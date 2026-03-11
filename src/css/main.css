@@ -19,6 +19,7 @@
 @import url('./components/cards.css');
 @import url('./components/forms.css');
 @import url('./components/sections.css');
+@import url('./components/search-profile.css');
 
 /* === UTILITIES === */
 @import url('./utilities/animations.css');
@@ -31,3 +32,4 @@
 @import url('./pages/comparatie.css');
 @import url('./pages/console-detail.css');
 @import url('./pages/contact.css');
+@import url('./pages/auth-profile.css');

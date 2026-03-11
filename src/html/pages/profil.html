@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Profil — Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+    <title>Profil — Console Notebook</title>
+    <link rel="stylesheet" href="../../css/production.css">
+</head>
+<body>
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="Caută" type="button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="index.html" class="logo">Console Notebook</a>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="invata.html">Învață</a></li>
+                <li><a href="evolutie.html">Evoluție</a></li>
+                <li><a href="comparatie.html">Comparație</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="bibliografie.html">Bibliografie</a></li>
+            </ul>
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-page" id="profile-page">
+        <!-- Header -->
+        <div class="profile-header" id="profile-header">
+            <div class="profile-avatar" id="profile-avatar">👤</div>
+            <div class="profile-info">
+                <div class="profile-name" id="profile-name">—</div>
+                <div class="profile-bio" id="profile-bio"></div>
+                <div class="profile-date" id="profile-date"></div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="profile-tabs">
+            <button class="profile-tab active" data-tab="cursuri">Cursuri</button>
+            <button class="profile-tab" data-tab="realizari">Realizări</button>
+            <button class="profile-tab" data-tab="setari">Setări</button>
+        </div>
+
+        <!-- Courses Panel -->
+        <div class="profile-panel active" id="panel-cursuri" data-panel="cursuri">
+            <div id="courses-container"></div>
+        </div>
+
+        <!-- Achievements Panel -->
+        <div class="profile-panel" id="panel-realizari" data-panel="realizari">
+            <div class="achievements-grid" id="achievements-container"></div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="profile-panel" id="panel-setari" data-panel="setari">
+            <div class="course-card">
+                <form class="settings-form" id="settings-form">
+                    <div class="auth-field">
+                        <label for="set-username">Nume utilizator</label>
+                        <input type="text" id="set-username" placeholder="Numele tău">
+                    </div>
+                    <div class="auth-field">
+                        <label for="set-bio">Bio</label>
+                        <input type="text" id="set-bio" placeholder="Scrie ceva despre tine..." maxlength="200">
+                    </div>
+                    <button type="submit" class="auth-btn">Salvează</button>
+                    <div class="auth-error" id="settings-msg" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/data/consoles-data.js"></script>
+    <script type="module" src="../../js/main.js"></script>
+    <script type="module">
+        import { AuthModule } from '../../js/modules/auth.js';
+        import { ProgressModule } from '../../js/modules/progress.js';
+        import { AchievementsModule } from '../../js/modules/achievements.js';
+        import { SearchModule } from '../../js/modules/search.js';
+        import { ProfileDropdownModule } from '../../js/modules/profile-dropdown.js';
+
+        // Init search + profile dropdown
+        SearchModule.init();
+        ProfileDropdownModule.init();
+
+        const user = AuthModule.getCurrentUser();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        function initProfile() {
+            if (!user) return;
+
+            // Check achievements
+            AchievementsModule.checkAndAward(user.id);
+
+            // Header
+            document.getElementById('profile-name').textContent = user.username;
+            document.getElementById('profile-bio').textContent = user.bio || 'Nicio descriere încă.';
+            document.getElementById('profile-date').textContent = 'Membru din ' + new Date(user.created_at).toLocaleDateString('ro-RO', { year: 'numeric', month: 'long' });
+
+            // Tabs
+            document.querySelectorAll('.profile-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    const panel = document.querySelector(`[data-panel="${tab.dataset.tab}"]`);
+                    if (panel) panel.classList.add('active');
+                });
+            });
+
+            // Handle hash navigation
+            const hash = window.location.hash.replace('#', '');
+            if (hash) {
+                const tabBtn = document.querySelector(`.profile-tab[data-tab="${hash}"]`);
+                if (tabBtn) tabBtn.click();
+            }
+
+            // Courses
+            renderCourses();
+
+            // Achievements
+            renderAchievements();
+
+            // Settings
+            document.getElementById('set-username').value = user.username;
+            document.getElementById('set-bio').value = user.bio || '';
+
+            document.getElementById('settings-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('set-username').value;
+                const bio = document.getElementById('set-bio').value;
+                AuthModule.updateProfile({ username, bio });
+                document.getElementById('profile-name').textContent = username;
+                document.getElementById('profile-bio').textContent = bio || 'Nicio descriere încă.';
+                const msg = document.getElementById('settings-msg');
+                msg.textContent = 'Salvat cu succes!';
+                msg.classList.add('visible');
+                setTimeout(() => msg.classList.remove('visible'), 2000);
+            });
+        }
+
+        function renderCourses() {
+            const container = document.getElementById('courses-container');
+            const courses = ProgressModule.COURSES;
+
+            if (courses.length === 0) {
+                container.innerHTML = '<div class="profile-empty"><span class="profile-empty__icon">📚</span>Niciun curs disponibil.</div>';
+                return;
+            }
+
+            container.innerHTML = courses.map(course => {
+                const progress = ProgressModule.getCourseProgress(user.id, course.id, course.totalLessons);
+                return `<div class="course-card">
+                    <div class="course-card__header">
+                        <div class="course-card__icon">${course.icon}</div>
+                        <div>
+                            <div class="course-card__name">${course.name}</div>
+                            <div class="course-card__counter">${progress.completed_lessons.length} / ${progress.total_lessons} lecții completate</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar__fill" style="width: ${progress.percentage}%"></div>
+                    </div>
+                    <div class="progress-bar__text">${progress.percentage}%</div>
+                </div>`;
+            }).join('');
+
+            // Animate progress bars
+            setTimeout(() => {
+                container.querySelectorAll('.progress-bar__fill').forEach(bar => {
+                    bar.style.width = bar.style.width; // trigger reflow
+                });
+            }, 100);
+        }
+
+        function renderAchievements() {
+            const container = document.getElementById('achievements-container');
+            const badges = AchievementsModule.getAllBadges(user.id);
+
+            container.innerHTML = badges.map(b => {
+                const cls = b.earned ? 'earned' : 'locked';
+                const date = b.earned_at ? new Date(b.earned_at).toLocaleDateString('ro-RO') : '';
+                return `<div class="achievement-badge ${cls}">
+                    <span class="achievement-badge__icon">${b.icon}</span>
+                    <div class="achievement-badge__name">${b.name}</div>
+                    <div class="achievement-badge__desc">${b.description}</div>
+                    ${b.earned ? `<div class="achievement-badge__date">Obținut pe ${date}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        initProfile();
+    </script>
+    <script src="../../js/fallback/hamburger.js" defer></script>
+    <script src="../../js/fallback/search-profile.js"></script>
+</body>
+</html>

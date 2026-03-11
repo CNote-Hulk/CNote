@@ -1,0 +1,402 @@
+/**
+ * Auth Pages CSS (login, register, profile)
+ * Matches existing dark cinematic theme
+ */
+
+/* === AUTH FORM PAGES === */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 40px;
+    background: var(--dark-bg, #1B1714) url('../../assets/images/wallpapers/login.png') center/cover no-repeat fixed;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card-bg, #2A2320);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg, 12px);
+    padding: 40px 32px;
+    box-shadow: var(--shadow-lg);
+}
+
+.auth-card__title {
+    font-size: 1.5rem;
+    color: var(--text-light, #F5F0E8);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-family: var(--font-sans);
+}
+
+.auth-card__subtitle {
+    color: var(--text-gray, #A89F94);
+    text-align: center;
+    font-size: 0.88rem;
+    margin-bottom: 2rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.auth-field label {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-family: var(--font-sans);
+}
+
+.auth-field input {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md, 8px);
+    padding: 12px 16px;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    transition: border-color 0.2s ease;
+    outline: none;
+}
+
+.auth-field input:focus {
+    border-color: var(--accent-color, #D4AF7A);
+}
+
+.auth-btn {
+    margin-top: 0.5rem;
+    padding: 14px 24px;
+    background: var(--accent-color, #D4AF7A);
+    color: var(--primary-color, #1B1714);
+    border: none;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.auth-btn:hover {
+    background: var(--accent-light, #E6C48A);
+    transform: translateY(-1px);
+}
+
+.auth-error {
+    background: rgba(229, 115, 115, 0.12);
+    border: 1px solid rgba(229, 115, 115, 0.25);
+    color: #e57373;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    display: none;
+}
+
+.auth-error.visible {
+    display: block;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.auth-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* === PROFILE PAGE === */
+.profile-page {
+    padding: 100px 20px 60px;
+    min-height: 100vh;
+    background: var(--dark-bg, #1B1714) url('../../assets/images/wallpapers/login.png') center/cover no-repeat fixed;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 32px;
+    background: var(--card-bg, #2A2320);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg, 12px);
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(212, 175, 122, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--accent-color);
+    flex-shrink: 0;
+    border: 2px solid rgba(212, 175, 122, 0.3);
+}
+
+.profile-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+
+.profile-bio {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.profile-date {
+    color: var(--text-gray);
+    font-size: 0.78rem;
+    opacity: 0.7;
+}
+
+/* Profile Tabs */
+.profile-tabs {
+    display: flex;
+    gap: 0;
+    max-width: 800px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 30px;
+}
+
+.profile-tab {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: var(--font-sans);
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.profile-tab:hover {
+    color: var(--text-light);
+}
+
+.profile-tab.active {
+    color: var(--accent-color);
+}
+
+.profile-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-color);
+    border-radius: 1px;
+}
+
+.profile-panel {
+    display: none;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.profile-panel.active {
+    display: block;
+}
+
+/* Course Card */
+.course-card {
+    background: var(--card-bg, #2A2320);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg, 12px);
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.course-card__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.course-card__icon {
+    font-size: 1.6rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 175, 122, 0.1);
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.course-card__name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+.course-card__counter {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    margin-top: 2px;
+}
+
+/* Progress Bar */
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar__fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color, #D4AF7A), var(--accent-light, #E6C48A));
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0;
+}
+
+.progress-bar__text {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    text-align: right;
+}
+
+/* Achievement Badge */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.achievement-badge {
+    background: var(--card-bg, #2A2320);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg, 12px);
+    padding: 24px 20px;
+    text-align: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.achievement-badge:hover {
+    transform: translateY(-2px);
+}
+
+.achievement-badge.earned {
+    border-color: rgba(212, 175, 122, 0.3);
+}
+
+.achievement-badge.locked {
+    opacity: 0.45;
+}
+
+.achievement-badge__icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.achievement-badge.locked .achievement-badge__icon {
+    filter: grayscale(1);
+}
+
+.achievement-badge__name {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+
+.achievement-badge__desc {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    line-height: 1.4;
+}
+
+.achievement-badge__date {
+    font-size: 0.72rem;
+    color: var(--accent-color);
+    margin-top: 8px;
+    opacity: 0.8;
+}
+
+/* Settings Form */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 500px;
+}
+
+/* No courses / achievements message */
+.profile-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-gray);
+    font-size: 0.92rem;
+}
+
+.profile-empty__icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    display: block;
+    opacity: 0.5;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .auth-card {
+        padding: 32px 24px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+    }
+
+    .profile-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}

@@ -8,6 +8,8 @@ import { NavigationModule } from './modules/navigation.js';
 import { AnimationsModule } from './modules/animations.js';
 import { ContactFormModule } from './modules/contact-form.js';
 import { DiacriticsModule } from './modules/diacritics.js';
+import { SearchModule } from './modules/search.js';
+import { ProfileDropdownModule } from './modules/profile-dropdown.js';
 
 /**
  * App Class - Orchestrates all modules
@@ -43,6 +45,12 @@ class App {
 
             DiacriticsModule.init();
             console.log('✓ Diacritics module initialized');
+
+            SearchModule.init();
+            console.log('✓ Search module initialized');
+
+            ProfileDropdownModule.init();
+            console.log('✓ Profile dropdown module initialized');
             
             console.log('✅ All modules initialized successfully');
             this.initMathRendering();

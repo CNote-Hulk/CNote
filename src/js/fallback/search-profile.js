@@ -1,0 +1,241 @@
+/**
+ * Search & Profile Dropdown Fallback (non-module)
+ * Works on file:// protocol without ES module support
+ */
+
+(function() {
+    if (window.__SEARCH_PROFILE_INITIALIZED__) return;
+    window.__SEARCH_PROFILE_INITIALIZED__ = true;
+
+    // ---- Minimal Auth helper (reads localStorage only) ----
+    var AuthHelper = {
+        SESSION_KEY: 'cn_session',
+        isLoggedIn: function() { return !!this.getCurrentUser(); },
+        getCurrentUser: function() {
+            try {
+                var s = JSON.parse(localStorage.getItem(this.SESSION_KEY));
+                return s && s.id ? s : null;
+            } catch(e) { return null; }
+        },
+        logout: function() { localStorage.removeItem(this.SESSION_KEY); }
+    };
+
+    // ---- Path helpers ----
+    function resolveImagePath(imgRelativePath) {
+        var p = window.location.pathname;
+        if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return '../../' + imgRelativePath;
+        if (p.indexOf('/pages/curs/') !== -1 || p.indexOf('\\pages\\curs\\') !== -1) return '../../' + imgRelativePath;
+        if (p.indexOf('/pages/') !== -1 || p.indexOf('\\pages\\') !== -1) return '../../' + imgRelativePath;
+        return 'src/' + imgRelativePath;
+    }
+
+    function resolveConsolePath(consoleId) {
+        var p = window.location.pathname;
+        if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return consoleId + '.html';
+        if (p.indexOf('/pages/curs/') !== -1 || p.indexOf('\\pages\\curs\\') !== -1) return '../consoles/' + consoleId + '.html';
+        if (p.indexOf('/pages/') !== -1 || p.indexOf('\\pages\\') !== -1) return 'consoles/' + consoleId + '.html';
+        return 'src/html/pages/consoles/' + consoleId + '.html';
+    }
+
+    function resolvePagePath(page) {
+        var p = window.location.pathname;
+        if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return '../' + page;
+        if (p.indexOf('/pages/curs/') !== -1 || p.indexOf('\\pages\\curs\\') !== -1) return '../' + page;
+        if (p.indexOf('/pages/') !== -1 || p.indexOf('\\pages\\') !== -1) return page;
+        return 'src/html/pages/' + page;
+    }
+
+    function normalize(str) {
+        return str.toLowerCase()
+            .replace(/[ăâ]/g, 'a').replace(/[îí]/g, 'i')
+            .replace(/[șş]/g, 's').replace(/[țţ]/g, 't')
+            .replace(/[-_]/g, ' ');
+    }
+
+    // ---- Search ----
+    var searchOverlay, searchInput, searchResults, selectedIndex = -1, searchVisible = false;
+    var consoles = [];
+
+    function loadConsoles() {
+        if (window.CONSOLES_DATA) { consoles = window.CONSOLES_DATA; return; }
+        var tryLoad = function() {
+            if (window.CONSOLES_DATA) consoles = window.CONSOLES_DATA;
+            else setTimeout(tryLoad, 200);
+        };
+        setTimeout(tryLoad, 300);
+    }
+
+    function createSearchOverlay() {
+        var ov = document.createElement('div');
+        ov.className = 'search-overlay';
+        ov.innerHTML =
+            '<div class="search-overlay__backdrop"></div>' +
+            '<div class="search-overlay__container">' +
+                '<div class="search-overlay__input-wrap">' +
+                    '<svg class="search-overlay__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
+                    '<input type="text" class="search-overlay__input" placeholder="Caută o consolă..." autocomplete="off" spellcheck="false">' +
+                    '<kbd class="search-overlay__kbd">ESC</kbd>' +
+                '</div>' +
+                '<div class="search-overlay__results"></div>' +
+            '</div>';
+        document.body.appendChild(ov);
+
+        searchOverlay = ov;
+        searchInput = ov.querySelector('.search-overlay__input');
+        searchResults = ov.querySelector('.search-overlay__results');
+
+        ov.querySelector('.search-overlay__backdrop').addEventListener('click', closeSearch);
+        searchInput.addEventListener('input', function() {
+            selectedIndex = -1;
+            doSearch(searchInput.value);
+        });
+        searchInput.addEventListener('keydown', handleSearchKey);
+    }
+
+    function openSearch() {
+        searchVisible = true;
+        searchOverlay.classList.add('search-overlay--active');
+        document.body.classList.add('search-open');
+        searchInput.value = '';
+        searchResults.innerHTML = '';
+        selectedIndex = -1;
+        setTimeout(function() { searchInput.focus(); }, 50);
+    }
+
+    function closeSearch() {
+        searchVisible = false;
+        searchOverlay.classList.remove('search-overlay--active');
+        document.body.classList.remove('search-open');
+    }
+
+    function doSearch(query) {
+        var q = normalize(query.trim());
+        if (!q) { searchResults.innerHTML = ''; return; }
+
+        var matches = consoles.filter(function(c) {
+            return normalize(c.nume || '').indexOf(q) !== -1 ||
+                   normalize(c.producator || '').indexOf(q) !== -1 ||
+                   String(c.lansare || '').indexOf(q) !== -1 ||
+                   normalize(c.id || '').indexOf(q) !== -1;
+        }).slice(0, 8);
+
+        if (matches.length === 0) {
+            searchResults.innerHTML = '<div class="search-overlay__empty">Niciun rezultat găsit</div>';
+            return;
+        }
+
+        searchResults.innerHTML = matches.map(function(c, i) {
+            var imgSrc = resolveImagePath(c.imagine || '');
+            var href = resolveConsolePath(c.id);
+            return '<a href="' + href + '" class="search-result" data-index="' + i + '">' +
+                '<img class="search-result__img" src="' + imgSrc + '" alt="' + c.nume + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+                '<div class="search-result__info">' +
+                    '<span class="search-result__name">' + c.nume + '</span>' +
+                    '<span class="search-result__meta">' + c.producator + ' · ' + c.lansare + '</span>' +
+                '</div></a>';
+        }).join('');
+    }
+
+    function handleSearchKey(e) {
+        var items = searchResults.querySelectorAll('.search-result');
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+            highlightResult(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, 0);
+            highlightResult(items);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (selectedIndex >= 0 && items[selectedIndex]) window.location.href = items[selectedIndex].href;
+        }
+    }
+
+    function highlightResult(items) {
+        for (var i = 0; i < items.length; i++) {
+            if (i === selectedIndex) { items[i].classList.add('search-result--active'); items[i].scrollIntoView({ block: 'nearest' }); }
+            else items[i].classList.remove('search-result--active');
+        }
+    }
+
+    // ---- Profile Dropdown ----
+    var profileDropdown, profileBtn, profileOpen = false;
+
+    function createProfileDropdown() {
+        profileBtn = document.querySelector('.navbar-profile-btn');
+        if (!profileBtn) return;
+
+        var dd = document.createElement('div');
+        dd.className = 'profile-dropdown';
+        dd.innerHTML =
+            '<a href="' + resolvePagePath('profil.html') + '" class="profile-dropdown__item">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Profil</a>' +
+            '<a href="' + resolvePagePath('profil.html') + '#cursuri" class="profile-dropdown__item">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Cursurile Mele</a>' +
+            '<a href="' + resolvePagePath('profil.html') + '#realizari" class="profile-dropdown__item">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> Realizări</a>' +
+            '<a href="' + resolvePagePath('profil.html') + '#setari" class="profile-dropdown__item">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Setări</a>' +
+            '<div class="profile-dropdown__divider"></div>' +
+            '<button class="profile-dropdown__item profile-dropdown__logout">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Deconectare</button>';
+        profileBtn.parentElement.appendChild(dd);
+        profileDropdown = dd;
+
+        profileBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!AuthHelper.isLoggedIn()) {
+                window.location.href = resolvePagePath('login.html');
+                return;
+            }
+            profileOpen = !profileOpen;
+            profileDropdown.classList.toggle('profile-dropdown--active', profileOpen);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (profileOpen && !profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+                profileOpen = false;
+                profileDropdown.classList.remove('profile-dropdown--active');
+            }
+        });
+
+        var logoutBtn = dd.querySelector('.profile-dropdown__logout');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function() {
+                AuthHelper.logout();
+                window.location.reload();
+            });
+        }
+    }
+
+    // ---- Init ----
+    function initAll() {
+        loadConsoles();
+        createSearchOverlay();
+        createProfileDropdown();
+
+        // Bind search button
+        var searchBtn = document.querySelector('.navbar-search-btn');
+        if (searchBtn) searchBtn.addEventListener('click', function(e) { e.preventDefault(); openSearch(); });
+
+        // Global keys
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+            if (e.key === 'Escape') {
+                if (searchVisible) closeSearch();
+                if (profileOpen) { profileOpen = false; profileDropdown.classList.remove('profile-dropdown--active'); }
+            }
+        });
+
+        console.log('✓ Search & Profile fallback initialized');
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+        initAll();
+    }
+})();
