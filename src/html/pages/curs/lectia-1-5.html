@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 1.5 — AC vs DC: Curent Alternativ și Continuu">
+    <meta name="description" content="Lecția 1.5 — Serie și paralel">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 1.5 — AC vs DC — Console Notebook</title>
+    <title>Lecția 1.5 — Serie și paralel — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -31,394 +35,412 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — Electricitate Fundamentală</p>
-            <h1>Lecția 1.5 — AC vs DC</h1>
-            <p>De ce priza ta-i AC, dar consola funcționează pe DC? Conversie și diferențe critice.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — ELECTRICITATE FUNDAMENTALĂ</p>
+            <h1>Lecția 1.5 — Serie și paralel</h1>
+            <p>circuite &#238;n serie, circuite &#238;n paralel, distribuția tensiunii, distribuția curentului</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- INTRODUCERE -->
-    <section class="section" id="introducere">
+                                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    Până acum am vorbit despre tensiune și curent ca și cum ar fi constante. Dar în realitate, <em>nu sunt întotdeauna</em>.
-                </p>
-                <p>
-                    <strong>DC (Direct Current) — Curent Continuu:</strong> Tensiune și curent constante în direcție și mărime. Fluxul de electroni merge într-un sens.
-                </p>
-                <p>
-                    <strong>AC (Alternating Current) — Curent Alternativ:</strong> Tensiune și curent se schimbă periodic în direcție. Fluxul de electroni merge înainte-și-înapoi oscilaator.
-                </p>
-                <p>
-                    <strong>De ce contează?</strong>
-                <ul class="specs-list">
-                    <li>Priza ta furnizează AC (230V în Europa)</li>
-                    <li>Consola ta funcționează pe DC (1.05V, 3.3V, 5V, 12V)</li>
-                    <li>PSU-ul convertește AC → DC</li>
-                    <li>Calitatea conversiei afectează stabilitate și eficiență consolei</li>
-                    <li>Ripple (oscilații în DC output) = instabilitate</li>
-                </ul>
-                </p>
+                <p>Curentul este același prin toate elementele.</p>
+                <p>Această lecție acoperă: <strong>circuite &#238;n serie</strong>, <strong>circuite &#238;n paralel</strong>, <strong>distribuția tensiunii</strong>, <strong>distribuția curentului</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- TEORIE -->
     <section class="section" id="teorie">
         <div class="container">
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — AC: Forma Sinusoidală</h3>
-                <p>
-                    AC oscilează în mod sinusoidal: V(t) = V_peak × sin(2πft)
-                </p>
+                <h3>1.5.1 — Definiții fundamentale</h3>
                 <ul class="specs-list">
-                    <li><strong>V_peak:</strong> amplitudinea maximă (ex: 325V pentru 230V RMS European)</li>
-                    <li><strong>f:</strong> frecvența (50Hz Europa, 60Hz USA)</li>
-                    <li><strong>RMS (Root Mean Square):</strong> valoarea efectivă. 230V RMS ≈ 325V peak</li>
+                    <li><strong>Componente conectate &#238;n serie:</strong> conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</li>
+                    <li>Tensiunea pe rețea = suma tensiunilor pe fiecare componentă (voltage drops)</li>
+                    <li><strong>Componente conectate &#238;n paralel:</strong> conectate pe mai multe trasee, fiecare componentă are aceeași tensiune pe ea, egală cu tensiunea pe rețea</li>
+                    <li>Curentul prin rețea = suma curenților prin fiecare componentă</li>
+                    <li>Cele două afirmații sunt echivalente, cu excepția interschimbării rolului tensiunii și curentului (dualitate)</li>
                 </ul>
-                <p>
-                    AC merge înainte-și-înapoi 50 ori pe secundă (50Hz). De fiecare dată schimbă direcție, tensiunea crește, apoit scade.
-                </p>
-                <p>
-                    <strong>Avantajul AC:</strong> Ușor de generat, ușor de transmodan (transformatoare), ușor de transmis pe distanțe mari. De aceea priza e AC.
-                </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — DC: Tensiune Constantă</h3>
-                <p>
-                    DC = tensiune și curent constante direct. Electronii se mișcă uni-direcțional.
-                </p>
+                <h3>1.5.2 — Exemplu practic (4 becuri + baterie 12V)</h3>
                 <ul class="specs-list">
-                    <li><strong>Baterii:</strong> fizic DC (1.5V, 3.7V per cell)</li>
-                    <li><strong>Electronice digitale:</strong> au nevoie de DC. CPU-ul nu înțelege AC.</li>
-                    <li><strong>Circuite integrate:</strong> necesită tensiune stabilă</li>
+                    <li><strong>Serie:</strong> curentul trece prin toate becurile la r&#226;nd; cădere de tensiune = 3V pe fiecare bec (12V / 4); posibil insuficient pentru iluminare</li>
+                    <li><strong>Paralel:</strong> fiecare bec este conectat direct la baterie; tensiune = 12V pe fiecare bec; toate becurile strălucesc</li>
+                    <li><strong>Serie:</strong> dacă un bec se arde, &#238;ntregul circuit se &#238;ntrerupe</li>
+                    <li><strong>Paralel:</strong> dacă un bec se arde, celelalte continuă să funcționeze</li>
                 </ul>
-                <p>
-                    <strong>Diferența cheie:</strong> Cu AC, tensiunea se schimbă de 100 ori pe secundă (50Hz significa 0→max→0→min→0, de două ori pe ciclu). CPU-ul are nevoie de tensiune constantă. Dacă I/O e AC, circuitele digitale nu funcționează.
-                </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Rectificare: De la AC la DC</h3>
-                <p>
-                    <strong>Rectificare:</strong> Proces de convertire AC → DC. Foloseștii diode.
+                <h3>1.5.3 — a) Curent</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$I = I_{1} = I_{2} = \ldots = I_{n}$$
                 </p>
-                <ul class="specs-list">
-                    <li><strong>Diodă:</strong> permite curentul to-o direcție doar. Dacă AC vine, dioda "tăie" jumătatea negativă.</li>
-                    <li><strong>Rectifor monoandă (HWR):</strong> folosește o diodă. Output e 0→V→0→V... Pe jumătate din timp e zero.</li>
-                    <li><strong>Rectificator pund (FWR):</strong> folosește 4 diode. Inversează jumătatea negativă, deci output e mai lin.</li>
-                </ul>
-                <p>
-                    După rectificare, ai un semnal "ondulat" care merge de la 0 la V_peak. Nu-i perfect DC.
-                </p>
+                <p>Curentul este același prin toate elementele.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Filtrare și Ripple</h3>
-                <p>
-                    După rectificare, semnalul e puțin pur. Îl trebuie "netezit" cu condensatori.
+                <h3>1.5.4 — b) Tensiune</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$V = \Sigma V_{i} = I \times \Sigma R_{i}$$
                 </p>
-                <p>
-                    <strong>Ripple:</strong> Oscilația în DC output datorita rectificării. Măsurată în milivolți.
-                </p>
-                <ul class="specs-list">
-                    <li><strong>PSU bun (modern):</strong> ripple &lt; 50mV</li>
-                    <li><strong>PSU slab:</strong> ripple &gt; 200mV</li>
-                </ul>
-                <p>
-                    Ripple mare = tensiune instabilă = CPU primește 1.05V, apoi 1.10V, apoi 0.95V — chaos. Firmware face reboot pentru a se proteja.
-                </p>
-                <p>
-                    Condensatorii pe placa (C1, C2, ... mii de mici condensatori) absorbă ripple-ul și furnizează curent smooth la chipuri.
-                </p>
+                <p>Tensiunea total = suma căderilor de tensiune individuale (voltage drops).</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Switch-Mode vs Linear PSU</h3>
-                <p>
-                    Există două tecnologie principale pentru PSU:
+                <h3>1.5.5 — c) Rezistență totală</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$R_{\text{total}} = R_{1} + R_{2} + R_{3} + \ldots + R_{n}$$
                 </p>
-                <ul class="specs-list">
-                    <li><strong>Linear PSU:</strong> transformer → rectificare → filtrare. Simple, dar mare și fierbinte. Eficiență ~60%. Destul de mort acum.</li>
-                    <li><strong>Switch-Mode PSU (SMPS):</strong> transformer → rectificare → DC → oscilator (PWM) → transformer mic → rectificare → filtrare. Mic, eficient, modern. Eficiență ~88-92%. Used în toți console și PSU-urile astazi. </li>
-                </ul>
-                <p>
-                    PS5 și Xbox Series X folosesc SMPS cu putere de comutație de ~130kHz. Asta permite condensatori ieftini, design compact, și pierderi mici.
-                </p>
+                <p>Rezistența totală = suma rezistențelor individuale.</p>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.6 — d) Condensatoare &#238;n serie</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$1/C_{\text{total}} = 1/C_{1} + 1/C_{2} + \ldots + 1/C_{n}$$
+                </p>
+                <p>Capacitatea totală = reciproca sumei reciprocelor capacităților individuale.</p>
+                <p>(Invers față de rezistoare!)</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.7 — e) Inductoare &#238;n serie</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$L_{\text{total}} = L_{1} + L_{2} + \ldots + L_{n}$$
+                </p>
+                <p>Inductanța totală = suma inductanțelor individuale.</p>
+                <p>(La fel ca rezistoarele.)</p>
+                <ul class="specs-list">
+                    <li><strong>Switch-uri &#238;n serie = AND logic:</strong> circuitul funcționează doar dacă TOATE switch-urile sunt &#238;nchise.</li>
+                    <li><strong>Baterii &#238;n serie:</strong> tensiunea totală = suma tensiunilor celulelor.</li>
+                </ul>
+                <p>Ex: baterie auto 12V = 6 celule &#215; 2V.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.8 — h) Caracteristici serie</h3>
+                <ul class="specs-list">
+                    <li>Un singur traseu pentru curent</li>
+                    <li>Deschiderea/ruperea circuitului &#238;n orice punct oprește tot circuitul</li>
+                    <li>Numit și „current-coupled&quot; (cuplat prin curent)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.9 — a) Tensiune</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$V = V_{1} = V_{2} = \ldots = V_{n}$$
+                </p>
+                <p>Tensiunea este aceeași pe toate elementele.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.10 — b) Curent</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$I = \Sigma I_{i} = V \times \Sigma (1/R_{i})$$
+                </p>
+                <p>Curentul total = suma curenților individuali (legea lui Kirchhoff pentru curent – KCL).</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.11 — c) Rezistență totală</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$1/R_{\text{total}} = 1/R_{1} + 1/R_{2} + \ldots + 1/R_{n}$$
+                </p>
+                <p>Rezistența totală &lt; cea mai mică rezistență individuală.</p>
+                <p>Caz special 2 rezistoare: R_total = (R₁ &#215; R₂) / (R₁ + R₂) – „product over sum&quot;</p>
+                <p>N rezistoare egale R&#39;: R_total = R&#39;/N.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.12 — d) Distribuția curentului (2 rezistoare)</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$I_{1}/I_{2} = R_{2}/R_{1}$$
+                </p>
+                <p>Componentele &#238;mpart curentul invers proporțional cu rezistențele lor.</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.13 — e) Condensatoare &#238;n paralel</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$C_{\text{total}} = C_{1} + C_{2} + \ldots + C_{n}$$
+                </p>
+                <p>Capacitatea totală = suma capacităților individuale.</p>
+                <p>(Invers față de rezistoare! La fel ca rezistoarele &#238;n serie.)</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.14 — f) Inductoare &#238;n paralel</h3>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$1/L_{\text{total}} = 1/L_{1} + 1/L_{2} + \ldots + 1/L_{n}$$
+                </p>
+                <p>(La fel ca rezistoarele &#238;n paralel.)</p>
+                <ul class="specs-list">
+                    <li><strong>Switch-uri &#238;n paralel = OR logic:</strong> circuitul funcționează dacă cel puțin un switch este &#238;nchis.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.15 — h) Baterii &#238;n paralel</h3>
+                <ul class="specs-list">
+                    <li>Tensiunea = tensiunea unei singure celule</li>
+                    <li>Curentul furnizat de fiecare celulă = fracțiune din curentul total</li>
+                    <li>Crește capacitatea (amp-hours)</li>
+                    <li>Celulele trebuie să aibă tensiune identică, altfel cele cu tensiune mai mare vor &#238;ncerca să le &#238;ncarce pe cele cu tensiune mai mică</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.16 — Notație</h3>
+                <ul class="specs-list">
+                    <li><strong>Operatorul paralel:</strong> ∥</li>
+                    <li>R₁ ∥ R₂ = (R₁ &#215; R₂) / (R₁ + R₂)</li>
+                    <li>Simplifică expresiile complexe</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.17 — Aplicații</h3>
+                <ul class="specs-list">
+                    <li><strong>Baterii:</strong> celule &#238;n serie pentru tensiune mai mare (ex: lanternă, scule electrice cu 12 celule Li-ion = 48V)</li>
+                    <li><strong>Circuite serie &#238;n trenuri:</strong> 8 becuri de 70V &#238;n serie pe linie de 600V</li>
+                    <li><strong>Analogie cu sistemul circulator:</strong> vase de s&#226;nge &#238;n serie (rezistența se adună) vs organe alimentate &#238;n paralel (rezistența totală &lt; individuală)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>1.5.18 — Legile lui Kirchhoff (menționate)</h3>
+                <ul class="specs-list">
+                    <li><strong>KCL (Kirchhoff&#39;s Current Law):</strong> suma curenților care intră &#238;ntr-un nod = suma curenților care ies</li>
+                    <li><strong>KVL (Kirchhoff&#39;s Voltage Law):</strong> suma căderilor de tensiune pe o buclă &#238;nchisă = 0</li>
+                </ul>
+            </div>
+
         </div>
     </section>
 
-    <!-- LEGATURA FIZICA-INFORMATICA -->
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    <strong>Fizica:</strong> AC și DC sunt fenomene diferite pe o nivel electromagnetic. AC e mai eficiență pentru transport (transformatoare), DC pentru dispozitive.
-                </p>
-                <p>
-                    <strong>Informatica:</strong> Logica digitală funcționează cu 0 și 1. O "1" = tensiune ≥ 0.7V pe linia de logică (ex: 3.3V). O "0" = tensiune ≤ 0.2V. Dacă ripple cauzeaza 3.3V să oscilleze la 2.8V, circuitul poate să-mi citească greșit.
-                </p>
-                <p>
-                    Firmware-ul nu-și dă seama de ripple-ul mic, dar chipurile digitale sunt sensibile. De aceea filtrare e critică.
-                </p>
+                <p>Conceptele din această lecție — Serie și paralel — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- APLICARE DIRECTA -->
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 1: De ce PS5 nu merge direct la priză</h3>
-                <p>
-                    Dacă PS5 ar primi 230V AC direct: chips ar primii semnale șuier care se schimbă 100 ori pe secundă. Nu pot funcționa. PSU convertește 230V AC 50Hz → 12V DC cu ripple &lt; 50mV.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 2: Dacă PSU-ul Defect (Ripple Mare)</h3>
-                <p>
-                    Imaginează PSU defect care furnizează 1.05V ± 0.15V (ripple mare). CPU alternează între 0.90V și 1.20V. 0.90V = prea mic, CPU nu funcționează. Firmware vede instabilitate, rezeteaza. Consola nu porneaste.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 3: De ce Xbox Series X are ventilator mai mare</h3>
-                <p>
-                    Xbox SMPS funcționează la ~130kHz. AC nici nu se vede (sunet de 130kHz e în range ultrasonor). Dar cu tot stoom pentru comutare, pricini e fierbinte. Xbox are ventilator mai ghinion. PS5 similar.
-                </p>
+                <h3>Exemplu practic (4 becuri + baterie 12V)</h3>
+                <ul class="specs-list">
+                    <li><strong>Serie:</strong> curentul trece prin toate becurile la r&#226;nd; cădere de tensiune = 3V pe fiecare bec (12V / 4); posibil insuficient pentru iluminare</li>
+                    <li><strong>Paralel:</strong> fiecare bec este conectat direct la baterie; tensiune = 12V pe fiecare bec; toate becurile strălucesc</li>
+                    <li><strong>Serie:</strong> dacă un bec se arde, &#238;ntregul circuit se &#238;ntrerupe</li>
+                    <li><strong>Paralel:</strong> dacă un bec se arde, celelalte continuă să funcționeze</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- EXEMPLU REAL -->
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Curba AC și Rectificare</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenar:</strong> 230V AC European intră-n PSU.</p>
-
-                <p><strong>Pas 1 — AC Input:</strong></p>
-                <p>V(t) = 325 × sin(2π × 50 × t) [V]</p>
+                <h3>Aplicații</h3>
                 <ul class="specs-list">
-                    <li>230V RMS = 325V peak</li>
-                    <li>Oscileaza +325V → 0 → -325V → 0 ... 50 ori pe secundă</li>
+                    <li><strong>Baterii:</strong> celule &#238;n serie pentru tensiune mai mare (ex: lanternă, scule electrice cu 12 celule Li-ion = 48V)</li>
+                    <li><strong>Circuite serie &#238;n trenuri:</strong> 8 becuri de 70V &#238;n serie pe linie de 600V</li>
                 </ul>
-
-                <p><strong>Pas 2 — Rectificare Pund:</strong></p>
-                <ul class="specs-list">
-                    <li>Diodele permit doar curent pozitiv</li>
-                    <li>Output va +325V → 0 → +325V → 0 ... 100 ori pe secundă (ca pe jumătatea negativă e flipped)</li>
-                </ul>
-
-                <p><strong>Pas 3 — Filtrare cu Condensatoare:</strong></p>
-                <ul class="specs-list">
-                    <li>Condensatorii absorb vârfurile (325V) și reemit curent între vârfuri</li>
-                    <li>Output devine mai lin: 320V → 315V → 320V ... (ripple = 5V)</li>
-                </ul>
-
-                <p><strong>Pas 4 — Transformare (SMPS):</strong></p>
-                <ul class="specs-list">
-                    <li>Oscilator comută pe 130kHz (invertor PWM)</li>
-                    <li>Transformator mic reduce 320V → 12V aprox</li>
-                    <li>Rectificare din nou și filtrare la 12V DC cu ripple &lt; 0.1V</li>
-                </ul>
-
-                <p><strong>Pas 5 — Output Final:</strong></p>
-                <p>12.0V ± 0.05V DC — Asta-i ce vede PS5.</p>
             </div>
         </div>
     </section>
 
-    <!-- PROBLEME FRECVENTE -->
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-            <div class="card">
-                <h3>⚠️ Consola se reboot-ează random, fără pattern</h3>
-                <p>
-                    Cause: Ripple mare din PSU. Tensiunile instabile cauzeaza malfuncții logice. Firmware detecta și reseteaza. Soluție: testare PSU, înlocuire dacă defect.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Se aude șuier de 50Hz din PSU</h3>
-                <p>
-                    Cauza: Transformatorul linear nu-și filtrează AC suficient. PSU-ul mai vechi, mai slab. SMPS modern nu fac asta.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ PSU se încălzește prea mult la operație normală</h3>
-                <p>
-                    Cauza: Linear PSU neeficients (dacă se-i), sau SMPS supraincarcata. Soluție: înlocuire PSU, sau consola pus-a în aer liber.
-                </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu Serie și paralel</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- RECAPITULARE -->
     <section class="section" id="recapitulare">
         <div class="container">
             <h2 class="section-title">Recapitulare</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>AC (Alternating Current):</strong> tensiune oscilant, merit±ă la +V, -V, sinusoidal</li>
-                    <li><strong>DC (Direct Current):</strong> tensiune constantă, unidirecțional</li>
-                    <li><strong>Priza e AC (230V, 50Hz Europe), console-e DC</strong></li>
-                    <li><strong>Rectificare:</strong> diode convert AC → "pseudo-DC" (pulsant)</li>
-                    <li><strong>Filtrare:</strong> condensatori netezesc pulsul → DC pur</li>
-                    <li><strong>Ripple:</strong> oscilație în DC output. Mare = instabil, mic = stabil</li>
-                    <li><strong>Linear PSU:</strong> vechi, ineficiență, fierbință, ripple mare</li>
-                    <li><strong>SMPS (Switch-Mode):</strong> modern, eficient, compact, ripple mic</li>
-                    <li>PS5 și Xbox folosesc SMPS cu comutare 130kHz</li>
-                    <li>Ripple cauzeaza instabilitate și reboot-uri</li>
+                    <li><strong>Definiții fundamentale:</strong> Componente conectate &#238;n serie: conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</li>
+                    <li><strong>Exemplu practic (4 becuri + baterie 12V):</strong> Serie: curentul trece prin toate becurile la r&#226;nd; cădere de tensiune = 3V pe fiecare bec (12V / 4); posibil insuficient pentru iluminare</li>
+                    <li><strong>a) Curent:</strong> I = I₁ = I₂ = ... = Iₙ</li>
+                    <li><strong>b) Tensiune:</strong> V = ΣVᵢ = I &#215; ΣRᵢ</li>
+                    <li><strong>c) Rezistență totală:</strong> R_total = R₁ + R₂ + R₃ + ... + Rₙ</li>
+                    <li><strong>d) Condensatoare &#238;n serie:</strong> 1/C_total = 1/C₁ + 1/C₂ + ... + 1/Cₙ</li>
+                    <li><strong>e) Inductoare &#238;n serie:</strong> L_total = L₁ + L₂ + ... + Lₙ</li>
+                    <li><strong>h) Caracteristici serie:</strong> Un singur traseu pentru curent</li>
+                    <li><strong>a) Tensiune:</strong> V = V₁ = V₂ = ... = Vₙ</li>
+                    <li><strong>b) Curent:</strong> I = ΣIᵢ = V &#215; Σ(1/Rᵢ)</li>
+                    <li><strong>c) Rezistență totală:</strong> 1/R_total = 1/R₁ + 1/R₂ + ... + 1/Rₙ</li>
+                    <li><strong>d) Distribuția curentului (2 rezistoare):</strong> I₁/I₂ = R₂/R₁</li>
+                    <li><strong>e) Condensatoare &#238;n paralel:</strong> C_total = C₁ + C₂ + ... + Cₙ</li>
+                    <li><strong>f) Inductoare &#238;n paralel:</strong> 1/L_total = 1/L₁ + 1/L₂ + ... + 1/Lₙ</li>
+                    <li><strong>h) Baterii &#238;n paralel:</strong> Tensiunea = tensiunea unei singure celule</li>
+                    <li><strong>Notație:</strong> Operatorul paralel: ∥</li>
+                    <li><strong>Aplicații:</strong> Baterii: celule &#238;n serie pentru tensiune mai mare (ex: lanternă, scule electrice cu 12 celule Li-ion = 48V)</li>
+                    <li><strong>Legile lui Kirchhoff (menționate):</strong> KCL (Kirchhoff&#39;s Current Law): suma curenților care intră &#238;ntr-un nod = suma curenților care ies</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- QUIZ -->
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Care-i diferența fundamentală între AC și DC?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Componente conectate &#238;n serie?</strong></p>
                 <ul class="specs-list">
-                    <li>a) AC e mai puternic, DC e mai slab</li>
-                    <li>b) AC oscilant, DC constant directional</li>
-                    <li>c) DC e mai bun decât AC</li>
-                    <li>d) AC și DC sunt identic</li>
+                    <li>a) Curentul prin rețea = suma curenților prin fiecare componentă</li>
+                    <li>b) Tensiunea pe rețea = suma tensiunilor pe fiecare componentă (voltage drops)</li>
+                    <li>c) conectate pe mai multe trasee, fiecare componentă are aceeași tensiune pe ea, egală cu tensiunea pe rețea</li>
+                    <li>d) conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) AC oscilant, DC constant directional</strong> — AC merge +,-,+,-; DC merge constant +.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebara 2</h3>
-                <p><strong>De ce PSU trebuie să convertească 230V AC la DC?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Serie?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Pentru a economisi curent</li>
-                    <li>b) CPU-ul nu înțelege AC, are nevoie de DC stabil</li>
-                    <li>c) E mai ușor să transmit AC</li>
-                    <li>d) AC e toxic pentru circuitele digitale</li>
+                    <li>a) curentul trece prin toate becurile la r&#226;nd; cădere de tensiune = 3V pe fiecare bec (12V / 4); posibil insuficient pentru iluminare</li>
+                    <li>b) conectate pe mai multe trasee, fiecare componentă are aceeași tensiune pe ea, egală cu tensiunea pe rețea</li>
+                    <li>c) conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</li>
+                    <li>d) Tensiunea pe rețea = suma tensiunilor pe fiecare componentă (voltage drops)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) CPU-ul nu înțelege AC, are nevoie de DC stabil</strong> — Logica digitală necesită 0/1 (low/high), nu oscilații.</p>
+                    <p style="margin-top: 0.5rem;"><strong>a) — curentul trece prin toate becurile la r&#226;nd; cădere de tensiune = 3V pe fiecare bec (12V / 4); posibil insuficient pentru iluminare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Ce-i ripple și cum afectează consola?</strong></p>
+                <p><strong>Care afirmație este corectă despre: a) Curent?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Ripple = zgomotul PSU-ului</li>
-                    <li>b) Ripple = oscilație în DC output; mare cauzează instabilitate</li>
-                    <li>c) Ripple = temperatura ridicată</li>
-                    <li>d) Ripple e necesar pentru funcționare</li>
+                    <li>a) I = I₁ = I₂ = ... = Iₙ</li>
+                    <li>b) Tensiunea pe rețea = suma tensiunilor pe fiecare componentă (voltage drops)</li>
+                    <li>c) conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</li>
+                    <li>d) conectate pe mai multe trasee, fiecare componentă are aceeași tensiune pe ea, egală cu tensiunea pe rețea</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Ripple = oscilație în DC output; mare cauzează instabilitate</strong> — Ripple mare = V schimbă, CPU nu-și dă seama, malfuncții.</p>
+                    <p style="margin-top: 0.5rem;"><strong>a) — I = I₁ = I₂ = ... = Iₙ</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Care-i deosebire dintre Linear și Switch-Mode PSU?</strong></p>
+                <p><strong>Care afirmație este corectă despre: b) Tensiune?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Linear e mai eficiență</li>
-                    <li>b) SMPS e mic, eficiență, modern; Linear e mare, ineficiență, vechi</li>
-                    <li>c) Sunt identic, doar nume diferite</li>
-                    <li>d) Linear putere mai sus</li>
+                    <li>a) Tensiunea pe rețea = suma tensiunilor pe fiecare componentă (voltage drops)</li>
+                    <li>b) conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</li>
+                    <li>c) conectate pe mai multe trasee, fiecare componentă are aceeași tensiune pe ea, egală cu tensiunea pe rețea</li>
+                    <li>d) Tensiunea total = suma căderilor de tensiune individuale (voltage drops).</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) SMPS e mic, eficiență, modern; Linear e mare, ineficiență, vechi</strong> — SMPS: 88-92%, Linear: 60-70%.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — Tensiunea total = suma căderilor de tensiune individuale (voltage drops).</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Cum condensatorii ajută la filtrare AC → DC?</strong></p>
+                <p><strong>Care afirmație este corectă despre: c) Rezistență totală?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Condenseaza AC-ul</li>
-                    <li>b) Absorb vârfuri, reemit curent între ele, netezesc oscilația</li>
-                    <li>c) Transformă AC în DC instantaneu</li>
-                    <li>d) Condenseaza energie pentru mai tard</li>
+                    <li>a) conectate pe mai multe trasee, fiecare componentă are aceeași tensiune pe ea, egală cu tensiunea pe rețea</li>
+                    <li>b) Tensiunea pe rețea = suma tensiunilor pe fiecare componentă (voltage drops)</li>
+                    <li>c) R_total = R₁ + R₂ + R₃ + ... + Rₙ</li>
+                    <li>d) conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Absorb vârfuri, reemit curent între ele, netezesc oscilația</strong> — Condenseaza absorb în vârf, eliberează-n vale, rezultat = curbă netedă.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — R_total = R₁ + R₂ + R₃ + ... + Rₙ</strong></p>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- EXERCITIU -->
     <section class="section" id="exercitiu">
         <div class="container">
             <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Analiza Forme de Undă PSU</h3>
-                <p>
-                    <strong>Scenariu:</strong> Măsuray tensiunea la ieșirea PSU-ului la 4 stadii diferite cu un osciloscop.
-                </p>
-                <p><strong>Date:</strong></p>
+                <h3>🧠 Exercițiu: Serie și paralel</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de circuite &#238;n serie. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>Stadiul 1 (AC intrare): +325V, -325V, frecvență 50Hz</li>
-                    <li>Stadiul 2 (După rectificare): +325V, 0V, 100Hz</li>
-                    <li>Stadiul 3 (După filtrare PSU): 310V ± 10V, ripple 20V peak-to-peak</li>
-                    <li>Stadiul 4 (După SMPS și filtrare finală): 12V ± 0.05V, ripple &lt; 0.1V peak-to-peak</li>
-                </ul>
-                <p><strong>Sarcini:</strong></p>
-                <ul class="specs-list">
-                    <li>1. Descrieți forma de undă la fiecare stadiu (cum arată, frecvență, amplitudine)</li>
-                    <li>2. De ce ripple-ul scade la fiecare stadiu?</li>
-                    <li>3. Dacă stadiul 3 ar fi 320V ± 30V (ripple 60V), ce probleme ar putea apărea?</li>
-                    <li>4. Calculează raportul reducere tension: 325V (stadiul 1) → 12V (stadiul 4). Ce procent e asta?</li>
-                    <li>5. De ce Stadiul 4 e mai mic decât Stadiul 3 (deci mai bun)? Cine face asta?</li>
+                    <li>1. Defineste pe scurt: circuite &#238;n serie.</li>
+                    <li>2. Ce rol are circuite &#238;n paralel în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre circuite &#238;n serie și distribuția tensiunii.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1. Forme de undă:</strong></p>
-                        <ul class="specs-list">
-                            <li>Stadiul 1: Sinusoidă ±325V, 50Hz, AC pur</li>
-                            <li>Stadiul 2: Puls 0→325V, 100Hz (jumătate din faza negativă cut-off), rectificat</li>
-                            <li>Stadiul 3: Puls 280V→340V, ondulant, ripple = 20Vpp</li>
-                            <li>Stadiul 4: Linie dreapta 11.95V→12.05V, ripple = 0.1Vpp</li>
-                        </ul>
-                        <p><strong>2. Ripple scade pentru:</strong> Condensatori acumulă energia vârfurilor, reliberează-n vale. La stadiul 4, SMPS comută la 130kHz mare, și filtrare finală e mai agresivă.</p>
-                        <p><strong>3. Cu ripple 60V:</strong> Stadiul 3 e 290V→350V. După SMPS (factor 1/27 aprox), output ar fi 10.7V→12.9V. Ripple ≈ 2.2V pe 12V = 18%! CPU ar fi instabil, reboot-uri.</p>
-                        <p><strong>4. Raport reducere:</strong> 325V → 12V = 12/325 = 0.0369 = <strong>3.69%</strong>. Invertor reduce de ~27 ori.</p>
-                        <p><strong>5. Stadiul 4 e mai bun pentru:</strong> SMPS-ul comută cu rapid (130kHz), permitând condensatori mici cu toleranțe bune. Filtrare finală e optimizată pentru logica digit, nu putere brută. Rezultat = tensiune ultra-stabilă.</p>
+                        <p><strong>1.</strong> Componente conectate &#238;n serie: conectate de-a lungul unui singur „traseu electric&quot;, fiecare componentă are același curent prin ea, egal cu curentul prin rețea</p>
+                        <p><strong>2.</strong> Serie: curentul trece prin toate becurile la r&#226;nd; cădere de tensiune = 3V pe fiecare bec (12V / 4); posibil insuficient pentru iluminare</p>
+                        <p><strong>3.</strong> I = I₁ = I₂ = ... = Iₙ</p>
                     </div>
                 </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -502,3 +524,18 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

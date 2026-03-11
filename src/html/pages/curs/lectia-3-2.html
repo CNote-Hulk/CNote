@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 3.2 — Porți Logice: AND, OR, XOR, NOT">
+    <meta name="description" content="Lecția 3.2 — Porți logice">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 3.2 — Porți Logice — Console Notebook</title>
+    <title>Lecția 3.2 — Porți logice — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 — Logică Digitală</p>
-            <h1>Lecția 3.2 — Porți Logice</h1>
-            <p>AND, OR, XOR, NOT. Blocurile atomice din care se construiesc procesoare.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 — LOGICĂ DIGITALĂ</p>
+            <h1>Lecția 3.2 — Porți logice</h1>
+            <p>AND, OR, NOT, NAND</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                                <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Poartă logică:</strong> Circuit care face o operație boolean pe biți de intrare și produce bit de ieșire.</p>
-                <p>Un procesor PS5 are miliarde de porți logice. Fiecare ARM core = 20 milioane+ tranzistori care implementează porți logice.</p>
-                <p>Toate calculele se reduc la AND, OR, XOR, NOT combinate în structuri mai mari.</p>
+                <p>Poartă logică = dispozitiv care efectuează o funcție booleană</p>
+                <p>Această lecție acoperă: <strong>AND</strong>, <strong>OR</strong>, <strong>NOT</strong>, <strong>NAND</strong>, <strong>NOR</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,83 +53,217 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1 — Poarta AND</h3>
-                <p><strong>Expresie:</strong> Y = A AND B. Output = 1 doar daca A=1 SI B=1. Altfel 0.</p>
-                <p><strong>Tabel adevăr:</strong> (A, B) → Y: (0,0)→0, (0,1)→0, (1,0)→0, (1,1)→1.</p>
-                <p><strong>Implementare CMOS:</strong> 2 MOSFET-uri în serie. Amândoi trebuie ON pentru ieșire on.</p>
-                <p><strong>Aplicație:</strong> Mascare. (10101010 AND 11110000) = 10100000. Pastrează doar biții unde cere mască.</p>
+                <h3>3.2.1 — Definiție porți logice</h3>
+                <ul class="specs-list">
+                    <li>Poartă logică = dispozitiv care efectuează o funcție booleană</li>
+                    <li>Operație logică pe una sau mai multe intrări binare → produce o singură ieșire binară</li>
+                    <li>Construite primar din diode sau tranzistoare (comutatoare electronice)</li>
+                    <li><strong>Majoritatea porților logice moderne:</strong> MOSFET (metal-oxide-semiconductor field-effect transistor)</li>
+                    <li><strong>Pot fi cascadate:</strong> ieșirea unei porți conectată la intrarea alteia, construind circuite complexe</li>
+                    <li><strong>De la porți logice se construiesc:</strong> multiplexoare, registre, ALU, memorie, microprocesoare (&gt;100 milioane de porți)</li>
+                    <li><strong>7 porți logice de bază:</strong> NOT, OR, NOR, AND, NAND, XOR, XNOR</li>
+                    <li><strong>Familii logice:</strong> RTL, DTL, TTL (bipolare), PMOS, NMOS, CMOS (MOSFET)</li>
+                    <li><strong>CMOS:</strong> complementar (n-channel + p-channel MOSFET) → viteză mare, consum redus</li>
+                    <li><strong>Serii comerciale:</strong> TTL 7400 (Texas Instruments), CMOS 4000 (RCA)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.2 — Poarta OR</h3>
-                <p><strong>Expresie:</strong> Y = A OR B. Output = 1 daca A=1 SAU B=1 SAU amândoi. Output=0 doar daca A=0 SI B=0.</p>
-                <p><strong>Tabel adevăr:</strong> (A, B) → Y: (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→1.</p>
-                <p><strong>Implementare CMOS:</strong> 2 MOSFET-uri în paralel. Cel puțin unu ON → ieșire ON.</p>
-                <p><strong>Aplicație:</strong> Setare. (10101010 OR 01010101) = 11111111. Rezultat cu toți biții setați.</p>
+                <h3>3.2.2 — AND (ȘI)</h3>
+                <ul class="specs-list">
+                    <li>Ieșire = 1 doar dacă TOATE intrările sunt 1</li>
+                    <li>Tabel de adevăr (2 intrări):</li>
+                    <li>A=0, B=0 → 0</li>
+                    <li>A=0, B=1 → 0</li>
+                    <li>A=1, B=0 → 0</li>
+                    <li>A=1, B=1 → 1</li>
+                    <li><strong>Echivalent matematic:</strong> A &#183; B sau A ∧ B</li>
+                    <li>Tabelul de &#238;nmulțire binară este identic cu AND</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3 — Poarta XOR (Exclusive OR)</h3>
-                <p><strong>Expresie:</strong> Y = A XOR B. Output = 1 daca A≠B. Output = 0 daca A=B.</p>
-                <p><strong>Tabel adevăr:</strong> (A, B) → Y: (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→0.</p>
-                <p><strong>Implementare CMOS:</strong> Combinație AND, OR, NOT. (A·B̄) + (Ā·B).</p>
-                <p><strong>Aplicație:</strong> Comparație și paritate. XOR lanț = parity bit. CRC checksums.</p>
+                <h3>3.2.3 — OR (SAU)</h3>
+                <ul class="specs-list">
+                    <li>Ieșire = 1 dacă CEL PUȚIN O intrare este 1</li>
+                    <li>Tabel de adevăr (2 intrări):</li>
+                    <li>A=0, B=0 → 0</li>
+                    <li>A=0, B=1 → 1</li>
+                    <li>A=1, B=0 → 1</li>
+                    <li>A=1, B=1 → 1</li>
+                    <li><strong>Echivalent matematic:</strong> A + B sau A ∨ B</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.4 — Poarta NOT (Inverter)</h3>
-                <p><strong>Expresie:</strong> Y = NOT A = Ā. Output inversează input.</p>
-                <p><strong>Tabel adevăr:</strong> A → Y: 0→1, 1→0.</p>
-                <p><strong>Implementare CMOS:</strong> Un singur MOSFET. Simple și rapid (~1ns).</p>
-                <p><strong>Aplicație:</strong> Logic negare. Complementul unui byte: NOT 10101010 = 01010101.</p>
+                <h3>3.2.4 — NOT (NU / Invertor)</h3>
+                <ul class="specs-list">
+                    <li>O singură intrare → ieșirea este complementul (inversul)</li>
+                    <li>Tabel de adevăr:</li>
+                    <li>A=0 → 1</li>
+                    <li>A=1 → 0</li>
+                    <li><strong>Echivalent matematic:</strong> &#172;A sau Ā</li>
+                    <li>&#206;n electronică se numește „inverter&quot;</li>
+                    <li>Simbolul cercului (bubble) pe schemă indică negarea logică</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5 — NAND &amp; NOR (Variante)</h3>
-                <p><strong>NAND:</strong> NOT(A AND B). Output = 1 daca NU (A=1 SI B=1). Universală — orice logică se poate face din NAND-uri.</p>
-                <p><strong>NOR:</strong> NOT(A OR B). Output = 1 daca NU (A=1 SAU B=1). De asemenea universală.</p>
-                <p><strong>De ce importante?</strong> NAND și NOR sunt mai ușoare de implementat în CMOS (mai puțini tranzistori) decât pure AND/OR.</p>
+                <h3>3.2.5 — NAND (NU-ȘI)</h3>
+                <ul class="specs-list">
+                    <li><strong>NOT + AND:</strong> ieșirea este inversul funcției AND</li>
+                    <li>Ieșire = 0 doar dacă TOATE intrările sunt 1; altfel = 1</li>
+                    <li>Tabel de adevăr (2 intrări):</li>
+                    <li>A=0, B=0 → 1</li>
+                    <li>A=0, B=1 → 1</li>
+                    <li>A=1, B=0 → 1</li>
+                    <li>A=1, B=1 → 0</li>
+                    <li><strong>Echivalent matematic:</strong> &#172;(A &#183; B) sau A↑B (Sheffer stroke)</li>
+                    <li><strong>POARTĂ LOGICĂ UNIVERSALĂ:</strong> orice alt tip de poartă poate fi construit doar din porți NAND</li>
+                    <li>Charles Sanders Peirce (1880-1881) și Henry M. Sheffer (1913) au demonstrat universalitatea</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.2.6 — NOR (NU-SAU)</h3>
+                <ul class="specs-list">
+                    <li><strong>NOT + OR:</strong> ieșirea este inversul funcției OR</li>
+                    <li>Ieșire = 1 doar dacă TOATE intrările sunt 0; altfel = 0</li>
+                    <li>Tabel de adevăr (2 intrări):</li>
+                    <li>A=0, B=0 → 1</li>
+                    <li>A=0, B=1 → 0</li>
+                    <li>A=1, B=0 → 0</li>
+                    <li>A=1, B=1 → 0</li>
+                    <li><strong>Echivalent matematic:</strong> &#172;(A + B) sau A↓B (Peirce&#39;s arrow)</li>
+                    <li><strong>De asemenea POARTĂ LOGICĂ UNIVERSALĂ:</strong> orice alt tip de poartă se poate construi doar din NOR</li>
+                    <li>NAND și NOR se numesc „porți universale&quot; (universal logic gates)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.2.7 — Porți universale și legile De Morgan</h3>
+                <ul class="specs-list">
+                    <li><strong>Teorema De Morgan:</strong> &#172;(A &#183; B) = &#172;A + &#172;B și &#172;(A + B) = &#172;A &#183; &#172;B</li>
+                    <li>AND = OR cu intrări/ieșiri negate; OR = AND cu intrări/ieșiri negate</li>
+                    <li>NAND = OR cu intrări negate; NOR = AND cu intrări negate</li>
+                    <li><strong>Construcții din NAND:</strong> NOT(A) = NAND(A,A); AND = NAND → NOT; OR = NOT intrări → NAND</li>
+                    <li><strong>Construcții din NOR:</strong> NOT(A) = NOR(A,A); OR = NOR → NOT; AND = NOT intrări → NOR</li>
+                    <li>Toate funcțiile logice posibile se pot implementa doar cu NAND sau doar cu NOR</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.2.8 — Stocare date și logică secvențială</h3>
+                <ul class="specs-list">
+                    <li>Porțile logice pot stoca stare prin conectare &#238;n circuit „latch&quot;</li>
+                    <li><strong>Latch SR (Set-Reset):</strong> construit din 2 porți NOR sau 2 porți NAND</li>
+                    <li>Latch-urile sunt folosite &#238;n SRAM (static random-access memory)</li>
+                    <li>Flip-flop = latch cu semnal de ceas (clock); se schimbă doar pe front crescător sau descrescător</li>
+                    <li>Flip-flop = circuit bistabil (două stări stabile pe care le menține indefinit)</li>
+                    <li>Registru = combinație de flip-flop-uri &#238;n paralel, stochează o valoare multi-bit</li>
+                    <li><strong>Logică secvențială:</strong> ieșirea depinde de starea anterioară (memorie)</li>
+                    <li><strong>Logică combinațională:</strong> ieșirea depinde doar de intrările curente</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.2.9 — Implementare fizică</h3>
+                <ul class="specs-list">
+                    <li><strong>Fan-out:</strong> numărul maxim de intrări pe care o ieșire le poate alimenta</li>
+                    <li><strong>Propagation delay:</strong> &#238;nt&#226;rziere de la schimbarea intrării la schimbarea ieșirii</li>
+                    <li><strong>Porțile cascadate:</strong> &#238;nt&#226;rziere totală ≈ suma &#238;nt&#226;rzierilor individuale</li>
+                    <li>Familii logice (cu caracteristici diferite de consum, viteză, cost):</li>
+                    <li>RTL (resistor-transistor logic) – prima implementare &#238;n circuite integrate</li>
+                    <li>DTL (diode-transistor logic)</li>
+                    <li>TTL (transistor-transistor logic) – a &#238;nlocuit DTL</li>
+                    <li>CMOS – predominantă azi, consum foarte redus</li>
+                    <li><strong>FPGA (Field-Programmable Gate Array):</strong> permite reprogramarea logicii hardware</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție porți logice</h3>
+                <ul class="specs-list">
+                    <li>Operație logică pe una sau mai multe intrări binare → produce o singură ieșire binară</li>
+                    <li><strong>Majoritatea porților logice moderne:</strong> MOSFET (metal-oxide-semiconductor field-effect transistor)</li>
+                    <li><strong>De la porți logice se construiesc:</strong> multiplexoare, registre, ALU, memorie, microprocesoare (&gt;100 milioane de porți)</li>
+                    <li><strong>7 porți logice de bază:</strong> NOT, OR, NOR, AND, NAND, XOR, XNOR</li>
+                    <li><strong>Familii logice:</strong> RTL, DTL, TTL (bipolare), PMOS, NMOS, CMOS (MOSFET)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>AND (ȘI)</h3>
+                <ul class="specs-list">
+                    <li>Tabelul de &#238;nmulțire binară este identic cu AND</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Porți universale și legile De Morgan</h3>
+                <ul class="specs-list">
+                    <li>Toate funcțiile logice posibile se pot implementa doar cu NAND sau doar cu NOR</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Stocare date și logică secvențială</h3>
+                <ul class="specs-list">
+                    <li>Porțile logice pot stoca stare prin conectare &#238;n circuit „latch&quot;</li>
+                    <li>Registru = combinație de flip-flop-uri &#238;n paralel, stochează o valoare multi-bit</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> MOSFET-uri sunt tranzistori care se deschid/închid rapid (ns-scale).</p>
-                <p><strong>Informatică:</strong> Combinații de MOSFET-uri formează porți logice. Miliarde de porți formează CPU-ul care joacă jocuri.</p>
+                <h3>Implementare fizică</h3>
+                <ul class="specs-list">
+                    <li><strong>Fan-out:</strong> numărul maxim de intrări pe care o ieșire le poate alimenta</li>
+                    <li><strong>Propagation delay:</strong> &#238;nt&#226;rziere de la schimbarea intrării la schimbarea ieșirii</li>
+                    <li><strong>Porțile cascadate:</strong> &#238;nt&#226;rziere totală ≈ suma &#238;nt&#226;rzierilor individuale</li>
+                    <li>Familii logice (cu caracteristici diferite de consum, viteză, cost):</li>
+                    <li>RTL (resistor-transistor logic) – prima implementare &#238;n circuite integrate</li>
+                    <li>DTL (diode-transistor logic)</li>
+                    <li>TTL (transistor-transistor logic) – a &#238;nlocuit DTL</li>
+                    <li>CMOS – predominantă azi, consum foarte redus</li>
+                    <li><strong>FPGA (Field-Programmable Gate Array):</strong> permite reprogramarea logicii hardware</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Comparator Magnitudine</h3>
-                <p>Trebuie să compari dacă Voltage &gt; Threshold (1.0V vs 1.2V VRM). Circuitul fizic: Lanț AND/XOR-uri determină mai mare/mai mic.</p>
-                <p>Logică: (V_actual &gt; V_target) = (V_bit2 &amp; NOT V_target_bit2) OR ... → 1 bit = true / false.</p>
+                <p>Componentele reale care utilizează AND se regăsesc în toate consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Multiplexer (MUX)</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenario:</strong> CPU trebuie să ales între 4 surse de date (data0-3). Selector = 2 biți (00, 01, 10, 11).</p>
-                <p><strong>Logică MUX:</strong> Output = (selector[1] AND data1) OR (selector[0] AND data0) ... pentru fiecare combinație.</p>
-                <p>Rezultat: Speed of light răspuns. Perfect pentru multiplexare semnale în console.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ De ce NAND/NOR găitor "universal"?</h3><p>Orice operație logică se poate exprima cu NAND-uri lanțate. Asta = flexibilitate hardware. Fabricanți optimizează NAND.</p></div>
-            <div class="card"><h3>⚠️ De ce propagation delay important?</h3><p>AND gate cu 2 intrări: ~0.1 ns latență. 20 porți lanțate = 2ns. Clock PS5 = ~11ns period (90GHz). Timing e critic.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu Porți logice</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -134,12 +272,15 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>AND:</strong> 1 daca amândoi = 1.</li>
-                    <li><strong>OR:</strong> 1 daca - 1 SAU amboi = 1.</li>
-                    <li><strong>XOR:</strong> 1 daca diferiți.</li>
-                    <li><strong>NOT:</strong> Inversare simplu.</li>
-                    <li><strong>NAND/NOR universale.</strong> Toate logicele deriv din acestea.</li>
-                    <li>20 milioane porți pe ARM core PS5.</li>
+                    <li><strong>Definiție porți logice:</strong> Poartă logică = dispozitiv care efectuează o funcție booleană</li>
+                    <li><strong>AND (ȘI):</strong> Ieșire = 1 doar dacă TOATE intrările sunt 1</li>
+                    <li><strong>OR (SAU):</strong> Ieșire = 1 dacă CEL PUȚIN O intrare este 1</li>
+                    <li><strong>NOT (NU / Invertor):</strong> O singură intrare → ieșirea este complementul (inversul)</li>
+                    <li><strong>NAND (NU-ȘI):</strong> NOT + AND: ieșirea este inversul funcției AND</li>
+                    <li><strong>NOR (NU-SAU):</strong> NOT + OR: ieșirea este inversul funcției OR</li>
+                    <li><strong>Porți universale și legile De Morgan:</strong> Teorema De Morgan: &#172;(A &#183; B) = &#172;A + &#172;B și &#172;(A + B) = &#172;A &#183; &#172;B</li>
+                    <li><strong>Stocare date și logică secvențială:</strong> Porțile logice pot stoca stare prin conectare &#238;n circuit „latch&quot;</li>
+                    <li><strong>Implementare fizică:</strong> Fan-out: numărul maxim de intrări pe care o ieșire le poate alimenta</li>
                 </ul>
             </div>
         </div>
@@ -148,61 +289,129 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>A=1, B=0. Care e A AND B?</strong></p>
-                <ul class="specs-list"><li>a) 0</li><li>b) 1</li><li>c) Undefined</li><li>d) 2</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>a) 0</strong> — Trebuie ambii 1 pentru AND=1.</p></details>
+                <p><strong>Care afirmație este corectă despre: Majoritatea porților logice moderne?</strong></p>
+                <ul class="specs-list">
+                    <li>a) NOT, OR, NOR, AND, NAND, XOR, XNOR</li>
+                    <li>b) multiplexoare, registre, ALU, memorie, microprocesoare (&gt;100 milioane de porți)</li>
+                    <li>c) ieșirea unei porți conectată la intrarea alteia, construind circuite complexe</li>
+                    <li>d) MOSFET (metal-oxide-semiconductor field-effect transistor)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — MOSFET (metal-oxide-semiconductor field-effect transistor)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>A=1, B=0. Care e A OR B?</strong></p>
-                <ul class="specs-list"><li>a) 0</li><li>b) 1</li><li>c) 2</li><li>d) Undefined</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 1</strong> — Dacă măcar unu e 1, OR=1.</p></details>
+                <p><strong>Care afirmație este corectă despre: AND (ȘI)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) multiplexoare, registre, ALU, memorie, microprocesoare (&gt;100 milioane de porți)</li>
+                    <li>b) MOSFET (metal-oxide-semiconductor field-effect transistor)</li>
+                    <li>c) Ieșire = 1 doar dacă TOATE intrările sunt 1</li>
+                    <li>d) ieșirea unei porți conectată la intrarea alteia, construind circuite complexe</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Ieșire = 1 doar dacă TOATE intrările sunt 1</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>A=1, B=1. Care e A XOR B?</strong></p>
-                <ul class="specs-list"><li>a) 0</li><li>b) 1</li><li>c) 2</li><li>d) 3</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>a) 0</strong> — Sunt egali, deci XOR=0.</p></details>
+                <p><strong>Care afirmație este corectă despre: OR (SAU)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) ieșirea unei porți conectată la intrarea alteia, construind circuite complexe</li>
+                    <li>b) MOSFET (metal-oxide-semiconductor field-effect transistor)</li>
+                    <li>c) Ieșire = 1 dacă CEL PUȚIN O intrare este 1</li>
+                    <li>d) multiplexoare, registre, ALU, memorie, microprocesoare (&gt;100 milioane de porți)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Ieșire = 1 dacă CEL PUȚIN O intrare este 1</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Calculează: (10101010 AND 11110000) = ?</strong></p>
-                <ul class="specs-list"><li>a) 10101010</li><li>b) 11110000</li><li>c) 10100000</li><li>d) 01010101</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) 10100000</strong> — Logic AND bit-by-bit.</p></details>
+                <p><strong>Care afirmație este corectă despre: NOT (NU / Invertor)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) MOSFET (metal-oxide-semiconductor field-effect transistor)</li>
+                    <li>b) multiplexoare, registre, ALU, memorie, microprocesoare (&gt;100 milioane de porți)</li>
+                    <li>c) ieșirea unei porți conectată la intrarea alteia, construind circuite complexe</li>
+                    <li>d) A=0 → 1</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — A=0 → 1</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>De ce NAND/NOR sunt "universal"?</strong></p>
-                <ul class="specs-list"><li>a) Sunt mai rapide</li><li>b) Orice porată logică se exprimă cu NAND/NOR lanțate</li><li>c) Consum mai puțin curent</li><li>d) Suportă 3 intrări</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Orice se exprimă cu NAND/NOR</strong> — Proprietate fundamentală de completitudine.</p></details>
+                <p><strong>Care afirmație este corectă despre: NOT + AND?</strong></p>
+                <ul class="specs-list">
+                    <li>a) multiplexoare, registre, ALU, memorie, microprocesoare (&gt;100 milioane de porți)</li>
+                    <li>b) ieșirea este inversul funcției AND</li>
+                    <li>c) ieșirea unei porți conectată la intrarea alteia, construind circuite complexe</li>
+                    <li>d) MOSFET (metal-oxide-semiconductor field-effect transistor)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — ieșirea este inversul funcției AND</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Implementare Comparator</h3>
-                <p><strong>Cerință:</strong> Doriți circuit care semnalizează dacă V_out = 1.0V (binar: 01010101) sau V_targ = 1.2V (binar: 01111111).</p>
-                <ol class="specs-list"><li>Compară bit-by-bit folosind XOR (dacă egali → 0, diferiți → 1)</li><li>Dacă orice bit e diferit, output = "Diferit".</li><li>Implementarea: OR de toate XOR-urile.</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>V_out = 01010101, V_targ = 01111111</strong></p>
-                    <ul class="specs-list">
-                        <li>Bit 7: 0 XOR 0 = 0</li>
-                        <li>Bit 6: 1 XOR 1 = 0</li>
-                        <li>Bit 5: 0 XOR 1 = 1 ← DIFERIT</li>
-                        <li>Bit 4-0: ... mai mult 1-uri din mască</li>
-                    </ul>
-                    <p>XOR rezultate: 00101010</p>
-                    <p>OR lanț: Dacă măcar unu e 1 → "Diferit" = 1 (true)</p>
-                    <p>Output: "Tensiunile nu sunt egale" → Controller ajustează PWM.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Porți logice</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de AND. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: AND.</li>
+                    <li>2. Ce rol are OR în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre AND și NOT.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Poartă logică = dispozitiv care efectuează o funcție booleană</p>
+                        <p><strong>2.</strong> Ieșire = 1 doar dacă TOATE intrările sunt 1</p>
+                        <p><strong>3.</strong> Ieșire = 1 dacă CEL PUȚIN O intrare este 1</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -279,3 +488,14 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 5.5 — Surse și rail-uri de alimentare">
+    <meta name="description" content="Lecția 5.5 — Rail-uri de alimentare">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
     <title>Lecția 5.5 — Rail-uri de alimentare — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — Anatomia unei Console</p>
-            <h1>Lecția 5.5 — Surse și rail-uri de alimentare</h1>
-            <p>12V, 5V, 3.3V, 1.8V, 1.05V. Fiecare rail are rolul său.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — ANATOMIA UNEI CONSOLE</p>
+            <h1>Lecția 5.5 — Rail-uri de alimentare</h1>
+            <p>power rail, distribuția tensiunii, alimentarea componentelor</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Rail:</strong> Linie de tensiune stabilă care alimentează un subsistem.</p>
-                <p>Consola modernă are multiple rail-uri: 12V principal, 5V standby, 3.3V I/O, 1.8V logic, 1.05V core APU.</p>
-                <p>Secvențierea corectă a rail-urilor e vitală. Un rail lipsă = no boot.</p>
+                <p>PSU-ul convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de tensiune joasă</p>
+                <p>Această lecție acoperă: <strong>power rail</strong>, <strong>distribuția tensiunii</strong>, <strong>alimentarea componentelor</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,81 +53,333 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1 — 12V Principal</h3>
-                <p><strong>Rol:</strong> Alimentare de bază din PSU. Alimentează VRM-uri și motoare (ventilator).</p>
-                <p><strong>Curent:</strong> 10-20A în load. 12V × 15A = 180W.</p>
-                <p><strong>Caracteristică:</strong> Fără 12V, nimic nu pornește.</p>
+                <h3>5.5.1 — Funcții și definiția rail-ului de alimentare</h3>
+                <ul class="specs-list">
+                    <li>PSU-ul convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de tensiune joasă</li>
+                    <li>Sunt necesare mai multe tensiuni DC, reglate cu precizie pentru funcționare stabilă</li>
+                    <li>&quot;A power supply rail or voltage rail refers to a single voltage provided by a PSU&quot;</li>
+                    <li>PSU-ul furnizează tensiune standby pentru ca sistemul să poată fi pornit de la distanță (Wake-on-LAN)</li>
+                    <li>Tensiunea standby poate fi generată de un mic PSU liniar intern sau de sursa switching, partaj&#226;nd componente</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2 — 5V Standby și 5V Main</h3>
-                <p><strong>5V Standby:</strong> Activ chiar când consola e "oprită". Alimentează controlerul de power și USB charging.</p>
-                <p><strong>5V Main:</strong> Pornit după apăsare power. Alimentează USB, HDD, controlere.</p>
-                <p><strong>Tipic:</strong> 1-3A curent, suficient pentru periferice.</p>
+                <h3>5.5.2 — Evoluția rail-urilor – de la IBM PC la ATX</h3>
+                <ul class="specs-list">
+                    <li><strong>Primul IBM PC:</strong> două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</li>
+                    <li>Majoritatea cipurilor operau la 5 V; din 63.5 W total, majoritate pe rail-ul +5 V</li>
+                    <li>Rail-ul +12 V folosit pentru motoare (discuri, ventilatoare)</li>
+                    <li>Rail-ul −12 V alimenta porturile seriale RS-232</li>
+                    <li><strong>Rail-ul −5 V pentru periferice ISA (ex:</strong> plăci de sunet), neutilizat de alte plăci de bază</li>
+                    <li>Semnalul &quot;Power Good&quot; previne operarea circuitelor digitale &#238;n primele milisecunde ale pornirii, c&#226;nd tensiunile nu sunt stabile</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.3 — 3.3V și 1.8V</h3>
-                <p><strong>3.3V:</strong> I/O logic, flash BIOS, WiFi module.</p>
-                <p><strong>1.8V:</strong> Control logic, PLL, interface memory.</p>
-                <p>Aceste rail-uri sunt create din 5V prin buck converters mici.</p>
+                <h3>5.5.3 — Standardul ATX și rail-urile +3.3V, +5V, +12V</h3>
+                <ul class="specs-list">
+                    <li><strong>ATX (Intel, 1995):</strong> trei rail-uri pozitive: +3.3 V, +5 V, +12 V</li>
+                    <li>Cipurile la 3.3 V au &#238;nceput cu Intel 80486DX4 (1994)</li>
+                    <li>Calculatoarele pre-ATX derivau 3.3 V printr-un regulator liniar din +5 V (ineficient, pierderi ca căldură)</li>
+                    <li><strong>ATX:</strong> mai multe fire și conexiuni pentru 3.3 V (sensibil la voltage drop)</li>
+                    <li>Rail-ul +5 V SB (standby) furnizează putere mică c&#226;nd calculatorul este &quot;oprit&quot; nominal</li>
+                    <li>&#206;n modul ACPI S3 sleep, doar rail-ul +5 V SB este activ</li>
+                    <li><strong>Soft switch:</strong> butonul front panel nu comută tensiunea AC, ci trimite doar un semnal de control</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.4 — 1.05V Core APU</h3>
-                <p><strong>Rail core:</strong> Cel mai critic. APU funcționează între 0.9-1.2V.</p>
-                <p><strong>Curent mare:</strong> 80-120A. VRM dedicat multi-fază.</p>
-                <p><strong>Stabilitate:</strong> Ripple &lt; 20 mV. Orice fluctuație poate crash.</p>
+                <h3>5.5.4 — Tranziția puterii pe rail-ul de +12 V (ATX12V)</h3>
+                <ul class="specs-list">
+                    <li><strong>Procesoarele moderne necesită tensiuni joase:</strong> &gt;200 A la ≤1.5 V, imposibil de livrat din PSU extern</li>
+                    <li>VRM-ul pe placa de bază convertește din +12 V la tensiunea necesară CPU-ului</li>
+                    <li>Inițial VRM alimentat din +5 V; cu Pentium 4, Intel a mutat alimentarea CPU pe +12 V</li>
+                    <li>Conector P4 separat cu 4 pini adăugat la standardul ATX12V 1.0</li>
+                    <li><strong>GPU-urile high-end:</strong> majoritatea puterii pe rail-ul +12 V</li>
+                    <li><strong>PSU-urile vechi:</strong> &quot;5 V-heavy&quot;, doar 50-60% din putere pe 12 V</li>
+                    <li><strong>PSU-uri moderne:</strong> 80-90% din capacitatea totală pe rail-ul +12 V</li>
+                    <li><strong>Important:</strong> capacitatea +12 V contează mai mult dec&#226;t puterea totală</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.5 — Power Sequencing</h3>
-                <p><strong>Order:</strong> 5V standby → 3.3V → 1.8V → 12V main → 1.05V core.</p>
-                <p><strong>Power good:</strong> Semnal indică rail stabil. CPU pornește doar când toate PG sunt OK.</p>
-                <p><strong>Protecții:</strong> Dacă rail cade, sistem se oprește pentru a preveni damage.</p>
+                <h3>5.5.5 — Rail-urile +3.3 V și +5 V – rol actual</h3>
+                <ul class="specs-list">
+                    <li>Rail-urile +3.3 V și +5 V rar sunt factori limitanți &#238;n sisteme moderne</li>
+                    <li>Hard disk-urile și plăcile PCI creează sarcină mai mare pe +5 V</li>
+                    <li>CPU-urile vechi (5 V) și apoi i386 (3.3/3.45 V) foloseau regulatoare liniare pe placa de bază</li>
+                    <li>Trecerea la regulatoare switching (buck converter) pentru eficiență cu curenții mai mari</li>
+                    <li>ATX a adăugat ieșire de 3.3 V direct din PSU</li>
+                    <li>Transportul puterii pe 12 V la curent mai mic reduce pierderile de conducție (P = I&#178;R)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.6 — Single rail vs. multiple +12 V rails</h3>
+                <ul class="specs-list">
+                    <li><strong>ATX 2.0:</strong> limita de 240 VA per ieșire din motive de siguranță (UL 1950)</li>
+                    <li><strong>Rezultat:</strong> curentul maxim ~20 A per rail; tipic garantat 18 A</li>
+                    <li>Fiecare rail controlat independent de un senzor de curent (auto-reset, nu fuzibil)</li>
+                    <li><strong>Problemă:</strong> balansarea sarcinii &#238;ntre rail-uri – incomod pentru utilizatori</li>
+                    <li><strong>PSU-uri high-end:</strong> &gt;2000 W = &gt;150 A la 12 V</li>
+                    <li>Mulți producători au ignorat cerința și au oferit &quot;single-rail&quot; fără limitare pe rail</li>
+                    <li>Cerința retrasă din ATX 2.3 (2007)</li>
+                    <li><strong>ATX 2.31:</strong> single rail – curentul poate fi tras prin orice combinație de cabluri</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.7 — 12V-only supplies – viitorul</h3>
+                <ul class="specs-list">
+                    <li><strong>Fujitsu și alți Tier-1 din 2011:</strong> plăci de bază cu doar 12 V de la PSU</li>
+                    <li>Conversia DC-DC pe placa de bază (5 V și 3.3 V via VRM-uri)</li>
+                    <li><strong>Google:</strong> PSU-uri 12V-only &#238;n servere din ~2003</li>
+                    <li><strong>Avantaje:</strong> elimină probleme cross-load, simplifică cablarea, reduce costuri, crește eficiența, reduce zgomot</li>
+                    <li><strong>Dell OptiPlex 9020 și Precision T1700 (2013):</strong> PSU 12V-only</li>
+                    <li><strong>ATX12VO (Intel, 2019):</strong> standard cu ieșire doar 12 V, conector redus de la 24 pini la 10 pini</li>
+                    <li>5 V, 3.3 V transformate pe placa de bază pentru USB, HDD etc.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.8 — Conectori și distribuția puterii</h3>
+                <ul class="specs-list">
+                    <li><strong>ATX Main Power:</strong> 20 sau 24 pini (24 din ATX12V 2.0)</li>
+                    <li><strong>EPS12V:</strong> conectori 4-pin sau 8-pin pentru alimentarea CPU (+12 V dedicat)</li>
+                    <li><strong>Peripheral (Molex):</strong> 4 fire – 2&#215; ground (negru), +5 V (roșu), +12 V (galben)</li>
+                    <li><strong>SATA Power:</strong> 15 pini, furnizează +3.3 V, +5 V, +12 V</li>
+                    <li><strong>PCIe:</strong> 6-pin (max 75 W), 8-pin (max 150 W), 12-pin Nvidia (max 648 W), 16-pin 12VHPWR (max 600 W)</li>
+                    <li><strong>PSU modulare:</strong> cabluri detașabile, dar pin assignment standardizat doar pe partea de ieșire</li>
+                    <li>Cablurile unui PSU modular NU sunt interschimbabile &#238;ntre modele diferite (risc de daune)</li>
+                    <li><strong>Coduri culori fire:</strong> portocaliu = +3.3 V, roșu = +5 V, galben = +12 V, negru = ground, albastru = −12 V, gri = Power Good, mov = +5 V SB, verde = PS_ON</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.9 — Eficiență și rating-uri</h3>
+                <ul class="specs-list">
+                    <li><strong>80 Plus certificare:</strong> Bronze ≥82%, Silver ≥85%, Gold ≥87%, Platinum ≥90%, Titanium ≥94%</li>
+                    <li>Eficiența maximă la 50-75% din sarcină</li>
+                    <li><strong>PSU supradimensionat:</strong> mai puțin eficient la sarcini mici</li>
+                    <li><strong>Putere totală:</strong> 250-1000+ W; tipic 300-500 W pentru desktop standard</li>
+                    <li><strong>Recomandare:</strong> PSU cu ~40% peste consumul calculat al sistemului</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.10 — Definiție și principiu de funcționare</h3>
+                <ul class="specs-list">
+                    <li><strong>Condensator de decuplare:</strong> previne transferul energiei electrice nedorite &#238;ntre părți ale circuitului</li>
+                    <li>Zgomotul de la alte elemente este deviat prin condensator, reduc&#226;nd efectul asupra restului circuitului</li>
+                    <li>La frecvențe mari = bypass capacitor (ocolește sursa de alimentare sau componenta de impedanță mare)</li>
+                    <li>Conductoarele de alimentare au rezistență și inductanță finită → cădere de tensiune la schimbări de curent</li>
+                    <li>Condensatorul de decuplare oferă o cale de bypass pentru curenții tranzitorii</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.11 — Funcția ca stocare locală de energie</h3>
+                <ul class="specs-list">
+                    <li>Condensatorul funcționează ca stocare locală de energie pentru dispozitiv</li>
+                    <li>Se plasează &#238;ntre linia de alimentare și masă (ground)</li>
+                    <li><strong>Relația curent-tensiune:</strong> i(t) = C &#215; dv(t)/dt</li>
+                    <li>C&#226;nd capacitanța C este suficient de mare, condensatorul furnizează curent suficient pentru a menține tensiunea</li>
+                    <li>Condensatoare mici și mari &#238;n paralel reduc inductanța parazită (ESL)</li>
+                    <li>~100 nF ceramic per IC logic (mai multe pentru IC-uri complexe), combinat cu electroliți/tantal</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.12 — Decuplare pentru circuite de comutare</h3>
+                <ul class="specs-list">
+                    <li>Comutarea &#238;n circuite digitale schimbă curentul cerut brusc</li>
+                    <li>Liniile de alimentare au inductanță → răspuns lent la schimbări de curent</li>
+                    <li>Tensiunea de alimentare scade pe inductanțele parazite pe durata comutării</li>
+                    <li>Condensatorul de decuplare furnizează curentul tranzitoriu</li>
+                    <li><strong>Plasare:</strong> c&#226;t mai aproape de dispozitivul care cauzează tranzientul</li>
+                    <li>Cu c&#226;t conductorul este mai lung &#238;ntre condensator și dispozitiv, cu at&#226;t mai multă inductanță</li>
+                    <li><strong>PCB-ul ideal:</strong> sandwich de planuri de alimentare și masă peste un material dielectric = condensator gigant</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.5.13 — Aplicații practice</h3>
+                <ul class="specs-list">
+                    <li><strong>Circuitele logice:</strong> condensator de decuplare l&#226;ngă fiecare IC, &#238;ntre fiecare conexiune de alimentare și ground</li>
+                    <li>Fiecare IC este decuplat de celelalte IC-uri &#238;n ceea ce privește scăderile de tensiune</li>
+                    <li>Condensatoare plasate și la fiecare sursă de alimentare și la fiecare componentă analogică</li>
+                    <li>Componenta analogică cu PSRR (Power Supply Rejection Ratio) slab va copia fluctuațiile de alimentare pe ieșire</li>
+                    <li>Condensatoarele de bypass furnizează cantități mari de curent disponibil rapid</li>
+                    <li>Alimentarea mai lentă &#238;ncarcă condensatoarele, iar condensatoarele furnizează curentul de v&#226;rf</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Evoluția rail-urilor – de la IBM PC la ATX</h3>
+                <ul class="specs-list">
+                    <li>Semnalul &quot;Power Good&quot; previne operarea circuitelor digitale &#238;n primele milisecunde ale pornirii, c&#226;nd tensiunile nu sunt stabile</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Tranziția puterii pe rail-ul de +12 V (ATX12V)</h3>
+                <ul class="specs-list">
+                    <li><strong>GPU-urile high-end:</strong> majoritatea puterii pe rail-ul +12 V</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Rail-urile +3.3 V și +5 V – rol actual</h3>
+                <ul class="specs-list">
+                    <li>CPU-urile vechi (5 V) și apoi i386 (3.3/3.45 V) foloseau regulatoare liniare pe placa de bază</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Conectori și distribuția puterii</h3>
+                <ul class="specs-list">
+                    <li><strong>EPS12V:</strong> conectori 4-pin sau 8-pin pentru alimentarea CPU (+12 V dedicat)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Decuplare pentru circuite de comutare</h3>
+                <ul class="specs-list">
+                    <li>Comutarea &#238;n circuite digitale schimbă curentul cerut brusc</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> Rail-uri sunt stabilizate de VRM și filtre LC.</p>
-                <p><strong>Informatică:</strong> Boot sequence depinde de rail-uri. Firmware verifică PG înainte de init hardware.</p>
+                <h3>Funcții și definiția rail-ului de alimentare</h3>
+                <ul class="specs-list">
+                    <li>PSU-ul convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de tensiune joasă</li>
+                    <li>&quot;A power supply rail or voltage rail refers to a single voltage provided by a PSU&quot;</li>
+                    <li>PSU-ul furnizează tensiune standby pentru ca sistemul să poată fi pornit de la distanță (Wake-on-LAN)</li>
+                    <li>Tensiunea standby poate fi generată de un mic PSU liniar intern sau de sursa switching, partaj&#226;nd componente</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Tranziția puterii pe rail-ul de +12 V (ATX12V)</h3>
+                <ul class="specs-list">
+                    <li><strong>Procesoarele moderne necesită tensiuni joase:</strong> &gt;200 A la ≤1.5 V, imposibil de livrat din PSU extern</li>
+                    <li>VRM-ul pe placa de bază convertește din +12 V la tensiunea necesară CPU-ului</li>
+                    <li>Inițial VRM alimentat din +5 V; cu Pentium 4, Intel a mutat alimentarea CPU pe +12 V</li>
+                    <li><strong>PSU-urile vechi:</strong> &quot;5 V-heavy&quot;, doar 50-60% din putere pe 12 V</li>
+                    <li><strong>PSU-uri moderne:</strong> 80-90% din capacitatea totală pe rail-ul +12 V</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Rail-urile +3.3 V și +5 V – rol actual</h3>
+                <ul class="specs-list">
+                    <li>ATX a adăugat ieșire de 3.3 V direct din PSU</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Single rail vs. multiple +12 V rails</h3>
+                <ul class="specs-list">
+                    <li><strong>PSU-uri high-end:</strong> &gt;2000 W = &gt;150 A la 12 V</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>12V-only supplies – viitorul</h3>
+                <ul class="specs-list">
+                    <li><strong>Fujitsu și alți Tier-1 din 2011:</strong> plăci de bază cu doar 12 V de la PSU</li>
+                    <li>Conversia DC-DC pe placa de bază (5 V și 3.3 V via VRM-uri)</li>
+                    <li><strong>Google:</strong> PSU-uri 12V-only &#238;n servere din ~2003</li>
+                    <li><strong>Dell OptiPlex 9020 și Precision T1700 (2013):</strong> PSU 12V-only</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Conectori și distribuția puterii</h3>
+                <ul class="specs-list">
+                    <li><strong>PSU modulare:</strong> cabluri detașabile, dar pin assignment standardizat doar pe partea de ieșire</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Eficiență și rating-uri</h3>
+                <ul class="specs-list">
+                    <li><strong>PSU supradimensionat:</strong> mai puțin eficient la sarcini mici</li>
+                    <li><strong>Recomandare:</strong> PSU cu ~40% peste consumul calculat al sistemului</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și principiu de funcționare</h3>
+                <ul class="specs-list">
+                    <li>La frecvențe mari = bypass capacitor (ocolește sursa de alimentare sau componenta de impedanță mare)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Decuplare pentru circuite de comutare</h3>
+                <ul class="specs-list">
+                    <li><strong>PCB-ul ideal:</strong> sandwich de planuri de alimentare și masă peste un material dielectric = condensator gigant</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Aplicații practice</h3>
+                <ul class="specs-list">
+                    <li><strong>Circuitele logice:</strong> condensator de decuplare l&#226;ngă fiecare IC, &#238;ntre fiecare conexiune de alimentare și ground</li>
+                    <li>Fiecare IC este decuplat de celelalte IC-uri &#238;n ceea ce privește scăderile de tensiune</li>
+                    <li>Condensatoare plasate și la fiecare sursă de alimentare și la fiecare componentă analogică</li>
+                    <li>Componenta analogică cu PSRR (Power Supply Rejection Ratio) slab va copia fluctuațiile de alimentare pe ieșire</li>
+                    <li>Condensatoarele de bypass furnizează cantități mari de curent disponibil rapid</li>
+                    <li>Alimentarea mai lentă &#238;ncarcă condensatoarele, iar condensatoarele furnizează curentul de v&#226;rf</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Secvență Pornire</h3>
-                <p>1. Consola în standby: 5V standby activ.</p>
-                <p>2. Power button: activează 12V main și 5V main.</p>
-                <p>3. VRM pornește 3.3V, 1.8V. Apoi 1.05V core APU.</p>
-                <p>4. Power-good semnale confirmă. CPU pornește BIOS, GPU init.</p>
+                <h3>Standardul ATX și rail-urile +3.3V, +5V, +12V</h3>
+                <ul class="specs-list">
+                    <li>Cipurile la 3.3 V au &#238;nceput cu Intel 80486DX4 (1994)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Conectori și distribuția puterii</h3>
+                <ul class="specs-list">
+                    <li><strong>PCIe:</strong> 6-pin (max 75 W), 8-pin (max 150 W), 12-pin Nvidia (max 648 W), 16-pin 12VHPWR (max 600 W)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Diagnostic Rail</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>Consola nu pornește. Multimetru arată 5V standby OK, 12V main absent. Problema la PSU sau semnal power-on.</p>
-                <p>Dacă 12V OK, dar 1.05V lipsește → VRM defect sau scurt pe APU rail.</p>
-                <p>Diagnosticul rail-urilor reduce timpul de reparație cu 80%.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ 5V standby lipsă</h3><p>PSU defect sau siguranță arsă. Consola complet moartă, fără LED.</p></div>
-            <div class="card"><h3>⚠️ Rail 1.05V scurt</h3><p>APU sau condensator defect. VRM intră în protecție, consola se oprește instant.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Conectori și distribuția puterii</h3>
+                    <p>Cablurile unui PSU modular NU sunt interschimbabile &#238;ntre modele diferite (risc de daune)</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -132,11 +388,19 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>12V:</strong> Rail principal pentru VRM.</li>
-                    <li><strong>5V standby:</strong> Activ mereu, pornire logică.</li>
-                    <li><strong>3.3V/1.8V:</strong> I/O și logică.</li>
-                    <li><strong>1.05V:</strong> Core APU, curent mare, VRM dedicat.</li>
-                    <li><strong>Sequencing:</strong> Rail-urile trebuie pornite în ordine strictă.</li>
+                    <li><strong>Funcții și definiția rail-ului de alimentare:</strong> PSU-ul convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de tensiune joasă</li>
+                    <li><strong>Evoluția rail-urilor – de la IBM PC la ATX:</strong> Primul IBM PC: două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</li>
+                    <li><strong>Standardul ATX și rail-urile +3.3V, +5V, +12V:</strong> ATX (Intel, 1995): trei rail-uri pozitive: +3.3 V, +5 V, +12 V</li>
+                    <li><strong>Tranziția puterii pe rail-ul de +12 V (ATX12V):</strong> Procesoarele moderne necesită tensiuni joase: &gt;200 A la ≤1.5 V, imposibil de livrat din PSU extern</li>
+                    <li><strong>Rail-urile +3.3 V și +5 V – rol actual:</strong> Rail-urile +3.3 V și +5 V rar sunt factori limitanți &#238;n sisteme moderne</li>
+                    <li><strong>Single rail vs. multiple +12 V rails:</strong> ATX 2.0: limita de 240 VA per ieșire din motive de siguranță (UL 1950)</li>
+                    <li><strong>12V-only supplies – viitorul:</strong> Fujitsu și alți Tier-1 din 2011: plăci de bază cu doar 12 V de la PSU</li>
+                    <li><strong>Conectori și distribuția puterii:</strong> ATX Main Power: 20 sau 24 pini (24 din ATX12V 2.0)</li>
+                    <li><strong>Eficiență și rating-uri:</strong> 80 Plus certificare: Bronze ≥82%, Silver ≥85%, Gold ≥87%, Platinum ≥90%, Titanium ≥94%</li>
+                    <li><strong>Definiție și principiu de funcționare:</strong> Condensator de decuplare: previne transferul energiei electrice nedorite &#238;ntre părți ale circuitului</li>
+                    <li><strong>Funcția ca stocare locală de energie:</strong> Condensatorul funcționează ca stocare locală de energie pentru dispozitiv</li>
+                    <li><strong>Decuplare pentru circuite de comutare:</strong> Comutarea &#238;n circuite digitale schimbă curentul cerut brusc</li>
+                    <li><strong>Aplicații practice:</strong> Circuitele logice: condensator de decuplare l&#226;ngă fiecare IC, &#238;ntre fiecare conexiune de alimentare și ground</li>
                 </ul>
             </div>
         </div>
@@ -145,55 +409,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Rail activ în standby?</strong></p>
-                <ul class="specs-list"><li>a) 12V</li><li>b) 5V standby</li><li>c) 1.05V</li><li>d) 3.3V main</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 5V standby</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Primul IBM PC?</strong></p>
+                <ul class="specs-list">
+                    <li>a) mai multe fire și conexiuni pentru 3.3 V (sensibil la voltage drop)</li>
+                    <li>b) +3.3 V, +5 V, +12 V</li>
+                    <li>c) două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</li>
+                    <li>d) plăci de sunet), neutilizat de alte plăci de bază</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Rail-ul APU core este:</strong></p>
-                <ul class="specs-list"><li>a) 12V</li><li>b) 5V</li><li>c) 3.3V</li><li>d) 1.05V</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>d) 1.05V</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: ATX (Intel, 1995): trei rail-uri pozitive?</strong></p>
+                <ul class="specs-list">
+                    <li>a) două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</li>
+                    <li>b) mai multe fire și conexiuni pentru 3.3 V (sensibil la voltage drop)</li>
+                    <li>c) +3.3 V, +5 V, +12 V</li>
+                    <li>d) plăci de sunet), neutilizat de alte plăci de bază</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — +3.3 V, +5 V, +12 V</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Power-good semnal indică:</strong></p>
-                <ul class="specs-list"><li>a) GPU idle</li><li>b) Rail stabil</li><li>c) Temperatură mică</li><li>d) Tensiune 12V doar</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Rail stabil</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Procesoarele moderne necesită tensiuni joase?</strong></p>
+                <ul class="specs-list">
+                    <li>a) două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</li>
+                    <li>b) plăci de sunet), neutilizat de alte plăci de bază</li>
+                    <li>c) +3.3 V, +5 V, +12 V</li>
+                    <li>d) &gt;200 A la ≤1.5 V, imposibil de livrat din PSU extern</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — &gt;200 A la ≤1.5 V, imposibil de livrat din PSU extern</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Secvență corectă include:</strong></p>
-                <ul class="specs-list"><li>a) 1.05V înainte de 3.3V</li><li>b) 5V standby înainte de rest</li><li>c) 12V după boot</li><li>d) 1.8V după APU start</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 5V standby înainte de rest</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: ATX 2.0?</strong></p>
+                <ul class="specs-list">
+                    <li>a) limita de 240 VA per ieșire din motive de siguranță (UL 1950)</li>
+                    <li>b) +3.3 V, +5 V, +12 V</li>
+                    <li>c) plăci de sunet), neutilizat de alte plăci de bază</li>
+                    <li>d) două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — limita de 240 VA per ieșire din motive de siguranță (UL 1950)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Lipsă 12V main duce la:</strong></p>
-                <ul class="specs-list"><li>a) Boot normal</li><li>b) Doar USB fără APU</li><li>c) No power pentru VRM și APU</li><li>d) FPS scade</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) No power</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Fujitsu și alți Tier-1 din 2011?</strong></p>
+                <ul class="specs-list">
+                    <li>a) plăci de bază cu doar 12 V de la PSU</li>
+                    <li>b) două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</li>
+                    <li>c) +3.3 V, +5 V, +12 V</li>
+                    <li>d) plăci de sunet), neutilizat de alte plăci de bază</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — plăci de bază cu doar 12 V de la PSU</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Buget Putere pe Rail</h3>
-                <p><strong>Cerință:</strong> Rail 12V livrează 15A, rail 5V livrează 2A, rail 3.3V livrează 1A. Calculează puterea totală.</p>
-                <ol class="specs-list"><li>P_12V = 12 × 15</li><li>P_5V = 5 × 2</li><li>P_3.3V = 3.3 × 1</li><li>Total</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1.</strong> P_12V = 180W.</p>
-                    <p><strong>2.</strong> P_5V = 10W.</p>
-                    <p><strong>3.</strong> P_3.3V = 3.3W.</p>
-                    <p><strong>Total:</strong> 193.3W.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Rail-uri de alimentare</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de power rail. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: power rail.</li>
+                    <li>2. Ce rol are distribuția tensiunii în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre power rail și alimentarea componentelor.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> PSU-ul convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de tensiune joasă</p>
+                        <p><strong>2.</strong> Primul IBM PC: două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)</p>
+                        <p><strong>3.</strong> ATX (Intel, 1995): trei rail-uri pozitive: +3.3 V, +5 V, +12 V</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -270,3 +606,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

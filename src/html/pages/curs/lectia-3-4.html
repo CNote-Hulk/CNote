@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 3.4 — Ceas și Frecvență: Sincronizare Digitală">
+    <meta name="description" content="Lecția 3.4 — Ceas și frecvență">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 3.4 — Ceas și Frecvență — Console Notebook</title>
+    <title>Lecția 3.4 — Ceas și frecvență — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 — Logică Digitală</p>
-            <h1>Lecția 3.4 — Ceas și Frecvență</h1>
-            <p>Cum se sincronizează toată digitala? Oscilator care bate miliarde de ori pe secundă.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 — LOGICĂ DIGITALĂ</p>
+            <h1>Lecția 3.4 — Ceas și frecvență</h1>
+            <p>clock, sincronizare, timing</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                                <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Clock:</strong> Semnal periodic care bate la rată constantă. 0→1→0→1→0→1...</p>
-                <p><strong>Frecvență:</strong> Câte bătute pe secundă (Hz). PS5 CPU = 3.5 GHz = 3,500,000,000 cicli pe secundă.</p>
-                <p><strong>De ce clock obligatoriu?</strong> Sincronizează. Toți flip-flop-urile captură date la același moment. Chaos altfel.</p>
+                <p>Semnalul de ceas (clock signal) este un semnal logic electronic (tensiune sau curent) care oscilează &#238;ntre starea high și low la o frecvență constantă</p>
+                <p>Această lecție acoperă: <strong>clock</strong>, <strong>sincronizare</strong>, <strong>timing</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,82 +53,289 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1 — Clock Oscilator</h3>
-                <p><strong>Sursă clock:</strong> Cristal de cuarț. Când vibrează la frecvență naturală, emite semnal perioada constant.</p>
-                <p><strong>Exemplu:</strong> Cristal 27 MHz → oscilatoare pe PS5 se multiplică la 3.5 GHz (129.6×).</p>
-                <p><strong>PLL (Phase Locked Loop):</strong> Circuit care sincronizează și multiplică frecvența oscillator-ului. Feedback negativ manține frecvență exacta.</p>
+                <h3>3.4.1 — Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Semnalul de ceas (clock signal) este un semnal logic electronic (tensiune sau curent) care oscilează &#238;ntre starea high și low la o frecvență constantă</li>
+                    <li>Utilizat ca metronom pentru a sincroniza acțiunile circuitelor digitale</li>
+                    <li>&#206;n circuitele de logică sincronă (cel mai comun tip), semnalul de ceas este aplicat tuturor elementelor de stocare (flip-flop-uri și latches)</li>
+                    <li>Determină toate elementele să schimbe starea simultan, prevenind race conditions</li>
+                    <li>Produs de un oscilator electronic numit clock generator</li>
+                    <li><strong>Formă:</strong> cel mai comun undă pătrată (square wave) cu duty cycle de 50%</li>
+                    <li><strong>Circuitele pot deveni active pe:</strong> rising edge, falling edge, sau ambele (double data rate)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.2 — Ciclu Clock si Putere</h3>
-                <p><strong>Period T:</strong> Timp între 2 flanc. T = 1/f. Pentru 3.5 GHz: T = 1/3,500,000,000 = 0.286 nanosecunde.</p>
-                <p><strong>Duty cycle:</strong> Procentaj de timp cu semnal HIGH în fiecare ciclu. Ideal = 50% (egal timp UP/DOWN).</p>
-                <p><strong>Power & frequență:</strong> Putere dinamică ∝ frecvență². Dublez frecvența → 4× mai multa putere (şi căldură).</p>
+                <h3>3.4.2 — Circuite digitale și sincronizare</h3>
+                <ul class="specs-list">
+                    <li>Majoritatea IC-urilor de complexitate suficientă utilizează semnal de ceas pentru sincronizare</li>
+                    <li>Frecvența ceasului trebuie mai mică dec&#226;t worst-case propagation delay intern</li>
+                    <li>&#206;n unele cazuri, mai multe cicluri de ceas sunt necesare pentru o acțiune predictibilă</li>
+                    <li>Problema livrării ceasului precis și sincronizat crește cu complexitatea chipului</li>
+                    <li><strong>Exemplu principal:</strong> microprocesorul, care se bazează pe ceas de la crystal oscillator</li>
+                    <li><strong>Excepții:</strong> circuite asincrone (asynchronous CPUs)</li>
+                    <li><strong>Clock gating:</strong> combinarea semnalului de ceas cu un semnal de control (enable/disable)</li>
+                    <li>Economisește energie prin oprirea temporară a porțiunilor neutilizate</li>
+                    <li><strong>Cost:</strong> complexitate crescută &#238;n analiza de timing</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3 — Jitter și Stabilitate</h3>
-                <p><strong>Jitter:</strong> Variație mică în timing flancuri. Noise, temperatura, etc. introduce jitter.</p>
-                <p><strong>Effect:</strong> Setup/hold violations apar. Metastabilitate în flip-flop-uri. Calcule eronate.</p>
-                <p><strong>Spec PS5:</strong> Jitter &lt; 5 ps (picoseconds). Ultra-strict pentru stability.</p>
+                <h3>3.4.3 — Tipuri de ceasuri</h3>
+                <ul class="specs-list">
+                    <li><strong>Single-phase clock:</strong> cel mai comun, toate semnalele de ceas pe un singur fir</li>
+                    <li><strong>Two-phase clock (φ1 și φ2):</strong> distribuție pe două fire cu impulsuri non-overlapping</li>
+                    <li>Gated latches &#238;n loc de edge-triggered flip-flops (4 porți vs 6 porți → mai puține porți total)</li>
+                    <li>Penalizare &#238;n dificultate design și performanță</li>
+                    <li>Utilizat de MOS IC-uri &#238;n anii 1970 (Motorola 6800, Intel 8080)</li>
+                    <li><strong>8080:</strong> ceas 2 MHz; 6800: ceas 1 MHz (randament de procesare similar)</li>
+                    <li><strong>6800:</strong> clock minim 100 kHz; 8080: clock minim 500 kHz (datorită logicii dinamice)</li>
+                    <li><strong>MOS Technology 6502:</strong> generator de ceas 2-faze on-chip, necesită doar intrare single-phase</li>
+                    <li><strong>Four-phase clock:</strong> 4 fire separate, non-overlapping</li>
+                    <li><strong>Utilizat &#238;n microprocesoare timpurii:</strong> IMP-16, TMS9900, MCP-1600</li>
+                    <li>Rar &#238;n procesoare CMOS moderne</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.4 — Scaling si DVFS</h3>
-                <p><strong>DVFS (Dynamic Voltage Frequency Scaling):</strong> PS5 poate reduce frecvență și tensiune când joc nu cere putere maximă.</p>
-                <p><strong>Exemplu:</strong> Menu PS5 (static) = 2.0 GHz + 0.8V (low power). Gaming = 3.5 GHz + 1.2V (full power). Controller schimbă dinamic.</p>
-                <p><strong>Beneficiu:</strong> Economie putere 60% în idle. Fără pierdere gameplay.</p>
+                <h3>3.4.4 — Multiplicator de ceas și frecvență dinamică</h3>
+                <ul class="specs-list">
+                    <li><strong>Clock multiplier:</strong> multiplică un ceas extern de frecvență mai mică la clock rate-ul procesorului</li>
+                    <li>Permite CPU să opereze la frecvență mult mai mare dec&#226;t restul computerului</li>
+                    <li>C&#226;știguri de performanță c&#226;nd CPU nu așteaptă factori externi (memorie, I/O)</li>
+                    <li><strong>Dynamic frequency change:</strong> majoritatea dispozitivelor nu necesită frecvență fixă constantă</li>
+                    <li>At&#226;ta timp c&#226;t perioadele min/max de ceas sunt respectate, timpul &#238;ntre fronturi poate varia</li>
+                    <li>Spread-spectrum clock generation, dynamic frequency scaling</li>
+                    <li><strong>Static logic:</strong> fără perioadă maximă de ceas → poate fi &#238;ncetinit/oprit și reluat</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5 — Clock Delivery &amp; Skew</h3>
-                <p><strong>Clock distribution:</strong> Clock se transmite pe mil de trasee pe PCB. Lung traseu = intârziere diferita. Asta = clock skew.</p>
-                <p><strong>Skew problem:</strong> Logic la locație A vede clock mai devreme decât logic la B. Setup violation posibil.</p>
-                <p><strong>H-tree routing:</strong> Clock se distribuie simtabil (like binary tree) pentru a menține skew &lt; 50ps.</p>
+                <h3>3.4.5 — Distribuția semnalului de ceas</h3>
+                <ul class="specs-list">
+                    <li><strong>Metoda cea mai eficientă:</strong> metal grid – skew minim</li>
+                    <li><strong>&#206;n microprocesoare mari:</strong> &gt; 30% din puterea totală consumată de drivarea ceasului</li>
+                    <li>Trebuie &#238;ncărcat/descărcat tot arborele de porți + amplificatoare la fiecare ciclu</li>
+                    <li><strong>Clock gating:</strong> oprește temporar porțiuni ale arborelui pentru economie de energie</li>
+                    <li><strong>Clock distribution network (clock tree, ex. H-tree):</strong> distribuie semnalul de la un punct comun la toate elementele</li>
+                    <li><strong>Semnalele de ceas:</strong> cel mai mare fanout, cele mai mari viteze din sistem</li>
+                    <li>Formele de undă trebuie curate și precise (referință temporală pentru semnalele de date)</li>
+                    <li><strong>Scalarea tehnologiei:</strong> linii de interconexiune globale devin semnificativ mai rezistive</li>
+                    <li>Diferențele/incertitudinea &#238;n timpii de sosire a ceasului pot limita sever performanța maximă</li>
+                    <li>Creează race conditions unde date incorecte se pot &#238;nscrie &#238;n registre</li>
+                    <li><strong>Sisteme sincrone digitale:</strong> bancuri de registre secvențiale cascadate cu logică combinațională &#238;ntre ele</li>
+                    <li><strong>Registre de pipeline:</strong> inserare &#238;n ferestre temporale egale pentru a satisface constr&#226;ngeri de timing critice</li>
+                    <li><strong>Clock skew:</strong> diferența de timp de sosire a ceasului la diferite componente</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.4.6 — Definiție și măsurare</h3>
+                <ul class="specs-list">
+                    <li>Clock rate (clock speed) = frecvența la care generatorul de ceas al procesorului produce impulsuri</li>
+                    <li>Utilizat ca indicator al vitezei procesorului</li>
+                    <li>Măsurat &#238;n hertz (Hz, unitate SI de frecvență)</li>
+                    <li><strong>Evoluție:</strong> prima generație &#238;n Hz/kHz; primele PC-uri (1970-1980) &#238;n MHz; CPUs moderne (sec. 21) &#238;n GHz</li>
+                    <li>Util pentru comparații &#238;ntre procesoare din aceeași familie (cu alte caracteristici constante)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.4.7 — Factori determinanți – Binning</h3>
+                <ul class="specs-list">
+                    <li>Producătorii percep prețuri mai mari pentru frecvențe mai mari (practice = binning/product binning)</li>
+                    <li>Clock rate-ul final se determină la sf&#226;rșitul procesului de fabricație prin testare individuală</li>
+                    <li><strong>Se publică &quot;maximum clock rate&quot;:</strong> testare la cele mai complicate instrucțiuni, cu datele cele mai lente</li>
+                    <li>Testare la temperatura și tensiunea care dau performanța cea mai scăzută</li>
+                    <li>Procesoare care trec testul la frecvență mai mare → etichetate superior (ex. 3.50 GHz)</li>
+                    <li>Cele care eșuează la frecvență mare dar trec la una mai mică → etichetate inferior (ex. 3.3 GHz, preț mai mic)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.4.8 — Factori determinanți – Inginerie</h3>
+                <ul class="specs-list">
+                    <li>Clock rate-ul CPU determinat de frecvența unui cristal oscilator (crystal oscillator)</li>
+                    <li>Cristalul produce undă sinusoidală fixă → circuitul electronic o convertește &#238;n undă pătrată</li>
+                    <li><strong>CPU multiplier:</strong> clock rate = multiplu fix al frecvenței cristalului de referință</li>
+                    <li><strong>Clock distribution network:</strong> transportă semnalul de ceas &#238;n interiorul CPU-ului</li>
+                    <li>După fiecare impuls de ceas, liniile de semnal din CPU au nevoie de timp să se stabilizeze (settle)</li>
+                    <li>Dacă pulsul următor vine &#238;nainte de stabilizare → rezultate incorecte</li>
+                    <li>&#206;n procesul de tranziție, energia se pierde ca căldură (&#238;n tranzistorii de drive)</li>
+                    <li>Instrucțiuni complicate cu multe tranziții → mai multă căldură la frecvență mai mare</li>
+                    <li>Tranzistori pot fi deteriorați de căldură excesivă</li>
+                    <li><strong>Limită inferioară de clock rate:</strong> necesară cu excepția fully static core</li>
+                    <li><strong>Underclocking:</strong> cristal la jumătate de frecvență → jumătate din performanță, mai puțină căldură</li>
+                    <li><strong>Overclocking:</strong> cristal de frecvență mai mare → performanță crescută dar limitată de timp de stabilizare și căldură</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.4.9 — Repere istorice</h3>
+                <ul class="specs-list">
+                    <li><strong>Z1 (primul computer mecanic digital):</strong> 1 Hz</li>
+                    <li><strong>Z3 (primul computer electromecanic general):</strong> ~5-10 Hz</li>
+                    <li><strong>ENIAC (primul computer electronic general):</strong> 100 kHz cycling unit, 5 kHz instruction rate (20 cicluri/instrucțiune)</li>
+                    <li><strong>Altair 8800 (primul PC comercial):</strong> Intel 8080, 2 MHz</li>
+                    <li><strong>IBM PC (1981):</strong> 4.77 MHz</li>
+                    <li><strong>1992:</strong> HP PA-7100 și DEC Alpha AXP 21064 depășesc 100 MHz (tehnici RISC)</li>
+                    <li><strong>1995:</strong> Intel Pentium P5 la 100 MHz</li>
+                    <li><strong>2000:</strong> AMD demonstrează 1 GHz (cu c&#226;teva zile &#238;naintea Intel)</li>
+                    <li><strong>2002:</strong> Intel Pentium 4 la 3 GHz (primul CPU de 3 GHz; ~0.33 ns per ciclu)</li>
+                    <li><strong>De atunci:</strong> clock rate-ul producției a crescut mai lent; &#238;mbunătățiri din alte schimbări de design</li>
+                    <li><strong>Record overclock Guinness (2011):</strong> AMD FX-8150 la 8.43 GHz (LHe/LN2)</li>
+                    <li><strong>Record CPU-Z (2025):</strong> Intel Core i9-14900KF la 9.12 GHz</li>
+                    <li><strong>Cel mai mare boost clock producție:</strong> i9-14900KS la 6.2 GHz (Q1 2024)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>3.4.10 — Comparație și limitări</h3>
+                <ul class="specs-list">
+                    <li><strong>Clock rate:</strong> util doar pentru comparații &#238;n aceeași familie de procesoare</li>
+                    <li><strong>Nu este fix fiabil singur:</strong> factori importanți includ lățimea bus-ului de date, latența memoriei, arhitectura cache</li>
+                    <li><strong>Megahertz myth:</strong> clock rate-ul singur = măsură inexactă a performanței</li>
+                    <li>Software benchmarks mai utile</li>
+                    <li><strong>Procesoare superscalare:</strong> execută &gt;1 instrucțiune per ciclu (IPC) dar pot face &quot;mai puțin&quot; per ciclu</li>
+                    <li>IPC (Instructions Per Cycle) variază &#238;ntre arhitecturi</li>
+                    <li>Frecvență cumulativă (core &#215; clock) = uneori asumată dar nu complet exactă</li>
+                    <li><strong>Tehnici de performanță independente de clock:</strong> instruction pipelining, out-of-order execution, instruction level parallelism</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Utilizat ca metronom pentru a sincroniza acțiunile circuitelor digitale</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Multiplicator de ceas și frecvență dinamică</h3>
+                <ul class="specs-list">
+                    <li><strong>Clock multiplier:</strong> multiplică un ceas extern de frecvență mai mică la clock rate-ul procesorului</li>
+                    <li>Permite CPU să opereze la frecvență mult mai mare dec&#226;t restul computerului</li>
+                    <li>C&#226;știguri de performanță c&#226;nd CPU nu așteaptă factori externi (memorie, I/O)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Distribuția semnalului de ceas</h3>
+                <ul class="specs-list">
+                    <li><strong>Sisteme sincrone digitale:</strong> bancuri de registre secvențiale cascadate cu logică combinațională &#238;ntre ele</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și măsurare</h3>
+                <ul class="specs-list">
+                    <li>Clock rate (clock speed) = frecvența la care generatorul de ceas al procesorului produce impulsuri</li>
+                    <li>Utilizat ca indicator al vitezei procesorului</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Factori determinanți – Inginerie</h3>
+                <ul class="specs-list">
+                    <li>Clock rate-ul CPU determinat de frecvența unui cristal oscilator (crystal oscillator)</li>
+                    <li><strong>CPU multiplier:</strong> clock rate = multiplu fix al frecvenței cristalului de referință</li>
+                    <li><strong>Clock distribution network:</strong> transportă semnalul de ceas &#238;n interiorul CPU-ului</li>
+                    <li>După fiecare impuls de ceas, liniile de semnal din CPU au nevoie de timp să se stabilizeze (settle)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Repere istorice</h3>
+                <ul class="specs-list">
+                    <li><strong>Z1 (primul computer mecanic digital):</strong> 1 Hz</li>
+                    <li><strong>Z3 (primul computer electromecanic general):</strong> ~5-10 Hz</li>
+                    <li><strong>ENIAC (primul computer electronic general):</strong> 100 kHz cycling unit, 5 kHz instruction rate (20 cicluri/instrucțiune)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> Cristal oscilează la rezonanță mecanică. Capacitoare eletrice pe PCB filtrează noise.</p>
-                <p><strong>Informatică:</strong> Clock periodic sincronizează miliarde operații paralel. Fără clock, chaos.</p>
+                <p>În contextul consolelor de jocuri, ceas și frecvență joacă un rol esențial în funcționarea hardware-ului.</p>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: CPU Fetch-Decode-Execute Cycle</h3>
-                <p>Clock 1: PC → adresa RAM. Fetch instrucție (4 bytes).</p>
-                <p>Clock 2-5: Decode instrucție. Pipeline stages latență 4 cicli.</p>
-                <p>Clock 6-10: Execute (ALU operations, memory, writeback).</p>
-                <p>La 3.5 GHz: 3.5 miliarde cicli/sec = instrucție finalizata fiecare ~1-10 cicli = 350 mioane - 3.5 miliarde instrucții/sec.</p>
+                <h3>Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Produs de un oscilator electronic numit clock generator</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Tipuri de ceasuri</h3>
+                <ul class="specs-list">
+                    <li>Utilizat de MOS IC-uri &#238;n anii 1970 (Motorola 6800, Intel 8080)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Repere istorice</h3>
+                <ul class="specs-list">
+                    <li><strong>Altair 8800 (primul PC comercial):</strong> Intel 8080, 2 MHz</li>
+                    <li><strong>1995:</strong> Intel Pentium P5 la 100 MHz</li>
+                    <li><strong>2000:</strong> AMD demonstrează 1 GHz (cu c&#226;teva zile &#238;naintea Intel)</li>
+                    <li><strong>2002:</strong> Intel Pentium 4 la 3 GHz (primul CPU de 3 GHz; ~0.33 ns per ciclu)</li>
+                    <li><strong>Record overclock Guinness (2011):</strong> AMD FX-8150 la 8.43 GHz (LHe/LN2)</li>
+                    <li><strong>Record CPU-Z (2025):</strong> Intel Core i9-14900KF la 9.12 GHz</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Comparație și limitări</h3>
+                <ul class="specs-list">
+                    <li><strong>Clock rate:</strong> util doar pentru comparații &#238;n aceeași familie de procesoare</li>
+                    <li><strong>Nu este fix fiabil singur:</strong> factori importanți includ lățimea bus-ului de date, latența memoriei, arhitectura cache</li>
+                    <li><strong>Megahertz myth:</strong> clock rate-ul singur = măsură inexactă a performanței</li>
+                    <li>Software benchmarks mai utile</li>
+                    <li><strong>Procesoare superscalare:</strong> execută &gt;1 instrucțiune per ciclu (IPC) dar pot face &quot;mai puțin&quot; per ciclu</li>
+                    <li>IPC (Instructions Per Cycle) variază &#238;ntre arhitecturi</li>
+                    <li>Frecvență cumulativă (core &#215; clock) = uneori asumată dar nu complet exactă</li>
+                    <li><strong>Tehnici de performanță independente de clock:</strong> instruction pipelining, out-of-order execution, instruction level parallelism</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: PS5 Clock PLL</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Crystal:</strong> 27 MHz (referință generală PS5, TV, camera).</p>
-                <p><strong>PLL multiplier:</strong> ×129.6. Output = 27 × 129.6 = ~3510 MHz (3.51 GHz).</p>
-                <p><strong>Stabilitate:</strong> Feedback loop ajustează multiplier dacă jitter detectat. Precision ±0.01%.</p>
-                <p><strong>Temperature compensation:</strong> Cristal se dilatează cu căldură. PLL ajustează frecvență pentru a menține stabilitate -40°C la +80°C.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ De ce nu pot dubla frecvența mai mult?</h3><p>Putere ∝ f² și V². Putere devine catastrofal. Căldură disipare crește exponențial. Fan nu mai poate răci.</p></div>
-            <div class="card"><h3>⚠️ De ce jitter e periculos?</h3><p>Jitter mic = timing violation ocazional. Output flip-flop-uri nondeterministic. Calcule eronate aparecer aleator. Debug imposibil.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Circuite digitale și sincronizare</h3>
+                    <p>Problema livrării ceasului precis și sincronizat crește cu complexitatea chipului</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Factori determinanți – Inginerie</h3>
+                    <p>Tranzistori pot fi deteriorați de căldură excesivă</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Repere istorice</h3>
+                    <p>1992: HP PA-7100 și DEC Alpha AXP 21064 depășesc 100 MHz (tehnici RISC)</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -133,12 +344,16 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Clock:</strong> Semnal periodic 0→1→0→1... bate la rată constantă.</li>
-                    <li><strong>Frecvență:</strong> Bătute pe secundă (Hz). PS5 = 3.5 GHz.</li>
-                    <li><strong>PLL:</strong> Phase-Locked-Loop multiplică și stabilizează frecvență.</li>
-                    <li><strong>Jitter:</strong> Variație în timing. Jitter mic = metastabilitate. Critical &lt; 5ps.</li>
-                    <li><strong>DVFS:</strong> Dynamic voltage frequency scaling. Reduce putere în idle.</li>
-                    <li><strong>H-tree:</strong> Clock distribution pentru minim skew.</li>
+                    <li><strong>Definiție și rol:</strong> Semnalul de ceas (clock signal) este un semnal logic electronic (tensiune sau curent) care oscilează &#238;ntre starea high și low la o frecvență constantă</li>
+                    <li><strong>Circuite digitale și sincronizare:</strong> Majoritatea IC-urilor de complexitate suficientă utilizează semnal de ceas pentru sincronizare</li>
+                    <li><strong>Tipuri de ceasuri:</strong> Single-phase clock: cel mai comun, toate semnalele de ceas pe un singur fir</li>
+                    <li><strong>Multiplicator de ceas și frecvență dinamică:</strong> Clock multiplier: multiplică un ceas extern de frecvență mai mică la clock rate-ul procesorului</li>
+                    <li><strong>Distribuția semnalului de ceas:</strong> Metoda cea mai eficientă: metal grid – skew minim</li>
+                    <li><strong>Definiție și măsurare:</strong> Clock rate (clock speed) = frecvența la care generatorul de ceas al procesorului produce impulsuri</li>
+                    <li><strong>Factori determinanți – Binning:</strong> Producătorii percep prețuri mai mari pentru frecvențe mai mari (practice = binning/product binning)</li>
+                    <li><strong>Factori determinanți – Inginerie:</strong> Clock rate-ul CPU determinat de frecvența unui cristal oscilator (crystal oscillator)</li>
+                    <li><strong>Repere istorice:</strong> Z1 (primul computer mecanic digital): 1 Hz</li>
+                    <li><strong>Comparație și limitări:</strong> Clock rate: util doar pentru comparații &#238;n aceeași familie de procesoare</li>
                 </ul>
             </div>
         </div>
@@ -147,56 +362,129 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>PS5 CPU dacă 3.5 GHz. Period T?</strong></p>
-                <ul class="specs-list"><li>a) 3.5 ns</li><li>b) 0.286 ns</li><li>c) 0.0286 ns</li><li>d) 286 ns</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 0.286 ns</strong> — T = 1/3.5e9 = 0.286e-9 ns</p></details>
+                <p><strong>Care afirmație este corectă despre: Formă?</strong></p>
+                <ul class="specs-list">
+                    <li>a) rising edge, falling edge, sau ambele (double data rate)</li>
+                    <li>b) circuite asincrone (asynchronous CPUs)</li>
+                    <li>c) microprocesorul, care se bazează pe ceas de la crystal oscillator</li>
+                    <li>d) cel mai comun undă pătrată (square wave) cu duty cycle de 50%</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — cel mai comun undă pătrată (square wave) cu duty cycle de 50%</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Crystal frecvență PS5 și multiplier PLL?</strong></p>
-                <ul class="specs-list"><li>a) 27 MHz × 1</li><li>b) 54 MHz × 2</li><li>c) 27 MHz × ~130</li><li>d) 3.5 GHz direct</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) 27 MHz × ~130</strong> — PLL multiplică pentru frecvență finală 3.5 GHz</p></details>
+                <p><strong>Care afirmație este corectă despre: Exemplu principal?</strong></p>
+                <ul class="specs-list">
+                    <li>a) rising edge, falling edge, sau ambele (double data rate)</li>
+                    <li>b) microprocesorul, care se bazează pe ceas de la crystal oscillator</li>
+                    <li>c) circuite asincrone (asynchronous CPUs)</li>
+                    <li>d) cel mai comun undă pătrată (square wave) cu duty cycle de 50%</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — microprocesorul, care se bazează pe ceas de la crystal oscillator</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Relația putere vs frecvență în circuite digitale?</strong></p>
-                <ul class="specs-list"><li>a) Linear (2× freq = 2× putere)</li><li>b) Exponențial</li><li>c) Pătratic (2× freq = 4× putere)</li><li>d) Niciun relație</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) Pătratic (P ∝ f²)</strong> — Și cu tensiune: P ∝ f V²</p></details>
+                <p><strong>Care afirmație este corectă despre: Single-phase clock?</strong></p>
+                <ul class="specs-list">
+                    <li>a) rising edge, falling edge, sau ambele (double data rate)</li>
+                    <li>b) cel mai comun, toate semnalele de ceas pe un singur fir</li>
+                    <li>c) cel mai comun undă pătrată (square wave) cu duty cycle de 50%</li>
+                    <li>d) microprocesorul, care se bazează pe ceas de la crystal oscillator</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — cel mai comun, toate semnalele de ceas pe un singur fir</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Ce e jitter și cum afectează sistemul?</strong></p>
-                <ul class="specs-list"><li>a) Zgomot electric, afectează putere</li><li>b) Variație în timing clock flanc, poate cauza timing violations și metastabilitate</li><li>c) Oscilație frequență constantă</li><li>d) Temperatura pe chip</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Variație timing lead la timing violations</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Clock multiplier?</strong></p>
+                <ul class="specs-list">
+                    <li>a) microprocesorul, care se bazează pe ceas de la crystal oscillator</li>
+                    <li>b) rising edge, falling edge, sau ambele (double data rate)</li>
+                    <li>c) cel mai comun undă pătrată (square wave) cu duty cycle de 50%</li>
+                    <li>d) multiplică un ceas extern de frecvență mai mică la clock rate-ul procesorului</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — multiplică un ceas extern de frecvență mai mică la clock rate-ul procesorului</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>DVFS = Dynamic Voltage Frequency Scaling. Beneficiu în PS5 menu?</strong></p>
-                <ul class="specs-list"><li>a) Mai rapid renderare</li><li>b) Mai mult graphics details</li><li>c) Economie putere 60% în idle</li><li>d) Redus lag în network</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) Economie putere significanta</strong> — Menu nu necesită putere maximă</p></details>
+                <p><strong>Care afirmație este corectă despre: Metoda cea mai eficientă?</strong></p>
+                <ul class="specs-list">
+                    <li>a) rising edge, falling edge, sau ambele (double data rate)</li>
+                    <li>b) microprocesorul, care se bazează pe ceas de la crystal oscillator</li>
+                    <li>c) metal grid – skew minim</li>
+                    <li>d) cel mai comun undă pătrată (square wave) cu duty cycle de 50%</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — metal grid – skew minim</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: PLL Calcul și Jitter Budget</h3>
-                <p><strong>Cerință:</strong> PS5 CPU 3.5 GHz. Setup time flip-flop = 0.5 ns. Hold time = 0.3 ns. Jitter allowed = ?</strong></p>
-                <ol class="specs-list"><li>Calculează period T la 3.5 GHz</li><li>Setup + Hold = total "forbidden window"</li><li>Jitter budget = percentage din period permises inainte tip violație timing</li><li>Estimare: Jitter trebuie &lt; ce % din T?</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1. Period:</strong> T = 1/3.5e9 = 0.286 ns</p>
-                    <p><strong>2. Setup + Hold window:</strong> 0.5 + 0.3 = 0.8 ns forbidden (dar perioada e numai 0.286 ns!)</p>
-                    <p>← Asta e problema reală! Flip-flop modern trebuie mai rapid decât 0.8 ns. Actual setup/hold su ~5 ps combined pe moderne device.</p>
-                    <p><strong>Cu 5 ps combined setpu/hold:</strong> Jitter budget ≈ 5 ps / 0.286 ns = 1.7% din period.</p>
-                    <p>Jitter PS5 spec: &lt;5 ps. Margin: 0 ps. Strâns! Orice variație riscă eroare.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Ceas și frecvență</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de clock. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: clock.</li>
+                    <li>2. Ce rol are sincronizare în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre clock și timing.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Semnalul de ceas (clock signal) este un semnal logic electronic (tensiune sau curent) care oscilează &#238;ntre starea high și low la o frecvență constantă</p>
+                        <p><strong>2.</strong> Majoritatea IC-urilor de complexitate suficientă utilizează semnal de ceas pentru sincronizare</p>
+                        <p><strong>3.</strong> Single-phase clock: cel mai comun, toate semnalele de ceas pe un singur fir</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -273,3 +561,14 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

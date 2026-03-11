@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 6.3 — No Power: De ce nu pornește consola">
+    <meta name="description" content="Lecția 6.3 — No Power">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
     <title>Lecția 6.3 — No Power — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — Alimentare și Probleme Reale</p>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — ALIMENTARE ȘI PROBLEME REALE</p>
             <h1>Lecția 6.3 — No Power</h1>
-            <p>Consola moartă: fără LED, fără beep. Cum localizezi defectul.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p>cauze posibile, verificarea alimentării, diagnostic hardware</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>No Power:</strong> Consola nu arată niciun semn: LED off, nu pornește ventilator, fără sunet.</p>
-                <p>Diagnostic începe cu 5V standby și PSU. Dacă 5V lipsește, totul este mort.</p>
-                <p>Scop: să izolezi rapid dacă problema e în PSU, placă sau APU.</p>
+                <p>1. Reproducerea problemei: trebuie să poți reproduce defectul intenționat</p>
+                <p>Această lecție acoperă: <strong>cauze posibile</strong>, <strong>verificarea alimentării</strong>, <strong>diagnostic hardware</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,79 +53,368 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1 — Verificare PSU și 5V Standby</h3>
-                <p><strong>Primul pas:</strong> Măsoară 5V standby la conector. Dacă nu există, PSU defect sau siguranță arsă.</p>
-                <p><strong>PSU intern:</strong> Poate avea siguranță, MOSFET primar sau controller defect.</p>
-                <p><strong>Test rapid:</strong> Alimentare externă 5V pentru a vedea dacă placa se trezește.</p>
+                <h3>6.3.1 — Funcția sursei de alimentare</h3>
+                <ul class="specs-list">
+                    <li>PSU convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de joasă tensiune</li>
+                    <li>Toate computerele moderne folosesc surse de alimentare cu comutație (switched-mode power supplies)</li>
+                    <li><strong>Tensiuni furnizate:</strong> +3.3V, +5V, +12V, +5VSB (standby)</li>
+                    <li>C&#226;t timp sursa este conectată la priză, furnizează permanent +5VSB pentru funcțiile de standby</li>
+                    <li>Sursa trimite semnal PS_ON (pornire) și Power Good (tensiuni stabile) către placa de bază</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.2 — Power Button și Controller</h3>
-                <p><strong>Buton power:</strong> Tranzistor sau logic I/O către PMIC. Dacă butonul e defect, PS_ON nu se generează.</p>
-                <p><strong>Controller standby:</strong> Dacă 5V e OK, dar LED nu se aprinde, controlerul standby poate fi defect.</p>
+                <h3>6.3.2 — Protecții ale sursei de alimentare</h3>
+                <ul class="specs-list">
+                    <li>Short circuit protection (protecție la scurtcircuit)</li>
+                    <li>Overpower/overload protection (protecție la suprasarcină)</li>
+                    <li>Over-voltage protection (OVP – protecție la supratensiune)</li>
+                    <li>Under-voltage protection (protecție la subtensiune)</li>
+                    <li>Over-current protection (OCP – protecție la supracurent)</li>
+                    <li>Over-temperature protection (OTP – protecție la supra&#238;ncălzire)</li>
+                    <li>C&#226;nd o protecție se activează → PSU se oprește sau se resetează</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.3 — Scurtcircuit pe Rail-uri</h3>
-                <p><strong>Scurt pe 12V:</strong> PSU intră în protecție și nu pornește. Măsoară rezistența la masă.</p>
-                <p><strong>Scurt pe 5V:</strong> Standby nu se poate stabiliza. 5V cade la 0V.</p>
-                <p><strong>Metodă:</strong> Test cu injectare curent și termocameră pentru a identifica componenta fierbinte.</p>
+                <h3>6.3.3 — Simptome de defectare PSU</h3>
+                <ul class="specs-list">
+                    <li>Miros de ars &#238;nainte de oprirea computerului</li>
+                    <li>Defectarea ventilatorului de răcire → supra&#238;ncălzirea componentelor interne</li>
+                    <li>Restartări aleatorii sau opriri fără motiv aparent</li>
+                    <li>Chirpuit/tictăcit rapid (PSU se oprește și repornește repetat la scurtcircuit)</li>
+                    <li>Sistem complet mort – fără răspuns la butonul de pornire</li>
+                    <li>Capacitoare umflate sau sparte vizibil</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.4 — Semnal PS_ON</h3>
-                <p><strong>PS_ON:</strong> Semnal logic care spune PSU să pornească 12V.</p>
-                <p><strong>Măsurare:</strong> În standby, PS_ON = HIGH/LOW (depinde de logic). La apăsare buton, PS_ON se schimbă.</p>
-                <p>Dacă semnalul nu se schimbă, problema e pe placa de bază, nu în PSU.</p>
+                <h3>6.3.4 — Testarea sursei de alimentare</h3>
+                <ul class="specs-list">
+                    <li><strong>Power supply tester:</strong> instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</li>
+                    <li>Testarea sub sarcină recomandată pentru citiri precise</li>
+                    <li><strong>PSU tester cu LCD:</strong> afișează tensiunile pe fiecare rail</li>
+                    <li><strong>PSU tester cu LED-uri:</strong> indică prezența/absența tensiunilor</li>
+                    <li>Monitorizarea tensiunii prin BIOS sau software (lm_sensors Linux, SpeedFan Windows)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5 — Debug step-by-step</h3>
-                <p><strong>1.</strong> 5V standby prezent? Dacă nu, PSU/siguranță.</p>
-                <p><strong>2.</strong> LED standby on? Dacă nu, controler standby defect.</p>
-                <p><strong>3.</strong> PS_ON se activează? Dacă nu, buton/power logic.</p>
-                <p><strong>4.</strong> 12V apare? Dacă nu, PSU fault sau scurt pe 12V.</p>
+                <h3>6.3.5 — Conectori și semnale relevante pentru diagnostic</h3>
+                <ul class="specs-list">
+                    <li><strong>Pin PS_ON (verde):</strong> semnal de control – trebuie tras la GND pentru pornirea sursei</li>
+                    <li><strong>Pin Power Good (gri):</strong> semnal LOW c&#226;nd tensiunile nu sunt stabile, HIGH c&#226;nd sunt OK</li>
+                    <li><strong>+5VSB (mov):</strong> standby 5V – prezent permanent c&#226;nd sursa este conectată la priză</li>
+                    <li><strong>Testul paperclip:</strong> scurtcircuitarea PS_ON cu GND pentru a testa dacă sursa pornește fără placa de bază</li>
+                    <li>Dacă +5VSB lipsește → sursa este complet moartă sau nu primește AC</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.6 — Cauze comune de defectare PSU</h3>
+                <ul class="specs-list">
+                    <li>Ventilator blocat → supra&#238;ncălzire → defectare componente</li>
+                    <li>Suprasarcină (componente noi care depășesc capacitatea sursei)</li>
+                    <li>Condensatoare defecte (capacitor plague – vezi sursa 3)</li>
+                    <li>Fluctuații de tensiune din rețea (v&#226;rfuri de tensiune, descărcări electrice)</li>
+                    <li><strong>&#206;mbătr&#226;nire normală:</strong> MTBF tipic 100.000 ore (~11.4 ani), dar 23% eșuează &#238;n 3 ani</li>
+                    <li><strong>Surse frauduloase/generice:</strong> capacitate reală poate fi jumătate din cea etichetată</li>
+                    <li><strong>Cabluri modulare incompatibile:</strong> folosirea cablului de la alt PSU poate cauza scurtcircuit</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.7 — Peak power și OCP</h3>
+                <ul class="specs-list">
+                    <li>TDP-ul procesorului/GPU-ului nu reflectă consumul de v&#226;rf real</li>
+                    <li><strong>CPU:</strong> v&#226;rf de ~1.5&#215; TDP; GPU: v&#226;rf de ~2&#215; TDP (ex: RTX 2070 Super, 215W TDP dar 430W v&#226;rf)</li>
+                    <li>OCP/OPP prea sensibilă poate cauza opriri false → interpretate ca „no power&quot;</li>
+                    <li><strong>ATX 3.0:</strong> toleranță de 3&#215; puterea maximă susținută pe 100μs</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.8 — Funcționarea de bază a PSU</h3>
+                <ul class="specs-list">
+                    <li>Convertește AC (120V/220V la 60Hz) &#238;n DC la tensiuni joase (3.3V, 5V, 12V)</li>
+                    <li><strong>Tehnologia de comutație:</strong> crește frecvența AC pentru eficiență → transformator mic, ușor</li>
+                    <li>Butonul de pornire trimite doar un semnal de 5V către sursa de alimentare</li>
+                    <li><strong>+5VSB (standby voltage):</strong> furnizează 5V chiar și c&#226;nd computerul este „oprit&quot; → permite funcționarea butonului</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.9 — Probleme tipice PSU (sursa HowStuffWorks)</h3>
+                <ul class="specs-list">
+                    <li>PSU = componenta cea mai predispusă la defectare dintr-un PC</li>
+                    <li>Se &#238;ncălzește și se răcește la fiecare utilizare → stress termic</li>
+                    <li>Primește primul val de curent la pornire (inrush current)</li>
+                    <li>Defectarea ventilatorului = predictor de defectare a sursei</li>
+                    <li><strong>Simptome:</strong> miros de ars, restartări aleatorii, oprire subită</li>
+                    <li>Toate dispozitivele primesc DC de la PSU → defectarea PSU afectează tot sistemul</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.10 — ACPI și managementul energiei</h3>
+                <ul class="specs-list">
+                    <li>ACPI controlează și monitorizează consumul de putere al componentelor</li>
+                    <li>Decide unde se trimite putere completă, parțială sau zero &#238;n modul sleep</li>
+                    <li><strong>Relevant pentru diagnostic:</strong> un conflict ACPI poate cauza probleme de pornire</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.11 — Definiția capacitor plague</h3>
+                <ul class="specs-list">
+                    <li>Rată de defectare excesivă a condensatoarelor electroiltice din aluminiu (1999-2007)</li>
+                    <li><strong>Cauza:</strong> electrolitul formulat greșit – provocat de formula furată incomplet de la Rubycon (Japonia)</li>
+                    <li>Formula incompletă lipsiea inhibitori esențiali pentru stabilitate pe termen lung</li>
+                    <li>Electrolit alcalin (pH 7-8) &#238;n loc de acid (pH ~4) → dizolvarea aluminiului</li>
+                    <li>Gaz de hidrogen generat → umflare, rupere, scurgere</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.12 — Simptome vizibile condensatoare defecte</h3>
+                <ul class="specs-list">
+                    <li>Umflarea supapei de ventilare de pe capacitor (capacitor „gravid&quot;)</li>
+                    <li>Ruperea supapei, cu depozite de electroloit uscat maron/roșu</li>
+                    <li>Capacitor &#238;nclinat pe placa de circuit (dopul de cauciuc &#238;mpins afară de la bază)</li>
+                    <li><strong>Scurgere de electroloit pe PCB:</strong> depozite maro-&#238;nchis sau negre pe suprafața plăcii</li>
+                    <li>Explozie completă a carcasei cu elemente interne expuse</li>
+                    <li><strong>ATENȚIE:</strong> adezivul maro/negru pe laterala condensatoarelor NU este electroloit (este lipici de fixare)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.13 — Simptome electrice condensatoare defecte</h3>
+                <ul class="specs-list">
+                    <li>Capacitanță sub valoarea nominală</li>
+                    <li>ESR (Equivalent Series Resistance) crescută la valori foarte mari</li>
+                    <li>Curent de scurgere ridicat și fluctuant</li>
+                    <li>Capacitanță crescută (p&#226;nă la 2&#215; nominal) care fluctuează cu temperatura</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.14 — Impact asupra PC-urilor</h3>
+                <ul class="specs-list">
+                    <li>Multe plăci de bază, plăci video și surse de alimentare au fost afectate</li>
+                    <li><strong>Producători:</strong> Abit, IBM, Dell, Apple, HP, Intel</li>
+                    <li>Dell a cheltuit $420 milioane pe &#238;nlocuiri (2005)</li>
+                    <li><strong>Condensatoare afectate:</strong> majoritatea din seria „low ESR&quot; cu electrolit pe bază de apă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.15 — Definiția troubleshooting</h3>
+                <ul class="specs-list">
+                    <li>Căutare logică, sistematică a sursei unei probleme pentru a o rezolva</li>
+                    <li><strong>Sistematică:</strong> identificare simptome → formare ipoteze → teste de eliminare → confirmare</li>
+                    <li><strong>Rezultatul:</strong> produsul/procesul devine din nou operațional</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.16 — Metodologie de diagnostic</h3>
+                <ul class="specs-list">
+                    <li><strong>Strategia simptomatică:</strong> bazată pe experiență anterioară (ce defect a cauzat acest simptom &#238;n trecut?)</li>
+                    <li><strong>Strategia topografică:</strong> bazată pe &#238;nțelegere profundă a sistemului (cum funcționează normal?)</li>
+                    <li><strong>Divide and conquer:</strong> bisectarea sistemului (half-splitting) – testare la jumătatea lanțului de dependențe</li>
+                    <li>Principii fundamentale:</li>
+                </ul>
+                <p>1. Reproducerea problemei: trebuie să poți reproduce defectul intenționat</p>
+                <p>2. Simplificarea sistemului: reduce la forma minimă care prezintă problema</p>
+                <p>3. &#206;nțelegerea funcționării normale: trebuie să știi cum ar trebui să funcționeze</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.3.17 — Abordări practice de diagnostic hardware</h3>
+                <ul class="specs-list">
+                    <li><strong>Substituție serială:</strong> &#238;nlocuirea componentelor una c&#226;te una cu componente funcționale</li>
+                    <li>Verificarea condițiilor frecvente/ușoare mai &#238;nt&#226;i (cablul de alimentare, priza, &#238;ntrerupătorul PSU)</li>
+                    <li><strong>Bisectare:</strong> verificarea la mijlocul lanțului (ex: sursa pornește fără placa de bază?)</li>
+                    <li><strong>Probleme intermitente:</strong> sensibilitate termică (funcționează la rece, defectează la cald sau invers)</li>
+                    <li><strong>Probleme multiple:</strong> posibilitate de mai multe defecte simultane</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Funcția sursei de alimentare</h3>
+                <ul class="specs-list">
+                    <li>Toate computerele moderne folosesc surse de alimentare cu comutație (switched-mode power supplies)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Peak power și OCP</h3>
+                <ul class="specs-list">
+                    <li>TDP-ul procesorului/GPU-ului nu reflectă consumul de v&#226;rf real</li>
+                    <li><strong>CPU:</strong> v&#226;rf de ~1.5&#215; TDP; GPU: v&#226;rf de ~2&#215; TDP (ex: RTX 2070 Super, 215W TDP dar 430W v&#226;rf)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Funcționarea de bază a PSU</h3>
+                <ul class="specs-list">
+                    <li><strong>+5VSB (standby voltage):</strong> furnizează 5V chiar și c&#226;nd computerul este „oprit&quot; → permite funcționarea butonului</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> Rail-urile sunt tensiuni reale. Dacă lipsesc, CPU nu execută nimic.</p>
-                <p><strong>Informatică:</strong> Firmware nu se poate încărca fără 5V/12V, deci nu există log sau output.</p>
+                <h3>Funcția sursei de alimentare</h3>
+                <ul class="specs-list">
+                    <li>PSU convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de joasă tensiune</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Protecții ale sursei de alimentare</h3>
+                <ul class="specs-list">
+                    <li>C&#226;nd o protecție se activează → PSU se oprește sau se resetează</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Testarea sursei de alimentare</h3>
+                <ul class="specs-list">
+                    <li><strong>PSU tester cu LCD:</strong> afișează tensiunile pe fiecare rail</li>
+                    <li><strong>PSU tester cu LED-uri:</strong> indică prezența/absența tensiunilor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Funcționarea de bază a PSU</h3>
+                <ul class="specs-list">
+                    <li>Butonul de pornire trimite doar un semnal de 5V către sursa de alimentare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Abordări practice de diagnostic hardware</h3>
+                <ul class="specs-list">
+                    <li><strong>Substituție serială:</strong> &#238;nlocuirea componentelor una c&#226;te una cu componente funcționale</li>
+                    <li>Verificarea condițiilor frecvente/ușoare mai &#238;nt&#226;i (cablul de alimentare, priza, &#238;ntrerupătorul PSU)</li>
+                    <li><strong>Bisectare:</strong> verificarea la mijlocul lanțului (ex: sursa pornește fără placa de bază?)</li>
+                    <li><strong>Probleme intermitente:</strong> sensibilitate termică (funcționează la rece, defectează la cald sau invers)</li>
+                    <li><strong>Probleme multiple:</strong> posibilitate de mai multe defecte simultane</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Diagnostic rapid</h3>
-                <p>Consola complet moartă. Măsori 5V standby = 0V. Concluzie: PSU sau siguranță.</p>
-                <p>Schimbi PSU, 5V apare. LED aprins. Problema rezolvată.</p>
+                <h3>Definiția troubleshooting</h3>
+                <ul class="specs-list">
+                    <li><strong>Rezultatul:</strong> produsul/procesul devine din nou operațional</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Scurt pe 12V</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>PSU pornește, dar se oprește instant. 12V cade la 0.5V.</p>
-                <p>Măsori rezistență 12V către GND: 0.2 ohm. Scurt sever.</p>
-                <p>Injectezi 1V 2A pe 12V. Componenta încălzită: MOSFET defect.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ Siguranță arsă</h3><p>PSU nu oferă 5V standby. Înlocuire sigurantă sau PSU complet.</p></div>
-            <div class="card"><h3>⚠️ Scurt pe rail 5V</h3><p>PSU intră în protecție. 5V cade imediat. Diagnosticul cere izolarea componentelor 5V.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Protecții ale sursei de alimentare</h3>
+                    <p>Short circuit protection (protecție la scurtcircuit)</p>
+                    <p>Overpower/overload protection (protecție la suprasarcină)</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Simptome de defectare PSU</h3>
+                    <p>Miros de ars &#238;nainte de oprirea computerului</p>
+                    <p>Defectarea ventilatorului de răcire → supra&#238;ncălzirea componentelor interne</p>
+                    <p>Restartări aleatorii sau opriri fără motiv aparent</p>
+                    <p>Chirpuit/tictăcit rapid (PSU se oprește și repornește repetat la scurtcircuit)</p>
+                    <p>Sistem complet mort – fără răspuns la butonul de pornire</p>
+                    <p>Capacitoare umflate sau sparte vizibil</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Conectori și semnale relevante pentru diagnostic</h3>
+                    <p>Pin PS_ON (verde): semnal de control – trebuie tras la GND pentru pornirea sursei</p>
+                    <p>Pin Power Good (gri): semnal LOW c&#226;nd tensiunile nu sunt stabile, HIGH c&#226;nd sunt OK</p>
+                    <p>+5VSB (mov): standby 5V – prezent permanent c&#226;nd sursa este conectată la priză</p>
+                    <p>Testul paperclip: scurtcircuitarea PS_ON cu GND pentru a testa dacă sursa pornește fără placa de bază</p>
+                    <p>Dacă +5VSB lipsește → sursa este complet moartă sau nu primește AC</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Cauze comune de defectare PSU</h3>
+                    <p>Ventilator blocat → supra&#238;ncălzire → defectare componente</p>
+                    <p>Suprasarcină (componente noi care depășesc capacitatea sursei)</p>
+                    <p>Condensatoare defecte (capacitor plague – vezi sursa 3)</p>
+                    <p>Fluctuații de tensiune din rețea (v&#226;rfuri de tensiune, descărcări electrice)</p>
+                    <p>&#206;mbătr&#226;nire normală: MTBF tipic 100.000 ore (~11.4 ani), dar 23% eșuează &#238;n 3 ani</p>
+                    <p>Surse frauduloase/generice: capacitate reală poate fi jumătate din cea etichetată</p>
+                    <p>Cabluri modulare incompatibile: folosirea cablului de la alt PSU poate cauza scurtcircuit</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Probleme tipice PSU (sursa HowStuffWorks)</h3>
+                    <p>PSU = componenta cea mai predispusă la defectare dintr-un PC</p>
+                    <p>Se &#238;ncălzește și se răcește la fiecare utilizare → stress termic</p>
+                    <p>Primește primul val de curent la pornire (inrush current)</p>
+                    <p>Defectarea ventilatorului = predictor de defectare a sursei</p>
+                    <p>Simptome: miros de ars, restartări aleatorii, oprire subită</p>
+                    <p>Toate dispozitivele primesc DC de la PSU → defectarea PSU afectează tot sistemul</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ ACPI și managementul energiei</h3>
+                    <p>Relevant pentru diagnostic: un conflict ACPI poate cauza probleme de pornire</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Definiția capacitor plague</h3>
+                    <p>Rată de defectare excesivă a condensatoarelor electroiltice din aluminiu (1999-2007)</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Simptome vizibile condensatoare defecte</h3>
+                    <p>Umflarea supapei de ventilare de pe capacitor (capacitor „gravid&quot;)</p>
+                    <p>Ruperea supapei, cu depozite de electroloit uscat maron/roșu</p>
+                    <p>Capacitor &#238;nclinat pe placa de circuit (dopul de cauciuc &#238;mpins afară de la bază)</p>
+                    <p>Scurgere de electroloit pe PCB: depozite maro-&#238;nchis sau negre pe suprafața plăcii</p>
+                    <p>Explozie completă a carcasei cu elemente interne expuse</p>
+                    <p>ATENȚIE: adezivul maro/negru pe laterala condensatoarelor NU este electroloit (este lipici de fixare)</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Simptome electrice condensatoare defecte</h3>
+                    <p>Capacitanță sub valoarea nominală</p>
+                    <p>ESR (Equivalent Series Resistance) crescută la valori foarte mari</p>
+                    <p>Curent de scurgere ridicat și fluctuant</p>
+                    <p>Capacitanță crescută (p&#226;nă la 2&#215; nominal) care fluctuează cu temperatura</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Definiția troubleshooting</h3>
+                    <p>Sistematică: identificare simptome → formare ipoteze → teste de eliminare → confirmare</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Metodologie de diagnostic</h3>
+                    <p>Strategia simptomatică: bazată pe experiență anterioară (ce defect a cauzat acest simptom &#238;n trecut?)</p>
+                    <p>Strategia topografică: bazată pe &#238;nțelegere profundă a sistemului (cum funcționează normal?)</p>
+                    <p>Divide and conquer: bisectarea sistemului (half-splitting) – testare la jumătatea lanțului de dependențe</p>
+                    <p>Principii fundamentale:</p>
+                    <p>1. Reproducerea problemei: trebuie să poți reproduce defectul intenționat</p>
+                    <p>2. Simplificarea sistemului: reduce la forma minimă care prezintă problema</p>
+                    <p>3. &#206;nțelegerea funcționării normale: trebuie să știi cum ar trebui să funcționeze</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -130,11 +423,23 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>No power:</strong> LED off, fără semnal.</li>
-                    <li><strong>Primul test:</strong> 5V standby.</li>
-                    <li><strong>PS_ON:</strong> Semnalul care activează 12V.</li>
-                    <li><strong>Scurt:</strong> Măsurat ca rezistență mică spre GND.</li>
-                    <li>Diagnostic eficient reduce timpul de reparație.</li>
+                    <li><strong>Funcția sursei de alimentare:</strong> PSU convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de joasă tensiune</li>
+                    <li><strong>Protecții ale sursei de alimentare:</strong> Short circuit protection (protecție la scurtcircuit)</li>
+                    <li><strong>Simptome de defectare PSU:</strong> Miros de ars &#238;nainte de oprirea computerului</li>
+                    <li><strong>Testarea sursei de alimentare:</strong> Power supply tester: instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</li>
+                    <li><strong>Conectori și semnale relevante pentru diagnostic:</strong> Pin PS_ON (verde): semnal de control – trebuie tras la GND pentru pornirea sursei</li>
+                    <li><strong>Cauze comune de defectare PSU:</strong> Ventilator blocat → supra&#238;ncălzire → defectare componente</li>
+                    <li><strong>Peak power și OCP:</strong> TDP-ul procesorului/GPU-ului nu reflectă consumul de v&#226;rf real</li>
+                    <li><strong>Funcționarea de bază a PSU:</strong> Convertește AC (120V/220V la 60Hz) &#238;n DC la tensiuni joase (3.3V, 5V, 12V)</li>
+                    <li><strong>Probleme tipice PSU (sursa HowStuffWorks):</strong> PSU = componenta cea mai predispusă la defectare dintr-un PC</li>
+                    <li><strong>ACPI și managementul energiei:</strong> ACPI controlează și monitorizează consumul de putere al componentelor</li>
+                    <li><strong>Definiția capacitor plague:</strong> Rată de defectare excesivă a condensatoarelor electroiltice din aluminiu (1999-2007)</li>
+                    <li><strong>Simptome vizibile condensatoare defecte:</strong> Umflarea supapei de ventilare de pe capacitor (capacitor „gravid&quot;)</li>
+                    <li><strong>Simptome electrice condensatoare defecte:</strong> Capacitanță sub valoarea nominală</li>
+                    <li><strong>Impact asupra PC-urilor:</strong> Multe plăci de bază, plăci video și surse de alimentare au fost afectate</li>
+                    <li><strong>Definiția troubleshooting:</strong> Căutare logică, sistematică a sursei unei probleme pentru a o rezolva</li>
+                    <li><strong>Metodologie de diagnostic:</strong> Strategia simptomatică: bazată pe experiență anterioară (ce defect a cauzat acest simptom &#238;n trecut?)</li>
+                    <li><strong>Abordări practice de diagnostic hardware:</strong> Substituție serială: &#238;nlocuirea componentelor una c&#226;te una cu componente funcționale</li>
                 </ul>
             </div>
         </div>
@@ -143,53 +448,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Primul rail de verificat la no power?</strong></p>
-                <ul class="specs-list"><li>a) 1.05V</li><li>b) 12V</li><li>c) 5V standby</li><li>d) 3.3V</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) 5V standby</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Tensiuni furnizate?</strong></p>
+                <ul class="specs-list">
+                    <li>a) indică prezența/absența tensiunilor</li>
+                    <li>b) afișează tensiunile pe fiecare rail</li>
+                    <li>c) +3.3V, +5V, +12V, +5VSB (standby)</li>
+                    <li>d) instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — +3.3V, +5V, +12V, +5VSB (standby)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>PS_ON semnal:</strong></p>
-                <ul class="specs-list"><li>a) Oprește GPU</li><li>b) Pornește 12V main</li><li>c) Activează RAM</li><li>d) Resetează BIOS</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Pornește 12V</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Power supply tester?</strong></p>
+                <ul class="specs-list">
+                    <li>a) +3.3V, +5V, +12V, +5VSB (standby)</li>
+                    <li>b) afișează tensiunile pe fiecare rail</li>
+                    <li>c) instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</li>
+                    <li>d) indică prezența/absența tensiunilor</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Scurt pe 12V indică:</strong></p>
-                <ul class="specs-list"><li>a) Rezistență mare</li><li>b) Rezistență foarte mică</li><li>c) Rezistență infinită</li><li>d) 5V standby OK</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Rezistență foarte mică</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Pin PS_ON (verde)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) afișează tensiunile pe fiecare rail</li>
+                    <li>b) +3.3V, +5V, +12V, +5VSB (standby)</li>
+                    <li>c) instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</li>
+                    <li>d) semnal de control – trebuie tras la GND pentru pornirea sursei</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — semnal de control – trebuie tras la GND pentru pornirea sursei</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Dacă 5V standby există dar LED off:</strong></p>
-                <ul class="specs-list"><li>a) PSU defect</li><li>b) Controller standby defect</li><li>c) GPU defect</li><li>d) RAM defect</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Controller standby defect</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: &#206;mbătr&#226;nire normală?</strong></p>
+                <ul class="specs-list">
+                    <li>a) MTBF tipic 100.000 ore (~11.4 ani), dar 23% eșuează &#238;n 3 ani</li>
+                    <li>b) afișează tensiunile pe fiecare rail</li>
+                    <li>c) instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</li>
+                    <li>d) +3.3V, +5V, +12V, +5VSB (standby)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — MTBF tipic 100.000 ore (~11.4 ani), dar 23% eșuează &#238;n 3 ani</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Metodă pentru a găsi componenta în scurt?</strong></p>
-                <ul class="specs-list"><li>a) Reset OS</li><li>b) Injectare curent + termocameră</li><li>c) Update firmware</li><li>d) Schimbare HDD</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Injectare curent + termocameră</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: CPU: v&#226;rf de ~1.5&#215; TDP; GPU: v&#226;rf de ~2&#215; TDP (ex?</strong></p>
+                <ul class="specs-list">
+                    <li>a) RTX 2070 Super, 215W TDP dar 430W v&#226;rf)</li>
+                    <li>b) +3.3V, +5V, +12V, +5VSB (standby)</li>
+                    <li>c) instrument specializat care confirmă prezența tensiunilor corecte la fiecare conector</li>
+                    <li>d) afișează tensiunile pe fiecare rail</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — RTX 2070 Super, 215W TDP dar 430W v&#226;rf)</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Diagnosticul No Power</h3>
-                <p><strong>Cerință:</strong> Măsurători: 5V standby OK, PS_ON schimbă, 12V nu apare. Ce concluzie?</p>
-                <ol class="specs-list"><li>Problema în PSU sau scurt pe 12V</li><li>Măsoară rezistența 12V către GND</li><li>Dacă rezistența mică → scurt</li><li>Dacă rezistența normală → PSU defect</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>Concluzie:</strong> PS_ON funcționează, deci placa trimite semnal. 12V absent = PSU defect sau scurt.</p>
-                    <p>Măsoară rezistența. Dacă &lt; 1 ohm, scurt pe 12V. Dacă &gt; 10 ohmi, PSU defect.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: No Power</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de cauze posibile. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: cauze posibile.</li>
+                    <li>2. Ce rol are verificarea alimentării în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre cauze posibile și diagnostic hardware.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> PSU convertește curentul alternativ (AC) din priză &#238;n curent continuu (DC) de joasă tensiune</p>
+                        <p><strong>2.</strong> Short circuit protection (protecție la scurtcircuit)</p>
+                        <p><strong>3.</strong> Miros de ars &#238;nainte de oprirea computerului</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -266,3 +645,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 7.5 — Memorie și bandwidth ca limitare de performanță">
+    <meta name="description" content="Lecția 7.5 — Bandwidth și memorie">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 7.5 — Memorie și Bandwidth — Console Notebook</title>
+    <title>Lecția 7.5 — Bandwidth și memorie — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -31,431 +35,692 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — Memoria și Stocare</p>
-            <h1>Lecția 7.5 — Memorie și Bandwidth ca Limitare de Performanță</h1>
-            <p>Nu CPU-ul decide viteza. Nu GPU-ul. Memorie și bandwidth-ul acesteia sunt adevărații regi.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — PERFORMANȚĂ ȘI GRAFICĂ</p>
+            <h1>Lecția 7.5 — Bandwidth și memorie</h1>
+            <p>bandwidth, latență, influența asupra performanței</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- ===========================
          CAPITOLUL 1: INTRODUCERE
          =========================== -->
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    Marketing zice: "PS5 are CPU octo-core la 3.5 GHz și GPU cu 2304 RDNA cores." Sună incredibil. Dar adevărul e mai adânc. Acele core-uri sunt <em>doar utilaje</em>. Adevărata limitare nu e puterea de calcul — e <em>viteza cu care pot accesa datele</em>.
-                </p>
-                <p>
-                    Te gândești la un supermarket. Casă e rapid de scanat coduri de bare și calculat suma. Dar dacă raioanele sunt în altă clădire și trebuie să mergi acolo de fiecare dată să iei un produs, checkout-ul e lent. Banda e raioanele. Memoria e Checkout. Banda lipsă = CPU și GPU așteptând idle, inutil.
-                </p>
-                <p>
-                    Această lecție expliccă de ce o generație nouă de consolă nu doar are procesor mai rapid, ci și memorie cu bandwidth mult mai mare. Și cum inginerii optimizează software-ul pentru a-și maximiza folosirea acestei bande.
-                </p>
+                <p>1. Convenția bcopy: numără cantitatea de date copiate dintr-o locație &#238;n alta per unitate de timp</p>
+                <p>Această lecție acoperă: <strong>bandwidth</strong>, <strong>latență</strong>, <strong>influența asupra performanței</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 2: TEORIE
-         =========================== -->
     <section class="section" id="teorie">
         <div class="container">
             <h2 class="section-title">Teorie Structurată</h2>
 
-            <!-- 2.1 Definiția bandwidth -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Ce Este Bandwidth?</h3>
-                <p>
-                    <strong>Bandwidth</strong> = rata de transfer de date dintr-o memorie în alt component pe secundă. Măsurat în <strong>GB/s (gigabytes pe secundă)</strong>.
-                </p>
-                <p>
-                    Formula simplă: <strong>Bandwidth = Clock Frequency × Data Width × Number of Lanes</strong>
-                </p>
-                <p>
-                    <strong>Exemplu GDDR6 (PS5 VRAM):</strong>
-                </p>
+                <h3>7.5.1 — Definiția memory bandwidth</h3>
                 <ul class="specs-list">
-                    <li>Clock frequency: 448 MHz (pentru GDDR6, e o frecvență efectivă după prefetch)</li>
-                    <li>Data width: 256 bites (32 bytes) pe ciclu</li>
-                    <li>Result: 448 MHz × 32 bytes = 14.3 GB/s... dar GDDR6 mai are 4 layer access, deci 448 MHz × 128 bytes = <strong>~448 GB/s</strong> (teoretică)</li>
+                    <li>Memory bandwidth = rata la care datele pot fi citite din sau stocate &#238;ntr-o memorie semiconductoare de către un procesor</li>
+                    <li>Se exprimă de obicei &#238;n bytes/second (octeți pe secundă)</li>
+                    <li>Bandwidth-ul anunțat pentru o memorie sau sistem este de obicei maximum teoretic</li>
+                    <li>&#206;n practică, bandwidth-ul observat va fi mai mic dec&#226;t cel anunțat (garantat să nu depășească)</li>
+                    <li>Există benchmark-uri (ex. STREAM) pentru a măsura bandwidth-ul susținut folosind diverse tipare de acces</li>
                 </ul>
-                <p>
-                    În practice, PS5 raportează <strong>448 GB/s total bandwidth pentru GDDR6</strong>. Aceasta e pentru GPU. CPU din PS5 are acces la o parte din aceasta prin UMA.
-                </p>
             </div>
 
-            <!-- 2.2 Memory Bandwidth Limitations -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Limitări Fizice ale Bandwidth-ului</h3>
-                <p>
-                    Bandwidth nu e nelimitat. Există restricții hardware:
-                </p>
+                <h3>7.5.2 — Convenții de măsurare a bandwidth-ului</h3>
                 <ul class="specs-list">
-                    <li><strong>Numărul de fire pe PCB</strong> — fiecare linie de date e un fir. Mai multe fire = mai scump, mai greu de ruta pe placa</li>
-                    <li><strong>Frecvența de ceas</strong> — limita fizică a la ce viteză pot comuta tranzistorii fără erori</li>
-                    <li><strong>Capacitate calorică</strong> — mai multă date pe secundă = mai multă energie consumată = mai multă căldură</li>
-                    <li><strong>Latență</strong> — chiar dacă bandwidth e mare, dacă latența e înaltă, efectul e diminuat</li>
+                    <li>3 convenții diferite pentru definirea cantității de date transferate:</li>
                 </ul>
-                <p>
-                    De aceea console-urile generațiilor anterioare aveau bandwidth mult mai mic. Xbox 360: 22.4 GB/s (GDR3). PS4: 176 GB/s (GDDR5). PS5: 448 GB/s (GDDR6). Fiecare generație a găsit cale să pompe mai mulți bytes prin aceeași dimensiune de chip.
-                </p>
-            </div>
-
-            <!-- 2.3 Bandwidth vs Latency -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Bandwidth vs Latență (Throughput vs Access Time)</h3>
-                <p>
-                    <strong>Bandwidth</strong> = cât de mult (GB pe secundă)
-                    <strong>Latență</strong> = cât de repede ajung (nanosecunde până la cicle)
-                </p>
-                <p>
-                    Ambele sunt importante. Exemplu:
-                </p>
+                <p>1. Convenția bcopy: numără cantitatea de date copiate dintr-o locație &#238;n alta per unitate de timp</p>
                 <ul class="specs-list">
-                    <li><strong>Scenario A:</strong> Bandwidth ridicat (448 GB/s) dar latență înaltă (200 cicli). Am pot transfera mult date, dar trebuie să aștept mult timp pentru prima dată.</li>
-                    <li><strong>Scenario B:</strong> Bandwidth scăzut (50 GB/s) dar latență joasă (10 cicli). Primesc data repede, dar pot pune ceva date pe secundă.</li>
+                    <li><strong>Exemplu:</strong> copierea a 1 milion de bytes = 1 milion bytes/s</li>
                 </ul>
-                <p>
-                    De obicei preferi un mix: latență moderată + bandwidth ridicat. Cache-uri ajută: L1/L2/L3 sunt lent, dar au latență scăzută (4-40 cicli). RAM e mai lent, dar latență mai înaltă (200 cicli). Strategia: păstrează datele folosite frecvent în cache.
-                </p>
-            </div>
-
-            <!-- 2.4 Bottleneck la memorie -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Memory Bottleneck: Când Memoria Limitează CPU-ul</h3>
-                <p>
-                    Scenario: procesorul poate executa 10 miliarde de instrucțiuni pe secundă. Dar fiecare instrucțiune necesită citire de date din memorie. Memorie poate furniza doar 5 miliarde de date pe secundă (bandwidth-limited).
-                </p>
-                <p>
-                    Rezultat: CPU asteaptă memoria. Cores-ul e idle, așteptând date, nu poate executa instrucțiunea următoare. Performance e limitat de memoria, nu de CPU.
-                </p>
-                <p>
-                    Aceasta e definiția Memory Bottleneck. Și contra-intuitiv, e un lucru pozitiv dacă e managementat: dacă CPU-ul e bottleneck-ed de memorie, asta înseamnă CPU-ul și-a folosit puterea maximă până la punct. E optimizat perfect.
-                </p>
-                <p>
-                    Dar dacă software-ul e prost scris și CPU asteaptă memorie prea des, jocul ruleaza lent deși core-urile ar putea mai mult.
-                </p>
-            </div>
-
-            <!-- 2.5 Cache locality optimization -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Optimizarea din Spatial și Temporal Locality</h3>
-                <p>
-                    Programatorii nu pot modifica hardware, dar pot rescrie cod pentru a-l accesa memoria eficient.
-                </p>
-                <p>
-                    <strong>Spatial Locality:</strong> Dacă accesezi un element din memorie, accesul următoarele element din aproape e mai rapid. Hardware prefetch-ează automativ bytes-ul care urmează.
-                </p>
-                <p>
-                    <strong>Temporal Locality:</strong> Dacă ai accesat o dată, e probabil să o accesezi iar în viitorul apropiat. Cache-ul o ține gata.
-                </p>
-                <p>
-                    Exemplu real de optimizare PS5:
-                </p>
-                <ol class="specs-list">
-                    <li>Organizează datele jocului (modele, texturile) în RAM în ordine secvențială (spatial locality)</li>
-                    <li>Preîncarcă în cache L3 datele pe care stii că vor fi folosite în următoarele frame (temporal locality)</li>
-                    <li>Evita random access la memorie — aceasta sparge cache hit-urile și forța latență înaltă</li>
-                </ol>
-            </div>
-
-            <!-- 2.6 Bandwidth in context-ul renderarii -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.6 — Bandwidth în Contextul Rendering-ului grafic</h3>
-                <p>
-                    GPU-ul trebuie să:
-                </p>
-                <ol class="specs-list">
-                    <li>Citească geometrie (modele 3D) din memorie — datele de vertex, indici</li>
-                    <li>Citească texturile — culori pentru fiecare pixel</li>
-                    <li>Citească normal maps, roughness maps, material properties</li>
-                    <li>Scrie framebuffer-ul (imaginea finală)</li>
-                </ol>
-                <p>
-                    Un joc PS5 la 4K 60 FPS necesită:
-                </p>
+                <p>2. Convenția STREAM: sumează datele citite explicit + datele scrise explicit de codul aplicației</p>
                 <ul class="specs-list">
-                    <li>3840 × 2160 × 4 bytes color (RGBA) × 60 fps = 3.1 GB/s (doar framebuffer write)</li>
-                    <li>Texturile referite: 50-100 GB/s (estimat)</li>
-                    <li>Geometrie și constante: 50 GB/s (estimat)</li>
-                    <li>Total: ~150-200 GB/s din memorie la o scenă complexă</li>
+                    <li>Același exemplu = 2 milioane bytes/s (1M citit + 1M scris)</li>
+                    <li>Cel mai direct legată de codul utilizatorului</li>
                 </ul>
-                <p>
-                    PS5 cu 448 GB/s poate gestiona asta confortabil. Dar dacă ar trebui 500 GB/s, nu e posibil — jocul downgrades resolution sau frame rate.
-                </p>
+                <p>3. Convenția hardware: numără traficul real de date al hardware-ului (inclusiv cel neexplicit)</p>
+                <ul class="specs-list">
+                    <li>Sisteme cu write-allocate cache policy adaugă trafic suplimentar</li>
+                    <li>Același exemplu = 3 milioane bytes/s (citire sursă + citire destinație + scriere destinație)</li>
+                    <li>Cel mai direct legată de hardware</li>
+                </ul>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.3 — Calculul bandwidth-ului și nomenclatura</h3>
+                <ul class="specs-list">
+                    <li>Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
+                </ul>
+                <p>• Frecvența de bază a ceasului DRAM</p>
+                <p>• Numărul de transferuri de date per ciclu de ceas: 2 (pentru DDR = &quot;double data rate&quot;)</p>
+                <p>• Lățimea magistralei de memorie (interfață): 64 biți per interfață DDR</p>
+                <p>• Numărul de interfețe: PC-urile moderne folosesc de obicei 2 interfețe (dual-channel) = 128 biți efectivi</p>
+                <ul class="specs-list">
+                    <li><strong>EXEMPLU CALCUL:</strong> dual-channel DDR2-800 la 400 MHz:</li>
+                </ul>
+                <p>400.000.000 cicluri/s &#215; 2 transferuri/ciclu &#215; 64 biți/transfer &#215; 2 interfețe =</p>
+                <p>102.400.000.000 biți/s = 12.800 MB/s = 12,8 GB/s (burst rate teoretic)</p>
+                <ul class="specs-list">
+                    <li>Convenția de denumire DDR:</li>
+                    <li>DDR2-800 = viteza maximă (800 MT/s, NU frecvența ceasului)</li>
+                    <li>PC2-6400 = bandwidth-ul maxim (6400 MB/s per interfață de 64 biți)</li>
+                    <li>Dual-channel efectiv = 128 biți lățime</li>
+                    <li>Plăci grafice moderne folosesc mai mult de 2 interfețe de memorie:</li>
+                    <li><strong>Intel LGA 2011, NVIDIA GeForce GTX 980:</strong> 4 interfețe</li>
+                    <li><strong>NVIDIA GeForce GTX TITAN:</strong> 384 biți (6 interfețe &#215; 64 biți)</li>
+                    <li><strong>AMD Radeon R9 290X:</strong> 512 biți (8 interfețe &#215; 64 biți)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.4 — Biți ECC</h3>
+                <ul class="specs-list">
+                    <li>Sistemele cu memorie ECC (error-correcting code) au interfețe mai late (72 biți vs 64)</li>
+                    <li>Biții suplimentari NU se numără &#238;n specificațiile de bandwidth (nu stochează date utilizator)</li>
+                    <li>Biții ECC fac parte din hardware-ul memoriei, nu din informația stocată</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.5 — Definiția CAS latency</h3>
+                <ul class="specs-list">
+                    <li>CAS latency (CL) = Column Address Strobe latency</li>
+                    <li>&#206;nt&#226;rzierea &#238;ntre comanda READ și momentul c&#226;nd datele sunt disponibile</li>
+                    <li><strong>DRAM asincron:</strong> interval specificat &#238;n nanosecunde (timp absolut)</li>
+                    <li><strong>SDRAM sincron:</strong> interval specificat &#238;n cicluri de ceas</li>
+                    <li>Timpul real variază dacă frecvența ceasului diferă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.6 — Fundamente ale operațiunii RAM</h3>
+                <ul class="specs-list">
+                    <li>DRAM este aranjat &#238;ntr-o matrice rectangulară (r&#226;nduri &#215; coloane)</li>
+                    <li>Fiecare r&#226;nd selectat de un word line orizontal</li>
+                    <li>Semnalul HIGH pe un r&#226;nd activează MOSFET-urile, conect&#226;nd condensatoarele de stocare la bit lines verticale</li>
+                    <li>Fiecare bit line este conectată la un sense amplifier</li>
+                    <li>C&#226;nd nu e activ niciun r&#226;nd, bit lines sunt menținute &#238;ntr-o stare pre&#238;ncărcată (voltaj la jumătatea distanței &#238;ntre high și low)</li>
+                    <li>CAS latency = &#238;nt&#226;rzierea &#238;ntre prezentarea adresei de coloană + CAS signal și momentul datelor disponibile</li>
+                    <li>R&#226;ndul dorit TREBUIE să fie deja activ; dacă nu, se adaugă timp suplimentar</li>
+                    <li><strong>EXEMPLU modul 1 GiB SDRAM:</strong> 8 chipuri de 1 Gbit (128 MiB fiecare)</li>
+                    <li><strong>Fiecare chip:</strong> 8 bănci de 128 Mibits</li>
+                    <li><strong>Fiecare bancă:</strong> 16.384 r&#226;nduri &#215; 8.192 biți</li>
+                    <li><strong>Acces:</strong> 3 biți bancă + 14 biți adresă r&#226;nd + 13 biți adresă coloană</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.7 — Efectul CAS latency asupra vitezei de acces</h3>
+                <ul class="specs-list">
+                    <li>Modulele au bănci interne multiple – date pot fi outputate din una &#238;n timpul latenței alteia (pipelining)</li>
+                    <li>Bandwidth-ul maxim realizabil depinde DOAR de viteza ceasului (prin pipelining)</li>
+                    <li><strong>ATENȚIE:</strong> bandwidth-ul maxim se atinge doar c&#226;nd adresa datelor este cunoscută suficient de devreme</li>
+                    <li>Pipeline stalls = pierdere de bandwidth c&#226;nd adresa nu este predictibilă</li>
+                    <li><strong>Random access complet:</strong> timp = &#238;nchidere r&#226;nd activ + deschidere r&#226;nd dorit + CAS latency</li>
+                    <li><strong>Acces secvențial (spatial locality):</strong> doar CAS latency determină timpul</li>
+                    <li>CAS latency specificat &#238;n cicluri de ceas → trebuie convertit &#238;n timp absolut pentru comparație</li>
+                    <li>CL mai mare numeric poate fi MAI RAPID dacă ceasul este mai rapid</li>
+                    <li><strong>Exemplu:</strong> DDR4-3200 CL16 = 10,00 ns vs DDR4-2400 CL15 = 12,50 ns (CL16 e mai rapid!)</li>
+                    <li><strong>DDR (Double Data Rate):</strong> 2 transferuri per ciclu de ceas</li>
+                    <li>CAS latency specificat &#238;n cicluri de ceas, NU transferuri</li>
+                    <li><strong>Formula:</strong> CAS latency (ns) = (CL / frecvența ceasului) = CL &#215; (2 / rată de transfer)</li>
+                    <li><strong>Burst transfers:</strong> cache line modern = 64 bytes = 8 transferuri de 64 biți</li>
+                    <li>CAS latency = doar primul cuv&#226;nt; restul depind de data rate</li>
+                    <li><strong>Critical word first:</strong> procesorul poate folosi primul cuv&#226;nt imediat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.8 — Date CAS latency concrete (selecție din tabele)</h3>
+                <ul class="specs-list">
+                    <li><strong>SDRAM PC100:</strong> CL 2, latență 20,00 ns</li>
+                    <li><strong>DDR-400:</strong> CL 2.5-3, latență 12,50-15,00 ns</li>
+                    <li><strong>DDR2-800:</strong> CL 4-6, latență 10,00-15,00 ns</li>
+                    <li><strong>DDR3-1600:</strong> CL 6-11, latență 7,50-13,75 ns</li>
+                    <li><strong>DDR4-3200:</strong> CL 14-16, latență 8,75-10,00 ns</li>
+                    <li><strong>DDR5-4800:</strong> CL 34-40, latență 14,17-16,67 ns</li>
+                    <li><strong>DDR5-6000:</strong> CL 26-40, latență 8,67-13,33 ns</li>
+                    <li><strong>DDR5-6400:</strong> CL 28-40, latență 8,75-12,50 ns</li>
+                    <li><strong>OBSERVAȚIE IMPORTANTĂ:</strong> CL a crescut numeric de la 2 (SDRAM) la 40 (DDR5)</li>
+                </ul>
+                <p>dar latența absolută a rămas relativ stabilă (~10-15 ns) datorită frecvențelor mai mari</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.9 — Definiția DDR SDRAM</h3>
+                <ul class="specs-list">
+                    <li>DDR SDRAM = Double Data Rate Synchronous Dynamic Random-Access Memory</li>
+                    <li>Transferă date pe AMBELE fronturi ale semnalului de ceas (rising + falling)</li>
+                    <li>Astfel dublează rata de date fără a crește frecvența ceasului</li>
+                    <li>Bandwidth mai mare + consum mai mic de energie + interferență redusă</li>
+                    <li><strong>Samsung:</strong> primul prototip 1997, primul chip comercial (64 Mbit) iunie 1998</li>
+                    <li>Specificație finalizată de JEDEC &#238;n iunie 2000 (JESD79)</li>
+                    <li><strong>Prima placă de bază retail cu DDR:</strong> august 2000</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.10 — Generații DDR cu specificații</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR (2n prefetch, 1998):</strong> DDR-200 la DDR-400</li>
+                    <li><strong>Frecvență:</strong> 100-200 MHz, Transfer: 200-400 MT/s, Bandwidth: 1600-3200 MB/s</li>
+                    <li><strong>Voltaj:</strong> 2.5V (2.6V pentru DDR-400), DIMM: 184 pini</li>
+                    <li><strong>DDR2 (4n prefetch, 2003):</strong> DDR2-400 la DDR2-1066</li>
+                    <li><strong>Frecvență:</strong> 100-266 MHz, Transfer: 400-1066 MT/s, Bandwidth: 3200-8533 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.8V, DIMM: 240 pini</li>
+                    <li><strong>DDR3 (8n prefetch, 2007):</strong> DDR3-800 la DDR3-2133</li>
+                    <li><strong>Frecvență:</strong> 100-266 MHz, Transfer: 800-2133 MT/s, Bandwidth: 6400-17066 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.5V/1.35V, DIMM: 240 pini</li>
+                    <li><strong>DDR4 (8n prefetch, 2014):</strong> DDR4-1600 la DDR4-3200</li>
+                    <li><strong>Frecvență:</strong> 200-400 MHz, Transfer: 1600-3200 MT/s, Bandwidth: 12800-25600 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.2V/1.05V, DIMM: 288 pini</li>
+                    <li>16 bănci, 4 grupuri de bănci &#215; 4 bănci</li>
+                    <li><strong>DDR5 (16n prefetch, 2020):</strong> DDR5-3200 la DDR5-7200</li>
+                    <li><strong>Frecvență:</strong> 200-450 MHz, Transfer: 3200-7200 MT/s, Bandwidth: 25600-57600 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.1V, DIMM: 288 pini</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.11 — Principiul Double Data Rate</h3>
+                <ul class="specs-list">
+                    <li>DDR transferă de obicei 64 biți la un moment dat</li>
+                    <li>Rata de transfer efectivă = frecvența magistralei &#215; 2 (DDR) &#215; 64 biți &#247; 8 (conversie la bytes)</li>
+                    <li><strong>Exemplu:</strong> modul DDR la 100 MHz = 1600 MB/s peak</li>
+                    <li><strong>Fiecare generație a dublat prefetch depth:</strong> 2n → 4n → 8n → 8n → 16n</li>
+                </ul>
+                <p>Aceasta crește rata externă fără a crește frecvența internă a DRAM-ului</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.12 — Module și organizare</h3>
+                <ul class="specs-list">
+                    <li><strong>DIMM 64-bit data bus:</strong> necesită 8 chipuri de 8 biți, adresate &#238;n paralel</li>
+                    <li>Multiple chipuri cu linii de adresă comune = memory rank</li>
+                    <li>Multi-channel architecture (dual-channel) combate memory bottleneck</li>
+                    <li><strong>DDR memory bus width per channel:</strong> 64 biți (72 pentru ECC)</li>
+                    <li><strong>Consum de energie:</strong> ~1-3 W per modul de 512 MB (crește cu frecvența și utilizarea)</li>
+                    <li>Generațiile NU sunt backward/forward compatible (nu se pot interschimba pe aceeași placă)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.13 — LPDDR (Low Power DDR)</h3>
+                <ul class="specs-list">
+                    <li>Varianta cu consum redus pentru dispozitive portabile</li>
+                    <li>Folosit &#238;n telefoane, handheld-uri, playere audio digitale</li>
+                    <li><strong>Tehnici:</strong> voltaj redus, opțiuni avansate de refresh</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.14 — GDDR6 SDRAM</h3>
+                <ul class="specs-list">
+                    <li>GDDR6 = Graphics Double Data Rate 6 Synchronous Dynamic Random-Access Memory</li>
+                    <li>Tip de SGRAM (Synchronous Graphics RAM) cu interfață high-bandwidth, double data rate</li>
+                    <li>Proiectat pentru plăci grafice, console de jocuri, high-performance computing</li>
+                    <li>Succesor al GDDR5</li>
+                    <li><strong>Specificație finalizată de JEDEC:</strong> iulie 2017</li>
+                    <li><strong>Bandwidth per pin:</strong> p&#226;nă la 16 Gbit/s</li>
+                    <li><strong>Voltaj operare:</strong> 1.35V (mai mic dec&#226;t GDDR5X)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.15 — Implementări comerciale GDDR6</h3>
+                <ul class="specs-list">
+                    <li><strong>Samsung:</strong> primul chip produs &#238;n masă ianuarie 2018 (16 Gb / 2 GB, proces 10nm, 18 Gbit/s per pin)</li>
+                    <li><strong>SK Hynix:</strong> producție masă februarie 2018 (8 Gbit, 14 Gbit/s per pin)</li>
+                    <li><strong>Exemplu:</strong> 12 GB RAM, bus 384 biți → bandwidth 768 GB/s</li>
+                    <li><strong>Micron:</strong> producție masă iunie 2018 (8 Gb)</li>
+                    <li><strong>Primele plăci grafice cu GDDR6:</strong> Nvidia Turing (GeForce RTX 2080 Ti, 2080, 2070) – august 2018</li>
+                    <li><strong>AMD Radeon RX 5700 (Navi 10):</strong> 8 GB GDDR6 – iunie 2019</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.16 — GDDR6X (variantă avansată)</h3>
+                <ul class="specs-list">
+                    <li>Dezvoltat de Micron &#238;n colaborare cu Nvidia (nestandardizat de JEDEC)</li>
+                    <li><strong>Bandwidth per pin:</strong> 19-21 Gbit/s</li>
+                    <li>Utilizează semnalizare PAM4 (Pulse Amplitude Modulation 4-level)</li>
+                    <li>2 biți per simbol vs 1 bit per simbol la NRZ (PAM2) standard</li>
+                    <li>Aceasta limitează GDDR6 normal la 16 Gbit/s per pin</li>
+                    <li><strong>Primele plăci cu GDDR6X:</strong> Nvidia GeForce RTX 3080 și 3090</li>
+                    <li>Consumă 15% mai puțină energie per bit transferat vs GDDR6</li>
+                    <li>Considerat mai ieftin dec&#226;t High Bandwidth Memory (HBM)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.17 — GDDR6W (variantă Samsung)</h3>
+                <ul class="specs-list">
+                    <li>Anunțat de Samsung &#238;n noiembrie 2022</li>
+                    <li>&#206;mbunătățiri față de GDDR6:</li>
+                    <li><strong>Rată transmisie per pin:</strong> 22 Gb/s</li>
+                    <li><strong>Capacitate per package dublată:</strong> de la 16 Gb la 32 Gb</li>
+                    <li><strong>Pini I/O dublați:</strong> de la 32 la 64</li>
+                    <li>Grosime cu 36% mai mică (0.7 mm vs 1.1 mm, prin Fan-Out Wafer-Level Packaging)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.18 — Ierarhia memoriei (Memory Hierarchy)</h3>
+                <ul class="specs-list">
+                    <li>Niveluri cu latență și throughput real măsurat:</li>
+                    <li><strong>Registre CPU:</strong> 18.432 biți, p&#226;nă la 256 GB/s, 0.25 ns (1 ciclu la 4 GHz)</li>
+                    <li><strong>Cache L1 date:</strong> 32 KiB, p&#226;nă la 64 GB/s, 1 ns (4 cicluri)</li>
+                    <li><strong>Cache L2:</strong> 1 MB, p&#226;nă la 18.3 GB/s, 3.5 ns (14 cicluri)</li>
+                    <li><strong>Cache L3:</strong> 16-32 MB, p&#226;nă la 5.45 GB/s, 11.75 ns (47 cicluri)</li>
+                    <li><strong>Memorie principală (DDR5-6000):</strong> 64 GiB, ~60 GB/s, 82.5 ns</li>
+                    <li><strong>SSD NVMe:</strong> 2 TB, 2000 MB/s, 0.2 ms</li>
+                    <li><strong>HDD:</strong> 18 TB, 500 MB/s, 4.16 ms</li>
+                    <li><strong>Bottleneck principal:</strong> localitate de referință a acceselor de memorie</li>
+                    <li>CPU-urile moderne sunt at&#226;t de rapide &#238;nc&#226;t stau inactiv aștept&#226;nd I/O memorie</li>
+                    <li>Register pressure → cache pressure → memory pressure</li>
+                    <li>Register spilling (registru → cache), cache miss (cache → memorie principală), page fault (memorie → disk)</li>
+                    <li>Minimizarea distanței &#238;n ierarhia memoriei = cea mai importantă cale de creștere a performanței</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.5.19 — Memory latency - definiție</h3>
+                <ul class="specs-list">
+                    <li>Memory latency = timpul &#238;ntre inițierea unei cereri pentru un byte/word din memorie</li>
+                </ul>
+                <p>și recuperarea acestuia de către procesor</p>
+                <ul class="specs-list">
+                    <li>Dacă datele NU sunt &#238;n cache-ul procesorului → latență mai mare (comunicare cu celule externe)</li>
+                    <li><strong>Măsură fundamentală a vitezei memoriei:</strong> latență mai mică = citire mai rapidă</li>
+                    <li><strong>IMPORTANT:</strong> latența NU trebuie confundată cu bandwidth-ul memoriei (throughput)</li>
+                    <li>Latența exprimată &#238;n cicluri de ceas a rămas relativ stabilă &#238;n timp</li>
+                </ul>
+                <p>dar s-a &#238;mbunătățit &#238;n termeni de timp absolut</p>
+                <ul class="specs-list">
+                    <li><strong>Exemplu:</strong> DRAM-urile de 1 Mbit de pe module SIMM 30-pin aveau 70 ns latență</li>
+                </ul>
+                <p>vs DDR4 DIMMs moderne cu sub 15 ns</p>
+            </div>
+
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 3: LEGATURA FIZICA-INFORMATICA
-         =========================== -->
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    <strong>Fizica:</strong> Bandwidth e o proprietate fizică a canalului de comunicație. Fiecare linie de date e un fir pe placa de bază. Semnale electrice se propagă ca impulsuri de tensiune. Cât de repede se poate schimba tensiune = cât de repede se transmit biți = resultâ bandwidth.
-                </p>
-                <p>
-                    GDDR6 e proiectat pentru a transmite 8 biți pe ceas (octet) la 448 MHz efectiv. Placheta de memorie conține sute de mii de tranzistore care amplificam și repeți acele semnale, mii de capacitoare care stabilizează tensiunile, izolație perfis între liniile de date.
-                </p>
-                <p>
-                    <strong>Informatica:</strong> Bandwidth matematic = rata de transfer. Dacă programul accesează memorie aleatoriu, CPU asteaptă — latență înaltă, utulizare scăzută de bandwidth. Dacă accesează secvențial (cache-friendly), latență joasă, utilizare înaltă. Aceasta e ceea ce optimizează programatori.
-                </p>
+                <h3>Definiția memory bandwidth</h3>
+                <ul class="specs-list">
+                    <li>Memory bandwidth = rata la care datele pot fi citite din sau stocate &#238;ntr-o memorie semiconductoare de către un procesor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Fundamente ale operațiunii RAM</h3>
+                <ul class="specs-list">
+                    <li>Semnalul HIGH pe un r&#226;nd activează MOSFET-urile, conect&#226;nd condensatoarele de stocare la bit lines verticale</li>
+                    <li>Fiecare bit line este conectată la un sense amplifier</li>
+                    <li>C&#226;nd nu e activ niciun r&#226;nd, bit lines sunt menținute &#238;ntr-o stare pre&#238;ncărcată (voltaj la jumătatea distanței &#238;ntre high și low)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Efectul CAS latency asupra vitezei de acces</h3>
+                <ul class="specs-list">
+                    <li><strong>Critical word first:</strong> procesorul poate folosi primul cuv&#226;nt imediat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Module și organizare</h3>
+                <ul class="specs-list">
+                    <li><strong>DIMM 64-bit data bus:</strong> necesită 8 chipuri de 8 biți, adresate &#238;n paralel</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>LPDDR (Low Power DDR)</h3>
+                <ul class="specs-list">
+                    <li>Folosit &#238;n telefoane, handheld-uri, playere audio digitale</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GDDR6X (variantă avansată)</h3>
+                <ul class="specs-list">
+                    <li>2 biți per simbol vs 1 bit per simbol la NRZ (PAM2) standard</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Ierarhia memoriei (Memory Hierarchy)</h3>
+                <ul class="specs-list">
+                    <li><strong>Registre CPU:</strong> 18.432 biți, p&#226;nă la 256 GB/s, 0.25 ns (1 ciclu la 4 GHz)</li>
+                    <li>CPU-urile moderne sunt at&#226;t de rapide &#238;nc&#226;t stau inactiv aștept&#226;nd I/O memorie</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Memory latency - definiție</h3>
+                <p>și recuperarea acestuia de către procesor</p>
+                <ul class="specs-list">
+                    <li>Dacă datele NU sunt &#238;n cache-ul procesorului → latență mai mare (comunicare cu celule externe)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 4: APLICARE DIRECTA IN CONSOLE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>De Ce Consoles Noi Au Memorie Cu Bandwidth Mai Mare</h3>
-                <p>
-                    <strong>PS4 (2013):</strong> 8 GB GDDR5, 176 GB/s. Jocuri la 1080p 30-60 FPS cu detalii moderate.
-                </p>
-                <p>
-                    <strong>PS5 (2020):</strong> 16 GB GDDR6, 448 GB/s — 2.5× mai mult bandwidth. Jocuri la 4K 60 FPS cu texturile gigantice, model-e complicate, light-ing complex.
-                </p>
-                <p>
-                    Diferența: PS5 poate transfera 3× mai many bytes pe secundă. Asta îi permite:
-                </p>
+                <h3>GDDR6 SDRAM</h3>
                 <ul class="specs-list">
-                    <li>Încărcări texture full 4K în timp real (nu "pop-in" de textură low-res care devin high-res)</li>
-                    <li>Renderare rapid cu many light sources (ray-tracing partial)</li>
-                    <li>Post-processing efecte (bloom, motion blur) la 60 FPS fără lag</li>
+                    <li>Proiectat pentru plăci grafice, console de jocuri, high-performance computing</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 5: EXEMPLU REAL DE HARDWARE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: GPU Memory Bandwidth Comparison</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <strong>Comparație Bandwidth Memorie - Gaming Consoles:</strong>
+                <h3>Calculul bandwidth-ului și nomenclatura</h3>
                 <ul class="specs-list">
-                    <li><strong>Xbox 360 (2005):</strong> 22.4 GB/s GDDR3 — Jocuri sub 720p, texture compressed</li>
-                    <li><strong>PS3 (2006):</strong> 25.6 GB/s XDR + 22.4 GB/s RSX VRAM — Complexitate medie</li>
-                    <li><strong>Xbox One (2013):</strong> 68 GB/s GDDR3 + 32 GB/s DDR3 — Principala 1080p 30 FPS</li>
-                    <li><strong>PS4 (2013):</strong> 176 GB/s GDDR5 — Benchmark pentru generația 8</li>
-                    <li><strong>Xbox Series X (2020):</strong> 560 GB/s (448 GB/s GDDR6 + 72 GB/s DDR5) — 4K 60 FPS, ray-tracing</li>
-                    <li><strong>PS5 (2020):</strong> 448 GB/s GDDR6C (GDDR6 extended) — Standard 4K 60 FPS, upscaling 8K posibil</li>
+                    <li>Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
+                    <li><strong>Intel LGA 2011, NVIDIA GeForce GTX 980:</strong> 4 interfețe</li>
+                    <li><strong>NVIDIA GeForce GTX TITAN:</strong> 384 biți (6 interfețe &#215; 64 biți)</li>
+                    <li><strong>AMD Radeon R9 290X:</strong> 512 biți (8 interfețe &#215; 64 biți)</li>
                 </ul>
             </div>
 
-            <div class="card">
-                <p>
-                    <strong>Observație:</strong> Xbox Series X are mai mult bandwidth (560 vs 448) deoarece combină GDDR6 rapid + DDR5 mai lent. PS5 folosește GDDR6C (versiune mai rapid). Rezultatul: amândouă pot renda 4K 60 FPS, dar Xbox cu full ray-tracing e mai robust.
-                </p>
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția CAS latency</h3>
+                <ul class="specs-list">
+                    <li><strong>DRAM asincron:</strong> interval specificat &#238;n nanosecunde (timp absolut)</li>
+                    <li><strong>SDRAM sincron:</strong> interval specificat &#238;n cicluri de ceas</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Efectul CAS latency asupra vitezei de acces</h3>
+                <ul class="specs-list">
+                    <li>CAS latency specificat &#238;n cicluri de ceas → trebuie convertit &#238;n timp absolut pentru comparație</li>
+                    <li><strong>Exemplu:</strong> DDR4-3200 CL16 = 10,00 ns vs DDR4-2400 CL15 = 12,50 ns (CL16 e mai rapid!)</li>
+                    <li>CAS latency specificat &#238;n cicluri de ceas, NU transferuri</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Date CAS latency concrete (selecție din tabele)</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR3-1600:</strong> CL 6-11, latență 7,50-13,75 ns</li>
+                    <li><strong>DDR4-3200:</strong> CL 14-16, latență 8,75-10,00 ns</li>
+                    <li><strong>DDR5-4800:</strong> CL 34-40, latență 14,17-16,67 ns</li>
+                    <li><strong>DDR5-6000:</strong> CL 26-40, latență 8,67-13,33 ns</li>
+                    <li><strong>DDR5-6400:</strong> CL 28-40, latență 8,75-12,50 ns</li>
+                    <li><strong>OBSERVAȚIE IMPORTANTĂ:</strong> CL a crescut numeric de la 2 (SDRAM) la 40 (DDR5)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția DDR SDRAM</h3>
+                <ul class="specs-list">
+                    <li><strong>Samsung:</strong> primul prototip 1997, primul chip comercial (64 Mbit) iunie 1998</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Generații DDR cu specificații</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR (2n prefetch, 1998):</strong> DDR-200 la DDR-400</li>
+                    <li><strong>Frecvență:</strong> 100-200 MHz, Transfer: 200-400 MT/s, Bandwidth: 1600-3200 MB/s</li>
+                    <li><strong>Voltaj:</strong> 2.5V (2.6V pentru DDR-400), DIMM: 184 pini</li>
+                    <li><strong>DDR2 (4n prefetch, 2003):</strong> DDR2-400 la DDR2-1066</li>
+                    <li><strong>Frecvență:</strong> 100-266 MHz, Transfer: 400-1066 MT/s, Bandwidth: 3200-8533 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.8V, DIMM: 240 pini</li>
+                    <li><strong>DDR3 (8n prefetch, 2007):</strong> DDR3-800 la DDR3-2133</li>
+                    <li><strong>Frecvență:</strong> 100-266 MHz, Transfer: 800-2133 MT/s, Bandwidth: 6400-17066 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.5V/1.35V, DIMM: 240 pini</li>
+                    <li><strong>DDR4 (8n prefetch, 2014):</strong> DDR4-1600 la DDR4-3200</li>
+                    <li><strong>Frecvență:</strong> 200-400 MHz, Transfer: 1600-3200 MT/s, Bandwidth: 12800-25600 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.2V/1.05V, DIMM: 288 pini</li>
+                    <li>16 bănci, 4 grupuri de bănci &#215; 4 bănci</li>
+                    <li><strong>DDR5 (16n prefetch, 2020):</strong> DDR5-3200 la DDR5-7200</li>
+                    <li><strong>Frecvență:</strong> 200-450 MHz, Transfer: 3200-7200 MT/s, Bandwidth: 25600-57600 MB/s</li>
+                    <li><strong>Voltaj:</strong> 1.1V, DIMM: 288 pini</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GDDR6 SDRAM</h3>
+                <ul class="specs-list">
+                    <li>GDDR6 = Graphics Double Data Rate 6 Synchronous Dynamic Random-Access Memory</li>
+                    <li>Succesor al GDDR5</li>
+                    <li><strong>Voltaj operare:</strong> 1.35V (mai mic dec&#226;t GDDR5X)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Implementări comerciale GDDR6</h3>
+                <ul class="specs-list">
+                    <li><strong>Samsung:</strong> primul chip produs &#238;n masă ianuarie 2018 (16 Gb / 2 GB, proces 10nm, 18 Gbit/s per pin)</li>
+                    <li><strong>SK Hynix:</strong> producție masă februarie 2018 (8 Gbit, 14 Gbit/s per pin)</li>
+                    <li><strong>Micron:</strong> producție masă iunie 2018 (8 Gb)</li>
+                    <li><strong>Primele plăci grafice cu GDDR6:</strong> Nvidia Turing (GeForce RTX 2080 Ti, 2080, 2070) – august 2018</li>
+                    <li><strong>AMD Radeon RX 5700 (Navi 10):</strong> 8 GB GDDR6 – iunie 2019</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GDDR6X (variantă avansată)</h3>
+                <ul class="specs-list">
+                    <li>Dezvoltat de Micron &#238;n colaborare cu Nvidia (nestandardizat de JEDEC)</li>
+                    <li>Aceasta limitează GDDR6 normal la 16 Gbit/s per pin</li>
+                    <li><strong>Primele plăci cu GDDR6X:</strong> Nvidia GeForce RTX 3080 și 3090</li>
+                    <li>Consumă 15% mai puțină energie per bit transferat vs GDDR6</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GDDR6W (variantă Samsung)</h3>
+                <ul class="specs-list">
+                    <li>Anunțat de Samsung &#238;n noiembrie 2022</li>
+                    <li>&#206;mbunătățiri față de GDDR6:</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Ierarhia memoriei (Memory Hierarchy)</h3>
+                <ul class="specs-list">
+                    <li><strong>Memorie principală (DDR5-6000):</strong> 64 GiB, ~60 GB/s, 82.5 ns</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Memory latency - definiție</h3>
+                <p>vs DDR4 DIMMs moderne cu sub 15 ns</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 6: PROBLEME FRECVENTE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-            <div class="card">
-                <h3>⚠️ Texture pop-in (texturi apărând cu delay)</h3>
-                <p>
-                    Cauză: bandwidth insuficient pentru a transfera toate texture-urile la detail înalt. GPU încarcă o textură la rezoluție joasă, apoi, pe măsură ce memoria e disponibilă, upgrade-ează. Soluție: update shader-ul să preloadeze texturile; optim-ize memoria.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Frame rate cade dramatic în zone cu mulți inimici sau obiecte</h3>
-                <p>
-                    Cauză: bandwidth bottleneck. GPU trebuie să render-ez mii de modele + texturile fiecăruia. Memorie nu can țineți pasul. Soluție: LOD (Level of Detail) — folosește modele simple departe, detaliate aproape.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Jocul lag-uiește pe efecte de post-processing</h3>
-                <p>
-                    Cauză: post-processing (bloom, motion blur) necesită citiți și scriere frecventă a framebuffer-ului. Bandwidth-ul este hot. Soluție: dezactivează efecte de post-processing; use lower resolution intermediare.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ AMD Infinity Cache nu ajută dacă dataset-ul e mai mare decât cache</h3>
-                <p>
-                    Cauză: conștient design limitation. Cache e mic (128 MB). Dacă dataset-ul necesită mai mult, memoria trebuie accesată mereu. Fără caching advantage, latență crește. Soluție: organizează date să se potrivesc în cache; sau use SSD streaming.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Raytracing produce frame lags chiar la PS5</h3>
-                <p>
-                    Cauză: ray-tracing requere milioane de ray-memory acccess-uri per frame. Chiar 448 GB/s rămâne la limit. Soluție: hybrid rendering — raytracing în timp real pe selectate obiecte; rasterization pe background.
-                </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu Bandwidth și memorie</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 7: RECAPITULARE
-         =========================== -->
     <section class="section" id="recapitulare">
         <div class="container">
             <h2 class="section-title">Recapitulare</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Bandwidth</strong> = rata de transfer de date din memorie, măsurat în GB/s</li>
-                    <li><strong>Frequency × Data Width</strong> = formula de calcul a bandwidth-ului fizic</li>
-                    <li><strong>GDDR6 PS5:</strong> 448 GB/s total (teoretică); 380+ GB/s practic cu overhead</li>
-                    <li><strong>Latență vs Bandwidth:</strong> ambele importante; latență joasă + bandwidth ridicat = optim</li>
-                    <li><strong>Memory Bottleneck</strong> = datele se transferă mai lent decât CPU/GPU pot procesa</li>
-                    <li><strong>Cache Hit</strong> = data e în cache rapid; <strong>Cache Miss</strong> = data e în RAM lent</li>
-                    <li><strong>Spatial Locality</strong> = accesa date consecutive; hardware prefetch-ează automat</li>
-                    <li><strong>Temporal Locality</strong> = accesa aceleași date; cache-ul le ține gata</li>
-                    <li>Gameplay la 4K 60 FPS necesită 150-200 GB/s din memorie la scene complexe</li>
-                    <li>PS5 (448 GB/s) > PS4 (176 GB/s) = 2.5× mai mult; permite 4K vs 1080p și textură detail</li>
+                    <li><strong>Definiția memory bandwidth:</strong> Memory bandwidth = rata la care datele pot fi citite din sau stocate &#238;ntr-o memorie semiconductoare de către un procesor</li>
+                    <li><strong>Convenții de măsurare a bandwidth-ului:</strong> 3 convenții diferite pentru definirea cantității de date transferate:</li>
+                    <li><strong>Calculul bandwidth-ului și nomenclatura:</strong> Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
+                    <li><strong>Biți ECC:</strong> Sistemele cu memorie ECC (error-correcting code) au interfețe mai late (72 biți vs 64)</li>
+                    <li><strong>Definiția CAS latency:</strong> CAS latency (CL) = Column Address Strobe latency</li>
+                    <li><strong>Fundamente ale operațiunii RAM:</strong> DRAM este aranjat &#238;ntr-o matrice rectangulară (r&#226;nduri &#215; coloane)</li>
+                    <li><strong>Efectul CAS latency asupra vitezei de acces:</strong> Modulele au bănci interne multiple – date pot fi outputate din una &#238;n timpul latenței alteia (pipelining)</li>
+                    <li><strong>Date CAS latency concrete (selecție din tabele):</strong> SDRAM PC100: CL 2, latență 20,00 ns</li>
+                    <li><strong>Definiția DDR SDRAM:</strong> DDR SDRAM = Double Data Rate Synchronous Dynamic Random-Access Memory</li>
+                    <li><strong>Generații DDR cu specificații:</strong> DDR (2n prefetch, 1998): DDR-200 la DDR-400</li>
+                    <li><strong>Principiul Double Data Rate:</strong> DDR transferă de obicei 64 biți la un moment dat</li>
+                    <li><strong>Module și organizare:</strong> DIMM 64-bit data bus: necesită 8 chipuri de 8 biți, adresate &#238;n paralel</li>
+                    <li><strong>LPDDR (Low Power DDR):</strong> Varianta cu consum redus pentru dispozitive portabile</li>
+                    <li><strong>GDDR6 SDRAM:</strong> GDDR6 = Graphics Double Data Rate 6 Synchronous Dynamic Random-Access Memory</li>
+                    <li><strong>Implementări comerciale GDDR6:</strong> Samsung: primul chip produs &#238;n masă ianuarie 2018 (16 Gb / 2 GB, proces 10nm, 18 Gbit/s per pin)</li>
+                    <li><strong>GDDR6X (variantă avansată):</strong> Dezvoltat de Micron &#238;n colaborare cu Nvidia (nestandardizat de JEDEC)</li>
+                    <li><strong>GDDR6W (variantă Samsung):</strong> Anunțat de Samsung &#238;n noiembrie 2022</li>
+                    <li><strong>Ierarhia memoriei (Memory Hierarchy):</strong> Niveluri cu latență și throughput real măsurat:</li>
+                    <li><strong>Memory latency - definiție:</strong> Memory latency = timpul &#238;ntre inițierea unei cereri pentru un byte/word din memorie</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 8: QUIZ
-         =========================== -->
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
-            <!-- Quiz Q1 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Ce este bandwidth-ul și cum se măsoară?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Exemplu?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Lățimea cablului de memorie</li>
-                    <li>b) Rata de transfer de date, măsurată în GB/s</li>
-                    <li>c) Viteza procesorului în GHz</li>
-                    <li>d) Capacitatea totală de memorie în GB</li>
+                    <li>a) Același exemplu = 2 milioane bytes/s (1M citit + 1M scris)</li>
+                    <li>b) copierea a 1 milion de bytes = 1 milion bytes/s</li>
+                    <li>c) Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
+                    <li>d) dual-channel DDR2-800 la 400 MHz:</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Rata de transfer de date, măsurată în GB/s</strong> — Bandwidth = cât de mult (GB) pe secundă.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — copierea a 1 milion de bytes = 1 milion bytes/s</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q2 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>De ce e Memory Bottleneck considerat un lucru bun în optimizare?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Calculul bandwidth-ului și nomenclatura?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Nu e bun; e întotdeauna o problemă</li>
-                    <li>b) Deoarece CPU și-a folosit puterea maximă până ce memoria nu mai țineți pasul</li>
-                    <li>c) Deoarece memoria se regenerează mai rapid</li>
-                    <li>d) Deoarece latența scade dramatic</li>
+                    <li>a) Același exemplu = 2 milioane bytes/s (1M citit + 1M scris)</li>
+                    <li>b) dual-channel DDR2-800 la 400 MHz:</li>
+                    <li>c) copierea a 1 milion de bytes = 1 milion bytes/s</li>
+                    <li>d) Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Deoarece CPU și-a folosit puterea maximă până ce memoria nu mai țineți pasul</strong> — E o semn că software-ul e bine optimizat; CPU-ul nu stă idle.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q3 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Care e bandwidth-ul GDDR6 în PS5?</strong></p>
+                <p><strong>Care afirmație este corectă despre: DRAM asincron?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 176 GB/s</li>
-                    <li>b) 256 GB/s</li>
-                    <li>c) 448 GB/s</li>
-                    <li>d) 560 GB/s</li>
+                    <li>a) Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
+                    <li>b) interval specificat &#238;n nanosecunde (timp absolut)</li>
+                    <li>c) copierea a 1 milion de bytes = 1 milion bytes/s</li>
+                    <li>d) Același exemplu = 2 milioane bytes/s (1M citit + 1M scris)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) 448 GB/s</strong> — PS5 folosește GDDR6C (versiune extinsă); cel mai ridicat bandwidth pentru memorie de consum gaming.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — interval specificat &#238;n nanosecunde (timp absolut)</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q4 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Care e diferența între Spatial și Temporal Locality?</strong></p>
+                <p><strong>Care afirmație este corectă despre: EXEMPLU modul 1 GiB SDRAM?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Nu e nicio diferență; e același concept</li>
-                    <li>b) Spatial = date consecutive; Temporal = data refolosită în scurt timp</li>
-                    <li>c) Spatial e pentru CPU; Temporal e pentru GPU</li>
-                    <li>d) Spatial e permanent; Temporal e temporar</li>
+                    <li>a) Același exemplu = 2 milioane bytes/s (1M citit + 1M scris)</li>
+                    <li>b) copierea a 1 milion de bytes = 1 milion bytes/s</li>
+                    <li>c) 8 chipuri de 1 Gbit (128 MiB fiecare)</li>
+                    <li>d) Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Spatial = date consecutive; Temporal = data refolosită în scurt timp</strong> — Ambele țelevize ajută hardware prefetch și cache efficiency.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — 8 chipuri de 1 Gbit (128 MiB fiecare)</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q5 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Cât bandwidth aproximativ necesită rendering-ul 4K 60 FPS la PS5?</strong></p>
+                <p><strong>Care afirmație este corectă despre: ATENȚIE?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 50 GB/s</li>
-                    <li>b) 150-200 GB/s</li>
-                    <li>c) 300 GB/s</li>
-                    <li>d) 448 GB/s (maxim)</li>
+                    <li>a) Același exemplu = 2 milioane bytes/s (1M citit + 1M scris)</li>
+                    <li>b) copierea a 1 milion de bytes = 1 milion bytes/s</li>
+                    <li>c) Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</li>
+                    <li>d) bandwidth-ul maxim se atinge doar c&#226;nd adresa datelor este cunoscută suficient de devreme</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) 150-200 GB/s</strong> — Framebuffer + texturile + geometrie + post-processing. PS5 cu 448 GB/s poate confortabil gestiona chiar și ray-tracing partial.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — bandwidth-ul maxim se atinge doar c&#226;nd adresa datelor este cunoscută suficient de devreme</strong></p>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 9: EXERCITIU
-         =========================== -->
     <section class="section" id="exercitiu">
         <div class="container">
             <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Optimizarea Bandwidth-ului</h3>
-                <p>
-                    <strong>Scenariu:</strong> Scrii cod pentru PS5 care trebuie să proceseze o hartă de teren de 4000×4000 pixeles, fiecare cu normal map, roughness map și color texture. Fiecare pixel necesită citire a 3 texturi × 4 bytes = 12 bytes. Harta se actualiza 60 ori pe secundă.
-                </p>
-                <p><strong>Sarcini:</strong></p>
+                <h3>🧠 Exercițiu: Bandwidth și memorie</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de bandwidth. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>1. Calculează bandwidth-ul pur necesar pentru a transfera toți pixelii × 3 texturi × 60 fps. Cât trebuie din cei 448 GB/s ai PS5?</li>
-                    <li>2. Dacă fiecare acces la memorie are latență de 100 ns (o vânzare pentru RAM), cât timp pierde procesul așteptând?</li>
-                    <li>3. Pentru a optimiza, propune o strategie de caching. Ce date ar trebui în L1, L2, L3?</li>
-                    <li>4. Cum poate Spatial Locality ajuta? Rescrie procesarea să acceseze texturi în ordine secvențială.</li>
-                    <li>5. Ce e compression ratio-ul. Cum poate compresiunea texture-urilor reduce necesarul de bandwidth?</li>
+                    <li>1. Defineste pe scurt: bandwidth.</li>
+                    <li>2. Ce rol are latență în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre bandwidth și influența asupra performanței.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> 4000×4000 × 12 bytes × 60 fps = 11.52 GB/s. Asta e ~2.6% din capacitate PS5 de 448 GB/s. E multă ram disponibil!</p>
-                        <p><strong>2.</strong> Latență 100 ns per acces. Pentru 4000×4000×3 = 48 milioni accuse. Dacă fiecare e serial, 48M × 100ns = 4.8 secunde. Dar în realitate, am multi-threadsit, so latency hiding cu pipelining. Dar e o ilustrare.</p>
-                        <p><strong>3.</strong> L1 cache (32 KB per core) — ține pixelmapping mici (256×256). L2 (256 KB) — o jumătate din hartă. L3 (8 MB) — întreaga hartă. RAM — backup.</p>
-                        <p><strong>4.</strong> Spatial Locality: în loc de a accesa pixel la (100, 100), apoi (4000, 4000), apoi (50, 50), accesezi în ordine: (0,0), (1,0), (2,0), ... (4000, 4000). Hardware-ul prefetch-ează pixelul următor automat. Cache hit rate urca de la ~30% la ~90%.</p>
-                        <p><strong>5.</strong> Compression ratio: texturi compresate (BC7 la PC, ASTC pe mobile) pot reduce dimensiune de 4-8×. O textură de 1 GB devine 125-250 MB. Bandwidth necesar scade proporțional. PS5 GPU dezcomprimeaza ASTC in-flight; programatorul doar citiți compressed texturi.</p>
+                        <p><strong>1.</strong> Memory bandwidth = rata la care datele pot fi citite din sau stocate &#238;ntr-o memorie semiconductoare de către un procesor</p>
+                        <p><strong>2.</strong> 3 convenții diferite pentru definirea cantității de date transferate:</p>
+                        <p><strong>3.</strong> Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:</p>
                     </div>
                 </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -539,3 +804,14 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

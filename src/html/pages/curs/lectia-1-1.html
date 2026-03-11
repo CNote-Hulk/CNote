@@ -8,6 +8,10 @@
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
     <title>Lecția 1.1 — Electricitate Fundamentală — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -95,13 +99,13 @@
                     Sarcina electrică nu este un flux continuu — este o mărime <strong>cuantificată</strong>. Unitatea indivizibilă de sarcină este sarcina electronului:
                 </p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
-                    q<sub>e</sub> = 1.6 × 10⁻¹⁹ C
+                    $$q_e = 1.6 \times 10^{-19} \text{ C}$$
                 </p>
                 <p>
                     Sarcina electrică Q a oricărui sistem macroscopic este întotdeauna un multiplu întreg al sarcinii elementare:
                 </p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
-                    Q = n × q<sub>e</sub> , n ∈ ℤ
+                    $$Q = n \times q_e, \quad n \in \mathbb{Z}$$
                 </p>
                 <p>
                     Această cuantificare implică un fapt esențial: curentul electric nu este un fluid continuu, ci un transfer discret de purtători de sarcină. Fiecare electron care se deplasează prin traseul de cupru de pe PCB contribuie cu exact 1.6 × 10⁻¹⁹ Coulombi la fluxul total.
@@ -171,7 +175,7 @@
                     <strong>Curentul electric</strong> este deplasarea ordonată (dirijată) a purtătorilor de sarcină printr-un mediu conductor. Nu este un proces spontan — este rezultatul acțiunii unui câmp electric creat de o diferență de potențial. Formal, intensitatea curentului este:
                 </p>
                 <p style="text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--accent-color); margin: 1.5rem 0;">
-                    I = dQ / dt
+                    $$I = \frac{dQ}{dt}$$
                 </p>
                 <p>
                     Unde I = curent (Amperi), Q = sarcină (Coulombi), t = timp (secunde). 1 Amper = 1 Coulomb pe secundă ≈ 6.24 × 10¹⁸ electroni pe secundă.
@@ -180,7 +184,7 @@
                     <strong>Densitatea de curent (J⃗):</strong> Pentru proiectarea traseelor PCB, nu este suficient să știm curentul total — trebuie să cunoaștem distribuția locală a sarcinilor în secțiunea conductorului. Densitatea de curent asociază fiecărui punct din conductor fluxul local de sarcină, măsurată în A/m². Intensitatea totală este fluxul vectorului J⃗ prin suprafața secțiunii:
                 </p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
-                    I = ∫ J⃗ · dA⃗
+                    $$I = \int \vec{J} \cdot d\vec{A}$$
                 </p>
                 <p>
                     <strong>Punct critic:</strong> Fiecare conductor are o limită de densitate de curent peste care energia se transformă ireversibil în căldură (efect Joule), ducând la topirea traseelor de cupru sau eșecul joncțiunilor semiconductoare. Acest parametru guvernează lățimea minimă a traseelor pe placa de bază a oricărei console.
@@ -216,7 +220,7 @@
                     <strong>Tensiunea electrică</strong> (diferența de potențial) este mărimea scalară care cuantifică lucrul mecanic efectuat pentru a deplasa o unitate de sarcină între două puncte. Este „presiunea" care pune electronii în mișcare.
                 </p>
                 <p style="text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--accent-color); margin: 1.5rem 0;">
-                    U = L / Q
+                    $$U = \frac{L}{Q}$$
                 </p>
                 <p>
                     Unitatea de măsură este <strong>Voltul (V)</strong>, numit în onoarea lui Alessandro Volta. 1 Volt = 1 Joule / 1 Coulomb.
@@ -225,7 +229,7 @@
                     <strong>Bilanțul tensiunilor:</strong> Într-un circuit complet, sursa trebuie să învingă atât rezistența circuitului exterior, cât și pe cea interioară proprie:
                 </p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
-                    E = U<sub>b</sub> + u
+                    $$E = U_b + u$$
                 </p>
                 <p>
                     Unde E = tensiune electromotoare (t.e.m.), U<sub>b</sub> = tensiune la bornele sursei (energia disponibilă circuitului exterior), u = tensiune internă (energia pierdută în sursă). O sursă cu rezistență internă mare prezintă o cădere de tensiune semnificativă sub sarcină, reducând eficiența — exact motivul pentru care PSU-urile consolelor sunt proiectate cu impedanță de ieșire minimă.
@@ -248,7 +252,7 @@
                     Relația fundamentală, stabilită de Georg Simon Ohm în 1826:
                 </p>
                 <p style="text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--accent-color); margin: 1.5rem 0;">
-                    R = U / I
+                    $$R = \frac{U}{I}$$
                 </p>
                 <p>
                     Unitatea: Ohm (Ω). 1Ω = rezistența unui conductor parcurs de 1A la o tensiune de 1V. Mărimea inversă — <strong>conductanța (G)</strong> — se măsoară în Siemens (S) și simplifică analiza circuitelor în paralel.
@@ -260,7 +264,7 @@
                     <strong>Legea rezistenței (geometrică):</strong>
                 </p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
-                    R = ρ × l / S
+                    $$R = \frac{\rho \times l}{S}$$
                 </p>
                 <p>
                     Unde ρ = rezistivitatea materialului (Ω·m), l = lungimea conductorului, S = secțiunea transversală.
@@ -717,3 +721,4 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+

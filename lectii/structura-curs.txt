@@ -48,6 +48,140 @@ REGULI PENTRU AGENT
 
 ---
 
+STRUCTURA LECȚIEI — TEMPLATE OFICIAL
+Această structură definește formatul standard pentru toate lecțiile cursului.
+Agentul trebuie să respecte exact această ordine și să nu modifice structura HTML existentă.
+
+
+HERO
+
+Conține introducerea vizuală a lecției.
+Elemente:
+• Modulul lecției (ex: Modul 1 — Electricitate Fundamentală)
+• Titlul lecției (ex: Lecția 1.1 — De la Atom la Electron Liber)
+• Descriere scurtă a lecției (1 propoziție)
+• Buton CTA „Începe Lecția”
+
+
+INTRODUCERE
+
+Secțiune narativă care explică contextul lecției.
+Conținut:
+• 2–3 paragrafe explicative
+• termeni cheie evidențiați
+• explicația importanței lecției pentru ingineria consolelor
+
+
+TEORIE STRUCTURATĂ
+
+Partea principală a lecției.
+Conținut:
+• mai multe blocuri „card”
+• fiecare card tratează un sub-concept al lecției
+• fiecare card conține:
+
+titlu numerotat (ex: 1.1 — Structura atomului)
+explicații în paragrafe
+listă de specificații (term + explicație)
+formule (dacă există)
+
+
+
+LEGĂTURA FIZICĂ — INFORMATICĂ
+
+Secțiune care conectează conceptele fizice cu informatica.
+Conținut:
+• blocuri card explicative
+• exemple de legătură între:
+
+fizică
+electronică
+calculatoare
+
+Exemple:
+• electron → bit
+• material semiconductor → procesor
+
+
+APLICARE DIRECTĂ ÎN CONSOLE
+
+Exemple concrete din hardware real.
+Conținut:
+• scenarii reale din console
+• explicații pas cu pas
+• liste cu etapele proceselor
+
+
+EXEMPLU REAL DE HARDWARE
+
+Studii de caz pentru componente reale.
+Conținut:
+• componente reale (ex: PSU PS5, PCB Xbox Series X)
+• specificații tehnice
+• explicația rolului în sistem
+
+
+PROBLEME FRECVENTE ASOCIATE
+
+Defecțiuni hardware reale.
+Conținut:
+• carduri cu probleme frecvente
+• descrierea simptomelor
+• explicația cauzei
+Exemple:
+• circuit deschis
+• scurtcircuit MOSFET
+• degradare termică
+
+
+RECAPITULARE
+
+Rezumat al lecției.
+Conținut:
+• listă cu conceptele principale
+• definiții scurte sau formule
+
+
+QUIZ — 5 ÎNTREBĂRI
+
+Verificarea cunoștințelor.
+Conținut:
+• 5 întrebări
+• 4 variante de răspuns
+• răspuns corect explicat
+
+
+EXERCIȚIU APLICAT
+
+Problemă practică de diagnostic sau analiză.
+Conținut:
+• scenariu real
+• întrebări de analiză
+• rezolvare explicată
+
+
+NAVIGARE
+
+Navigarea între lecții.
+Conținut:
+• link către lecția anterioară
+• link către lecția următoare
+
+
+VIDEO RECOMANDAT
+
+Material video suplimentar.
+Conținut:
+• player video
+• descriere scurtă a videoclipului
+
+REGULI PENTRU GENERAREA LECȚIILOR
+• respectă exact această structură
+• nu adăuga secțiuni noi
+• nu elimina secțiuni existente
+• folosește doar informația din fișierele de research verificate
+
+
 FAZA I – FUNDAMENTE
 
 Bazele fizice și informatice ale hardware-ului.

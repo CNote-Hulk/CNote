@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 1.3 — Legea lui Ohm și relația V, I, R">
+    <meta name="description" content="Lecția 1.3 — Circuite electrice">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 1.3 — Legea lui Ohm — Console Notebook</title>
+    <title>Lecția 1.3 — Circuite electrice — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -31,387 +35,227 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — Electricitate Fundamentală</p>
-            <h1>Lecția 1.3 — Legea lui Ohm</h1>
-            <p>V = I × R — ecuația care guvernează fiecare circuit din orice consolă.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — ELECTRICITATE FUNDAMENTALĂ</p>
+            <h1>Lecția 1.3 — Circuite electrice</h1>
+            <p>circuit deschis, circuit &#238;nchis, scurtcircuit, conductor</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- INTRODUCERE -->
-    <section class="section" id="introducere">
+                                                                <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    După ce am înțeles că electricitatea e mișcare de electroni, că tensiunea e forța și curentul e cantitate, vine întrebarea naturală: cum sunt ele legate? Dacă cresc tensiunea, ce se întâmplă cu curentul?
-                </p>
-                <p>
-                    Răspunsul e o relație simplă și universală numită <strong>Legea lui Ohm</strong>, formulată în 1826 de fizicianul Georg Ohm. E una din legile fundamentale ale electricității, și <em>fără ea, nu am putea proiecta o singură consolă</em>.
-                </p>
-                <p>
-                    În această lecție vom analiza relația V = I × R, ce înseamnă rezistență real în circuitele consolelor, și cum această lege simpară explică fenomene complexe: de ce PSU-urile au limite de curent, de ce tranzistorii se încălzesc, și de ce un cablu prea subțire poate cauza chiar și defectarea unui chip.
-                </p>
+                <p>O rețea electrică este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectări, format din elemente electrice (ex: surse de tensiune, surse de curent, rezistențe, inductanțe, capacități).</p>
+                <p>Această lecție acoperă: <strong>circuit deschis</strong>, <strong>circuit &#238;nchis</strong>, <strong>scurtcircuit</strong>, <strong>conductor</strong>, <strong>sarcină</strong>, <strong>sursă de energie</strong>, <strong>GND</strong>, <strong>referință de potențial</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- TEORIE -->
     <section class="section" id="teorie">
         <div class="container">
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Enunțul Legii lui Ohm</h3>
-                <p>
-                    <strong>Legea lui Ohm:</strong> Tensiunea pe un conductor este direct proporțională cu curentul care curge prin el, cu constanta de proporționalitate fiind rezistența.
-                </p>
-                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; margin: 1.5rem 0; color: var(--accent-color);">
-                    V = I × R
-                </p>
-                <ul class="specs-list">
-                    <li><strong>V</strong> = Tensiunea [Volți]</li>
-                    <li><strong>I</strong> = Curentul [Amperi]</li>
-                    <li><strong>R</strong> = Rezistența [Ohmi — Ω]</li>
-                </ul>
-                <p>
-                    Aceasta se poate rescrie și ca: <strong>I = V / R</strong> sau <strong>R = V / I</strong>
-                </p>
-                <p>
-                    Implicația: dacă crești tensiunea, curentul crește proporțional (dacă rezistența rămâne constantă). Dacă crești rezistența, curentul scade.
-                </p>
+                <h3>1.3.1 — Prezentare generala</h3>
+                <p>O rețea electrică este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectări, format din elemente electrice (ex: surse de tensiune, surse de curent, rezistențe, inductanțe, capacități).</p>
+                <p>Un circuit electric este o rețea formată dintr-o buclă &#238;nchisă, oferind o cale de retur pentru curent. Astfel, toate circuitele sunt rețele, dar nu toate rețelele sunt circuite (rețelele fără buclă &#238;nchisă sunt adesea numite circuite deschise).</p>
+                <p>O rețea activă conține cel puțin o sursă de tensiune sau o sursă de curent care poate furniza energie rețelei la nesf&#226;rșit. Exemple practice: baterie, generator. Elementele active pot injecta putere &#238;n circuit, pot oferi amplificare de putere și pot controla fluxul de curent.</p>
+                <p>Rețelele pasive nu conțin surse de forță electromotoare. Sunt formate din elemente pasive precum rezistoare și condensatoare.</p>
+                <p>Legea curenților a lui Kirchhoff: Suma tuturor curenților care intră &#238;ntr-un nod este egală cu suma tuturor curenților care ies din nod.</p>
+                <p>Legea tensiunilor a lui Kirchhoff: Suma algebrică direcționată a diferențelor de potențial electric de-a lungul unei bucle trebuie să fie zero.</p>
+                <p>Un scurtcircuit este un circuit electric care permite curentului electric să circule pe o cale neplanificată cu impedanță electrică zero sau foarte scăzută. Aceasta rezultă &#238;ntr-un curent excesiv care curge prin circuit.</p>
+                <p>Opusul unui scurtcircuit este circuitul deschis, care prezintă o rezistență infinită (sau impedanță foarte mare) &#238;ntre două noduri.</p>
+                <p>Un scurtcircuit este o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite. Aceasta rezultă &#238;ntr-un curent limitat doar de rezistența echivalentă Th&#233;venin a restului rețelei, ceea ce poate cauza deteriorarea circuitului, supra&#238;ncălzire, incendiu sau explozie.</p>
+                <p>&#206;n analiza circuitelor, un scurtcircuit este definit ca o conexiune &#238;ntre două noduri care le forțează să fie la aceeași tensiune. &#206;ntr-un scurtcircuit „ideal&quot;, aceasta &#238;nseamnă că nu există rezistență și, prin urmare, nu există cădere de tensiune pe conexiune.</p>
+                <p>Un tip comun de scurtcircuit apare atunci c&#226;nd terminalele pozitiv și negativ ale unei baterii sunt conectate cu un conductor cu rezistență scăzută, precum un fir. Cu o rezistență scăzută &#238;n conexiune, va curge un curent mare, provoc&#226;nd livrarea unei cantități mari de energie &#238;ntr-o perioadă scurtă de timp.</p>
+                <p>Protecție: Daunele cauzate de scurtcircuite pot fi reduse prin utilizarea siguranțelor fuzibile, &#238;ntrerupătoarelor automate sau a altor dispozitive de protecție la suprasarcină, care deconectează alimentarea ca reacție la curentul excesiv.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Rezistența Electrică</h3>
-                <p>
-                    <strong>Rezistență</strong> = măsura cât de mult se opune un material la trecerea curentului. Fiecare material are o rezistență specifică (resistivitate).
-                </p>
+                <h3>1.3.2 — &#206;n ingineria electrică, masă sau &#238;mpăm&#226;ntare (ground/earth) se poate referi la</h3>
                 <ul class="specs-list">
-                    <li><strong>Conductori buni:</strong> cupru (0.017 µΩ·m), aur (0.022 µΩ·m) — rezistență foarte mică</li>
-                    <li><strong>Conductori slabi:</strong> aluminiu, nichrom (material din rezistoare) — rezistență moderată</li>
-                    <li><strong>Izolatori:</strong> plastic, ceramic — rezistență extremă (MΩ, GΩ)</li>
+                    <li><strong>masă de referință (reference ground):</strong> un punct de referință &#238;ntr-un circuit electric de la care se măsoară tensiunile</li>
+                    <li><strong>&#238;mpăm&#226;ntare fizică (earth ground):</strong> un nod neutru electric care are multe sarcini disponibile (ex: păm&#226;ntul fizic al Terrei)</li>
+                    <li><strong>masă comună (common ground):</strong> o cale de retur comună pentru curentul electric (numită și neutru &#238;n sistemele de alimentare electrică)</li>
                 </ul>
-                <p>
-                    Rezistența unui fir depinde de trei factori:
-                </p>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
-                    R = ρ × (L / A)
-                </p>
-                <ul class="specs-list">
-                    <li><strong>ρ (rho)</strong> = resistivitatea specifică a materialului</li>
-                    <li><strong>L</strong> = lungimea firului</li>
-                    <li><strong>A</strong> = aria secțiunii transversale (grosimea firului)</li>
-                </ul>
-                <p>
-                    <strong>Exemplu practic:</strong> Dacă folosești un cablu prea lung (L mare) sau prea subțire (A mică) pentru a conecta o consolă la încarcare, rezistența crește. Conform Legii lui Ohm, dacă R crește și V rămâne constant, curentul scade. Consola se încarcă mai lent.
-                </p>
+                <p>Tensiunea este definită ca diferența de potențiale electrice &#238;ntre puncte &#238;ntr-un c&#226;mp electric. Un voltmetru este utilizat pentru a măsura diferența de potențial &#238;ntre un punct și un punct de referință convenabil, dar altfel arbitrar. Acest punct de referință comun este denumit „masă&quot; și este desemnat ca av&#226;nd un potențial nominal zero.</p>
+                <p>Masele de semnal servesc drept căi de retur pentru semnale și alimentare &#238;n interiorul echipamentelor. De obicei, există un conductor mare atașat la o parte a sursei de alimentare (precum „planul de masă&quot; de pe o placă de circuit imprimat), care servește drept masă comună, calea de retur comună pentru curentul de la multe componente diferite din circuit.</p>
+                <p>Circuitele din dispozitivele electronice portabile (telefoane mobile, playere media) și din vehicule au o masă de referință (numită și masă de șasiu).</p>
+                <p>&#206;n teoria circuitelor electronice, masa de semnal este masa comună și masa de referință pentru semnalul electric; iar masa de alimentare este masa comună pentru curentul de alimentare.</p>
             </div>
 
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Putere Disipată și Căldură</h3>
-                <p>
-                    Când curentul curge printr-o rezistență, energia se transformation în căldură. Puterea disipată se calculează cu:
-                </p>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
-                    P = I² × R sau P = V² / R sau P = V × I
-                </p>
-                <p>
-                    <strong>Exemplu:</strong> Dacă un tranzistor din placa de bază are rezistență 0.1Ω și curge 10A prin el, puterea disipată = 10² × 0.1 = 10W. Asta-i multă căldură pentru un cip mic. De aceea tranzistorii care gestionează curenți mari (cum sunt VRM-urile) au radiatori.
-                </p>
-                <p>
-                    Aceasta explică și de ce o consolă în load greu se încălzește mai mult — curentul crescut × rezistență internă = putere crescută → căldură crescută.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Legea lui Ohm pe Liniile PSU</h3>
-                <p>
-                    Sursa de alimentare a unui PlayStation 5 trebuie să furnizeze:
-                </p>
-                <ul class="specs-list">
-                    <li>Linia 12V: până la 15A (maximum limitare OCP)</li>
-                    <li>Linia 5V: până la 10A</li>
-                    <li>Linia 3.3V: până la 5A</li>
-                    <li>Linia de core CPU (1.05V): până la 90A</li>
-                </ul>
-                <p>
-                    Fiecare linie are o rezistență internă datorită cablourilor, doze și traseelor pe placa. Conform Legii lui Ohm, aceasta rezistență cauzeaza o cădere de tensiune.
-                </p>
-                <p>
-                    <strong>Exemplu:</strong> Dacă linia de 1.05V are rezistență internă 0.005Ω și curge 90A, căderea = 90 × 0.005 = 0.45V. Deci în loc de 1.050V, CPU primește de fapt 1.050 - 0.45 = 0.60V. Asta e prea mic! CPU nu funcționează. De aceea VRM-urile sunt amplasate cât mai aproape de SoC.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Cum Gândesc Inginerii Console Legea lui Ohm</h3>
-                <p>
-                    Atunci când proiectează o consolă, inginerii rezolvă această problemă:
-                </p>
-                <ol class="specs-list">
-                    <li>Știu ce voltaj necesită chipul (ex: 1.05V)</li>
-                    <li>Știu ce curent ar trebui să furnizeze (ex: 90A)</li>
-                    <li>Calculează rezistența maximă acceptabilă: R_max = V_drop / I, unde V_drop e fluctuația permisă (ex: ±5% = 0.05V)</li>
-                    <li>R_max = 0.05 / 90 = 0.00055Ω. Asta e foarte mic!</li>
-                    <li>Pentru a atinge asta, folosesc: cablu gros (A mare), distanță scurtă (L mic), material conductiv (ρ mic)</li>
-                </ol>
-                <p>
-                    Aceasta explică și de ce placar de bază a PS5 e atât de complexă — sute de trasee de cupru, grosime variabilă, optimizate pentru a reduce rezistență.
-                </p>
-            </div>
         </div>
     </section>
 
-    <!-- LEGATURA FIZICA-INFORMATICA -->
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    <strong>Fizica:</strong> Legea lui Ohm e o relație fundamentală între mărimile electrice. Ea se aplică identic, indiferent dacă vorbim de cabluri sau de materialele semiconductoare din SoC.
-                </p>
-                <p>
-                    <strong>Informatica:</strong> CPU-ul din consolă are miliarde de tranzistori micros, fiecare avand o mică rezistență. Când primesc semnalul "1" (tensiune prezentă), curentul curge, genereaza căldură. Multă activitate = multă căldură. Termistoarele măsoară căldura → firmware-ul reduce clock-ul pentru a reduce curent → reducem P = I² × R.
-                </p>
-                <p>
-                    Legea lui Ohm conectează direct fizica și comportamentul software-ului consolei.
-                </p>
+                <p>Conceptele din această lecție — Circuite electrice — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- APLICARE DIRECTA -->
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 1: De ce cablul lungime limitată?</h3>
-                <p>
-                    Cablul de încărcare PS5 e ~1.5m maxim recomandat. De ce nu 5 metri?
-                </p>
-                <p>
-                    Răspuns: L crește, R crește, V scade, curentul scade. În loc de putere completă pentru încărcare rapidă, consola încarcă lent .
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 2: Throttling datorită căldurii</h3>
-                <p>
-                    GPU la plin consum = 200W disipat. P = V × I, deci I mare. I mare × rezistență internă = V cade. CPU primește 1.0V în loc de 1.05V. E prea mic, deci firmware reduce clock-ul, I scade, P scade, temperatura scade.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 3: Scurtcircuitele și Legea lui Ohm</h3>
-                <p>
-                    Dacă o pista de cupru se umezeaza de apă și ia o alta pista, se creeaza o cale de curent cu R ≈ 0. Conform V = I × R, dacă R → 0, atunci I → ∞. Curentul infinit = topire firul, incendiu. De aceea OCP se declanseaza într-o microsecundă.
-                </p>
+                <h3>&#206;n ingineria electrică, masă sau &#238;mpăm&#226;ntare (ground/earth) se poate referi la</h3>
+                <p>Masele de semnal servesc drept căi de retur pentru semnale și alimentare &#238;n interiorul echipamentelor. De obicei, există un conductor mare atașat la o parte a sursei de alimentare (precum „planul de masă&quot; de pe o placă de circuit imprimat), care servește drept masă comună, calea de retur comună pentru curentul de la multe componente diferite din circuit.</p>
             </div>
         </div>
     </section>
 
-    <!-- EXEMPLU REAL -->
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Calcul PSU PS5</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <strong>Scenariul:</strong> PS5 în load greu desemneaza 200W.
-                <ul class="specs-list">
-                    <li>Tensiune priză: 230V AC</li>
-                    <li>PSU converteste: 230V AC → 12V DC, 5V DC, 3.3V DC, 1.05V DC</li>
-                    <li>Eficiență PSU: ~90%</li>
-                </ul>
-
-                <p><strong>Calculare curent din priză:</strong></p>
-                <p>P (din priză) = 200W / 0.90 = 222W</p>
-                <p>I = P / V = 222W / 230V ≈ <strong>0.97A din priză</strong></p>
-
-                <p><strong>Calculare curent pe linia de core (1V):</strong></p>
-                <p>Dacă 80W din cei 200W merg la SoC</p>
-                <p>I = P / V = 80W / 1.05V ≈ <strong>76A pe linia de core</strong></p>
-
-                <p><strong>Căderea de tensiune pe cablul intern:</strong></p>
-                <p>Dacă rezistență cablaj = 0.002Ω</p>
-                <p>V_drop = I × R = 76A × 0.002Ω = 0.152V</p>
-                <p>Tensiune reală la SoC = 1.05 - 0.152 = <strong>0.898V</strong> — prea mic!</p>
-
-                <p><strong>Soluție:</strong> PSU modern PS5 are VRM-uri pe placa de bază la cât mai aproape de SoC, reducând cablajul. Asta reduce R, deci V_drop mai mic.
-                </p>
+                <p>Componentele reale care utilizează circuit deschis se regăsesc în toate consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- PROBLEME FRECVENTE -->
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-            <div class="card">
-                <h3>⚠️ Consolidaua încarcă lent cu cablul lung</h3>
-                <p>
-                    Cauză: R cablaj crește, V scade, I scade, putere scade. Soluție: cablul scurt și gros.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Consola se reboot-ează sub load greu</h3>
-                <p>
-                    Cauza: V pe linia de core cade sub 0.95V datorita căderii ohmic. Firmware vede e instabil, resetează. Soluție: reparare VRM, înlocuire condensatori.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Firul cablului se încălzește anormal</h3>
-                <p>
-                    Cauza: R mare (cablul e prea subțire), P = I² × R crește, căldura crește. Soluție: înlocuiți cablul cu secțiune mai mare.
-                </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Prezentare generala</h3>
+                    <p>Un circuit electric este o rețea formată dintr-o buclă &#238;nchisă, oferind o cale de retur pentru curent. Astfel, toate circuitele sunt rețele, dar nu toate rețelele sunt circuite (rețelele fără buclă &#238;nchisă sunt adesea numite circuite deschise).</p>
+                    <p>Un scurtcircuit este un circuit electric care permite curentului electric să circule pe o cale neplanificată cu impedanță electrică zero sau foarte scăzută. Aceasta rezultă &#238;ntr-un curent excesiv care curge prin circuit.</p>
+                    <p>Opusul unui scurtcircuit este circuitul deschis, care prezintă o rezistență infinită (sau impedanță foarte mare) &#238;ntre două noduri.</p>
+                    <p>Un scurtcircuit este o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite. Aceasta rezultă &#238;ntr-un curent limitat doar de rezistența echivalentă Th&#233;venin a restului rețelei, ceea ce poate cauza deteriorarea circuitului, supra&#238;ncălzire, incendiu sau explozie.</p>
+                    <p>&#206;n analiza circuitelor, un scurtcircuit este definit ca o conexiune &#238;ntre două noduri care le forțează să fie la aceeași tensiune. &#206;ntr-un scurtcircuit „ideal&quot;, aceasta &#238;nseamnă că nu există rezistență și, prin urmare, nu există cădere de tensiune pe conexiune.</p>
+                    <p>Un tip comun de scurtcircuit apare atunci c&#226;nd terminalele pozitiv și negativ ale unei baterii sunt conectate cu un conductor cu rezistență scăzută, precum un fir. Cu o rezistență scăzută &#238;n conexiune, va curge un curent mare, provoc&#226;nd livrarea unei cantități mari de energie &#238;ntr-o perioadă scurtă de timp.</p>
+                    <p>Protecție: Daunele cauzate de scurtcircuite pot fi reduse prin utilizarea siguranțelor fuzibile, &#238;ntrerupătoarelor automate sau a altor dispozitive de protecție la suprasarcină, care deconectează alimentarea ca reacție la curentul excesiv.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- RECAPITULARE -->
     <section class="section" id="recapitulare">
         <div class="container">
             <h2 class="section-title">Recapitulare</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Legea lui Ohm: V = I × R</strong> — tensiune, curent și rezistență sunt interdependente</li>
-                    <li><strong>Rezistență:</strong> măsura opoziției materiale la trecerea curentului</li>
-                    <li><strong>R = ρ × (L / A)</strong> — depinde de material, lungime și grosime</li>
-                    <li><strong>Puterea disipată: P = I² × R</strong> — cauzeaza căldură</li>
-                    <li>Dacă R crește, I scade (dacă V constant)</li>
-                    <li>Căldura crescuta = tensiune instabilă = defecte</li>
-                    <li>VRM-urile trebuie cât mai aproape de SoC pentru a reduce R cabaлу</li>
-                    <li>PSU limiteaza I cu OCP; dacă I depășiște, PSU se oprește</li>
+                    <li><strong>Prezentare generala:</strong> O rețea electrică este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectări, format din...</li>
+                    <li><strong>&#206;n ingineria electrică, masă sau &#238;mpăm&#226;ntare (ground/earth) se poate referi la:</strong> masă de referință (reference ground): un punct de referință &#238;ntr-un circuit electric de la care se măsoară tensiunile</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- QUIZ -->
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Conform Legii lui Ohm, dacă rezistența crește și tensiunea rămâne constantă, ce se întâmplă cu curentul?</strong></p>
+                <p><strong>Care afirmație este corectă despre: masă de referință (reference ground)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Curentul crește</li>
-                    <li>b) Curentul scade</li>
-                    <li>c) Curentul rămâne egal</li>
-                    <li>d) Curentul devine infinit</li>
+                    <li>a) o cale de retur comună pentru curentul electric (numită și neutru &#238;n sistemele de alimentare electrică)</li>
+                    <li>b) un punct de referință &#238;ntr-un circuit electric de la care se măsoară tensiunile</li>
+                    <li>c) Această proprietate nu este relevantă pentru acest concept</li>
+                    <li>d) un nod neutru electric care are multe sarcini disponibile (ex: păm&#226;ntul fizic al Terrei)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Curentul scade</strong> — I = V / R; dacă R crește, I scade.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — un punct de referință &#238;ntr-un circuit electric de la care se măsoară tensiunile</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>De ce cablurile groase se preferă pentru curenți mari?</strong></p>
+                <p><strong>Care afirmație este corectă despre: &#238;mpăm&#226;ntare fizică (earth ground)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Culoarea nu contează, doar lungimea</li>
-                    <li>b) Aria transversală A mare reduc rezistență R</li>
-                    <li>c) Cablurile groase refuze curentul mare</li>
-                    <li>d) Groasimea nu are efect</li>
+                    <li>a) un punct de referință &#238;ntr-un circuit electric de la care se măsoară tensiunile</li>
+                    <li>b) Această proprietate nu este relevantă pentru acest concept</li>
+                    <li>c) un nod neutru electric care are multe sarcini disponibile (ex: păm&#226;ntul fizic al Terrei)</li>
+                    <li>d) o cale de retur comună pentru curentul electric (numită și neutru &#238;n sistemele de alimentare electrică)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Aria transversală A mare reduc rezistență R</strong> — R = ρ × (L / A); cablage gros (A mare) = R mic.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — un nod neutru electric care are multe sarcini disponibile (ex: păm&#226;ntul fizic al Terrei)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Când puteri P = I² × R, ce se întâmplă dacă curentul se dublează?</strong></p>
+                <p><strong>Care afirmație este corectă despre: masă comună (common ground)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Puterea se dublează</li>
-                    <li>b) Puterea se triplează</li>
-                    <li>c) Puterea se înpatruiește (4×)</li>
-                    <li>d) Puterea scade la jumătate</li>
+                    <li>a) un nod neutru electric care are multe sarcini disponibile (ex: păm&#226;ntul fizic al Terrei)</li>
+                    <li>b) un punct de referință &#238;ntr-un circuit electric de la care se măsoară tensiunile</li>
+                    <li>c) o cale de retur comună pentru curentul electric (numită și neutru &#238;n sistemele de alimentare electrică)</li>
+                    <li>d) Această proprietate nu este relevantă pentru acest concept</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) Puterea se înpatruiește (4×)</strong> — P ∝ I²; dacă I se dublează, I² se înpatruiește, deci P se înpatruiește.</p>
-                </details>
-            </div>
-
-            <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Ce efect are o cădere de tensiune pe linia de CPU (1.05V)?</strong></p>
-                <ul class="specs-list">
-                    <li>a) CPU merge mai repede</li>
-                    <li>b) CPU poate deveni instabil, firmware-ul îl resetează</li>
-                    <li>c) CPU se încălzește mai puțin</li>
-                    <li>d) Nu are efect, CPU merge normal</li>
-                </ul>
-                <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) CPU poate deveni instabil, firmware-ul îl resetează</strong> — Tensiune sub limita minimă cauzeaza malfoncționari logice.</p>
-                </details>
-            </div>
-
-            <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Dacă R = 0 (scurtcircuit), ce se întâmplă conform V = I × R?</strong></p>
-                <ul class="specs-list">
-                    <li>a) V = 0</li>
-                    <li>b) I = infinit (teoretic)</li>
-                    <li>c) I = 0</li>
-                    <li>d) R crește automat</li>
-                </ul>
-                <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) I = infinit (teoretic)</strong> — I = V / R; dacă R = 0, I → ∞. În practică, OCP limitează curentul.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — o cale de retur comună pentru curentul electric (numită și neutru &#238;n sistemele de alimentare electrică)</strong></p>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- EXERCITIU -->
     <section class="section" id="exercitiu">
         <div class="container">
             <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Proiectarea VRM pe placa PS5</h3>
-                <p>
-                    <strong>Scenariu:</strong> Trebuie să proiectezi traseul de aluminium cupru care furnizează 1.05V SoC-ului PS5, care solicita 90A în plin load.
-                </p>
-                <p><strong>Constrângeri:</strong></p>
+                <h3>🧠 Exercițiu: Circuite electrice</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de circuit deschis. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>Cădere de tensiune maximă acceptabilă: 5% = 0.0525V (65mV exact)</li>
-                    <li>Resistivitate cupru: 0.017 µΩ·m</li>
-                    <li>Distanța VRM-SoC: 5 cm (L = 0.05m)</li>
-                </ul>
-                <p><strong>Sarcini:</strong></p>
-                <ul class="specs-list">
-                    <li>1. Calculează R_maxim acceptabil: R = V_drop / I</li>
-                    <li>2. Calculează aria secțiunii necesare din R = ρ × (L / A), rezolvand pentru A</li>
-                    <li>3. Dacă materialul e o bandă de cupru, și grosimea o alegi să fie 5mm, ce lățime trebuie?</li>
-                    <li>4. Comparează cu cabluri normale (1.5mm²) — de ce nu merge?</li>
-                    <li>5. Cum ar schimba răspunsul dacă distanța era 2cm în loc de 5cm?</li>
+                    <li>1. Defineste pe scurt: circuit deschis.</li>
+                    <li>2. Ce rol are circuit &#238;nchis în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre circuit deschis și scurtcircuit.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> R_max = V_drop / I = 0.0525V / 90A = <strong>0.000583Ω</strong> (583 µΩ)</p>
-                        <p><strong>2.</strong> Din R = ρ × (L / A), deci A = ρ × L / R = 0.017 × 0.05 / 0.000583 = <strong>1.46 mm²</strong></p>
-                        <p><strong>3.</strong> Dacă grosime 5mm, atunci lățime = A / grosime = 1.46 / 5 = <strong>0.292 mm</strong> — adică 292 micrometri. Asta e o bandă foarte subțire, dificil de fabricat.</p>
-                        <p><strong>4.</strong> Cablul normal 1.5mm² ar furniza R = 0.017 × 0.05 / 1.5 = <strong>0.000567Ω</strong> — OK, pare să funcționeze! De fapt merge, dar limita e strânsă. Orice vârf de curent o depășiți, și V scade sub 1.0V.</p>
-                        <p><strong>5.</strong> La L = 0.02m (2cm): R = ρ × (L / A), deci R scade. Dacă vreau aceeași V_drop cu curent mai mare sau distanță mai scurtă, putem folosi cabil mai subțire. A = 0.017 × 0.02 / 0.000583 = <strong>0.584 mm²</strong> — putem folosi cabluri standard sau chiar mai subțiri.</p>
+                        <p><strong>1.</strong> Rețelele pasive nu conțin surse de forță electromotoare. Sunt formate din elemente pasive precum rezistoare și condensatoare.</p>
+                        <p><strong>2.</strong> masă de referință (reference ground): un punct de referință &#238;ntr-un circuit electric de la care se măsoară tensiunile</p>
+                        <p><strong>3.</strong> Conceptele studiate sunt aplicate direct &#238;n proiectarea hardware-ului consolelor.</p>
                     </div>
                 </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -495,3 +339,19 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 1.2 — Tensiune, curent și rezistență: cele trei coloane ale ingineriei electrice în console">
+    <meta name="description" content="Lecția 1.2 — Tensiune, Curent și Rezistență">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 1.2 — Tensiune, Curent, Rezistență — Console Notebook</title>
+    <title>Lecția 1.2 — Tensiune, Curent și Rezistență — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -31,532 +35,273 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — Electricitate Fundamentală</p>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — ELECTRICITATE FUNDAMENTALĂ</p>
             <h1>Lecția 1.2 — Tensiune, Curent și Rezistență</h1>
-            <p>Cele trei mărimi fundamentale care guvernează fiecare circuit electronic din interiorul unei console. Legea lui Ohm — ecuația care le leagă pe toate.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p>tensiunea electrică, curentul electric, rezistența electrică, legea lui Ohm</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- ===========================
          CAPITOLUL 1: INTRODUCERE
          =========================== -->
-    <section class="section" id="introducere">
+                                                                    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    Când un inginer de la Sony deschide schema electrică a unui PlayStation 5, el nu vede tranzistori, condensatoare sau rezistoare. Vede <strong>tensiuni, curenți și rezistențe</strong>. Acestea sunt cele trei mărimi fundamentale care descriu complet comportamentul oricărui circuit electric.
-                </p>
-                <p>
-                    În lecția anterioară am învățat <em>ce</em> este electricitatea. Acum învățăm <em>cum se comportă</em>. Am zis că tensiunea pune electronii în mișcare și că curentul este acea mișcare. Dar ce determină <em>cât</em> curent curge? Ce oprește electronii din a curge fără control? Răspunsul este <strong>rezistența</strong> — a treia piesă a puzzle-ului.
-                </p>
-                <p>
-                    Relația dintre aceste trei mărimi este capturată de una dintre cele mai importante ecuații din fizică: <strong>Legea lui Ohm</strong>. Această ecuație simplă — V = I × R — stă la baza absolut oricărui calcul electric din ingineria consolelor. De la dimensionarea sursei de alimentare la proiectarea VRM-urilor, de la alegerea rezistoarelor pe PCB la calculul termicului — totul pornește de la Ohm.
-                </p>
+                <p>Tensiunea electrică, cunoscută și ca diferență de potențial electric, presiune electrică sau tensiune electromotoare, este diferența de potențial electric &#238;ntre două puncte. &#206;ntr-un c&#226;mp electric static, aceasta corespunde lucrului mecanic necesar per unitate de sarcină pentru a deplasa o sarcină de test pozitivă de la primul punct la al doilea. &#206;n Sistemul Internațional de Unități (SI), unitatea derivată pentru tensiune este voltul (V).</p>
+                <p>Această lecție acoperă: <strong>tensiunea electrică</strong>, <strong>curentul electric</strong>, <strong>rezistența electrică</strong>, <strong>legea lui Ohm</strong>, <strong>puterea electrică</strong>, <strong>triunghiul lui Ohm</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 2: TEORIE
-         =========================== -->
     <section class="section" id="teorie">
         <div class="container">
             <h2 class="section-title">Teorie Structurată</h2>
 
-            <!-- 2.1 Tensiunea -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Tensiunea Electrică (V)</h3>
-                <p>
-                    <strong>Tensiunea electrică</strong> (denumită și diferență de potențial sau voltage) este forța care împinge electronii printr-un circuit. Se măsoară în <strong>Volți (V)</strong>, numită după fizicianul italian Alessandro Volta.
-                </p>
-                <p>
-                    <strong>Analogia hidraulică:</strong> Imaginează-ți două rezervoare de apă conectate printr-o țeavă, plasate la înălțimi diferite. Diferența de înălțime creează presiune și forțează apa să curgă din rezervorul superior spre cel inferior. Tensiunea electrică funcționează identic: este „presiunea" care forțează electronii să se miște dintr-un punct cu potențial electric mai mare spre unul cu potențial mai mic.
-                </p>
-                <p>
-                    <strong>Surse de tensiune într-o consolă:</strong>
-                </p>
-                <ul class="specs-list">
-                    <li><strong>Priza de perete:</strong> 230V AC (alternativ, sinusoidal, 50Hz)</li>
-                    <li><strong>Output PSU:</strong> 12V DC (continuu, stabil)</li>
-                    <li><strong>Linia de alimentare CPU:</strong> ~1.05V DC (ultra-precis, toleranță ±3%)</li>
-                    <li><strong>Linia de alimentare RAM GDDR6:</strong> ~1.35V DC</li>
-                    <li><strong>Porturi USB:</strong> 5V DC</li>
-                </ul>
-                <p>
-                    <strong>Punct critic:</strong> Tensiunea este întotdeauna măsurată <em>între două puncte</em>. Nu poți spune „acest fir are 5V" fără a specifica față de ce. De obicei, referința este <strong>masa (GND — Ground)</strong>, care are potențial 0V prin convenție. Când spunem „linia CPU are 1.05V", înseamnă 1.05V <em>față de GND</em>.
-                </p>
-            </div>
-
-            <!-- 2.2 Curentul -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Curentul Electric (I)</h3>
-                <p>
-                    <strong>Curentul electric</strong> este cantitatea de sarcină electrică (electroni) care trece printr-un punct al circuitului într-o unitate de timp. Se măsoară în <strong>Amperi (A)</strong>, numiți după fizicianul francez André-Marie Ampère.
-                </p>
-                <p>Matematic:</p>
+                <h3>1.2.1 — Prezentare generala</h3>
+                <p>Tensiunea electrică, cunoscută și ca diferență de potențial electric, presiune electrică sau tensiune electromotoare, este diferența de potențial electric &#238;ntre două puncte. &#206;ntr-un c&#226;mp electric static, aceasta corespunde lucrului mecanic necesar per unitate de sarcină pentru a deplasa o sarcină de test pozitivă de la primul punct la al doilea. &#206;n Sistemul Internațional de Unități (SI), unitatea derivată pentru tensiune este voltul (V).</p>
+                <p>Tensiunea &#238;ntre două puncte poate fi cauzată de acumularea de sarcină electrică (ex: un condensator) și de o forță electromotoare (ex: inducție electromagnetică &#238;ntr-un generator). La scară macroscopică, o diferență de potențial poate fi cauzată de procese electrochimice (ex: celule și baterii), efectul piezoelectric, efectul fotovoltaic și efectul termoelectric.</p>
+                <p>Simboluri comune: V, ∆V, U, ∆U.</p>
+                <p>Unitate SI: volt.</p>
+                <p>Derivare: Tensiune = Energie / sarcină.</p>
+                <p>&#206;n unități SI de bază: kg⋅m&#178;⋅s⁻&#179;⋅A⁻&#185;.</p>
+                <p>Unitatea SI de lucru mecanic per unitate de sarcină este joulul per coulomb, unde 1 volt = 1 joule (de lucru mecanic) per 1 coulomb de sarcină.</p>
+                <p>Tensiunea este definită astfel &#238;nc&#226;t obiectele &#238;ncărcate negativ sunt atrase spre tensiuni mai mari, iar obiectele &#238;ncărcate pozitiv sunt atrase spre tensiuni mai mici. Prin urmare, curentul convențional &#238;ntr-un fir sau rezistor curge &#238;ntotdeauna de la tensiune mai mare la tensiune mai mică.</p>
+                <p>Un voltmetru poate fi utilizat pentru a măsura tensiunea &#238;ntre două puncte dintr-un sistem. Adesea se folosește un potențial de referință comun, precum masa (ground) sistemului, ca unul dintre puncte.</p>
+                <p>Analogia hidraulică: O analogie simplă pentru un circuit electric este apa care curge &#238;ntr-un circuit &#238;nchis de conducte, &#238;mpinsă de o pompă mecanică. Diferența de potențial &#238;ntre două puncte corespunde diferenței de presiune &#238;ntre cele două puncte. Dacă pompa creează o diferență de presiune, apa care curge de la un punct la altul va putea efectua lucru mecanic.</p>
+                <p>Tensiuni tipice: baterii lanternă 1,5V CC; baterii auto 12V CC; rețea electrică 110-120V CA (America de Nord) sau 220-240V CA (Europa); linii de transmisie 110-1200 kV CA.</p>
+                <p>Legea lui Ohm afirmă că curentul electric printr-un conductor &#238;ntre două puncte este direct proporțional cu tensiunea dintre cele două puncte. Introduc&#226;nd constanta de proporționalitate — rezistența — se obțin cele trei ecuații matematice:</p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
-                    I = Q / t
+                    $$V = I\cdot R \text{ sau } I = V/R \text{ sau } R = V/I$$
                 </p>
-                <p>
-                    Unde I = curent (Amperi), Q = sarcină electrică (Coulombi), t = timp (secunde).
+                <p>unde I este curentul prin conductor, V este tensiunea măsurată pe conductor și R este rezistența conductorului.</p>
+                <p>Mai precis, Legea lui Ohm afirmă că R &#238;n această relație este constantă, independentă de curent. Dacă rezistența nu este constantă, ecuația nu poate fi numită Legea lui Ohm, dar poate fi folosită ca definiție a rezistenței statice/CC.</p>
+                <p>Legea lui Ohm este o relație empirică care descrie cu precizie conductivitatea marii majorități a materialelor conductive electric, pe mai multe ordine de mărime ale curentului. Totuși, unele materiale nu respectă Legea lui Ohm; acestea sunt numite non-ohmice.</p>
+                <p>Legea a fost numită după fizicianul german Georg Ohm, care &#238;n 1827 a publicat măsurători prin circuite electrice simple conțin&#226;nd diverse lungimi de fir.</p>
+                <p>Triunghiul lui Ohm (mnemonic pentru analiza circuitelor): Interschimbabilitatea ecuației poate fi reprezentată printr-un triunghi, unde V (tensiunea) este plasată &#238;n secțiunea superioară, I (curentul) &#238;n secțiunea din st&#226;nga, iar R (rezistența) &#238;n secțiunea din dreapta. Separatorul &#238;ntre secțiunile superioară și inferioară indică &#238;mpărțirea. Acoperind necunoscuta se obține formula &#238;n funcție de parametrii rămași.</p>
+                <p>Circuite rezistive: Legea lui Ohm este valabilă pentru circuite care conțin doar elemente rezistive (fără capacități sau inductanțe) pentru toate formele de tensiune sau curent de excitare, indiferent dacă tensiunea sau curentul de excitare este constant (CC) sau variabil &#238;n timp, precum CA.</p>
+                <p>Rezistoarele &#238;n serie sau paralel pot fi grupate &#238;ntr-o singură „rezistență echivalentă&quot; pentru a aplica Legea lui Ohm &#238;n analiza circuitului.</p>
+                <p>Analogia hidraulică: Presiunea apei (pascali) este analogul tensiunii. Debitul volumetric al apei (litri pe secundă) este analogul curentului. Restricțiile de debit (deschideri &#238;n conducte) sunt analogul rezistoarelor.</p>
+                <p>Puterea electrică este rata de transfer a energiei electrice &#238;ntr-un circuit. Unitatea sa SI este wattul, definit ca un joule pe secundă.</p>
+                <p>Puterea electrică &#238;n wați produsă de un curent electric I format dintr-o sarcină de Q coulombi la fiecare t secunde, trec&#226;nd printr-o diferență de potențial electric (tensiune) V, este:</p>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$P = W/t = V \times I$$
                 </p>
-                <p>
-                    1 Amper = 1 Coulomb pe secundă = ~6.24 × 10¹⁸ electroni pe secundă.
+                <p>unde W este lucrul mecanic &#238;n jouli, t este timpul &#238;n secunde, Q este sarcina electrică &#238;n coulombi, V este potențialul electric sau tensiunea &#238;n volți, I este curentul electric &#238;n amperi.</p>
+                <p>Circuite rezistive: &#206;n cazul sarcinilor rezistive (ohmice), formula puterii (P = I&#183;V) și prima lege a lui Joule (P = I&#178;&#183;R) pot fi combinate cu Legea lui Ohm (V = I&#183;R) pentru a produce expresii alternative:</p>
+                <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
+                    $$P = I\cdot V = I^{2}\cdot R = V^{2}/R$$
                 </p>
-                <p>
-                    <strong>Submultipli utili:</strong>
-                </p>
-                <ul class="specs-list">
-                    <li><strong>1 mA (miliamper)</strong> = 0.001 A — curentul consumat de un LED indicator pe consolă</li>
-                    <li><strong>1 μA (microamper)</strong> = 0.000001 A — curentul de leakage al tranzistorilor în standby</li>
-                    <li><strong>1 nA (nanoamper)</strong> = 0.000000001 A — curentul prin porțile logice individuale</li>
-                </ul>
-                <p>
-                    <strong>Curenți tipici într-o consolă:</strong>
-                </p>
-                <ul class="specs-list">
-                    <li>Curent din priză (230V AC): ~0.5–1A</li>
-                    <li>Curent pe linia de 12V: ~15–30A</li>
-                    <li>Curent prin SoC (~1.05V): ~50–80A</li>
-                    <li>Curent prin ventilator: ~0.3–0.5A</li>
-                    <li>Curent în controller wireless (Bluetooth): ~0.02A</li>
-                </ul>
-                <p>
-                    <strong>Observație importantă:</strong> Cu cât tensiunea este mai mică și puterea mai mare, cu atât curentul este mai ridicat. De aceea linia de alimentare a procesorului (1.05V, 80W → ~76A) necesită trasee mult mai late pe PCB decât linia de 12V (12V, 200W → ~17A). Mai mult curent = mai multă căldură generată pe traseu = traseu mai lat necesar.
-                </p>
+                <p>unde R este rezistența electrică.</p>
             </div>
 
-            <!-- 2.3 Rezistența -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Rezistența Electrică (R)</h3>
-                <p>
-                    <strong>Rezistența electrică</strong> este proprietatea unui material de a se opune trecerii curentului electric. Se măsoară în <strong>Ohmi (Ω)</strong>, numiți după fizicianul german Georg Simon Ohm.
-                </p>
-                <p>
-                    <strong>Analogia hidraulică:</strong> Dacă tensiunea este presiunea apei și curentul este debitul, rezistența este <em>grosimea țevii</em>. O țeavă subțire (rezistență mare) permite mai puțină apă să treacă. O țeavă groasă (rezistență mică) permite un debit mare.
-                </p>
-                <p>
-                    Fiecare material are o rezistivitate (ρ) intrinsecă:
-                </p>
+                <h3>1.2.2 — Surse și sarcini</h3>
                 <ul class="specs-list">
-                    <li><strong>Cupru:</strong> ρ = 1.68 × 10⁻⁸ Ω·m — excelent conductor, folosit pentru trasee PCB</li>
-                    <li><strong>Aur:</strong> ρ = 2.44 × 10⁻⁸ Ω·m — rezistent la oxidare, folosit pentru contacte (conectori, pini)</li>
-                    <li><strong>Siliciu pur:</strong> ρ = 640 Ω·m — semiconductor, baza tuturor chipurilor</li>
-                    <li><strong>Plastic ABS:</strong> ρ = 10¹⁶ Ω·m — izolator perfect, carcasa consolei</li>
-                </ul>
-                <p>
-                    <strong>De ce contează rezistența în console:</strong>
-                </p>
-                <ul class="specs-list">
-                    <li><strong>Rezistoare pe PCB:</strong> Controlează curenți, setează tensiuni de referință, protejează componente</li>
-                    <li><strong>Rezistența traseelor:</strong> Trasee lungi sau subțiri au rezistență proprie → căderi de tensiune → pierderi de energie</li>
-                    <li><strong>Rezistența de contact:</strong> Contacte oxidate sau murdare → rezistență crescută → încălzire locală</li>
-                    <li><strong>Rezistoare pull-up/pull-down:</strong> Definesc starea logică a pinilor digitali (1 sau 0)</li>
+                    <li><strong>Dispozitive active (surse de putere):</strong> energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</li>
+                    <li><strong>Dispozitive pasive (sarcini):</strong> energia potențială a sarcinilor este convertită &#238;n energie cinetică. Exemple: becuri, motoare electrice, &#238;ncălzitoare electrice.</li>
                 </ul>
             </div>
 
-            <!-- 2.4 Legea lui Ohm -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Legea lui Ohm: ecuația fundamentală</h3>
-                <p>
-                    Cele trei mărimi sunt legate printr-o relație simplă și elegantă, descoperită de Georg Ohm în 1827:
-                </p>
-                <p style="text-align: center; font-size: 1.8rem; font-weight: 700; color: var(--accent-color); margin: 1.5rem 0; letter-spacing: 2px;">
-                    V = I × R
-                </p>
-                <p>
-                    Unde: V = tensiune (Volți), I = curent (Amperi), R = rezistență (Ohmi).
-                </p>
-                <p>
-                    Această formulă se poate rearanja:
-                </p>
-                <ul class="specs-list">
-                    <li><strong>I = V / R</strong> — curentul este direct proporțional cu tensiunea și invers proporțional cu rezistența</li>
-                    <li><strong>R = V / I</strong> — rezistența se poate calcula din tensiune și curent</li>
-                </ul>
-                <p>
-                    <strong>Exemplu practic din consolă:</strong> Un LED indicator de alimentare pe un PlayStation 4 funcționează la 2V și consumă 20mA (0.02A). Dacă sursa internă oferă 5V, ce rezistență trebuie pusă în serie cu LED-ul?
-                </p>
-                <p style="background: rgba(91,164,230,0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                    Tensiunea pe rezistență: V<sub>R</sub> = 5V − 2V = 3V<br>
-                    R = V / I = 3V / 0.02A = <strong>150Ω</strong><br>
-                    Se pune un rezistor de 150Ω în serie cu LED-ul.
-                </p>
-            </div>
-
-            <!-- 2.5 Puterea electrică -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Puterea Electrică (P) — extensia lui Ohm</h3>
-                <p>
-                    <strong>Puterea electrică</strong> este rata la care energia este consumată sau transformată. Se măsoară în <strong>Wați (W)</strong>.
-                </p>
-                <p style="text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--accent-color); margin: 1.5rem 0;">
-                    P = V × I
-                </p>
-                <p>
-                    Combinând cu Legea lui Ohm, obținem variante utile:
-                </p>
-                <ul class="specs-list">
-                    <li><strong>P = V × I</strong> — formulă de bază</li>
-                    <li><strong>P = I² × R</strong> — utilă când cunoști curentul și rezistența</li>
-                    <li><strong>P = V² / R</strong> — utilă când cunoști tensiunea și rezistența</li>
-                </ul>
-                <p>
-                    <strong>De ce contează P = I² × R:</strong> Această formulă explică de ce curenții mari sunt atât de problematici. Dacă curentul se dublează, puterea disipată (transformată în căldură) se <em>cvaduplează</em>. De aceea:
-                </p>
-                <ul class="specs-list">
-                    <li>VRM-urile (care gestionează ~76A la 1.05V) sunt cele mai fierbinți componente de pe PCB</li>
-                    <li>Traseele de alimentare ale SoC-ului sunt cele mai late de pe întregul PCB</li>
-                    <li>Lipiturile BGA sub SoC trebuie să fie perfecte — orice rezistență suplimentară la curent ridicat generează căldură excesivă</li>
-                </ul>
-            </div>
-
-            <!-- 2.6 Triunghiul Ohm -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.6 — Triunghiul lui Ohm și Triunghiul Puterii</h3>
-                <p>
-                    Pentru a memora rapid formulele, inginerii folosesc două triunghiuri mnemonice:
-                </p>
-                <p style="text-align: center; font-family: monospace; font-size: 1.1rem; line-height: 1.8; background: rgba(91,164,230,0.08); padding: 1.5rem; border-radius: 12px; margin: 1rem 0;">
-                    <strong>Triunghiul lui Ohm:</strong><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                    &nbsp;&nbsp;&nbsp;─────&nbsp;&nbsp;&nbsp;<br>
-                    &nbsp;&nbsp;I&nbsp;&nbsp;×&nbsp;&nbsp;R&nbsp;&nbsp;<br><br>
-                    V = I × R&nbsp;&nbsp;|&nbsp;&nbsp;I = V / R&nbsp;&nbsp;|&nbsp;&nbsp;R = V / I<br><br>
-                    <strong>Triunghiul Puterii:</strong><br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                    &nbsp;&nbsp;&nbsp;─────&nbsp;&nbsp;&nbsp;<br>
-                    &nbsp;&nbsp;V&nbsp;&nbsp;×&nbsp;&nbsp;I&nbsp;&nbsp;<br><br>
-                    P = V × I&nbsp;&nbsp;|&nbsp;&nbsp;V = P / I&nbsp;&nbsp;|&nbsp;&nbsp;I = P / V
-                </p>
-                <p>
-                    Acoperă mărimea pe care vrei s-o afli. Ce rămâne este formula. Simplu, eficient, universal.
-                </p>
-            </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 3: FIZICĂ ↔ INFORMATICĂ
-         =========================== -->
     <section class="section" id="legatura">
         <div class="container">
             <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Rezistența și viteza de calcul</h3>
-                <p>
-                    Legea lui Ohm nu este doar abstractă — ea determină direct performanța informatică a unei console.
-                </p>
-                <p>
-                    Un tranzistor în interiorul procesorului funcționează ca un comutator: deschis (0) sau închis (1). Dar fiecare tranzistor are o <strong>rezistență internă</strong> și o <strong>capacitate parazită</strong>. Timpul necesar pentru a comuta de la 0 la 1 depinde de produsul R × C (rezistență × capacitate), numit <strong>constanta de timp RC</strong>.
-                </p>
-                <ul class="specs-list">
-                    <li>Tranzistori mai mici (7nm vs 14nm) → rezistență mai mare PER tranzistor, DAR capacitate mult mai mică</li>
-                    <li>Produs RC mai mic → comutare mai rapidă → frecvență de ceas mai mare</li>
-                    <li>PS4 (28nm): CPU la 1.6 GHz | PS5 (7nm): CPU la 3.5 GHz — frecvență 2x mai mare datorită unui produs RC mai favorabil</li>
-                </ul>
-                <p>
-                    <strong>Rezumat:</strong> Când auzi că „PS5 are un procesor de 3.5 GHz", ceea ce se spune de fapt este: tranzistorii din interiorul chipului pot comuta între 0 și 1 de 3.5 miliarde de ori pe secundă. Iar viteza acestei comutări este dictată de Legea lui Ohm aplicată la nivel nanometric.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Puterea și budget-ul termic</h3>
-                <p>
-                    Fiecare consolă are un <strong>TDP (Thermal Design Power)</strong> — puterea maximă pe care sistemul de răcire o poate disipa fără supraîncălzire. Aceasta este o consecință directă a formulei P = I² × R.
-                </p>
-                <ul class="specs-list">
-                    <li><strong>PS5 SoC TDP:</strong> ~100W</li>
-                    <li><strong>Xbox Series X SoC TDP:</strong> ~100W (similar, dar cu 12 TFLOPS vs 10.3)</li>
-                    <li><strong>Nintendo Switch SoC TDP:</strong> ~10W (design mobil, eficiență maximă)</li>
-                </ul>
-                <p>
-                    Dacă un joc cere mai multă putere de calcul decât permite TDP-ul, consola are două opțiuni: <strong>reduce frecvența</strong> (throttling) sau <strong>crește viteza ventilatorului</strong> (zgomot). Ambele sunt compromisuri directe ale fizicii electrice.
-                </p>
+                <p>Conceptele din această lecție — Tensiune, Curent și Rezistență — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 4: APLICARE ÎN CONSOLE
-         =========================== -->
     <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Studiu: Analiza electrică a Xbox Series X</h3>
-                <p>
-                    Xbox Series X are una dintre cele mai sofisticate plăci de bază din istoria consolelor. Să aplicăm ce am învățat:
-                </p>
-
-                <h4 style="margin-top: 1.5rem; color: var(--accent-color);">Alimentarea SoC-ului</h4>
-                <ul class="specs-list">
-                    <li>SoC: AMD Zen 2 + RDNA 2, 15.3 miliarde tranzistori, 7nm</li>
-                    <li>Tensiune de alimentare CPU: ~1.1V</li>
-                    <li>Putere maximă estimată SoC: ~110W</li>
-                    <li>Curent maxim: I = P / V = 110W / 1.1V = <strong>100A</strong></li>
-                </ul>
-                <p>
-                    100 Amperi prin traseele de pe PCB! Aceasta este cauza pentru care Xbox Series X are un VRM cu <strong>6 faze</strong> — fiecare fază gestionează ~17A. Distribuirea curentului pe mai multe faze reduce căldura per componentă.
-                </p>
-
-                <h4 style="margin-top: 1.5rem; color: var(--accent-color);">Căderea de tensiune pe traseu</h4>
-                <p>
-                    Traseul de cupru de pe PCB nu este un conductor perfect — are rezistență proprie. Un traseu tipic de alimentare pe Xbox Series X:
-                </p>
-                <p style="background: rgba(91,164,230,0.1); padding: 1rem; border-radius: 8px;">
-                    Lungime: ~5cm | Lățime: ~3mm | Grosime cupru: 35μm<br>
-                    Rezistență estimată: R ≈ 0.008Ω<br>
-                    Cădere de tensiune: V = I × R = 100A × 0.008Ω = <strong>0.8V</strong><br>
-                    Putere disipată pe traseu: P = I² × R = 100² × 0.008 = <strong>80W (!)</strong>
-                </p>
-                <p>
-                    Acesta e motivul pentru care traseele de alimentare nu sunt simple linii de cupru — sunt <strong>plane-uri</strong> întregi (straturi complete de cupru în PCB-ul multi-layer), distribuite pe <strong>mai multe layer-e</strong>, pentru a reduce rezistența la minimum.
-                </p>
+                <p>În contextul consolelor de jocuri, tensiune, curent și rezistență joacă un rol esențial în funcționarea hardware-ului.</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 5: EXEMPLU REAL
-         =========================== -->
     <section class="section" id="exemplu">
         <div class="container">
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>VRM-urile (Voltage Regulator Modules) din PlayStation 5</h3>
-                <p>
-                    VRM-urile sunt circuitele care convertesc 12V DC de la PSU în tensiunile precise necesare fiecărei componente. Sunt compuse din:
-                </p>
-                <ul class="specs-list">
-                    <li><strong>Controller PWM (Pulse Width Modulation):</strong> Chipul „creier" care comandă MOSFET-urile</li>
-                    <li><strong>High-side MOSFET:</strong> Tranzistorul care conectează sursa de 12V</li>
-                    <li><strong>Low-side MOSFET:</strong> Tranzistorul care conectează la masă</li>
-                    <li><strong>Inductor (bobina):</strong> Stochează energie magnetic și netezește curentul</li>
-                    <li><strong>Condensatoare de output:</strong> Filtrează oscilațiile de tensiune (ripple)</li>
-                </ul>
-                <p>
-                    <strong>Specificații VRM pentru SoC pe PS5:</strong>
-                </p>
-                <ul class="specs-list">
-                    <li>Configurație: 6+2 faze (6 pentru SoC, 2 pentru memorie)</li>
-                    <li>Input: 12V DC de la PSU</li>
-                    <li>Output: ~1.05V DC pentru SoC, ~1.35V DC pentru GDDR6</li>
-                    <li>Curent maxim per fază: ~50A (MOSFET-uri smart power stage)</li>
-                    <li>Curent total disponibil: ~300A (cu headroom bun)</li>
-                    <li>Controller PWM: Renesas ISL69269 (digital multi-phase)</li>
-                    <li>Frecvență de comutare: ~400-700 kHz</li>
-                </ul>
-                <p>
-                    <strong>Ce se întâmplă când un VRM eșuează:</strong> Dacă o fază VRM moare (un MOSFET defect), restul fazelor preiau sarcina. Dar curentul suplimentar per fază cauzează supraîncălzire → degradare accelerată → potențial defecțiune în cascadă. Simptomul tipic: consola pornește dar se oprește după 5-30 de secunde sub sarcină.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Comparație VRM-uri pe generații</h3>
-                <ul class="specs-list">
-                    <li><strong>PlayStation 3 (2006):</strong> VRM lineare + switching basic, eficiență ~75%, componente discrete mari</li>
-                    <li><strong>PlayStation 4 (2013):</strong> VRM multi-fază 4+2, controller analogic, eficiență ~85%</li>
-                    <li><strong>PlayStation 5 (2020):</strong> VRM multi-fază 6+2, controller digital, power stages integrate, eficiență ~92%</li>
-                </ul>
-                <p>
-                    Eficiența contează enorm: la 200W consum total, un VRM cu eficiență 75% pierde 50W ca căldură. La 92% pierderea e doar 16W. Acea diferență de 34W e echivalentul unui bec aprins constant <em>în interiorul consolei</em>.
-                </p>
+                <h3>Prezentare generala</h3>
+                <p>Rezistoarele &#238;n serie sau paralel pot fi grupate &#238;ntr-o singură „rezistență echivalentă&quot; pentru a aplica Legea lui Ohm &#238;n analiza circuitului.</p>
+                <p>Puterea electrică &#238;n wați produsă de un curent electric I format dintr-o sarcină de Q coulombi la fiecare t secunde, trec&#226;nd printr-o diferență de potențial electric (tensiune) V, este:</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 6: PROBLEME FRECVENTE
-         =========================== -->
     <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ YLOD (Yellow Light of Death) — PS3</h3>
-                    <p>
-                        <strong>Cauza principală:</strong> Lipiturile BGA (Ball Grid Array) sub procesorul Cell se crăpau din cauza ciclurilor termice. Rezistența de contact creștea progresiv → tensiune insuficientă → procesor inoperabil. Legea lui Ohm în acțiune: R crește → V scade la aceeași I → SoC-ul nu mai funcționează.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <h3>⚠️ Coil Whine — zgomot de bobine</h3>
-                    <p>
-                        <strong>Cauza:</strong> Inductoarele din VRM vibrează fizic la frecvența de comutare PWM (400-700 kHz), generând armonici audibile (1-5 kHz). Este un fenomen normal, nu un defect grav, dar indică curenți mari și variabili prin inductoare — V = L × (dI/dt).
-                    </p>
-                </div>
-
-                <div class="card">
-                    <h3>⚠️ Scăderea performanței în timp</h3>
-                    <p>
-                        <strong>Cauza:</strong> Oxidarea contactelor, degradarea pastei termice și aging-ul condensatoarelor din VRM cresc rezistența totală a circuitelor. Consecință: mai multă căldură, throttling mai agresiv, performanță redusă. Schimbarea pastei termice și curățarea contactelor pot recupera performanța originală.
-                    </p>
+                    <h3>⚠️ Probleme asociate cu Tensiune, Curent și Rezistență</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 7: RECAPITULARE
-         =========================== -->
     <section class="section" id="recapitulare">
         <div class="container">
             <h2 class="section-title">Recapitulare</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Tensiunea (V)</strong> = forța care pune electronii în mișcare (Volți)</li>
-                    <li><strong>Curentul (I)</strong> = cantitatea de electroni care circulă pe secundă (Amperi)</li>
-                    <li><strong>Rezistența (R)</strong> = opoziția materialului la trecerea curentului (Ohmi)</li>
-                    <li><strong>Legea lui Ohm:</strong> V = I × R (ecuația fundamentală)</li>
-                    <li><strong>Puterea:</strong> P = V × I = I² × R = V² / R</li>
-                    <li>P = I² × R explică de ce curenții mari generează mult mai multă căldură</li>
-                    <li><strong>VRM-urile</strong> convertesc 12V → tensiuni precise cu eficiență &gt;90%</li>
-                    <li>Frecvența procesorului depinde de constanta de timp RC a tranzistorilor</li>
-                    <li><strong>TDP</strong> = limita termică care restricționează performanța maximă</li>
-                    <li>Rezistențele de contact crescute sunt cauza multor defecte clasice (YLOD, RROD)</li>
+                    <li><strong>Prezentare generala:</strong> Tensiunea electrică, cunoscută și ca diferență de potențial electric, presiune electrică sau tensiune electromotoare, este diferența de potențial electric &#238;ntre două puncte. &#206;ntr-un c&#22...</li>
+                    <li><strong>Surse și sarcini:</strong> Dispozitive active (surse de putere): energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 8: QUIZ
-         =========================== -->
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
-            <!-- Q1 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Conform Legii lui Ohm, dacă tensiunea rămâne constantă și rezistența se dublează, ce se întâmplă cu curentul?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Se dublează</li>
-                    <li>b) Se înjumătățește</li>
-                    <li>c) Rămâne constant</li>
-                    <li>d) Se cvaduplează</li>
+                    <li>a) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
+                    <li>b) P = W/t = V &#215; I</li>
+                    <li>c) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>d) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Se înjumătățește</strong> — Din I = V / R, dacă R se dublează și V e constant, I scade la jumătate.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Derivare: Tensiune = Energie / sarcină.</strong></p>
                 </details>
             </div>
 
-            <!-- Q2 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>SoC-ul PlayStation 5 funcționează la ~1.05V și consumă ~80W. Care este curentul aproximativ care trece prin procesor?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Dispozitive active (surse de putere)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ~0.87A</li>
-                    <li>b) ~7.6A</li>
-                    <li>c) ~76A</li>
-                    <li>d) ~760A</li>
+                    <li>a) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>b) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
+                    <li>c) P = W/t = V &#215; I</li>
+                    <li>d) energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) ~76A</strong> — I = P / V = 80W / 1.05V ≈ 76.2A. Curenți imensi la tensiuni mici!</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</strong></p>
                 </details>
             </div>
 
-            <!-- Q3 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>De ce P = I² × R este critică în designul PCB-ului unei console?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Arată că tensiunea crește cu rezistența</li>
-                    <li>b) Demonstrează că dublarea curentului cvaduplează căldura disipată</li>
-                    <li>c) Dovedește că rezistența nu afectează căldura</li>
-                    <li>d) Explică funcționarea condensatoarelor</li>
+                    <li>a) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
+                    <li>b) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
+                    <li>c) P = W/t = V &#215; I</li>
+                    <li>d) Derivare: Tensiune = Energie / sarcină.</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Dublarea curentului cvaduplează căldura disipată</strong> — Curentul este la pătrat în formulă. De aceea traseele cu curenți mari trebuie dimensionate corespunzător.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — V = I&#183;R  sau  I = V/R  sau  R = V/I</strong></p>
                 </details>
             </div>
 
-            <!-- Q4 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Ce rol au VRM-urile pe placa de bază a unei console?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Amplifică semnalul video</li>
-                    <li>b) Convertesc 12V DC în tensiunile precise necesare fiecărei componente</li>
-                    <li>c) Stochează datele temporar în memorie</li>
-                    <li>d) Controlează viteza ventilatorului</li>
+                    <li>a) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>b) P = W/t = V &#215; I</li>
+                    <li>c) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
+                    <li>d) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Convertesc 12V DC în tensiunile precise necesare fiecărei componente</strong> — VRM = Voltage Regulator Module. Fiecare componentă necesită o tensiune diferită (1.05V, 1.35V, 3.3V etc.).</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — P = W/t = V &#215; I</strong></p>
                 </details>
             </div>
 
-            <!-- Q5 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>YLOD pe PlayStation 3 este cauzat, la nivel electric, de:</strong></p>
+                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Tensiune prea mare de la priză</li>
-                    <li>b) Lipsa memoriei RAM</li>
-                    <li>c) Creșterea rezistenței de contact la lipiturile BGA din cauza ciclurilor termice</li>
-                    <li>d) Defectarea lentilei laser Blu-ray</li>
+                    <li>a) P = W/t = V &#215; I</li>
+                    <li>b) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
+                    <li>c) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>d) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) Creșterea rezistenței de contact la lipiturile BGA</strong> — Expansiunea/contracția termică repetată crăpa bilele de lipit → contact electric degradat → procesor nefuncțional.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — P = I&#183;V = I&#178;&#183;R = V&#178;/R</strong></p>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 9: EXERCITIU
-         =========================== -->
     <section class="section" id="exercitiu">
         <div class="container">
             <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Proiectează un VRM simplificat</h3>
-                <p>
-                    <strong>Scenariu:</strong> Ești inginer la Microsoft și proiectezi placa de bază pentru viitoarea consolă Xbox. SoC-ul tău necesită:
-                </p>
+                <h3>🧠 Exercițiu: Tensiune, Curent și Rezistență</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de tensiunea electrică. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>Tensiune: 1.0V DC</li>
-                    <li>Putere maximă: 120W</li>
-                    <li>Sursa internă (PSU) oferă: 12V DC</li>
-                </ul>
-                <p><strong>Sarcini:</strong></p>
-                <ul class="specs-list">
-                    <li>1. Calculează curentul maxim necesar pentru SoC (I = P / V).</li>
-                    <li>2. Dacă fiecare fază VRM poate gestiona maxim 25A, câte faze minime ai nevoie?</li>
-                    <li>3. Adaugă 20% headroom de siguranță la numărul de faze. Câte faze alegi în final?</li>
-                    <li>4. Traseul de alimentare de pe PCB are o rezistență totală de 0.005Ω. Calculează puterea disipată ca și căldură pe traseu (P = I² × R).</li>
-                    <li>5. Eficiența VRM-ului tău este 90%. Câți Wați se pierd ca și căldură doar în VRM?</li>
-                    <li>6. Calculează puterea totală generată ca și căldură (traseu + VRM + SoC). Cât trebuie să disipeze sistemul de răcire?</li>
+                    <li>1. Defineste pe scurt: tensiunea electrică.</li>
+                    <li>2. Ce rol are curentul electric în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre tensiunea electrică și rezistența electrică.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> I = P / V = 120W / 1.0V = <strong>120A</strong></p>
-                        <p><strong>2.</strong> 120A / 25A = <strong>4.8 → minim 5 faze</strong></p>
-                        <p><strong>3.</strong> 5 × 1.2 = 6 faze. Rotunjit: <strong>6 faze</strong> (sau 7 pentru siguranță suplimentară)</p>
-                        <p><strong>4.</strong> P = I² × R = 120² × 0.005 = 14400 × 0.005 = <strong>72W pe traseu</strong>. Aceasta este o valoare inacceptabilă! Traseul are rezistență prea mare. Soluție: plane-uri de cupru masive, layer-e multiple, via stitching.</p>
-                        <p><strong>5.</strong> Putere totală din PSU: P_input = P_output / eficiență = 120W / 0.9 = 133.3W. Pierderi VRM = 133.3W - 120W = <strong>13.3W</strong></p>
-                        <p><strong>6.</strong> Căldură totală: SoC (120W) + VRM (13.3W) + traseu (72W, dar TREBUIE redus prin design la sub 5W) ≈ <strong>~138W</strong> minim. Sistemul de răcire trebuie să evacueze cel puțin 140W continuu.</p>
+                        <p><strong>1.</strong> Simboluri comune: V, ∆V, U, ∆U.</p>
+                        <p><strong>2.</strong> Dispozitive active (surse de putere): energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</p>
+                        <p><strong>3.</strong> Conceptele studiate sunt aplicate direct &#238;n proiectarea hardware-ului consolelor.</p>
                     </div>
                 </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -640,3 +385,20 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

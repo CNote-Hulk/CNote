@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 2.5 — Surse în Comutație (SMPS): Alimentare Modernă">
+    <meta name="description" content="Lecția 2.5 — Regulatoare de tensiune">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 2.5 — SMPS — Console Notebook</title>
+    <title>Lecția 2.5 — Regulatoare de tensiune — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — Electronică de Bază</p>
-            <h1>Lecția 2.5 — Surse în Comutație (SMPS)</h1>
-            <p>Cum PSU-ul PS5 convertește AC din priză în DC stabil pentru toată consola.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.5 — Regulatoare de tensiune</h1>
+            <p>LDO, VRM, stabilizare tensiune</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                                <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>SMPS (Switch-Mode Power Supply):</strong> Sursă de alimentare care folosește comutarea rapidă a MOSFET-urilor pentru a converti și regula tensiuni.</p>
-                <p>Alternativa la Linear PSU (vechi, fierbinte, ineficient). Dominator în console și electronice moderne.</p>
-                <p>PS5: SMPS 450W cu eficiență 88-92%. Mic, compact, răcit bine. AC 230V → DC 12V, 5V, 3.3V, 1.05V core CPU/GPU.</p>
+                <p>Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și c&#226;nd tensiunea de intrare este foarte apropiată de tensiunea de ieșire</p>
+                <p>Această lecție acoperă: <strong>LDO</strong>, <strong>VRM</strong>, <strong>stabilizare tensiune</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,102 +53,213 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Arhitectura SMPS</h3>
-                <p><strong>Cinci etape principale:</strong></p>
+                <h3>2.5.1 — Definiție LDO</h3>
                 <ul class="specs-list">
-                    <li><strong>1. AC Input:</strong> 230V AC din priză. Frecvență 50Hz.</li>
-                    <li><strong>2. Rectificare:</strong> Diode Schottky în punte, 4 diode. AC → DC pulsant ~320V.</li>
-                    <li><strong>3. Filtrare:</strong> Condensatori electroliți masivi (4700µF, 3000µF) netezesc la ~310V.</li>
-                    <li><strong>4. Invertor de comutare:</strong> MOSFET-uri comută la 50-150kHz. Transformator mic reduce la tensiuni secundare.</li>
-                    <li><strong>5. Rectificare secundară:</strong> Diode pe secundar (Schottky). DC la ieșire.</li>
+                    <li>Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și c&#226;nd tensiunea de intrare este foarte apropiată de tensiunea de ieșire</li>
+                    <li><strong>Avantaje față de alte regulatoare DC-DC:</strong> absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitate mai simplă de design</li>
+                    <li><strong>Dezavantaj:</strong> regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                    <li>Componente principale constau dintr-o referință de tensiune (bandgap reference), un amplificator, și un element de trecere (pass element)</li>
+                    <li><strong>Primul LDO ajustabil:</strong> prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Transformator în SMPS vs Linear</h3>
-                <p><strong>Linear PSU:</strong> Transformator mare (50Hz), necesită volum. Eficiență 60-70%.</p>
-                <p><strong>SMPS:</strong> Transformator mic (100kHz+). Comutare rapidă permite fier mai puțin. 500mL, eficiență 88-92%.</p>
-                <p>Raportul transformării: N = f_primary / f_secondary. Din 320V la 5V: 320/5 = 64:1.</p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Feedback și Control Tensiune</h3>
-                <p>Transformator secundar măsoară tensiune și completează feedback la controller IC pe primar.</p>
-                <p><strong>Optocoupler (optoisolator):</strong> Transmite semnal de feedback prin izolație optic (LED + fotodiodf). Protejează circuitul primar de perturbații secundar.</p>
-                <p><strong>Feedback loop:</strong> Dacă V_output scade, feedback reduce, PWM crește (comutare mai lungă), output crește. Compensare automată.</p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Protecții SMPS</h3>
+                <h3>2.5.2 — Componente și reglare</h3>
                 <ul class="specs-list">
-                    <li><strong>OCP (Over-Current):</strong> Dacă curent depășiți, PWM se oprește. Protecție scurtcircuit.</li>
-                    <li><strong>OVP (Over-Voltage):</strong> Dacă V_output > limita, PWM reduce sau oprește.</li>
-                    <li><strong>OTP (Over-Temperature):</strong> Termistor pe PCB. Dacă > 80°C, PWM reduce. > 100°C oprire urgență.</li>
-                    <li><strong>Soft-start:</strong> La pornire, PWM creşte încet în loc de salt. Protecție șoc.</li>
-                    <li><strong>Hold-up time:</strong> Dacă AC se pierde, condensatori mari dau putere pentru câteva milisecunde. Consola nu se resetează instantaneu.</li>
+                    <li><strong>Componente principale:</strong> power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li>O intrare a amplificatorului diferențial monitorizează fracțiunea tensiunii de ieșire (determinată de raportul R1/R2)</li>
+                    <li><strong>A doua intrare:</strong> referință de tensiune stabilă (bandgap reference)</li>
+                    <li>Dacă tensiunea de ieșire crește prea mult, comanda elementului de putere se ajustează pentru a menține tensiune constantă</li>
+                    <li><strong>Topologie:</strong> colector/drenă deschisă (open collector/drain) – spre deosebire de emitter follower la regulatoare non-LDO</li>
+                    <li>Aceasta permite ca dropout voltage să fie la fel de mic ca tensiunea de saturație a tranzistorului</li>
+                    <li><strong>Formula tensiune de ieșire:</strong> Vout = (1 + R1/R2) &#215; Vref</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Eficiență și Pierderi</h3>
-                <p>Pierderi SMPS modern:</p>
+                <h3>2.5.3 — Eficiență și disipare termică</h3>
                 <ul class="specs-list">
-                    <li>Diode rectificare: 3-5% (0.35V × curent)</li>
-                    <li>Transformator (cuore, cupru): 3-4%</li>
-                    <li>MOSFET invertor: 2-3%</li>
-                    <li>Circuite control si standby: 1-2%</li>
-                    <li><strong>Total:</strong> 8-12% pierderi → eficiență 88-92%</li>
+                    <li><strong>Putere disipată:</strong> PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</li>
+                    <li><strong>C&#226;nd IOUT &gt;&gt; IQ (funcționare normală):</strong> PLOSS ≈ (VIN - VOUT) &#215; IOUT</li>
+                    <li><strong>Eficiența simplificată:</strong> η = VOUT / VIN</li>
+                    <li>Curent ridicat și/sau diferența mare &#238;ntre VIN și VOUT → disipare mare de putere</li>
+                    <li>Eficiența scade pe măsură ce diferența VIN - VOUT crește</li>
+                    <li>Disiparea excesivă poate dăuna LDO-ului sau poate cauza oprire termică (thermal shutdown)</li>
                 </ul>
-                <p>PS5 PSU 450W: 450W × 0.10 = 45W pierderi. Asta e puterce care devine căldură. Ventilatoare și radiatori evacuează.</p>
             </div>
-        </div>
-    </section>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizica:</strong> SMPS folosește inducție (transformator), semiconductori (MOSFET, diode) și feedback loop pentru a converti și regula putere.</p>
-                <p><strong>Informatica:</strong> CPU/GPU au nevoie de tensiuni precise. Firmware comunică feedback (solicită mai mult/mai puțin curent). SMPS ajustează automat.</p>
+                <h3>2.5.4 — Curent quiescent</h3>
+                <ul class="specs-list">
+                    <li>IQ = IIN - IOUT (diferența &#238;ntre curentul de intrare și cel de ieșire)</li>
+                    <li>Curentul necesar de circuitul intern al LDO pentru funcționare corectă</li>
+                    <li><strong>Contribuitori principali:</strong> elementul de trecere &#238;n serie, topologia, temperatura ambientală</li>
+                    <li><strong>&#206;n stare inactivă (fără sarcină):</strong> PLOSS = VIN &#215; IQ</li>
+                </ul>
             </div>
-        </div>
-    </section>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Secvență Pornire PS5</h3>
-                <p>1. Apesez butonul ON.</p>
-                <p>2. SMPS (în standby) se activează, PWM soft-start încet.</p>
-                <p>3. Tensiuni secundare (12V, 5V, 3.3V) cresc progresiv.</p>
-                <p>4. Feedback vede V_output reaching nominal, PWM ajustează la normal.</p>
-                <p>5. Rail 1.05V core (pe placa) primește comand de la firmware pentru a activa. VRM local pe placa (buck converter) pornește.</p>
-                <p>6. CPU core 1.05V activat, firmware-ul startează. Consola porneste.</p>
+                <h3>2.5.5 — Filtrare și specificații</h3>
+                <ul class="specs-list">
+                    <li>LDO-urile pot fi folosite ca filtre, util c&#226;nd se folosesc surse switching care introduc ripple</li>
+                    <li>Ripple-ul poate afecta oscilatoare, convertoare de date, sisteme RF</li>
+                    <li><strong>PSRR (Power Supply Rejection Ratio):</strong> capacitatea LDO de a respinge ripple-ul de la intrare</li>
+                    <li>PSRR = ΔVIN&#178; / ΔVOUT&#178; (exprimat &#238;n dB)</li>
+                    <li><strong>Exemplu:</strong> PSRR de 55 dB la 1 MHz atenuează ripple de 1 mV la 1.78 μV la ieșire</li>
+                    <li><strong>LDO-uri de performanță:</strong> PSRR ridicat pe bandă largă (10 Hz - 5 MHz)</li>
+                    <li><strong>Load regulation:</strong> ΔVOUT / ΔIOUT – capacitatea de a menține tensiune stabilă la varierea sarcinii</li>
+                    <li><strong>Line regulation:</strong> ΔVOUT / ΔVIN – capacitatea de a menține tensiune stabilă la varierea tensiunii de intrare</li>
+                    <li><strong>Transient response:</strong> variația maximă a tensiunii de ieșire la schimbare bruscă de curent</li>
+                    <li><strong>Output noise:</strong> zgomot termal, shot noise, flicker noise – contribuie la zgomotul de ieșire</li>
+                </ul>
             </div>
-        </div>
-    </section>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Exemplu Real: Calcul Pierderi SMPS</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenar:</strong> PS5 la 200W load. Intrare AC 230V RMS, curent AC ≈ 1A RMS.</p>
-                <p><strong>Putere absorbita din priză:</strong> 230V × 1A = 230W (cu ceva PF < 1, real ≈ 210-220W).</p>
-                <p><strong>Putere pe consolă:</strong> 200W.</p>
-                <p><strong>Pierderi:</strong> 220W - 200W = 20W = 9.1% pierderi.</p>
-                <p><strong>Distribuție pierderi:</strong> Diode 7W, transformator 6W, MOSFET 4W, control 3W.</p>
-                <p>Eficiență: 200/220 = 90.9%.</p>
+                <h3>2.5.6 — Definiție VRM</h3>
+                <ul class="specs-list">
+                    <li>VRM (Voltage Regulator Module) = convertor buck care furnizează procesorului și chipsetului tensiunea de alimentare corespunzătoare</li>
+                    <li>Convertește +3.3V, +5V sau +12V la tensiuni mai mici necesare dispozitivelor</li>
+                    <li>Permite montarea dispozitivelor cu tensiuni diferite pe aceeași placă de bază</li>
+                    <li>Pe sisteme PC, VRM-ul este tipic alcătuit din dispositive power MOSFET</li>
+                    <li>Majoritatea implementărilor VRM sunt lipite direct pe placa de bază (motherboard)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.5.7 — FIVR și integrare</h3>
+                <ul class="specs-list">
+                    <li>Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU</li>
+                    <li>FIVR (Fully Integrated Voltage Regulator) sau IVR (Integrated Voltage Regulator)</li>
+                    <li>Simplifică designul VRM al plăcii de bază</li>
+                    <li>Procesoarele moderne necesită sub 1.5V tensiune de alimentare</li>
+                    <li><strong>Tendința designerilor CPU:</strong> tensiuni core mai mici → disipare redusă → TDP (Thermal Design Power) mai mic</li>
+                    <li>Plăcile video moderne folosesc și ele VRM datorită cerințelor ridicate de putere/curent</li>
+                    <li>VRM-urile pot genera căldură semnificativă, necesit&#226;nd radiatoare separate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.5.8 — VID (Voltage Identification)</h3>
+                <ul class="specs-list">
+                    <li>Procesorul comunică VRM-ului tensiunea și curentul corecte la pornire prin biți VID</li>
+                    <li>VRM-ul furnizează inițial o tensiune standard logicii VID a procesorului</li>
+                    <li>Logica VID trimite codul VID &#238;napoi la VRM, care apoi reglează tensiunea cerută</li>
+                    <li>Switch-mode buck converter ajustează ieșirea conform codului VID</li>
+                    <li>VID de 5 biți → maxim 32 tensiuni de ieșire distincte</li>
+                    <li>VID de 5, 6, sau 8 biți – tensiuni &#238;ntre 0.5V și 3.5V (din 2008)</li>
+                    <li>Permite folosirea aceluiași PSU pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>Reduce consumul de putere &#238;n perioadele de inactivitate prin scăderea tensiunii</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.5.9 — VRM și overclocking</h3>
+                <ul class="specs-list">
+                    <li>Calitatea VRM-ului influențează direct potențialul de overclocking al plăcii de bază</li>
+                    <li>Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite</li>
+                    <li>O alimentare stabilă este necesară pentru overclocking reușit</li>
+                    <li>Un chip forțat dincolo de setările din fabrică crește consumul de putere → VRM-ul trebuie să se adapteze</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>FIVR și integrare</h3>
+                <ul class="specs-list">
+                    <li><strong>Tendința designerilor CPU:</strong> tensiuni core mai mici → disipare redusă → TDP (Thermal Design Power) mai mic</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ PSU furnizează 0V (mort)</h3><p>Cauza: MOSFET invertor ars, transformator defect, controller IC mort. Nu-i comutare.</p></div>
-            <div class="card"><h3>⚠️ Tensiuni scăzute sub nominal</h3><p>Cauza: Diode defecte, transformator diminuat, feedback rupt.</p></div>
-            <div class="card"><h3>⚠️ PSU se oprește sub load</h3><p>Cauza: OCP declanșat din cauza scurtcircuit pe consolă, sau PSU degradat nu mai furnizează.</p></div>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție VRM</h3>
+                <ul class="specs-list">
+                    <li>VRM (Voltage Regulator Module) = convertor buck care furnizează procesorului și chipsetului tensiunea de alimentare corespunzătoare</li>
+                    <li>Pe sisteme PC, VRM-ul este tipic alcătuit din dispositive power MOSFET</li>
+                    <li>Majoritatea implementărilor VRM sunt lipite direct pe placa de bază (motherboard)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>FIVR și integrare</h3>
+                <ul class="specs-list">
+                    <li>Simplifică designul VRM al plăcii de bază</li>
+                    <li>Plăcile video moderne folosesc și ele VRM datorită cerințelor ridicate de putere/curent</li>
+                    <li>VRM-urile pot genera căldură semnificativă, necesit&#226;nd radiatoare separate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>VID (Voltage Identification)</h3>
+                <ul class="specs-list">
+                    <li>Procesorul comunică VRM-ului tensiunea și curentul corecte la pornire prin biți VID</li>
+                    <li>VRM-ul furnizează inițial o tensiune standard logicii VID a procesorului</li>
+                    <li>Logica VID trimite codul VID &#238;napoi la VRM, care apoi reglează tensiunea cerută</li>
+                    <li>Permite folosirea aceluiași PSU pentru CPU-uri cu tensiuni nominale diferite</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>VRM și overclocking</h3>
+                <ul class="specs-list">
+                    <li>Calitatea VRM-ului influențează direct potențialul de overclocking al plăcii de bază</li>
+                    <li>Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite</li>
+                    <li>Un chip forțat dincolo de setările din fabrică crește consumul de putere → VRM-ul trebuie să se adapteze</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="exemplu">
+        <div class="container">
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Filtrare și specificații</h3>
+                <ul class="specs-list">
+                    <li>LDO-urile pot fi folosite ca filtre, util c&#226;nd se folosesc surse switching care introduc ripple</li>
+                    <li>Ripple-ul poate afecta oscilatoare, convertoare de date, sisteme RF</li>
+                    <li><strong>PSRR (Power Supply Rejection Ratio):</strong> capacitatea LDO de a respinge ripple-ul de la intrare</li>
+                    <li>PSRR = ΔVIN&#178; / ΔVOUT&#178; (exprimat &#238;n dB)</li>
+                    <li><strong>Exemplu:</strong> PSRR de 55 dB la 1 MHz atenuează ripple de 1 mV la 1.78 μV la ieșire</li>
+                    <li><strong>LDO-uri de performanță:</strong> PSRR ridicat pe bandă largă (10 Hz - 5 MHz)</li>
+                    <li><strong>Load regulation:</strong> ΔVOUT / ΔIOUT – capacitatea de a menține tensiune stabilă la varierea sarcinii</li>
+                    <li><strong>Line regulation:</strong> ΔVOUT / ΔVIN – capacitatea de a menține tensiune stabilă la varierea tensiunii de intrare</li>
+                    <li><strong>Transient response:</strong> variația maximă a tensiunii de ieșire la schimbare bruscă de curent</li>
+                    <li><strong>Output noise:</strong> zgomot termal, shot noise, flicker noise – contribuie la zgomotul de ieșire</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>FIVR și integrare</h3>
+                <ul class="specs-list">
+                    <li>Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="probleme">
+        <div class="container">
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Componente și reglare</h3>
+                    <p>Componente principale: power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -153,13 +268,15 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>SMPS:</strong> Switch-Mode Power Supply, comută rapid MOSFET pentru a regula putere.</li>
-                    <li><strong>5 etape:</strong> AC input → rectificare → filtrare → invertor comutare → rectificare secundară → DC ieșire.</li>
-                    <li><strong>Transformator mic:</strong> 100kHz+ permite fier mic vs linear 50Hz mare.</li>
-                    <li><strong>Eficiență:</strong> 88-92% modern vs 60-70% linear.</li>
-                    <li><strong>Feedback:</strong> Optocoupler izolează și transmite semnal de control.</li>
-                    <li><strong>Protecții:</strong> OCP, OVP, OTP, soft-start, hold-up time.</li>
-                    <li>PS5: 450W SMPS, 45W pierderi, răcit pe ventilatoare.</li>
+                    <li><strong>Definiție LDO:</strong> Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și c&#226;nd tensiunea de intrare este foarte apropiată de tensiunea de ieșire</li>
+                    <li><strong>Componente și reglare:</strong> Componente principale: power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li><strong>Eficiență și disipare termică:</strong> Putere disipată: PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</li>
+                    <li><strong>Curent quiescent:</strong> IQ = IIN - IOUT (diferența &#238;ntre curentul de intrare și cel de ieșire)</li>
+                    <li><strong>Filtrare și specificații:</strong> LDO-urile pot fi folosite ca filtre, util c&#226;nd se folosesc surse switching care introduc ripple</li>
+                    <li><strong>Definiție VRM:</strong> VRM (Voltage Regulator Module) = convertor buck care furnizează procesorului și chipsetului tensiunea de alimentare corespunzătoare</li>
+                    <li><strong>FIVR și integrare:</strong> Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU</li>
+                    <li><strong>VID (Voltage Identification):</strong> Procesorul comunică VRM-ului tensiunea și curentul corecte la pornire prin biți VID</li>
+                    <li><strong>VRM și overclocking:</strong> Calitatea VRM-ului influențează direct potențialul de overclocking al plăcii de bază</li>
                 </ul>
             </div>
         </div>
@@ -168,61 +285,129 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Avantaj principal SMPS vs Linear PSU?</strong></p>
-                <ul class="specs-list"><li>a) SMPS mai ieftin</li><li>b) SMPS mic, eficiență 88-92% vs linear mare, 60-70%</li><li>c) Linear mai bun pentru audio</li><li>d) Nicio diferență</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) SMPS mic și eficiență mare</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Avantaje față de alte regulatoare DC-DC?</strong></p>
+                <ul class="specs-list">
+                    <li>a) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
+                    <li>b) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
+                    <li>c) power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li>d) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitate mai simplă de design</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Frecvență comutare SMPS vs Linear?</strong></p>
-                <ul class="specs-list"><li>a) SMPS 50Hz, Linear 100kHz</li><li>b) SMPS 100kHz+, Linear 50Hz</li><li>c) Identic</li><li>d) SMPS 1MHz</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) SMPS 100kHz+, Linear 50Hz</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Componente principale?</strong></p>
+                <ul class="specs-list">
+                    <li>a) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
+                    <li>b) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
+                    <li>c) power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li>d) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Care-i rolul optocoupler-ului în SMPS?</strong></p>
-                <ul class="specs-list"><li>a) Fermoar comutare</li><li>b) Transmite feedback izolat între primar și secundar</li><li>c) Filtrare zgomot</li><li>d) Protecție supratensiune</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Transmite feedback izolat</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Putere disipată?</strong></p>
+                <ul class="specs-list">
+                    <li>a) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                    <li>b) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
+                    <li>c) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
+                    <li>d) PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Ce-i Soft-Start în SMPS?</strong></p>
-                <ul class="specs-list"><li>a) Pornire buton</li><li>b) PWM crește încet la pornire pentru a evita șoc curent</li><li>c) Rezistență serie</li><li>d) Comutare lentă normal</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) PWM crește încet pentru protecție</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Curent quiescent?</strong></p>
+                <ul class="specs-list">
+                    <li>a) IQ = IIN - IOUT (diferența &#238;ntre curentul de intrare și cel de ieșire)</li>
+                    <li>b) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
+                    <li>c) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                    <li>d) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — IQ = IIN - IOUT (diferența &#238;ntre curentul de intrare și cel de ieșire)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebara 5</h3>
-                <p><strong>Eficiență PS5 SMPS și pierderi la 450W nominal?</strong></p>
-                <ul class="specs-list"><li>a) Eficiență 60%, pierderi 180W</li><li>b) Eficiență 88-92%, pierderi 36-54W</li><li>c) Eficiență 99%, pierderi 5W</li><li>d) Eficiență 75%, pierderi 111W</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Eficiență 88-92%, pierderi 36-54W</strong> — Modern SMPS.</p></details>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: PSRR (Power Supply Rejection Ratio)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
+                    <li>b) capacitatea LDO de a respinge ripple-ul de la intrare</li>
+                    <li>c) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
+                    <li>d) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — capacitatea LDO de a respinge ripple-ul de la intrare</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Design Comparativ PSU</h3>
-                <p><strong>Cerință:</strong> Proiectează o sursă de 450W pentru PS5 în două versiuni: Linear și SMPS.</p>
-                <ol class="specs-list"><li>Linear: Estimează dimensiuni transformator (frecvență 50Hz) și racire</li><li>Linear: Calculează pierderi și eficiență (estimare 65%)</li><li>SMPS: Estimează transformator (130kHz)</li><li>SMPS: Calculează pierderi si eficiență (estimare 90%)</li><li>Comparație: Volum, greutate, cost, consum anual vs timp PSU linear</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1. Linear:</strong> Transformator 50Hz → volum mare (de 5-10 ori mai mare). Răcire activ (ventilator masiv).</p>
-                    <p><strong>2. Linear:</strong> Pierderi = 450W × (1-0.65) = 157.5W. Fierbinte! Necesită radiator imens.</p>
-                    <p><strong>3. SMPS:</strong> Transformator 130kHz → volum mic (1/5 din linear). Răcire pasiv (radiator oțel).</p>
-                    <p><strong>4. SMPS:</strong> Pierderi = 450W × (1-0.90) = 45W. Multe câturi mai puțin!</p>
-                    <p><strong>5.</strong> Comparație:</p>
-                    <ul class="specs-list">
-                        <li>Linear: 5L volum, 3kg, 100$, zgomot ventilator. Consum anual linear = consum constant 45W.</li>
-                        <li>SMPS: 1L volum, 0.8kg, 40$, liniștit. Consum anual = 45W divis.</li>
-                        <li>Costuri anuale: (450W/0.65 - 450W) / 8760h = 91W × 8760h = 797kWh vs (450W/0.90 - 450W) / 8760h = 50W × 8760h = 438kWh. Diferență 359kWh/an ≈ $180 pe an. SMPS plătit în 3 luni din economii energie!</li>
-                    </ul>
-                </div></details>
+                <h3>🧠 Exercițiu: Regulatoare de tensiune</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de LDO. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: LDO.</li>
+                    <li>2. Ce rol are VRM în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre LDO și stabilizare tensiune.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și c&#226;nd tensiunea de intrare este foarte apropiată de tensiunea de ieșire</p>
+                        <p><strong>2.</strong> Componente principale: power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</p>
+                        <p><strong>3.</strong> Putere disipată: PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -299,3 +484,15 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 7.3 — TDP și temperatură: limitele fizice ale performanței">
+    <meta name="description" content="Lecția 7.3 — TDP și temperatură">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 7.3 — TDP și Temperatură — Console Notebook</title>
+    <title>Lecția 7.3 — TDP și temperatură — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — Performanță și Grafică</p>
-            <h1>Lecția 7.3 — TDP și Temperatură</h1>
-            <p>De ce performanța este limitată de căldură și putere.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — PERFORMANȚĂ ȘI GRAFICĂ</p>
+            <h1>Lecția 7.3 — TDP și temperatură</h1>
+            <p>TDP, disiparea căldurii, temperatură de funcționare</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>TDP (Thermal Design Power):</strong> Puterea maximă de căldură pe care sistemul de răcire trebuie să o disipe.</p>
-                <p>PS5 are TDP ~200W. Dacă depășește, consola reduce frecvența (throttling).</p>
-                <p>Temperatura este limita fizică a performanței.</p>
+                <p>1. Nominal TDP – frecvența și TDP-ul nominal</p>
+                <p>Această lecție acoperă: <strong>TDP</strong>, <strong>disiparea căldurii</strong>, <strong>temperatură de funcționare</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,73 +53,425 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1 — TDP și Power Budget</h3>
-                <p>TDP este o limită termică, nu electrică. Dar puterea electrică se transformă în căldură.</p>
-                <p>CPU+GPU împart același buget. Dacă GPU consumă 150W, CPU rămâne cu ~50W.</p>
+                <h3>7.3.1 — Definiția TDP</h3>
+                <ul class="specs-list">
+                    <li>Thermal design power (TDP), cunoscut și ca thermal design point, este cantitatea maximă de căldură pe care o componentă de calculator (CPU, GPU sau system on a chip) o poate genera și pe care sistemul de răcire este proiectat să o disipeze &#238;n timpul funcționării normale la frecvența de bază (non-turbo)</li>
+                    <li>Puterea maximă (peak power rating) pentru un microprocesor este de obicei 1,5 ori valoarea TDP</li>
+                    <li>GPU-urile au discrepanțe și mai mari &#238;ntre puterea de v&#226;rf și TDP</li>
+                    <li>TDP NU este consum de energie, ci valoarea termică pentru care trebuie proiectat sistemul de răcire</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.2 — Relația putere-frecvență</h3>
-                <p>Putere dinamică: P ∝ C × V² × f.</p>
-                <p>Creșterea frecvenței necesită tensiune mai mare, ceea ce ridică puterea exponențial.</p>
+                <h3>7.3.2 — Calculul TDP și ACP</h3>
+                <ul class="specs-list">
+                    <li>Average CPU Power (ACP) este consumul de energie al procesoarelor sub utilizare &quot;medie&quot; zilnică, definit de AMD pentru procesoarele K10 (Opteron 8300 și 2300)</li>
+                    <li>TDP-ul Intel (Pentium, Core 2) măsoară consumul de energie sub sarcină mare – numeric mai mare dec&#226;t ACP</li>
+                    <li><strong>ACP include benchmarks:</strong> TPC-C, SPECcpu2006, SPECjbb2005, STREAM Benchmark (memory bandwidth)</li>
+                    <li>TDP-ul unui CPU poate fi subestimat – aplicații intense (encoding video, jocuri) pot face CPU-ul să depășească TDP-ul specificat → therm-trip (oprire) sau throttling (reducerea vitezei)</li>
+                    <li>Therm-trip catastrofic apare doar la defecțiune gravă a răcirii (ventilator nefuncțional, heatsink montat greșit)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.3 — Thermal Headroom</h3>
-                <p>Diferența dintre temperatura actuală și limita maximă (ex: 85°C vs 100°C).</p>
-                <p>Headroom mic = risc de throttling. Headroom mare = performanță constantă.</p>
+                <h3>7.3.3 — Exemplu de sistem de răcire</h3>
+                <ul class="specs-list">
+                    <li>Sistemul de răcire al unui laptop poate fi proiectat pentru TDP 20W → poate disipa 20W fără a depăși temperatura maximă de joncțiune (junction temperature)</li>
+                    <li><strong>Metode de răcire:</strong> heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</li>
+                    <li>De obicei se folosește o combinație a acestor metode</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4 — Sensor Feedback</h3>
-                <p>APU are senzori de temperatură și curent. Firmware ajustează clock pentru a menține TDP.</p>
-                <p>Controlul este rapid (ms). De aceea fluctuațiile frecvenței apar în load variabil.</p>
+                <h3>7.3.4 — Comparabilitatea TDP &#238;ntre producători</h3>
+                <ul class="specs-list">
+                    <li>Marginile de siguranță și definițiile variază &#238;ntre producători → TDP-ul NU se poate compara precis &#238;ntre producători diferiți</li>
+                    <li>TDP-ul este adesea specificat pentru familii de procesoare, modelele de bază consum&#226;nd semnificativ mai puțin dec&#226;t cele de top</li>
+                    <li>P&#226;nă &#238;n ~2006, AMD raporta puterea maximă ca TDP; Intel a schimbat practica cu procesoarele Conroe</li>
+                    <li>Intel calculează TDP ca puterea pe care heatsink-ul și ventilatorul trebuie să o disipeze sub sarcină susținută</li>
+                    <li>Intel NU include complet Turbo Boost &#238;n TDP (din cauza limitelor de timp), AMD include Turbo Core (care forțează &#238;ntotdeauna puterea maximă)</li>
+                    <li>Din generația a 12-a Intel, TDP a fost &#238;nlocuit cu PBP (Processor Base Power)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.5 — Thermal Throttling</h3>
-                <p>Când temperatura depășește pragul, clock scade.</p>
-                <p>Rezultatul: FPS scade, dar hardware rămâne sigur.</p>
+                <h3>7.3.5 — TDP multiplu (cTDP)</h3>
+                <ul class="specs-list">
+                    <li>Configurable TDP (cTDP) / programmable TDP / TDP power cap – mod de funcționare al procesoarelor Intel mobile (din ianuarie 2014) și AMD (din iunie 2012)</li>
+                    <li>Permite ajustarea valorilor TDP prin modificarea comportamentului și nivelurilor de performanță</li>
+                    <li>Trei moduri tipice cTDP:</li>
+                </ul>
+                <p>1. Nominal TDP – frecvența și TDP-ul nominal</p>
+                <p>2. cTDP down – TDP mai mic, frecvență garantată mai mică (funcționare mai silențioasă/rece)</p>
+                <p>3. cTDP up – TDP mai mare, frecvență garantată mai mare (c&#226;nd există răcire suplimentară)</p>
+                <ul class="specs-list">
+                    <li><strong>Exemplu:</strong> procesoare mobile Haswell suportă cTDP up, cTDP down sau ambele</li>
+                    <li>Intel SDP (Scenario Design Power) – introdus 2013 pentru procesoare Y-series cu consum redus, punct termic de referință pentru scenarii din lumea reală</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.6 — Fundamentele managementului termic</h3>
+                <ul class="specs-list">
+                    <li><strong>Calea de conducție termică:</strong> de la carcasa CPU → aer ambient prin heatsink</li>
+                    <li>Parametri:</li>
+                </ul>
+                <p>Pd (Watt) = puterea termică generată de CPU, de disipat &#238;n ambient</p>
+                <p>Rca (&#176;C/W) = rezistența termică a heatsink-ului (&#238;ntre carcasa CPU și aerul ambiant)</p>
+                <p>Tc (&#176;C) = temperatura maximă admisă a carcasei CPU (pentru performanțe complete)</p>
+                <p>Ta (&#176;C) = temperatura maximă anticipată a aerului ambiant la intrarea ventilatorului</p>
+                <ul class="specs-list">
+                    <li><strong>Formula fundamentală:</strong> (Tc − Ta) = Pd &#215; Rca</li>
+                    <li><strong>Rearanjat:</strong> Pd = (Tc − Ta) / Rca, unde Pd poate fi &#238;nlocuit cu TDP</li>
+                    <li>Calea de disipare prin PCB-ul plăcii de bază are rezistență termică cu ordine de mărime mai mare dec&#226;t heatsink-ul → poate fi neglijată</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.7 — Probleme cu TDP</h3>
+                <ul class="specs-list">
+                    <li>Producătorii nu dezvăluie condițiile exacte de definire a TDP</li>
+                    <li><strong>Lipsesc de obicei:</strong> Tc maxim, Ta corespunzător, detalii despre sarcina computațională</li>
+                    <li><strong>Intel:</strong> TDP = consum sub &quot;sarcina teoretică maximă&quot; / &quot;aplicații reale&quot; (fără a specifica care)</li>
+                    <li><strong>Concluzii:</strong> compararea TDP &#238;ntre producători diferiți nu este foarte semnificativă</li>
+                    <li>Selecția unui heatsink poate duce la supra&#238;ncălzire sau supradimensionare</li>
+                    <li><strong>Abordare sigură:</strong> safety margin de 1,5&#215; TDP, țin&#226;nd cont de turbo overclocking</li>
+                    <li>Temperatura mai mică a joncțiunii silicon → durată de viață mai lungă (ecuația Arrhenius)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.8 — Detalii AMD despre TDP</h3>
+                <ul class="specs-list">
+                    <li><strong>GamersNexus (octombrie 2019):</strong> tabel cu temperaturi de carcasă și ambientale direct de la AMD pentru Ryzen 5, 7, 9</li>
+                    <li><strong>Formula AMD:</strong> TDP = (Tc − Ta) / Rca</li>
+                    <li><strong>TDP-uri declarate:</strong> 65W–105W</li>
+                    <li><strong>Temperatura ambiantă AMD:</strong> +42&#176;C</li>
+                    <li><strong>Temperaturi carcasă:</strong> +61,8&#176;C – +69,3&#176;C</li>
+                    <li><strong>Rezistențe termice carcasă-ambient:</strong> 0,189 – 0,420 &#176;C/W</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.9 — Definiția temperaturii de joncțiune</h3>
+                <ul class="specs-list">
+                    <li>Junction temperature = temperatura semiconductorului real dintr-un dispozitiv electronic</li>
+                    <li>&#206;n funcționare, este mai mare dec&#226;t temperatura carcasei și temperatura exterioară</li>
+                    <li>Diferența = cantitatea de căldură transferată de la joncțiune la carcasă &#215; rezistența termică joncțiune-carcasă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.10 — Efecte microscopice</h3>
+                <ul class="specs-list">
+                    <li>Proprietăți fizice ale semiconductoarelor dependente de temperatură: rata de difuzie a dopanților, mobilitatea purtătorilor de sarcină, producția termică de purtători de sarcină</li>
+                    <li><strong>La temperaturi extreme ridicate:</strong> creșterea disipării locale poate duce la thermal runaway → defecțiune tranzitorie sau permanentă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.11 — Calculul temperaturii maxime de joncțiune (TJMax)</h3>
+                <ul class="specs-list">
+                    <li>TJMax specificat &#238;n datasheet, folosit la calcularea rezistenței termice carcasă-ambient necesare</li>
+                    <li><strong>Formula:</strong> TJ = TA + (RθJA &#215; PD)</li>
+                </ul>
+                <p>TJ = temperatura joncțiunii (&#176;C)</p>
+                <p>TA = temperatura ambientală (&#176;C)</p>
+                <p>RθJA = rezistența termică joncțiune-ambient (&#176;C/W)</p>
+                <p>PD = puterea disipată &#238;n pachet (W)</p>
+                <ul class="specs-list">
+                    <li><strong>Procesoare moderne (Intel, AMD, Qualcomm):</strong> temperatura este măsurată printr-o rețea de senzori</li>
+                    <li><strong>C&#226;nd senzorul detectează depășirea iminentă a TJ:</strong> se aplică clock gating, clock stretching, reducerea vitezei (thermal throttling)</li>
+                    <li><strong>Dacă mecanismele nu compensează suficient:</strong> dispozitivul se oprește (shutdown) pentru a preveni daune permanente</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.12 — Generatoare de căldură</h3>
+                <ul class="specs-list">
+                    <li>Circuitele integrate (CPU, GPU) sunt principalele generatoare de căldură &#238;n calculatoarele moderne</li>
+                    <li><strong>Generarea de căldură poate fi redusă prin:</strong> design eficient, selecția parametrilor de operare (tensiune și frecvență)</li>
+                    <li>Temperatura componentei crește p&#226;nă la echilibrul termic: căldura transferată = căldura produsă</li>
+                    <li>Pentru funcționare fiabilă, temperatura NU trebuie să depășească niciodată valoarea maximă permisă (unică pentru fiecare componentă)</li>
+                    <li><strong>Temperatura critică:</strong> junction temperature (nu temperatura carcasei, heatsink-ului sau ambientală)</li>
+                    <li><strong>Factori care &#238;mpiedică răcirea:</strong> praf (izolant termic + impediment al fluxului de aer), flux de aer slab (turbulențe), contact termic slab</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.13 — Prevenirea daunelor</h3>
+                <ul class="specs-list">
+                    <li>Componentele cu senzori termici integrati (CPU, placa de bază, chipset, GPU) → pot opri computerul la temperaturi ridicate</li>
+                    <li><strong>&#206;nainte de oprire:</strong> throttling prin dynamic frequency scaling → reducerea frecvenței și tensiunii sau dezactivarea funcțiilor non-esențiale</li>
+                    <li>Throttling controlat la nivel BIOS (desktopuri și laptopuri)</li>
+                    <li><strong>&#206;n smartphone-uri și tablete:</strong> throttling comun din cauza componentelor ambalate str&#226;ns, fără răcire activă, plus căldura transferată de la m&#226;na utilizatorului</li>
+                    <li><strong>Prevenire:</strong> inspecție vizuală a coolerului/ventilatoarelor, curățarea prafului, &#238;nlocuirea pastei termice regulat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.14 — Răcirea cu aer – Heatsink-uri</h3>
+                <ul class="specs-list">
+                    <li>Componenta se montează &#238;n contact termic bun cu un heatsink (dispozitiv pasiv cu capacitate termică mare, suprafață mare)</li>
+                    <li>Heatsink-uri de obicei din aluminiu sau cupru, cu aripioare</li>
+                    <li>Strat subțire de pastă termică (thermal grease), pad termic sau adeziv termic &#238;ntre componentă și heatsink</li>
+                    <li>Cuprul are caracteristici mai bune dec&#226;t aluminiul, dar mai scump</li>
+                    <li><strong>Integrated Heat Spreader (IHS):</strong> placă metalică plată, parte din pachetul CPU, redistribuie căldura local</li>
+                    <li><strong>Pasiv:</strong> fără ventilator, convecție naturală (CPU-uri vechi, componente cu putere mică, sisteme silențioase)</li>
+                    <li><strong>Activ:</strong> cu ventilator atașat, necesar pentru CPU-uri și GPU-uri moderne care consumă multă energie</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.15 — Răcirea cu lichid</h3>
+                <ul class="specs-list">
+                    <li><strong>Lichid de transfer termic:</strong> apă distilată cu aditivi (cel mai comun &#238;n PC desktop)</li>
+                    <li><strong>Avantajele apei:</strong> capacitate calorică specifică și conductivitate termică superioare aerului</li>
+                    <li><strong>Principiu identic cu motorul auto:</strong> pompă → waterblock pe CPU → radiator → ventilator</li>
+                    <li><strong>All-in-One (AIO):</strong> kit sigilat cu radiator, ventilator(e) și waterblock cu pompă integrată → simplifică instalarea</li>
+                    <li>Inventat de Asetek (closed-loop liquid cooler); popularitate crescută &#238;n anii 2010</li>
+                    <li><strong>Dezavantaje:</strong> complexitate, risc de scurgere (lichid pe componente electronice → daune), zgomot de la pompe</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.16 — Heat pipes și camere de vapori</h3>
+                <ul class="specs-list">
+                    <li><strong>Heat pipe:</strong> tub gol cu lichid de transfer termic → lichidul absoarbe căldura, se evaporă, vaporii se deplasează spre capătul rece, condensează, lichidul revine prin gravitație/acțiune capilară</li>
+                    <li>Conductivitate termică efectivă mult mai mare dec&#226;t materialele solide</li>
+                    <li><strong>Vapor chamber:</strong> funcționează pe aceleași principii, dar sub formă de placă/foaie &#238;n loc de tub</li>
+                    <li>Utilizate &#238;n laptopuri, PC-uri compacte, GPU-uri de performanță</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.17 — Alte metode extreme (informative)</h3>
+                <ul class="specs-list">
+                    <li><strong>Azot lichid:</strong> −196&#176;C, folosit pentru overclocking extrem (sesiuni scurte)</li>
+                    <li><strong>Heliu lichid:</strong> −269&#176;C, mai scump și dificil de stocat</li>
+                    <li><strong>Răcire Peltier (termoelectrică):</strong> 10-15% eficiență vs 40-60% la sisteme convenționale; poate produce temperaturi sub ambient</li>
+                    <li><strong>Răcire cu compresie de vapori (phase-change):</strong> temperaturi de −15&#176;C la −150&#176;C</li>
+                    <li><strong>Liquid immersion cooling:</strong> imersia completă &#238;n lichid dielectric (ulei mineral, Fluorinert, 3M Novec)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.18 — Reducerea căldurii generate (Soft cooling)</h3>
+                <ul class="specs-list">
+                    <li><strong>Undervolting:</strong> funcționarea cu tensiuni sub specificații → consum mai mic → mai puțină căldură</li>
+                    <li><strong>Underclocking:</strong> reducerea frecvenței prin software/BIOS</li>
+                    <li><strong>Soft cooling:</strong> instrucțiuni HLT, power management → oprirea subpărților CPU neutilizate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.19 — Definiția temperaturii de funcționare</h3>
+                <ul class="specs-list">
+                    <li>Operating temperature = intervalul de temperatură al mediului ambiant local la care un dispozitiv electric sau mecanic funcționează</li>
+                    <li>Dispozitivul funcționează eficient &#238;ntr-un interval specificat: de la temperatura minimă la temperatura maximă de funcționare</li>
+                    <li>&#206;n afara intervalului de funcționare sigură → dispozitivul poate eșua</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.20 — Grade de temperatură pentru semiconductoare</h3>
+                <ul class="specs-list">
+                    <li><strong>Commercial:</strong> 0&#176;C – 70&#176;C</li>
+                    <li><strong>Industrial:</strong> −40&#176;C – 85&#176;C</li>
+                    <li><strong>Military:</strong> −55&#176;C – 125&#176;C</li>
+                    <li>Fiecare producător definește propriile grade → trebuie verificat datasheet-ul</li>
+                    <li><strong>Factori care afectează intervalul:</strong> puterea disipată de dispozitiv</li>
+                    <li><strong>Temperatura prag (threshold temperature):</strong> temperatura maximă normală de funcționare</li>
+                    <li><strong>Temperatura maximă de funcționare:</strong> dincolo de care dispozitivul nu mai funcționează</li>
+                    <li><strong>&#206;ntre cele două:</strong> funcționare la nivel non-peak (derating)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.3.21 — Temperatura de joncțiune &#238;n context de funcționare</h3>
+                <ul class="specs-list">
+                    <li><strong>Formula:</strong> TJ = Ta + PD &#215; Rja</li>
+                </ul>
+                <p>TJ = temperatura joncțiunii (&#176;C)</p>
+                <p>Ta = temperatura ambientală (&#176;C)</p>
+                <p>PD = disiparea puterii circuitului integrat (W)</p>
+                <p>Rja = rezistența termică joncțiune-ambient (&#176;C/W)</p>
+                <ul class="specs-list">
+                    <li><strong>Procesoarele Intel:</strong> trei grade – commercial, industrial, extended</li>
+                    <li><strong>Răcirea corectă:</strong> heatsink montat corespunzător + flux de aer eficient prin carcasă</li>
+                    <li>Sisteme proiectate pentru protecție contra condițiilor neobișnuite (temperaturi ambientale mai mari, defecțiune a componentelor de management termic)</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția TDP</h3>
+                <ul class="specs-list">
+                    <li>Thermal design power (TDP), cunoscut și ca thermal design point, este cantitatea maximă de căldură pe care o componentă de calculator (CPU, GPU sau system on a chip) o poate genera și pe care sistemul de răcire este proiectat să o disipeze &#238;n timpul funcționării normale la frecvența de bază (non-turbo)</li>
+                    <li>GPU-urile au discrepanțe și mai mari &#238;ntre puterea de v&#226;rf și TDP</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Fundamentele managementului termic</h3>
+                <ul class="specs-list">
+                    <li><strong>Calea de conducție termică:</strong> de la carcasa CPU → aer ambient prin heatsink</li>
+                </ul>
+                <p>Pd (Watt) = puterea termică generată de CPU, de disipat &#238;n ambient</p>
+                <p>Rca (&#176;C/W) = rezistența termică a heatsink-ului (&#238;ntre carcasa CPU și aerul ambiant)</p>
+                <p>Tc (&#176;C) = temperatura maximă admisă a carcasei CPU (pentru performanțe complete)</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Generatoare de căldură</h3>
+                <ul class="specs-list">
+                    <li>Circuitele integrate (CPU, GPU) sunt principalele generatoare de căldură &#238;n calculatoarele moderne</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Prevenirea daunelor</h3>
+                <ul class="specs-list">
+                    <li>Componentele cu senzori termici integrati (CPU, placa de bază, chipset, GPU) → pot opri computerul la temperaturi ridicate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Răcirea cu aer – Heatsink-uri</h3>
+                <ul class="specs-list">
+                    <li><strong>Integrated Heat Spreader (IHS):</strong> placă metalică plată, parte din pachetul CPU, redistribuie căldura local</li>
+                    <li><strong>Pasiv:</strong> fără ventilator, convecție naturală (CPU-uri vechi, componente cu putere mică, sisteme silențioase)</li>
+                    <li><strong>Activ:</strong> cu ventilator atașat, necesar pentru CPU-uri și GPU-uri moderne care consumă multă energie</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Răcirea cu lichid</h3>
+                <ul class="specs-list">
+                    <li><strong>Principiu identic cu motorul auto:</strong> pompă → waterblock pe CPU → radiator → ventilator</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Heat pipes și camere de vapori</h3>
+                <ul class="specs-list">
+                    <li>Utilizate &#238;n laptopuri, PC-uri compacte, GPU-uri de performanță</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Reducerea căldurii generate (Soft cooling)</h3>
+                <ul class="specs-list">
+                    <li><strong>Soft cooling:</strong> instrucțiuni HLT, power management → oprirea subpărților CPU neutilizate</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> Căldura trebuie disipată. Metal, heat pipes și ventilatoare sunt critice.</p>
-                <p><strong>Informatică:</strong> TDP dictează frecvența maximă și FPS.</p>
+                <h3>Fundamentele managementului termic</h3>
+                <ul class="specs-list">
+                    <li>Calea de disipare prin PCB-ul plăcii de bază are rezistență termică cu ordine de mărime mai mare dec&#226;t heatsink-ul → poate fi neglijată</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Overclock CPU</h3>
-                <p>CPU 3.5 GHz la 1.0V consumă 50W. La 4.0 GHz necesită 1.1V → putere crește cu ~30%.</p>
-                <p>TDP depășit → throttling → performanță reală mai mică decât stock.</p>
+                <h3>Calculul TDP și ACP</h3>
+                <ul class="specs-list">
+                    <li>Average CPU Power (ACP) este consumul de energie al procesoarelor sub utilizare &quot;medie&quot; zilnică, definit de AMD pentru procesoarele K10 (Opteron 8300 și 2300)</li>
+                    <li>TDP-ul Intel (Pentium, Core 2) măsoară consumul de energie sub sarcină mare – numeric mai mare dec&#226;t ACP</li>
+                    <li>TDP-ul unui CPU poate fi subestimat – aplicații intense (encoding video, jocuri) pot face CPU-ul să depășească TDP-ul specificat → therm-trip (oprire) sau throttling (reducerea vitezei)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Exemplu de sistem de răcire</h3>
+                <ul class="specs-list">
+                    <li>Sistemul de răcire al unui laptop poate fi proiectat pentru TDP 20W → poate disipa 20W fără a depăși temperatura maximă de joncțiune (junction temperature)</li>
+                    <li><strong>Metode de răcire:</strong> heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</li>
+                    <li>De obicei se folosește o combinație a acestor metode</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Comparabilitatea TDP &#238;ntre producători</h3>
+                <ul class="specs-list">
+                    <li>Marginile de siguranță și definițiile variază &#238;ntre producători → TDP-ul NU se poate compara precis &#238;ntre producători diferiți</li>
+                    <li>TDP-ul este adesea specificat pentru familii de procesoare, modelele de bază consum&#226;nd semnificativ mai puțin dec&#226;t cele de top</li>
+                    <li>P&#226;nă &#238;n ~2006, AMD raporta puterea maximă ca TDP; Intel a schimbat practica cu procesoarele Conroe</li>
+                    <li>Intel calculează TDP ca puterea pe care heatsink-ul și ventilatorul trebuie să o disipeze sub sarcină susținută</li>
+                    <li>Intel NU include complet Turbo Boost &#238;n TDP (din cauza limitelor de timp), AMD include Turbo Core (care forțează &#238;ntotdeauna puterea maximă)</li>
+                    <li>Din generația a 12-a Intel, TDP a fost &#238;nlocuit cu PBP (Processor Base Power)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>TDP multiplu (cTDP)</h3>
+                <ul class="specs-list">
+                    <li>Configurable TDP (cTDP) / programmable TDP / TDP power cap – mod de funcționare al procesoarelor Intel mobile (din ianuarie 2014) și AMD (din iunie 2012)</li>
+                    <li>Intel SDP (Scenario Design Power) – introdus 2013 pentru procesoare Y-series cu consum redus, punct termic de referință pentru scenarii din lumea reală</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Detalii AMD despre TDP</h3>
+                <ul class="specs-list">
+                    <li><strong>GamersNexus (octombrie 2019):</strong> tabel cu temperaturi de carcasă și ambientale direct de la AMD pentru Ryzen 5, 7, 9</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Calculul temperaturii maxime de joncțiune (TJMax)</h3>
+                <ul class="specs-list">
+                    <li>TJMax specificat &#238;n datasheet, folosit la calcularea rezistenței termice carcasă-ambient necesare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția temperaturii de funcționare</h3>
+                <ul class="specs-list">
+                    <li>Dispozitivul funcționează eficient &#238;ntr-un interval specificat: de la temperatura minimă la temperatura maximă de funcționare</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: PS5 în joc heavy</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>Ray tracing + 4K = load maxim. GPU atinge 85°C. Ventilator crește la 80% RPM.</p>
-                <p>Dacă radiatorul este prăfuit, temperatura urcă la 95°C și GPU reduce frecvența. FPS scade cu 10-15%.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ Temperatură mare în standby</h3><p>Semn că ventilatorul sau senzorii nu funcționează corect. Poate cauza degrade în timp.</p></div>
-            <div class="card"><h3>⚠️ Throttling excesiv</h3><p>Pastă termică uscată, radiator colmatat sau TDP setat prea agresiv.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme cu TDP</h3>
+                    <p>Producătorii nu dezvăluie condițiile exacte de definire a TDP</p>
+                    <p>Lipsesc de obicei: Tc maxim, Ta corespunzător, detalii despre sarcina computațională</p>
+                    <p>Intel: TDP = consum sub &quot;sarcina teoretică maximă&quot; / &quot;aplicații reale&quot; (fără a specifica care)</p>
+                    <p>Concluzii: compararea TDP &#238;ntre producători diferiți nu este foarte semnificativă</p>
+                    <p>Selecția unui heatsink poate duce la supra&#238;ncălzire sau supradimensionare</p>
+                    <p>Abordare sigură: safety margin de 1,5&#215; TDP, țin&#226;nd cont de turbo overclocking</p>
+                    <p>Temperatura mai mică a joncțiunii silicon → durată de viață mai lungă (ecuația Arrhenius)</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Răcirea cu lichid</h3>
+                    <p>Dezavantaje: complexitate, risc de scurgere (lichid pe componente electronice → daune), zgomot de la pompe</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -124,10 +480,27 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li>TDP = limită termică de design.</li>
-                    <li>Puterea crește cu V² × f.</li>
-                    <li>Throttling protejează hardware-ul.</li>
-                    <li>Răcirea determină performanța stabilă.</li>
+                    <li><strong>Definiția TDP:</strong> Thermal design power (TDP), cunoscut și ca thermal design point, este cantitatea maximă de căldură pe care o componentă de calculator (CPU, GPU sau system on a chip) o poate genera și pe care siste...</li>
+                    <li><strong>Calculul TDP și ACP:</strong> Average CPU Power (ACP) este consumul de energie al procesoarelor sub utilizare &quot;medie&quot; zilnică, definit de AMD pentru procesoarele K10 (Opteron 8300 și 2300)</li>
+                    <li><strong>Exemplu de sistem de răcire:</strong> Sistemul de răcire al unui laptop poate fi proiectat pentru TDP 20W → poate disipa 20W fără a depăși temperatura maximă de joncțiune (junction temperature)</li>
+                    <li><strong>Comparabilitatea TDP &#238;ntre producători:</strong> Marginile de siguranță și definițiile variază &#238;ntre producători → TDP-ul NU se poate compara precis &#238;ntre producători diferiți</li>
+                    <li><strong>TDP multiplu (cTDP):</strong> Configurable TDP (cTDP) / programmable TDP / TDP power cap – mod de funcționare al procesoarelor Intel mobile (din ianuarie 2014) și AMD (din iunie 2012)</li>
+                    <li><strong>Fundamentele managementului termic:</strong> Calea de conducție termică: de la carcasa CPU → aer ambient prin heatsink</li>
+                    <li><strong>Probleme cu TDP:</strong> Producătorii nu dezvăluie condițiile exacte de definire a TDP</li>
+                    <li><strong>Detalii AMD despre TDP:</strong> GamersNexus (octombrie 2019): tabel cu temperaturi de carcasă și ambientale direct de la AMD pentru Ryzen 5, 7, 9</li>
+                    <li><strong>Definiția temperaturii de joncțiune:</strong> Junction temperature = temperatura semiconductorului real dintr-un dispozitiv electronic</li>
+                    <li><strong>Efecte microscopice:</strong> Proprietăți fizice ale semiconductoarelor dependente de temperatură: rata de difuzie a dopanților, mobilitatea purtătorilor de sarcină, producția termică de purtători de sarcină</li>
+                    <li><strong>Calculul temperaturii maxime de joncțiune (TJMax):</strong> TJMax specificat &#238;n datasheet, folosit la calcularea rezistenței termice carcasă-ambient necesare</li>
+                    <li><strong>Generatoare de căldură:</strong> Circuitele integrate (CPU, GPU) sunt principalele generatoare de căldură &#238;n calculatoarele moderne</li>
+                    <li><strong>Prevenirea daunelor:</strong> Componentele cu senzori termici integrati (CPU, placa de bază, chipset, GPU) → pot opri computerul la temperaturi ridicate</li>
+                    <li><strong>Răcirea cu aer – Heatsink-uri:</strong> Componenta se montează &#238;n contact termic bun cu un heatsink (dispozitiv pasiv cu capacitate termică mare, suprafață mare)</li>
+                    <li><strong>Răcirea cu lichid:</strong> Lichid de transfer termic: apă distilată cu aditivi (cel mai comun &#238;n PC desktop)</li>
+                    <li><strong>Heat pipes și camere de vapori:</strong> Heat pipe: tub gol cu lichid de transfer termic → lichidul absoarbe căldura, se evaporă, vaporii se deplasează spre capătul rece, condensează, lichidul revine prin gravitație/acțiune capilară</li>
+                    <li><strong>Alte metode extreme (informative):</strong> Azot lichid: −196&#176;C, folosit pentru overclocking extrem (sesiuni scurte)</li>
+                    <li><strong>Reducerea căldurii generate (Soft cooling):</strong> Undervolting: funcționarea cu tensiuni sub specificații → consum mai mic → mai puțină căldură</li>
+                    <li><strong>Definiția temperaturii de funcționare:</strong> Operating temperature = intervalul de temperatură al mediului ambiant local la care un dispozitiv electric sau mecanic funcționează</li>
+                    <li><strong>Grade de temperatură pentru semiconductoare:</strong> Commercial: 0&#176;C – 70&#176;C</li>
+                    <li><strong>Temperatura de joncțiune &#238;n context de funcționare:</strong> Formula: TJ = Ta + PD &#215; Rja</li>
                 </ul>
             </div>
         </div>
@@ -136,51 +509,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>TDP este:</strong></p>
-                <ul class="specs-list"><li>a) Putere electrică fixă</li><li>b) Limită termică</li><li>c) Frecvență CPU</li><li>d) FPS maxim</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Limită termică</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: ACP include benchmarks?</strong></p>
+                <ul class="specs-list">
+                    <li>a) heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</li>
+                    <li>b) TPC-C, SPECcpu2006, SPECjbb2005, STREAM Benchmark (memory bandwidth)</li>
+                    <li>c) de la carcasa CPU → aer ambient prin heatsink</li>
+                    <li>d) procesoare mobile Haswell suportă cTDP up, cTDP down sau ambele</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — TPC-C, SPECcpu2006, SPECjbb2005, STREAM Benchmark (memory bandwidth)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Puterea dinamică depinde de:</strong></p>
-                <ul class="specs-list"><li>a) V × f</li><li>b) V² × f</li><li>c) V² × f²</li><li>d) V / f</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) V² × f</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Metode de răcire?</strong></p>
+                <ul class="specs-list">
+                    <li>a) TPC-C, SPECcpu2006, SPECjbb2005, STREAM Benchmark (memory bandwidth)</li>
+                    <li>b) de la carcasa CPU → aer ambient prin heatsink</li>
+                    <li>c) procesoare mobile Haswell suportă cTDP up, cTDP down sau ambele</li>
+                    <li>d) heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Throttling înseamnă:</strong></p>
-                <ul class="specs-list"><li>a) Creștere frecvență</li><li>b) Reducere frecvență pentru răcire</li><li>c) Oprire PSU</li><li>d) Overclock RAM</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Reducere frecvență</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Exemplu?</strong></p>
+                <ul class="specs-list">
+                    <li>a) procesoare mobile Haswell suportă cTDP up, cTDP down sau ambele</li>
+                    <li>b) heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</li>
+                    <li>c) de la carcasa CPU → aer ambient prin heatsink</li>
+                    <li>d) TPC-C, SPECcpu2006, SPECjbb2005, STREAM Benchmark (memory bandwidth)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — procesoare mobile Haswell suportă cTDP up, cTDP down sau ambele</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Overclock fără răcire suficientă duce la:</strong></p>
-                <ul class="specs-list"><li>a) FPS stabil</li><li>b) Throttling și performanță mai mică</li><li>c) Temperatură mai mică</li><li>d) 0 consum</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Throttling</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Calea de conducție termică?</strong></p>
+                <ul class="specs-list">
+                    <li>a) de la carcasa CPU → aer ambient prin heatsink</li>
+                    <li>b) procesoare mobile Haswell suportă cTDP up, cTDP down sau ambele</li>
+                    <li>c) TPC-C, SPECcpu2006, SPECjbb2005, STREAM Benchmark (memory bandwidth)</li>
+                    <li>d) heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — de la carcasa CPU → aer ambient prin heatsink</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Headroom termic înseamnă:</strong></p>
-                <ul class="specs-list"><li>a) Diferența față de limita maximă</li><li>b) Temperatură fixă</li><li>c) Voltaj suplimentar</li><li>d) FPS minim</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>a) Diferența față de limita maximă</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Lipsesc de obicei?</strong></p>
+                <ul class="specs-list">
+                    <li>a) procesoare mobile Haswell suportă cTDP up, cTDP down sau ambele</li>
+                    <li>b) heatsink cu ventilator (convecție forțată), radiație termică, conducție termică</li>
+                    <li>c) TPC-C, SPECcpu2006, SPECjbb2005, STREAM Benchmark (memory bandwidth)</li>
+                    <li>d) Tc maxim, Ta corespunzător, detalii despre sarcina computațională</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — Tc maxim, Ta corespunzător, detalii despre sarcina computațională</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Estimare TDP</h3>
-                <p><strong>Cerință:</strong> CPU consumă 60W, GPU consumă 140W. Care este TDP total? Dacă cooling suportă doar 180W, ce se întâmplă?</p>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p>TDP total = 200W. Cooling 180W → temperatură crește, throttling sau shutdown.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: TDP și temperatură</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de TDP. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: TDP.</li>
+                    <li>2. Ce rol are disiparea căldurii în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre TDP și temperatură de funcționare.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Puterea maximă (peak power rating) pentru un microprocesor este de obicei 1,5 ori valoarea TDP</p>
+                        <p><strong>2.</strong> Average CPU Power (ACP) este consumul de energie al procesoarelor sub utilizare &quot;medie&quot; zilnică, definit de AMD pentru procesoarele K10 (Opteron 8300 și 2300)</p>
+                        <p><strong>3.</strong> Sistemul de răcire al unui laptop poate fi proiectat pentru TDP 20W → poate disipa 20W fără a depăși temperatura maximă de joncțiune (junction temperature)</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -257,3 +706,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 5.4 — Sistem de răcire: Heat pipes, ventilatoare, pastă termică">
+    <meta name="description" content="Lecția 5.4 — Sistemul de răcire">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 5.4 — Răcire — Console Notebook</title>
+    <title>Lecția 5.4 — Sistemul de răcire — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — Anatomia unei Console</p>
-            <h1>Lecția 5.4 — Sistem de răcire</h1>
-            <p>Heat pipes, vapor chamber, ventilatoare și pastă termică. Controlul temperaturii.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — ANATOMIA UNEI CONSOLE</p>
+            <h1>Lecția 5.4 — Sistemul de răcire</h1>
+            <p>disiparea căldurii, heat sink, heat pipe, ventilatoare</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Răcirea:</strong> Modul prin care transferăm căldura de la APU spre aer.</p>
-                <p>PS5 produce 180-200W termic. Fără răcire, temperatura APU urcă la 110°C și consola se oprește.</p>
-                <p>Sistem: heat spreader, heat pipes sau vapor chamber, radiator, ventilator și pastă termică.</p>
+                <p>Heat sink = schimbător de căldură pasiv care transferă căldura generată de un dispozitiv electronic sau mecanic către un fluid (aer, apă, ulei)</p>
+                <p>Această lecție acoperă: <strong>disiparea căldurii</strong>, <strong>heat sink</strong>, <strong>heat pipe</strong>, <strong>ventilatoare</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,80 +53,366 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1 — Transfer de Căldură</h3>
-                <p><strong>Conducție:</strong> Căldura trece prin metal (cupru, aluminiu). Ierarhia: cupru &gt; aluminiu &gt; plastic.</p>
-                <p><strong>Convecție:</strong> Aerul circulă peste radiator și preia căldura.</p>
-                <p><strong>Radiație:</strong> Emisie termică. Minoră față de conducție + convecție.</p>
+                <h3>5.4.1 — Definiție și principiu heat sink</h3>
+                <ul class="specs-list">
+                    <li>Heat sink = schimbător de căldură pasiv care transferă căldura generată de un dispozitiv electronic sau mecanic către un fluid (aer, apă, ulei)</li>
+                    <li>Permite reglarea temperaturii dispozitivului prin disiparea căldurii</li>
+                    <li><strong>&#206;n computere:</strong> răcesc CPU, GPU, chipset-uri și module RAM</li>
+                    <li><strong>Principiul:</strong> legea lui Fourier - conducția căldurii: qk = -k &#215; A &#215; (dT/dx)</li>
+                    <li><strong>Transferul de căldură:</strong> prin convecție (principal), radiație și conducție</li>
+                    <li>Maximizează suprafața de contact cu mediul de răcire (aripioare/fins)</li>
+                    <li><strong>Thermal paste sau thermal pad:</strong> umple golurile de aer &#238;ntre heat sink și heat spreader</li>
+                    <li>Heat sink fabricat din materiale cu conductivitate termică ridicată: aluminiu sau cupru</li>
+                    <li>Fără flux de aer &#238;n jurul heat sink-ului, energia nu poate fi transferată</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2 — Heat Pipes și Vapor Chamber</h3>
-                <p><strong>Heat pipe:</strong> Tub cu lichid intern. Căldura evaporă lichidul, vaporul se mișcă, condensează și transferă căldura.</p>
-                <p><strong>Vapor chamber:</strong> Placă plată cu lichid. Distribuie căldura uniform pe radiator.</p>
-                <p>PS5 revizia nouă folosește vapor chamber pentru distribuție uniformă.</p>
+                <h3>5.4.2 — Materiale și rezistență termică</h3>
+                <ul class="specs-list">
+                    <li><strong>Rezistența termică:</strong> temperatură / putere, exprimată &#238;n &#176;C/W</li>
+                    <li><strong>Model serie de rezistențe:</strong> die→carcasă→heat sink→aer ambient</li>
+                    <li>Suma rezistențelor = rezistență termică totală</li>
+                    <li><strong>Aluminiu:</strong> cel mai comun material, aliaj 1050 conductivitate 229 W/(m&#183;K), capacitate termică 922 J/(kg&#183;K)</li>
+                    <li><strong>Aliaje aluminiu 6060/6061/6063:</strong> conductivitate 166-201 W/(m&#183;K), fabricare prin extrudare, turnare, skiving, frezare</li>
+                    <li><strong>Cupru:</strong> conductivitate ~400 W/(m&#183;K), de ~2x mai bun dec&#226;t aluminiu</li>
+                    <li><strong>Cupru:</strong> de 3x mai dens și mai scump dec&#226;t aluminiu, mai puțin ductil</li>
+                    <li><strong>Heat sink-uri comerciale extrudate:</strong> rezistență 0.4 &#176;C/W (TO-3 mare) p&#226;nă la 85 &#176;C/W (TO-92 clip-on)</li>
+                    <li><strong>Fin efficiency:</strong> eficiența scade de la bază la v&#226;rf (gradient termic)</li>
+                    <li><strong>Spreading resistance:</strong> căldura nu se distribuie uniform prin baza heat sink; vapor chamber sau heat pipe &#238;n bază reduce această problemă</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.3 — Ventilator și Flux de Aer</h3>
-                <p><strong>CFM:</strong> Volum de aer mișcat per minut. Mai mare = răcire mai bună, dar zgomot mai mare.</p>
-                <p><strong>Presiune statică:</strong> Capacitatea de a împinge aer prin radiator dens.</p>
-                <p><strong>PS5:</strong> Ventilator 120 mm, 2300 RPM max, control PWM.</p>
+                <h3>5.4.3 — Tipuri de aripioare și TIM</h3>
+                <ul class="specs-list">
+                    <li><strong>Pin fin:</strong> aripioare cilindrice/eliptice/pătrate, suprafață mare 194 cm&#178;, funcționează &#238;n orice orientare a fluxului</li>
+                    <li><strong>Straight fin:</strong> aripioare drepte paralele, 58 cm&#178;, mai eficiente &#238;n anumite configurații dec&#226;t pin fin</li>
+                    <li><strong>Flared fin:</strong> aripioare nepalelele, reduce rezistența la flux, permite mai mult aer prin canale</li>
+                    <li><strong>Thermal Interface Material (TIM):</strong> reduce rezistența termică de contact</li>
+                    <li><strong>Aerul:</strong> conductivitate 0.022 W/(m&#183;K)</li>
+                    <li><strong>TIM:</strong> conductivitate 0.3 W/(m&#183;K) și mai mult</li>
+                    <li><strong>Tipuri:</strong> thermal paste (+++), epoxy (+++), phase change (+++), thermal tape (++), gap filler (+)</li>
+                    <li><strong>Metode de atașare:</strong> thermal tape, epoxy, z-clips, clip-on, push pins cu arcuri, standoff-uri cu arcuri</li>
+                    <li><strong>Thermal paste:</strong> umple golurile microscopice, conductivitate 0.5-80 W/(m&#183;K)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.4 — Pastă Termică și Contact</h3>
-                <p><strong>Pastă termică:</strong> Umple micro-golurile între APU și heat spreader.</p>
-                <p><strong>Conductivitate:</strong> 5-12 W/mK tipic. Liquid metal = 30-70 W/mK.</p>
-                <p><strong>Pump-out:</strong> După ani, pasta se usucă. Rezistență termică crește.</p>
+                <h3>5.4.4 — Răcirea microprocesoarelor</h3>
+                <ul class="specs-list">
+                    <li><strong>Heat sink pasiv:</strong> fără ventilator, convecție naturală, folosit pe CPU-uri vechi, chipset-uri, sisteme silențioase</li>
+                    <li><strong>Heat sink activ:</strong> cu ventilator atașat direct, standardul pentru desktop-uri moderne</li>
+                    <li><strong>IHS (Integrated Heat Spreader):</strong> placă metalică de pe CPU care redistribuie căldura</li>
+                    <li>Praful reduce eficiența heat sink-ului izol&#226;nd termic &#238;ntre aripioare</li>
+                    <li><strong>Desktop:</strong> heat sink cu bază cupru sau complet din cupru (evoluție de la aluminiu pur)</li>
+                    <li><strong>Laptop:</strong> heat pipe + fin stack + ventilator de evacuare</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.5 — Rezistență Termică (Theta)</h3>
-                <p><strong>Formula:</strong> ΔT = P × R_th. Dacă 200W și R_th 0.2 °C/W, ΔT = 40°C.</p>
-                <p><strong>Țintă:</strong> APU 70-85°C. Ambient 25°C. Deci R_th trebuie &lt; 0.3 °C/W.</p>
-                <p>R_th total = R_spreader + R_paste + R_pipe + R_radiator + R_air.</p>
+                <h3>5.4.5 — Definiție și principiul heat pipe</h3>
+                <ul class="specs-list">
+                    <li>Heat pipe = dispozitiv de transfer termic bazat pe tranziția de fază (lichid↔vapori)</li>
+                    <li><strong>La interfața caldă:</strong> lichidul volatil se evaporă absorbind căldura (căldura latentă de vaporizare)</li>
+                    <li>Vaporii călătoresc la capătul rece unde condensează, eliber&#226;nd căldura latentă</li>
+                    <li>Lichidul se &#238;ntoarce prin acțiune capilară (wick), forță centrifugă sau gravitație</li>
+                    <li><strong>Conductivitate termică efectivă:</strong> poate ajunge la 100 kW/(m&#183;K), vs cupru ~0.4 kW/(m&#183;K) - de ~250x mai bun</li>
+                    <li><strong>Exemple:</strong> o țeavă de 1 inch diametru, 2 feet lungime: transferă 3.7 kW la 980&#176;C cu doar 10&#176;C diferență</li>
+                    <li>Heat pipe-urile NU pot scădea temperatura sub temperatura ambientă</li>
+                    <li><strong>Inventat:</strong> R.S. Gaugler (GM, 1942), dezvoltat independent George Grover (Los Alamos, 1963)</li>
+                    <li><strong>Sony:</strong> primele produse comerciale cu heat pipe, anii &#39;80</li>
+                    <li><strong>Heat pipe-uri CPU:</strong> de obicei cupru cu apă ca fluid de lucru, operare 20-150&#176;C</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.6 — Structura și construcția</h3>
+                <ul class="specs-list">
+                    <li><strong>Componente:</strong> envelope (tub sigilat), wick (fitil), fluid de lucru</li>
+                    <li><strong>Envelope:</strong> cupru (pentru apă), aluminiu (pentru amoniac)</li>
+                    <li>Se face vacuum, se umple parțial cu fluid de lucru, se sigilează</li>
+                    <li>Fluid trebuie să conțină at&#226;t lichid c&#226;t și vapori pe &#238;ntregul interval de operare</li>
+                    <li><strong>Sub temperatura de operare:</strong> lichidul nu se vaporizează → funcționează doar prin conducție (1/80 din flux design)</li>
+                    <li><strong>Structuri wick:</strong> pulbere metalică sinterizată, plasă metalică, caneluri paralele cu axa</li>
+                    <li>Nu conține piese mobile → nu necesită &#238;ntreținere</li>
+                    <li><strong>Diametru minim practic:</strong> 3 mm (limitări materiale)</li>
+                    <li><strong>Fluide de lucru:</strong> heliu lichid (2-4K), amoniac (213-373K), metanol (283-403K), apă (298-573K), sodiu (873-1473K)</li>
+                    <li><strong>Cupru/apă:</strong> cea mai comună combinație pentru electronice</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.7 — Tipuri de heat pipe</h3>
+                <ul class="specs-list">
+                    <li><strong>Vapor chamber:</strong> heat pipe plan (2D), aceleași componente + structură internă de suport</li>
+                    <li>Poate &#238;ndepărta 2000W pe 4 cm&#178;, sau 700W pe 1 cm&#178;</li>
+                    <li>Subțimi de p&#226;nă la 1.0 mm</li>
+                    <li><strong>Folosit &#238;n laptopuri gaming (ex:</strong> Lenovo Legion 7i)</li>
+                    <li><strong>Avantaj:</strong> mai plat, secțiune transversală adecvată &#238;n dispozitive subțiri</li>
+                    <li><strong>Variable conductance (VCHP):</strong> gaz necondensabil + rezervor, reglează conductanța</li>
+                    <li>Control &#177;1-2&#176;C, demonstrat chiar mili-Kelvin</li>
+                    <li><strong>Thermosiphon:</strong> returnează lichidul prin gravitație, nu necesită wick</li>
+                    <li><strong>Diodă termică:</strong> funcționează doar cu evaporatorul jos</li>
+                    <li>Lungimi de p&#226;nă la 11-12m (Trans-Alaska Pipeline)</li>
+                    <li><strong>Loop heat pipe:</strong> transport co-curent lichid/vapori, distanțe mai mari, puteri mai mari</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.8 — Aplicații &#238;n sisteme de calcul</h3>
+                <ul class="specs-list">
+                    <li><strong>Heat pipe &#238;n computere:</strong> din anii &#39;90, cauzat de creșterea puterii disipate</li>
+                    <li>Conducea căldura de la CPU/GPU la heat sink-uri la distanță</li>
+                    <li><strong>Laptop tipic:</strong> heat pipe leagă CPU și GPU de fin stack + ventilator de evacuare</li>
+                    <li><strong>Desktop-uri moderne:</strong> CPU și GPU folosesc heat pipe + cooling activ</li>
+                    <li><strong>Console:</strong> sisteme similare laptopurilor datorită constr&#226;ngerilor de spațiu</li>
+                    <li><strong>Heat pipe-urile au 3 zone:</strong> evaporator (pe CPU), adiabatic (transport), condensator (heat sink/fins)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.9 — Principii generale de răcire</h3>
+                <ul class="specs-list">
+                    <li><strong>CPU și GPU:</strong> principalele generatoare de căldură &#238;n computere moderne</li>
+                    <li>Temperatura componentelor crește p&#226;nă la echilibru termic (căldura generată = căldura disipată)</li>
+                    <li><strong>Pentru fiabilitate:</strong> temperatura nu trebuie să depășească niciodată maximul specificat</li>
+                    <li><strong>Factori care afectează răcirea:</strong> praf (izolant termic), flux de aer slab (turbulență), contact termic slab</li>
+                    <li><strong>Protecție:</strong> throttling (reducere frecvență/tensiune), shutdown termic</li>
+                    <li><strong>Thermal compound:</strong> conductivitate 0.5-80 W/(m&#183;K), aluminiu ~200, aer ~0.02</li>
+                    <li><strong>Thermal pad:</strong> mai puțin eficient dar mai simplu de aplicat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.10 — Metode de răcire</h3>
+                <ul class="specs-list">
+                    <li><strong>Pasivă (convecție naturală):</strong> heat sink fără ventilator, silențioasă, pentru componente low-power, mobile</li>
+                    <li><strong>Activă (convecție forțată):</strong> ventilator + heat sink, standard pentru desktop CPU/GPU</li>
+                    <li><strong>Heat pipe și vapor chamber:</strong> conductivitate termică foarte ridicată, folosite c&#226;nd spațiul e limitat</li>
+                    <li><strong>Desktop:</strong> heat pipe + fan + fin stack</li>
+                    <li><strong>Laptop:</strong> heat pipe leagă CPU+GPU de fin stack cu ventilator centrifugal</li>
+                    <li><strong>Liquid cooling:</strong> apă distilată + aditivi, capacitate termică mai mare dec&#226;t aerul</li>
+                    <li><strong>Custom loop:</strong> pompă + waterblock + radiator + rezervor</li>
+                    <li><strong>AIO (All-in-One):</strong> sistem &#238;nchis Asetek (inventat), popular din 2010s</li>
+                    <li><strong>Liquid immersion:</strong> tot computerul scufundat &#238;n fluid dielectric</li>
+                    <li><strong>Soft cooling:</strong> undervolting, underclocking pentru reducerea producției de căldură</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.11 — Tipuri și utilizare ventilatoare</h3>
+                <ul class="specs-list">
+                    <li><strong>Computer fan:</strong> ventilator &#238;n sau atașat la carcasa computerului, pentru răcire activă</li>
+                    <li><strong>Tipuri principale:</strong> axial (cel mai comun, volum mare aer, presiune joasă) și centrifugal (blower/squirrel cage)</li>
+                    <li><strong>CPU fan activ:</strong> standard pe desktop-uri din Intel 80486 (1989), universal din 1997</li>
+                    <li><strong>Case fans (intake+exhaust):</strong> comune din Pentium 4 (2000)</li>
+                    <li><strong>Dimensiuni standard:</strong> 40, 60, 80, 92, 120 (cel mai comun), 140, 200, 220 mm</li>
+                    <li><strong>Grosime:</strong> 10, 15, 25 sau 38 mm</li>
+                    <li><strong>120/140 mm:</strong> gaming, performanță, operare silențioasă la turații mici</li>
+                    <li><strong>80/92 mm:</strong> aplicații mai puțin pretențioase</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.12 — Specificații tehnice ventilatoare</h3>
+                <ul class="specs-list">
+                    <li><strong>Două specificații principale:</strong> debit aer (CFM - Cubic Feet per Minute) și presiune statică</li>
+                    <li><strong>Static pressure:</strong> important pentru heatsink/radiator cu spații &#238;nguste &#238;ntre aripioare</li>
+                    <li><strong>Formula debit necesar:</strong> CFM = 3.16 &#215; P / (Δ&#176;F) sau 1.76 &#215; P / (Δ&#176;C)</li>
+                    <li><strong>Ex:</strong> 500W, ΔT=30&#176;F → CFM = 53</li>
+                    <li><strong>Viteza de rotație (RPM):</strong> ventilator mai mare + turație mică = mai silențios dec&#226;t ventilator mic + turație mare</li>
+                    <li><strong>Zgomotul:</strong> proporțional cu puterea a cincea a vitezei; &#238;njumătățirea vitezei reduce zgomotul cu ~15 dB</li>
+                    <li><strong>Ventilatoare paralele:</strong> dublează debitul, aceeași presiune</li>
+                    <li><strong>Ventilatoare serie:</strong> dublează presiunea, același debit</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.13 — Rulmenți și conectori</h3>
+                <ul class="specs-list">
+                    <li>Tipuri rulmenți:</li>
+                    <li><strong>Sleeve bearing:</strong> lubrifiat cu ulei, ieftin, silențios inițial, durată ~30,000 ore la 50&#176;C</li>
+                    <li><strong>Rifle bearing:</strong> similar sleeve cu canal spiral, pompare fluid, poate fi montat orizontal</li>
+                    <li><strong>Fluid dynamic bearing (FDB):</strong> aproape silențios, durată mare</li>
+                    <li><strong>Ball bearing:</strong> mai scump, funcționează &#238;n orice orientare, durată &gt;60,000 ore la 50&#176;C</li>
+                    <li><strong>Magnetic/Maglev bearing:</strong> fără contact mecanic</li>
+                    <li>Conectori:</li>
+                    <li><strong>3-pin:</strong> GND, +12V, tachometru (semnal viteză)</li>
+                    <li><strong>4-pin:</strong> adaugă pin PWM pentru control variabil al vitezei</li>
+                    <li><strong>4-pin Molex:</strong> conectare directă la PSU (+12V și GND)</li>
+                    <li><strong>PWM (Pulse Width Modulation):</strong> control variabil al vitezei de rotație</li>
+                    <li>BIOS controlează automatic viteza ventilatoarelor &#238;n funcție de temperatură</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.4.14 — Aplicații specifice ventilatoare</h3>
+                <ul class="specs-list">
+                    <li><strong>Case fan:</strong> intake (frontal/jos, aer rece) și exhaust (spate/sus, aer cald)</li>
+                    <li><strong>Positive pressure:</strong> intake &gt; exhaust, previne acumularea prafului (cu filtre)</li>
+                    <li><strong>Negative pressure:</strong> exhaust &gt; intake, trasează praf prin toate deschiderile</li>
+                    <li><strong>CPU fan:</strong> obligatoriu pentru desktop modern, heat sink singur nu previne supra&#238;ncălzirea</li>
+                    <li><strong>GPU fan:</strong> unele plăci video disipă &gt;350W (mai mult dec&#226;t CPU-ul)</li>
+                    <li><strong>Tipuri:</strong> axial fans sau centrifugal (blower)</li>
+                    <li><strong>PSU fan:</strong> propriu, nu trebuie folosit pentru ventilația carcasei</li>
+                    <li><strong>Laptop:</strong> ventilator centrifugal blower, răcește heat pipe conectat la CPU+GPU</li>
+                    <li><strong>Server:</strong> r&#226;nd de ventilatoare &#238;ntre hard disk-uri (față) și heat sink-uri pasive (spate)</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și principiu heat sink</h3>
+                <ul class="specs-list">
+                    <li><strong>&#206;n computere:</strong> răcesc CPU, GPU, chipset-uri și module RAM</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Răcirea microprocesoarelor</h3>
+                <ul class="specs-list">
+                    <li><strong>Heat sink pasiv:</strong> fără ventilator, convecție naturală, folosit pe CPU-uri vechi, chipset-uri, sisteme silențioase</li>
+                    <li><strong>IHS (Integrated Heat Spreader):</strong> placă metalică de pe CPU care redistribuie căldura</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și principiul heat pipe</h3>
+                <ul class="specs-list">
+                    <li><strong>Heat pipe-uri CPU:</strong> de obicei cupru cu apă ca fluid de lucru, operare 20-150&#176;C</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Aplicații &#238;n sisteme de calcul</h3>
+                <ul class="specs-list">
+                    <li><strong>Heat pipe &#238;n computere:</strong> din anii &#39;90, cauzat de creșterea puterii disipate</li>
+                    <li>Conducea căldura de la CPU/GPU la heat sink-uri la distanță</li>
+                    <li><strong>Laptop tipic:</strong> heat pipe leagă CPU și GPU de fin stack + ventilator de evacuare</li>
+                    <li><strong>Desktop-uri moderne:</strong> CPU și GPU folosesc heat pipe + cooling activ</li>
+                    <li><strong>Heat pipe-urile au 3 zone:</strong> evaporator (pe CPU), adiabatic (transport), condensator (heat sink/fins)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Principii generale de răcire</h3>
+                <ul class="specs-list">
+                    <li><strong>CPU și GPU:</strong> principalele generatoare de căldură &#238;n computere moderne</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Metode de răcire</h3>
+                <ul class="specs-list">
+                    <li><strong>Activă (convecție forțată):</strong> ventilator + heat sink, standard pentru desktop CPU/GPU</li>
+                    <li><strong>Laptop:</strong> heat pipe leagă CPU+GPU de fin stack cu ventilator centrifugal</li>
+                    <li><strong>Liquid immersion:</strong> tot computerul scufundat &#238;n fluid dielectric</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Aplicații specifice ventilatoare</h3>
+                <ul class="specs-list">
+                    <li><strong>CPU fan:</strong> obligatoriu pentru desktop modern, heat sink singur nu previne supra&#238;ncălzirea</li>
+                    <li><strong>GPU fan:</strong> unele plăci video disipă &gt;350W (mai mult dec&#226;t CPU-ul)</li>
+                    <li><strong>Laptop:</strong> ventilator centrifugal blower, răcește heat pipe conectat la CPU+GPU</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> Căldura disipă prin conductivitate, convecție, radiație.</p>
-                <p><strong>Informatică:</strong> Temperatură mare = throttling. FPS scade, stabilitatea e afectată.</p>
+                <h3>Aplicații &#238;n sisteme de calcul</h3>
+                <ul class="specs-list">
+                    <li><strong>Console:</strong> sisteme similare laptopurilor datorită constr&#226;ngerilor de spațiu</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Tipuri și utilizare ventilatoare</h3>
+                <ul class="specs-list">
+                    <li><strong>Computer fan:</strong> ventilator &#238;n sau atașat la carcasa computerului, pentru răcire activă</li>
+                    <li><strong>Tipuri principale:</strong> axial (cel mai comun, volum mare aer, presiune joasă) și centrifugal (blower/squirrel cage)</li>
+                    <li><strong>CPU fan activ:</strong> standard pe desktop-uri din Intel 80486 (1989), universal din 1997</li>
+                    <li><strong>Case fans (intake+exhaust):</strong> comune din Pentium 4 (2000)</li>
+                    <li><strong>Dimensiuni standard:</strong> 40, 60, 80, 92, 120 (cel mai comun), 140, 200, 220 mm</li>
+                    <li><strong>Grosime:</strong> 10, 15, 25 sau 38 mm</li>
+                    <li><strong>120/140 mm:</strong> gaming, performanță, operare silențioasă la turații mici</li>
+                    <li><strong>80/92 mm:</strong> aplicații mai puțin pretențioase</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Rulmenți și conectori</h3>
+                <ul class="specs-list">
+                    <li><strong>4-pin Molex:</strong> conectare directă la PSU (+12V și GND)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Aplicații specifice ventilatoare</h3>
+                <ul class="specs-list">
+                    <li><strong>PSU fan:</strong> propriu, nu trebuie folosit pentru ventilația carcasei</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Calcul Temperatură APU</h3>
-                <p>APU 180W, R_th total 0.25 °C/W. ΔT = 180 × 0.25 = 45°C.</p>
-                <p>Ambient 25°C. APU = 70°C. În limite.</p>
-                <p>Dacă pastă uscată crește R_th la 0.35, ΔT = 63°C → APU = 88°C. Throttling.</p>
+                <h3>Materiale și rezistență termică</h3>
+                <ul class="specs-list">
+                    <li><strong>Model serie de rezistențe:</strong> die→carcasă→heat sink→aer ambient</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Principii generale de răcire</h3>
+                <ul class="specs-list">
+                    <li><strong>Pentru fiabilitate:</strong> temperatura nu trebuie să depășească niciodată maximul specificat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Specificații tehnice ventilatoare</h3>
+                <ul class="specs-list">
+                    <li><strong>Două specificații principale:</strong> debit aer (CFM - Cubic Feet per Minute) și presiune statică</li>
+                    <li><strong>Static pressure:</strong> important pentru heatsink/radiator cu spații &#238;nguste &#238;ntre aripioare</li>
+                    <li><strong>Formula debit necesar:</strong> CFM = 3.16 &#215; P / (Δ&#176;F) sau 1.76 &#215; P / (Δ&#176;C)</li>
+                    <li><strong>Ex:</strong> 500W, ΔT=30&#176;F → CFM = 53</li>
+                    <li><strong>Viteza de rotație (RPM):</strong> ventilator mai mare + turație mică = mai silențios dec&#226;t ventilator mic + turație mare</li>
+                    <li><strong>Zgomotul:</strong> proporțional cu puterea a cincea a vitezei; &#238;njumătățirea vitezei reduce zgomotul cu ~15 dB</li>
+                    <li><strong>Ventilatoare paralele:</strong> dublează debitul, aceeași presiune</li>
+                    <li><strong>Ventilatoare serie:</strong> dublează presiunea, același debit</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: PS5 Cooling</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>PS5 are radiator mare cu heat pipes și ventilator axial.</p>
-                <p>În reviziile noi, Sony a schimbat radiatorul și a redus greutatea. Temperatura APU a crescut ușor, dar rămâne sub limita de 90°C.</p>
-                <p>Curățarea periodică a prafului scade temperatura cu 5-10°C.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ Fan zgomotos</h3><p>Praful crește rezistența la aer. Ventilatorul crește RPM. Curățare + re-paste rezolvă.</p></div>
-            <div class="card"><h3>⚠️ Throttling</h3><p>R_th prea mare. Pastă termică degradată, presiune slabă pe heat spreader sau heat pipes blocate.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu Sistemul de răcire</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -131,11 +421,20 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Heat pipes:</strong> Transfer rapid al căldurii.</li>
-                    <li><strong>Vapor chamber:</strong> Distribuție uniformă.</li>
-                    <li><strong>Ventilator:</strong> Convecție forțată.</li>
-                    <li><strong>Pastă termică:</strong> Umple micro-goluri, reduce R_th.</li>
-                    <li><strong>R_th:</strong> ΔT = P × R_th. Controlul temperaturii.</li>
+                    <li><strong>Definiție și principiu heat sink:</strong> Heat sink = schimbător de căldură pasiv care transferă căldura generată de un dispozitiv electronic sau mecanic către un fluid (aer, apă, ulei)</li>
+                    <li><strong>Materiale și rezistență termică:</strong> Rezistența termică: temperatură / putere, exprimată &#238;n &#176;C/W</li>
+                    <li><strong>Tipuri de aripioare și TIM:</strong> Pin fin: aripioare cilindrice/eliptice/pătrate, suprafață mare 194 cm&#178;, funcționează &#238;n orice orientare a fluxului</li>
+                    <li><strong>Răcirea microprocesoarelor:</strong> Heat sink pasiv: fără ventilator, convecție naturală, folosit pe CPU-uri vechi, chipset-uri, sisteme silențioase</li>
+                    <li><strong>Definiție și principiul heat pipe:</strong> Heat pipe = dispozitiv de transfer termic bazat pe tranziția de fază (lichid↔vapori)</li>
+                    <li><strong>Structura și construcția:</strong> Componente: envelope (tub sigilat), wick (fitil), fluid de lucru</li>
+                    <li><strong>Tipuri de heat pipe:</strong> Vapor chamber: heat pipe plan (2D), aceleași componente + structură internă de suport</li>
+                    <li><strong>Aplicații &#238;n sisteme de calcul:</strong> Heat pipe &#238;n computere: din anii &#39;90, cauzat de creșterea puterii disipate</li>
+                    <li><strong>Principii generale de răcire:</strong> CPU și GPU: principalele generatoare de căldură &#238;n computere moderne</li>
+                    <li><strong>Metode de răcire:</strong> Pasivă (convecție naturală): heat sink fără ventilator, silențioasă, pentru componente low-power, mobile</li>
+                    <li><strong>Tipuri și utilizare ventilatoare:</strong> Computer fan: ventilator &#238;n sau atașat la carcasa computerului, pentru răcire activă</li>
+                    <li><strong>Specificații tehnice ventilatoare:</strong> Două specificații principale: debit aer (CFM - Cubic Feet per Minute) și presiune statică</li>
+                    <li><strong>Rulmenți și conectori:</strong> Tipuri rulmenți:</li>
+                    <li><strong>Aplicații specifice ventilatoare:</strong> Case fan: intake (frontal/jos, aer rece) și exhaust (spate/sus, aer cald)</li>
                 </ul>
             </div>
         </div>
@@ -144,54 +443,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Ce transferă căldura în heat pipe?</strong></p>
-                <ul class="specs-list"><li>a) Aer</li><li>b) Lichid evaporat și condensat</li><li>c) Plastic</li><li>d) Electroni</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Lichid</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: &#206;n computere?</strong></p>
+                <ul class="specs-list">
+                    <li>a) prin convecție (principal), radiație și conducție</li>
+                    <li>b) qk = -k &#215; A &#215; (dT/dx)</li>
+                    <li>c) răcesc CPU, GPU, chipset-uri și module RAM</li>
+                    <li>d) umple golurile de aer &#238;ntre heat sink și heat spreader</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — răcesc CPU, GPU, chipset-uri și module RAM</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Formula pentru creșterea temperaturii?</strong></p>
-                <ul class="specs-list"><li>a) ΔT = V × I</li><li>b) ΔT = P × R_th</li><li>c) ΔT = P / R_th</li><li>d) ΔT = R_th / P</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) ΔT = P × R_th</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Rezistența termică?</strong></p>
+                <ul class="specs-list">
+                    <li>a) răcesc CPU, GPU, chipset-uri și module RAM</li>
+                    <li>b) prin convecție (principal), radiație și conducție</li>
+                    <li>c) qk = -k &#215; A &#215; (dT/dx)</li>
+                    <li>d) temperatură / putere, exprimată &#238;n &#176;C/W</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — temperatură / putere, exprimată &#238;n &#176;C/W</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Pastă termică are rol:</strong></p>
-                <ul class="specs-list"><li>a) Decorativ</li><li>b) Umple micro-goluri și reduce R_th</li><li>c) Crește rezistența</li><li>d) Încălzește APU</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Umple micro-goluri</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Pin fin?</strong></p>
+                <ul class="specs-list">
+                    <li>a) răcesc CPU, GPU, chipset-uri și module RAM</li>
+                    <li>b) aripioare cilindrice/eliptice/pătrate, suprafață mare 194 cm&#178;, funcționează &#238;n orice orientare a fluxului</li>
+                    <li>c) prin convecție (principal), radiație și conducție</li>
+                    <li>d) qk = -k &#215; A &#215; (dT/dx)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — aripioare cilindrice/eliptice/pătrate, suprafață mare 194 cm&#178;, funcționează &#238;n orice orientare a fluxului</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>R_th 0.25 °C/W la 200W → ΔT?</strong></p>
-                <ul class="specs-list"><li>a) 20°C</li><li>b) 50°C</li><li>c) 80°C</li><li>d) 200°C</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 50°C</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Heat sink pasiv?</strong></p>
+                <ul class="specs-list">
+                    <li>a) qk = -k &#215; A &#215; (dT/dx)</li>
+                    <li>b) fără ventilator, convecție naturală, folosit pe CPU-uri vechi, chipset-uri, sisteme silențioase</li>
+                    <li>c) răcesc CPU, GPU, chipset-uri și module RAM</li>
+                    <li>d) prin convecție (principal), radiație și conducție</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — fără ventilator, convecție naturală, folosit pe CPU-uri vechi, chipset-uri, sisteme silențioase</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Throttling apare când:</strong></p>
-                <ul class="specs-list"><li>a) GPU rece</li><li>b) APU depășește pragul termic</li><li>c) FPS e mare</li><li>d) R_th scade</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) APU depășește pragul</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: La interfața caldă?</strong></p>
+                <ul class="specs-list">
+                    <li>a) qk = -k &#215; A &#215; (dT/dx)</li>
+                    <li>b) prin convecție (principal), radiație și conducție</li>
+                    <li>c) răcesc CPU, GPU, chipset-uri și module RAM</li>
+                    <li>d) lichidul volatil se evaporă absorbind căldura (căldura latentă de vaporizare)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — lichidul volatil se evaporă absorbind căldura (căldura latentă de vaporizare)</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Rezistență Termică Totală</h3>
-                <p><strong>Cerință:</strong> APU 180W. R_th total = 0.22 °C/W. Ambient 25°C. Care e temperatura APU?</p>
-                <ol class="specs-list"><li>ΔT = P × R_th</li><li>T_APU = Ambient + ΔT</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1.</strong> ΔT = 180 × 0.22 = 39.6°C.</p>
-                    <p><strong>2.</strong> T_APU = 25 + 39.6 = 64.6°C.</p>
-                    <p>Temperatură sigură, fără throttling.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Sistemul de răcire</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de disiparea căldurii. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: disiparea căldurii.</li>
+                    <li>2. Ce rol are heat sink în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre disiparea căldurii și heat pipe.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Heat sink = schimbător de căldură pasiv care transferă căldura generată de un dispozitiv electronic sau mecanic către un fluid (aer, apă, ulei)</p>
+                        <p><strong>2.</strong> Rezistența termică: temperatură / putere, exprimată &#238;n &#176;C/W</p>
+                        <p><strong>3.</strong> Pin fin: aripioare cilindrice/eliptice/pătrate, suprafață mare 194 cm&#178;, funcționează &#238;n orice orientare a fluxului</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -268,3 +640,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 7.2 — FPS și bottleneck: CPU-bound vs GPU-bound">
+    <meta name="description" content="Lecția 7.2 — CPU-bound vs GPU-bound">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 7.2 — FPS și Bottleneck — Console Notebook</title>
+    <title>Lecția 7.2 — CPU-bound vs GPU-bound — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — Performanță și Grafică</p>
-            <h1>Lecția 7.2 — FPS și Bottleneck</h1>
-            <p>Când ești CPU-bound și când GPU-bound? Cum identifici gâtul de sticlă.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — PERFORMANȚĂ ȘI GRAFICĂ</p>
+            <h1>Lecția 7.2 — CPU-bound vs GPU-bound</h1>
+            <p>limitarea performanței, rolul CPU, rolul GPU</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>FPS:</strong> Cadre pe secundă. Limitat de etapa cea mai lentă din sistem.</p>
-                <p><strong>Bottleneck:</strong> Componenta care limitează performanța (CPU, GPU, RAM, SSD).</p>
-                <p>În console, CPU și GPU sunt echilibrate, dar jocurile pot schimba balanța.</p>
+                <p>Un task/job/proces este CPU-bound (compute-bound) c&#226;nd timpul de finalizare este determinat principalment de viteza procesorului central</p>
+                <p>Această lecție acoperă: <strong>limitarea performanței</strong>, <strong>rolul CPU</strong>, <strong>rolul GPU</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,76 +53,254 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1 — CPU-bound</h3>
-                <p>CPU nu poate genera suficient de rapid draw calls, physics și AI.</p>
-                <p>Simptome: GPU usage sub 70%, FPS scade când crește numărul de NPC.</p>
-                <p>Rezolvare: reduce logică CPU, optimizează AI, folosește multithreading.</p>
+                <h3>7.2.1 — Definiție CPU-bound</h3>
+                <ul class="specs-list">
+                    <li>Un task/job/proces este CPU-bound (compute-bound) c&#226;nd timpul de finalizare este determinat principalment de viteza procesorului central</li>
+                    <li>Utilizare procesor ridicată, poate ajunge la 100% pentru secunde sau minute</li>
+                    <li>&#206;ntreruperile generate de periferice pot fi procesate lent sau &#238;nt&#226;rziate nedefinit</li>
+                    <li>CPU-bound jobs petrec majoritatea timpului de execuție pe calcule efective (&quot;number crunching&quot;), nu pe comunicarea cu periferice</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.2 — GPU-bound</h3>
-                <p>GPU este saturat de shading și pixel count.</p>
-                <p>Simptome: GPU usage 95-100%, CPU usage scăzut.</p>
-                <p>Rezolvare: scade rezoluția, reduce efecte, optimizează shader-ele.</p>
+                <h3>7.2.2 — CPU-bound vs I/O-bound</h3>
+                <ul class="specs-list">
+                    <li><strong>Opusul CPU-bound este I/O-bound:</strong> task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                    <li><strong>Există și memory-bound:</strong> limitat de viteza memoriei</li>
+                    <li>Taskurile CPU-bound pot beneficia de tehnici de paralelizare (multithreading) dacă algoritmul o permite</li>
+                    <li>Pot distribui sarcina pe mai multe core-uri CPU</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.3 — Frame Time</h3>
-                <p>FPS = 1 / frame time. Pentru 60 FPS, frame time = 16.67 ms.</p>
-                <p>Dacă o etapă durează 20 ms, FPS scade la 50.</p>
-                <p>Profilarea frame time arată exact unde se pierde timp.</p>
+                <h3>7.2.3 — Conceptul de bottleneck</h3>
+                <ul class="specs-list">
+                    <li>Conceptul a fost dezvoltat la primele computere, c&#226;nd se vedea vizual o componentă lucr&#226;nd și alta inactivă</li>
+                    <li><strong>Componentele:</strong> CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</li>
+                    <li>Computerele care foloseau predominant perifericele erau I/O bound</li>
+                    <li><strong>Stabilirea că un computer este frecvent CPU-bound implică:</strong> upgrade CPU sau optimizarea codului va &#238;mbunătăți performanța generală</li>
+                    <li>&#206;n computerele moderne, bottleneck-ul se schimbă rapid &#238;ntre componente</li>
+                    <li>Este posibil să ai 100% utilizare CPU cu impact minim pe alte componente</li>
+                    <li>Upgrade CPU nu are &#238;ntotdeauna efect dramatic – acum e doar un factor din mulți</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4 — Draw Calls și API Overhead</h3>
-                <p>Fiecare draw call are cost CPU. Dacă sunt prea multe, CPU-bound.</p>
-                <p>Modern APIs (Vulkan, DX12) reduc overhead, dar necesită optimizare de engine.</p>
+                <h3>7.2.4 — Definiție GPU</h3>
+                <ul class="specs-list">
+                    <li>GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagini digitale și accelerarea graficii computerizate</li>
+                    <li>Prezent ca componentă pe placă grafică discretă sau integrat pe motherboard, telefoane mobile, PC-uri, workstation-uri, console de jocuri</li>
+                    <li>GPU &#238;n uz modern include abilitatea de a efectua intern calculele necesare pentru diverse sarcini grafice (rotirea și scalarea imaginilor 3D)</li>
+                    <li>Poate rula programe personalizate numite shadere</li>
+                    <li>Diferă de controlerele video anterioare care nu aveau capacități de calcul intern</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.5 — Balanced Pipeline</h3>
-                <p>Ideal: CPU și GPU au frame time similar. Nicio componentă nu stă idle.</p>
-                <p>În practică, se țintește GPU-bound ușor, pentru a folosi GPU la maxim.</p>
+                <h3>7.2.5 — Arhitectura și paralelismul GPU</h3>
+                <ul class="specs-list">
+                    <li>Funcțiile grafice sunt &#238;n general independente → potrivite pentru implementare pe motoare de calcul separate</li>
+                    <li>GPU-urile moderne includ sute sau mii de unități de calcul</li>
+                    <li>Structura paralelă le face utile pentru probleme &quot;embarrassingly parallel&quot;</li>
+                    <li>Performanța GPU se măsoară &#238;n FLOPS (floating point operations per second); GPU-urile din 2010s-2020s: teraflops (TFLOPS)</li>
+                    <li><strong>Factori de performanță:</strong> dimensiunea traseelor &#238;n semiconductor, frecvența ceasului, numărul și dimensiunea cache-urilor</li>
+                    <li>Streaming multiprocessors (SM) pentru Nvidia, Compute Units (CU) pentru AMD, Xe cores pentru Intel</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.2.6 — GPU dedicat vs GPU integrat</h3>
+                <ul class="specs-list">
+                    <li><strong>GPU dedicat (discrete):</strong> folosește RAM dedicat GPU-ului (ex: GDDR SDRAM), performanță mare</li>
+                    <li><strong>GPU integrat (IGP/integrated):</strong> folosește o porțiune din RAM-ul sistemului, mai ieftin dar mai puțin capabil</li>
+                    <li><strong>IGP:</strong> bandwidth p&#226;nă la 128 GB/s, GPU discret: peste 1000 GB/s &#238;ntre VRAM și GPU core</li>
+                    <li>Memoria poate limita performanța GPU-ului</li>
+                    <li><strong>UMA (Unified Memory Architecture):</strong> CPU și GPU partajează același pool de RAM (AMD APU, Intel HD, PS5, Xbox Series)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.2.7 — Evoluția GPU &#238;n console</h3>
+                <ul class="specs-list">
+                    <li>Termenul &quot;GPU&quot; a fost inventat de Sony pentru PlayStation (1994), GPU proiectat de Toshiba</li>
+                    <li>Popularizat de Nvidia &#238;n 1999 cu GeForce 256 &quot;primul GPU din lume&quot;</li>
+                    <li><strong>PS4 și Xbox One (2013):</strong> GPU-uri bazate pe AMD Radeon HD 7850/7790</li>
+                    <li><strong>PS5 și Xbox Series X/S (2020):</strong> GPU-uri bazate pe arhitectura RDNA 2</li>
+                    <li><strong>Nintendo 64 (1996):</strong> primul hardware T&amp;L GPU pe consolă de casă (Reality Coprocessor)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.2.8 — GPGPU</h3>
+                <ul class="specs-list">
+                    <li>GPU-urile au devenit dispozitive de calcul generalizate cu GeForce 8 series (unități de stream processing generice)</li>
+                    <li><strong>GPU computing / GPGPU:</strong> calcule cu scop general pe GPU</li>
+                    <li><strong>Aplicații:</strong> machine learning, procesare de imagini, algebră liniară, statistici, reconstrucție 3D</li>
+                    <li>GPU calculates forty times faster than CPU in certain circumstances (Folding@home)</li>
+                    <li>CUDA (Nvidia, 2007), OpenCL (standard deschis), DirectCompute</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>7.2.9 — Energie și performanță</h3>
+                <ul class="specs-list">
+                    <li>GPU-urile au crescut continuu &#238;n consum de energie</li>
+                    <li>Performanța pe watt (performance per watt) traduce direct &#238;n performanță maximă a unui sistem</li>
+                    <li><strong>Design-urile GPU sunt foarte scalabile:</strong> multiple chipuri pe aceeași placă video sau plăci video multiple</li>
+                    <li>Performanța maximă este limitată de puterea electrică aspirată și căldura ce poate fi disipată</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție CPU-bound</h3>
+                <ul class="specs-list">
+                    <li>Un task/job/proces este CPU-bound (compute-bound) c&#226;nd timpul de finalizare este determinat principalment de viteza procesorului central</li>
+                    <li>Utilizare procesor ridicată, poate ajunge la 100% pentru secunde sau minute</li>
+                    <li>CPU-bound jobs petrec majoritatea timpului de execuție pe calcule efective (&quot;number crunching&quot;), nu pe comunicarea cu periferice</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>CPU-bound vs I/O-bound</h3>
+                <ul class="specs-list">
+                    <li><strong>Opusul CPU-bound este I/O-bound:</strong> task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                    <li>Taskurile CPU-bound pot beneficia de tehnici de paralelizare (multithreading) dacă algoritmul o permite</li>
+                    <li>Pot distribui sarcina pe mai multe core-uri CPU</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Conceptul de bottleneck</h3>
+                <ul class="specs-list">
+                    <li>Conceptul a fost dezvoltat la primele computere, c&#226;nd se vedea vizual o componentă lucr&#226;nd și alta inactivă</li>
+                    <li><strong>Componentele:</strong> CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</li>
+                    <li>Computerele care foloseau predominant perifericele erau I/O bound</li>
+                    <li><strong>Stabilirea că un computer este frecvent CPU-bound implică:</strong> upgrade CPU sau optimizarea codului va &#238;mbunătăți performanța generală</li>
+                    <li>&#206;n computerele moderne, bottleneck-ul se schimbă rapid &#238;ntre componente</li>
+                    <li>Este posibil să ai 100% utilizare CPU cu impact minim pe alte componente</li>
+                    <li>Upgrade CPU nu are &#238;ntotdeauna efect dramatic – acum e doar un factor din mulți</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție GPU</h3>
+                <ul class="specs-list">
+                    <li>GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagini digitale și accelerarea graficii computerizate</li>
+                    <li>GPU &#238;n uz modern include abilitatea de a efectua intern calculele necesare pentru diverse sarcini grafice (rotirea și scalarea imaginilor 3D)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Arhitectura și paralelismul GPU</h3>
+                <ul class="specs-list">
+                    <li>GPU-urile moderne includ sute sau mii de unități de calcul</li>
+                    <li>Performanța GPU se măsoară &#238;n FLOPS (floating point operations per second); GPU-urile din 2010s-2020s: teraflops (TFLOPS)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GPU dedicat vs GPU integrat</h3>
+                <ul class="specs-list">
+                    <li><strong>GPU integrat (IGP/integrated):</strong> folosește o porțiune din RAM-ul sistemului, mai ieftin dar mai puțin capabil</li>
+                    <li><strong>IGP:</strong> bandwidth p&#226;nă la 128 GB/s, GPU discret: peste 1000 GB/s &#238;ntre VRAM și GPU core</li>
+                    <li>Memoria poate limita performanța GPU-ului</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GPGPU</h3>
+                <ul class="specs-list">
+                    <li>GPU-urile au devenit dispozitive de calcul generalizate cu GeForce 8 series (unități de stream processing generice)</li>
+                    <li><strong>GPU computing / GPGPU:</strong> calcule cu scop general pe GPU</li>
+                    <li>GPU calculates forty times faster than CPU in certain circumstances (Folding@home)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Energie și performanță</h3>
+                <ul class="specs-list">
+                    <li>GPU-urile au crescut continuu &#238;n consum de energie</li>
+                    <li><strong>Design-urile GPU sunt foarte scalabile:</strong> multiple chipuri pe aceeași placă video sau plăci video multiple</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> CPU și GPU au limite de putere și temperatură.</p>
-                <p><strong>Informatică:</strong> Profiling identifică bottleneck-ul și ghidează optimizările.</p>
+                <h3>Definiție GPU</h3>
+                <ul class="specs-list">
+                    <li>Prezent ca componentă pe placă grafică discretă sau integrat pe motherboard, telefoane mobile, PC-uri, workstation-uri, console de jocuri</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GPU dedicat vs GPU integrat</h3>
+                <ul class="specs-list">
+                    <li><strong>UMA (Unified Memory Architecture):</strong> CPU și GPU partajează același pool de RAM (AMD APU, Intel HD, PS5, Xbox Series)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Evoluția GPU &#238;n console</h3>
+                <ul class="specs-list">
+                    <li>Termenul &quot;GPU&quot; a fost inventat de Sony pentru PlayStation (1994), GPU proiectat de Toshiba</li>
+                    <li>Popularizat de Nvidia &#238;n 1999 cu GeForce 256 &quot;primul GPU din lume&quot;</li>
+                    <li><strong>PS4 și Xbox One (2013):</strong> GPU-uri bazate pe AMD Radeon HD 7850/7790</li>
+                    <li><strong>PS5 și Xbox Series X/S (2020):</strong> GPU-uri bazate pe arhitectura RDNA 2</li>
+                    <li><strong>Nintendo 64 (1996):</strong> primul hardware T&amp;L GPU pe consolă de casă (Reality Coprocessor)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: CPU-bound în jocuri strategice</h3>
-                <p>Joc RTS cu 5,000 unități. CPU calculează AI și pathfinding. GPU stă la 50%.</p>
-                <p>Reducerea AI update rate sau batching logică crește FPS semnificativ.</p>
+                <h3>Arhitectura și paralelismul GPU</h3>
+                <ul class="specs-list">
+                    <li>Streaming multiprocessors (SM) pentru Nvidia, Compute Units (CU) pentru AMD, Xe cores pentru Intel</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GPU dedicat vs GPU integrat</h3>
+                <ul class="specs-list">
+                    <li><strong>GPU dedicat (discrete):</strong> folosește RAM dedicat GPU-ului (ex: GDDR SDRAM), performanță mare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GPGPU</h3>
+                <ul class="specs-list">
+                    <li>CUDA (Nvidia, 2007), OpenCL (standard deschis), DirectCompute</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: GPU-bound la 4K</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>Joc AAA la 4K, ray-tracing activ. GPU 99%, CPU 40%.</p>
-                <p>Reducerea rezoluției la 1440p crește FPS cu 50% fără impact major vizual.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ Interpretare greșită a FPS</h3><p>FPS mic nu înseamnă neapărat GPU slab. Poate fi CPU-bound sau memory bound.</p></div>
-            <div class="card"><h3>⚠️ Frame time spikes</h3><p>Stutter periodic indică asset streaming sau garbage collection, nu neapărat GPU.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu CPU-bound vs GPU-bound</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -127,10 +309,15 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li>CPU-bound: GPU usage mic, CPU saturat.</li>
-                    <li>GPU-bound: GPU usage mare, CPU relaxat.</li>
-                    <li>Frame time este metricul real pentru FPS.</li>
-                    <li>Profiling = cheia optimizării.</li>
+                    <li><strong>Definiție CPU-bound:</strong> Un task/job/proces este CPU-bound (compute-bound) c&#226;nd timpul de finalizare este determinat principalment de viteza procesorului central</li>
+                    <li><strong>CPU-bound vs I/O-bound:</strong> Opusul CPU-bound este I/O-bound: task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                    <li><strong>Conceptul de bottleneck:</strong> Conceptul a fost dezvoltat la primele computere, c&#226;nd se vedea vizual o componentă lucr&#226;nd și alta inactivă</li>
+                    <li><strong>Definiție GPU:</strong> GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagini digitale și accelerarea graficii computerizate</li>
+                    <li><strong>Arhitectura și paralelismul GPU:</strong> Funcțiile grafice sunt &#238;n general independente → potrivite pentru implementare pe motoare de calcul separate</li>
+                    <li><strong>GPU dedicat vs GPU integrat:</strong> GPU dedicat (discrete): folosește RAM dedicat GPU-ului (ex: GDDR SDRAM), performanță mare</li>
+                    <li><strong>Evoluția GPU &#238;n console:</strong> Termenul &quot;GPU&quot; a fost inventat de Sony pentru PlayStation (1994), GPU proiectat de Toshiba</li>
+                    <li><strong>GPGPU:</strong> GPU-urile au devenit dispozitive de calcul generalizate cu GeForce 8 series (unități de stream processing generice)</li>
+                    <li><strong>Energie și performanță:</strong> GPU-urile au crescut continuu &#238;n consum de energie</li>
                 </ul>
             </div>
         </div>
@@ -139,51 +326,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>GPU usage 40% și FPS mic indică:</strong></p>
-                <ul class="specs-list"><li>a) GPU-bound</li><li>b) CPU-bound</li><li>c) SSD-bound</li><li>d) RAM-only</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) CPU-bound</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Opusul CPU-bound este I/O-bound?</strong></p>
+                <ul class="specs-list">
+                    <li>a) dimensiunea traseelor &#238;n semiconductor, frecvența ceasului, numărul și dimensiunea cache-urilor</li>
+                    <li>b) CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</li>
+                    <li>c) limitat de viteza memoriei</li>
+                    <li>d) task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Frame time pentru 60 FPS:</strong></p>
-                <ul class="specs-list"><li>a) 8.3 ms</li><li>b) 16.67 ms</li><li>c) 33 ms</li><li>d) 5 ms</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 16.67 ms</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Componentele?</strong></p>
+                <ul class="specs-list">
+                    <li>a) dimensiunea traseelor &#238;n semiconductor, frecvența ceasului, numărul și dimensiunea cache-urilor</li>
+                    <li>b) CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</li>
+                    <li>c) task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                    <li>d) limitat de viteza memoriei</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Reducerea rezoluției ajută când:</strong></p>
-                <ul class="specs-list"><li>a) CPU-bound</li><li>b) GPU-bound</li><li>c) PSU-bound</li><li>d) Update-bound</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) GPU-bound</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Factori de performanță?</strong></p>
+                <ul class="specs-list">
+                    <li>a) limitat de viteza memoriei</li>
+                    <li>b) dimensiunea traseelor &#238;n semiconductor, frecvența ceasului, numărul și dimensiunea cache-urilor</li>
+                    <li>c) task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                    <li>d) CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — dimensiunea traseelor &#238;n semiconductor, frecvența ceasului, numărul și dimensiunea cache-urilor</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Draw calls multe afectează:</strong></p>
-                <ul class="specs-list"><li>a) GPU only</li><li>b) CPU overhead</li><li>c) RAM only</li><li>d) SSD</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) CPU overhead</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: GPU dedicat (discrete)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                    <li>b) limitat de viteza memoriei</li>
+                    <li>c) CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</li>
+                    <li>d) folosește RAM dedicat GPU-ului (ex: GDDR SDRAM), performanță mare</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — folosește RAM dedicat GPU-ului (ex: GDDR SDRAM), performanță mare</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Bottleneck =</strong></p>
-                <ul class="specs-list"><li>a) Componenta cea mai rapidă</li><li>b) Componenta cea mai lentă</li><li>c) Orice componentă</li><li>d) RAM only</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Componenta cea mai lentă</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: PS4 și Xbox One (2013)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) CPU, unități de bandă, hard disk-uri, cititoare de cartele, imprimante</li>
+                    <li>b) task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</li>
+                    <li>c) GPU-uri bazate pe AMD Radeon HD 7850/7790</li>
+                    <li>d) limitat de viteza memoriei</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — GPU-uri bazate pe AMD Radeon HD 7850/7790</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Identificare Bottleneck</h3>
-                <p><strong>Cerință:</strong> GPU 99%, CPU 35%, FPS 30. Ce faci pentru 60 FPS?</p>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p>Este GPU-bound. Reduci rezoluția, calitatea shadow/lighting, sau optimizezi shader-ele.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: CPU-bound vs GPU-bound</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de limitarea performanței. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: limitarea performanței.</li>
+                    <li>2. Ce rol are rolul CPU în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre limitarea performanței și rolul GPU.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Un task/job/proces este CPU-bound (compute-bound) c&#226;nd timpul de finalizare este determinat principalment de viteza procesorului central</p>
+                        <p><strong>2.</strong> Opusul CPU-bound este I/O-bound: task-urile sunt limitate de viteza perifericelor (rețea, dispozitive de stocare)</p>
+                        <p><strong>3.</strong> Conceptul a fost dezvoltat la primele computere, c&#226;nd se vedea vizual o componentă lucr&#226;nd și alta inactivă</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -260,3 +523,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

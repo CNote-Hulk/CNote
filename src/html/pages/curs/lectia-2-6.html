@@ -1,0 +1,491 @@
+﻿<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lecția 2.6 — Surse &#238;n comutație (SMPS)">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+    <title>Lecția 2.6 — Surse &#238;n comutație (SMPS) — Console Notebook</title>
+    <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="logo">Console Notebook</a>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+            <ul class="nav-links">
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+                <li><a href="../bibliografie.html">Bibliografie</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero hero-cinematic hero-invata">
+        <div class="hero-content">
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.6 — Surse &#238;n comutație (SMPS)</h1>
+            <p>redresare, filtrare, conversie DC, eficiență</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+        </div>
+    </section>
+
+                                                <section class="section" id="introducere">
+        <div class="container">
+            <h2 class="section-title">Introducere</h2>
+            <div class="card" style="margin-bottom: 2rem;">
+                <p>SMPS (Switched-Mode Power Supply) = sursă de alimentare electronică care incorporează un regulator de comutație pentru conversia eficientă a energiei electrice</p>
+                <p>Această lecție acoperă: <strong>redresare</strong>, <strong>filtrare</strong>, <strong>conversie DC</strong>, <strong>eficiență</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="teorie">
+        <div class="container">
+            <h2 class="section-title">Teorie Structurată</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.1 — Definiție SMPS</h3>
+                <ul class="specs-list">
+                    <li>SMPS (Switched-Mode Power Supply) = sursă de alimentare electronică care incorporează un regulator de comutație pentru conversia eficientă a energiei electrice</li>
+                    <li>Transferă putere de la o sursă DC sau AC la sarcini DC, convertind caracteristicile de tensiune și curent</li>
+                    <li>Tranzistorul de trecere comută continuu &#238;ntre starea complet deschis (full-on) și complet &#238;nchis (full-off)</li>
+                    <li>&#206;mprumuth minim de timp &#238;n tranzițiile cu disipare mare → energie pierdută minimizată</li>
+                    <li><strong>Reglarea tensiunii:</strong> varierea raportului timp-deschis/timp-&#238;nchis (duty cycle)</li>
+                    <li><strong>Contrast cu sursa liniară:</strong> sursa liniară reglează prin disiparea continuă a puterii &#238;n tranzistorul de trecere</li>
+                    <li>SMPS poate fi substanțial mai mic și mai ușor dec&#226;t o sursă liniară deoarece transformatorul operează la frecvență de comutare &#238;naltă (sute de kHz p&#226;nă la MHz) vs. 50/60 Hz</li>
+                    <li>Complexitate mai mare din cauza topologiei și cerințelor de compatibilitate electromagnetică</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.2 — Comparație cu sursa liniară</h3>
+                <ul class="specs-list">
+                    <li><strong>Eficiență sursa liniară:</strong> tipic 30-40%</li>
+                    <li><strong>Eficiență SMPS:</strong> tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</li>
+                    <li><strong>Dimensiune/greutate:</strong> SMPS la 20 kHz este de 4&#215; mai mic; la 100-200 kHz de 8&#215; mai mic</li>
+                    <li><strong>Complexitate:</strong> SMPS necesită IC controller, tranzistori de putere, diode, transformator, inductori, condensatoare de filtrare</li>
+                    <li><strong>Sursa liniară:</strong> circuit mai simplu, buclă de feedback mai simplă</li>
+                    <li><strong>Zgomot:</strong> sursa liniară are respingere excelentă a ripple-ului AC; SMPS este mai zgomotoasă din cauza frecvenței de comutare</li>
+                    <li><strong>EMI/RFI:</strong> SMPS produce interferențe din comutarea bruscă → necesită filtre EMI și ecranare RF</li>
+                    <li><strong>Factor de putere:</strong> SMPS 0.5-0.6 fără corecție; 0.7-0.75 cu corecție pasivă; &gt;0.99 cu PFC activ</li>
+                    <li><strong>Combinație ideală:</strong> SMPS + LDO post-regulator = eficiență 60-65% cu zgomot redus</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.3 — Etapa de redresare la intrare</h3>
+                <ul class="specs-list">
+                    <li><strong>Prima etapă pentru intrare AC:</strong> conversia AC→DC (redresare)</li>
+                    <li><strong>Redresare:</strong> half-wave (semiundr) sau full-wave (undă completă/punte)</li>
+                    <li>Produce DC neregulat, trimis la un condensator mare de filtrare</li>
+                    <li>Curentul absrit &#238;n impulsuri scurte &#238;n jurul v&#226;rfurilor AC → factor de putere scăzut</li>
+                    <li><strong>PFC (Power Factor Correction):</strong> circuit special care face curentul de intrare să urmeze forma sinusoidală a tensiunii AC</li>
+                    <li><strong>PFC activ:</strong> permite funcționarea cu intrare universală ~100-250 VAC fără selector de tensiune</li>
+                    <li><strong>Standard UE IEC 61000-3-2:</strong> limite pentru armonici ale curentului AC de intrare (peste 75W)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.4 — Etapa invertor (chopper)</h3>
+                <ul class="specs-list">
+                    <li>Convertește DC (de la redresare sau direct) &#238;n AC prin oscilator de putere</li>
+                    <li><strong>Transformatorul de ieșire:</strong> foarte mic, cu puține spire, la frecvență de zeci/sute de kHz</li>
+                    <li>Frecvența aleasă &gt;20 kHz pentru a fi inaudibilă</li>
+                    <li>Implementat cu MOSFET-uri multi-etajă (rezistență on scăzută, curent mare)</li>
+                    <li>Transformator de frecvență &#238;naltă mult mai mic dec&#226;t transformatorul 50/60 Hz</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.5 — Convertor de tensiune și redresare la ieșire</h3>
+                <ul class="specs-list">
+                    <li><strong>Izolare galvanică:</strong> AC inversat alimentează primarul unui transformator de frecvență &#238;naltă</li>
+                    <li>Transformatorul convertește tensiunea sus/jos conform raportului de spire</li>
+                    <li>Redresarea ieșirii AC din transformator:</li>
+                    <li><strong>&gt;10V:</strong> diode din siliciu obișnuite</li>
+                    <li><strong>Tensiuni joase:</strong> diode Schottky (timp recuperare mai rapid, cădere de tensiune mai mică)</li>
+                    <li><strong>Tensiuni foarte joase:</strong> MOSFET-uri ca redresoare sincrone (cădere de conducție și mai mică)</li>
+                    <li><strong>Smoothing/filtrare:</strong> filtru LC (inductori + condensatoare) netezește ieșirea redresată</li>
+                    <li>Frecvențe de comutare mai mari → componente cu capacitate/inductanță mai mică</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.6 — Topologii neizolate (buck, boost, buck-boost)</h3>
+                <ul class="specs-list">
+                    <li><strong>Buck converter:</strong> reduce tensiunea, VOUT = D &#215; VIN (D = duty cycle, 0-1)</li>
+                    <li><strong>Exemplu:</strong> 10V intrare, 50% duty cycle → 5V ieșire</li>
+                    <li>Curent continuu la ieșire</li>
+                    <li><strong>Putere:</strong> 0-1000W</li>
+                    <li><strong>Boost converter:</strong> crește tensiunea, VOUT ≥ VIN</li>
+                    <li>Curent continuu la intrare</li>
+                    <li><strong>Putere:</strong> 0-5000W</li>
+                    <li><strong>Buck-boost converter:</strong> ieșire inversată, poate fi mai mare sau mai mică dec&#226;t intrarea</li>
+                    <li><strong>Putere:</strong> 0-150W</li>
+                    <li><strong>Buclă de feedback:</strong> reglează duty cycle pentru a compensa variații la intrare</li>
+                    <li><strong>Alte topologii:</strong> Ćuk, SEPIC, Zeta (adaugă inductori/condensatoare suplimentare)</li>
+                    <li><strong>Charge pump:</strong> folosește doar condensatoare, fără stocare magnetică</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.7 — Topologii izolate (cu transformator)</h3>
+                <ul class="specs-list">
+                    <li><strong>Flyback:</strong> 0-250W, formă izolată a buck-boost, 5-600V intrare</li>
+                    <li><strong>Forward:</strong> 100-200W, formă izolată a buck, 60-200V intrare</li>
+                    <li><strong>Half-bridge:</strong> 0-2000W, 50-1000V intrare</li>
+                    <li><strong>Full-bridge:</strong> 400-5000W, utilizare foarte eficientă a transformatorului, pentru puteri maxime</li>
+                    <li><strong>Push-pull:</strong> 100-1000W</li>
+                    <li><strong>Quasi-resonant ZCS/ZVS:</strong> comutare la curent/tensiune zero → EMI redus, eficiență ridicată</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.8 — Reglare și feedback</h3>
+                <ul class="specs-list">
+                    <li>Circuit de feedback monitorizează tensiunea de ieșire și o compară cu o referință</li>
+                    <li>Optocuplor pentru izolare &#238;ntre părțile primare și secundare</li>
+                    <li>Sistemul ajustează duty cycle pentru a menține tensiunea de ieșire constantă</li>
+                    <li>Circuitul de feedback necesită putere proprie (sursă non-switching de standby suplimentară)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.9 — Eficiență, EMI și moduri de defectare</h3>
+                <ul class="specs-list">
+                    <li><strong>Eficiența crește cu:</strong> tensiunea de intrare mai mare, redresare sincronă</li>
+                    <li>Frecvență de comutare mai mare → componente mai mici, dar mai mult RFI</li>
+                    <li><strong>Eșecuri:</strong> sensibilitate la temperatură (rata de eșec se dublează la fiecare 10-15&#176;C peste 25&#176;C)</li>
+                    <li>Condensatoare cu ESR crescut → frecvență de comutare crescută → stres termic pe semiconductoare</li>
+                    <li>Tranzistorul de comutare gestionează ~325V (pentru 230 VAC) → scurtcircuit frecvent</li>
+                    <li>Condensatorul de filtrare principal poate stoca 325V mult după deconectare → pericol de electrocutare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.6.10 — Aplicații</h3>
+                <ul class="specs-list">
+                    <li><strong>Surse de calculatoare (ATX PSU):</strong> intrare universală, multiple tensiuni de ieșire</li>
+                    <li><strong>&#206;ncărcătoare de telefoane mobile:</strong> topologie flyback sau RCC</li>
+                    <li><strong>Conversie DC-DC:</strong> vehicule grele (24V→12V), telecomunicații</li>
+                    <li><strong>&quot;Transformatoare electronice&quot;:</strong> surse de iluminat de joasă tensiune</li>
+                    <li><strong>Programul 80 Plus:</strong> certificare eficiență pentru surse de calculatoare</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <p>Conceptele din această lecție — Surse &#238;n comutație (SMPS) — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="aplicare">
+        <div class="container">
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție SMPS</h3>
+                <ul class="specs-list">
+                    <li>SMPS (Switched-Mode Power Supply) = sursă de alimentare electronică care incorporează un regulator de comutație pentru conversia eficientă a energiei electrice</li>
+                    <li>SMPS poate fi substanțial mai mic și mai ușor dec&#226;t o sursă liniară deoarece transformatorul operează la frecvență de comutare &#238;naltă (sute de kHz p&#226;nă la MHz) vs. 50/60 Hz</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Aplicații</h3>
+                <ul class="specs-list">
+                    <li><strong>Surse de calculatoare (ATX PSU):</strong> intrare universală, multiple tensiuni de ieșire</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="exemplu">
+        <div class="container">
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Comparație cu sursa liniară</h3>
+                <ul class="specs-list">
+                    <li><strong>Eficiență sursa liniară:</strong> tipic 30-40%</li>
+                    <li><strong>Eficiență SMPS:</strong> tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</li>
+                    <li><strong>Dimensiune/greutate:</strong> SMPS la 20 kHz este de 4&#215; mai mic; la 100-200 kHz de 8&#215; mai mic</li>
+                    <li><strong>Complexitate:</strong> SMPS necesită IC controller, tranzistori de putere, diode, transformator, inductori, condensatoare de filtrare</li>
+                    <li><strong>Sursa liniară:</strong> circuit mai simplu, buclă de feedback mai simplă</li>
+                    <li><strong>Zgomot:</strong> sursa liniară are respingere excelentă a ripple-ului AC; SMPS este mai zgomotoasă din cauza frecvenței de comutare</li>
+                    <li><strong>EMI/RFI:</strong> SMPS produce interferențe din comutarea bruscă → necesită filtre EMI și ecranare RF</li>
+                    <li><strong>Factor de putere:</strong> SMPS 0.5-0.6 fără corecție; 0.7-0.75 cu corecție pasivă; &gt;0.99 cu PFC activ</li>
+                    <li><strong>Combinație ideală:</strong> SMPS + LDO post-regulator = eficiență 60-65% cu zgomot redus</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="probleme">
+        <div class="container">
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Eficiență, EMI și moduri de defectare</h3>
+                    <p>Eficiența crește cu: tensiunea de intrare mai mare, redresare sincronă</p>
+                    <p>Frecvență de comutare mai mare → componente mai mici, dar mai mult RFI</p>
+                    <p>Eșecuri: sensibilitate la temperatură (rata de eșec se dublează la fiecare 10-15&#176;C peste 25&#176;C)</p>
+                    <p>Condensatoare cu ESR crescut → frecvență de comutare crescută → stres termic pe semiconductoare</p>
+                    <p>Tranzistorul de comutare gestionează ~325V (pentru 230 VAC) → scurtcircuit frecvent</p>
+                    <p>Condensatorul de filtrare principal poate stoca 325V mult după deconectare → pericol de electrocutare</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="recapitulare">
+        <div class="container">
+            <h2 class="section-title">Recapitulare</h2>
+            <div class="card" style="margin-bottom: 2rem;">
+                <ul class="specs-list">
+                    <li><strong>Definiție SMPS:</strong> SMPS (Switched-Mode Power Supply) = sursă de alimentare electronică care incorporează un regulator de comutație pentru conversia eficientă a energiei electrice</li>
+                    <li><strong>Comparație cu sursa liniară:</strong> Eficiență sursa liniară: tipic 30-40%</li>
+                    <li><strong>Etapa de redresare la intrare:</strong> Prima etapă pentru intrare AC: conversia AC→DC (redresare)</li>
+                    <li><strong>Etapa invertor (chopper):</strong> Convertește DC (de la redresare sau direct) &#238;n AC prin oscilator de putere</li>
+                    <li><strong>Convertor de tensiune și redresare la ieșire:</strong> Izolare galvanică: AC inversat alimentează primarul unui transformator de frecvență &#238;naltă</li>
+                    <li><strong>Topologii neizolate (buck, boost, buck-boost):</strong> Buck converter: reduce tensiunea, VOUT = D &#215; VIN (D = duty cycle, 0-1)</li>
+                    <li><strong>Topologii izolate (cu transformator):</strong> Flyback: 0-250W, formă izolată a buck-boost, 5-600V intrare</li>
+                    <li><strong>Reglare și feedback:</strong> Circuit de feedback monitorizează tensiunea de ieșire și o compară cu o referință</li>
+                    <li><strong>Eficiență, EMI și moduri de defectare:</strong> Eficiența crește cu: tensiunea de intrare mai mare, redresare sincronă</li>
+                    <li><strong>Aplicații:</strong> Surse de calculatoare (ATX PSU): intrare universală, multiple tensiuni de ieșire</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="quiz">
+        <div class="container">
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Reglarea tensiunii?</strong></p>
+                <ul class="specs-list">
+                    <li>a) sursa liniară reglează prin disiparea continuă a puterii &#238;n tranzistorul de trecere</li>
+                    <li>b) tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</li>
+                    <li>c) varierea raportului timp-deschis/timp-&#238;nchis (duty cycle)</li>
+                    <li>d) SMPS la 20 kHz este de 4&#215; mai mic; la 100-200 kHz de 8&#215; mai mic</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — varierea raportului timp-deschis/timp-&#238;nchis (duty cycle)</strong></p>
+                </details>
+            </div>
+
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Eficiență SMPS?</strong></p>
+                <ul class="specs-list">
+                    <li>a) varierea raportului timp-deschis/timp-&#238;nchis (duty cycle)</li>
+                    <li>b) SMPS la 20 kHz este de 4&#215; mai mic; la 100-200 kHz de 8&#215; mai mic</li>
+                    <li>c) sursa liniară reglează prin disiparea continuă a puterii &#238;n tranzistorul de trecere</li>
+                    <li>d) tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</strong></p>
+                </details>
+            </div>
+
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Prima etapă pentru intrare AC?</strong></p>
+                <ul class="specs-list">
+                    <li>a) varierea raportului timp-deschis/timp-&#238;nchis (duty cycle)</li>
+                    <li>b) conversia AC→DC (redresare)</li>
+                    <li>c) tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</li>
+                    <li>d) sursa liniară reglează prin disiparea continuă a puterii &#238;n tranzistorul de trecere</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — conversia AC→DC (redresare)</strong></p>
+                </details>
+            </div>
+
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Transformatorul de ieșire?</strong></p>
+                <ul class="specs-list">
+                    <li>a) foarte mic, cu puține spire, la frecvență de zeci/sute de kHz</li>
+                    <li>b) varierea raportului timp-deschis/timp-&#238;nchis (duty cycle)</li>
+                    <li>c) sursa liniară reglează prin disiparea continuă a puterii &#238;n tranzistorul de trecere</li>
+                    <li>d) tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — foarte mic, cu puține spire, la frecvență de zeci/sute de kHz</strong></p>
+                </details>
+            </div>
+
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Izolare galvanică?</strong></p>
+                <ul class="specs-list">
+                    <li>a) tipic 70-85%, poate atinge 90%, unele modele ajung la 98-99%</li>
+                    <li>b) sursa liniară reglează prin disiparea continuă a puterii &#238;n tranzistorul de trecere</li>
+                    <li>c) varierea raportului timp-deschis/timp-&#238;nchis (duty cycle)</li>
+                    <li>d) AC inversat alimentează primarul unui transformator de frecvență &#238;naltă</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — AC inversat alimentează primarul unui transformator de frecvență &#238;naltă</strong></p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="exercitiu">
+        <div class="container">
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>🧠 Exercițiu: Surse &#238;n comutație (SMPS)</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de redresare. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: redresare.</li>
+                    <li>2. Ce rol are filtrare în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre redresare și conversie DC.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> SMPS (Switched-Mode Power Supply) = sursă de alimentare electronică care incorporează un regulator de comutație pentru conversia eficientă a energiei electrice</p>
+                        <p><strong>2.</strong> Eficiență sursa liniară: tipic 30-40%</p>
+                        <p><strong>3.</strong> Prima etapă pentru intrare AC: conversia AC→DC (redresare)</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- NAVIGARE LECȚII -->
+    <section class="section" id="navigare">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <a href="lectia-2-4.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 2.4 &mdash; MOSFET &#x219;i VRM</a>
+            <a href="lectia-3-1.html" class="hero-button" style="font-size: 0.9rem;">Lec&#x21B;ia 3.1 &mdash; Bit &#x219;i Sistem Binar &rarr;</a>
+        </div>
+    </section>
+
+    <!-- VIDEO RECOMANDAT -->
+    <section class="section" id="video">
+        <div class="container">
+            <h2 class="section-title">Video Recomandat</h2>
+            <div class="video-section">
+                <div class="custom-player" data-video-id="W6O-Pmkx1cE">
+                    <div class="yt-placeholder"></div>
+
+                    <div class="player-overlay">
+                        <button class="overlay-play-btn" aria-label="Redare">
+                            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="player-controls">
+                        <div class="ctrl-progress-row">
+                            <div class="ctrl-progress">
+                                <div class="ctrl-progress-buffer"></div>
+                                <div class="ctrl-progress-fill"></div>
+                            </div>
+                            <span class="ctrl-time">0:00 / 0:00</span>
+                        </div>
+                        <div class="ctrl-buttons-row">
+                            <button class="ctrl-btn ctrl-play-pause" aria-label="Redare / Pauz&#x103;">
+                                <svg class="icon-play" viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+                            </button>
+                            <button class="ctrl-btn ctrl-skip-back" aria-label="&#x2212;10 secunde">
+                                <svg viewBox="0 0 24 24"><path d="M12.5 3C7.81 3 4 6.81 4 11.5h-3l4 4 4-4H6c0-3.58 2.92-6.5 6.5-6.5S19 7.92 19 11.5 16.08 18 12.5 18c-1.56 0-3-.56-4.12-1.48l-1.42 1.42A8.46 8.46 0 0012.5 20c4.69 0 8.5-3.81 8.5-8.5S17.19 3 12.5 3z"/><text x="12" y="14.5" text-anchor="middle" font-size="7" fill="white" font-family="sans-serif" font-weight="700">10</text></svg>
+                            </button>
+                            <button class="ctrl-btn ctrl-skip-fwd" aria-label="+10 secunde">
+                                <svg viewBox="0 0 24 24"><path d="M11.5 3C16.19 3 20 6.81 20 11.5h3l-4 4-4-4h3c0-3.58-2.92-6.5-6.5-6.5S5 7.92 5 11.5 7.92 18 11.5 18c1.56 0 3-.56 4.12-1.48l1.42 1.42A8.46 8.46 0 0111.5 20C6.81 20 3 16.19 3 11.5S6.81 3 11.5 3z"/><text x="12" y="14.5" text-anchor="middle" font-size="7" fill="white" font-family="sans-serif" font-weight="700">10</text></svg>
+                            </button>
+                            <div class="ctrl-vol-group">
+                                <button class="ctrl-btn ctrl-vol-btn" aria-label="Volum">
+                                    <svg class="icon-vol-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 8.77v6.46A4.49 4.49 0 0016.5 12zM14 3.23v2.06a7 7 0 010 13.42v2.06A9 9 0 0014 3.23z"/></svg>
+                                    <svg class="icon-vol-off" viewBox="0 0 24 24"><path d="M16.5 12A4.5 4.5 0 0014 8.77v2.36l2.45 2.45c.03-.19.05-.38.05-.58zm2.5 0a7 7 0 01-.57 2.8l1.5 1.5A9 9 0 0021 12a9 9 0 00-7-8.77v2.06A7 7 0 0119 12zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a9 9 0 003.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4l-1.88 1.88L12 7.76V4z"/></svg>
+                                </button>
+                                <div class="ctrl-vol-slider">
+                                    <div class="ctrl-vol-fill"></div>
+                                </div>
+                            </div>
+                            <button class="ctrl-btn ctrl-fullscreen" aria-label="Ecran complet">
+                                <svg class="icon-fs-enter" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm0-4h2V7h3V5H5v5zm10 7h-3v2h5v-5h-2v3zm0-12h-5v2h3v3h2V5z"/></svg>
+                                <svg class="icon-fs-exit" viewBox="0 0 24 24"><path d="M5 16h2v3h3v2H5v-5zm2-8H5V3h5v2H7v3zm10 11v-3h2v5h-5v-2h3zM14 3h5v5h-2V5h-3V3z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p class="video-description">Cum funcționează o sursă în comutație (SMPS): principii de funcționare, etape și avantaje față de sursele liniare.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner container">
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
+        </div>
+    </footer>
+
+    <script type="module" src="../../../js/main.js"></script>
+    <script src="../../../js/fallback/hamburger.js"></script>
+    <script src="../../../js/fallback/quiz.js"></script>
+    <script src="../../../js/modules/custom-player.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

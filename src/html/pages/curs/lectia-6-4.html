@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 6.4 — Instabilitate: Restarturi, Freeze, Shutdown aleator">
+    <meta name="description" content="Lecția 6.4 — Instabilitate sistem">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 6.4 — Instabilitate — Console Notebook</title>
+    <title>Lecția 6.4 — Instabilitate sistem — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — Alimentare și Probleme Reale</p>
-            <h1>Lecția 6.4 — Instabilitate</h1>
-            <p>Restarturi, freeze, shutdown aleator. Cum corelezi simptome cu rail-uri și temperaturi.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — ALIMENTARE ȘI PROBLEME REALE</p>
+            <h1>Lecția 6.4 — Instabilitate sistem</h1>
+            <p>fluctuații de tensiune, probleme VRM, supra&#238;ncălzire</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Instabilitate:</strong> Consola pornește, dar se resetează, se blochează sau se oprește fără motiv aparent.</p>
-                <p>De obicei cauza este termică, rail instabil sau defecte intermitente (BGA, VRM, RAM).</p>
-                <p>Instabilitatea este cea mai grea de diagnosticat, pentru că apare doar în anumite condiții.</p>
+                <p>VRM (Voltage Regulator Module), numit și PPM (Processor Power Module)</p>
+                <p>Această lecție acoperă: <strong>fluctuații de tensiune</strong>, <strong>probleme VRM</strong>, <strong>supra&#238;ncălzire</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,78 +53,426 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1 — Thermal Throttling vs Shutdown</h3>
-                <p><strong>Throttling:</strong> Firmware reduce frecvența când temperatura crește. FPS scade, dar consola rămâne on.</p>
-                <p><strong>Shutdown:</strong> Dacă temperatura depășește pragul (90-100°C), sistemul se oprește pentru protecție.</p>
-                <p>Instabilitate termică apare după 5-20 min de joc.</p>
+                <h3>6.4.1 — Definiția și funcția VRM</h3>
+                <ul class="specs-list">
+                    <li>VRM (Voltage Regulator Module), numit și PPM (Processor Power Module)</li>
+                    <li>Este un convertor buck care furnizează tensiunea corespunzătoare microprocesorului și chipsetului</li>
+                    <li>Convertește +3.3V, +5V sau +12V la tensiuni mai mici necesare dispozitivelor</li>
+                    <li>Majoritatea implementărilor VRM sunt lipite pe placa de bază (motherboard)</li>
+                    <li>VRM-ul modern este compus din tranzistoare Power MOSFET</li>
+                    <li>Permite montarea dispozitivelor cu tensiuni diferite pe aceeași placă de bază</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.2 — Rail Instabil și Ripple</h3>
-                <p><strong>Ripple mare:</strong> VRM degradează, condensatori uscați.</p>
-                <p><strong>Symptom:</strong> Crash în jocuri heavy, dar meniu OK.</p>
-                <p>Rail core 1.05V trebuie să aibă ripple &lt; 20 mV. Dacă 60 mV, APU devine instabil.</p>
+                <h3>6.4.2 — FIVR – Fully Integrated Voltage Regulator</h3>
+                <ul class="specs-list">
+                    <li>Unele procesoare (Intel Haswell, Ice Lake) integrează componente de reglare a tensiunii pe pachetul CPU</li>
+                    <li>Aceasta simplifică designul VRM de pe placa de bază</li>
+                    <li>Aduce simplificarea reglării complexe a tensiunii care implică multiple tensiuni de alimentare CPU</li>
+                    <li>Permite pornirea și oprirea dinamică a diferitelor zone ale CPU</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.3 — RAM Errors</h3>
-                <p><strong>GDDR6 timing:</strong> Dacă voltaj 1.35V scade sau memory training este marginal, erorile apar la load mare.</p>
-                <p><strong>Symptom:</strong> Artefacte grafice, crash după 1-2 ore.</p>
-                <p><strong>Test:</strong> Memory stress test, observare temperatură RAM.</p>
+                <h3>6.4.3 — Tensiunea de alimentare și VID</h3>
+                <ul class="specs-list">
+                    <li>Majoritatea CPU-urilor moderne necesită sub 1.5V</li>
+                    <li>Designerii CPU tind să folosească tensiuni mai mici pentru a reduce disiparea termică</li>
+                    <li>VRM-ul detectează tensiunea necesară de la procesor prin VID (Voltage Identification Definition)</li>
+                    <li>VRM-ul furnizează inițial o tensiune standard logicii VID</li>
+                    <li>Logica VID trimite VRM-ului tensiunea necesară prin biți VID</li>
+                    <li>VID vine &#238;n variante de 5, 6 și 8 biți</li>
+                    <li><strong>Tensiunile de ieșire:</strong> &#238;ntre 0.5V și 3.5V (din 2008)</li>
+                    <li><strong>Exemplu:</strong> VID pe 5 biți → maxim 32 (2^5) tensiuni de ieșire distincte</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.4 — BGA Microfracturi</h3>
-                <p><strong>BGA balls:</strong> APU și RAM sunt BGA. Dilatare termică repetată poate crea microfracturi.</p>
-                <p><strong>Symptom:</strong> Consola funcționează când e rece, dar crash când se încălzește.</p>
-                <p><strong>Diagnostic:</strong> Presiune ușoară pe APU poate schimba comportamentul (test de flex).</p>
+                <h3>6.4.4 — VRM și probleme de overclocking/instabilitate</h3>
+                <ul class="specs-list">
+                    <li>Calitatea VRM-ului impact direct potențialul de overclocking al plăcii de bază</li>
+                    <li>Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite</li>
+                    <li>O alimentare stabilă este necesară pentru overclocking reușit</li>
+                    <li>C&#226;nd un chip este forțat peste setările din fabrică, consumul de putere crește</li>
+                    <li>VRM-ul trebuie să &#238;și ajusteze ieșirea corespunzător</li>
+                    <li>VRM-uri de calitate inferioară → fluctuații de tensiune → instabilitate sistem</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5 — PSU și Power Spikes</h3>
-                <p><strong>PSU slab:</strong> Nu poate livra spike-uri de curent. Rail 12V scade scurt → reset.</p>
-                <p><strong>Symptom:</strong> Reset imediat când începe joc (load mare).</p>
-                <p><strong>Test:</strong> Măsoară 12V cu osciloscop, urmărește droop la load.</p>
+                <h3>6.4.5 — VRM-ul pe plăci video</h3>
+                <ul class="specs-list">
+                    <li>Plăcile video moderne folosesc VRM din cauza cerințelor mari de putere și curent</li>
+                    <li>VRM-urile plăcilor video pot genera căldură semnificativă</li>
+                    <li>Necesită radiatoare separate de GPU</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.6 — Definiția TDP</h3>
+                <ul class="specs-list">
+                    <li>TDP (Thermal Design Power / Thermal Design Point)</li>
+                    <li>Cantitatea maximă de căldură pe care o componentă (CPU, GPU, SoC) o poate genera</li>
+                    <li>Sistemul de răcire trebuie proiectat să disipeze această căldură &#238;n operare normală</li>
+                    <li>Se măsoară la frecvența de bază (non-turbo, clock rate)</li>
+                    <li>Puterea maximă este de obicei 1.5&#215; TDP-ul specificat (CPU)</li>
+                    <li>GPU-urile pot avea discrepanțe și mai mari &#238;ntre puterea maximă și TDP</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.7 — Thermal throttling și protecție termică</h3>
+                <ul class="specs-list">
+                    <li><strong>Dacă TDP-ul este depășit (sarcini intensive:</strong> video encoding, jocuri), CPU-ul:</li>
+                    <li>Provoacă o defecțiune de sistem (therm-trip) SAU</li>
+                    <li>Reduce viteza (throttling)</li>
+                    <li>Therm-trip apare doar la defecțiuni catastrofale de răcire (ventilator nefuncțional, heatsink montat incorect)</li>
+                    <li>Un sistem de răcire pentru laptop proiectat pentru 20W TDP poate disipa p&#226;nă la 20W fără depășirea temperaturii maxime de joncțiune</li>
+                    <li>Din generația 12 Intel, TDP a fost &#238;nlocuit cu PBP (Processor Base Power)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.8 — Ambiguități ale TDP și consecințe</h3>
+                <ul class="specs-list">
+                    <li>Diferiți producători definesc TDP folosind metode de calcul diferite</li>
+                    <li>Condițiile de operare sunt păstrate aproape nedezvăluite</li>
+                    <li>Compararea TDP &#238;ntre dispozitive de la producători diferiți nu este relevantă</li>
+                    <li>Selectarea unui heatsink poate duce la supra&#238;ncălzire (heatsink subdimensionat) sau suprarăcire (heatsink supradimensionat)</li>
+                    <li><strong>O abordare sigură:</strong> considerarea unei puteri termice de 1.5&#215; TDP-ul specificat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.9 — Formula termică fundamentală</h3>
+                <ul class="specs-list">
+                    <li>Pd (Watt) = puterea termică generată de CPU</li>
+                    <li>Rca (&#176;C/W) = rezistența termică a heatsink-ului</li>
+                    <li>Tc (&#176;C) = temperatura maximă permisă a carcasei CPU</li>
+                    <li>Ta (&#176;C) = temperatura maximă a mediului ambiant</li>
+                    <li><strong>Ecuația:</strong> (Tc - Ta) = Pd &#215; Rca</li>
+                    <li>Rca = (Tc - Ta) / Pd → determină caracteristicile heatsink-ului necesar</li>
+                    <li>Temperatura mai scăzută a joncțiunii de siliciu → durată de viață mai lungă (ecuația Arrhenius)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.10 — cTDP – Configurable TDP</h3>
+                <ul class="specs-list">
+                    <li>Moduri de operare cu TDP variabil:</li>
+                    <li><strong>Nominal TDP:</strong> frecvența și TDP-ul specificat</li>
+                    <li><strong>cTDP down:</strong> mod mai silențios, TDP și frecvență mai mică</li>
+                    <li><strong>cTDP up:</strong> răcire suplimentară disponibilă, TDP și frecvență mai mare</li>
+                    <li>Intel cTDP disponibil din procesoarele mobile Haswell</li>
+                    <li>AMD Opteron și Kaveri APU-uri suportă configurare TDP</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.11 — Supra&#238;ncălzire – cauze și simptome</h3>
+                <ul class="specs-list">
+                    <li><strong>Componentele susceptibile la supra&#238;ncălzire:</strong> CPU, chipset, plăci grafice, HDD, SSD</li>
+                    <li>Supra&#238;ncălzirea poate cauza defecțiuni temporare sau daune permanente</li>
+                    <li>Procesoarele moderne sunt proiectate să se oprească sau să reducă tensiunea/frecvența la temperaturi interne excesive</li>
+                    <li><strong>Thermal Throttling:</strong> reducerea frecvenței și tensiunii, dezactivarea funcțiilor neesențiale</li>
+                    <li><strong>Thermal Shutdown:</strong> oprirea completă a dispozitivului sau sistemului</li>
+                    <li>Throttling-ul este controlat la nivel BIOS</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.12 — Factorii care afectează răcirea</h3>
+                <ul class="specs-list">
+                    <li><strong>Praful:</strong> acționează ca izolator termic, &#238;mpiedică fluxul de aer, reduce performanța heatsink-ului</li>
+                    <li><strong>Flux de aer deficitar:</strong> turbulențe, orientare incorectă a ventilatoarelor</li>
+                    <li><strong>Transfer termic deficitar:</strong> contact termic slab &#238;ntre componente și dispozitive de răcire</li>
+                    <li>Pasta termică uscată sau aplicată incorect</li>
+                    <li>Construcția laptopului acumulează praf care face laptopul inutilizabil din cauza opririlor termice frecvente</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.13 — Prevenirea daunelor termice</h3>
+                <ul class="specs-list">
+                    <li>Inspecție vizuală a cooler-ului și ventilatoarelor</li>
+                    <li>Ventilator care nu se rotește corect → necesită &#238;nlocuire</li>
+                    <li>Curățarea ventilatoarelor cu aer comprimat</li>
+                    <li>&#206;nlocuirea pastei termice &#238;n mod regulat</li>
+                    <li>Praful se acumulează &#238;n crestăturile radiatoarelor cu aripioare</li>
+                    <li>Utilizarea filtrelor de praf pe ventilatoare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.14 — Tipuri de răcire</h3>
+                <ul class="specs-list">
+                    <li><strong>Răcire pasivă:</strong> heatsink fără ventilator, convecție naturală</li>
+                    <li><strong>Răcire activă:</strong> heatsink cu ventilator, dimensiuni comune: 40, 60, 80, 92, 120, 140 mm</li>
+                    <li><strong>Răcire cu lichid (liquid cooling):</strong> apă distilată cu aditivi, capacitate termică și conductivitate mai mare</li>
+                    <li><strong>Heat pipe:</strong> tub gol cu lichid de transfer termic, evaporare/condensare, conductivitate termică mai mare</li>
+                    <li><strong>Vapor chamber:</strong> funcționează pe același principiu ca heat pipe dar &#238;n formă de placă</li>
+                    <li><strong>AIO (All-in-One):</strong> sistem &#238;nchis prefabricat cu radiator, ventilator și waterblock cu pompă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.15 — Airflow și presiune</h3>
+                <ul class="specs-list">
+                    <li><strong>Presiune pozitivă:</strong> aerul de intrare mai puternic dec&#226;t evacuarea → previne acumularea prafului</li>
+                    <li><strong>Presiune negativă:</strong> evacuare mai puternică → trage praf prin toate orificiile</li>
+                    <li>Presiune pozitivă + filtre pe intrare = soluția optimă</li>
+                    <li>Ventilator frontal + ventilator spate + ventilator sus = configurație recomandată</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.16 — Ripple – fluctuații de tensiune</h3>
+                <ul class="specs-list">
+                    <li><strong>Ripple (voltage ripple):</strong> variația periodică reziduală a tensiunii DC &#238;n sursa de alimentare</li>
+                    <li>Rezultă din suprimarea incompletă a formei de undă alternanțe după redresare</li>
+                    <li>Ripple-ul este o formă de undă compozită (non-sinusoidală)</li>
+                    <li><strong>&#206;n SMPS, frecvența ripple-ului:</strong> 50 kHz – 1 MHz (nu depinde de frecvența rețelei)</li>
+                    <li>Efectele ripple-ului nedorit:</li>
+                    <li>Putere pierdută care nu poate fi utilizată de circuit</li>
+                    <li>&#206;ncălzire &#238;n componente DC din cauza curentului prin elemente parazite (ESR al condensatoarelor)</li>
+                    <li>Tensiunea de v&#226;rf a componentelor trebuie mai mare</li>
+                    <li>Componente mai mari și de calitate mai mare necesare</li>
+                    <li><strong>&#206;n circuite digitale:</strong> reduce pragul la care circuitele logice dau ieșiri incorecte și datele sunt corupte</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.17 — Filtrarea ripple-ului</h3>
+                <ul class="specs-list">
+                    <li>Condensatoare electroliticite cu rating mare de curent ripple</li>
+                    <li>Bobine cu miez de fier (chokes)</li>
+                    <li>Rezistențe de putere bobinate</li>
+                    <li><strong>Filtru LC (inductor + condensator):</strong> reducerea ripple-ului independentă de sarcină</li>
+                    <li><strong>Filtru Pi (Π):</strong> factor de ripple mult mai mic dec&#226;t filtrele cu condensator sau bobină singure</li>
+                    <li><strong>Regulatoare de tensiune:</strong> elimină aproape tot ripple-ul</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.18 — Dynamic Voltage Scaling și instabilitate</h3>
+                <ul class="specs-list">
+                    <li><strong>DVS:</strong> tehnică de management al puterii prin creșterea/scăderea tensiunii</li>
+                    <li><strong>Overvolting:</strong> creștere tensiune → suport frecvențe mai mari → performanță</li>
+                    <li><strong>Undervolting:</strong> scădere tensiune → conservare energie → temperaturi mai mici</li>
+                    <li><strong>Puterea disipată CMOS:</strong> P = α &#215; C &#215; V&#178; &#215; f</li>
+                    <li>V = tensiune, f = frecvență, C = capacitanță, α = factor de activitate</li>
+                    <li>Puterea scade pătratic cu tensiunea</li>
+                    <li>Tensiune sub minimul recomandat de producător → instabilitate sistem</li>
+                    <li>La temperaturi ridicate, eficiența regulatoarelor de tensiune scade</li>
+                    <li><strong>Thermal runaway:</strong> consumul de putere crește cu temperatura, cre&#226;nd un ciclu de deteriorare</li>
+                    <li><strong>Efecte adverse la nivel de dispozitiv:</strong> hot carrier injection, electromigrare</li>
+                    <li>Aceste efecte reduc durata de viață a componentelor supratensionate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.4.19 — Formula vitezei de comutare</h3>
+                <ul class="specs-list">
+                    <li>Viteza la care un circuit digital comută stări este proporțională cu diferența de tensiune</li>
+                    <li>Tensiune mai mare → slew rate mai mare → tranziție mai rapidă prin pragul MOSFET</li>
+                    <li>Tensiune redusă → circuitele comută mai lent → frecvența maximă scade</li>
+                    <li><strong>DVFS (Dynamic Voltage and Frequency Scaling):</strong> ajustare simultană tensiune + frecvență</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>FIVR – Fully Integrated Voltage Regulator</h3>
+                <ul class="specs-list">
+                    <li>Aduce simplificarea reglării complexe a tensiunii care implică multiple tensiuni de alimentare CPU</li>
+                    <li>Permite pornirea și oprirea dinamică a diferitelor zone ale CPU</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Tensiunea de alimentare și VID</h3>
+                <ul class="specs-list">
+                    <li>Majoritatea CPU-urilor moderne necesită sub 1.5V</li>
+                    <li>Designerii CPU tind să folosească tensiuni mai mici pentru a reduce disiparea termică</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>VRM-ul pe plăci video</h3>
+                <ul class="specs-list">
+                    <li>Necesită radiatoare separate de GPU</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția TDP</h3>
+                <ul class="specs-list">
+                    <li>GPU-urile pot avea discrepanțe și mai mari &#238;ntre puterea maximă și TDP</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Thermal throttling și protecție termică</h3>
+                <ul class="specs-list">
+                    <li><strong>Dacă TDP-ul este depășit (sarcini intensive:</strong> video encoding, jocuri), CPU-ul:</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Formula termică fundamentală</h3>
+                <ul class="specs-list">
+                    <li>Pd (Watt) = puterea termică generată de CPU</li>
+                    <li>Tc (&#176;C) = temperatura maximă permisă a carcasei CPU</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Ripple – fluctuații de tensiune</h3>
+                <ul class="specs-list">
+                    <li><strong>&#206;n circuite digitale:</strong> reduce pragul la care circuitele logice dau ieșiri incorecte și datele sunt corupte</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Formula vitezei de comutare</h3>
+                <ul class="specs-list">
+                    <li>Viteza la care un circuit digital comută stări este proporțională cu diferența de tensiune</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> Temperatură și alimentare instabilă afectează tranzistorii.</p>
-                <p><strong>Informatică:</strong> Erori de calcul duc la crash, freeze, reset.</p>
+                <h3>Definiția și funcția VRM</h3>
+                <ul class="specs-list">
+                    <li>VRM (Voltage Regulator Module), numit și PPM (Processor Power Module)</li>
+                    <li>Majoritatea implementărilor VRM sunt lipite pe placa de bază (motherboard)</li>
+                    <li>VRM-ul modern este compus din tranzistoare Power MOSFET</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>FIVR – Fully Integrated Voltage Regulator</h3>
+                <ul class="specs-list">
+                    <li>Aceasta simplifică designul VRM de pe placa de bază</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Tensiunea de alimentare și VID</h3>
+                <ul class="specs-list">
+                    <li>VRM-ul detectează tensiunea necesară de la procesor prin VID (Voltage Identification Definition)</li>
+                    <li>VRM-ul furnizează inițial o tensiune standard logicii VID</li>
+                    <li>Logica VID trimite VRM-ului tensiunea necesară prin biți VID</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>VRM-ul pe plăci video</h3>
+                <ul class="specs-list">
+                    <li>Plăcile video moderne folosesc VRM din cauza cerințelor mari de putere și curent</li>
+                    <li>VRM-urile plăcilor video pot genera căldură semnificativă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția TDP</h3>
+                <ul class="specs-list">
+                    <li>Cantitatea maximă de căldură pe care o componentă (CPU, GPU, SoC) o poate genera</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>cTDP – Configurable TDP</h3>
+                <ul class="specs-list">
+                    <li>AMD Opteron și Kaveri APU-uri suportă configurare TDP</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Ripple – fluctuații de tensiune</h3>
+                <ul class="specs-list">
+                    <li><strong>Ripple (voltage ripple):</strong> variația periodică reziduală a tensiunii DC &#238;n sursa de alimentare</li>
+                    <li><strong>&#206;n SMPS, frecvența ripple-ului:</strong> 50 kHz – 1 MHz (nu depinde de frecvența rețelei)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Restart în joc</h3>
-                <p>Joc heavy → GPU load 95% → curent mare. VRM ripple crește, APU crash, consolă restart.</p>
-                <p>În meniu, load mic, nu apare problemă. Diagnosticul trebuie făcut sub load.</p>
+                <h3>FIVR – Fully Integrated Voltage Regulator</h3>
+                <ul class="specs-list">
+                    <li>Unele procesoare (Intel Haswell, Ice Lake) integrează componente de reglare a tensiunii pe pachetul CPU</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția TDP</h3>
+                <ul class="specs-list">
+                    <li>Puterea maximă este de obicei 1.5&#215; TDP-ul specificat (CPU)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Ambiguități ale TDP și consecințe</h3>
+                <ul class="specs-list">
+                    <li><strong>O abordare sigură:</strong> considerarea unei puteri termice de 1.5&#215; TDP-ul specificat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>cTDP – Configurable TDP</h3>
+                <ul class="specs-list">
+                    <li><strong>Nominal TDP:</strong> frecvența și TDP-ul specificat</li>
+                    <li>Intel cTDP disponibil din procesoarele mobile Haswell</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: PS5 Freeze după 30 min</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>Consola funcționează 30 min, apoi freeze. Temperatura APU 92°C.</p>
-                <p>Curățare radiator, schimbare pastă termică. Temperatura scade la 75°C. Freeze dispare.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ Crash aleator după ore</h3><p>RAM marginală sau BGA microfracturi. Diagnostic dificil, necesită test termic.</p></div>
-            <div class="card"><h3>⚠️ Restart imediat sub load</h3><p>PSU slab sau VRM insuficient. Rail 12V droop.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ VRM și probleme de overclocking/instabilitate</h3>
+                    <p>Calitatea VRM-ului impact direct potențialul de overclocking al plăcii de bază</p>
+                    <p>Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite</p>
+                    <p>O alimentare stabilă este necesară pentru overclocking reușit</p>
+                    <p>C&#226;nd un chip este forțat peste setările din fabrică, consumul de putere crește</p>
+                    <p>VRM-ul trebuie să &#238;și ajusteze ieșirea corespunzător</p>
+                    <p>VRM-uri de calitate inferioară → fluctuații de tensiune → instabilitate sistem</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Supra&#238;ncălzire – cauze și simptome</h3>
+                    <p>Componentele susceptibile la supra&#238;ncălzire: CPU, chipset, plăci grafice, HDD, SSD</p>
+                    <p>Supra&#238;ncălzirea poate cauza defecțiuni temporare sau daune permanente</p>
+                    <p>Procesoarele moderne sunt proiectate să se oprească sau să reducă tensiunea/frecvența la temperaturi interne excesive</p>
+                    <p>Thermal Throttling: reducerea frecvenței și tensiunii, dezactivarea funcțiilor neesențiale</p>
+                    <p>Thermal Shutdown: oprirea completă a dispozitivului sau sistemului</p>
+                    <p>Throttling-ul este controlat la nivel BIOS</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Dynamic Voltage Scaling și instabilitate</h3>
+                    <p>Thermal runaway: consumul de putere crește cu temperatura, cre&#226;nd un ciclu de deteriorare</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -129,11 +481,25 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Thermal:</strong> Throttling sau shutdown la 90-100°C.</li>
-                    <li><strong>Ripple:</strong> VRM instabil = crash sub load.</li>
-                    <li><strong>RAM errors:</strong> Artefacte și freeze.</li>
-                    <li><strong>BGA:</strong> Microfracturi termice dau instabilitate.</li>
-                    <li><strong>PSU:</strong> Power spikes pot cauza reset instant.</li>
+                    <li><strong>Definiția și funcția VRM:</strong> VRM (Voltage Regulator Module), numit și PPM (Processor Power Module)</li>
+                    <li><strong>FIVR – Fully Integrated Voltage Regulator:</strong> Unele procesoare (Intel Haswell, Ice Lake) integrează componente de reglare a tensiunii pe pachetul CPU</li>
+                    <li><strong>Tensiunea de alimentare și VID:</strong> Majoritatea CPU-urilor moderne necesită sub 1.5V</li>
+                    <li><strong>VRM și probleme de overclocking/instabilitate:</strong> Calitatea VRM-ului impact direct potențialul de overclocking al plăcii de bază</li>
+                    <li><strong>VRM-ul pe plăci video:</strong> Plăcile video moderne folosesc VRM din cauza cerințelor mari de putere și curent</li>
+                    <li><strong>Definiția TDP:</strong> TDP (Thermal Design Power / Thermal Design Point)</li>
+                    <li><strong>Thermal throttling și protecție termică:</strong> Dacă TDP-ul este depășit (sarcini intensive: video encoding, jocuri), CPU-ul:</li>
+                    <li><strong>Ambiguități ale TDP și consecințe:</strong> Diferiți producători definesc TDP folosind metode de calcul diferite</li>
+                    <li><strong>Formula termică fundamentală:</strong> Pd (Watt) = puterea termică generată de CPU</li>
+                    <li><strong>cTDP – Configurable TDP:</strong> Moduri de operare cu TDP variabil:</li>
+                    <li><strong>Supra&#238;ncălzire – cauze și simptome:</strong> Componentele susceptibile la supra&#238;ncălzire: CPU, chipset, plăci grafice, HDD, SSD</li>
+                    <li><strong>Factorii care afectează răcirea:</strong> Praful: acționează ca izolator termic, &#238;mpiedică fluxul de aer, reduce performanța heatsink-ului</li>
+                    <li><strong>Prevenirea daunelor termice:</strong> Inspecție vizuală a cooler-ului și ventilatoarelor</li>
+                    <li><strong>Tipuri de răcire:</strong> Răcire pasivă: heatsink fără ventilator, convecție naturală</li>
+                    <li><strong>Airflow și presiune:</strong> Presiune pozitivă: aerul de intrare mai puternic dec&#226;t evacuarea → previne acumularea prafului</li>
+                    <li><strong>Ripple – fluctuații de tensiune:</strong> Ripple (voltage ripple): variația periodică reziduală a tensiunii DC &#238;n sursa de alimentare</li>
+                    <li><strong>Filtrarea ripple-ului:</strong> Condensatoare electroliticite cu rating mare de curent ripple</li>
+                    <li><strong>Dynamic Voltage Scaling și instabilitate:</strong> DVS: tehnică de management al puterii prin creșterea/scăderea tensiunii</li>
+                    <li><strong>Formula vitezei de comutare:</strong> Viteza la care un circuit digital comută stări este proporțională cu diferența de tensiune</li>
                 </ul>
             </div>
         </div>
@@ -142,54 +508,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Throttling este:</strong></p>
-                <ul class="specs-list"><li>a) Oprire totală</li><li>b) Reducere frecvență pentru răcire</li><li>c) Creștere tensiune</li><li>d) Reset BIOS</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Reducere frecvență</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Tensiunile de ieșire?</strong></p>
+                <ul class="specs-list">
+                    <li>a) VID pe 5 biți → maxim 32 (2^5) tensiuni de ieșire distincte</li>
+                    <li>b) video encoding, jocuri), CPU-ul:</li>
+                    <li>c) considerarea unei puteri termice de 1.5&#215; TDP-ul specificat</li>
+                    <li>d) &#238;ntre 0.5V și 3.5V (din 2008)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — &#238;ntre 0.5V și 3.5V (din 2008)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Ripple mare pe 1.05V core produce:</strong></p>
-                <ul class="specs-list"><li>a) FPS mai mare</li><li>b) Crash și instabilitate</li><li>c) Temperatură scăzută</li><li>d) Boot rapid</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Crash</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Dacă TDP-ul este depășit (sarcini intensive?</strong></p>
+                <ul class="specs-list">
+                    <li>a) VID pe 5 biți → maxim 32 (2^5) tensiuni de ieșire distincte</li>
+                    <li>b) considerarea unei puteri termice de 1.5&#215; TDP-ul specificat</li>
+                    <li>c) video encoding, jocuri), CPU-ul:</li>
+                    <li>d) &#238;ntre 0.5V și 3.5V (din 2008)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — video encoding, jocuri), CPU-ul:</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Freeze după 30 min indică:</strong></p>
-                <ul class="specs-list"><li>a) Standby error</li><li>b) Problemă termică sau BGA</li><li>c) BIOS corupt</li><li>d) SSD defect imediat</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Problemă termică</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: O abordare sigură?</strong></p>
+                <ul class="specs-list">
+                    <li>a) VID pe 5 biți → maxim 32 (2^5) tensiuni de ieșire distincte</li>
+                    <li>b) &#238;ntre 0.5V și 3.5V (din 2008)</li>
+                    <li>c) considerarea unei puteri termice de 1.5&#215; TDP-ul specificat</li>
+                    <li>d) video encoding, jocuri), CPU-ul:</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — considerarea unei puteri termice de 1.5&#215; TDP-ul specificat</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Restart imediat sub load indică:</strong></p>
-                <ul class="specs-list"><li>a) PSU droop</li><li>b) WiFi error</li><li>c) Update pending</li><li>d) LED defect</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>a) PSU droop</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Ecuația?</strong></p>
+                <ul class="specs-list">
+                    <li>a) video encoding, jocuri), CPU-ul:</li>
+                    <li>b) &#238;ntre 0.5V și 3.5V (din 2008)</li>
+                    <li>c) VID pe 5 biți → maxim 32 (2^5) tensiuni de ieșire distincte</li>
+                    <li>d) (Tc - Ta) = Pd &#215; Rca</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — (Tc - Ta) = Pd &#215; Rca</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>BGA microfracturi apar din:</strong></p>
-                <ul class="specs-list"><li>a) Software</li><li>b) Dilatări termice repetate</li><li>c) Overclock GPU</li><li>d) RAM update</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Dilatări termice</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Nominal TDP?</strong></p>
+                <ul class="specs-list">
+                    <li>a) video encoding, jocuri), CPU-ul:</li>
+                    <li>b) frecvența și TDP-ul specificat</li>
+                    <li>c) VID pe 5 biți → maxim 32 (2^5) tensiuni de ieșire distincte</li>
+                    <li>d) &#238;ntre 0.5V și 3.5V (din 2008)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — frecvența și TDP-ul specificat</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Diagnosticul Instabilității</h3>
-                <p><strong>Cerință:</strong> Consola face freeze după 20 min în joc. Temperatură APU 95°C, rail 1.05V ripple 25 mV.</p>
-                <ol class="specs-list"><li>Care este cauza principală?</li><li>Ce test faci primul?</li><li>Ce soluție aplici?</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1.</strong> Cauza principală: temperatură prea mare (95°C) + ripple ușor ridicat.</p>
-                    <p><strong>2.</strong> Test: curățare radiator și schimbare pastă termică. Monitorizează temp sub load.</p>
-                    <p><strong>3.</strong> Soluție: reducerea temperaturii, verificare ventilator. Dacă persistă, verifică VRM condensatori.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Instabilitate sistem</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de fluctuații de tensiune. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: fluctuații de tensiune.</li>
+                    <li>2. Ce rol are probleme VRM în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre fluctuații de tensiune și supra&#238;ncălzire.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> VRM (Voltage Regulator Module), numit și PPM (Processor Power Module)</p>
+                        <p><strong>2.</strong> Unele procesoare (Intel Haswell, Ice Lake) integrează componente de reglare a tensiunii pe pachetul CPU</p>
+                        <p><strong>3.</strong> Majoritatea CPU-urilor moderne necesită sub 1.5V</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -266,3 +705,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

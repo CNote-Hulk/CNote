@@ -8,24 +8,24 @@ DATA ACCESĂRII: 2025
 
 INFORMAȚII EXTRASE:
 
-Voltage, also known as electrical potential difference, electric pressure, or electric tension, is the difference in electric potential between two points. In a static electric field, it corresponds to the work needed per unit of charge to move a positive test charge from the first point to the second point. In the International System of Units (SI), the derived unit for voltage is the volt (V).
+Tensiunea electrică, cunoscută și ca diferență de potențial electric, presiune electrică sau tensiune electromotoare, este diferența de potențial electric între două puncte. Într-un câmp electric static, aceasta corespunde lucrului mecanic necesar per unitate de sarcină pentru a deplasa o sarcină de test pozitivă de la primul punct la al doilea. În Sistemul Internațional de Unități (SI), unitatea derivată pentru tensiune este voltul (V).
 
-The voltage between points can be caused by the build-up of electric charge (e.g., a capacitor), and from an electromotive force (e.g., electromagnetic induction in a generator). On a macroscopic scale, a potential difference can be caused by electrochemical processes (e.g., cells and batteries), the pressure-induced piezoelectric effect, photovoltaic effect, and the thermoelectric effect.
+Tensiunea între două puncte poate fi cauzată de acumularea de sarcină electrică (ex: un condensator) și de o forță electromotoare (ex: inducție electromagnetică într-un generator). La scară macroscopică, o diferență de potențial poate fi cauzată de procese electrochimice (ex: celule și baterii), efectul piezoelectric, efectul fotovoltaic și efectul termoelectric.
 
-Common symbols: V, ∆V, U, ∆U.
-SI unit: volt.
-Derivation: Voltage = Energy / charge.
-In SI base units: kg⋅m²⋅s⁻³⋅A⁻¹.
+Simboluri comune: V, ∆V, U, ∆U.
+Unitate SI: volt.
+Derivare: Tensiune = Energie / sarcină.
+În unități SI de bază: kg⋅m²⋅s⁻³⋅A⁻¹.
 
-The SI unit of work per unit charge is the joule per coulomb, where 1 volt = 1 joule (of work) per 1 coulomb of charge.
+Unitatea SI de lucru mecanic per unitate de sarcină este joulul per coulomb, unde 1 volt = 1 joule (de lucru mecanic) per 1 coulomb de sarcină.
 
-Voltage is defined so that negatively charged objects are pulled towards higher voltages, while positively charged objects are pulled towards lower voltages. Therefore, the conventional current in a wire or resistor always flows from higher voltage to lower voltage.
+Tensiunea este definită astfel încât obiectele încărcate negativ sunt atrase spre tensiuni mai mari, iar obiectele încărcate pozitiv sunt atrase spre tensiuni mai mici. Prin urmare, curentul convențional într-un fir sau rezistor curge întotdeauna de la tensiune mai mare la tensiune mai mică.
 
-A voltmeter can be used to measure the voltage between two points in a system. Often a common reference potential such as the ground of the system is used as one of the points.
+Un voltmetru poate fi utilizat pentru a măsura tensiunea între două puncte dintr-un sistem. Adesea se folosește un potențial de referință comun, precum masa (ground) sistemului, ca unul dintre puncte.
 
-Hydraulic analogy: A simple analogy for an electric circuit is water flowing in a closed circuit of pipework, driven by a mechanical pump. The potential difference between two points corresponds to the pressure difference between two points. If the pump creates a pressure difference between two points, then water flowing from one point to the other will be able to do work.
+Analogia hidraulică: O analogie simplă pentru un circuit electric este apa care curge într-un circuit închis de conducte, împinsă de o pompă mecanică. Diferența de potențial între două puncte corespunde diferenței de presiune între cele două puncte. Dacă pompa creează o diferență de presiune, apa care curge de la un punct la altul va putea efectua lucru mecanic.
 
-Typical voltages: flashlight batteries 1.5V DC; automobile batteries 12V DC; mains power 110-120V AC (North America) or 220-240V AC (Europe); power transmission lines 110-1200 kV AC.
+Tensiuni tipice: baterii lanternă 1,5V CC; baterii auto 12V CC; rețea electrică 110-120V CA (America de Nord) sau 220-240V CA (Europa); linii de transmisie 110-1200 kV CA.
 
 ========================================
 SURSA 2: Wikipedia – Ohm's law
@@ -34,25 +34,25 @@ DATA ACCESĂRII: 2025
 
 INFORMAȚII EXTRASE:
 
-Ohm's law states that the electric current through a conductor between two points is directly proportional to the voltage across the two points. Introducing the constant of proportionality, the resistance, one arrives at the three mathematical equations:
+Legea lui Ohm afirmă că curentul electric printr-un conductor între două puncte este direct proporțional cu tensiunea dintre cele două puncte. Introducând constanta de proporționalitate — rezistența — se obțin cele trei ecuații matematice:
 
-V = I·R  or  I = V/R  or  R = V/I
+V = I·R  sau  I = V/R  sau  R = V/I
 
-where I is the current through the conductor, V is the voltage measured across the conductor and R is the resistance of the conductor.
+unde I este curentul prin conductor, V este tensiunea măsurată pe conductor și R este rezistența conductorului.
 
-More specifically, Ohm's law states that R in this relation is constant, independent of the current. If the resistance is not constant, the equation cannot be called Ohm's law, but it can still be used as a definition of static/DC resistance.
+Mai precis, Legea lui Ohm afirmă că R în această relație este constantă, independentă de curent. Dacă rezistența nu este constantă, ecuația nu poate fi numită Legea lui Ohm, dar poate fi folosită ca definiție a rezistenței statice/CC.
 
-Ohm's law is an empirical relation which accurately describes the conductivity of the vast majority of electrically conductive materials over many orders of magnitude of current. However, some materials do not obey Ohm's law; these are called non-ohmic.
+Legea lui Ohm este o relație empirică care descrie cu precizie conductivitatea marii majorități a materialelor conductive electric, pe mai multe ordine de mărime ale curentului. Totuși, unele materiale nu respectă Legea lui Ohm; acestea sunt numite non-ohmice.
 
-The law was named after German physicist Georg Ohm, who in 1827 published measurements through simple electrical circuits containing various lengths of wire.
+Legea a fost numită după fizicianul german Georg Ohm, care în 1827 a publicat măsurători prin circuite electrice simple conținând diverse lungimi de fir.
 
-Ohm's Triangle (circuit analysis mnemonic): The interchangeability of the equation may be represented by a triangle, where V (voltage) is placed on the top section, the I (current) is placed to the left section, and the R (resistance) is placed to the right. The divider between the top and bottom sections indicates division. Covering the unknown gives the formula in terms of the remaining parameters.
+Triunghiul lui Ohm (mnemonic pentru analiza circuitelor): Interschimbabilitatea ecuației poate fi reprezentată printr-un triunghi, unde V (tensiunea) este plasată în secțiunea superioară, I (curentul) în secțiunea din stânga, iar R (rezistența) în secțiunea din dreapta. Separatorul între secțiunile superioară și inferioară indică împărțirea. Acoperind necunoscuta se obține formula în funcție de parametrii rămași.
 
-Resistive circuits: Ohm's law holds for circuits containing only resistive elements (no capacitances or inductances) for all forms of driving voltage or current, regardless of whether the driving voltage or current is constant (DC) or time-varying such as AC.
+Circuite rezistive: Legea lui Ohm este valabilă pentru circuite care conțin doar elemente rezistive (fără capacități sau inductanțe) pentru toate formele de tensiune sau curent de excitare, indiferent dacă tensiunea sau curentul de excitare este constant (CC) sau variabil în timp, precum CA.
 
-Resistors in series or parallel may be grouped into a single "equivalent resistance" to apply Ohm's law in analyzing the circuit.
+Rezistoarele în serie sau paralel pot fi grupate într-o singură „rezistență echivalentă" pentru a aplica Legea lui Ohm în analiza circuitului.
 
-Hydraulic analogy: Water pressure (pascals) is the analog of voltage. Water volume flow rate (liters per second) is the analog of current. Flow restrictors (apertures in pipes) are the analog of resistors.
+Analogia hidraulică: Presiunea apei (pascali) este analogul tensiunii. Debitul volumetric al apei (litri pe secundă) este analogul curentului. Restricțiile de debit (deschideri în conducte) sunt analogul rezistoarelor.
 
 ========================================
 SURSA 3: Wikipedia – Electric power
@@ -61,23 +61,23 @@ DATA ACCESĂRII: 2025
 
 INFORMAȚII EXTRASE:
 
-Electric power is the rate of transfer of electrical energy within a circuit. Its SI unit is the watt, defined as one joule per second.
+Puterea electrică este rata de transfer a energiei electrice într-un circuit. Unitatea sa SI este wattul, definit ca un joule pe secundă.
 
-The electric power in watts produced by an electric current I consisting of a charge of Q coulombs every t seconds passing through an electric potential (voltage) difference of V is:
+Puterea electrică în wați produsă de un curent electric I format dintr-o sarcină de Q coulombi la fiecare t secunde, trecând printr-o diferență de potențial electric (tensiune) V, este:
 
 P = W/t = V × I
 
-where W is work in joules, t is time in seconds, Q is electric charge in coulombs, V is electric potential or voltage in volts, I is electric current in amperes.
+unde W este lucrul mecanic în jouli, t este timpul în secunde, Q este sarcina electrică în coulombi, V este potențialul electric sau tensiunea în volți, I este curentul electric în amperi.
 
-Resistive circuits: In the case of resistive (Ohmic) loads, the power formula (P = I·V) and Joule's first law (P = I²·R) can be combined with Ohm's law (V = I·R) to produce alternative expressions:
+Circuite rezistive: În cazul sarcinilor rezistive (ohmice), formula puterii (P = I·V) și prima lege a lui Joule (P = I²·R) pot fi combinate cu Legea lui Ohm (V = I·R) pentru a produce expresii alternative:
 
 P = I·V = I²·R = V²/R
 
-where R is the electrical resistance.
+unde R este rezistența electrică.
 
-Sources and loads:
-- Active devices (power sources): energy is converted to electric potential energy from some other type of energy (mechanical, chemical). Examples: electric generators, batteries.
-- Passive devices (loads): potential energy of charges is converted to kinetic energy. Examples: light bulbs, electric motors, electric heaters.
+Surse și sarcini:
+- Dispozitive active (surse de putere): energia este convertită în energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.
+- Dispozitive pasive (sarcini): energia potențială a sarcinilor este convertită în energie cinetică. Exemple: becuri, motoare electrice, încălzitoare electrice.
 
 ========================================
 NOTE CERCETARE:

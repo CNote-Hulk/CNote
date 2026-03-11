@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 2.4 — MOSFET și VRM: Regulatoarele de Tensiune">
+    <meta name="description" content="Lecția 2.4 — Tranzistori">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 2.4 — MOSFET și VRM — Console Notebook</title>
+    <title>Lecția 2.4 — Tranzistori — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — Electronică de Bază</p>
-            <h1>Lecția 2.4 — MOSFET și VRM</h1>
-            <p>Cum MOSFET-urile construiesc regulatoarele de tensiune care dau viață consolei.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.4 — Tranzistori</h1>
+            <p>BJT, MOSFET, comutare</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                                <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>VRM (Voltage Regulator Module):</strong> Circuit cu MOSFET-uri care convertește tensiune de intrare (12V) în tensiuni de ieșire precise (1.05V, 3.3V, etc.) cu stabilitate extremă.</p>
-                <p>PS5 are ~15-20 module VRM pe placa de bază. Fiecare în-și joacă rolul: CPU core, GPU core, RAM, I/O.</p>
-                <p>VRM-ul e "creierul" care menține tensiuni stabile. Dacă VRM crapă, consola nu pornește.</p>
+                <p>Un tranzistor bipolar cu joncțiune (BJT) este un tip de tranzistor care folosește at&#226;t electroni c&#226;t și goluri (electron holes) ca purtători de sarcină</p>
+                <p>Această lecție acoperă: <strong>BJT</strong>, <strong>MOSFET</strong>, <strong>comutare</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,95 +53,243 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Principiu VRM: Buck Converter</h3>
-                <p><strong>Buck Converter:</strong> Schimă rapid între ON și OFF a MOSFET-ului pentru a crea tensiune medie mai mică decât intrare.</p>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
-                    V_out = V_in × (Ton / (Ton + Toff))
-                </p>
+                <h3>2.4.1 — Definiție și structură</h3>
                 <ul class="specs-list">
-                    <li><strong>Ton:</strong> Timp tranzistor ON</li>
-                    <li><strong>Toff:</strong> Timp tranzistor OFF</li>
-                    <li><strong>Ration:</strong> Raport de comutare (duty cycle)</li>
-                </ul>
-                <p><strong>Exemplu:</strong> 12V input, comutare 50/50 → output 6V medie. 30/70 → output 3.6V.</p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Componente VRM</h3>
-                <ul class="specs-list">
-                    <li><strong>MOSFET High/Low (H-L):</strong> 2N+1 MOSFET-uri comutând alternativ. N-channel și P-channel în punte.</li>
-                    <li><strong>Inductanță (bobina):</strong> Stochează energie, furnizează curent continuu la ieșire. 1µH-10µH tipic.</li>
-                    <li><strong>Condensator ieșire:</strong> ESR mic pentru a filtra ripple. 100µF+.</li>
-                    <li><strong>Controller IC:</strong> PWM generator care orchestrează comutarea MOSFET-urilor. ex: IR3570, TI TPS54200+.</li>
-                    <li><strong>Feedback & sensori:</strong> Măsoară tensie și curent, ajustează duty cycle pentru a menține V_out stabil.</li>
+                    <li>Un tranzistor bipolar cu joncțiune (BJT) este un tip de tranzistor care folosește at&#226;t electroni c&#226;t și goluri (electron holes) ca purtători de sarcină</li>
+                    <li>Un tranzistor unipolar (cum ar fi FET) folosește doar un singur tip de purtător de sarcină</li>
+                    <li>BJT permite unui curent mic injectat la unul din terminale să controleze un curent mult mai mare &#238;ntre celelalte două terminale → capabil de amplificare sau comutare</li>
+                    <li>BJT folosește două joncțiuni p-n &#238;ntre două tipuri de semiconductor, n-type și p-type, &#238;n cadrul unui singur cristal</li>
+                    <li><strong>Cele trei regiuni se numesc:</strong> emitor (E), bază (B), colector (C)</li>
+                    <li><strong>Există două tipuri:</strong> NPN și PNP</li>
+                    <li><strong>NPN:</strong> două regiuni n-type cu o regiune p-type subțire &#238;ntre ele</li>
+                    <li><strong>PNP:</strong> două regiuni p-type cu o regiune n-type subțire &#238;ntre ele</li>
+                    <li>Emitorul este puternic dopat, baza este subțire și slab dopată, colectorul este moderat dopat</li>
+                    <li>Doparea asimetrică face dispozitivul ne-simetric (interschimbarea colector-emitor degradează performanța)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Controlul Feedback</h3>
-                <p>VRM măsoară tensiunea de ieșire (1.05V dorită) și o compară cu o referință internă. Dacă V_out < V_ref, crește duty cycle (T_on mai lung). Dacă V_out > V_ref, reduce duty cycle.</p>
-                <p><strong>Feedback divider:</strong> Doi rezistori (R1, R2) împart V_out. R1//R2 contribuie la V_feedback care se compară cu V_ref.</p>
-                <p><strong>Ripple Control:</strong> VRM modern detectează ripple (milivolți de fluctuație rapida) și ajustează comutare pentru a-l reduce.</p>
+                <h3>2.4.2 — Funcționare BJT</h3>
+                <ul class="specs-list">
+                    <li><strong>&#206;n modul activ (forward-active):</strong> joncțiunea bază-emitor este polarizată direct, joncțiunea bază-colector este polarizată invers</li>
+                    <li>Polarizarea directă a joncțiunii B-E permite curgerea electronilor din emitor &#238;n bază</li>
+                    <li>Electronii injectați &#238;n bază difuzează ca purtători minoritari spre colector</li>
+                    <li>C&#226;mpul electric din zona de depleție a joncțiunii B-C mătură electronii &#238;n colector</li>
+                    <li>Baza trebuie să fie suficient de subțire astfel &#238;nc&#226;t purtătorii să difuzeze &#238;nainte de recombinare</li>
+                    <li>Curentul de emitor IE = IB + IC</li>
+                    <li><strong>C&#226;știgul de curent DC (hFE sau β):</strong> raportul IC/IB, tipic 100 sau mai mult pentru tranzistoare de semnal mic</li>
+                    <li>O creștere a VBE cu ~60 mV crește curentul de emitor de 10 ori (la temperatura camerei)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Performanță VRM: Eficiență și Ripple</h3>
-                <p><strong>Eficiență:</strong> Putere de ieșire / Putere de intrare. Modern VRM: 85-92% (din cauza pierderi MOSFET, inductanță, condensator ESR).</p>
-                <p><strong>Ripple:</strong> Oscilație în tensiune de ieșire. Calitate VRM: ripple < 20mV. Slabă: > 50mV.</p>
-                <p><strong>Respons time:</strong> Cât de repede VRM reacționează la schimbări de curent. Sub-microsecunde pentru VRM modern.</p>
+                <h3>2.4.3 — Regiuni de operare BJT</h3>
+                <ul class="specs-list">
+                    <li><strong>Forward-active (activ):</strong> B-E polarizat direct, B-C polarizat invers – regiune de amplificare, IC ≈ β &#215; IB</li>
+                    <li><strong>Saturație:</strong> ambele joncțiuni polarizate direct – curent mare emitor-colector, corespunde unui comutator &#238;nchis (&quot;ON&quot;)</li>
+                    <li><strong>Cut-off (blocare):</strong> ambele joncțiuni polarizate invers – curent neglijabil, corespunde unui comutator deschis (&quot;OFF&quot;)</li>
+                    <li><strong>Reverse-active (activ invers):</strong> B-E polarizat invers, B-C polarizat direct – β mult mai mic, rar folosit</li>
+                    <li><strong>&#206;n comutare digitală:</strong> saturație = &quot;ON&quot; logic, cut-off = &quot;OFF&quot; logic</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Probleme VRM și Degradare</h3>
-                <p><strong>Condensator electrolitic defect:</strong> Capacitate pică, ESR crește, ripple crește. Instabilitate CPU.</p>
-                <p><strong>MOSFET ars:</strong> On-resistance crește (posibil 10x din cauza deteriorării oxide). Putere disipata nu poate fi evacuată, temperatura crește necontrolat. Avalanșă termică.</p>
-                <p><strong>Bobina cu miez crăpat:</strong> Inductanță cade, ripple crește.</p>
-                <p><strong>Controller IC defect:</strong> PWM nu mai orchestrează; VRM furnizează tensiune aleatorie.</p>
+                <h3>2.4.4 — Caracteristici α și β</h3>
+                <ul class="specs-list">
+                    <li><strong>α (common-base current gain):</strong> raportul IC/IE, tipic 0.980-0.998</li>
+                    <li><strong>β (common-emitter current gain):</strong> raportul IC/IB, tipic 20-500</li>
+                    <li><strong>Relația:</strong> α = β/(1+β) sau β = α/(1-α)</li>
+                    <li>β nu este o proprietate fizică fundamentală, ci un parametru de performanță</li>
+                    <li>Un curent de bază mic controlează un curent de colector mult mai mare</li>
+                </ul>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.5 — Comutare (switching)</h3>
+                <ul class="specs-list">
+                    <li>Tranzistoarele bipolare au timpi lungi de stocare &#238;n bază c&#226;nd sunt conduse &#238;n saturație</li>
+                    <li>Stocarea &#238;n bază limitează timpul de comutare (turn-off) &#238;n aplicații de switching</li>
+                    <li>Un clamp Baker poate preveni saturația profundă, reduc&#226;nd sarcina stocată &#238;n bază și &#238;mbunătățind timpul de comutare</li>
+                    <li>Turn-on, turn-off și storage delay sunt parametri critici pentru aplicații de comutare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.6 — Aplicații BJT</h3>
+                <ul class="specs-list">
+                    <li><strong>Circuite discrete:</strong> selecție foarte largă de tipuri disponibile</li>
+                    <li><strong>Circuite analogice exigente:</strong> transconductanță și impedanță de ieșire ridicate</li>
+                    <li><strong>Aplicații de frecvență foarte &#238;naltă (RF):</strong> sisteme wireless</li>
+                    <li><strong>Logică digitală de mare viteză:</strong> Emitter-Coupled Logic (ECL)</li>
+                    <li><strong>Amplificatoare:</strong> common-emitter, common-base, common-collector</li>
+                    <li><strong>Senzori de temperatură:</strong> tensiunea VBE variază predictibil cu temperatura</li>
+                    <li><strong>BiCMOS:</strong> combinație BJT + MOSFET pe aceeași plăcuță IC</li>
+                    <li><strong>Procesoare mainframe (istoric):</strong> &#238;nlocuite de CMOS &#238;n computerele moderne</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.7 — Definiție și structură MOSFET</h3>
+                <ul class="specs-list">
+                    <li>MOSFET = Metal-Oxide-Semiconductor Field-Effect Transistor</li>
+                    <li>Tip de tranzistor cu efect de c&#226;mp (FET), fabricat prin oxidarea controlată a siliciului</li>
+                    <li>Are o poartă (gate) izolată, a cărei tensiune determină conductivitatea dispozitivului</li>
+                    <li><strong>Terminale:</strong> gate (poartă), source (sursă), drain (drenă), body/substrate (substrat)</li>
+                    <li><strong>Avantajul principal:</strong> necesită aproape zero curent de intrare pentru a controla curentul de sarcină (&#238;n condiții de regim staționar)</li>
+                    <li><strong>N-channel (nMOS):</strong> sursa și drenul sunt regiuni n+, substrat p-type</li>
+                    <li><strong>P-channel (pMOS):</strong> sursa și drenul sunt regiuni p+, substrat n-type</li>
+                    <li><strong>Cel mai comun tranzistor din circuitele digitale:</strong> miliarde pe un singur chip de memorie sau microprocesor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.8 — Funcționare MOSFET</h3>
+                <ul class="specs-list">
+                    <li><strong>Structura MOS:</strong> strat de SiO2 (dielectric) pe substrat de siliciu, cu un strat de metal/polisilciu deasupra</li>
+                    <li><strong>C&#226;nd se aplică tensiune la gate:</strong> c&#226;mpul electric penetrează prin oxid și creează un strat de inversie (canal) la interfața semiconductor-izolator</li>
+                    <li>Canalul de inversie oferă o cale de conducție &#238;ntre source și drain</li>
+                    <li><strong>Tensiune de prag (threshold voltage, Vth):</strong> tensiunea la gate la care se formează canalul de inversie</li>
+                    <li><strong>Overdrive voltage:</strong> Vov = VGS - Vth</li>
+                    <li><strong>Izolarea prin oxid:</strong> nu curge curent DC prin gate → consumul de putere extrem de redus</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.9 — Moduri de operare MOSFET</h3>
+                <ul class="specs-list">
+                    <li><strong>Cut-off (subthreshold):</strong> VGS &lt; Vth, tranzistorul este oprit, curent neglijabil (doar curent subthreshold de scurgere)</li>
+                    <li><strong>Triode (liniar/ohmic):</strong> VGS &gt; Vth și VDS &lt; (VGS - Vth), tranzistorul se comportă ca un rezistor controlat de tensiunea gate</li>
+                    <li>ID = μnCox(W/L)[(VGS-Vth)VDS - VDS&#178;/2]</li>
+                    <li><strong>Saturație (activ):</strong> VGS &gt; Vth și VDS ≥ (VGS - Vth), curentul depinde slab de VDS, controlat de VGS</li>
+                    <li>ID = (μnCox/2)(W/L)(VGS-Vth)&#178;(1+λVDS)</li>
+                    <li><strong>Enhancement mode:</strong> canal format doar c&#226;nd se aplică tensiune la gate (default OFF)</li>
+                    <li><strong>Depletion mode:</strong> canal existent fără tensiune la gate (default ON)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.10 — CMOS și comutare digitală</h3>
+                <ul class="specs-list">
+                    <li><strong>CMOS (Complementary MOS):</strong> perechi complementare de nMOS + pMOS</li>
+                    <li><strong>Tensiune mare la gate:</strong> nMOS conduce, pMOS nu conduce</li>
+                    <li><strong>Tensiune mică la gate:</strong> pMOS conduce, nMOS nu conduce</li>
+                    <li>Putere consumată aproape zero c&#226;nd nu se comută (doar &#238;n tranziție ambele conduc scurt)</li>
+                    <li>&#206;mbunătățire drastică a consumului de putere față de nMOS/pMOS singure</li>
+                    <li><strong>Logica CMOS:</strong> baza tuturor procesoarelor și memoriilor moderne</li>
+                    <li><strong>Primele microprocesoare (din 1970):</strong> fabricate cu PMOS sau NMOS</li>
+                    <li>CMOS a &#238;nlocuit NMOS ca proces preferat pentru chips digitale &#238;n anii 1980</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.11 — MOSFET ca comutator</h3>
+                <ul class="specs-list">
+                    <li>MOSFET-urile Power pot comuta mii de wați</li>
+                    <li><strong>Exemplu:</strong> D2PAK poate bloca 120V &#238;n starea off, conduce 30A continuu, disipă ~100W</li>
+                    <li><strong>MOSFETs digitale:</strong> miliarde pe un chip, funcții de comutare pentru porți logice și stocare date</li>
+                    <li><strong>MOSFETs ca switch-uri analogice:</strong> impedanță mare c&#226;nd sunt oprite, impedanță mică c&#226;nd sunt deschise</li>
+                    <li><strong>Transmission gate (CMOS switch):</strong> nMOS + pMOS &#238;n paralel pentru comutare analogică bidirecțională</li>
+                    <li><strong>Avantaj față de BJT:</strong> impedanță de intrare foarte mare, fără curent DC prin gate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.4.12 — Scalare și dezvoltare</h3>
+                <ul class="specs-list">
+                    <li><strong>Moore&#39;s Law:</strong> densitatea tranzistorilor se dublează la fiecare 2-3 ani</li>
+                    <li>De la micrometri la zeci de nanometri pentru lungimea canalului</li>
+                    <li><strong>Provocări la scalare:</strong> creșterea curentului de scurgere, scăderea tensiunii de prag</li>
+                    <li><strong>FinFET:</strong> geometrie tridimensională cu canal sub formă de aripioare, pentru noduri sub 22nm</li>
+                    <li><strong>High-κ dielectrics + metal gate (HKMG):</strong> &#238;nlocuiesc SiO2 + polisilciu la noduri avansate</li>
+                </ul>
+            </div>
+
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizica:</strong> VRM folosește inducție (bobina stochează) și comutare rapidă (MOSFET) pentru a converti și regula tensiuni.</p>
-                <p><strong>Informatica:</strong> CPU necesită 1.05V exact. Firmware ajustează voltaj pentru stabilitate. VRM livrează. Tensiune instabilă → logic se rupe.</p>
+                <h3>Regiuni de operare BJT</h3>
+                <ul class="specs-list">
+                    <li><strong>&#206;n comutare digitală:</strong> saturație = &quot;ON&quot; logic, cut-off = &quot;OFF&quot; logic</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Aplicații BJT</h3>
+                <ul class="specs-list">
+                    <li><strong>Circuite analogice exigente:</strong> transconductanță și impedanță de ieșire ridicate</li>
+                    <li><strong>Logică digitală de mare viteză:</strong> Emitter-Coupled Logic (ECL)</li>
+                    <li><strong>Procesoare mainframe (istoric):</strong> &#238;nlocuite de CMOS &#238;n computerele moderne</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și structură MOSFET</h3>
+                <ul class="specs-list">
+                    <li>Tip de tranzistor cu efect de c&#226;mp (FET), fabricat prin oxidarea controlată a siliciului</li>
+                    <li><strong>Cel mai comun tranzistor din circuitele digitale:</strong> miliarde pe un singur chip de memorie sau microprocesor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>CMOS și comutare digitală</h3>
+                <ul class="specs-list">
+                    <li><strong>Logica CMOS:</strong> baza tuturor procesoarelor și memoriilor moderne</li>
+                    <li>CMOS a &#238;nlocuit NMOS ca proces preferat pentru chips digitale &#238;n anii 1980</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>MOSFET ca comutator</h3>
+                <ul class="specs-list">
+                    <li><strong>MOSFETs digitale:</strong> miliarde pe un chip, funcții de comutare pentru porți logice și stocare date</li>
+                    <li><strong>MOSFETs ca switch-uri analogice:</strong> impedanță mare c&#226;nd sunt oprite, impedanță mică c&#226;nd sunt deschise</li>
+                    <li><strong>Transmission gate (CMOS switch):</strong> nMOS + pMOS &#238;n paralel pentru comutare analogică bidirecțională</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: CPU Rails PS5</h3>
-                <p>2 VRM dedicate pentru CPU core: 1.05V. 5 faze per VRM × 2 = 10 faze total. Fiecare fază cu 10 MOSFET-uri. 100 MOSFET-uri total pe CPU rail!</p>
-                <p>Curent: 90A total. Distribuția: 90A / 10 faze = 9A per fază. Fiecare MOSFET 9A / 10 = 0.9A. Curent mic per MOSFET → pierderi mici, siguranță mare.</p>
+                <h3>Comutare (switching)</h3>
+                <ul class="specs-list">
+                    <li>Tranzistoarele bipolare au timpi lungi de stocare &#238;n bază c&#226;nd sunt conduse &#238;n saturație</li>
+                    <li>Stocarea &#238;n bază limitează timpul de comutare (turn-off) &#238;n aplicații de switching</li>
+                    <li>Un clamp Baker poate preveni saturația profundă, reduc&#226;nd sarcina stocată &#238;n bază și &#238;mbunătățind timpul de comutare</li>
+                    <li>Turn-on, turn-off și storage delay sunt parametri critici pentru aplicații de comutare</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Design VRM PS5</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Calculare duty cycle:</strong> V_out = 1.05V, V_in = 12V.</p>
-                <p>Duty cycle = V_out / V_in = 1.05 / 12 = 8.75%.</p>
-                <p>Deci MOSFET e ON 8.75% din timp.</p>
-                <p><strong>Calcul Ripple:</strong> Frekvență comutare 130kHz. Inductanță 5µH.</p>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">Ripple = (V_in × Duty) / (L × f)<br>Ripple = (12V × 0.0875) / (5µH × 130kHz) ≈ 16.15mV</p>
-                <p>Calitate bună.</p>
+                <p>Componentele reale care utilizează BJT se regăsesc în toate consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ Consola nu pornește (No power)</h3><p>Potența: VRM furnizează 0V din cauza MOSFET defect sau controller IC mort.</p></div>
-            <div class="card"><h3>⚠️ Consola reboot-uri aleatorii</h3><p>Cauza: Ripple VRM prea mare din cauza condensator defect. CPU instabil.</p></div>
-            <div class="card"><h3>⚠️ VRM se încălzește anormal</h3><p>Cauza: MOSFET degradat (R_DS crescut), pierderi mari.</p></div>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu Tranzistori</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -146,13 +298,18 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>VRM (Voltage Regulator):</strong>Convertor de tensiune cu MOSFET comutând.</li>
-                    <li><strong>Buck converter:</strong> Scade tensiune prin comutare rapidă.</li>
-                    <li><strong>Duty cycle:</strong> Raport ON/OFF care determină V_out.</li>
-                    <li><strong>Componente:</strong> MOSFET, bobina, condensator, controller IC, feedback.</li>
-                    <li><strong>Eficiență:</strong> 85-92% modern.</li>
-                    <li><strong>Ripple:</strong> < 20mV bun, > 50mV slab.</li>
-                    <li>PS5: 15-20 module VRM. CPU: 100+ MOSFET-uri.<br></li>
+                    <li><strong>Definiție și structură:</strong> Un tranzistor bipolar cu joncțiune (BJT) este un tip de tranzistor care folosește at&#226;t electroni c&#226;t și goluri (electron holes) ca purtători de sarcină</li>
+                    <li><strong>Funcționare BJT:</strong> &#206;n modul activ (forward-active): joncțiunea bază-emitor este polarizată direct, joncțiunea bază-colector este polarizată invers</li>
+                    <li><strong>Regiuni de operare BJT:</strong> Forward-active (activ): B-E polarizat direct, B-C polarizat invers – regiune de amplificare, IC ≈ β &#215; IB</li>
+                    <li><strong>Caracteristici α și β:</strong> α (common-base current gain): raportul IC/IE, tipic 0.980-0.998</li>
+                    <li><strong>Comutare (switching):</strong> Tranzistoarele bipolare au timpi lungi de stocare &#238;n bază c&#226;nd sunt conduse &#238;n saturație</li>
+                    <li><strong>Aplicații BJT:</strong> Circuite discrete: selecție foarte largă de tipuri disponibile</li>
+                    <li><strong>Definiție și structură MOSFET:</strong> MOSFET = Metal-Oxide-Semiconductor Field-Effect Transistor</li>
+                    <li><strong>Funcționare MOSFET:</strong> Structura MOS: strat de SiO2 (dielectric) pe substrat de siliciu, cu un strat de metal/polisilciu deasupra</li>
+                    <li><strong>Moduri de operare MOSFET:</strong> Cut-off (subthreshold): VGS &lt; Vth, tranzistorul este oprit, curent neglijabil (doar curent subthreshold de scurgere)</li>
+                    <li><strong>CMOS și comutare digitală:</strong> CMOS (Complementary MOS): perechi complementare de nMOS + pMOS</li>
+                    <li><strong>MOSFET ca comutator:</strong> MOSFET-urile Power pot comuta mii de wați</li>
+                    <li><strong>Scalare și dezvoltare:</strong> Moore&#39;s Law: densitatea tranzistorilor se dublează la fiecare 2-3 ani</li>
                 </ul>
             </div>
         </div>
@@ -161,56 +318,129 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Ce-i VRM și ce face?</strong></p>
-                <ul class="specs-list"><li>a) Încarcă bateria</li><li>b) Dă volum audio</li><li>c) Convertor de tensiune care reglează V_out prin comutare MOSFET</li><li>d) Radiator</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) Convertor de tensiune cu comutare MOSFET</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Cele trei regiuni se numesc?</strong></p>
+                <ul class="specs-list">
+                    <li>a) emitor (E), bază (B), colector (C)</li>
+                    <li>b) două regiuni n-type cu o regiune p-type subțire &#238;ntre ele</li>
+                    <li>c) două regiuni p-type cu o regiune n-type subțire &#238;ntre ele</li>
+                    <li>d) joncțiunea bază-emitor este polarizată direct, joncțiunea bază-colector este polarizată invers</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — emitor (E), bază (B), colector (C)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Principiul Buck Converter?</strong></p>
-                <ul class="specs-list"><li>a) Amplificare curent</li><li>b) Comutare rapidă pentru a scădea tensiune medie</li><li>c) Blocare curent</li><li>d) Transformare AC</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Comutare rapidă pentru scădere V medie</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: &#206;n modul activ (forward-active)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) joncțiunea bază-emitor este polarizată direct, joncțiunea bază-colector este polarizată invers</li>
+                    <li>b) două regiuni n-type cu o regiune p-type subțire &#238;ntre ele</li>
+                    <li>c) două regiuni p-type cu o regiune n-type subțire &#238;ntre ele</li>
+                    <li>d) emitor (E), bază (B), colector (C)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — joncțiunea bază-emitor este polarizată direct, joncțiunea bază-colector este polarizată invers</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Ce determină Duty Cycle-ul VRM?</strong></p>
-                <ul class="specs-list"><li>a) Curent intrare</li><li>b) Raportul V_out / V_in</li><li>c) Generator de frecvență</li><li>d) Bobina</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Raportul V_out / V_in</strong> — Duty = V_out / V_in.</p></details>
+                <p><strong>Care afirmație este corectă despre: Forward-active (activ)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) două regiuni p-type cu o regiune n-type subțire &#238;ntre ele</li>
+                    <li>b) B-E polarizat direct, B-C polarizat invers – regiune de amplificare, IC ≈ β &#215; IB</li>
+                    <li>c) emitor (E), bază (B), colector (C)</li>
+                    <li>d) două regiuni n-type cu o regiune p-type subțire &#238;ntre ele</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — B-E polarizat direct, B-C polarizat invers – regiune de amplificare, IC ≈ β &#215; IB</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>De ce PS5 are 2 module VRM pentru CPU în loc de unu?</strong></p>
-                <ul class="specs-list"><li>a) Redundanță și distribuție curent</li><li>b) Zgomot</li><li>c) Cost</li><li>d) E convențional</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>a) Redundanță și distribuție curent</strong> — Dacă una defectă, cealaltă continua.</p></details>
+                <p><strong>Care afirmație este corectă despre: α (common-base current gain)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) emitor (E), bază (B), colector (C)</li>
+                    <li>b) două regiuni n-type cu o regiune p-type subțire &#238;ntre ele</li>
+                    <li>c) raportul IC/IE, tipic 0.980-0.998</li>
+                    <li>d) două regiuni p-type cu o regiune n-type subțire &#238;ntre ele</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — raportul IC/IE, tipic 0.980-0.998</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Ce-i ripple în VRM și ce cauzeaza?</strong></p>
-                <ul class="specs-list"><li>a) Zgomot audio</li><li>b) Oscilație în V_out; condensator defect crește ripple</li><li>c) Curent alternativ</li><li>d) Temperatură</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Oscilație în V_out; condensator defect crește ripple</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Circuite discrete?</strong></p>
+                <ul class="specs-list">
+                    <li>a) două regiuni p-type cu o regiune n-type subțire &#238;ntre ele</li>
+                    <li>b) două regiuni n-type cu o regiune p-type subțire &#238;ntre ele</li>
+                    <li>c) selecție foarte largă de tipuri disponibile</li>
+                    <li>d) emitor (E), bază (B), colector (C)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — selecție foarte largă de tipuri disponibile</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Proiect Simplificat VRM pentru CPU</h3>
-                <p><strong>Date:</strong> V_in = 12V, V_out dorită = 1.05V, I_out = 10A, frecvență = 130kHz, L = 2µH.</p>
-                <ol class="specs-list"><li>Calculează Duty Cycle</li><li>Calculează Ripple de curent (ΔI = V_out / L × Δt)</li><li>Dacă condensator C_out = 1000µF, calculează ripple de tensiune (ΔV = ΔI / C / f)</li><li>E ridicat ripple-ul? (< 20mV = bine)</li><li>Cum ajustezi pentru a reduce ripple? (Sugestii)</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1.</strong> Duty = V_out / V_in = 1.05 / 12 = 8.75%</p>
-                    <p><strong>2.</strong> Δt = Duty / f = 0.0875 / 130kHz ≈ 673ns. ΔI = 1.05V / 2µH × 673ns = 352.6mA.</p>
-                    <p><strong>3.</strong> ΔV = ΔI / (C × f) = 0.3526A / (1000µF × 130kHz) ≈ 2.7mV.</p>
-                    <p><strong>4.</strong> 2.7mV e extrem de bine! < 20mV. Excelență.</p>
-                    <p><strong>5.</strong> Pentru a reduce mai mult: creștere L, creștere C, creștere f, sau feedback control mai agresiv.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Tranzistori</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de BJT. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: BJT.</li>
+                    <li>2. Ce rol are MOSFET în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre BJT și comutare.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Un tranzistor bipolar cu joncțiune (BJT) este un tip de tranzistor care folosește at&#226;t electroni c&#226;t și goluri (electron holes) ca purtători de sarcină</p>
+                        <p><strong>2.</strong> &#206;n modul activ (forward-active): joncțiunea bază-emitor este polarizată direct, joncțiunea bază-colector este polarizată invers</p>
+                        <p><strong>3.</strong> Forward-active (activ): B-E polarizat direct, B-C polarizat invers – regiune de amplificare, IC ≈ β &#215; IB</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -287,3 +517,15 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

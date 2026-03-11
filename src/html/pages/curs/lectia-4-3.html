@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 4.3 — RAM și Cache: Ierarhia Memoriei">
+    <meta name="description" content="Lecția 4.3 — RAM și cache">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 4.3 — RAM și Cache — Console Notebook</title>
+    <title>Lecția 4.3 — RAM și cache — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — Arhitectură Hardware</p>
-            <h1>Lecția 4.3 — RAM și Cache: Ierarhia Memoriei</h1>
-            <p>De ce avem L1, L2, L3 și RAM? Viteză vs capacitate. Ierarhia e cheia performanței.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — ARHITECTURĂ HARDWARE</p>
+            <h1>Lecția 4.3 — RAM și cache</h1>
+            <p>ierarhia memoriei, latență, bandwidth</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                                <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Memorie ierarhică:</strong> Cu cât e mai rapidă, cu atât e mai mică și mai scumpă. Cu cât e mai mare, cu atât e mai lentă.</p>
-                <p><strong>PS5:</strong> Cache L1 (32KB per core), L2 (512KB), L3 (8MB). RAM = 16 GB GDDR6 la 448 GB/s.</p>
-                <p>Scop: CPU să aibă date rapide aproape. Cache reduce latența de la 200 ns (RAM) la 1 ns (L1).</p>
+                <p>1. Internal: registre procesor + cache</p>
+                <p>Această lecție acoperă: <strong>ierarhia memoriei</strong>, <strong>latență</strong>, <strong>bandwidth</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,81 +53,373 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1 — RAM (DRAM)</h3>
-                <p><strong>DRAM:</strong> Fiecare bit stocat într-un condensator mic + tranzistor. Se descarcă, deci necesita refresh la fiecare 64 ms.</p>
-                <p><strong>Latency:</strong> 50-100 ns (100+ ciclu la 3.5 GHz). Complex. Dar capacitate mare.</p>
-                <p><strong>GDDR6:</strong> VRAM high-speed. 16 GB PS5, 448 GB/s bandwidth.</p>
+                <h3>4.3.1 — Definiție și tipuri RAM</h3>
+                <ul class="specs-list">
+                    <li>Random-access memory (RAM) = formă de memorie electronică care poate fi citită și modificată &#238;n orice ordine, folosită pentru stocarea datelor de lucru și a codului mașinii</li>
+                    <li><strong>Acces aleatoriu:</strong> datele pot fi citite/scrise &#238;n aproximativ același timp indiferent de locația fizică din memorie (spre deosebire de HDD/bandă magnetică unde timpul depinde de locația fizică)</li>
+                    <li>RAM modern = circuite integrate (IC) cu celule de memorie MOS (metal-oxide-semiconductor)</li>
+                    <li><strong>RAM este volatilă:</strong> datele se pierd c&#226;nd se oprește alimentarea</li>
+                    <li>Două tipuri principale:</li>
+                    <li><strong>SRAM (Static RAM):</strong> stochează un bit folosind un circuit flip-flop, de obicei cu 6 tranzistori MOSFET; mai rapid, consum mai mic de putere statică, dar mai scump și densitate mai mică; folosit ca cache CPU</li>
+                    <li><strong>DRAM (Dynamic RAM):</strong> stochează un bit folosind un tranzistor + un condensator; condensatorul menține sarcină HIGH sau LOW (1 sau 0); tranzistorul funcționează ca switch; necesită refresh periodic (&#238;nainte ca sarcina să se scurgă); mai ieftin, densitate mai mare; formă predominantă de memorie &#238;n computere moderne</li>
+                    <li><strong>ECC memory (poate fi SRAM sau DRAM):</strong> include circuite speciale pentru detectarea/corectarea erorilor aleatorii, folosind biți de paritate sau coduri de corecție erori</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.2 — Cache L1, L2, L3</h3>
-                <p><strong>L1:</strong> 32 KB, 1-3 ns latență. Ultra rapid, stocat aproape de core.</p>
-                <p><strong>L2:</strong> 512 KB, 4-10 ns. Mai lent dar încă rapid.</p>
-                <p><strong>L3:</strong> 8 MB shared, 15-25 ns. Un cache pentru tot CPU.</p>
-                <p><strong>SRAM:</strong> Cache = SRAM (flip-flop) — nu necesită refresh, dar ocupă mult silicon.</p>
+                <h3>4.3.2 — Celula de memorie</h3>
+                <ul class="specs-list">
+                    <li>Memory cell = bloc fundamental al memoriei computerului, circuit electronic care stochează un bit de informație binară</li>
+                    <li><strong>SRAM cell:</strong> circuit flip-flop implementat cu FET-uri, necesită putere foarte mică c&#226;nd nu e accesat, dar complex și scump, densitate mică de stocare</li>
+                    <li><strong>DRAM cell:</strong> bazat pe condensator, &#238;ncărcarea/descărcarea condensatorului stochează 1 sau 0; sarcina se scurge treptat → necesită refresh periodic; consumă mai multă putere, dar densitate mai mare și cost/unitate mai mic dec&#226;t SRAM</li>
+                    <li><strong>Structură:</strong> SRAM cell = 6 tranzistori; DRAM cell = 1 tranzistor + 1 condensator</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.3 — Cache Hit &amp; Miss</h3>
-                <p><strong>Hit:</strong> Data găsită în cache → latență mică.</p>
-                <p><strong>Miss:</strong> Data absentă → se fetch-ează din memorie. Penalty 100+ ciclu.</p>
-                <p><strong>Hit rate:</strong> CPU modern > 90%. În game loops, tipic 95-98% dacă data locală. Cache miss rate de 2% = degrade performance 20%.</p>
+                <h3>4.3.3 — Ierarhia memoriei (secțiune din articolul RAM)</h3>
+                <ul class="specs-list">
+                    <li><strong>Multe sisteme au ierarhie de memorie const&#226;nd din:</strong> registre procesor → cache SRAM on-die → cache externe → DRAM → memory paging → memorie virtuală/swap space pe SSD sau HDD</li>
+                    <li><strong>Scopul:</strong> obținerea celui mai rapid timp mediu de acces minimiz&#226;nd costul total al sistemului de memorie</li>
+                    <li>&#206;ntregul pool de memorie poate fi referit ca &quot;RAM&quot; din perspectivă de programare</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4 — Localitate Temporală și Spațială</h3>
-                <p><strong>Temporal:</strong> Dacă accesezi data acum, probabil o vei accesa curând din nou. Cache reține.</p>
-                <p><strong>Spațial:</strong> Dacă accesezi un address, probabil vei accesa și vecinii. Cache line = 64 bytes. Încarcă întreg bloc.</p>
-                <p>Exemplu: Array de 1000 ints. Acces secvențial = 1000/16 cache lines. Acces random = 1000 cache lines = 16× mai multe misses.</p>
+                <h3>4.3.4 — Memory wall</h3>
+                <ul class="specs-list">
+                    <li>Memory wall = disparitatea cresc&#226;ndă &#238;ntre viteza CPU și timpul de răspuns al memoriei (latența memoriei) din afara cipului CPU</li>
+                    <li><strong>Motiv principal:</strong> lățimea de bandă limitată de comunicare dincolo de limitele cipului</li>
+                    <li><strong>1986-2000:</strong> viteza CPU s-a &#238;mbunătățit cu 55% anual, &#238;n timp ce timpul de răspuns al memoriei off-chip s-a &#238;mbunătățit doar cu 10% anual</li>
+                    <li>Inițial, PC-urile aveau &lt;1 MB RAM cu timp de răspuns de 1 ciclu clock (0 wait states)</li>
+                    <li>Memorii mai mari sunt inerent mai lente dec&#226;t cele mai mici de același tip</li>
+                    <li>CPU-urile moderne au ~1 MB de cache cu 0 wait states, dar acesta rezidă pe același cip cu nucleele CPU din cauza limitărilor de bandwidth chip-to-chip</li>
+                    <li>Cache-ul trebuie construit din SRAM, mult mai scump dec&#226;t DRAM-ul folosit pentru memorii mai mari</li>
+                    <li><strong>Metoda principală de a ponte gap-ul:</strong> cache-uri (cantități mici de memorie de mare viteză care păstrează operații/instrucțiuni recente)</li>
+                    <li>Multiple niveluri de caching dezvoltate pentru a face față gap-ului tot mai mare</li>
+                    <li>Diferență de p&#226;nă la 53% &#238;ntre creșterea vitezei procesorului și viteza de acces a memoriei principale</li>
+                    <li><strong>DDR5 8000MHz single-lane:</strong> capabil de 128 GB/s bandwidth</li>
+                    <li><strong>GDDR modern:</strong> și mai rapid dec&#226;t DDR5</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.5 — Eviction și Prefetch</h3>
-                <p><strong>Eviction:</strong> Cache full. Trebuie să scoată o linie veche. Algoritm LRU (Least Recently Used).</p>
-                <p><strong>Prefetch:</strong> CPU ghicește ce data vei folosi și o aduce înainte. Dacă ghicește bine = minus latență. Dacă greșește = ocupă cache inutil.</p>
-                <p><strong>Preload in PS5:</strong> Game engine prefetch-ează asset-uri înainte de frame render (streaming textures).</p>
+                <h3>4.3.5 — Istoric DDR/SDRAM (din timeline)</h3>
+                <ul class="specs-list">
+                    <li><strong>1963:</strong> primul SRAM integrat bipolar (Robert H. Norman, Fairchild)</li>
+                    <li><strong>1967:</strong> Robert Dennard (IBM) inventează arhitectura DRAM modernă (1 tranzistor MOS per condensator)</li>
+                    <li><strong>1970:</strong> Intel 1103 – primul DRAM IC comercial (1 kbit, proces 8 μm)</li>
+                    <li><strong>1992:</strong> Samsung KM48SL2000 – primul SDRAM comercial (16 Mbit)</li>
+                    <li><strong>Iunie 1998:</strong> Samsung – primul DDR SDRAM comercial (64 Mbit)</li>
+                    <li><strong>1998:</strong> Samsung – primul GDDR (SGRAM) de 16 Mbit</li>
+                    <li><strong>2000:</strong> Sony/Toshiba GS eDRAM 32 Mbit (PS2, 180 nm)</li>
+                    <li><strong>2003:</strong> Sony/Toshiba EE+GS eDRAM 32 Mbit (PS2 Slim, 90 nm)</li>
+                    <li><strong>2005:</strong> NEC Xenos eDRAM 80 Mbit (Xbox 360, 90 nm)</li>
+                    <li><strong>Console-relevant:</strong> N64 RDRAM 36 Mbit (NEC, 1996)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.6 — Definiție și structură</h3>
+                <ul class="specs-list">
+                    <li>Ierarhia memoriei separă stocarea computerului &#238;ntr-o ierarhie bazată pe timpul de răspuns</li>
+                    <li>Nivelurile se disting prin performanță și tehnologii de control</li>
+                    <li>Componenta mi este de obicei mai mică și mai rapidă dec&#226;t mi+1</li>
+                    <li>Patru niveluri majore de stocare:</li>
+                </ul>
+                <p>1. Internal: registre procesor + cache</p>
+                <p>2. Main: RAM-ul sistemului + controllere</p>
+                <p>3. On-line mass storage: stocare secundară</p>
+                <p>4. Off-line bulk storage: stocare terțiară și offline</p>
+                <ul class="specs-list">
+                    <li><strong>Scopul:</strong> minimizarea c&#226;t de ad&#226;nc &#238;n ierarhie trebuie să mergi pentru a manipula datele</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.7 — Exemple concrete cu latențe și bandwidth (tabel)</h3>
+                <ul class="specs-list">
+                    <li><strong>Register file:</strong> 18,432 biți, p&#226;nă la 256 GB/s (512 biți/ciclu), latență 0.25 ns (1 ciclu la 4 GHz)</li>
+                    <li><strong>L1 data cache:</strong> 32 KiB per core, p&#226;nă la 64 GB/s (64 bytes/4 cicluri), latență 1 ns (4 cicluri)</li>
+                    <li><strong>L2 cache:</strong> 1 MB per core, p&#226;nă la 18.3 GB/s (64 bytes/14 cicluri), latență 3.5 ns (14 cicluri)</li>
+                    <li><strong>L3 cache:</strong> 16-32 MB partajat &#238;ntre 8 nuclei, p&#226;nă la 5.45 GB/s (64 bytes/47 cicluri), latență 11.75 ns (47 cicluri)</li>
+                    <li><strong>Main memory (DDR5 6000 MT/s):</strong> 64 GiB, ~60 GB/s, latență 82.5 ns</li>
+                    <li><strong>SSD NVMe (M.2, 2017):</strong> 2 TB, 2000 MB/s, latență 0.2 ms</li>
+                    <li><strong>HDD:</strong> 18 TB, 500 MB/s, latență 4.16 ms</li>
+                    <li><strong>Tape library:</strong> exabytes, 160 MB/s, latență minute</li>
+                    <li>Haswell include L4 cache de 128 MB pe unitățile mobile</li>
+                    <li>CPU spends much time idling, waiting for memory I/O → &quot;space cost&quot;</li>
+                    <li><strong>Termeni:</strong> register spilling (register→cache), cache miss (cache→main memory), page fault (RAM→disk)</li>
+                    <li>Latency și bandwidth sunt metrici asociate cu cache-urile, specifice fiecărei componente din ierarhie</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.8 — Programare și localitate</h3>
+                <ul class="specs-list">
+                    <li>Bottleneck = localitate de referință a accesărilor de memorie și eficiența caching-ului</li>
+                    <li><strong>Programatorii:</strong> mută date &#238;ntre disk și memorie prin file I/O</li>
+                    <li><strong>Hardware:</strong> mută date &#238;ntre memorie și cache-uri</li>
+                    <li><strong>Compilatoarele optimizatoare:</strong> generează cod care folosește eficient cache-urile și registrele</li>
+                    <li><strong>Memory tiering:</strong> practică de a diviza memoria principală &#238;n niveluri după caracteristici de performanță (NUMA, CXL, Optane DCPMM)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.9 — Definiție și principiu DDR</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR SDRAM (Double Data Rate Synchronous DRAM):</strong> transferă date pe ambele fronturi ale semnalului de ceas (rising + falling edge), dubl&#226;nd rata de date fără a crește frecvența ceasului</li>
+                    <li>DDR transferă de obicei 64 biți odată</li>
+                    <li>Rata efectivă de transfer = frecvența bus &#215; 2 (DDR) &#215; lățimea busului (64 biți) / 8 (biți→bytes)</li>
+                    <li><strong>Exemplu:</strong> DDR cu 100 MHz bus clock = 1600 MB/s peak transfer rate</li>
+                    <li><strong>Samsung:</strong> prototip DDR SDRAM 1997, primul chip comercial (64 Mbit) iunie 1998</li>
+                    <li>DDR1 nu este compatibil cu DDR2/DDR3/DDR4/DDR5 (nu sunt backward/forward compatible)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.10 — Generații DDR: specificații</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR1 (1998):</strong> prefetch 2n, 200-400 MT/s, bandwidth 1600-3200 MB/s, 2.5-2.6V, 184 pini DIMM</li>
+                    <li><strong>DDR-400/PC-3200:</strong> 200 MHz bus, 400 MT/s, 3200 MB/s</li>
+                    <li><strong>DDR2 (2003):</strong> prefetch 4n, 400-1066 MT/s, bandwidth 3200-8533 MB/s, 1.8V, 240 pini DIMM</li>
+                    <li><strong>DDR2-800/PC2-6400:</strong> 400 MHz bus, 800 MT/s, 6400 MB/s</li>
+                    <li><strong>DDR3 (2007):</strong> prefetch 8n, 800-2133 MT/s, bandwidth 6400-17066 MB/s, 1.5/1.35V, 240 pini DIMM</li>
+                    <li><strong>DDR3-1600/PC3-12800:</strong> 800 MHz bus, 1600 MT/s, 12800 MB/s</li>
+                    <li><strong>DDR4 (2014):</strong> prefetch 8n, 1600-3200 MT/s, bandwidth 12800-25600 MB/s, 1.2/1.05V, 288 pini DIMM</li>
+                    <li><strong>DDR4-3200/PC4-25600:</strong> 1600 MHz bus, 3200 MT/s, 25600 MB/s</li>
+                    <li><strong>DDR5 (2020):</strong> prefetch 16n, 3200-7200 MT/s, bandwidth 25600-57600 MB/s, 1.1V, 288 pini DIMM</li>
+                    <li><strong>DDR5-6400:</strong> 3200 MHz bus, 6400 MT/s, 51200 MB/s</li>
+                    <li><strong>Fiecare generație:</strong> frecvență internă similară dar se dublează rata de transfer prin creșterea prefetch depth</li>
+                    <li><strong>LPDDR:</strong> versiune low-power pentru dispozitive mobile (telefoane, handheld, playere audio)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.11 — Module și organizare</h3>
+                <ul class="specs-list">
+                    <li>DIMM cu 64-bit data bus necesită 8 chip-uri de 8 biți, adresate &#238;n paralel</li>
+                    <li>Multiple chip-uri cu linii de adresă comune = memory rank</li>
+                    <li>Multi-channel architecture (dual-channel, etc.) pentru a depăși bottleneck-ul</li>
+                    <li><strong>DDR memory bus width per channel:</strong> 64 biți (72 pentru ECC)</li>
+                    <li>Capacitate modul = capacitate chip &#215; număr chip-uri</li>
+                    <li><strong>ECC:</strong> 9 chip-uri per rank (1 bit per byte pentru corecție erori)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.12 — Definiție CAS latency</h3>
+                <ul class="specs-list">
+                    <li>CAS latency (CL) = &#238;nt&#226;rzierea &#238;n cicluri de ceas &#238;ntre comanda READ și momentul &#238;n care datele sunt disponibile</li>
+                    <li><strong>DRAM asincron:</strong> specificat &#238;n nanosecunde (timp absolut)</li>
+                    <li><strong>SDRAM sincron:</strong> specificat &#238;n cicluri de ceas → timpul real depinde de frecvența ceasului</li>
+                    <li>CAS latency numeric mai mare poate fi de fapt mai rapid dacă ceasul e mai rapid (se compară &#238;n nanosecunde, nu cicluri)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.13 — Operare RAM (background)</h3>
+                <ul class="specs-list">
+                    <li><strong>DRAM aranjat &#238;n matrice dreptunghiulară:</strong> r&#226;nduri selectate de word line, coloane de bit line</li>
+                    <li>Fiecare bit line → sense amplifier care amplifică micile variații de tensiune ale condensatorului</li>
+                    <li><strong>Secvență acces:</strong> selectare r&#226;nd (activare) → coloane pot fi accesate</li>
+                    <li>CAS latency = delay &#238;ntre prezentarea adresei de coloană + CAS signal și momentul disponibilității datelor</li>
+                    <li>R&#226;ndul dorit trebuie să fie deja activ; dacă nu, timp suplimentar necesar</li>
+                    <li>DDR transferă pe ambele fronturi ale ceasului → CAS se specifică &#238;n cicluri de ceas, nu transferuri</li>
+                    <li><strong>Burst transfers:</strong> un cache line modern de 64 bytes necesită 8 transferuri de la un bus de 64-bit; CAS latency măsoară doar primul word; &quot;critical word first&quot; order</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.3.14 — Exemple concrete de timing-uri (selecție)</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR-400:</strong> CL 2.5 → 12.50 ns first word latency</li>
+                    <li><strong>DDR2-800:</strong> CL 5 → 12.50 ns first word latency</li>
+                    <li><strong>DDR3-1600:</strong> CL 9 → 11.25 ns first word latency</li>
+                    <li><strong>DDR4-3200:</strong> CL 16 → 10.00 ns first word latency</li>
+                    <li><strong>DDR5-4800:</strong> CL 40 → 16.67 ns first word latency</li>
+                    <li><strong>DDR5-6000:</strong> CL 30 → 10.00 ns first word latency</li>
+                    <li><strong>DDR5-6400:</strong> CL 32 → 10.00 ns first word latency</li>
+                    <li><strong>DDR5-7200:</strong> CL 36 → 10.00 ns first word latency</li>
+                    <li><strong>Observație cheie:</strong> CAS latency &#238;n nanosecunde a rămas relativ constantă (~10-15 ns) de-a lungul generațiilor, chiar dacă CL numeric crește (deoarece ceasul crește proporțional)</li>
+                    <li>Bandwidth crește semnificativ cu fiecare generație, dar latența absolută nu se &#238;mbunătățește dramatic</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și tipuri RAM</h3>
+                <ul class="specs-list">
+                    <li><strong>SRAM (Static RAM):</strong> stochează un bit folosind un circuit flip-flop, de obicei cu 6 tranzistori MOSFET; mai rapid, consum mai mic de putere statică, dar mai scump și densitate mai mică; folosit ca cache CPU</li>
+                    <li><strong>DRAM (Dynamic RAM):</strong> stochează un bit folosind un tranzistor + un condensator; condensatorul menține sarcină HIGH sau LOW (1 sau 0); tranzistorul funcționează ca switch; necesită refresh periodic (&#238;nainte ca sarcina să se scurgă); mai ieftin, densitate mai mare; formă predominantă de memorie &#238;n computere moderne</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Celula de memorie</h3>
+                <ul class="specs-list">
+                    <li>Memory cell = bloc fundamental al memoriei computerului, circuit electronic care stochează un bit de informație binară</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Ierarhia memoriei (secțiune din articolul RAM)</h3>
+                <ul class="specs-list">
+                    <li><strong>Multe sisteme au ierarhie de memorie const&#226;nd din:</strong> registre procesor → cache SRAM on-die → cache externe → DRAM → memory paging → memorie virtuală/swap space pe SSD sau HDD</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Memory wall</h3>
+                <ul class="specs-list">
+                    <li>Memory wall = disparitatea cresc&#226;ndă &#238;ntre viteza CPU și timpul de răspuns al memoriei (latența memoriei) din afara cipului CPU</li>
+                    <li><strong>1986-2000:</strong> viteza CPU s-a &#238;mbunătățit cu 55% anual, &#238;n timp ce timpul de răspuns al memoriei off-chip s-a &#238;mbunătățit doar cu 10% anual</li>
+                    <li>CPU-urile moderne au ~1 MB de cache cu 0 wait states, dar acesta rezidă pe același cip cu nucleele CPU din cauza limitărilor de bandwidth chip-to-chip</li>
+                    <li>Diferență de p&#226;nă la 53% &#238;ntre creșterea vitezei procesorului și viteza de acces a memoriei principale</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și structură</h3>
+                <ul class="specs-list">
+                    <li>Ierarhia memoriei separă stocarea computerului &#238;ntr-o ierarhie bazată pe timpul de răspuns</li>
+                </ul>
+                <p>1. Internal: registre procesor + cache</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Exemple concrete cu latențe și bandwidth (tabel)</h3>
+                <ul class="specs-list">
+                    <li>CPU spends much time idling, waiting for memory I/O → &quot;space cost&quot;</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Module și organizare</h3>
+                <ul class="specs-list">
+                    <li>DIMM cu 64-bit data bus necesită 8 chip-uri de 8 biți, adresate &#238;n paralel</li>
+                    <li><strong>ECC:</strong> 9 chip-uri per rank (1 bit per byte pentru corecție erori)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Operare RAM (background)</h3>
+                <ul class="specs-list">
+                    <li><strong>DRAM aranjat &#238;n matrice dreptunghiulară:</strong> r&#226;nduri selectate de word line, coloane de bit line</li>
+                    <li>Fiecare bit line → sense amplifier care amplifică micile variații de tensiune ale condensatorului</li>
+                    <li><strong>Burst transfers:</strong> un cache line modern de 64 bytes necesită 8 transferuri de la un bus de 64-bit; CAS latency măsoară doar primul word; &quot;critical word first&quot; order</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> SRAM (cache) = flip-flop → rapid, scump. DRAM (RAM) = condensator → lent, ieftin.</p>
-                <p><strong>Informatică:</strong> Algoritmi cache-friendly (localitate bună) → FPS mai mare.</p>
+                <h3>Istoric DDR/SDRAM (din timeline)</h3>
+                <ul class="specs-list">
+                    <li><strong>2005:</strong> NEC Xenos eDRAM 80 Mbit (Xbox 360, 90 nm)</li>
+                    <li><strong>Console-relevant:</strong> N64 RDRAM 36 Mbit (NEC, 1996)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Traversare Array în Engine</h3>
-                <p>Array 1,000,000 vectori (12 bytes each). Traversare secvențială = cache friendly.</p>
-                <p>Cache line 64 bytes. Încarcă 5 vectori per line. Total = 200,000 cache lines.</p>
-                <p>Acces random: 1,000,000 cache lines. 5× mai multe miss. FPS scade drastic.</p>
+                <h3>Memory wall</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR5 8000MHz single-lane:</strong> capabil de 128 GB/s bandwidth</li>
+                    <li><strong>GDDR modern:</strong> și mai rapid dec&#226;t DDR5</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Istoric DDR/SDRAM (din timeline)</h3>
+                <ul class="specs-list">
+                    <li><strong>1970:</strong> Intel 1103 – primul DRAM IC comercial (1 kbit, proces 8 μm)</li>
+                    <li><strong>1992:</strong> Samsung KM48SL2000 – primul SDRAM comercial (16 Mbit)</li>
+                    <li><strong>Iunie 1998:</strong> Samsung – primul DDR SDRAM comercial (64 Mbit)</li>
+                    <li><strong>1998:</strong> Samsung – primul GDDR (SGRAM) de 16 Mbit</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Exemple concrete cu latențe și bandwidth (tabel)</h3>
+                <ul class="specs-list">
+                    <li><strong>Main memory (DDR5 6000 MT/s):</strong> 64 GiB, ~60 GB/s, latență 82.5 ns</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și principiu DDR</h3>
+                <ul class="specs-list">
+                    <li><strong>Samsung:</strong> prototip DDR SDRAM 1997, primul chip comercial (64 Mbit) iunie 1998</li>
+                    <li>DDR1 nu este compatibil cu DDR2/DDR3/DDR4/DDR5 (nu sunt backward/forward compatible)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Generații DDR: specificații</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR1 (1998):</strong> prefetch 2n, 200-400 MT/s, bandwidth 1600-3200 MB/s, 2.5-2.6V, 184 pini DIMM</li>
+                    <li><strong>DDR-400/PC-3200:</strong> 200 MHz bus, 400 MT/s, 3200 MB/s</li>
+                    <li><strong>DDR2 (2003):</strong> prefetch 4n, 400-1066 MT/s, bandwidth 3200-8533 MB/s, 1.8V, 240 pini DIMM</li>
+                    <li><strong>DDR2-800/PC2-6400:</strong> 400 MHz bus, 800 MT/s, 6400 MB/s</li>
+                    <li><strong>DDR3 (2007):</strong> prefetch 8n, 800-2133 MT/s, bandwidth 6400-17066 MB/s, 1.5/1.35V, 240 pini DIMM</li>
+                    <li><strong>DDR3-1600/PC3-12800:</strong> 800 MHz bus, 1600 MT/s, 12800 MB/s</li>
+                    <li><strong>DDR4 (2014):</strong> prefetch 8n, 1600-3200 MT/s, bandwidth 12800-25600 MB/s, 1.2/1.05V, 288 pini DIMM</li>
+                    <li><strong>DDR4-3200/PC4-25600:</strong> 1600 MHz bus, 3200 MT/s, 25600 MB/s</li>
+                    <li><strong>DDR5 (2020):</strong> prefetch 16n, 3200-7200 MT/s, bandwidth 25600-57600 MB/s, 1.1V, 288 pini DIMM</li>
+                    <li><strong>DDR5-6400:</strong> 3200 MHz bus, 6400 MT/s, 51200 MB/s</li>
+                    <li><strong>Fiecare generație:</strong> frecvență internă similară dar se dublează rata de transfer prin creșterea prefetch depth</li>
+                    <li><strong>LPDDR:</strong> versiune low-power pentru dispozitive mobile (telefoane, handheld, playere audio)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție CAS latency</h3>
+                <ul class="specs-list">
+                    <li><strong>DRAM asincron:</strong> specificat &#238;n nanosecunde (timp absolut)</li>
+                    <li><strong>SDRAM sincron:</strong> specificat &#238;n cicluri de ceas → timpul real depinde de frecvența ceasului</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Exemple concrete de timing-uri (selecție)</h3>
+                <ul class="specs-list">
+                    <li><strong>DDR3-1600:</strong> CL 9 → 11.25 ns first word latency</li>
+                    <li><strong>DDR4-3200:</strong> CL 16 → 10.00 ns first word latency</li>
+                    <li><strong>DDR5-4800:</strong> CL 40 → 16.67 ns first word latency</li>
+                    <li><strong>DDR5-6000:</strong> CL 30 → 10.00 ns first word latency</li>
+                    <li><strong>DDR5-6400:</strong> CL 32 → 10.00 ns first word latency</li>
+                    <li><strong>DDR5-7200:</strong> CL 36 → 10.00 ns first word latency</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: PS5 Streaming Textures</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenario:</strong> Open-world game. Player merge rapid. Engine trebuie să încarce textures ahead of time.</p>
-                <p><strong>Cache usage:</strong> Textures sunt mari (MB). L3 cache mic (8 MB) → miss rate mare dacă nu prefetch.</p>
-                <p><strong>Solution:</strong> Streaming system: anticipare camera movement. Încarcă textures înainte (prefetch). L3 cache și VRAM se umple cu data necesara. FPS constant.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ De ce cache miss rate mic produce impact mare?</h3><p>Miss penalty = 200 ciclu. 1% miss rate × 200 = +2 ciclu mediu per instr. CPU 3.5 GHz, latenta ridicată. Perf -30%.</p></div>
-            <div class="card"><h3>⚠️ De ce L1 cache este mic?</h3><p>SRAM costă mult. 32 KB la fiecare core = ~2 milioane tranzistori. L1 mai mare ar crește latenta și consumul.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu RAM și cache</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -132,12 +428,20 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>RAM:</strong> DRAM mare, 50-100 ns latență. 16 GB GDDR6 PS5.</li>
-                    <li><strong>L1/L2/L3:</strong> SRAM rapid, mic. L1 ~1 ns, L3 ~15 ns.</li>
-                    <li><strong>Cache hit:</strong> Data găsită local → rapid. Miss → penalty 100+ cicli.</li>
-                    <li><strong>Localitate:</strong> Temporală &amp; spațială. Access pattern defineste performance.</li>
-                    <li><strong>Prefetch:</strong> aduce data înainte. Dacă ghicește corect, reduce latență.</li>
-                    <li>Game engine optimizează structuri de date pentru cache-friendly behavior.</li>
+                    <li><strong>Definiție și tipuri RAM:</strong> Random-access memory (RAM) = formă de memorie electronică care poate fi citită și modificată &#238;n orice ordine, folosită pentru stocarea datelor de lucru și a codului mașinii</li>
+                    <li><strong>Celula de memorie:</strong> Memory cell = bloc fundamental al memoriei computerului, circuit electronic care stochează un bit de informație binară</li>
+                    <li><strong>Ierarhia memoriei (secțiune din articolul RAM):</strong> Multe sisteme au ierarhie de memorie const&#226;nd din: registre procesor → cache SRAM on-die → cache externe → DRAM → memory paging → memorie virtuală/swap space pe SSD sau HDD</li>
+                    <li><strong>Memory wall:</strong> Memory wall = disparitatea cresc&#226;ndă &#238;ntre viteza CPU și timpul de răspuns al memoriei (latența memoriei) din afara cipului CPU</li>
+                    <li><strong>Istoric DDR/SDRAM (din timeline):</strong> 1963: primul SRAM integrat bipolar (Robert H. Norman, Fairchild)</li>
+                    <li><strong>Definiție și structură:</strong> Ierarhia memoriei separă stocarea computerului &#238;ntr-o ierarhie bazată pe timpul de răspuns</li>
+                    <li><strong>Exemple concrete cu latențe și bandwidth (tabel):</strong> Register file: 18,432 biți, p&#226;nă la 256 GB/s (512 biți/ciclu), latență 0.25 ns (1 ciclu la 4 GHz)</li>
+                    <li><strong>Programare și localitate:</strong> Bottleneck = localitate de referință a accesărilor de memorie și eficiența caching-ului</li>
+                    <li><strong>Definiție și principiu DDR:</strong> DDR SDRAM (Double Data Rate Synchronous DRAM): transferă date pe ambele fronturi ale semnalului de ceas (rising + falling edge), dubl&#226;nd rata de date fără a crește frecvența ceasului</li>
+                    <li><strong>Generații DDR: specificații:</strong> DDR1 (1998): prefetch 2n, 200-400 MT/s, bandwidth 1600-3200 MB/s, 2.5-2.6V, 184 pini DIMM</li>
+                    <li><strong>Module și organizare:</strong> DIMM cu 64-bit data bus necesită 8 chip-uri de 8 biți, adresate &#238;n paralel</li>
+                    <li><strong>Definiție CAS latency:</strong> CAS latency (CL) = &#238;nt&#226;rzierea &#238;n cicluri de ceas &#238;ntre comanda READ și momentul &#238;n care datele sunt disponibile</li>
+                    <li><strong>Operare RAM (background):</strong> DRAM aranjat &#238;n matrice dreptunghiulară: r&#226;nduri selectate de word line, coloane de bit line</li>
+                    <li><strong>Exemple concrete de timing-uri (selecție):</strong> DDR-400: CL 2.5 → 12.50 ns first word latency</li>
                 </ul>
             </div>
         </div>
@@ -146,55 +450,129 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>RAM (DRAM) stocheaza bitul prin:</strong></p>
-                <ul class="specs-list"><li>a) Flip-flop</li><li>b) Condensator</li><li>c) Releu</li><li>d) Curent continuu stabil</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Condensator</strong> — Necesită refresh periodic.</p></details>
+                <p><strong>Care afirmație este corectă despre: Acces aleatoriu?</strong></p>
+                <ul class="specs-list">
+                    <li>a) stochează un bit folosind un circuit flip-flop, de obicei cu 6 tranzistori MOSFET; mai rapid, consum mai mic de putere statică, dar mai scump și de...</li>
+                    <li>b) datele se pierd c&#226;nd se oprește alimentarea</li>
+                    <li>c) stochează un bit folosind un tranzistor + un condensator; condensatorul menține sarcină HIGH sau LOW (1 sau 0); tranzistorul funcționează ca switch...</li>
+                    <li>d) datele pot fi citite/scrise &#238;n aproximativ același timp indiferent de locația fizică din memorie (spre deosebire de HDD/bandă magnetică unde t...</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — datele pot fi citite/scrise &#238;n aproximativ același timp indiferent de locația fizică din memorie (spre deosebire de HDD/bandă magnetică unde timpul depinde de locația fizică)</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>L1 cache latență aproximativ?</strong></p>
-                <ul class="specs-list"><li>a) 1-3 ns</li><li>b) 10-20 ns</li><li>c) 50-100 ns</li><li>d) 1 ms</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>a) 1-3 ns</strong> — L1 e cel mai rapid.</p></details>
+                <p><strong>Care afirmație este corectă despre: SRAM cell?</strong></p>
+                <ul class="specs-list">
+                    <li>a) circuit flip-flop implementat cu FET-uri, necesită putere foarte mică c&#226;nd nu e accesat, dar complex și scump, densitate mică de stocare</li>
+                    <li>b) stochează un bit folosind un circuit flip-flop, de obicei cu 6 tranzistori MOSFET; mai rapid, consum mai mic de putere statică, dar mai scump și de...</li>
+                    <li>c) datele se pierd c&#226;nd se oprește alimentarea</li>
+                    <li>d) datele pot fi citite/scrise &#238;n aproximativ același timp indiferent de locația fizică din memorie (spre deosebire de HDD/bandă magnetică unde t...</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — circuit flip-flop implementat cu FET-uri, necesită putere foarte mică c&#226;nd nu e accesat, dar complex și scump, densitate mică de stocare</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Localitate spațială înseamnă:</strong></p>
-                <ul class="specs-list"><li>a) Acces repetat aceeași adresă</li><li>b) Acces vecini consecutivi în memorie</li><li>c) Acces random</li><li>d) Acces la GPU</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Acces vecini consecutivi</strong> — Cache line profită.</p></details>
+                <p><strong>Care afirmație este corectă despre: Multe sisteme au ierarhie de memorie const&#226;nd din?</strong></p>
+                <ul class="specs-list">
+                    <li>a) registre procesor → cache SRAM on-die → cache externe → DRAM → memory paging → memorie virtuală/swap space pe SSD sau HDD</li>
+                    <li>b) datele pot fi citite/scrise &#238;n aproximativ același timp indiferent de locația fizică din memorie (spre deosebire de HDD/bandă magnetică unde t...</li>
+                    <li>c) datele se pierd c&#226;nd se oprește alimentarea</li>
+                    <li>d) stochează un bit folosind un circuit flip-flop, de obicei cu 6 tranzistori MOSFET; mai rapid, consum mai mic de putere statică, dar mai scump și de...</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — registre procesor → cache SRAM on-die → cache externe → DRAM → memory paging → memorie virtuală/swap space pe SSD sau HDD</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Cache miss rate 1% cu penalty 200 ciclu produce CPI extra:</strong></p>
-                <ul class="specs-list"><li>a) 0.02 ciclu</li><li>b) 1 ciclu</li><li>c) 2 ciclu</li><li>d) 200 ciclu</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) 2 ciclu</strong> — 0.01 × 200 = 2.</p></details>
+                <p><strong>Care afirmație este corectă despre: Motiv principal?</strong></p>
+                <ul class="specs-list">
+                    <li>a) datele se pierd c&#226;nd se oprește alimentarea</li>
+                    <li>b) stochează un bit folosind un circuit flip-flop, de obicei cu 6 tranzistori MOSFET; mai rapid, consum mai mic de putere statică, dar mai scump și de...</li>
+                    <li>c) datele pot fi citite/scrise &#238;n aproximativ același timp indiferent de locația fizică din memorie (spre deosebire de HDD/bandă magnetică unde t...</li>
+                    <li>d) lățimea de bandă limitată de comunicare dincolo de limitele cipului</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — lățimea de bandă limitată de comunicare dincolo de limitele cipului</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Prefetch ajută când:</strong></p>
-                <ul class="specs-list"><li>a) Acces random total</li><li>b) Există pattern predictibil de acces</li><li>c) Datele nu sunt folosite</li><li>d) Cache e infinita</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Pattern predictibil</strong> — Prefetch ghicește următoarele adrese.</p></details>
+                <p><strong>Care afirmație este corectă despre: 1963?</strong></p>
+                <ul class="specs-list">
+                    <li>a) datele se pierd c&#226;nd se oprește alimentarea</li>
+                    <li>b) primul SRAM integrat bipolar (Robert H. Norman, Fairchild)</li>
+                    <li>c) stochează un bit folosind un circuit flip-flop, de obicei cu 6 tranzistori MOSFET; mai rapid, consum mai mic de putere statică, dar mai scump și de...</li>
+                    <li>d) datele pot fi citite/scrise &#238;n aproximativ același timp indiferent de locația fizică din memorie (spre deosebire de HDD/bandă magnetică unde t...</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — primul SRAM integrat bipolar (Robert H. Norman, Fairchild)</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Cache Efficiency</h3>
-                <p><strong>Cerință:</strong> Vector 1,000,000 ints. Cache line 64 bytes (16 ints). Acces secvențial vs random.</p>
-                <ol class="specs-list"><li>Cache lines necesare secvențial</li><li>Cache lines necesare random</li><li>Raport miss rate</li><li>Impact pe perf dacă miss penalty 200 ciclu</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1. Secvențial:</strong> 1,000,000 / 16 = 62,500 cache lines.</p>
-                    <p><strong>2. Random:</strong> 1,000,000 cache lines (1 per int).</p>
-                    <p><strong>3. Ratio:</strong> Random/Sequential = 16× misses.</p>
-                    <p><strong>4. Perf impact:</strong> Dacă secvențial: miss rate 6.25%. Random: 100% miss rate. CPI +200 ciclu per access. Perf drop ~16× (dramatic).</p>
-                </div></details>
+                <h3>🧠 Exercițiu: RAM și cache</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de ierarhia memoriei. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: ierarhia memoriei.</li>
+                    <li>2. Ce rol are latență în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre ierarhia memoriei și bandwidth.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Random-access memory (RAM) = formă de memorie electronică care poate fi citită și modificată &#238;n orice ordine, folosită pentru stocarea datelor de lucru și a codului mașinii</p>
+                        <p><strong>2.</strong> Memory cell = bloc fundamental al memoriei computerului, circuit electronic care stochează un bit de informație binară</p>
+                        <p><strong>3.</strong> Multe sisteme au ierarhie de memorie const&#226;nd din: registre procesor → cache SRAM on-die → cache externe → DRAM → memory paging → memorie virtuală/swap space pe SSD sau HDD</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -271,3 +649,14 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

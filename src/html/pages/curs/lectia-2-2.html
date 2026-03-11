@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 2.2 — Diode: Rectificare și Protecție">
+    <meta name="description" content="Lecția 2.2 — Condensatoare">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 2.2 — Diode — Console Notebook</title>
+    <title>Lecția 2.2 — Condensatoare — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,21 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — Electronică de Bază</p>
-            <h1>Lecția 2.2 — Diode</h1>
-            <p>Component cu o direcție — valve electronice care permit și blochează curent.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.2 — Condensatoare</h1>
+            <p>capacitate, stocare de energie, filtrare, smoothing</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                                        <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Diodă:</strong> Component cu 2 terminali care permite curentul numer o singură direcție (anod → catod) și blochează în cealaltă (catod → anod).</p>
-                <p>Cea mai simpla componentă activă. Combină (suprapune) proprități de conducetor și izolator în funcție de polaritate.</p>
-                <p>Aplicații principale: <strong>rectificare (AC→DC), protecție (prevent curent invers), fixare de tensiune (Zener).</strong></p>
-                <p>Într-o consolă: mii de diode — în PSU pentru rectificare, pe placa pentru protecție, pe cabluri pentru evitarea deteriorării.</p>
+                <p>Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</p>
+                <p>Această lecție acoperă: <strong>capacitate</strong>, <strong>stocare de energie</strong>, <strong>filtrare</strong>, <strong>smoothing</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -50,120 +53,201 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Structura și Funcționare Diodei</h3>
-                <p><strong>Diodă</strong> = joncțiune P-N (semiconductor P-doped și N-doped conectate).</p>
+                <h3>2.2.1 — DEFINIȚIE</h3>
                 <ul class="specs-list">
-                    <li><strong>Anod (A):</strong> Legat la P (gol de electroni), conexiune pozitivă</li>
-                    <li><strong>Catod (K):</strong> Legat la N (surplus de electroni), conexiune negativă</li>
-                    <li><strong>Forward Bias:</strong> Anod+ lanț Catod-. Electroni curge. Diodă <strong>conduce</strong>. V_drop ≈ 0.7V pentru Si, 0.3V pentru Schottky.</li>
-                    <li><strong>Reverse Bias:</strong> Anod- și Catod+. Electroni refuză să curge. Diodă <strong>blochează</strong>. Curent scurt ≈ 0 (în realitate nanoamperi).</li>
-                </ul>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
-                    I = I_s × (e^(V/nV_t) - 1)
-                </p>
-                <p>Shockley diode equation — exponențial în forward, logaritmic în reverse.</p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Tipuri de Diode și Aplicații</h3>
-                <ul class="specs-list">
-                    <li><strong>Diodă rectificatoare (1N4007):</strong> Curent mediu (1A), recuperare lentă. Folosit în PSU pentru rectificare AC.</li>
-                    <li><strong>Diodă Schottky:</strong> V_drop mic (0.3V), recuperare super-rapidă (picosecunde). Folosit în VRM și switched PSU.</li>
-                    <li><strong>Diodă Zener:</strong> Permite curent invers la o tensiune fixa (Zener voltage). Fixare tensiune. Ex: 5.1V Zener fixează linia la 5V.</li>
-                    <li><strong>Diodă TVS (Transient Voltage Suppression):</strong> Protecție contra spike-urilor. Clampează la tensiune fixa.</li>
-                    <li><strong>LED:</strong> Emite lumina când conduce forward. 2.0V drop (roșu), ~3.3V (albastru).</li>
+                    <li>Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</li>
+                    <li>Componentă electronică pasivă cu două terminale</li>
+                    <li><strong>Termenul vechi:</strong> „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>Cele mai multe condensatoare conțin cel puțin doi conductori electrici (plăci metalice) separați de un dielectric</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Rectificare AC → DC cu Diode</h3>
-                <p><strong>Rectificare = convertire AC în pulsant DC folosind diode pentru a bloca jumătatea negativă.</strong></p>
+                <h3>2.2.2 — CAPACITATE (C)</h3>
                 <ul class="specs-list">
-                    <li><strong>Rectificator simplu (HWR):</strong> 1 diodă. Permite doar semi-unda pozitivă. Output: 0 → V_peak → 0. Ineficiență (jumătate din timp e zero).</li>
-                    <li><strong>Rectificator punte (FWR):</strong> 4 diode în configurație punte. Inversează semi-unda negativă. Output: |V| continuu (0 → V_peak → 0 → V_peak) — dobândă două ori pe ciclu.</li>
+                    <li><strong>Definită ca raportul sarcinii Q la tensiunea V:</strong> C = Q / V</li>
+                    <li><strong>Unitate:</strong> farad (F) – 1 farad = 1 coulomb pe volt</li>
+                    <li>1 farad este o valoare foarte mare; &#238;n practică se folosesc:</li>
+                    <li>microfarad (μF = 10⁻⁶ F)</li>
+                    <li>nanofarad (nF = 10⁻⁹ F)</li>
+                    <li>picofarad (pF = 10⁻&#185;&#178; F)</li>
+                    <li><strong>Capacitatea unui condensator cu plăci paralele:</strong> C = ε &#215; A / d</li>
+                    <li>ε = permitivitatea dielectricului</li>
+                    <li>A = aria plăcilor</li>
+                    <li>d = distanța &#238;ntre plăci</li>
+                    <li>Capacitate mai mare = permitivitate mare, arie mare, distanță mică</li>
                 </ul>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
-                    V_avg (HWR) = V_peak / π ≈ 0.32 × V_peak<br>
-                    V_avg (FWR) = 2 × V_peak / π ≈ 0.64 × V_peak
-                </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Protecție cu Diode</h3>
-                <p><strong>Diode Protector (freewheeling):</strong> Previne curentul invers dacă cablul e deconectat greșit.</p>
-                <p>Exemplu: Cablul PSU deconectat. Curentul USB de pe placa de bază ar putea curge înapoi în PSU. Dioda pe PSU output blochează. Protecție.</p>
-                <p><strong>Diode Protector de spikuri:</strong> TVS diode clampează spike-uri de tensiune dintr-un scurtcircuit dinamic. Dacă relay deschide brusc cu current dens, inducție creaza milivolți. TVS clampeaza.</p>
+                <h3>2.2.3 — STOCARE DE ENERGIE</h3>
+                <ul class="specs-list">
+                    <li><strong>Energia stocată:</strong> W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
+                    <li>Energia este stocată &#238;n c&#226;mpul electric dintre plăci</li>
+                    <li><strong>Densitatea energiei:</strong> W = &#189; &#215; ε &#215; E&#178; &#215; (volumul c&#226;mpului electric)</li>
+                    <li>Un condensator poate fi folosit ca o baterie temporară</li>
+                    <li>Condensatoarele pot elibera energia foarte rapid (comparativ cu bateriile)</li>
+                    <li><strong>Energia specifică:</strong> condensatoare convenționale &lt; 360 J/kg vs. baterie alcalină ~590 kJ/kg</li>
+                    <li><strong>Supercondensatoare:</strong> pot accepta/livra sarcină mult mai rapid dec&#226;t bateriile</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Recuperare (Recovery Time) și Frecvență</h3>
-                <p>După ce forward bias cade și reverse bias se aplică, dioda nu se oprește instantaneu. Timp de recuperare = timp până când blochează complet.</p>
+                <h3>2.2.4 — TIPURI DE CONDENSATOARE (materiale dielectrice)</h3>
                 <ul class="specs-list">
-                    <li><strong>Diodă rectificatoare standard:</strong> Recovery time ≈ 100-200 nanosecunde. Lentă. OK pentru PSU la 50/100Hz.</li>
-                    <li><strong>Diodă Schottky:</strong> Recovery time ≈ < 5 nanosecunde. Rapid. Esențial pentru VRM la 100+ kHz.</li>
+                    <li><strong>Ceramic:</strong> mici, ieftine, utile la frecvențe &#238;nalte</li>
+                    <li><strong>Clasa 1 (C0G/NP0):</strong> variație predictibilă cu temperatura</li>
+                    <li><strong>Clasa 2:</strong> pot opera la tensiuni mai mari</li>
+                    <li><strong>Dezavantaje:</strong> capacitatea variază cu tensiunea și temperatura, &#238;mbătr&#226;nire</li>
                 </ul>
-                <p>Dacă diodă lentă la frecvență înaltă, nu blochează suficient de repede, curent invers curge, disipare de puteri și pierderi mari.</p>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.5 — b) Electrolitic (aluminiu sau tantal)</h3>
+                <ul class="specs-list">
+                    <li>Placă de aluminiu/tantal cu strat de oxid ca dielectric</li>
+                    <li>Al doilea electrod = electrolit lichid</li>
+                    <li>Capacitanțe foarte mari</li>
+                    <li><strong>Dezavantaje:</strong> toleranțe slabe, instabilitate, pierderi de capacitanță la căldură, curent de scurgere</li>
+                    <li>Se degradează dacă nu sunt utilizate ~1 an</li>
+                    <li>Polarizate (au + și -)</li>
+                    <li><strong>Tantal:</strong> mai bune caracteristici de frecvență și temperatură dec&#226;t aluminiu</li>
+                    <li>Absorbție dielectrică mai mare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.6 — d) Film (plastic/polimer)</h3>
+                <ul class="specs-list">
+                    <li>Stabilitate și &#238;mbătr&#226;nire mai bune dec&#226;t h&#226;rtia</li>
+                    <li>Folosite &#238;n circuite de suprimare, pornire motoare, corecție factor de putere</li>
+                    <li><strong>Sticlă și mică:</strong> extrem de fiabile, stabile, tolerante la temperaturi și tensiuni &#238;nalte</li>
+                    <li>Prea scumpe pentru aplicații standard</li>
+                    <li><strong>Supercondensatoare:</strong> folosesc electrozi de carbon poros</li>
+                    <li>Capacitanțe p&#226;nă la 5 kF</li>
+                    <li>Pot &#238;nlocui bateriile re&#238;ncărcabile &#238;n unele aplicații</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.7 — FILTRARE (Power Conditioning)</h3>
+                <ul class="specs-list">
+                    <li>Condensatoarele-rezervor sunt folosite &#238;n surse de alimentare pentru a netezi ieșirea unui redresor</li>
+                    <li>Conectate &#238;n paralel cu circuitele de putere pentru a elimina fluctuațiile de curent</li>
+                    <li>Oferă o sursă DC „curată&quot; pentru circuitele de semnal/control</li>
+                    <li>Filtrare zgomot de rețea (hum) din echipamentele audio</li>
+                    <li><strong>Condensatoare bypass:</strong> ocolesc componentele de impedanță mare, șunt&#226;nd curentul AC</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.8 — SMOOTHING (NETEZIRE)</h3>
+                <ul class="specs-list">
+                    <li>&#206;n circuitele DC rectificate, condensatoarele netezesc variațiile de tensiune</li>
+                    <li><strong>Analogia hidraulică:</strong> un condensator funcționează ca un acumulator hidraulic, amortiz&#226;nd variațiile de la pompa (redresorul)</li>
+                    <li>Condensatoarele-rezervor mențin tensiunea &#238;ntre ciclurile de redresare</li>
+                    <li>Curentul de ondulare (ripple current) = componenta AC dintr-o sursă comutată</li>
+                    <li>Generează căldură din pierderi dielectrice + ESR (rezistența echivalentă serie)</li>
+                    <li><strong>Condensatoarele electroliticc tantalice:</strong> limitate de ripple, ESR cel mai mare</li>
+                    <li><strong>Condensatoarele electroliticc aluminiu:</strong> durata de viață scade la ripple mare</li>
+                    <li><strong>Condensatoarele ceramice:</strong> &#238;n general fără limitare de ripple, ESR scăzut</li>
+                    <li><strong>Condensatoarele film:</strong> ESR foarte scăzut</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.9 — CONDENSATOARE &#206;N SERIE ȘI PARALEL</h3>
+                <ul class="specs-list">
+                    <li><strong>Paralel:</strong> Ceq = C1 + C2 + ... + Cn (capacitățile se adună)</li>
+                    <li><strong>Serie:</strong> 1/Ceq = 1/C1 + 1/C2 + ... + 1/Cn (se adună inversele)</li>
+                    <li><strong>&#206;n serie:</strong> se folosesc pentru a obține tensiune de lucru mai mare</li>
+                    <li>Condensatoarele &#238;n serie se comportă invers față de rezistoarele &#238;n serie</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.10 — CIRCUIT RC</h3>
+                <ul class="specs-list">
+                    <li><strong>Constanta de timp:</strong> τ = R &#215; C</li>
+                    <li><strong>&#206;ncărcare:</strong> V(t) = V₀(1 - e^(-t/τ))</li>
+                    <li><strong>Descărcare:</strong> V(t) = V₀ &#215; e^(-t/τ))</li>
+                    <li>Curentul scade exponențial pe măsură ce condensatorul se &#238;ncarcă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.11 — COMPORTAMENT &#206;N AC</h3>
+                <ul class="specs-list">
+                    <li><strong>Reactanța capacitivă:</strong> Xc = 1/(ω&#215;C) = 1/(2πfC)</li>
+                    <li><strong>La frecvențe &#238;nalte:</strong> Xc → 0 (scurtcircuit AC)</li>
+                    <li><strong>La frecvențe joase:</strong> Xc → ∞ (circuit deschis)</li>
+                    <li>Curentul conduce tensiunea cu 90&#176;</li>
+                    <li>Condensatoarele blochează DC dar permit trecerea AC</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.2.12 — APLICAȚII</h3>
+                <ul class="specs-list">
+                    <li>Stocare de energie (backup memorie, flash, supercondensatoare)</li>
+                    <li>Condiționare putere (smoothing, bypass, filtrare)</li>
+                    <li>Cuplare semnal (AC coupling – separă AC de DC)</li>
+                    <li>Decuplare (protejare de zgomot/tranzitoari)</li>
+                    <li>Filtre trece-sus și trece-jos</li>
+                    <li>Suprimare zgomot / snubber</li>
+                    <li>Pornire motoare (condensator de pornire)</li>
+                    <li>Circuite rezonante (tunare radio)</li>
+                    <li>Senzori (umiditate, presiune, accelerometre, touchscreen)</li>
+                    <li>Oscilatori</li>
+                </ul>
+            </div>
+
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizica:</strong> Dioda folosește proprietățile semiconductoarelor (P-N junction) pentru a controla curentul unidirectional.</p>
-                <p><strong>Informatica:</strong> Diode permite logica digitală să funcționeze printr-o rectificare de curent și protecție contra fluctuațiilor externe. Fără diode, curenții inverși și spikuri ar distruge circuitele.</p>
+                <p>Conceptele din această lecție — Condensatoare — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 1: Rectificare PSU PS5</h3>
-                <p>4 diode Schottky în punte convertesc 230V AC → 320V DC pulsant. Schottky pentru că frecvență e înaltă (100Hz minimum), și recuperare rapidă e critică.</p>
-            </div>
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 2: Protecție USB</h3>
-                <p>Port USB PS5 are diode de protecție pe toate liniile. Dacă încarcator defect furnizează inversă polaritate, diode blochează. Protecție.</p>
-            </div>
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 3: Zener Voltage Regulator</h3>
-                <p>Linia de 3.3V poate avea o diodă Zener 3.3V în reverse pentru a clampeza la 3.3V dacă PSU furnizează mai mult accidental.</p>
+                <p>În contextul consolelor de jocuri, condensatoare joacă un rol esențial în funcționarea hardware-ului.</p>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Rectificare și Pierderi</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenar:</strong> PSU PS5 cu 4 diode Schottky în punte, 20A curent.</p>
-                <p><strong>Calculare pierderi:</strong></p>
+                <h3>CONDENSATOARE &#206;N SERIE ȘI PARALEL</h3>
                 <ul class="specs-list">
-                    <li>Schottky V_drop ≈ 0.35V (2 diode în serie în fiecare jumătate ciclu)</li>
-                    <li>P_diode = V_drop × I = 0.35V × 20A = 7W</li>
-                    <li>Asta se disipă ca căldură. Diodele au radiator mic.</li>
+                    <li>Condensatoarele &#238;n serie se comportă invers față de rezistoarele &#238;n serie</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
-            <div class="card">
-                <h3>⚠️ Diodă defectă (scurtcircuit)</h3>
-                <p>Cauza: Defect în joncțiune, deteriorare din spike. Dioda se comportă ca o rezistență foarte mică. PSU furnizează curent invers nereglat.</p>
-            </div>
-            <div class="card">
-                <h3>⚠️ Diodă arsă (open circuit)</h3>
-                <p>Cauza: Supraîncărcare curent. Dioda se arde, circuit se deschide. Jumătate din rectificare se pierde.</p>
-            </div>
-            <div class="card">
-                <h3>⚠️ Ripple crescut după defect diodă</h3>
-                <p>Cauza: Rectificare incompletă. Voltage pulsează extrem. CPU instabil.</p>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ COMPORTAMENT &#206;N AC</h3>
+                    <p>La frecvențe &#238;nalte: Xc → 0 (scurtcircuit AC)</p>
+                    <p>La frecvențe joase: Xc → ∞ (circuit deschis)</p>
+                </div>
             </div>
         </div>
     </section>
@@ -173,13 +257,18 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Diodă:</strong> Permite curent numer o direcție (anod→catod), blochează în cealaltă.</li>
-                    <li><strong>Forward bias:</strong> Diodă conduce, V_drop ≈ 0.7V (Si) sau 0.3V (Schottky).</li>
-                    <li><strong>Reverse bias:</strong> Diodă blochează, curent ≈ 0.</li>
-                    <li><strong>Rectificare:</strong> AC → DC folosind diode.</li>
-                    <li><strong>Putere și pierderi:</strong> P = V_drop × I. Diodele se încălzesc.</li>
-                    <li><strong>Recovery time:</strong> Timp până blochează. Schottky super-rapid.</li>
-                    <li>PS5: Diode Schottky în PSU, protecție pe porturile externe.</li>
+                    <li><strong>DEFINIȚIE:</strong> Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</li>
+                    <li><strong>CAPACITATE (C):</strong> Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li><strong>STOCARE DE ENERGIE:</strong> Energia stocată: W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
+                    <li><strong>TIPURI DE CONDENSATOARE (materiale dielectrice):</strong> Ceramic: mici, ieftine, utile la frecvențe &#238;nalte</li>
+                    <li><strong>b) Electrolitic (aluminiu sau tantal):</strong> Placă de aluminiu/tantal cu strat de oxid ca dielectric</li>
+                    <li><strong>d) Film (plastic/polimer):</strong> Stabilitate și &#238;mbătr&#226;nire mai bune dec&#226;t h&#226;rtia</li>
+                    <li><strong>FILTRARE (Power Conditioning):</strong> Condensatoarele-rezervor sunt folosite &#238;n surse de alimentare pentru a netezi ieșirea unui redresor</li>
+                    <li><strong>SMOOTHING (NETEZIRE):</strong> &#206;n circuitele DC rectificate, condensatoarele netezesc variațiile de tensiune</li>
+                    <li><strong>CONDENSATOARE &#206;N SERIE ȘI PARALEL:</strong> Paralel: Ceq = C1 + C2 + ... + Cn (capacitățile se adună)</li>
+                    <li><strong>CIRCUIT RC:</strong> Constanta de timp: τ = R &#215; C</li>
+                    <li><strong>COMPORTAMENT &#206;N AC:</strong> Reactanța capacitivă: Xc = 1/(ω&#215;C) = 1/(2πfC)</li>
+                    <li><strong>APLICAȚII:</strong> Stocare de energie (backup memorie, flash, supercondensatoare)</li>
                 </ul>
             </div>
         </div>
@@ -188,61 +277,133 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Ce permite dioda și ce blochează?</strong></p>
-                <ul class="specs-list"><li>a) AC, blochează DC</li><li>b) DC, blochează AC</li><li>c) Curent în o direcție, blochează în cealaltă</li><li>d) Totul</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) Curent în o direcție, blochează în cealaltă</strong> — Dioda permite forward, blochează reverse.</p></details>
+                <p><strong>Care afirmație este corectă despre: Termenul vechi?</strong></p>
+                <ul class="specs-list">
+                    <li>a) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>b) farad (F) – 1 farad = 1 coulomb pe volt</li>
+                    <li>c) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>d) microfarad (μF = 10⁻⁶ F)</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Care-i aplicația principală a diodei în PSU?</strong></p>
-                <ul class="specs-list"><li>a) Stabilizare curent</li><li>b) Rectificare AC → DC</li><li>c) Amplificare</li><li>d) Compresie semnal</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Rectificare AC → DC</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: CAPACITATE (C)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) farad (F) – 1 farad = 1 coulomb pe volt</li>
+                    <li>b) microfarad (μF = 10⁻⁶ F)</li>
+                    <li>c) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>d) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Ce-i cădere de tensiune V_drop în diodă forward?</strong></p>
-                <ul class="specs-list"><li>a) 0V</li><li>b) 0.7V (Si) sau 0.3V (Schottky)</li><li>c) 5V</li><li>d) Variabil, depinde de curent total</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 0.7V (Si) sau 0.3V (Schottky)</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Energia stocată?</strong></p>
+                <ul class="specs-list">
+                    <li>a) W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
+                    <li>b) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>c) farad (F) – 1 farad = 1 coulomb pe volt</li>
+                    <li>d) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>De ce PSU folosește diode Schottky și nu Silicon normale?</strong></p>
-                <ul class="specs-list"><li>a) Sun mai ieftine</li><li>b) Schottky mai bune la frecvență înaltă cu recovery super-rapid</li><li>c) Silicon mai bune</li><li>d) Nu-i diferență</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Schottky mai bune la frecvență înaltă cu recovery rapid</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Ceramic?</strong></p>
+                <ul class="specs-list">
+                    <li>a) mici, ieftine, utile la frecvențe &#238;nalte</li>
+                    <li>b) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>c) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>d) farad (F) – 1 farad = 1 coulomb pe volt</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — mici, ieftine, utile la frecvențe &#238;nalte</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Cum se numește diodă care fixează tensiune la o valoare specifică?</strong></p>
-                <ul class="specs-list"><li>a) Schottky</li><li>b) Zener</li><li>c) TVS</li><li>d) LED</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Zener</strong> — Zener fixează tensiune reverse la o valoare specifică.</p></details>
+                <p><strong>Care afirmație este corectă despre: b) Electrolitic (aluminiu sau tantal)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) Al doilea electrod = electrolit lichid</li>
+                    <li>b) farad (F) – 1 farad = 1 coulomb pe volt</li>
+                    <li>c) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>d) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — Al doilea electrod = electrolit lichid</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Calcul Pierderi Diodă Rectificatoare</h3>
-                <p><strong>Scenariu:</strong> PSU PS5 cu putere 450W, curent output 20A, diode Schottky în punte.</p>
-                <p><strong>Sarcini:</strong></p>
-                <ol class="specs-list">
-                    <li>Calculează P pierdut în diode (2 diode serie per jumătate ciclu, V_drop 0.35V fiecare)</li>
-                    <li>Calculează procent eficiență pierdut în diode (P_diode / P_total × 100%)</li>
-                    <li>Dacă PSU are și alte pierderi (bobine 10W, condensatori 5W), cât e total efficiency?</li>
-                    <li>Ce se întâmplă dacă diode ar fi Silicon (0.7V drop) în loc de Schottky?</li>
-                </ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1. Pierderi diode:</strong> V_drop_total = 2 × 0.35V = 0.70V (2 diode în serie). P = V × I = 0.70V × 20A = 14W.</p>
-                    <p><strong>2. Procent:</strong> 14W / 450W = 3.1% pierdut în diode.</p>
-                    <p><strong>3. Total pierderi:</strong> 14W (diode) + 10W (bobine) + 5W (cond) = 29W. Eficiență = (450-29)/450 = 93.6%.</p>
-                    <p><strong>4. Cu Silicon:</strong> V_drop = 0.7V fiecare, total 1.4V. P = 1.4V × 20A = 28W. Pierderi duble! Eficiență cade la (450-28-10-5)/450 = 87.4%.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Condensatoare</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de capacitate. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: capacitate.</li>
+                    <li>2. Ce rol are stocare de energie în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre capacitate și filtrare.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</p>
+                        <p><strong>2.</strong> Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</p>
+                        <p><strong>3.</strong> Energia stocată: W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -325,3 +486,17 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

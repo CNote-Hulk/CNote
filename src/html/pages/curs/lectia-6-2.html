@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 6.2 — Standby: Ce face consola când doarme">
+    <meta name="description" content="Lecția 6.2 — Standby">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
     <title>Lecția 6.2 — Standby — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — Alimentare și Probleme Reale</p>
-            <h1>Lecția 6.2 — Standby: Ce face consola când "doarme"</h1>
-            <p>Consumul mic, update-uri în fundal, încărcare controller. Standby nu înseamnă off.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — ALIMENTARE ȘI PROBLEME REALE</p>
+            <h1>Lecția 6.2 — Standby</h1>
+            <p>mod standby, consum redus, circuite active &#238;n standby</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Standby:</strong> Consola este oprită logic, dar unele subsisteme rămân alimentate.</p>
-                <p>PS5 consumă 1-3W în standby, dar poate descărca update-uri, încărca controller și asculta semnale de wake.</p>
-                <p>Standby este un compromis între consum și funcționalitate.</p>
+                <p>→ Permite procesarea &#238;n fundal (descărcări, sincronizare, notificări)</p>
+                <p>Această lecție acoperă: <strong>mod standby</strong>, <strong>consum redus</strong>, <strong>circuite active &#238;n standby</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,79 +53,376 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1 — Rail-uri active în standby</h3>
-                <p><strong>5V standby:</strong> principalul rail. Alimentează controlerul de power, IR, USB charging.</p>
-                <p><strong>3.3V standby:</strong> pentru flash și PMIC logic.</p>
-                <p>Rail-urile principale (12V, 1.05V) sunt OFF în standby.</p>
+                <h3>6.2.1 — Definiția standby power</h3>
+                <ul class="specs-list">
+                    <li>Standby power = puterea electrică consumată de echipamente electronice &#238;n timp ce sunt oprite (turned off) sau nu &#238;și &#238;ndeplinesc funcția principală</li>
+                    <li>Dispozitivul așteaptă activarea prin telecomandă sau semnal extern</li>
+                    <li><strong>Sinonime:</strong> phantom load, vampire power, vampire draw, ghost load, leaking electricity, wall wart</li>
+                    <li>Un wat consumat continuu &#238;n standby ≈ 9 kWh/an</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.2 — Wake Sources</h3>
-                <p><strong>Buton power:</strong> semnal hardware direct.</p>
-                <p><strong>Controller:</strong> semnal wireless (Bluetooth) detectat de modul standby.</p>
-                <p><strong>LAN:</strong> Wake-on-LAN pentru update-uri remote.</p>
+                <h3>6.2.2 — Avantajele modului standby</h3>
+                <ul class="specs-list">
+                    <li>Pornire instantanee (instant-on capability) – fără așteptarea boot-ului complet</li>
+                    <li>Receptorul de telecomandă răm&#226;ne alimentat – poate primi semnale IR/RF</li>
+                    <li>Afișaje și ceasuri răm&#226;n funcționale (LED-uri de stare, display-uri)</li>
+                    <li>&#206;ncărcarea bateriilor (pentru dispozitive portabile)</li>
+                    <li>Menținerea setărilor și memoriei (ceas RTC, configurații salvate)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.3 — Update-uri și USB charging</h3>
-                <p>Consola poate descărca update-uri în standby. Modulele WiFi rămân active la consum mic.</p>
-                <p>USB port poate furniza 5V pentru încărcare controller (0.5-1A).</p>
-                <p>Firmware controlează aceste funcții pentru a reduce consumul.</p>
+                <h3>6.2.3 — Consumul de energie &#238;n standby</h3>
+                <ul class="specs-list">
+                    <li><strong>&#206;nainte de reglementări:</strong> 8-22% din consumul total al aparatului era standby</li>
+                    <li><strong>One Watt Initiative (IEA, 1999):</strong> țintă de reducere a consumului standby la maximum 1W p&#226;nă &#238;n 2010</li>
+                    <li>Reducere suplimentară la 0.5W de la 2013</li>
+                    <li><strong>Regulamentul EU 1275/2008:</strong> implementare obligatorie a limitelor de standby</li>
+                    <li><strong>Exemplu console:</strong> Nintendo Wii consuma 18W &#238;n standby cu WiiConnect24 activ, 8W cu WiiConnect24 dezactivat, 1W cu Standby Connection dezactivat complet</li>
+                    <li><strong>Wake-on-LAN standby:</strong> tipic 2-8W, poate fi redus sub 0.5W cu microcontroller dedicat</li>
+                    <li>Risc de incendiu de la dispozitive &#238;n standby (rar, dar documentat)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.4 — Standby vs Off</h3>
-                <p><strong>Off real:</strong> PSU complet oprit. 0W. Nu se pot primi update-uri.</p>
-                <p><strong>Standby:</strong> PSU menține 5V. Păstrează starea de sistem și permite wake rapid.</p>
-                <p>Standby reduce timpul de pornire de la 30 sec la 5 sec.</p>
+                <h3>6.2.4 — Circuite active &#238;n standby</h3>
+                <ul class="specs-list">
+                    <li><strong>Sursa de alimentare:</strong> circuitul de standby (+5VSB pe ATX) răm&#226;ne activ permanent</li>
+                    <li><strong>Receptorul infraroșu/RF:</strong> circuit mic care ascultă semnale de la telecomandă</li>
+                    <li><strong>Microcontrollerul de management:</strong> gestionează tranziția &#238;ntre stări de putere</li>
+                    <li>LED-uri indicatoare de stare (roșu = standby, verde = pornit)</li>
+                    <li><strong>Circuitul de ceas (RTC – Real Time Clock):</strong> menține ora și data</li>
+                    <li>Circuitul de alimentare a memoriei RAM (&#238;n modul Sleep/S3)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5 — Riscuri în standby</h3>
-                <p><strong>Surtensiuni:</strong> Dacă PSU primește spike, standby poate fi afectat.</p>
-                <p><strong>Standby drain:</strong> Consumul constant 1-3W = 8-26 kWh/an.</p>
-                <p><strong>Corupere update:</strong> Dacă se întrerupe curentul în update, firmware poate fi corupt.</p>
+                <h3>6.2.5 — Definiția ACPI</h3>
+                <ul class="specs-list">
+                    <li>ACPI = Advanced Configuration and Power Interface</li>
+                    <li>Standard deschis pentru managementul puterii de către sistemul de operare</li>
+                    <li>&#206;nlocuiește APM (Advanced Power Management)</li>
+                    <li>Dezvoltat inițial de Intel, Microsoft, Toshiba (1996)</li>
+                    <li>Permite OS-ului să controleze direct distribuția puterii către componente</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.6 — Stări globale de putere (Global States)</h3>
+                <ul class="specs-list">
+                    <li><strong>G0/S0 – Working:</strong> CPU execută instrucțiuni, sistem complet funcțional</li>
+                    <li><strong>G1 – Sleeping:</strong> sistem &#238;n repaus, mai multe substări posibile</li>
+                    <li><strong>G2/S5 – Soft Off (Shutdown):</strong> sistemul pare oprit dar sursa de alimentare furnizează +5VSB</li>
+                    <li><strong>G3 – Mechanical Off:</strong> puterea complet oprită prin &#238;ntrerupător fizic, nu se consumă energie</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.7 — Substările de sleep (S-States)</h3>
+                <ul class="specs-list">
+                    <li><strong>S0ix – Modern Standby:</strong> SoC parțial &#238;n sleep, sub-stări S0i1/S0i2/S0i3</li>
+                </ul>
+                <p>→ Permite procesarea &#238;n fundal (descărcări, sincronizare, notificări)</p>
+                <p>→ Similar cu modul standby al smartphone-urilor</p>
+                <ul class="specs-list">
+                    <li><strong>S1 – Power on Suspend (POS):</strong> CPU oprește execuția, RAM alimentată, refresh activ</li>
+                </ul>
+                <p>→ Toate celelalte componente pot fi oprite</p>
+                <p>→ Reluarea funcționării: instantanee</p>
+                <ul class="specs-list">
+                    <li>S2 – Similar cu S1, dar CPU este complet oprit, cache-ul este golit &#238;n RAM</li>
+                    <li>S3 – Suspend to RAM / Sleep / Standby:</li>
+                </ul>
+                <p>→ RAM &#238;n modul self-refresh (consum minim, doar menținerea datelor)</p>
+                <p>→ Majoritatea perifericelor oprite</p>
+                <p>→ Ventilatoarele oprite</p>
+                <p>→ Consumul tipic: c&#226;țiva wați (2-8W pentru un PC)</p>
+                <p>→ Reluarea funcționării: c&#226;teva secunde</p>
+                <ul class="specs-list">
+                    <li>S4 – Hibernate / Suspend to Disk:</li>
+                </ul>
+                <p>→ Conținutul complet al RAM-ului salvat pe disc (HDD/SSD)</p>
+                <p>→ Sistemul poate fi complet oprit (consum aproape zero)</p>
+                <p>→ Reluarea funcționării: 10-30 secunde (citire de pe disc)</p>
+                <p>→ &#206;n Windows: fișierul hiberfil.sys</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.8 — Stări ale dispozitivelor (Device States)</h3>
+                <ul class="specs-list">
+                    <li><strong>D0 – Fully On:</strong> dispozitivul complet funcțional, consum maxim</li>
+                    <li>D1 – Stare intermediară (definită per dispozitiv), consum redus</li>
+                    <li>D2 – Stare intermediară mai profundă, consum și mai redus</li>
+                    <li>D3 Hot – Oprit dar cu alimentare auxiliară (poate răspunde la semnale de trezire)</li>
+                    <li>D3 Cold – Complet oprit, fără alimentare (necesită reinițializare completă)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.9 — Stări ale procesorului (C-States)</h3>
+                <ul class="specs-list">
+                    <li><strong>C0 – Operating:</strong> CPU execută instrucțiuni normal</li>
+                    <li><strong>C1 – Halt:</strong> CPU oprit, poate relua instantaneu (instrucțiunea HLT)</li>
+                    <li><strong>C1E – Enhanced Halt:</strong> tensiune și frecvență reduse suplimentar</li>
+                    <li><strong>C2 – Stop-Clock:</strong> ceasul CPU oprit, reluare mai lentă dec&#226;t C1</li>
+                    <li><strong>C3 – Sleep:</strong> fără menținerea coerenței cache-ului, reluare și mai lentă</li>
+                    <li>C4-C10 – Stări din ce &#238;n ce mai profunde (Intel, de la Haswell)</li>
+                </ul>
+                <p>→ Fiecare stare mai profundă reduce consumul dar crește latența de reluare</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.10 — Stări de performanță (P-States)</h3>
+                <ul class="specs-list">
+                    <li><strong>P0 – Maximum performance:</strong> frecvența și tensiunea maximă</li>
+                    <li>P1, P2, ... Pn – Reduceri progresive ale frecvenței și tensiunii</li>
+                    <li><strong>Implementări:</strong> Intel SpeedStep, AMD Cool&#39;n&#39;Quiet, AMD PowerSaver</li>
+                    <li>Sistemul de operare poate solicita tranziții &#238;ntre P-states pentru eficiență energetică</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.11 — Definiția Sleep Mode</h3>
+                <ul class="specs-list">
+                    <li>Sleep mode = mod de funcționare cu consum redus pentru dispozitive electronice</li>
+                    <li><strong>Sinonime:</strong> Suspend to RAM, Stand By</li>
+                    <li>Salvează semnificativ energie comparativ cu funcționarea completă</li>
+                    <li><strong>La reluare:</strong> operațiunile continuă din punctul &#238;n care au fost oprite</li>
+                    <li>Aplicații și fișiere răm&#226;n deschise, date nesalvate intacte</li>
+                    <li>Indicat prin LED pulsatoriu sau roșu</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.12 — Sleep (Suspend to RAM) – detalii</h3>
+                <ul class="specs-list">
+                    <li>Starea mașinii este menținută &#238;n RAM</li>
+                    <li>Alimentarea este oprită pentru subsistemele neesențiale</li>
+                    <li>RAM-ul este menținut &#238;n stare de consum minim (self-refresh)</li>
+                    <li>Majoritatea laptopurilor intră automat &#238;n Sleep c&#226;nd capacul este &#238;nchis (pe baterie)</li>
+                    <li><strong>Computerul trebuie să consume energie &#238;n sleep:</strong> alimentarea RAM + capacitate de răspuns la evenimente de trezire</li>
+                    <li>Reglementat de One Watt Initiative (SUA, din 2010)</li>
+                    <li><strong>Evenimente de trezire:</strong> buton power, tastatură, mouse, semnal de rețea (Wake-on-LAN), apel telefonic pe modem (Wake-on-Ring)</li>
+                    <li>RTC alarm poate programa trezirea automată din sleep</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.13 — Hibernate (Suspend to Disk)</h3>
+                <ul class="specs-list">
+                    <li>Toate datele operaționale sunt salvate pe disc &#238;nainte de oprirea completă</li>
+                    <li><strong>La repornire:</strong> starea este restaurată complet (programe, fișiere, date nesalvate)</li>
+                    <li><strong>Diferență față de Sleep:</strong> Hibernate salvează pe disc (nu necesită alimentare continuă), Sleep salvează &#238;n RAM (necesită alimentare continuă)</li>
+                    <li><strong>Avantaj:</strong> consum zero de energie (sau aproape zero)</li>
+                    <li><strong>Dezavantaj:</strong> timp de reluare mai lung (citire de pe disc)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.14 — Hybrid Sleep</h3>
+                <ul class="specs-list">
+                    <li>Combinație &#238;ntre Sleep și Hibernate</li>
+                    <li>Conținutul RAM-ului este copiat pe disc, apoi sistemul intră &#238;n Sleep</li>
+                    <li><strong>Beneficii combinate:</strong> reluare instantanee (ca Sleep), dar fără pierdere de date la cădere de curent (ca Hibernate)</li>
+                    <li>Disponibil din Windows Vista, macOS (Safe Sleep), Linux kernel 3.6+</li>
+                    <li><strong>Pe macOS:</strong> Safe Sleep – salvează RAM pe disc la fiecare intrare &#238;n Sleep</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.15 — ACPI și Sleep Mode</h3>
+                <ul class="specs-list">
+                    <li>Sleep mode corespunde ACPI S3</li>
+                    <li>C&#226;nd un dispozitiv non-ACPI este conectat, Windows poate dezactiva funcționalitatea de standby pentru &#238;ntreg sistemul</li>
+                    <li><strong>Fără ACPI:</strong> sleep mode limitat la oprirea monitorului și oprirea discului</li>
+                    <li><strong>Modern Standby (S0ix):</strong> permite procesare silențioasă &#238;n fundal (sincronizare cloud, indexare)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.16 — Definiția Wake-on-LAN</h3>
+                <ul class="specs-list">
+                    <li>WoL = standard de rețea Ethernet care permite pornirea sau trezirea unui computer din sleep printr-un mesaj de rețea</li>
+                    <li>Bazat pe AMD Magic Packet Technology (1995, AMD + Hewlett-Packard)</li>
+                    <li>Adoptat pe scară largă din 1996-1997 (IBM, Intel)</li>
+                    <li>WoWLAN = varianta pentru Wi-Fi (Wake on Wireless LAN)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.17 — Principiul de funcționare WoL</h3>
+                <ul class="specs-list">
+                    <li>NIC (Network Interface Controller) ascultă pachetele primite chiar și c&#226;nd restul sistemului este oprit</li>
+                    <li><strong>Magic Packet:</strong> 6 bytes de FF (broadcast) + 16 repetiții ale adresei MAC destinație (48-bit) = 102 bytes total</li>
+                    <li>Trimis de obicei ca datagram UDP pe port 0, 7 sau 9, sau direct pe Ethernet cu EtherType 0x0842</li>
+                    <li>C&#226;nd pachetul magic ajunge, NIC semnalează sursa de alimentare/placa de bază pentru trezire</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.18 — Consumul WoL &#238;n standby</h3>
+                <ul class="specs-list">
+                    <li>NIC-ul trebuie să răm&#226;nă parțial activ (ascultă pachetele)</li>
+                    <li><strong>Viteza legăturii redusă la minimum (ex:</strong> Gigabit NIC menține doar 10 Mbit/s)</li>
+                    <li>Consumul adaugă la sarcina de standby</li>
+                    <li>Dezactivarea WoL reduce consumul pe computerele oprite dar conectate la priză</li>
+                    <li><strong>Pe dispozitive cu baterie (laptopuri):</strong> WoL poate descărca bateria chiar și c&#226;nd dispozitivul este complet oprit</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.2.19 — Cerințe hardware WoL</h3>
+                <ul class="specs-list">
+                    <li>Suport implementat pe placa de bază + NIC</li>
+                    <li>Necesită activare &#238;n BIOS/UEFI (secțiunea Power Management)</li>
+                    <li><strong>Pe plăcile mai vechi:</strong> cablu special cu 3 pini &#238;ntre NIC și placa de bază (pin 1: +5V, pin 2: GND, pin 3: wake signal)</li>
+                    <li><strong>PCI 2.2+:</strong> standby power furnizat prin magistrala PCI (fără cablu separat)</li>
+                    <li>Sursa de alimentare trebuie să respecte ATX 2.01+ (pentru +5VSB suficient)</li>
+                    <li>ACPI este notificat despre sursa de trezire (NIC, buton power, temperatură, etc.)</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Stări globale de putere (Global States)</h3>
+                <ul class="specs-list">
+                    <li><strong>G0/S0 – Working:</strong> CPU execută instrucțiuni, sistem complet funcțional</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Substările de sleep (S-States)</h3>
+                <ul class="specs-list">
+                    <li><strong>S1 – Power on Suspend (POS):</strong> CPU oprește execuția, RAM alimentată, refresh activ</li>
+                    <li>S2 – Similar cu S1, dar CPU este complet oprit, cache-ul este golit &#238;n RAM</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Stări ale procesorului (C-States)</h3>
+                <ul class="specs-list">
+                    <li><strong>C0 – Operating:</strong> CPU execută instrucțiuni normal</li>
+                    <li><strong>C1 – Halt:</strong> CPU oprit, poate relua instantaneu (instrucțiunea HLT)</li>
+                    <li><strong>C2 – Stop-Clock:</strong> ceasul CPU oprit, reluare mai lentă dec&#226;t C1</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Sleep (Suspend to RAM) – detalii</h3>
+                <ul class="specs-list">
+                    <li><strong>Computerul trebuie să consume energie &#238;n sleep:</strong> alimentarea RAM + capacitate de răspuns la evenimente de trezire</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția Wake-on-LAN</h3>
+                <ul class="specs-list">
+                    <li>WoL = standard de rețea Ethernet care permite pornirea sau trezirea unui computer din sleep printr-un mesaj de rețea</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Principiul de funcționare WoL</h3>
+                <ul class="specs-list">
+                    <li><strong>Magic Packet:</strong> 6 bytes de FF (broadcast) + 16 repetiții ale adresei MAC destinație (48-bit) = 102 bytes total</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Consumul WoL &#238;n standby</h3>
+                <ul class="specs-list">
+                    <li>Dezactivarea WoL reduce consumul pe computerele oprite dar conectate la priză</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> 5V standby este constant, generat de PSU.</p>
-                <p><strong>Informatică:</strong> OS în standby păstrează context și poate rula servicii background.</p>
+                <h3>Consumul de energie &#238;n standby</h3>
+                <ul class="specs-list">
+                    <li><strong>Exemplu console:</strong> Nintendo Wii consuma 18W &#238;n standby cu WiiConnect24 activ, 8W cu WiiConnect24 dezactivat, 1W cu Standby Connection dezactivat complet</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Circuite active &#238;n standby</h3>
+                <ul class="specs-list">
+                    <li><strong>Sursa de alimentare:</strong> circuitul de standby (+5VSB pe ATX) răm&#226;ne activ permanent</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Stări globale de putere (Global States)</h3>
+                <ul class="specs-list">
+                    <li><strong>G2/S5 – Soft Off (Shutdown):</strong> sistemul pare oprit dar sursa de alimentare furnizează +5VSB</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Substările de sleep (S-States)</h3>
+                <ul class="specs-list">
+                    <li><strong>S0ix – Modern Standby:</strong> SoC parțial &#238;n sleep, sub-stări S0i1/S0i2/S0i3</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Principiul de funcționare WoL</h3>
+                <ul class="specs-list">
+                    <li>C&#226;nd pachetul magic ajunge, NIC semnalează sursa de alimentare/placa de bază pentru trezire</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Cerințe hardware WoL</h3>
+                <ul class="specs-list">
+                    <li>Sursa de alimentare trebuie să respecte ATX 2.01+ (pentru +5VSB suficient)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Descărcare Update</h3>
-                <p>Consola în standby primește update de 5 GB. WiFi modul folosește 1W, SSD activează 2W. Total 3W.</p>
-                <p>Update durează 30 min. Energie consumată: 3W × 0.5h = 1.5 Wh.</p>
-                <p>În termeni anuali, standby continuu = ~13 kWh/an.</p>
+                <h3>Stări de performanță (P-States)</h3>
+                <ul class="specs-list">
+                    <li><strong>Implementări:</strong> Intel SpeedStep, AMD Cool&#39;n&#39;Quiet, AMD PowerSaver</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția Wake-on-LAN</h3>
+                <ul class="specs-list">
+                    <li>Bazat pe AMD Magic Packet Technology (1995, AMD + Hewlett-Packard)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Wake-on-LAN</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>PS5 poate fi trezită de la distanță prin aplicația mobilă.</p>
-                <p>LAN controller rămâne alimentat în standby. Semnalul magic packet declanșează power-on sequence.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ Consola nu intră în standby</h3><p>Firmware detectează update în curs sau error. Rail-urile nu se opresc complet.</p></div>
-            <div class="card"><h3>⚠️ Standby drain mare</h3><p>USB device consumă mult sau modul WiFi rămâne activ. Consumul crește la 5-7W.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Consumul de energie &#238;n standby</h3>
+                    <p>Risc de incendiu de la dispozitive &#238;n standby (rar, dar documentat)</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -130,11 +431,25 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Standby:</strong> 5V active, restul off.</li>
-                    <li><strong>Wake sources:</strong> Buton, controller, LAN.</li>
-                    <li><strong>Funcții:</strong> Update background, USB charging.</li>
-                    <li><strong>Consum:</strong> 1-3W tipic.</li>
-                    <li>Standby reduce timpul de pornire și oferă funcții extra.</li>
+                    <li><strong>Definiția standby power:</strong> Standby power = puterea electrică consumată de echipamente electronice &#238;n timp ce sunt oprite (turned off) sau nu &#238;și &#238;ndeplinesc funcția principală</li>
+                    <li><strong>Avantajele modului standby:</strong> Pornire instantanee (instant-on capability) – fără așteptarea boot-ului complet</li>
+                    <li><strong>Consumul de energie &#238;n standby:</strong> &#206;nainte de reglementări: 8-22% din consumul total al aparatului era standby</li>
+                    <li><strong>Circuite active &#238;n standby:</strong> Sursa de alimentare: circuitul de standby (+5VSB pe ATX) răm&#226;ne activ permanent</li>
+                    <li><strong>Definiția ACPI:</strong> ACPI = Advanced Configuration and Power Interface</li>
+                    <li><strong>Stări globale de putere (Global States):</strong> G0/S0 – Working: CPU execută instrucțiuni, sistem complet funcțional</li>
+                    <li><strong>Substările de sleep (S-States):</strong> S0ix – Modern Standby: SoC parțial &#238;n sleep, sub-stări S0i1/S0i2/S0i3</li>
+                    <li><strong>Stări ale dispozitivelor (Device States):</strong> D0 – Fully On: dispozitivul complet funcțional, consum maxim</li>
+                    <li><strong>Stări ale procesorului (C-States):</strong> C0 – Operating: CPU execută instrucțiuni normal</li>
+                    <li><strong>Stări de performanță (P-States):</strong> P0 – Maximum performance: frecvența și tensiunea maximă</li>
+                    <li><strong>Definiția Sleep Mode:</strong> Sleep mode = mod de funcționare cu consum redus pentru dispozitive electronice</li>
+                    <li><strong>Sleep (Suspend to RAM) – detalii:</strong> Starea mașinii este menținută &#238;n RAM</li>
+                    <li><strong>Hibernate (Suspend to Disk):</strong> Toate datele operaționale sunt salvate pe disc &#238;nainte de oprirea completă</li>
+                    <li><strong>Hybrid Sleep:</strong> Combinație &#238;ntre Sleep și Hibernate</li>
+                    <li><strong>ACPI și Sleep Mode:</strong> Sleep mode corespunde ACPI S3</li>
+                    <li><strong>Definiția Wake-on-LAN:</strong> WoL = standard de rețea Ethernet care permite pornirea sau trezirea unui computer din sleep printr-un mesaj de rețea</li>
+                    <li><strong>Principiul de funcționare WoL:</strong> NIC (Network Interface Controller) ascultă pachetele primite chiar și c&#226;nd restul sistemului este oprit</li>
+                    <li><strong>Consumul WoL &#238;n standby:</strong> NIC-ul trebuie să răm&#226;nă parțial activ (ascultă pachetele)</li>
+                    <li><strong>Cerințe hardware WoL:</strong> Suport implementat pe placa de bază + NIC</li>
                 </ul>
             </div>
         </div>
@@ -143,54 +458,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Rail activ în standby?</strong></p>
-                <ul class="specs-list"><li>a) 12V</li><li>b) 5V standby</li><li>c) 1.05V</li><li>d) 3.3V main</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 5V standby</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Sinonime?</strong></p>
+                <ul class="specs-list">
+                    <li>a) implementare obligatorie a limitelor de standby</li>
+                    <li>b) țintă de reducere a consumului standby la maximum 1W p&#226;nă &#238;n 2010</li>
+                    <li>c) 8-22% din consumul total al aparatului era standby</li>
+                    <li>d) phantom load, vampire power, vampire draw, ghost load, leaking electricity, wall wart</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — phantom load, vampire power, vampire draw, ghost load, leaking electricity, wall wart</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Wake-on-LAN folosește:</strong></p>
-                <ul class="specs-list"><li>a) HDMI</li><li>b) LAN controller alimentat în standby</li><li>c) GPU</li><li>d) SSD</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) LAN controller</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: &#206;nainte de reglementări?</strong></p>
+                <ul class="specs-list">
+                    <li>a) 8-22% din consumul total al aparatului era standby</li>
+                    <li>b) țintă de reducere a consumului standby la maximum 1W p&#226;nă &#238;n 2010</li>
+                    <li>c) implementare obligatorie a limitelor de standby</li>
+                    <li>d) phantom load, vampire power, vampire draw, ghost load, leaking electricity, wall wart</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — 8-22% din consumul total al aparatului era standby</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Consumul tipic în standby:</strong></p>
-                <ul class="specs-list"><li>a) 0W</li><li>b) 1-3W</li><li>c) 20W</li><li>d) 100W</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 1-3W</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Sursa de alimentare?</strong></p>
+                <ul class="specs-list">
+                    <li>a) țintă de reducere a consumului standby la maximum 1W p&#226;nă &#238;n 2010</li>
+                    <li>b) phantom load, vampire power, vampire draw, ghost load, leaking electricity, wall wart</li>
+                    <li>c) circuitul de standby (+5VSB pe ATX) răm&#226;ne activ permanent</li>
+                    <li>d) 8-22% din consumul total al aparatului era standby</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — circuitul de standby (+5VSB pe ATX) răm&#226;ne activ permanent</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Standby reduce timpul de pornire pentru că:</strong></p>
-                <ul class="specs-list"><li>a) GPU rămâne on</li><li>b) Unele subsisteme sunt deja active</li><li>c) PSU are mai multă putere</li><li>d) RAM rămâne la 1.2V core</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Unele subsisteme active</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Definiția ACPI?</strong></p>
+                <ul class="specs-list">
+                    <li>a) phantom load, vampire power, vampire draw, ghost load, leaking electricity, wall wart</li>
+                    <li>b) 8-22% din consumul total al aparatului era standby</li>
+                    <li>c) țintă de reducere a consumului standby la maximum 1W p&#226;nă &#238;n 2010</li>
+                    <li>d) ACPI = Advanced Configuration and Power Interface</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — ACPI = Advanced Configuration and Power Interface</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Riscul major în standby?</strong></p>
-                <ul class="specs-list"><li>a) FPS scade</li><li>b) Update corupt dacă se întrerupe curentul</li><li>c) GPU se degradează</li><li>d) Controller nu funcționează</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Update corupt</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: G0/S0 – Working?</strong></p>
+                <ul class="specs-list">
+                    <li>a) țintă de reducere a consumului standby la maximum 1W p&#226;nă &#238;n 2010</li>
+                    <li>b) CPU execută instrucțiuni, sistem complet funcțional</li>
+                    <li>c) 8-22% din consumul total al aparatului era standby</li>
+                    <li>d) phantom load, vampire power, vampire draw, ghost load, leaking electricity, wall wart</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — CPU execută instrucțiuni, sistem complet funcțional</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Consum anual în standby</h3>
-                <p><strong>Cerință:</strong> Consola consumă 2W în standby. Este în standby 20 ore/zi. Calculează kWh/an.</p>
-                <ol class="specs-list"><li>Putere × timp zilnic</li><li>kWh/an</li><li>Cost la 0.7 lei/kWh</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1.</strong> 2W × 20h = 40 Wh/zi = 0.04 kWh/zi.</p>
-                    <p><strong>2.</strong> 0.04 × 365 = 14.6 kWh/an.</p>
-                    <p><strong>3.</strong> Cost = 14.6 × 0.7 = 10.22 lei/an.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: Standby</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de mod standby. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: mod standby.</li>
+                    <li>2. Ce rol are consum redus în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre mod standby și circuite active &#238;n standby.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> Standby power = puterea electrică consumată de echipamente electronice &#238;n timp ce sunt oprite (turned off) sau nu &#238;și &#238;ndeplinesc funcția principală</p>
+                        <p><strong>2.</strong> Pornire instantanee (instant-on capability) – fără așteptarea boot-ului complet</p>
+                        <p><strong>3.</strong> &#206;nainte de reglementări: 8-22% din consumul total al aparatului era standby</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -267,3 +655,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

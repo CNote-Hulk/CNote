@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 2.1 — Rezistențe și Condensatori: Componentele Fundamentale">
+    <meta name="description" content="Lecția 2.1 — Rezistoare">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 2.1 — Rezistențe și Condensatori — Console Notebook</title>
+    <title>Lecția 2.1 — Rezistoare — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -31,389 +35,503 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — Electronică de Bază</p>
-            <h1>Lecția 2.1 — Rezistențe și Condensatori</h1>
-            <p>Componentele pasive care filtrează, protejează și stabilizează orice circuit din consolă.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.1 — Rezistoare</h1>
+            <p>tipuri de rezistoare, toleranță, codul culorilor, aplicații pe PCB</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- INTRODUCERE -->
-    <section class="section" id="introducere">
+                                                        <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    După ce înțelegi electricitatea, pasul următor e să controlezi și să filtrezi curentul cu componente. Rezistențele și condensatorii sunt cele mai simple și mai importante componente pasive.
-                </p>
-                <p>
-                    <strong>Rezistor:</strong> Opune rezistență curentului, disipă energie ca căldură.
-                </p>
-                <p>
-                    <strong>Condensator:</strong> Acumulează energie într-un câmp electric, permite AC, blochează DC. Filtrul de facto al oricărui PSU.
-                </p>
-                <p>
-                    Într-o consolă PS5, sunt <strong>mii de rezistori și zeci de mii de condensatori</strong> — fiecare cu rol specific. Dacă unul din ei crapă, consola poate să nu-și pornească.
-                </p>
+                <p>Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit</p>
+                <p>Această lecție acoperă: <strong>tipuri de rezistoare</strong>, <strong>toleranță</strong>, <strong>codul culorilor</strong>, <strong>aplicații pe PCB</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- TEORIE -->
     <section class="section" id="teorie">
         <div class="container">
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Rezistori: Tipuri și Valabilitate</h3>
-                <p>
-                    <strong>Rezistor:</strong> Component pasivă care limitează curentul conformă Legii lui Ohm. V = I × R.
-                </p>
-                <p>
-                    <strong>Tipuri comune:</strong>
-                    <ul class="specs-list">
-                        <li><strong>Rezistor de film subțire:</strong> Acuratețe 1%, performanță bună. Folosit în critice (VRM feedback, sensori).</li>
-                        <li><strong>Rezistor de film gros:</strong> Acuratețe 5-10%, mas mic. Folosit în circuite non-critice.</li>
-                        <li><strong>Rezistor chip SMD:</strong> Miniatură (0402, 0603, 0805 mm), masiv pe placa modernă. 99% din rezistorii din PS5.</li>
-                        <li><strong>Rezistor de putere:</strong> Mare, cu radiator, pentru curenți mari. Rar în console.</li>
-                    </ul>
-                </p>
-                <p>
-                    <strong>Codare de valori:</strong> Benzile colorate (rezistorii vechi) sau valori directe (SMD): 10kΩ = 10,000Ω.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Condensatori: Acumulare și Filtrare</h3>
-                <p>
-                    <strong>Condensator:</strong> Depoziteaza energie în câmp electric între două plăci conductoare.
-                </p>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
-                    Q = C × V
-                </p>
+                <h3>2.1.1 — DEFINIȚIE ȘI ROL</h3>
                 <ul class="specs-list">
-                    <li><strong>Q:</strong> Sarcina [Coulombi]</li>
-                    <li><strong>C:</strong> Capacitate [Farazi — F]</li>
-                    <li><strong>V:</strong> Tensiune [Volți]</li>
+                    <li>Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit</li>
+                    <li>&#206;n circuitele electronice, rezistoarele sunt folosite pentru: reducerea curentului, ajustarea nivelurilor de semnal, divizarea tensiunilor, polarizarea elementelor active și terminarea liniilor de transmisie</li>
+                    <li>Rezistoarele fixe au rezistențe care se schimbă doar ușor cu temperatura, timpul sau tensiunea de operare</li>
+                    <li>Rezistoarele variabile pot fi folosite pentru ajustarea elementelor de circuit (control volum, dimmer)</li>
                 </ul>
-                <p>
-                    <strong>Proprietăți cheie:</strong>
-                    <ul class="specs-list">
-                        <li><strong>Permite AC:</strong> Curentul alternativ curge prin condensator. Frecvență mai înaltă = mai ușor trecere.</li>
-                        <li><strong>Blochează DC:</strong> Curentul continuu ajunge la platoul și se opește (charged).</li>
-                        <li><strong>Stocare de energie:</strong> Energia = 0.5 × C × V². Condensatori mari (30V, 100µF) depozitează multă energie.</li>
-                        <li><strong>Decocuplare:</strong> Absorb fluctuații de tensiune și le reemit (filtrare ripple).</li>
-                    </ul>
-                </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Tipuri de Condensatori</h3>
+                <h3>2.1.2 — LEGEA LUI OHM (aplicată la rezistoare)</h3>
                 <ul class="specs-list">
-                    <li><strong>Condensator electrolitic:</strong> Capacitate mare (1µF-10000µF), polaritate importantă, ESR (rezistență seriei) mare. Folosit pe PSU după rectificare.</li>
-                    <li><strong>Condensator ceramic:</strong> SMD, SMD mic, toleranță 10-20%, ESR mic. Zeci de mii din acestea în PS5 pentru decocuplare.</li>
-                    <li><strong>Condensator de film:</strong> Acuratețe bună, ESR mic, scump. Filtrare critică.</li>
-                    <li><strong>Condensator tantal:</strong> Mic, stabili, scump. Selectiv pentru circuite de putere joasă critice.</li>
+                    <li>V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li><strong>Unitatea:</strong> ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li><strong>Derivate:</strong> milliohm (1 mΩ = 10⁻&#179; Ω), kilohm (1 kΩ = 10&#179; Ω), megohm (1 MΩ = 10⁶ Ω)</li>
+                    <li><strong>Exemplu:</strong> un rezistor de 300 Ω conectat la o baterie de 12V → curent de 0.04 A</li>
                 </ul>
-                <p>
-                    <strong>ESR (Equivalent Series Resistance):</strong> Atunci când curentul curge printr-un condensator, se comportă ca și cum ar fi în serie cu o mică rezistență. ESR mare = cădere de tensiune pe condensator. În VRM-uri, ESR mic e critic.
-                </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Filtrare și Decocuplare</h3>
-                <p>
-                    <strong>Filtrare:</strong> Procesul de a îndepărta zgomotulul din semnal. Condensatorii fac asta absorbind vârfuri de tensiune.
-                </p>
-                <p>
-                    În PSU PS5, după rectificare, tensiunea e pulsantă (320V → 0 → 320V). Condensatorii mari (4700µF) "netezesc" asta la 310V ± 5V. Apoi, condensatori mici (100nF) pe fiecare cip absorb varianțe de nanovolți din curenți de comutare.
-                </p>
-                <p>
-                    <strong>Decocuplare:</strong> Furnizează curent rapid pentru pic instantanei. CPU ia 90A dintr-o dată. Dacă PSU e prea departe, curentul nu ajunge suficient de repede. Condensatorii pe placa de bază de lângă CPU "iau" energia pe care o stocat și o furnizează instantanei, apoi se reîncarcă de la PSU.
-                </p>
-                <p>
-                    <strong>Tank effect:</strong> Mii de condensatori mici în paralel au capacitate cumulativă enormă și ESR redusă. Comportă ca un "rezervor" de energie la CPU.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Impedanță și Frecvență</h3>
-                <p>
-                    Odată cu frecvența, impedanța condensatorului scade. Formula:
-                </p>
-                <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
-                    X_C = 1 / (2 × π × f × C)
-                </p>
+                <h3>2.1.3 — DISIPAREA PUTERII</h3>
                 <ul class="specs-list">
-                    <li><strong>X_C:</strong> Reactanță capacitivă [Ohmi]</li>
-                    <li><strong>f:</strong> Frecvență [Hz]</li>
-                    <li><strong>C:</strong> Capacitate [Farazi]</li>
+                    <li>P = I &#215; V = I&#178; &#215; R = V&#178; / R</li>
+                    <li>Rezistoarele discrete sunt de obicei 1/10, 1/8 sau 1/4 watt</li>
+                    <li><strong>Rezistoarele de putere:</strong> 1 W sau mai mult, fizic mai mari, pot necesita radiatoare</li>
+                    <li>Depășirea puterii nominale poate deteriora permanent rezistorul sau cauza incendiu</li>
+                    <li>Există rezistoare ignifuge care nu produc flăcări la nicio suprasarcină</li>
                 </ul>
-                <p>
-                    <strong>Exemplu:</strong> Condensator 100nF la frecvență 1kHz: X_C = 1 / (2π × 1000 × 100e-9) ≈ 1.6kΩ.
-                    La 1MHz: X_C ≈ 1.6Ω.
-                    La 100MHz: X_C ≈ 0.016Ω — practic un conductor scurt circuit.
-                </p>
-                <p>
-                    De aceea, mici capacități (10-100nF) sunt excellente pentru filtrare de zgomot de înaltă frecvență (comutare VRM la 100kHz+), dar inutil pentru filtrare de joasă frecvență (PSU la 50/60Hz).
-                </p>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.4 — a) Carbon composition (CCR)</h3>
+                <ul class="specs-list">
+                    <li>Amestec de carbon pudră fin și material izolator (ceramică), legat cu rășină</li>
+                    <li>Rezistența determinată de raportul carbon/material de umplutură</li>
+                    <li><strong>Toleranță maximă:</strong> 5% (sortate din fabrică)</li>
+                    <li>Non-inductive, bune pentru protecție la supratensiune</li>
+                    <li>Relativ scumpe acum, folosite &#238;n alimentatoare și controlul sudării</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.5 — b) Carbon film</h3>
+                <ul class="specs-list">
+                    <li>Film de carbon depus pe substrat izolant, cu helix tăiat</li>
+                    <li>Zgomot mai scăzut dec&#226;t carbon composition</li>
+                    <li><strong>Putere:</strong> 0.125 W – 5 W la 70&#176;C</li>
+                    <li><strong>Rezistențe:</strong> 1 Ω – 10 MΩ</li>
+                    <li><strong>Temperatură operare:</strong> −55&#176;C – 155&#176;C</li>
+                    <li><strong>Tensiune maximă:</strong> 200–600 V</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.6 — c) Carbon printat pe PCB</h3>
+                <ul class="specs-list">
+                    <li>Printat direct pe substratul PCB-ului</li>
+                    <li>Toleranțe mari (~30%)</li>
+                    <li><strong>Aplicație tipică:</strong> rezistoare pull-up non-critice</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.7 — d) Thick film (film gros)</h3>
+                <ul class="specs-list">
+                    <li>Populare din anii 1970, majoritatea SMD sunt de acest tip</li>
+                    <li>Material ceramic conductiv amestecat cu sticlă sinterizată</li>
+                    <li>Fuzionat la ~850&#176;C</li>
+                    <li><strong>Toleranțe standard:</strong> 2% sau 1%</li>
+                    <li><strong>Coeficient de temperatură:</strong> &#177;200 sau &#177;250 ppm/K</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.8 — e) Thin film (film subțire)</h3>
+                <ul class="specs-list">
+                    <li>Fabricate prin sputtering (depunere &#238;n vid)</li>
+                    <li><strong>Toleranțe:</strong> 1% și 5%</li>
+                    <li><strong>Coeficient de temperatură:</strong> 5–50 ppm/K</li>
+                    <li>Zgomot 10–100&#215; mai mic dec&#226;t thick film</li>
+                    <li>Mai scumpe dec&#226;t thick film</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.9 — f) Metal film</h3>
+                <ul class="specs-list">
+                    <li>Acoperite cu nichel-crom (NiCr)</li>
+                    <li><strong>Toleranță:</strong> 0.5%, 1% sau 2%</li>
+                    <li><strong>Coeficient de temperatură:</strong> 50–100 ppm/K</li>
+                    <li>Zgomot scăzut, liniaritate bună, stabilitate pe termen lung</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.10 — g) Metal oxide film</h3>
+                <ul class="specs-list">
+                    <li>Temperatură de operare mai mare, stabilitate și fiabilitate superioare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.11 — h) Wire wound (&#238;nfășurat cu s&#226;rmă)</h3>
+                <ul class="specs-list">
+                    <li>S&#226;rmă metalică (de obicei nichrome) &#238;nfășurată pe un nucleu ceramic/plastic</li>
+                    <li>Pot suporta p&#226;nă la 450&#176;C</li>
+                    <li><strong>Putere:</strong> p&#226;nă la 1000+ W</li>
+                    <li><strong>Dezavantaj:</strong> inductanță nedorită</li>
+                    <li><strong>Soluții:</strong> &#238;nfășurare bifilar sau Ayrton-Perry</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.12 — i) Metal foil (folie metalică)</h3>
+                <ul class="specs-list">
+                    <li>Cea mai bună precizie și stabilitate (din 1960)</li>
+                    <li><strong>TCR:</strong> 0.14 ppm/&#176;C</li>
+                    <li><strong>Toleranță:</strong> &#177;0.005%</li>
+                    <li><strong>Stabilitate pe termen lung (1 an):</strong> 25 ppm</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.13 — TIPURI DE REZISTOARE VARIABILE</h3>
+                <ul class="specs-list">
+                    <li><strong>Reostat:</strong> rezistor ajustabil cu două terminale</li>
+                    <li><strong>Potențiometru:</strong> rezistor cu trei terminale, cursor rotativ/liniar</li>
+                    <li><strong>Element rezistiv:</strong> carbon composition, metal film sau plastic conductiv</li>
+                    <li>Variante multi-turn de mare precizie (10 rotații, rezoluție 3 cifre)</li>
+                    <li><strong>Decade box:</strong> cutie cu rezistoare de multe valori cu comutatoare mecanice</li>
+                    <li><strong>Dispozitive speciale:</strong> termistoare NTC, fotrezistoare, senzori de deformare (strain gauge)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.14 — APLICAȚII COMUNE</h3>
+                <ul class="specs-list">
+                    <li><strong>Limitarea curentului:</strong> protejarea componentelor (ex. LED-uri) de supracurent</li>
+                    <li><strong>Divizor de tensiune:</strong> două rezistoare &#238;n serie &#238;ntre două tensiuni fixe</li>
+                    <li><strong>Exemplu:</strong> 200 Ω + 400 Ω &#238;ntre 6V și 0V → 4V la terminal</li>
+                    <li><strong>Pull-up / pull-down:</strong> furnizează tensiune implicită c&#226;nd circuitul este deconectat</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.15 — MONTAJ PE PCB</h3>
+                <ul class="specs-list">
+                    <li><strong>Through-hole (străpungere):</strong> cu terminale axiale sau radiale</li>
+                    <li><strong>SMT/SMD (montaj pe suprafață):</strong> lipite direct pe suprafața PCB</li>
+                    <li>Rezistoare de putere pot avea carcasă de aluminiu pe radiator</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.16 — ISTORIC</h3>
+                <ul class="specs-list">
+                    <li>Dezvoltat &#238;n anii 1920 de Radio Manufacturers Association (RMA)</li>
+                    <li><strong>Primele radiouri cu rezistoare codate prin culori:</strong> 1930</li>
+                    <li><strong>Standardizat internațional:</strong> IEC 62:1952</li>
+                    <li><strong>Standard curent:</strong> IEC 60062:2016</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.17 — SISTEMUL DE BENZI COLORATE (4 benzi)</h3>
+                <ul class="specs-list">
+                    <li><strong>Banda A:</strong> prima cifră semnificativă</li>
+                    <li><strong>Banda B:</strong> a doua cifră semnificativă</li>
+                    <li><strong>Banda C:</strong> multiplicator zecimal (puterea lui 10)</li>
+                    <li><strong>Banda D:</strong> toleranță (dacă lipsește = &#177;20%)</li>
+                    <li><strong>Distincție st&#226;nga-dreapta:</strong> spațiu mai mare &#238;ntre C și D</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.18 — SISTEMUL DE 5 BENZI (precizie)</h3>
+                <ul class="specs-list">
+                    <li><strong>Primele 3 benzi:</strong> trei cifre semnificative</li>
+                    <li><strong>Banda 4:</strong> multiplicator</li>
+                    <li><strong>Banda 5:</strong> toleranță</li>
+                    <li>Bandă extra-lată la prima bandă = rezistor wire-wound</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.19 — TABELUL CULORILOR</h3>
+                <p>| Culoare  | Cifră | Multiplicator | Toleranță |</p>
+                <p>|----------|-------|---------------|-----------|</p>
+                <p>| Negru   |   0   | &#215;1            | —         |</p>
+                <p>| Maro    |   1   | &#215;10           | &#177;1%       |</p>
+                <p>| Roșu    |   2   | &#215;100          | &#177;2%       |</p>
+                <p>| Portocaliu| 3   | &#215;1000         | &#177;0.05%    |</p>
+                <p>| Galben  |   4   | &#215;10000        | &#177;0.02%    |</p>
+                <p>| Verde   |   5   | &#215;100000       | &#177;0.5%     |</p>
+                <p>| Albastru|   6   | &#215;1000000      | &#177;0.25%    |</p>
+                <p>| Violet  |   7   | &#215;10000000     | &#177;0.1%     |</p>
+                <p>| Gri     |   8   | &#215;100000000    | &#177;0.01%    |</p>
+                <p>| Alb     |   9   | &#215;1000000000   | —         |</p>
+                <p>| Auriu   |   —   | &#215;0.1          | &#177;5%       |</p>
+                <p>| Argintiu|   —   | &#215;0.01         | &#177;10%      |</p>
+                <p>| Roz     |   —   | &#215;0.001        | —         |</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.20 — EXEMPLE DE CITIRE</h3>
+                <ul class="specs-list">
+                    <li>Roșu, violet, verde, auriu = 2 700 000 Ω (2.7 MΩ) &#177;5%</li>
+                    <li>Verde, albastru, negru, negru, maro = 560 Ω &#177;1%</li>
+                    <li>Roșu, roșu, portocaliu, auriu = 22 000 Ω (22 kΩ) &#177;5%</li>
+                    <li>Galben, violet, maro, auriu = 470 Ω &#177;5%</li>
+                    <li>Albastru, gri, negru, auriu = 68 Ω &#177;5%</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.21 — MARCAJ SMD (montaj pe suprafață)</h3>
+                <ul class="specs-list">
+                    <li><strong>Cod cu 3 cifre:</strong> primele 2 = cifre semnificative, a 3-a = puterea lui 10</li>
+                    <li>334 = 33 &#215; 10⁴ = 330 kΩ</li>
+                    <li>222 = 22 &#215; 10&#178; = 2.2 kΩ</li>
+                    <li>473 = 47 &#215; 10&#179; = 47 kΩ</li>
+                    <li><strong>Sub 100 Ω:</strong> 100 = 10 Ω, 220 = 22 Ω</li>
+                    <li><strong>Sub 10 Ω:</strong> se folosește &#39;R&#39; pentru punct zecimal (4R7 = 4.7 Ω)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.22 — SERII DE VALORI PREFERATE (E-series, IEC 60063)</h3>
+                <ul class="specs-list">
+                    <li><strong>E6 (6 valori/decadă):</strong> toleranță &#177;20%</li>
+                    <li><strong>E12:</strong> toleranță &#177;10%</li>
+                    <li><strong>E24:</strong> toleranță &#177;5%</li>
+                    <li><strong>E48:</strong> toleranță &#177;2%</li>
+                    <li><strong>E96:</strong> toleranță &#177;1%</li>
+                    <li><strong>E192:</strong> toleranță &#177;0.5% sau mai bună</li>
+                    <li><strong>Progresie geometrică:</strong> fiecare valoare ≈ valoarea precedentă &#215; factor fix</li>
+                    <li><strong>E6:</strong> 10, 15, 22, 33, 47, 68 (factor ≈ 1.4678 ≈ 10^(1/6))</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>2.1.23 — TOLERANȚĂ</h3>
+                <ul class="specs-list">
+                    <li>Indică abaterea maximă față de valoarea nominală</li>
+                    <li><strong>Exemplu:</strong> 100 Ω &#177;20% = valoare reală &#238;ntre 80 și 120 Ω</li>
+                    <li>E6 → &#177;20%; E12 → &#177;10%; E24 → &#177;5%; E48 → &#177;2%; E96 → &#177;1%</li>
+                    <li>„Binning&quot; = sortarea componentelor pe clase de toleranță după fabricare</li>
+                </ul>
+            </div>
+
         </div>
     </section>
 
-    <!-- LEGATURA FIZICA-INFORMATICA -->
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    <strong>Fizica:</strong> Condensatorii depozitează energie în câmp electric, rezistorii disipă ca căldură.
-                </p>
-                <p>
-                    <strong>Informatica:</strong> CPU-ul are nevoie de tensiune extremely stabilă. Orice fluctuație de milivolți în 1.05V și logica se rupe. Mii de condensatori pe placa de bază filtrează comutări de 100 milioni de tranzistori pe secundă. Fără ei, consola nu funcționează.
-                </p>
+                <p>Conceptele din această lecție — Rezistoare — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- APLICARE DIRECTA -->
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 1: Condensatori de Decocuplare pe CPU PS5</h3>
-                <p>
-                    Pe placa de bază din jur de SoC (CPU+GPU), sunt 120 condensatori de 10µF în paralel. Fiecare: 10µF × 120 = 1200µF cumulativ.
-                </p>
-                <p>
-                    Curentul picos al CPU: 90A în 1µs (extrem de rapid). PSU nu poate reacționa atât de repede. Condensatorii oferă curentul dinuna și apoi se reîncarcă de la PSU pe următoarele milisecunde.
-                </p>
+                <h3>c) Carbon printat pe PCB</h3>
+                <ul class="specs-list">
+                    <li>Printat direct pe substratul PCB-ului</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 2: Rezistori de Pull-Up și Pull-Down</h3>
-                <p>
-                    Linii de semnal digital (reset, clock) au rezistori mici (10kΩ) care "trag" linia la 0V sau 3.3V dacă nimic în-o driver. De aceea se numesc "pull-up" și "pull-down."
-                </p>
-                <p>
-                    Dacă rezistor defect (ars), linia pluteşte (floating), logic decide random 0 sau 1. Consola nu pornește corect.
-                </p>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 3: Filtrare Zgomot pe PSU</h3>
-                <p>
-                    După rectificare din AC, PSU are condensatori electroliCI masivi (4700µF, 3000µF) pentru a neteza ondulațiile. Apoi, pe linia de 1.05V, mii de condensatori mici (100nF, 10nF) absorb zgomotul de comutare.
-                </p>
+                <h3>MONTAJ PE PCB</h3>
+                <ul class="specs-list">
+                    <li><strong>SMT/SMD (montaj pe suprafață):</strong> lipite direct pe suprafața PCB</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- EXEMPLU REAL -->
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Calculul Puterii Stocate vs Livrare</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenar:</strong> CPU PS5 solicita picos de 90A pentru 1µs. Condensatorii trebuie să furnizeze asta.</p>
-
-                <p><strong>Pasul 1 — Energia Storata:</strong></p>
+                <h3>e) Thin film (film subțire)</h3>
                 <ul class="specs-list">
-                    <li>Capacitate totală: 1200µF la 1.05V</li>
-                    <li>E = 0.5 × C × V² = 0.5 × 1200e-6 × 1.05² ≈ 0.66 mJ</li>
+                    <li>Fabricate prin sputtering (depunere &#238;n vid)</li>
                 </ul>
-
-                <p><strong>Pasul 2 — Curentul și Timp:</strong></p>
-                <ul class="specs-list">
-                    <li>I = dQ/dt, deci dQ = I × dt = 90A × 1µs = 90 µC</li>
-                    <li>Schimbarea capacității: ΔQ = C × ΔV, deci ΔV = ΔQ / C = 90µC / 1200µF ≈ 0.075V</li>
-                </ul>
-
-                <p><strong>Pasul 3 — Rezulatul:</strong></p>
-                <ul class="specs-list">
-                    <li>Tensiunea cade de la 1.05V la ~0.975V pe 1µs</li>
-                    <li>PSU (departe, cu întârziere) nu poate reacționa în 1µs; condensatorii iau sarcina</li>
-                    <li>După 1µs, PSU providează curentul și condensatorii se reîncarcă</li>
-                </ul>
-
-                <p>
-                    De aceea criza apare la trecerea liniei de comutare digitale: condensatori trebuie să fie lângă CPU to provide curent instant.
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- PROBLEME FRECVENTE -->
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-            <div class="card">
-                <h3>⚠️ Condensator electrolitic defect (bellow-up)</h3>
-                <p>
-                    Cauza: Uzură, temperatură prea înaltă, sau fabrică defect. Capacitor explodează, pierde capacitate. Ripple crește, CPU devine instabil.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ ESR crescut din cauza uscării</h3>
-                <p>
-                    Cauza: Electrolit în condensator se evaporă (5-10 ani). ESR crește, impedanță crește, filtrare perde eficiență. Consola reboot-uri.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Rezistor ars (open circuit)</h3>
-                <p>
-                    Cauza: Curent excesiv sau manufacturing defect. Rezistor se arde, circuit se deschide. Semnal nu mai ajunge, logică se rupe.
-                </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ DISIPAREA PUTERII</h3>
+                    <p>Depășirea puterii nominale poate deteriora permanent rezistorul sau cauza incendiu</p>
+                    <p>Există rezistoare ignifuge care nu produc flăcări la nicio suprasarcină</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- RECAPITULARE -->
     <section class="section" id="recapitulare">
         <div class="container">
             <h2 class="section-title">Recapitulare</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Rezistor:</strong> Limitează curent, disipă căldură. V = I × R.</li>
-                    <li><strong>Condensator:</strong> Stochează energie în câmp electric. Q = C × V.</li>
-                    <li><strong>Permit AC, blochez DC:</strong> Proprietatea fundamentală.</li>
-                    <li><strong>ESR (Equivalent Series Resistance):</strong> Rezistență seriei în condensator. Mic = mai bun pentru filtrare.</li>
-                    <li><strong>Reactanță capacitivă: X_C = 1/(2πfC)</strong> — cade cu frecvență.</li>
-                    <li><strong>Decocuplare:</strong> Mii de condensatori furnizează curent instant la CPU. "Tank effect."</li>
-                    <li><strong>Filtrare:</strong> Condensatori absorb fluctuații de tensiune, emit în copil "redacție de curent."</li>
-                    <li>PS5: > 1000 condensatori, > 5000 rezistori — fiecare critic.</li>
-                    <li>Defect: capacitate pierdere, ESR crescut, instabilitate CPU.</li>
+                    <li><strong>DEFINIȚIE ȘI ROL:</strong> Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit</li>
+                    <li><strong>LEGEA LUI OHM (aplicată la rezistoare):</strong> V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li><strong>DISIPAREA PUTERII:</strong> P = I &#215; V = I&#178; &#215; R = V&#178; / R</li>
+                    <li><strong>a) Carbon composition (CCR):</strong> Amestec de carbon pudră fin și material izolator (ceramică), legat cu rășină</li>
+                    <li><strong>b) Carbon film:</strong> Film de carbon depus pe substrat izolant, cu helix tăiat</li>
+                    <li><strong>c) Carbon printat pe PCB:</strong> Printat direct pe substratul PCB-ului</li>
+                    <li><strong>d) Thick film (film gros):</strong> Populare din anii 1970, majoritatea SMD sunt de acest tip</li>
+                    <li><strong>e) Thin film (film subțire):</strong> Fabricate prin sputtering (depunere &#238;n vid)</li>
+                    <li><strong>f) Metal film:</strong> Acoperite cu nichel-crom (NiCr)</li>
+                    <li><strong>g) Metal oxide film:</strong> Temperatură de operare mai mare, stabilitate și fiabilitate superioare</li>
+                    <li><strong>h) Wire wound (&#238;nfășurat cu s&#226;rmă):</strong> S&#226;rmă metalică (de obicei nichrome) &#238;nfășurată pe un nucleu ceramic/plastic</li>
+                    <li><strong>i) Metal foil (folie metalică):</strong> Cea mai bună precizie și stabilitate (din 1960)</li>
+                    <li><strong>TIPURI DE REZISTOARE VARIABILE:</strong> Reostat: rezistor ajustabil cu două terminale</li>
+                    <li><strong>APLICAȚII COMUNE:</strong> Limitarea curentului: protejarea componentelor (ex. LED-uri) de supracurent</li>
+                    <li><strong>MONTAJ PE PCB:</strong> Through-hole (străpungere): cu terminale axiale sau radiale</li>
+                    <li><strong>ISTORIC:</strong> Dezvoltat &#238;n anii 1920 de Radio Manufacturers Association (RMA)</li>
+                    <li><strong>SISTEMUL DE BENZI COLORATE (4 benzi):</strong> Banda A: prima cifră semnificativă</li>
+                    <li><strong>SISTEMUL DE 5 BENZI (precizie):</strong> Primele 3 benzi: trei cifre semnificative</li>
+                    <li><strong>TABELUL CULORILOR:</strong> | Culoare  | Cifră | Multiplicator | Toleranță |</li>
+                    <li><strong>EXEMPLE DE CITIRE:</strong> Roșu, violet, verde, auriu = 2 700 000 Ω (2.7 MΩ) &#177;5%</li>
+                    <li><strong>MARCAJ SMD (montaj pe suprafață):</strong> Cod cu 3 cifre: primele 2 = cifre semnificative, a 3-a = puterea lui 10</li>
+                    <li><strong>SERII DE VALORI PREFERATE (E-series, IEC 60063):</strong> E6 (6 valori/decadă): toleranță &#177;20%</li>
+                    <li><strong>TOLERANȚĂ:</strong> Indică abaterea maximă față de valoarea nominală</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- QUIZ -->
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Care-i diferența fundamentală între rezistor și condensator?</strong></p>
+                <p><strong>Care afirmație este corectă despre: LEGEA LUI OHM (aplicată la rezistoare)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Sunt identici</li>
-                    <li>b) Rezistor disipă căldură, condensator stochează energie</li>
-                    <li>c) Ambii blochează curent</li>
-                    <li>d) Ambii permit doar DC</li>
+                    <li>a) V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li>b) un rezistor de 300 Ω conectat la o baterie de 12V → curent de 0.04 A</li>
+                    <li>c) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>d) milliohm (1 mΩ = 10⁻&#179; Ω), kilohm (1 kΩ = 10&#179; Ω), megohm (1 MΩ = 10⁶ Ω)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Rezistor disipă căldură, condensator stochează energie</strong> — Rezistor = disipare, condensator = stocare.</p>
+                    <p style="margin-top: 0.5rem;"><strong>a) — V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Ce permite condensatorul și ce blochează?</strong></p>
+                <p><strong>Care afirmație este corectă despre: DISIPAREA PUTERII?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Permite DC, blochează AC</li>
-                    <li>b) Permite AC, blochează DC</li>
-                    <li>c) Permite ambele</li>
-                    <li>d) Blochează ambele</li>
+                    <li>a) P = I &#215; V = I&#178; &#215; R = V&#178; / R</li>
+                    <li>b) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>c) V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li>d) milliohm (1 mΩ = 10⁻&#179; Ω), kilohm (1 kΩ = 10&#179; Ω), megohm (1 MΩ = 10⁶ Ω)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Permite AC, blochează DC</strong> — AC curge prin după ce se încarcă; DC se oprește.</p>
+                    <p style="margin-top: 0.5rem;"><strong>a) — P = I &#215; V = I&#178; &#215; R = V&#178; / R</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Ce-i ESR și de ce e important?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Toleranță maximă?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ESR = Electrolyte Standard Resistance, neimportant</li>
-                    <li>b) ESR = rezistență seriei în condensator, mic = mai bun pentru filtrare</li>
-                    <li>c) ESR = capacitate totală</li>
-                    <li>d) ESR = voltaj maxim</li>
+                    <li>a) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>b) V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li>c) milliohm (1 mΩ = 10⁻&#179; Ω), kilohm (1 kΩ = 10&#179; Ω), megohm (1 MΩ = 10⁶ Ω)</li>
+                    <li>d) 5% (sortate din fabrică)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) ESR = rezistență seriei în condensator, mic = mai bun</strong> — ESR mare = cădere de tensiune pe condensator, pierdere filtrare.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — 5% (sortate din fabrică)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Ce-i decocuplare și cum-o fac condensatorii?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Putere?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Decocuplare = ține curentul separat, rezistori fac asta</li>
-                    <li>b) Decocuplare = furnizează curent rapid la CPU dinuna, condensatori absorb și emit</li>
-                    <li>c) Decocuplare = blocarea AC</li>
-                    <li>d) Nu e important în console</li>
+                    <li>a) milliohm (1 mΩ = 10⁻&#179; Ω), kilohm (1 kΩ = 10&#179; Ω), megohm (1 MΩ = 10⁶ Ω)</li>
+                    <li>b) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>c) 0.125 W – 5 W la 70&#176;C</li>
+                    <li>d) V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Decocuplare = furnizează curent rapid, condensatori absorb și emit</strong> — "Tank effect" = mii de condensatori stochează și livrează instant.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — 0.125 W – 5 W la 70&#176;C</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Cum se schimbă reactanța capacitivă cu frecvența?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Aplicație tipică?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Crește cu frecvența</li>
-                    <li>b) Rămâne constantă</li>
-                    <li>c) Scade cu frecvența</li>
-                    <li>d) Depinde de voltaj</li>
+                    <li>a) V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li>b) rezistoare pull-up non-critice</li>
+                    <li>c) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>d) milliohm (1 mΩ = 10⁻&#179; Ω), kilohm (1 kΩ = 10&#179; Ω), megohm (1 MΩ = 10⁶ Ω)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) Scade cu frecvența</strong> — X_C = 1/(2πfC); mai mare f = mai mic X_C. La înaltă frecvență, condensator e practic scurtcircuit.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — rezistoare pull-up non-critice</strong></p>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- EXERCITIU -->
     <section class="section" id="exercitiu">
         <div class="container">
             <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Proiectare Filtru Condensator pour VRM</h3>
-                <p>
-                    <strong>Scenariu:</strong> Trebuie să proiectezi o configurație de condensatori de decocuplare pentru linia de 1.05V a CPU-ului PS5.
-                </p>
-                <p><strong>Constrângeri:</strong></p>
+                <h3>🧠 Exercițiu: Rezistoare</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de tipuri de rezistoare. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>CPU necesită 90A cu varianță ±0.05V (50mV)</li>
-                    <li>Curentul schimbări în <1µs (extrem de rapid)</li>
-                    <li>ESR total trebuie <0.5mΩ (acceptat VRM) pentru ca V_drop = I × ESR = 90A × 0.5mΩ = 45mV ✓</li>
-                </ul>
-                <p><strong>Sarcini:</strong></p>
-                <ul class="specs-list">
-                    <li>1. Dacă folosești condensatori de 10µF cu ESR 2mΩ, câți ar trebui în paralel pentru a atinge ESR 0.5mΩ?</li>
-                    <li>2. Să presupunem că ai 100 condensatori de 10µF în paralel (1000µF total). Cu 90A în 1µs, cât cade tensiunea? ΔV = ΔQ/C; ΔQ = I×t</li>
-                    <li>3. Dacă ai, de asemenea, 1000 condensatori de 100nF în paralel, cum ajută la filtrare de înaltă frecvență (VRM comutare 130kHz)?</li>
-                    <li>4. Care dintre condensatori (10µF sau 100nF) e mai important pentru decocuplare și care pentru filtrare zgomot?</li>
-                    <li>5. Dacă un condensator din cei 100 de 10µF defectos, are capacitate 0, cum se schimbă ESR total?</li>
+                    <li>1. Defineste pe scurt: tipuri de rezistoare.</li>
+                    <li>2. Ce rol are toleranță în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre tipuri de rezistoare și codul culorilor.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1. ESR paralel:</strong> 1/ESR_total = 1/2mΩ × N, deci ESR_total = 2mΩ / N. Pentru ESR_total = 0.5mΩ: N = 2mΩ / 0.5mΩ = <strong>4 condensatori minimum</strong> (cu 100 = 0.02mΩ, excellent).</p>
-                        <p><strong>2. Cădere tensiune:</strong> ΔQ = 90A × 1µs = 90µC. ΔV = ΔQ/C = 90µC / 1000µF = 0.09V = <strong>90mV</strong>. Prea mult! (Limita 50mV)</p>
-                        <p><strong>3. 1000 × 100nF:</strong> Capacitate cumulativă = 100µF. ESR parallel ≈ 0.02mΩ (excelent). Reactanța la 130kHz: X_C = 1/(2π × 130kHz × 100µF) ≈ 0.012Ω. V_drop = 90A × 0.012Ω = 1.08V — prea mult! Dar formula scade pentru AC, în practică condensatorii de 100nF au ESR mic și permit AC bine.</p>
-                        <p><strong>4. Importanță:</strong> 10µF = decocuplare (stocare mare, reacție lentă). 100nF = filtrare zgomot (reacție repede la AC).</p>
-                        <p><strong>5. Dacă unu din 100 × 10µF moare:</strong> ESR_total = 2mΩ / 99 ≈ 0.0202mΩ. Liniștit, o degradare mică. Dar dacă 2 mor: ESR = 2mΩ / 98 ≈ 0.0204mΩ. Încă OK. Redundanța lucrează.</p>
+                        <p><strong>1.</strong> Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit</p>
+                        <p><strong>2.</strong> V = I &#215; R (tensiunea pe rezistor este proporțională cu curentul)</p>
+                        <p><strong>3.</strong> P = I &#215; V = I&#178; &#215; R = V&#178; / R</p>
                     </div>
                 </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -497,3 +615,17 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 4.2 — GPU: Geometrie, Shadere și Pixeli">
+    <meta name="description" content="Lecția 4.2 — GPU">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
     <title>Lecția 4.2 — GPU — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — Arhitectură Hardware</p>
-            <h1>Lecția 4.2 — GPU: Geometrie, Shadere și Pixeli</h1>
-            <p>Render-gu imaginu: De la vârf virtual la pixel pe ecran. Miliarde operații paralel.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — ARHITECTURĂ HARDWARE</p>
+            <h1>Lecția 4.2 — GPU</h1>
+            <p>geometrie, rasterizare, shading</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                                <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>GPU (Graphics Processing Unit):</strong> Specialista paralelismului. Mii de thread-uri mici executa simultan pixeli diferite.</p>
-                <p><strong>Diferență CPU vs GPU:</strong> CPU = putere de calcul serială (IPC mare per core). GPU = bandwidth masiv (mii calcule paralel pe pixeli).</p>
-                <p>PS5 GPU: 36 compute units, 2304 stream processors. 10.28 TFLOPS (tera-floating-point-operații/sec). AMD RDNA arch.</p>
+                <p>GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagine digitală și accelerare grafică</p>
+                <p>Această lecție acoperă: <strong>geometrie</strong>, <strong>rasterizare</strong>, <strong>shading</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,83 +53,377 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1 — Rendering Pipeline</h3>
-                <p><strong>Input:</strong> Vertex buffer (liste de (x,y,z,w,u,v) coordonate). Triangle definit de 3 vertice.</p>
-                <p><strong>Vertex shader:</strong> GPU lanseaza 1 shader per vertex (paralel). Transforma vertex coords din model space la screen space. Mii de vertice simultane.</p>
-                <p><strong>Rasterization:</strong> Determina care pixeli curg în interioru triunghi. Hardware scanline.</p>
-                <p><strong>Fragment shader:</strong> GPU lanseaza 1 shader per pixel in triung. Calculeaza culoare (texture lookup, lighting, etc). PARALEL pe toate pixeli.</p>
-                <p><strong>Output:</strong> Framebuffer. Pixel culori => VRAM => monitor 60 Hz.</p>
+                <h3>4.2.1 — Definiție și componente GPU</h3>
+                <ul class="specs-list">
+                    <li>GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagine digitală și accelerare grafică</li>
+                    <li>Prezent pe plăci grafice discrete, motherboard-uri, telefoane mobile, PC-uri, workstation-uri, console de jocuri</li>
+                    <li>Termenul &quot;GPU&quot; folosit prima dată de Sony (1994) pentru PlayStation (GPU proiectat de Toshiba)</li>
+                    <li>Popularizat de Nvidia (1999) cu GeForce 256 – &quot;primul GPU din lume&quot;</li>
+                    <li><strong>GeForce 256:</strong> single-chip processor cu transform, lighting, triangle setup/clipping și rendering integrat</li>
+                    <li>GPU modern = capacitate de a rula programe custom numite shadere</li>
+                    <li>Diferă de controllere video mai vechi (video display controllers – fără calcule interne) și blittere (doar operații de bază pe memorie)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.2 — Warp &amp; Thread Organization</h3>
-                <p><strong>Warp:</strong> Grup 32 thread-uri (AMD) executa aceeași instrucție pe date diferite (SIMD).</p>
-                <p><strong>Wave (AMD):</strong> 64 thread-uri per compute unit. Lanseaza mii simultan pe 36 CU = 36×64 = 2304 paralel.</p>
-                <p><strong>Execution model:</strong> Thread-uri gândesc local (care pixel? care vertex?). Hardware synchronizeaza operații globale (atomic, barrier).</p>
+                <h3>4.2.2 — Arhitectură și procesare paralelă</h3>
+                <ul class="specs-list">
+                    <li>Funcțiile grafice sunt &#238;n general independente → se pretează la implementare pe motoare de calcul separate</li>
+                    <li>GPU-urile moderne includ sute sau mii de unități de calcul (embarrassingly parallel)</li>
+                    <li><strong>Unități de procesare:</strong> Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</li>
+                    <li>Performanță măsurată &#238;n FLOPS (floating point operations per second), tipic TFLOPS &#238;n anii 2010-2020</li>
+                    <li><strong>Factori de performanță:</strong> dimensiunea traseelor semiconductoare, frecvența ceasului, cache-urile on-chip</li>
+                    <li>GDDR SDRAM = memorie dedicată GPU-ului (vs. system RAM pentru integrated graphics)</li>
+                    <li><strong>GPU dedicat (discrete):</strong> RAM propriu (GDDR), performanță mai mare</li>
+                    <li><strong>GPU integrat (IGP/UMA):</strong> partajează RAM-ul sistemului, bandwidth limitat (~128 GB/s vs. &gt;1000 GB/s la discrete)</li>
+                    <li>APU (AMD Accelerated Processing Unit) = CPU + GPU pe același die</li>
+                    <li>PS5 și Xbox Series = UMA (Unified Memory Architecture)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.3 — Shaders și Instruction Latency</h3>
-                <p><strong>Vertex shader:</strong> ~10-50 instrucțiuni per vertex. Matrici transform (4×4), projections.</p>
-                <p><strong>Fragment shader:</strong> ~50-500 instrucțiuni per pixel. Textură lookups (~4 ciclu latență), lighting math, depth test.</p>
-                <p><strong>Latency hiding:</strong> Compute unit are 1000+ thread-uri în flight. Cand 1 warp stall (memory latency), executor switchează la alt warp. Zero stall daca suficiente waveleți!</p>
+                <h3>4.2.3 — Istoria GPU &#238;n console</h3>
+                <ul class="specs-list">
+                    <li><strong>Atari 2600 (1977):</strong> Television Interface Adaptor – video shifter</li>
+                    <li><strong>Namco Galaxian (1979):</strong> hardware specializat cu suport RGB color, multi-sprite, tilemap scrolling</li>
+                    <li><strong>Sega Model 1 (1993), Namco System 22, Sega Model 2:</strong> accelerare 3D &#238;n arcade-uri</li>
+                    <li><strong>Nintendo 64 (1996):</strong> Reality Coprocessor – primul GPU cu hardware T&amp;L (Transform &amp; Lighting) pe console home</li>
+                    <li><strong>PlayStation (1994):</strong> GPU Sony 32-bit (Toshiba) – prima utilizare a termenului &quot;GPU&quot;</li>
+                    <li><strong>PlayStation 4/Xbox One (2013):</strong> GPU bazat pe AMD Radeon HD 7850/7790</li>
+                    <li><strong>PlayStation 5/Xbox Series X (2020):</strong> GPU bazat pe AMD RDNA 2 cu ray tracing hardware</li>
+                    <li>PS4/Xbox One = GPU Radeon HD 7000 series; PS5/Xbox Series = RDNA 2</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4 — Texture Cache &amp; Bandwidth</h3>
-                <p><strong>Texture unit:</strong> Specialista cache pentru imagini. 64K L1-texture cache per CU. Rapid texture lookups (ex. Samplu normal map pe 2304 pixeli simultane).</p>
-                <p><strong>Bandwidth:</strong> GPU → VRAM = 448 GB/sec (PS5 GDDR6). CPU → VRAM = 448 GB/sec shared. Throughput = fiecare shader lanse output + fetch input rapid.</p>
+                <h3>4.2.4 — GPGPU și evoluție modernă</h3>
+                <ul class="specs-list">
+                    <li>GPGPU = General Purpose computing on GPU</li>
+                    <li><strong>GeForce 8 series:</strong> primele GPU-uri cu stream processing units generice</li>
+                    <li><strong>CUDA (Nvidia, 2007):</strong> prima platformă larg adoptată pentru GPU computing</li>
+                    <li><strong>OpenCL:</strong> standard deschis de la Khronos Group pentru dezvoltare cross-platform (CPU + GPU)</li>
+                    <li><strong>RTX 20 series (2018):</strong> ray tracing cores adăugate – real-time ray tracing pe hardware consumer</li>
+                    <li><strong>RDNA 2 (AMD, 2020):</strong> hardware-accelerated ray tracing</li>
+                    <li><strong>Tensor cores (Nvidia Volta 2017, Turing 2018):</strong> deep learning, DLSS (Deep Learning Super Sampling)</li>
+                    <li>AMD Matrix Cores (RDNA 3), Intel XMX Cores (Arc Alchemist)</li>
+                    <li><strong>Aplicații actuale:</strong> AI/machine learning, rendering, video encoding, simulări științifice</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.5 — GPU Limitations și Occupancy</h3>
-                <p><strong>Occupancy:</strong> % CU compute units efectiv cu waveleți. Ocupanță bună 70-90%. Slabă &lt;25% = stalls.</p>
-                <p><strong>Bottleneck:</strong> ALU-bound shaders (calcul intens) vs memory-bound (texture lookups, G-buffer access).</p>
-                <p><strong>PS5 limite:</strong> 10.28 TFLOPS. Dar dacă memory-bound, throughput AI (arithmetic intensity, operații per byte fetched) control real perf.</p>
+                <h3>4.2.5 — Structura pipeline-ului grafic</h3>
+                <ul class="specs-list">
+                    <li>Pipeline-ul grafic = framework ce descrie procedurile de transformare a unei scene 3D &#238;n reprezentare 2D pe ecran</li>
+                    <li><strong>Trei părți principale:</strong> Application, Geometry, Rasterization</li>
+                    <li><strong>Application stage:</strong> rulează pe CPU, gestionează input utilizator, animații, detecția coliziunilor, scene management</li>
+                    <li><strong>Geometry stage:</strong> operează pe poligoane și vertecși (Vertex pipeline)</li>
+                    <li><strong>Rasterization stage:</strong> convertește primitive continue &#238;n fragmente discrete (pixeli)</li>
+                    <li><strong>API-uri standard:</strong> Direct3D, OpenGL, Vulkan – abstractizează hardware-ul</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.6 — Geometria (procesare vertecși)</h3>
+                <ul class="specs-list">
+                    <li>Vertex = punct &#238;n spațiul 3D; mai mulți vertecși definesc suprafețe</li>
+                    <li>Triunghi = primitivă geometrică de bază (definit de 3 vertecși + vector normal)</li>
+                    <li><strong>Triunghi preferat față de patrulater:</strong> orice 3 puncte &#238;n 3D formează un plan (triunghi plat garantat)</li>
+                    <li>Textura = imagine &quot;lipită&quot; pe suprafața primitivei</li>
+                    <li><strong>Sistemul de coordonate world:</strong> cartezian, dreptunghiular, axe la scală egală</li>
+                    <li>Model/Object coordinate system → World coordinate system (prin transformări: translație, rotație, scalare)</li>
+                    <li>Matrici de transformare 4&#215;4 (coordonate omogene) pentru rotație pe fiecare axă (Rx, Ry, Rz) + translație (T)</li>
+                    <li><strong>Instancing:</strong> mai multe copii ale unui obiect cu transformări diferite (ex.: pădure din copaci)</li>
+                    <li><strong>Camera Transformation (View Transformation):</strong> scena se transformă ca și cum camera e la origine, privind pe axa Z</li>
+                    <li><strong>Projection:</strong> transformare view volume → cub normalizat (-1,-1,0) la (1,1,1)</li>
+                    <li><strong>Perspective projection:</strong> proiecție centrală, frustum (piramidă trunchiată), obiectele &#238;ndepărtate par mai mici</li>
+                    <li><strong>Orthogonal projection:</strong> paralelism păstrat, pentru reprezentări tehnice/hărți</li>
+                    <li><strong>Z-buffer (depth buffer):</strong> stochează ad&#226;ncimea fiecărui pixel, rezoluție tipică 16 biți</li>
+                    <li><strong>Lighting:</strong> iluminarea suprafețelor calculate per-vertex (ambient light + directional); scalar product &#238;ntre direcția luminii și normala suprafeței</li>
+                    <li><strong>Clipping:</strong> eliminarea primitivelor din afara volumului vizual (frustum culling), decuparea celor parțiale</li>
+                    <li><strong>Window-Viewport Transformation:</strong> mapare coordonate normalizate → coordonate ecran (pixeli)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.7 — Rasterizarea &#238;n pipeline</h3>
+                <ul class="specs-list">
+                    <li><strong>Etapa finală:</strong> primitivele continue devin fragmente discrete (fiecare fragment = un pixel &#238;n framebuffer)</li>
+                    <li><strong>Hidden surface determination:</strong> Z-buffer determină care fragment e mai aproape de observator</li>
+                    <li><strong>Culoarea fragmentului:</strong> depinde de iluminare, textură, proprietăți material; interpolat din valorile vertecșilor triunghiului</li>
+                    <li><strong>Fragment shader (Pixel shader):</strong> rulat per fragment, calculează culoarea/atributele finale</li>
+                    <li><strong>Double buffering:</strong> rasterizarea se face &#238;ntr-o zonă de memorie separată, apoi copiată &#238;n zona vizibilă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.8 — Vertex shader și transformări</h3>
+                <ul class="specs-list">
+                    <li><strong>Vertex shader:</strong> pe hardware modern, execută cel puțin transformarea punctelor și calculul iluminării</li>
+                    <li><strong>DirectX 10+:</strong> vertex shader custom obligatoriu</li>
+                    <li><strong>Projection + view matrix:</strong> pre-calculate (răm&#226;n constante per imagine)</li>
+                    <li><strong>World matrix:</strong> diferită per obiect, recalculată la fiecare frame</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.9 — Definiție rasterizare</h3>
+                <ul class="specs-list">
+                    <li>Rasterizare = conversia unei imagini descrise &#238;n format vector (forme geometrice) &#238;ntr-o imagine raster (pixeli)</li>
+                    <li><strong>Etimologie:</strong> German &quot;Raster&quot; (grilă, tipar) + Latin &quot;rāstrum&quot; (greblă)</li>
+                    <li><strong>Poate referi:</strong> desenare modele 3D sau conversie primitive 2D (poligoane, segmente) &#238;n format rasterizat</li>
+                    <li>Extrem de rapidă comparativ cu ray tracing → folosită &#238;n majoritatea motoarelor 3D real-time</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.10 — Rasterizare triunghiuri 3D</h3>
+                <ul class="specs-list">
+                    <li>Poligoanele (mesh-uri) = reprezentare comună a modelelor 3D digitale</li>
+                    <li>&#206;nainte de rasterizare, poligoanele se descompun &#238;n triunghiuri (problema tipică: rasterizarea unui triunghi)</li>
+                    <li><strong>Cerințe algoritm:</strong> 1) fără goluri &#238;ntre triunghiuri adiacente; 2) niciun pixel rasterizat de două ori (fără overlap)</li>
+                    <li><strong>Top-left rule:</strong> pixel rasterizat dacă centrul e complet &#238;n interior SAU pe marginea top/left</li>
+                    <li>Top edge = margine exact orizontală, deasupra celorlalte</li>
+                    <li>Left edge = margine non-orizontală pe partea st&#226;ngă</li>
+                    <li>Implementat &#238;n Direct3D și multe implementări OpenGL</li>
+                    <li>Culoarea fiecărui pixel = determinată de pixel shader (complet programabil pe GPU-uri moderne)</li>
+                    <li><strong>Fixed-function hardware:</strong> rasterizarea se face de hardware non-programabil (eficiență maximă)</li>
+                    <li><strong>Anti-aliasing:</strong> &#238;mbunătățește calitatea, creează margini &quot;smooth&quot;</li>
+                    <li><strong>Sub-pixel precision:</strong> calculează poziții la scară mai fină dec&#226;t grila de pixeli (PlayStation 1 nu avea sub-pixel precision)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.11 — Definiție și tipuri de shadere</h3>
+                <ul class="specs-list">
+                    <li>Shader = operație programabilă aplicată datelor pe măsură ce traversează rendering pipeline-ul</li>
+                    <li>Termenul prima dată public de Pixar (1988) &#238;n RenderMan Interface Specification v3.0</li>
+                    <li>Shadere moderne rulează pe GPU-uri = hardware dedicat cu execuție masiv paralelă</li>
+                    <li>Rendering-ul imaginilor este embarrassingly parallel → pixel/fragment shaders scalează bine pe hardware SIMD</li>
+                    <li><strong>Unified Shader Model:</strong> pool comun de unități shader, distribuit dinamic &#238;ntre tipuri diferite</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.12 — Fragment (Pixel) Shader</h3>
+                <ul class="specs-list">
+                    <li><strong>Fragment/Pixel shader:</strong> calculează culoarea și atributele fiecărui &quot;fragment&quot; (unitate de rendering care afectează maximum un pixel de ieșire)</li>
+                    <li><strong>Aplicații:</strong> bump mapping (textură de profunzime), shadows, specular highlights, translucency, Z-buffering</li>
+                    <li>Poate altera ad&#226;ncimea fragmentului, poate genera mai multe culori (multiple render targets)</li>
+                    <li><strong>Post-processing 2D:</strong> blur, edge detection, cel shading</li>
+                    <li><strong>Primul GPU cu pixel shader programabil:</strong> Nvidia GeForce 3 (NV20), 2001</li>
+                    <li><strong>ATI Radeon 9700 (2002):</strong> primul Direct3D 9.0 accelerator – shadere cu looping și floating point extins</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.13 — Vertex Shader</h3>
+                <ul class="specs-list">
+                    <li>Rulat o dată per vertex 3D dat procesorului grafic</li>
+                    <li>Transformă poziția 3D a vertexului → coordonată 2D pe ecran + depth value (Z-buffer)</li>
+                    <li><strong>Manipulează:</strong> position, color, texture coordinates (nu poate crea vertecși noi)</li>
+                    <li>Output → geometry shader (dacă există) sau rasterizer</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.2.14 — Alte tipuri de shadere</h3>
+                <ul class="specs-list">
+                    <li><strong>Geometry shader:</strong> introdus &#238;n Direct3D 10 / OpenGL 3.2</li>
+                    <li><strong>Input:</strong> primitivă completă (ex. triunghi cu 3 vertecși + adiacență)</li>
+                    <li>Poate genera primitive noi (puncte, linii, triunghiuri)</li>
+                    <li><strong>Utilizări:</strong> point sprites, tessellation, shadow volumes, cube map rendering</li>
+                    <li><strong>Tessellation shader:</strong> OpenGL 4.0 / Direct3D 11</li>
+                    <li><strong>Hull shader + Domain shader:</strong> subdivizare mesh-uri la runtime</li>
+                    <li><strong>Level-of-detail activ:</strong> mai mult detaliu aproape de cameră, mai puțin departe</li>
+                    <li><strong>Mesh shader:</strong> Nvidia Turing (2018), AMD RDNA 2 (2020), Intel Arc Alchemist</li>
+                    <li>Modelat după compute shaders, acces la date de geometrie</li>
+                    <li>Crește dramatic numărul de triunghiuri/frame rate</li>
+                    <li><strong>Ray-tracing shader:</strong> DirectX Raytracing, Vulkan, Metal</li>
+                    <li>Nvidia/AMD = &quot;ray tracing cores&quot; (hardware dedicat)</li>
+                    <li><strong>Compute shader:</strong> calcule generale pe GPU (GPGPU), nu limitat la grafică</li>
+                    <li>CUDA, OpenCL, DirectCompute</li>
+                    <li><strong>Limbaje shader:</strong> GLSL (OpenGL), HLSL (DirectX), Metal Shading Language (Apple), SPIR-V (intermediar)</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și componente GPU</h3>
+                <ul class="specs-list">
+                    <li>GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagine digitală și accelerare grafică</li>
+                    <li>GPU modern = capacitate de a rula programe custom numite shadere</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Arhitectură și procesare paralelă</h3>
+                <ul class="specs-list">
+                    <li>GPU-urile moderne includ sute sau mii de unități de calcul (embarrassingly parallel)</li>
+                    <li><strong>GPU integrat (IGP/UMA):</strong> partajează RAM-ul sistemului, bandwidth limitat (~128 GB/s vs. &gt;1000 GB/s la discrete)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GPGPU și evoluție modernă</h3>
+                <ul class="specs-list">
+                    <li>GPGPU = General Purpose computing on GPU</li>
+                    <li><strong>GeForce 8 series:</strong> primele GPU-uri cu stream processing units generice</li>
+                    <li><strong>OpenCL:</strong> standard deschis de la Khronos Group pentru dezvoltare cross-platform (CPU + GPU)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Structura pipeline-ului grafic</h3>
+                <ul class="specs-list">
+                    <li><strong>Application stage:</strong> rulează pe CPU, gestionează input utilizator, animații, detecția coliziunilor, scene management</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Rasterizare triunghiuri 3D</h3>
+                <ul class="specs-list">
+                    <li>Poligoanele (mesh-uri) = reprezentare comună a modelelor 3D digitale</li>
+                    <li>Culoarea fiecărui pixel = determinată de pixel shader (complet programabil pe GPU-uri moderne)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și tipuri de shadere</h3>
+                <ul class="specs-list">
+                    <li>Shadere moderne rulează pe GPU-uri = hardware dedicat cu execuție masiv paralelă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Vertex Shader</h3>
+                <ul class="specs-list">
+                    <li>Rulat o dată per vertex 3D dat procesorului grafic</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Alte tipuri de shadere</h3>
+                <ul class="specs-list">
+                    <li>Modelat după compute shaders, acces la date de geometrie</li>
+                    <li><strong>Compute shader:</strong> calcule generale pe GPU (GPGPU), nu limitat la grafică</li>
+                    <li>CUDA, OpenCL, DirectCompute</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> Mii de tranzistori comutează în paralel pe pixeli diferite. GDDR6 memorie transferu 14 GBps bandwidth.</p>
-                <p><strong>Informatică:</strong> Shader code transformat în maschinsprog. Fiecare pixel = independent task. Procesare masiv paralelă.</p>
+                <h3>Definiție și componente GPU</h3>
+                <ul class="specs-list">
+                    <li>Prezent pe plăci grafice discrete, motherboard-uri, telefoane mobile, PC-uri, workstation-uri, console de jocuri</li>
+                    <li>Termenul &quot;GPU&quot; folosit prima dată de Sony (1994) pentru PlayStation (GPU proiectat de Toshiba)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Arhitectură și procesare paralelă</h3>
+                <ul class="specs-list">
+                    <li>APU (AMD Accelerated Processing Unit) = CPU + GPU pe același die</li>
+                    <li>PS5 și Xbox Series = UMA (Unified Memory Architecture)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Istoria GPU &#238;n console</h3>
+                <ul class="specs-list">
+                    <li><strong>Atari 2600 (1977):</strong> Television Interface Adaptor – video shifter</li>
+                    <li><strong>Namco Galaxian (1979):</strong> hardware specializat cu suport RGB color, multi-sprite, tilemap scrolling</li>
+                    <li><strong>Sega Model 1 (1993), Namco System 22, Sega Model 2:</strong> accelerare 3D &#238;n arcade-uri</li>
+                    <li><strong>Nintendo 64 (1996):</strong> Reality Coprocessor – primul GPU cu hardware T&amp;L (Transform &amp; Lighting) pe console home</li>
+                    <li><strong>PlayStation (1994):</strong> GPU Sony 32-bit (Toshiba) – prima utilizare a termenului &quot;GPU&quot;</li>
+                    <li><strong>PlayStation 4/Xbox One (2013):</strong> GPU bazat pe AMD Radeon HD 7850/7790</li>
+                    <li><strong>PlayStation 5/Xbox Series X (2020):</strong> GPU bazat pe AMD RDNA 2 cu ray tracing hardware</li>
+                    <li>PS4/Xbox One = GPU Radeon HD 7000 series; PS5/Xbox Series = RDNA 2</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Rasterizare triunghiuri 3D</h3>
+                <ul class="specs-list">
+                    <li><strong>Sub-pixel precision:</strong> calculează poziții la scară mai fină dec&#226;t grila de pixeli (PlayStation 1 nu avea sub-pixel precision)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Render Frame 1080p 60 FPS</h3>
-                <p><strong>Framebuffer:</strong> 1920 × 1080 = 2,073,600 pixeli. 4 bytes RGBA = 8.3 MB per frame.</p>
-                <p><strong>60 FPS:</strong> 60 × 60 FPS = 60 frames/sec. Throughput pixel: 2 × 60/sec × 60 = 124.4 megapixel/sec.</p>
-                <p><strong>GPU task:</strong> Lanseaza 2M fragment shader threads simultane (paralle pe waveleți). Fiecare shader: texture fetch + lighting = ~200 instrucțiuni.</p>
-                <p><strong>Bandwidth:</strong> 2M pixeli × 8 bytes output + textură lookups ~1KB per pixel = 2 GB/sec effective utilization din 448 GB/sec max (0.4% utilizare!).</p>
-                <p>→ GPU super ocup. Vertex shader ~ 1M thread (mii triungi, 3M vertex total). parallelism masiv.</p>
+                <h3>Definiție și componente GPU</h3>
+                <ul class="specs-list">
+                    <li>Popularizat de Nvidia (1999) cu GeForce 256 – &quot;primul GPU din lume&quot;</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Arhitectură și procesare paralelă</h3>
+                <ul class="specs-list">
+                    <li><strong>Unități de procesare:</strong> Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</li>
+                    <li>GDDR SDRAM = memorie dedicată GPU-ului (vs. system RAM pentru integrated graphics)</li>
+                    <li><strong>GPU dedicat (discrete):</strong> RAM propriu (GDDR), performanță mai mare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>GPGPU și evoluție modernă</h3>
+                <ul class="specs-list">
+                    <li><strong>CUDA (Nvidia, 2007):</strong> prima platformă larg adoptată pentru GPU computing</li>
+                    <li><strong>Tensor cores (Nvidia Volta 2017, Turing 2018):</strong> deep learning, DLSS (Deep Learning Super Sampling)</li>
+                    <li>AMD Matrix Cores (RDNA 3), Intel XMX Cores (Arc Alchemist)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și tipuri de shadere</h3>
+                <ul class="specs-list">
+                    <li>Termenul prima dată public de Pixar (1988) &#238;n RenderMan Interface Specification v3.0</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Fragment (Pixel) Shader</h3>
+                <ul class="specs-list">
+                    <li><strong>Primul GPU cu pixel shader programabil:</strong> Nvidia GeForce 3 (NV20), 2001</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Alte tipuri de shadere</h3>
+                <ul class="specs-list">
+                    <li><strong>Mesh shader:</strong> Nvidia Turing (2018), AMD RDNA 2 (2020), Intel Arc Alchemist</li>
+                    <li>Nvidia/AMD = &quot;ray tracing cores&quot; (hardware dedicat)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Unreal Engine 5 Exemplo PS5</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenario:</strong> Rendering 4K resolución (3840×2160) cu 60 FPS, Ray-traced shadows.</p>
-                <p><strong>Challenge:</strong> 8.3M pixeli × 60 = 498M pixeli/sec. Cu ray-trace, ~100 instruc/pixel = 49 miliarde instruc/sec = 4.7 TFLOPS.</p>
-                <p><strong>PS5 utilization:</strong> 10.28 TFLOPS / 4.7 = 45% occupanță. Plenty of  headroom. Deci putem adaugă mai mulți pixeli (post-effects) sau mai complex shader.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ De ce 4K pe PS5 = problema?</h3><p>4K = 4× pixeli decât 1080p. Framebuffer 3× mai mare. Bandwidth 3× plus. Shaders ~3× mai lungă. Score IPC cade dacă overhead mari. 30 FPS normal, 60 FPS rare.</p></div>
-            <div class="card"><h3>⚠️ De ce ray-tracing scump per pixel?</h3><p>Ray-trace = 5-10 instruc per pixel vs 100 per standard shader. GPU-ul trebuie să facă milioane calcule simultaneas. Thermal power limitează.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Rasterizare triunghiuri 3D</h3>
+                    <p>&#206;nainte de rasterizare, poligoanele se descompun &#238;n triunghiuri (problema tipică: rasterizarea unui triunghi)</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -134,12 +432,20 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>GPU:</strong> Specialista paralelismului. Mii thread-uri pe pixeli simultan.</li>
-                    <li><strong>Pipeline:</strong> Vertex → Rasterize → Fragment shader → Framebuffer.</li>
-                    <li><strong>Compute unit:</strong> 36 CU × 64 thread-uri = 2304 paralel.</li>
-                    <li><strong>Latency hiding:</strong> Wavelet-uri switch cand memory stall.</li>
-                    <li><strong>PS5:</strong> 10.28 TFLOPS, 448 GB/sec GDDR6, 10.7 GB texture cache.</li>
-                    <li>Shader optimization = key pentru 60 FPS + 4K (dificil pe PS5).</li>
+                    <li><strong>Definiție și componente GPU:</strong> GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagine digitală și accelerare grafică</li>
+                    <li><strong>Arhitectură și procesare paralelă:</strong> Funcțiile grafice sunt &#238;n general independente → se pretează la implementare pe motoare de calcul separate</li>
+                    <li><strong>Istoria GPU &#238;n console:</strong> Atari 2600 (1977): Television Interface Adaptor – video shifter</li>
+                    <li><strong>GPGPU și evoluție modernă:</strong> GPGPU = General Purpose computing on GPU</li>
+                    <li><strong>Structura pipeline-ului grafic:</strong> Pipeline-ul grafic = framework ce descrie procedurile de transformare a unei scene 3D &#238;n reprezentare 2D pe ecran</li>
+                    <li><strong>Geometria (procesare vertecși):</strong> Vertex = punct &#238;n spațiul 3D; mai mulți vertecși definesc suprafețe</li>
+                    <li><strong>Rasterizarea &#238;n pipeline:</strong> Etapa finală: primitivele continue devin fragmente discrete (fiecare fragment = un pixel &#238;n framebuffer)</li>
+                    <li><strong>Vertex shader și transformări:</strong> Vertex shader: pe hardware modern, execută cel puțin transformarea punctelor și calculul iluminării</li>
+                    <li><strong>Definiție rasterizare:</strong> Rasterizare = conversia unei imagini descrise &#238;n format vector (forme geometrice) &#238;ntr-o imagine raster (pixeli)</li>
+                    <li><strong>Rasterizare triunghiuri 3D:</strong> Poligoanele (mesh-uri) = reprezentare comună a modelelor 3D digitale</li>
+                    <li><strong>Definiție și tipuri de shadere:</strong> Shader = operație programabilă aplicată datelor pe măsură ce traversează rendering pipeline-ul</li>
+                    <li><strong>Fragment (Pixel) Shader:</strong> Fragment/Pixel shader: calculează culoarea și atributele fiecărui &quot;fragment&quot; (unitate de rendering care afectează maximum un pixel de ieșire)</li>
+                    <li><strong>Vertex Shader:</strong> Rulat o dată per vertex 3D dat procesorului grafic</li>
+                    <li><strong>Alte tipuri de shadere:</strong> Geometry shader: introdus &#238;n Direct3D 10 / OpenGL 3.2</li>
                 </ul>
             </div>
         </div>
@@ -148,55 +454,129 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>GPU vs CPU: GPU especializa în:</strong></p>
-                <ul class="specs-list"><li>a) Instrucțiuni singulare rapid</li><li>b) Paralelismul masiv de mii calcule</li><li>c) Integer arithmetic</li><li>d) Subroutine calls</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Paralelismul masiv</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: GeForce 256?</strong></p>
+                <ul class="specs-list">
+                    <li>a) single-chip processor cu transform, lighting, triangle setup/clipping și rendering integrat</li>
+                    <li>b) dimensiunea traseelor semiconductoare, frecvența ceasului, cache-urile on-chip</li>
+                    <li>c) GPU modern = capacitate de a rula programe custom numite shadere</li>
+                    <li>d) Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — single-chip processor cu transform, lighting, triangle setup/clipping și rendering integrat</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Vertex shader lanseaza 1 shader per:</strong></p>
-                <ul class="specs-list"><li>a) Pixel</li><li>b) Vertex</li><li>c) Triangle</li><li>d) Frame</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Vertex</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Unități de procesare?</strong></p>
+                <ul class="specs-list">
+                    <li>a) single-chip processor cu transform, lighting, triangle setup/clipping și rendering integrat</li>
+                    <li>b) GPU modern = capacitate de a rula programe custom numite shadere</li>
+                    <li>c) Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</li>
+                    <li>d) dimensiunea traseelor semiconductoare, frecvența ceasului, cache-urile on-chip</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Wavy (warp) = thread-uri. PS5 per CU?</strong></p>
-                <ul class="specs-list"><li>a) 32</li><li>b) 64</li><li>c) 256</li><li>d) 2304</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 64</strong> — Per wave. 36 CU × 64 = 2304 total.</p></details>
+                <p><strong>Care afirmație este corectă despre: Atari 2600 (1977)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</li>
+                    <li>b) GPU modern = capacitate de a rula programe custom numite shadere</li>
+                    <li>c) Television Interface Adaptor – video shifter</li>
+                    <li>d) single-chip processor cu transform, lighting, triangle setup/clipping și rendering integrat</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Television Interface Adaptor – video shifter</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>PS5 GPU TFLOPS?</strong></p>
-                <ul class="specs-list"><li>a) 4.2</li><li>b) 8.5</li><li>c) 10.28</li><li>d) 15</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) 10.28 TFLOPS</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: GPGPU și evoluție modernă?</strong></p>
+                <ul class="specs-list">
+                    <li>a) single-chip processor cu transform, lighting, triangle setup/clipping și rendering integrat</li>
+                    <li>b) GPGPU = General Purpose computing on GPU</li>
+                    <li>c) Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</li>
+                    <li>d) GPU modern = capacitate de a rula programe custom numite shadere</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — GPGPU = General Purpose computing on GPU</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>4K (3840×2160) vs 1080p (1920×1080) pixeli ratio?</strong></p>
-                <ul class="specs-list"><li>a) 2×</li><li>b) 3×</li><li>c) 4×</li><li>d) 9×</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>c) 4× (3840/1920 × 2160/1080 = 2×2 = 4×)</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Trei părți principale?</strong></p>
+                <ul class="specs-list">
+                    <li>a) Application, Geometry, Rasterization</li>
+                    <li>b) single-chip processor cu transform, lighting, triangle setup/clipping și rendering integrat</li>
+                    <li>c) GPU modern = capacitate de a rula programe custom numite shadere</li>
+                    <li>d) Streaming Multiprocessors (SM) la Nvidia, Compute Units (CU) la AMD, Xe Cores la Intel</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — Application, Geometry, Rasterization</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Shader Throughput Analiza</h3>
-                <p><strong>Cerință:</strong> Fragment shader: 300 instrucțiuni (float, ALU, texture lookups). Fiecare lookup latență 4 ciclu. Clock 1 GHz (GPU = slower ALU, latenci masqué).</p>
-                <ol class="specs-list"><li>Instrucțiuni critical path (latență dominator)?</li><li>Waveleți necesare pentru hide latență texture (4 ciclu)?</li><li>Throughput pixel/sec dacă 64 waveleți per CU, 36 CU?</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1. Critical path:</strong> Texture lookup = 4 ciclu dominator. ALU e mai rapid (1-2 ciclu). Optimal: launch next wavelet cand current waitem.</p>
-                    <p><strong>2. Waveleți hide latență:</strong> 4 ciclu latență / (1 ciclu per ALU) = need 4 waveleți în flight (simplice). Real cu dependencies: 8-16 waveleți.</p>
-                    <p><strong>3. Throughput:</strong> 64 waveleți per CU × 36 CU = 2304 thread-uri simultane. Daca fiecare shader = 10 ciclu latență (texture 4 + ALU 6), throughput = 2304 × 100 MHz = 230 mpixel/sec.</p>
-                    <p>Comparație: 1080p 60 FPS = 124 mpixel/sec. Shader can handle 1.8× load. Good ocupanță!</p>
-                </div></details>
+                <h3>🧠 Exercițiu: GPU</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de geometrie. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: geometrie.</li>
+                    <li>2. Ce rol are rasterizare în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre geometrie și shading.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> GPU (Graphics Processing Unit) = circuit electronic specializat pentru procesare de imagine digitală și accelerare grafică</p>
+                        <p><strong>2.</strong> Funcțiile grafice sunt &#238;n general independente → se pretează la implementare pe motoare de calcul separate</p>
+                        <p><strong>3.</strong> Atari 2600 (1977): Television Interface Adaptor – video shifter</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -273,3 +653,14 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 4.6 — Ierarhia sistemului complet: de la CPU la I/O">
+    <meta name="description" content="Lecția 4.6 — Ierarhia sistemului complet">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 4.6 — Ierarhia Sistemului — Console Notebook</title>
+    <title>Lecția 4.6 — Ierarhia sistemului complet — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -31,420 +35,571 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — Procesoare și Procesare</p>
-            <h1>Lecția 4.6 — Ierarhia Sistemului Complet</h1>
-            <p>De la procesor la Hard Drive — cum comunică componentele și cum fluxul de date determină performance-ul final.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — ARHITECTURĂ HARDWARE</p>
+            <h1>Lecția 4.6 — Ierarhia sistemului complet</h1>
+            <p>CPU, GPU, RAM, Storage</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- ===========================
          CAPITOLUL 1: INTRODUCERE
          =========================== -->
-    <section class="section" id="introducere">
+                                                    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    O consolă nu este doar un procesor. Nici măcar nu este doar procesor + GPU. Este o <strong>orchestrație complexă de sisteme</strong> care trebuie să comunice perfect pentru a transforma 1 și 0 în imagini, sunet și senzație de joc real.
-                </p>
-                <p>
-                    În Modulul 4 am studiat procesoare — acum este timp să înțelegem cum se conectează CPU-ul la fiecare alt component din sistem. Vom analiza <strong>ierarhia sistemului</strong>: ordinea prioritizării, vitezele de transfer, bottleneck-urile și optimizările care fac diferența între un joc care ruleaza la 60 FPS cu textură de înaltă rezoluție și unul care lag-uiește la 30 FPS.
-                </p>
-                <p>
-                    Această lecție este piatra de temelie pentru a înțelege de ce generațiile noi de console nu doar au procesoare mai rapide — au și sisteme de memorie, storage și I/O fundamentalmente diferite. PlayStation 5 și Xbox Series X nu ar fi posibile fără o rearchitectură completă a modului în care datele circulă.
-                </p>
+                <p>1. ISA (Instruction Set Architecture) – interfața software-hardware: machine code, word size, adresare, registre, tipuri de date</p>
+                <p>Această lecție acoperă: <strong>CPU</strong>, <strong>GPU</strong>, <strong>RAM</strong>, <strong>Storage</strong>, <strong>I/O</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 2: TEORIE
-         =========================== -->
     <section class="section" id="teorie">
         <div class="container">
             <h2 class="section-title">Teorie Structurată</h2>
 
-            <!-- 2.1 Ierarhia memoriei -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Ierarhia Memoriei (Memory Hierarchy)</h3>
-                <p>
-                    Memoria într-un sistem pc de calcul nu este uniformă. Există mai multe tipuri, organizate într-o <strong>piramidă de acces</strong>:
-                </p>
+                <h3>4.6.1 — Definiție și componente fundamentale</h3>
                 <ul class="specs-list">
-                    <li><strong>Registri (CPU Internal)</strong> — de ordinul zecilor de bytes, acces instantaneu (0 cicli)</li>
-                    <li><strong>L1 Cache</strong> — 32-64 KB per nucleu, acces 4 cicli</li>
-                    <li><strong>L2 Cache</strong> — 256 KB – 1MB per nucleu, acces 8-10 cicli</li>
-                    <li><strong>L3 Cache</strong> — 4-16 MB shared, acces 40-75 cicli</li>
-                    <li><strong>RAM (GDDR6X / DDR5)</strong> — gigabytes, acces 200+ cicli</li>
-                    <li><strong>Storage (SSD / HDD)</strong> — terabytes, acces milisecunde</li>
+                    <li>Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetică centrală (ALU), unitate de control centrală, memorie (date + instrucțiuni), mediu de &#238;nregistrare extern (stocare), organe de intrare/ieșire</li>
+                    <li><strong>Model stored-program:</strong> instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
+                    <li>Spre deosebire de calculatoarele cu program fix (ENIAC – 3 săptăm&#226;ni reprogramare), stored-program permite schimbarea programului fără recablare hardware</li>
+                    <li><strong>Originea:</strong> First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
+                    <li><strong>Terminologia originală:</strong> „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>Majoritatea calculatoarelor moderne folosesc arhitectura Von Neumann cu modificări (Modified Harvard – cache-uri separate instrucțiuni/date)</li>
                 </ul>
-                <p>
-                    Regula de aur: fiecare nivel este mai lent, dar mult mai mare. CPU-ul caută datele mai întâi în registri, apoi L1, apoi L2, și așa mai departe. Dacă găsește datele imediat (cache hit), procesul este rapid. Dacă trebuie să meargă până la RAM (cache miss), se pierde timp prețios.
-                </p>
-                <p>
-                    <strong>Aplicație în console:</strong> PS5-ul are 448 GB/s de bandwidth pentru GDDR6 cache-L. Aceasta e incredibil de rapid comparativ cu generațiile anterioare. Developers-ii pot ține în VRAM mai multă dat viteză, reducând necesitatea de acces la SSD-ul mai lent.
-                </p>
             </div>
 
-            <!-- 2.2 CPU-GPU Interconnect -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Conexiunea CPU–GPU (Unified Memory Architecture)</h3>
-                <p>
-                    Istoricul: în consoles mai vechi (PS3, Xbox 360), CPU și GPU aveau memorii separate. CPU avea o mărime de RAM, GPU avea alta. Programatorii trebuiau să copie datele dintr-o parte în alta — pagube de performance masive.
-                </p>
-                <p>
-                    Modern: <strong>Unified Memory Architecture</strong> (UMA) permite atât CPU-ului, cât și GPU-ului să acceseze aceeași memorie fără copiere. PS5 și Xbox Series X ambele folosesc această aproape: 10 GB GDDR6 standard (pentru GPU și processare grafică) + 2 GB DDR4 pentru OS-ul consolei.
-                </p>
-                <p>
-                    Beneficiu: reducție drastică de latență și overhead. Datele unui model 3D pot fi procesate de CPU (physics, AI) și apoi renderizate direct de GPU fără re-upload.
-                </p>
-            </div>
-
-            <!-- 2.3 Busuri de date si bandwidth -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Busuri de Date și Bandwidth (PCIe, UMI, Infinity Fabric)</h3>
-                <p>
-                    Componentele din interiorul consolei comunică prin <strong>busuri</strong> — canale dedicate de transmisie a datelor. Fiecare bus are o capacitate (bandwidth) limitată.
-                </p>
+                <h3>4.6.2 — Von Neumann Bottleneck</h3>
                 <ul class="specs-list">
-                    <li><strong>GPU Memory Bus</strong> (256-bit, 448 GB/s) — conectează GPU la memoria GDDR6</li>
-                    <li><strong>UMI (Unified Memory Interconnect)</strong> — conectează CPU la GPU; critică pentru transfer rapid de date</li>
-                    <li><strong>PCIe 4.0</strong> — pentru SSD-uri și periferice externe; 7.5 GB/s unidirectional</li>
-                    <li><strong>Infinity Fabric</strong> (AMD) — magistrala internă care conectează nucleele multi-core</li>
+                    <li>Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
+                    <li>CPU-ul nu poate accesa simultan instrucțiuni și date (partajează același bus)</li>
+                    <li>CPU trebuie să aștepte transferul datelor din/&#238;n memorie</li>
+                    <li>Severitatea crește cu fiecare generație de CPU (viteza CPU crește mai repede dec&#226;t bandwidth-ul memoriei)</li>
+                    <li><strong>Descris de John Backus (1977 Turing Award):</strong> „pushing vast numbers of words back and forth through the von Neumann bottleneck&quot;</li>
                 </ul>
-                <p>
-                    <strong>Exemplu real PS5:</strong> SSD Kraken PCIe 4.0 poate citi 5.5 GB/s. O textură non-comprimată de 1GB se încarcă în ~180ms. Aceasta permite developer-ilor să încărce niveluri noi aproape instantaneu în joc fără loading screen tradițional.
-                </p>
             </div>
 
-            <!-- 2.4 Fluxul datelor in joc -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Fluxul Datelor Într-un Joc</h3>
-                <p>
-                    Urmărești o scenă într-un joc PS5 modern. Iată ce se întâmplă la nivel hardware în fiecare frame (1/60 secundă):
-                </p>
-                <ol class="specs-list">
-                    <li><strong>Încărcare assets</strong> — SSD → RAM (datele jocului: modele, texturile, sunetele pentru scene viitoare)</li>
-                    <li><strong>Physics Engine</strong> — CPU calculează coliziuni, forțe, mișcări; datele sunt stocate în cache L3 și RAM</li>
-                    <li><strong>AI Logic</strong> — CPU determină comportamentul enemy-ilor pe baza stării jocului</li>
-                    <li><strong>Geometry Setup</strong> — CPU trimite liste de obiecte care trebuie render-ate către GPU (command buffer)</li>
-                    <li><strong>Rendering</strong> — GPU primește lista de obiecte, le transformă în 3D, aplică lighting, texturile, postprocessing</li>
-                    <li><strong>Output Frame</strong> — Framebuffer-ul (memorie GPU) conține imaginea finală; HDMI output-ul o trimite pe ecran</li>
-                </ol>
-                <p>
-                    Viteza completă a ciclului determină frame rate-ul. Dacă CPU e lent la physics, GPU trebuie să aștepte → 30 FPS în loc de 60. Dacă GPU face rendering prea lung, CPU e blocat → din nou 30 FPS. Ambele trebuie să fie echilibrate perfect.
-                </p>
-            </div>
-
-            <!-- 2.5 Storage hierarchy -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Ierarhia Storage: SSD + Queue Streaming</h3>
-                <p>
-                    Nu se pot ține toate gigabytes-urile unei lumi game-ului în RAM (14 GB util de GDDR6 la PS5). Datele trebuie încărcate dinamic de pe SSD.
-                </p>
-                <p>
-                    <strong>Tehnica modernă:</strong> Queue Streaming. Pe măsură ce jucătorul mișcă controllerul, CPU-ul <em>prevede</em> ce zone ale hărții vor fi necesare în următoarele secunde și le cere SSD-ului să le citească în avans. Când jucătorul intră în zona, datele sunt deja în RAM, gata pentru rendering.
-                </p>
-                <p>
-                    Exemplu: în Ratchet &amp; Clank: Rift Apart (PS5), portalurile instantanee între lumi sunt posibile doar pentru că SSD-ul este atât de rapid (5.5 GB/s). În generația PS4, tranziția ar fi durat 5-10 secunde; acum mult sub secundă.
-                </p>
-            </div>
-
-            <!-- 2.6 I/O Controller (Input Output) -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.6 — I/O Controller: Conectarea la Perifericele</h3>
-                <p>
-                    CPU și GPU trebuie să comunice cu lumea exterioară: controllerul wireless, microfon, cameră, internet. Pentru acestea sunt niște controler-e specialized numite <strong>I/O Controller</strong>.
-                </p>
+                <h3>4.6.3 — Mitigări ale bottleneck-ului</h3>
                 <ul class="specs-list">
-                    <li><strong>USB Hub</strong> — conectează controllerele, headset-uri, camere</li>
-                    <li><strong>Wi-Fi 6 (802.11ax)</strong> — conexiune wireless la internet; speedtest spune 150+ Mbps</li>
-                    <li><strong>Ethernet</strong> — conexiune wired; 1 Gigabit = 125 MB/s teoretic</li>
-                    <li><strong>Audio Codec</strong> — procesează sunetul în Dolby Atmos / DTS</li>
-                    <li><strong>Power Delivery</strong> — controlează încărcarea controlerelor și gestionează puterea consolei</li>
+                    <li>Cache &#238;ntre CPU și memoria principală</li>
+                    <li>Cache-uri separate pentru date și instrucțiuni (Modified Harvard Architecture)</li>
+                    <li>Branch predictor</li>
+                    <li>Scratchpad memory pe chip</li>
+                    <li>System on Chip (SoC) – CPU + ierarhia memoriei pe același chip, reduce latența</li>
+                    <li>Parallel computing, NUMA (Non-Uniform Memory Access)</li>
                 </ul>
-                <p>
-                    PS5-ul are un controller-ul de I/O dedicat care elimină overhead-ul le CPU. În PS4, o parte din I/O era gestionată de CPU; în PS5, tot e delegat, eliberând putere de calcul pentru joc.
-                </p>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.4 — Evoluția arhitecturii</h3>
+                <ul class="specs-list">
+                    <li><strong>1960-1970:</strong> Memory-mapped I/O – dispozitivele I/O tratate ca memorie</li>
+                    <li>System bus unic – modularitate la cost redus</li>
+                    <li>Microcontrolerele simple omit funcții pentru cost/dimensiune reduse</li>
+                    <li>Calculatoarele mari adaugă funcții pentru performanță</li>
+                    <li><strong>Primele calculatoare Von Neumann:</strong> Manchester Baby (1948), EDSAC (1949), EDVAC (1951)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.5 — Definiția și subcategoriile</h3>
+                <ul class="specs-list">
+                    <li>Arhitectura calculatorului = structura unui sistem de calcul din componente</li>
+                    <li>3 subcategorii principale:</li>
+                </ul>
+                <p>1. ISA (Instruction Set Architecture) – interfața software-hardware: machine code, word size, adresare, registre, tipuri de date</p>
+                <p>2. Microarhitectură (Computer Organization) – cum un procesor specific implementează ISA-ul (ex: dimensiunea cache-ului)</p>
+                <p>3. Systems Design – toate componentele hardware &#238;n afara CPU: DMA, virtualizare, multiprocessing</p>
+                <ul class="specs-list">
+                    <li>Termenul „arhitectură&quot; folosit prima dată de Lyle R. Johnson și Frederick P. Brooks Jr. (IBM, 1959) pentru proiectul Stretch</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.6 — Performanță</h3>
+                <ul class="specs-list">
+                    <li><strong>IPC (Instructions Per Cycle) – măsura eficienței:</strong> calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
+                    <li><strong>Clock rate (MHz/GHz) – metric &#238;nșelător:</strong> mașină cu clock mai mare nu e neapărat mai rapidă</li>
+                    <li><strong>Alți factori:</strong> functional units, bus speeds, memoria disponibilă, tipul instrucțiunilor</li>
+                    <li><strong>Două tipuri de viteză:</strong> latency (timp start→finalizare) și throughput (lucru/unitate timp)</li>
+                    <li><strong>Pipeline:</strong> latency mai mare, throughput mai bun</li>
+                    <li><strong>Benchmarking:</strong> măsoară timpul pe suite de teste standardizate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.7 — Eficiență energetică și tendințe</h3>
+                <ul class="specs-list">
+                    <li>MIPS/W (millions of instructions per second per watt) – metric clasic</li>
+                    <li>Performance-per-watt – metric modern</li>
+                    <li>Circuitele integrate moderne consumă mai multă putere totală &#238;n ciuda &#238;mbunătățirilor per-tranzistor</li>
+                    <li>Densitatea de putere (watts/cm&#178;) crește pe măsură ce nod-ul de fabricație scade → management termic mai dificil</li>
+                    <li>Temperatura ridicată crește rezistența interconexiunilor → feedback pozitiv putere-căldură</li>
+                    <li><strong>Tendința:</strong> focusul s-a mutat de la clock speed la eficiență energetică (Intel Haswell: 30-40W → 10-20W)</li>
+                    <li><strong>Procesoare:</strong> frecvența 3→4 GHz (2002-2006), dar puterea scăzută cu 50% &#238;n Haswell</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.8 — Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Motherboard (mainboard, system board, logic board) = PCB principal &#238;ntr-un calculator</li>
+                    <li>Permite comunicarea &#238;ntre componentele electronice cruciale: CPU, memorie, periferice</li>
+                    <li><strong>Conține subsisteme semnificative:</strong> CPU, chipset I/O, memory controller, conectori interfață</li>
+                    <li>Termenul „motherboard&quot; documentat din 1965 (revista Electronics)</li>
+                    <li><strong>Primul motherboard:</strong> Planar Breadboard, designat de Patty McHugh (IBM, 1981 PC)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.9 — Componentele unui motherboard modern</h3>
+                <ul class="specs-list">
+                    <li>CPU socket(s) – montarea procesorului (sau BGA lipit direct)</li>
+                    <li><strong>Memory slots – DIMM:</strong> DDR3/DDR4/DDR5 sau LPDDRx onboard</li>
+                    <li>Chipset – interfață CPU↔memorie principală↔bus-uri periferice</li>
+                    <li>Non-volatile memory (flash) – firmware/BIOS</li>
+                    <li>Clock generator – semnal de ceas pentru sincronizare</li>
+                    <li>Expansion slots – PCIe x16 (GPU), PCIe x1, legacy PCI</li>
+                    <li>Power connectors – distribuie alimentarea la CPU, chipset, RAM, sloturi</li>
+                    <li>Storage connectors – SATA, NVMe (M.2)</li>
+                    <li>I/O connectors – USB, Ethernet, audio, display output</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.10 — Periferice integrate (onboard)</h3>
+                <ul class="specs-list">
+                    <li>Disk controllers (SATA, istoric PATA)</li>
+                    <li>Integrated GPU (2D/3D cu VGA/DVI/HDMI/DisplayPort/TV)</li>
+                    <li>Sound card integrat (7.1 canale, S/PDIF)</li>
+                    <li>Ethernet controller</li>
+                    <li>USB controller</li>
+                    <li>Wi-Fi + Bluetooth</li>
+                    <li>Senzori temperatură, tensiune, viteză ventilatoare</li>
+                    <li>Power management IC (PMIC)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.11 — Form factor și evoluție</h3>
+                <ul class="specs-list">
+                    <li><strong>ATX – cel mai comun form factor desktop (2024):</strong> microATX, mini-ITX, EATX</li>
+                    <li>Case + motherboard + PSU trebuie să aibă form factor compatibil</li>
+                    <li><strong>Laptopuri:</strong> motherboard integrat, miniaturizat, greu de upgrade</li>
+                    <li>Evoluția integrării:</li>
+                    <li><strong>1980s:</strong> Super I/O chips – keyboard, mouse, floppy, serial, parallel</li>
+                    <li><strong>Late 1990s:</strong> audio, video, storage, networking integrate pe motherboard</li>
+                    <li><strong>2000s+:</strong> laptopuri integrează practici toate perifericele</li>
+                    <li><strong>Tableta/netbook:</strong> memorie, procesor, networking, storage – totul pe o singură placă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.12 — Bootstrapping (Power-On)</h3>
+                <ul class="specs-list">
+                    <li>Firmware (BIOS/UEFI) stocat &#238;n flash non-volatil pe motherboard</li>
+                    <li><strong>La pornire:</strong> POST (Power-On Self Test) – testează și inițializează hardware</li>
+                    <li><strong>POST verifică:</strong> video card, expansion cards, temperaturi/tensiuni/ventilatoare, CMOS, keyboard, mouse, sound card, network, storage (HDD/SSD), USB</li>
+                    <li>UEFI a &#238;nlocuit BIOS-ul clasic (obligatoriu Windows 8+)</li>
+                    <li><strong>Boot sequence:</strong> firmware → POST → detectare boot device → &#238;ncărcare OS</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.13 — Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Chipset = set de circuite integrate pe motherboard care gestionează fluxul de date &#238;ntre procesor, memorie și periferice</li>
+                    <li><strong>Determină performanța sistemului:</strong> controlează comunicarea CPU↔dispozitive externe</li>
+                    <li><strong>Primul chipset PC:</strong> NEAT chipset (Chips and Technologies, 1984) pentru IBM PC AT cu Intel 80286</li>
+                    <li>Designat să funcționeze cu o familie specifică de microprocesoare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.14 — Arhitectura Northbridge/Southbridge</h3>
+                <ul class="specs-list">
+                    <li><strong>Northbridge:</strong> legătură CPU ↔ dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
+                    <li><strong>Southbridge:</strong> periferice lower-speed (USB, SATA, audio, serial, parallel, PCI)</li>
+                    <li><strong>Front-Side Bus (FSB):</strong> conexiunea CPU ↔ Northbridge</li>
+                    <li>Northbridge era intermediar &#238;ntre CPU și Southbridge</li>
+                    <li><strong>Interfața Northbridge↔Southbridge:</strong> bus-ul PCI (anii 1990-2000)</li>
+                    <li>Performanța CPU era foarte dependentă de chipset-ul northbridge (memory performance)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.15 — Evoluția către integrare &#238;n procesor</h3>
+                <ul class="specs-list">
+                    <li><strong>2003:</strong> AMD Athlon 64 – primul cu memory controller integrat &#238;n CPU → nu mai e nevoie de northbridge pentru acces memorie</li>
+                    <li><strong>2008:</strong> Intel Core i series + X58 – Intel integrează și el memory controller</li>
+                    <li><strong>Progresiv:</strong> PCIe controller și GPU integrat direct pe CPU die</li>
+                    <li>Intel Platform Controller Hub (PCH) = northbridge+southbridge condensate &#238;ntr-un singur chip (de fapt un southbridge &#238;mbunătățit)</li>
+                    <li>AMD Fusion Controller Hub (FCH) – echivalentul AMD</li>
+                    <li>PCH-ul a fost integrat &#238;n package-ul procesorului (Skylake mobile – al doilea die)</li>
+                    <li><strong>AMD Zen:</strong> chipset-ul gestionează doar I/O de viteză mică (USB, SATA); toate conexiunile PCIe merg direct la CPU</li>
+                    <li><strong>AMD EPYC server:</strong> SoC complet, nu mai necesită chipset extern</li>
+                    <li><strong>Interfețe moderne:</strong> DMI (Intel), UMI (AMD) – legătura procesor↔chipset</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>4.6.16 — Console și sisteme mobile</h3>
+                <ul class="specs-list">
+                    <li><strong>Home computers, console, arcade (1980-1990):</strong> chipset = cipuri custom audio/grafică (ex: Original Amiga chipset, Sega System 16)</li>
+                    <li><strong>Smartphone-uri moderne:</strong> SoC (System on Chip) – CPU+GPU+modem+I/O pe un singur chip (ex: Qualcomm Snapdragon, Apple A-series)</li>
+                </ul>
+            </div>
+
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 3: LEGATURA FIZICA-INFORMATICA
-         =========================== -->
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    <strong>Fizica:</strong> Busul PCIe 4.0 este o magistrală electrică. Semnalele se propagă cu viteza luminii prin material; latența e de ordinul nanosecundelor. Fiecare bit este o pulsație de tensiune pe un fir (lane).
-                </p>
-                <p>
-                    <strong>Informatica:</strong> 16 lane-uri PCIe 4.0 = 16 Gbps × 16 = 256 Gbps. După codificare (8b/10b), rezultația reală e 200 Gbps = 25 GB/s. Aceasta este limita fizică a comunicării PS5 SSD cu placa de bază.
-                </p>
-                <p>
-                    Dacă lipsit o lane (defect fizic), nu doar viteza scade — în cel mai rău caz, comunicația se oprește complet. Jocul se încarcă la jumătate din viteză sau crash-ează.
-                </p>
+                <h3>Definiție și componente fundamentale</h3>
+                <ul class="specs-list">
+                    <li>Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetică centrală (ALU), unitate de control centrală, memorie (date + instrucțiuni), mediu de &#238;nregistrare extern (stocare), organe de intrare/ieșire</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Von Neumann Bottleneck</h3>
+                <ul class="specs-list">
+                    <li>CPU-ul nu poate accesa simultan instrucțiuni și date (partajează același bus)</li>
+                    <li>CPU trebuie să aștepte transferul datelor din/&#238;n memorie</li>
+                    <li>Severitatea crește cu fiecare generație de CPU (viteza CPU crește mai repede dec&#226;t bandwidth-ul memoriei)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Mitigări ale bottleneck-ului</h3>
+                <ul class="specs-list">
+                    <li>Cache &#238;ntre CPU și memoria principală</li>
+                    <li>Parallel computing, NUMA (Non-Uniform Memory Access)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiția și subcategoriile</h3>
+                <p>2. Microarhitectură (Computer Organization) – cum un procesor specific implementează ISA-ul (ex: dimensiunea cache-ului)</p>
+                <p>3. Systems Design – toate componentele hardware &#238;n afara CPU: DMA, virtualizare, multiprocessing</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Permite comunicarea &#238;ntre componentele electronice cruciale: CPU, memorie, periferice</li>
+                    <li><strong>Conține subsisteme semnificative:</strong> CPU, chipset I/O, memory controller, conectori interfață</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Componentele unui motherboard modern</h3>
+                <ul class="specs-list">
+                    <li>CPU socket(s) – montarea procesorului (sau BGA lipit direct)</li>
+                    <li>Chipset – interfață CPU↔memorie principală↔bus-uri periferice</li>
+                    <li>Expansion slots – PCIe x16 (GPU), PCIe x1, legacy PCI</li>
+                    <li>Power connectors – distribuie alimentarea la CPU, chipset, RAM, sloturi</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Periferice integrate (onboard)</h3>
+                <ul class="specs-list">
+                    <li>Integrated GPU (2D/3D cu VGA/DVI/HDMI/DisplayPort/TV)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Form factor și evoluție</h3>
+                <ul class="specs-list">
+                    <li><strong>Tableta/netbook:</strong> memorie, procesor, networking, storage – totul pe o singură placă</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Chipset = set de circuite integrate pe motherboard care gestionează fluxul de date &#238;ntre procesor, memorie și periferice</li>
+                    <li><strong>Determină performanța sistemului:</strong> controlează comunicarea CPU↔dispozitive externe</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Arhitectura Northbridge/Southbridge</h3>
+                <ul class="specs-list">
+                    <li><strong>Northbridge:</strong> legătură CPU ↔ dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
+                    <li><strong>Front-Side Bus (FSB):</strong> conexiunea CPU ↔ Northbridge</li>
+                    <li>Northbridge era intermediar &#238;ntre CPU și Southbridge</li>
+                    <li>Performanța CPU era foarte dependentă de chipset-ul northbridge (memory performance)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Evoluția către integrare &#238;n procesor</h3>
+                <ul class="specs-list">
+                    <li><strong>Progresiv:</strong> PCIe controller și GPU integrat direct pe CPU die</li>
+                    <li>PCH-ul a fost integrat &#238;n package-ul procesorului (Skylake mobile – al doilea die)</li>
+                    <li><strong>Interfețe moderne:</strong> DMI (Intel), UMI (AMD) – legătura procesor↔chipset</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 4: APLICARE DIRECTA IN CONSOLE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Cum Hierarhia Sistemului Afectează Gameplay</h3>
-                <p>
-                    1. <strong>Încărcări rapide vs lente:</strong> Xbox Series S (7 GB/s) are loading mai lent decât PS5 (5.5 GB/s, dar GDDR6 mai rapid). Developers-ii măsoară startup time; dacă e sub 3 secunde, primesc bonus la Metacritic.
-                </p>
-                <p>
-                    2. <strong>Densitatea texturilor și modele:</strong> Cu UMA și SSD rapid, artists-ii pot crea lumi mai dense. Texturile de 4K sunt norma, nu excepție. Memorie slow ar forța texturi de 256×256, art style aproape cartoony.
-                </p>
-                <p>
-                    3. <strong>Physics realism:</strong> CPU cu 8 nuclee (PS5, Xbox) permite physics engine complex. Mii de obiecte interacționând în real-time, fire care se clatină, apă care se agită. Generic PS3 nu putea face asta.
-                </p>
-                <p>
-                    4. <strong>Streaming-ul în multiplayer:</strong> Wi-Fi 6 și ethernet 1Gbit asigură latență sub 50ms. Asta e diferența dintre a simți controlabilitate și a simți lag mort.
-                </p>
+                <h3>Mitigări ale bottleneck-ului</h3>
+                <ul class="specs-list">
+                    <li>System on Chip (SoC) – CPU + ierarhia memoriei pe același chip, reduce latența</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li>Motherboard (mainboard, system board, logic board) = PCB principal &#238;ntr-un calculator</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Form factor și evoluție</h3>
+                <ul class="specs-list">
+                    <li>Case + motherboard + PSU trebuie să aibă form factor compatibil</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Evoluția către integrare &#238;n procesor</h3>
+                <ul class="specs-list">
+                    <li><strong>AMD EPYC server:</strong> SoC complet, nu mai necesită chipset extern</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Console și sisteme mobile</h3>
+                <ul class="specs-list">
+                    <li><strong>Home computers, console, arcade (1980-1990):</strong> chipset = cipuri custom audio/grafică (ex: Original Amiga chipset, Sega System 16)</li>
+                    <li><strong>Smartphone-uri moderne:</strong> SoC (System on Chip) – CPU+GPU+modem+I/O pe un singur chip (ex: Qualcomm Snapdragon, Apple A-series)</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 5: EXEMPLU REAL DE HARDWARE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Ierarhia PS5 vs PS4</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <strong>PlayStation 4 (2013):</strong>
+                <h3>Eficiență energetică și tendințe</h3>
                 <ul class="specs-list">
-                    <li>CPU: 8-core Jaguar (1.6 GHz) — acces la GDDR5 doar indirect via L2</li>
-                    <li>GPU: 1152 CUDA cores (AMD custom) — GDDR5 176 GB/s</li>
-                    <li>RAM: 8 GB GDDR5 (5.5GB game + 2.5GB OS)</li>
-                    <li>HDD: 5400 RPM, ~80 MB/s lectura medie</li>
-                    <li>Bottleneck: CPU liniștit la HDD; jocuri aunchin o sesiune din mai puțin de ce pot memora eficient</li>
+                    <li><strong>Tendința:</strong> focusul s-a mutat de la clock speed la eficiență energetică (Intel Haswell: 30-40W → 10-20W)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <strong>PlayStation 5 (2020):</strong>
+                <h3>Componentele unui motherboard modern</h3>
                 <ul class="specs-list">
-                    <li>CPU: 8-core Zen 2 (3.5 GHz) — acces direct la GDDR6C (448 GB/s) via UMA</li>
-                    <li>GPU: 2304 RDNA cores (AMD custom) — GDDR6 bandwidth 448 GB/s</li>
-                    <li>RAM: 16 GB GDDR6C (10 GB game + 6 GB audio/I/O + OS)</li>
-                    <li>SSD: NVMe PCIe 4.0, Kraken conroller, ~5.5 GB/s lectura (comprimare hardware H.265 scuta 500 MB/s overhead)</li>
-                    <li>Beneficiu: CPU poate procesa miliarde de calcule; GPU poate randa textură masive; SSD permite încarcări sub 1 secundă</li>
+                    <li><strong>Memory slots – DIMM:</strong> DDR3/DDR4/DDR5 sau LPDDRx onboard</li>
                 </ul>
             </div>
 
-            <div class="card">
-                <p>
-                    <strong>Impactul asupra jocurilor:</strong> Ghost of Tsushima (PS4) = 30 FPS cu draw distance limitat. Rift Apart (PS5) = 60 FPS cu draw distance infinit și tranziții instantanee între lumi. Aceasta nu e doar firmware; este arhitectura hardware direct în action.
-                </p>
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și rol</h3>
+                <ul class="specs-list">
+                    <li><strong>Primul chipset PC:</strong> NEAT chipset (Chips and Technologies, 1984) pentru IBM PC AT cu Intel 80286</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Evoluția către integrare &#238;n procesor</h3>
+                <ul class="specs-list">
+                    <li><strong>2003:</strong> AMD Athlon 64 – primul cu memory controller integrat &#238;n CPU → nu mai e nevoie de northbridge pentru acces memorie</li>
+                    <li><strong>2008:</strong> Intel Core i series + X58 – Intel integrează și el memory controller</li>
+                    <li>Intel Platform Controller Hub (PCH) = northbridge+southbridge condensate &#238;ntr-un singur chip (de fapt un southbridge &#238;mbunătățit)</li>
+                    <li>AMD Fusion Controller Hub (FCH) – echivalentul AMD</li>
+                    <li><strong>AMD Zen:</strong> chipset-ul gestionează doar I/O de viteză mică (USB, SATA); toate conexiunile PCIe merg direct la CPU</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 6: PROBLEME FRECVENTE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-            <div class="card">
-                <h3>⚠️ Jocul lag-uiește atunci când sunt mai mulți inimici pe ecran</h3>
-                <p>
-                    Cauză: CPU-ul nu poate calcula physics pentru toți inimicii în timp. Queue-uri de comandă se înclică, GPU așteaptă datele. Developers-ii trebuie să compromise: fewer enemies, simpler AI, sau lower resolution.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Texturile nu se încarcă — apar placeholder gri</h3>
-                <p>
-                    Cauză: SSD declarat defect sau bandwidth consum blocat. Queue streaming nu poate aduce date în timp. Soluție: schimbă SSD-ul (expansion port) sau resetează cache-ul jocului.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Conectivitate slabă în multiplayer</h3>
-                <p>
-                    Cauză: Wi-Fi 6 e blocat (interferență 2.4 GHz) sau ethernet-ul e deconectat. I/O controller-ul nu-și face treaba. Soluție: switch la ethernet, mutare departe de microunde, Wi-Fi 6E router.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Jocul se oprește inespetat în scene complexe</h3>
-                <p>
-                    Cauză: spill la RAM — datele din SSD nu se pot încărca în timp; RAM e plin. Cache L3 e depășit. Procesul de streaming nu poate ține pasul. Rezultat: crash sau freeze. Developers-ii trebuie profiling-uri aggressive.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Controller-ul lag-uiește / se deconectează brusc</h3>
-                <p>
-                    Cauză: I/O controller-ul pierde pachetele USB wireless datorită interferenței. Firmware out-of-date în controller. Soluție: update firmware PS5, mutare router-ului, USB extender pentru receptor.
-                </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu Ierarhia sistemului complet</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 7: RECAPITULARE
-         =========================== -->
     <section class="section" id="recapitulare">
         <div class="container">
             <h2 class="section-title">Recapitulare</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Ierarhia memoriei</strong> = Registri, Cache L1/L2/L3, RAM, Storage — fiecare nivel mai lent dar mai mare</li>
-                    <li><strong>UMA (Unified Memory)</strong> = CPU și GPU împart aceeași memorie fără copiere</li>
-                    <li><strong>Bandwidth</strong> = rata de transfer; limitează viteza cu care datele circulă</li>
-                    <li><strong>Cache hit</strong> = data e într-un cache apropiat; acces rapid. <strong>Cache miss</strong> = data e în RAM/SSD; acces lent</li>
-                    <li><strong>Queue Streaming</strong> = SSD încarcă datele pentru zone viitoare înainte ca jucătorul să ajungă</li>
-                    <li><strong>PCIe 4.0</strong> = magistrala la 25 GB/s pentru SSD și periferice</li>
-                    <li><strong>I/O Controller</strong> = procesor dedicat pentru USB, Wi-Fi, ethernet, audio — elibereaza CPU</li>
-                    <li><strong>Bottleneck</strong> = în orice sistem, componenta cea mai lentă determină viteza generală</li>
-                    <li>PS5 SSD: 5.5 GB/s (Kraken compresie); PS4 HDD: 80 MB/s — <strong>68x mai rapid</strong></li>
-                    <li>Fluxul datelor: SSD → RAM → CPU/GPU cache → regitri → rezultat final pe ecran</li>
+                    <li><strong>Definiție și componente fundamentale:</strong> Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetică centrală (ALU), unitate de control centrală, memorie (date + instrucțiuni), mediu de &#238;nregistra...</li>
+                    <li><strong>Von Neumann Bottleneck:</strong> Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
+                    <li><strong>Mitigări ale bottleneck-ului:</strong> Cache &#238;ntre CPU și memoria principală</li>
+                    <li><strong>Evoluția arhitecturii:</strong> 1960-1970: Memory-mapped I/O – dispozitivele I/O tratate ca memorie</li>
+                    <li><strong>Definiția și subcategoriile:</strong> Arhitectura calculatorului = structura unui sistem de calcul din componente</li>
+                    <li><strong>Performanță:</strong> IPC (Instructions Per Cycle) – măsura eficienței: calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
+                    <li><strong>Eficiență energetică și tendințe:</strong> MIPS/W (millions of instructions per second per watt) – metric clasic</li>
+                    <li><strong>Definiție și rol:</strong> Motherboard (mainboard, system board, logic board) = PCB principal &#238;ntr-un calculator</li>
+                    <li><strong>Componentele unui motherboard modern:</strong> CPU socket(s) – montarea procesorului (sau BGA lipit direct)</li>
+                    <li><strong>Periferice integrate (onboard):</strong> Disk controllers (SATA, istoric PATA)</li>
+                    <li><strong>Form factor și evoluție:</strong> ATX – cel mai comun form factor desktop (2024): microATX, mini-ITX, EATX</li>
+                    <li><strong>Bootstrapping (Power-On):</strong> Firmware (BIOS/UEFI) stocat &#238;n flash non-volatil pe motherboard</li>
+                    <li><strong>Definiție și rol:</strong> Chipset = set de circuite integrate pe motherboard care gestionează fluxul de date &#238;ntre procesor, memorie și periferice</li>
+                    <li><strong>Arhitectura Northbridge/Southbridge:</strong> Northbridge: legătură CPU ↔ dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
+                    <li><strong>Evoluția către integrare &#238;n procesor:</strong> 2003: AMD Athlon 64 – primul cu memory controller integrat &#238;n CPU → nu mai e nevoie de northbridge pentru acces memorie</li>
+                    <li><strong>Console și sisteme mobile:</strong> Home computers, console, arcade (1980-1990): chipset = cipuri custom audio/grafică (ex: Original Amiga chipset, Sega System 16)</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 8: QUIZ
-         =========================== -->
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
-            <!-- Quiz Q1 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Ce înseamnă UMA (Unified Memory Architecture)?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Model stored-program?</strong></p>
                 <ul class="specs-list">
-                    <li>a) CPU și GPU au memorii separate, trebuie copiate datele între ele</li>
-                    <li>b) CPU și GPU împart aceeași memorie și o accesează direct</li>
-                    <li>c) Una memorie doar pentru CPU, alta doar pentru storage</li>
-                    <li>d) Memoria se sincronizează la fiecare ciclu de ceas</li>
+                    <li>a) Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
+                    <li>b) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
+                    <li>c) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
+                    <li>d) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) CPU și GPU împart aceeași memorie și o accesează direct</strong> — UMA elimină overhead-ul copiere datelor și crește efficiency.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — instrucțiunile și datele sunt stocate &#238;n aceeași memorie</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q2 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Care este diferența dintre L3 cache și RAM în ceea ce privește viteza?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Von Neumann Bottleneck?</strong></p>
                 <ul class="specs-list">
-                    <li>a) L3 e mai rapid cu ~50x, dar RAM e mult mai mare</li>
-                    <li>b) RAM e mai rapid, dar L3 e mai mic</li>
-                    <li>c) Nu e diferență de viteză, doar de capacitate</li>
-                    <li>d) L3 e doar pentru GPU, RAM pentru CPU</li>
+                    <li>a) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
+                    <li>b) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>c) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
+                    <li>d) Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) L3 e mai rapid cu ~50x, dar RAM e mult mai mare</strong> — L3 cache acces 40-75 cicli, RAM acces 200+ cicli. Trade-off între viteză și capacitate.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q3 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Ce este Queue Streaming în context-ul jocurilor moderne?</strong></p>
+                <p><strong>Care afirmație este corectă despre: 1960-1970?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Streaming a jocului pe Twitch în real-time</li>
-                    <li>b) SSD-ul încarcă datele pentru zone viitoare înainte ca jucătorul să ajungă</li>
-                    <li>c) Trimiterea pachetelor de date printr-un server</li>
-                    <li>d) Sincronizarea timingului audio-video</li>
+                    <li>a) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>b) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
+                    <li>c) Memory-mapped I/O – dispozitivele I/O tratate ca memorie</li>
+                    <li>d) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) SSD-ul încarcă datele pentru zone viitoare înainte ca jucătorul să ajungă</strong> — Predictive loading. Permite lumi mai mari și tranziții mai rapide.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Memory-mapped I/O – dispozitivele I/O tratate ca memorie</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q4 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Care este bandwidth-ul PCIe 4.0 pentru un SSD modern?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Definiția și subcategoriile?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 5.5 GB/s</li>
-                    <li>b) 25 GB/s</li>
-                    <li>c) 80 MB/s</li>
-                    <li>d) 448 GB/s</li>
+                    <li>a) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>b) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
+                    <li>c) Arhitectura calculatorului = structura unui sistem de calcul din componente</li>
+                    <li>d) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) 25 GB/s</strong> — PCIe 4.0 raw = 64 Gbps pe 16 lane-uri; după codificare 8b/10b = 25 GB/s. PS5 SSD e ceva mai lent (5.5 GB/s) datorită algoritmului de compresie Kraken.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — Arhitectura calculatorului = structura unui sistem de calcul din componente</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q5 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Ce rol joacă I/O Controller-ul în PS5?</strong></p>
+                <p><strong>Care afirmație este corectă despre: IPC (Instructions Per Cycle) – măsura eficienței?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Amplifică semnalul audio</li>
-                    <li>b) Gestionează USB, Wi-Fi, ethernet și alte periferice; elibereaza CPU din aceste lucrări</li>
-                    <li>c) Controlează temperatura procesorului</li>
-                    <li>d) Sincronizează cadre pentru HDMI</li>
+                    <li>a) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>b) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
+                    <li>c) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
+                    <li>d) calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Gestionează USB, Wi-Fi, ethernet și alte periferice; elibereaza CPU din aceste lucrări</strong> — În PS4, o parte din I/O era responsabilitate CPU. Dedicare în PS5 = mai multă putere de calcul pentru joc.</p>
+                    <p style="margin-top: 0.5rem;"><strong>d) — calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</strong></p>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 9: EXERCITIU
-         =========================== -->
     <section class="section" id="exercitiu">
         <div class="container">
             <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Optimizarea cache-ului</h3>
-                <p>
-                    <strong>Scenariu:</strong> Scrii o funcție în C++ care procesează o matrice 3D de 1000×1000×1000 voxeli (puncte în spațiu 3D) pentru raytracing. Fiecare voxel ocupă 4 bytes. Matricea întreagă = ~4 GB. Hardware: PS5 cu L3 cache de 8 MB.
-                </p>
-                <p><strong>Sarcini:</strong></p>
+                <h3>🧠 Exercițiu: Ierarhia sistemului complet</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de CPU. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>1. Calculează câți voxeli încap în L3 cache-ul de 8 MB. (8 MB / 4 bytes = ? voxeli)</li>
-                    <li>2. Dacă procesezi voxeli la întâmplare (random), cât de des va apărea cache miss?</li>
-                    <li>3. Propune o strategie de acces (walking pattern) care maximează cache hit-uri. De ce va funcționa mai bine?</li>
-                    <li>4. Calculează time-ul de acces: CPU e la 3.5 GHz (285 ps per ciclu). L3 access e 40 cicli, RAM access e 200 cicli. Cât e diferența de timp pentru 1 milion de acces-uri?</li>
-                    <li>5. Cum ar schimba răspunsul tău dacă ar putea coopia datele mai întâi în VRAM rapid (448 GB/s)?</li>
+                    <li>1. Defineste pe scurt: CPU.</li>
+                    <li>2. Ce rol are GPU în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre CPU și RAM.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> 8 MB = 8,000,000 bytes. 8,000,000 / 4 = <strong>2 milioni de voxeli</strong>. Din 1 miliard total, asta e 0.2% — e clar că cache nu încape toți datele.</p>
-                        <p><strong>2.</strong> Random access = aproape constant cache miss-uri pe 99.8% din operații. Performance catastrofal.</p>
-                        <p><strong>3.</strong> Spatial locality: procesează voxeli în ordine lineară (rând cu rând, strat cu strat). Fiecare acces la cache duce și pe vecini în cache (datorită prefetch-ului hardware). Hit rate urca la ~80-90%.</p>
-                        <p><strong>4.</strong> L3 time/acces = 40 × 285 ps = 11.4 ns. RAM time/acces = 200 × 285 ps = 57 ns. Diferență = 45.6 ns per acces. Pentru 1 milion de acces-uri: dacă toți sunt RAM, 57 micro-secunde. Dacă toți sunt L3, 11.4 micro-secunde. Diferență totală = ~45 milli-secunde pentru 1M acces-uri. Pe o scena cu raytracing care face miliarde de acces-uri, ăsta e killer.</p>
-                        <p><strong>5.</strong> Copierea 4 GB în VRAM = 4 GB / 448 GB/s = 9 ms. Ca apoi toți accesul-urile să fie din GDDR6 rapid? Deci total = 9 ms copy + 10-50 ms processing cu VRAM. Mai rapid decât RAM slow? Probabil. Depinde de algoritm; cu raytracing, VRAM e MVP.</p>
+                        <p><strong>1.</strong> Model stored-program: instrucțiunile și datele sunt stocate &#238;n aceeași memorie</p>
+                        <p><strong>2.</strong> Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</p>
+                        <p><strong>3.</strong> Cache &#238;ntre CPU și memoria principală</p>
                     </div>
                 </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -528,3 +683,16 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 6.5 — Protecții electrice și circuite de siguranță">
+    <meta name="description" content="Lecția 6.5 — Protecții electrice">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 6.5 — Protecții Electrice — Console Notebook</title>
+    <title>Lecția 6.5 — Protecții electrice — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -31,426 +35,485 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — Surse de Alimentare și Eficiență</p>
-            <h1>Lecția 6.5 — Protecții Electrice și Semnale de Eroare</h1>
-            <p>Cum circuitele de protecție vă salvează consola din autodestruct și cum recunosc erorile grave.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — ALIMENTARE ȘI PROBLEME REALE</p>
+            <h1>Lecția 6.5 — Protecții electrice</h1>
+            <p>OCP, OVP, OTP, SCP</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- ===========================
          CAPITOLUL 1: INTRODUCERE
          =========================== -->
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    Apeși butonul de pornire. În acel moment, o tensiune de 230V AC pătrunde în sarcina consolei. Dacă nu am avea protecții, acea tensiune ar ajunge direct la procesor de 1.05V și îl ar arde instantaneu. Comienza o reacție în lanț: scurtcircuit, incendiu pe placa, producția fugar a unui fulg electric intern.
-                </p>
-                <p>
-                    Dar consola <em>nu</em> se aprinde spontan. De ce? Răspunsul: <strong>circuite de protecție sofisticate</strong>. Sute de componente mici — comparatori, multiplexori, mosfet-uri — monitorizează fiecare aspect al puterii și declanșează acțiuni apărării înainte de dezastru.
-                </p>
-                <p>
-                    Acestea sunt OCP (Overcurrent Protection), OVP (Overvoltage Protection), OTP (Overtemperature Protection), SCP (Short Circuit Protection). Plus semnale de control: Power Good, Reset Line, Watchdog Timer. Fiecare are o misiune. Fiecare poate salva sau coda consola.
-                </p>
+                <p>limitatoare de curent (current limiters)</p>
+                <p>Această lecție acoperă: <strong>OCP</strong>, <strong>OVP</strong>, <strong>OTP</strong>, <strong>SCP</strong>, <strong>Power Good</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 2: TEORIE
-         =========================== -->
     <section class="section" id="teorie">
         <div class="container">
             <h2 class="section-title">Teorie Structurată</h2>
 
-            <!-- 2.1 OCP - Overcurrent Protection -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — OCP (Overcurrent Protection)</h3>
-                <p>
-                    <strong>Scenă:</strong> O componentă pe placa de bază devine defectă și scurtcircuitează. Zeci de amperi încearcă să curgă printr-un fir dimensionat pentru 2 amperi. Firul se încinge anormal, plasticul izolator se topește, combustibili se aprind. Incendiu.
-                </p>
-                <p>
-                    <strong>Soluție — OCP:</strong> Un senzor de curent (Current Sense Resistor) măsoară curentul pe fiecare linie majoră (12V, 5V, 3.3V, core CPU). Dacă curentul depășește pragul stabilit (ex: 3A pe o linie), un circuit comparator declanșează imediat o comandă SHUT-OFF către PSU.
-                </p>
+                <h3>6.5.1 — Definiția semnalului Power Good</h3>
                 <ul class="specs-list">
-                    <li>Timp de răspuns: sub 1 microsecundă</li>
-                    <li>Precizie: ±5%</li>
-                    <li>După OCP: PSU intră într-o stare de eroare și refuză alimentare; LED roșu aprins</li>
+                    <li><strong>Power Good (power-good):</strong> semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>Indică faptul că toate tensiunile sunt conform specificațiilor</li>
+                    <li>Sistemul poate proceda la pornire (boot) și operare</li>
+                    <li>Este un semnal de +5V generat de sursa de alimentare</li>
                 </ul>
-                <p>
-                    <strong>Exemplu real:</strong> PS5 spune "Cannot start — thermal error" datorită OCP! Dacă ceva scurtcircuitează (chip crăpat, sursă de apă), OCP detectează curent anomal și oprește complet consola înainte de deteriorare majoră. E o protecție de ultim moment.
-                </p>
             </div>
 
-            <!-- 2.2 OVP - Overvoltage Protection -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — OVP (Overvoltage Protection)</h3>
-                <p>
-                    <strong>Scenă:</strong> Un VRM (Voltage Regulator Module) pe placa de bază se defectează și, în loc să stabilizeze 1.05V spre CPU, produce 2.5V. Pe măsură ce tranzistori din SoC vedeau o tensiune dublu mai mare, toți ar arde simultan. Electromigrare în nanosecunde.
-                </p>
-                <p>
-                    <strong>Soluție — OVP:</strong> Un circuit Zener diode + opamp monitorizează fiecare linie de tensiune. Dacă tensiunea depășește limita maximă (ex: CPU core max 1.2V), un comutator electronic (FET) deschide circuitul și deconectează alimentarea de la acea componentă. 
-                </p>
+                <h3>6.5.2 — Specificația ATX Power Good</h3>
                 <ul class="specs-list">
-                    <li>Linii monitorizate în PS5: 1V core, 1.35V I/O, 3.3V, 5V, 12V</li>
-                    <li>Prag alert: ±5% peste nominal</li>
-                    <li>Timp de respons: sub 100 nanosecunde</li>
+                    <li>Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</li>
+                    <li>Se generează c&#226;nd sursa a trecut testele interne și ieșirile s-au stabilizat</li>
+                    <li><strong>Timp de stabilizare:</strong> &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>Semnalul este trimis plăcii de bază unde este recepționat de chip-ul timer al procesorului</li>
+                    <li>Timer-ul controlează linia de reset a procesorului</li>
                 </ul>
-                <p>
-                    O defecțiune OVP lasă consola cu LED roșu și ecranul negru. Jocul e imposibil. Nicio deteriorare majoră însă — componentele critice s-au decuplat sigur.
-                </p>
             </div>
 
-            <!-- 2.3 OTP - Overtemperature Protection -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — OTP (Overtemperature Protection)</h3>
-                <p>
-                    <strong>Scenă:</strong> Fantana de răcire a PS5 e blocată de praf. Temperatura SoC-ului crește la 100°C, apoi 110°C. La 115°C, tranzistorii încep să se deterioreze ireversibil. Defectări în cascadă ale circuitelor.
-                </p>
-                <p>
-                    <strong>Soluție — OTP:</strong> Processor-ul PS5 conține senzori termici încorporați. Firmware-ul urmării temperatura în real-time. Praguri de acțiune:
-                </p>
+                <h3>6.5.3 — Cerințe ATX pentru PWR_OK</h3>
                 <ul class="specs-list">
-                    <li>80°C — avertisment, software notificare</li>
-                    <li>90°C — reducere a clock-ului (thermal throttling); jocul ruleaza la 60 FPS → 30 FPS</li>
-                    <li>105°C — shutdown de urgență; consolea se oprește complet</li>
+                    <li>PWR_OK trebuie să devină HIGH nu mai devreme de 100 ms după stabilizarea liniilor de tensiune</li>
+                    <li>Trebuie să răm&#226;nă HIGH pentru cel puțin 16 ms după pierderea alimentării AC</li>
+                    <li>Trebuie să scadă (sub 0.4V) cu cel puțin 1 ms &#238;nainte ca liniile de tensiune să iasă din specificații</li>
+                    <li><strong>Specificația:</strong> liniile de tensiune la 95% din valoarea nominală</li>
                 </ul>
-                <p>
-                    Aceasta schimbă viteza din joc — din throttling apărut pe ecran o mică notificare "console getting too hot" și frame-rate scade. Jucătorul știe: curăță fantana, dai pauză, mai apoi e OK.
-                </p>
             </div>
 
-            <!-- 2.4 SCP - Short Circuit Protection -->
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — SCP (Short Circuit Protection)</h3>
-                <p>
-                    <strong>Diferență de OCP:</strong> OCP detectează curent ridicat pe o linie normală. SCP detectează scurtcircuit direkt: 12V conectat neintențional cu GND (masa).
-                </p>
-                <p>
-                    <strong>Mecanismul:</strong> Un FET de putere controlat electronic este în serie cu fiecare linie de putere. Dacă detectează o cădere de tensiune anormală (indicator de scurtcircuit), FET-ul se deschide (cută circuitul), limitând curentul la un nivel sigur (~100 mA, nu suficient pentru incendiu).
-                </p>
-                <p>
-                    <strong>Combinație OCP + SCP:</strong> OCP monitorizează curent; SCP preântâmpină scurtcircuit fizic. Împreună, acoperă 99% din defecte de hardware care ar putea cauza daunelor.
-                </p>
-            </div>
-
-            <!-- 2.5 Power Good și Reset Signals -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Power Good (PG) și Reset Line (RST#)</h3>
-                <p>
-                    Consola nu pornește imediat când apesi butonul. De ce? Pentru că trebuie o secvență de power-on controlată:
-                </p>
-                <ol class="specs-list">
-                    <li><strong>Pornire PSU:</strong> 12V apare pe magistrala principală. Dar CPU nu trebuie să pornească încă.</li>
-                    <li><strong>Power Good signal:</strong> PSU monitorizează stabilitate a 12V timp de ~100 ms. Dacă e stabil, trimite semnalul PG = HIGH către placa de bază.</li>
-                    <li><strong>Reset sequence:</strong> Micro-controller-ul consolei primind PG, pornește secvența de reset. VRM-urile încep să furnizeze 1.05V către CPU. Dar CPU e ținut în reset (RST# = LOW).</li>
-                    <li><strong>Voltage ramp:</strong> Tensiunile de core urc lent de la 0V la 1.05V. Aceasta e critică; o creștere bruscă ar deteriora tranzistorii. Durează ~50 ms.</li>
-                    <li><strong>Release reset:</strong> După ce toți voltaj sunt stabil (Power Good și Voltage Rails good), RST# devin HIGH. CPU iese din reset și pornesc boot-ul BIOS.</li>
-                </ol>
-                <p>
-                    Dacă oricare din acești semnale faliază (defect PSU, defect VRM), consola nici nu porneș. E mecanismul care-ți salvează componente.
-                </p>
-            </div>
-
-            <!-- 2.6 Watchdog Timer -->
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.6 — Watchdog Timer (WDT)</h3>
-                <p>
-                    <strong>Scenariu:</strong> Firmware-ul PS5 intrează într-o buclă infinit sau e blocat pe o operație de I/O care niciodată nu se termină. CPU e "alive" (tensiune normală) dar nefuncțional. Consola par-pare să fie criptică, dar nimic se întâmplă. Jocul e blocat.
-                </p>
-                <p>
-                    <strong>Soluție — WDT:</strong> Un timer hardware intern care trebuie să fie "feed" (resetat) de firmware la intervale regulate (ex: fiecare 1 secundă). Dacă firmware nu reușiți să feed-ul timer (adică, e blocat), timer-ul se elibereaza și declanșează automat un reset complet a sistemului.
-                </p>
+                <h3>6.5.4 — Surse de calitate inferioară</h3>
                 <ul class="specs-list">
-                    <li>Feed timeout: 1-2 secunde (configurat în boot ROM)</li>
-                    <li>Acțiune pe timeout: RST# pulsa LOW o dată, CPU resetează</li>
-                    <li>Efect: Consola reface boot-ul. Jocul e pierdut, dar hardware e intact.</li>
+                    <li>Sursele ieftine/de calitate scăzută nu urmează specificația ATX</li>
+                    <li>&#206;n loc de circuit de monitorizare separat, conectează Power Good la una din liniile de +5V</li>
+                    <li><strong>Consecință:</strong> procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>Linia de +5V trebuie să scadă foarte mult pentru a opri trigger-ul</li>
+                    <li>Aceasta poate fi prea jos pentru operare corectă</li>
                 </ul>
-                <p>
-                    Watchdog e și apărare compotrus omul de siguranță pentru operații nesfârșite. Dacă jocul se blochează (și WDT e implementat corect), consola se resetează de la sine.
-                </p>
             </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.5 — Valorile Power Good</h3>
+                <ul class="specs-list">
+                    <li>Bazate pe &#238;nt&#226;rzierea &#238;n milisecunde p&#226;nă la gata completă</li>
+                    <li><strong>Valori considerate anormale:</strong> sub 100 ms sau peste 500 ms</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.6 — Definiția supracurentului (OCP)</h3>
+                <ul class="specs-list">
+                    <li><strong>Overcurrent (supracurent):</strong> situație &#238;n care un curent electric mai mare dec&#226;t cel intenționat</li>
+                </ul>
+                <p>există printr-un conductor</p>
+                <ul class="specs-list">
+                    <li>Duce la generare excesivă de căldură și risc de incendiu sau deteriorare echipament</li>
+                    <li><strong>Cauze posibile:</strong> scurtcircuit, sarcină excesivă, design incorect, arc fault, ground fault</li>
+                    <li><strong>Mecanisme de protecție OCP:</strong> siguranțe (fuses), &#238;ntreruptoare de circuit (circuit breakers),</li>
+                </ul>
+                <p>limitatoare de curent (current limiters)</p>
+                <ul class="specs-list">
+                    <li>Protejează cablajul circuitului de deteriorare cauzată de supracurent</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.7 — Supracurent &#238;n rețeaua electrică</h3>
+                <ul class="specs-list">
+                    <li>Lipsa capacității de supracurent (short circuit ratio scăzut) creează probleme multiple:</li>
+                    <li>Tranzienți la schimbări mari de sarcină → variații mari de tensiune</li>
+                    <li>Unele motoare nu pot porni &#238;n condiții de subtensiune</li>
+                    <li>Dispozitivele de protecție sunt proiectate pentru un nivel suficient de supracurent</li>
+                    <li>&#206;n sisteme slabe, curentul de scurtcircuit e greu de distins de tranzienți normali</li>
+                    <li>La black start, curentul mare de inrush poate fi necesar pentru energizarea componentelor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.8 — Definiția supratensiunii (OVP)</h3>
+                <ul class="specs-list">
+                    <li><strong>Overvoltage (supratensiune):</strong> ridicarea tensiunii peste limita de design a circuitului</li>
+                    <li>Poate fi tranzientă (milisecunde – spike de tensiune) sau susținută (power frequency overvoltage)</li>
+                    <li>Dispozitivele sunt proiectate pentru o tensiune maximă de alimentare</li>
+                    <li>Depășirea poate cauza daune considerabile</li>
+                    <li><strong>Exemplu:</strong> un bec are un fir care la tensiunea nominală duce un curent suficient</li>
+                </ul>
+                <p>→ tensiune prea mare = firul se topește = becul arde</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.9 — Surse de supratensiune</h3>
+                <ul class="specs-list">
+                    <li><strong>Naturale:</strong> fulgere, rafale de v&#226;nt solar după erupții solare</li>
+                    <li><strong>Artificiale:</strong> inducție electromagnetică la pornirea/oprirea sarcinilor inductive</li>
+                </ul>
+                <p>(motoare electrice, electromagneți)</p>
+                <ul class="specs-list">
+                    <li>Comutarea sarcinilor rezistive AC grele fără circuite zero-crossing</li>
+                    <li>Generatoare diesel/benzină cu viteză instabilă → supratensiune scurtă dar dăunătoare</li>
+                    <li>Regulator de tensiune defect → supratensiune</li>
+                    <li><strong>Exemplu real:</strong> East Palo Alto 2011, tensiunea a crescut de la 110V la 400V timp de 80 minute</li>
+                </ul>
+                <p>→ echipamente electronice, becuri și contoare smart deteriorate</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.10 — Dispozitive de protecție la supratensiune</h3>
+                <ul class="specs-list">
+                    <li>Avalanche diode</li>
+                    <li>Gas-filled tube (tub cu gaz)</li>
+                    <li>Lightning rod (paratrăsnet)</li>
+                    <li>Metal-oxide varistor (MOV)</li>
+                    <li>Spark gap</li>
+                    <li>Transient-voltage-suppression diode (TVS)</li>
+                    <li>Zener diode</li>
+                    <li>Varistor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.11 — Circuitul Crowbar – protecție la supratensiune</h3>
+                <ul class="specs-list">
+                    <li>Circuit electric pentru prevenirea deteriorării circuitelor de o condiție de supratensiune</li>
+                    <li><strong>Funcționare:</strong> pune un scurtcircuit sau o cale de rezistență mică pe ieșirea de tensiune</li>
+                    <li><strong>Implementare:</strong> thyristor, TRIAC, trisil sau thyratron ca dispozitiv de scurtcircuitare</li>
+                    <li>Odată declanșat, depinde de circuitul de limitare a curentului de la sursa de alimentare</li>
+                    <li>Dacă limitarea curentului eșuează → siguranța se arde sau breaker-ul se declanșează</li>
+                    <li>Numele vine de la efectul similar cu aruncarea unui crowbar peste terminalele expuse</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.12 — Crowbar vs Clamp</h3>
+                <ul class="specs-list">
+                    <li><strong>Crowbar:</strong> odată declanșat, trage tensiunea sub nivelul de declanșare (aproape de ground)</li>
+                    <li><strong>Clamp:</strong> previne depășirea unui nivel preset de tensiune</li>
+                    <li>Crowbar nu revine automat la operare normală c&#226;nd supratensiunea dispare</li>
+                    <li>Alimentarea trebuie scoasă complet pentru resetare</li>
+                    <li><strong>Active crowbar:</strong> poate scoate scurtcircuitul c&#226;nd tranzientul s-a &#238;ncheiat</li>
+                </ul>
+                <p>→ folosește tranzistor sau GTO thyristor &#238;n loc de thyristor simplu</p>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.13 — Avantajele crowbar-ului</h3>
+                <ul class="specs-list">
+                    <li>Tensiunea de menținere scăzută permite transportul unui curent de defect mai mare</li>
+                </ul>
+                <p>fără disipare excesivă de putere (evită supra&#238;ncălzirea)</p>
+                <ul class="specs-list">
+                    <li>Mai probabil să dezactiveze dispozitivul (prin arderea siguranței/declanșarea breaker-ului)</li>
+                    <li>Atrage atenția asupra echipamentului defect</li>
+                    <li><strong>Aplicații:</strong> protecția tuburilor HV (klystron, IOT), surse de alimentare de laborator</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.14 — Protecții &#238;n sursa de alimentare ATX (din date anterioare)</h3>
+                <ul class="specs-list">
+                    <li><strong>OCP (Overcurrent Protection):</strong> protecție la supracurent</li>
+                    <li>Limitează curentul pe fiecare linie de ieșire</li>
+                    <li>Oprește sursa sau reduce ieșirea c&#226;nd curentul depășește limita</li>
+                    <li><strong>OVP (Overvoltage Protection):</strong> protecție la supratensiune</li>
+                    <li>Monitorizează toate liniile de ieșire (+3.3V, +5V, +12V)</li>
+                    <li>Oprește sursa c&#226;nd tensiunea depășește un prag (de obicei 110-120% din nominal)</li>
+                    <li><strong>OTP (Overtemperature Protection):</strong> protecție la supra&#238;ncălzire</li>
+                    <li>Senzor de temperatură intern</li>
+                    <li>Oprește sursa c&#226;nd temperatura internă depășește limita de siguranță</li>
+                    <li><strong>SCP (Short Circuit Protection):</strong> protecție la scurtcircuit</li>
+                    <li>Detectează scurtcircuitul pe orice linie de ieșire</li>
+                    <li>Oprește sursa instant pentru a preveni deteriorarea componentelor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.15 — Conectorul ATX 24-pin și semnale relevante</h3>
+                <ul class="specs-list">
+                    <li><strong>Pin 16 (PS_ON, verde):</strong> semnal de pornire, activ LOW (conectat la ground pentru pornire)</li>
+                    <li><strong>Pin 8 (Power Good, gri):</strong> semnal PWR_OK de +5V</li>
+                    <li><strong>Pin 9 (+5VSB, mov):</strong> tensiune standby permanentă de +5V (chiar și &#238;n standby)</li>
+                    <li><strong>Testul paperclip:</strong> conectarea PS_ON la ground pentru testarea sursei &#238;n afara sistemului</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.16 — Simptome de defecțiune PSU (din date anterioare)</h3>
+                <ul class="specs-list">
+                    <li><strong>Miros de ars:</strong> componentă internă deteriorată</li>
+                    <li><strong>Reporniri aleatorii:</strong> tensiune instabilă sau protecție OCP/OVP declanșată intermitent</li>
+                    <li><strong>Ventilator PSU nefuncțional:</strong> risc de supra&#238;ncălzire internă → declanșare OTP</li>
+                    <li>Chirping/squealing la scurtcircuit pe linia de ieșire</li>
+                    <li><strong>MTBF (Mean Time Between Failures):</strong> ~100.000 ore pentru surse de calitate</li>
+                </ul>
+            </div>
+
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 3: LEGATURA FIZICA-INFORMATICA
-         =========================== -->
-    <section class="section">
+    <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>
-                    <strong>Fizica:</strong> Fiecare protecție e o construcție electrică. OCP = senzor rezistiv care primește cadvere tensiune mică proporțional cu curentul, trimite pe comparator. OVP = referință Zener + opamp care compară. OTP = termistor (rezistor sensibil la temperatură) pe magistrala de date ADC.
-                </p>
-                <p>
-                    <strong>Informatica:</strong> Semnalul de intrare (analog) e convertit în digital. Firmware-ul comparând cu praguri pre-programate și iau decizii logice: "Curent > 3A? Da → trimite semnalul SHUT-OFF."
-                </p>
-                <p>
-                    Aceasta e combinație perfectă: hardware rapid (sub microsecundă) + software logic (citiți valori, evaluează condiții).
-                </p>
+                <h3>Surse de calitate inferioară</h3>
+                <ul class="specs-list">
+                    <li><strong>Consecință:</strong> procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 4: APLICARE DIRECTA IN CONSOLE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
             <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Scenarii Real de Utilizare</h3>
-                <p>
-                    <strong>1. Defect RAM:</strong> Chip de RAM se scurtcircuitează, 3.3V condiție cu GND. SCP detectează cădere de tensiune, limitează curentul. OCP confirmă curent ridicat. PSU primind OCP alert, oprice alimentare. Rezultat: LED roșu, consola nu pornișe, dar nu arată incendiu.
-                </p>
-                <p>
-                    <strong>2. VRM deteriorat:</strong> Un VRM care ar fi trebuit să furnizeze 1.05V produce brusc 1.8V. OVP pe linia CPU core pe care se declanșează: FET deschis. CPU e decuplat de tensiune anormală. Consola nu pornește, dar CPU rămâne intact. După service și înlocuire VRM, e reparabilă.
-                </p>
-                <p>
-                    <strong>3. Supraîncălzire ușoară:</strong> Jocul rulează în 90°C datorită un ventilator care se rotesc mai lent. OTP vede 90°C: software reduce clock. Jocul merge la 30 FPS în loc de 60. Jucătorul vede notificare. După pauză și curățare, revine normal. Experiență ușoară degradată, dar sistema e protejată.
-                </p>
-                <p>
-                    <strong>4. Firmware blocat:</strong> Update-ul de firmware se blochează în mijlocul unei operații Flash. CPU nu feed-ul WDT. După 1-2 secunde, WDT resetează CPU. Boot-ul reîncepe. Poate că firmware-ul se corup ușor, dar consolă nu e deterorată permanent.
-                </p>
+                <h3>Definiția semnalului Power Good</h3>
+                <ul class="specs-list">
+                    <li><strong>Power Good (power-good):</strong> semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>Este un semnal de +5V generat de sursa de alimentare</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Circuitul Crowbar – protecție la supratensiune</h3>
+                <ul class="specs-list">
+                    <li>Odată declanșat, depinde de circuitul de limitare a curentului de la sursa de alimentare</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 5: EXEMPLU REAL DE HARDWARE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: PS5 vs PS4 Protecții</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <strong>PlayStation 4 (2013) — Protecțiile Originale:</strong>
+                <h3>Specificația ATX Power Good</h3>
                 <ul class="specs-list">
-                    <li>OCP pe 12V, 5V — liniile majore</li>
-                    <li>OVP pe core CPU și GPU — monitorizare limitată</li>
-                    <li>OTP software – termosenzori pe die</li>
-                    <li>Watchdog Timer: 2 secunde timeout</li>
-                    <li>Limitare: monitorizare post-hoc; daunele apar mai ușor ante de a fi detectate</li>
+                    <li>Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</li>
+                    <li>Se generează c&#226;nd sursa a trecut testele interne și ieșirile s-au stabilizat</li>
+                    <li><strong>Timp de stabilizare:</strong> &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>Semnalul este trimis plăcii de bază unde este recepționat de chip-ul timer al procesorului</li>
+                    <li>Timer-ul controlează linia de reset a procesorului</li>
                 </ul>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <strong>PlayStation 5 (2020) — Protecțiile Avansate:</strong>
-                <ul class="specs-list">
-                    <li>OCP pe fiecare linie de tensiune (1V, 1.35V, 3.3V, 5V, 12V) — granularitate maximă</li>
-                    <li>OVP cu senzori analog redundanți pe semnale critice</li>
-                    <li>SCP dedicat pe fiecare magistrală de putere — prevenție scurtcircuit</li>
-                    <li>OTP cu histeresis multi-level (80°C-alert, 90°C-throttle, 105°C-shutdown)</li>
-                    <li>Watchdog Timer: 500 ms timeout — mai strict, mai degrabă de reset în caz de blocare</li>
-                    <li>Power Good monitoring cu história de voltage ramp control</li>
-                    <li>I/O Controller dedicat gestionează resetur și Power Sequences</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <p>
-                    <strong>Rezultat:</strong> PS5 e mult mai sigură decât PS4. La 2019-2021, mulți PS5-uri care au fost expuse la surge (defect PSU, ciment neregulă), s-au oprit sigur. PS4 din acea perioada aveau mai des probleme de determinare prin OVP insuficient.
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 6: PROBLEME FRECVENTE
-         =========================== -->
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-            <div class="card">
-                <h3>⚠️ PS5 nu pornește – LED roșu intermitent</h3>
-                <p>
-                    Cauză: OCP sau OVP declanșat. O componentă sau PSU e defectă. Semnalul Power Good nu e stabil. Soluție: testează cu un altă PSU; dacă merge, PSU e defectă. Dacă LED roșu revine, ceva pe placa de bază e rupt (chip RAM, VRM defect).
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Consola se reboot-ează aleatoriu în joc</h3>
-                <p>
-                    Cauză: OTP atinge pragul. Jocul e prea greu, temperatura crește peste 105°C, WDT resetează. Soluție: Curață fantana, controlează ventilatoare, reduce temperatura ambiantă. Dacă se întâmplă la jocuri low-end, VRM potențial defect generând volataj instabil.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Consola pornește dar se oprește după 5 secunde</h3>
-                <p>
-                    Cauză: Power Good monitoring detectează instabilitate a tensiunilor de core. Voltage rails nu se stabilizează. Solutie: verifica cabluri PSU; încearcă alta PSU; verifică condensatori (pot fi fisured de uzură).
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Thermal error — PS5 nu pornește deși e rece afară</h3>
-                <p>
-                    Cauză: Senzor OTP e defect sau lecitură ambigua. Firmware-ul crede că temperature e ridicată, deși nu e. Soluție: recalibrare în serviciu; teren senzor poate fi corupt și trebuia Reinstatat.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>⚠️ Consola se blochează în loading screen, nu se reboot-ează</h3>
-                <p>
-                    Cauză: Watchdog Timer nu e implementat corect în firmware deschis. Sau SSD I/O blocată permanent. WDT nu poate rescua. Soluție: boot-ul în Safe Mode, resetează hardware, restaure software din backup USB.
-                </p>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Definiția supracurentului (OCP)</h3>
+                    <p>Duce la generare excesivă de căldură și risc de incendiu sau deteriorare echipament</p>
+                    <p>Cauze posibile: scurtcircuit, sarcină excesivă, design incorect, arc fault, ground fault</p>
+                    <p>Protejează cablajul circuitului de deteriorare cauzată de supracurent</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Supracurent &#238;n rețeaua electrică</h3>
+                    <p>&#206;n sisteme slabe, curentul de scurtcircuit e greu de distins de tranzienți normali</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Surse de supratensiune</h3>
+                    <p>Regulator de tensiune defect → supratensiune</p>
+                    <p>→ echipamente electronice, becuri și contoare smart deteriorate</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Circuitul Crowbar – protecție la supratensiune</h3>
+                    <p>Funcționare: pune un scurtcircuit sau o cale de rezistență mică pe ieșirea de tensiune</p>
+                    <p>Implementare: thyristor, TRIAC, trisil sau thyratron ca dispozitiv de scurtcircuitare</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Crowbar vs Clamp</h3>
+                    <p>Active crowbar: poate scoate scurtcircuitul c&#226;nd tranzientul s-a &#238;ncheiat</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Avantajele crowbar-ului</h3>
+                    <p>Tensiunea de menținere scăzută permite transportul unui curent de defect mai mare</p>
+                    <p>Mai probabil să dezactiveze dispozitivul (prin arderea siguranței/declanșarea breaker-ului)</p>
+                    <p>Atrage atenția asupra echipamentului defect</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Protecții &#238;n sursa de alimentare ATX (din date anterioare)</h3>
+                    <p>SCP (Short Circuit Protection): protecție la scurtcircuit</p>
+                    <p>Detectează scurtcircuitul pe orice linie de ieșire</p>
+                    <p>Oprește sursa instant pentru a preveni deteriorarea componentelor</p>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Simptome de defecțiune PSU (din date anterioare)</h3>
+                    <p>Miros de ars: componentă internă deteriorată</p>
+                    <p>Reporniri aleatorii: tensiune instabilă sau protecție OCP/OVP declanșată intermitent</p>
+                    <p>Ventilator PSU nefuncțional: risc de supra&#238;ncălzire internă → declanșare OTP</p>
+                    <p>Chirping/squealing la scurtcircuit pe linia de ieșire</p>
+                    <p>MTBF (Mean Time Between Failures): ~100.000 ore pentru surse de calitate</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 7: RECAPITULARE
-         =========================== -->
     <section class="section" id="recapitulare">
         <div class="container">
             <h2 class="section-title">Recapitulare</h2>
-
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>OCP (Overcurrent Protection)</strong> = detectează curent excesiv, oprire PSU sub 1 microsecundă</li>
-                    <li><strong>OVP (Overvoltage Protection)</strong> = monitorizează tensiunile de core, decuplare componentă dacă crește excesiv</li>
-                    <li><strong>SCP (Short Circuit Protection)</strong> = limitează curent în caz de scurtcircuit direkt, prevenție incendiu</li>
-                    <li><strong>OTP (Overtemperature Protection)</strong> = reducere clock la 90°C, shutdown la 105°C pe PS5</li>
-                    <li><strong>Power Good (PG)</strong> = semnal din PSU că 12V e stabil și ready; declanșează voltage ramp sequence</li>
-                    <li><strong>Reset Line (RST#)</strong> = ține CPU în reset până ce toți voltaj sunt stabil</li>
-                    <li><strong>Watchdog Timer</strong> = resetează CPU dacă firmware-ul se blochează; timeout 500 ms la PS5</li>
-                    <li><strong>Voltage Ramp</strong> = creștere controlată a tensiunilor de core din 0V la 1.05V; evită deteriorare tranziator</li>
-                    <li>Protecții multiple = redundanță; mai rar apare defect nedetectat</li>
-                    <li>LED roșu intermitent = OCP/OVP declanșat; consola refuză pornire pentru a se proteja</li>
+                    <li><strong>Definiția semnalului Power Good:</strong> Power Good (power-good): semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li><strong>Specificația ATX Power Good:</strong> Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</li>
+                    <li><strong>Cerințe ATX pentru PWR_OK:</strong> PWR_OK trebuie să devină HIGH nu mai devreme de 100 ms după stabilizarea liniilor de tensiune</li>
+                    <li><strong>Surse de calitate inferioară:</strong> Sursele ieftine/de calitate scăzută nu urmează specificația ATX</li>
+                    <li><strong>Valorile Power Good:</strong> Bazate pe &#238;nt&#226;rzierea &#238;n milisecunde p&#226;nă la gata completă</li>
+                    <li><strong>Definiția supracurentului (OCP):</strong> Overcurrent (supracurent): situație &#238;n care un curent electric mai mare dec&#226;t cel intenționat</li>
+                    <li><strong>Supracurent &#238;n rețeaua electrică:</strong> Lipsa capacității de supracurent (short circuit ratio scăzut) creează probleme multiple:</li>
+                    <li><strong>Definiția supratensiunii (OVP):</strong> Overvoltage (supratensiune): ridicarea tensiunii peste limita de design a circuitului</li>
+                    <li><strong>Surse de supratensiune:</strong> Naturale: fulgere, rafale de v&#226;nt solar după erupții solare</li>
+                    <li><strong>Dispozitive de protecție la supratensiune:</strong> Avalanche diode</li>
+                    <li><strong>Circuitul Crowbar – protecție la supratensiune:</strong> Circuit electric pentru prevenirea deteriorării circuitelor de o condiție de supratensiune</li>
+                    <li><strong>Crowbar vs Clamp:</strong> Crowbar: odată declanșat, trage tensiunea sub nivelul de declanșare (aproape de ground)</li>
+                    <li><strong>Avantajele crowbar-ului:</strong> Tensiunea de menținere scăzută permite transportul unui curent de defect mai mare</li>
+                    <li><strong>Protecții &#238;n sursa de alimentare ATX (din date anterioare):</strong> OCP (Overcurrent Protection): protecție la supracurent</li>
+                    <li><strong>Conectorul ATX 24-pin și semnale relevante:</strong> Pin 16 (PS_ON, verde): semnal de pornire, activ LOW (conectat la ground pentru pornire)</li>
+                    <li><strong>Simptome de defecțiune PSU (din date anterioare):</strong> Miros de ars: componentă internă deteriorată</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 8: QUIZ
-         =========================== -->
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
-            <!-- Quiz Q1 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>Care este diferența între OCP și SCP?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Power Good (power-good)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) OCP detectează curent ridicat pe o linie normală; SCP detectează scurtcircuit direkt</li>
-                    <li>b) Amândouă sunt identice, doar denumiri diferite</li>
-                    <li>c) OCP pentru AC, SCP pentru DC</li>
-                    <li>d) SCP monitorizează temperatura, OCP monitorizează curent</li>
+                    <li>a) &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>b) procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>c) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>d) liniile de tensiune la 95% din valoarea nominală</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) OCP detectează curent ridicat pe o linie normală; SCP detectează scurtcircuit direkt</strong> — Complementar: OCP e detecție curent, SCP e prevenție scurtcircuit fizic.</p>
+                    <p style="margin-top: 0.5rem;"><strong>c) — semnal furnizat de sursa de alimentare (PSU) către placa de bază</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q2 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Ce se întâmplă când PSU trimite semnalul Power Good?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Timp de stabilizare?</strong></p>
                 <ul class="specs-list">
-                    <li>a) CPU pornește imediat</li>
-                    <li>b) Voltage Ramp incepe, tensiunile de core cresc lent de la 0V la 1.05V</li>
-                    <li>c) Firmware-ul descarcă un screenshot</li>
-                    <li>d) PSU se oprește pentru a economisi energie</li>
+                    <li>a) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>b) &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>c) liniile de tensiune la 95% din valoarea nominală</li>
+                    <li>d) procesorul nu se va reseta niciodată la tensiune deficitară</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Voltage Ramp incepe, tensiunile de core cresc lent de la 0V la 1.05V</strong> — PG semnal declanșează secvența de boot controlată cu Voltage Ramp lent pentru a proteja tranzistorii.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q3 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>La ce temperatură PS5 reduce clock-ul (thermal throttling)?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Specificația?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 75°C</li>
-                    <li>b) 90°C</li>
-                    <li>c) 110°C</li>
-                    <li>d) 120°C</li>
+                    <li>a) procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>b) liniile de tensiune la 95% din valoarea nominală</li>
+                    <li>c) &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>d) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) 90°C</strong> — 80°C = avertisment, 90°C = throttling (60 FPS → 30 FPS), 105°C = shutdown.</p>
+                    <p style="margin-top: 0.5rem;"><strong>b) — liniile de tensiune la 95% din valoarea nominală</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q4 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Ce este Watchdog Timer și care e timeout-ul la PS5?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Consecință?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Timer care se resetează manual; nu are timeout</li>
-                    <li>b) Hardware timer care resetează CPU dacă firmware-ul se blochează; 500 ms la PS5</li>
-                    <li>c) Monitor pentru a verifica dacă ventilator funcționează</li>
-                    <li>d) Protecție împotriva update-urilor software neautorizate</li>
+                    <li>a) procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>b) liniile de tensiune la 95% din valoarea nominală</li>
+                    <li>c) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>d) &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Hardware timer care resetează CPU dacă firmware-ul se blochează; 500 ms la PS5</strong> — Watchdog previne blocări permanente ale sistemului.</p>
+                    <p style="margin-top: 0.5rem;"><strong>a) — procesorul nu se va reseta niciodată la tensiune deficitară</strong></p>
                 </details>
             </div>
 
-            <!-- Quiz Q5 -->
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>De ce o creștere bruscă de tensiune (de la 1.05V la 2V) ar arde procesorul?</strong></p>
+                <p><strong>Care afirmație este corectă despre: Valori considerate anormale?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Tranzistorii nu pot suporta voltaje ridicate; electromigrare și distrugere rapidă a circuitelor</li>
-                    <li>b) Numai tensiuni scăzute pot arde un procesor</li>
-                    <li>c) 2V ar întrerupe curentul datorită OVP</li>
-                    <li>d) Temperatura ambiantă ar crește brusc</li>
+                    <li>a) sub 100 ms sau peste 500 ms</li>
+                    <li>b) &#238;ntre 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>c) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>d) liniile de tensiune la 95% din valoarea nominală</li>
                 </ul>
                 <details style="margin-top: 1rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) Tranzistorii nu pot suporta voltaje ridicate; electromigrare și distrugere rapidă a circuitelor</strong> — OVP este specificat tocmai pentru prevenția acestui scenariu catastrofal.</p>
+                    <p style="margin-top: 0.5rem;"><strong>a) — sub 100 ms sau peste 500 ms</strong></p>
                 </details>
             </div>
         </div>
     </section>
 
-    <!-- ===========================
-         CAPITOLUL 9: EXERCITIU
-         =========================== -->
     <section class="section" id="exercitiu">
         <div class="container">
             <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Diagnosticarea unei defecțiuni</h3>
-                <p>
-                    <strong>Scenariu:</strong> Ai o PS5 care nu pornește. LED este roșu intermitent. Inițial, consola era funcționala; apoi dintr-o dată, defect. Nu a fost fizic deteriorată — posibil doar un spike de tensiune de pe rețea.
-                </p>
-                <p><strong>Sarcini de diagnostic:</strong></p>
+                <h3>🧠 Exercițiu: Protecții electrice</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de OCP. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>1. Desenează traseul unui spike de tensiune de 350V AC din priză. De ce ar trebui să nu dăuneze componentelor interne?</li>
-                    <li>2. Care protecție ar trebui să detecteze spike-ul? La ce nivel?</li>
-                    <li>3. Dacă PSU-ul a regresat și nu mai produce 12V stabil (oscilează între 11.5V și 12.5V), ce protecție ar declanșa?</li>
-                    <li>4. Testezi PS5-ul cu o altă PSU. Consola pornește normal. Ce concluzii tragi?</li>
-                    <li>5. Propune o strategie de reparare. Care componente ar trebui să sarcini mai întâi?</li>
+                    <li>1. Defineste pe scurt: OCP.</li>
+                    <li>2. Ce rol are OVP în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre OCP și OTP.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
                     <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Priză 350V AC → Cablu → PSU input → transformator de putere cu izolare. Componente interne e gestionat la 12V DC max. Componente mai mici (VRM, SoC) au 1V–3.3V. Spike nu ar trebui să ajungă direct; PSU-ul are capacitoare și regulatoare.</p>
-                        <p><strong>2.</strong> PSU input rectifier și filtru ar trebui să absoarbă spike. Dacă spike ajunge la rând 12V, VRM-ul ar trebui OVP. Daca 12V e instabil (11.5-12.5V), Power Good logic detectează instabilitate și refuză să releaseze RST#.</p>
-                        <p><strong>3.</strong> Oscilație 12V ± 4% declar sub toleranța (rar), dar la granita. Power Good este strict: oricare neregularitate, refuza boot. Alternate posibilitate: OVP pe linia 12V se declanșează periodic.</p>
-                        <p><strong>4.</strong> Consola merge cu alta PSU = originale PSU e defecta. Componente interne (placa, VRM, SoC) sunt likely OK. Doar trebuia sa inlocuiesti PSU.</p>
-                        <p><strong>5.</strong> Strategie: 1) Vizual inspect placa de bază pentru semne de fizic daune (capacitoare umflate, arsură). 2) Înlocuirea PSU cu una nouă. 3) Testează din nou. Dacă OK, problema e rezolvată. Dacă LED roșu revine, placa de bază are daune; sarcina reparator profesionist.</p>
+                        <p><strong>1.</strong> Power Good (power-good): semnal furnizat de sursa de alimentare (PSU) către placa de bază</p>
+                        <p><strong>2.</strong> Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</p>
+                        <p><strong>3.</strong> PWR_OK trebuie să devină HIGH nu mai devreme de 100 ms după stabilizarea liniilor de tensiune</p>
                     </div>
                 </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -534,3 +597,14 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

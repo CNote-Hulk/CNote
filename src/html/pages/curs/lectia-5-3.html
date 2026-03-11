@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 5.3 — VRM pe placa de bază: Stabilitate și Curent">
+    <meta name="description" content="Lecția 5.3 — VRM">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 5.3 — VRM pe Placă — Console Notebook</title>
+    <title>Lecția 5.3 — VRM — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
+    <!-- KaTeX - randare formule matematice -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,20 +30,20 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — Anatomia unei Console</p>
-            <h1>Lecția 5.3 — VRM pe placa de bază</h1>
-            <p>Regulatoare de tensiune care hrănesc APU-ul. Fără VRM stabil, consola nu pornește.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — ANATOMIA UNEI CONSOLE</p>
+            <h1>Lecția 5.3 — VRM</h1>
+            <p>VRM, conversia tensiunii, faze VRM, MOSFET</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-    <section class="section" id="introducere">
+                                            <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>VRM (Voltage Regulator Module):</strong> Convertește 12V în 1.0-1.2V pentru APU, cu curent mare (80-120A).</p>
-                <p>VRM este format din PWM controller, MOSFET-uri, bobine și condensatori.</p>
-                <p>Pe PS5, VRM are 8-10 faze pentru APU, plus faze separate pentru memorie și SSD.</p>
+                <p>VRM (Voltage Regulator Module), uneori PPM (Processor Power Module) = un buck converter care furnizează microprocesorului și chipset-ului tensiunea corectă</p>
+                <p>Această lecție acoperă: <strong>VRM</strong>, <strong>conversia tensiunii</strong>, <strong>faze VRM</strong>, <strong>MOSFET</strong>, <strong>inductori</strong>, <strong>condensatori</strong>.</p>
+                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
@@ -49,80 +53,233 @@
             <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1 — Faze VRM</h3>
-                <p><strong>Faza:</strong> Un set de MOSFET high/low + bobină + condensator. Fiecare fază livrează o parte din curent.</p>
-                <p><strong>Avantaje multi-fază:</strong> Ripple mai mic, curent distribuit, temperatură mai mică.</p>
-                <p><strong>Exemplu:</strong> 100A total, 10 faze → 10A per fază. MOSFET-uri lucrează eficient.</p>
+                <h3>5.3.1 — Definiție și rol VRM</h3>
+                <ul class="specs-list">
+                    <li>VRM (Voltage Regulator Module), uneori PPM (Processor Power Module) = un buck converter care furnizează microprocesorului și chipset-ului tensiunea corectă</li>
+                    <li>Convertește +3.3V, +5V sau +12V la tensiuni mai mici necesare dispozitivelor</li>
+                    <li>Permite montarea dispozitivelor cu tensiuni diferite pe aceeași placă de bază</li>
+                    <li>Pe sisteme PC, VRM-ul este de obicei compus din MOSFET-uri de putere</li>
+                    <li>Majoritatea implementărilor VRM sunt lipit direct pe motherboard</li>
+                    <li>Procesoare Intel Haswell și Ice Lake au integrat unele componente VRM pe package-ul CPU (FIVR – Fully Integrated Voltage Regulator)</li>
+                    <li>CPU-urile moderne necesită sub 1.5V (tendință de reducere tensiune core)</li>
+                    <li>Tensiunile mai mici reduc disiparea de putere (specificată prin TDP)</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2 — Load Line și Feedback</h3>
-                <p><strong>Load line:</strong> VRM permite scădere mică a tensiunii când crește curentul. Evită overshoot.</p>
-                <p><strong>Feedback loop:</strong> Controller măsoară V_out și ajustează duty cycle PWM.</p>
-                <p><strong>Stabilitate:</strong> Fără control, tensiunea oscilează (ripple) și APU poate crash.</p>
+                <h3>5.3.2 — VID (Voltage Identification)</h3>
+                <ul class="specs-list">
+                    <li>CPU comunică tensiunea necesară VRM-ului la pornire prin biți VID (Voltage Identification Definition)</li>
+                    <li>VRM oferă inițial o tensiune standard logicii VID, apoi primește VID-ul care identifică tensiunea necesară</li>
+                    <li>După primirea VID, VRM funcționează ca regulator de tensiune, furniz&#226;nd tensiune și curent constant</li>
+                    <li>CPU folosește linii digitale VID pentru a instrui buck converter-ul on-board să ajusteze tensiunea de ieșire</li>
+                    <li><strong>Flexibilitate:</strong> aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>Reduce consumul &#238;n idle prin scăderea tensiunii</li>
+                    <li>VID pe 5 biți = max 32 tensiuni distincte de ieșire (unele coduri rezervate funcțiilor speciale)</li>
+                    <li><strong>Din 2008:</strong> VID pe 5, 6 și 8 biți, output 0.5V–3.5V</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.3 — Inductoare și Condensatori</h3>
-                <p><strong>Inductor:</strong> Netezește curentul, reduce ripple. Valori tipice 0.2-0.6 uH.</p>
-                <p><strong>Condensatori:</strong> Furnizează curent rapid la spike-uri. ESR mic = stabilitate mai bună.</p>
-                <p>Combinarea bobinei și condensatorului creează filtru LC, esențial pentru rail-ul APU.</p>
+                <h3>5.3.3 — VRM și overclocking</h3>
+                <ul class="specs-list">
+                    <li>Calitatea VRM-ului impactează direct potențialul de overclocking al plăcii de bază</li>
+                    <li>Același procesor overclockat poate performa diferit pe VRM-uri diferite</li>
+                    <li>Overclocking necesită alimentare stabilă; la frecvențe mai mari crește consumul</li>
+                    <li>VRM-ul trebuie să furnizeze mai mult curent corespunzător</li>
+                    <li>Plăcile video moderne au și ele VRM propriu datorită cerințelor ridicate de putere/curent</li>
+                    <li>VRM-urile pot genera căldură semnificativă, necesit&#226;nd heat sink-uri separate</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.4 — VRM Monitoring și Telemetrie</h3>
-                <p><strong>Senzori:</strong> Tensiune, curent, temperatură. Controller trimite date către firmware.</p>
-                <p><strong>Protecții:</strong> OCP, OVP, OTP. Dacă curentul e prea mare, VRM oprește rail-ul.</p>
-                <p><strong>În console:</strong> Dacă VRM detectează scurt, consola oprește în 100 ms (blink LED).</p>
+                <h3>5.3.4 — Principiul convertorului buck (step-down)</h3>
+                <ul class="specs-list">
+                    <li>Buck converter = convertor DC-DC care scade tensiunea și crește curentul de la intrare (sursă) la ieșire (sarcină)</li>
+                    <li>Clasă de alimentări cu comutare (switched-mode power supply)</li>
+                    <li>Eficiență mult mai mare dec&#226;t regulatoarele liniare (care disipă puterea ca căldură)</li>
+                    <li><strong>Eficiența buck converter:</strong> adesea peste 90%</li>
+                    <li><strong>Aplicație tipică:</strong> convertirea 12V sursă calculatorului la tensiuni mai mici pentru USB (5V), DRAM (3.3V/1.2V), CPU (sub 1.5V)</li>
+                    <li>Conține minim 2 semiconductori (diodă + tranzistor, sau 2 tranzistoare pentru rectificare sincronă) + inductor (bobină) + condensator</li>
+                    <li><strong>Frecvență de comutare tipică:</strong> 100 kHz – c&#226;teva MHz</li>
+                    <li>Frecvență mai mare = inductori/condensatori mai mici, dar pierderi de comutare mai mari</li>
+                    <li><strong>Formula principală (mod continuu ideal):</strong> Vout = D &#215; Vin, unde D = duty cycle (0 la 1)</li>
+                    <li><strong>Exemplu:</strong> 12V → 3V necesită duty cycle 25%</li>
+                </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.5 — Layout și Distribuție Curent</h3>
-                <p><strong>Trasee groase:</strong> Rail APU are curent mare, necesită copper pour mare și lățime 2-3 mm.</p>
-                <p><strong>Placement:</strong> VRM lângă APU pentru trasee scurte. Condensatori lângă die (decoupling).</p>
-                <p>Layout prost = ripple mare, instabilitate, overheat MOSFET.</p>
+                <h3>5.3.5 — Componentele VRM – MOSFET, inductor, condensator</h3>
+                <ul class="specs-list">
+                    <li><strong>MOSFET (high-side switch):</strong> comută tensiunea de intrare ON/OFF rapid</li>
+                    <li>RDSon = rezistența drain-source c&#226;nd este ON; mai mică = mai puține pierderi de conducere</li>
+                    <li><strong>Pierderi de comutare:</strong> proporționale cu frecvența de comutare (turn-on + turn-off time)</li>
+                    <li><strong>Gate charge (QG):</strong> energia necesară comutare poartă MOSFET; mai mică = eficiență mai bună</li>
+                    <li>MOSFET/diodă (low-side / synchronous rectification):</li>
+                    <li><strong>Rectificare sincronă:</strong> &#238;nlocuirea diodei cu al doilea MOSFET reduce pierderile (pierdere diodă 0.7V vs MOSFET &lt;0.02Ω)</li>
+                    <li><strong>Exemplu:</strong> cu sarcina 10A, dioda pierde 2.38W vs MOSFET 0.51W</li>
+                    <li>Inductor (bobină):</li>
+                    <li>Stochează energie sub formă de c&#226;mp magnetic &#238;n timpul ON</li>
+                    <li>Eliberează energia &#238;n sarcină &#238;n timpul OFF</li>
+                    <li>„Bucks&quot; (se opune) tensiunii sursei → de aici numele „buck converter&quot;</li>
+                    <li>Rezistența DC a inductorului (RDC) cauzează pierderi suplimentare</li>
+                    <li>Condensator (capacitor de ieșire):</li>
+                    <li>Netezește tensiunea de ieșire (reduce ripple-ul)</li>
+                    <li><strong>Ripple mai mic cu:</strong> condensatori mai mari SAU frecvență de comutare mai mare</li>
+                    <li>ESR (Equivalent Series Resistance) al condensatorului afectează calitatea ieșirii</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.3.6 — Convertorul buck multifazic (multiphase)</h3>
+                <ul class="specs-list">
+                    <li>Buck multifazic = mai multe circuite buck de bază &#238;n paralel &#238;ntre intrare și sarcină</li>
+                    <li>Fiecare din cele n faze este activată la intervale egale pe parcursul perioadei de comutare</li>
+                    <li>Avantaje:</li>
+                    <li>Răspuns rapid la schimbări de sarcină (ca și cum ar comuta de n ori mai rapid)</li>
+                    <li>Reducere semnificativă a ripple-ului de comutare</li>
+                    <li>C&#226;nd n &#215; duty cycle = &#238;ntreg → ripple = 0 (creștere curent pe fazele ON = scădere curenta pe fazele OFF)</li>
+                    <li>Curentul total este &#238;mpărțit &#238;ntre n faze → căldura distribuită pe suprafață mai mare</li>
+                    <li><strong>Aplicație:</strong> motherboard-uri convertesc 12V la ~1V pentru CPU</li>
+                    <li><strong>Cerințe CPU moderne:</strong> pot depăși 200W, variații foarte rapide, ripple &lt;10mV</li>
+                    <li><strong>Plăci mainstream:</strong> 3-4 faze VRM</li>
+                    <li><strong>Plăci high-end:</strong> 16 sau mai multe faze</li>
+                    <li><strong>Provocare:</strong> echilibrarea curentului &#238;ntre faze (current balancing)</li>
+                    <li><strong>Senzare curent:</strong> prin tensiunea pe inductor, pe MOSFET-ul low-side, sau prin rezistor de sens</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>5.3.7 — Eficiența și pierderi</h3>
+                <ul class="specs-list">
+                    <li><strong>Pierderi de conducere (statice):</strong> I&#178;R &#238;n fire/PCB, switch-uri, inductor, condensator ESR</li>
+                    <li><strong>Pierderi de comutare (dinamice):</strong> la tranzițiile ON↔OFF ale MOSFET-ului, proporționale cu frecvența</li>
+                    <li><strong>Pierderi gate drive:</strong> energia de &#238;ncărcare/descărcare capacitanță gate MOSFET</li>
+                    <li><strong>Pierderi body diode:</strong> c&#226;nd ambele switch-uri sunt OFF (non-overlap time), dioda body conduce</li>
+                    <li><strong>Shoot-through:</strong> ambele switch-uri ON simultan → pierderi severe + &#238;ncălzire → protecție prin non-overlap time</li>
+                    <li><strong>Tradeoff complet:</strong> pierderi conducere (mai mici la frecvențe mici) vs pierderi comutare (mai mici la frecvențe mari)</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="legatura">
+        <div class="container">
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Definiție și rol VRM</h3>
+                <ul class="specs-list">
+                    <li>CPU-urile moderne necesită sub 1.5V (tendință de reducere tensiune core)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>VID (Voltage Identification)</h3>
+                <ul class="specs-list">
+                    <li>CPU folosește linii digitale VID pentru a instrui buck converter-ul on-board să ajusteze tensiunea de ieșire</li>
+                    <li><strong>Flexibilitate:</strong> aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Principiul convertorului buck (step-down)</h3>
+                <ul class="specs-list">
+                    <li><strong>Aplicație tipică:</strong> convertirea 12V sursă calculatorului la tensiuni mai mici pentru USB (5V), DRAM (3.3V/1.2V), CPU (sub 1.5V)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Convertorul buck multifazic (multiphase)</h3>
+                <ul class="specs-list">
+                    <li><strong>Aplicație:</strong> motherboard-uri convertesc 12V la ~1V pentru CPU</li>
+                    <li><strong>Cerințe CPU moderne:</strong> pot depăși 200W, variații foarte rapide, ripple &lt;10mV</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Fizică:</strong> MOSFET comută la 300 kHz, bobina netezește curentul, condensatorul ține tensiunea stabilă.</p>
-                <p><strong>Informatică:</strong> APU necesită tensiune stabilă pentru execuție corectă. Instabil VRM = crash.</p>
+                <h3>Definiție și rol VRM</h3>
+                <ul class="specs-list">
+                    <li>VRM (Voltage Regulator Module), uneori PPM (Processor Power Module) = un buck converter care furnizează microprocesorului și chipset-ului tensiunea corectă</li>
+                    <li>Pe sisteme PC, VRM-ul este de obicei compus din MOSFET-uri de putere</li>
+                    <li>Majoritatea implementărilor VRM sunt lipit direct pe motherboard</li>
+                    <li>Procesoare Intel Haswell și Ice Lake au integrat unele componente VRM pe package-ul CPU (FIVR – Fully Integrated Voltage Regulator)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>VID (Voltage Identification)</h3>
+                <ul class="specs-list">
+                    <li>CPU comunică tensiunea necesară VRM-ului la pornire prin biți VID (Voltage Identification Definition)</li>
+                    <li>VRM oferă inițial o tensiune standard logicii VID, apoi primește VID-ul care identifică tensiunea necesară</li>
+                    <li>După primirea VID, VRM funcționează ca regulator de tensiune, furniz&#226;nd tensiune și curent constant</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>VRM și overclocking</h3>
+                <ul class="specs-list">
+                    <li>Calitatea VRM-ului impactează direct potențialul de overclocking al plăcii de bază</li>
+                    <li>Același procesor overclockat poate performa diferit pe VRM-uri diferite</li>
+                    <li>VRM-ul trebuie să furnizeze mai mult curent corespunzător</li>
+                    <li>Plăcile video moderne au și ele VRM propriu datorită cerințelor ridicate de putere/curent</li>
+                    <li>VRM-urile pot genera căldură semnificativă, necesit&#226;nd heat sink-uri separate</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Convertorul buck multifazic (multiphase)</h3>
+                <ul class="specs-list">
+                    <li><strong>Plăci mainstream:</strong> 3-4 faze VRM</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Eficiența și pierderi</h3>
+                <ul class="specs-list">
+                    <li><strong>Pierderi de conducere (statice):</strong> I&#178;R &#238;n fire/PCB, switch-uri, inductor, condensator ESR</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="exemplu">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă</h2>
+            <h2 class="section-title">Exemplu Real de Hardware</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu: Rail APU PS5</h3>
-                <p>APU: 1.05V, 100A. VRM 10 faze. Fiecare fază livrează 10A.</p>
-                <p>Duty cycle = V_out / V_in = 1.05/12 = 8.75%.</p>
-                <p>Ripple țintă: &lt; 20 mV. Condensatori low-ESR, bobine 0.3 uH.</p>
+                <h3>Definiție și rol VRM</h3>
+                <ul class="specs-list">
+                    <li>Tensiunile mai mici reduc disiparea de putere (specificată prin TDP)</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>Componentele VRM – MOSFET, inductor, condensator</h3>
+                <ul class="specs-list">
+                    <li>ESR (Equivalent Series Resistance) al condensatorului afectează calitatea ieșirii</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="probleme">
         <div class="container">
-            <h2 class="section-title">Exemplu Real: Defect VRM</h2>
-            <div class="card" style="margin-bottom: 2rem;">
-                <p>Un MOSFET high-side scurt → rail APU cade la 0V. Consola nu pornește.</p>
-                <p>Un condensator ESR crește → ripple crește la 80 mV. Consola se blochează în jocuri grele.</p>
-                <p>Un inductor crăpat → faza moartă, curentul se redistribuie. Restul fazelor se încălzesc excesiv.</p>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Probleme Frecvente</h2>
-            <div class="card"><h3>⚠️ VRM supraîncălzit</h3><p>Heat sink slab, praf, pastă termică uscată. MOSFET degradează, rezistența crește, VRM instabil.</p></div>
-            <div class="card"><h3>⚠️ Ripple mare</h3><p>Condensatori degradați sau inductanță mică. APU primește tensiune instabilă → freeze.</p></div>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>⚠️ Probleme asociate cu VRM</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -131,11 +288,13 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>VRM:</strong> Convertor 12V → 1V cu curent mare.</li>
-                    <li><strong>Faze:</strong> Distribuie curentul, reduc ripple și temperatură.</li>
-                    <li><strong>Feedback:</strong> PWM controller stabilizează tensiunea.</li>
-                    <li><strong>Filtru LC:</strong> Inductor + condensator reduc ripple.</li>
-                    <li><strong>Layout:</strong> Trasee groase, placement scurt, decoupling aproape de APU.</li>
+                    <li><strong>Definiție și rol VRM:</strong> VRM (Voltage Regulator Module), uneori PPM (Processor Power Module) = un buck converter care furnizează microprocesorului și chipset-ului tensiunea corectă</li>
+                    <li><strong>VID (Voltage Identification):</strong> CPU comunică tensiunea necesară VRM-ului la pornire prin biți VID (Voltage Identification Definition)</li>
+                    <li><strong>VRM și overclocking:</strong> Calitatea VRM-ului impactează direct potențialul de overclocking al plăcii de bază</li>
+                    <li><strong>Principiul convertorului buck (step-down):</strong> Buck converter = convertor DC-DC care scade tensiunea și crește curentul de la intrare (sursă) la ieșire (sarcină)</li>
+                    <li><strong>Componentele VRM – MOSFET, inductor, condensator:</strong> MOSFET (high-side switch): comută tensiunea de intrare ON/OFF rapid</li>
+                    <li><strong>Convertorul buck multifazic (multiphase):</strong> Buck multifazic = mai multe circuite buck de bază &#238;n paralel &#238;ntre intrare și sarcină</li>
+                    <li><strong>Eficiența și pierderi:</strong> Pierderi de conducere (statice): I&#178;R &#238;n fire/PCB, switch-uri, inductor, condensator ESR</li>
                 </ul>
             </div>
         </div>
@@ -144,55 +303,127 @@
     <section class="section" id="quiz">
         <div class="container">
             <h2 class="section-title">Quiz — 5 Întrebări</h2>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 1</h3>
-                <p><strong>VRM convertește:</strong></p>
-                <ul class="specs-list"><li>a) 1V → 12V</li><li>b) 12V → 1V</li><li>c) 5V → 12V</li><li>d) 3.3V → 5V</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) 12V → 1V</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Flexibilitate?</strong></p>
+                <ul class="specs-list">
+                    <li>a) aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>b) convertirea 12V sursă calculatorului la tensiuni mai mici pentru USB (5V), DRAM (3.3V/1.2V), CPU (sub 1.5V)</li>
+                    <li>c) adesea peste 90%</li>
+                    <li>d) VID pe 5, 6 și 8 biți, output 0.5V–3.5V</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 2</h3>
-                <p><strong>Mai multe faze VRM =</strong></p>
-                <ul class="specs-list"><li>a) Ripple mai mare</li><li>b) Curent distribuit și temperatură mai mică</li><li>c) Instabilitate</li><li>d) Consum mai mare fără beneficii</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Curent distribuit</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Eficiența buck converter?</strong></p>
+                <ul class="specs-list">
+                    <li>a) adesea peste 90%</li>
+                    <li>b) convertirea 12V sursă calculatorului la tensiuni mai mici pentru USB (5V), DRAM (3.3V/1.2V), CPU (sub 1.5V)</li>
+                    <li>c) aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>d) VID pe 5, 6 și 8 biți, output 0.5V–3.5V</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — adesea peste 90%</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 3</h3>
-                <p><strong>Ripple mare pe rail APU produce:</strong></p>
-                <ul class="specs-list"><li>a) Performanță mai mare</li><li>b) Instabilitate, freeze</li><li>c) Consum redus</li><li>d) Overclock automat</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Instabilitate</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: MOSFET (high-side switch)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) adesea peste 90%</li>
+                    <li>b) VID pe 5, 6 și 8 biți, output 0.5V–3.5V</li>
+                    <li>c) aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>d) comută tensiunea de intrare ON/OFF rapid</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — comută tensiunea de intrare ON/OFF rapid</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 4</h3>
-                <p><strong>Load line face:</strong></p>
-                <ul class="specs-list"><li>a) Crește tensiunea la load</li><li>b) Permite scădere controlată a tensiunii la load</li><li>c) Oprește PWM</li><li>d) Mărește ripple</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>b) Scădere controlată</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Aplicație?</strong></p>
+                <ul class="specs-list">
+                    <li>a) adesea peste 90%</li>
+                    <li>b) VID pe 5, 6 și 8 biți, output 0.5V–3.5V</li>
+                    <li>c) motherboard-uri convertesc 12V la ~1V pentru CPU</li>
+                    <li>d) aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — motherboard-uri convertesc 12V la ~1V pentru CPU</strong></p>
+                </details>
             </div>
+
             <div class="card" style="margin-bottom: 1.5rem;">
                 <h3>Întrebarea 5</h3>
-                <p><strong>Ce reduce ripple?</strong></p>
-                <ul class="specs-list"><li>a) Inductor și condensatori low-ESR</li><li>b) Mai puține faze</li><li>c) Trasee subțiri</li><li>d) Frecvență mică PWM</li></ul>
-                <details style="margin-top: 1rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary><p style="margin-top: 0.5rem;"><strong>a) Inductor + condensatori low-ESR</strong></p></details>
+                <p><strong>Care afirmație este corectă despre: Pierderi de conducere (statice)?</strong></p>
+                <ul class="specs-list">
+                    <li>a) aceeași sursă de alimentare pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>b) adesea peste 90%</li>
+                    <li>c) I&#178;R &#238;n fire/PCB, switch-uri, inductor, condensator ESR</li>
+                    <li>d) VID pe 5, 6 și 8 biți, output 0.5V–3.5V</li>
+                </ul>
+                <details style="margin-top: 1rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — I&#178;R &#238;n fire/PCB, switch-uri, inductor, condensator ESR</strong></p>
+                </details>
             </div>
         </div>
     </section>
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Dimensionare Faze VRM</h3>
-                <p><strong>Cerință:</strong> APU are nevoie de 120A la 1.1V. Un MOSFET phase poate livra 15A sigur. Câte faze sunt necesare?</p>
-                <ol class="specs-list"><li>Curent total</li><li>Curent per fază</li><li>Număr faze minim</li><li>Număr faze recomandat (20% headroom)</li></ol>
-                <details style="margin-top: 1.5rem;"><summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary><div style="margin-top: 1rem;">
-                    <p><strong>1.</strong> I_total = 120A.</p>
-                    <p><strong>2.</strong> I_faza = 15A.</p>
-                    <p><strong>3.</strong> Fazele minime = 120/15 = 8 faze.</p>
-                    <p><strong>4.</strong> Cu 20% headroom: 8 × 1.2 = 9.6 → 10 faze recomandate.</p>
-                </div></details>
+                <h3>🧠 Exercițiu: VRM</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de VRM. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <ul class="specs-list">
+                    <li>1. Defineste pe scurt: VRM.</li>
+                    <li>2. Ce rol are conversia tensiunii în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre VRM și faze VRM.</li>
+                </ul>
+                <details style="margin-top: 1.5rem;">
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>1.</strong> VRM (Voltage Regulator Module), uneori PPM (Processor Power Module) = un buck converter care furnizează microprocesorului și chipset-ului tensiunea corectă</p>
+                        <p><strong>2.</strong> CPU comunică tensiunea necesară VRM-ului la pornire prin biți VID (Voltage Identification Definition)</p>
+                        <p><strong>3.</strong> Calitatea VRM-ului impactează direct potențialul de overclocking al plăcii de bază</p>
+                    </div>
+                </details>
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
@@ -269,3 +500,13 @@
     <script src="../../../js/modules/custom-player.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
