@@ -25,11 +25,14 @@
      * Load image dimensions from JSON
      */
     function loadImageDimensions() {
-        return fetch('../../../js/data/image-dimensions.json')
-            .then(function (res) {
+        var path = '../../../js/data/image-dimensions.json';
+        var loadFn = (window.location.protocol === 'file:')
+            ? loadJsonWithXhr(path)
+            : fetch(path).then(function (res) {
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 return res.json();
-            })
+            });
+        return loadFn
             .then(function (data) {
                 IMAGE_DIMENSIONS = data;
                 return data;
