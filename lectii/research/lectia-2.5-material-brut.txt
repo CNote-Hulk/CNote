@@ -1,0 +1,96 @@
+LECȚIA 2.5 – Regulatoare de tensiune
+Material brut de cercetare
+
+========================================
+SURSA 1: Wikipedia – Low-dropout regulator
+URL: https://en.wikipedia.org/wiki/Low-dropout_regulator
+========================================
+
+SECȚIUNEA 1 – Definiție LDO
+- Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și când tensiunea de intrare este foarte apropiată de tensiunea de ieșire
+- Avantaje față de alte regulatoare DC-DC: absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitate mai simplă de design
+- Dezavantaj: regulatoarele liniare trebuie să disipeze căldură pentru a funcționa
+- Componente principale constau dintr-o referință de tensiune (bandgap reference), un amplificator, și un element de trecere (pass element)
+- Primul LDO ajustabil: prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor
+
+SECȚIUNEA 2 – Componente și reglare
+- Componente principale: power FET (element de trecere) + amplificator diferențial (amplificator de eroare)
+- O intrare a amplificatorului diferențial monitorizează fracțiunea tensiunii de ieșire (determinată de raportul R1/R2)
+- A doua intrare: referință de tensiune stabilă (bandgap reference)
+- Dacă tensiunea de ieșire crește prea mult, comanda elementului de putere se ajustează pentru a menține tensiune constantă
+- Topologie: colector/drenă deschisă (open collector/drain) – spre deosebire de emitter follower la regulatoare non-LDO
+- Aceasta permite ca dropout voltage să fie la fel de mic ca tensiunea de saturație a tranzistorului
+- Formula tensiune de ieșire: Vout = (1 + R1/R2) × Vref
+
+SECȚIUNEA 3 – Eficiență și disipare termică
+- Putere disipată: PLOSS = (VIN - VOUT) × IOUT + VIN × IQ
+- Când IOUT >> IQ (funcționare normală): PLOSS ≈ (VIN - VOUT) × IOUT
+- Eficiența simplificată: η = VOUT / VIN
+- Curent ridicat și/sau diferența mare între VIN și VOUT → disipare mare de putere
+- Eficiența scade pe măsură ce diferența VIN - VOUT crește
+- Disiparea excesivă poate dăuna LDO-ului sau poate cauza oprire termică (thermal shutdown)
+
+SECȚIUNEA 4 – Curent quiescent
+- IQ = IIN - IOUT (diferența între curentul de intrare și cel de ieșire)
+- Curentul necesar de circuitul intern al LDO pentru funcționare corectă
+- Contribuitori principali: elementul de trecere în serie, topologia, temperatura ambientală
+- În stare inactivă (fără sarcină): PLOSS = VIN × IQ
+
+SECȚIUNEA 5 – Filtrare și specificații
+- LDO-urile pot fi folosite ca filtre, util când se folosesc surse switching care introduc ripple
+- Ripple-ul poate afecta oscilatoare, convertoare de date, sisteme RF
+- PSRR (Power Supply Rejection Ratio): capacitatea LDO de a respinge ripple-ul de la intrare
+- PSRR = ΔVIN² / ΔVOUT² (exprimat în dB)
+- Exemplu: PSRR de 55 dB la 1 MHz atenuează ripple de 1 mV la 1.78 μV la ieșire
+- LDO-uri de performanță: PSRR ridicat pe bandă largă (10 Hz - 5 MHz)
+- Load regulation: ΔVOUT / ΔIOUT – capacitatea de a menține tensiune stabilă la varierea sarcinii
+- Line regulation: ΔVOUT / ΔVIN – capacitatea de a menține tensiune stabilă la varierea tensiunii de intrare
+- Transient response: variația maximă a tensiunii de ieșire la schimbare bruscă de curent
+- Output noise: zgomot termal, shot noise, flicker noise – contribuie la zgomotul de ieșire
+
+========================================
+SURSA 2: Wikipedia – Voltage regulator module
+URL: https://en.wikipedia.org/wiki/Voltage_regulator_module
+========================================
+
+SECȚIUNEA 1 – Definiție VRM
+- VRM (Voltage Regulator Module) = convertor buck care furnizează procesorului și chipsetului tensiunea de alimentare corespunzătoare
+- Convertește +3.3V, +5V sau +12V la tensiuni mai mici necesare dispozitivelor
+- Permite montarea dispozitivelor cu tensiuni diferite pe aceeași placă de bază
+- Pe sisteme PC, VRM-ul este tipic alcătuit din dispositive power MOSFET
+- Majoritatea implementărilor VRM sunt lipite direct pe placa de bază (motherboard)
+
+SECȚIUNEA 2 – FIVR și integrare
+- Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU
+- FIVR (Fully Integrated Voltage Regulator) sau IVR (Integrated Voltage Regulator)
+- Simplifică designul VRM al plăcii de bază
+- Procesoarele moderne necesită sub 1.5V tensiune de alimentare
+- Tendința designerilor CPU: tensiuni core mai mici → disipare redusă → TDP (Thermal Design Power) mai mic
+- Plăcile video moderne folosesc și ele VRM datorită cerințelor ridicate de putere/curent
+- VRM-urile pot genera căldură semnificativă, necesitând radiatoare separate
+
+SECȚIUNEA 3 – VID (Voltage Identification)
+- Procesorul comunică VRM-ului tensiunea și curentul corecte la pornire prin biți VID
+- VRM-ul furnizează inițial o tensiune standard logicii VID a procesorului
+- Logica VID trimite codul VID înapoi la VRM, care apoi reglează tensiunea cerută
+- Switch-mode buck converter ajustează ieșirea conform codului VID
+- VID de 5 biți → maxim 32 tensiuni de ieșire distincte
+- VID de 5, 6, sau 8 biți – tensiuni între 0.5V și 3.5V (din 2008)
+- Permite folosirea aceluiași PSU pentru CPU-uri cu tensiuni nominale diferite
+- Reduce consumul de putere în perioadele de inactivitate prin scăderea tensiunii
+
+SECȚIUNEA 4 – VRM și overclocking
+- Calitatea VRM-ului influențează direct potențialul de overclocking al plăcii de bază
+- Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite
+- O alimentare stabilă este necesară pentru overclocking reușit
+- Un chip forțat dincolo de setările din fabrică crește consumul de putere → VRM-ul trebuie să se adapteze
+
+========================================
+NOTE CERCETARE
+========================================
+- VERIFICAT: Informațiile provin exclusiv din Wikipedia (sursă permisă)
+- Concepte acoperite conform structura-curs.txt: LDO, VRM, stabilizare tensiune
+- LDO: definiție, componente, eficiență, quiescent current, filtrare, PSRR, load/line regulation
+- VRM: definiție, buck converter, FIVR, VID, overclocking
+- Stabilizare tensiune: mecanismul feedback cu amplificator de eroare + referință bandgap
+- Surse suplimentare recomandate: allaboutcircuits.com (LDO noise/PSRR)

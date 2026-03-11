@@ -1,0 +1,143 @@
+LECȚIA 8.2 – MULTIMETRUL
+========================
+MATERIAL BRUT DE CERCETARE
+========================
+
+SURSA 1: Wikipedia – "Multimeter"
+URL: https://en.wikipedia.org/wiki/Multimeter
+
+SECȚIUNEA 1: Definiție și funcții de bază
+- Multimeter (known as: multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)
+- Instrument de măsură ce poate măsura multiple proprietăți electrice
+- Funcții de bază: tensiune (voltage), rezistență (resistance), curent (current)
+- Poate funcționa ca: voltmetru, ohmetru, ampermetru
+- Funcții adiționale: temperatură, capacitanță, frecvență, duty cycle, inductanță
+- Utilizat în operațiuni diagnostice pentru verificarea funcționării corecte a circuitelor
+
+SECȚIUNEA 2: Istoric
+- Primul galvanometru (detector de curent cu pointer mobil): 1820
+- Mecanismul D'Arsonval-Weston: bobină mobilă pe pivoți, rotație în câmp magnetic permanent
+- Inventatorul primului multimeter: Donald Macadie, inginer British Post Office
+- Avometer (1923): măsura Amperi, Volți, Ohmi – de unde numele
+- Primul AVO: sensibilitate 60 Ω/V, 3 range-uri DC curent, 3 range-uri DC tensiune, 10.000 Ω rezistență
+- Primul digital multimeter (DMM): 1955, Non Linear Systems
+- Primul handheld DMM: 1977, Frank Bishop de la Intron Electronics
+
+SECȚIUNEA 3: Tipuri – Analog
+- Folosește microampermetru cu pointer mobil pe scală
+- Principiu de funcționare: bobină mobilă (galvanometru d'Arsonval)
+- Măsurat tensiune DC: rezistor în serie cu meter movement
+- Măsurat curent: shunt-uri (rezistențe în paralel) cu meter movement
+- Măsurat rezistență: baterie internă trimite curent prin dispozitivul testat; scala este INVERSĂ (full-scale = 0 Ω)
+- Scala ohmilor este COMPRESATĂ – rezoluție mai bună la valori mici
+- Sensibilitate tipică: 20.000 Ω/V (50 μA full-scale deflection), max ~50.000 Ω/V
+- Avantaje: intuitive pentru tendințe, nu necesită amplificator (mai puțin susceptibile la interferență RF)
+- Precizie tipică: ±3%
+- Dezavantaje: fragile fizic și electric, compresie la rezistențe mari
+
+SECȚIUNEA 4: Tipuri – Digital (DMM)
+- Afișaj numeric, elimină erorile de paralaxă
+- Rezistență: curent constant mic prin dispozitiv, citire a căderii de tensiune rezultate
+- Auto-ranging: selectare automată a scalei pentru maxim de cifre semnificative
+- Auto-polaritate: arată dacă tensiunea DC este pozitivă sau negativă
+- Sample and hold: menține ultima citire pentru examinare
+- Rezoluție exprimată în cifre: ex. 4½ digit = poate citi până la 19999
+- Precizie standard portabil: ±0.5% pe range-urile DC tensiune
+- Bench-top: mai bine de ±0.01%
+- Laborator: câteva părți per milion (ppm)
+- Interfețe: IrDA, RS-232, USB, Bluetooth, IEEE-488
+
+SECȚIUNEA 5: Funcția de continuitate
+- Buzzer care sună când rezistența circuitului este suficient de mică
+- Test inexact (pragul de "suficient de mic" variază între aparate)
+- Testare diode: măsurare forward drop al joncțiunilor semiconductoare
+- Testare tranzistori: măsurare câștig de curent și alți parametri
+
+SECȚIUNEA 6: Sonde (Probes)
+- Tipuri: crocodile clips, retractable hook clips, sonde cu vârf ascuțit
+- Tweezer probes: pentru componente SMD (surface-mount devices)
+- Conectate prin banana jacks (distanță standard 19 mm între centre)
+- Clamp meters: măsoară curent fără contact direct (principiul transformatorului pentru AC)
+- Hall effect sensors: permit măsurare DC curent
+
+SECȚIUNEA 7: Siguranță (Safety)
+- Sigurante interne (una sau două) pentru protecție la supracurent
+- Eroare frecventă: setare pe ohmi sau amperi, apoi conectare la sursă de tensiune cu impedanță mică
+- Categorii IEC 61010: I (neconectat la rețea), II (subcircuite mains), III (sarcini permanente), IV (intrare rețea)
+- Sigurante HRC ceramice (>20A) la metri de calitate
+- Protecție MOV (Metal Oxide Varistor) la supratensiune
+- Protecție supracurent cu Polyswitch
+
+SECȚIUNEA 8: Impedanță de intrare
+- DMM-uri: tipic 1 MΩ sau 10 MΩ impedanță fixă de intrare
+- High-end: >10 GΩ pentru range-uri ≤10V
+- Analog fără amplificator: impedanța variază cu range-ul selectat (ex: 20.000 Ω/V × 300V range = 6 MΩ)
+- Loading effect: impedanța mică a metrului poate afecta circuitul testat, dând citiri false
+
+SURSA 2: Wikipedia – "Ohm's law"
+URL: https://en.wikipedia.org/wiki/Ohm%27s_law
+
+SECȚIUNEA 9: Legea lui Ohm – formulare
+- V = I × R (tensiune = curent × rezistență)
+- I = V / R (curent = tensiune / rezistență)
+- R = V / I (rezistență = tensiune / curent)
+- Georg Ohm, publicat 1827 "Die galvanische Kette, mathematisch bearbeitet"
+- Lege empirică: generalizare din experimente, nu întotdeauna respectată (materiale non-ohmice)
+- Rezistența R este constantă, independentă de curent (pentru materiale ohmice)
+- Analogie hidraulică: presiune=tensiune, debit=curent, restricție=rezistență
+
+SECȚIUNEA 10: Modelul Drude
+- Paul Drude, 1900: electronii se mișcă ca bile de pinball între ioni
+- Câmp electric accelerează electronii, coliziunile cu atomii dispersează mișcarea
+- Traiectorie zigzag, dar drift net în direcția opusă câmpului electric
+- Viteza medie de drift proporțională cu câmpul electric → curent proporțional cu tensiunea
+
+SECȚIUNEA 11: Efect termic
+- Rezistivitatea metalelor crește cu temperatura
+- Rezistivitatea semiconductorilor scade cu temperatura
+- Încălzire Joule: P = I² × R (putere disipată ca căldură)
+- Coeficient de temperatură tiipic: +3×10⁻³ K⁻¹ până la +6×10⁻³ K⁻¹ pentru metale
+
+SURSA 3: Wikipedia – "Continuity test"
+URL: https://en.wikipedia.org/wiki/Continuity_test
+
+SECȚIUNEA 12: Testul de continuitate
+- Verificarea dacă curentul trece printr-un circuit electric (circuit complet)
+- Se realizează prin aplicarea unei tensiuni mici, în serie cu LED sau buzzer piezoelectric
+- Dacă fluxul de electroni este blocat de conductori rupți, componente deteriorate sau rezistență excesivă → circuit "deschis"
+- Dispozitive: multimetre (mai avansate) și continuity testers (mai simple, cu bec)
+
+SECȚIUNEA 13: Utilizări ale testului de continuitate
+- Testarea componentelor simple: switch-uri, siguranțe, fire (o siguranță funcțională trebuie să aibă continuitate)
+- Verificare grounding: o sondă pe conductorul expus, alta pe un punct de masă cunoscut
+- Reverse engineering: deducerea conexiunilor din măsurători - completarea buclei de curent arată cărui fir aparține conexiunea
+- PCB tracing: continuitate între puncte de lipire relevă trace-urile ce conectează componentele
+
+SECȚIUNEA 14: Limitări ale testului de continuitate
+- Alimentarea trebuie deconectată înainte de test
+- Rezistori cu valoare mică, motoare, transformatoare, inductori, difuzoare și diode pot da informații ambigue
+
+SURSA 4: Wikipedia – "Electrical resistance and conductance"
+URL: https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance
+
+SECȚIUNEA 15: Rezistența electrică – definiție
+- R = V / I (ohm, Ω), G = I / V = 1/R (siemens, S)
+- Depinde de: material și formă (geometrie)
+- R = ρ × l / A (rezistivitate × lungime / arie secțiune transversală)
+- Fir lung și subțire = rezistență mare; fir scurt și gros = rezistență mică
+- Valori tipice: 1m fir cupru Ø1mm = 0.02 Ω, bec incandescent = 200-1000 Ω, corp uman = 1.000-100.000 Ω
+- Rezistență piele uscată: 100 kΩ, piele umedă: 1 kΩ, tensiune mare "sparge" pielea: 500 Ω
+
+SECȚIUNEA 16: Măsurare rezistență
+- Ohmetru: instrument specializat
+- Ohmetre simple: erorile de rezistență ale sondelor afectează citirea
+- Metoda four-wire (Kelvin sensing): 2 sonde furnizează curent, 2 sonde measure tensiunea → elimină rezistența cablurilor
+- Funcția "delta", "zero", sau "null" pe DMM-uri: scad rezistența sondelor din citire
+
+NOTE CERCETARE:
+- 4 surse Wikipedia consultate, fiecare oferind informații complementare
+- Legea lui Ohm este fundamentul tuturor măsurătorilor cu multimetrul
+- Loading effect al metrului (impedanță de intrare) = concept critic pentru măsurători corecte
+- Testul de continuitate: relevant direct pentru diagnosticul consolelor (verificarea traseelor PCB, componentelor)
+- Categoriile IEC 61010 nu sunt direct relevante pentru diagnosticul consolelor (tensiuni joase), dar sunt importante pentru siguranță
+- Metoda four-wire poate fi menționată ca tehnica avansată de măsurare a rezistențelor foarte mici

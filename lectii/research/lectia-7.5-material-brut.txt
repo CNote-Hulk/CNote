@@ -1,0 +1,265 @@
+LECȚIA 7.5 – BANDWIDTH ȘI MEMORIE
+=====================================
+MATERIAL BRUT DE CERCETARE
+Data cercetării: 2025
+Surse utilizate: 4 (Wikipedia)
+
+=====================================
+SURSA 1: Wikipedia – "Memory bandwidth"
+URL: https://en.wikipedia.org/wiki/Memory_bandwidth
+=====================================
+
+SECȚIUNEA 1: Definiția memory bandwidth
+- Memory bandwidth = rata la care datele pot fi citite din sau stocate într-o memorie semiconductoare de către un procesor
+- Se exprimă de obicei în bytes/second (octeți pe secundă)
+- Bandwidth-ul anunțat pentru o memorie sau sistem este de obicei maximum teoretic
+- În practică, bandwidth-ul observat va fi mai mic decât cel anunțat (garantat să nu depășească)
+- Există benchmark-uri (ex. STREAM) pentru a măsura bandwidth-ul susținut folosind diverse tipare de acces
+
+SECȚIUNEA 2: Convenții de măsurare a bandwidth-ului
+- 3 convenții diferite pentru definirea cantității de date transferate:
+  1. Convenția bcopy: numără cantitatea de date copiate dintr-o locație în alta per unitate de timp
+     - Exemplu: copierea a 1 milion de bytes = 1 milion bytes/s
+  2. Convenția STREAM: sumează datele citite explicit + datele scrise explicit de codul aplicației
+     - Același exemplu = 2 milioane bytes/s (1M citit + 1M scris)
+     - Cel mai direct legată de codul utilizatorului
+  3. Convenția hardware: numără traficul real de date al hardware-ului (inclusiv cel neexplicit)
+     - Sisteme cu write-allocate cache policy adaugă trafic suplimentar
+     - Același exemplu = 3 milioane bytes/s (citire sursă + citire destinație + scriere destinație)
+     - Cel mai direct legată de hardware
+
+SECȚIUNEA 3: Calculul bandwidth-ului și nomenclatura
+- Pentru DDR SDRAM (DDR, DDR2, DDR3, DDR4), bandwidth-ul total = produs de:
+  • Frecvența de bază a ceasului DRAM
+  • Numărul de transferuri de date per ciclu de ceas: 2 (pentru DDR = "double data rate")
+  • Lățimea magistralei de memorie (interfață): 64 biți per interfață DDR
+  • Numărul de interfețe: PC-urile moderne folosesc de obicei 2 interfețe (dual-channel) = 128 biți efectivi
+
+- EXEMPLU CALCUL: dual-channel DDR2-800 la 400 MHz:
+  400.000.000 cicluri/s × 2 transferuri/ciclu × 64 biți/transfer × 2 interfețe = 
+  102.400.000.000 biți/s = 12.800 MB/s = 12,8 GB/s (burst rate teoretic)
+
+- Convenția de denumire DDR: 
+  - DDR2-800 = viteza maximă (800 MT/s, NU frecvența ceasului)
+  - PC2-6400 = bandwidth-ul maxim (6400 MB/s per interfață de 64 biți)
+  - Dual-channel efectiv = 128 biți lățime
+
+- Plăci grafice moderne folosesc mai mult de 2 interfețe de memorie:
+  - Intel LGA 2011, NVIDIA GeForce GTX 980: 4 interfețe
+  - NVIDIA GeForce GTX TITAN: 384 biți (6 interfețe × 64 biți)
+  - AMD Radeon R9 290X: 512 biți (8 interfețe × 64 biți)
+
+SECȚIUNEA 4: Biți ECC
+- Sistemele cu memorie ECC (error-correcting code) au interfețe mai late (72 biți vs 64)
+- Biții suplimentari NU se numără în specificațiile de bandwidth (nu stochează date utilizator)
+- Biții ECC fac parte din hardware-ul memoriei, nu din informația stocată
+
+=====================================
+SURSA 2: Wikipedia – "CAS latency"
+URL: https://en.wikipedia.org/wiki/CAS_latency
+=====================================
+
+SECȚIUNEA 5: Definiția CAS latency
+- CAS latency (CL) = Column Address Strobe latency
+- Întârzierea între comanda READ și momentul când datele sunt disponibile
+- DRAM asincron: interval specificat în nanosecunde (timp absolut)
+- SDRAM sincron: interval specificat în cicluri de ceas
+- Timpul real variază dacă frecvența ceasului diferă
+
+SECȚIUNEA 6: Fundamente ale operațiunii RAM
+- DRAM este aranjat într-o matrice rectangulară (rânduri × coloane)
+- Fiecare rând selectat de un word line orizontal
+- Semnalul HIGH pe un rând activează MOSFET-urile, conectând condensatoarele de stocare la bit lines verticale
+- Fiecare bit line este conectată la un sense amplifier
+- Când nu e activ niciun rând, bit lines sunt menținute într-o stare preîncărcată (voltaj la jumătatea distanței între high și low)
+- CAS latency = întârzierea între prezentarea adresei de coloană + CAS signal și momentul datelor disponibile
+- Rândul dorit TREBUIE să fie deja activ; dacă nu, se adaugă timp suplimentar
+
+- EXEMPLU modul 1 GiB SDRAM: 8 chipuri de 1 Gbit (128 MiB fiecare)
+  - Fiecare chip: 8 bănci de 128 Mibits
+  - Fiecare bancă: 16.384 rânduri × 8.192 biți
+  - Acces: 3 biți bancă + 14 biți adresă rând + 13 biți adresă coloană
+
+SECȚIUNEA 7: Efectul CAS latency asupra vitezei de acces
+- Modulele au bănci interne multiple – date pot fi outputate din una în timpul latenței alteia (pipelining)
+- Bandwidth-ul maxim realizabil depinde DOAR de viteza ceasului (prin pipelining)
+- ATENȚIE: bandwidth-ul maxim se atinge doar când adresa datelor este cunoscută suficient de devreme
+- Pipeline stalls = pierdere de bandwidth când adresa nu este predictibilă
+- Random access complet: timp = închidere rând activ + deschidere rând dorit + CAS latency
+- Acces secvențial (spatial locality): doar CAS latency determină timpul
+
+- CAS latency specificat în cicluri de ceas → trebuie convertit în timp absolut pentru comparație
+  - CL mai mare numeric poate fi MAI RAPID dacă ceasul este mai rapid
+  - Exemplu: DDR4-3200 CL16 = 10,00 ns vs DDR4-2400 CL15 = 12,50 ns (CL16 e mai rapid!)
+
+- DDR (Double Data Rate): 2 transferuri per ciclu de ceas
+  - CAS latency specificat în cicluri de ceas, NU transferuri
+  - Formula: CAS latency (ns) = (CL / frecvența ceasului) = CL × (2 / rată de transfer)
+
+- Burst transfers: cache line modern = 64 bytes = 8 transferuri de 64 biți
+  - CAS latency = doar primul cuvânt; restul depind de data rate
+  - Critical word first: procesorul poate folosi primul cuvânt imediat
+
+SECȚIUNEA 8: Date CAS latency concrete (selecție din tabele)
+- SDRAM PC100: CL 2, latență 20,00 ns
+- DDR-400: CL 2.5-3, latență 12,50-15,00 ns
+- DDR2-800: CL 4-6, latență 10,00-15,00 ns
+- DDR3-1600: CL 6-11, latență 7,50-13,75 ns
+- DDR4-3200: CL 14-16, latență 8,75-10,00 ns
+- DDR5-4800: CL 34-40, latență 14,17-16,67 ns
+- DDR5-6000: CL 26-40, latență 8,67-13,33 ns
+- DDR5-6400: CL 28-40, latență 8,75-12,50 ns
+
+- OBSERVAȚIE IMPORTANTĂ: CL a crescut numeric de la 2 (SDRAM) la 40 (DDR5)
+  dar latența absolută a rămas relativ stabilă (~10-15 ns) datorită frecvențelor mai mari
+
+=====================================
+SURSA 3: Wikipedia – "DDR SDRAM"
+URL: https://en.wikipedia.org/wiki/DDR_SDRAM
+=====================================
+
+SECȚIUNEA 9: Definiția DDR SDRAM
+- DDR SDRAM = Double Data Rate Synchronous Dynamic Random-Access Memory
+- Transferă date pe AMBELE fronturi ale semnalului de ceas (rising + falling)
+- Astfel dublează rata de date fără a crește frecvența ceasului
+- Bandwidth mai mare + consum mai mic de energie + interferență redusă
+- Samsung: primul prototip 1997, primul chip comercial (64 Mbit) iunie 1998
+- Specificație finalizată de JEDEC în iunie 2000 (JESD79)
+- Prima placă de bază retail cu DDR: august 2000
+
+SECȚIUNEA 10: Generații DDR cu specificații
+- DDR (2n prefetch, 1998): DDR-200 la DDR-400
+  - Frecvență: 100-200 MHz, Transfer: 200-400 MT/s, Bandwidth: 1600-3200 MB/s
+  - Voltaj: 2.5V (2.6V pentru DDR-400), DIMM: 184 pini
+
+- DDR2 (4n prefetch, 2003): DDR2-400 la DDR2-1066
+  - Frecvență: 100-266 MHz, Transfer: 400-1066 MT/s, Bandwidth: 3200-8533 MB/s
+  - Voltaj: 1.8V, DIMM: 240 pini
+
+- DDR3 (8n prefetch, 2007): DDR3-800 la DDR3-2133
+  - Frecvență: 100-266 MHz, Transfer: 800-2133 MT/s, Bandwidth: 6400-17066 MB/s
+  - Voltaj: 1.5V/1.35V, DIMM: 240 pini
+
+- DDR4 (8n prefetch, 2014): DDR4-1600 la DDR4-3200
+  - Frecvență: 200-400 MHz, Transfer: 1600-3200 MT/s, Bandwidth: 12800-25600 MB/s
+  - Voltaj: 1.2V/1.05V, DIMM: 288 pini
+  - 16 bănci, 4 grupuri de bănci × 4 bănci
+
+- DDR5 (16n prefetch, 2020): DDR5-3200 la DDR5-7200
+  - Frecvență: 200-450 MHz, Transfer: 3200-7200 MT/s, Bandwidth: 25600-57600 MB/s
+  - Voltaj: 1.1V, DIMM: 288 pini
+
+SECȚIUNEA 11: Principiul Double Data Rate
+- DDR transferă de obicei 64 biți la un moment dat
+- Rata de transfer efectivă = frecvența magistralei × 2 (DDR) × 64 biți ÷ 8 (conversie la bytes)
+- Exemplu: modul DDR la 100 MHz = 1600 MB/s peak
+- Fiecare generație a dublat prefetch depth: 2n → 4n → 8n → 8n → 16n
+  Aceasta crește rata externă fără a crește frecvența internă a DRAM-ului
+
+SECȚIUNEA 12: Module și organizare
+- DIMM 64-bit data bus: necesită 8 chipuri de 8 biți, adresate în paralel
+- Multiple chipuri cu linii de adresă comune = memory rank
+- Multi-channel architecture (dual-channel) combate memory bottleneck
+- DDR memory bus width per channel: 64 biți (72 pentru ECC)
+- Consum de energie: ~1-3 W per modul de 512 MB (crește cu frecvența și utilizarea)
+- Generațiile NU sunt backward/forward compatible (nu se pot interschimba pe aceeași placă)
+
+SECȚIUNEA 13: LPDDR (Low Power DDR)
+- Varianta cu consum redus pentru dispozitive portabile
+- Folosit în telefoane, handheld-uri, playere audio digitale
+- Tehnici: voltaj redus, opțiuni avansate de refresh
+
+=====================================
+SURSA 4: Wikipedia – "GDDR6 SDRAM" + "Memory hierarchy" + "Memory latency"
+URL: https://en.wikipedia.org/wiki/GDDR6_SDRAM
+URL: https://en.wikipedia.org/wiki/Memory_hierarchy
+URL: https://en.wikipedia.org/wiki/Memory_latency
+=====================================
+
+SECȚIUNEA 14: GDDR6 SDRAM
+- GDDR6 = Graphics Double Data Rate 6 Synchronous Dynamic Random-Access Memory
+- Tip de SGRAM (Synchronous Graphics RAM) cu interfață high-bandwidth, double data rate
+- Proiectat pentru plăci grafice, console de jocuri, high-performance computing
+- Succesor al GDDR5
+- Specificație finalizată de JEDEC: iulie 2017
+- Bandwidth per pin: până la 16 Gbit/s
+- Voltaj operare: 1.35V (mai mic decât GDDR5X)
+
+SECȚIUNEA 15: Implementări comerciale GDDR6
+- Samsung: primul chip produs în masă ianuarie 2018 (16 Gb / 2 GB, proces 10nm, 18 Gbit/s per pin)
+- SK Hynix: producție masă februarie 2018 (8 Gbit, 14 Gbit/s per pin)
+  - Exemplu: 12 GB RAM, bus 384 biți → bandwidth 768 GB/s
+- Micron: producție masă iunie 2018 (8 Gb)
+- Primele plăci grafice cu GDDR6: Nvidia Turing (GeForce RTX 2080 Ti, 2080, 2070) – august 2018
+- AMD Radeon RX 5700 (Navi 10): 8 GB GDDR6 – iunie 2019
+
+SECȚIUNEA 16: GDDR6X (variantă avansată)
+- Dezvoltat de Micron în colaborare cu Nvidia (nestandardizat de JEDEC)
+- Bandwidth per pin: 19-21 Gbit/s 
+- Utilizează semnalizare PAM4 (Pulse Amplitude Modulation 4-level)
+  - 2 biți per simbol vs 1 bit per simbol la NRZ (PAM2) standard
+  - Aceasta limitează GDDR6 normal la 16 Gbit/s per pin
+- Primele plăci cu GDDR6X: Nvidia GeForce RTX 3080 și 3090
+- Consumă 15% mai puțină energie per bit transferat vs GDDR6
+- Considerat mai ieftin decât High Bandwidth Memory (HBM)
+
+SECȚIUNEA 17: GDDR6W (variantă Samsung)
+- Anunțat de Samsung în noiembrie 2022
+- Îmbunătățiri față de GDDR6:
+  - Rată transmisie per pin: 22 Gb/s
+  - Capacitate per package dublată: de la 16 Gb la 32 Gb
+  - Pini I/O dublați: de la 32 la 64
+  - Grosime cu 36% mai mică (0.7 mm vs 1.1 mm, prin Fan-Out Wafer-Level Packaging)
+
+SECȚIUNEA 18: Ierarhia memoriei (Memory Hierarchy)
+- Niveluri cu latență și throughput real măsurat:
+  - Registre CPU: 18.432 biți, până la 256 GB/s, 0.25 ns (1 ciclu la 4 GHz)
+  - Cache L1 date: 32 KiB, până la 64 GB/s, 1 ns (4 cicluri)
+  - Cache L2: 1 MB, până la 18.3 GB/s, 3.5 ns (14 cicluri)
+  - Cache L3: 16-32 MB, până la 5.45 GB/s, 11.75 ns (47 cicluri)
+  - Memorie principală (DDR5-6000): 64 GiB, ~60 GB/s, 82.5 ns
+  - SSD NVMe: 2 TB, 2000 MB/s, 0.2 ms
+  - HDD: 18 TB, 500 MB/s, 4.16 ms
+
+- Bottleneck principal: localitate de referință a acceselor de memorie
+  - CPU-urile moderne sunt atât de rapide încât stau inactiv așteptând I/O memorie
+  - Register pressure → cache pressure → memory pressure
+  - Register spilling (registru → cache), cache miss (cache → memorie principală), page fault (memorie → disk)
+
+- Minimizarea distanței în ierarhia memoriei = cea mai importantă cale de creștere a performanței
+
+SECȚIUNEA 19: Memory latency - definiție
+- Memory latency = timpul între inițierea unei cereri pentru un byte/word din memorie 
+  și recuperarea acestuia de către procesor
+- Dacă datele NU sunt în cache-ul procesorului → latență mai mare (comunicare cu celule externe)
+- Măsură fundamentală a vitezei memoriei: latență mai mică = citire mai rapidă
+- IMPORTANT: latența NU trebuie confundată cu bandwidth-ul memoriei (throughput)
+- Latența exprimată în cicluri de ceas a rămas relativ stabilă în timp
+  dar s-a îmbunătățit în termeni de timp absolut
+- Exemplu: DRAM-urile de 1 Mbit de pe module SIMM 30-pin aveau 70 ns latență
+  vs DDR4 DIMMs moderne cu sub 15 ns
+
+=====================================
+NOTE CERCETARE
+=====================================
+
+1. Bandwidth-ul memoriei este un factor critic pentru performanța consolelor de jocuri:
+   - Console folosesc memorie unificată (UMA): CPU și GPU împart același bandwidth
+   - PS5 folosește GDDR6, Xbox Series X folosește GDDR6 (din cercetarea L7.2)
+   - Plăcile grafice dedicate au bandwidth mult mai mare (ex. 768 GB/s cu GDDR6 384-bit)
+
+2. Relația bandwidth-latență este inversă în anumite aspecte:
+   - Latența CAS a crescut numeric (CL 2 → CL 40) dar a rămas ~10-15 ns în timp absolut
+   - Bandwidth-ul a crescut dramatic: 1600 MB/s (DDR) → 57.600 MB/s (DDR5-7200) per canal
+
+3. Prefetch depth a fost mecanismul cheie pentru creșterea bandwidth-ului:
+   - DDR: 2n, DDR2: 4n, DDR3: 8n, DDR4: 8n, DDR5: 16n
+   - Permite rate de transfer externe mai mari fără a crește frecvența internă DRAM
+
+4. Diferența DDR vs GDDR:
+   - DDR: optimizat pentru latență scăzută (important pentru CPU)
+   - GDDR: optimizat pentru bandwidth ridicat (important pentru GPU, procesare grafică paralelă)
+   - Console folosesc de obicei GDDR (mai ales GDDR5/6) partajat ca memorie unificată
+
+5. Formula de calcul bandwidth:
+   Bandwidth = frecvența_ceas × 2 (DDR) × lățime_bus (biți) × nr_canale ÷ 8 (bytes)

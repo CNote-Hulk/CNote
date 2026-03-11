@@ -1,0 +1,254 @@
+LECȚIA 8.1 – METODOLOGIA DE DIAGNOSTIC
+=====================================
+MATERIAL BRUT DE CERCETARE
+Data cercetării: 2025
+Surse utilizate: 4 (Wikipedia)
+
+=====================================
+SURSA 1: Wikipedia – "Troubleshooting"
+URL: https://en.wikipedia.org/wiki/Troubleshooting
+=====================================
+
+SECȚIUNEA 1: Definiția troubleshooting-ului
+- Troubleshooting = formă de problem solving, aplicată la repararea produselor sau proceselor defecte
+- Căutare logică și sistematică a sursei unei probleme pentru a o rezolva
+- Necesar să identifice simptomele, să determine cauza cea mai probabilă, apoi să confirme soluția
+- Procesul de eliminare (process of elimination) pentru excluderea sistematică a cauzelor potențiale
+- O strategie = set organizat de activități exprimând o modalitate plauzibilă de a atinge un obiectiv
+- Strategiile NU sunt algoritmi rigizi – rezolvatorii se adaptează oportunistic
+
+SECȚIUNEA 2: Diagnosticul – două tipuri de strategii
+- Doi pași esențiali: cunoștințe de domeniu apriorice + strategii de căutare
+- Strategia topografică: ghidată de funcționarea CORECTĂ a dispozitivului ("ce se întâmplă?")
+  - Deep reasoning, reasoning from first principles
+  - Necesită cunoaștere profundă/cauzală/model-based a sistemului
+  - Folosită la defecte noi (novel faults) când experiența nu ajunge
+- Strategia simptomatică: ghidată de funcționarea ANORMALĂ ("ce e greșit?")
+  - Case-based reasoning sau shallow reasoning
+  - Bazată pe experiență anterioară – conexiuni stabilite între simptome și cauze
+  - Expertul cunoaște cauza pentru că a întâlnit cazuri similare
+  - CEA MAI PUTERNICĂ strategie, cea mai folosită
+  - NU funcționează independent cu probleme cu adevărat noi
+
+- Cele două strategii se completează reciproc – simptomatica are nevoie de topografică și invers
+
+SECȚIUNEA 3: Aspecte fundamentale ale troubleshooting-ului
+- Focus inițial: schimbări recente ale sistemului sau mediului
+- PRINCIPIU: corelația NU implică cauzalitate (exemplu: dispozitiv defect după mutare)
+- Necesită gândire critică (critical thinking), NU gândire magică (magical thinking)
+
+- CELE TREI PRINCIPII FUNDAMENTALE:
+  1. Să poți REPRODUCE problema la cerere
+  2. Să reduci sistemul la cea mai simplă formă care încă prezintă problema
+  3. Să CUNOȘTI cum ar trebui să funcționeze sistemul (pentru a "observa" eroarea)
+
+- Substituția serială: verificarea componentelor una câte una, înlocuind cu componente bune
+  - Considerată degenerată dacă se face fără ipoteză despre cum defectul produce simptomele
+- Sistemele simple/intermediare: liste sau arbori de dependențe
+- Sisteme complexe: dependențe ciclice, bucle de feedback – mai greu de biselat
+- Repornirea (reboot) = pornire de la o stare cunoscută bună
+
+- Troubleshooting poate fi organizat ca: checklist, procedură, flowchart, tabel
+  - Dezvoltate ÎNAINTE de apariția problemei pentru eficiență maximă
+
+SECȚIUNEA 4: Metoda Half-splitting (bisecția)
+- Troubleshooting eficient: înțelegerea clară a comportamentului așteptat + simptomele observate
+- Formularea ipotezelor → teste pentru eliminarea cauzelor → "divide and conquer"
+
+- Două strategii comune:
+  1. Verifică ÎNTÂI condițiile frecvente sau ușor de testat ("milking the front panel")
+     Exemplu: verificarea LED-ului imprimantei, cablul bine conectat
+  2. "Bisecția" sistemului – verificare la jumătatea lanțului de dependențe
+     Exemplu: a ajuns job-ul la server? → problema e "spre utilizator" sau "spre dispozitiv"
+
+- Half-splitting = aplicarea binary search pe dependențe serializate
+  - Similar jocului "20 de întrebări": 1 opțiune din 1 milion izolată în 20 de bisecții
+  - Eficient mai ales în sisteme cu lanțuri lungi de dependențe
+
+SECȚIUNEA 5: Reproducerea simptomelor
+- Problemele reproductibile pot fi izolate și rezolvate în mod fiabil
+- Efort considerabil se depune adesea pentru a găsi o procedură de reproducere
+
+SECȚIUNEA 6: Probleme intermitente
+- Cele mai dificile probleme de troubleshooting
+- În electronică: componente sensibile termic (rezistența variază cu temperatura)
+  - Aer comprimat pentru răcirea punctuală + pistol de căldură pentru încălzire
+- Intermitent = "problemă pentru care nu există o procedură cunoscută de reproducere consistentă"
+- Frecvența apariției ≠ procedura cunoscută de reproducere
+- Uneori trebuie resort la metode statistice
+- Testele de stres pot determina dacă componente specifice au cedat
+
+SECȚIUNEA 7: Probleme multiple
+- Multe probleme apar din cauza defecțiunilor MULTIPLE
+- Mai ales în sisteme fault-tolerant cu redundanță
+- Substituția serială poate eșua cu defecte multiple
+- Înlocuirea cu componente defecte poate CREȘTE numărul de probleme
+- "Înlocuire" include și ajustare, reglare sau alte modificări
+- Contactele murdare sau slăbite pot necesita doar curățare/strângere
+
+=====================================
+SURSA 2: Wikipedia – "Root-cause analysis"
+URL: https://en.wikipedia.org/wiki/Root-cause_analysis
+=====================================
+
+SECȚIUNEA 8: Definiția Root Cause Analysis (RCA)
+- RCA = metodă de problem solving pentru identificarea cauzelor fundamentale ale defecțiunilor
+- Folosită în: IT operations, manufacturing, telecom, industrial process control, accident analysis
+- Combină abducția (generare ipoteze bazate pe dovezi empirice) și inferența deductivă (testare teorie)
+
+- CEI 4 PAȘI AI RCA:
+  1. Identificarea și descrierea clară a problemei
+  2. Stabilirea unui timeline de la situația normală la apariția problemei
+  3. Distingerea între cauza fundamentală și alți factori cauzali (prin event correlation)
+  4. Stabilirea unui graf cauzal între cauza fundamentală și problemă
+
+- Tehnici RCA (conform ISO/IEC 31010): Five Whys, FMEA, Fault Tree Analysis, Ishikawa diagrams, Pareto analysis
+
+SECȚIUNEA 9: Management reactiv vs proactiv
+- Management REACTIV: reacție rapidă după apariția problemei, tratarea simptomelor
+- Management PROACTIV: prevenirea problemelor
+  - Root cause = factorul a cărui eliminare PREVINE recurența problemei
+  - Factor cauzal = contribuie dar eliminarea sa nu previne recurența cu certitudine
+  - Exemplu clasic: mașina s-a oprit → siguranța arsă → suprasarcină → lubrifiant insuficient → pompă uzată → resturi metalice în pompă → cauza fundamentală = lipsa filtrului
+
+- RCA servește ca input pentru procesul de remediere → acțiuni corective
+
+SECȚIUNEA 10: Principiile generale ale RCA
+- Problem statement clar = "steaua polară" a RCA
+- Adunarea factelor: declarații martori, cronologie, cerințe aplicabile
+- Instrumente analitice: Pareto charts, process maps, fault trees, control charts
+- Analiza apărărilor (Barrier Analysis): listarea apărărilor, căutarea dovezilor de eficacitate
+- Întrebări focalizate, nebiased → linii de investigație
+- Analiză cauză-efect: întrebări socratice până se epuizează răspunsurile
+- ATENȚIE: Fishbone (1940s) și 5-Whys (1930s) nu sunt suficient de riguroase
+- Acțiuni corective bazate pe Hierarchy of Hazard Controls
+- Effectiveness review: evaluarea eficacității acțiunilor corective după implementare
+
+=====================================
+SURSA 3: Wikipedia – "Power-on self-test"
+URL: https://en.wikipedia.org/wiki/Power-on_self-test
+=====================================
+
+SECȚIUNEA 11: POST – definiție și funcționare
+- POST = Power-On Self-Test, proces efectuat de firmware/software imediat după pornire
+- Setează starea inițială a dispozitivului din firmware
+- Detectează componente hardware nefuncționale
+- Rezultatele: afișaj pe panel, output extern, sau stocate pentru diagnostic ulterior
+- Eșecuri indicate prin: LED-uri intermitente sau coduri de bipuri (beep codes)
+- Dacă POST reușește → se încarcă bootstrap loader → sistem de operare
+
+- Responsabilități principale POST (IBM PC):
+  • Verificarea registrelor CPU
+  • Verificarea integrității codului BIOS
+  • Verificarea componentelor de bază: DMA, timer, interrupt controller
+  • Inițializarea, dimensionarea și verificarea memoriei principale
+  • Inițializarea BIOS
+  • Transferul controlului la extension BIOS (video, SCSI etc.)
+  • Identificarea și organizarea dispozitivelor de boot
+
+- Versiuni BIOS ulterioare adaugă: inițializare chipset, descoperire și catalogare busuri și dispozitive, UI configurare, construirea mediului pentru OS
+
+SECȚIUNEA 12: Evoluția istorică a POST
+- BIOS-urile inițiale: test complet de memorie la fiecare pornire (inspirat de mainframe-uri IBM)
+- IBM PC original: 16 KB–640 KB RAM, 4.77 MHz 8088, POST: 5s–1.5 min, fără skip
+- De la IBM XT: afișaj numărătoare memorie în loc de ecran gol
+- PC-uri clone: posibilitatea de a sări testul RAM prin apăsarea unei taste
+- Mașini moderne (2000+): adesea fără test RAM implicit (activabil din BIOS setup)
+- DRAM modern semnificativ mai fiabil decât în anii 1980
+
+SECȚIUNEA 13: Coduri de eroare POST (beep codes)
+- Original IBM: coduri numerice pe portul I/O 0x80, vizibile cu POST card sau logic analyzer
+- Ulterior: secvențe de bipuri de la PC speaker
+- Codurile variază între producători de BIOS și chiar între versiuni
+
+- IBM original POST beep codes:
+  • 1 bip scurt = POST normal, sistem OK
+  • 2 bipuri scurte = eroare POST, cod pe ecran
+  • Fără bip = alimentare, system board, CPU deconectat
+  • Bip continuu = alimentare, system board, RAM sau tastatură
+  • 1 lung + 2 scurte = problemă display adapter
+
+- AMI BIOS beep codes:
+  • 1 = Memory refresh timer error
+  • 2 = Parity error in base memory (primii 64 KiB)
+  • 3 = Base memory read/write test error
+  • 5 = Processor failure
+  • 8 = Display memory error
+  • Bipuri continue = niciun modul RAM detectat
+
+- CompTIA A+ (examen):
+  • Bipuri scurte constante = alimentare defectă
+  • Ton lung continuu = defecțiune memorie
+  • Un lung + două scurte = defecțiune placă video
+
+- IBM POST diagnostic codes (intervale numerice):
+  100-199 = System boards, 200-299 = Memory, 300-399 = Keyboard
+  400-499 = Monochrome display, 500-599 = Color/graphics display
+  1700-1799 = Hard drive/adapter
+
+SECȚIUNEA 14: POST pe alte platforme
+- Macintosh (pre-1987): crash silențios + Sad Mac icon + string hexazecimal
+- Macintosh (1987-1998): death chime (bip, crash mașină, geam spart, ton muzical)
+  + Sad Mac icon + 2 string-uri hexazecimale
+- New World Mac (1998+): 1 bip=no RAM, 2=RAM incompatibil, 3=nicio bancă OK, 4=ROM bad, 5=CPU bad
+- Apple Silicon: fără coduri audio/vizuale la erori fatale hardware
+
+- Amiga: secvențe de culori pe ecran în loc de bipuri
+  • Roșu = ROM bad, Galben = CPU exception, Verde = Chip RAM bad, Negru = no CPU
+  • LED tastatură: 1 flash=ROM, 2=RAM, 3=Watchdog, 4=scurtcircuit
+
+=====================================
+SURSA 4: Wikipedia – "Fault detection and isolation"
+URL: https://en.wikipedia.org/wiki/Fault_detection_and_isolation
+=====================================
+
+SECȚIUNEA 15: FDIR – Fault Detection, Isolation and Recovery
+- Subdomeniu al ingineriei de control: monitorizarea unui sistem, identificarea defecțiunii, localizarea
+- Două abordări: recunoaștere directă a pattern-urilor senzorilor și analiza discrepanței vs valori așteptate
+- Defect detectat = când discrepanța (rezidualul) depășește un prag
+- Izolarea defectului = categorizarea tipului și localizării defecțiunii
+
+- Tehnici FDI bazate pe model: observer-based, parity-space, parameter identification
+- Tehnici FDI bazate pe procesarea semnalelor: operații matematice/statistice, rețele neuronale
+  - Exemplu: TDR (Time Domain Reflectometry) – semnal trimis pe cablu, reflecție analizată
+
+- Fault Recovery: acțiune după detectare și izolare
+  • Oprirea echipamentului defect
+  • Comutare la echipament redundant
+  • Trecerea sistemului într-un Safe Mode cu funcționalități limitate
+
+SECȚIUNEA 16: Diagnosticul defectelor în mașini
+- Metode de colectare date: monitorizarea vibrațiilor, imaging termic, analiza particulelor din ulei
+- Procesare: analiză spectrală, wavelets, Fourier transform
+- Root cause failure analysis: identificarea cauzei originale (ex. rulment defect → aliniere greșită la montaj)
+- Diagnosticul stării nu este suficient → trebuie identificată cauza fundamentală
+
+- Strategii de mentenanță:
+  • Condition-based maintenance (pe baza stării)
+  • Planned preventive maintenance
+  • Preventive maintenance
+  • Corrective maintenance (fără diagnostic)
+
+=====================================
+NOTE CERCETARE
+=====================================
+
+1. Metodologia de diagnostic hardware aplicată consolelor combină:
+   - Strategia simptomatică (experiență cu defecte comune: RROD, YLOD)
+   - Strategia topografică (înțelegerea circuitului: GPU, CPU, memorie, alimentare)
+   - Half-splitting (izolarea subsistemului defect)
+
+2. POST este relevant și în console (verificare hardware la pornire):
+   - Console au secvențe de boot proprii, LED-uri diagnostice, coduri de eroare
+   - PS4/5: blue light, white light, coduri LED intermitente
+   - Xbox: coduri LED, ventilator, HDMI signal
+
+3. RCA în context console:
+   - Simptom: nu pornește → cauze posibile: alimentare, APU, NAND, Southbridge
+   - Simptom: se oprește singur → cauze: supraîncălzire, pasta termică, ventilator
+   - Simptom: artefacte grafice → cauze: GPU, VRAM, lipire BGA defectă
+
+4. Beep codes sunt analogi cu LED patterns pe console:
+   - Xbox 360: LED ring patterns (RROD = 3 secțiuni roșii)
+   - PS3: LED intermitent galben (YLOD)
+   - Aceste pattern-uri sunt "beep codes" vizuale ale consolelor

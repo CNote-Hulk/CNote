@@ -1,0 +1,33 @@
+LESSON: 1.5 – Serie și paralel
+
+---
+
+CONCEPT: Circuite în serie
+
+VERIFIED INFORMATION:
+Componentele conectate în serie sunt conectate de-a lungul unui singur traseu electric, una după alta. Curentul este identic prin toate componentele: I = I₁ = I₂ = ... = Iₙ. Tensiunea totală = suma căderilor de tensiune pe fiecare componentă: V = V₁ + V₂ + ... + Vₙ. Rezistența totală = suma rezistențelor individuale: R_total = R₁ + R₂ + ... + Rₙ. Condensatoare în serie: 1/C_total = 1/C₁ + 1/C₂ + ... + 1/Cₙ. Dacă un element se defectează (circuit deschis), întregul circuit se întrerupe. Switch-uri în serie = AND logic.
+
+---
+
+CONCEPT: Circuite în paralel
+
+VERIFIED INFORMATION:
+Componentele conectate în paralel sunt conectate pe trasee multiple între aceleași două noduri. Tensiunea este identică pe toate componentele: V = V₁ = V₂ = ... = Vₙ. Curentul total = suma curenților prin fiecare componentă: I = I₁ + I₂ + ... + Iₙ (KCL – legea lui Kirchhoff pentru curent). Rezistența totală: 1/R_total = 1/R₁ + 1/R₂ + ... + 1/Rₙ; R_total < cea mai mică rezistență individuală. Caz special 2 rezistoare: R_total = (R₁ × R₂) / (R₁ + R₂). N rezistoare egale: R_total = R/N. Condensatoare în paralel: C_total = C₁ + C₂ + ... + Cₙ (se adună direct). Dacă un element se defectează, celelalte continuă să funcționeze. Switch-uri în paralel = OR logic.
+
+---
+
+CONCEPT: Distribuția tensiunii
+
+VERIFIED INFORMATION:
+În serie: tensiunea se distribuie între componente proporțional cu rezistența fiecăreia. V_i = I × R_i. Suma căderilor de tensiune = tensiunea sursei. Principiu „voltage divider": fiecare componentă consumă o fracțiune din tensiunea totală. Exemplu: 4 becuri identice pe baterie 12V → fiecare bec primește 3V.
+În paralel: tensiunea este identică pe toate componentele, egală cu tensiunea sursei. Nu există distribuție — toate componentele văd aceeași tensiune.
+
+---
+
+CONCEPT: Distribuția curentului
+
+VERIFIED INFORMATION:
+În serie: curentul este identic prin toate componentele (nu se distribuie). I = I₁ = I₂ = ... = Iₙ. Circuitul serie este „current-coupled".
+În paralel: curentul total se distribuie între componente invers proporțional cu rezistența lor. I_i = V / R_i. I_total = I₁ + I₂ + ... + Iₙ (KCL). Raportul curenților (2 rezistoare): I₁/I₂ = R₂/R₁ (curent mai mare prin rezistență mai mică). Principiu „current divider". Exemplu: 4 celule identice în paralel, curent total 1A → fiecare celulă furnizează 0,25A.
+
+---

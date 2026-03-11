@@ -1,0 +1,31 @@
+LESSON: 3.5 – Construcția logică a unui procesor
+
+---
+
+CONCEPT: ALU – Unitatea Aritmetică și Logică
+
+VERIFIED INFORMATION:
+ALU = circuit digital combinațional care efectuează operații aritmetice și logice pe numere binare întregi. Propus de John von Neumann în 1945 (raportul EDVAC). Bloc fundamental al CPU, FPU și GPU. Intrări: doi operanzi (A, B) + opcode (cod de selecție a operației). Ieșiri: rezultat (Y) + semnale de status (flags). Flags: Carry-out (transport/împrumut), Zero (rezultat=0), Negative (rezultat negativ), Overflow (depășire capacitate), Parity (paritate biți). Operații aritmetice: adunare, scădere, complement față de 2, increment, decrement. Operații logice: AND, OR, XOR, NOT. Operații de deplasare: shift aritmetic, shift logic, rotație. ALU combinațional: ieșirile se schimbă asincron → logica secvențială externă sincronizează cu ceasul. GPU-urile conțin sute/mii de ALU-uri operând concurent.
+
+---
+
+CONCEPT: Registre și status register
+
+VERIFIED INFORMATION:
+Registrele procesorului: surse ale operanzilor ALU și destinații ale rezultatelor. Register file: structură cu porturi de citire/scriere adresabile, conectată la ALU. CPU rutează operanzi din registre la intrările ALU, aplică opcode, activează registrul destinație. La următorul front de ceas, registrul destinație stochează rezultatul. Status register (condition code register): stochează flags-urile de la fiecare operație ALU. Carry stocat poate fi reconectat la carry-in → aritmetică multi-precision. Flags-urile sunt utilizate pentru branching condițional (decizii în program). Registrele = grupuri de flip-flop-uri sincronizate; word size = lățimea datelor procesorului.
+
+---
+
+CONCEPT: Instruction pipeline
+
+VERIFIED INFORMATION:
+Pipelining = tehnică de paralelism la nivel de instrucțiuni într-un singur procesor. Instrucțiunile sunt împărțite în etape secvențiale, executate de unități diferite simultan. Pipeline registers memorează datele intermediare între etape. Classic RISC pipeline – 5 etape: Instruction Fetch (IF), Instruction Decode (ID), Execute (EX), Memory Access (MEM), Write Back (WB). IBM Stretch (1956–61): a stabilit terminologia Fetch/Decode/Execute. Pipeline complet: ~1 instrucțiune per ciclu de ceas (throughput crescut). Variații de adâncime: 2 etape (Atmel AVR) → 5 (RISC clasic) → 20+ (Pentium 4) → 31 (NetBurst Prescott). Superpipeline: etape mai simple → frecvență mai mare posibilă.
+
+---
+
+CONCEPT: Hazards și soluții de pipeline
+
+VERIFIED INFORMATION:
+Hazard = situație în care execuția instrucțiunilor în pipeline este compromisă. Data hazard: instrucțiunea N+1 citește un registru înainte ca instrucțiunea N să-l fi scris. Soluții: pipeline stall (bubble — inserarea de cicluri goale), operand forwarding (bypass — rutare directă a rezultatului), out-of-order execution (executare instrucțiuni independente în alt ordine). Branch hazard: salturile condiționale nu se decid decât în etapa Execute, dar pipeline a început fetch-ul instrucțiunilor secvențiale. Branch prediction: prezicerea direcției saltului → minimizare penalizare. Predicție greșită → pipeline flush: anularea lucrului din calea greșită. Control unit: orchestrează fluxul prin pipeline, gestionează pornire/oprire/continuare.
+
+---

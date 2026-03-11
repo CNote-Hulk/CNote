@@ -1,0 +1,38 @@
+LESSON: 6.3 – No Power
+
+---
+
+CONCEPT: Cauze posibile pentru „No Power"
+
+VERIFIED INFORMATION:
+Cauze AC: cablu defect/deconectat, priză fără tensiune, adaptor AC defect (la console cu sursă externă). Cauze PSU: fuzibil ars, condensatoare electrolitice umflate/sparte (capacitor plague: electrolit greșit → pH alcalin → generare hidrogen → umflare), ventilator blocat → supraîncălzire, îmbătrânire (MTBF tipic ~100.000h), suprasarcină, activare protecții (OCP, OVP, OTP), surse generice cu capacitate reală sub etichetă. Cauze placa de bază: scurtcircuit pe PCB (lichid, lipitură defectă, componente arse), VRM defect (MOSFET ars → scurtcircuit → PSU protecție), condensatoare defecte. Cauze conectică: buton pornire defect, conectori neîmpinși complet (24-pin ATX, 8-pin EPS12V), cabluri modulare incompatibile (pin-out diferit → scurtcircuit).
+
+---
+
+CONCEPT: Verificarea alimentării – pași de diagnostic
+
+VERIFIED INFORMATION:
+Ordinea (simplu→complex): 1) Verificare AC (cablu, priză — testat cu alt dispozitiv). 2) Întrerupător PSU pe „I". 3) LED standby pe placa de bază (indică +5VSB). 4) Buton power — testare directă prin conectare pini pe placa de bază (cu șurubelniță). 5) +5VSB cu multimetrul: pin 9 pe conectorul 24-pin (fir mov) = +5V față de GND; dacă lipsește → sursa moartă. 6) Testul paperclip: scurtcircuitare PS_ON (fir verde) cu GND (fir negru adiacent) → ventilatorul sursei pornește → sursa funcționează minim. 7) PSU Tester: verifică toate tensiunile pe fiecare conector. 8) Substituție: testare cu PSU funcțională cunoscută. Principiu: de la exterior (AC) spre interior (placa de bază).
+
+---
+
+CONCEPT: Diagnostic hardware – metodologie sistematică
+
+VERIFIED INFORMATION:
+Troubleshooting = căutare logică, sistematică a sursei problemei. Două strategii: simptomatică (bazată pe experiență — „acest simptom → cauza X") și topografică (bazată pe înțelegerea funcționării normale). Trei principii: 1) reproducerea problemei (constant vs intermitent?), 2) simplificarea sistemului (deconectare periferice, GPU suplimentar), 3) cunoașterea funcționării normale. Half-splitting: testare la jumătatea lanțului — PSU pornește singură? Da → problema pe placa de bază; Nu → problema la PSU/AC. Substituție serială: înlocuire componente una câte una (atenție: defecte multiple pot induce în eroare). Probleme intermitente: sensibilitate termică — spray de răcire și pistol termic pe componente. Simptome confuze: fără imagine dar ventilator merge = VIDEO nu POWER; bip-uri POST = pornește dar eroare hardware; ciclu pornire/oprire 1–2s = scurtcircuit sau OCP.
+
+---
+
+CONCEPT: Condensatoare defecte ca sursă de „No Power"
+
+VERIFIED INFORMATION:
+Capacitor plague (1999–2007): formulă electrolit furată incomplet de la Rubycon (Japonia), lipsă inhibitori chimici. Mecanism: electrolit alcalin (pH 7–8) → dizolvare aluminiu → generare hidrogen → presiune internă → umflare/explozie. Simptome vizuale: parte superioară umflată, supapă ruptă cu depozite maro/roșii, capacitor înclinat, scurgere electrolit pe PCB. NU confunda cu adezivul de fixare (maro/negru pe laterală = normal). Simptome electrice: capacitanță scăzută, ESR crescut, curent de scurgere. Dell a cheltuit $420M pe înlocuiri. Durată de viață normală condensator consumer (2000h/85°C, funcționare la 40°C): ~6 ani. Efecte: no power, instabilitate, restartări, opriri subite.
+
+---
+
+CONCEPT: Aplicare la console de jocuri
+
+VERIFIED INFORMATION:
+Console cu sursă internă (PS3, PS4, Xbox 360, Xbox One): diagnostic AC → PSU internă → placa de bază; verificare cablu AC, priză, fuzibil intern; scurtcircuit pe placa de bază → PSU protecție; condensatoare defecte = cauză frecventă. Console cu sursă externă (Xbox 360 original, Xbox One original): LED pe sursa externă indică starea (portocaliu = standby, verde = funcțional, roșu = defect/protecție); sursa externă testabilă independent. Cauze specifice console: supraîncălzire cronică → degradare lipituri BGA → scurtcircuit/circuit deschis; condensatoare defecte; MOSFET ars; deteriorare ESD/vârfuri tensiune. Pași: 1) verificare priză/cablu AC, 2) LED-uri stare, 3) testare cu alt cablu/sursă, 4) inspecție vizuală (condensatoare umflate, componente arse, urme lichid), 5) verificare tensiuni cu multimetru.
+
+---

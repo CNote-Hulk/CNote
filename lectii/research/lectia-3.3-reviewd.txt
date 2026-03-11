@@ -1,0 +1,67 @@
+LECȚIA 3.3 – Flip-flop și registre
+MATERIAL VERIFICAT ȘI CURĂȚAT
+========================================
+
+CONCEPT 1: Latch (memorie digitală asincronă)
+INFORMAȚIE VERIFICATĂ:
+- Latch-ul este un circuit bistabil level-triggered (sensibil la nivel), transparent când enable=1
+- SR Latch (Set-Reset): cel mai fundamental
+  - Construit din 2 porți NOR cross-coupled (sau 2 NAND cu intrări inversate)
+  - S=1,R=0 → Set (Q=1); S=0,R=1 → Reset (Q=0); S=0,R=0 → Hold; S=1,R=1 → invalid (restricționat)
+  - Ecuație: Q_next = S + R̄·Q (cu constrângerea S·R = 0)
+- Gated D Latch (Data Latch): elimină combinația invalidă
+  - Un singur input D + Enable; R = complement D automat
+  - E=1: Q urmează D (transparent); E=0: Q menține starea (opac)
+  - Utilizat ca porturi I/O, în sisteme asincrone sau cu două faze de ceas
+- Inventat 1918 de Eccles și Jordan (trigger circuit cu tuburi vidate)
+SURSE: Wikipedia Flip-flop (electronics) — https://en.wikipedia.org/wiki/Flip-flop_(electronics)
+STATUS: VERIFICAT
+
+CONCEPT 2: Flip-Flop (bistabil sincron)
+INFORMAȚIE VERIFICATĂ:
+- Flip-flop-ul este un circuit bistabil edge-triggered (sensibil la front), stochează 1 bit
+- D Flip-Flop (cel mai utilizat): captează D la frontul activ al ceasului (rising/falling edge)
+  - Rising edge + D=0 → Q=0; Rising edge + D=1 → Q=1; altfel Q neschimbat
+  - Baza shift registers (registre de deplasare)
+  - Master-slave: 2 gated D latches în serie cu enable inversat; captare pe rising edge, actualizare slave
+- T Flip-Flop (Toggle): T=1 → toggle la clock; T=0 → hold
+  - Divide frecvența la 2 (utilizat în contoare digitale)
+  - Q_next = T ⊕ Q
+- JK Flip-Flop (universal): J=Set, K=Reset, J=K=1 → Toggle, J=K=0 → Hold
+  - Q_next = J·Q̄ + K̄·Q
+  - Poate fi configurat ca SR, D sau T → flip-flop universal
+- Parametri critici de timing:
+  - Setup time (tsu): stabilitate date ÎNAINTE de frontul ceasului
+  - Hold time (th): stabilitate date DUPĂ frontul ceasului
+  - Propagation delay (tCO): timp de la front ceas la schimbare ieșire
+  - Metastabilitate: stare imprevizibilă când date și ceas se schimbă simultan; soluție: cascadare (dual-ranked)
+SURSE: Wikipedia Flip-flop (electronics) — https://en.wikipedia.org/wiki/Flip-flop_(electronics)
+STATUS: VERIFICAT
+
+CONCEPT 3: Registre (grupuri de flip-flop-uri)
+INFORMAȚIE VERIFICATĂ:
+- Registrul = grup sincronizat de flip-flop-uri ce stochează o colecție de biți (un cuvânt/word)
+- Word size = numărul de flip-flop-uri = numărul de biți stocați (ex. registru de 32 biți = 32 flip-flop-uri)
+- Memorie volatilă: pierde datele la pierderea alimentării
+- Semnale: Reset (inițializare la 0), Clock (front activ → stocare), Data in (D₀-D_{n-1}), Data out (Q₀-Q_{n-1})
+- Ieșirile sunt continuu emise și stabile (cu excepția tranzițiilor)
+- Implementări: MSI IC standalone, integrate în ASIC/procesoare, blocuri IP în FPGA (sintetizate din VHDL/Verilog)
+- Load enable: multiplexor 2-to-1 selectează între data nouă (D) și stare curentă (Q) → permite stocare selectivă
+SURSE: Wikipedia Hardware register — https://en.wikipedia.org/wiki/Hardware_register
+STATUS: VERIFICAT
+
+CONCEPT 4: Aplicații ale registrelor
+INFORMAȚIE VERIFICATĂ:
+- Shift register (registru de deplasare): transferă fiecare bit la flip-flop-ul adiacent la fiecare ciclu de ceas
+  - Serial-in parallel-out (SIPO), parallel-in serial-out (PISO)
+  - Esențial în multe dispozitive electronice
+- Contor binar sincron: logică incrementează valoarea stocată la fiecare ciclu
+- Register file (fișier de registre): grup de registre adresabile
+  - Scriere (Write): adresă → decoder binar → activare LD → date stocate de pe bus la clock edge
+  - Citire (Read): adresă → multiplexor sau buffere tri-state → date pe bus de ieșire
+  - Read ports multiple: permit citirea concurentă a registrelor diferite
+- Registre CPU (processor registers): utilizate pentru date, adrese, stare, configurare
+- Registre periferice: acces prin memory-mapped I/O sau port-mapped I/O (load/store instructions)
+- Operații atomice pe biți: set/clear/complement fără read-modify-write (evită race conditions)
+SURSE: Wikipedia Hardware register — https://en.wikipedia.org/wiki/Hardware_register
+STATUS: VERIFICAT

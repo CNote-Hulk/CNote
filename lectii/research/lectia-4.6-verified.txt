@@ -1,0 +1,38 @@
+LESSON: 4.6 – Ierarhia sistemului complet: CPU, GPU, RAM, Storage, I/O
+
+---
+
+CONCEPT: Arhitectura Von Neumann
+
+VERIFIED INFORMATION:
+Modelul Von Neumann (1945, EDVAC) definește 5 componente: ALU, unitate de control, memorie (shared date+instrucțiuni), stocare externă, I/O. Stored-program: instrucțiunile și datele rezidă în aceeași memorie. Von Neumann Bottleneck: bus-ul comun limitează throughput-ul (descris de Backus, 1977). Mitigări moderne: cache hierarchy, cache-uri separate instrucțiuni/date (Modified Harvard), branch predictor, SoC, DMA, NUMA. Calculatoarele moderne sunt Modified Harvard cu memorie principală unificată. Primul stored-program funcțional: Manchester Baby (21 iunie 1948). Harvard Architecture: bus-uri separate instrucțiuni/date (microcontrolere).
+
+---
+
+CONCEPT: Componentele sistemului și ierarhia de performanță
+
+VERIFIED INFORMATION:
+Ierarhia de viteză: registre CPU (<1 ns, ~KB), L1 cache (~1 ns, 32–64 KB/core), L2 (~3–10 ns, 256 KB–1 MB), L3 (~10–30 ns, 4–64 MB shared), RAM DDR5 (~50–100 ns, 8–128 GB), SSD NVMe (~50–100 μs), SSD SATA (~0,5 ms), HDD (~2,9–12 ms). Fiecare nivel: capacitate mai mare, latență mai mare, cost/GB mai mic. GPU: procesare paralelă masivă, optimizat throughput nu latency. Performanță: latency vs throughput; pipeline crește throughput dar crește latency.
+
+---
+
+CONCEPT: Motherboard-ul ca platformă de integrare
+
+VERIFIED INFORMATION:
+Motherboard = PCB principal care permite comunicarea între componente. Componente: CPU socket, DIMM slots, chipset, flash BIOS/UEFI, clock generator, PCIe slots, power connectors, storage connectors (SATA, M.2), I/O (USB, Ethernet, audio). Form factors: ATX, microATX, mini-ITX. Bootstrapping: BIOS/UEFI execută POST → testează hardware → detectează boot device → încarcă OS. UEFI a înlocuit BIOS clasic. Primul motherboard: Planar Breadboard (IBM PC, 1981).
+
+---
+
+CONCEPT: Chipset – evoluția Northbridge/Southbridge → PCH/SoC
+
+VERIFIED INFORMATION:
+Chipset = circuite integrate care gestionează fluxul de date CPU↔memorie↔periferice. Arhitectura clasică: Northbridge (CPU↔RAM+GPU, high-speed) + Southbridge (periferice lente). Evoluție: 2003 AMD Athlon 64 integrează memory controller; 2008 Intel integrează la rândul său. Intel PCH = northbridge+southbridge condensate (funcțiile northbridge sunt acum în CPU). AMD FCH echivalent. AMD EPYC: SoC complet fără chipset extern. Interfețe CPU↔chipset: DMI (Intel), UMI (AMD). Console/smartphone: SoC — CPU+GPU+memory controller+I/O pe un singur die. Primul chipset PC: NEAT (Chips and Technologies, 1984).
+
+---
+
+CONCEPT: Sinteza ierarhiei complete
+
+VERIFIED INFORMATION:
+Flux de date modern: CPU → cache (L1→L2→L3, pe die) → RAM (DDR, memory controller integrat) → Storage (NVMe prin PCIe direct la CPU, sau SATA prin PCH) → Periferice I/O (USB/Ethernet prin PCH). GPU: PCIe ×16 direct la CPU; în APU/SoC — pe același die, partajează RAM. Principiul ierarhiei: fiecare nivel compensează bottleneck-ul nivelului anterior. Bus-uri: PCIe (GPU, NVMe), SATA (legacy), USB (periferice), DMI/UMI (CPU↔chipset). DMA: periferice transferă direct în RAM fără CPU. Tendința: maximizarea integrării SoC. Console moderne (PS5, Xbox Series X): APU AMD cu CPU Zen + GPU RDNA + memory controller pe un singur die, GDDR6 unificat.
+
+---

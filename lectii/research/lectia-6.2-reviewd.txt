@@ -1,0 +1,104 @@
+LECȚIA 6.2 – STANDBY
+MATERIAL VERIFICAT ȘI ORGANIZAT
+
+========================================
+CONCEPT 1: Modul Standby – Definiție și principii
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Standby = stare de consum redus în care dispozitivul este oprit dar anumite circuite rămân active
+- Scopul: pornire rapidă, recepție telecomandă, menținere ceas/setări, descărcări în fundal
+- Consum tipic standby pentru console: de la 1W (funcții minimale) până la 18W (funcții de rețea complete – ex: Nintendo Wii cu WiiConnect24)
+- ACPI definește standby-ul ca stare S3 (Suspend to RAM) sau S5 (Soft Off cu +5VSB activ)
+- Un wat continuu standby ≈ 9 kWh/an – cost mic per dispozitiv, semnificativ la scară mare
+- Sinonime: phantom load, vampire power, ghost load
+
+SURSE: Wikipedia Standby power, Wikipedia ACPI, Wikipedia Sleep mode
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 2: Consum redus – Stări de putere ACPI
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Ierarhia ACPI de stări globale:
+  → G0/S0 – Working: funcționare normală, consum maxim
+  → S0ix – Modern Standby: SoC parțial în sleep, procesare în fundal (model smartphone)
+  → S1 – POS: CPU oprit, RAM alimentat, reluare instantanee
+  → S3 – Sleep/Standby: RAM self-refresh, periferice oprite, consum 2-8W, reluare câteva secunde
+  → S4 – Hibernate: RAM salvat pe disc, consum ~0W, reluare 10-30 secunde
+  → G2/S5 – Soft Off: doar +5VSB activ (WoL, LED standby)
+  → G3 – Mechanical Off: complet oprit, consum zero
+- Stări CPU (C-States): C0 (activ) → C1 (halt, instantaneu) → C2 (stop-clock) → C3 (sleep, fără cache coherent) → C10 (cel mai profund)
+- Stări dispozitive (D-States): D0 (on) → D1/D2 (intermediar) → D3hot (oprit, alimentare auxiliară) → D3cold (oprit complet)
+- Stări performanță (P-States): P0 (maxim) → Pn (minim) – Intel SpeedStep, AMD Cool'n'Quiet
+- Sleep (S3) vs Hibernate (S4): Sleep = rapid dar necesită alimentare RAM; Hibernate = lent dar consum zero
+- Hybrid Sleep: combină ambele – RAM copiat pe disc, apoi intră în Sleep (Windows Vista+, macOS Safe Sleep)
+
+SURSE: Wikipedia ACPI, Wikipedia Sleep mode
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 3: Circuite active în standby
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Sursa ATX – linia +5VSB (5V Standby):
+  → Rămâne alimentată permanent când sursa este conectată la priză
+  → Furnizează energie pentru circuitele de management al puterii
+  → Alimentează NIC-ul pentru Wake-on-LAN, receptorul IR/RF pentru telecomandă
+- Circuite care rămân active:
+  → Microcontrollerul de management al puterii (monitorizează butonul power, semnale de trezire)
+  → RTC (Real Time Clock): menține ora și data, alimentat de bateria CMOS sau +5VSB
+  → LED-uri indicatoare de stare (roșu = standby, verde/alb = pornit)
+  → NIC (Network Interface Controller): ascultă Magic Packets pentru WoL, reduce viteza la 10 Mbit/s
+  → RAM (doar în S3/Sleep): auto-refresh la consum minim
+  → Receptorul de telecomandă (IR/RF) pe console și TV-uri
+- Wake-on-LAN: AMD Magic Packet Technology (1995)
+  → Magic Packet = 6 bytes FF + 16 × MAC address (102 bytes total)
+  → NIC semnalează placa de bază/sursa de alimentare pentru trezire
+  → Adaugă 2-8W la consumul standby (poate fi redus sub 0.5W cu microcontroller dedicat)
+  → Cerință hardware: ATX 2.01+ pentru +5VSB suficient, PCI 2.2+ pentru alimentare standby prin bus
+- Surse de trezire ACPI: buton power, tastatură, mouse, NIC (WoL), temperatură, RTC alarm
+
+SURSE: Wikipedia Wake-on-LAN, Wikipedia ACPI, Wikipedia Standby power
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 4: Reglementări și eficiență energetică standby
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Înainte de reglementări: consumul standby era 8-22% din consumul total al aparatului
+- One Watt Initiative (IEA – International Energy Agency, 1999):
+  → Țintă: reducerea consumului standby la maximum 1W până în 2010
+  → Reducere suplimentară la 0.5W de la 2013
+- Regulamentul EU 1275/2008: limite obligatorii de consum în standby pentru echipamente electrice
+- Exemplu console – Nintendo Wii:
+  → 18W cu WiiConnect24 activ (descărcare conținut, comunicare online)
+  → 8W cu WiiConnect24 dezactivat
+  → 1W cu Standby Connection dezactivat complet
+- Risc de incendiu documentat la dispozitive lăsate în standby (rar)
+- Impactul agregat: miliarde de dispozitive × câțiva wați = consum semnificativ la nivel global
+
+SURSE: Wikipedia Standby power
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 5: Aplicare la console de jocuri
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Consolele moderne utilizează standby pentru:
+  → Descărcarea actualizărilor și jocurilor în fundal
+  → Sincronizare cloud (save-uri)
+  → Încărcarea controller-elor prin USB
+  → Pornire rapidă (instant-on vs cold boot)
+- Stări tipice console:
+  → On (G0/S0): funcționare completă, joc activ sau meniu
+  → Rest Mode / Standby (similar S3): RAM alimentat, funcții de descărcare active, controller charging
+  → Off (similar S5): doar +5VSB activ, LED standby, posibil WoL
+  → Off complet (G3): deconectat de la priză
+- Modern Standby (S0ix): inspirat din modelul smartphone – always-connected, procesare silențioasă
+  → PS5 Rest Mode, Xbox Instant-On: funcționalitate similară
+  → Compromis: consum mai mare în standby vs. pornire mai rapidă și funcționalitate în fundal
+- Eficiența energetică: producătorii au fost presați de reglementări (One Watt Initiative) să reducă consumul standby
+- Circuite active console în standby: sursa internă (standy rail), controller USB power, NIC/Wi-Fi, LED status
+
+SURSE: Wikipedia Standby power, Wikipedia ACPI, Wikipedia Sleep mode
+STATUS: VERIFICAT ✓ (cu inferențe bazate pe specificații ACPI aplicate contextului consolelor)

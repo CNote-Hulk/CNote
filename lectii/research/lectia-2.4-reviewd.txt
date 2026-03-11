@@ -1,0 +1,71 @@
+LECȚIA 2.4 – Tranzistori
+Cercetare verificată și sintetizată
+
+========================================
+CONCEPT 1: BJT (Bipolar Junction Transistor)
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Tranzistor care folosește atât electroni cât și goluri ca purtători de sarcină (bipolar)
+- Structură: trei regiuni semiconductoare – emitor (E), bază (B), colector (C)
+- Două tipuri: NPN (n-p-n) și PNP (p-n-p)
+- Emitorul este puternic dopat, baza este subțire și slab dopată, colectorul moderat dopat
+- Funcționare (mod activ NPN): joncțiunea B-E polarizată direct, joncțiunea B-C polarizată invers
+- Electronii sunt injectați din emitor în bază, difuzează prin baza subțire și sunt colectați
+- Câștigul de curent β (hFE) = IC/IB, tipic 20-500 (100+ pentru semnal mic)
+- Câștigul α = IC/IE, tipic 0.980-0.998
+- Relația: α = β/(1+β)
+- Creștere VBE cu ~60 mV → creștere curent de 10× (la temperatura camerei)
+- IE = IB + IC (legea curenților la nodul emitor)
+- Regiuni de operare: forward-active (amplificare), saturație (ON), cut-off (OFF), reverse-active
+- Aplicații: amplificare analogică, circuite RF de mare viteză, logică ECL, BiCMOS
+
+SURSE: Wikipedia – Bipolar junction transistor (https://en.wikipedia.org/wiki/Bipolar_junction_transistor)
+STATUS: VERIFICAT – informații factuale confirmate
+
+========================================
+CONCEPT 2: MOSFET (Metal-Oxide-Semiconductor FET)
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Tranzistor cu efect de câmp cu poartă izolată prin oxid
+- Terminale: gate (poartă), source (sursă), drain (drenă), body (substrat)
+- Poarta izolată de canal printr-un strat de oxid (SiO2 sau high-κ dielectric)
+- Două tipuri de canal: nMOS (canal n, substrat p) și pMOS (canal p, substrat n)
+- Funcționare: tensiunea la gate controlează conductivitatea canalului
+- Tensiune de prag Vth: tensiunea minimă VGS necesară pentru formarea canalului de inversie
+- Avantaj cheie: curent de intrare practic zero (gate izolat) → impedanță de intrare enormă
+- Moduri de operare:
+  * Cut-off: VGS < Vth → tranzistor oprit
+  * Triode/Liniar: VGS > Vth, VDS < VGS-Vth → se comportă ca rezistor variabil
+  * Saturație: VGS > Vth, VDS ≥ VGS-Vth → curent controlat de VGS
+- Enhancement mode (default OFF) vs. Depletion mode (default ON)
+- Cel mai comun tranzistor din circuitele digitale (miliarde pe un chip)
+- Scalare: de la micrometri la nanometri, FinFET la noduri sub 22nm, HKMG
+
+SURSE: Wikipedia – MOSFET (https://en.wikipedia.org/wiki/MOSFET)
+STATUS: VERIFICAT – informații factuale confirmate
+
+========================================
+CONCEPT 3: Comutare (Switching)
+========================================
+INFORMAȚIE VERIFICATĂ:
+- BJT ca switch: saturație = ON (curent mare, VCE mic), cut-off = OFF (curent neglijabil)
+  * Limitare: timp de stocare în bază (storage delay) la trecerea din saturație
+  * Baker clamp: previne saturația profundă, îmbunătățește viteza de comutare
+  * Turn-on, turn-off, storage delay sunt parametri critici
+- MOSFET ca switch: VGS > Vth = ON (canal deschis), VGS < Vth = OFF (canal închis)
+  * Avantaj: fără curent DC prin gate → consum de putere foarte redus
+  * Power MOSFET: poate comuta sute de volți și zeci de amperi
+  * Exemplu: D2PAK – blochează 120V off, conduce 30A on, controlează >2000W
+- CMOS (Complementary MOS): perechi nMOS + pMOS
+  * Tensiune mare → nMOS ON, pMOS OFF
+  * Tensiune mică → pMOS ON, nMOS OFF
+  * Consum de putere aproape zero în stare statică (doar la tranziția de comutare)
+  * Baza tuturor procesoarelor și memoriilor moderne
+- Comparație BJT vs MOSFET în comutare:
+  * BJT: transconductanță mai mare, mai rapid pentru analog/RF
+  * MOSFET: zero curent gate, consum redus, ideal pentru logică digitală
+  * BiCMOS: integrare ambelor tipuri pentru avantaje combinate
+- Moore's Law: densitatea tranzistorilor se dublează la fiecare 2-3 ani
+
+SURSE: Wikipedia – BJT + MOSFET (https://en.wikipedia.org/wiki/Bipolar_junction_transistor, https://en.wikipedia.org/wiki/MOSFET)
+STATUS: VERIFICAT – informații factuale confirmate

@@ -1,0 +1,82 @@
+LECȚIA 4.1 – CPU
+MATERIAL VERIFICAT ȘI ORGANIZAT
+========================================
+
+CONCEPT 1: Ciclul de execuție al instrucțiunilor (Fetch-Decode-Execute)
+INFORMAȚIE VERIFICATĂ:
+- CPU execută instrucțiuni în cicluri repetitive: Fetch → Decode → Execute
+- FETCH:
+  - Program Counter (PC / Instruction Pointer) conține adresa instrucțiunii următoare
+  - CPU citește instrucțiunea din memorie la adresa indicată de PC
+  - PC se incrementează automat cu lungimea instrucțiunii
+  - Latența memoriei → rezolvată prin cache și pipeline
+- DECODE:
+  - Instruction decoder (circuit combinațional) convertește instrucțiunea în semnale de control
+  - Opcode = câmpul care specifică operația (add, subtract, jump etc.)
+  - Operanzii: valori imediate, registre procesor, sau adrese de memorie
+  - Implementare: hardwired (circuit fix, rapid) sau microprogram/microcode (flexibil, reprogramabil)
+- EXECUTE:
+  - Semnalele de control activează ALU, registre, și alte componente
+  - ALU calculează rezultatul; output-ul → registru intern sau memorie
+  - Flags (overflow, zero, carry, negative) → stocate în status register
+  - Jump/branch: modifică PC pentru bucle, condiții, apeluri funcții
+- Von Neumann architecture: program + date în aceeași memorie (EDVAC, 1945)
+- Harvard architecture: memorie separată instrucțiuni/date (ex. Atmel AVR)
+SURSE: Wikipedia – Central processing unit (https://en.wikipedia.org/wiki/Central_processing_unit)
+STATUS: ✅ Verificat
+
+CONCEPT 2: Pipeline și paralelism la nivel de instrucțiuni
+INFORMAȚIE VERIFICATĂ:
+- Instruction pipelining: suprapunerea etapelor fetch/decode/execute ale instrucțiunilor succesive
+  - Analogie: linia de asamblare – fiecare etapă procesează o instrucțiune diferită simultan
+  - Throughput crescut: ~1 instrucțiune completată per ciclu de ceas (când pipeline-ul e plin)
+- Hazards: situații care împiedică execuția fluidă
+  - Data dependency: instrucțiunea N+1 necesită rezultatul instrucțiunii N
+  - Pipeline stall: inserare cicluri goale (bubbles) pentru rezolvare
+  - Soluții: operand forwarding, out-of-order execution
+- Superscalar: multiple execution units (ALU, FPU, load-store unit, AGU) operând în paralel
+  - Dispatcher decide ce instrucțiuni pot fi executate simultan
+  - Branch prediction: prezicerea direcției salturilor condiționale
+  - Speculative execution: execuție pe calea prezisă înainte de confirmarea branch-ului
+  - Register renaming: eliminarea falselor dependențe de date
+- IPC (Instructions Per Clock): metric de eficiență; superscalar atinge IPC > 1
+- Task-level parallelism: multi-core + multithreading (SMT)
+  - Exemple console: Xbox 360 (triple-core PowerPC Xenon), PS3 (Cell 7-core SPE)
+- Data parallelism: SIMD (Intel SSE, AltiVec) – o instrucțiune pe vectori de date
+SURSE: Wikipedia – Central processing unit (https://en.wikipedia.org/wiki/Central_processing_unit)
+STATUS: ✅ Verificat
+
+CONCEPT 3: CPU cache – ierarhie și principii
+INFORMAȚIE VERIFICATĂ:
+- CPU cache = memorie SRAM rapidă, aproape de core, stochează copii ale datelor frecvent accesate
+- SRAM vs DRAM: SRAM (4-6 tranzistori/bit, rapid, costisitor) vs DRAM (1T+1C/bit, lent, dens)
+- Ierarhia cache:
+  - L1: cea mai rapidă, cea mai mică (32-96 KiB/core); split în L1i (instrucțiuni) + L1d (date)
+    - Split L1 standard din IBM 801 (1976); 486 = primul L1 on-die (8 KiB, 1989)
+  - L2: mai mare, mai lentă; unificată (I+D); dedicată per core
+  - L3: partajată între toate core-urile (Last-Level Cache / LLC); poate ajunge la zeci de MiB
+  - L4: rar, de obicei eDRAM (ex. Intel Haswell Crystalwell 128 MiB)
+- Tradeoff fundamental: cache mai mare = hit rate mai bun, dar latență mai mare
+- Istorie cache x86: 386 = extern pe motherboard; 486 = L1 on-die; modern = totul on-die
+SURSE: Wikipedia – CPU cache (https://en.wikipedia.org/wiki/CPU_cache)
+STATUS: ✅ Verificat
+
+CONCEPT 4: Funcționarea cache-ului – hits, misses, politici
+INFORMAȚIE VERIFICATĂ:
+- Cache line (cache block): unitatea de transfer memorie ↔ cache (tipic 64 bytes)
+- Cache entry: tag (identifică adresa) + data block (datele) + flag bits (valid, dirty)
+- Cache hit: datele sunt găsite în cache → acces rapid
+- Cache miss: datele nu sunt în cache → fetch din main memory (latență mare)
+  - 3 tipuri: instruction read miss (cel mai costisitor), data read miss, data write miss
+- CPU stall: procesorul rămâne fără lucru așteptând datele → OoO execution și SMT ca soluții
+- Replacement policy: LRU (Least Recently Used) cel mai comun
+- Write policies:
+  - Write-through: fiecare scriere cache → imediat reflectată în memorie
+  - Write-back (copy-back): dirty bit marchează liniile modificate; scrise în memorie doar la evicție
+- Associativity: direct-mapped (1 locație) → N-way set associative → fully associative
+  - Dublarea associativity ≈ efect similar cu dublarea dimensiunii cache-ului
+  - Modern: 8-way set associative tipic
+- Cache-uri specializate: TLB, μop cache (Sandy Bridge+, Zen+), trace cache (Pentium 4)
+- Multi-core: L1 per core, L3 partajat; inclusive vs exclusive vs non-exclusive
+SURSE: Wikipedia – CPU cache (https://en.wikipedia.org/wiki/CPU_cache)
+STATUS: ✅ Verificat

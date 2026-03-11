@@ -1,0 +1,31 @@
+LESSON: 4.5 – Stocare: HDD, SSD, NVMe
+
+---
+
+CONCEPT: Hard Disk Drive (HDD)
+
+VERIFIED INFORMATION:
+HDD = dispozitiv electro-mecanic cu platouri rigide rotative acoperite cu material feromagnetic. Principiu: magnetizarea în direcții diferite reprezintă biții, citire prin detectarea tranzițiilor. Componente: platouri, braț actuator cu voice coil, capete citire/scriere (zboară la zeci de nm). Viteze: 5400/7200 rpm (consumer), 10000/15000 rpm (enterprise). Latență rotațională: 7200 rpm = 4,16 ms. Tehnologii: PMR perpendicular recording (2005+), SMR, HAMR. Interfețe: PATA → SATA → SAS. Capacitate max 2025: 36 TB. Producători: Western Digital, Seagate, Toshiba. Head crash: capul zgârie platoul → pierdere date. Piață în declin: peak 2010 (651M unități).
+
+---
+
+CONCEPT: Solid-State Drive (SSD)
+
+VERIFIED INFORMATION:
+SSD = stocare solid-state cu circuite integrate, fără piese mobile. Memorie: NAND flash (non-volatilă), celule floating-gate MOSFET. Tipuri celule: SLC (1 bit, rapidă, durabilă), MLC (2 biți), TLC (3 biți), QLC (4 biți, ieftină). 3D NAND: celule stivuite vertical. Controller SSD: bad block mapping, ECC, garbage collection, wear leveling, TRIM. Wear leveling: distribuie scrierile uniform. Write amplification: scrieri suplimentare de la wear leveling. Durabilitate: TBW sau DWPD. Cache: DRAM intern sau SLC buffer. HMB: SSD NVMe DRAM-less folosește DRAM-ul gazdei. Performanță vs HDD: SSD 200–14800 MB/s secvențial, acces aleatoriu 0,05–0,2 ms, silențios, consum redus. Preț: SSD ~$0,05–0,10/GB vs HDD ~$0,01–0,03/GB (2025).
+
+---
+
+CONCEPT: NVM Express (NVMe)
+
+VERIFIED INFORMATION:
+NVMe = specificație de interfață logică pentru stocare non-volatilă prin PCIe. NVMe 1.0 lansat 1 martie 2011, coordonat de Intel. Motivație: SATA/AHCI deveneau bottleneck pentru SSD-uri rapide (SATA max ~600 MB/s). NVMe vs AHCI: 65535 cozi × 65536 comenzi/coadă (vs 1×32 AHCI), max 2 registre uncacheable/comandă (vs 6–9), 2048 MSI-X interrupts, fără locking, full-duplex. Form factors: M.2 (2280, consumer), U.2/U.3 (enterprise), AIC (card PCIe), EDSFF. Primul SSD NVMe: Samsung XS1715 (2013, 3 GB/s citire). NVMe-oF: acces remote prin rețea.
+
+---
+
+CONCEPT: Ierarhia tehnologiilor de stocare
+
+VERIFIED INFORMATION:
+Evoluție: mecanic (HDD) → electronic (SSD NAND) → protocol optimizat (NVMe pe PCIe). Comparație 2025: HDD ~200 MB/s secvențial, latență 2,9–12 ms; SSD SATA ~550 MB/s, latență 0,5 ms; SSD NVMe 3500–14800 MB/s, latență 0,05–0,1 ms. Bottleneck-uri: HDD mecanic, SSD SATA limitat la 600 MB/s + AHCI overhead, SSD NVMe practic nelimitat de protocol. Tranziție piață: SSD revenue depășește HDD din 2018. Flash NAND revenue >2× HDD din 2017. 2025: laptopuri practic fără HDD, HDD rămâne pentru stocare bulk/NAS/server.
+
+---

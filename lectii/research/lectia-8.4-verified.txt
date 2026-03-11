@@ -1,0 +1,38 @@
+LESSON: 8.4 – Studii de caz
+
+---
+
+CONCEPT: Red Ring of Death (RROD) – Xbox 360
+
+VERIFIED INFORMATION:
+RROD = defect hardware masiv pe Xbox 360 (lansată noiembrie 2005). Trei LED-uri roșii = „General Hardware Failure". Cauza confirmată oficial de Microsoft (2021): fisurarea îmbinărilor de lipitură din pachetul flip chip al GPU-ului, cauzată de stresul termic din cicluri repetate pornire/oprire. Lipitura fără plumb (conformitate RoHS UE) devenea fragilă la temperaturi ridicate → fisuri microscopice. Rate defectare: SquareTrade 23,7%, Game Informer 54,2%, intern Microsoft până la 68%. Microsoft a extins garanția la 3 ani (iulie 2007) și a cheltuit $1,15 miliarde. Atenuare din 2009 cu Jasper (sub 4%), rezolvare cu Xbox 360 S (2010).
+
+---
+
+CONCEPT: Yellow Light of Death (YLOD) – PlayStation 3
+
+VERIFIED INFORMATION:
+YLOD = defect hardware PS3, LED galben = defecțiune hardware generală, consola refuză pornirea. Cauza: deteriorare îmbinări lipitură fără plumb (BGA) pe GPU sau CPU din stres termic (similară RROD). BBC Watchdog (2009): console cedau tipic la 18–24 luni, în afara garanției Sony de 1 an. Rate: SquareTrade 10% în doi ani; Sony intern doar 0,5% returnări cu YLOD. PS3: procesor Cell Broadband Engine (3,2 GHz) + GPU RSX Reality Synthesizer (Nvidia), 87,4 milioane unități vândute. YLOD a afectat predominant modele originale „Fat".
+
+---
+
+CONCEPT: Blue Light of Death (BLOD) – PlayStation 4
+
+VERIFIED INFORMATION:
+BLOD = lumină albastră pulsată care nu trece la alb, fără semnal video. Cauze multiple (nu o singură cauză dominantă): cip encoder HDMI defect (Panasonic MN864729), port HDMI deteriorat fizic, îmbinări lipitură defecte pe APU AMD (stres termic), management termic insuficient, sursă alimentare defectă. PS4: APU AMD 8 nuclee Jaguar x86-64 la 1,6 GHz, GPU GCN 18 CU la 800 MHz (1,84 TFLOPS), 8 GB GDDR5. 117,2 milioane unități. BLOD: procent mic, nu a generat criză comparabilă cu RROD.
+
+---
+
+CONCEPT: Cauza comună – lipitura fără plumb și stresul termic
+
+VERIFIED INFORMATION:
+Element tehnic comun RROD, YLOD și parțial BLOD: deteriorare îmbinări lipitură fără plumb (lead-free solder) din stres termic. Tranziția de la Sn-Pb (punct topire ~183°C, ductilă, rezistentă la cicluri termice) la Sn-Ag-Cu (punct topire ~217°C, mai rigidă, susceptibilă la fisuri microscopice) impusă de directiva RoHS UE. CPU/GPU generează cicluri termice intense la fiecare sesiune de joc → degradează îmbinări BGA. Explică de ce toate trei probleme au apărut în generația 2005–2013 (adoptare lipitură fără plumb pe scară largă).
+
+---
+
+CONCEPT: Comparație impact și răspuns producători
+
+VERIFIED INFORMATION:
+RROD (Xbox 360): cel mai grav — rate 23–54%, $1,15 miliarde, garanție 3 ani, rezolvare cu redesign hardware 2009–2010. VP Peter Moore a aprobat cheltuielile, Steve Ballmer a autorizat. YLOD (PS3): moderat — ~10% (SquareTrade), Sony a contestat rapoartele (0,5% returnări), fără extindere specială garanție, poziție defensivă vs BBC Watchdog. BLOD (PS4): minor — procent mic, cauze multiple (nu problemă sistematică unică), proceduri standard troubleshooting, garanție obișnuită.
+
+---

@@ -1,0 +1,31 @@
+LESSON: 3.1 – Bit și sistem binar
+
+---
+
+CONCEPT: Reprezentare binară
+
+VERIFIED INFORMATION:
+Sistemul binar = sistem de numerație în baza 2, folosind doar cifrele 0 și 1. Notație pozițională: fiecare poziție reprezintă o putere a lui 2. LSB (Least Significant Bit) = 2⁰ = 1. Valoarea unui număr binar = suma puterilor de 2 unde bitul este 1. Exemplu: 1010₂ = 1×2³ + 0×2² + 1×2¹ + 0×2⁰ = 10₁₀. Cu n biți se pot reprezenta 2ⁿ valori distincte (0 până la 2ⁿ−1). Utilizat de toate computerele moderne: implementare directă cu porți logice. Leibniz (1703): primul studiu sistematic; Boole (1854): algebra logică; Shannon (1937): implementare electrică.
+
+---
+
+CONCEPT: Codificare
+
+VERIFIED INFORMATION:
+Codificare = reprezentarea informației prin secvențe de biți conform unor reguli. Conversie decimal → binar: împărțiri succesive la 2, resturile citite invers. Conversie binar → decimal: schema lui Horner (valoare×2 + bitul următor). Relație binar ↔ hexadecimal: grupuri de 4 biți = 1 cifră hex (0–F); 16 = 2⁴. Relație binar ↔ octal: grupuri de 3 biți = 1 cifră octală (0–7); 8 = 2³. Aritmetică binară: 0+0=0, 0+1=1, 1+1=10 (cu transport). Înmulțire binară identică cu AND logic. Operații pe biți (bitwise): AND, OR, XOR, NOT, SHIFT. Shift stânga cu n = înmulțire cu 2ⁿ.
+
+---
+
+CONCEPT: Bit
+
+VERIFIED INFORMATION:
+Bit (binary digit) = cea mai mică unitate de informație în calcul. Termen propus de John W. Tukey, 9 ianuarie 1947 (memo Bell Labs). Prima publicare: Claude Shannon, 1948, „A Mathematical Theory of Communication". Reprezintă o stare logică cu 2 valori posibile: 0/1, true/false, on/off. Reprezentare fizică: flip-flop electronic (2 stări stabile), condensator cu/fără sarcină (DRAM), MOSFET cu poartă flotantă (flash/SSD), polaritate magnetică (HDD), micro-pit pe suprafață reflectivă (CD/DVD), tensiuni electrice diferite (circuite logice). Simbol standard: „bit" (IEC 80000-13). Nibble = 4 biți, Byte = 8 biți, Word = 32 sau 64 biți (modern).
+
+---
+
+CONCEPT: Byte
+
+VERIFIED INFORMATION:
+Byte = unitate de informație digitală, standard modern: 8 biți. Termen inventat de Werner Buchholz, iunie 1956, IBM, proiectul Stretch. Cea mai mică unitate adresabilă de memorie în arhitecturile moderne. 1 byte = 8 biți = 2⁸ = 256 valori posibile (0–255). Octet = sinonim neambiguu pentru 8 biți (utilizat în protocoale de rețea). Simbol: B (majusculă) – IEC 80000-13. Multiplii SI: 1 KB = 1.000 B, 1 MB = 10⁶ B, 1 GB = 10⁹ B, 1 TB = 10¹² B. Multiplii IEC (puteri de 2): 1 KiB = 1.024 B, 1 MiB = 1.048.576 B, 1 GiB = 2³⁰ B. Arhitecturi moderne: word = 32 biți (4 bytes) sau 64 biți (8 bytes).
+
+---

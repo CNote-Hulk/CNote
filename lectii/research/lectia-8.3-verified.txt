@@ -1,0 +1,38 @@
+LESSON: 8.3 – Detectarea scurtcircuitelor
+
+---
+
+CONCEPT: Definiția și mecanismul scurtcircuitului
+
+VERIFIED INFORMATION:
+Scurtcircuit = conexiune anormală de impedanță foarte mică între două noduri care ar trebui să fie la tensiuni diferite. Curentul este limitat doar de rezistența echivalentă Thévenin a rețelei. Căderea de tensiune pe conexiune: zero (ideal). Cauze: deteriorare izolație, material conductor introdus accidental, conectarea terminalelor unei baterii cu conductor de rezistență mică. Efecte: supraîncălzire, deteriorare circuit, incendiu, explozie, arc electric (zeci de mii de grade). Poate livra curent de defect de sute–mii de ori mai mare decât curentul normal, în milisecunde.
+
+---
+
+CONCEPT: Metode de detectare cu multimetrul
+
+VERIFIED INFORMATION:
+Testul de continuitate: multimetrul aplică tensiune mică, măsoară dacă curentul trece; buzzer/LED indică continuitate; rezistență sub prag = circuit complet. Măsurare rezistență: ~0 Ω între două puncte care ar trebui izolate = scurtcircuit. Alimentarea trebuie deconectată (obligatoriu — siguranță + precizie). Impedanța DMM (1–10 MΩ) nu interferează cu măsurătorile de rezistență scăzută. Metodă: setare continuitate/rezistență → sonde pe puncte suspecte → verificare continuitate nedorită.
+
+---
+
+CONCEPT: Dispozitive de protecție – siguranțe și întrerupătoare
+
+VERIFIED INFORMATION:
+Siguranțe fuzibile: fir metalic (zinc/cupru/argint) care se topește la curent excesiv; sacrificiale; timp răspuns ≈ 0,002 s; pot întrerupe defect în ¼ ciclu. Circuit breakers (întrerupătoare): resetabile; detectează prin efecte termice (bandă bimetalică) și magnetice (solenoid). MCB thermal-magnetic: solenoid răspunde instant la scurtcircuite; bandă bimetalică la suprasarcini graduale. Tipuri MCB: B (3–5× In), C (5–10× In), D (10–14× In). Dispozitive avansate: RCD/GFCI (defecte la pământ), AFCI (arcuri electrice), RCBO (RCD + MCB). Siguranță arsă / CB declanșat = primul indicator de scurtcircuit posibil.
+
+---
+
+CONCEPT: Termografia ca metodă avansată de detectare
+
+VERIFIED INFORMATION:
+Termografia infraroșu (IRT): cameră termică detectează radiația infraroșu emisă de suprafețe. Obiecte mai calde emit mai multă radiație → vizibile pe termogramă. Aplicații: detectare îmbinări supraîncălzite, diagnostic echipamente distribuție electrică, predictive maintenance. Hotspot pe componentă electrică = semn defecțiune iminentă sau curent excesiv (posibil scurtcircuit parțial). Avantaj: neinvazivă, non-distructivă, pe echipament în funcționare. Permite detectare înainte de defecțiune completă. Limitare: camere profesionale scumpe (mii USD), precizie ±2%.
+
+---
+
+CONCEPT: Procedura sistematică de detectare a scurtcircuitelor
+
+VERIFIED INFORMATION:
+Pași: 1) Deconectare alimentare (obligatoriu). 2) Inspecție vizuală (arsuri, izolație topită, decolorare, miros). 3) Verificare siguranțe/CB (arsă/declanșat → indică zona). 4) Test continuitate cu multimetru (rezistență între puncte care nu ar trebui conectate). 5) Izolarea secțiunilor (half-splitting — deconectare progresivă componente). 6) Termografie IR (opțional, profesional — scanare hotspots). Principiu: rezistență anormal de mică (~0 Ω) între două noduri izolate = confirmare scurtcircuit. Se corelează cu metodologia de diagnostic din lecția 8.1.
+
+---

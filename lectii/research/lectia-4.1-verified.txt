@@ -1,0 +1,31 @@
+LESSON: 4.1 – CPU
+
+---
+
+CONCEPT: Ciclul de execuție al instrucțiunilor (Fetch-Decode-Execute)
+
+VERIFIED INFORMATION:
+CPU execută instrucțiuni în cicluri repetitive: Fetch → Decode → Execute. FETCH: Program Counter (PC) conține adresa instrucțiunii următoare; CPU citește instrucțiunea din memorie; PC se incrementează automat. DECODE: Instruction decoder convertește instrucțiunea în semnale de control; opcode specifică operația; implementare hardwired (rapid) sau microcode (flexibil). EXECUTE: ALU calculează rezultatul; flags (overflow, zero, carry, negative) stocate în status register; jump/branch modifică PC. Von Neumann architecture: program + date în aceeași memorie (EDVAC, 1945). Harvard architecture: memorie separată instrucțiuni/date.
+
+---
+
+CONCEPT: Pipeline și paralelism la nivel de instrucțiuni
+
+VERIFIED INFORMATION:
+Instruction pipelining: suprapunerea etapelor fetch/decode/execute ale instrucțiunilor succesive. Throughput: ~1 instrucțiune completată per ciclu de ceas (pipeline plin). Hazards: data dependency (instrucțiunea N+1 necesită rezultatul N) → soluții: pipeline stall, operand forwarding, out-of-order execution. Superscalar: multiple execution units (ALU, FPU, load-store, AGU) în paralel. Branch prediction: prezicerea salturilor condiționale. Speculative execution: execuție pe calea prezisă. Register renaming: eliminarea falselor dependențe. IPC (Instructions Per Clock): superscalar atinge IPC > 1. Task-level parallelism: multi-core + SMT. Data parallelism: SIMD (SSE, AltiVec).
+
+---
+
+CONCEPT: CPU cache – ierarhie și principii
+
+VERIFIED INFORMATION:
+CPU cache = memorie SRAM rapidă stocând copii ale datelor frecvent accesate. SRAM: 4–6 tranzistori/bit, rapid, costisitor. DRAM: 1T+1C/bit, lent, dens. Ierarhie: L1 (32–96 KiB/core, split L1i+L1d, ~1 ns), L2 (mai mare, unificată, per core), L3 (partajată între core-uri, zeci de MiB), L4 (rar, eDRAM). Tradeoff: cache mai mare = hit rate mai bun dar latență mai mare. Istorie x86: 386 = extern pe motherboard; 486 = L1 on-die (8 KiB, 1989).
+
+---
+
+CONCEPT: Funcționarea cache-ului – hits, misses, politici
+
+VERIFIED INFORMATION:
+Cache line: unitatea de transfer memorie ↔ cache (tipic 64 bytes). Cache entry: tag + data block + flag bits (valid, dirty). Cache hit: date găsite în cache → acces rapid. Cache miss: date lipsă → fetch din main memory (latență mare). 3 tipuri miss: instruction read, data read, data write. Replacement policy: LRU (Least Recently Used). Write-through: scriere imediată în memorie. Write-back: dirty bit, scris la evicție. Associativity: direct-mapped → N-way set associative → fully associative. Modern: 8-way tipic. Cache-uri specializate: TLB, μop cache, trace cache. Multi-core: L1 per core, L3 partajat.
+
+---

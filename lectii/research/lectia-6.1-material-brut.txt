@@ -1,0 +1,161 @@
+LECȚIA 6.1 – SECVENȚA DE PORNIRE
+Material brut de cercetare
+
+========================================
+SURSA 1: Wikipedia – "Power-on self-test"
+URL: https://en.wikipedia.org/wiki/Power-on_self-test
+========================================
+
+SECȚIUNEA 1: Definiție POST
+Informație extrasă:
+POST (Power-On Self-Test) este o secvență de teste de diagnostic efectuată de firmware-ul computerului imediat după pornire. Scopul este verificarea funcționării corecte a componentelor hardware înainte de încărcarea sistemului de operare.
+
+SECȚIUNEA 2: Scopurile POST
+Informație extrasă:
+POST îndeplinește următoarele funcții:
+- Verificarea registrelor CPU
+- Verificarea integrității codului BIOS
+- Verificarea funcționării controlerului DMA (Direct Memory Access)
+- Verificarea funcționării timerului și controlerului de întreruperi
+- Inițializarea, dimensionarea și verificarea memoriei principale (RAM)
+- Inițializarea BIOS-ului
+- Transferul controlului către extension BIOS (Option ROM)
+- Identificarea, organizarea și selectarea dispozitivelor de boot
+Ulterior, POST a fost extins pentru a include:
+- Inițializarea chipset-ului
+- Descoperirea, inițializarea și catalogarea magistralelor de sistem și dispozitivelor
+- Furnizarea unei interfețe utilizator pentru configurare
+- Construirea mediului pentru sistemul de operare
+
+SECȚIUNEA 3: Procesul de pornire al CPU
+Informație extrasă:
+La resetare, CPU-ul execută instrucțiunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-biți, aceasta este la adresa fizică FFFFFFF0h. Northbridge-ul direcționează această cerere de citire către memoria flash BIOS (la cold boot) sau RAM (la warm boot). CPU-ul începe execuția codului BIOS care rulează POST.
+
+SECȚIUNEA 4: Cold boot vs warm boot
+Informație extrasă:
+Cold boot = pornire completă de la zero, POST complet efectuat.
+Warm boot (Ctrl+Alt+Delete) = repornire fără a opri alimentarea; poate ocoli anumite teste POST prin intermediul unui flag CMOS.
+
+SECȚIUNEA 5: Coduri sonore (beep codes)
+Informație extrasă:
+POST raportează erori prin coduri sonore (beep codes):
+IBM:
+- 1 scurt = POST OK, toate testele trecute
+- 2 scurte = eroare POST afișată pe ecran
+- Continuu = eroare sursă alimentare / placă de bază / RAM
+- 1 lung + 2 scurte = eroare adaptor video/display
+AMI (American Megatrends):
+- 1 beep = eroare reîmprospătare memorie
+- 2 beeps = eroare paritate memorie
+- 3 beeps = eroare read/write memorie
+- 4 beeps = eroare timer
+- 5 beeps = eroare procesor
+POST card: dispozitiv de diagnostic tehnic, placă de interfață dedicată care afișează codul de pe portul I/O 0x80.
+
+========================================
+SURSA 2: Wikipedia – "BIOS"
+URL: https://en.wikipedia.org/wiki/BIOS
+========================================
+
+SECȚIUNEA 6: Definiția BIOS
+Informație extrasă:
+BIOS (Basic Input/Output System) este firmware-ul stocat pe placa de bază, responsabil pentru inițializarea hardware-ului și furnizarea serviciilor runtime. Inițial stocat în ROM, acum se folosește memorie flash.
+
+SECȚIUNEA 7: Secvența de pornire a sistemului
+Informație extrasă:
+La pornire, procesoarele x86 încep execuția de la adresa FFFFFFF0h (pe 80386+). Prima instrucțiune din BIOS ROM este de obicei un jump către programul principal de start-up. Acest program rulează POST, care identifică, testează și inițializează:
+- CPU
+- Chipset
+- RAM (unul dintre cei mai complecși pași, setare DRAM prin SPD)
+- Placa de bază
+- Placa video
+- Tastatura
+- Mouse
+- Hard disk
+- Unitate optică
+
+SECȚIUNEA 8: Scanarea Option ROM
+Informație extrasă:
+După POST, BIOS-ul scanează pentru Option ROM-uri în zona de adrese 0x0C0000–0x0F0000 pe granițe de 2KB. Fiecare ROM trebuie să conțină semnătura 0x55 0xAA. Dacă este găsită, BIOS-ul execută codul ROM-ului respectiv, care inițializează hardware-ul asociat și înregistrează vectori de întrerupere.
+
+SECȚIUNEA 9: Procesul de boot
+Informație extrasă:
+După POST și scanarea Option ROM:
+1. BIOS-ul apelează interrupt 19h
+2. Încearcă dispozitivele de boot în ordinea configurată
+3. Încarcă primul sector (boot sector, 512 bytes) de pe dispozitivul bootabil
+4. Verifică semnătura 0x55 0xAA la sfârșitul sectorului
+5. Transferă controlul la boot loader-ul din sectorul de boot
+6. CPU-ul este în real mode, CS:IP la 0x07C00
+7. Boot loader-ul încarcă kernel-ul OS
+
+SECȚIUNEA 10: Actualizări microcode
+Informație extrasă:
+În timpul POST, actualizări de microcode sunt încărcate din BIOS în SRAM-ul procesorului. Aceste actualizări nu sunt persistente – se reîncarcă la fiecare pornire.
+
+SECȚIUNEA 11: UEFI - succesorul BIOS
+Informație extrasă:
+UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy începând din 2020. UEFI nu se bazează pe boot sectors; încarcă direct boot loader-ul (fișier EFI application) de pe partiția EFI System Partition.
+
+========================================
+SURSA 3: Wikipedia – "Power good signal"
+URL: https://en.wikipedia.org/wiki/Power_good_signal
+========================================
+
+SECȚIUNEA 12: Definiție Power Good
+Informație extrasă:
+Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului către placa de bază, indicând că toate tensiunile sunt în specificații și că sistemul poate proceda la boot și operare.
+
+SECȚIUNEA 13: ATX Power Good specificații
+Informație extrasă:
+Conform specificației ATX:
+- Semnalul Power-Good este un semnal de +5V generat de sursa de alimentare
+- Se generează după ce sursa a trecut testele interne și ieșirile s-au stabilizat
+- Timpul de stabilizare: între 0.1 și 0.5 secunde (100ms – 500ms) după pornirea sursei
+- Semnalul este trimis la placa de bază, unde este recepționat de cip-ul timer al procesorului care controlează linia de reset a procesorului
+- PWR_OK trebuie să devină HIGH nu mai devreme de 100ms după stabilizarea rail-urilor
+- PWR_OK trebuie să rămână HIGH pentru cel puțin 16ms după pierderea alimentării AC
+- PWR_OK trebuie să cadă (sub 0.4V) cu cel puțin 1ms înainte ca rail-urile să iasă din specificații (95% din valoarea nominală)
+
+SECȚIUNEA 14: Surse de calitate scăzută
+Informație extrasă:
+Sursele ieftine/de calitate scăzută nu urmează specificația ATX de circuit de monitorizare separat; în schimb, conectează ieșirea Power Good direct la una din liniile de 5V. Acest lucru înseamnă că procesorul nu va primi niciodată reset la alimentare necorespunzătoare decât dacă linia de 5V scade suficient de mult.
+
+========================================
+SURSA 4: Wikipedia – "Booting"
+URL: https://en.wikipedia.org/wiki/Booting
+========================================
+
+SECȚIUNEA 15: Definiția procesului de boot
+Informație extrasă:
+Booting (bootstrapping) este procesul de pornire a unui computer inițiat prin hardware (buton fizic) sau comandă software. După pornire, CPU-ul nu are software în memoria principală, deci un proces trebuie să încarce software-ul în memorie înainte de execuție. Termenul vine de la expresia "to pull oneself up by one's bootstraps".
+
+SECȚIUNEA 16: Secvența de boot PC IBM-compatibil
+Informație extrasă:
+La pornirea unui PC IBM-compatibil:
+1. CPU x86 execută instrucțiunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)
+2. Aceasta indică de obicei către punctul de intrare al firmware-ului (UEFI sau BIOS) din ROM
+3. Locația de memorie conține de obicei o instrucțiune jump către programul de start-up
+4. Programul rulează POST pentru verificarea și inițializarea dispozitivelor necesare (DRAM, bus PCI, dispozitive PCI, Option ROM-uri)
+5. Setarea DRAM prin SPD = unul dintre cei mai complecși pași
+6. După inițializarea hardware-ului, firmware-ul parcurge lista preconfigurată de dispozitive de boot
+
+SECȚIUNEA 17: Boot loaders multi-stage
+Informație extrasă:
+Procesul de boot folosește adesea încărcare în etape (multi-stage):
+- First-stage boot loaders: BIOS, UEFI, coreboot, Libreboot, Das U-Boot (inițializare hardware)
+- Second-stage boot loaders: GNU GRUB, rEFInd, BOOTMGR, Syslinux, NTLDR (încărcare OS)
+Boot sector pe MBR: limitat la 446 bytes (restul: tabelă partiții 64 bytes + semnătură boot 2 bytes)
+UEFI nu se bazează pe boot sectors; încarcă direct boot loader-ul EFI de pe EFI System Partition.
+
+========================================
+NOTE CERCETARE
+========================================
+
+Concepte cheie identificate:
+1. Power sequence = secvența completă: Power Good → reset vector → BIOS/POST → Option ROM → Boot
+2. Inițializare hardware = POST testează și inițializează CPU, chipset, RAM, video, tastatură, stocare
+3. Semnale de pornire = Power Good (+5V PWR_OK), reset vector, beep codes, PS_ON
+
+Surse utilizate: 4 (Wikipedia POST, BIOS, Power Good signal, Booting)
+Total secțiuni extrase: 17

@@ -1,0 +1,126 @@
+LECȚIA 4.4 – Bus și interconectări: PCIe, memory bus, I/O
+========================================================
+MATERIAL VERIFICAT ȘI STRUCTURAT
+
+═══════════════════════════════════════════════════════════
+CONCEPT 1: Conceptul de bus și evoluția de la paralel la serial
+═══════════════════════════════════════════════════════════
+
+INFORMAȚIE VERIFICATĂ:
+- Bus = sistem de comunicare (hardware + protocol) care transferă date între componente
+- Evoluție în 3 generații:
+  * Gen 1: bus simplu, fire directe la CPU, toate dispozitivele la aceeași viteză (S-100, anii '70-'80)
+  * Gen 2: bus controller intermediar, separare CPU/periferice (ISA, PCI, AGP, anii '90-2000)
+  * Gen 3: interconexiuni seriale punct-la-punct, tip rețea (PCIe, HyperTransport, CXL, din ~2001)
+- Tranziția paralel → serial:
+  * Bus paralel: mai multe fire transmit biți simultan, dar limitat de timing skew (nanosecunde)
+  * Bus serial: un singur semnal diferențial per direcție, clock înglobat, fără timing skew
+  * Serial atinge multi-gigahertz; paralel limitat la sute de MHz
+  * Legea lui Moore a permis integrarea SerDes (serializer/deserializer) în chip-uri
+- Exemple tranziție: PCI→PCIe, Parallel ATA→SATA, paralel printer→USB
+- Tipuri de bus: system bus (CPU↔memorie), expansion bus (periferice), memory bus (CPU↔DRAM)
+- Parametri bus: lățime (biți), frecvență (MHz), transferuri/ciclu (SDR=1, DDR=2, quad=4)
+  * Data rate = lățime × frecvență × transferuri/ciclu
+
+SURSE: Wikipedia "Bus (computing)" – https://en.wikipedia.org/wiki/Bus_(computing)
+STATUS: ✓ Verificat – definiții standard, exemple concrete, evoluție documentată
+
+
+═══════════════════════════════════════════════════════════
+CONCEPT 2: PCI Express – arhitectură și generații
+═══════════════════════════════════════════════════════════
+
+INFORMAȚIE VERIFICATĂ:
+- PCIe = standard serial de viteză mare, înlocuiește PCI/PCI-X/AGP
+- Creat 2003 de PCI-SIG (Intel, Dell, HP, IBM)
+- Arhitectură:
+  * Topologie punct-la-punct (vs PCI shared parallel bus)
+  * Link = canal între 2 porturi PCIe, compus din 1-16 lane-uri
+  * Lane = 2 perechi diferențiale (4 fire): 1 pereche TX + 1 pereche RX → full-duplex
+  * Lățimi standard: ×1, ×4, ×8, ×16
+  * Data striping: bytes succesivi pe lane-uri succesive
+  * Negociere automată a lățimii la inițializare
+- Protocol pe 3 straturi:
+  * Physical Layer: semnale electrice, SerDes, clock recovery
+  * Data Link Layer: secvențiere TLP, ACK/NAK, flow control
+  * Transaction Layer: split transactions, credit-based flow control
+- Generații cu throughput per direcție:
+  | Gen | An   | Rate/lane  | ×1 GB/s | ×16 GB/s | Codare     |
+  |-----|------|-----------|---------|----------|------------|
+  | 1.0 | 2003 | 2.5 GT/s  | 0.25    | 4        | 8b/10b     |
+  | 2.0 | 2007 | 5.0 GT/s  | 0.5     | 8        | 8b/10b     |
+  | 3.0 | 2010 | 8.0 GT/s  | 0.985   | 15.754   | 128b/130b  |
+  | 4.0 | 2017 | 16 GT/s   | 1.969   | 31.508   | 128b/130b  |
+  | 5.0 | 2019 | 32 GT/s   | 3.938   | 63.015   | 128b/130b  |
+  | 6.0 | 2022 | 64 GT/s   | 7.563   | 121      | PAM-4+FEC  |
+  | 7.0 | 2025 | 128 GT/s  | 15.125  | 242      | PAM-4+FEC  |
+- Codare: 8b/10b (20% overhead) → 128b/130b (1.54%) → PAM-4 + FEC (de la 6.0)
+  * PAM-4: 2 biți per simbol, dar BER crește la 10⁻⁶ → necesită Forward Error Correction
+- Backward compatible între toate generațiile
+- Aplicații: GPU (×16), SSD NVMe (×4 via M.2/U.2), rețea, extensii
+- Power: slot ×1=25W, slot ×16=75W, 6-pin=+75W, 8-pin=+150W, 12VHPWR=600W
+
+SURSE: Wikipedia "PCI Express" – https://en.wikipedia.org/wiki/PCI_Express
+STATUS: ✓ Verificat – specificații oficiale PCI-SIG, tabel cu date concrete per generație
+
+
+═══════════════════════════════════════════════════════════
+CONCEPT 3: Front-side bus și evoluția la interconexiuni moderne
+═══════════════════════════════════════════════════════════
+
+INFORMAȚIE VERIFICATĂ:
+- FSB (Front-Side Bus) = interfață CPU↔northbridge, folosit pe platforme Intel/AMD în anii 1990-2000
+- Arhitectura clasică cu chipset:
+  * CPU ↔ FSB ↔ Northbridge ↔ RAM (memory bus) + AGP/PCIe (grafică)
+  * Northbridge ↔ Southbridge ↔ PCI, USB, SATA, audio, periferice lente
+- Parametri FSB:
+  * Frecvența CPU = FSB × multiplicator (ex: 400 MHz × 8 = 3200 MHz)
+  * Bandwidth = lățime × frecvență × transferuri/ciclu
+  * Intel Quad Pumping: 4 transferuri/ciclu → FSB 200 MHz = 800 MT/s marketing
+  * AMD EV6: 2 transferuri/ciclu (double-pumped)
+- Transfer rates istorice:
+  * Pentium (66 MHz, 1×): 528 MB/s
+  * Pentium 4 HT (200 MHz, 4×): 6400 MB/s
+  * Core 2 Extreme (400 MHz, 4×): 12800 MB/s
+- FSB = bottleneck: CPU rapid dar FSB lent → CPU idle așteptând date
+- Evoluția modernă (FSB eliminat de Intel în 2009):
+  * AMD: HyperTransport → Infinity Fabric
+  * Intel: QPI (QuickPath Interconnect) → DMI → UPI (Ultra Path Interconnect)
+  * Schimbare fundamentală: memory controller integrat ÎN CPU (nu mai în northbridge)
+  * Northbridge dispare → rămâne doar PCH (Platform Controller Hub) = fostul southbridge
+  * CPU moderne: accesează RAM direct, link serial rapid spre PCH pentru I/O
+- Relevanță console: consoles au chipset-uri custom (APU) cu memory controller integrat
+
+SURSE: Wikipedia "Front-side bus" – https://en.wikipedia.org/wiki/Front-side_bus
+STATUS: ✓ Verificat – evoluția documentată, FSB eliminat 2009, QPI/HyperTransport confirmate
+
+
+═══════════════════════════════════════════════════════════
+CONCEPT 4: Input/Output – metode și DMA
+═══════════════════════════════════════════════════════════
+
+INFORMAȚIE VERIFICATĂ:
+- I/O = orice comunicare între CPU/memorie și restul sistemului
+- Din perspectiva arhitecturii: CPU + RAM = nucleu; orice transfer de/la acest nucleu = I/O
+- Metode de acces I/O:
+  1. Memory-mapped I/O: dispozitivele mapate ca locații de memorie
+     * CPU folosește aceleași instrucțiuni (mov) ca pentru memorie
+     * Cel mai comun pe sisteme moderne (ARM, consolele de jocuri)
+  2. Port-mapped I/O (isolated I/O): instrucțiuni CPU speciale (in/out pe x86)
+     * Spațiu de adrese separat de memorie
+     * Folosit pe x86 pentru periferice legacy
+  3. Channel I/O: instrucțiuni speciale adresează un canal I/O dedicat
+     * Canalul operează asincron (independent de CPU)
+     * Similar cu DMA dar mai flexibil
+  4. DMA (Direct Memory Access):
+     * Dispozitivele transferă date direct la/din memorie fără intervenția CPU
+     * Crucial pentru transferuri mari (disk, rețea, grafică)
+     * CPU inițiază transferul, DMA controller gestionează, CPU primește întrerupere la final
+- Handshaking: semnale BUSY/READY/WAIT pentru sincronizare
+- Întreruperile (interrupts): dispozitivele semnalează CPU-ul când au date gata
+  * Evită busy-waiting (polling constant)
+  * Trebuie prioritizate (CPU execută doar un handler la un moment dat)
+- Relevanță console: GPU-urile folosesc DMA masiv pentru transferuri texturi/buffere
+
+SURSE: Wikipedia "Input/output" – https://en.wikipedia.org/wiki/Input/output
+STATUS: ✓ Verificat – concepte fundamentale de arhitectură, metode standard I/O

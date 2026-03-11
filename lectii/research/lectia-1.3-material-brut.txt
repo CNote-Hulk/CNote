@@ -1,0 +1,78 @@
+LECȚIA 1.3 – Circuite electrice
+MATERIAL BRUT – RESEARCH
+
+========================================
+SURSA 1: Wikipedia – Electrical network
+URL: https://en.wikipedia.org/wiki/Electrical_network
+DATA ACCESĂRII: 2025
+
+INFORMAȚII EXTRASE:
+
+An electrical network is an interconnection of electrical components (e.g., batteries, resistors, inductors, capacitors, switches, transistors) or a model of such an interconnection, consisting of electrical elements (e.g., voltage sources, current sources, resistances, inductances, capacitances).
+
+An electrical circuit is a network consisting of a closed loop, giving a return path for the current. Thus all circuits are networks, but not all networks are circuits (networks without a closed loop are often referred to as open circuits).
+
+An active network contains at least one voltage source or current source that can supply energy to the network indefinitely. Practical examples: battery, generator. Active elements can inject power to the circuit, provide power gain, and control the current flow.
+
+Passive networks do not contain any sources of electromotive force. They consist of passive elements like resistors and capacitors.
+
+Kirchhoff's current law: The sum of all currents entering a node is equal to the sum of all currents leaving the node.
+Kirchhoff's voltage law: The directed sum of the electrical potential differences around a loop must be zero.
+
+========================================
+SURSA 2: Wikipedia – Short circuit
+URL: https://en.wikipedia.org/wiki/Short_circuit
+DATA ACCESĂRII: 2025
+
+INFORMAȚII EXTRASE:
+
+A short circuit is an electrical circuit that allows an electric current to travel along an unintended path with no or very low electrical impedance. This results in an excessive current flowing through the circuit.
+
+The opposite of a short circuit is an open circuit, which is an infinite resistance (or very high impedance) between two nodes.
+
+A short circuit is an abnormal connection between two nodes of an electric circuit intended to be at different voltages. This results in a current limited only by the Thévenin equivalent resistance of the rest of the network which can cause circuit damage, overheating, fire or explosion.
+
+In circuit analysis, a short circuit is defined as a connection between two nodes that forces them to be at the same voltage. In an 'ideal' short circuit, this means there is no resistance and thus no voltage drop across the connection.
+
+A common type of short circuit occurs when the positive and negative terminals of a battery are connected with a low-resistance conductor, like a wire. With a low resistance in the connection, a high current will flow, causing the delivery of a large amount of energy in a short period of time.
+
+Protection: Damage from short circuits can be reduced by employing fuses, circuit breakers, or other overload protection, which disconnect the power in reaction to excessive current.
+
+========================================
+SURSA 3: Wikipedia – Ground (electricity)
+URL: https://en.wikipedia.org/wiki/Ground_(electricity)
+DATA ACCESĂRII: 2025
+
+INFORMAȚII EXTRASE:
+
+In electrical engineering, ground or earth may refer to:
+- reference ground: a reference point in an electrical circuit from which voltages are measured
+- earth ground: an electrically neutral node that has a lot of available charges (e.g. the physical ground of Earth)
+- common ground: a common return path for electric current (also called neutral in electric power systems)
+
+Voltage is defined as the difference of electric potentials between points in an electric field. A voltmeter is used to measure the potential difference between some point and a convenient, but otherwise arbitrary reference point. This common reference point is denoted "ground" and is designated as having a nominal zero potential.
+
+Signal grounds serve as return paths for signals and power within equipment. There is usually a large conductor attached to one side of the power supply (such as the "ground plane" on a printed circuit board), which serves as the common ground, the common return path for current from many different components in the circuit.
+
+Circuits in portable electronic devices (cell phones, media players) and in vehicles have a reference ground (also called chassis ground).
+
+In electronic circuit theory, a signal ground is the common ground and reference ground for electric signal; and a power ground is the common ground for power current.
+
+========================================
+NOTE CERCETARE:
+
+Circuit deschis (open circuit): Un circuit în care calea pentru curent este întreruptă — nu există o buclă completă. Curentul nu poate circula. Reprezintă o rezistență infinită sau impedanță foarte mare între două noduri.
+
+Circuit închis (closed circuit): Un circuit complet cu cale continuă pentru curent, de la terminalul pozitiv al sursei, prin sarcină/componente, și înapoi la terminalul negativ. Curentul circulă prin circuit.
+
+Scurtcircuit (short circuit): O conexiune anormală cu impedanță foarte scăzută care permite curentului să curgă pe o cale neintențonată. Rezultă curenți excesivi care pot provoca daune, supraîncălzire, incendiu. Se protejează cu siguranțe și întrerupătoare automate.
+
+Conductor: Material care permite trecerea curentului electric (fir, traseu de cupru pe PCB).
+
+Sarcină (load): Dispozitiv pasiv care consumă energie electrică — rezistor, LED, motor.
+
+Sursă de energie (source): Dispozitiv activ care furnizează energie — baterie, generator, alimentator.
+
+GND (Ground): Punct de referință al circuitului, considerat la potențial zero. Servește ca cale de retur pentru curent.
+
+Referință de potențial: Punct arbitrar ales în circuit față de care se măsoară toate tensiunile. De obicei este GND (0V).

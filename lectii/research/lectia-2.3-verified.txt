@@ -1,0 +1,24 @@
+LESSON: 2.3 – Diode
+
+---
+
+CONCEPT: Joncțiune PN
+
+VERIFIED INFORMATION:
+Joncțiunea p-n = combinația a două tipuri de semiconductor (p-type și n-type) într-un singur cristal. Partea n: conține electroni liberi (dopare cu atomi donori). Partea p: conține goluri/holes (dopare cu atomi acceptori). La contact se formează zona de golire (depletion region): purtătorii mobili se recombină. Atomii dopanți ficși creează câmp electric intern → potențial built-in (Vbi). Polarizare directă (forward bias): tensiune pozitivă pe p, negativă pe n → zona de golire se micșorează → curent. Polarizare inversă (reverse bias): tensiune negativă pe p, pozitivă pe n → zona de golire crește → izolator. Tensiune de prag siliciu: 0,6–0,7 V. Breakdown la tensiune inversă mare: Zener (<5V, tunelare) sau avalanșă (>6,2V, ionizare în cascadă). Curent forward crește exponențial cu tensiunea (ecuația Shockley).
+
+---
+
+CONCEPT: Redresare
+
+VERIFIED INFORMATION:
+Redresare (rectification) = conversia AC în DC. Funcționează datorită conductanței unidirecționale a diodei. Half-wave rectifier: o singură diodă, permite doar semiperioadele pozitive. Full-wave bridge rectifier: 4 diode în configurație punte, utilizează ambele semiperioade. Condensator de netezire adăugat după redresor pentru reducerea ripple-ului. Diode redresoare populare: seria 1N400x (1A), seria 1N580x (3A Schottky). Cădere de tensiune: 0,6–0,7 V (siliciu standard) sau 0,15–0,45 V (Schottky). Diodele Schottky sunt preferate în aplicații de eficiență ridicată datorită căderii de tensiune mai mici.
+
+---
+
+CONCEPT: Protecție polaritate
+
+VERIFIED INFORMATION:
+Dioda serie: conectată în serie cu alimentarea, blochează curentul dacă polaritatea este inversată. Protejează circuite sensibile de daune la inversarea polarității sursei/bateriei. Flyback diode: protejează la deenergizarea bobinelor inductive (motoare, relee) de spike-uri de tensiune. TVS (Transient Voltage Suppression) diode: diode avalanșă cu secțiune mare, pentru tranzienți rapizi. Circuitele integrate au diode de protecție pe pinii de conexiune. Dioda Zener: menține tensiunea la un nivel precis (ex. 5,6 V), protecție și referință tensiune. Dioda Schottky: forward voltage mic, pierderi reduse ca protecție.
+
+---

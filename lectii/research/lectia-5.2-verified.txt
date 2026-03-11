@@ -1,0 +1,31 @@
+LESSON: 5.2 – APU (CPU + GPU)
+
+---
+
+CONCEPT: Definiția și rolul APU-ului
+
+VERIFIED INFORMATION:
+APU (Accelerated Processing Unit) = microprocesor care combină CPU și GPU pe un singur die. Termen specific AMD (proiectul Fusion, 2006, lansat 2011), accelerat de achiziția ATI Technologies (2006). CPU și GPU partajează die, bus intern, memory controller. Avantaj: comunicare directă CPU↔GPU fără bottleneck PCIe, latență redusă, cost și consum redus. Intel are grafică integrată similară (UHD/Iris) dar nu folosește termenul APU. APU-ul este componenta centrală în consolele moderne de jocuri.
+
+---
+
+CONCEPT: Integrarea CPU și GPU – evoluția arhitecturii
+
+VERIFIED INFORMATION:
+Llano (2011): CPU K10 + Radeon HD 6000, 32 nm, memorie partiționată. Trinity/Richland (2012–2013): Piledriver + Radeon HD 7000, Turbo Core 3.0 bidirectional. Kaveri (2014): Steamroller + GCN, HSA-enabled, CPU și GPU partajează același spațiu de adrese (zero-copy). PS4/Xbox One (2013): 8 nuclee Jaguar + GCN, 28 nm TSMC, memorie unificată GDDR5. Era Zen (2017+): Raven Ridge → Phoenix → Strix Point; GPU: Vega → RDNA 2 → RDNA 3.5; fabricație: 14 nm → 4 nm. PS5/Xbox Series X|S (2020): Zen 2 + RDNA 2, 7 nm. Tendință: NPU adăugat pe die (AI).
+
+---
+
+CONCEPT: Comunicarea cu memoria
+
+VERIFIED INFORMATION:
+Generații timpurii: memorie partiționată (GPU max 512 MB, CPU restul). Kaveri + PS4: HSA — MMU CPU și IOMMU GPU partajează spațiul de adrese, pointeri liberi CPU↔GPU (zero-copy), memorie complet coerentă hardware. Console: memorie unificată (GDDR5 la PS4, GDDR6 la PS5), bandwidth maxim, zero overhead copiere. Bandwidth APU desktop: DDR3 ~30 GB/s → DDR5 ~120 GB/s. Console: PS4 ~176 GB/s, PS5 ~448 GB/s. Shared Power Management: CPU și GPU partajează bugetul de putere, prioritate dinamică.
+
+---
+
+CONCEPT: APU în console – design semi-custom
+
+VERIFIED INFORMATION:
+Consolele moderne folosesc APU-uri semi-custom AMD. PS4/Xbox One (2013): 8 nuclee Jaguar + GCN, 28 nm TSMC. PS5/Xbox Series X|S (2020): 8 nuclee Zen 2 + RDNA 2, 7 nm TSMC. Avantaje: un singur cip = cost fabricație redus, PCB mai simplu, consum mic; memorie unificată = nicio penalizare transfer CPU↔GPU; Turbo Core bidirectional redistribuie puterea automat; design termic optimizat cu un singur hotspot. Dezavantaj: upgrade individual imposibil (CPU și GPU pe același die).
+
+---

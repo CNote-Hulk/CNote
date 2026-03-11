@@ -1,0 +1,165 @@
+LECȚIA 6.1 – SECVENȚA DE PORNIRE
+Informații verificate și consolidate
+
+========================================
+CONCEPT 1: Power Sequence – secvența completă de pornire
+========================================
+
+INFORMAȚIE VERIFICATĂ:
+Secvența de pornire a unui computer/consolă urmează acești pași în ordine:
+
+1. ALIMENTARE: Utilizatorul apasă butonul de pornire → semnalul PS_ON activează sursa de alimentare
+2. STABILIZARE TENSIUNI: Sursa generează rail-urile de tensiune (+3.3V, +5V, +12V) → se așteaptă stabilizarea (100-500ms)
+3. POWER GOOD (PWR_OK): Sursa trimite semnalul Power Good (+5V) către placa de bază, confirmând că tensiunile sunt în specificații. Specificații ATX:
+   - PWR_OK HIGH nu mai devreme de 100ms după stabilizarea rail-urilor
+   - PWR_OK rămâne HIGH cel puțin 16ms după pierderea AC
+   - PWR_OK cade (sub 0.4V) cu cel puțin 1ms înainte ca rail-urile să iasă din specificații
+4. RESET VECTOR: La primirea Power Good, timer-ul procesorului eliberează linia de reset. CPU-ul începe execuția de la adresa reset vector (FFFFFFF0h pe x86 32/64-bit). Northbridge-ul direcționează citirea către memoria flash BIOS.
+5. POST (Power-On Self-Test): BIOS-ul execută testele de diagnostic
+6. OPTION ROM SCAN: Scanare și execuție ROM-uri extensie
+7. BOOT: Încărcare boot loader și sistem de operare
+
+SURSE: Wikipedia "Power-on self-test", Wikipedia "BIOS", Wikipedia "Power good signal", Wikipedia "Booting"
+STATUS: VERIFICAT – confirmat din 4 surse concordante
+
+========================================
+CONCEPT 2: Inițializarea hardware (POST)
+========================================
+
+INFORMAȚIE VERIFICATĂ:
+POST (Power-On Self-Test) este secvența de teste de diagnostic executată de firmware imediat după pornire. Funcții principale:
+
+Verificări:
+- Registrele CPU – funcționare corectă
+- Integritatea codului BIOS – verificare checksum
+- Controlerul DMA – transfer direct memorie
+- Timerul de sistem – funcționare ceas
+- Controlerul de întreruperi – gestiune semnale hardware
+
+Inițializări (în ordine):
+- CPU – verificare și configurare
+- Chipset – inițializare bridge-uri nord/sud
+- RAM – unul dintre cei mai complecși pași; dimensionare și verificare prin SPD (Serial Presence Detect)
+- Placă de bază – configurare bus-uri
+- Placă video – inițializare display
+- Tastatură – detectare și configurare
+- Mouse – detectare
+- Hard disk / SSD – detectare și catalogare
+- Unitate optică – detectare
+
+Cold boot vs Warm boot:
+- Cold boot = pornire de la zero, POST complet
+- Warm boot (Ctrl+Alt+Delete) = poate ocoli unele teste prin flag CMOS
+
+Scanare Option ROM:
+- După POST, BIOS scanează adresele 0x0C0000–0x0F0000 pe granițe de 2KB
+- Caută semnătura 0x55 0xAA
+- Execută codul fiecărui ROM găsit (ex: BIOS placa video)
+- ROM-urile își inițializează hardware-ul asociat și înregistrează vectori de întrerupere
+
+Actualizări microcode:
+- În timpul POST, se încarcă actualizări microcode din BIOS flash în SRAM-ul CPU
+- Nu sunt persistente – se reîncarcă la fiecare pornire
+
+SURSE: Wikipedia "Power-on self-test", Wikipedia "BIOS"
+STATUS: VERIFICAT – informații consistente între surse
+
+========================================
+CONCEPT 3: Semnale de pornire
+========================================
+
+INFORMAȚIE VERIFICATĂ:
+Semnalele cheie în secvența de pornire:
+
+1. PS_ON (Power Supply ON):
+   - Semnal de control care pornește sursa de alimentare
+   - Activat prin butonul de pornire
+
+2. Power Good (PWR_OK):
+   - Semnal +5V generat de sursa de alimentare după auto-testare internă
+   - Confirmare: toate tensiunile de ieșire sunt stabile și în specificații
+   - Timp stabilizare: 100–500ms după pornire
+   - Recepționat de chip-ul timer al procesorului, care controlează linia de reset CPU
+   - Sursele ieftine pot conecta Power Good direct la linia +5V (fără circuit de monitorizare separat), ceea ce nu protejează procesorul la alimentare instabilă
+
+3. Reset (CPU Reset):
+   - Linia de reset a procesorului este controlată de timer-ul care primește Power Good
+   - La eliberarea reset-ului, CPU citește prima instrucțiune de la reset vector
+   - Adresa reset vector: FFFFFFF0h (x86 pe 32/64-bit), FFFF0h (x86 pe 16-bit)
+
+4. Beep codes (coduri sonore):
+   - Mecanismul de raportare a erorilor POST
+   - IBM: 1 scurt = OK, continuu = PSU/placă/RAM, 1 lung + 2 scurte = adaptor video
+   - AMI: 1 = reîmprospătare memorie, 2 = paritate, 3 = read/write RAM, 4 = timer, 5 = procesor
+   - POST card: dispozitiv de diagnostic pe portul I/O 0x80
+
+5. Boot sector signature (0x55 0xAA):
+   - Semnătura care confirmă un sector de boot valid
+   - Verificată de BIOS înainte de transferul controlului la boot loader
+
+SURSE: Wikipedia "Power good signal", Wikipedia "Power-on self-test", Wikipedia "BIOS", Wikipedia "Booting"
+STATUS: VERIFICAT – confirmat din multiple surse
+
+========================================
+CONCEPT 4: Procesul de boot (încărcarea sistemului de operare)
+========================================
+
+INFORMAȚIE VERIFICATĂ:
+După finalizarea POST și scanarea Option ROM:
+
+Secvența de boot (BIOS legacy):
+1. BIOS apelează interrupt 19h
+2. Parcurge lista de dispozitive de boot în ordinea configurată
+3. Încarcă primul sector (boot sector, 512 bytes) de pe dispozitivul bootabil
+4. Verifică semnătura 0x55AA la sfârșitul sectorului
+5. Încarcă boot sector-ul la adresa liniară 7C00h
+6. CPU-ul este în real mode, toate serviciile BIOS disponibile
+7. Boot loader-ul din MBR verifică tabela de partiții, găsește partiția activă
+8. Încarcă VBR (Volume Boot Record) de pe partiția activă
+9. VBR încarcă boot loader-ul OS (ex: BOOTMGR, NTLDR, GRUB)
+10. Boot loader-ul încarcă kernel-ul OS
+
+Boot loaders multi-stage:
+- Stage 1: BIOS/UEFI (inițializare hardware)
+- Stage 2: GRUB/BOOTMGR/NTLDR (încărcare OS)
+- MBR: limitat la 446 bytes pentru cod (+ 64 bytes tabelă partiții + 2 bytes semnătură)
+
+UEFI – metoda modernă:
+- Nu se bazează pe boot sectors
+- Încarcă direct EFI application de pe EFI System Partition
+- Suportă Secure Boot
+- Intel a eliminat suportul BIOS legacy din 2020
+- Necesar pentru Windows 11
+
+SURSE: Wikipedia "Booting", Wikipedia "BIOS"
+STATUS: VERIFICAT – informații coerente între surse
+
+========================================
+CONCEPT 5: Aplicație în console de jocuri
+========================================
+
+INFORMAȚIE VERIFICATĂ:
+Secvența de pornire în console urmează aceleași principii:
+
+1. Alimentare și Power Good:
+   - Sursa internă sau externă generează tensiunile necesare
+   - Semnalul Power Good confirmă stabilizarea
+   - VRM-urile de pe placa de bază convertesc tensiunile pentru APU/GPU/RAM
+
+2. Inițializare firmware:
+   - Consolele au firmware proprietar (echivalentul BIOS-ului)
+   - POST simplificat – hardware fix, nu variabil ca la PC
+   - Verificare componentelor critice (APU, RAM, stocare)
+
+3. Boot securizat:
+   - Consolele folosesc verificare criptografică a firmware-ului și software-ului
+   - Previne rularea de cod neautorizat
+   - Similar cu UEFI Secure Boot pe PC-uri
+
+4. Sisteme embedded:
+   - Consolele sunt sisteme embedded cu firmware în flash
+   - Boot rapid – hardware predefinit, nu necesită detectare extensivă
+   - Unele console pot fi "instant-on" (pornire imediată din standby)
+
+SURSE: Wikipedia "Booting" (secțiunea embedded systems), Wikipedia "BIOS"
+STATUS: VERIFICAT PARȚIAL – principii generale aplicate contextului consolelor

@@ -1,0 +1,93 @@
+LECȚIA 4.2 – GPU: GEOMETRIE, RASTERIZARE, SHADING
+MATERIAL VERIFICAT ȘI ORGANIZAT
+
+========================================
+CONCEPT 1: GPU – Definiție și arhitectură paralelă
+
+INFORMAȚIE VERIFICATĂ:
+- GPU = circuit electronic specializat pentru procesare grafică, cu arhitectură masiv paralelă
+- Sute sau mii de unități de calcul independente (SM la Nvidia, CU la AMD, Xe Cores la Intel)
+- Funcțiile grafice sunt independente (embarrassingly parallel) → ideale pentru procesare paralelă SIMD
+- GPU dedicat (discrete): memorie GDDR proprie, bandwidth >1000 GB/s
+- GPU integrat (IGP/UMA): partajează RAM-ul sistemului, bandwidth mai mic (~128 GB/s)
+- APU = CPU + GPU pe același die (AMD); UMA = memorie unificată (PS5, Xbox Series, Apple)
+- Performanță: măsurată în TFLOPS (floating point operations per second)
+- Termenul "GPU" – Sony 1994 (PlayStation, GPU Toshiba); popularizat de Nvidia 1999 (GeForce 256 cu hardware T&L integrat)
+- Evoluție console: Atari 2600 (video shifter) → N64 (primul hardware T&L pe console, 1996) → PS4/Xbox One (AMD GCN) → PS5/Xbox Series (AMD RDNA 2 cu ray tracing, 2020)
+- GPGPU: calcule generale pe GPU – CUDA (Nvidia 2007), OpenCL (Khronos Group, cross-platform)
+- Tensor cores / RT cores: unități specializate AI + ray tracing (Nvidia Turing 2018+)
+
+SURSE: Wikipedia – Graphics processing unit (https://en.wikipedia.org/wiki/Graphics_processing_unit)
+STATUS: VERIFICAT – informații factuale din articol enciclopedic, cu referințe multiple
+
+========================================
+CONCEPT 2: Pipeline-ul grafic – Geometrie (procesare 3D)
+
+INFORMAȚIE VERIFICATĂ:
+- Pipeline-ul grafic = framework cu 3 etape: Application → Geometry → Rasterization
+- Application stage: pe CPU – input utilizator, detecția coliziunilor, animații, scene management
+- Geometry stage: operații pe poligoane și vertecși
+  - Vertex = punct 3D; Triunghi = primitivă de bază (3 vertecși + vector normal + textură opțional)
+  - Triunghiul preferat: orice 3 puncte 3D garantează un plan – rectangulul nu
+  - Transformări prin matrici 4×4 (coordonate omogene): rotație (Rx, Ry, Rz) + translație (T)
+  - Model space → World space (World matrix) → Camera space (View matrix) → Clip space (Projection matrix)
+  - Instancing: copii multiple cu transformări diferite (ex. pădure din copaci)
+  - Perspective projection: frustum (piramidă trunchiată), obiecte îndepărtate par mai mici
+  - Orthogonal projection: paralelism păstrat, pentru hărți/reprezentări tehnice
+  - Lighting: per-vertex, scalar product (direcția luminii · normala suprafeței)
+  - Clipping: frustum culling (eliminare primitive în afara vizualizării), decupare parțiale
+  - Window-Viewport transform: coordonate normalizate → coordonate ecran (pixeli)
+- API-uri: Direct3D, OpenGL, Vulkan – standardizează pipeline-ul grafic
+
+SURSE: Wikipedia – Graphics pipeline (https://en.wikipedia.org/wiki/Graphics_pipeline)
+STATUS: VERIFICAT – descriere tehnică detaliată din articol enciclopedic
+
+========================================
+CONCEPT 3: Rasterizarea – conversia geometriei în pixeli
+
+INFORMAȚIE VERIFICATĂ:
+- Rasterizare = conversia formelor geometrice (vector) în pixeli (raster/grilă)
+- Etimologie: German "Raster" (grilă) + Latin "rāstrum" (greblă)
+- Extrem de rapidă comparativ cu ray tracing → standard pentru motoare 3D real-time
+- Poligoane (mesh-uri 3D) → descompuse în triunghiuri → rasterizate pixel cu pixel
+- Cerințe critice: 1) fără goluri între triunghiuri adiacente; 2) niciun pixel rasterizat de două ori
+- Top-left rule (Direct3D, multe implementări OpenGL):
+  - Pixel rasterizat doar dacă centrul e complet în interior SAU pe marginea top/left
+  - Top edge = margine exact orizontală, deasupra; Left edge = margine non-orizontală pe stânga
+- Z-buffer (depth buffer): determină care fragment e vizibil (cel mai aproape de observator)
+- Fragment = unitate de procesare corespunzătoare unui pixel din framebuffer
+- Culoarea: interpolată din proprietățile vertecșilor, determinată final de pixel shader
+- Double buffering: rasterizare în memorie separată, apoi copiere în zona vizibilă (evită artefacte)
+- Anti-aliasing: margini netede; Sub-pixel precision: calcule sub rezoluția grilei (PS1 nu avea)
+- Hardware non-programabil (fixed-function): eficiență maximă pentru rasterizare
+
+SURSE: Wikipedia – Rasterisation (https://en.wikipedia.org/wiki/Rasterisation), Wikipedia – Graphics pipeline
+STATUS: VERIFICAT – informații factuale coroborate din ambele articole
+
+========================================
+CONCEPT 4: Shading – tipuri de shadere și programare GPU
+
+INFORMAȚIE VERIFICATĂ:
+- Shader = program care operează pe date pe măsură ce traversează pipeline-ul de rendering
+- Termenul introdus de Pixar (1988) în RenderMan Interface Specification v3.0
+- Rulează pe GPU-uri moderne (hardware SIMD, execuție masiv paralelă)
+- Tipuri principale de shadere:
+  1. Vertex shader: rulat per vertex, transformă poziția 3D → 2D ecran + Z depth
+     - Manipulează position, color, texture coordinates (nu creează vertecși noi)
+  2. Fragment/Pixel shader: rulat per fragment, calculează culoarea finală a pixelului
+     - Aplicații: bump mapping, shadows, specular highlights, translucency
+     - Primul programabil: GeForce 3 NV20 (2001); ATI Radeon 9700 (2002) = primul D3D 9.0
+  3. Geometry shader: Direct3D 10 / OpenGL 3.2
+     - Input: primitivă completă + adiacență; poate genera primitive noi
+  4. Tessellation shader: OpenGL 4.0 / Direct3D 11
+     - Hull + Domain shader: subdivizare mesh-uri la runtime, LOD (level-of-detail) activ
+  5. Mesh shader: Nvidia Turing (2018), AMD RDNA 2 (2020), Intel Arc
+     - Modelat după compute shaders; crește dramatic triunghiuri/frame rate
+  6. Ray-tracing shader: DirectX Raytracing, Vulkan, Metal; hardware = RT cores
+  7. Compute shader: calcule GPGPU non-grafice (CUDA, OpenCL, DirectCompute)
+- Unified Shader Model: pool comun de unități shader, distribuit dinamic per nevoie (fără separare strictă)
+- Limbaje shader: GLSL (OpenGL), HLSL (DirectX), Metal Shading Language (Apple)
+- SPIR-V: format intermediar (Khronos), adoptat de Vulkan, OpenGL, apoi DirectX 12
+
+SURSE: Wikipedia – Shader (https://en.wikipedia.org/wiki/Shader), Wikipedia – Graphics pipeline
+STATUS: VERIFICAT – informații tehnice coroborate din ambele articole

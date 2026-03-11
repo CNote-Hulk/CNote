@@ -1,0 +1,38 @@
+LESSON: 7.5 – Bandwidth și memorie
+
+---
+
+CONCEPT: Memory Bandwidth – definiție și calcul
+
+VERIFIED INFORMATION:
+Memory bandwidth = rata la care datele pot fi citite/stocate în memorie, exprimată în bytes/s. Formula: Bandwidth = frecvență_ceas × 2 (DDR) × lățime_bus (biți) × nr_canale ÷ 8. Exemplu dual-channel DDR2-800: 400 MHz × 2 × 64 biți × 2 canale = 12.800 MB/s. Plăci grafice: bus-uri mult mai late (GTX TITAN 384 biți, Radeon R9 290X 512 biți). GDDR6: până la 16 Gbit/s per pin; SK Hynix 12 GB bus 384-bit = 768 GB/s. Bandwidth anunțat = maximum teoretic (burst rate); bandwidth real susținut este mai mic. Trei convenții de măsurare: bcopy, STREAM, hardware (trafic total cu write-allocate).
+
+---
+
+CONCEPT: CAS Latency și latența memoriei
+
+VERIFIED INFORMATION:
+CAS latency (CL) = întârzierea între comanda READ și disponibilitatea datelor, specificat în cicluri de ceas (nu timp absolut). Formula timp real: CAS latency (ns) = CL × (2 / transfer_rate_MT/s) × 1000. Paradox: CL a crescut numeric (CL 2 SDRAM → CL 40 DDR5-4800), dar latența absolută a rămas relativ stabilă (~10–15 ns). Exemplu: DDR4-3200 CL16 = 10,00 ns vs DDR4-2400 CL15 = 12,50 ns → CL mai mare poate fi mai rapid. Latența ≠ bandwidth (latență = timp individual acces, bandwidth = throughput total). Pipelining: 100% utilizare pini indiferent de CL — bandwidth depinde doar de frecvență. Random access: latență totală = închidere rând + deschidere rând + CL. Acces secvențial (spatial locality): doar CL contează.
+
+---
+
+CONCEPT: Generații DDR SDRAM
+
+VERIFIED INFORMATION:
+DDR SDRAM: transfer pe ambele fronturi ale ceasului (rising + falling), inventat de Samsung (1997). Generații JEDEC: DDR (1998): 2n prefetch, 200–400 MT/s, 2,5V, 184 pini. DDR2 (2003): 4n prefetch, 400–1066 MT/s, 1,8V, 240 pini. DDR3 (2007): 8n prefetch, 800–2133 MT/s, 1,5V, 240 pini. DDR4 (2014): 8n prefetch, 1600–3200 MT/s, 1,2V, 288 pini. DDR5 (2020): 16n prefetch, 3200–7200 MT/s, 1,1V, 288 pini. Evoluție principală: prefetch depth (2n→16n) permite rate externe mai mari fără creștere frecvență internă. Voltaj scăzut constant (2,5V → 1,1V). Generațiile NU sunt compatibile. LPDDR: variantă consum redus pentru dispozitive mobile.
+
+---
+
+CONCEPT: GDDR (Graphics DDR) și memoria video
+
+VERIFIED INFORMATION:
+GDDR6: memorie grafică high-bandwidth, tip SGRAM cu double data rate. Standard JEDEC: iulie 2017. Performanță: până la 16 Gbit/s per pin, 1,35V. Producători: Samsung (10 nm, 18 Gbit/s), SK Hynix (14 Gbit/s), Micron. Primele plăci grafice GDDR6: Nvidia Turing RTX 2080 Ti (august 2018). GDDR6X (Micron + Nvidia): PAM4 semnalizare, 19–21 Gbit/s per pin, 2 biți/simbol vs 1 bit NRZ; 15% mai puțină energie per bit vs GDDR6; RTX 3080/3090. GDDR6W (Samsung, 2022): 22 Gb/s, capacitate dublată (32 Gb), pini I/O dublați (64). Diferența fundamentală: DDR optimizat latență, GDDR optimizat bandwidth.
+
+---
+
+CONCEPT: Ierarhia memoriei și impactul asupra performanței
+
+VERIFIED INFORMATION:
+Ierarhia: registre → L1 → L2 → L3 → RAM → SSD → HDD. Latențe la 4 GHz: registre 0,25 ns (1 ciclu, 256 GB/s); L1 1 ns (4 cicluri, 64 GB/s, 32 KiB/core); L2 3,5 ns (14 cicluri, 18,3 GB/s, 1 MB/core); L3 11,75 ns (47 cicluri, 5,45 GB/s, 16–32 MB shared); RAM DDR5-6000 82,5 ns (~60 GB/s, 64 GiB); SSD NVMe 0,2 ms (2000 MB/s); HDD 4,16 ms (500 MB/s). Principalul bottleneck: CPU petrece timp inactiv așteptând date. Locality of reference (spațială și temporală) determinantă. Termeni cheie: register spilling, cache miss, page fault. Console: UMA — CPU și GPU partajează bandwidth, necesită management atent.
+
+---

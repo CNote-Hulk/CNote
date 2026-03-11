@@ -1,0 +1,135 @@
+LECȚIA 5.5 – Rail-uri de alimentare
+MATERIAL BRUT – CERCETARE
+
+========================================
+SURSA 1: Wikipedia – Power supply unit (computer)
+URL: https://en.wikipedia.org/wiki/Power_supply_unit_(computer)
+DATA ACCESĂRII: 2026
+========================================
+
+SECȚIUNEA 1: Funcții și definiția rail-ului de alimentare
+- PSU-ul convertește curentul alternativ (AC) din priză în curent continuu (DC) de tensiune joasă
+- Sunt necesare mai multe tensiuni DC, reglate cu precizie pentru funcționare stabilă
+- "A power supply rail or voltage rail refers to a single voltage provided by a PSU"
+- PSU-ul furnizează tensiune standby pentru ca sistemul să poată fi pornit de la distanță (Wake-on-LAN)
+- Tensiunea standby poate fi generată de un mic PSU liniar intern sau de sursa switching, partajând componente
+
+SECȚIUNEA 2: Evoluția rail-urilor – de la IBM PC la ATX
+- Primul IBM PC: două rail-uri principale +5 V și +12 V, plus −5 V și −12 V (putere limitată)
+- Majoritatea cipurilor operau la 5 V; din 63.5 W total, majoritate pe rail-ul +5 V
+- Rail-ul +12 V folosit pentru motoare (discuri, ventilatoare)
+- Rail-ul −12 V alimenta porturile seriale RS-232
+- Rail-ul −5 V pentru periferice ISA (ex: plăci de sunet), neutilizat de alte plăci de bază
+- Semnalul "Power Good" previne operarea circuitelor digitale în primele milisecunde ale pornirii, când tensiunile nu sunt stabile
+
+SECȚIUNEA 3: Standardul ATX și rail-urile +3.3V, +5V, +12V
+- ATX (Intel, 1995): trei rail-uri pozitive: +3.3 V, +5 V, +12 V
+- Cipurile la 3.3 V au început cu Intel 80486DX4 (1994)
+- Calculatoarele pre-ATX derivau 3.3 V printr-un regulator liniar din +5 V (ineficient, pierderi ca căldură)
+- ATX: mai multe fire și conexiuni pentru 3.3 V (sensibil la voltage drop)
+- Rail-ul +5 V SB (standby) furnizează putere mică când calculatorul este "oprit" nominal
+- În modul ACPI S3 sleep, doar rail-ul +5 V SB este activ
+- Soft switch: butonul front panel nu comută tensiunea AC, ci trimite doar un semnal de control
+
+SECȚIUNEA 4: Tranziția puterii pe rail-ul de +12 V (ATX12V)
+- Procesoarele moderne necesită tensiuni joase: >200 A la ≤1.5 V, imposibil de livrat din PSU extern
+- VRM-ul pe placa de bază convertește din +12 V la tensiunea necesară CPU-ului
+- Inițial VRM alimentat din +5 V; cu Pentium 4, Intel a mutat alimentarea CPU pe +12 V
+- Conector P4 separat cu 4 pini adăugat la standardul ATX12V 1.0
+- GPU-urile high-end: majoritatea puterii pe rail-ul +12 V
+- PSU-urile vechi: "5 V-heavy", doar 50-60% din putere pe 12 V
+- PSU-uri moderne: 80-90% din capacitatea totală pe rail-ul +12 V
+- Important: capacitatea +12 V contează mai mult decât puterea totală
+
+SECȚIUNEA 5: Rail-urile +3.3 V și +5 V – rol actual
+- Rail-urile +3.3 V și +5 V rar sunt factori limitanți în sisteme moderne
+- Hard disk-urile și plăcile PCI creează sarcină mai mare pe +5 V
+- CPU-urile vechi (5 V) și apoi i386 (3.3/3.45 V) foloseau regulatoare liniare pe placa de bază
+- Trecerea la regulatoare switching (buck converter) pentru eficiență cu curenții mai mari
+- ATX a adăugat ieșire de 3.3 V direct din PSU
+- Transportul puterii pe 12 V la curent mai mic reduce pierderile de conducție (P = I²R)
+
+SECȚIUNEA 6: Single rail vs. multiple +12 V rails
+- ATX 2.0: limita de 240 VA per ieșire din motive de siguranță (UL 1950)
+- Rezultat: curentul maxim ~20 A per rail; tipic garantat 18 A
+- Fiecare rail controlat independent de un senzor de curent (auto-reset, nu fuzibil)
+- Problemă: balansarea sarcinii între rail-uri – incomod pentru utilizatori
+- PSU-uri high-end: >2000 W = >150 A la 12 V
+- Mulți producători au ignorat cerința și au oferit "single-rail" fără limitare pe rail
+- Cerința retrasă din ATX 2.3 (2007)
+- ATX 2.31: single rail – curentul poate fi tras prin orice combinație de cabluri
+
+SECȚIUNEA 7: 12V-only supplies – viitorul
+- Fujitsu și alți Tier-1 din 2011: plăci de bază cu doar 12 V de la PSU
+- Conversia DC-DC pe placa de bază (5 V și 3.3 V via VRM-uri)
+- Google: PSU-uri 12V-only în servere din ~2003
+- Avantaje: elimină probleme cross-load, simplifică cablarea, reduce costuri, crește eficiența, reduce zgomot
+- Dell OptiPlex 9020 și Precision T1700 (2013): PSU 12V-only
+- ATX12VO (Intel, 2019): standard cu ieșire doar 12 V, conector redus de la 24 pini la 10 pini
+- 5 V, 3.3 V transformate pe placa de bază pentru USB, HDD etc.
+
+SECȚIUNEA 8: Conectori și distribuția puterii
+- ATX Main Power: 20 sau 24 pini (24 din ATX12V 2.0)
+- EPS12V: conectori 4-pin sau 8-pin pentru alimentarea CPU (+12 V dedicat)
+- Peripheral (Molex): 4 fire – 2× ground (negru), +5 V (roșu), +12 V (galben)
+- SATA Power: 15 pini, furnizează +3.3 V, +5 V, +12 V
+- PCIe: 6-pin (max 75 W), 8-pin (max 150 W), 12-pin Nvidia (max 648 W), 16-pin 12VHPWR (max 600 W)
+- PSU modulare: cabluri detașabile, dar pin assignment standardizat doar pe partea de ieșire
+  - Cablurile unui PSU modular NU sunt interschimbabile între modele diferite (risc de daune)
+- Coduri culori fire: portocaliu = +3.3 V, roșu = +5 V, galben = +12 V, negru = ground, albastru = −12 V, gri = Power Good, mov = +5 V SB, verde = PS_ON
+
+SECȚIUNEA 9: Eficiență și rating-uri
+- 80 Plus certificare: Bronze ≥82%, Silver ≥85%, Gold ≥87%, Platinum ≥90%, Titanium ≥94%
+- Eficiența maximă la 50-75% din sarcină
+- PSU supradimensionat: mai puțin eficient la sarcini mici
+- Putere totală: 250-1000+ W; tipic 300-500 W pentru desktop standard
+- Recomandare: PSU cu ~40% peste consumul calculat al sistemului
+
+========================================
+SURSA 2: Wikipedia – Decoupling capacitor
+URL: https://en.wikipedia.org/wiki/Decoupling_capacitor
+DATA ACCESĂRII: 2026
+========================================
+
+SECȚIUNEA 1: Definiție și principiu de funcționare
+- Condensator de decuplare: previne transferul energiei electrice nedorite între părți ale circuitului
+- Zgomotul de la alte elemente este deviat prin condensator, reducând efectul asupra restului circuitului
+- La frecvențe mari = bypass capacitor (ocolește sursa de alimentare sau componenta de impedanță mare)
+- Conductoarele de alimentare au rezistență și inductanță finită → cădere de tensiune la schimbări de curent
+- Condensatorul de decuplare oferă o cale de bypass pentru curenții tranzitorii
+
+SECȚIUNEA 2: Funcția ca stocare locală de energie
+- Condensatorul funcționează ca stocare locală de energie pentru dispozitiv
+- Se plasează între linia de alimentare și masă (ground)
+- Relația curent-tensiune: i(t) = C × dv(t)/dt
+- Când capacitanța C este suficient de mare, condensatorul furnizează curent suficient pentru a menține tensiunea
+- Condensatoare mici și mari în paralel reduc inductanța parazită (ESL)
+- ~100 nF ceramic per IC logic (mai multe pentru IC-uri complexe), combinat cu electroliți/tantal
+
+SECȚIUNEA 3: Decuplare pentru circuite de comutare
+- Comutarea în circuite digitale schimbă curentul cerut brusc
+- Liniile de alimentare au inductanță → răspuns lent la schimbări de curent
+- Tensiunea de alimentare scade pe inductanțele parazite pe durata comutării
+- Condensatorul de decuplare furnizează curentul tranzitoriu
+- Plasare: cât mai aproape de dispozitivul care cauzează tranzientul
+- Cu cât conductorul este mai lung între condensator și dispozitiv, cu atât mai multă inductanță
+- PCB-ul ideal: sandwich de planuri de alimentare și masă peste un material dielectric = condensator gigant
+
+SECȚIUNEA 4: Aplicații practice
+- Circuitele logice: condensator de decuplare lângă fiecare IC, între fiecare conexiune de alimentare și ground
+- Fiecare IC este decuplat de celelalte IC-uri în ceea ce privește scăderile de tensiune
+- Condensatoare plasate și la fiecare sursă de alimentare și la fiecare componentă analogică
+- Componenta analogică cu PSRR (Power Supply Rejection Ratio) slab va copia fluctuațiile de alimentare pe ieșire
+- Condensatoarele de bypass furnizează cantități mari de curent disponibil rapid
+- Alimentarea mai lentă încarcă condensatoarele, iar condensatoarele furnizează curentul de vârf
+
+========================================
+NOTE CERCETARE
+========================================
+1. Un "power rail" (rail de alimentare) este o singură tensiune furnizată de sursa de alimentare
+2. Evoluția istorică: +5V dominant → +12V dominant (tranziție completată cu ATX12V/Pentium 4)
+3. Rail-urile standard PC: +12V (CPU, GPU, motoare), +5V (periferice, USB), +3.3V (logică), +5VSB (standby), −12V (serial/legacy)
+4. Tendința viitorului: PSU-uri 12V-only (ATX12VO) cu conversie DC-DC pe placa de bază
+5. Distribuția tensiunii pe PCB necesită condensatoare de decuplare lângă fiecare IC pentru a compensa inductanța parazită
+6. Semnalul Power Good: indicator că tensiunile sunt stabile și sistemul poate porni
+7. Pentru console de jocuri: alimentarea urmează principii similare PC-urilor, cu PSU intern/extern care furnizează tensiuni multiple convertite pe placa de bază

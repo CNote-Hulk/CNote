@@ -1,0 +1,65 @@
+LECȚIA 3.4 – Ceas și frecvență
+MATERIAL VERIFICAT ȘI CURĂȚAT
+========================================
+
+CONCEPT 1: Semnalul de ceas (Clock Signal)
+INFORMAȚIE VERIFICATĂ:
+- Semnal logic electronic care oscilează între high și low la frecvență constantă
+- Formă: undă pătrată (square wave) cu duty cycle 50%
+- Produs de clock generator (oscilator electronic), bazat pe crystal oscillator
+- Crystal oscillator → undă sinusoidală → conversie la undă pătrată prin circuite electronice
+- Aplicat tuturor elementelor de stocare (flip-flop-uri, latches) într-un circuit sincron
+- Schimbă starea tuturor elementelor simultan → previne race conditions
+- Active pe: rising edge, falling edge, sau ambele (double data rate – DDR)
+- Clock multiplier: CPU operează la multiplu al frecvenței cristalului extern
+- Măsurat în hertz (Hz); modern în GHz (miliarde de cicluri pe secundă)
+SURSE: Wikipedia Clock signal — https://en.wikipedia.org/wiki/Clock_signal | Wikipedia Clock rate — https://en.wikipedia.org/wiki/Clock_rate
+STATUS: VERIFICAT
+
+CONCEPT 2: Sincronizare și distribuție
+INFORMAȚIE VERIFICATĂ:
+- Clock distribution network (clock tree, ex. H-tree): distribuie semnalul de la un punct comun la toate componentele
+- Frecvența ceasului trebuie mai mică decât worst-case propagation delay intern al circuitului
+- Clock skew: diferența de timp de sosire a ceasului la diferite componente → poate cauza race conditions
+- Fanout ceasului: cel mai mare din sistem; consumă >30% din puterea totală în microprocesoare mari
+- Sisteme sincrone: bancuri de registre secvențiale cu logică combinațională între ele
+- Pipeline registers: inserare în ferestre temporale egale → satisface constrângeri de timing critice
+- Tipuri de ceas: single-phase (modern, un fir), two-phase (2 fire non-overlapping, anii 1970), four-phase (rar)
+- Clock gating: oprește porțiuni neutilizate ale arborelui de ceas → economie de energie
+SURSE: Wikipedia Clock signal — https://en.wikipedia.org/wiki/Clock_signal
+STATUS: VERIFICAT
+
+CONCEPT 3: Timing și constrângeri
+INFORMAȚIE VERIFICATĂ:
+- După fiecare impuls, liniile de semnal au nevoie de timp să se stabilizeze (settle):
+  - Dacă pulsul următor vine înainte → rezultate incorecte
+  - Tranzițiile consumă energie sub formă de căldură (în tranzistorii de drive)
+  - Mai multe tranziții + frecvență mai mare = mai multă căldură generată
+- Constrângeri de timing (din Lecția 3.3): setup time, hold time, propagation delay
+- Overclocking: cristal de frecvență mai mare → performanță crescută dar limitată de:
+  - Timp de stabilizare insuficient
+  - Căldură excesivă → posibilă deteriorare tranzistori
+- Underclocking: frecvență redusă → performanță redusă, mai puțină căldură
+- Dynamic frequency scaling: frecvența variază dinamic (nu necesită valoare fixă)
+  - Atâta timp cât perioadele min/max sunt respectate
+  - Static logic: poate fi oprit complet și reluat fără limită de ceas minim
+SURSE: Wikipedia Clock rate — https://en.wikipedia.org/wiki/Clock_rate
+STATUS: VERIFICAT
+
+CONCEPT 4: Evoluție istorică a frecvenței
+INFORMAȚIE VERIFICATĂ:
+- Z1 (primul computer mecanic digital): 1 Hz
+- Z3 (primul electromecanic general): ~5-10 Hz
+- ENIAC (primul electronic general): 100 kHz (5 kHz instruction rate)
+- Altair 8800 (primul PC comercial): Intel 8080, 2 MHz
+- IBM PC (1981): 4.77 MHz
+- 1992: HP PA-7100 și DEC Alpha depășesc 100 MHz (RISC)
+- 1995: Intel Pentium P5 la 100 MHz
+- 2000: AMD atinge 1 GHz
+- 2002: Intel Pentium 4 la 3 GHz (~0.33 ns per ciclu)
+- De atunci clock rate-ul producției crește lent; performanță din IPC, pipelining, out-of-order execution
+- Record overclock (2025): Intel i9-14900KF la 9.12 GHz
+- Cel mai mare boost clock producție: i9-14900KS la 6.2 GHz
+- Megahertz myth: clock rate singur ≠ performanță reală; depinde de IPC, lățime bus, cache, arhitectură
+SURSE: Wikipedia Clock rate — https://en.wikipedia.org/wiki/Clock_rate
+STATUS: VERIFICAT

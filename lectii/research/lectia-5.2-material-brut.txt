@@ -1,0 +1,87 @@
+LECȚIA 5.2 – APU (CPU + GPU)
+========================================================================
+MATERIAL BRUT – CERCETARE
+========================================================================
+
+SURSA 1: Wikipedia – AMD APU
+URL: https://en.wikipedia.org/wiki/AMD_APU
+DATA ACCESĂRII: 2025
+
+SECȚIUNEA 1: Definiție și concept APU
+INFORMAȚIE EXTRASĂ:
+- AMD Accelerated Processing Unit (APU), cunoscută anterior ca Fusion, este o serie de microprocesoare pe 64 de biți de la AMD
+- Combină un CPU general-purpose (AMD64) și un GPU integrat (IGPU) pe un singur die
+- Proiectul AMD Fusion a început în 2006, accelerat de achiziția ATI Technologies în 2006
+- Dificultăți tehnice: combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU
+- Prima generație (Llano): lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1
+- AMD APU-urile au module CPU, cache și un procesor grafic de clasă discretă, toate pe același die folosind același bus
+- Scopul: crearea unui APU „complet integrat" cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU
+
+SECȚIUNEA 2: Evoluția APU – generații și console
+INFORMAȚIE EXTRASĂ:
+- Gen 1 – Llano (2011): K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1
+- Gen 1 low-power – Brazos/Bobcat (2011): 1-2 nuclee Bobcat, Radeon Evergreen GPU, 9W (Ontario) / 18W (Zacate)
+- Gen 2 – Trinity (2012): Piledriver cores, Radeon HD 7000, Socket FM2, TDP 65-100W
+- Gen 2 – Richland (2013): Enhanced Piledriver, Temperature Smart Turbo Core
+- Console semi-custom: PS4 și Xbox One = APU-uri semi-custom bazate pe Jaguar (8 nuclee, 28 nm, GCN GPU)
+  - Ulterior: Xbox Series X|S și PlayStation 5 = APU-uri semi-custom AMD
+- Gen 3 – Kaveri (2014): Steamroller cores, GCN 2nd gen GPU, Socket FM2+, HSA-enabled zero-copy
+  - CPU+GPU partajează același spațiu de adrese de memorie (Heterogeneous Memory Management)
+- Kabini/Temash (2013): Jaguar cores, primele SoC-uri quad-core x86, 28 nm TSMC
+- Gen 4 – Carrizo (2015): Excavator cores, GCN 3rd gen, integrare southbridge, 15-35W TDP
+- Era Zen: APU-urile redenumite Ryzen with Radeon Graphics
+  - Raven Ridge (2017): Zen + Vega GPU, 14 nm, Socket AM4/FP5
+  - Picasso (2018): Zen+, 12 nm refresh
+  - Renoir (2019): Zen 2 + Vega GPU, 7 nm TSMC, DDR4 + LPDDR4X
+  - Cezanne (2020): Zen 3 + Vega GPU, 7 nm
+  - Rembrandt (2022): Zen 3+ + RDNA 2 GPU, 6 nm, DDR5 support
+  - Phoenix Point (2023): Zen 4 + RDNA 3 GPU, 4 nm TSMC, XDNA NPU (16 TOPS)
+  - Strix Point (2024): Zen 5 + RDNA 3.5 GPU, 4 nm, XDNA2 NPU (55 TOPS)
+
+SECȚIUNEA 3: Heterogeneous System Architecture (HSA) și comunicarea cu memoria
+INFORMAȚIE EXTRASĂ:
+- AMD este membru fondator al HSA Foundation
+- Evoluția HSA în APU-uri:
+  - 2012 (Trinity): GPU Compute C++ Support – CPU și GPU lucrează împreună pentru sarcini paralele (OpenCL C++, C++ AMP)
+  - HSA-aware MMU: GPU poate accesa întreaga memorie de sistem prin serviciile de traducere ale MMU-ului HSA
+  - Shared Power Management: CPU și GPU partajează bugetul de putere, prioritate merge la procesorul potrivit sarcinii curente
+  - 2014 (PS4, Kaveri): Architectural Integration – MMU-ul CPU și IOMMU-ul GPU partajează același spațiu de adrese
+    - CPU și GPU accesează memoria cu același spațiu de adrese
+    - Pointerii pot fi trecuți liber între CPU și GPU → zero-copy
+    - Memorie complet coerentă: GPU accesează date din regiuni coerente de memorie + referință cache CPU
+    - GPU folosește memorie paginabilă prin pointeri CPU (fără copiere/pinning)
+  - 2015 (Carrizo): System Integration
+    - GPU compute context switch (multitasking)
+    - GPU graphics pre-emption (latență scăzută)
+    - Quality of service: resurse hardware echilibrate/prioritizate
+
+SECȚIUNEA 4: Comunicarea cu memoria – specificații tehnice
+INFORMAȚIE EXTRASĂ:
+- Memorie RAM: evoluție de la DDR3-1866 (Llano) → DDR3-2133 → DDR4-2400 → DDR4-3200 → DDR5-5600, LPDDR5x-7500
+- Canale de memorie: 2 canale per APU (mainstream), 1 canal (low-power)
+- Bandwidth maxim (stock): 29.8 GB/s (Llano DDR3) → 102.4 GB/s (Zen 4 DDR5) → 120 GB/s (Zen 5)
+- Controller de memorie integrat: arbitrare între cereri coerente și non-coerente
+- Llano: memoria fizică partiționată între GPU (max 512 MB) și CPU (restul)
+- Kaveri+: spațiu de adrese unificat CPU/GPU (HSA), fără partiționare
+- GPU microarchitecturi integrate: TeraScale 2/3 → GCN (2nd-5th gen) → RDNA 2/3/3.5
+- Cache: L1 data 16-64 KiB/core, L2 1-16 MiB total, L3 4-128 MiB (inclusiv 3D V-Cache la Zen 4+)
+- TDP: de la 4.5W (ultra-low-power) la 170W (desktop performance)
+- Die area: 75-250 mm², tranzistori de la 1.178B (Llano) la mai mulți B (Phoenix la 4nm)
+
+SECȚIUNEA 5: APU în console de jocuri
+INFORMAȚIE EXTRASĂ:
+- PS4 (2013): 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificată 8 GB
+- Xbox One (2013): 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm
+- PS5 (2020): Zen 2 + RDNA 2 semi-custom, 7 nm
+- Xbox Series X|S (2020): Zen 2 + RDNA 2 semi-custom
+- Toate consolele moderne folosesc APU-uri semi-custom AMD cu memorie unificată
+- Avantaj console: memorie partajată/unificată între CPU și GPU = lățime de bandă maximă, latență minimă
+- Turbo Core bidirectional: puterea se redistribuie automat între CPU și GPU în funcție de sarcină
+
+========================================================================
+NOTE CERCETARE:
+- Sursa Wikipedia AMD APU a furnizat informații comprehensive despre definiția APU, evoluția generațiilor, HSA și memoria
+- De menționat: Intel are și ei grafică integrată (Intel Graphics Technology) dar termenul APU este specific AMD
+- Conceptul cheie pentru console: memorie unificată (CPU și GPU accesează aceeași memorie fără copiere)
+- Relevat pentru lecție: APU-ul este componenta centrală din consolele moderne, nu doar un „procesor ieftin"
+========================================================================

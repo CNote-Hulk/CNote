@@ -1,0 +1,170 @@
+LECȚIA 4.6 – IERARHIA SISTEMULUI COMPLET: CPU, GPU, RAM, STORAGE, I/O
+========================================================================
+MATERIAL BRUT – CERCETARE DIN SURSE VERIFICATE
+========================================================================
+
+SURSA 1: Wikipedia – Von Neumann Architecture
+URL: https://en.wikipedia.org/wiki/Von_Neumann_architecture
+ACCESAT: 2024
+INFORMAȚII EXTRASE:
+
+SECȚIUNEA 1 – Definiție și componente fundamentale
+- Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetică centrală (ALU), unitate de control centrală, memorie (date + instrucțiuni), mediu de înregistrare extern (stocare), organe de intrare/ieșire
+- Model stored-program: instrucțiunile și datele sunt stocate în aceeași memorie
+- Spre deosebire de calculatoarele cu program fix (ENIAC – 3 săptămâni reprogramare), stored-program permite schimbarea programului fără recablare hardware
+- Originea: First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly
+- Terminologia originală: „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC"
+- Majoritatea calculatoarelor moderne folosesc arhitectura Von Neumann cu modificări (Modified Harvard – cache-uri separate instrucțiuni/date)
+
+SECȚIUNEA 2 – Von Neumann Bottleneck
+- Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul
+- CPU-ul nu poate accesa simultan instrucțiuni și date (partajează același bus)
+- CPU trebuie să aștepte transferul datelor din/în memorie
+- Severitatea crește cu fiecare generație de CPU (viteza CPU crește mai repede decât bandwidth-ul memoriei)
+- Descris de John Backus (1977 Turing Award): „pushing vast numbers of words back and forth through the von Neumann bottleneck"
+
+SECȚIUNEA 3 – Mitigări ale bottleneck-ului
+- Cache între CPU și memoria principală
+- Cache-uri separate pentru date și instrucțiuni (Modified Harvard Architecture)
+- Branch predictor
+- Scratchpad memory pe chip
+- System on Chip (SoC) – CPU + ierarhia memoriei pe același chip, reduce latența
+- Parallel computing, NUMA (Non-Uniform Memory Access)
+
+SECȚIUNEA 4 – Evoluția arhitecturii
+- 1960-1970: Memory-mapped I/O – dispozitivele I/O tratate ca memorie
+- System bus unic – modularitate la cost redus
+- Microcontrolerele simple omit funcții pentru cost/dimensiune reduse
+- Calculatoarele mari adaugă funcții pentru performanță
+- Primele calculatoare Von Neumann: Manchester Baby (1948), EDSAC (1949), EDVAC (1951)
+
+---
+
+SURSA 2: Wikipedia – Computer Architecture
+URL: https://en.wikipedia.org/wiki/Computer_architecture
+ACCESAT: 2024
+INFORMAȚII EXTRASE:
+
+SECȚIUNEA 1 – Definiția și subcategoriile
+- Arhitectura calculatorului = structura unui sistem de calcul din componente
+- 3 subcategorii principale:
+  1. ISA (Instruction Set Architecture) – interfața software-hardware: machine code, word size, adresare, registre, tipuri de date
+  2. Microarhitectură (Computer Organization) – cum un procesor specific implementează ISA-ul (ex: dimensiunea cache-ului)
+  3. Systems Design – toate componentele hardware în afara CPU: DMA, virtualizare, multiprocessing
+- Termenul „arhitectură" folosit prima dată de Lyle R. Johnson și Frederick P. Brooks Jr. (IBM, 1959) pentru proiectul Stretch
+
+SECȚIUNEA 2 – Performanță
+- IPC (Instructions Per Cycle) – măsura eficienței: calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC
+- Clock rate (MHz/GHz) – metric înșelător: mașină cu clock mai mare nu e neapărat mai rapidă
+- Alți factori: functional units, bus speeds, memoria disponibilă, tipul instrucțiunilor
+- Două tipuri de viteză: latency (timp start→finalizare) și throughput (lucru/unitate timp)
+- Pipeline: latency mai mare, throughput mai bun
+- Benchmarking: măsoară timpul pe suite de teste standardizate
+
+SECȚIUNEA 3 – Eficiență energetică și tendințe
+- MIPS/W (millions of instructions per second per watt) – metric clasic
+- Performance-per-watt – metric modern
+- Circuitele integrate moderne consumă mai multă putere totală în ciuda îmbunătățirilor per-tranzistor
+- Densitatea de putere (watts/cm²) crește pe măsură ce nod-ul de fabricație scade → management termic mai dificil
+- Temperatura ridicată crește rezistența interconexiunilor → feedback pozitiv putere-căldură
+- Tendința: focusul s-a mutat de la clock speed la eficiență energetică (Intel Haswell: 30-40W → 10-20W)
+- Procesoare: frecvența 3→4 GHz (2002-2006), dar puterea scăzută cu 50% în Haswell
+
+---
+
+SURSA 3: Wikipedia – Motherboard
+URL: https://en.wikipedia.org/wiki/Motherboard
+ACCESAT: 2024
+INFORMAȚII EXTRASE:
+
+SECȚIUNEA 1 – Definiție și rol
+- Motherboard (mainboard, system board, logic board) = PCB principal într-un calculator
+- Permite comunicarea între componentele electronice cruciale: CPU, memorie, periferice
+- Conține subsisteme semnificative: CPU, chipset I/O, memory controller, conectori interfață
+- Termenul „motherboard" documentat din 1965 (revista Electronics)
+- Primul motherboard: Planar Breadboard, designat de Patty McHugh (IBM, 1981 PC)
+
+SECȚIUNEA 2 – Componentele unui motherboard modern
+- CPU socket(s) – montarea procesorului (sau BGA lipit direct)
+- Memory slots – DIMM: DDR3/DDR4/DDR5 sau LPDDRx onboard
+- Chipset – interfață CPU↔memorie principală↔bus-uri periferice
+- Non-volatile memory (flash) – firmware/BIOS
+- Clock generator – semnal de ceas pentru sincronizare
+- Expansion slots – PCIe x16 (GPU), PCIe x1, legacy PCI
+- Power connectors – distribuie alimentarea la CPU, chipset, RAM, sloturi
+- Storage connectors – SATA, NVMe (M.2)
+- I/O connectors – USB, Ethernet, audio, display output
+
+SECȚIUNEA 3 – Periferice integrate (onboard)
+- Disk controllers (SATA, istoric PATA)
+- Integrated GPU (2D/3D cu VGA/DVI/HDMI/DisplayPort/TV)
+- Sound card integrat (7.1 canale, S/PDIF)
+- Ethernet controller
+- USB controller
+- Wi-Fi + Bluetooth
+- Senzori temperatură, tensiune, viteză ventilatoare
+- Power management IC (PMIC)
+
+SECȚIUNEA 4 – Form factor și evoluție
+- ATX – cel mai comun form factor desktop (2024): microATX, mini-ITX, EATX
+- Case + motherboard + PSU trebuie să aibă form factor compatibil
+- Laptopuri: motherboard integrat, miniaturizat, greu de upgrade
+- Evoluția integrării:
+  - 1980s: Super I/O chips – keyboard, mouse, floppy, serial, parallel
+  - Late 1990s: audio, video, storage, networking integrate pe motherboard
+  - 2000s+: laptopuri integrează practici toate perifericele
+  - Tableta/netbook: memorie, procesor, networking, storage – totul pe o singură placă
+
+SECȚIUNEA 5 – Bootstrapping (Power-On)
+- Firmware (BIOS/UEFI) stocat în flash non-volatil pe motherboard
+- La pornire: POST (Power-On Self Test) – testează și inițializează hardware
+- POST verifică: video card, expansion cards, temperaturi/tensiuni/ventilatoare, CMOS, keyboard, mouse, sound card, network, storage (HDD/SSD), USB
+- UEFI a înlocuit BIOS-ul clasic (obligatoriu Windows 8+)
+- Boot sequence: firmware → POST → detectare boot device → încărcare OS
+
+---
+
+SURSA 4: Wikipedia – Chipset
+URL: https://en.wikipedia.org/wiki/Chipset
+ACCESAT: 2024
+INFORMAȚII EXTRASE:
+
+SECȚIUNEA 1 – Definiție și rol
+- Chipset = set de circuite integrate pe motherboard care gestionează fluxul de date între procesor, memorie și periferice
+- Determină performanța sistemului: controlează comunicarea CPU↔dispozitive externe
+- Primul chipset PC: NEAT chipset (Chips and Technologies, 1984) pentru IBM PC AT cu Intel 80286
+- Designat să funcționeze cu o familie specifică de microprocesoare
+
+SECȚIUNEA 2 – Arhitectura Northbridge/Southbridge
+- Northbridge: legătură CPU ↔ dispozitive high-speed (RAM, GPU/AGP/PCIe)
+- Southbridge: periferice lower-speed (USB, SATA, audio, serial, parallel, PCI)
+- Front-Side Bus (FSB): conexiunea CPU ↔ Northbridge
+- Northbridge era intermediar între CPU și Southbridge
+- Interfața Northbridge↔Southbridge: bus-ul PCI (anii 1990-2000)
+- Performanța CPU era foarte dependentă de chipset-ul northbridge (memory performance)
+
+SECȚIUNEA 3 – Evoluția către integrare în procesor
+- 2003: AMD Athlon 64 – primul cu memory controller integrat în CPU → nu mai e nevoie de northbridge pentru acces memorie
+- 2008: Intel Core i series + X58 – Intel integrează și el memory controller
+- Progresiv: PCIe controller și GPU integrat direct pe CPU die
+- Intel Platform Controller Hub (PCH) = northbridge+southbridge condensate într-un singur chip (de fapt un southbridge îmbunătățit)
+- AMD Fusion Controller Hub (FCH) – echivalentul AMD
+- PCH-ul a fost integrat în package-ul procesorului (Skylake mobile – al doilea die)
+- AMD Zen: chipset-ul gestionează doar I/O de viteză mică (USB, SATA); toate conexiunile PCIe merg direct la CPU
+- AMD EPYC server: SoC complet, nu mai necesită chipset extern
+- Interfețe moderne: DMI (Intel), UMI (AMD) – legătura procesor↔chipset
+
+SECȚIUNEA 4 – Console și sisteme mobile
+- Home computers, console, arcade (1980-1990): chipset = cipuri custom audio/grafică (ex: Original Amiga chipset, Sega System 16)
+- Smartphone-uri moderne: SoC (System on Chip) – CPU+GPU+modem+I/O pe un singur chip (ex: Qualcomm Snapdragon, Apple A-series)
+
+---
+
+NOTE CERCETARE:
+1. Lecția 4.6 este o lecție de sinteză – integrează conceptele din 4.1 (CPU), 4.2 (GPU), 4.3 (RAM/cache), 4.4 (Bus/interconectări), 4.5 (Stocare)
+2. Modelul Von Neumann furnizează cadrul fundamental: CPU+Memorie+I/O pe un bus comun
+3. Bottleneck-ul Von Neumann explică de ce cache, DMA, bus-uri dedicate sunt necesare
+4. Evoluția chipset-ului (northbridge/southbridge → PCH → integrare în CPU) demonstrează tendința de unificare
+5. Motherboard-ul este platforma fizică care leagă toate subsistemele
+6. Console moderne și smartphone-uri folosesc SoC – maximă integrare pe un singur chip
+7. Ierarhia completă: Registre CPU → Cache L1/L2/L3 → RAM (DDR) → SSD/NVMe → HDD, cu bus-uri (PCIe, SATA) și chipset (PCH/FCH) ca intermediari

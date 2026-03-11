@@ -1,0 +1,95 @@
+LECȚIA 1.2 – Tensiune, Curent și Rezistență
+MATERIAL BRUT – RESEARCH
+
+========================================
+SURSA 1: Wikipedia – Voltage
+URL: https://en.wikipedia.org/wiki/Voltage
+DATA ACCESĂRII: 2025
+
+INFORMAȚII EXTRASE:
+
+Voltage, also known as electrical potential difference, electric pressure, or electric tension, is the difference in electric potential between two points. In a static electric field, it corresponds to the work needed per unit of charge to move a positive test charge from the first point to the second point. In the International System of Units (SI), the derived unit for voltage is the volt (V).
+
+The voltage between points can be caused by the build-up of electric charge (e.g., a capacitor), and from an electromotive force (e.g., electromagnetic induction in a generator). On a macroscopic scale, a potential difference can be caused by electrochemical processes (e.g., cells and batteries), the pressure-induced piezoelectric effect, photovoltaic effect, and the thermoelectric effect.
+
+Common symbols: V, ∆V, U, ∆U.
+SI unit: volt.
+Derivation: Voltage = Energy / charge.
+In SI base units: kg⋅m²⋅s⁻³⋅A⁻¹.
+
+The SI unit of work per unit charge is the joule per coulomb, where 1 volt = 1 joule (of work) per 1 coulomb of charge.
+
+Voltage is defined so that negatively charged objects are pulled towards higher voltages, while positively charged objects are pulled towards lower voltages. Therefore, the conventional current in a wire or resistor always flows from higher voltage to lower voltage.
+
+A voltmeter can be used to measure the voltage between two points in a system. Often a common reference potential such as the ground of the system is used as one of the points.
+
+Hydraulic analogy: A simple analogy for an electric circuit is water flowing in a closed circuit of pipework, driven by a mechanical pump. The potential difference between two points corresponds to the pressure difference between two points. If the pump creates a pressure difference between two points, then water flowing from one point to the other will be able to do work.
+
+Typical voltages: flashlight batteries 1.5V DC; automobile batteries 12V DC; mains power 110-120V AC (North America) or 220-240V AC (Europe); power transmission lines 110-1200 kV AC.
+
+========================================
+SURSA 2: Wikipedia – Ohm's law
+URL: https://en.wikipedia.org/wiki/Ohm%27s_law
+DATA ACCESĂRII: 2025
+
+INFORMAȚII EXTRASE:
+
+Ohm's law states that the electric current through a conductor between two points is directly proportional to the voltage across the two points. Introducing the constant of proportionality, the resistance, one arrives at the three mathematical equations:
+
+V = I·R  or  I = V/R  or  R = V/I
+
+where I is the current through the conductor, V is the voltage measured across the conductor and R is the resistance of the conductor.
+
+More specifically, Ohm's law states that R in this relation is constant, independent of the current. If the resistance is not constant, the equation cannot be called Ohm's law, but it can still be used as a definition of static/DC resistance.
+
+Ohm's law is an empirical relation which accurately describes the conductivity of the vast majority of electrically conductive materials over many orders of magnitude of current. However, some materials do not obey Ohm's law; these are called non-ohmic.
+
+The law was named after German physicist Georg Ohm, who in 1827 published measurements through simple electrical circuits containing various lengths of wire.
+
+Ohm's Triangle (circuit analysis mnemonic): The interchangeability of the equation may be represented by a triangle, where V (voltage) is placed on the top section, the I (current) is placed to the left section, and the R (resistance) is placed to the right. The divider between the top and bottom sections indicates division. Covering the unknown gives the formula in terms of the remaining parameters.
+
+Resistive circuits: Ohm's law holds for circuits containing only resistive elements (no capacitances or inductances) for all forms of driving voltage or current, regardless of whether the driving voltage or current is constant (DC) or time-varying such as AC.
+
+Resistors in series or parallel may be grouped into a single "equivalent resistance" to apply Ohm's law in analyzing the circuit.
+
+Hydraulic analogy: Water pressure (pascals) is the analog of voltage. Water volume flow rate (liters per second) is the analog of current. Flow restrictors (apertures in pipes) are the analog of resistors.
+
+========================================
+SURSA 3: Wikipedia – Electric power
+URL: https://en.wikipedia.org/wiki/Electric_power
+DATA ACCESĂRII: 2025
+
+INFORMAȚII EXTRASE:
+
+Electric power is the rate of transfer of electrical energy within a circuit. Its SI unit is the watt, defined as one joule per second.
+
+The electric power in watts produced by an electric current I consisting of a charge of Q coulombs every t seconds passing through an electric potential (voltage) difference of V is:
+
+P = W/t = V × I
+
+where W is work in joules, t is time in seconds, Q is electric charge in coulombs, V is electric potential or voltage in volts, I is electric current in amperes.
+
+Resistive circuits: In the case of resistive (Ohmic) loads, the power formula (P = I·V) and Joule's first law (P = I²·R) can be combined with Ohm's law (V = I·R) to produce alternative expressions:
+
+P = I·V = I²·R = V²/R
+
+where R is the electrical resistance.
+
+Sources and loads:
+- Active devices (power sources): energy is converted to electric potential energy from some other type of energy (mechanical, chemical). Examples: electric generators, batteries.
+- Passive devices (loads): potential energy of charges is converted to kinetic energy. Examples: light bulbs, electric motors, electric heaters.
+
+========================================
+NOTE CERCETARE:
+
+Tensiunea electrică = diferența de potențial electric între două puncte, măsurată în volți (V). Este forța motrice care împinge electronii prin circuit.
+
+Curentul electric = fluxul de sarcini electrice (electroni) printr-un conductor, măsurat în amperi (A). Curentul convențional curge de la potențial mai mare la potențial mai mic.
+
+Rezistența electrică = opoziția pe care o opune un material fluxului de curent electric, măsurată în ohmi (Ω).
+
+Legea lui Ohm: V = I × R — tensiunea este direct proporțională cu curentul, la rezistență constantă.
+
+Puterea electrică: P = V × I = I²R = V²/R — rata de transfer a energiei electrice, măsurată în wați (W).
+
+Triunghiul lui Ohm: un mnemonic vizual — V sus, I stânga, R dreapta. Acoperind necunoscuta se obține formula.

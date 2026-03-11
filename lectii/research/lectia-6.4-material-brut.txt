@@ -1,0 +1,190 @@
+LECȚIA 6.4 – Instabilitate sistem
+MATERIAL BRUT DE CERCETARE
+Data cercetării: 2024
+Stare: COMPLETAT
+
+================================================================================
+SURSA 1: Wikipedia – Voltage Regulator Module
+URL: https://en.wikipedia.org/wiki/Voltage_regulator_module
+================================================================================
+
+SECȚIUNEA 1: Definiția și funcția VRM
+- VRM (Voltage Regulator Module), numit și PPM (Processor Power Module)
+- Este un convertor buck care furnizează tensiunea corespunzătoare microprocesorului și chipsetului
+- Convertește +3.3V, +5V sau +12V la tensiuni mai mici necesare dispozitivelor
+- Majoritatea implementărilor VRM sunt lipite pe placa de bază (motherboard)
+- VRM-ul modern este compus din tranzistoare Power MOSFET
+- Permite montarea dispozitivelor cu tensiuni diferite pe aceeași placă de bază
+
+SECȚIUNEA 2: FIVR – Fully Integrated Voltage Regulator
+- Unele procesoare (Intel Haswell, Ice Lake) integrează componente de reglare a tensiunii pe pachetul CPU
+- Aceasta simplifică designul VRM de pe placa de bază
+- Aduce simplificarea reglării complexe a tensiunii care implică multiple tensiuni de alimentare CPU
+- Permite pornirea și oprirea dinamică a diferitelor zone ale CPU
+
+SECȚIUNEA 3: Tensiunea de alimentare și VID
+- Majoritatea CPU-urilor moderne necesită sub 1.5V
+- Designerii CPU tind să folosească tensiuni mai mici pentru a reduce disiparea termică
+- VRM-ul detectează tensiunea necesară de la procesor prin VID (Voltage Identification Definition)
+- VRM-ul furnizează inițial o tensiune standard logicii VID
+- Logica VID trimite VRM-ului tensiunea necesară prin biți VID
+- VID vine în variante de 5, 6 și 8 biți
+- Tensiunile de ieșire: între 0.5V și 3.5V (din 2008)
+- Exemplu: VID pe 5 biți → maxim 32 (2^5) tensiuni de ieșire distincte
+
+SECȚIUNEA 4: VRM și probleme de overclocking/instabilitate
+- Calitatea VRM-ului impact direct potențialul de overclocking al plăcii de bază
+- Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite
+- O alimentare stabilă este necesară pentru overclocking reușit
+- Când un chip este forțat peste setările din fabrică, consumul de putere crește
+- VRM-ul trebuie să își ajusteze ieșirea corespunzător
+- VRM-uri de calitate inferioară → fluctuații de tensiune → instabilitate sistem
+
+SECȚIUNEA 5: VRM-ul pe plăci video
+- Plăcile video moderne folosesc VRM din cauza cerințelor mari de putere și curent
+- VRM-urile plăcilor video pot genera căldură semnificativă
+- Necesită radiatoare separate de GPU
+
+================================================================================
+SURSA 2: Wikipedia – Thermal Design Power / Thermal Throttling
+URL: https://en.wikipedia.org/wiki/Thermal_design_power
+================================================================================
+
+SECȚIUNEA 6: Definiția TDP
+- TDP (Thermal Design Power / Thermal Design Point)
+- Cantitatea maximă de căldură pe care o componentă (CPU, GPU, SoC) o poate genera
+- Sistemul de răcire trebuie proiectat să disipeze această căldură în operare normală
+- Se măsoară la frecvența de bază (non-turbo, clock rate)
+- Puterea maximă este de obicei 1.5× TDP-ul specificat (CPU)
+- GPU-urile pot avea discrepanțe și mai mari între puterea maximă și TDP
+
+SECȚIUNEA 7: Thermal throttling și protecție termică
+- Dacă TDP-ul este depășit (sarcini intensive: video encoding, jocuri), CPU-ul:
+  * Provoacă o defecțiune de sistem (therm-trip) SAU
+  * Reduce viteza (throttling)
+- Therm-trip apare doar la defecțiuni catastrofale de răcire (ventilator nefuncțional, heatsink montat incorect)
+- Un sistem de răcire pentru laptop proiectat pentru 20W TDP poate disipa până la 20W fără depășirea temperaturii maxime de joncțiune
+- Din generația 12 Intel, TDP a fost înlocuit cu PBP (Processor Base Power)
+
+SECȚIUNEA 8: Ambiguități ale TDP și consecințe
+- Diferiți producători definesc TDP folosind metode de calcul diferite
+- Condițiile de operare sunt păstrate aproape nedezvăluite
+- Compararea TDP între dispozitive de la producători diferiți nu este relevantă
+- Selectarea unui heatsink poate duce la supraîncălzire (heatsink subdimensionat) sau suprarăcire (heatsink supradimensionat)
+- O abordare sigură: considerarea unei puteri termice de 1.5× TDP-ul specificat
+
+SECȚIUNEA 9: Formula termică fundamentală
+- Pd (Watt) = puterea termică generată de CPU
+- Rca (°C/W) = rezistența termică a heatsink-ului
+- Tc (°C) = temperatura maximă permisă a carcasei CPU
+- Ta (°C) = temperatura maximă a mediului ambiant
+- Ecuația: (Tc - Ta) = Pd × Rca
+- Rca = (Tc - Ta) / Pd → determină caracteristicile heatsink-ului necesar
+- Temperatura mai scăzută a joncțiunii de siliciu → durată de viață mai lungă (ecuația Arrhenius)
+
+SECȚIUNEA 10: cTDP – Configurable TDP
+- Moduri de operare cu TDP variabil:
+  * Nominal TDP: frecvența și TDP-ul specificat
+  * cTDP down: mod mai silențios, TDP și frecvență mai mică
+  * cTDP up: răcire suplimentară disponibilă, TDP și frecvență mai mare
+- Intel cTDP disponibil din procesoarele mobile Haswell
+- AMD Opteron și Kaveri APU-uri suportă configurare TDP
+
+================================================================================
+SURSA 3: Wikipedia – Computer Cooling
+URL: https://en.wikipedia.org/wiki/Computer_cooling
+================================================================================
+
+SECȚIUNEA 11: Supraîncălzire – cauze și simptome
+- Componentele susceptibile la supraîncălzire: CPU, chipset, plăci grafice, HDD, SSD
+- Supraîncălzirea poate cauza defecțiuni temporare sau daune permanente
+- Procesoarele moderne sunt proiectate să se oprească sau să reducă tensiunea/frecvența la temperaturi interne excesive
+- Thermal Throttling: reducerea frecvenței și tensiunii, dezactivarea funcțiilor neesențiale
+- Thermal Shutdown: oprirea completă a dispozitivului sau sistemului
+- Throttling-ul este controlat la nivel BIOS
+
+SECȚIUNEA 12: Factorii care afectează răcirea
+- Praful: acționează ca izolator termic, împiedică fluxul de aer, reduce performanța heatsink-ului
+- Flux de aer deficitar: turbulențe, orientare incorectă a ventilatoarelor
+- Transfer termic deficitar: contact termic slab între componente și dispozitive de răcire
+- Pasta termică uscată sau aplicată incorect
+- Construcția laptopului acumulează praf care face laptopul inutilizabil din cauza opririlor termice frecvente
+
+SECȚIUNEA 13: Prevenirea daunelor termice
+- Inspecție vizuală a cooler-ului și ventilatoarelor
+- Ventilator care nu se rotește corect → necesită înlocuire
+- Curățarea ventilatoarelor cu aer comprimat
+- Înlocuirea pastei termice în mod regulat
+- Praful se acumulează în crestăturile radiatoarelor cu aripioare
+- Utilizarea filtrelor de praf pe ventilatoare
+
+SECȚIUNEA 14: Tipuri de răcire
+- Răcire pasivă: heatsink fără ventilator, convecție naturală
+- Răcire activă: heatsink cu ventilator, dimensiuni comune: 40, 60, 80, 92, 120, 140 mm
+- Răcire cu lichid (liquid cooling): apă distilată cu aditivi, capacitate termică și conductivitate mai mare
+- Heat pipe: tub gol cu lichid de transfer termic, evaporare/condensare, conductivitate termică mai mare
+- Vapor chamber: funcționează pe același principiu ca heat pipe dar în formă de placă
+- AIO (All-in-One): sistem închis prefabricat cu radiator, ventilator și waterblock cu pompă
+
+SECȚIUNEA 15: Airflow și presiune
+- Presiune pozitivă: aerul de intrare mai puternic decât evacuarea → previne acumularea prafului
+- Presiune negativă: evacuare mai puternică → trage praf prin toate orificiile
+- Presiune pozitivă + filtre pe intrare = soluția optimă
+- Ventilator frontal + ventilator spate + ventilator sus = configurație recomandată
+
+================================================================================
+SURSA 4: Wikipedia – Ripple (electrical) + Dynamic Voltage Scaling
+URL: https://en.wikipedia.org/wiki/Ripple_(electrical)
+URL: https://en.wikipedia.org/wiki/Dynamic_voltage_scaling
+================================================================================
+
+SECȚIUNEA 16: Ripple – fluctuații de tensiune
+- Ripple (voltage ripple): variația periodică reziduală a tensiunii DC în sursa de alimentare
+- Rezultă din suprimarea incompletă a formei de undă alternanțe după redresare
+- Ripple-ul este o formă de undă compozită (non-sinusoidală)
+- În SMPS, frecvența ripple-ului: 50 kHz – 1 MHz (nu depinde de frecvența rețelei)
+- Efectele ripple-ului nedorit:
+  * Putere pierdută care nu poate fi utilizată de circuit
+  * Încălzire în componente DC din cauza curentului prin elemente parazite (ESR al condensatoarelor)
+  * Tensiunea de vârf a componentelor trebuie mai mare
+  * Componente mai mari și de calitate mai mare necesare
+  * În circuite digitale: reduce pragul la care circuitele logice dau ieșiri incorecte și datele sunt corupte
+
+SECȚIUNEA 17: Filtrarea ripple-ului
+- Condensatoare electroliticite cu rating mare de curent ripple
+- Bobine cu miez de fier (chokes)
+- Rezistențe de putere bobinate
+- Filtru LC (inductor + condensator): reducerea ripple-ului independentă de sarcină
+- Filtru Pi (Π): factor de ripple mult mai mic decât filtrele cu condensator sau bobină singure
+- Regulatoare de tensiune: elimină aproape tot ripple-ul
+
+SECȚIUNEA 18: Dynamic Voltage Scaling și instabilitate
+- DVS: tehnică de management al puterii prin creșterea/scăderea tensiunii
+- Overvolting: creștere tensiune → suport frecvențe mai mari → performanță
+- Undervolting: scădere tensiune → conservare energie → temperaturi mai mici
+- Puterea disipată CMOS: P = α × C × V² × f
+  * V = tensiune, f = frecvență, C = capacitanță, α = factor de activitate
+  * Puterea scade pătratic cu tensiunea
+- Tensiune sub minimul recomandat de producător → instabilitate sistem
+- La temperaturi ridicate, eficiența regulatoarelor de tensiune scade
+- Thermal runaway: consumul de putere crește cu temperatura, creând un ciclu de deteriorare
+- Efecte adverse la nivel de dispozitiv: hot carrier injection, electromigrare
+- Aceste efecte reduc durata de viață a componentelor supratensionate
+
+SECȚIUNEA 19: Formula vitezei de comutare
+- Viteza la care un circuit digital comută stări este proporțională cu diferența de tensiune
+- Tensiune mai mare → slew rate mai mare → tranziție mai rapidă prin pragul MOSFET
+- Tensiune redusă → circuitele comută mai lent → frecvența maximă scade
+- DVFS (Dynamic Voltage and Frequency Scaling): ajustare simultană tensiune + frecvență
+
+================================================================================
+NOTE CERCETARE:
+================================================================================
+1. Datele combină informații despre VRM, TDP/thermal throttling, cooling și ripple
+2. Conceptele de cercetat pentru lecția 6.4: fluctuații de tensiune, probleme VRM, supraîncălzire
+3. Toate cele 4 surse sunt permise (Wikipedia)
+4. VRM-ul este legătura directă între sursa de alimentare și instabilitatea sistemului
+5. Ripple-ul (voltage ripple) este cauza tehnică principală a fluctuațiilor de tensiune
+6. Thermal throttling și thermal shutdown sunt mecanismele de protecție
+7. Relația V² în puterea disipată explică de ce schimbări mici de tensiune au impact mare
+8. Aplicații console: VRM-urile consolelor sunt proiectate pentru un TDP fix, dar degradarea lor cauzează instabilitate

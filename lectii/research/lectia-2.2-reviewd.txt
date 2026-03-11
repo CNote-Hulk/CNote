@@ -1,0 +1,67 @@
+LECȚIA 2.2 – Condensatoare
+MATERIAL VERIFICAT – REVIEW
+
+========================================
+CONCEPT 1: Capacitate
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Capacitatea (C) = raportul sarcinii la tensiune: C = Q / V
+- Unitate: farad (F); submultipli uzuali: μF, nF, pF
+- Condensator cu plăci paralele: C = ε × A / d (ε = permitivitate, A = arie, d = distanță)
+- Capacitate mai mare prin: permitivitate (ε) mare, arie (A) mare, separare (d) mică
+- Tipuri de dielectric: ceramic, electrolit, film polimeric, sticlă, mică
+- Condensatoare ceramice: mici, ieftine, frecvențe înalte; electroliticc: capacitanțe mari dar polarizate
+- Comportament în AC: reactanța Xc = 1/(2πfC) – scade cu frecvența
+
+SURSE: Wikipedia – Capacitor (https://en.wikipedia.org/wiki/Capacitor)
+STATUS: ✓ Verificat – informații factuale din surse permise
+
+========================================
+CONCEPT 2: Stocare de energie
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Energia stocată: W = ½ × C × V² = ½ × Q²/C = ½ × V × Q (în jouli)
+- Energia este stocată în câmpul electric dintre plăcile condensatorului
+- Condensatoarele pot elibera energia foarte rapid (comparativ cu bateriile)
+- Energie specifică: condensatoare convenționale < 360 J/kg vs. baterie alcalină ~590 kJ/kg
+- Supercondensatoare: capacitanțe până la 5 kF, pot înlocui bateriile în anumite aplicații
+- Aplicații stocare: backup memorie volatilă, flash foto, sisteme audio auto
+- Circuit RC: constanta de timp τ = R × C; încărcare/descărcare exponențială
+
+SURSE: Wikipedia – Capacitor (https://en.wikipedia.org/wiki/Capacitor)
+STATUS: ✓ Verificat – informații factuale din surse permise
+
+========================================
+CONCEPT 3: Filtrare
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Condensatoarele blochează DC dar permit trecerea AC (AC coupling)
+- Reactanța capacitivă Xc = 1/(2πfC): scăzută la frecvențe înalte, mare la frecvențe joase
+- Condensatoare bypass/decuplare: conectate între alimentare și masă, șuntează zgomotul AC
+- Folosite pentru eliminarea zgomotului de rețea (hum) din echipamente audio
+- Condensatoare de decuplare pot fi integrate direct în straturile PCB-ului
+- Filtre trece-sus: permit frecvențe înalte, blochează joase
+- Filtre trece-jos: permit frecvențe joase, blochează înalte
+- Snubber: protejează contacte de arcuri electrice la deschiderea circuitelor inductive
+
+SURSE: Wikipedia – Capacitor (https://en.wikipedia.org/wiki/Capacitor)
+STATUS: ✓ Verificat – informații factuale din surse permise
+
+========================================
+CONCEPT 4: Smoothing (netezire)
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Condensatoarele-rezervor netezesc ieșirea redresoarelor (full-wave / half-wave)
+- Mențin tensiunea între ciclurile de redresare, reducând ripple-ul
+- Conectate în paralel cu circuitele de alimentare
+- Curent de ondulare (ripple current): componenta AC care generează căldură prin ESR
+- ESR (Equivalent Series Resistance): parametru cheie pentru smoothing
+  - Ceramic: ESR cel mai scăzut, fără limitare ripple
+  - Film: ESR foarte scăzut
+  - Electrolitic aluminiu: durata viață scade la ripple mare
+  - Electrolitic tantal: ESR cel mai mare, limitat de ripple
+- Analogia hidraulică: condensatorul ca acumulator hidraulic care amortizează pulsațiile
+- Condensatoarele electroliticc sunt cele mai uzuale pentru smoothing în surse de alimentare
+
+SURSE: Wikipedia – Capacitor (https://en.wikipedia.org/wiki/Capacitor)
+STATUS: ✓ Verificat – informații factuale din surse permise

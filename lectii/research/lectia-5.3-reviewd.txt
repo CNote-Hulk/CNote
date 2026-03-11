@@ -1,0 +1,76 @@
+LECȚIA 5.3 – VRM (VOLTAGE REGULATOR MODULE)
+========================================================================
+INFORMAȚII VERIFICATE ȘI SINTETIZATE
+========================================================================
+
+CONCEPT 1: VRM – definiție și principiul buck converter
+INFORMAȚIE VERIFICATĂ:
+- VRM (Voltage Regulator Module) = circuit buck converter care convertește tensiunea de alimentare (12V/5V/3.3V) la tensiunea mică necesară procesorului (<1.5V)
+- Buck converter = convertor DC-DC step-down: scade tensiunea și crește curentul
+- Eficiență ridicată: peste 90% (vs regulator liniar care disipă diferența ca căldură)
+- Principiu de funcționare: comutare rapidă ON/OFF (100 kHz – câteva MHz) + stocare energie în inductor
+- Formula ideală: Vout = D × Vin (D = duty cycle, valoare 0-1)
+  - Ex: 12V intrare, duty cycle 10% → 1.2V ieșire (tensiune tipică CPU)
+- CPU comunică tensiunea necesară prin linii VID (Voltage Identification) la pornire
+  - VID pe 5-8 biți → 32-256 tensiuni posibile (0.5V–3.5V)
+  - Permite aceeași placă de bază pentru CPU-uri cu tensiuni diferite
+  - DVFS: tensiunea scade automat în idle pentru economie de energie
+SURSE: Wikipedia – Voltage Regulator Module (https://en.wikipedia.org/wiki/Voltage_regulator_module), Wikipedia – Buck Converter (https://en.wikipedia.org/wiki/Buck_converter)
+STATUS: VERIFICAT ✓
+
+CONCEPT 2: Componentele unei faze VRM – MOSFET, inductor, condensator
+INFORMAȚIE VERIFICATĂ:
+- O fază VRM conține minimum: 2 tranzistoare (MOSFET) + 1 inductor (bobină) + condensatori
+- MOSFET high-side (Q1):
+  - Comută tensiunea de intrare ON/OFF cu frecvență mare
+  - Parametru cheie: RDSon (rezistența drain-source când e ON) – mai mică = mai puțină căldură
+  - Pierderi de comutare: proporționale cu frecvența × timp de tranziție
+- MOSFET low-side (Q2) – rectificare sincronă:
+  - Înlocuiește dioda tradițională → pierderi mult mai mici
+  - Ex la 10A: dioda pierde 2.38W, MOSFET cu RDSon 0.015Ω pierde doar 0.51W
+- Inductor (bobină toroidală):
+  - Stochează energie ca câmp magnetic în timpul ON, o eliberează în OFF
+  - „Bucks" (se opune) tensiunii sursei → de aici numele buck converter
+  - Vizual pe motherboard: componentele cele mai mari și ușor de identificat (toroizi negri)
+- Condensator de ieșire:
+  - Netezește tensiunea (reduce ripple-ul = variația tensiunii de ieșire)
+  - Ripple mai mic cu capacitate mai mare sau frecvență comutare mai mare
+  - ESR (rezistența serie echivalentă) afectează calitatea filtrării
+SURSE: Wikipedia – Buck Converter (https://en.wikipedia.org/wiki/Buck_converter), Wikipedia – Voltage Regulator Module (https://en.wikipedia.org/wiki/Voltage_regulator_module)
+STATUS: VERIFICAT ✓
+
+CONCEPT 3: Faze VRM – multiphase buck converter
+INFORMAȚIE VERIFICATĂ:
+- VRM multifazic = mai multe circuite buck identice în paralel, activate la intervale egale
+- Fiecare „fază" comută la un moment diferit al perioadei de comutare
+- Avantaje faze multiple:
+  1. Curent total împărțit între faze → căldură distribuită pe suprafață mai mare
+  2. Ripple redus semnificativ (când n × duty cycle = număr întreg → ripple teoretic = 0)
+  3. Răspuns rapid la schimbări de sarcină (echivalent comutare de n ori mai rapidă)
+  4. Fiecare componentă individuală este dimensionată pentru curent mai mic
+- Configurații tipice:
+  - Plăci mainstream PC: 3-4 faze
+  - Plăci high-end PC: 8-16+ faze
+  - Console de jocuri: de obicei 4-6 faze (proiectat pentru TDP fix, nu overclocking)
+- Cerințe alimentare CPU modern: pot depăși 200W, variații foarte rapide, ripple sub 10mV
+- Provocare: echilibrarea curentului între faze (current balancing)
+SURSE: Wikipedia – Buck Converter (https://en.wikipedia.org/wiki/Buck_converter)
+STATUS: VERIFICAT ✓
+
+CONCEPT 4: Eficiența VRM și pierderi de putere
+INFORMAȚIE VERIFICATĂ:
+- Două categorii principale de pierderi:
+  1. Pierderi de conducere (statice): I²R prin MOSFET-uri, inductor, trasee PCB; proporționale cu curentul²
+  2. Pierderi de comutare (dinamice): la tranziția ON↔OFF a MOSFET-urilor; proporționale cu frecvența
+- Pierderi suplimentare:
+  - Gate drive: energia de încărcare/descărcare a capacitanței gate MOSFET (QG × VGS × f)
+  - Body diode: în intervalul non-overlap (ambele MOSFET-uri OFF, dioda internă conduce)
+  - Shoot-through: dacă ambele MOSFET-uri sunt ON simultan → curent scurtcircuit → ardere → protecție prin non-overlap time
+- Trade-off frecvență:
+  - Frecvență mai mare → componente mai mici + ripple mai mic + răspuns mai rapid
+  - Frecvență mai mare → pierderi comutare mai mari + EMI mai mare
+- VRM-urile generează căldură semnificativă → necesită heat sink-uri (plăci video, motherboard-uri high-end)
+- Calitatea VRM = factor critic pentru stabilitate și overclocking
+- FIVR (Fully Integrated Voltage Regulator): unele componente VRM integrate pe package-ul CPU (Intel Haswell, Ice Lake)
+SURSE: Wikipedia – Buck Converter (https://en.wikipedia.org/wiki/Buck_converter), Wikipedia – Voltage Regulator Module (https://en.wikipedia.org/wiki/Voltage_regulator_module)
+STATUS: VERIFICAT ✓

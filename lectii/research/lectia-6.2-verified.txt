@@ -1,0 +1,38 @@
+LESSON: 6.2 – Standby
+
+---
+
+CONCEPT: Modul Standby – definiție și principii
+
+VERIFIED INFORMATION:
+Standby = stare de consum redus în care dispozitivul este oprit dar anumite circuite rămân active. Scopuri: pornire rapidă, recepție telecomandă, menținere ceas/setări, descărcări în fundal. Consum tipic standby console: 1W (funcții minimale) → 18W (funcții rețea complete, ex: Nintendo Wii cu WiiConnect24). ACPI definește standby ca S3 (Suspend to RAM) sau S5 (Soft Off cu +5VSB activ). Un watt continuu standby ≈ 8,76 kWh/an. Sinonime: phantom load, vampire power, ghost load.
+
+---
+
+CONCEPT: Stări de putere ACPI
+
+VERIFIED INFORMATION:
+Ierarhia ACPI: G0/S0 = Working (funcționare normală); S0ix = Modern Standby (SoC parțial sleep, model smartphone); S1 = POS (CPU oprit, RAM alimentat, reluare instantanee); S3 = Sleep/Standby (RAM self-refresh, periferice oprite, 2–8W, reluare câteva secunde); S4 = Hibernate (RAM salvat pe disc, ~0W, reluare 10–30s); G2/S5 = Soft Off (doar +5VSB activ); G3 = Mechanical Off (0W). C-States CPU: C0 (activ) → C1 (halt) → C2 (stop-clock) → C3 (sleep) → C10 (cel mai profund). D-States dispozitive: D0 (on) → D1/D2 → D3hot → D3cold. P-States performanță: P0 (max) → Pn (min) — Intel SpeedStep, AMD Cool'n'Quiet. Hybrid Sleep: RAM copiat pe disc + Sleep (Windows Vista+, macOS Safe Sleep).
+
+---
+
+CONCEPT: Circuite active în standby
+
+VERIFIED INFORMATION:
++5VSB (5V Standby) pe sursa ATX rămâne alimentată permanent (cât timp sursa e conectată). Circuite active: microcontroller management putere (monitorizează buton power, semnale trezire), RTC (ceas timp real, alimentat de baterie CMOS sau +5VSB), LED-uri indicatoare, NIC (ascultă Magic Packets pentru WoL, reduce viteza la 10 Mbit/s), RAM (doar în S3 — auto-refresh), receptor telecomandă (IR/RF). Wake-on-LAN: AMD Magic Packet Technology (1995); Magic Packet = 6 bytes FF + 16 × MAC address (102 bytes total); adaugă 2–8W la consumul standby (poate fi sub 0,5W cu microcontroller dedicat); cerințe: ATX 2.01+, PCI 2.2+. Surse de trezire ACPI: buton power, tastatură, mouse, NIC, temperatură, RTC alarm.
+
+---
+
+CONCEPT: Reglementări și eficiență energetică standby
+
+VERIFIED INFORMATION:
+Înainte de reglementări: consumul standby era 8–22% din consumul total. One Watt Initiative (IEA, 1999): țintă 1W până în 2010, 0,5W de la 2013. Regulamentul EU 1275/2008: limite obligatorii. Nintendo Wii: 18W cu WiiConnect24 activ, 8W dezactivat, 1W cu Standby Connection dezactivat complet. Impactul agregat: miliarde de dispozitive × câțiva wați = consum semnificativ global.
+
+---
+
+CONCEPT: Aplicare la console de jocuri
+
+VERIFIED INFORMATION:
+Consolele moderne: Rest Mode (descărcări în fundal, sincronizare cloud, încărcare controllere USB, pornire rapidă). Stări tipice: On (G0/S0), Rest Mode/Standby (similar S3 — RAM alimentat, descărcări active), Off (similar S5 — doar +5VSB, LED standby), Off complet (G3 — deconectat). PS5 Rest Mode, Xbox Instant-On: funcționalitate Modern Standby (S0ix). Compromis: consum mai mare în standby vs pornire rapidă. Circuite active în standby console: standby rail, controller USB power, NIC/Wi-Fi, LED status.
+
+---

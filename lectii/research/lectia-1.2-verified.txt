@@ -1,0 +1,45 @@
+LESSON: 1.2 – Tensiune, curent și rezistență
+
+---
+
+CONCEPT: Tensiunea electrică
+
+VERIFIED INFORMATION:
+Tensiunea electrică (voltage) este diferența de potențial electric între două puncte. Se măsoară în volți (V). Reprezintă lucrul mecanic necesar pentru a deplasa o unitate de sarcină electrică (1 coulomb) între cele două puncte. 1 V = 1 J / 1 C. Tensiunea este forța motrice care determină fluxul de curent prin circuit. Poate fi produsă de baterii (procese electrochimice), generatoare (inducție electromagnetică) sau efectul piezoelectric/fotoelectric.
+
+---
+
+CONCEPT: Curentul electric
+
+VERIFIED INFORMATION:
+Curentul electric este fluxul de sarcini electrice printr-un conductor. Se măsoară în amperi (A). Curentul convențional este definit ca având direcția de la potențial mai înalt la potențial mai scăzut. Electronii (purtători de sarcină negativă) se deplasează în sens opus direcției curentului convențional. 1 A = 1 C/s (un coulomb de sarcină pe secundă).
+
+---
+
+CONCEPT: Rezistența electrică
+
+VERIFIED INFORMATION:
+Rezistența electrică este opoziția pe care un material o prezintă fluxului de curent electric. Se măsoară în ohmi (Ω). Rezistivitatea ρ a unui conductor uniform este legată de rezistență prin formula R = ρ·l/A, unde l este lungimea conductorului și A este aria secțiunii transversale. Un dispozitiv ohmic menține un raport constant V/I indiferent de tensiunea aplicată.
+
+---
+
+CONCEPT: Legea lui Ohm
+
+VERIFIED INFORMATION:
+Legea lui Ohm: curentul electric printr-un conductor este direct proporțional cu tensiunea aplicată pe acel conductor. Formula: V = I × R (echivalent I = V/R sau R = V/I). Formulată de Georg Simon Ohm în 1827. Este o lege empirică, validată experimental pe o gamă largă de materiale. Se aplică circuitelor rezistive atât pentru curent continuu cât și pentru curent alternativ. Materialele care nu respectă legea lui Ohm se numesc non-ohmice (ex: diode, termistori).
+
+---
+
+CONCEPT: Puterea electrică
+
+VERIFIED INFORMATION:
+Puterea electrică este rata de transfer a energiei electrice într-un circuit. Se măsoară în wați (W). Formula fundamentală: P = V × I. Formule derivate prin combinare cu legea lui Ohm: P = I²·R și P = V²/R. 1 W = 1 J/s. Dispozitivele active (surse) convertesc energie în potențial electric. Dispozitivele pasive (sarcini) consumă energia electrică transformând-o în altă formă (căldură, lumină, mișcare).
+
+---
+
+CONCEPT: Triunghiul lui Ohm
+
+VERIFIED INFORMATION:
+Triunghiul lui Ohm este un mnemonic vizual pentru cele trei forme ale legii lui Ohm. V (tensiunea) este plasat în partea de sus, I (curentul) în stânga jos, R (rezistența) în dreapta jos. Bara orizontală dintre V sus și I, R jos indică operația de împărțire. Acoperind variabila necunoscută se obține formula: acoperind V → V = I×R, acoperind I → I = V/R, acoperind R → R = V/I. O versiune extinsă include și puterea (P) în combinație cu V, I, R.
+
+---

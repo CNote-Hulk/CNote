@@ -1,0 +1,31 @@
+LESSON: 4.3 – RAM și cache: ierarhia memoriei, latență, bandwidth
+
+---
+
+CONCEPT: Ierarhia memoriei
+
+VERIFIED INFORMATION:
+Ierarhia memoriei separă stocarea în niveluri bazate pe timp de răspuns. Principiu: fiecare nivel mai mic și mai rapid decât nivelul inferior. Niveluri cu latențe (la 4 GHz CPU): registre (~0,25 ns), L1 cache (32 KiB/core, ~1 ns), L2 cache (1 MB/core, ~3,5 ns), L3 cache (16–32 MB partajat, ~11,75 ns), RAM DDR5 6000 MT/s (64 GiB, ~82,5 ns), SSD NVMe (~0,2 ms), HDD (~4,16 ms). Memory wall: 1986–2000 viteza CPU +55%/an, memoria doar +10%/an. Cache-urile (SRAM) sunt metoda principală de a ponte diferența. Localitate de referință (spatial/temporal) = principiul exploatat de cache-uri.
+
+---
+
+CONCEPT: RAM – SRAM vs DRAM
+
+VERIFIED INFORMATION:
+RAM = memorie volatilă cu acces aleatoriu. SRAM: celulă flip-flop cu 6 tranzistori MOSFET, rapid, consum mic static, nu necesită refresh, scump, densitate mică; utilizare: cache CPU. Primul SRAM integrat: Robert H. Norman, Fairchild, 1963. DRAM: 1 tranzistor + 1 condensator (Robert Dennard, IBM, 1967), necesită refresh periodic, ieftin, densitate mare. Primul DRAM IC comercial: Intel 1103 (1 kbit, 1970). ECC memory: detectarea/corectarea erorilor. Console: eDRAM (PS2 GS 32 Mbit, Xbox 360 Xenos 80 Mbit), RDRAM (N64), GDDR (optimizat GPU).
+
+---
+
+CONCEPT: Generații DDR – bandwidth
+
+VERIFIED INFORMATION:
+DDR SDRAM: transferă date pe ambele fronturi ale ceasului (rising + falling), dublând rata efectivă. Bus width: 64 biți per canal. Formula: bandwidth = frecvența bus × 2 × 64 biți / 8. Generații: DDR1 (1998, 200–400 MT/s, 2,5V), DDR2 (2003, 400–1066 MT/s, 1,8V), DDR3 (2007, 800–2133 MT/s, 1,5V), DDR4 (2014, 1600–3200 MT/s, 1,2V), DDR5 (2020, 3200–7200 MT/s, 1,1V). Fiecare generație dublează bandwidth prin creșterea prefetch depth. Voltajul scade cu fiecare generație. Generațiile NU sunt compatibile între ele. Multi-channel multiplică bandwidth-ul total. LPDDR: Low-Power DDR pentru dispozitive mobile.
+
+---
+
+CONCEPT: Latență – CAS Latency
+
+VERIFIED INFORMATION:
+CAS latency (CL) = delay în cicluri de ceas între comanda READ și disponibilitatea datelor. DRAM organizat ca matrice: rând selectat de word line → sense amplifier amplifică. Secvență: precharge → activare rând → acces coloană (CAS). Paradoxul CAS: CL numeric crește cu fiecare generație, dar latența absolută rămâne ~10–15 ns (DDR-400 CL2,5=12,5 ns; DDR5-6400 CL32=10 ns). Bandwidth crește masiv dar latența absolută stagnează → „memory wall". Cache line modern: 64 bytes; bus 64-bit → 8 transferuri necesare. „Critical word first": procesorul primește primul cuvânt necesar imediat.
+
+---

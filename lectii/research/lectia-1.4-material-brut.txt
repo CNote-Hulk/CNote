@@ -1,0 +1,192 @@
+LECȚIA 1.4 – Curent alternativ vs curent continuu
+MATERIAL BRUT – CERCETARE
+
+========================================
+SURSA 1: Wikipedia – Direct current
+URL: https://en.wikipedia.org/wiki/Direct_current
+DATA ACCESĂRII: 2025
+========================================
+
+INFORMAȚII EXTRASE:
+
+1. Definiție curent continuu (DC):
+   - Direct current (DC) este un flux unidirecțional de sarcină electrică
+   - Un exemplu primar de sursă DC este celula electrochimică (bateria)
+   - Curentul electric curge într-o direcție constantă, deosebindu-l de curentul alternativ (AC)
+   - Un termen folosit anterior pentru acest tip de curent era „curent galvanic"
+
+2. Caracteristici DC:
+   - Poate curge prin conductori (fire), semiconductori, izolatori, sau chiar prin vid (fascicule de electroni/ioni)
+   - Tensiunea pe o sursă DC este constantă, la fel și curentul printr-o sursă de curent continuu
+   - Orice formă de undă staționară poate fi descompusă într-o componentă DC (valoarea medie) și o componentă AC (variație în timp cu media zero)
+
+3. Diverse definiții:
+   - DC se referă la sisteme de alimentare care folosesc o singură polaritate de tensiune/curent
+   - DC poate varia în timp (ex: ieșirea brută a unui redresor), dar menține polaritate constantă
+   - Unele forme de DC (regulator de tensiune) au aproape zero variații în tensiune
+
+4. Circuite DC:
+   - Un circuit DC constă din orice combinație de surse de tensiune constantă, surse de curent constant și rezistoare
+   - Tensiunile și curenții sunt independenți de timp
+   - Dacă se adaugă condensator sau inductor → nu mai e strict circuit DC, dar are o soluție DC (steady state)
+
+5. Aplicații DC:
+   - Sisteme auto: bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)
+   - Alternator auto: dispozitiv AC care folosește redresor pentru a produce DC pentru încărcarea bateriei
+   - Vehicule electrice: sistem „low voltage" 12V + sistem „high voltage" 300-400V pentru motoare de tracțiune
+   - Telecomunicații: -48V DC standard
+   - HVDC (High-Voltage Direct Current): transmisie de putere pe distanțe lungi, uneori singura opțiune fezabilă (ex: cabluri submarine)
+   - Celule de combustibil: produc doar DC
+
+6. Istorie:
+   - Prima sursă DC: bateria lui Alessandro Volta (Voltaic pile), 1800
+   - André-Marie Ampère: curentul circulă de la pozitiv la negativ
+   - Hippolyte Pixii: primul generator dinamo (1832), producea inițial AC, apoi a adăugat comutator pentru DC
+   - Thomas Edison: promovarea DC pentru iluminat (1882)
+   - AC a înlocuit DC în distribuția de putere datorită transformatoarelor
+   - Din anii 1950: HVDC devine viabil pentru transmisie pe distanțe lungi
+
+7. Conversie:
+   - DC poate fi convertit din AC folosind un redresor (rectifier)
+   - DC poate fi convertit în AC folosind un invertor
+
+========================================
+SURSA 2: Wikipedia – Alternating current
+URL: https://en.wikipedia.org/wiki/Alternating_current
+DATA ACCESĂRII: 2025
+========================================
+
+INFORMAȚII EXTRASE:
+
+1. Definiție curent alternativ (AC):
+   - Alternating current (AC) este un curent electric care își inversează periodic direcția și își schimbă magnitudinea continuu în timp
+   - AC este forma în care energia electrică este livrată consumatorilor rezidențiali și comerciali
+   - Forma de undă obișnuită este sinusoidală (sine wave)
+
+2. Formulare matematică:
+   - v(t) = V_peak × sin(ωt)
+   - V_peak = tensiunea de vârf (peak voltage)
+   - ω = frecvența unghiulară (angular frequency), în radiani/secundă
+   - ω = 2πf, unde f = frecvența fizică în Hz (cicluri pe secundă)
+   - Tensiunea peak-to-peak: V_pp = 2 × V_peak
+
+3. Frecvență:
+   - Cele mai multe sisteme electrice operează la 50 Hz sau 60 Hz
+   - 50 Hz: Europa, Asia, Africa, Australia, majoritatea lumii
+   - 60 Hz: America de Nord, unele țări din America de Sud, Japonia (parțial)
+   - Frecvențe joase (16.7 Hz): sisteme feroviare europene (Austria, Germania, Norvegia, Suedia, Elveția)
+   - Frecvențe înalte (400 Hz): aplicații militare, maritime, aviație, aerospace
+
+4. Tensiune RMS (Root Mean Square):
+   - RMS = rădăcina pătrată a mediei pe un ciclu a pătratului tensiunii instantanee
+   - Formula generală: V_rms = √(1/T × ∫₀ᵀ [v(t)]² dt)
+   - Pentru undă sinusoidală: V_rms = V_peak / √2 ≈ V_peak × 0.707
+   - √2 se numește „crest factor" (factor de creastă)
+   - Exemplu: 230V AC înseamnă V_rms = 230V → V_peak = 230 × √2 ≈ 325V
+   - RMS este important deoarece P_average = V_rms² / R (puterea medie echivalentă cu DC)
+
+5. Putere:
+   - p(t) = v²(t) / R (puterea instantanee)
+   - P_average = V_rms² / R
+   - Forma de undă a puterii = sinusoidă redresată complet, frecvență dublă față de tensiune
+
+6. Transmisie și distribuție:
+   - AC este distribuit deoarece tensiunea poate fi crescută/scăzută cu transformatoare
+   - Pierderi de putere: P_w = I² × R → la tensiune dublă, curentul se înjumătățește, pierderile scad de 4 ori
+   - P_transmisă = I × V
+   - AC se generează la tensiune convenabilă → se crește la sute de kV pentru transmisie → se coboară la 100-240V pentru uz domestic
+   - Three-phase (trifazat): foarte comun, 3 bobine la 120° decalaj
+
+7. Efecte la frecvențe înalte:
+   - Skin effect: curentul alternativ este forțat spre suprafața exterioară a conductorului
+   - La 60 Hz: adâncimea pielii (skin depth) = ~8.57 mm pentru cupru
+   - Conductori de mare curent: adesea tubulari (golați) pentru a reduce masa și costul
+   - Rezistența AC > rezistența DC → pierderi mai mari prin încălzire ohmică (I²R loss)
+
+8. Istorie:
+   - Primul alternator: Hippolyte Pixii, 1832 (bazat pe principiile lui Michael Faraday)
+   - 1855: Guillaume Duchenne anunță că AC e superior DC-ului pentru electroterapie
+   - War of the Currents: Thomas Edison (pro-DC) vs George Westinghouse (pro-AC)
+   - 1888: motorul cu inducție inventat independent de Galileo Ferraris și Nikola Tesla
+   - Sisteme trifazate: Mikhail Dolivo-Dobrovolsky și Charles Brown (Germania), Jonas Wenström (Suedia)
+
+========================================
+SURSA 3: Wikipedia – Rectifier
+URL: https://en.wikipedia.org/wiki/Rectifier
+DATA ACCESĂRII: 2025
+========================================
+
+INFORMAȚII EXTRASE:
+
+1. Definiție redresor (rectifier):
+   - Dispozitiv electric care convertește curentul alternativ (AC) în curent continuu (DC)
+   - Procesul se numește „redresare" (rectification) – „îndreaptă" direcția curentului
+   - Dispozitivul invers (DC → AC) se numește invertor
+
+2. Tipuri de redresoare:
+   - Diode cu vid (vacuum tube diodes) – istoric
+   - Valve cu arc de mercur (mercury-arc valves) – istoric industrial
+   - Stive de seleniu/oxid de cupru – istoric
+   - Diode semiconductoare – modern, cel mai comun
+   - SCR (Silicon Controlled Rectifier) / Thyristoare – pentru putere mare
+
+3. Redresare semisemnal (Half-wave):
+   - Trece doar semiperioada pozitivă (sau negativă) a AC
+   - Cealaltă semiperioadă este blocată
+   - Necesită o singură diodă (monofazic)
+   - V_rms = V_peak / 2
+   - V_dc = V_peak / π
+   - Raport de conversie maxim: η = 4/π² ≈ 40.5%
+   - Produce mult ripple, necesită filtrare extensivă
+
+4. Redresare semnal complet (Full-wave):
+   - Convertește ambele semioricoda ale AC în DC pulsator
+   - Două metode: (a) 2 diode + transformator cu priză mediană (center-tapped), (b) 4 diode în punte (bridge rectifier)
+   - V_dc = 2 × V_peak / π
+   - V_rms = V_peak / √2
+   - Raport de conversie: η = 8/π² ≈ 81.0%
+   - Ripple la frecvență dublă față de sursa AC → necesită condensator mai mic
+
+5. Punte de diode (Bridge rectifier):
+   - 4 diode în configurație punte
+   - Cea mai comună configurație modernă
+   - Pierdere de tensiune: 2 × căderea pe diodă (~1.4V pentru diode silicon)
+   - Disponibil ca componentă unică (modul integrat)
+
+6. Netezire (Smoothing):
+   - DC redresat nu este constant, conține „ripple" (ondulație)
+   - Condensator de filtrare (reservoir/smoothing capacitor): stochează energie și eliberează în perioadele fără alimentare
+   - Filtru LC (bobină + condensator): curent mai lin pe întreg ciclul
+   - Filtru RC (rezistor + condensator): simplu dar pierde putere
+   - Regulatoare de tensiune: mențin tensiune constantă indiferent de variații
+
+7. Cădere de tensiune pe redresor:
+   - Diode silicon standard: ~0.7V
+   - Diode Schottky: ~0.3V
+   - Half-wave / full-wave cu priză mediană: pierdere de 1 diodă drop
+   - Bridge rectifier: pierdere de 2 diode drops
+   - Semnificativ la tensiuni joase (ex: 12V), nesemnificativ la tensiuni înalte (HVDC)
+
+8. Aplicații:
+   - Surse de alimentare pentru echipamente electronice (computere, TV, radio)
+   - Convertirea AC din rețea în DC pentru circuitele interne
+   - Alternator auto: 6 diode formează punte redresoare trifazică
+   - Sudare: tensiune polarizată
+
+========================================
+NOTE CERCETARE:
+========================================
+
+CONCEPTE ACOPERITE DIN STRUCTURA CURSULUI:
+[✓] curent continuu (DC) – definiție, caracteristici, aplicații, istorie
+[✓] curent alternativ (AC) – definiție, undă sinusoidală, formulare, transmisie
+[✓] frecvență – 50/60 Hz, Hz, ω=2πf, frecvențe speciale
+[✓] RMS – Root Mean Square, V_rms = V_peak/√2, echivalența cu DC
+[✓] conversie AC → DC – redresare, half-wave, full-wave, bridge, smoothing
+
+OBSERVAȚII:
+- Toate cele 5 concepte ale lecției au fost acoperite cu surse Wikipedia
+- Informații suficiente despre diferențele practice DC vs AC
+- Formule matematice verificate: V_rms = V_peak/√2, ω=2πf
+- Contextul istoric (War of the Currents, Edison vs Westinghouse) oferă narativă bună
+- Conversie AC→DC: arată procesul complet (redresare → filtrare → reglare)

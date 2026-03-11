@@ -1,0 +1,147 @@
+LECȚIA 7.4 – THROTTLING
+MATERIAL BRUT DE CERCETARE
+========================================
+
+SURSA 1: Wikipedia – "Dynamic frequency scaling" (redirectat și de la "Dynamic voltage and frequency scaling")
+URL: https://en.wikipedia.org/wiki/Dynamic_frequency_scaling
+ACCESAT: 2025
+
+SECȚIUNEA 1: Definiția Dynamic Frequency Scaling (CPU Throttling)
+- Dynamic frequency scaling (cunoscut și ca CPU throttling) = tehnică de power management în arhitectura calculatoarelor
+- Frecvența unui microprocesor poate fi ajustată automat "on the fly" în funcție de nevoile reale
+- Scopuri: conservarea energiei, reducerea căldurii generate
+- Ajută la: prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de răcire și zgomot (sisteme silențioase), măsură de securitate pentru sisteme supraîncălzite (ex: overclocking necorespunzător)
+- Aproape întotdeauna combinat cu Dynamic Voltage Scaling (DVS) – frecvențe mai mari necesită tensiuni de alimentare mai mari
+- Combinația: DVFS (Dynamic Voltage and Frequency Scaling)
+
+SECȚIUNEA 2: Funcționare – formula puterii dinamice
+- Puterea dinamică (switching power) disipată: P = C × V² × A × f
+  C = capacitatea comutată per ciclu de ceas
+  V = tensiunea
+  A = factorul de activitate (numărul mediu de comutări per ciclu)
+  f = frecvența de ceas
+- Tensiunea (V) este determinantul principal al consumului de energie și încălzirii (V² în formulă)
+- Tensiunea necesară pentru funcționare stabilă este determinată de frecvență – poate fi redusă dacă frecvența scade
+- Puterea statică (leakage currents): a devenit din ce în ce mai importantă pe măsură ce tranzistoarele s-au micșorat
+- Acum un deceniu: puterea dinamică = ~2/3 din puterea totală a chip-ului
+- Astăzi: pierderile prin curenți de scurgere tind să domine consumul total în CPU-uri și SoC-uri contemporane
+- Metode de control: high-k metal-gates, power gating
+- Eficiența componentelor (regulatoare de tensiune) scade cu creșterea temperaturii → consum crescut care crește temperatura (feedback pozitiv)
+- Există o frecvență optimă CPU unde consumul de energie este minim (comportament convex al energiei)
+
+SECȚIUNEA 3: Interfața standard ACPI
+- ACPI 1.0 (1996): definește "C states" (stări idle) pentru CPU, dar FĂRĂ sistem de scalare a frecvenței
+- ACPI 2.0 (2000): introduce P states (performance-power states) – procesorul comunică setările posibile frecvență-putere la OS
+  • OS comută între stări după necesitate
+  • SpeedStep, PowerNow!/Cool'n'Quiet, PowerSaver funcționează prin P states
+  • Limită de maximum 16 stări
+- ACPI 5.0 (2011): introduce CPPC (Collaborative Processor Performance Control)
+  • Expune sute de niveluri de performanță la OS
+  • Abstracție de la frecvență → "performance level"
+  • Permite procesorului să ajusteze funcționarea prin alte metode decât frecvența
+
+SECȚIUNEA 4: Scalare autonomă a frecvenței
+- CPU-uri moderne pot face frequency scaling autonom, folosind un interval de performanță și o preferință de eficiență/performanță de la OS
+- Intel: din Skylake – hardware-managed P-states (Speed Shift), bazat pe CPPC, control prin model-specific register (MSR)
+- AMD: din Zen 2 – funcție similară, depinde de CPPC; canal preferat MSR (introdus în Zen 3); Zen 2 folosește metoda ACPI AML
+
+SECȚIUNEA 5: Impactul asupra performanței
+- DFS reduce numărul de instrucțiuni pe care procesorul le poate emite pe unitate de timp → reduce performanța
+- De obicei folosit când sarcina NU este CPU-bound
+- Frequency scaling singur rar merită: economisirea maximă necesită și voltage scaling (datorită V²)
+- "Race to idle" / computational sprinting: mai eficient să rulezi scurt la viteză maximă apoi să stai în idle profund, decât să rulezi lung la viteză redusă
+- Reducerea tensiunii împreună cu frecvența schimbă calculele de eficiență
+- Overclocking: tehnica opusă – creșterea frecvenței peste specificații; static și pe FSB vs DFS dinamic pe multiplicator
+- T-states (ACPI): throttling care nu reduce frecvența reală, ci inserează semnale STPCLK (stop clock) omițând cicluri de lucru
+
+SECȚIUNEA 6: Suport la producători (CPU)
+- Intel: SpeedStep – folosit pe liniile de procesoare mobile și desktop
+- AMD CPU desktop/server: Cool'n'Quiet – scop: producere de mai puțină căldură → ventilator la viteze mai mici → funcționare mai răcoroasă și silențioasă
+- AMD CPU mobile: PowerNow!
+- AMD GPU: PowerTune și ZeroCore Power (dynamic frequency scaling pentru GPU-uri)
+- Diferite SoC-uri ARM oferă throttling pentru CPU și GPU
+
+---
+
+SURSA 2: Wikipedia – "SpeedStep"
+URL: https://en.wikipedia.org/wiki/SpeedStep
+ACCESAT: 2025
+
+SECȚIUNEA 7: Istoricul SpeedStep
+- Enhanced SpeedStep (EIST): serie de tehnologii DFS (codename Geyserville) – SpeedStep, SpeedStep II, SpeedStep III
+- Permite schimbarea dinamică a vitezei procesorului (în diferite P-states) de către software
+- Scop: satisfacerea nevoilor de performanță instantanee, minimizând consumul de energie și generarea de căldură
+- EIST (SpeedStep III) introdus în Q1 2005 în mai multe Prescott 6 series (Pentium 4 660)
+- Intel Speed Shift Technology (SST) introdus cu arhitectura Skylake (hardware-managed)
+- Marca "Intel SpeedStep" anulată în 2012 (invalidată)
+
+SECȚIUNEA 8: Explicația SpeedStep
+- La frecvențe mari: performanță mai bună; la frecvențe mici: mai puțină căldură, mai puțin consum
+- Tensiunea de bază (core voltage) poate fi și ea redusă → reducere suplimentară a consumului și căldurii
+- Formula puterii: P = C × V² × f (C fix pentru un procesor dat; V și f variabile)
+- Exemplu Pentium M 1.6 GHz: frecvența scade de la 1.6 la 0.6 GHz (pași de 200 MHz), tensiunea scade de la 1.484 V la 0.956 V
+  • Rezultat teoretic: consumul scade cu factor 6,4×
+  • În practică: efect mai mic din cauza instrucțiunilor HLT (suspendă părți ale CPU-ului)
+- Suport OS: Windows XP – Power Management console, Linux – subsistemul "cpufreq"
+
+---
+
+SURSA 3: Wikipedia – "Clock gating"
+URL: https://en.wikipedia.org/wiki/Clock_gating
+ACCESAT: 2025
+
+SECȚIUNEA 9: Definiția Clock Gating
+- Clock gating = tehnică populară de power management în circuite sincrone
+- Reduce disiparea dinamică de putere prin eliminarea semnalului de ceas când circuitul (sau o sub-parte) este idle (inactiv)
+- Economisește energie prin "pruning" (tăierea) unei părți din arborele de distribuție a ceasului
+- Flip-flop-urile nu mai comută starea → consumul de switching power este redus
+- Eficient în sisteme cu perioade semnificative de inactivitate
+
+SECȚIUNEA 10: Detalii esențiale – puterea dinamică
+- Puterea medie într-un circuit CMOS: P_avg = P_dynamic + P_short + P_leakage + P_static
+  • P_dynamic: încărcarea/descărcarea sarcinilor capacitive (proporțională cu activitatea de comutare, capacitanță, V², frecvență)
+  • P_short: tranzistoarele PMOS și NMOS conduc simultan momentan (scurtcircuit temporar)
+  • P_leakage: curenți subthreshold și de poartă (chiar cu tranzistoarele oprite; cresc în tehnologii submicron)
+  • P_static: blocuri mereu active (circuite de polarizare, generatoare de referință)
+- Formula puterii dinamice: P_dynamic = α × CL × Vdd² × f
+  α = factorul de activitate de comutare
+  CL = capacitatea de sarcină
+  Vdd = tensiunea de alimentare
+  f = frecvența ceasului
+- Clock gating reduce α → scade consumul dinamic
+- Diferență față de power gating: power gating taie alimentarea complet, reducând multiple surse de putere
+
+SECȚIUNEA 11: Tehnici de clock gating
+- Glitch-free clock gating: folosește un latch sensibil la nivel pentru prevenirea glitch-urilor
+- Semnalul de enable este capturat doar când ceasul este în faza inactivă
+- Clock gating la granularitate mai mare → overhead mai mic, economii mai mari
+- Implementare: manuală (drivere software enable/disable), automată (hardware detectează inactivitatea), hibridă
+- Aplicații: telefoane mobile, dispozitive portabile, sisteme embedded – implementări multiple simultane
+- Clock gating poate reduce și aria circuitului (înlocuiește multiplexoare 2:1 cu un singur ICG)
+
+---
+
+SURSA SUPLIMENTARĂ: Din Lecția 7.3 (Wikipedia "Computer cooling" / "Thermal design power" / "Junction temperature")
+Informații relevante despre protecția termică deja extrase:
+
+SECȚIUNEA 12: Mecanisme de protecție termică (din surse 7.3)
+- Throttling: reducerea frecvenței și tensiunii sau dezactivarea funcțiilor non-esențiale prin dynamic frequency scaling
+- Clock gating, clock stretching: mecanisme de reducere a temperaturii detectate de senzori
+- Thermal shutdown: oprire completă când mecanismele de throttling nu compensează suficient
+- Therm-trip catastrofic: doar la defecțiune gravă a răcirii
+- TDP depășit → throttling automat sau therm-trip
+- Procesoare moderne (Intel, AMD, Qualcomm): rețea de senzori de temperatură integrați
+- Controlat la nivel BIOS (desktop/laptop), hardware (smartphone/tabletă)
+- Prevenire: inspecție vizuală cooler, curățare praf, înlocuire pastă termică
+
+========================================
+NOTE CERCETARE:
+- Throttling are două scopuri: (1) conservare energie/baterie (proactiv) și (2) protecție termică (reactiv – thermal throttling)
+- Formula P = C × V² × f explică de ce reducerea tensiunii (V²) are efect mai mare decât reducerea frecvenței
+- DVFS combină ambele: reducere frecvență + reducere tensiune = economie maximă
+- ACPI P-states = mecanismul standard de comunicare OS ↔ procesor
+- Clock gating = nivel hardware, reduce α (activitatea) fără a schimba frecvența
+- Consolele folosesc mecanisme similare: SoC-urile AMD din PS4/5 și Xbox One/Series au DVFS
+- "Race to idle" este strategia preferată în sistemele moderne cu stări idle profunde
+- SpeedStep/Cool'n'Quiet sunt echivalente Intel/AMD pentru aceeași funcționalitate
+========================================

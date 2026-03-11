@@ -1,0 +1,550 @@
+STRUCTURA COMPLETĂ A MATERIEI – GHID DE RESEARCH PENTRU AI
+
+SURSE PERMISE PENTRU RESEARCH
+
+Agentul trebuie să folosească informații doar din următoarele surse atunci când extrage conținut pentru lecții.
+
+Surse educaționale generale:
+
+https://www.wikipedia.org
+https://ro.wikipedia.org
+https://www.khanacademy.org
+https://ro.khanacademy.org
+
+Surse educaționale de fizică:
+
+https://www.fizichim.ro
+https://eduboom.ro
+
+Surse de electronică și hardware:
+
+https://www.allaboutcircuits.com
+https://learn.sparkfun.com
+https://www.electronics-tutorials.ws
+
+Surse tehnice hardware:
+
+https://www.intel.com
+https://www.amd.com
+https://developer.nvidia.com
+
+Surse documentație și explicații tehnice:
+
+https://howstuffworks.com
+https://computer.howstuffworks.com
+
+REGULI PENTRU AGENT
+
+• folosește doar informații din aceste surse
+• ignoră alte site-uri
+• preferă surse educaționale sau tehnice
+• dacă două surse confirmă aceeași informație, consideră informația validă
+• nu inventa informații care nu apar în surse
+• Prioritate surse:
+    1. Khan Academy
+    2. Fizichim
+    3. AllAboutCircuits
+    4. Wikipedia
+
+---
+
+FAZA I – FUNDAMENTE
+
+Bazele fizice și informatice ale hardware-ului.
+
+---
+
+MODUL 1 – ELECTRICITATE FUNDAMENTALĂ
+
+Electricitatea este baza tuturor circuitelor electronice. În acest modul se introduc conceptele fizice fundamentale.
+
+---
+
+Lecția 1.1 – Ce este energia electrică
+
+Concepte de cercetat:
+
+• structura atomului
+• sarcina electrică elementară
+• electronii de valență
+• conductori
+• izolatori
+• semiconductori
+• band gap
+• aplicații în hardware
+
+---
+
+Lecția 1.2 – Tensiune, Curent și Rezistență
+
+Concepte de cercetat:
+
+• tensiunea electrică
+• curentul electric
+• rezistența electrică
+• legea lui Ohm
+• puterea electrică
+• triunghiul lui Ohm
+
+---
+
+Lecția 1.3 – Circuite electrice
+
+Concepte de cercetat:
+
+• circuit deschis
+• circuit închis
+• scurtcircuit
+• conductor
+• sarcină
+• sursă de energie
+• GND
+• referință de potențial
+
+---
+
+Lecția 1.4 – Curent alternativ vs curent continuu
+
+Concepte de cercetat:
+
+• curent continuu (DC)
+• curent alternativ (AC)
+• frecvență
+• RMS
+• conversie AC → DC
+
+---
+
+Lecția 1.5 – Serie și paralel
+
+Concepte de cercetat:
+
+• circuite în serie
+• circuite în paralel
+• distribuția tensiunii
+• distribuția curentului
+
+---
+
+MODUL 2 – ELECTRONICĂ DE BAZĂ
+
+În acest modul sunt introduse componentele reale ale circuitelor electronice.
+
+---
+
+Lecția 2.1 – Rezistoare
+
+Concepte de cercetat:
+
+• tipuri de rezistoare
+• toleranță
+• codul culorilor
+• aplicații pe PCB
+
+---
+
+Lecția 2.2 – Condensatoare
+
+Concepte de cercetat:
+
+• capacitate
+• stocare de energie
+• filtrare
+• smoothing
+
+---
+
+Lecția 2.3 – Diode
+
+Concepte de cercetat:
+
+• joncțiune PN
+• redresare
+• protecție polaritate
+
+---
+
+Lecția 2.4 – Tranzistori
+
+Concepte de cercetat:
+
+• BJT
+• MOSFET
+• comutare
+
+---
+
+Lecția 2.5 – Regulatoare de tensiune
+
+Concepte de cercetat:
+
+• LDO
+• VRM
+• stabilizare tensiune
+
+---
+
+Lecția 2.6 – Surse în comutație (SMPS)
+
+Concepte de cercetat:
+
+• redresare
+• filtrare
+• conversie DC
+• eficiență
+
+---
+
+MODUL 3 – LOGICĂ DIGITALĂ
+
+Electricitatea devine informație digitală.
+
+---
+
+Lecția 3.1 – Bit și sistem binar
+
+Concepte de cercetat:
+
+• reprezentare binară
+• codificare
+• bit
+• byte
+
+---
+
+Lecția 3.2 – Porți logice
+
+Concepte de cercetat:
+
+• AND
+• OR
+• NOT
+• NAND
+• NOR
+
+---
+
+Lecția 3.3 – Flip-flop și registre
+
+Concepte de cercetat:
+
+• memorie digitală
+• latch
+• bistabile
+• registre
+
+---
+
+Lecția 3.4 – Ceas și frecvență
+
+Concepte de cercetat:
+
+• clock
+• sincronizare
+• timing
+
+---
+
+Lecția 3.5 – Construcția logică a unui procesor
+
+Concepte de cercetat:
+
+• ALU
+• registre
+• pipeline
+
+---
+
+MODUL 4 – ARHITECTURĂ HARDWARE
+
+Cum sunt construite sistemele de calcul.
+
+---
+
+Lecția 4.1 – CPU
+
+Concepte de cercetat:
+
+• execuția instrucțiunilor
+• pipeline
+• cache
+
+---
+
+Lecția 4.2 – GPU
+
+Concepte de cercetat:
+
+• geometrie
+• rasterizare
+• shading
+
+---
+
+Lecția 4.3 – RAM și cache
+
+Concepte de cercetat:
+
+• ierarhia memoriei
+• latență
+• bandwidth
+
+---
+
+Lecția 4.4 – Bus și interconectări
+
+Concepte de cercetat:
+
+• PCIe
+• memory bus
+• I/O
+
+---
+
+Lecția 4.5 – Stocare
+
+Concepte de cercetat:
+
+• HDD
+• SSD
+• NVMe
+
+---
+
+Lecția 4.6 – Ierarhia sistemului complet
+
+Concepte de cercetat:
+
+• CPU
+• GPU
+• RAM
+• Storage
+• I/O
+
+---
+
+FAZA II – INGINERIE APLICATĂ PE CONSOLE
+
+Aplicarea conceptelor hardware în arhitectura reală a consolelor.
+
+---
+
+MODUL 5 – ANATOMIA UNEI CONSOLE
+
+---
+
+Lecția 5.1 – Placa de bază (PCB)
+
+Concepte de cercetat:
+
+• PCB
+• straturile unei plăci de bază
+• trasee electrice
+• ground plane
+• distribuția alimentării pe PCB
+
+---
+
+Lecția 5.2 – APU (CPU + GPU)
+
+Concepte de cercetat:
+
+• APU
+• integrarea CPU și GPU
+• comunicarea cu memoria
+
+---
+
+Lecția 5.3 – VRM
+
+Concepte de cercetat:
+
+• VRM
+• conversia tensiunii
+• faze VRM
+• MOSFET
+• inductori
+• condensatori
+
+---
+
+Lecția 5.4 – Sistemul de răcire
+
+Concepte de cercetat:
+
+• disiparea căldurii
+• heat sink
+• heat pipe
+• ventilatoare
+
+---
+
+Lecția 5.5 – Rail-uri de alimentare
+
+Concepte de cercetat:
+
+• power rail
+• distribuția tensiunii
+• alimentarea componentelor
+
+---
+
+MODUL 6 – ALIMENTARE ȘI PROBLEME REALE
+
+---
+
+Lecția 6.1 – Secvența de pornire
+
+Concepte de cercetat:
+
+• power sequence
+• inițializare hardware
+• semnale de pornire
+
+---
+
+Lecția 6.2 – Standby
+
+Concepte de cercetat:
+
+• mod standby
+• consum redus
+• circuite active în standby
+
+---
+
+Lecția 6.3 – No Power
+
+Concepte de cercetat:
+
+• cauze posibile
+• verificarea alimentării
+• diagnostic hardware
+
+---
+
+Lecția 6.4 – Instabilitate sistem
+
+Concepte de cercetat:
+
+• fluctuații de tensiune
+• probleme VRM
+• supraîncălzire
+
+---
+
+Lecția 6.5 – Protecții electrice
+
+Concepte de cercetat:
+
+• OCP
+• OVP
+• OTP
+• SCP
+• Power Good
+
+---
+
+MODUL 7 – PERFORMANȚĂ ȘI GRAFICĂ
+
+---
+
+Lecția 7.1 – Pipeline grafic
+
+Concepte de cercetat:
+
+• etapele pipeline-ului grafic
+• procesarea geometriei
+• rasterizare
+• shading
+
+---
+
+Lecția 7.2 – CPU-bound vs GPU-bound
+
+Concepte de cercetat:
+
+• limitarea performanței
+• rolul CPU
+• rolul GPU
+
+---
+
+Lecția 7.3 – TDP și temperatură
+
+Concepte de cercetat:
+
+• TDP
+• disiparea căldurii
+• temperatură de funcționare
+
+---
+
+Lecția 7.4 – Throttling
+
+Concepte de cercetat:
+
+• thermal throttling
+• reducerea frecvenței
+• protecție termică
+
+---
+
+Lecția 7.5 – Bandwidth și memorie
+
+Concepte de cercetat:
+
+• bandwidth
+• latență
+• influența asupra performanței
+
+---
+
+MODUL 8 – DIAGNOSTIC HARDWARE
+
+---
+
+Lecția 8.1 – Metodologia de diagnostic
+
+Concepte de cercetat:
+
+• pașii diagnosticului hardware
+• analiza simptomelor
+
+---
+
+Lecția 8.2 – Multimetrul
+
+Concepte de cercetat:
+
+• măsurarea tensiunii
+• măsurarea rezistenței
+• măsurarea continuității
+
+---
+
+Lecția 8.3 – Detectarea scurtcircuitelor
+
+Concepte de cercetat:
+
+• identificarea scurtcircuitelor
+• metode de testare
+
+---
+
+Lecția 8.4 – Studii de caz
+
+Concepte de cercetat:
+
+• YLOD
+• RROD
+• BLOD
+
+---
+
+Lecția 8.5 – Interpretarea simptomelor vs cauza reală
+
+Concepte de cercetat:
+
+• simptome hardware
+• cauze reale ale defectelor

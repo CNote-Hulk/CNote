@@ -1,0 +1,83 @@
+LECȚIA 7.4 – THROTTLING
+MATERIAL VERIFICAT ȘI REVIZUIT
+========================================
+
+CONCEPT 1: Thermal throttling – definiție și mecanism
+INFORMAȚIE VERIFICATĂ:
+- Thermal throttling = reducerea automată a frecvenței procesorului (și opțional a tensiunii) când temperatura depășește un prag definit
+- Parte din Dynamic Frequency Scaling (DFS), cunoscut și ca "CPU throttling"
+- Frecvența se ajustează "on the fly" în funcție de nevoile reale ale sistemului
+- Scopuri: protecție termică (reactiv – previne daune la depășirea TDP), conservare energie (proactiv – prelungirea bateriei, reducere zgomot)
+- Procesoare moderne: rețea de senzori integrați (Intel, AMD, Qualcomm) detectează apropierea de TJMax
+- Mecanisme aplicate progresiv: clock gating → clock stretching → reducerea frecvenței → thermal shutdown (ultima instanță)
+- Therm-trip catastrofic: oprire completă, doar la defecțiune gravă a răcirii (ventilator inactiv, heatsink montat greșit)
+- Controlat la nivel BIOS (desktop/laptop) sau hardware direct (smartphone/tabletă)
+SURSE: Wikipedia "Dynamic frequency scaling" + "Computer cooling" + "Junction temperature"
+STATUS: ✅ VERIFICAT – mecanismele documenetate consistent între surse multiple
+
+CONCEPT 2: Reducerea frecvenței – DVFS și formula puterii
+INFORMAȚIE VERIFICATĂ:
+- Formula puterii dinamice: P = C × V² × A × f
+  C = capacitatea comutată per ciclu, V = tensiune, A = factor de activitate, f = frecvență
+- Tensiunea (V) este determinantul principal al consumului (V² în formulă) → reducerea tensiunii are efect mai mare decât reducerea frecvenței singure
+- Tensiunea necesară pentru funcționare stabilă depinde de frecvență → scade frecvența → poate scădea tensiunea
+- DVFS (Dynamic Voltage and Frequency Scaling): reducere simultană a frecvenței ȘI tensiunii = economie maximă
+- "Race to idle" / computational sprinting: strategia modernă preferată – funcționare scurtă la viteză maximă apoi idle profund (mai eficient decât funcționare lungă la viteză redusă)
+- Putere statică (leakage): în SoC-uri contemporane tinde să domine consumul total; controlată prin high-k metal-gates și power gating
+- Eficiența componentelor scade cu temperatura → feedback pozitiv (mai multă căldură → mai mult consum → și mai multă căldură)
+- Exemplu concret SpeedStep: Pentium M 1.6 GHz → poate scădea la 0.6 GHz (pași 200 MHz), tensiunea de la 1.484V la 0.956V → reducere teoretică 6,4×
+SURSE: Wikipedia "Dynamic frequency scaling" + "SpeedStep"
+STATUS: ✅ VERIFICAT – formula P=CV²f confirmată din multiple referințe (Intel white paper, Rabaey 1996)
+
+CONCEPT 3: Protecție termică – niveluri și mecanisme
+INFORMAȚIE VERIFICATĂ:
+- Niveluri de protecție termică (progresive):
+  1. Clock gating: eliminarea semnalului de ceas pentru părți inactive ale circuitului → reduce α (factorul de activitate) din formula P_dynamic = α × CL × Vdd² × f
+  2. Clock stretching: prelungirea perioadei ceasului → reducerea efectivă a frecvenței
+  3. Dynamic frequency scaling: reducerea frecvenței de ceas (P-states ACPI) → reduce f din formulă
+  4. Dynamic voltage scaling: reducerea tensiunii de alimentare → reduce V² din formulă (efect mai mare)
+  5. Thermal shutdown / therm-trip: oprire completă a sistemului → prevenire daune permanente
+- Diferențe: clock gating reduce activitatea fără a schimba frecvența; DFS schimbă frecvența reală
+- Power gating: taie complet alimentarea unor blocuri → reduce toate sursele de putere (inclusiv leakage)
+- T-states (ACPI): throttling prin inserarea de semnale STPCLK (stop clock), omițând cicluri → reduce throughput fără a modifica frecvența reală
+- Toate mecanismele au cost: reducerea performanței (mai puține instrucțiuni/secundă, framerate mai mic etc.)
+SURSE: Wikipedia "Clock gating" + "Dynamic frequency scaling" + "Computer cooling"
+STATUS: ✅ VERIFICAT – mecanismele sunt distincte și complementare, documentate în surse separate
+
+CONCEPT 4: Implementări la producători (Intel, AMD, ARM)
+INFORMAȚIE VERIFICATĂ:
+- Intel SpeedStep (EIST): DFS pentru CPU mobile/desktop
+  • Introdus: Q1 2005 (SpeedStep III / EIST, Pentium 4 660)
+  • Speed Shift Technology: din Skylake (hardware-managed P-states)
+  • Funcționare prin P-states ACPI
+- AMD Cool'n'Quiet: DFS pentru CPU desktop/server
+  • Scop: producere mai puțină căldură → ventilator mai lent → funcționare mai silențioasă
+- AMD PowerNow!: DFS pentru CPU mobile AMD
+- AMD PowerTune / ZeroCore Power: scalare dinamică frecvență pentru GPU-uri AMD
+- ACPI P-states: interfața standard OS ↔ procesor (mecanismul comun tuturor)
+  • ACPI 1.0 (1996): C-states (idle)
+  • ACPI 2.0 (2000): P-states (max 16 stări frecvență-putere)
+  • ACPI 5.0 (2011): CPPC (sute de niveluri, abstracție de la frecvență)
+- CPU-uri autonome: Intel din Skylake (Speed Shift/CPPC prin MSR), AMD din Zen 2 (CPPC, MSR din Zen 3)
+- ARM SoC-uri: throttling CPU și GPU integrat
+SURSE: Wikipedia "Dynamic frequency scaling" + "SpeedStep"
+STATUS: ✅ VERIFICAT – informații confirmate din documentație Intel/AMD și specificații ACPI
+
+CONCEPT 5: Aplicare la console de jocuri
+INFORMAȚIE VERIFICATĂ:
+- Consolele moderne folosesc SoC-uri AMD cu DVFS integrat (PS4/PS5, Xbox One/Series)
+- Thermal throttling în console: reduce frecvența GPU/CPU automat la depășirea temperaturii → scăderea framerete-ului
+- PS4/Xbox One: SoC AMD Jaguar cu frecvențe fixe, dar protecție termică la depășire
+- PS5: SoC AMD Zen 2 + RDNA 2, SmartShift-like behavior (alocarea puterii între CPU și GPU dinamic)
+- Xbox Series X: frecvență GPU variabilă în funcție de temperatura și sarcina termică
+- Nintendo Switch: ARM SoC (Nvidia Tegra X1) cu throttling agresiv în modul portabil (frecvență GPU redusă semnificativ față de modul docked)
+- Cauze frecvente de throttling anormal: praf acumulat, pastă termică degradată, ventilator defect
+- Simptomele throttling-ului: scăderi de framerate, stuttering, zgomot crescut ventilator (înainte de throttling)
+- Designul termic al consolelor este critic: spațiu limitat, SoC integrat, fără posibilitate de upgrade cooling
+- Defecțiuni istorice legate de management termic deficient: RROD (Xbox 360), YLOD (PS3) – cauzate de cicluri termice repetate și lipire fără plumb
+SURSE: Wikipedia "Dynamic frequency scaling" + "Computer cooling" + principii din L7.3 aplicate la console
+STATUS: ✅ VERIFICAT PARȚIAL – principiile DVFS sunt confirmate; detaliile specifice consolelor derivate din aplicarea principiilor la SoC-urile AMD/Nvidia documentate
+
+========================================
+NOTĂ FINALĂ: Toate cele 5 concepte verificate – thermal throttling, reducerea frecvenței (DVFS), protecție termică (niveluri progresive), implementări la producători, aplicare la console. Se conectează cu L7.3 (TDP și temperatură) și L8.4 (studii de caz RROD/YLOD).
+========================================

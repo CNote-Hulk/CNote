@@ -1,0 +1,38 @@
+LESSON: 6.5 – Protecții electrice
+
+---
+
+CONCEPT: OCP – Overcurrent Protection
+
+VERIFIED INFORMATION:
+Overcurrent = curent mai mare decât cel intenționat prin conductor. Cauze: scurtcircuit, sarcină excesivă, design incorect, arc fault, ground fault. Efect: generare excesivă de căldură, risc incendiu, deteriorare echipament. Mecanisme OCP: siguranțe (fuses), întreruptoare (circuit breakers), limitatoare de curent. În surse ATX: limitare curent pe fiecare linie (+3,3V, +5V, +12V); sursa se oprește sau reduce ieșirea la depășire.
+
+---
+
+CONCEPT: OVP – Overvoltage Protection
+
+VERIFIED INFORMATION:
+Overvoltage = tensiune peste limita de design. Poate fi tranzientă (spike ms) sau susținută. Dispozitive OVP: diode avalanche, varistoare MOV, diode TVS, diode Zener, spark gap. Circuitul Crowbar: pune scurtcircuit pe ieșire la detectarea supratensiunii; implementare cu thyristor, TRIAC, trisil. Crowbar (distructiv — trage la ground) vs Clamp (non-distructiv — limitează tensiunea). Active crowbar: poate reveni la operare normală (tranzistor/GTO). În surse ATX: monitorizare toate liniile, oprire la 110–120% din tensiunea nominală.
+
+---
+
+CONCEPT: OTP și SCP – protecție termică și la scurtcircuit
+
+VERIFIED INFORMATION:
+OTP (Overtemperature Protection): senzor intern în sursa de alimentare; oprește sursa la supraîncălzire (ventilator PSU defect, flux aer blocat, sarcină excesivă). SCP (Short Circuit Protection): detectează scurtcircuitul pe orice linie de ieșire; oprire instant; simptom: chirping/squealing din sursă; cauze: componente defecte, cabluri cu izolație deteriorată. MTBF surse de calitate: ~100.000 ore.
+
+---
+
+CONCEPT: Power Good Signal
+
+VERIFIED INFORMATION:
+Power Good (PWR_OK) = semnal +5V de la PSU către placa de bază. Indică: tensiuni conform specificațiilor, sursa a trecut auto-testele. Stabilizare: 0,1–0,5 secunde după pornire. Recepționat de timer-ul procesorului care controlează linia de reset. Cerințe ATX: HIGH nu mai devreme de 100 ms după stabilizare; rămâne HIGH min. 16 ms după pierderea AC; scade sub 0,4V cu cel puțin 1 ms înainte ca liniile să cadă sub 95% nominal. Conector ATX 24-pin: pin 8 (gri). Surse ieftine: conectează Power Good direct la +5V fără circuit monitorizare → procesorul nu primește reset la tensiune deficitară → risc corupere date.
+
+---
+
+CONCEPT: Aplicație console
+
+VERIFIED INFORMATION:
+Consolele folosesc aceleași protecții electrice ca PC-urile. OCP protejează APU-ul de supracurent. OVP previne deteriorarea la fluctuații tensiune. OTP: senzori de temperatură declanșează oprirea la supraîncălzire. SCP: detectează scurtcircuite (cauze: coroziune, suduri defecte). Power Good: sursa consolei trimite semnal similar de validare. Console cu sursă internă (PS3, PS4, PS5, Xbox One S/X, Xbox Series) vs sursă externă (Xbox 360 original, Xbox One original): aceleași protecții, formă diferită. Defecte frecvente: condensatoare degradate în sursa internă → protecții declanșate intermitent. Diagnostic: multimetru pentru verificarea tensiunilor vs specificații.
+
+---

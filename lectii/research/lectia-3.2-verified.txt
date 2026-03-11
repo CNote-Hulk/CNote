@@ -1,0 +1,38 @@
+LESSON: 3.2 – Porți logice
+
+---
+
+CONCEPT: AND (ȘI)
+
+VERIFIED INFORMATION:
+Poartă logică AND: ieșire = 1 doar dacă TOATE intrările sunt 1. Echivalent matematic: A · B sau A ∧ B. Tabel de adevăr: 0∧0=0, 0∧1=0, 1∧0=0, 1∧1=1. Identic cu înmulțirea binară. Implementare CMOS: tranzistoare MOSFET în serie (ambele trebuie activate). Utilizare: verificare condiții simultane, mascare biți, operații aritmetice.
+
+---
+
+CONCEPT: OR (SAU)
+
+VERIFIED INFORMATION:
+Poartă logică OR: ieșire = 1 dacă cel puțin o intrare este 1. Echivalent matematic: A + B sau A ∨ B. Tabel de adevăr: 0∨0=0, 0∨1=1, 1∨0=1, 1∨1=1. Implementare CMOS: tranzistoare MOSFET în paralel (oricare activat conduce). Utilizare: selectare semnale, combinare condiții, logică de decizie.
+
+---
+
+CONCEPT: NOT (NU / Invertor)
+
+VERIFIED INFORMATION:
+Poartă logică NOT: o singură intrare, ieșirea este complementul (inversul). Echivalent matematic: ¬A sau Ā. Tabel de adevăr: NOT 0 = 1, NOT 1 = 0. În electronică se numește „inverter". Simbolul cercului (bubble) pe schemă indică negare logică. Implementare CMOS: un PMOS + un NMOS complementare (cel mai simplu circuit CMOS). Utilizare: inversarea semnalelor, generare complement, construirea altor porți.
+
+---
+
+CONCEPT: NAND (NU-ȘI)
+
+VERIFIED INFORMATION:
+Poartă logică NAND: inversul funcției AND (NOT-AND). Ieșire = 0 doar dacă TOATE intrările sunt 1. Echivalent matematic: ¬(A · B) sau A↑B (Sheffer stroke, Henry M. Sheffer, 1913). Tabel de adevăr: 0↑0=1, 0↑1=1, 1↑0=1, 1↑1=0. POARTĂ UNIVERSALĂ: orice funcție logică poate fi construită doar din porți NAND. NOT(A) = NAND(A,A); AND(A,B) = NAND(NAND(A,B), NAND(A,B)); OR(A,B) = NAND(NAND(A,A), NAND(B,B)). Legea De Morgan: ¬(A·B) = ¬A+¬B. Chipul 7400 (Texas Instruments): 4 porți NAND într-un circuit integrat.
+
+---
+
+CONCEPT: NOR (NU-SAU)
+
+VERIFIED INFORMATION:
+Poartă logică NOR: inversul funcției OR (NOT-OR). Ieșire = 1 doar dacă TOATE intrările sunt 0. Echivalent matematic: ¬(A + B) sau A↓B (Peirce's arrow). Tabel de adevăr: 0↓0=1, 0↓1=0, 1↓0=0, 1↓1=0. POARTĂ UNIVERSALĂ: orice funcție logică poate fi construită doar din porți NOR. NOT(A) = NOR(A,A); OR(A,B) = NOR(NOR(A,B), NOR(A,B)); AND(A,B) = NOR(NOR(A,A), NOR(B,B)). Legea De Morgan: ¬(A+B) = ¬A·¬B. Latch SR din 2 porți NOR: cel mai simplu circuit de stocare (memorie pe 1 bit).
+
+---

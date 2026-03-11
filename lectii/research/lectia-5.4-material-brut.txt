@@ -1,0 +1,200 @@
+LECTIA 5.4 - SISTEMUL DE RĂCIRE
+Concepte de cercetat: disiparea căldurii, heat sink, heat pipe, ventilatoare
+================================================================================
+
+SURSA 1: Wikipedia - Heat sink
+URL: https://en.wikipedia.org/wiki/Heat_sink
+
+SECȚIUNEA 1: Definiție și principiu heat sink
+INFORMAȚIE EXTRASĂ:
+- Heat sink = schimbător de căldură pasiv care transferă căldura generată de un dispozitiv electronic sau mecanic către un fluid (aer, apă, ulei)
+- Permite reglarea temperaturii dispozitivului prin disiparea căldurii
+- În computere: răcesc CPU, GPU, chipset-uri și module RAM
+- Principiul: legea lui Fourier - conducția căldurii: qk = -k × A × (dT/dx)
+- Transferul de căldură: prin convecție (principal), radiație și conducție
+- Maximizează suprafața de contact cu mediul de răcire (aripioare/fins)
+- Thermal paste sau thermal pad: umple golurile de aer între heat sink și heat spreader
+- Heat sink fabricat din materiale cu conductivitate termică ridicată: aluminiu sau cupru
+- Fără flux de aer în jurul heat sink-ului, energia nu poate fi transferată
+
+SECȚIUNEA 2: Materiale și rezistență termică
+INFORMAȚIE EXTRASĂ:
+- Rezistența termică: temperatură / putere, exprimată în °C/W
+- Model serie de rezistențe: die→carcasă→heat sink→aer ambient
+- Suma rezistențelor = rezistență termică totală
+- Aluminiu: cel mai comun material, aliaj 1050 conductivitate 229 W/(m·K), capacitate termică 922 J/(kg·K)
+- Aliaje aluminiu 6060/6061/6063: conductivitate 166-201 W/(m·K), fabricare prin extrudare, turnare, skiving, frezare
+- Cupru: conductivitate ~400 W/(m·K), de ~2x mai bun decât aluminiu
+- Cupru: de 3x mai dens și mai scump decât aluminiu, mai puțin ductil
+- Heat sink-uri comerciale extrudate: rezistență 0.4 °C/W (TO-3 mare) până la 85 °C/W (TO-92 clip-on)
+- Fin efficiency: eficiența scade de la bază la vârf (gradient termic)
+- Spreading resistance: căldura nu se distribuie uniform prin baza heat sink; vapor chamber sau heat pipe în bază reduce această problemă
+
+SECȚIUNEA 3: Tipuri de aripioare și TIM
+INFORMAȚIE EXTRASĂ:
+- Pin fin: aripioare cilindrice/eliptice/pătrate, suprafață mare 194 cm², funcționează în orice orientare a fluxului
+- Straight fin: aripioare drepte paralele, 58 cm², mai eficiente în anumite configurații decât pin fin
+- Flared fin: aripioare nepalelele, reduce rezistența la flux, permite mai mult aer prin canale
+- Thermal Interface Material (TIM): reduce rezistența termică de contact
+  - Aerul: conductivitate 0.022 W/(m·K)
+  - TIM: conductivitate 0.3 W/(m·K) și mai mult
+  - Tipuri: thermal paste (+++), epoxy (+++), phase change (+++), thermal tape (++), gap filler (+)
+- Metode de atașare: thermal tape, epoxy, z-clips, clip-on, push pins cu arcuri, standoff-uri cu arcuri
+- Thermal paste: umple golurile microscopice, conductivitate 0.5-80 W/(m·K)
+
+SECȚIUNEA 4: Răcirea microprocesoarelor
+INFORMAȚIE EXTRASĂ:
+- Heat sink pasiv: fără ventilator, convecție naturală, folosit pe CPU-uri vechi, chipset-uri, sisteme silențioase
+- Heat sink activ: cu ventilator atașat direct, standardul pentru desktop-uri moderne
+- IHS (Integrated Heat Spreader): placă metalică de pe CPU care redistribuie căldura
+- Praful reduce eficiența heat sink-ului izolând termic între aripioare
+- Desktop: heat sink cu bază cupru sau complet din cupru (evoluție de la aluminiu pur)
+- Laptop: heat pipe + fin stack + ventilator de evacuare
+
+================================================================================
+
+SURSA 2: Wikipedia - Heat pipe
+URL: https://en.wikipedia.org/wiki/Heat_pipe
+
+SECȚIUNEA 5: Definiție și principiul heat pipe
+INFORMAȚIE EXTRASĂ:
+- Heat pipe = dispozitiv de transfer termic bazat pe tranziția de fază (lichid↔vapori)
+- La interfața caldă: lichidul volatil se evaporă absorbind căldura (căldura latentă de vaporizare)
+- Vaporii călătoresc la capătul rece unde condensează, eliberând căldura latentă
+- Lichidul se întoarce prin acțiune capilară (wick), forță centrifugă sau gravitație
+- Conductivitate termică efectivă: poate ajunge la 100 kW/(m·K), vs cupru ~0.4 kW/(m·K) - de ~250x mai bun
+- Exemple: o țeavă de 1 inch diametru, 2 feet lungime: transferă 3.7 kW la 980°C cu doar 10°C diferență
+- Heat pipe-urile NU pot scădea temperatura sub temperatura ambientă
+- Inventat: R.S. Gaugler (GM, 1942), dezvoltat independent George Grover (Los Alamos, 1963)
+- Sony: primele produse comerciale cu heat pipe, anii '80
+- Heat pipe-uri CPU: de obicei cupru cu apă ca fluid de lucru, operare 20-150°C
+
+SECȚIUNEA 6: Structura și construcția
+INFORMAȚIE EXTRASĂ:
+- Componente: envelope (tub sigilat), wick (fitil), fluid de lucru
+- Envelope: cupru (pentru apă), aluminiu (pentru amoniac)
+- Se face vacuum, se umple parțial cu fluid de lucru, se sigilează
+- Fluid trebuie să conțină atât lichid cât și vapori pe întregul interval de operare
+- Sub temperatura de operare: lichidul nu se vaporizează → funcționează doar prin conducție (1/80 din flux design)
+- Structuri wick: pulbere metalică sinterizată, plasă metalică, caneluri paralele cu axa
+- Nu conține piese mobile → nu necesită întreținere
+- Diametru minim practic: 3 mm (limitări materiale)
+- Fluide de lucru: heliu lichid (2-4K), amoniac (213-373K), metanol (283-403K), apă (298-573K), sodiu (873-1473K)
+- Cupru/apă: cea mai comună combinație pentru electronice
+
+SECȚIUNEA 7: Tipuri de heat pipe
+INFORMAȚIE EXTRASĂ:
+- Vapor chamber: heat pipe plan (2D), aceleași componente + structură internă de suport
+  - Poate îndepărta 2000W pe 4 cm², sau 700W pe 1 cm²
+  - Subțimi de până la 1.0 mm
+  - Folosit în laptopuri gaming (ex: Lenovo Legion 7i)
+  - Avantaj: mai plat, secțiune transversală adecvată în dispozitive subțiri
+- Variable conductance (VCHP): gaz necondensabil + rezervor, reglează conductanța
+  - Control ±1-2°C, demonstrat chiar mili-Kelvin
+- Thermosiphon: returnează lichidul prin gravitație, nu necesită wick
+  - Diodă termică: funcționează doar cu evaporatorul jos
+  - Lungimi de până la 11-12m (Trans-Alaska Pipeline)
+- Loop heat pipe: transport co-curent lichid/vapori, distanțe mai mari, puteri mai mari
+
+SECȚIUNEA 8: Aplicații în sisteme de calcul
+INFORMAȚIE EXTRASĂ:
+- Heat pipe în computere: din anii '90, cauzat de creșterea puterii disipate
+- Conducea căldura de la CPU/GPU la heat sink-uri la distanță
+- Laptop tipic: heat pipe leagă CPU și GPU de fin stack + ventilator de evacuare
+- Desktop-uri moderne: CPU și GPU folosesc heat pipe + cooling activ
+- Console: sisteme similare laptopurilor datorită constrângerilor de spațiu
+- Heat pipe-urile au 3 zone: evaporator (pe CPU), adiabatic (transport), condensator (heat sink/fins)
+
+================================================================================
+
+SURSA 3: Wikipedia - Computer cooling
+URL: https://en.wikipedia.org/wiki/Computer_cooling
+
+SECȚIUNEA 9: Principii generale de răcire
+INFORMAȚIE EXTRASĂ:
+- CPU și GPU: principalele generatoare de căldură în computere moderne
+- Temperatura componentelor crește până la echilibru termic (căldura generată = căldura disipată)
+- Pentru fiabilitate: temperatura nu trebuie să depășească niciodată maximul specificat
+- Factori care afectează răcirea: praf (izolant termic), flux de aer slab (turbulență), contact termic slab
+- Protecție: throttling (reducere frecvență/tensiune), shutdown termic
+- Thermal compound: conductivitate 0.5-80 W/(m·K), aluminiu ~200, aer ~0.02
+- Thermal pad: mai puțin eficient dar mai simplu de aplicat
+
+SECȚIUNEA 10: Metode de răcire
+INFORMAȚIE EXTRASĂ:
+- Pasivă (convecție naturală): heat sink fără ventilator, silențioasă, pentru componente low-power, mobile
+- Activă (convecție forțată): ventilator + heat sink, standard pentru desktop CPU/GPU
+- Heat pipe și vapor chamber: conductivitate termică foarte ridicată, folosite când spațiul e limitat
+  - Desktop: heat pipe + fan + fin stack
+  - Laptop: heat pipe leagă CPU+GPU de fin stack cu ventilator centrifugal
+- Liquid cooling: apă distilată + aditivi, capacitate termică mai mare decât aerul
+  - Custom loop: pompă + waterblock + radiator + rezervor
+  - AIO (All-in-One): sistem închis Asetek (inventat), popular din 2010s
+- Liquid immersion: tot computerul scufundat în fluid dielectric
+- Soft cooling: undervolting, underclocking pentru reducerea producției de căldură
+
+================================================================================
+
+SURSA 4: Wikipedia - Computer fan
+URL: https://en.wikipedia.org/wiki/Computer_fan
+
+SECȚIUNEA 11: Tipuri și utilizare ventilatoare
+INFORMAȚIE EXTRASĂ:
+- Computer fan: ventilator în sau atașat la carcasa computerului, pentru răcire activă
+- Tipuri principale: axial (cel mai comun, volum mare aer, presiune joasă) și centrifugal (blower/squirrel cage)
+- CPU fan activ: standard pe desktop-uri din Intel 80486 (1989), universal din 1997
+- Case fans (intake+exhaust): comune din Pentium 4 (2000)
+- Dimensiuni standard: 40, 60, 80, 92, 120 (cel mai comun), 140, 200, 220 mm
+- Grosime: 10, 15, 25 sau 38 mm
+- 120/140 mm: gaming, performanță, operare silențioasă la turații mici
+- 80/92 mm: aplicații mai puțin pretențioase
+
+SECȚIUNEA 12: Specificații tehnice ventilatoare
+INFORMAȚIE EXTRASĂ:
+- Două specificații principale: debit aer (CFM - Cubic Feet per Minute) și presiune statică
+- Static pressure: important pentru heatsink/radiator cu spații înguste între aripioare
+- Formula debit necesar: CFM = 3.16 × P / (Δ°F) sau 1.76 × P / (Δ°C)
+  - Ex: 500W, ΔT=30°F → CFM = 53
+- Viteza de rotație (RPM): ventilator mai mare + turație mică = mai silențios decât ventilator mic + turație mare
+- Zgomotul: proporțional cu puterea a cincea a vitezei; înjumătățirea vitezei reduce zgomotul cu ~15 dB
+- Ventilatoare paralele: dublează debitul, aceeași presiune
+- Ventilatoare serie: dublează presiunea, același debit
+
+SECȚIUNEA 13: Rulmenți și conectori
+INFORMAȚIE EXTRASĂ:
+- Tipuri rulmenți:
+  - Sleeve bearing: lubrifiat cu ulei, ieftin, silențios inițial, durată ~30,000 ore la 50°C
+  - Rifle bearing: similar sleeve cu canal spiral, pompare fluid, poate fi montat orizontal
+  - Fluid dynamic bearing (FDB): aproape silențios, durată mare
+  - Ball bearing: mai scump, funcționează în orice orientare, durată >60,000 ore la 50°C
+  - Magnetic/Maglev bearing: fără contact mecanic
+- Conectori:
+  - 3-pin: GND, +12V, tachometru (semnal viteză)
+  - 4-pin: adaugă pin PWM pentru control variabil al vitezei
+  - 4-pin Molex: conectare directă la PSU (+12V și GND)
+- PWM (Pulse Width Modulation): control variabil al vitezei de rotație
+- BIOS controlează automatic viteza ventilatoarelor în funcție de temperatură
+
+SECȚIUNEA 14: Aplicații specifice ventilatoare
+INFORMAȚIE EXTRASĂ:
+- Case fan: intake (frontal/jos, aer rece) și exhaust (spate/sus, aer cald)
+- Positive pressure: intake > exhaust, previne acumularea prafului (cu filtre)
+- Negative pressure: exhaust > intake, trasează praf prin toate deschiderile
+- CPU fan: obligatoriu pentru desktop modern, heat sink singur nu previne supraîncălzirea
+- GPU fan: unele plăci video disipă >350W (mai mult decât CPU-ul)
+  - Tipuri: axial fans sau centrifugal (blower)
+- PSU fan: propriu, nu trebuie folosit pentru ventilația carcasei
+- Laptop: ventilator centrifugal blower, răcește heat pipe conectat la CPU+GPU
+- Server: rând de ventilatoare între hard disk-uri (față) și heat sink-uri pasive (spate)
+
+================================================================================
+
+NOTE CERCETARE:
+- Toate cele 4 surse sunt Wikipedia (sursă permisă)
+- Informațiile sunt verificabile prin referințele din articolele Wikipedia
+- Conceptul "disiparea căldurii" este acoperit transversal de toate cele 4 surse
+- Heat sink acoperit detaliat de sursa 1 (materiale, TIM, rezistență termică)
+- Heat pipe acoperit detaliat de sursa 2 (principiu, vapor chamber, aplicații)
+- Ventilatoare acoperite detaliat de sursa 4 (tipuri, specificații, rulmenți, PWM)
+- Computer cooling (sursa 3) oferă contextul general al sistemului de răcire
+- Lecția poate fi structurată: principii disipare → heat sink → heat pipe → ventilatoare → sistem complet

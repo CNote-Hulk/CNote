@@ -1,0 +1,38 @@
+LESSON: 7.2 – CPU-bound vs GPU-bound
+
+---
+
+CONCEPT: CPU-bound – limitarea de procesor
+
+VERIFIED INFORMATION:
+Un task este CPU-bound (compute-bound) când timpul de finalizare depinde în principal de viteza CPU-ului. Utilizare procesor ridicată (poate 100% pentru perioade extinse). Exemple: calcule matematice intensive, logica jocului, AI, simulări fizice. Poate beneficia de paralelizare (multithreading) dacă algoritmul permite. Soluții: upgrade CPU, optimizare cod, distribuire pe mai multe core-uri. Opus: I/O-bound (limitat de periferice), memory-bound (limitat de memorie).
+
+---
+
+CONCEPT: GPU-bound – limitarea de procesor grafic
+
+VERIFIED INFORMATION:
+Un task este GPU-bound când performanța este limitată de capacitatea GPU-ului. GPU-ul procesează grafică prin unități masiv paralele (sute sau mii), structură SIMD (Single Instruction, Multiple Data). Performanța GPU: măsurată în TFLOPS, afectată de frecvență, cache, număr SM/CU. GPU dedicat: memorie GDDR dedicată, bandwidth >1000 GB/s. GPU integrat (IGP): folosește RAM sistem, bandwidth ~128 GB/s, ieftin dar mai lent. UMA (Unified Memory Architecture): CPU și GPU partajează RAM (AMD APU, PS5, Xbox Series). Bandwidth-ul memoriei poate fi bottleneck GPU.
+
+---
+
+CONCEPT: Rolul CPU vs rolul GPU în jocuri/console
+
+VERIFIED INFORMATION:
+CPU gestionează etapa Application (logica jocului, input, AI, fizică, coliziuni, animație). GPU gestionează etapele Geometry și Rasterization (transformări, iluminare, shading, rasterizare). CPU-bound în jocuri: FPS limitat de logică/AI/fizică → GPU sub-utilizat; creșterea rezoluției nu reduce FPS semnificativ. GPU-bound: FPS limitat de complexitate grafică → CPU sub-utilizat; creșterea rezoluției reduce FPS direct. CPU trimite draw calls la GPU; prea multe draw calls = CPU-bound. Echilibrul CPU-GPU = decizie fundamentală de design în arhitectura consolelor.
+
+---
+
+CONCEPT: Bottleneck și performanță
+
+VERIFIED INFORMATION:
+Bottleneck = componenta care limitează performanța întregului sistem. Se poate schimba rapid între componente. Factori: CPU, GPU, memorie, I/O, bus. Upgrade CPU nu are întotdeauna efect dramatic — depinde de task. Performanța maximă GPU = limitată de puterea electrică și disiparea căldurii. Design-uri GPU scalabile: multiple chipuri pe placă sau plăci multiple (SLI/CrossFire — acum rar utilizate).
+
+---
+
+CONCEPT: Aplicație în console
+
+VERIFIED INFORMATION:
+Console cu GPU-uri AMD customizate: PS4/Xbox One (2013) bazate pe AMD Radeon HD 7850/7790; PS5/Xbox Series X (2020) RDNA 2; Nintendo 64 (1996) primul hardware T&L GPU pe consolă (Reality Coprocessor); PlayStation 1 (1994) primul dispozitiv cu termenul „GPU" (proiectat de Toshiba). Console moderne: UMA — CPU și GPU partajează aceeași memorie fizică (elimină copiere, dar introduce competiție bandwidth). GPU-ul nu se poate upgrade → echilibrul CPU-GPU trebuie optimizat la design. GPGPU pe console: GPU pentru calcule non-grafice (fizică, AI, audio).
+
+---

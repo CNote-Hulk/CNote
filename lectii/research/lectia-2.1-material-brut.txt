@@ -1,0 +1,187 @@
+LECȚIA 2.1 – Rezistoare
+MATERIAL BRUT – CERCETARE
+
+========================================
+SURSA 1: Wikipedia – Resistor
+URL: https://en.wikipedia.org/wiki/Resistor
+========================================
+
+INFORMAȚII EXTRASE:
+
+1. DEFINIȚIE ȘI ROL:
+- Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit
+- În circuitele electronice, rezistoarele sunt folosite pentru: reducerea curentului, ajustarea nivelurilor de semnal, divizarea tensiunilor, polarizarea elementelor active și terminarea liniilor de transmisie
+- Rezistoarele fixe au rezistențe care se schimbă doar ușor cu temperatura, timpul sau tensiunea de operare
+- Rezistoarele variabile pot fi folosite pentru ajustarea elementelor de circuit (control volum, dimmer)
+
+2. LEGEA LUI OHM (aplicată la rezistoare):
+- V = I × R (tensiunea pe rezistor este proporțională cu curentul)
+- Unitatea: ohm (Ω), numită după Georg Simon Ohm
+- Derivate: milliohm (1 mΩ = 10⁻³ Ω), kilohm (1 kΩ = 10³ Ω), megohm (1 MΩ = 10⁶ Ω)
+- Exemplu: un rezistor de 300 Ω conectat la o baterie de 12V → curent de 0.04 A
+
+3. DISIPAREA PUTERII:
+- P = I × V = I² × R = V² / R
+- Rezistoarele discrete sunt de obicei 1/10, 1/8 sau 1/4 watt
+- Rezistoarele de putere: 1 W sau mai mult, fizic mai mari, pot necesita radiatoare
+- Depășirea puterii nominale poate deteriora permanent rezistorul sau cauza incendiu
+- Există rezistoare ignifuge care nu produc flăcări la nicio suprasarcină
+
+4. TIPURI DE REZISTOARE FIXE:
+a) Carbon composition (CCR):
+   - Amestec de carbon pudră fin și material izolator (ceramică), legat cu rășină
+   - Rezistența determinată de raportul carbon/material de umplutură
+   - Toleranță maximă: 5% (sortate din fabrică)
+   - Non-inductive, bune pentru protecție la supratensiune
+   - Relativ scumpe acum, folosite în alimentatoare și controlul sudării
+
+b) Carbon film:
+   - Film de carbon depus pe substrat izolant, cu helix tăiat
+   - Zgomot mai scăzut decât carbon composition
+   - Putere: 0.125 W – 5 W la 70°C
+   - Rezistențe: 1 Ω – 10 MΩ
+   - Temperatură operare: −55°C – 155°C
+   - Tensiune maximă: 200–600 V
+
+c) Carbon printat pe PCB:
+   - Printat direct pe substratul PCB-ului
+   - Toleranțe mari (~30%)
+   - Aplicație tipică: rezistoare pull-up non-critice
+
+d) Thick film (film gros):
+   - Populare din anii 1970, majoritatea SMD sunt de acest tip
+   - Material ceramic conductiv amestecat cu sticlă sinterizată
+   - Fuzionat la ~850°C
+   - Toleranțe standard: 2% sau 1%
+   - Coeficient de temperatură: ±200 sau ±250 ppm/K
+
+e) Thin film (film subțire):
+   - Fabricate prin sputtering (depunere în vid)
+   - Toleranțe: 1% și 5%
+   - Coeficient de temperatură: 5–50 ppm/K
+   - Zgomot 10–100× mai mic decât thick film
+   - Mai scumpe decât thick film
+
+f) Metal film:
+   - Acoperite cu nichel-crom (NiCr)
+   - Toleranță: 0.5%, 1% sau 2%
+   - Coeficient de temperatură: 50–100 ppm/K
+   - Zgomot scăzut, liniaritate bună, stabilitate pe termen lung
+
+g) Metal oxide film:
+   - Temperatură de operare mai mare, stabilitate și fiabilitate superioare
+
+h) Wire wound (înfășurat cu sârmă):
+   - Sârmă metalică (de obicei nichrome) înfășurată pe un nucleu ceramic/plastic
+   - Pot suporta până la 450°C
+   - Putere: până la 1000+ W
+   - Dezavantaj: inductanță nedorită
+   - Soluții: înfășurare bifilar sau Ayrton-Perry
+
+i) Metal foil (folie metalică):
+   - Cea mai bună precizie și stabilitate (din 1960)
+   - TCR: 0.14 ppm/°C
+   - Toleranță: ±0.005%
+   - Stabilitate pe termen lung (1 an): 25 ppm
+
+5. TIPURI DE REZISTOARE VARIABILE:
+a) Reostat: rezistor ajustabil cu două terminale
+b) Potențiometru: rezistor cu trei terminale, cursor rotativ/liniar
+   - Element rezistiv: carbon composition, metal film sau plastic conductiv
+   - Variante multi-turn de mare precizie (10 rotații, rezoluție 3 cifre)
+c) Decade box: cutie cu rezistoare de multe valori cu comutatoare mecanice
+d) Dispozitive speciale: termistoare NTC, fotrezistoare, senzori de deformare (strain gauge)
+
+6. APLICAȚII COMUNE:
+a) Limitarea curentului: protejarea componentelor (ex. LED-uri) de supracurent
+b) Divizor de tensiune: două rezistoare în serie între două tensiuni fixe
+   - Exemplu: 200 Ω + 400 Ω între 6V și 0V → 4V la terminal
+c) Pull-up / pull-down: furnizează tensiune implicită când circuitul este deconectat
+
+7. MONTAJ PE PCB:
+- Through-hole (străpungere): cu terminale axiale sau radiale
+- SMT/SMD (montaj pe suprafață): lipite direct pe suprafața PCB
+- Rezistoare de putere pot avea carcasă de aluminiu pe radiator
+
+========================================
+SURSA 2: Wikipedia – Electronic color code
+URL: https://en.wikipedia.org/wiki/Electronic_color_code
+========================================
+
+INFORMAȚII EXTRASE:
+
+1. ISTORIC:
+- Dezvoltat în anii 1920 de Radio Manufacturers Association (RMA)
+- Primele radiouri cu rezistoare codate prin culori: 1930
+- Standardizat internațional: IEC 62:1952
+- Standard curent: IEC 60062:2016
+
+2. SISTEMUL DE BENZI COLORATE (4 benzi):
+- Banda A: prima cifră semnificativă
+- Banda B: a doua cifră semnificativă
+- Banda C: multiplicator zecimal (puterea lui 10)
+- Banda D: toleranță (dacă lipsește = ±20%)
+- Distincție stânga-dreapta: spațiu mai mare între C și D
+
+3. SISTEMUL DE 5 BENZI (precizie):
+- Primele 3 benzi: trei cifre semnificative
+- Banda 4: multiplicator
+- Banda 5: toleranță
+- Bandă extra-lată la prima bandă = rezistor wire-wound
+
+4. TABELUL CULORILOR:
+| Culoare  | Cifră | Multiplicator | Toleranță |
+|----------|-------|---------------|-----------|
+| Negru   |   0   | ×1            | —         |
+| Maro    |   1   | ×10           | ±1%       |
+| Roșu    |   2   | ×100          | ±2%       |
+| Portocaliu| 3   | ×1000         | ±0.05%    |
+| Galben  |   4   | ×10000        | ±0.02%    |
+| Verde   |   5   | ×100000       | ±0.5%     |
+| Albastru|   6   | ×1000000      | ±0.25%    |
+| Violet  |   7   | ×10000000     | ±0.1%     |
+| Gri     |   8   | ×100000000    | ±0.01%    |
+| Alb     |   9   | ×1000000000   | —         |
+| Auriu   |   —   | ×0.1          | ±5%       |
+| Argintiu|   —   | ×0.01         | ±10%      |
+| Roz     |   —   | ×0.001        | —         |
+
+5. EXEMPLE DE CITIRE:
+- Roșu, violet, verde, auriu = 2 700 000 Ω (2.7 MΩ) ±5%
+- Verde, albastru, negru, negru, maro = 560 Ω ±1%
+- Roșu, roșu, portocaliu, auriu = 22 000 Ω (22 kΩ) ±5%
+- Galben, violet, maro, auriu = 470 Ω ±5%
+- Albastru, gri, negru, auriu = 68 Ω ±5%
+
+6. MARCAJ SMD (montaj pe suprafață):
+- Cod cu 3 cifre: primele 2 = cifre semnificative, a 3-a = puterea lui 10
+  - 334 = 33 × 10⁴ = 330 kΩ
+  - 222 = 22 × 10² = 2.2 kΩ
+  - 473 = 47 × 10³ = 47 kΩ
+- Sub 100 Ω: 100 = 10 Ω, 220 = 22 Ω
+- Sub 10 Ω: se folosește 'R' pentru punct zecimal (4R7 = 4.7 Ω)
+
+7. SERII DE VALORI PREFERATE (E-series, IEC 60063):
+- E6 (6 valori/decadă): toleranță ±20%
+- E12: toleranță ±10%
+- E24: toleranță ±5%
+- E48: toleranță ±2%
+- E96: toleranță ±1%
+- E192: toleranță ±0.5% sau mai bună
+- Progresie geometrică: fiecare valoare ≈ valoarea precedentă × factor fix
+- E6: 10, 15, 22, 33, 47, 68 (factor ≈ 1.4678 ≈ 10^(1/6))
+
+8. TOLERANȚĂ:
+- Indică abaterea maximă față de valoarea nominală
+- Exemplu: 100 Ω ±20% = valoare reală între 80 și 120 Ω
+- E6 → ±20%; E12 → ±10%; E24 → ±5%; E48 → ±2%; E96 → ±1%
+- „Binning" = sortarea componentelor pe clase de toleranță după fabricare
+
+========================================
+NOTE CERCETARE:
+========================================
+- Ambele surse sunt de pe Wikipedia (surse permise conform structura-curs.txt)
+- Informația acoperă toate conceptele cerute: tipuri de rezistoare, toleranță, codul culorilor, aplicații pe PCB
+- Rezistoarele sunt sortate în două categorii majore: fixe și variabile
+- Codul culorilor este standardizat internațional (IEC 60062:2016)
+- Aplicații pe PCB: through-hole vs. SMD + pull-up/pull-down, limitare curent, divizor de tensiune

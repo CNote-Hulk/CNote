@@ -1,0 +1,129 @@
+LECȚIA 4.1 – CPU
+MATERIAL BRUT DE CERCETARE
+========================================
+
+SURSA 1: Wikipedia – Central processing unit
+URL: https://en.wikipedia.org/wiki/Central_processing_unit
+
+SECȚIUNEA 1: Definiție și componente principale
+INFORMAȚIE EXTRASĂ:
+- CPU (Central Processing Unit) = procesorul principal dintr-un computer
+- Execută instrucțiuni ale unui program: aritmetice, logice, control, I/O
+- Componente principale: ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)
+- Von Neumann: raportul EDVAC 1945, program stocat în memorie
+- Harvard architecture: separare memorie instrucțiuni/date (ex. Atmel AVR)
+- Modern: multi-core (mai multe CPU-uri pe un singur chip), multithreading
+- Microprocesor: CPU implementat pe un singur circuit integrat
+- Intel 4004 (1971): primul microprocesor comercial, integra ALU + control unit + registre
+- Moore's Law: creșterea complexității/nr. tranzistori pe IC
+
+SECȚIUNEA 2: Ciclul de execuție al instrucțiunilor (Fetch-Decode-Execute)
+INFORMAȚIE EXTRASĂ:
+- Operația fundamentală: fetch → decode → execute (instruction cycle)
+- FETCH: citirea instrucțiunii din memorie; adresa determinată de program counter (PC/instruction pointer)
+  - PC incrementat cu lungimea instrucțiunii după fetch
+  - Instrucțiunea trebuie adusă din memorie (potențial lentă) → cache și pipeline rezolvă
+- DECODE: circuitul instruction decoder convertește instrucțiunea în semnale de control
+  - Opcode: câmpul care indică operația; restul câmpurilor = operanzi
+  - Operanzii pot fi: valori imediate, registre procesor, adrese de memorie
+  - Implementare: hardwired (circuit fix) sau microprogram (microcode, reprogramabil)
+- EXECUTE: semnale de control activează/dezactivează părți ale CPU
+  - ALU efectuează operația; rezultatul → registru intern sau memorie
+  - Overflow flag setat dacă rezultatul depășește word size
+  - Jump instructions: modifică PC → permit bucle, condiții, funcții
+  - Status register (flags register): stochează rezultatul comparațiilor → branching condițional
+
+SECȚIUNEA 3: Pipeline și paralelism
+INFORMAȚIE EXTRASĂ:
+- Instruction pipelining: primii pași (fetch/decode) ai instrucțiunii următoare încep înainte de finalizarea celei curente
+  - Comparat cu linia de asamblare: fiecare etapă face instrucțiunea "mai completată"
+  - Data dependency conflict: rezultatul operației anterioare necesar pentru următoarea
+  - Pipeline stall: CPU devine aproape scalar, inhibat doar de stalls
+- Superscalar: pipeline lung + multiple execution units identice (ALU, FPU, load-store, AGU)
+  - Dispatcher: decide dacă instrucțiunile pot fi executate în paralel
+  - Necesită: branch prediction, speculative execution, register renaming, out-of-order execution
+- IPC (Instructions Per Clock): măsoară eficiența; subscalar (IPC < 1), scalar (IPC = 1), superscalar (IPC > 1)
+- VLIW (Very Long Instruction Word): mută o parte din ILP în software/ISA
+- Task-level parallelism: multithreading (temporal MT, simultaneous MT/SMT), multi-core
+  - Exemple consolă: Xbox 360 triple-core PowerPC, PS3 Cell 7-core
+- Data parallelism: SIMD (Single Instruction, Multiple Data) – ex. Intel SSE, PowerPC AltiVec
+
+SECȚIUNEA 4: Structura și implementarea
+INFORMAȚIE EXTRASĂ:
+- ISA (Instruction Set Architecture): setul de operații de bază hardwired în CPU
+- Opcode → binary decoder → semnale de control
+- Control Unit: dirijează operația procesorului, timing și semnale de control
+- ALU: circuit digital, operații aritmetice/logice întregi; modern CPU-uri au multiple ALU-uri
+- AGU (Address Generation Unit): calculează adrese memorie în paralel cu CPU
+- MMU (Memory Management Unit): traduce adrese logice → fizice, memory protection, paging, virtual memory
+- VRM (Voltage Regulator Module): module integrate pe die pentru reglare tensiune
+- Word size: 8/16/32/64 biți; determină rangul de numere întregi și adrese
+- Clock rate: semnal de ceas determină viteza operațiilor secvențiale
+  - Clock gating: oprirea semnalului de ceas pentru componentele inactive (economie energie)
+  - Ex: IBM PowerPC Xenon (Xbox 360) folosește clock gating extensiv
+
+========================================
+
+SURSA 2: Wikipedia – CPU cache
+URL: https://en.wikipedia.org/wiki/CPU_cache
+
+SECȚIUNEA 1: Definiție și principii
+INFORMAȚIE EXTRASĂ:
+- CPU cache = memorie hardware folosită de CPU pentru reducerea timpului/energiei de acces la main memory
+- Cache = memorie mai mică, mai rapidă, mai aproape de nucleul procesorului
+- Stochează copii ale datelor din locații de memorie frecvent utilizate
+- SRAM (Static RAM): necesită 4-6 tranzistori per bit; rapidă dar costisitoare
+- DRAM: 1 tranzistor + 1 capacitor per bit; lentă dar densitate mare
+- Cache hit: datele căutate sunt în cache → acces rapid
+- Cache miss: datele nu sunt în cache → acces la main memory (latență mare)
+
+SECȚIUNEA 2: Ierarhia cache (niveluri L1, L2, L3)
+INFORMAȚIE EXTRASĂ:
+- Majoritatea CPU-urilor: cel puțin 3 niveluri independente (L1, L2, L3)
+- L1: cea mai rapidă, cea mai aproape de core, cea mai mică
+  - Split: L1i (instrucțiuni) + L1d (date) – standard din IBM 801 (1976)
+  - Dimensiuni tipice: 32-96 KiB per core
+- L2: mai mare, mai lentă; de obicei unificată (instrucțiuni + date); dedicată per core
+- L3: partajată între toate core-urile (last-level cache/LLC); poate fi zeci de MiB
+- L4: rar, de obicei eDRAM pe modul separat (ex. Intel Haswell Crystalwell 128 MiB)
+- Tradeoff: cache mai mare = hit rate mai bun dar latență mai mare
+- Register file: cea mai mică și rapidă "cache" din sistem
+- Istorie: Atlas 2 și IBM System/360 Model 85 (anii 1960); 486 = primul cache L1 on-die (8 KiB)
+- x86: 386 cache extern; 486 L1 on-die; Pentium Pro L2 on-package; modern = totul on-die
+
+SECȚIUNEA 3: Funcționare cache
+INFORMAȚIE EXTRASĂ:
+- Cache line (cache block): unitatea de transfer între memorie și cache (dimensiune fixă, tipic 64 bytes)
+- Cache entry: tag (adresă) + data block + flag bits
+- Tag: identifică locația din main memory stocată
+- Cache hit/miss: procesorul verifică tag-urile pentru adresa căutată
+- Replacement policies: LRU (Least Recently Used) cel mai popular
+- Write policies:
+  - Write-through: fiecare scriere în cache → scriere imediată în memorie
+  - Write-back (copy-back): scrierile nu sunt reflectate imediat; dirty bit marchează modificările
+- Associativity:
+  - Direct-mapped: fiecare adresă → exact o locație în cache
+  - N-way set associative: fiecare adresă → N locații posibile (ex. 8-way la CPU-uri moderne)
+  - Fully associative: orice locație (practic doar pentru cache-uri mici)
+  - 2× associativity ≈ 2× cache size în termeni de hit rate
+
+SECȚIUNEA 4: Cache misses și stalls
+INFORMAȚIE EXTRASĂ:
+- 3 tipuri de cache miss: instruction read miss (cel mai costisitor), data read miss, data write miss
+- CPU stall: procesorul rămâne fără lucru în așteptarea datelor din memorie
+  - CPU-urile moderne pot executa sute de instrucțiuni în timpul unui singur fetch din main memory
+- Soluții: out-of-order execution (execută instrucțiuni independente), SMT (alt thread pe core)
+- Cache-uri specializate: TLB (adresse virtuale → fizice), instruction cache, data cache, μop cache
+  - μop cache: stochează micro-operații decodate (Intel Sandy Bridge+, AMD Zen+)
+  - Trace cache: Intel Pentium 4, stochează secvențe de instrucțiuni decodate
+- Multi-core: L1 dedicat per core; L2 uneori partajat per pereche; L3 partajat global (LLC)
+- Inclusive vs exclusive: inclusive = date L1 replicate și în L2; exclusive = date în max un nivel (AMD Athlon)
+
+========================================
+
+NOTE CERCETARE:
+- Lecția cere: execuția instrucțiunilor, pipeline, cache
+- Ciclul instrucțiunilor: Fetch (PC → memorie → instrucțiune), Decode (opcode + operanzi), Execute (ALU + store result)
+- Pipeline: suprapunerea etapelor; superscalar: multiple execution units; branch prediction + OoO
+- Cache: SRAM, ierarhie L1/L2/L3, cache line, hit/miss, write-back/write-through, associativity
+- Conexiune cu consolele: Xbox 360 (PowerPC Xenon cu clock gating), PS3 (Cell cu 7 core-uri SPE)

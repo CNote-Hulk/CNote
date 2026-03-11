@@ -1,0 +1,24 @@
+LESSON: 2.5 – Regulatoare de tensiune
+
+---
+
+CONCEPT: LDO (Low-Dropout Regulator)
+
+VERIFIED INFORMATION:
+Regulator liniar DC care funcționează cu diferență mică între tensiunea de intrare și cea de ieșire. Dropout voltage: diferența minimă VIN − VOUT necesară pentru funcționare corectă. Topologie: element de trecere (pass FET/transistor) + amplificator de eroare + referință bandgap. Amplificatorul compară fracțiunea tensiunii de ieșire (prin divisor R1/R2) cu referința. Formula: Vout = (1 + R1/R2) × Vref. Eficiență: η = VOUT/VIN. Putere disipată: PLOSS = (VIN − VOUT) × IOUT. Curent quiescent IQ = IIN − IOUT. Avantaje: fără zgomot de comutare, dimensiuni mici, design simplu. Dezavantaj: disipare de căldură când diferența VIN−VOUT este mare. PSRR ridicat respinge ripple-ul de la surse switching.
+
+---
+
+CONCEPT: VRM (Voltage Regulator Module)
+
+VERIFIED INFORMATION:
+Convertor buck care furnizează procesorului tensiunea corectă de alimentare. Convertește +3,3V/+5V/+12V la tensiuni mai mici (<1,5V pentru procesoare moderne). Alcătuit din power MOSFETs, lipit pe placa de bază. VID (Voltage Identification): protocol digital prin care CPU comunică tensiunea necesară (5–8 biți → 32–256 niveluri, gamă tipică 0,5V–3,5V). Permite ajustare dinamică a tensiunii (reducere consum în idle). FIVR (Fully Integrated Voltage Regulator): unele procesoare integrează VRM pe pachetul CPU. VRM-urile generează căldură semnificativă → necesită radiatoare. Calitatea VRM influențează potențialul de overclocking.
+
+---
+
+CONCEPT: Stabilizare tensiune
+
+VERIFIED INFORMATION:
+Mecanism de bază: buclă de feedback cu amplificator de eroare. Amplificatorul compară tensiunea de ieșire (prin divisor rezistiv) cu o referință stabilă (bandgap reference — tensiune stabilă independentă de temperatură). Dacă ieșirea deviază, elementul de trecere ajustează conducția. Regulatoare liniare (inclusiv LDO): element de trecere în serie, tensiune stabilă prin ajustarea continuă a rezistenței, energia excedentară disipată ca căldură, zgomot redus. Regulatoare switching (buck converter): comutare rapidă ON/OFF a MOSFET-urilor, eficiență 80–95%, introduc ripple/zgomot, necesită inductor și condensator de filtrare. LDO poate fi plasat după sursa switching ca post-regulator pentru filtrare ripple. Load regulation: VOUT stabilă la varierea curentului. Line regulation: VOUT stabilă la varierea tensiunii de intrare.
+
+---

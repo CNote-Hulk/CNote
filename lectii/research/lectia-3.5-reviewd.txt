@@ -1,0 +1,77 @@
+LECȚIA 3.5 – Construcția logică a unui procesor
+MATERIAL VERIFICAT ȘI ORGANIZAT
+========================================
+
+CONCEPT 1: ALU – Unitatea Aritmetică și Logică
+INFORMAȚIE VERIFICATĂ:
+- ALU = circuit digital combinațional care efectuează operații aritmetice și logice pe numere binare întregi
+- Propus de John von Neumann în 1945 (raportul EDVAC)
+- Bloc fundamental al CPU, FPU și GPU
+- Intrări: doi operanzi (A, B) prin bus-uri paralele + opcode (cod de selecție a operației)
+- Ieșiri: rezultat (Y) prin bus paralel + semnale de status
+- Semnale de status (flags):
+  - Carry-out: transport din adunare, împrumut din scădere
+  - Zero: rezultatul este 0
+  - Negative: rezultatul este negativ
+  - Overflow: depășirea capacității de reprezentare
+  - Parity: paritatea biților din rezultat
+- Operații aritmetice: adunare, scădere, complement față de 2, increment, decrement
+- Operații logice pe biți: AND, OR, XOR, NOT (ones' complement)
+- Operații de deplasare: shift aritmetic, shift logic, rotație, rotație prin carry
+- ALU combinațional: ieșirile se schimbă asincron → logica secvențială externă sincronizează cu semnalul de ceas
+- Istorie: Whirlwind I 1951 (16 ALU-uri paralele), Fairchild 3800 1967 (primul IC ALU, 8-bit), 74181/Am2901 (bit-slice 4-bit)
+- GPU-urile conțin sute/mii de ALU-uri operând concurent
+SURSE: Wikipedia – Arithmetic logic unit (https://en.wikipedia.org/wiki/Arithmetic_logic_unit)
+STATUS: ✅ Verificat
+
+CONCEPT 2: Registre și status register
+INFORMAȚIE VERIFICATĂ:
+- Registrele procesorului: surse ale operanzilor ALU și destinații ale rezultatelor
+- Register file: structură cu porturi de citire/scriere adresabile, conectată la ALU
+- CPU rutează operanzi din registre la intrările ALU, aplică opcode, activează registrul destinație
+- La următorul front de ceas, registrul destinație stochează rezultatul
+- Status register (condition code register): stochează flags-urile de la fiecare operație ALU
+  - Carry stocat → reconectat la carry-in → permite aritmetică multi-precision
+  - Flags utilizate pentru branching condițional (decizii în program)
+- Registrele = grupuri de flip-flop-uri sincronizate (din lecția 3.3)
+  - Word size = nr. flip-flop-uri = lățimea datelor procesorului
+  - Semnale: Reset, Clock, Data in (D₀-D_{n-1}), Data out (Q₀-Q_{n-1})
+SURSE: Wikipedia – Arithmetic logic unit, Wikipedia – Hardware register (lecția 3.3)
+STATUS: ✅ Verificat
+
+CONCEPT 3: Instruction pipeline
+INFORMAȚIE VERIFICATĂ:
+- Pipelining = tehnică de paralelism la nivel de instrucțiuni într-un singur procesor
+- Instrucțiunile sunt împărțite în etape secvențiale, executate de unități diferite simultan
+- Pipeline registers: memorează datele intermediare între etape
+- Classic RISC pipeline – 5 etape:
+  1. Instruction Fetch (IF): citirea instrucțiunii din memorie
+  2. Instruction Decode (ID): decodare + citire registre sursă
+  3. Execute (EX): execuția operației (ALU calculează)
+  4. Memory Access (MEM): acces la memorie (load/store)
+  5. Write Back (WB): scrierea rezultatului în registrul destinație
+- IBM Stretch (1956-61): a stabilit terminologia Fetch/Decode/Execute
+- Pipeline complet: completează ~1 instrucțiune pe ciclu de ceas (throughput crescut)
+- Variații de adâncime: 2 etape (Atmel AVR) → 5 (RISC clasic) → 20+ (Pentium 4) → 31 (NetBurst Prescott)
+- Superpipeline: mai multe etape, mai simple → frecvență de ceas mai mare posibilă
+- Dezavantaje: complexitate crescută, mai multe porți logice și registre necesare
+SURSE: Wikipedia – Instruction pipelining (https://en.wikipedia.org/wiki/Instruction_pipelining)
+STATUS: ✅ Verificat
+
+CONCEPT 4: Hazards și soluții de pipeline
+INFORMAȚIE VERIFICATĂ:
+- Hazard = situație în care execuția instrucțiunilor în pipeline este compromisă
+- Data hazard: instrucțiunea N+1 citește un registru înainte ca instrucțiunea N să-l fi scris
+  - Exemplu: instrucțiunea 1 scrie R5, instrucțiunea 2 citește R5 → conflict
+- Soluții la data hazards:
+  1. Pipeline stall (bubble): oprirea lansării de noi instrucțiuni, inserarea de cicluri goale
+  2. Operand forwarding: rutarea directă a rezultatului calculat spre instrucțiuni viitoare (bypass)
+  3. Out-of-order execution: executarea instrucțiunilor independente în alt ordine decât cel secvențial
+- Branch hazard: salturile condiționale nu se decid decât în etapa Execute
+  - Pipeline a început deja fetch-ul instrucțiunilor secvențiale (pot fi greșite)
+  - Branch prediction: prezicerea direcției saltului → minimizare penalizare
+  - Predicție greșită → pipeline flush: anularea lucrului din calea greșită
+- Control unit: orchestrează fluxul prin pipeline, gestionează pornire/oprire/continuare
+- Tradeoff: viteză (throughput) vs. predictibiliate (timing) și economie (cost per operație)
+SURSE: Wikipedia – Instruction pipelining (https://en.wikipedia.org/wiki/Instruction_pipelining)
+STATUS: ✅ Verificat

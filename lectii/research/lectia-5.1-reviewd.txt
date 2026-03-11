@@ -1,0 +1,68 @@
+LECȚIA 5.1 – PCB (PRINTED CIRCUIT BOARD)
+========================================================================
+INFORMAȚII VERIFICATE ȘI SINTETIZATE
+========================================================================
+
+CONCEPT 1: PCB – definiție și structura tip lasagna
+INFORMAȚIE VERIFICATĂ:
+- PCB (Printed Circuit Board) = structură laminată sandwich din straturi conductoare (cupru) și izolante (substrat)
+- Trasee (traces) de cupru gravate chimic funcționează ca fire fixate pe suprafață
+- Pad-uri = zone expuse de metal pentru lipirea componentelor
+- Vias = găuri metalizate care conectează electric straturile între ele
+- Structura pe straturi (de la interior spre exterior): substrat FR4 (fibră de sticlă + epoxid) → cupru (trasee/plane) → soldermask (protecție, de obicei verde) → silkscreen (text identificare)
+- Grosime standard PCB: 1.6mm; alternative 0.8mm; flexibile pe Kapton (poliimidă)
+- PCB-urile pot fi: single-sided (1 strat cupru), double-sided (2 straturi), multi-layer (4, 6, 8, 16+ straturi)
+- Multi-layer: straturi alternante cupru-substrat laminate împreună sub presiune și căldură
+- Inventat de Paul Eisler (1936, Austria/UK); adoptat masiv în WWII pentru fuzee de proximitate
+- Piața globală: ~$80 miliarde (2024), estimat ~$97 miliarde (2029)
+SURSE: Wikipedia – Printed Circuit Board (https://en.wikipedia.org/wiki/Printed_circuit_board), SparkFun – PCB Basics (https://learn.sparkfun.com/tutorials/pcb-basics/all)
+STATUS: VERIFICAT ✓
+
+CONCEPT 2: Straturile plăcii de bază – ground plane și power plane
+INFORMAȚIE VERIFICATĂ:
+- Cel mai simplu: 2-layer (cupru pe ambele fețe, exterior)
+- 4-layer: adaugă 2 straturi interne, frecvent folosite ca ground plane și/sau power plane
+- Ground plane = strat complet (sau aproape complet) de cupru conectat la masă (GND)
+  - Funcții: ecranare electromagnetică (EMI shielding), cale de întoarcere curent (return path), decuplare alimentare, reducere zgomot, permite frecvențe de semnal mai mari
+- Power plane = strat de cupru dedicat distribuției tensiunii de alimentare
+  - Funcții: distribuie tensiunea uniform la toate componentele, reduce impedanța alimentării, reduce interferența între semnale
+- Straturile interne sunt metalizate înainte de laminare; protejate de substratul adiacent după laminare
+- Mai multe straturi = rutare mai bună + integritate semnal mai bună, dar cost mai mare
+- PCB-uri de console/servere: 6-12+ straturi, cu multiple ground și power planes
+- Conceptul „plane" (SparkFun): bloc continuu de cupru definit de limite, nu de traseu individual
+SURSE: Wikipedia – Printed Circuit Board (https://en.wikipedia.org/wiki/Printed_circuit_board), SparkFun – PCB Basics (https://learn.sparkfun.com/tutorials/pcb-basics/all)
+STATUS: VERIFICAT ✓
+
+CONCEPT 3: Trasee electrice – proprietăți și limitări
+INFORMAȚIE VERIFICATĂ:
+- Trace = parte plată, îngustă de cupru rămasă după gravare chimică
+- Rezistența traseului depinde de: lățime, grosime (oz/ft²) și lungime
+- Cu cât curentul e mai mare, cu atât traseul trebuie mai lat (trasee de alimentare >> trasee de semnal)
+- Grosimea cuprului: specificată în oz/ft² → 1 oz/ft² = ~35 μm. Standarde: 0.5 oz (17 μm), 1 oz (35 μm), 2 oz (70 μm), 3 oz (102 μm)
+- Heavy copper (>3 oz, >105 μm): pentru curenți mari și disipare căldură
+- La frecvențe înalte / semnale digitale rapide: traseele se comportă ca linii de transmisie
+  - Stripline: traseu între două ground planes
+  - Microstrip: traseu pe suprafață cu ground plane dedesubt
+  - Necesită impedanță controlată (dimensiuni precise lățime/distanță față de plane)
+- Inductanța și capacitanța parazitică a traseelor: semnificative la frecvențe mari (pot cauza interferență sau reflecții)
+- HDI (High Density Interconnect): trasee și vias sub 152 μm – permite densitate mare de componente
+- Thermal relief: traseu mic care conectează pad la plane, necesar pentru lipire corectă (altfel plane-ul absoarbe toată căldura)
+SURSE: Wikipedia – Printed Circuit Board (https://en.wikipedia.org/wiki/Printed_circuit_board), SparkFun – PCB Basics (https://learn.sparkfun.com/tutorials/pcb-basics/all)
+STATUS: VERIFICAT ✓
+
+CONCEPT 4: Distribuția alimentării pe PCB
+INFORMAȚIE VERIFICATĂ:
+- Alimentarea pe PCB se distribuie prin: power planes dedicate (straturi complete de cupru) sau trasee late de cupru
+- Power plane: strat intern (în multi-layer PCB) dedicat unei tensiuni specifice (ex: 3.3V, 5V, 12V)
+  - Oferă impedanță scăzută pentru distribuție uniformă
+  - Reduce noise-ul de alimentare prin efect de decuplare cu ground plane-ul adiacent (formează condensator parazitic distribuit)
+- Trasee de alimentare: în PCB-uri simple (2-layer) – trasee mai late decât cele de semnal
+- Conectorii de alimentare (power connectors) pe motherboard distribuie puterea de la PSU la CPU, chipset, RAM, expansion slots
+- Condensatori de decuplare: plasați aproape de fiecare IC, filtrează zgomotul de alimentare
+- Vias de alimentare: transferă curentul între straturi (mai multe vias în paralel pentru curent mare)
+- Substraturi cu bază de aluminiu (IMS – Insulated Metal Substrate): pentru componente de putere mare, disipare termică
+- FR-4 standard: adecvat pentru majoritatea aplicațiilor; Tg (glass transition temperature) tipic 130°C
+  - Peste Tg: rășina se înmoaie, expansiunea termică crește → stres pe vias și componente → risc de defectare
+- Montarea componentelor: SMT (Surface Mount Technology) dominantă din anii 1990; permite automatizare, densitate mare, cost redus
+SURSE: Wikipedia – Printed Circuit Board (https://en.wikipedia.org/wiki/Printed_circuit_board), SparkFun – PCB Basics (https://learn.sparkfun.com/tutorials/pcb-basics/all)
+STATUS: VERIFICAT ✓

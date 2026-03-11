@@ -1,0 +1,111 @@
+LECȚIA 5.1 – PCB (PRINTED CIRCUIT BOARD)
+========================================================================
+MATERIAL BRUT – CERCETARE DIN SURSE VERIFICATE
+========================================================================
+
+SURSA 1: Wikipedia – Printed Circuit Board
+URL: https://en.wikipedia.org/wiki/Printed_circuit_board
+ACCESAT: 2024
+INFORMAȚII EXTRASE:
+
+SECȚIUNEA 1 – Definiție și structură de bază
+- PCB (Printed Circuit Board) = structură laminată sandwich din straturi conductoare și izolante
+- Fiecare strat are un pattern de trasee (traces), plane și alte elemente, gravate chimic din foi de cupru
+- Cuprul este laminat pe/între straturi de substrat non-conductiv
+- Componentele electronice sunt fixate pe pad-uri conductive prin lipire (soldering)
+- Vias = găuri metalizate care permit conexiuni electrice între straturi
+- Alternativele la PCB: wire wrap, construcție point-to-point (rare astăzi)
+- Piața globală PCB: >$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)
+
+SECȚIUNEA 2 – Straturi (Layers)
+- PCB poate fi: single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)
+- Multi-layer: straturi alternante cupru-substrat-cupru-substrat, laminate împreună
+- Cel mai simplu: 2-layer board (cupru pe ambele fețe = straturi externe)
+- 4-layer board: adaugă semnificativ mai multe opțiuni de rutare internă
+- Straturile interne folosite frecvent ca ground plane sau power plane
+- Ground plane: strat complet de cupru pentru ecranare, integritate semnal, frecvențe mai mari, EMI redus, decuplare alimentare
+- Internal vias: metalizate înainte de laminare; straturile interne protejate de substratul adiacent
+- Mai multe straturi = mai multe opțiuni rutare + control integritate semnal, dar cost și timp fabricație mai mari
+
+SECȚIUNEA 3 – Proprietăți electrice ale traseelor
+- Trace = parte plată, îngustă din folia de cupru rămasă după gravare
+- Rezistența traseului: determinată de lățime, grosime și lungime
+- Trasee de putere și ground: trebuie mai late decât traseele de semnal
+- Ground plane: un strat complet de cupru solid pentru ecranare și return de putere
+- La frecvențe înalte/semnale rapide: traseele funcționează ca linii de transmisie (stripline, microstrip)
+- Impedanță controlată: dimensiuni precise necesare pentru consistență
+- Inductanța și capacitanța traseelor devin semnificative la frecvențe mari
+- HDI (High Density Interconnect): trasee/vias sub 152 μm
+
+SECȚIUNEA 4 – Materiale și substraturi
+- FR-4 = cel mai comun substrat: fibră de sticlă țesută impregnată cu rășină epoxidică
+- Proprietăți FR-4: absorbție apă scăzută (~0.15%), izolație bună, rezistență la arc, rating 130°C
+- FR-2 = hârtie fenolică: mai ieftin, electronice consumer low-end, proprietăți electrice inferioare
+- Substraturi flexibile: Kapton (poliimidă) – rezistent la temperaturi înalte, electronice miniaturizate
+- Substraturi aluminiu (IMS): pentru componente de putere mare (LED-uri, comutatoare putere)
+- Parametri cheie substrat: Tg (glass transition temperature), constanta dielectrică, loss tangent, rezistența la tracțiune
+- La Tg rășina se înmoaie → expansiune termică crește → stres pe vias și componente
+- Constanta dielectrică: determină viteza propagare semnal, variază cu frecvența
+
+SECȚIUNEA 5 – Grosimea cuprului
+- Specificată în oz/ft² (uncii/picior pătrat): 1 oz/ft² = 34.1 μm = 35 μm
+- Grosimi comune: 0.5 oz (17 μm), 1 oz (34 μm), 2 oz (68 μm), 3 oz (102 μm)
+- Heavy copper: >3 oz/ft² (~105 μm) – pentru curenți mari sau disipare căldură
+- 1 oz/ft² este cea mai frecventă grosime
+
+SECȚIUNEA 6 – Montarea componentelor
+- Through-hole (THT): pinii componentei trec prin găuri și sunt lipiți pe partea opusă
+- Surface-mount (SMT): componentele sunt lipite direct pe suprafața PCB-ului (fără găuri)
+- SMT dominantă din anii 1990: componente ¼ – 1/10 din dimensiunea THT
+- SMT permite automatizare, producție rapidă, densitate mai mare
+- PCB-uri moderne: predominant SMT, cu THT doar pentru componente mari (condensatoare electrolitice, conectori)
+- Wave soldering: PCB-ul trece peste un val de aliaj topit (pentru THT)
+- Reflow soldering: pasta de lipire se topește în cuptor (pentru SMT)
+
+SECȚIUNEA 7 – Istorie
+- 1903: Albert Hanson – conductori plați laminați pe substrat izolant, straturi multiple
+- 1936: Paul Eisler (Austria/UK) – inventează circuitul imprimat ca parte dintr-un radio
+- 1941: PCB multi-layer folosit în mine navale germane
+- ~1943: SUA adoptă tehnologia pe scară largă pentru fuzee de proximitate (WWII)
+- 1948: eliberare pentru uz comercial
+- 1950s: Motorola – adopție în electronice consumer
+- 1980s: SMT înlocuiește progresiv through-hole
+- 1990s: plăci multi-layer + HDI cu microvia
+- 2020s: 3D printing pe PCB, HDI avansat
+
+---
+
+SURSA 2: SparkFun – PCB Basics
+URL: https://learn.sparkfun.com/tutorials/pcb-basics/all
+ACCESAT: 2024
+INFORMAȚII EXTRASE:
+
+SECȚIUNEA 1 – Compoziția PCB (structură lasagna)
+- PCB = structură tip lasagna din straturi alternante laminate cu căldură și adeziv
+- Straturile (de la interior la exterior):
+  1. FR4 (substrat): fibră de sticlă, dă rigiditate și grosime. Grosime comună: 1.6mm (0.063"). Alternative: 0.8mm. PCB-uri flexibile: Kapton
+  2. Cupru: folie subțire de cupru laminată pe substrat. Double-sided = cupru pe ambele fețe. Poate fi 1-16+ straturi. 1 oz/ft² = ~35 μm grosime
+  3. Soldermask: strat protector peste cupru, previne scurtcircuite accidentale și coroziune. De obicei verde, dar orice culoare posibilă. Lasă expuse pad-urile pentru lipire
+  4. Silkscreen: litere, numere, simboluri pentru identificare componente. De obicei alb
+
+SECȚIUNEA 2 – Terminologie cheie PCB
+- Trace: cale continuă de cupru pe PCB (echivalent fir electric)
+- Pad: zonă expusă de metal pentru lipirea componentelor (PTH = plated through-hole, SMD = surface mount)
+- Via: gaură metalizată pentru transmiterea semnalului între straturi. Tented via = acoperită cu soldermask
+- Annular ring: inelul de cupru în jurul unui through-hole metalizat
+- Plane (pour): bloc continuu de cupru definit de limite, nu de traseu (ex: ground pour)
+- Thermal: traseu mic care conectează un pad la un plane – necesare pentru lipire corectă
+- DRC (Design Rule Check): verificare software a design-ului
+- Drill hit: locuri de găurire pe PCB
+- Solder paste: bilute mici de aliaj suspendate într-un gel, aplicate pe pad-uri SMD
+
+---
+
+NOTE CERCETARE:
+1. PCB-ul este platforma fizică fundamentală pe care se construiesc toate dispozitivele electronice, inclusiv console
+2. Conceptul de straturi (layers) este esențial: ground plane + power plane + signal layers
+3. Ground plane oferă: ecranare EMI, return path pentru curent, stabilitate semnal
+4. Distribuția alimentării se face prin power plane dedicat sau trasee late de cupru
+5. FR-4 este materialul standard dar console/dispozitive speciale pot folosi substraturi avansate
+6. Grosimea cuprului determină capacitatea de curent – în console power delivery necesită cupru mai gros
+7. Legătura cu lecțiile anterioare: PCB-ul este „motherboard-ul" descris în 4.6

@@ -1,0 +1,180 @@
+LECȚIA 3.3 – Flip-flop și registre
+MATERIAL BRUT DE CERCETARE
+========================================
+
+SURSA 1: Wikipedia – Flip-flop (electronics)
+URL: https://en.wikipedia.org/wiki/Flip-flop_(electronics)
+
+SECȚIUNEA 1: Definiție și principii fundamentale
+INFORMAȚIE EXTRASĂ:
+- Flip-flops și latches sunt circuite care au două stări stabile ce pot stoca informație de stare – bistable multivibrator
+- Circuitul poate fi schimbat prin semnale aplicate la una sau mai multe intrări de control și va furniza starea sa (plus complementul logic) la ieșire
+- Este elementul fundamental de stocare în logica secvențială
+- Stochează un singur bit (cifră binară) de date; una din cele două stări reprezintă 1, cealaltă reprezintă 0
+- Utilizări: stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare
+- Termenul flip-flop se referă modern exclusiv la circuitele edge-triggered (sincrone, cu ceas)
+- Termenul latch se referă la circuitele level-triggered (asincrone, transparente)
+- Primul latch electronic inventat în 1918 de William Eccles și F. W. Jordan (trigger circuit Eccles–Jordan, cu tuburi vidate)
+- Utilizat în computerul Colossus (1943) pentru spargerea codurilor
+
+SECȚIUNEA 2: Implementare
+INFORMAȚIE EXTRASĂ:
+- Latches transparente (asincrone) se construiesc din perechi de inversoare cross-coupled
+- Elemente active utilizate: tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare
+- Flip-flop-urile cu ceas sunt proiectate pentru sisteme sincrone
+- Ignoră intrările cu excepția tranziției semnalului de ceas dedicat (clocking/pulsing/strobing)
+- La tranziția ceasului: flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor
+- Unele flip-flop-uri schimbă pe rising edge, altele pe falling edge
+- Două etape de amplificare inversoare conectate în cascadă formează amplificatorul neinversor necesar
+
+SECȚIUNEA 3: Latch SR (Set-Reset)
+INFORMAȚIE EXTRASĂ:
+- Cel mai fundamental latch: SR asincron (Set-Reset)
+- S=1, R=0: Set (Q=1)
+- S=0, R=1: Reset (Q=0)
+- S=0, R=0: Hold state (menține starea anterioară)
+- S=1, R=1: Combinație restricționată (nevalidă)
+- SR NOR latch: două porți NOR cross-coupled cu feedback
+  - NOR cu control 1 fixează ieșirea la 0; NOR cu control 0 acționează ca NOT
+  - Q și Q̄ sunt complementare în mod normal
+  - S=R=1 forțează ambele ieșiri la 0, rupând ecuația Q = NOT Q̄
+  - Poate duce la metastabilitate (race condition)
+  - Ecuație caracteristică: Q_next = R̄·Q + R̄·S sau Q_next = S + R̄·Q (cu S·R = 0)
+- SR NAND latch: aceleași feedback-uri, porți NAND; intrări active-low (inversate)
+  - S=R=0 produce starea invalidă (opusul NOR)
+- JK latch: SR latch cu comportament toggle pentru combinația J=K=1
+
+SECȚIUNEA 4: Latches cu poartă (Gated) și transparență
+INFORMAȚIE EXTRASĂ:
+- Gated SR latch: nivel suplimentar de porți NAND/AND adăugat la SR latch
+  - Intrare Enable (E): E=1 permite semnalelor să treacă (transparent), E=0 blochează (opac, menține starea)
+  - Semnalul periodic Enable se numește write strobe
+  - Când Enable = clock signal → latch level-sensitive (nu edge-sensitive)
+- Gated D latch (transparent latch / data latch):
+  - Exploatează faptul că în combinațiile active (01, 10) ale SR, R = complement S
+  - Un singur input D + Enable: elimină combinația restricționată S=R=1
+  - E=0: ieșirea nu se schimbă (hold); E=1: Q urmează D
+  - Utilizat ca porturi I/O, în sisteme asincrone, sau sisteme sincrone cu două faze
+  - Tabel: E=0,D=X → Q_prev (no change); E=1,D=0 → Reset; E=1,D=1 → Set
+- Earle latch: alternativă cu propagare constantă de 2 gate delays
+  - Dezvoltat de John G. Earle pentru IBM System/360 Model 91
+  - Hazard-free; poate fi fuzionat cu nivelurile de porți ale circuitelor precedente (pipelining)
+- Master-slave: latch transparent-high urmat de transparent-low (sau invers) → starea se schimbă doar pe fronturile ceasului
+
+SECȚIUNEA 5: D Flip-Flop
+INFORMAȚIE EXTRASĂ:
+- Cel mai utilizat flip-flop: D flip-flop (data flip-flop)
+- Captează valoarea D-input la o porțiune definită a ciclului de ceas (ex. rising edge)
+- Valoarea capturată devine ieșirea Q; în restul timpului Q nu se schimbă
+- Poate fi văzut ca celulă de memorie, zero-order hold, sau delay line
+- Tabel de adevăr: Rising edge + D=0 → Q=0; Rising edge + D=1 → Q=1; Non-rising → Q_prev
+- Majoritatea au capacitate de Set/Reset forțat (ignoră D și ceasul)
+- Formează baza shift registers (registre de deplasare)
+- Classical positive-edge-triggered D flip-flop:
+  - Două etape implementate cu SR NAND latches (input stage + output stage)
+  - Clock low: ambele ieșiri ale input stage sunt high → output latch neafectat (stochează starea anterioară)
+  - Clock rising edge: una dintre ieșiri scade → setează/resetează output latch
+  - Clock high: orice schimbare D este ignorată
+- Master-slave edge-triggered D flip-flop:
+  - Doi gated D latches în serie cu enable inversat
+  - Master latch controlează slave latch; slave copiază mereu de la master
+  - Positive-edge: clock low → master acceptă date; clock rising → master se blochează, slave se actualizează
+  - Clock returnează low → slave se blochează, master acceptă date noi
+- Dual-edge-triggered: citește pe ambele fronturi (rising + falling)
+  - Construit din doi single-edge D flip-flops + multiplexor sau + 3 porți XOR
+
+SECȚIUNEA 6: T Flip-Flop și JK Flip-Flop
+INFORMAȚIE EXTRASĂ:
+- T flip-flop (Toggle):
+  - T=1 + clock strobe → schimbă starea (toggle)
+  - T=0 → menține starea anterioară
+  - Ecuație: Q_next = T ⊕ Q = T·Q̄ + T̄·Q
+  - T menținut high → divide frecvența ceasului la 2 (4 MHz → 2 MHz)
+  - Aplicații: contoare digitale
+  - Se poate construi din JK (J=K conectate) sau din D (T XOR Q_prev → D)
+- JK flip-flop:
+  - Augmentează SR: J=1,K=0 → Set; J=0,K=1 → Reset; J=K=1 → Toggle; J=K=0 → Hold
+  - Ecuație: Q_next = J·Q̄ + K̄·Q
+  - Universal flip-flop: poate fi configurat ca SR, D sau T
+  - D flip-flop: K = complement J
+  - T flip-flop: K = J
+
+SECȚIUNEA 7: Parametri de timing
+INFORMAȚIE EXTRASĂ:
+- Setup time (tsu): timpul minim în care datele trebuie menținute stabile ÎNAINTE de frontul ceasului
+- Hold time (th): timpul minim în care datele trebuie menținute stabile DUPĂ frontul ceasului
+- Aperture: suma setup time + hold time; datele trebuie stabile pe toată această perioadă
+- Recovery time: similar cu setup, dar pentru intrările asincrone (set/reset)
+- Removal time: similar cu hold, dar pentru intrările asincrone
+- Metastabilitate: problemă când două intrări (data+clock sau clock+reset) se schimbă aproape simultan
+  - Ieșirea poate oscila sau rămâne într-o stare nepredictibilă
+  - Teoretic, timpul de stabilizare nu are limită superioară
+  - Soluție: lanț de flip-flop-uri cascadate (dual-ranked = 2 în serie)
+  - Metastable-hardened flip-flops: reduc setup/hold dar nu elimină problema complet
+- Propagation delay (tCO / tP): timpul dintre frontul ceasului și schimbarea ieșirii
+  - tPHL (high-to-low) poate diferi de tPLH (low-to-high)
+  - În shift registers: tCO al precedentului trebuie > th al succesorului
+  - Perioada ceasului trebuie > tsu + th
+
+========================================
+
+SURSA 2: Wikipedia – Hardware register
+URL: https://en.wikipedia.org/wiki/Hardware_register
+
+SECȚIUNEA 1: Definiție și structură
+INFORMAȚIE EXTRASĂ:
+- Registrul = un grup de celule de memorie ce stochează o colecție de biți și furnizează continuu datele stocate
+- Format din grup sincronizat de flip-flop-uri; fiecare flip-flop stochează și furnizează un bit
+- Numărul de biți = word size = numărul de flip-flop-uri (ex. "registru de 32 biți")
+- Memorie volatilă: pierde datele la pierderea alimentării
+- Caracterizat prin: capacitate de stocare, polarități de semnal, nivele logice, tensiuni, parametri de timing
+- Bloc fundamental al sistemelor digitale
+
+SECȚIUNEA 2: Semnale
+INFORMAȚIE EXTRASĂ:
+- Intrări:
+  - Reset: inițializează toate flip-flop-urile la stări cunoscute (tipic '0'), sincron sau asincron
+  - Clock: la frontul activ (rising/falling), datele de la intrări sunt stocate în flip-flop-uri
+  - Data in: date de stocat, un bit per flip-flop, D₀ la D_{n-1}
+- Ieșiri:
+  - Data out: datele stocate curent, un bit per flip-flop, Q₀ la Q_{n-1}
+  - Continuu emise, stabile cu excepția tranzițiilor
+  - Unele registre furnizează ieșiri true și complementare (ex. 74175: 4 flip-flop-uri cu Q și Q̄)
+- Intrări neutilizate: conectate la nivele logice fixe (prevenire floating → comportament imprevizibil)
+
+SECȚIUNEA 3: Implementare și aplicații
+INFORMAȚIE EXTRASĂ:
+- Implementări: MSI IC standalone, registre integrate în ASIC-uri și procesoare, blocuri IP în FPGA
+- FPGA: sintetizate din descrieri VHDL/Verilog/alt HDL
+- Load enable: permite stocarea de date noi doar în cicluri de ceas specifice
+  - Implementare: multiplexor 2-to-1 controlat de LD rutează D sau Q curent la intrarea flip-flop-ului
+  - Alternativ cu JK flip-flop: LD controlează set/clear
+- Registre adresabile: fiecare registru primește adresă binară unică
+  - Write: adresa trimisă la decoder binar → activează LD al registrului → date stocate de pe bus comun la clock edge
+  - Read: multiplexor sau buffere tri-state rutează ieșirea registrului pe bus comun
+  - Read port: instanță de mecanism gating pentru citire concurentă
+- Aplicații în computere: CPU (processor registers), configurare, buffer storage (ex. video memory), I/O, întreruperi, status periferic
+- Peripheral registers: software scrie/citește prin load/store cu adrese memory-mapped I/O sau port-mapped I/O
+- Shift register: logică transferă fiecare bit stocat la flip-flop-ul adiacent (deplasare cu 1 poziție per ciclu de ceas)
+- Contor binar sincron: logică produce secvența de numărare
+
+SECȚIUNEA 4: Operații atomice și registre de întreruperi
+INFORMAȚIE EXTRASĂ:
+- Operații atomice pe biți: set/clear/complement biți individuali fără read-modify-write
+  - Evită necesitatea memory barriers, instrucțiuni atomice, semafoare
+  - MODE pe 2 biți: mode 0 = store necondiționat, mode 1 = set, mode 2 = clear, mode 3 = complement
+  - Biții sunt modificați doar când D='1' pentru acel bit
+- Interrupt status register: flip-flop setat la REQ (cerere întrerupere), resetat la ACK (confirmare)
+  - AND gate previne pierderea cererilor noi în timpul confirmării
+  - PEND + INTEN activ → IRQ trimis la interrupt controller
+
+========================================
+
+NOTE CERCETARE:
+- Lecția cere: memorie digitală, latch, bistabile, registre
+- Flip-flop-ul este elementul fundamental de stocare a unui bit (bistabil)
+- Latch = level-triggered, flip-flop = edge-triggered (distincție modernă)
+- Tipuri principale: SR (Set-Reset), D (Data), T (Toggle), JK (universal)
+- Registrul = grup de flip-flop-uri sincronizate, stochează un cuvânt (word)
+- Timing critic: setup time, hold time, propagation delay, metastabilitate
+- Aplicații: shift registers, contoare, register files, memorie cache, I/O periferic

@@ -1,0 +1,31 @@
+LESSON: 2.2 – Condensatoare
+
+---
+
+CONCEPT: Capacitate
+
+VERIFIED INFORMATION:
+Capacitatea (C) = raportul sarcinii la tensiune: C = Q / V. Unitate: farad (F); submultipli uzuali: μF, nF, pF. Condensator cu plăci paralele: C = ε × A / d (ε = permitivitate, A = arie, d = distanță). Capacitate mai mare prin: permitivitate mare, arie mare, separare mică. Tipuri de dielectric: ceramic, electrolitic, film polimeric, sticlă, mică. Condensatoare ceramice: mici, ieftine, frecvențe înalte. Electroliticele: capacitanțe mari dar polarizate. Comportament în AC: reactanța Xc = 1/(2πfC) – scade cu frecvența.
+
+---
+
+CONCEPT: Stocare de energie
+
+VERIFIED INFORMATION:
+Energia stocată: W = ½ × C × V² = ½ × Q²/C = ½ × V × Q (în jouli). Energia este stocată în câmpul electric dintre plăcile condensatorului. Condensatoarele pot elibera energia foarte rapid comparativ cu bateriile. Energie specifică: condensatoare convenționale < 360 J/kg vs. baterie alcalină ~590 kJ/kg. Supercondensatoare: capacitanțe până la 5 kF, pot înlocui bateriile în anumite aplicații. Circuit RC: constanta de timp τ = R × C; încărcare/descărcare exponențială.
+
+---
+
+CONCEPT: Filtrare
+
+VERIFIED INFORMATION:
+Condensatoarele blochează DC dar permit trecerea AC (AC coupling). Reactanța capacitivă Xc = 1/(2πfC): scăzută la frecvențe înalte, mare la frecvențe joase. Condensatoare bypass/decuplare: conectate între alimentare și masă, șuntează zgomotul AC. Condensatoare de decuplare pot fi integrate în straturile PCB-ului. Filtre trece-sus: permit frecvențe înalte, blochează joase. Filtre trece-jos: permit frecvențe joase, blochează înalte. Snubber: protejează contacte de arcuri electrice la deschiderea circuitelor inductive.
+
+---
+
+CONCEPT: Smoothing (netezire)
+
+VERIFIED INFORMATION:
+Condensatoarele-rezervor netezesc ieșirea redresoarelor (full-wave / half-wave). Mențin tensiunea între ciclurile de redresare, reducând ripple-ul. Conectate în paralel cu circuitele de alimentare. Curent de ondulare (ripple current): componenta AC care generează căldură prin ESR. ESR (Equivalent Series Resistance): parametru cheie pentru smoothing. Ceramic: ESR cel mai scăzut. Film: ESR foarte scăzut. Electrolitic aluminiu: durata de viață scade la ripple mare. Electrolitic tantal: ESR cel mai mare, limitat de ripple. Condensatoarele electroliticele sunt cele mai uzuale pentru smoothing în surse de alimentare.
+
+---

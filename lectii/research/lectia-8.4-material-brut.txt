@@ -1,0 +1,148 @@
+LECTIA 8.4 – Studii de caz
+MATERIAL BRUT – Cercetare
+
+========================================
+SURSA 1: Wikipedia – Red Ring of Death
+URL: https://en.wikipedia.org/wiki/Xbox_360_technical_problems
+========================================
+
+SECTIUNEA 1: Definitie si manifestare RROD
+- Red Ring of Death (RROD) = trei LED-uri rosii pe fata consolei Xbox 360 care indica "General Hardware Failure"
+- Termenul a fost creat dupa analogia cu Blue Screen of Death (BSOD) din Windows
+- Trei cadrane rosii din patru aprinse simultan = eroare hardware generala
+- Un singur cadran rosu = eroare E74, legata de conexiunea GPU
+
+SECTIUNEA 2: Rate de defectare
+- SquareTrade (2009): rata de defectare de 23.7% in doua luni de utilizare
+- Game Informer: 54.2% din respondenti au raportat cel putin un RROD
+- Angajatii Joystiq: 90% au experimentat RROD pana la sfarsitul lui 2007
+- Date interne Microsoft: 6-7% rata de defectare la fabricatie sfarsitul 2005, ~30% pana in martie 2006
+- Randamentul productiei a scazut pana la 32% (rata de defectare de 68%)
+
+SECTIUNEA 3: Cauza radacina (confirmata oficial 2021)
+- Cauza principala: fisurarea imbinarilor de lipitura (solder joints) din interiorul pachetului flip chip al GPU-ului
+- Fisurile apareau intre GPU si substratul interposer
+- Cauza stresului termic: cicluri de pornire/oprire (incalzire/racire repetata)
+- Lipitura fara plumb (lead-free solder) adoptata din cauza regulamentelor EU
+- Aliajul alternativ ales a devenit fragil la temperaturi ridicate → fisuri microscopice aproape ireparabile
+- Microsoft a proiectat cipul intern pentru a economisi costurile furnizorului ASIC → dupa esecuri s-au intors la furnizorul ASIC pentru reproiectare cu disipare termica imbunatatita
+
+SECTIUNEA 4: Istoricul problemei
+- Xbox 360 lansat in noiembrie 2005 cu design grabit si schimbari tardive (adaugarea HDD-ului a compromis fluxul de aer)
+- Testare insuficienta inainte de lansare
+- Inginerii erau constienti de probleme din august 2005: supraincalzire cipuri grafice, fisurarea radiatoarelor, cipuri de memorie Infineon cu performante sub asteptari, probleme cu unitatea DVD
+- Consolele au inceput sa cedeze "aproape imediat" dupa lansare
+- Microsoft a considerat initial rapoartele "cazuri izolate"
+
+SECTIUNEA 5: Costul crizei si rezolvarea
+- Peter Moore (VP Microsoft): costul total al crizei = 1.15 miliarde dolari (din care 240 milioane $ doar pentru FedEx)
+- Steve Ballmer a aprobat cheltuielile fara ezitare
+- Iulie 2007: extinderea garantiei la 3 ani de la data cumpararii pentru RROD
+- Eroarea E74 (conexiune GPU defecta, un singur cadran rosu) acoperita de garantia extinsa din 2009
+- Criza s-a diminuat din 2009: modelele Jasper aveau rate sub 4%
+- Xbox 360 S (2010): rate de defectare semnificativ mai mici
+- Pana in 2012: ratele Xbox 360 erau comparabile cu PS3
+
+SECTIUNEA 6: Alte defecte conexe
+- Discuri zgriate: defect separat (unitatea de disc nu avea mecanism de securizare), necorect prin revizii; inginerii stiau din sept-oct 2005, bumperele ar fi costat 0.50$/unitate
+- Actualizarea din noiembrie 2006 a blocat console (eroarea E71)
+- NXE (New Xbox Experience) a cauzat probleme cu mediile optice si HDMI
+- Periferice: Wireless Racing Wheel ("Hotwheels") supraincalzire; Nyko Intercooler putea cauza RROD
+
+========================================
+SURSA 2: Wikipedia – PlayStation 3 (Yellow Light of Death)
+URL: https://en.wikipedia.org/wiki/PlayStation_3
+========================================
+
+SECTIUNEA 1: Definitie YLOD
+- Yellow Light of Death (YLOD) = LED galben pe consola PS3 care indica defectiune hardware generala
+- Consola refuza sa porneasca dupa aparitia luminii galbene
+- Similar cu RROD de la Xbox 360 ca natura problemei
+
+SECTIUNEA 2: Raportare si rata de defectare
+- BBC Watchdog (2009): consolele afectate cedau de obicei la 18-24 luni de la cumparare
+- Perioada de defectare depasea garantia Sony de 1 an
+- SquareTrade (2009): rata de defectare de 10% in doi ani
+- Ars Technica: rata de defectare in intervalul asteptat pentru electronice de consum
+- Date interne Sony: doar ~0.5% din console returnate cu YLOD
+- Sony a contestat raportul Watchdog ca fiind "inselator"
+
+SECTIUNEA 3: Hardware PS3 – context tehnic
+- Procesor: Cell Broadband Engine la 3.2 GHz (PowerPC PPE + 7 SPE-uri, 1 dezactivat pentru randament)
+- GPU: RSX Reality Synthesizer (Nvidia, 256 MB GDDR3)
+- Memorie: 256 MB XDR DRAM
+- 87.4 milioane unitati vandute la nivel mondial
+- 3 revizii hardware: original, Slim, Super Slim
+
+SECTIUNEA 4: Cauza tehnica YLOD
+- Cauza principala: deteriorarea imbinarilor de lipitura fara plumb (lead-free solder) pe GPU sau CPU
+- Stresul termic din cicluri de incalzire/racire cauza fisuri in imbinarile BGA (Ball Grid Array)
+- Similar cu RROD: tranzitia la lipitura fara plumb (conformitate RoHS) a introdus vulnerabilitati
+- Componentele generate cantitati mari de caldura, iar managementul termic era insuficient in unele modele
+
+SECTIUNEA 5: Bug conex – ApocalyPS3
+- Bug de an bisect (1 martie 2010): stocarea datei in format BCD a identificat gresit 2010 ca an bisect
+- Eroarea 8001050F a afectat consolele PS3 mai vechi (Fat)
+- Nu a fost legat de YLOD dar a fost o alta problema hardware/software notabila
+
+========================================
+SURSA 3: iFixit – PlayStation 4 Troubleshooting (Blue Light of Death)
+URL: https://www.ifixit.com/Wiki/PlayStation_4_Troubleshooting
+========================================
+
+SECTIUNEA 1: Definitie BLOD
+- Blue Light of Death (BLOD) = lumina albastra pulsata pe partea superioara a consolei PlayStation 4
+- Consola nu reuseste sa treaca de la lumina albastra la lumina alba (care indica functionarea normala)
+- Rezultat: consola nu trimite semnal video la televizor
+
+SECTIUNEA 2: Cauze posibile identificate de iFixit
+- Sursa de alimentare defecta (Faulty Power Supply): se recomanda verificarea cablului AC si a portului de alimentare, apoi inlocuirea sursei
+- Hard disk defect (Faulty Hard Drive): se recomanda oprirea sistemului (7 secunde power button), deconectarea cablurilor, apoi inlocuirea HDD
+- Hardware defect generic: daca solutiile de mai sus nu functioneaza, se recomanda contactarea Sony pentru garantie
+
+SECTIUNEA 3: Cauze tehnice detaliate (din comunitatea de reparatii)
+- Cipul encoder HDMI defect: Panasonic MN864729 – responsabil pentru conversia semnalului video in format HDMI; defectarea acestuia cauzeaza absenta semnalului video
+- Portul HDMI deteriorat fizic: pini indoiti sau rupti impiedica transmisia semnalului
+- Imbinari de lipitura defecte pe APU (AMD Accelerated Processing Unit): similar cu RROD/YLOD, stresul termic poate cauza fisurarea lipiturilor BGA sub procesorul principal
+- Management termic insuficient: supraincalzirea duce la deteriorarea componentelor si a lipiturilor
+- Defectarea sursei de alimentare: nu furnizeaza tensiunile corecte pentru initializarea sistemului
+
+========================================
+SURSA 4: Wikipedia – PlayStation 4 (context hardware)
+URL: https://en.wikipedia.org/wiki/PlayStation_4
+========================================
+
+SECTIUNEA 1: Specificatii hardware PS4
+- APU dezvoltat de AMD in cooperare cu Sony
+- CPU: doua module quad-core Jaguar = 8 nuclee x86-64 la 1.6 GHz (2.13 GHz pe PS4 Pro)
+- GPU: AMD GCN cu 18 CU-uri la 800 MHz = 1.84 TFLOPS (36 CU-uri la 911 MHz = 4.2 TFLOPS pe Pro)
+- Memorie: 8 GB GDDR5 la 2.75 GHz (5500 MT/s), bandwidth maxim 176 GB/s
+- Stocare: HDD 500 GB sau 1 TB
+- Sistem de operare: Orbis OS (bazat pe FreeBSD 9 modificat)
+- Iesire video: doar HDMI (fara iesire analogica)
+- 117.2 milioane unitati livrate (pana in martie 2022)
+- Lansat: 15 noiembrie 2013 (America de Nord)
+- Revizii: Original, Slim (CUH-2000, 2016), Pro (CUH-7000, 2016)
+
+========================================
+NOTE CERCETARE
+========================================
+
+1. RROD este cel mai bine documentat caz de defectare hardware in masa din istoria consolelor de jocuri video
+   - Cauza confirmata oficial abia in 2021, la 16 ani de la aparitia problemei
+   - Costul total de 1.15 miliarde $ a fost una dintre cele mai mari cheltuieli de garantie din industria electronicelor de consum
+
+2. YLOD a afectat PS3 intr-o masura mai mica decat RROD a afectat Xbox 360
+   - Ratele de defectare YLOD (~10% in 2 ani vs ~54% auto-raportate pentru RROD) au fost semnificativ mai mici
+   - Cauza tehnica similara: lipitura fara plumb + stres termic
+
+3. BLOD pe PS4 are mai multe cauze posibile comparativ cu RROD/YLOD
+   - Nu exista o singura cauza dominanta; poate fi encoder HDMI, port HDMI, APU sau sursa de alimentare
+   - PS4 nu a avut o criza de defectare comparabila cu RROD; BLOD afecteaza un procent mic de console
+   - Wikipedia nu are un articol dedicat problemelor tehnice ale PS4, ceea ce confirma ca BLOD nu a fost o problema la scara larga
+
+4. Element comun tuturor cazurilor: lipitura fara plumb (lead-free solder) – tranzitia impusa de regulamentele RoHS/EU
+   - Lipitura traditionala cu plumb era mai rezistenta la stresul termic
+   - Aliajele fara plumb sunt mai fragile si susceptibile la fisurare prin cicluri termice
+
+5. Sursa iFixit ofera informatii practice de diagnostic dar nu date statistice despre rata de aparitie a BLOD

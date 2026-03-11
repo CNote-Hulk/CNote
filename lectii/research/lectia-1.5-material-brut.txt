@@ -1,0 +1,125 @@
+LECȚIA 1.5 – Serie și paralel
+MATERIAL BRUT – CERCETARE
+
+========================================
+SURSA 1: Wikipedia – Series and parallel circuits
+URL: https://en.wikipedia.org/wiki/Series_and_parallel_circuits
+DATA ACCESĂRII: 2025
+========================================
+
+INFORMAȚII EXTRASE:
+
+1. Definiții fundamentale:
+   - Componente conectate în serie: conectate de-a lungul unui singur „traseu electric", fiecare componentă are același curent prin ea, egal cu curentul prin rețea
+   - Tensiunea pe rețea = suma tensiunilor pe fiecare componentă (voltage drops)
+   - Componente conectate în paralel: conectate pe mai multe trasee, fiecare componentă are aceeași tensiune pe ea, egală cu tensiunea pe rețea
+   - Curentul prin rețea = suma curenților prin fiecare componentă
+   - Cele două afirmații sunt echivalente, cu excepția interschimbării rolului tensiunii și curentului (dualitate)
+
+2. Exemplu practic (4 becuri + baterie 12V):
+   - Serie: curentul trece prin toate becurile la rând; cădere de tensiune = 3V pe fiecare bec (12V / 4); posibil insuficient pentru iluminare
+   - Paralel: fiecare bec este conectat direct la baterie; tensiune = 12V pe fiecare bec; toate becurile strălucesc
+   - Serie: dacă un bec se arde, întregul circuit se întrerupe
+   - Paralel: dacă un bec se arde, celelalte continuă să funcționeze
+
+3. CIRCUITE ÎN SERIE:
+
+   a) Curent:
+      I = I₁ = I₂ = ... = Iₙ
+      Curentul este același prin toate elementele.
+
+   b) Tensiune:
+      V = ΣVᵢ = I × ΣRᵢ
+      Tensiunea total = suma căderilor de tensiune individuale (voltage drops).
+
+   c) Rezistență totală:
+      R_total = R₁ + R₂ + R₃ + ... + Rₙ
+      Rezistența totală = suma rezistențelor individuale.
+
+   d) Condensatoare în serie:
+      1/C_total = 1/C₁ + 1/C₂ + ... + 1/Cₙ
+      Capacitatea totală = reciproca sumei reciprocelor capacităților individuale.
+      (Invers față de rezistoare!)
+
+   e) Inductoare în serie:
+      L_total = L₁ + L₂ + ... + Lₙ
+      Inductanța totală = suma inductanțelor individuale.
+      (La fel ca rezistoarele.)
+
+   f) Switch-uri în serie = AND logic: circuitul funcționează doar dacă TOATE switch-urile sunt închise.
+
+   g) Baterii în serie: tensiunea totală = suma tensiunilor celulelor.
+      Ex: baterie auto 12V = 6 celule × 2V.
+
+   h) Caracteristici serie:
+      - Un singur traseu pentru curent
+      - Deschiderea/ruperea circuitului în orice punct oprește tot circuitul
+      - Numit și „current-coupled" (cuplat prin curent)
+
+4. CIRCUITE ÎN PARALEL:
+
+   a) Tensiune:
+      V = V₁ = V₂ = ... = Vₙ
+      Tensiunea este aceeași pe toate elementele.
+
+   b) Curent:
+      I = ΣIᵢ = V × Σ(1/Rᵢ)
+      Curentul total = suma curenților individuali (legea lui Kirchhoff pentru curent – KCL).
+
+   c) Rezistență totală:
+      1/R_total = 1/R₁ + 1/R₂ + ... + 1/Rₙ
+      Rezistența totală < cea mai mică rezistență individuală.
+      Caz special 2 rezistoare: R_total = (R₁ × R₂) / (R₁ + R₂) – „product over sum"
+      N rezistoare egale R': R_total = R'/N.
+
+   d) Distribuția curentului (2 rezistoare):
+      I₁/I₂ = R₂/R₁
+      Componentele împart curentul invers proporțional cu rezistențele lor.
+
+   e) Condensatoare în paralel:
+      C_total = C₁ + C₂ + ... + Cₙ
+      Capacitatea totală = suma capacităților individuale.
+      (Invers față de rezistoare! La fel ca rezistoarele în serie.)
+
+   f) Inductoare în paralel:
+      1/L_total = 1/L₁ + 1/L₂ + ... + 1/Lₙ
+      (La fel ca rezistoarele în paralel.)
+
+   g) Switch-uri în paralel = OR logic: circuitul funcționează dacă cel puțin un switch este închis.
+
+   h) Baterii în paralel:
+      - Tensiunea = tensiunea unei singure celule
+      - Curentul furnizat de fiecare celulă = fracțiune din curentul total
+      - Crește capacitatea (amp-hours)
+      - Celulele trebuie să aibă tensiune identică, altfel cele cu tensiune mai mare vor încerca să le încarce pe cele cu tensiune mai mică
+
+5. Notație:
+   - Operatorul paralel: ∥
+   - R₁ ∥ R₂ = (R₁ × R₂) / (R₁ + R₂)
+   - Simplifică expresiile complexe
+
+6. Aplicații:
+   - Baterii: celule în serie pentru tensiune mai mare (ex: lanternă, scule electrice cu 12 celule Li-ion = 48V)
+   - Circuite serie în trenuri: 8 becuri de 70V în serie pe linie de 600V
+   - Analogie cu sistemul circulator: vase de sânge în serie (rezistența se adună) vs organe alimentate în paralel (rezistența totală < individuală)
+
+7. Legile lui Kirchhoff (menționate):
+   - KCL (Kirchhoff's Current Law): suma curenților care intră într-un nod = suma curenților care ies
+   - KVL (Kirchhoff's Voltage Law): suma căderilor de tensiune pe o buclă închisă = 0
+
+========================================
+NOTE CERCETARE:
+========================================
+
+CONCEPTE ACOPERITE DIN STRUCTURA CURSULUI:
+[✓] circuite în serie – definiție, proprietăți curent, tensiune, rezistență
+[✓] circuite în paralel – definiție, proprietăți curent, tensiune, rezistență
+[✓] distribuția tensiunii – voltage drops în serie, tensiune egală în paralel
+[✓] distribuția curentului – curent egal în serie, curent distribuit în paralel
+
+OBSERVAȚII:
+- Toate cele 4 concepte ale lecției au fost acoperite cu o singură sursă Wikipedia
+- Formule verificate: serie (R=ΣRᵢ), paralel (1/R=Σ1/Rᵢ)
+- Dualitatea serie/paralel este un pattern important de reținut
+- Comportamentul condensatoarelor este opus rezistoarelor (serie↔paralel inversate)
+- Exemplul practic cu becurile ilustrează bine diferența

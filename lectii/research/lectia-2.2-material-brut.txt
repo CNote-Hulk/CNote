@@ -1,0 +1,122 @@
+LECȚIA 2.2 – Condensatoare
+MATERIAL BRUT – CERCETARE
+
+========================================
+SURSA 1: Wikipedia – Capacitor
+URL: https://en.wikipedia.org/wiki/Capacitor
+========================================
+
+INFORMAȚII EXTRASE:
+
+1. DEFINIȚIE:
+- Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta
+- Componentă electronică pasivă cu două terminale
+- Termenul vechi: „condenser" (condensator), inventat de Alessandro Volta în 1780
+- Cele mai multe condensatoare conțin cel puțin doi conductori electrici (plăci metalice) separați de un dielectric
+
+2. CAPACITATE (C):
+- Definită ca raportul sarcinii Q la tensiunea V: C = Q / V
+- Unitate: farad (F) – 1 farad = 1 coulomb pe volt
+- 1 farad este o valoare foarte mare; în practică se folosesc:
+  - microfarad (μF = 10⁻⁶ F)
+  - nanofarad (nF = 10⁻⁹ F)
+  - picofarad (pF = 10⁻¹² F)
+- Capacitatea unui condensator cu plăci paralele: C = ε × A / d
+  - ε = permitivitatea dielectricului
+  - A = aria plăcilor
+  - d = distanța între plăci
+- Capacitate mai mare = permitivitate mare, arie mare, distanță mică
+
+3. STOCARE DE ENERGIE:
+- Energia stocată: W = ½ × C × V² = ½ × Q² / C = ½ × V × Q
+- Energia este stocată în câmpul electric dintre plăci
+- Densitatea energiei: W = ½ × ε × E² × (volumul câmpului electric)
+- Un condensator poate fi folosit ca o baterie temporară
+- Condensatoarele pot elibera energia foarte rapid (comparativ cu bateriile)
+- Energia specifică: condensatoare convenționale < 360 J/kg vs. baterie alcalină ~590 kJ/kg
+- Supercondensatoare: pot accepta/livra sarcină mult mai rapid decât bateriile
+
+4. TIPURI DE CONDENSATOARE (materiale dielectrice):
+a) Ceramic: mici, ieftine, utile la frecvențe înalte
+   - Clasa 1 (C0G/NP0): variație predictibilă cu temperatura
+   - Clasa 2: pot opera la tensiuni mai mari
+   - Dezavantaje: capacitatea variază cu tensiunea și temperatura, îmbătrânire
+
+b) Electrolitic (aluminiu sau tantal):
+   - Placă de aluminiu/tantal cu strat de oxid ca dielectric
+   - Al doilea electrod = electrolit lichid
+   - Capacitanțe foarte mari
+   - Dezavantaje: toleranțe slabe, instabilitate, pierderi de capacitanță la căldură, curent de scurgere
+   - Se degradează dacă nu sunt utilizate ~1 an
+   - Polarizate (au + și -)
+
+c) Tantal: mai bune caracteristici de frecvență și temperatură decât aluminiu
+   - Absorbție dielectrică mai mare
+
+d) Film (plastic/polimer):
+   - Stabilitate și îmbătrânire mai bune decât hârtia
+   - Folosite în circuite de suprimare, pornire motoare, corecție factor de putere
+
+e) Sticlă și mică: extrem de fiabile, stabile, tolerante la temperaturi și tensiuni înalte
+   - Prea scumpe pentru aplicații standard
+
+f) Supercondensatoare: folosesc electrozi de carbon poros
+   - Capacitanțe până la 5 kF
+   - Pot înlocui bateriile reîncărcabile în unele aplicații
+
+5. FILTRARE (Power Conditioning):
+- Condensatoarele-rezervor sunt folosite în surse de alimentare pentru a netezi ieșirea unui redresor
+- Conectate în paralel cu circuitele de putere pentru a elimina fluctuațiile de curent
+- Oferă o sursă DC „curată" pentru circuitele de semnal/control
+- Filtrare zgomot de rețea (hum) din echipamentele audio
+- Condensatoare bypass: ocolesc componentele de impedanță mare, șuntând curentul AC
+
+6. SMOOTHING (NETEZIRE):
+- În circuitele DC rectificate, condensatoarele netezesc variațiile de tensiune
+- Analogia hidraulică: un condensator funcționează ca un acumulator hidraulic, amortizând variațiile de la pompa (redresorul)
+- Condensatoarele-rezervor mențin tensiunea între ciclurile de redresare
+- Curentul de ondulare (ripple current) = componenta AC dintr-o sursă comutată
+  - Generează căldură din pierderi dielectrice + ESR (rezistența echivalentă serie)
+  - Condensatoarele electroliticc tantalice: limitate de ripple, ESR cel mai mare
+  - Condensatoarele electroliticc aluminiu: durata de viață scade la ripple mare
+  - Condensatoarele ceramice: în general fără limitare de ripple, ESR scăzut
+  - Condensatoarele film: ESR foarte scăzut
+
+7. CONDENSATOARE ÎN SERIE ȘI PARALEL:
+- Paralel: Ceq = C1 + C2 + ... + Cn (capacitățile se adună)
+- Serie: 1/Ceq = 1/C1 + 1/C2 + ... + 1/Cn (se adună inversele)
+- În serie: se folosesc pentru a obține tensiune de lucru mai mare
+- Condensatoarele în serie se comportă invers față de rezistoarele în serie
+
+8. CIRCUIT RC:
+- Constanta de timp: τ = R × C
+- Încărcare: V(t) = V₀(1 - e^(-t/τ))
+- Descărcare: V(t) = V₀ × e^(-t/τ))
+- Curentul scade exponențial pe măsură ce condensatorul se încarcă
+
+9. COMPORTAMENT ÎN AC:
+- Reactanța capacitivă: Xc = 1/(ω×C) = 1/(2πfC)
+- La frecvențe înalte: Xc → 0 (scurtcircuit AC)
+- La frecvențe joase: Xc → ∞ (circuit deschis)
+- Curentul conduce tensiunea cu 90°
+- Condensatoarele blochează DC dar permit trecerea AC
+
+10. APLICAȚII:
+- Stocare de energie (backup memorie, flash, supercondensatoare)
+- Condiționare putere (smoothing, bypass, filtrare)
+- Cuplare semnal (AC coupling – separă AC de DC)
+- Decuplare (protejare de zgomot/tranzitoari)
+- Filtre trece-sus și trece-jos
+- Suprimare zgomot / snubber
+- Pornire motoare (condensator de pornire)
+- Circuite rezonante (tunare radio)
+- Senzori (umiditate, presiune, accelerometre, touchscreen)
+- Oscilatori
+
+========================================
+NOTE CERCETARE:
+========================================
+- Sursa este Wikipedia (sursă permisă conform structura-curs.txt)
+- Informația acoperă conceptele cerute: capacitate, stocare de energie, filtrare, smoothing
+- Condensatoarele sunt esențiale în surse de alimentare (smoothing/filtrare)
+- Energia stocată este proporțională cu pătratul tensiunii (W = ½CV²)

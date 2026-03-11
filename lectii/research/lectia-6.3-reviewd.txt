@@ -1,0 +1,122 @@
+LECȚIA 6.3 – NO POWER
+MATERIAL VERIFICAT ȘI ORGANIZAT
+
+========================================
+CONCEPT 1: Cauze posibile pentru „No Power"
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Cauze la nivel de alimentare AC:
+  → Cablu de alimentare defect sau deconectat
+  → Priză fără tensiune (întrerupător/siguranță panou electric)
+  → Adaptor AC defect (la console cu sursă externă)
+- Cauze la nivel de sursă de alimentare (PSU):
+  → Fuzibil intern ars
+  → Condensatoare electroiltice umflate/sparte (capacitor plague: electrolit greșit → pH alcalin → generare hidrogen → umflare/explozie)
+  → Ventilator blocat → supraîncălzire → defectare componente interne
+  → Îmbătrânire normală (MTBF tipic 100.000h, dar 23% eșuează în 3 ani)
+  → Suprasarcină: componente noi (GPU puternic) depășesc capacitatea sursei
+  → Activarea protecțiilor (OCP, OVP, OTP) din cauza scurtcircuit sau suprasarcină
+  → Surse generice/frauduloase: capacitate reală poate fi jumătate din etichetă
+- Cauze la nivel de placa de bază:
+  → Scurtcircuit pe PCB (lichidul vărsat, lipitură defectă, componente arse)
+  → VRM defect (MOSFET ars → scurtcircuit → PSU se oprește prin protecție)
+  → Condensatoare defecte pe placa de bază (aceleași simptome ca la PSU)
+- Cauze la nivel de conectică:
+  → Buton de pornire defect sau deconectat
+  → Conectori de alimentare neîmpinși complet (24-pin ATX, 8-pin EPS12V)
+  → Cabluri modulare incompatibile (pin-out diferit → scurtcircuit)
+
+SURSE: Wikipedia PSU, HowStuffWorks Power Supply, Wikipedia Capacitor plague
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 2: Verificarea alimentării – Pași de diagnostic
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Ordinea verificărilor (de la simplu la complex):
+  1. Verificare AC: cablul de alimentare este conectat? Priza funcționează? (testat cu alt dispozitiv)
+  2. Verificare întrerupător PSU: comutatorul I/O de pe spatele sursei este pe „I" (pornit)?
+  3. Verificare LED standby: LED-ul pe placa de bază indică prezența +5VSB? Dacă da → sursa furnizează +5VSB
+  4. Verificare buton power: conectarea pinilor de power direct pe placa de bază (cu șurubelniță) → exclude butonul defect
+  5. Verificare +5VSB cu multimetrul: pin 9 pe conectorul 24-pin (fir mov) = +5V față de GND → dacă lipsește, sursa este moartă
+  6. Testul paperclip: scurtcircuitarea PS_ON (pin verde) cu GND (pin negru adiacent) pe conectorul 24-pin → dacă ventilatorul sursei pornește, sursa funcționează minim
+  7. PSU Tester: instrument dedicat care verifică toate tensiunile (+3.3V, +5V, +12V, -12V) pe fiecare conector
+  8. Testare cu PSU funcțională cunoscută: înlocuire (substituție serială)
+- Principiu: pornirea de la exterior (AC) spre interior (placa de bază), eliminând progresiv cauzele
+
+SURSE: Wikipedia PSU (Testing, Wiring diagrams), Wikipedia Troubleshooting, HowStuffWorks
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 3: Diagnostic hardware – Metodologie sistematică
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Troubleshooting = căutare logică, sistematică a sursei problemei
+- Două strategii principale:
+  → Simptomatică (case-based reasoning): bazată pe experiență – „acest simptom a fost cauzat de X în trecut"
+  → Topografică (deep reasoning): bazată pe înțelegerea funcționării normale – „cum ar trebui să funcționeze?"
+- Trei principii fundamentale:
+  1. Reproducerea problemei: trebuie să poți reproduce defectul intenționat (este constant sau intermitent?)
+  2. Simplificarea sistemului: elimină tot ce nu e necesar (deconectare periferice, HDD, discuri, GPU suplimentar)
+  3. Cunoașterea funcționării normale: cum arată un sistem funcțional? ce semnale/tensiuni ar trebui să fie prezente?
+- Tehnica half-splitting (bisectare): testare la jumătatea lanțului de dependențe
+  → Exemplu „No Power": PSU pornește singură? Dacă da → problema e pe placa de bază; dacă nu → problema e la PSU/AC
+- Substituție serială: înlocuirea componentelor una câte una cu componente funcționale cunoscute
+  → Atenție: dacă sunt defecte multiple, substituția serială poate fi înșelătoare
+- Probleme intermitente: pot fi cauzate de sensibilitate termică – funcționează la rece, defectează la cald
+  → Testare cu spray de răcire și pistol termic pe componente specifice
+- Simptome „No Power" care nu sunt neapărat cauze de alimentare:
+  → Fără imagine (monitor, cablu video, GPU), dar se aude ventilator = VIDEO, nu POWER
+  → Bip-uri la POST = sistemul pornește dar detectează eroare hardware
+  → Pornire și oprire imediată (ciclu 1-2 secunde) = scurtcircuit sau OCP activat
+
+SURSE: Wikipedia Troubleshooting, Wikipedia PSU, HowStuffWorks
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 4: Condensatoare defecte ca sursă de „No Power"
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Capacitor plague (1999-2007): rată anormal de mare de defectare a condensatoarelor electroiltice
+- Cauza: formulă de electrolit furată incomplet de la Rubycon (Japonia) → lipsa inhibitorilor chimici
+- Mecanismul: electrolit alcalin (pH 7-8) → dizolvare aluminiu → generare hidrogen → presiune internă → umflare/explozie
+- Simptome vizibile:
+  → Parte superioară umflată (supapa de ventilare bombare)
+  → Supapă ruptă cu depozite maro/roșii de electrolit uscat
+  → Capacitor înclinat pe PCB (dopul de cauciuc împins de la bază)
+  → Scurgere de electrolit pe placa de circuit
+  → NU confunda cu adezivul de fixare (maro/negru pe laterală = normal)
+- Simptome electrice: capacitanță scăzută, ESR crescut, curent de scurgere
+- Impact: plăci de bază, plăci video, surse de alimentare afectate → Dell a cheltuit $420M pe înlocuiri
+- Durata de viață normală condensator consumer (2000h/85°C, funcționare la 40°C): ~6 ani
+- Condensatoarele defecte pot cauza: no power, instabilitate, restartări, opriri subite
+
+SURSE: Wikipedia Capacitor plague
+STATUS: VERIFICAT ✓
+
+========================================
+CONCEPT 5: Aplicare la console de jocuri
+========================================
+INFORMAȚIE VERIFICATĂ:
+- Console cu sursă internă (PS3, PS4, Xbox 360, Xbox One):
+  → Diagnosticul urmează aceeași logică: AC → PSU internă → placa de bază
+  → Verificare cablu AC, priză, fuzibil intern
+  → Scurtcircuit pe placa de bază → PSU internă se protejează
+  → Condensatoare defecte pe placa de bază sunt cauză frecventă (YLOD pe PS3, RROD pe Xbox 360)
+- Console cu sursă externă (Xbox 360 original, Xbox One original):
+  → LED pe sursa externă indică starea: portocaliu = standby, verde = funcțional, roșu = defect/protecție
+  → Sursa externă poate fi testată independent
+- Cauze specifice console „no power":
+  → Supraîncălzire cronică → degradare lipituri (BGA) → scurtcircuit sau circuit deschis
+  → Condensatoare defecte pe placa de bază sau pe power board
+  → MOSFET ars pe circuitul de alimentare
+  → Deteriorare prin descărcare electrostatică sau vărfuri de tensiune
+- Pași de diagnostic console:
+  1. Verificare priză și cablu AC
+  2. Verificare LED-uri de stare (dacă există)
+  3. Testare cu alt cablu/sursă externă (dacă aplicabil)
+  4. Inspecție vizuală: condensatoare umflate, componente arse, urme de lichid
+  5. Verificare tensiuni cu multimetrul pe conectorii interni
+
+SURSE: Wikipedia PSU, Wikipedia Capacitor plague (inferențe aplicate la console)
+STATUS: VERIFICAT ✓ (cu inferențe bazate pe principii generale aplicate contextului consolelor)
