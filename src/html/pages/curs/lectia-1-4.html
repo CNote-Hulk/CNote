@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 1.4 � Curent alternativ vs curent continuu">
+    <meta name="description" content="Lecția 1.4 — Curent alternativ vs curent continuu">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 1.4 � Curent alternativ vs curent continuu � Console Notebook</title>
+    <title>Lecția 1.4 — Curent alternativ vs curent continuu — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -23,9 +23,9 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -35,266 +35,274 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 � ELECTRICITATE FUNDAMENTALA</p>
-            <h1>Lec?ia 1.4 � Curent alternativ vs curent continuu</h1>
-            <p>curent continuu (DC), curent alternativ (AC), frecven?a, RMS</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — ELECTRICITATE FUNDAMENTALĂ</p>
+            <h1>Lecția 1.4 — Curent alternativ vs curent continuu</h1>
+            <p>curent continuu (DC), curent alternativ (AC), frecvență, RMS</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- INTRODUCERE -->
-                                                            <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Direct current (DC) este un flux unidirec?ional de sarcina electrica</p>
-                <p>Aceasta lec?ie acopera: <strong>curent continuu (DC)</strong>, <strong>curent alternativ (AC)</strong>, <strong>frecven?a</strong>, <strong>RMS</strong>, <strong>conversie AC ? DC</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Electricitatea din priza de perete care alimentează consola ta nu este identică cu cea care ajunge la procesor. Rețeaua europeană furnizează 230V curent alternativ — o undă sinusoidală care își schimbă sensul de 100 de ori pe secundă. Dar SoC-ul din PlayStation 5 funcționează pe curent continuu stabil, la tensiuni sub 1.5V. Înțelegerea diferenței dintre AC și DC, și a modului în care se face conversia, este cheia care leagă priza de perete de fiecare frame randat pe ecran.
+                </p>
+                <p>
+                    Această lecție acoperă cele două regimuri fundamentale ale curentului electric: <strong>curentul continuu (DC)</strong> — regimul stabil necesar circuitelor logice, <strong>curentul alternativ (AC)</strong> — regimul eficient pentru transportul energiei, <strong>frecvența</strong> și <strong>valoarea RMS</strong> — parametrii care definesc comportamentul AC, precum și <strong>conversia AC → DC</strong> — procesul critic realizat de sursa de alimentare.
+                </p>
+                <p>
+                    Scopul nu este memorarea faptului că Europa folosește 230V AC, ci înțelegerea <em>de ce</em> rețeaua electrică folosește AC pentru transport, <em>de ce</em> circuitele logice au nevoie de DC și <em>ce se întâmplă</em> fizic în interiorul sursei de alimentare când convertește un regim în celălalt.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.1 � Defini?ie curent continuu (DC)</h3>
+                <h3>1.4.1 — Definiție curent continuu (DC)</h3>
                 <ul class="specs-list">
-                    <li>Direct current (DC) este un flux unidirec?ional de sarcina electrica</li>
-                    <li>Un exemplu primar de sursa DC este celula electrochimica (bateria)</li>
-                    <li>Curentul electric curge &#238;ntr-o direc?ie constanta, deosebindu-l de curentul alternativ (AC)</li>
-                    <li>Un termen folosit anterior pentru acest tip de curent era �curent galvanic&quot;</li>
+                    <li>Direct current (DC) este un flux unidirecțional de sarcină electrică</li>
+                    <li>Un exemplu primar de sursă DC este celula electrochimică (bateria)</li>
+                    <li>Curentul electric curge într-o direcție constantă, deosebindu-l de curentul alternativ (AC)</li>
+                    <li>Un termen folosit anterior pentru acest tip de curent era „curent galvanic&quot;</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.2 � Caracteristici DC</h3>
+                <h3>1.4.2 — Caracteristici DC</h3>
                 <ul class="specs-list">
                     <li>Poate curge prin conductori (fire), semiconductori, izolatori, sau chiar prin vid (fascicule de electroni/ioni)</li>
-                    <li>Tensiunea pe o sursa DC este constanta, la fel ?i curentul printr-o sursa de curent continuu</li>
-                    <li>Orice forma de unda sta?ionara poate fi descompusa &#238;ntr-o componenta DC (valoarea medie) ?i o componenta AC (varia?ie &#238;n timp cu media zero)</li>
+                    <li>Tensiunea pe o sursă DC este constantă, la fel și curentul printr-o sursă de curent continuu</li>
+                    <li>Orice formă de undă staționară poate fi descompusă într-o componentă DC (valoarea medie) și o componentă AC (variație în timp cu media zero)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.3 � Diverse defini?ii</h3>
+                <h3>1.4.3 — Diverse definiții</h3>
                 <ul class="specs-list">
-                    <li>DC se refera la sisteme de alimentare care folosesc o singura polaritate de tensiune/curent</li>
-                    <li><strong>DC poate varia &#238;n timp (ex:</strong> ie?irea bruta a unui redresor), dar men?ine polaritate constanta</li>
-                    <li>Unele forme de DC (regulator de tensiune) au aproape zero varia?ii &#238;n tensiune</li>
+                    <li>DC se referă la sisteme de alimentare care folosesc o singură polaritate de tensiune/curent</li>
+                    <li><strong>DC poate varia în timp (ex:</strong> ieșirea brută a unui redresor), dar menține polaritate constantă</li>
+                    <li>Unele forme de DC (regulator de tensiune) au aproape zero variații în tensiune</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.4 � Circuite DC</h3>
+                <h3>1.4.4 — Circuite DC</h3>
                 <ul class="specs-list">
-                    <li>Un circuit DC consta din orice combina?ie de surse de tensiune constanta, surse de curent constant ?i rezistoare</li>
-                    <li>Tensiunile ?i curen?ii sunt independen?i de timp</li>
-                    <li>Daca se adauga condensator sau inductor ? nu mai e strict circuit DC, dar are o solu?ie DC (steady state)</li>
+                    <li>Un circuit DC constă din orice combinație de surse de tensiune constantă, surse de curent constant și rezistoare</li>
+                    <li>Tensiunile și curenții sunt independenți de timp</li>
+                    <li>Dacă se adaugă condensator sau inductor → nu mai e strict circuit DC, dar are o soluție DC (steady state)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.5 � Aplica?ii DC</h3>
+                <h3>1.4.5 — Aplicații DC</h3>
                 <ul class="specs-list">
-                    <li><strong>Sisteme auto:</strong> bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
-                    <li><strong>Alternator auto:</strong> dispozitiv AC care folose?te redresor pentru a produce DC pentru &#238;ncarcarea bateriei</li>
-                    <li><strong>Vehicule electrice:</strong> sistem �low voltage&quot; 12V + sistem �high voltage&quot; 300-400V pentru motoare de trac?iune</li>
-                    <li><strong>Telecomunica?ii:</strong> -48V DC standard</li>
-                    <li><strong>HVDC (High-Voltage Direct Current):</strong> transmisie de putere pe distan?e lungi, uneori singura op?iune fezabila (ex: cabluri submarine)</li>
+                    <li><strong>Sisteme auto:</strong> bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
+                    <li><strong>Alternator auto:</strong> dispozitiv AC care folosește redresor pentru a produce DC pentru încărcarea bateriei</li>
+                    <li><strong>Vehicule electrice:</strong> sistem „low voltage&quot; 12V + sistem „high voltage&quot; 300-400V pentru motoare de tracțiune</li>
+                    <li><strong>Telecomunicații:</strong> -48V DC standard</li>
+                    <li><strong>HVDC (High-Voltage Direct Current):</strong> transmisie de putere pe distanțe lungi, uneori singura opțiune fezabilă (ex: cabluri submarine)</li>
                     <li><strong>Celule de combustibil:</strong> produc doar DC</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.6 � Istorie</h3>
+                <h3>1.4.6 — Istorie</h3>
                 <ul class="specs-list">
-                    <li><strong>Prima sursa DC:</strong> bateria lui Alessandro Volta (Voltaic pile), 1800</li>
-                    <li><strong>Andr&#233;-Marie Amp&#232;re:</strong> curentul circula de la pozitiv la negativ</li>
-                    <li><strong>Hippolyte Pixii:</strong> primul generator dinamo (1832), producea ini?ial AC, apoi a adaugat comutator pentru DC</li>
+                    <li><strong>Prima sursă DC:</strong> bateria lui Alessandro Volta (Voltaic pile), 1800</li>
+                    <li><strong>André-Marie Ampère:</strong> curentul circulă de la pozitiv la negativ</li>
+                    <li><strong>Hippolyte Pixii:</strong> primul generator dinamo (1832), producea inițial AC, apoi a adăugat comutator pentru DC</li>
                     <li><strong>Thomas Edison:</strong> promovarea DC pentru iluminat (1882)</li>
-                    <li>AC a &#238;nlocuit DC &#238;n distribu?ia de putere datorita transformatoarelor</li>
-                    <li><strong>Din anii 1950:</strong> HVDC devine viabil pentru transmisie pe distan?e lungi</li>
+                    <li>AC a înlocuit DC în distribuția de putere datorită transformatoarelor</li>
+                    <li><strong>Din anii 1950:</strong> HVDC devine viabil pentru transmisie pe distanțe lungi</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.7 � Conversie</h3>
+                <h3>1.4.7 — Conversie</h3>
                 <ul class="specs-list">
                     <li>DC poate fi convertit din AC folosind un redresor (rectifier)</li>
-                    <li>DC poate fi convertit &#238;n AC folosind un invertor</li>
+                    <li>DC poate fi convertit în AC folosind un invertor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.8 � Defini?ie curent alternativ (AC)</h3>
+                <h3>1.4.8 — Definiție curent alternativ (AC)</h3>
                 <ul class="specs-list">
-                    <li>Alternating current (AC) este un curent electric care &#238;?i inverseaza periodic direc?ia ?i &#238;?i schimba magnitudinea continuu &#238;n timp</li>
-                    <li>AC este forma &#238;n care energia electrica este livrata consumatorilor reziden?iali ?i comerciali</li>
-                    <li>Forma de unda obi?nuita este sinusoidala (sine wave)</li>
+                    <li>Alternating current (AC) este un curent electric care își inversează periodic direcția și își schimbă magnitudinea continuu în timp</li>
+                    <li>AC este forma în care energia electrică este livrată consumatorilor rezidențiali și comerciali</li>
+                    <li>Forma de undă obișnuită este sinusoidală (sine wave)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.9 � Formulare matematica</h3>
+                <h3>1.4.9 — Formulare matematică</h3>
                 <ul class="specs-list">
-                    <li>v(t) = V_peak &#215; sin(?t)</li>
-                    <li>V_peak = tensiunea de v&#226;rf (peak voltage)</li>
-                    <li>? = frecven?a unghiulara (angular frequency), &#238;n radiani/secunda</li>
-                    <li>? = 2pf, unde f = frecven?a fizica &#238;n Hz (cicluri pe secunda)</li>
-                    <li><strong>Tensiunea peak-to-peak:</strong> V_pp = 2 &#215; V_peak</li>
+                    <li>v(t) = V_peak × sin(ωt)</li>
+                    <li>V_peak = tensiunea de vârf (peak voltage)</li>
+                    <li>ω = frecvența unghiulară (angular frequency), în radiani/secundă</li>
+                    <li>ω = 2πf, unde f = frecvența fizică în Hz (cicluri pe secundă)</li>
+                    <li><strong>Tensiunea peak-to-peak:</strong> V_pp = 2 × V_peak</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.10 � Frecven?a</h3>
+                <h3>1.4.10 — Frecvență</h3>
                 <ul class="specs-list">
-                    <li>Cele mai multe sisteme electrice opereaza la 50 Hz sau 60 Hz</li>
+                    <li>Cele mai multe sisteme electrice operează la 50 Hz sau 60 Hz</li>
                     <li><strong>50 Hz:</strong> Europa, Asia, Africa, Australia, majoritatea lumii</li>
-                    <li><strong>60 Hz:</strong> America de Nord, unele ?ari din America de Sud, Japonia (par?ial)</li>
-                    <li><strong>Frecven?e joase (16.7 Hz):</strong> sisteme feroviare europene (Austria, Germania, Norvegia, Suedia, Elve?ia)</li>
-                    <li><strong>Frecven?e &#238;nalte (400 Hz):</strong> aplica?ii militare, maritime, avia?ie, aerospace</li>
+                    <li><strong>60 Hz:</strong> America de Nord, unele țări din America de Sud, Japonia (parțial)</li>
+                    <li><strong>Frecvențe joase (16.7 Hz):</strong> sisteme feroviare europene (Austria, Germania, Norvegia, Suedia, Elveția)</li>
+                    <li><strong>Frecvențe înalte (400 Hz):</strong> aplicații militare, maritime, aviație, aerospace</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.11 � Tensiune RMS (Root Mean Square)</h3>
+                <h3>1.4.11 — Tensiune RMS (Root Mean Square)</h3>
                 <ul class="specs-list">
-                    <li>RMS = radacina patrata a mediei pe un ciclu a patratului tensiunii instantanee</li>
-                    <li><strong>Formula generala:</strong> V_rms = v(1/T &#215; ?0? [v(t)]&#178; dt)</li>
-                    <li><strong>Pentru unda sinusoidala:</strong> V_rms = V_peak / v2 � V_peak &#215; 0.707</li>
-                    <li>v2 se nume?te �crest factor&quot; (factor de creasta)</li>
-                    <li><strong>Exemplu:</strong> 230V AC &#238;nseamna V_rms = 230V ? V_peak = 230 &#215; v2 � 325V</li>
-                    <li>RMS este important deoarece P_average = V_rms&#178; / R (puterea medie echivalenta cu DC)</li>
+                    <li>RMS = rădăcina pătrată a mediei pe un ciclu a pătratului tensiunii instantanee</li>
+                    <li><strong>Formula generală:</strong> V_rms = √(1/T × ∫₀ᵀ [v(t)]² dt)</li>
+                    <li><strong>Pentru undă sinusoidală:</strong> V_rms = V_peak / √2 ≈ V_peak × 0.707</li>
+                    <li>√2 se numește „crest factor&quot; (factor de creastă)</li>
+                    <li><strong>Exemplu:</strong> 230V AC înseamnă V_rms = 230V → V_peak = 230 × √2 ≈ 325V</li>
+                    <li>RMS este important deoarece P_average = V_rms² / R (puterea medie echivalentă cu DC)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.12 � Putere</h3>
+                <h3>1.4.12 — Putere</h3>
                 <ul class="specs-list">
-                    <li>p(t) = v&#178;(t) / R (puterea instantanee)</li>
-                    <li>P_average = V_rms&#178; / R</li>
-                    <li>Forma de unda a puterii = sinusoida redresata complet, frecven?a dubla fa?a de tensiune</li>
+                    <li>p(t) = v²(t) / R (puterea instantanee)</li>
+                    <li>P_average = V_rms² / R</li>
+                    <li>Forma de undă a puterii = sinusoidă redresată complet, frecvență dublă față de tensiune</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.13 � Transmisie ?i distribu?ie</h3>
+                <h3>1.4.13 — Transmisie și distribuție</h3>
                 <ul class="specs-list">
-                    <li>AC este distribuit deoarece tensiunea poate fi crescuta/scazuta cu transformatoare</li>
-                    <li><strong>Pierderi de putere:</strong> P_w = I&#178; &#215; R ? la tensiune dubla, curentul se &#238;njumata?e?te, pierderile scad de 4 ori</li>
-                    <li>P_transmisa = I &#215; V</li>
-                    <li>AC se genereaza la tensiune convenabila ? se cre?te la sute de kV pentru transmisie ? se coboara la 100-240V pentru uz domestic</li>
-                    <li><strong>Three-phase (trifazat):</strong> foarte comun, 3 bobine la 120&#176; decalaj</li>
+                    <li>AC este distribuit deoarece tensiunea poate fi crescută/scăzută cu transformatoare</li>
+                    <li><strong>Pierderi de putere:</strong> P_w = I² × R → la tensiune dublă, curentul se înjumătățește, pierderile scad de 4 ori</li>
+                    <li>P_transmisă = I × V</li>
+                    <li>AC se generează la tensiune convenabilă → se crește la sute de kV pentru transmisie → se coboară la 100-240V pentru uz domestic</li>
+                    <li><strong>Three-phase (trifazat):</strong> foarte comun, 3 bobine la 120° decalaj</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.14 � Efecte la frecven?e &#238;nalte</h3>
+                <h3>1.4.14 — Efecte la frecvențe înalte</h3>
                 <ul class="specs-list">
-                    <li><strong>Skin effect:</strong> curentul alternativ este for?at spre suprafa?a exterioara a conductorului</li>
-                    <li><strong>La 60 Hz:</strong> ad&#226;ncimea pielii (skin depth) = ~8.57 mm pentru cupru</li>
-                    <li><strong>Conductori de mare curent:</strong> adesea tubulari (gola?i) pentru a reduce masa ?i costul</li>
-                    <li>Rezisten?a AC &gt; rezisten?a DC ? pierderi mai mari prin &#238;ncalzire ohmica (I&#178;R loss)</li>
+                    <li><strong>Skin effect:</strong> curentul alternativ este forțat spre suprafața exterioară a conductorului</li>
+                    <li><strong>La 60 Hz:</strong> adâncimea pielii (skin depth) = ~8.57 mm pentru cupru</li>
+                    <li><strong>Conductori de mare curent:</strong> adesea tubulari (golați) pentru a reduce masa și costul</li>
+                    <li>Rezistența AC &gt; rezistența DC → pierderi mai mari prin încălzire ohmică (I²R loss)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.15 � Istorie</h3>
+                <h3>1.4.15 — Istorie</h3>
                 <ul class="specs-list">
                     <li><strong>Primul alternator:</strong> Hippolyte Pixii, 1832 (bazat pe principiile lui Michael Faraday)</li>
-                    <li><strong>1855:</strong> Guillaume Duchenne anun?a ca AC e superior DC-ului pentru electroterapie</li>
+                    <li><strong>1855:</strong> Guillaume Duchenne anunță că AC e superior DC-ului pentru electroterapie</li>
                     <li><strong>War of the Currents:</strong> Thomas Edison (pro-DC) vs George Westinghouse (pro-AC)</li>
-                    <li><strong>1888:</strong> motorul cu induc?ie inventat independent de Galileo Ferraris ?i Nikola Tesla</li>
-                    <li><strong>Sisteme trifazate:</strong> Mikhail Dolivo-Dobrovolsky ?i Charles Brown (Germania), Jonas Wenstr&#246;m (Suedia)</li>
+                    <li><strong>1888:</strong> motorul cu inducție inventat independent de Galileo Ferraris și Nikola Tesla</li>
+                    <li><strong>Sisteme trifazate:</strong> Mikhail Dolivo-Dobrovolsky și Charles Brown (Germania), Jonas Wenström (Suedia)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.16 � Defini?ie redresor (rectifier)</h3>
+                <h3>1.4.16 — Definiție redresor (rectifier)</h3>
                 <ul class="specs-list">
-                    <li>Dispozitiv electric care converte?te curentul alternativ (AC) &#238;n curent continuu (DC)</li>
-                    <li>Procesul se nume?te �redresare&quot; (rectification) � �&#238;ndreapta&quot; direc?ia curentului</li>
-                    <li>Dispozitivul invers (DC ? AC) se nume?te invertor</li>
+                    <li>Dispozitiv electric care convertește curentul alternativ (AC) în curent continuu (DC)</li>
+                    <li>Procesul se numește „redresare&quot; (rectification) – „îndreaptă&quot; direcția curentului</li>
+                    <li>Dispozitivul invers (DC → AC) se numește invertor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.17 � Tipuri de redresoare</h3>
+                <h3>1.4.17 — Tipuri de redresoare</h3>
                 <ul class="specs-list">
-                    <li>Diode cu vid (vacuum tube diodes) � istoric</li>
-                    <li>Valve cu arc de mercur (mercury-arc valves) � istoric industrial</li>
-                    <li>Stive de seleniu/oxid de cupru � istoric</li>
-                    <li>Diode semiconductoare � modern, cel mai comun</li>
-                    <li>SCR (Silicon Controlled Rectifier) / Thyristoare � pentru putere mare</li>
+                    <li>Diode cu vid (vacuum tube diodes) – istoric</li>
+                    <li>Valve cu arc de mercur (mercury-arc valves) – istoric industrial</li>
+                    <li>Stive de seleniu/oxid de cupru – istoric</li>
+                    <li>Diode semiconductoare – modern, cel mai comun</li>
+                    <li>SCR (Silicon Controlled Rectifier) / Thyristoare – pentru putere mare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.18 � Redresare semisemnal (Half-wave)</h3>
+                <h3>1.4.18 — Redresare semisemnal (Half-wave)</h3>
                 <ul class="specs-list">
-                    <li>Trece doar semiperioada pozitiva (sau negativa) a AC</li>
-                    <li>Cealalta semiperioada este blocata</li>
-                    <li>Necesita o singura dioda (monofazic)</li>
+                    <li>Trece doar semiperioada pozitivă (sau negativă) a AC</li>
+                    <li>Cealaltă semiperioadă este blocată</li>
+                    <li>Necesită o singură diodă (monofazic)</li>
                     <li>V_rms = V_peak / 2</li>
-                    <li>V_dc = V_peak / p</li>
-                    <li><strong>Raport de conversie maxim:</strong> ? = 4/p&#178; � 40.5%</li>
-                    <li>Produce mult ripple, necesita filtrare extensiva</li>
+                    <li>V_dc = V_peak / π</li>
+                    <li><strong>Raport de conversie maxim:</strong> η = 4/π² ≈ 40.5%</li>
+                    <li>Produce mult ripple, necesită filtrare extensivă</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.19 � Redresare semnal complet (Full-wave)</h3>
+                <h3>1.4.19 — Redresare semnal complet (Full-wave)</h3>
                 <ul class="specs-list">
-                    <li>Converte?te ambele semioricoda ale AC &#238;n DC pulsator</li>
-                    <li><strong>Doua metode:</strong> (a) 2 diode + transformator cu priza mediana (center-tapped), (b) 4 diode &#238;n punte (bridge rectifier)</li>
-                    <li>V_dc = 2 &#215; V_peak / p</li>
-                    <li>V_rms = V_peak / v2</li>
-                    <li><strong>Raport de conversie:</strong> ? = 8/p&#178; � 81.0%</li>
-                    <li>Ripple la frecven?a dubla fa?a de sursa AC ? necesita condensator mai mic</li>
+                    <li>Convertește ambele semioricoda ale AC în DC pulsator</li>
+                    <li><strong>Două metode:</strong> (a) 2 diode + transformator cu priză mediană (center-tapped), (b) 4 diode în punte (bridge rectifier)</li>
+                    <li>V_dc = 2 × V_peak / π</li>
+                    <li>V_rms = V_peak / √2</li>
+                    <li><strong>Raport de conversie:</strong> η = 8/π² ≈ 81.0%</li>
+                    <li>Ripple la frecvență dublă față de sursa AC → necesită condensator mai mic</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.20 � Punte de diode (Bridge rectifier)</h3>
+                <h3>1.4.20 — Punte de diode (Bridge rectifier)</h3>
                 <ul class="specs-list">
-                    <li>4 diode &#238;n configura?ie punte</li>
-                    <li>Cea mai comuna configura?ie moderna</li>
-                    <li><strong>Pierdere de tensiune:</strong> 2 &#215; caderea pe dioda (~1.4V pentru diode silicon)</li>
-                    <li>Disponibil ca componenta unica (modul integrat)</li>
+                    <li>4 diode în configurație punte</li>
+                    <li>Cea mai comună configurație modernă</li>
+                    <li><strong>Pierdere de tensiune:</strong> 2 × căderea pe diodă (~1.4V pentru diode silicon)</li>
+                    <li>Disponibil ca componentă unică (modul integrat)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.21 � Netezire (Smoothing)</h3>
+                <h3>1.4.21 — Netezire (Smoothing)</h3>
                 <ul class="specs-list">
-                    <li>DC redresat nu este constant, con?ine �ripple&quot; (ondula?ie)</li>
-                    <li><strong>Condensator de filtrare (reservoir/smoothing capacitor):</strong> stocheaza energie ?i elibereaza &#238;n perioadele fara alimentare</li>
-                    <li><strong>Filtru LC (bobina + condensator):</strong> curent mai lin pe &#238;ntreg ciclul</li>
+                    <li>DC redresat nu este constant, conține „ripple&quot; (ondulație)</li>
+                    <li><strong>Condensator de filtrare (reservoir/smoothing capacitor):</strong> stochează energie și eliberează în perioadele fără alimentare</li>
+                    <li><strong>Filtru LC (bobină + condensator):</strong> curent mai lin pe întreg ciclul</li>
                     <li><strong>Filtru RC (rezistor + condensator):</strong> simplu dar pierde putere</li>
-                    <li><strong>Regulatoare de tensiune:</strong> men?in tensiune constanta indiferent de varia?ii</li>
+                    <li><strong>Regulatoare de tensiune:</strong> mențin tensiune constantă indiferent de variații</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.22 � Cadere de tensiune pe redresor</h3>
+                <h3>1.4.22 — Cădere de tensiune pe redresor</h3>
                 <ul class="specs-list">
                     <li><strong>Diode silicon standard:</strong> ~0.7V</li>
                     <li><strong>Diode Schottky:</strong> ~0.3V</li>
-                    <li><strong>Half-wave / full-wave cu priza mediana:</strong> pierdere de 1 dioda drop</li>
+                    <li><strong>Half-wave / full-wave cu priză mediană:</strong> pierdere de 1 diodă drop</li>
                     <li><strong>Bridge rectifier:</strong> pierdere de 2 diode drops</li>
-                    <li><strong>Semnificativ la tensiuni joase (ex:</strong> 12V), nesemnificativ la tensiuni &#238;nalte (HVDC)</li>
+                    <li><strong>Semnificativ la tensiuni joase (ex:</strong> 12V), nesemnificativ la tensiuni înalte (HVDC)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.4.23 � Aplica?ii</h3>
+                <h3>1.4.23 — Aplicații</h3>
                 <ul class="specs-list">
                     <li>Surse de alimentare pentru echipamente electronice (computere, TV, radio)</li>
-                    <li>Convertirea AC din re?ea &#238;n DC pentru circuitele interne</li>
-                    <li><strong>Alternator auto:</strong> 6 diode formeaza punte redresoare trifazica</li>
-                    <li><strong>Sudare:</strong> tensiune polarizata</li>
+                    <li>Convertirea AC din rețea în DC pentru circuitele interne</li>
+                    <li><strong>Alternator auto:</strong> 6 diode formează punte redresoare trifazică</li>
+                    <li><strong>Sudare:</strong> tensiune polarizată</li>
                 </ul>
             </div>
 
@@ -303,10 +311,10 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Aplica?ii</h3>
+                <h3>Aplicații</h3>
                 <ul class="specs-list">
                     <li>Surse de alimentare pentru echipamente electronice (computere, TV, radio)</li>
                 </ul>
@@ -316,10 +324,10 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>�n contextul consolelor de jocuri, curent alternativ vs curent continuu joaca un rol esen?ial �n func?ionarea hardware-ului.</p>
+                <p>În contextul consolelor de jocuri, curent alternativ vs curent continuu joacă un rol esențial în funcționarea hardware-ului.</p>
             </div>
         </div>
     </section>
@@ -329,7 +337,7 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Componentele reale care utilizeaza curent continuu (DC) se regasesc �n toate consolele moderne.</p>
+                <p>Componentele reale care utilizează curent continuu (DC) se regăsesc în toate consolele moderne.</p>
             </div>
         </div>
     </section>
@@ -340,8 +348,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Probleme asociate cu Curent alternativ vs curent continuu</h3>
-                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
+                    <h3>⚠️ Probleme asociate cu Curent alternativ vs curent continuu</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
                 </div>
             </div>
         </div>
@@ -352,29 +360,29 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Defini?ie curent continuu (DC):</strong> Direct current (DC) este un flux unidirec?ional de sarcina electrica</li>
+                    <li><strong>Definiție curent continuu (DC):</strong> Direct current (DC) este un flux unidirecțional de sarcină electrică</li>
                     <li><strong>Caracteristici DC:</strong> Poate curge prin conductori (fire), semiconductori, izolatori, sau chiar prin vid (fascicule de electroni/ioni)</li>
-                    <li><strong>Diverse defini?ii:</strong> DC se refera la sisteme de alimentare care folosesc o singura polaritate de tensiune/curent</li>
-                    <li><strong>Circuite DC:</strong> Un circuit DC consta din orice combina?ie de surse de tensiune constanta, surse de curent constant ?i rezistoare</li>
-                    <li><strong>Aplica?ii DC:</strong> Sisteme auto: bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
-                    <li><strong>Istorie:</strong> Prima sursa DC: bateria lui Alessandro Volta (Voltaic pile), 1800</li>
+                    <li><strong>Diverse definiții:</strong> DC se referă la sisteme de alimentare care folosesc o singură polaritate de tensiune/curent</li>
+                    <li><strong>Circuite DC:</strong> Un circuit DC constă din orice combinație de surse de tensiune constantă, surse de curent constant și rezistoare</li>
+                    <li><strong>Aplicații DC:</strong> Sisteme auto: bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
+                    <li><strong>Istorie:</strong> Prima sursă DC: bateria lui Alessandro Volta (Voltaic pile), 1800</li>
                     <li><strong>Conversie:</strong> DC poate fi convertit din AC folosind un redresor (rectifier)</li>
-                    <li><strong>Defini?ie curent alternativ (AC):</strong> Alternating current (AC) este un curent electric care &#238;?i inverseaza periodic direc?ia ?i &#238;?i schimba magnitudinea continuu &#238;n timp</li>
-                    <li><strong>Formulare matematica:</strong> v(t) = V_peak &#215; sin(?t)</li>
-                    <li><strong>Frecven?a:</strong> Cele mai multe sisteme electrice opereaza la 50 Hz sau 60 Hz</li>
-                    <li><strong>Tensiune RMS (Root Mean Square):</strong> RMS = radacina patrata a mediei pe un ciclu a patratului tensiunii instantanee</li>
-                    <li><strong>Putere:</strong> p(t) = v&#178;(t) / R (puterea instantanee)</li>
-                    <li><strong>Transmisie ?i distribu?ie:</strong> AC este distribuit deoarece tensiunea poate fi crescuta/scazuta cu transformatoare</li>
-                    <li><strong>Efecte la frecven?e &#238;nalte:</strong> Skin effect: curentul alternativ este for?at spre suprafa?a exterioara a conductorului</li>
+                    <li><strong>Definiție curent alternativ (AC):</strong> Alternating current (AC) este un curent electric care își inversează periodic direcția și își schimbă magnitudinea continuu în timp</li>
+                    <li><strong>Formulare matematică:</strong> v(t) = V_peak × sin(ωt)</li>
+                    <li><strong>Frecvență:</strong> Cele mai multe sisteme electrice operează la 50 Hz sau 60 Hz</li>
+                    <li><strong>Tensiune RMS (Root Mean Square):</strong> RMS = rădăcina pătrată a mediei pe un ciclu a pătratului tensiunii instantanee</li>
+                    <li><strong>Putere:</strong> p(t) = v²(t) / R (puterea instantanee)</li>
+                    <li><strong>Transmisie și distribuție:</strong> AC este distribuit deoarece tensiunea poate fi crescută/scăzută cu transformatoare</li>
+                    <li><strong>Efecte la frecvențe înalte:</strong> Skin effect: curentul alternativ este forțat spre suprafața exterioară a conductorului</li>
                     <li><strong>Istorie:</strong> Primul alternator: Hippolyte Pixii, 1832 (bazat pe principiile lui Michael Faraday)</li>
-                    <li><strong>Defini?ie redresor (rectifier):</strong> Dispozitiv electric care converte?te curentul alternativ (AC) &#238;n curent continuu (DC)</li>
-                    <li><strong>Tipuri de redresoare:</strong> Diode cu vid (vacuum tube diodes) � istoric</li>
-                    <li><strong>Redresare semisemnal (Half-wave):</strong> Trece doar semiperioada pozitiva (sau negativa) a AC</li>
-                    <li><strong>Redresare semnal complet (Full-wave):</strong> Converte?te ambele semioricoda ale AC &#238;n DC pulsator</li>
-                    <li><strong>Punte de diode (Bridge rectifier):</strong> 4 diode &#238;n configura?ie punte</li>
-                    <li><strong>Netezire (Smoothing):</strong> DC redresat nu este constant, con?ine �ripple&quot; (ondula?ie)</li>
-                    <li><strong>Cadere de tensiune pe redresor:</strong> Diode silicon standard: ~0.7V</li>
-                    <li><strong>Aplica?ii:</strong> Surse de alimentare pentru echipamente electronice (computere, TV, radio)</li>
+                    <li><strong>Definiție redresor (rectifier):</strong> Dispozitiv electric care convertește curentul alternativ (AC) în curent continuu (DC)</li>
+                    <li><strong>Tipuri de redresoare:</strong> Diode cu vid (vacuum tube diodes) – istoric</li>
+                    <li><strong>Redresare semisemnal (Half-wave):</strong> Trece doar semiperioada pozitivă (sau negativă) a AC</li>
+                    <li><strong>Redresare semnal complet (Full-wave):</strong> Convertește ambele semioricoda ale AC în DC pulsator</li>
+                    <li><strong>Punte de diode (Bridge rectifier):</strong> 4 diode în configurație punte</li>
+                    <li><strong>Netezire (Smoothing):</strong> DC redresat nu este constant, conține „ripple&quot; (ondulație)</li>
+                    <li><strong>Cădere de tensiune pe redresor:</strong> Diode silicon standard: ~0.7V</li>
+                    <li><strong>Aplicații:</strong> Surse de alimentare pentru echipamente electronice (computere, TV, radio)</li>
                 </ul>
             </div>
         </div>
@@ -382,80 +390,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: DC poate varia &#238;n timp (ex?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: DC poate varia în timp (ex?</strong></p>
                 <ul class="specs-list">
-                    <li>a) sistem �low voltage&quot; 12V + sistem �high voltage&quot; 300-400V pentru motoare de trac?iune</li>
-                    <li>b) ie?irea bruta a unui redresor), dar men?ine polaritate constanta</li>
-                    <li>c) bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
-                    <li>d) dispozitiv AC care folose?te redresor pentru a produce DC pentru &#238;ncarcarea bateriei</li>
+                    <li>a) sistem „low voltage&quot; 12V + sistem „high voltage&quot; 300-400V pentru motoare de tracțiune</li>
+                    <li>b) ieșirea brută a unui redresor), dar menține polaritate constantă</li>
+                    <li>c) bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
+                    <li>d) dispozitiv AC care folosește redresor pentru a produce DC pentru încărcarea bateriei</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � ie?irea bruta a unui redresor), dar men?ine polaritate constanta</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — ieșirea brută a unui redresor), dar menține polaritate constantă</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Sisteme auto?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Sisteme auto?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ie?irea bruta a unui redresor), dar men?ine polaritate constanta</li>
-                    <li>b) dispozitiv AC care folose?te redresor pentru a produce DC pentru &#238;ncarcarea bateriei</li>
-                    <li>c) bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
-                    <li>d) sistem �low voltage&quot; 12V + sistem �high voltage&quot; 300-400V pentru motoare de trac?iune</li>
+                    <li>a) ieșirea brută a unui redresor), dar menține polaritate constantă</li>
+                    <li>b) dispozitiv AC care folosește redresor pentru a produce DC pentru încărcarea bateriei</li>
+                    <li>c) bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
+                    <li>d) sistem „low voltage&quot; 12V + sistem „high voltage&quot; 300-400V pentru motoare de tracțiune</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Prima sursa DC?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Prima sursă DC?</strong></p>
                 <ul class="specs-list">
-                    <li>a) bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
-                    <li>b) dispozitiv AC care folose?te redresor pentru a produce DC pentru &#238;ncarcarea bateriei</li>
+                    <li>a) bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
+                    <li>b) dispozitiv AC care folosește redresor pentru a produce DC pentru încărcarea bateriei</li>
                     <li>c) bateria lui Alessandro Volta (Voltaic pile), 1800</li>
-                    <li>d) ie?irea bruta a unui redresor), dar men?ine polaritate constanta</li>
+                    <li>d) ieșirea brută a unui redresor), dar menține polaritate constantă</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � bateria lui Alessandro Volta (Voltaic pile), 1800</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — bateria lui Alessandro Volta (Voltaic pile), 1800</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Formulare matematica?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Formulare matematică?</strong></p>
                 <ul class="specs-list">
-                    <li>a) V_peak = tensiunea de v&#226;rf (peak voltage)</li>
-                    <li>b) ie?irea bruta a unui redresor), dar men?ine polaritate constanta</li>
-                    <li>c) dispozitiv AC care folose?te redresor pentru a produce DC pentru &#238;ncarcarea bateriei</li>
-                    <li>d) bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
+                    <li>a) V_peak = tensiunea de vârf (peak voltage)</li>
+                    <li>b) ieșirea brută a unui redresor), dar menține polaritate constantă</li>
+                    <li>c) dispozitiv AC care folosește redresor pentru a produce DC pentru încărcarea bateriei</li>
+                    <li>d) bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � V_peak = tensiunea de v&#226;rf (peak voltage)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — V_peak = tensiunea de vârf (peak voltage)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: 50 Hz?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: 50 Hz?</strong></p>
                 <ul class="specs-list">
                     <li>a) Europa, Asia, Africa, Australia, majoritatea lumii</li>
-                    <li>b) ie?irea bruta a unui redresor), dar men?ine polaritate constanta</li>
-                    <li>c) bateria furnizeaza putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
-                    <li>d) dispozitiv AC care folose?te redresor pentru a produce DC pentru &#238;ncarcarea bateriei</li>
+                    <li>b) ieșirea brută a unui redresor), dar menține polaritate constantă</li>
+                    <li>c) bateria furnizează putere pentru pornire, iluminare, sistem de aprindere, climatizare (12V, 24V, sau 42V)</li>
+                    <li>d) dispozitiv AC care folosește redresor pentru a produce DC pentru încărcarea bateriei</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � Europa, Asia, Africa, Australia, majoritatea lumii</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — Europa, Asia, Africa, Australia, majoritatea lumii</strong></p>
                 </details>
             </div>
         </div>
@@ -463,22 +471,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Curent alternativ vs curent continuu</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de curent continuu (DC). Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Curent alternativ vs curent continuu</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de curent continuu (DC). Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: curent continuu (DC).</li>
-                    <li>2. Ce rol are curent alternativ (AC) �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre curent continuu (DC) ?i frecven?a.</li>
+                    <li>2. Ce rol are curent alternativ (AC) în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre curent continuu (DC) și frecvență.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Direct current (DC) este un flux unidirec?ional de sarcina electrica</p>
+                        <p><strong>1.</strong> Direct current (DC) este un flux unidirecțional de sarcină electrică</p>
                         <p><strong>2.</strong> Poate curge prin conductori (fire), semiconductori, izolatori, sau chiar prin vid (fascicule de electroni/ioni)</p>
-                        <p><strong>3.</strong> DC se refera la sisteme de alimentare care folosesc o singura polaritate de tensiune/curent</p>
+                        <p><strong>3.</strong> DC se referă la sisteme de alimentare care folosesc o singură polaritate de tensiune/curent</p>
                     </div>
                 </details>
             </div>
@@ -513,7 +521,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-1-3.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 1.3 &mdash; Legea lui Ohm</a>
@@ -570,7 +578,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Puterea electrica ?i wa?ii � cum se calculeaza puterea ?i ce �nseamna ea �n practica, cu demonstra?ii vizuale.</p>
+                <p class="video-description">Puterea electrică și wații — cum se calculează puterea și ce înseamnă ea în practică, cu demonstrații vizuale.</p>
             </div>
         </div>
     </section>
@@ -580,7 +588,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatica</p>
+                <p class="footer-sub">Proiect Atestat Informatică</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 2.5 � Regulatoare de tensiune">
+    <meta name="description" content="Lecția 2.5 — Regulatoare de tensiune">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 2.5 � Regulatoare de tensiune � Console Notebook</title>
+    <title>Lecția 2.5 — Regulatoare de tensiune — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,135 +30,143 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 � ELECTRONICA DE BAZA</p>
-            <h1>Lec?ia 2.5 � Regulatoare de tensiune</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.5 — Regulatoare de tensiune</h1>
             <p>LDO, VRM, stabilizare tensiune</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-                                                <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Low-dropout regulator (LDO) = tip de regulator liniar DC care poate func?iona chiar ?i c&#226;nd tensiunea de intrare este foarte apropiata de tensiunea de ie?ire</p>
-                <p>Aceasta lec?ie acopera: <strong>LDO</strong>, <strong>VRM</strong>, <strong>stabilizare tensiune</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    SoC-ul din PlayStation 5 funcționează la ~1.05V, memoria GDDR6 la ~1.35V, controllerele I/O la ~3.3V — dar sursa de alimentare furnizează un singur rail principal de 12V. Cine face conversia? Regulatoarele de tensiune — circuite specializate care coboară tensiunea cu precizie de milivolți, asigurând că fiecare componentă primește exact ce are nevoie.
+                </p>
+                <p>
+                    Această lecție acoperă cele două tipuri principale de regulatoare: <strong>LDO</strong> (Low-Dropout Regulator) — regulatorul liniar simplu dar ineficient, <strong>VRM</strong> (Voltage Regulator Module) — regulatorul de comutație multi-fază folosit de procesoarele moderne, și principiile de <strong>stabilizare a tensiunii</strong> care garantează toleranțe de ±3% pe rail-urile critice.
+                </p>
+                <p>
+                    Scopul nu este memorarea schemei unui LDO, ci înțelegerea <em>de ce</em> VRM-ul are nevoie de mai multe faze, <em>de ce</em> eficiența contează când convertești 12V în 1V la 76A și <em>ce se întâmplă</em> când un VRM cedează — unul dintre cele mai frecvente defecte în repararea consolelor.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.1 � Defini?ie LDO</h3>
+                <h3>2.5.1 — Definiție LDO</h3>
                 <ul class="specs-list">
-                    <li>Low-dropout regulator (LDO) = tip de regulator liniar DC care poate func?iona chiar ?i c&#226;nd tensiunea de intrare este foarte apropiata de tensiunea de ie?ire</li>
-                    <li><strong>Avantaje fa?a de alte regulatoare DC-DC:</strong> absen?a zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fara inductori sau transformatoare mari), complexitate mai simpla de design</li>
-                    <li><strong>Dezavantaj:</strong> regulatoarele liniare trebuie sa disipeze caldura pentru a func?iona</li>
-                    <li>Componente principale constau dintr-o referin?a de tensiune (bandgap reference), un amplificator, ?i un element de trecere (pass element)</li>
+                    <li>Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și când tensiunea de intrare este foarte apropiată de tensiunea de ieșire</li>
+                    <li><strong>Avantaje față de alte regulatoare DC-DC:</strong> absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitate mai simplă de design</li>
+                    <li><strong>Dezavantaj:</strong> regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                    <li>Componente principale constau dintr-o referință de tensiune (bandgap reference), un amplificator, și un element de trecere (pass element)</li>
                     <li><strong>Primul LDO ajustabil:</strong> prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.2 � Componente ?i reglare</h3>
+                <h3>2.5.2 — Componente și reglare</h3>
                 <ul class="specs-list">
-                    <li><strong>Componente principale:</strong> power FET (element de trecere) + amplificator diferen?ial (amplificator de eroare)</li>
-                    <li>O intrare a amplificatorului diferen?ial monitorizeaza frac?iunea tensiunii de ie?ire (determinata de raportul R1/R2)</li>
-                    <li><strong>A doua intrare:</strong> referin?a de tensiune stabila (bandgap reference)</li>
-                    <li>Daca tensiunea de ie?ire cre?te prea mult, comanda elementului de putere se ajusteaza pentru a men?ine tensiune constanta</li>
-                    <li><strong>Topologie:</strong> colector/drena deschisa (open collector/drain) � spre deosebire de emitter follower la regulatoare non-LDO</li>
-                    <li>Aceasta permite ca dropout voltage sa fie la fel de mic ca tensiunea de satura?ie a tranzistorului</li>
-                    <li><strong>Formula tensiune de ie?ire:</strong> Vout = (1 + R1/R2) &#215; Vref</li>
+                    <li><strong>Componente principale:</strong> power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li>O intrare a amplificatorului diferențial monitorizează fracțiunea tensiunii de ieșire (determinată de raportul R1/R2)</li>
+                    <li><strong>A doua intrare:</strong> referință de tensiune stabilă (bandgap reference)</li>
+                    <li>Dacă tensiunea de ieșire crește prea mult, comanda elementului de putere se ajustează pentru a menține tensiune constantă</li>
+                    <li><strong>Topologie:</strong> colector/drenă deschisă (open collector/drain) – spre deosebire de emitter follower la regulatoare non-LDO</li>
+                    <li>Aceasta permite ca dropout voltage să fie la fel de mic ca tensiunea de saturație a tranzistorului</li>
+                    <li><strong>Formula tensiune de ieșire:</strong> Vout = (1 + R1/R2) × Vref</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.3 � Eficien?a ?i disipare termica</h3>
+                <h3>2.5.3 — Eficiență și disipare termică</h3>
                 <ul class="specs-list">
-                    <li><strong>Putere disipata:</strong> PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</li>
-                    <li><strong>C&#226;nd IOUT &gt;&gt; IQ (func?ionare normala):</strong> PLOSS � (VIN - VOUT) &#215; IOUT</li>
-                    <li><strong>Eficien?a simplificata:</strong> ? = VOUT / VIN</li>
-                    <li>Curent ridicat ?i/sau diferen?a mare &#238;ntre VIN ?i VOUT ? disipare mare de putere</li>
-                    <li>Eficien?a scade pe masura ce diferen?a VIN - VOUT cre?te</li>
-                    <li>Disiparea excesiva poate dauna LDO-ului sau poate cauza oprire termica (thermal shutdown)</li>
+                    <li><strong>Putere disipată:</strong> PLOSS = (VIN - VOUT) × IOUT + VIN × IQ</li>
+                    <li><strong>Când IOUT &gt;&gt; IQ (funcționare normală):</strong> PLOSS ≈ (VIN - VOUT) × IOUT</li>
+                    <li><strong>Eficiența simplificată:</strong> η = VOUT / VIN</li>
+                    <li>Curent ridicat și/sau diferența mare între VIN și VOUT → disipare mare de putere</li>
+                    <li>Eficiența scade pe măsură ce diferența VIN - VOUT crește</li>
+                    <li>Disiparea excesivă poate dăuna LDO-ului sau poate cauza oprire termică (thermal shutdown)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.4 � Curent quiescent</h3>
+                <h3>2.5.4 — Curent quiescent</h3>
                 <ul class="specs-list">
-                    <li>IQ = IIN - IOUT (diferen?a &#238;ntre curentul de intrare ?i cel de ie?ire)</li>
-                    <li>Curentul necesar de circuitul intern al LDO pentru func?ionare corecta</li>
-                    <li><strong>Contribuitori principali:</strong> elementul de trecere &#238;n serie, topologia, temperatura ambientala</li>
-                    <li><strong>&#206;n stare inactiva (fara sarcina):</strong> PLOSS = VIN &#215; IQ</li>
+                    <li>IQ = IIN - IOUT (diferența între curentul de intrare și cel de ieșire)</li>
+                    <li>Curentul necesar de circuitul intern al LDO pentru funcționare corectă</li>
+                    <li><strong>Contribuitori principali:</strong> elementul de trecere în serie, topologia, temperatura ambientală</li>
+                    <li><strong>În stare inactivă (fără sarcină):</strong> PLOSS = VIN × IQ</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.5 � Filtrare ?i specifica?ii</h3>
+                <h3>2.5.5 — Filtrare și specificații</h3>
                 <ul class="specs-list">
-                    <li>LDO-urile pot fi folosite ca filtre, util c&#226;nd se folosesc surse switching care introduc ripple</li>
+                    <li>LDO-urile pot fi folosite ca filtre, util când se folosesc surse switching care introduc ripple</li>
                     <li>Ripple-ul poate afecta oscilatoare, convertoare de date, sisteme RF</li>
                     <li><strong>PSRR (Power Supply Rejection Ratio):</strong> capacitatea LDO de a respinge ripple-ul de la intrare</li>
-                    <li>PSRR = ?VIN&#178; / ?VOUT&#178; (exprimat &#238;n dB)</li>
-                    <li><strong>Exemplu:</strong> PSRR de 55 dB la 1 MHz atenueaza ripple de 1 mV la 1.78 �V la ie?ire</li>
-                    <li><strong>LDO-uri de performan?a:</strong> PSRR ridicat pe banda larga (10 Hz - 5 MHz)</li>
-                    <li><strong>Load regulation:</strong> ?VOUT / ?IOUT � capacitatea de a men?ine tensiune stabila la varierea sarcinii</li>
-                    <li><strong>Line regulation:</strong> ?VOUT / ?VIN � capacitatea de a men?ine tensiune stabila la varierea tensiunii de intrare</li>
-                    <li><strong>Transient response:</strong> varia?ia maxima a tensiunii de ie?ire la schimbare brusca de curent</li>
-                    <li><strong>Output noise:</strong> zgomot termal, shot noise, flicker noise � contribuie la zgomotul de ie?ire</li>
+                    <li>PSRR = ΔVIN² / ΔVOUT² (exprimat în dB)</li>
+                    <li><strong>Exemplu:</strong> PSRR de 55 dB la 1 MHz atenuează ripple de 1 mV la 1.78 μV la ieșire</li>
+                    <li><strong>LDO-uri de performanță:</strong> PSRR ridicat pe bandă largă (10 Hz - 5 MHz)</li>
+                    <li><strong>Load regulation:</strong> ΔVOUT / ΔIOUT – capacitatea de a menține tensiune stabilă la varierea sarcinii</li>
+                    <li><strong>Line regulation:</strong> ΔVOUT / ΔVIN – capacitatea de a menține tensiune stabilă la varierea tensiunii de intrare</li>
+                    <li><strong>Transient response:</strong> variația maximă a tensiunii de ieșire la schimbare bruscă de curent</li>
+                    <li><strong>Output noise:</strong> zgomot termal, shot noise, flicker noise – contribuie la zgomotul de ieșire</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.6 � Defini?ie VRM</h3>
+                <h3>2.5.6 — Definiție VRM</h3>
                 <ul class="specs-list">
-                    <li>VRM (Voltage Regulator Module) = convertor buck care furnizeaza procesorului ?i chipsetului tensiunea de alimentare corespunzatoare</li>
-                    <li>Converte?te +3.3V, +5V sau +12V la tensiuni mai mici necesare dispozitivelor</li>
-                    <li>Permite montarea dispozitivelor cu tensiuni diferite pe aceea?i placa de baza</li>
-                    <li>Pe sisteme PC, VRM-ul este tipic alcatuit din dispositive power MOSFET</li>
-                    <li>Majoritatea implementarilor VRM sunt lipite direct pe placa de baza (motherboard)</li>
+                    <li>VRM (Voltage Regulator Module) = convertor buck care furnizează procesorului și chipsetului tensiunea de alimentare corespunzătoare</li>
+                    <li>Convertește +3.3V, +5V sau +12V la tensiuni mai mici necesare dispozitivelor</li>
+                    <li>Permite montarea dispozitivelor cu tensiuni diferite pe aceeași placă de bază</li>
+                    <li>Pe sisteme PC, VRM-ul este tipic alcătuit din dispositive power MOSFET</li>
+                    <li>Majoritatea implementărilor VRM sunt lipite direct pe placa de bază (motherboard)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.7 � FIVR ?i integrare</h3>
+                <h3>2.5.7 — FIVR și integrare</h3>
                 <ul class="specs-list">
                     <li>Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU</li>
                     <li>FIVR (Fully Integrated Voltage Regulator) sau IVR (Integrated Voltage Regulator)</li>
-                    <li>Simplifica designul VRM al placii de baza</li>
-                    <li>Procesoarele moderne necesita sub 1.5V tensiune de alimentare</li>
-                    <li><strong>Tendin?a designerilor CPU:</strong> tensiuni core mai mici ? disipare redusa ? TDP (Thermal Design Power) mai mic</li>
-                    <li>Placile video moderne folosesc ?i ele VRM datorita cerin?elor ridicate de putere/curent</li>
-                    <li>VRM-urile pot genera caldura semnificativa, necesit&#226;nd radiatoare separate</li>
+                    <li>Simplifică designul VRM al plăcii de bază</li>
+                    <li>Procesoarele moderne necesită sub 1.5V tensiune de alimentare</li>
+                    <li><strong>Tendința designerilor CPU:</strong> tensiuni core mai mici → disipare redusă → TDP (Thermal Design Power) mai mic</li>
+                    <li>Plăcile video moderne folosesc și ele VRM datorită cerințelor ridicate de putere/curent</li>
+                    <li>VRM-urile pot genera căldură semnificativă, necesitând radiatoare separate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.8 � VID (Voltage Identification)</h3>
+                <h3>2.5.8 — VID (Voltage Identification)</h3>
                 <ul class="specs-list">
-                    <li>Procesorul comunica VRM-ului tensiunea ?i curentul corecte la pornire prin bi?i VID</li>
-                    <li>VRM-ul furnizeaza ini?ial o tensiune standard logicii VID a procesorului</li>
-                    <li>Logica VID trimite codul VID &#238;napoi la VRM, care apoi regleaza tensiunea ceruta</li>
-                    <li>Switch-mode buck converter ajusteaza ie?irea conform codului VID</li>
-                    <li>VID de 5 bi?i ? maxim 32 tensiuni de ie?ire distincte</li>
-                    <li>VID de 5, 6, sau 8 bi?i � tensiuni &#238;ntre 0.5V ?i 3.5V (din 2008)</li>
-                    <li>Permite folosirea aceluia?i PSU pentru CPU-uri cu tensiuni nominale diferite</li>
-                    <li>Reduce consumul de putere &#238;n perioadele de inactivitate prin scaderea tensiunii</li>
+                    <li>Procesorul comunică VRM-ului tensiunea și curentul corecte la pornire prin biți VID</li>
+                    <li>VRM-ul furnizează inițial o tensiune standard logicii VID a procesorului</li>
+                    <li>Logica VID trimite codul VID înapoi la VRM, care apoi reglează tensiunea cerută</li>
+                    <li>Switch-mode buck converter ajustează ieșirea conform codului VID</li>
+                    <li>VID de 5 biți → maxim 32 tensiuni de ieșire distincte</li>
+                    <li>VID de 5, 6, sau 8 biți – tensiuni între 0.5V și 3.5V (din 2008)</li>
+                    <li>Permite folosirea aceluiași PSU pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>Reduce consumul de putere în perioadele de inactivitate prin scăderea tensiunii</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5.9 � VRM ?i overclocking</h3>
+                <h3>2.5.9 — VRM și overclocking</h3>
                 <ul class="specs-list">
-                    <li>Calitatea VRM-ului influen?eaza direct poten?ialul de overclocking al placii de baza</li>
-                    <li>Acela?i procesor overclockat poate prezenta diferen?e notabile de performan?a cu VRM-uri diferite</li>
-                    <li>O alimentare stabila este necesara pentru overclocking reu?it</li>
-                    <li>Un chip for?at dincolo de setarile din fabrica cre?te consumul de putere ? VRM-ul trebuie sa se adapteze</li>
+                    <li>Calitatea VRM-ului influențează direct potențialul de overclocking al plăcii de bază</li>
+                    <li>Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite</li>
+                    <li>O alimentare stabilă este necesară pentru overclocking reușit</li>
+                    <li>Un chip forțat dincolo de setările din fabrică crește consumul de putere → VRM-ul trebuie să se adapteze</li>
                 </ul>
             </div>
 
@@ -167,12 +175,12 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>FIVR ?i integrare</h3>
+                <h3>FIVR și integrare</h3>
                 <ul class="specs-list">
-                    <li><strong>Tendin?a designerilor CPU:</strong> tensiuni core mai mici ? disipare redusa ? TDP (Thermal Design Power) mai mic</li>
+                    <li><strong>Tendința designerilor CPU:</strong> tensiuni core mai mici → disipare redusă → TDP (Thermal Design Power) mai mic</li>
                 </ul>
             </div>
         </div>
@@ -180,42 +188,42 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie VRM</h3>
+                <h3>Definiție VRM</h3>
                 <ul class="specs-list">
-                    <li>VRM (Voltage Regulator Module) = convertor buck care furnizeaza procesorului ?i chipsetului tensiunea de alimentare corespunzatoare</li>
-                    <li>Pe sisteme PC, VRM-ul este tipic alcatuit din dispositive power MOSFET</li>
-                    <li>Majoritatea implementarilor VRM sunt lipite direct pe placa de baza (motherboard)</li>
+                    <li>VRM (Voltage Regulator Module) = convertor buck care furnizează procesorului și chipsetului tensiunea de alimentare corespunzătoare</li>
+                    <li>Pe sisteme PC, VRM-ul este tipic alcătuit din dispositive power MOSFET</li>
+                    <li>Majoritatea implementărilor VRM sunt lipite direct pe placa de bază (motherboard)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>FIVR ?i integrare</h3>
+                <h3>FIVR și integrare</h3>
                 <ul class="specs-list">
-                    <li>Simplifica designul VRM al placii de baza</li>
-                    <li>Placile video moderne folosesc ?i ele VRM datorita cerin?elor ridicate de putere/curent</li>
-                    <li>VRM-urile pot genera caldura semnificativa, necesit&#226;nd radiatoare separate</li>
+                    <li>Simplifică designul VRM al plăcii de bază</li>
+                    <li>Plăcile video moderne folosesc și ele VRM datorită cerințelor ridicate de putere/curent</li>
+                    <li>VRM-urile pot genera căldură semnificativă, necesitând radiatoare separate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>VID (Voltage Identification)</h3>
                 <ul class="specs-list">
-                    <li>Procesorul comunica VRM-ului tensiunea ?i curentul corecte la pornire prin bi?i VID</li>
-                    <li>VRM-ul furnizeaza ini?ial o tensiune standard logicii VID a procesorului</li>
-                    <li>Logica VID trimite codul VID &#238;napoi la VRM, care apoi regleaza tensiunea ceruta</li>
-                    <li>Permite folosirea aceluia?i PSU pentru CPU-uri cu tensiuni nominale diferite</li>
+                    <li>Procesorul comunică VRM-ului tensiunea și curentul corecte la pornire prin biți VID</li>
+                    <li>VRM-ul furnizează inițial o tensiune standard logicii VID a procesorului</li>
+                    <li>Logica VID trimite codul VID înapoi la VRM, care apoi reglează tensiunea cerută</li>
+                    <li>Permite folosirea aceluiași PSU pentru CPU-uri cu tensiuni nominale diferite</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>VRM ?i overclocking</h3>
+                <h3>VRM și overclocking</h3>
                 <ul class="specs-list">
-                    <li>Calitatea VRM-ului influen?eaza direct poten?ialul de overclocking al placii de baza</li>
-                    <li>Acela?i procesor overclockat poate prezenta diferen?e notabile de performan?a cu VRM-uri diferite</li>
-                    <li>Un chip for?at dincolo de setarile din fabrica cre?te consumul de putere ? VRM-ul trebuie sa se adapteze</li>
+                    <li>Calitatea VRM-ului influențează direct potențialul de overclocking al plăcii de bază</li>
+                    <li>Același procesor overclockat poate prezenta diferențe notabile de performanță cu VRM-uri diferite</li>
+                    <li>Un chip forțat dincolo de setările din fabrică crește consumul de putere → VRM-ul trebuie să se adapteze</li>
                 </ul>
             </div>
         </div>
@@ -226,23 +234,23 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Filtrare ?i specifica?ii</h3>
+                <h3>Filtrare și specificații</h3>
                 <ul class="specs-list">
-                    <li>LDO-urile pot fi folosite ca filtre, util c&#226;nd se folosesc surse switching care introduc ripple</li>
+                    <li>LDO-urile pot fi folosite ca filtre, util când se folosesc surse switching care introduc ripple</li>
                     <li>Ripple-ul poate afecta oscilatoare, convertoare de date, sisteme RF</li>
                     <li><strong>PSRR (Power Supply Rejection Ratio):</strong> capacitatea LDO de a respinge ripple-ul de la intrare</li>
-                    <li>PSRR = ?VIN&#178; / ?VOUT&#178; (exprimat &#238;n dB)</li>
-                    <li><strong>Exemplu:</strong> PSRR de 55 dB la 1 MHz atenueaza ripple de 1 mV la 1.78 �V la ie?ire</li>
-                    <li><strong>LDO-uri de performan?a:</strong> PSRR ridicat pe banda larga (10 Hz - 5 MHz)</li>
-                    <li><strong>Load regulation:</strong> ?VOUT / ?IOUT � capacitatea de a men?ine tensiune stabila la varierea sarcinii</li>
-                    <li><strong>Line regulation:</strong> ?VOUT / ?VIN � capacitatea de a men?ine tensiune stabila la varierea tensiunii de intrare</li>
-                    <li><strong>Transient response:</strong> varia?ia maxima a tensiunii de ie?ire la schimbare brusca de curent</li>
-                    <li><strong>Output noise:</strong> zgomot termal, shot noise, flicker noise � contribuie la zgomotul de ie?ire</li>
+                    <li>PSRR = ΔVIN² / ΔVOUT² (exprimat în dB)</li>
+                    <li><strong>Exemplu:</strong> PSRR de 55 dB la 1 MHz atenuează ripple de 1 mV la 1.78 μV la ieșire</li>
+                    <li><strong>LDO-uri de performanță:</strong> PSRR ridicat pe bandă largă (10 Hz - 5 MHz)</li>
+                    <li><strong>Load regulation:</strong> ΔVOUT / ΔIOUT – capacitatea de a menține tensiune stabilă la varierea sarcinii</li>
+                    <li><strong>Line regulation:</strong> ΔVOUT / ΔVIN – capacitatea de a menține tensiune stabilă la varierea tensiunii de intrare</li>
+                    <li><strong>Transient response:</strong> variația maximă a tensiunii de ieșire la schimbare bruscă de curent</li>
+                    <li><strong>Output noise:</strong> zgomot termal, shot noise, flicker noise – contribuie la zgomotul de ieșire</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>FIVR ?i integrare</h3>
+                <h3>FIVR și integrare</h3>
                 <ul class="specs-list">
                     <li>Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU</li>
                 </ul>
@@ -256,8 +264,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Componente ?i reglare</h3>
-                    <p>Componente principale: power FET (element de trecere) + amplificator diferen?ial (amplificator de eroare)</p>
+                    <h3>⚠️ Componente și reglare</h3>
+                    <p>Componente principale: power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</p>
                 </div>
             </div>
         </div>
@@ -268,15 +276,15 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Defini?ie LDO:</strong> Low-dropout regulator (LDO) = tip de regulator liniar DC care poate func?iona chiar ?i c&#226;nd tensiunea de intrare este foarte apropiata de tensiunea de ie?ire</li>
-                    <li><strong>Componente ?i reglare:</strong> Componente principale: power FET (element de trecere) + amplificator diferen?ial (amplificator de eroare)</li>
-                    <li><strong>Eficien?a ?i disipare termica:</strong> Putere disipata: PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</li>
-                    <li><strong>Curent quiescent:</strong> IQ = IIN - IOUT (diferen?a &#238;ntre curentul de intrare ?i cel de ie?ire)</li>
-                    <li><strong>Filtrare ?i specifica?ii:</strong> LDO-urile pot fi folosite ca filtre, util c&#226;nd se folosesc surse switching care introduc ripple</li>
-                    <li><strong>Defini?ie VRM:</strong> VRM (Voltage Regulator Module) = convertor buck care furnizeaza procesorului ?i chipsetului tensiunea de alimentare corespunzatoare</li>
-                    <li><strong>FIVR ?i integrare:</strong> Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU</li>
-                    <li><strong>VID (Voltage Identification):</strong> Procesorul comunica VRM-ului tensiunea ?i curentul corecte la pornire prin bi?i VID</li>
-                    <li><strong>VRM ?i overclocking:</strong> Calitatea VRM-ului influen?eaza direct poten?ialul de overclocking al placii de baza</li>
+                    <li><strong>Definiție LDO:</strong> Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și când tensiunea de intrare este foarte apropiată de tensiunea de ieșire</li>
+                    <li><strong>Componente și reglare:</strong> Componente principale: power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li><strong>Eficiență și disipare termică:</strong> Putere disipată: PLOSS = (VIN - VOUT) × IOUT + VIN × IQ</li>
+                    <li><strong>Curent quiescent:</strong> IQ = IIN - IOUT (diferența între curentul de intrare și cel de ieșire)</li>
+                    <li><strong>Filtrare și specificații:</strong> LDO-urile pot fi folosite ca filtre, util când se folosesc surse switching care introduc ripple</li>
+                    <li><strong>Definiție VRM:</strong> VRM (Voltage Regulator Module) = convertor buck care furnizează procesorului și chipsetului tensiunea de alimentare corespunzătoare</li>
+                    <li><strong>FIVR și integrare:</strong> Unele procesoare (Intel Haswell, Ice Lake) au componente de reglare a tensiunii integrate pe pachetul CPU</li>
+                    <li><strong>VID (Voltage Identification):</strong> Procesorul comunică VRM-ului tensiunea și curentul corecte la pornire prin biți VID</li>
+                    <li><strong>VRM și overclocking:</strong> Calitatea VRM-ului influențează direct potențialul de overclocking al plăcii de bază</li>
                 </ul>
             </div>
         </div>
@@ -284,80 +292,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: Avantaje fa?a de alte regulatoare DC-DC?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Avantaje față de alte regulatoare DC-DC?</strong></p>
                 <ul class="specs-list">
                     <li>a) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
-                    <li>b) absen?a zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fara inductori sau transformatoare mari), complexitat...</li>
-                    <li>c) power FET (element de trecere) + amplificator diferen?ial (amplificator de eroare)</li>
-                    <li>d) regulatoarele liniare trebuie sa disipeze caldura pentru a func?iona</li>
+                    <li>b) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
+                    <li>c) power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li>d) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � absen?a zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fara inductori sau transformatoare mari), complexitate mai simpla de design</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitate mai simplă de design</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Componente principale?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Componente principale?</strong></p>
                 <ul class="specs-list">
                     <li>a) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
-                    <li>b) absen?a zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fara inductori sau transformatoare mari), complexitat...</li>
-                    <li>c) power FET (element de trecere) + amplificator diferen?ial (amplificator de eroare)</li>
-                    <li>d) regulatoarele liniare trebuie sa disipeze caldura pentru a func?iona</li>
+                    <li>b) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
+                    <li>c) power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</li>
+                    <li>d) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � power FET (element de trecere) + amplificator diferen?ial (amplificator de eroare)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Putere disipata?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Putere disipată?</strong></p>
                 <ul class="specs-list">
-                    <li>a) regulatoarele liniare trebuie sa disipeze caldura pentru a func?iona</li>
-                    <li>b) absen?a zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fara inductori sau transformatoare mari), complexitat...</li>
+                    <li>a) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                    <li>b) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
                     <li>c) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
-                    <li>d) PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</li>
+                    <li>d) PLOSS = (VIN - VOUT) × IOUT + VIN × IQ</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — PLOSS = (VIN - VOUT) × IOUT + VIN × IQ</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Curent quiescent?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Curent quiescent?</strong></p>
                 <ul class="specs-list">
-                    <li>a) IQ = IIN - IOUT (diferen?a &#238;ntre curentul de intrare ?i cel de ie?ire)</li>
+                    <li>a) IQ = IIN - IOUT (diferența între curentul de intrare și cel de ieșire)</li>
                     <li>b) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
-                    <li>c) regulatoarele liniare trebuie sa disipeze caldura pentru a func?iona</li>
-                    <li>d) absen?a zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fara inductori sau transformatoare mari), complexitat...</li>
+                    <li>c) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
+                    <li>d) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � IQ = IIN - IOUT (diferen?a &#238;ntre curentul de intrare ?i cel de ie?ire)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — IQ = IIN - IOUT (diferența între curentul de intrare și cel de ieșire)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: PSRR (Power Supply Rejection Ratio)?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: PSRR (Power Supply Rejection Ratio)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) absen?a zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fara inductori sau transformatoare mari), complexitat...</li>
+                    <li>a) absența zgomotului de comutare (spre deosebire de switching regulators), dimensiuni mai mici (fără inductori sau transformatoare mari), complexitat...</li>
                     <li>b) capacitatea LDO de a respinge ripple-ul de la intrare</li>
                     <li>c) prezentat pe 12 aprilie 1977, de Robert Dobkin de la National Semiconductor</li>
-                    <li>d) regulatoarele liniare trebuie sa disipeze caldura pentru a func?iona</li>
+                    <li>d) regulatoarele liniare trebuie să disipeze căldură pentru a funcționa</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � capacitatea LDO de a respinge ripple-ul de la intrare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — capacitatea LDO de a respinge ripple-ul de la intrare</strong></p>
                 </details>
             </div>
         </div>
@@ -365,22 +373,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Regulatoare de tensiune</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de LDO. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Regulatoare de tensiune</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de LDO. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: LDO.</li>
-                    <li>2. Ce rol are VRM �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre LDO ?i stabilizare tensiune.</li>
+                    <li>2. Ce rol are VRM în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre LDO și stabilizare tensiune.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Low-dropout regulator (LDO) = tip de regulator liniar DC care poate func?iona chiar ?i c&#226;nd tensiunea de intrare este foarte apropiata de tensiunea de ie?ire</p>
-                        <p><strong>2.</strong> Componente principale: power FET (element de trecere) + amplificator diferen?ial (amplificator de eroare)</p>
-                        <p><strong>3.</strong> Putere disipata: PLOSS = (VIN - VOUT) &#215; IOUT + VIN &#215; IQ</p>
+                        <p><strong>1.</strong> Low-dropout regulator (LDO) = tip de regulator liniar DC care poate funcționa chiar și când tensiunea de intrare este foarte apropiată de tensiunea de ieșire</p>
+                        <p><strong>2.</strong> Componente principale: power FET (element de trecere) + amplificator diferențial (amplificator de eroare)</p>
+                        <p><strong>3.</strong> Putere disipată: PLOSS = (VIN - VOUT) × IOUT + VIN × IQ</p>
                     </div>
                 </details>
             </div>
@@ -409,7 +417,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-2-4.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 2.4 &mdash; MOSFET &#x219;i VRM</a>
@@ -466,14 +474,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cum func?ioneaza o sursa �n comuta?ie (SMPS): principii de func?ionare, etape ?i avantaje fa?a de sursele liniare.</p>
+                <p class="video-description">Cum funcționează o sursă în comutație (SMPS): principii de funcționare, etape și avantaje față de sursele liniare.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

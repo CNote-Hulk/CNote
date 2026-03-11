@@ -65,6 +65,10 @@ export async function loadConsoles() {
 
     _loading = (async () => {
         try {
+            if (window.CONSOLES_DATA) {
+                _cache = window.CONSOLES_DATA;
+                return _cache;
+            }
             const jsonPath = resolveJsonPath();
             if (window.location.protocol === 'file:') {
                 _cache = await loadJsonWithXhr(jsonPath);

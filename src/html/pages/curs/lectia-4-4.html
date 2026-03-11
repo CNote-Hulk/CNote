@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 4.4 � Bus ?i interconectari">
+    <meta name="description" content="Lecția 4.4 — Bus și interconectări">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 4.4 � Bus ?i interconectari � Console Notebook</title>
+    <title>Lecția 4.4 — Bus și interconectări — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,77 +30,85 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 � ARHITECTURA HARDWARE</p>
-            <h1>Lec?ia 4.4 � Bus ?i interconectari</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — ARHITECTURĂ HARDWARE</p>
+            <h1>Lecția 4.4 — Bus și interconectări</h1>
             <p>PCIe, memory bus, I/O</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-                                                <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>1. Physical Layer (PHY): semnale electrice, lane-uri, SerDes, clock recovery</p>
-                <p>Aceasta lec?ie acopera: <strong>PCIe</strong>, <strong>memory bus</strong>, <strong>I/O</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    CPU-ul, GPU-ul, memoria și stocarea unui PlayStation 5 sunt componente separate care trebuie să comunice între ele la viteze enorme. Canalele care fac posibilă această comunicare se numesc bus-uri — magistrale de date care transportă informație între componentele sistemului. PCIe conectează SSD-ul la procesor, memory bus-ul leagă RAM-ul de controller, iar bus-urile I/O gestionează controllerele, rețeaua și perifericele.
+                </p>
+                <p>
+                    Această lecție acoperă principalele tipuri de interconectări din consolele moderne: <strong>PCIe</strong> (interfața de mare viteză pentru SSD și periferice), <strong>memory bus</strong> (legătura directă cu RAM-ul) și <strong>I/O</strong> (canalele pentru USB, Ethernet, Bluetooth, HDMI).
+                </p>
+                <p>
+                    Scopul nu este memorarea specificațiilor PCIe, ci înțelegerea <em>de ce</em> SSD-ul din PS5 comunică la 5.5 GB/s prin PCIe 4.0, <em>de ce</em> memory bus-ul de 256-bit furnizează 448 GB/s de bandwidth și <em>cum</em> fiecare bus din sistem influențează direct performanța pe care o simți în joc.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.1 � Defini?ie ?i arhitectura PCIe</h3>
+                <h3>4.4.1 — Definiție și arhitectură PCIe</h3>
                 <ul class="specs-list">
-                    <li>PCI Express (PCIe) = standard de viteza mare pentru conectarea componentelor hardware &#238;n interiorul calculatoarelor</li>
-                    <li><strong>&#206;nlocuie?te standardele mai vechi:</strong> PCI, PCI-X, AGP</li>
+                    <li>PCI Express (PCIe) = standard de viteză mare pentru conectarea componentelor hardware în interiorul calculatoarelor</li>
+                    <li><strong>Înlocuiește standardele mai vechi:</strong> PCI, PCI-X, AGP</li>
                     <li>Dezvoltat de PCI-SIG (PCI Special Interest Group), creat 2003 de Intel, Dell, HP, IBM</li>
                     <li>Topologie punct-la-punct (point-to-point) spre deosebire de PCI care folosea bus partajat paralel</li>
-                    <li><strong>PCI:</strong> bus partajat = un singur master la un moment dat, direc?ie unica, ceas limitat de cel mai lent dispozitiv</li>
-                    <li><strong>PCIe:</strong> link-uri dedicate full-duplex &#238;ntre fiecare dispozitiv ?i root complex (host)</li>
-                    <li>Comunicarea PCIe este &#238;ncapsulata &#238;n pachete (protocol de tip re?ea)</li>
+                    <li><strong>PCI:</strong> bus partajat = un singur master la un moment dat, direcție unică, ceas limitat de cel mai lent dispozitiv</li>
+                    <li><strong>PCIe:</strong> link-uri dedicate full-duplex între fiecare dispozitiv și root complex (host)</li>
+                    <li>Comunicarea PCIe este încapsulată în pachete (protocol de tip rețea)</li>
                     <li>Compatibilitate software cu PCI vechi (software legacy poate detecta dispozitive PCIe)</li>
                     <li>Este un bus serial, nu paralel</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.2 � Lane-uri ?i link-uri</h3>
+                <h3>4.4.2 — Lane-uri și link-uri</h3>
                 <ul class="specs-list">
-                    <li>Un link PCIe = un canal de comunicare punct-la-punct &#238;ntre doua porturi PCIe</li>
+                    <li>Un link PCIe = un canal de comunicare punct-la-punct între două porturi PCIe</li>
                     <li>Link-ul este compus din una sau mai multe lane-uri</li>
-                    <li>O lane = 2 perechi diferen?iale (differential signaling):</li>
-                    <li>O pereche pentru recep?ie, una pentru transmisie</li>
+                    <li>O lane = 2 perechi diferențiale (differential signaling):</li>
+                    <li>O pereche pentru recepție, una pentru transmisie</li>
                     <li>Deci 4 fire per lane</li>
-                    <li><strong>Full-duplex:</strong> date simultane &#238;n ambele direc?ii</li>
-                    <li><strong>La?imi standard de link:</strong> &#215;1, &#215;2, &#215;4, &#215;8, &#215;16</li>
-                    <li>&#215;1 = dispozitive lente (Wi-Fi, etc.)</li>
-                    <li>&#215;16 = placi grafice</li>
-                    <li><strong>Datele pe link-uri multi-lane sunt intercalate (striped):</strong> fiecare byte succesiv pe lane-ul urmator</li>
-                    <li>Negociere automata a la?imii la ini?ializare</li>
-                    <li>Un card &#215;1 func?ioneaza &#238;n slot &#215;16 (negociaza &#215;1)</li>
+                    <li><strong>Full-duplex:</strong> date simultane în ambele direcții</li>
+                    <li><strong>Lățimi standard de link:</strong> ×1, ×2, ×4, ×8, ×16</li>
+                    <li>×1 = dispozitive lente (Wi-Fi, etc.)</li>
+                    <li>×16 = plăci grafice</li>
+                    <li><strong>Datele pe link-uri multi-lane sunt intercalate (striped):</strong> fiecare byte succesiv pe lane-ul următor</li>
+                    <li>Negociere automată a lățimii la inițializare</li>
+                    <li>Un card ×1 funcționează în slot ×16 (negociază ×1)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.3 � Serial vs paralel � de ce serial</h3>
+                <h3>4.4.3 — Serial vs paralel – de ce serial</h3>
                 <ul class="specs-list">
                     <li><strong>Bus paralel limitat de timing skew:</strong> semnale separate au durate diferite de propagare</li>
-                    <li>Timing skew = c&#226;?iva nanosecunde ? limita de bandwidth la sute de MHz</li>
-                    <li>Bus serial nu are timing skew (un singur semnal diferen?ial per direc?ie per lane)</li>
-                    <li>Clock-ul este &#238;nglobat (embedded) &#238;n semnalul serial ? nu necesita ceas extern</li>
+                    <li>Timing skew = câțiva nanosecunde → limita de bandwidth la sute de MHz</li>
+                    <li>Bus serial nu are timing skew (un singur semnal diferențial per direcție per lane)</li>
+                    <li>Clock-ul este înglobat (embedded) în semnalul serial → nu necesită ceas extern</li>
                     <li>Bandwidth-ul serial ajunge la multi-gigahertz</li>
-                    <li><strong>Alte exemple de tranzi?ie paralel?serial:</strong> SATA, USB, SAS, FireWire, DVI, HDMI, DisplayPort</li>
-                    <li>Tranzi?ia paralel?serial permisa de legea lui Moore (integrarea SerDes &#238;n IC-uri)</li>
+                    <li><strong>Alte exemple de tranziție paralel→serial:</strong> SATA, USB, SAS, FireWire, DVI, HDMI, DisplayPort</li>
+                    <li>Tranziția paralel→serial permisă de legea lui Moore (integrarea SerDes în IC-uri)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.4 � Genera?ii PCIe � tabel comparativ</h3>
-                <p>| Versiune | An   | Codare      | Transfer rate/lane | Throughput &#215;1  | Throughput &#215;16 |</p>
+                <h3>4.4.4 — Generații PCIe – tabel comparativ</h3>
+                <p>| Versiune | An   | Codare      | Transfer rate/lane | Throughput ×1  | Throughput ×16 |</p>
                 <p>|----------|------|-------------|--------------------|-----------|----|</p>
                 <p>| 1.0      | 2003 | 8b/10b      | 2.5 GT/s           | 0.25 GB/s | 4 GB/s      |</p>
                 <p>| 2.0      | 2007 | 8b/10b      | 5.0 GT/s           | 0.5 GB/s  | 8 GB/s      |</p>
@@ -110,191 +118,191 @@
                 <p>| 6.0      | 2022 | PAM-4 FEC   | 64.0 GT/s          | 7.563 GB/s| 121 GB/s    |</p>
                 <p>| 7.0      | 2025 | PAM-4 FEC   | 128.0 GT/s         | 15.125 GB/s| 242 GB/s   |</p>
                 <ul class="specs-list">
-                    <li>8b/10b encoding = 20% overhead (PCIe 1.x ?i 2.x)</li>
+                    <li>8b/10b encoding = 20% overhead (PCIe 1.x și 2.x)</li>
                     <li>128b/130b encoding = ~1.54% overhead (PCIe 3.0-5.0)</li>
                     <li>PAM-4 (Pulse Amplitude Modulation, 4 nivele) + FEC de la PCIe 6.0</li>
-                    <li>PAM-4 transmite 2 bi?i per simbol ? dublu fara a cre?te frecven?a</li>
-                    <li>BER cre?te la 10?6 (vs 10?&#185;&#178; anterior) ? necesita FEC (Forward Error Correction)</li>
+                    <li>PAM-4 transmite 2 biți per simbol → dublu fără a crește frecvența</li>
+                    <li>BER crește la 10⁻⁶ (vs 10⁻¹² anterior) → necesită FEC (Forward Error Correction)</li>
                     <li><strong>FLIT de 256 bytes:</strong> 242 bytes date + 8 bytes CRC + 6 bytes FEC</li>
-                    <li>Backward compatible &#238;ntre genera?ii</li>
+                    <li>Backward compatible între generații</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.5 � Aplica?ii PCIe</h3>
+                <h3>4.4.5 — Aplicații PCIe</h3>
                 <ul class="specs-list">
-                    <li><strong>Placi grafice (GPU):</strong> interfa?a primara de la 2013 (a &#238;nlocuit AGP)</li>
-                    <li><strong>Stocare:</strong> SSD-uri NVMe prin M.2 sau U.2 (p&#226;na la 4 lane-uri PCIe)</li>
-                    <li>NVMe ofera mult mai rapid I/O dec&#226;t AHCI/SATA</li>
-                    <li><strong>Re?ea:</strong> Ethernet 10 Gigabit, multiport Gigabit</li>
+                    <li><strong>Plăci grafice (GPU):</strong> interfață primară de la 2013 (a înlocuit AGP)</li>
+                    <li><strong>Stocare:</strong> SSD-uri NVMe prin M.2 sau U.2 (până la 4 lane-uri PCIe)</li>
+                    <li>NVMe oferă mult mai rapid I/O decât AHCI/SATA</li>
+                    <li><strong>Rețea:</strong> Ethernet 10 Gigabit, multiport Gigabit</li>
                     <li><strong>Enterprise storage:</strong> SAS, Fibre Channel</li>
                     <li>GPU extern prin Thunderbolt (Thunderbolt 3 bazat pe PCIe, USB-C fizic)</li>
-                    <li><strong>PCIe slot power:</strong> &#215;1 = max 25W, &#215;16 = max 75W</li>
+                    <li><strong>PCIe slot power:</strong> ×1 = max 25W, ×16 = max 75W</li>
                     <li>Conector suplimentar 6-pin = +75W, 8-pin = +150W</li>
-                    <li>12VHPWR (16-pin, Nvidia 2022) = p&#226;na la 600W</li>
+                    <li>12VHPWR (16-pin, Nvidia 2022) = până la 600W</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.6 � Protocol hardware pe straturi</h3>
+                <h3>4.4.6 — Protocol hardware pe straturi</h3>
                 <ul class="specs-list">
                     <li>Protocol pe straturi (layered protocol):</li>
                 </ul>
                 <p>1. Physical Layer (PHY): semnale electrice, lane-uri, SerDes, clock recovery</p>
-                <p>2. Data Link Layer: secven?ierea TLP-urilor, ACK/NAK, flow control credits</p>
-                <p>3. Transaction Layer: split transactions (request ?i response separate), credit-based flow control</p>
+                <p>2. Data Link Layer: secvențierea TLP-urilor, ACK/NAK, flow control credits</p>
+                <p>3. Transaction Layer: split transactions (request și response separate), credit-based flow control</p>
                 <ul class="specs-list">
-                    <li><strong>Eficien?a:</strong> 86% pentru payload 128 bytes, 98% pentru 1024 bytes, doar 16% pentru 4 bytes</li>
-                    <li>MSI (Message Signaled Interrupts) &#238;nlocuiesc &#238;ntreruperile pe linii dedicate ? laten?a mai mica</li>
+                    <li><strong>Eficiența:</strong> 86% pentru payload 128 bytes, 98% pentru 1024 bytes, doar 16% pentru 4 bytes</li>
+                    <li>MSI (Message Signaled Interrupts) înlocuiesc întreruperile pe linii dedicate → latență mai mică</li>
                 </ul>
-                <p>-----------------------------------------------------------</p>
+                <p>═══════════════════════════════════════════════════════════</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.7 � Defini?ie ?i concepte fundamentale</h3>
+                <h3>4.4.7 — Definiție și concepte fundamentale</h3>
                 <ul class="specs-list">
-                    <li>Bus = sistem de comunicare care transfera date &#238;ntre componente &#238;ntr-un calculator</li>
-                    <li>Include hardware (fire, fibra optica, trace-uri PCB) + software (protocoale de comunicare)</li>
-                    <li><strong>La baza:</strong> cale fizica partajata care permite mai multor dispozitive sa comunice</li>
-                    <li>Protocol de comunicare gestioneaza care dispozitiv transmite ?i c&#226;nd</li>
+                    <li>Bus = sistem de comunicare care transferă date între componente într-un calculator</li>
+                    <li>Include hardware (fire, fibră optică, trace-uri PCB) + software (protocoale de comunicare)</li>
+                    <li><strong>La bază:</strong> cale fizică partajată care permite mai multor dispozitive să comunice</li>
+                    <li>Protocol de comunicare gestionează care dispozitiv transmite și când</li>
                     <li>Categorii:</li>
-                    <li><strong>System bus (bus intern, bus de memorie):</strong> conecteaza CPU ?i memoria</li>
-                    <li><strong>Expansion bus (bus periferic):</strong> extinde sistemul la dispozitive adi?ionale</li>
-                    <li><strong>Exemple:</strong> PCIe (intern, viteza mare), USB (extern)</li>
-                    <li><strong>Bus-ul de adrese:</strong> specifica adresa fizica din memorie (la?imea determina cantitatea de memorie adresabila)</li>
-                    <li><strong>Ex:</strong> bus de adrese 32-bit ? 2&#179;&#178; = 4 GB adresabil</li>
-                    <li><strong>Address multiplexing:</strong> adresa trimisa &#238;n doua jumata?i pe cicluri alternate (RAS/CAS pentru DRAM)</li>
+                    <li><strong>System bus (bus intern, bus de memorie):</strong> conectează CPU și memoria</li>
+                    <li><strong>Expansion bus (bus periferic):</strong> extinde sistemul la dispozitive adiționale</li>
+                    <li><strong>Exemple:</strong> PCIe (intern, viteză mare), USB (extern)</li>
+                    <li><strong>Bus-ul de adrese:</strong> specifică adresa fizică din memorie (lățimea determină cantitatea de memorie adresabilă)</li>
+                    <li><strong>Ex:</strong> bus de adrese 32-bit → 2³² = 4 GB adresabil</li>
+                    <li><strong>Address multiplexing:</strong> adresa trimisă în două jumătăți pe cicluri alternate (RAS/CAS pentru DRAM)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.8 � Memory bus</h3>
+                <h3>4.4.8 — Memory bus</h3>
                 <ul class="specs-list">
-                    <li>Memory bus = conecteaza memoria principala (DRAM) la memory controller</li>
-                    <li>Ini?ial se foloseau busuri generale (VMEbus, S-100)</li>
+                    <li>Memory bus = conectează memoria principală (DRAM) la memory controller</li>
+                    <li>Inițial se foloseau busuri generale (VMEbus, S-100)</li>
                     <li><strong>Modern:</strong> busuri dedicate, definite de JEDEC (standardizare)</li>
-                    <li><strong>Exemple:</strong> genera?ii SDRAM, RDRAM, SLDRAM</li>
-                    <li>Busuri seriale punct-la-punct pentru memorie moderna</li>
+                    <li><strong>Exemple:</strong> generații SDRAM, RDRAM, SLDRAM</li>
+                    <li>Busuri seriale punct-la-punct pentru memorie modernă</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.9 � Paralel vs serial ?i evolu?ie</h3>
+                <h3>4.4.9 — Paralel vs serial și evoluție</h3>
                 <ul class="specs-list">
-                    <li><strong>Bus paralel:</strong> transporta date pe mai multe fire simultan</li>
-                    <li><strong>Bus serial:</strong> transporta date bit cu bit pe un fir (sau pereche diferen?iala)</li>
+                    <li><strong>Bus paralel:</strong> transportă date pe mai multe fire simultan</li>
+                    <li><strong>Bus serial:</strong> transportă date bit cu bit pe un fir (sau pereche diferențială)</li>
                     <li><strong>Problemele bus-ului paralel la viteze mari:</strong> timing skew, consum de putere, EMI, crosstalk</li>
-                    <li><strong>Solu?ie par?iala:</strong> double pumping (DDR)</li>
-                    <li>Bus serial poate func?iona la rate de date mai mari per conexiune</li>
+                    <li><strong>Soluție parțială:</strong> double pumping (DDR)</li>
+                    <li>Bus serial poate funcționa la rate de date mai mari per conexiune</li>
                     <li><strong>Exemple de serial:</strong> USB, FireWire, SATA</li>
-                    <li>Multidrop nu func?ioneaza bine la viteze mari ? design daisy-chain sau hub</li>
-                    <li><strong>Frecven?a bus-ului (Hz/MHz):</strong> determina cicluri de ceas pe secunda</li>
+                    <li>Multidrop nu funcționează bine la viteze mari → design daisy-chain sau hub</li>
+                    <li><strong>Frecvența bus-ului (Hz/MHz):</strong> determină cicluri de ceas pe secundă</li>
                     <li>SDR = 1 transfer/ciclu, DDR = 2 transferuri/ciclu</li>
-                    <li>Data rate (bps) = bi?i per ciclu &#215; frecven?a &#215; transferuri per ciclu</li>
+                    <li>Data rate (bps) = biți per ciclu × frecvență × transferuri per ciclu</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.10 � Istoria busurilor � trei genera?ii</h3>
+                <h3>4.4.10 — Istoria busurilor – trei generații</h3>
                 <ul class="specs-list">
-                    <li><strong>Genera?ia 1:</strong> busuri simple, fire conectate direct la pinii CPU</li>
-                    <li>Memorie ?i periferice pe acela?i bus</li>
-                    <li>Toate dispozitivele la aceea?i viteza</li>
+                    <li><strong>Generația 1:</strong> busuri simple, fire conectate direct la pinii CPU</li>
+                    <li>Memorie și periferice pe același bus</li>
+                    <li>Toate dispozitivele la aceeași viteză</li>
                     <li><strong>Exemplu:</strong> S-100 bus (Altair 8800)</li>
-                    <li>Adaugarea &#238;ntreruperilor pentru a evita busy-waiting</li>
+                    <li>Adăugarea întreruperilor pentru a evita busy-waiting</li>
                     <li><strong>Channel controllers (IBM 709, 1958):</strong> mini-calculatoare dedicate I/O</li>
-                    <li><strong>Genera?ia 2:</strong> separarea CPU/memorie de periferice</li>
+                    <li><strong>Generația 2:</strong> separarea CPU/memorie de periferice</li>
                     <li>Bus controller intermediar</li>
                     <li>NuBus, PCI, AGP</li>
-                    <li><strong>Busuri mai late:</strong> 8-bit ? 16/32-bit</li>
-                    <li>Plug-n-play &#238;n loc de jumperi manuali</li>
-                    <li><strong>Problema:</strong> toate dispozitivele tot la aceea?i viteza ? bottleneck</li>
-                    <li>AGP creat special pentru video, apoi depa?it ?i el ? PCIe (2004)</li>
-                    <li><strong>Genera?ia 3:</strong> HyperTransport, InfiniBand (din ~2001)</li>
-                    <li><strong>Flexibile:</strong> func?ioneaza intern ?i &#238;ntre ma?ini</li>
-                    <li>Mai mult re?ea dec&#226;t bus tradi?ional</li>
+                    <li><strong>Busuri mai late:</strong> 8-bit → 16/32-bit</li>
+                    <li>Plug-n-play în loc de jumperi manuali</li>
+                    <li><strong>Problema:</strong> toate dispozitivele tot la aceeași viteză → bottleneck</li>
+                    <li>AGP creat special pentru video, apoi depășit și el → PCIe (2004)</li>
+                    <li><strong>Generația 3:</strong> HyperTransport, InfiniBand (din ~2001)</li>
+                    <li><strong>Flexibile:</strong> funcționează intern și între mașini</li>
+                    <li>Mai mult rețea decât bus tradițional</li>
                     <li><strong>Compute Express Link (CXL):</strong> standard deschis CPU-to-device/CPU-to-memory, bazat pe PCIe 5.0</li>
                 </ul>
-                <p>-----------------------------------------------------------</p>
+                <p>═══════════════════════════════════════════════════════════</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.11 � Defini?ie ?i arhitectura FSB</h3>
+                <h3>4.4.11 — Definiție și arhitectură FSB</h3>
                 <ul class="specs-list">
-                    <li>Front-side bus (FSB) = interfa?a de comunicare folosita pe computere Intel (anii 1990-2000)</li>
+                    <li>Front-side bus (FSB) = interfață de comunicare folosită pe computere Intel (anii 1990-2000)</li>
                     <li>EV6 = echivalentul AMD</li>
-                    <li>Transporta date &#238;ntre CPU ?i memory controller hub (northbridge)</li>
-                    <li>�Front side&quot; = interfa?a externa a procesorului (vs back-side bus = cache)</li>
+                    <li>Transportă date între CPU și memory controller hub (northbridge)</li>
+                    <li>„Front side&quot; = interfața externă a procesorului (vs back-side bus = cache)</li>
                     <li>Arhitectura chipset cu northbridge + southbridge:</li>
-                    <li>FSB conecteaza CPU ? northbridge</li>
-                    <li><strong>Northbridge conecteaza la:</strong> RAM (memory bus), AGP/PCIe (grafica)</li>
-                    <li><strong>Southbridge conecteaza la:</strong> PCI, USB, SATA, audio, periferice lente</li>
-                    <li>Busurile secundare deriva frecven?a din FSB dar nu sunt neaparat sincronizate</li>
+                    <li>FSB conectează CPU ↔ northbridge</li>
+                    <li><strong>Northbridge conectează la:</strong> RAM (memory bus), AGP/PCIe (grafică)</li>
+                    <li><strong>Southbridge conectează la:</strong> PCI, USB, SATA, audio, periferice lente</li>
+                    <li>Busurile secundare derivă frecvența din FSB dar nu sunt neapărat sincronizate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.12 � Rela?ia FSB cu viteza componentelor</h3>
+                <h3>4.4.12 — Relația FSB cu viteza componentelor</h3>
                 <ul class="specs-list">
-                    <li>Frecven?a CPU = FSB &#215; multiplicator</li>
-                    <li><strong>Ex:</strong> CPU 3200 MHz = FSB 400 MHz &#215; multiplicator 8</li>
-                    <li>Memory bus legat direct de FSB (aceea?i frecven?a sau raport asincron 4:5)</li>
-                    <li>Bandwidth FSB = la?ime (bytes) &#215; frecven?a &#215; transferuri/ciclu</li>
-                    <li><strong>Ex:</strong> 8 bytes &#215; 100 MHz &#215; 4 transferuri = 3200 MB/s</li>
-                    <li><strong>Quad pumping (Intel):</strong> 4 transferuri/ciclu ? FSB 200 MHz real = 800 MT/s marketing</li>
-                    <li>FSB-ul lent = bottleneck ? CPU idle a?tept&#226;nd date din memorie</li>
+                    <li>Frecvența CPU = FSB × multiplicator</li>
+                    <li><strong>Ex:</strong> CPU 3200 MHz = FSB 400 MHz × multiplicator 8</li>
+                    <li>Memory bus legat direct de FSB (aceeași frecvență sau raport asincron 4:5)</li>
+                    <li>Bandwidth FSB = lățime (bytes) × frecvență × transferuri/ciclu</li>
+                    <li><strong>Ex:</strong> 8 bytes × 100 MHz × 4 transferuri = 3200 MB/s</li>
+                    <li><strong>Quad pumping (Intel):</strong> 4 transferuri/ciclu → FSB 200 MHz real = 800 MT/s marketing</li>
+                    <li>FSB-ul lent = bottleneck → CPU idle așteptând date din memorie</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.13 � Evolu?ia de la FSB la interconexiuni moderne</h3>
+                <h3>4.4.13 — Evoluția de la FSB la interconexiuni moderne</h3>
                 <ul class="specs-list">
-                    <li>FSB eliminat de Intel &#238;n 2009</li>
-                    <li>Criticat de AMD ca tehnologie veche ?i lenta</li>
-                    <li>&#206;nlocuit cu:</li>
+                    <li>FSB eliminat de Intel în 2009</li>
+                    <li>Criticat de AMD ca tehnologie veche și lentă</li>
+                    <li>Înlocuit cu:</li>
                     <li>AMD HyperTransport (apoi Infinity Fabric)</li>
                     <li>Intel QPI (QuickPath Interconnect), apoi DMI 2.0, apoi UPI (Ultra Path Interconnect)</li>
-                    <li><strong>Schimbarea fundamentala:</strong> memory controller integrat &#238;n CPU (nu mai &#238;n northbridge)</li>
-                    <li>Elimina bottleneck-ul FSB pentru accesul la memorie</li>
-                    <li>Bandwidth-ul link-ului CPU?chipset ram&#226;ne pentru alte dispozitive</li>
-                    <li>Northbridge dispare; ram&#226;ne Platform Controller Hub (PCH) = fostul southbridge</li>
+                    <li><strong>Schimbarea fundamentală:</strong> memory controller integrat în CPU (nu mai în northbridge)</li>
+                    <li>Elimină bottleneck-ul FSB pentru accesul la memorie</li>
+                    <li>Bandwidth-ul link-ului CPU↔chipset rămâne pentru alte dispozitive</li>
+                    <li>Northbridge dispare; rămâne Platform Controller Hub (PCH) = fostul southbridge</li>
                     <li>Transfer rates istorice:</li>
                     <li><strong>Pentium:</strong> 528 MB/s (FSB 66 MHz, 1 transfer/ciclu, 64-bit)</li>
                     <li><strong>Pentium 4 HT:</strong> 6400 MB/s (FSB 200 MHz, quad-pumped)</li>
                     <li><strong>Core 2 Extreme:</strong> 12800 MB/s (FSB 400 MHz, quad-pumped)</li>
                     <li><strong>AMD Athlon XP:</strong> 3200 MB/s (FSB 200 MHz, double-pumped, DDR)</li>
                 </ul>
-                <p>-----------------------------------------------------------</p>
+                <p>═══════════════════════════════════════════════════════════</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.14 � Defini?ie I/O</h3>
+                <h3>4.4.14 — Definiție I/O</h3>
                 <ul class="specs-list">
-                    <li>Input/output (I/O) = comunicarea &#238;ntre un sistem de procesare a informa?iilor ?i lumea exterioara</li>
+                    <li>Input/output (I/O) = comunicarea între un sistem de procesare a informațiilor și lumea exterioară</li>
                     <li>Inputs = semnale/date primite; Outputs = semnale/date trimise</li>
                     <li><strong>Dispozitive I/O:</strong> hardware folosit pentru comunicare</li>
-                    <li><strong>Input:</strong> tastatura, mouse</li>
-                    <li><strong>Output:</strong> monitor, imprimanta</li>
-                    <li><strong>Bidirec?ional:</strong> modem, placa de re?ea</li>
-                    <li><strong>Din perspectiva arhitecturii:</strong> CPU + memoria principala = �creierul&quot;; orice transfer de/la CPU/memorie = I/O</li>
+                    <li><strong>Input:</strong> tastatură, mouse</li>
+                    <li><strong>Output:</strong> monitor, imprimantă</li>
+                    <li><strong>Bidirecțional:</strong> modem, placă de rețea</li>
+                    <li><strong>Din perspectiva arhitecturii:</strong> CPU + memoria principală = „creierul&quot;; orice transfer de/la CPU/memorie = I/O</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.4.15 � Interfa?a ?i metode I/O</h3>
+                <h3>4.4.15 — Interfață și metode I/O</h3>
                 <ul class="specs-list">
-                    <li>Interfa?a I/O necesita logica pentru interpretarea adresei dispozitivului</li>
+                    <li>Interfața I/O necesită logică pentru interpretarea adresei dispozitivului</li>
                     <li><strong>Handshaking:</strong> comenzi BUSY, READY, WAIT</li>
-                    <li>Doua metode principale de acces:</li>
+                    <li>Două metode principale de acces:</li>
                 </ul>
-                <p>1. Memory-mapped I/O: dispozitivele apar ca loca?ii de memorie, acelea?i instruc?iuni ca pentru memorie</p>
-                <p>2. Port-mapped I/O (instruction-based): instruc?iuni CPU speciale pentru I/O (in/out pe x86)</p>
+                <p>1. Memory-mapped I/O: dispozitivele apar ca locații de memorie, aceleași instrucțiuni ca pentru memorie</p>
+                <p>2. Port-mapped I/O (instruction-based): instrucțiuni CPU speciale pentru I/O (in/out pe x86)</p>
                 <ul class="specs-list">
-                    <li><strong>Channel I/O:</strong> instruc?iuni specifice I/O care adreseaza un canal; canalul acceseaza asincron (similar DMA dar mai flexibil)</li>
-                    <li><strong>DMA (Direct Memory Access):</strong> dispozitivele transfera blocuri mari de date direct la/din memorie, independent de CPU</li>
-                    <li>Elimina overhead-ul CPU pentru transferuri mari de date</li>
+                    <li><strong>Channel I/O:</strong> instrucțiuni specifice I/O care adresează un canal; canalul accesează asincron (similar DMA dar mai flexibil)</li>
+                    <li><strong>DMA (Direct Memory Access):</strong> dispozitivele transferă blocuri mari de date direct la/din memorie, independent de CPU</li>
+                    <li>Elimină overhead-ul CPU pentru transferuri mari de date</li>
                 </ul>
-                <p>-----------------------------------------------------------</p>
+                <p>═══════════════════════════════════════════════════════════</p>
             </div>
 
         </div>
@@ -302,81 +310,81 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Aplica?ii PCIe</h3>
+                <h3>Aplicații PCIe</h3>
                 <ul class="specs-list">
-                    <li><strong>Placi grafice (GPU):</strong> interfa?a primara de la 2013 (a &#238;nlocuit AGP)</li>
+                    <li><strong>Plăci grafice (GPU):</strong> interfață primară de la 2013 (a înlocuit AGP)</li>
                     <li>GPU extern prin Thunderbolt (Thunderbolt 3 bazat pe PCIe, USB-C fizic)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie ?i concepte fundamentale</h3>
+                <h3>Definiție și concepte fundamentale</h3>
                 <ul class="specs-list">
-                    <li><strong>System bus (bus intern, bus de memorie):</strong> conecteaza CPU ?i memoria</li>
-                    <li><strong>Ex:</strong> bus de adrese 32-bit ? 2&#179;&#178; = 4 GB adresabil</li>
+                    <li><strong>System bus (bus intern, bus de memorie):</strong> conectează CPU și memoria</li>
+                    <li><strong>Ex:</strong> bus de adrese 32-bit → 2³² = 4 GB adresabil</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Paralel vs serial ?i evolu?ie</h3>
+                <h3>Paralel vs serial și evoluție</h3>
                 <ul class="specs-list">
-                    <li><strong>Bus serial:</strong> transporta date bit cu bit pe un fir (sau pereche diferen?iala)</li>
+                    <li><strong>Bus serial:</strong> transportă date bit cu bit pe un fir (sau pereche diferențială)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Istoria busurilor � trei genera?ii</h3>
+                <h3>Istoria busurilor – trei generații</h3>
                 <ul class="specs-list">
-                    <li><strong>Genera?ia 1:</strong> busuri simple, fire conectate direct la pinii CPU</li>
-                    <li><strong>Genera?ia 2:</strong> separarea CPU/memorie de periferice</li>
-                    <li><strong>Busuri mai late:</strong> 8-bit ? 16/32-bit</li>
+                    <li><strong>Generația 1:</strong> busuri simple, fire conectate direct la pinii CPU</li>
+                    <li><strong>Generația 2:</strong> separarea CPU/memorie de periferice</li>
+                    <li><strong>Busuri mai late:</strong> 8-bit → 16/32-bit</li>
                     <li><strong>Compute Express Link (CXL):</strong> standard deschis CPU-to-device/CPU-to-memory, bazat pe PCIe 5.0</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie ?i arhitectura FSB</h3>
+                <h3>Definiție și arhitectură FSB</h3>
                 <ul class="specs-list">
-                    <li>Transporta date &#238;ntre CPU ?i memory controller hub (northbridge)</li>
-                    <li>�Front side&quot; = interfa?a externa a procesorului (vs back-side bus = cache)</li>
-                    <li>FSB conecteaza CPU ? northbridge</li>
+                    <li>Transportă date între CPU și memory controller hub (northbridge)</li>
+                    <li>„Front side&quot; = interfața externă a procesorului (vs back-side bus = cache)</li>
+                    <li>FSB conectează CPU ↔ northbridge</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Rela?ia FSB cu viteza componentelor</h3>
+                <h3>Relația FSB cu viteza componentelor</h3>
                 <ul class="specs-list">
-                    <li>Frecven?a CPU = FSB &#215; multiplicator</li>
-                    <li><strong>Ex:</strong> CPU 3200 MHz = FSB 400 MHz &#215; multiplicator 8</li>
-                    <li>FSB-ul lent = bottleneck ? CPU idle a?tept&#226;nd date din memorie</li>
+                    <li>Frecvența CPU = FSB × multiplicator</li>
+                    <li><strong>Ex:</strong> CPU 3200 MHz = FSB 400 MHz × multiplicator 8</li>
+                    <li>FSB-ul lent = bottleneck → CPU idle așteptând date din memorie</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Evolu?ia de la FSB la interconexiuni moderne</h3>
+                <h3>Evoluția de la FSB la interconexiuni moderne</h3>
                 <ul class="specs-list">
-                    <li><strong>Schimbarea fundamentala:</strong> memory controller integrat &#238;n CPU (nu mai &#238;n northbridge)</li>
-                    <li>Bandwidth-ul link-ului CPU?chipset ram&#226;ne pentru alte dispozitive</li>
+                    <li><strong>Schimbarea fundamentală:</strong> memory controller integrat în CPU (nu mai în northbridge)</li>
+                    <li>Bandwidth-ul link-ului CPU↔chipset rămâne pentru alte dispozitive</li>
                     <li><strong>Pentium:</strong> 528 MB/s (FSB 66 MHz, 1 transfer/ciclu, 64-bit)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie I/O</h3>
+                <h3>Definiție I/O</h3>
                 <ul class="specs-list">
-                    <li><strong>Din perspectiva arhitecturii:</strong> CPU + memoria principala = �creierul&quot;; orice transfer de/la CPU/memorie = I/O</li>
+                    <li><strong>Din perspectiva arhitecturii:</strong> CPU + memoria principală = „creierul&quot;; orice transfer de/la CPU/memorie = I/O</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Interfa?a ?i metode I/O</h3>
-                <p>2. Port-mapped I/O (instruction-based): instruc?iuni CPU speciale pentru I/O (in/out pe x86)</p>
+                <h3>Interfață și metode I/O</h3>
+                <p>2. Port-mapped I/O (instruction-based): instrucțiuni CPU speciale pentru I/O (in/out pe x86)</p>
                 <ul class="specs-list">
-                    <li><strong>DMA (Direct Memory Access):</strong> dispozitivele transfera blocuri mari de date direct la/din memorie, independent de CPU</li>
-                    <li>Elimina overhead-ul CPU pentru transferuri mari de date</li>
+                    <li><strong>DMA (Direct Memory Access):</strong> dispozitivele transferă blocuri mari de date direct la/din memorie, independent de CPU</li>
+                    <li>Elimină overhead-ul CPU pentru transferuri mari de date</li>
                 </ul>
             </div>
         </div>
@@ -384,12 +392,12 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie ?i concepte fundamentale</h3>
+                <h3>Definiție și concepte fundamentale</h3>
                 <ul class="specs-list">
-                    <li>Include hardware (fire, fibra optica, trace-uri PCB) + software (protocoale de comunicare)</li>
+                    <li>Include hardware (fire, fibră optică, trace-uri PCB) + software (protocoale de comunicare)</li>
                 </ul>
             </div>
         </div>
@@ -400,8 +408,8 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Genera?ii PCIe � tabel comparativ</h3>
-                <p>| Versiune | An   | Codare      | Transfer rate/lane | Throughput &#215;1  | Throughput &#215;16 |</p>
+                <h3>Generații PCIe – tabel comparativ</h3>
+                <p>| Versiune | An   | Codare      | Transfer rate/lane | Throughput ×1  | Throughput ×16 |</p>
                 <p>|----------|------|-------------|--------------------|-----------|----|</p>
                 <p>| 1.0      | 2003 | 8b/10b      | 2.5 GT/s           | 0.25 GB/s | 4 GB/s      |</p>
                 <p>| 2.0      | 2007 | 8b/10b      | 5.0 GT/s           | 0.5 GB/s  | 8 GB/s      |</p>
@@ -411,35 +419,35 @@
                 <p>| 6.0      | 2022 | PAM-4 FEC   | 64.0 GT/s          | 7.563 GB/s| 121 GB/s    |</p>
                 <p>| 7.0      | 2025 | PAM-4 FEC   | 128.0 GT/s         | 15.125 GB/s| 242 GB/s   |</p>
                 <ul class="specs-list">
-                    <li>8b/10b encoding = 20% overhead (PCIe 1.x ?i 2.x)</li>
+                    <li>8b/10b encoding = 20% overhead (PCIe 1.x și 2.x)</li>
                     <li>128b/130b encoding = ~1.54% overhead (PCIe 3.0-5.0)</li>
                     <li>PAM-4 (Pulse Amplitude Modulation, 4 nivele) + FEC de la PCIe 6.0</li>
-                    <li>PAM-4 transmite 2 bi?i per simbol ? dublu fara a cre?te frecven?a</li>
-                    <li>BER cre?te la 10?6 (vs 10?&#185;&#178; anterior) ? necesita FEC (Forward Error Correction)</li>
+                    <li>PAM-4 transmite 2 biți per simbol → dublu fără a crește frecvența</li>
+                    <li>BER crește la 10⁻⁶ (vs 10⁻¹² anterior) → necesită FEC (Forward Error Correction)</li>
                     <li><strong>FLIT de 256 bytes:</strong> 242 bytes date + 8 bytes CRC + 6 bytes FEC</li>
-                    <li>Backward compatible &#238;ntre genera?ii</li>
+                    <li>Backward compatible între generații</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Aplica?ii PCIe</h3>
+                <h3>Aplicații PCIe</h3>
                 <ul class="specs-list">
-                    <li>12VHPWR (16-pin, Nvidia 2022) = p&#226;na la 600W</li>
+                    <li>12VHPWR (16-pin, Nvidia 2022) = până la 600W</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie ?i arhitectura FSB</h3>
+                <h3>Definiție și arhitectură FSB</h3>
                 <ul class="specs-list">
-                    <li>Front-side bus (FSB) = interfa?a de comunicare folosita pe computere Intel (anii 1990-2000)</li>
+                    <li>Front-side bus (FSB) = interfață de comunicare folosită pe computere Intel (anii 1990-2000)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Evolu?ia de la FSB la interconexiuni moderne</h3>
+                <h3>Evoluția de la FSB la interconexiuni moderne</h3>
                 <ul class="specs-list">
-                    <li>FSB eliminat de Intel &#238;n 2009</li>
-                    <li>Criticat de AMD ca tehnologie veche ?i lenta</li>
+                    <li>FSB eliminat de Intel în 2009</li>
+                    <li>Criticat de AMD ca tehnologie veche și lentă</li>
                     <li>AMD HyperTransport (apoi Infinity Fabric)</li>
                     <li>Intel QPI (QuickPath Interconnect), apoi DMI 2.0, apoi UPI (Ultra Path Interconnect)</li>
                     <li><strong>AMD Athlon XP:</strong> 3200 MB/s (FSB 200 MHz, double-pumped, DDR)</li>
@@ -454,8 +462,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Istoria busurilor � trei genera?ii</h3>
-                    <p>Problema: toate dispozitivele tot la aceea?i viteza ? bottleneck</p>
+                    <h3>⚠️ Istoria busurilor – trei generații</h3>
+                    <p>Problema: toate dispozitivele tot la aceeași viteză → bottleneck</p>
                 </div>
             </div>
         </div>
@@ -466,21 +474,21 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Defini?ie ?i arhitectura PCIe:</strong> PCI Express (PCIe) = standard de viteza mare pentru conectarea componentelor hardware &#238;n interiorul calculatoarelor</li>
-                    <li><strong>Lane-uri ?i link-uri:</strong> Un link PCIe = un canal de comunicare punct-la-punct &#238;ntre doua porturi PCIe</li>
-                    <li><strong>Serial vs paralel � de ce serial:</strong> Bus paralel limitat de timing skew: semnale separate au durate diferite de propagare</li>
-                    <li><strong>Genera?ii PCIe � tabel comparativ:</strong> | Versiune | An   | Codare      | Transfer rate/lane | Throughput &#215;1  | Throughput &#215;16 |</li>
-                    <li><strong>Aplica?ii PCIe:</strong> Placi grafice (GPU): interfa?a primara de la 2013 (a &#238;nlocuit AGP)</li>
+                    <li><strong>Definiție și arhitectură PCIe:</strong> PCI Express (PCIe) = standard de viteză mare pentru conectarea componentelor hardware în interiorul calculatoarelor</li>
+                    <li><strong>Lane-uri și link-uri:</strong> Un link PCIe = un canal de comunicare punct-la-punct între două porturi PCIe</li>
+                    <li><strong>Serial vs paralel – de ce serial:</strong> Bus paralel limitat de timing skew: semnale separate au durate diferite de propagare</li>
+                    <li><strong>Generații PCIe – tabel comparativ:</strong> | Versiune | An   | Codare      | Transfer rate/lane | Throughput ×1  | Throughput ×16 |</li>
+                    <li><strong>Aplicații PCIe:</strong> Plăci grafice (GPU): interfață primară de la 2013 (a înlocuit AGP)</li>
                     <li><strong>Protocol hardware pe straturi:</strong> Protocol pe straturi (layered protocol):</li>
-                    <li><strong>Defini?ie ?i concepte fundamentale:</strong> Bus = sistem de comunicare care transfera date &#238;ntre componente &#238;ntr-un calculator</li>
-                    <li><strong>Memory bus:</strong> Memory bus = conecteaza memoria principala (DRAM) la memory controller</li>
-                    <li><strong>Paralel vs serial ?i evolu?ie:</strong> Bus paralel: transporta date pe mai multe fire simultan</li>
-                    <li><strong>Istoria busurilor � trei genera?ii:</strong> Genera?ia 1: busuri simple, fire conectate direct la pinii CPU</li>
-                    <li><strong>Defini?ie ?i arhitectura FSB:</strong> Front-side bus (FSB) = interfa?a de comunicare folosita pe computere Intel (anii 1990-2000)</li>
-                    <li><strong>Rela?ia FSB cu viteza componentelor:</strong> Frecven?a CPU = FSB &#215; multiplicator</li>
-                    <li><strong>Evolu?ia de la FSB la interconexiuni moderne:</strong> FSB eliminat de Intel &#238;n 2009</li>
-                    <li><strong>Defini?ie I/O:</strong> Input/output (I/O) = comunicarea &#238;ntre un sistem de procesare a informa?iilor ?i lumea exterioara</li>
-                    <li><strong>Interfa?a ?i metode I/O:</strong> Interfa?a I/O necesita logica pentru interpretarea adresei dispozitivului</li>
+                    <li><strong>Definiție și concepte fundamentale:</strong> Bus = sistem de comunicare care transferă date între componente într-un calculator</li>
+                    <li><strong>Memory bus:</strong> Memory bus = conectează memoria principală (DRAM) la memory controller</li>
+                    <li><strong>Paralel vs serial și evoluție:</strong> Bus paralel: transportă date pe mai multe fire simultan</li>
+                    <li><strong>Istoria busurilor – trei generații:</strong> Generația 1: busuri simple, fire conectate direct la pinii CPU</li>
+                    <li><strong>Definiție și arhitectură FSB:</strong> Front-side bus (FSB) = interfață de comunicare folosită pe computere Intel (anii 1990-2000)</li>
+                    <li><strong>Relația FSB cu viteza componentelor:</strong> Frecvența CPU = FSB × multiplicator</li>
+                    <li><strong>Evoluția de la FSB la interconexiuni moderne:</strong> FSB eliminat de Intel în 2009</li>
+                    <li><strong>Definiție I/O:</strong> Input/output (I/O) = comunicarea între un sistem de procesare a informațiilor și lumea exterioară</li>
+                    <li><strong>Interfață și metode I/O:</strong> Interfața I/O necesită logică pentru interpretarea adresei dispozitivului</li>
                 </ul>
             </div>
         </div>
@@ -488,80 +496,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: &#206;nlocuie?te standardele mai vechi?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Înlocuiește standardele mai vechi?</strong></p>
                 <ul class="specs-list">
                     <li>a) PCI, PCI-X, AGP</li>
-                    <li>b) bus partajat = un singur master la un moment dat, direc?ie unica, ceas limitat de cel mai lent dispozitiv</li>
-                    <li>c) Un link PCIe = un canal de comunicare punct-la-punct &#238;ntre doua porturi PCIe</li>
-                    <li>d) link-uri dedicate full-duplex &#238;ntre fiecare dispozitiv ?i root complex (host)</li>
+                    <li>b) bus partajat = un singur master la un moment dat, direcție unică, ceas limitat de cel mai lent dispozitiv</li>
+                    <li>c) Un link PCIe = un canal de comunicare punct-la-punct între două porturi PCIe</li>
+                    <li>d) link-uri dedicate full-duplex între fiecare dispozitiv și root complex (host)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � PCI, PCI-X, AGP</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — PCI, PCI-X, AGP</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Lane-uri ?i link-uri?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Lane-uri și link-uri?</strong></p>
                 <ul class="specs-list">
-                    <li>a) link-uri dedicate full-duplex &#238;ntre fiecare dispozitiv ?i root complex (host)</li>
+                    <li>a) link-uri dedicate full-duplex între fiecare dispozitiv și root complex (host)</li>
                     <li>b) PCI, PCI-X, AGP</li>
-                    <li>c) bus partajat = un singur master la un moment dat, direc?ie unica, ceas limitat de cel mai lent dispozitiv</li>
-                    <li>d) Un link PCIe = un canal de comunicare punct-la-punct &#238;ntre doua porturi PCIe</li>
+                    <li>c) bus partajat = un singur master la un moment dat, direcție unică, ceas limitat de cel mai lent dispozitiv</li>
+                    <li>d) Un link PCIe = un canal de comunicare punct-la-punct între două porturi PCIe</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � Un link PCIe = un canal de comunicare punct-la-punct &#238;ntre doua porturi PCIe</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — Un link PCIe = un canal de comunicare punct-la-punct între două porturi PCIe</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Bus paralel limitat de timing skew?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Bus paralel limitat de timing skew?</strong></p>
                 <ul class="specs-list">
                     <li>a) semnale separate au durate diferite de propagare</li>
-                    <li>b) bus partajat = un singur master la un moment dat, direc?ie unica, ceas limitat de cel mai lent dispozitiv</li>
-                    <li>c) link-uri dedicate full-duplex &#238;ntre fiecare dispozitiv ?i root complex (host)</li>
+                    <li>b) bus partajat = un singur master la un moment dat, direcție unică, ceas limitat de cel mai lent dispozitiv</li>
+                    <li>c) link-uri dedicate full-duplex între fiecare dispozitiv și root complex (host)</li>
                     <li>d) PCI, PCI-X, AGP</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � semnale separate au durate diferite de propagare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — semnale separate au durate diferite de propagare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Genera?ii PCIe � tabel comparativ?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Generații PCIe – tabel comparativ?</strong></p>
                 <ul class="specs-list">
-                    <li>a) link-uri dedicate full-duplex &#238;ntre fiecare dispozitiv ?i root complex (host)</li>
-                    <li>b) 8b/10b encoding = 20% overhead (PCIe 1.x ?i 2.x)</li>
+                    <li>a) link-uri dedicate full-duplex între fiecare dispozitiv și root complex (host)</li>
+                    <li>b) 8b/10b encoding = 20% overhead (PCIe 1.x și 2.x)</li>
                     <li>c) PCI, PCI-X, AGP</li>
-                    <li>d) bus partajat = un singur master la un moment dat, direc?ie unica, ceas limitat de cel mai lent dispozitiv</li>
+                    <li>d) bus partajat = un singur master la un moment dat, direcție unică, ceas limitat de cel mai lent dispozitiv</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � 8b/10b encoding = 20% overhead (PCIe 1.x ?i 2.x)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — 8b/10b encoding = 20% overhead (PCIe 1.x și 2.x)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Placi grafice (GPU)?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Plăci grafice (GPU)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) bus partajat = un singur master la un moment dat, direc?ie unica, ceas limitat de cel mai lent dispozitiv</li>
-                    <li>b) interfa?a primara de la 2013 (a &#238;nlocuit AGP)</li>
+                    <li>a) bus partajat = un singur master la un moment dat, direcție unică, ceas limitat de cel mai lent dispozitiv</li>
+                    <li>b) interfață primară de la 2013 (a înlocuit AGP)</li>
                     <li>c) PCI, PCI-X, AGP</li>
-                    <li>d) link-uri dedicate full-duplex &#238;ntre fiecare dispozitiv ?i root complex (host)</li>
+                    <li>d) link-uri dedicate full-duplex între fiecare dispozitiv și root complex (host)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � interfa?a primara de la 2013 (a &#238;nlocuit AGP)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — interfață primară de la 2013 (a înlocuit AGP)</strong></p>
                 </details>
             </div>
         </div>
@@ -569,21 +577,21 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Bus ?i interconectari</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de PCIe. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Bus și interconectări</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de PCIe. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: PCIe.</li>
-                    <li>2. Ce rol are memory bus �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre PCIe ?i I/O.</li>
+                    <li>2. Ce rol are memory bus în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre PCIe și I/O.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> PCI Express (PCIe) = standard de viteza mare pentru conectarea componentelor hardware &#238;n interiorul calculatoarelor</p>
-                        <p><strong>2.</strong> Un link PCIe = un canal de comunicare punct-la-punct &#238;ntre doua porturi PCIe</p>
+                        <p><strong>1.</strong> PCI Express (PCIe) = standard de viteză mare pentru conectarea componentelor hardware în interiorul calculatoarelor</p>
+                        <p><strong>2.</strong> Un link PCIe = un canal de comunicare punct-la-punct între două porturi PCIe</p>
                         <p><strong>3.</strong> Bus paralel limitat de timing skew: semnale separate au durate diferite de propagare</p>
                     </div>
                 </details>
@@ -613,7 +621,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-4-3.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 4.3 &mdash; RAM &#x219;i Cache</a>
@@ -670,14 +678,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Magistralele computerului: magistrala de adrese, de date ?i de control � cum comunica componentele �ntre ele.</p>
+                <p class="video-description">Magistralele computerului: magistrala de adrese, de date și de control — cum comunică componentele între ele.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

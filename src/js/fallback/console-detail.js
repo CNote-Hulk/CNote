@@ -25,6 +25,10 @@
      * Load image dimensions from JSON
      */
     function loadImageDimensions() {
+        if (window.IMAGE_DIMENSIONS_DATA) {
+            IMAGE_DIMENSIONS = window.IMAGE_DIMENSIONS_DATA;
+            return Promise.resolve(IMAGE_DIMENSIONS);
+        }
         var path = '../../../js/data/image-dimensions.json';
         var loadFn = (window.location.protocol === 'file:')
             ? loadJsonWithXhr(path)
@@ -300,6 +304,9 @@
 
     function renderHero(consola) {
 
+        var h1 = document.querySelector('.console-hero-text h1');
+        if (h1) h1.textContent = consola.nume;
+
         var meta = document.querySelector('.console-hero-text .console-meta');
         if (meta) {
             meta.innerHTML =
@@ -402,6 +409,9 @@
         Promise.all([
             loadImageDimensions(),
             (function () {
+                if (window.CONSOLES_DATA) {
+                    return Promise.resolve(window.CONSOLES_DATA);
+                }
                 var path = '../../../js/data/consoles.json';
                 if (window.location.protocol === 'file:') {
                     return loadJsonWithXhr(path);

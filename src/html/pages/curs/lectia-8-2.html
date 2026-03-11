@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 8.2 � Multimetrul">
+    <meta name="description" content="Lecția 8.2 — Multimetrul">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 8.2 � Multimetrul � Console Notebook</title>
+    <title>Lecția 8.2 — Multimetrul — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,208 +30,216 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 � DIAGNOSTIC HARDWARE</p>
-            <h1>Lec?ia 8.2 � Multimetrul</h1>
-            <p>masurarea tensiunii, masurarea rezisten?ei, masurarea continuita?ii</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 — DIAGNOSTIC HARDWARE</p>
+            <h1>Lecția 8.2 — Multimetrul</h1>
+            <p>măsurarea tensiunii, măsurarea rezistenței, măsurarea continuității</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-                                            <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Multimeter (known as: multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</p>
-                <p>Aceasta lec?ie acopera: <strong>masurarea tensiunii</strong>, <strong>masurarea rezisten?ei</strong>, <strong>masurarea continuita?ii</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Multimetrul este instrumentul de bază al oricărui tehnician de console — un dispozitiv portabil care poate măsura tensiune, rezistență, continuitate, și uneori capacitate, frecvență sau temperatură. Cu un multimetru de 30 de euro și cunoștințele potrivite, poți diagnostica 90% din defectele hardware ale unei console: verifici dacă PSU-ul produce tensiune, dacă un traseu este continuu, dacă un condensator este în scurtcircuit.
+                </p>
+                <p>
+                    Această lecție acoperă utilizarea practică a multimetrului pentru diagnostic: <strong>măsurarea tensiunii</strong> (DC și AC, pe rail-urile consolei), <strong>măsurarea rezistenței</strong> (identificarea componentelor defecte) și <strong>măsurarea continuității</strong> (verificarea integrității traseelor și detectarea circuitelor deschise).
+                </p>
+                <p>
+                    Scopul nu este memorarea procedurilor de utilizare, ci înțelegerea <em>ce întrebare</em> răspunde fiecare funcție a multimetrului: este tensiune pe acest rail? (voltmetru), este intact acest traseu? (continuitate), este acest condensator în scurtcircuit? (ohmmetru) — și <em>cum</em> aceste răspunsuri transformă diagnosticul din ghicire în măsurare.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.1 � Defini?ie ?i func?ii de baza</h3>
+                <h3>8.2.1 — Definiție și funcții de bază</h3>
                 <ul class="specs-list">
                     <li><strong>Multimeter (known as:</strong> multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
-                    <li>Instrument de masura ce poate masura multiple proprieta?i electrice</li>
-                    <li><strong>Func?ii de baza:</strong> tensiune (voltage), rezisten?a (resistance), curent (current)</li>
-                    <li><strong>Poate func?iona ca:</strong> voltmetru, ohmetru, ampermetru</li>
-                    <li><strong>Func?ii adi?ionale:</strong> temperatura, capacitan?a, frecven?a, duty cycle, inductan?a</li>
-                    <li>Utilizat &#238;n opera?iuni diagnostice pentru verificarea func?ionarii corecte a circuitelor</li>
+                    <li>Instrument de măsură ce poate măsura multiple proprietăți electrice</li>
+                    <li><strong>Funcții de bază:</strong> tensiune (voltage), rezistență (resistance), curent (current)</li>
+                    <li><strong>Poate funcționa ca:</strong> voltmetru, ohmetru, ampermetru</li>
+                    <li><strong>Funcții adiționale:</strong> temperatură, capacitanță, frecvență, duty cycle, inductanță</li>
+                    <li>Utilizat în operațiuni diagnostice pentru verificarea funcționării corecte a circuitelor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.2 � Istoric</h3>
+                <h3>8.2.2 — Istoric</h3>
                 <ul class="specs-list">
                     <li><strong>Primul galvanometru (detector de curent cu pointer mobil):</strong> 1820</li>
-                    <li><strong>Mecanismul D&#39;Arsonval-Weston:</strong> bobina mobila pe pivo?i, rota?ie &#238;n c&#226;mp magnetic permanent</li>
+                    <li><strong>Mecanismul D'Arsonval-Weston:</strong> bobină mobilă pe pivoți, rotație în câmp magnetic permanent</li>
                     <li><strong>Inventatorul primului multimeter:</strong> Donald Macadie, inginer British Post Office</li>
-                    <li><strong>Avometer (1923):</strong> masura Amperi, Vol?i, Ohmi � de unde numele</li>
-                    <li><strong>Primul AVO:</strong> sensibilitate 60 O/V, 3 range-uri DC curent, 3 range-uri DC tensiune, 10.000 O rezisten?a</li>
+                    <li><strong>Avometer (1923):</strong> măsura Amperi, Volți, Ohmi – de unde numele</li>
+                    <li><strong>Primul AVO:</strong> sensibilitate 60 Ω/V, 3 range-uri DC curent, 3 range-uri DC tensiune, 10.000 Ω rezistență</li>
                     <li><strong>Primul digital multimeter (DMM):</strong> 1955, Non Linear Systems</li>
                     <li><strong>Primul handheld DMM:</strong> 1977, Frank Bishop de la Intron Electronics</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.3 � Tipuri � Analog</h3>
+                <h3>8.2.3 — Tipuri – Analog</h3>
                 <ul class="specs-list">
-                    <li>Folose?te microampermetru cu pointer mobil pe scala</li>
-                    <li><strong>Principiu de func?ionare:</strong> bobina mobila (galvanometru d&#39;Arsonval)</li>
-                    <li><strong>Masurat tensiune DC:</strong> rezistor &#238;n serie cu meter movement</li>
-                    <li><strong>Masurat curent:</strong> shunt-uri (rezisten?e &#238;n paralel) cu meter movement</li>
-                    <li><strong>Masurat rezisten?a:</strong> baterie interna trimite curent prin dispozitivul testat; scala este INVERSA (full-scale = 0 O)</li>
-                    <li>Scala ohmilor este COMPRESATA � rezolu?ie mai buna la valori mici</li>
-                    <li><strong>Sensibilitate tipica:</strong> 20.000 O/V (50 �A full-scale deflection), max ~50.000 O/V</li>
-                    <li><strong>Avantaje:</strong> intuitive pentru tendin?e, nu necesita amplificator (mai pu?in susceptibile la interferen?a RF)</li>
-                    <li><strong>Precizie tipica:</strong> &#177;3%</li>
-                    <li><strong>Dezavantaje:</strong> fragile fizic ?i electric, compresie la rezisten?e mari</li>
+                    <li>Folosește microampermetru cu pointer mobil pe scală</li>
+                    <li><strong>Principiu de funcționare:</strong> bobină mobilă (galvanometru d'Arsonval)</li>
+                    <li><strong>Măsurat tensiune DC:</strong> rezistor în serie cu meter movement</li>
+                    <li><strong>Măsurat curent:</strong> shunt-uri (rezistențe în paralel) cu meter movement</li>
+                    <li><strong>Măsurat rezistență:</strong> baterie internă trimite curent prin dispozitivul testat; scala este INVERSĂ (full-scale = 0 Ω)</li>
+                    <li>Scala ohmilor este COMPRESATĂ – rezoluție mai bună la valori mici</li>
+                    <li><strong>Sensibilitate tipică:</strong> 20.000 Ω/V (50 μA full-scale deflection), max ~50.000 Ω/V</li>
+                    <li><strong>Avantaje:</strong> intuitive pentru tendințe, nu necesită amplificator (mai puțin susceptibile la interferență RF)</li>
+                    <li><strong>Precizie tipică:</strong> ±3%</li>
+                    <li><strong>Dezavantaje:</strong> fragile fizic și electric, compresie la rezistențe mari</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.4 � Tipuri � Digital (DMM)</h3>
+                <h3>8.2.4 — Tipuri – Digital (DMM)</h3>
                 <ul class="specs-list">
-                    <li>Afi?aj numeric, elimina erorile de paralaxa</li>
-                    <li><strong>Rezisten?a:</strong> curent constant mic prin dispozitiv, citire a caderii de tensiune rezultate</li>
-                    <li><strong>Auto-ranging:</strong> selectare automata a scalei pentru maxim de cifre semnificative</li>
-                    <li><strong>Auto-polaritate:</strong> arata daca tensiunea DC este pozitiva sau negativa</li>
-                    <li><strong>Sample and hold:</strong> men?ine ultima citire pentru examinare</li>
-                    <li><strong>Rezolu?ie exprimata &#238;n cifre:</strong> ex. 4&#189; digit = poate citi p&#226;na la 19999</li>
-                    <li><strong>Precizie standard portabil:</strong> &#177;0.5% pe range-urile DC tensiune</li>
-                    <li><strong>Bench-top:</strong> mai bine de &#177;0.01%</li>
-                    <li><strong>Laborator:</strong> c&#226;teva par?i per milion (ppm)</li>
-                    <li><strong>Interfe?e:</strong> IrDA, RS-232, USB, Bluetooth, IEEE-488</li>
+                    <li>Afișaj numeric, elimină erorile de paralaxă</li>
+                    <li><strong>Rezistență:</strong> curent constant mic prin dispozitiv, citire a căderii de tensiune rezultate</li>
+                    <li><strong>Auto-ranging:</strong> selectare automată a scalei pentru maxim de cifre semnificative</li>
+                    <li><strong>Auto-polaritate:</strong> arată dacă tensiunea DC este pozitivă sau negativă</li>
+                    <li><strong>Sample and hold:</strong> menține ultima citire pentru examinare</li>
+                    <li><strong>Rezoluție exprimată în cifre:</strong> ex. 4½ digit = poate citi până la 19999</li>
+                    <li><strong>Precizie standard portabil:</strong> ±0.5% pe range-urile DC tensiune</li>
+                    <li><strong>Bench-top:</strong> mai bine de ±0.01%</li>
+                    <li><strong>Laborator:</strong> câteva părți per milion (ppm)</li>
+                    <li><strong>Interfețe:</strong> IrDA, RS-232, USB, Bluetooth, IEEE-488</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.5 � Func?ia de continuitate</h3>
+                <h3>8.2.5 — Funcția de continuitate</h3>
                 <ul class="specs-list">
-                    <li>Buzzer care suna c&#226;nd rezisten?a circuitului este suficient de mica</li>
-                    <li>Test inexact (pragul de &quot;suficient de mic&quot; variaza &#238;ntre aparate)</li>
-                    <li><strong>Testare diode:</strong> masurare forward drop al jonc?iunilor semiconductoare</li>
-                    <li><strong>Testare tranzistori:</strong> masurare c&#226;?tig de curent ?i al?i parametri</li>
+                    <li>Buzzer care sună când rezistența circuitului este suficient de mică</li>
+                    <li>Test inexact (pragul de &quot;suficient de mic&quot; variază între aparate)</li>
+                    <li><strong>Testare diode:</strong> măsurare forward drop al joncțiunilor semiconductoare</li>
+                    <li><strong>Testare tranzistori:</strong> măsurare câștig de curent și alți parametri</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.6 � Sonde (Probes)</h3>
+                <h3>8.2.6 — Sonde (Probes)</h3>
                 <ul class="specs-list">
-                    <li><strong>Tipuri:</strong> crocodile clips, retractable hook clips, sonde cu v&#226;rf ascu?it</li>
+                    <li><strong>Tipuri:</strong> crocodile clips, retractable hook clips, sonde cu vârf ascuțit</li>
                     <li><strong>Tweezer probes:</strong> pentru componente SMD (surface-mount devices)</li>
-                    <li>Conectate prin banana jacks (distan?a standard 19 mm &#238;ntre centre)</li>
-                    <li><strong>Clamp meters:</strong> masoara curent fara contact direct (principiul transformatorului pentru AC)</li>
-                    <li><strong>Hall effect sensors:</strong> permit masurare DC curent</li>
+                    <li>Conectate prin banana jacks (distanță standard 19 mm între centre)</li>
+                    <li><strong>Clamp meters:</strong> măsoară curent fără contact direct (principiul transformatorului pentru AC)</li>
+                    <li><strong>Hall effect sensors:</strong> permit măsurare DC curent</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.7 � Siguran?a (Safety)</h3>
+                <h3>8.2.7 — Siguranță (Safety)</h3>
                 <ul class="specs-list">
-                    <li>Sigurante interne (una sau doua) pentru protec?ie la supracurent</li>
-                    <li><strong>Eroare frecventa:</strong> setare pe ohmi sau amperi, apoi conectare la sursa de tensiune cu impedan?a mica</li>
-                    <li><strong>Categorii IEC 61010:</strong> I (neconectat la re?ea), II (subcircuite mains), III (sarcini permanente), IV (intrare re?ea)</li>
+                    <li>Sigurante interne (una sau două) pentru protecție la supracurent</li>
+                    <li><strong>Eroare frecventă:</strong> setare pe ohmi sau amperi, apoi conectare la sursă de tensiune cu impedanță mică</li>
+                    <li><strong>Categorii IEC 61010:</strong> I (neconectat la rețea), II (subcircuite mains), III (sarcini permanente), IV (intrare rețea)</li>
                     <li>Sigurante HRC ceramice (&gt;20A) la metri de calitate</li>
-                    <li>Protec?ie MOV (Metal Oxide Varistor) la supratensiune</li>
-                    <li>Protec?ie supracurent cu Polyswitch</li>
+                    <li>Protecție MOV (Metal Oxide Varistor) la supratensiune</li>
+                    <li>Protecție supracurent cu Polyswitch</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.8 � Impedan?a de intrare</h3>
+                <h3>8.2.8 — Impedanță de intrare</h3>
                 <ul class="specs-list">
-                    <li><strong>DMM-uri:</strong> tipic 1 MO sau 10 MO impedan?a fixa de intrare</li>
-                    <li><strong>High-end:</strong> &gt;10 GO pentru range-uri =10V</li>
-                    <li><strong>Analog fara amplificator:</strong> impedan?a variaza cu range-ul selectat (ex: 20.000 O/V &#215; 300V range = 6 MO)</li>
-                    <li><strong>Loading effect:</strong> impedan?a mica a metrului poate afecta circuitul testat, d&#226;nd citiri false</li>
+                    <li><strong>DMM-uri:</strong> tipic 1 MΩ sau 10 MΩ impedanță fixă de intrare</li>
+                    <li><strong>High-end:</strong> &gt;10 GΩ pentru range-uri ≤10V</li>
+                    <li><strong>Analog fără amplificator:</strong> impedanța variază cu range-ul selectat (ex: 20.000 Ω/V × 300V range = 6 MΩ)</li>
+                    <li><strong>Loading effect:</strong> impedanța mică a metrului poate afecta circuitul testat, dând citiri false</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.9 � Legea lui Ohm � formulare</h3>
+                <h3>8.2.9 — Legea lui Ohm – formulare</h3>
                 <ul class="specs-list">
-                    <li>V = I &#215; R (tensiune = curent &#215; rezisten?a)</li>
-                    <li>I = V / R (curent = tensiune / rezisten?a)</li>
-                    <li>R = V / I (rezisten?a = tensiune / curent)</li>
+                    <li>V = I × R (tensiune = curent × rezistență)</li>
+                    <li>I = V / R (curent = tensiune / rezistență)</li>
+                    <li>R = V / I (rezistență = tensiune / curent)</li>
                     <li>Georg Ohm, publicat 1827 &quot;Die galvanische Kette, mathematisch bearbeitet&quot;</li>
-                    <li><strong>Lege empirica:</strong> generalizare din experimente, nu &#238;ntotdeauna respectata (materiale non-ohmice)</li>
-                    <li>Rezisten?a R este constanta, independenta de curent (pentru materiale ohmice)</li>
-                    <li><strong>Analogie hidraulica:</strong> presiune=tensiune, debit=curent, restric?ie=rezisten?a</li>
+                    <li><strong>Lege empirică:</strong> generalizare din experimente, nu întotdeauna respectată (materiale non-ohmice)</li>
+                    <li>Rezistența R este constantă, independentă de curent (pentru materiale ohmice)</li>
+                    <li><strong>Analogie hidraulică:</strong> presiune=tensiune, debit=curent, restricție=rezistență</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.10 � Modelul Drude</h3>
+                <h3>8.2.10 — Modelul Drude</h3>
                 <ul class="specs-list">
-                    <li><strong>Paul Drude, 1900:</strong> electronii se mi?ca ca bile de pinball &#238;ntre ioni</li>
-                    <li>C&#226;mp electric accelereaza electronii, coliziunile cu atomii disperseaza mi?carea</li>
-                    <li>Traiectorie zigzag, dar drift net &#238;n direc?ia opusa c&#226;mpului electric</li>
-                    <li>Viteza medie de drift propor?ionala cu c&#226;mpul electric ? curent propor?ional cu tensiunea</li>
+                    <li><strong>Paul Drude, 1900:</strong> electronii se mișcă ca bile de pinball între ioni</li>
+                    <li>Câmp electric accelerează electronii, coliziunile cu atomii dispersează mișcarea</li>
+                    <li>Traiectorie zigzag, dar drift net în direcția opusă câmpului electric</li>
+                    <li>Viteza medie de drift proporțională cu câmpul electric → curent proporțional cu tensiunea</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.11 � Efect termic</h3>
+                <h3>8.2.11 — Efect termic</h3>
                 <ul class="specs-list">
-                    <li>Rezistivitatea metalelor cre?te cu temperatura</li>
+                    <li>Rezistivitatea metalelor crește cu temperatura</li>
                     <li>Rezistivitatea semiconductorilor scade cu temperatura</li>
-                    <li><strong>&#206;ncalzire Joule:</strong> P = I&#178; &#215; R (putere disipata ca caldura)</li>
-                    <li><strong>Coeficient de temperatura tiipic:</strong> +3&#215;10?&#179; K?&#185; p&#226;na la +6&#215;10?&#179; K?&#185; pentru metale</li>
+                    <li><strong>Încălzire Joule:</strong> P = I² × R (putere disipată ca căldură)</li>
+                    <li><strong>Coeficient de temperatură tiipic:</strong> +3×10⁻³ K⁻¹ până la +6×10⁻³ K⁻¹ pentru metale</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.12 � Testul de continuitate</h3>
+                <h3>8.2.12 — Testul de continuitate</h3>
                 <ul class="specs-list">
-                    <li>Verificarea daca curentul trece printr-un circuit electric (circuit complet)</li>
-                    <li>Se realizeaza prin aplicarea unei tensiuni mici, &#238;n serie cu LED sau buzzer piezoelectric</li>
-                    <li>Daca fluxul de electroni este blocat de conductori rup?i, componente deteriorate sau rezisten?a excesiva ? circuit &quot;deschis&quot;</li>
-                    <li><strong>Dispozitive:</strong> multimetre (mai avansate) ?i continuity testers (mai simple, cu bec)</li>
+                    <li>Verificarea dacă curentul trece printr-un circuit electric (circuit complet)</li>
+                    <li>Se realizează prin aplicarea unei tensiuni mici, în serie cu LED sau buzzer piezoelectric</li>
+                    <li>Dacă fluxul de electroni este blocat de conductori rupți, componente deteriorate sau rezistență excesivă → circuit &quot;deschis&quot;</li>
+                    <li><strong>Dispozitive:</strong> multimetre (mai avansate) și continuity testers (mai simple, cu bec)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.13 � Utilizari ale testului de continuitate</h3>
+                <h3>8.2.13 — Utilizări ale testului de continuitate</h3>
                 <ul class="specs-list">
-                    <li><strong>Testarea componentelor simple:</strong> switch-uri, siguran?e, fire (o siguran?a func?ionala trebuie sa aiba continuitate)</li>
-                    <li><strong>Verificare grounding:</strong> o sonda pe conductorul expus, alta pe un punct de masa cunoscut</li>
-                    <li><strong>Reverse engineering:</strong> deducerea conexiunilor din masuratori - completarea buclei de curent arata carui fir apar?ine conexiunea</li>
-                    <li><strong>PCB tracing:</strong> continuitate &#238;ntre puncte de lipire releva trace-urile ce conecteaza componentele</li>
+                    <li><strong>Testarea componentelor simple:</strong> switch-uri, siguranțe, fire (o siguranță funcțională trebuie să aibă continuitate)</li>
+                    <li><strong>Verificare grounding:</strong> o sondă pe conductorul expus, alta pe un punct de masă cunoscut</li>
+                    <li><strong>Reverse engineering:</strong> deducerea conexiunilor din măsurători - completarea buclei de curent arată cărui fir aparține conexiunea</li>
+                    <li><strong>PCB tracing:</strong> continuitate între puncte de lipire relevă trace-urile ce conectează componentele</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.14 � Limitari ale testului de continuitate</h3>
+                <h3>8.2.14 — Limitări ale testului de continuitate</h3>
                 <ul class="specs-list">
-                    <li>Alimentarea trebuie deconectata &#238;nainte de test</li>
-                    <li>Rezistori cu valoare mica, motoare, transformatoare, inductori, difuzoare ?i diode pot da informa?ii ambigue</li>
+                    <li>Alimentarea trebuie deconectată înainte de test</li>
+                    <li>Rezistori cu valoare mică, motoare, transformatoare, inductori, difuzoare și diode pot da informații ambigue</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.15 � Rezisten?a electrica � defini?ie</h3>
+                <h3>8.2.15 — Rezistența electrică – definiție</h3>
                 <ul class="specs-list">
-                    <li>R = V / I (ohm, O), G = I / V = 1/R (siemens, S)</li>
-                    <li><strong>Depinde de:</strong> material ?i forma (geometrie)</li>
-                    <li>R = ? &#215; l / A (rezistivitate &#215; lungime / arie sec?iune transversala)</li>
-                    <li>Fir lung ?i sub?ire = rezisten?a mare; fir scurt ?i gros = rezisten?a mica</li>
-                    <li><strong>Valori tipice:</strong> 1m fir cupru &#216;1mm = 0.02 O, bec incandescent = 200-1000 O, corp uman = 1.000-100.000 O</li>
-                    <li><strong>Rezisten?a piele uscata:</strong> 100 kO, piele umeda: 1 kO, tensiune mare &quot;sparge&quot; pielea: 500 O</li>
+                    <li>R = V / I (ohm, Ω), G = I / V = 1/R (siemens, S)</li>
+                    <li><strong>Depinde de:</strong> material și formă (geometrie)</li>
+                    <li>R = ρ × l / A (rezistivitate × lungime / arie secțiune transversală)</li>
+                    <li>Fir lung și subțire = rezistență mare; fir scurt și gros = rezistență mică</li>
+                    <li><strong>Valori tipice:</strong> 1m fir cupru Ø1mm = 0.02 Ω, bec incandescent = 200-1000 Ω, corp uman = 1.000-100.000 Ω</li>
+                    <li><strong>Rezistență piele uscată:</strong> 100 kΩ, piele umedă: 1 kΩ, tensiune mare &quot;sparge&quot; pielea: 500 Ω</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.2.16 � Masurare rezisten?a</h3>
+                <h3>8.2.16 — Măsurare rezistență</h3>
                 <ul class="specs-list">
                     <li><strong>Ohmetru:</strong> instrument specializat</li>
-                    <li><strong>Ohmetre simple:</strong> erorile de rezisten?a ale sondelor afecteaza citirea</li>
-                    <li><strong>Metoda four-wire (Kelvin sensing):</strong> 2 sonde furnizeaza curent, 2 sonde measure tensiunea ? elimina rezisten?a cablurilor</li>
-                    <li>Func?ia &quot;delta&quot;, &quot;zero&quot;, sau &quot;null&quot; pe DMM-uri: scad rezisten?a sondelor din citire</li>
+                    <li><strong>Ohmetre simple:</strong> erorile de rezistență ale sondelor afectează citirea</li>
+                    <li><strong>Metoda four-wire (Kelvin sensing):</strong> 2 sonde furnizează curent, 2 sonde measure tensiunea → elimină rezistența cablurilor</li>
+                    <li>Funcția &quot;delta&quot;, &quot;zero&quot;, sau &quot;null&quot; pe DMM-uri: scad rezistența sondelor din citire</li>
                 </ul>
             </div>
 
@@ -240,7 +248,7 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Istoric</h3>
@@ -253,12 +261,12 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Utilizari ale testului de continuitate</h3>
+                <h3>Utilizări ale testului de continuitate</h3>
                 <ul class="specs-list">
-                    <li><strong>PCB tracing:</strong> continuitate &#238;ntre puncte de lipire releva trace-urile ce conecteaza componentele</li>
+                    <li><strong>PCB tracing:</strong> continuitate între puncte de lipire relevă trace-urile ce conectează componentele</li>
                 </ul>
             </div>
         </div>
@@ -269,23 +277,23 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Tipuri � Analog</h3>
+                <h3>Tipuri – Analog</h3>
                 <ul class="specs-list">
-                    <li><strong>Masurat tensiune DC:</strong> rezistor &#238;n serie cu meter movement</li>
+                    <li><strong>Măsurat tensiune DC:</strong> rezistor în serie cu meter movement</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Testul de continuitate</h3>
                 <ul class="specs-list">
-                    <li>Se realizeaza prin aplicarea unei tensiuni mici, &#238;n serie cu LED sau buzzer piezoelectric</li>
+                    <li>Se realizează prin aplicarea unei tensiuni mici, în serie cu LED sau buzzer piezoelectric</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Masurare rezisten?a</h3>
+                <h3>Măsurare rezistență</h3>
                 <ul class="specs-list">
-                    <li>Func?ia &quot;delta&quot;, &quot;zero&quot;, sau &quot;null&quot; pe DMM-uri: scad rezisten?a sondelor din citire</li>
+                    <li>Funcția &quot;delta&quot;, &quot;zero&quot;, sau &quot;null&quot; pe DMM-uri: scad rezistența sondelor din citire</li>
                 </ul>
             </div>
         </div>
@@ -297,16 +305,16 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Defini?ie ?i func?ii de baza</h3>
-                    <p>Utilizat &#238;n opera?iuni diagnostice pentru verificarea func?ionarii corecte a circuitelor</p>
+                    <h3>⚠️ Definiție și funcții de bază</h3>
+                    <p>Utilizat în operațiuni diagnostice pentru verificarea funcționării corecte a circuitelor</p>
                 </div>
                 <div class="card">
-                    <h3>?? Siguran?a (Safety)</h3>
-                    <p>Eroare frecventa: setare pe ohmi sau amperi, apoi conectare la sursa de tensiune cu impedan?a mica</p>
+                    <h3>⚠️ Siguranță (Safety)</h3>
+                    <p>Eroare frecventă: setare pe ohmi sau amperi, apoi conectare la sursă de tensiune cu impedanță mică</p>
                 </div>
                 <div class="card">
-                    <h3>?? Testul de continuitate</h3>
-                    <p>Daca fluxul de electroni este blocat de conductori rup?i, componente deteriorate sau rezisten?a excesiva ? circuit &quot;deschis&quot;</p>
+                    <h3>⚠️ Testul de continuitate</h3>
+                    <p>Dacă fluxul de electroni este blocat de conductori rupți, componente deteriorate sau rezistență excesivă → circuit &quot;deschis&quot;</p>
                 </div>
             </div>
         </div>
@@ -317,22 +325,22 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Defini?ie ?i func?ii de baza:</strong> Multimeter (known as: multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
+                    <li><strong>Definiție și funcții de bază:</strong> Multimeter (known as: multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
                     <li><strong>Istoric:</strong> Primul galvanometru (detector de curent cu pointer mobil): 1820</li>
-                    <li><strong>Tipuri � Analog:</strong> Folose?te microampermetru cu pointer mobil pe scala</li>
-                    <li><strong>Tipuri � Digital (DMM):</strong> Afi?aj numeric, elimina erorile de paralaxa</li>
-                    <li><strong>Func?ia de continuitate:</strong> Buzzer care suna c&#226;nd rezisten?a circuitului este suficient de mica</li>
-                    <li><strong>Sonde (Probes):</strong> Tipuri: crocodile clips, retractable hook clips, sonde cu v&#226;rf ascu?it</li>
-                    <li><strong>Siguran?a (Safety):</strong> Sigurante interne (una sau doua) pentru protec?ie la supracurent</li>
-                    <li><strong>Impedan?a de intrare:</strong> DMM-uri: tipic 1 MO sau 10 MO impedan?a fixa de intrare</li>
-                    <li><strong>Legea lui Ohm � formulare:</strong> V = I &#215; R (tensiune = curent &#215; rezisten?a)</li>
-                    <li><strong>Modelul Drude:</strong> Paul Drude, 1900: electronii se mi?ca ca bile de pinball &#238;ntre ioni</li>
-                    <li><strong>Efect termic:</strong> Rezistivitatea metalelor cre?te cu temperatura</li>
-                    <li><strong>Testul de continuitate:</strong> Verificarea daca curentul trece printr-un circuit electric (circuit complet)</li>
-                    <li><strong>Utilizari ale testului de continuitate:</strong> Testarea componentelor simple: switch-uri, siguran?e, fire (o siguran?a func?ionala trebuie sa aiba continuitate)</li>
-                    <li><strong>Limitari ale testului de continuitate:</strong> Alimentarea trebuie deconectata &#238;nainte de test</li>
-                    <li><strong>Rezisten?a electrica � defini?ie:</strong> R = V / I (ohm, O), G = I / V = 1/R (siemens, S)</li>
-                    <li><strong>Masurare rezisten?a:</strong> Ohmetru: instrument specializat</li>
+                    <li><strong>Tipuri – Analog:</strong> Folosește microampermetru cu pointer mobil pe scală</li>
+                    <li><strong>Tipuri – Digital (DMM):</strong> Afișaj numeric, elimină erorile de paralaxă</li>
+                    <li><strong>Funcția de continuitate:</strong> Buzzer care sună când rezistența circuitului este suficient de mică</li>
+                    <li><strong>Sonde (Probes):</strong> Tipuri: crocodile clips, retractable hook clips, sonde cu vârf ascuțit</li>
+                    <li><strong>Siguranță (Safety):</strong> Sigurante interne (una sau două) pentru protecție la supracurent</li>
+                    <li><strong>Impedanță de intrare:</strong> DMM-uri: tipic 1 MΩ sau 10 MΩ impedanță fixă de intrare</li>
+                    <li><strong>Legea lui Ohm – formulare:</strong> V = I × R (tensiune = curent × rezistență)</li>
+                    <li><strong>Modelul Drude:</strong> Paul Drude, 1900: electronii se mișcă ca bile de pinball între ioni</li>
+                    <li><strong>Efect termic:</strong> Rezistivitatea metalelor crește cu temperatura</li>
+                    <li><strong>Testul de continuitate:</strong> Verificarea dacă curentul trece printr-un circuit electric (circuit complet)</li>
+                    <li><strong>Utilizări ale testului de continuitate:</strong> Testarea componentelor simple: switch-uri, siguranțe, fire (o siguranță funcțională trebuie să aibă continuitate)</li>
+                    <li><strong>Limitări ale testului de continuitate:</strong> Alimentarea trebuie deconectată înainte de test</li>
+                    <li><strong>Rezistența electrică – definiție:</strong> R = V / I (ohm, Ω), G = I / V = 1/R (siemens, S)</li>
+                    <li><strong>Măsurare rezistență:</strong> Ohmetru: instrument specializat</li>
                 </ul>
             </div>
         </div>
@@ -340,80 +348,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: Multimeter (known as?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Multimeter (known as?</strong></p>
                 <ul class="specs-list">
-                    <li>a) temperatura, capacitan?a, frecven?a, duty cycle, inductan?a</li>
+                    <li>a) temperatură, capacitanță, frecvență, duty cycle, inductanță</li>
                     <li>b) multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
-                    <li>c) tensiune (voltage), rezisten?a (resistance), curent (current)</li>
+                    <li>c) tensiune (voltage), rezistență (resistance), curent (current)</li>
                     <li>d) voltmetru, ohmetru, ampermetru</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Mecanismul D&#39;Arsonval-Weston?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Mecanismul D'Arsonval-Weston?</strong></p>
                 <ul class="specs-list">
-                    <li>a) tensiune (voltage), rezisten?a (resistance), curent (current)</li>
-                    <li>b) bobina mobila pe pivo?i, rota?ie &#238;n c&#226;mp magnetic permanent</li>
+                    <li>a) tensiune (voltage), rezistență (resistance), curent (current)</li>
+                    <li>b) bobină mobilă pe pivoți, rotație în câmp magnetic permanent</li>
                     <li>c) multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
                     <li>d) voltmetru, ohmetru, ampermetru</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � bobina mobila pe pivo?i, rota?ie &#238;n c&#226;mp magnetic permanent</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — bobină mobilă pe pivoți, rotație în câmp magnetic permanent</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Principiu de func?ionare?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Principiu de funcționare?</strong></p>
                 <ul class="specs-list">
                     <li>a) multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
-                    <li>b) tensiune (voltage), rezisten?a (resistance), curent (current)</li>
+                    <li>b) tensiune (voltage), rezistență (resistance), curent (current)</li>
                     <li>c) voltmetru, ohmetru, ampermetru</li>
-                    <li>d) bobina mobila (galvanometru d&#39;Arsonval)</li>
+                    <li>d) bobină mobilă (galvanometru d'Arsonval)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � bobina mobila (galvanometru d&#39;Arsonval)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — bobină mobilă (galvanometru d'Arsonval)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Rezisten?a?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Rezistență?</strong></p>
                 <ul class="specs-list">
                     <li>a) voltmetru, ohmetru, ampermetru</li>
                     <li>b) multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
-                    <li>c) curent constant mic prin dispozitiv, citire a caderii de tensiune rezultate</li>
-                    <li>d) tensiune (voltage), rezisten?a (resistance), curent (current)</li>
+                    <li>c) curent constant mic prin dispozitiv, citire a căderii de tensiune rezultate</li>
+                    <li>d) tensiune (voltage), rezistență (resistance), curent (current)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � curent constant mic prin dispozitiv, citire a caderii de tensiune rezultate</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — curent constant mic prin dispozitiv, citire a căderii de tensiune rezultate</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Testare diode?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Testare diode?</strong></p>
                 <ul class="specs-list">
-                    <li>a) masurare forward drop al jonc?iunilor semiconductoare</li>
+                    <li>a) măsurare forward drop al joncțiunilor semiconductoare</li>
                     <li>b) multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</li>
-                    <li>c) tensiune (voltage), rezisten?a (resistance), curent (current)</li>
+                    <li>c) tensiune (voltage), rezistență (resistance), curent (current)</li>
                     <li>d) voltmetru, ohmetru, ampermetru</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � masurare forward drop al jonc?iunilor semiconductoare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — măsurare forward drop al joncțiunilor semiconductoare</strong></p>
                 </details>
             </div>
         </div>
@@ -421,22 +429,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Multimetrul</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de masurarea tensiunii. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Multimetrul</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de măsurarea tensiunii. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>1. Defineste pe scurt: masurarea tensiunii.</li>
-                    <li>2. Ce rol are masurarea rezisten?ei �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre masurarea tensiunii ?i masurarea continuita?ii.</li>
+                    <li>1. Defineste pe scurt: măsurarea tensiunii.</li>
+                    <li>2. Ce rol are măsurarea rezistenței în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre măsurarea tensiunii și măsurarea continuității.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
                         <p><strong>1.</strong> Multimeter (known as: multi-tester, volt-ohm-milliammeter, volt-ohmmeter/VOM, avometer)</p>
                         <p><strong>2.</strong> Primul galvanometru (detector de curent cu pointer mobil): 1820</p>
-                        <p><strong>3.</strong> Folose?te microampermetru cu pointer mobil pe scala</p>
+                        <p><strong>3.</strong> Folosește microampermetru cu pointer mobil pe scală</p>
                     </div>
                 </details>
             </div>
@@ -463,7 +471,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-8-1.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 8.1 &mdash; Engineering Thinking</a>
@@ -520,14 +528,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cel mai bun tutorial despre multimetru: cum se masoara tensiunea, curentul ?i rezisten?a, cu demonstra?ii practice.</p>
+                <p class="video-description">Cel mai bun tutorial despre multimetru: cum se măsoară tensiunea, curentul și rezistența, cu demonstrații practice.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 2.1 � Rezistoare">
+    <meta name="description" content="Lecția 2.1 — Rezistoare">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 2.1 � Rezistoare � Console Notebook</title>
+    <title>Lecția 2.1 — Rezistoare — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -23,9 +23,9 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -35,277 +35,285 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 � ELECTRONICA DE BAZA</p>
-            <h1>Lec?ia 2.1 � Rezistoare</h1>
-            <p>tipuri de rezistoare, toleran?a, codul culorilor, aplica?ii pe PCB</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.1 — Rezistoare</h1>
+            <p>tipuri de rezistoare, toleranță, codul culorilor, aplicații pe PCB</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- INTRODUCERE -->
-                                                        <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Un rezistor este o componenta electronica pasiva cu doua terminale care implementeaza rezisten?a electrica ca element de circuit</p>
-                <p>Aceasta lec?ie acopera: <strong>tipuri de rezistoare</strong>, <strong>toleran?a</strong>, <strong>codul culorilor</strong>, <strong>aplica?ii pe PCB</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Deschide imaginea unui PCB de PlayStation 5 și numără componentele mici, dreptunghiulare, distribuite peste tot pe placă. Cele mai multe dintre ele sunt rezistoare — componente pasive care controlează cât curent ajunge la fiecare parte a circuitului. Fără ele, tensiunile ar fi neregulate, semnalele ar fi instabile, și procesorul s-ar supraîncălzi în secunde.
+                </p>
+                <p>
+                    Această lecție acoperă componenta electronică cea mai omniprezentă: <strong>tipurile de rezistoare</strong> (SMD, through-hole, film de carbon, film metalic), <strong>toleranța</strong> (precizia valorii nominale), <strong>codul culorilor</strong> (identificarea vizuală a valorii) și <strong>aplicațiile practice pe PCB</strong> — de la divizoare de tensiune la rezistoare de pull-up și terminarea liniilor de transmisie.
+                </p>
+                <p>
+                    Scopul nu este memorarea codului de culori, ci înțelegerea <em>de ce</em> fiecare rezistor de pe o placă de consolă are o valoare specifică, <em>ce rol</em> joacă în circuit și <em>cum</em> identifici un rezistor defect pe un PCB real. Pe o singură placă de consolă există sute de rezistoare, fiecare cu un scop precis.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.1 � DEFINI?IE ?I ROL</h3>
+                <h3>2.1.1 — DEFINIȚIE ȘI ROL</h3>
                 <ul class="specs-list">
-                    <li>Un rezistor este o componenta electronica pasiva cu doua terminale care implementeaza rezisten?a electrica ca element de circuit</li>
-                    <li>&#206;n circuitele electronice, rezistoarele sunt folosite pentru: reducerea curentului, ajustarea nivelurilor de semnal, divizarea tensiunilor, polarizarea elementelor active ?i terminarea liniilor de transmisie</li>
-                    <li>Rezistoarele fixe au rezisten?e care se schimba doar u?or cu temperatura, timpul sau tensiunea de operare</li>
+                    <li>Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit</li>
+                    <li>În circuitele electronice, rezistoarele sunt folosite pentru: reducerea curentului, ajustarea nivelurilor de semnal, divizarea tensiunilor, polarizarea elementelor active și terminarea liniilor de transmisie</li>
+                    <li>Rezistoarele fixe au rezistențe care se schimbă doar ușor cu temperatura, timpul sau tensiunea de operare</li>
                     <li>Rezistoarele variabile pot fi folosite pentru ajustarea elementelor de circuit (control volum, dimmer)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.2 � LEGEA LUI OHM (aplicata la rezistoare)</h3>
+                <h3>2.1.2 — LEGEA LUI OHM (aplicată la rezistoare)</h3>
                 <ul class="specs-list">
-                    <li>V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</li>
-                    <li><strong>Unitatea:</strong> ohm (O), numita dupa Georg Simon Ohm</li>
-                    <li><strong>Derivate:</strong> milliohm (1 mO = 10?&#179; O), kilohm (1 kO = 10&#179; O), megohm (1 MO = 106 O)</li>
-                    <li><strong>Exemplu:</strong> un rezistor de 300 O conectat la o baterie de 12V ? curent de 0.04 A</li>
+                    <li>V = I × R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li><strong>Unitatea:</strong> ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li><strong>Derivate:</strong> milliohm (1 mΩ = 10⁻³ Ω), kilohm (1 kΩ = 10³ Ω), megohm (1 MΩ = 10⁶ Ω)</li>
+                    <li><strong>Exemplu:</strong> un rezistor de 300 Ω conectat la o baterie de 12V → curent de 0.04 A</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.3 � DISIPAREA PUTERII</h3>
+                <h3>2.1.3 — DISIPAREA PUTERII</h3>
                 <ul class="specs-list">
-                    <li>P = I &#215; V = I&#178; &#215; R = V&#178; / R</li>
+                    <li>P = I × V = I² × R = V² / R</li>
                     <li>Rezistoarele discrete sunt de obicei 1/10, 1/8 sau 1/4 watt</li>
                     <li><strong>Rezistoarele de putere:</strong> 1 W sau mai mult, fizic mai mari, pot necesita radiatoare</li>
-                    <li>Depa?irea puterii nominale poate deteriora permanent rezistorul sau cauza incendiu</li>
-                    <li>Exista rezistoare ignifuge care nu produc flacari la nicio suprasarcina</li>
+                    <li>Depășirea puterii nominale poate deteriora permanent rezistorul sau cauza incendiu</li>
+                    <li>Există rezistoare ignifuge care nu produc flăcări la nicio suprasarcină</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.4 � a) Carbon composition (CCR)</h3>
+                <h3>2.1.4 — a) Carbon composition (CCR)</h3>
                 <ul class="specs-list">
-                    <li>Amestec de carbon pudra fin ?i material izolator (ceramica), legat cu ra?ina</li>
-                    <li>Rezisten?a determinata de raportul carbon/material de umplutura</li>
-                    <li><strong>Toleran?a maxima:</strong> 5% (sortate din fabrica)</li>
-                    <li>Non-inductive, bune pentru protec?ie la supratensiune</li>
-                    <li>Relativ scumpe acum, folosite &#238;n alimentatoare ?i controlul sudarii</li>
+                    <li>Amestec de carbon pudră fin și material izolator (ceramică), legat cu rășină</li>
+                    <li>Rezistența determinată de raportul carbon/material de umplutură</li>
+                    <li><strong>Toleranță maximă:</strong> 5% (sortate din fabrică)</li>
+                    <li>Non-inductive, bune pentru protecție la supratensiune</li>
+                    <li>Relativ scumpe acum, folosite în alimentatoare și controlul sudării</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.5 � b) Carbon film</h3>
+                <h3>2.1.5 — b) Carbon film</h3>
                 <ul class="specs-list">
-                    <li>Film de carbon depus pe substrat izolant, cu helix taiat</li>
-                    <li>Zgomot mai scazut dec&#226;t carbon composition</li>
-                    <li><strong>Putere:</strong> 0.125 W � 5 W la 70&#176;C</li>
-                    <li><strong>Rezisten?e:</strong> 1 O � 10 MO</li>
-                    <li><strong>Temperatura operare:</strong> -55&#176;C � 155&#176;C</li>
-                    <li><strong>Tensiune maxima:</strong> 200�600 V</li>
+                    <li>Film de carbon depus pe substrat izolant, cu helix tăiat</li>
+                    <li>Zgomot mai scăzut decât carbon composition</li>
+                    <li><strong>Putere:</strong> 0.125 W – 5 W la 70°C</li>
+                    <li><strong>Rezistențe:</strong> 1 Ω – 10 MΩ</li>
+                    <li><strong>Temperatură operare:</strong> −55°C – 155°C</li>
+                    <li><strong>Tensiune maximă:</strong> 200–600 V</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.6 � c) Carbon printat pe PCB</h3>
+                <h3>2.1.6 — c) Carbon printat pe PCB</h3>
                 <ul class="specs-list">
                     <li>Printat direct pe substratul PCB-ului</li>
-                    <li>Toleran?e mari (~30%)</li>
-                    <li><strong>Aplica?ie tipica:</strong> rezistoare pull-up non-critice</li>
+                    <li>Toleranțe mari (~30%)</li>
+                    <li><strong>Aplicație tipică:</strong> rezistoare pull-up non-critice</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.7 � d) Thick film (film gros)</h3>
+                <h3>2.1.7 — d) Thick film (film gros)</h3>
                 <ul class="specs-list">
                     <li>Populare din anii 1970, majoritatea SMD sunt de acest tip</li>
-                    <li>Material ceramic conductiv amestecat cu sticla sinterizata</li>
-                    <li>Fuzionat la ~850&#176;C</li>
-                    <li><strong>Toleran?e standard:</strong> 2% sau 1%</li>
-                    <li><strong>Coeficient de temperatura:</strong> &#177;200 sau &#177;250 ppm/K</li>
+                    <li>Material ceramic conductiv amestecat cu sticlă sinterizată</li>
+                    <li>Fuzionat la ~850°C</li>
+                    <li><strong>Toleranțe standard:</strong> 2% sau 1%</li>
+                    <li><strong>Coeficient de temperatură:</strong> ±200 sau ±250 ppm/K</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.8 � e) Thin film (film sub?ire)</h3>
+                <h3>2.1.8 — e) Thin film (film subțire)</h3>
                 <ul class="specs-list">
-                    <li>Fabricate prin sputtering (depunere &#238;n vid)</li>
-                    <li><strong>Toleran?e:</strong> 1% ?i 5%</li>
-                    <li><strong>Coeficient de temperatura:</strong> 5�50 ppm/K</li>
-                    <li>Zgomot 10�100&#215; mai mic dec&#226;t thick film</li>
-                    <li>Mai scumpe dec&#226;t thick film</li>
+                    <li>Fabricate prin sputtering (depunere în vid)</li>
+                    <li><strong>Toleranțe:</strong> 1% și 5%</li>
+                    <li><strong>Coeficient de temperatură:</strong> 5–50 ppm/K</li>
+                    <li>Zgomot 10–100× mai mic decât thick film</li>
+                    <li>Mai scumpe decât thick film</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.9 � f) Metal film</h3>
+                <h3>2.1.9 — f) Metal film</h3>
                 <ul class="specs-list">
                     <li>Acoperite cu nichel-crom (NiCr)</li>
-                    <li><strong>Toleran?a:</strong> 0.5%, 1% sau 2%</li>
-                    <li><strong>Coeficient de temperatura:</strong> 50�100 ppm/K</li>
-                    <li>Zgomot scazut, liniaritate buna, stabilitate pe termen lung</li>
+                    <li><strong>Toleranță:</strong> 0.5%, 1% sau 2%</li>
+                    <li><strong>Coeficient de temperatură:</strong> 50–100 ppm/K</li>
+                    <li>Zgomot scăzut, liniaritate bună, stabilitate pe termen lung</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.10 � g) Metal oxide film</h3>
+                <h3>2.1.10 — g) Metal oxide film</h3>
                 <ul class="specs-list">
-                    <li>Temperatura de operare mai mare, stabilitate ?i fiabilitate superioare</li>
+                    <li>Temperatură de operare mai mare, stabilitate și fiabilitate superioare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.11 � h) Wire wound (&#238;nfa?urat cu s&#226;rma)</h3>
+                <h3>2.1.11 — h) Wire wound (înfășurat cu sârmă)</h3>
                 <ul class="specs-list">
-                    <li>S&#226;rma metalica (de obicei nichrome) &#238;nfa?urata pe un nucleu ceramic/plastic</li>
-                    <li>Pot suporta p&#226;na la 450&#176;C</li>
-                    <li><strong>Putere:</strong> p&#226;na la 1000+ W</li>
-                    <li><strong>Dezavantaj:</strong> inductan?a nedorita</li>
-                    <li><strong>Solu?ii:</strong> &#238;nfa?urare bifilar sau Ayrton-Perry</li>
+                    <li>Sârmă metalică (de obicei nichrome) înfășurată pe un nucleu ceramic/plastic</li>
+                    <li>Pot suporta până la 450°C</li>
+                    <li><strong>Putere:</strong> până la 1000+ W</li>
+                    <li><strong>Dezavantaj:</strong> inductanță nedorită</li>
+                    <li><strong>Soluții:</strong> înfășurare bifilar sau Ayrton-Perry</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.12 � i) Metal foil (folie metalica)</h3>
+                <h3>2.1.12 — i) Metal foil (folie metalică)</h3>
                 <ul class="specs-list">
-                    <li>Cea mai buna precizie ?i stabilitate (din 1960)</li>
-                    <li><strong>TCR:</strong> 0.14 ppm/&#176;C</li>
-                    <li><strong>Toleran?a:</strong> &#177;0.005%</li>
+                    <li>Cea mai bună precizie și stabilitate (din 1960)</li>
+                    <li><strong>TCR:</strong> 0.14 ppm/°C</li>
+                    <li><strong>Toleranță:</strong> ±0.005%</li>
                     <li><strong>Stabilitate pe termen lung (1 an):</strong> 25 ppm</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.13 � TIPURI DE REZISTOARE VARIABILE</h3>
+                <h3>2.1.13 — TIPURI DE REZISTOARE VARIABILE</h3>
                 <ul class="specs-list">
-                    <li><strong>Reostat:</strong> rezistor ajustabil cu doua terminale</li>
-                    <li><strong>Poten?iometru:</strong> rezistor cu trei terminale, cursor rotativ/liniar</li>
+                    <li><strong>Reostat:</strong> rezistor ajustabil cu două terminale</li>
+                    <li><strong>Potențiometru:</strong> rezistor cu trei terminale, cursor rotativ/liniar</li>
                     <li><strong>Element rezistiv:</strong> carbon composition, metal film sau plastic conductiv</li>
-                    <li>Variante multi-turn de mare precizie (10 rota?ii, rezolu?ie 3 cifre)</li>
+                    <li>Variante multi-turn de mare precizie (10 rotații, rezoluție 3 cifre)</li>
                     <li><strong>Decade box:</strong> cutie cu rezistoare de multe valori cu comutatoare mecanice</li>
                     <li><strong>Dispozitive speciale:</strong> termistoare NTC, fotrezistoare, senzori de deformare (strain gauge)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.14 � APLICA?II COMUNE</h3>
+                <h3>2.1.14 — APLICAȚII COMUNE</h3>
                 <ul class="specs-list">
                     <li><strong>Limitarea curentului:</strong> protejarea componentelor (ex. LED-uri) de supracurent</li>
-                    <li><strong>Divizor de tensiune:</strong> doua rezistoare &#238;n serie &#238;ntre doua tensiuni fixe</li>
-                    <li><strong>Exemplu:</strong> 200 O + 400 O &#238;ntre 6V ?i 0V ? 4V la terminal</li>
-                    <li><strong>Pull-up / pull-down:</strong> furnizeaza tensiune implicita c&#226;nd circuitul este deconectat</li>
+                    <li><strong>Divizor de tensiune:</strong> două rezistoare în serie între două tensiuni fixe</li>
+                    <li><strong>Exemplu:</strong> 200 Ω + 400 Ω între 6V și 0V → 4V la terminal</li>
+                    <li><strong>Pull-up / pull-down:</strong> furnizează tensiune implicită când circuitul este deconectat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.15 � MONTAJ PE PCB</h3>
+                <h3>2.1.15 — MONTAJ PE PCB</h3>
                 <ul class="specs-list">
-                    <li><strong>Through-hole (strapungere):</strong> cu terminale axiale sau radiale</li>
-                    <li><strong>SMT/SMD (montaj pe suprafa?a):</strong> lipite direct pe suprafa?a PCB</li>
-                    <li>Rezistoare de putere pot avea carcasa de aluminiu pe radiator</li>
+                    <li><strong>Through-hole (străpungere):</strong> cu terminale axiale sau radiale</li>
+                    <li><strong>SMT/SMD (montaj pe suprafață):</strong> lipite direct pe suprafața PCB</li>
+                    <li>Rezistoare de putere pot avea carcasă de aluminiu pe radiator</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.16 � ISTORIC</h3>
+                <h3>2.1.16 — ISTORIC</h3>
                 <ul class="specs-list">
-                    <li>Dezvoltat &#238;n anii 1920 de Radio Manufacturers Association (RMA)</li>
+                    <li>Dezvoltat în anii 1920 de Radio Manufacturers Association (RMA)</li>
                     <li><strong>Primele radiouri cu rezistoare codate prin culori:</strong> 1930</li>
-                    <li><strong>Standardizat interna?ional:</strong> IEC 62:1952</li>
+                    <li><strong>Standardizat internațional:</strong> IEC 62:1952</li>
                     <li><strong>Standard curent:</strong> IEC 60062:2016</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.17 � SISTEMUL DE BENZI COLORATE (4 benzi)</h3>
+                <h3>2.1.17 — SISTEMUL DE BENZI COLORATE (4 benzi)</h3>
                 <ul class="specs-list">
-                    <li><strong>Banda A:</strong> prima cifra semnificativa</li>
-                    <li><strong>Banda B:</strong> a doua cifra semnificativa</li>
+                    <li><strong>Banda A:</strong> prima cifră semnificativă</li>
+                    <li><strong>Banda B:</strong> a doua cifră semnificativă</li>
                     <li><strong>Banda C:</strong> multiplicator zecimal (puterea lui 10)</li>
-                    <li><strong>Banda D:</strong> toleran?a (daca lipse?te = &#177;20%)</li>
-                    <li><strong>Distinc?ie st&#226;nga-dreapta:</strong> spa?iu mai mare &#238;ntre C ?i D</li>
+                    <li><strong>Banda D:</strong> toleranță (dacă lipsește = ±20%)</li>
+                    <li><strong>Distincție stânga-dreapta:</strong> spațiu mai mare între C și D</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.18 � SISTEMUL DE 5 BENZI (precizie)</h3>
+                <h3>2.1.18 — SISTEMUL DE 5 BENZI (precizie)</h3>
                 <ul class="specs-list">
                     <li><strong>Primele 3 benzi:</strong> trei cifre semnificative</li>
                     <li><strong>Banda 4:</strong> multiplicator</li>
-                    <li><strong>Banda 5:</strong> toleran?a</li>
-                    <li>Banda extra-lata la prima banda = rezistor wire-wound</li>
+                    <li><strong>Banda 5:</strong> toleranță</li>
+                    <li>Bandă extra-lată la prima bandă = rezistor wire-wound</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.19 � TABELUL CULORILOR</h3>
-                <p>| Culoare  | Cifra | Multiplicator | Toleran?a |</p>
+                <h3>2.1.19 — TABELUL CULORILOR</h3>
+                <p>| Culoare  | Cifră | Multiplicator | Toleranță |</p>
                 <p>|----------|-------|---------------|-----------|</p>
-                <p>| Negru   |   0   | &#215;1            | �         |</p>
-                <p>| Maro    |   1   | &#215;10           | &#177;1%       |</p>
-                <p>| Ro?u    |   2   | &#215;100          | &#177;2%       |</p>
-                <p>| Portocaliu| 3   | &#215;1000         | &#177;0.05%    |</p>
-                <p>| Galben  |   4   | &#215;10000        | &#177;0.02%    |</p>
-                <p>| Verde   |   5   | &#215;100000       | &#177;0.5%     |</p>
-                <p>| Albastru|   6   | &#215;1000000      | &#177;0.25%    |</p>
-                <p>| Violet  |   7   | &#215;10000000     | &#177;0.1%     |</p>
-                <p>| Gri     |   8   | &#215;100000000    | &#177;0.01%    |</p>
-                <p>| Alb     |   9   | &#215;1000000000   | �         |</p>
-                <p>| Auriu   |   �   | &#215;0.1          | &#177;5%       |</p>
-                <p>| Argintiu|   �   | &#215;0.01         | &#177;10%      |</p>
-                <p>| Roz     |   �   | &#215;0.001        | �         |</p>
+                <p>| Negru   |   0   | ×1            | —         |</p>
+                <p>| Maro    |   1   | ×10           | ±1%       |</p>
+                <p>| Roșu    |   2   | ×100          | ±2%       |</p>
+                <p>| Portocaliu| 3   | ×1000         | ±0.05%    |</p>
+                <p>| Galben  |   4   | ×10000        | ±0.02%    |</p>
+                <p>| Verde   |   5   | ×100000       | ±0.5%     |</p>
+                <p>| Albastru|   6   | ×1000000      | ±0.25%    |</p>
+                <p>| Violet  |   7   | ×10000000     | ±0.1%     |</p>
+                <p>| Gri     |   8   | ×100000000    | ±0.01%    |</p>
+                <p>| Alb     |   9   | ×1000000000   | —         |</p>
+                <p>| Auriu   |   —   | ×0.1          | ±5%       |</p>
+                <p>| Argintiu|   —   | ×0.01         | ±10%      |</p>
+                <p>| Roz     |   —   | ×0.001        | —         |</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.20 � EXEMPLE DE CITIRE</h3>
+                <h3>2.1.20 — EXEMPLE DE CITIRE</h3>
                 <ul class="specs-list">
-                    <li>Ro?u, violet, verde, auriu = 2 700 000 O (2.7 MO) &#177;5%</li>
-                    <li>Verde, albastru, negru, negru, maro = 560 O &#177;1%</li>
-                    <li>Ro?u, ro?u, portocaliu, auriu = 22 000 O (22 kO) &#177;5%</li>
-                    <li>Galben, violet, maro, auriu = 470 O &#177;5%</li>
-                    <li>Albastru, gri, negru, auriu = 68 O &#177;5%</li>
+                    <li>Roșu, violet, verde, auriu = 2 700 000 Ω (2.7 MΩ) ±5%</li>
+                    <li>Verde, albastru, negru, negru, maro = 560 Ω ±1%</li>
+                    <li>Roșu, roșu, portocaliu, auriu = 22 000 Ω (22 kΩ) ±5%</li>
+                    <li>Galben, violet, maro, auriu = 470 Ω ±5%</li>
+                    <li>Albastru, gri, negru, auriu = 68 Ω ±5%</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.21 � MARCAJ SMD (montaj pe suprafa?a)</h3>
+                <h3>2.1.21 — MARCAJ SMD (montaj pe suprafață)</h3>
                 <ul class="specs-list">
                     <li><strong>Cod cu 3 cifre:</strong> primele 2 = cifre semnificative, a 3-a = puterea lui 10</li>
-                    <li>334 = 33 &#215; 104 = 330 kO</li>
-                    <li>222 = 22 &#215; 10&#178; = 2.2 kO</li>
-                    <li>473 = 47 &#215; 10&#179; = 47 kO</li>
-                    <li><strong>Sub 100 O:</strong> 100 = 10 O, 220 = 22 O</li>
-                    <li><strong>Sub 10 O:</strong> se folose?te &#39;R&#39; pentru punct zecimal (4R7 = 4.7 O)</li>
+                    <li>334 = 33 × 10⁴ = 330 kΩ</li>
+                    <li>222 = 22 × 10² = 2.2 kΩ</li>
+                    <li>473 = 47 × 10³ = 47 kΩ</li>
+                    <li><strong>Sub 100 Ω:</strong> 100 = 10 Ω, 220 = 22 Ω</li>
+                    <li><strong>Sub 10 Ω:</strong> se folosește 'R' pentru punct zecimal (4R7 = 4.7 Ω)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.22 � SERII DE VALORI PREFERATE (E-series, IEC 60063)</h3>
+                <h3>2.1.22 — SERII DE VALORI PREFERATE (E-series, IEC 60063)</h3>
                 <ul class="specs-list">
-                    <li><strong>E6 (6 valori/decada):</strong> toleran?a &#177;20%</li>
-                    <li><strong>E12:</strong> toleran?a &#177;10%</li>
-                    <li><strong>E24:</strong> toleran?a &#177;5%</li>
-                    <li><strong>E48:</strong> toleran?a &#177;2%</li>
-                    <li><strong>E96:</strong> toleran?a &#177;1%</li>
-                    <li><strong>E192:</strong> toleran?a &#177;0.5% sau mai buna</li>
-                    <li><strong>Progresie geometrica:</strong> fiecare valoare � valoarea precedenta &#215; factor fix</li>
-                    <li><strong>E6:</strong> 10, 15, 22, 33, 47, 68 (factor � 1.4678 � 10^(1/6))</li>
+                    <li><strong>E6 (6 valori/decadă):</strong> toleranță ±20%</li>
+                    <li><strong>E12:</strong> toleranță ±10%</li>
+                    <li><strong>E24:</strong> toleranță ±5%</li>
+                    <li><strong>E48:</strong> toleranță ±2%</li>
+                    <li><strong>E96:</strong> toleranță ±1%</li>
+                    <li><strong>E192:</strong> toleranță ±0.5% sau mai bună</li>
+                    <li><strong>Progresie geometrică:</strong> fiecare valoare ≈ valoarea precedentă × factor fix</li>
+                    <li><strong>E6:</strong> 10, 15, 22, 33, 47, 68 (factor ≈ 1.4678 ≈ 10^(1/6))</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1.23 � TOLERAN?A</h3>
+                <h3>2.1.23 — TOLERANȚĂ</h3>
                 <ul class="specs-list">
-                    <li>Indica abaterea maxima fa?a de valoarea nominala</li>
-                    <li><strong>Exemplu:</strong> 100 O &#177;20% = valoare reala &#238;ntre 80 ?i 120 O</li>
-                    <li>E6 ? &#177;20%; E12 ? &#177;10%; E24 ? &#177;5%; E48 ? &#177;2%; E96 ? &#177;1%</li>
-                    <li>�Binning&quot; = sortarea componentelor pe clase de toleran?a dupa fabricare</li>
+                    <li>Indică abaterea maximă față de valoarea nominală</li>
+                    <li><strong>Exemplu:</strong> 100 Ω ±20% = valoare reală între 80 și 120 Ω</li>
+                    <li>E6 → ±20%; E12 → ±10%; E24 → ±5%; E48 → ±2%; E96 → ±1%</li>
+                    <li>„Binning&quot; = sortarea componentelor pe clase de toleranță după fabricare</li>
                 </ul>
             </div>
 
@@ -314,17 +322,17 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Conceptele din aceasta lec?ie � Rezistoare � reprezinta fundamentul fizic al tehnologiei digitale utilizate �n consolele moderne.</p>
+                <p>Conceptele din această lecție — Rezistoare — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>c) Carbon printat pe PCB</h3>
@@ -336,7 +344,7 @@
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>MONTAJ PE PCB</h3>
                 <ul class="specs-list">
-                    <li><strong>SMT/SMD (montaj pe suprafa?a):</strong> lipite direct pe suprafa?a PCB</li>
+                    <li><strong>SMT/SMD (montaj pe suprafață):</strong> lipite direct pe suprafața PCB</li>
                 </ul>
             </div>
         </div>
@@ -347,9 +355,9 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>e) Thin film (film sub?ire)</h3>
+                <h3>e) Thin film (film subțire)</h3>
                 <ul class="specs-list">
-                    <li>Fabricate prin sputtering (depunere &#238;n vid)</li>
+                    <li>Fabricate prin sputtering (depunere în vid)</li>
                 </ul>
             </div>
         </div>
@@ -361,9 +369,9 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? DISIPAREA PUTERII</h3>
-                    <p>Depa?irea puterii nominale poate deteriora permanent rezistorul sau cauza incendiu</p>
-                    <p>Exista rezistoare ignifuge care nu produc flacari la nicio suprasarcina</p>
+                    <h3>⚠️ DISIPAREA PUTERII</h3>
+                    <p>Depășirea puterii nominale poate deteriora permanent rezistorul sau cauza incendiu</p>
+                    <p>Există rezistoare ignifuge care nu produc flăcări la nicio suprasarcină</p>
                 </div>
             </div>
         </div>
@@ -374,29 +382,29 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>DEFINI?IE ?I ROL:</strong> Un rezistor este o componenta electronica pasiva cu doua terminale care implementeaza rezisten?a electrica ca element de circuit</li>
-                    <li><strong>LEGEA LUI OHM (aplicata la rezistoare):</strong> V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</li>
-                    <li><strong>DISIPAREA PUTERII:</strong> P = I &#215; V = I&#178; &#215; R = V&#178; / R</li>
-                    <li><strong>a) Carbon composition (CCR):</strong> Amestec de carbon pudra fin ?i material izolator (ceramica), legat cu ra?ina</li>
-                    <li><strong>b) Carbon film:</strong> Film de carbon depus pe substrat izolant, cu helix taiat</li>
+                    <li><strong>DEFINIȚIE ȘI ROL:</strong> Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit</li>
+                    <li><strong>LEGEA LUI OHM (aplicată la rezistoare):</strong> V = I × R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li><strong>DISIPAREA PUTERII:</strong> P = I × V = I² × R = V² / R</li>
+                    <li><strong>a) Carbon composition (CCR):</strong> Amestec de carbon pudră fin și material izolator (ceramică), legat cu rășină</li>
+                    <li><strong>b) Carbon film:</strong> Film de carbon depus pe substrat izolant, cu helix tăiat</li>
                     <li><strong>c) Carbon printat pe PCB:</strong> Printat direct pe substratul PCB-ului</li>
                     <li><strong>d) Thick film (film gros):</strong> Populare din anii 1970, majoritatea SMD sunt de acest tip</li>
-                    <li><strong>e) Thin film (film sub?ire):</strong> Fabricate prin sputtering (depunere &#238;n vid)</li>
+                    <li><strong>e) Thin film (film subțire):</strong> Fabricate prin sputtering (depunere în vid)</li>
                     <li><strong>f) Metal film:</strong> Acoperite cu nichel-crom (NiCr)</li>
-                    <li><strong>g) Metal oxide film:</strong> Temperatura de operare mai mare, stabilitate ?i fiabilitate superioare</li>
-                    <li><strong>h) Wire wound (&#238;nfa?urat cu s&#226;rma):</strong> S&#226;rma metalica (de obicei nichrome) &#238;nfa?urata pe un nucleu ceramic/plastic</li>
-                    <li><strong>i) Metal foil (folie metalica):</strong> Cea mai buna precizie ?i stabilitate (din 1960)</li>
-                    <li><strong>TIPURI DE REZISTOARE VARIABILE:</strong> Reostat: rezistor ajustabil cu doua terminale</li>
-                    <li><strong>APLICA?II COMUNE:</strong> Limitarea curentului: protejarea componentelor (ex. LED-uri) de supracurent</li>
-                    <li><strong>MONTAJ PE PCB:</strong> Through-hole (strapungere): cu terminale axiale sau radiale</li>
-                    <li><strong>ISTORIC:</strong> Dezvoltat &#238;n anii 1920 de Radio Manufacturers Association (RMA)</li>
-                    <li><strong>SISTEMUL DE BENZI COLORATE (4 benzi):</strong> Banda A: prima cifra semnificativa</li>
+                    <li><strong>g) Metal oxide film:</strong> Temperatură de operare mai mare, stabilitate și fiabilitate superioare</li>
+                    <li><strong>h) Wire wound (înfășurat cu sârmă):</strong> Sârmă metalică (de obicei nichrome) înfășurată pe un nucleu ceramic/plastic</li>
+                    <li><strong>i) Metal foil (folie metalică):</strong> Cea mai bună precizie și stabilitate (din 1960)</li>
+                    <li><strong>TIPURI DE REZISTOARE VARIABILE:</strong> Reostat: rezistor ajustabil cu două terminale</li>
+                    <li><strong>APLICAȚII COMUNE:</strong> Limitarea curentului: protejarea componentelor (ex. LED-uri) de supracurent</li>
+                    <li><strong>MONTAJ PE PCB:</strong> Through-hole (străpungere): cu terminale axiale sau radiale</li>
+                    <li><strong>ISTORIC:</strong> Dezvoltat în anii 1920 de Radio Manufacturers Association (RMA)</li>
+                    <li><strong>SISTEMUL DE BENZI COLORATE (4 benzi):</strong> Banda A: prima cifră semnificativă</li>
                     <li><strong>SISTEMUL DE 5 BENZI (precizie):</strong> Primele 3 benzi: trei cifre semnificative</li>
-                    <li><strong>TABELUL CULORILOR:</strong> | Culoare  | Cifra | Multiplicator | Toleran?a |</li>
-                    <li><strong>EXEMPLE DE CITIRE:</strong> Ro?u, violet, verde, auriu = 2 700 000 O (2.7 MO) &#177;5%</li>
-                    <li><strong>MARCAJ SMD (montaj pe suprafa?a):</strong> Cod cu 3 cifre: primele 2 = cifre semnificative, a 3-a = puterea lui 10</li>
-                    <li><strong>SERII DE VALORI PREFERATE (E-series, IEC 60063):</strong> E6 (6 valori/decada): toleran?a &#177;20%</li>
-                    <li><strong>TOLERAN?A:</strong> Indica abaterea maxima fa?a de valoarea nominala</li>
+                    <li><strong>TABELUL CULORILOR:</strong> | Culoare  | Cifră | Multiplicator | Toleranță |</li>
+                    <li><strong>EXEMPLE DE CITIRE:</strong> Roșu, violet, verde, auriu = 2 700 000 Ω (2.7 MΩ) ±5%</li>
+                    <li><strong>MARCAJ SMD (montaj pe suprafață):</strong> Cod cu 3 cifre: primele 2 = cifre semnificative, a 3-a = puterea lui 10</li>
+                    <li><strong>SERII DE VALORI PREFERATE (E-series, IEC 60063):</strong> E6 (6 valori/decadă): toleranță ±20%</li>
+                    <li><strong>TOLERANȚĂ:</strong> Indică abaterea maximă față de valoarea nominală</li>
                 </ul>
             </div>
         </div>
@@ -404,80 +412,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: LEGEA LUI OHM (aplicata la rezistoare)?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: LEGEA LUI OHM (aplicată la rezistoare)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</li>
-                    <li>b) un rezistor de 300 O conectat la o baterie de 12V ? curent de 0.04 A</li>
-                    <li>c) ohm (O), numita dupa Georg Simon Ohm</li>
-                    <li>d) milliohm (1 mO = 10?&#179; O), kilohm (1 kO = 10&#179; O), megohm (1 MO = 106 O)</li>
+                    <li>a) V = I × R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li>b) un rezistor de 300 Ω conectat la o baterie de 12V → curent de 0.04 A</li>
+                    <li>c) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>d) milliohm (1 mΩ = 10⁻³ Ω), kilohm (1 kΩ = 10³ Ω), megohm (1 MΩ = 10⁶ Ω)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — V = I × R (tensiunea pe rezistor este proporțională cu curentul)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: DISIPAREA PUTERII?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: DISIPAREA PUTERII?</strong></p>
                 <ul class="specs-list">
-                    <li>a) P = I &#215; V = I&#178; &#215; R = V&#178; / R</li>
-                    <li>b) ohm (O), numita dupa Georg Simon Ohm</li>
-                    <li>c) V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</li>
-                    <li>d) milliohm (1 mO = 10?&#179; O), kilohm (1 kO = 10&#179; O), megohm (1 MO = 106 O)</li>
+                    <li>a) P = I × V = I² × R = V² / R</li>
+                    <li>b) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>c) V = I × R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li>d) milliohm (1 mΩ = 10⁻³ Ω), kilohm (1 kΩ = 10³ Ω), megohm (1 MΩ = 10⁶ Ω)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � P = I &#215; V = I&#178; &#215; R = V&#178; / R</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — P = I × V = I² × R = V² / R</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Toleran?a maxima?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Toleranță maximă?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ohm (O), numita dupa Georg Simon Ohm</li>
-                    <li>b) V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</li>
-                    <li>c) milliohm (1 mO = 10?&#179; O), kilohm (1 kO = 10&#179; O), megohm (1 MO = 106 O)</li>
-                    <li>d) 5% (sortate din fabrica)</li>
+                    <li>a) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>b) V = I × R (tensiunea pe rezistor este proporțională cu curentul)</li>
+                    <li>c) milliohm (1 mΩ = 10⁻³ Ω), kilohm (1 kΩ = 10³ Ω), megohm (1 MΩ = 10⁶ Ω)</li>
+                    <li>d) 5% (sortate din fabrică)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � 5% (sortate din fabrica)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — 5% (sortate din fabrică)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Putere?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Putere?</strong></p>
                 <ul class="specs-list">
-                    <li>a) milliohm (1 mO = 10?&#179; O), kilohm (1 kO = 10&#179; O), megohm (1 MO = 106 O)</li>
-                    <li>b) ohm (O), numita dupa Georg Simon Ohm</li>
-                    <li>c) 0.125 W � 5 W la 70&#176;C</li>
-                    <li>d) V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</li>
+                    <li>a) milliohm (1 mΩ = 10⁻³ Ω), kilohm (1 kΩ = 10³ Ω), megohm (1 MΩ = 10⁶ Ω)</li>
+                    <li>b) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>c) 0.125 W – 5 W la 70°C</li>
+                    <li>d) V = I × R (tensiunea pe rezistor este proporțională cu curentul)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � 0.125 W � 5 W la 70&#176;C</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — 0.125 W – 5 W la 70°C</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Aplica?ie tipica?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Aplicație tipică?</strong></p>
                 <ul class="specs-list">
-                    <li>a) V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</li>
+                    <li>a) V = I × R (tensiunea pe rezistor este proporțională cu curentul)</li>
                     <li>b) rezistoare pull-up non-critice</li>
-                    <li>c) ohm (O), numita dupa Georg Simon Ohm</li>
-                    <li>d) milliohm (1 mO = 10?&#179; O), kilohm (1 kO = 10&#179; O), megohm (1 MO = 106 O)</li>
+                    <li>c) ohm (Ω), numită după Georg Simon Ohm</li>
+                    <li>d) milliohm (1 mΩ = 10⁻³ Ω), kilohm (1 kΩ = 10³ Ω), megohm (1 MΩ = 10⁶ Ω)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � rezistoare pull-up non-critice</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — rezistoare pull-up non-critice</strong></p>
                 </details>
             </div>
         </div>
@@ -485,22 +493,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Rezistoare</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de tipuri de rezistoare. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Rezistoare</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de tipuri de rezistoare. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: tipuri de rezistoare.</li>
-                    <li>2. Ce rol are toleran?a �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre tipuri de rezistoare ?i codul culorilor.</li>
+                    <li>2. Ce rol are toleranță în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre tipuri de rezistoare și codul culorilor.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Un rezistor este o componenta electronica pasiva cu doua terminale care implementeaza rezisten?a electrica ca element de circuit</p>
-                        <p><strong>2.</strong> V = I &#215; R (tensiunea pe rezistor este propor?ionala cu curentul)</p>
-                        <p><strong>3.</strong> P = I &#215; V = I&#178; &#215; R = V&#178; / R</p>
+                        <p><strong>1.</strong> Un rezistor este o componentă electronică pasivă cu două terminale care implementează rezistența electrică ca element de circuit</p>
+                        <p><strong>2.</strong> V = I × R (tensiunea pe rezistor este proporțională cu curentul)</p>
+                        <p><strong>3.</strong> P = I × V = I² × R = V² / R</p>
                     </div>
                 </details>
             </div>
@@ -533,7 +541,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-1-6.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 1.6 &mdash; Serie vs Paralel</a>
@@ -590,7 +598,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Rezistoare, condensatoare ?i bobine � cele trei componente pasive fundamentale din electronica, explicate cu exemple practice.</p>
+                <p class="video-description">Rezistoare, condensatoare și bobine — cele trei componente pasive fundamentale din electronică, explicate cu exemple practice.</p>
             </div>
         </div>
     </section>
@@ -600,7 +608,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatica</p>
+                <p class="footer-sub">Proiect Atestat Informatică</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

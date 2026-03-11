@@ -1,0 +1,3039 @@
+/* Auto-generated from consoles.json — do not edit manually */
+window.CONSOLES_DATA = [
+    {
+        "id":  "magnavox-odyssey",
+        "nume":  "Magnavox Odyssey",
+        "producator":  "Magnavox",
+        "generatie":  1,
+        "lansare":  1972,
+        "imagine":  "assets/images/consoles/magnavox-odyssey.webp",
+        "cpu":  {
+                    "arhitectura":  "Diode-transistor logic",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "N/A",
+                    "frecventa":  "N/A",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Analog",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "3 dots + 1 vertical line"
+                },
+        "memorie":  {
+                        "tip":  "N/A",
+                        "capacitate":  "N/A",
+                        "magistrala":  "N/A",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Game cards (circuit boards with jumpers)",
+                        "interfata":  "Jumper",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "RF output",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Screen overlays, light gun, discrete components"
+                       },
+        "avantaje":  [
+                         "Prima consolă de jocuri de casă din lume",
+                         "Stabilit concepte fundamentale (jocuri interschimbabile)",
+                         "Brevetul de pionierat generat 100M+ USD"
+                     ],
+        "dezavantaje":  [
+                            "Fără sunet",
+                            "Fără culoare",
+                            "Necesită overlay-uri pentru grafică"
+                        ],
+        "istorie":  "Prima Consolă de Jocuri Video de Casă din Lume\n\nMagnavox Odyssey marcează începutul unui nou capitol în istoria divertismentului. Fiind prima consolă de jocuri video pentru casă lansată la nivel mondial, Odyssey a stabilit fundamentele unei industrii care și astazi continuă să se dezvolte. Concepută de Ralph H. Baer la Sanders Associates și fabricată de Magnavox, consola a fost lansată în septembrie 1972, transformând modul în care oamenii se distrau acasă.\n\nCu tehnologia ei simplă și componentele discrete, Odyssey nu competea pe baza performanței. În schimb, a introdus concepte care au definit viitorul industriei: jocuri interschimbabile, periferice modulare și posibilitatea de expanziune. Deși succesul inițial comercial a fost moderat—aproximativ 350.000 de unități vândute—impactul ei legal s-a dovedit transformator, generând peste 100 de milioane de dolari în daune și licențe pe parcursul a două decenii.\n\nOrigine și Dezvoltare\n\nConceptul unei console de jocuri s-a născut în august 1966, când Ralph H. Baer lucra la Sanders Associates, un contractant militar american. Dezvoltarea nu a fost lineară. Între 1966 și 1969, Baer și echipa sa—Bill Harrison și Bill Rusch—au construit șapte prototipuri succesive, fiecare mai apropiat de un concept viabil. Primul prototip, TV Game #1, era primitiv: putea afișa doar o linie verticală.\n\nCel de-al șaptelea prototip, finalizat în ianuarie 1969, a reprezentat punctul de cotitură. Denumit \"Brown Box\" din cauza autocolantelor cu aspect de lemn, acest prototip includea deja mecanici de joc Pong și un pistol optic—idei care vor deveni caracteristice Odyssey-ului.\n\nDupă refuzuri din partea RCA și altor producători, Magnavox a acceptat. În ianuarie 1971, acordul de producție a fost semnat. George Kent și echipa Magnavox au rafinat designul și au luat o decizie strategică importantă: eliminarea capacității de a afișa culori pentru a reduce costurile și a simplifica procedurile de aprobare FCC.\n\nTehnologie și Arhitectură\n\nOdyssey funcționa pe principii analogice, nu digitale. Arhitectura folosea logică diodă-tranzistor cu componente discrete—tranzistori și diode—în loc de microchipuri integrate. Sistemul era alimentat de șase baterii de tip C sau printr-un adaptor AC opțional.\n\nCapacitățile grafice erau minimaliste, dar deliberate. Consola putea afișa trei puncte pătrate și o linie verticală de înălțime variabilă pe un ecran negru. Două dintre puncte erau controlate de jucători; al treilea era controlat de sistem. Această simplitate extremă a forțat inovație în alte zone. Consola nu avea sunet și nici nu calculat scoruri automate—jucătorii notau manual.\n\nCardurile de joc nu erau cartușe ROM. Erau plăci de circuite care funcționau ca jumperi programabili, modificând comportamentul electronic al sistemului. Pentru a compensa limitarea grafică, Magnavox a inclus suprapuneri de plastic transparent cu imagini care se aplicau direct pe ecranul televizorului—terenuri de fotbal, case bântuite, table de joc. Consola venea și cu accesorii fizice: zaruri, bani de joc, jetoane de poker și foi de scor, transformând experiența într-un hibrid între joc de societate și joc video.\n\nLansare și Piață\n\nLansată la 99,95 USD—echivalentul a aproximativ 750 USD în valori actuale—Odyssey a avut o recepție mixtă. În primul an calendaristic, au fost vândute 69.000 de unități. Până la încetarea producției în 1975, totalul a atins între 350.000 și 367.000 de unități.\n\nStrategia de distribuție a creat confuzie. Consola era disponibilă exclusiv prin distribuitorii Magnavox, ceea ce a determinat mulți consumatori să creadă incorect că funcționează doar cu televizoare Magnavox, deși publicitatea menționa compatibilitatea universală.\n\nExpand internațional a fost semnificativ. În 1973, consola a fost lansată în Regatul Unit. În 1974, a ajuns în alte zece țări—inclusiv Uniunea Sovietică și Venezuela. În Mexic a fost vândută sub numele Magnavox Odisea.\n\nCatalogul de jocuri includea 28 de titluri distribuite pe 11 carduri diferite. Table Tennis era inclus odată cu consola. Shooting Gallery venea cu Electronic Rifle, produs de Nintendo, și patru jocuri asociate. Unele jocuri, cum ar fi Percepts, erau oferite gratuit jucătorilor care trimiteau un card de sondaj.\n\nMoștenire Juridică și Impactul Durat\n\nImportanța Odyssey depășește cifrele de vânzări. Brevetele sale au definit cadrul legal al întregii industrii.\n\nNolan Bushnell de la Atari a vizionat o demonstrație a Table Tennis pe Odyssey și s-a inspirat pentru Pong. Magnavox a dat în judecată Atari în 1974, obținând un acord de licențiere de 1,5 milioane de dolari. În 1977, judecătorul John Grady a declarat că brevetul lui Baer era \"brevetul de pionierat al artei jocurilor video\"—o recunoaștere legală semnificativă.\n\nSanders și Magnavox au câștigat peste 100 de milioane de dolari din procese și acorduri cu producători majori: Coleco, Mattel, Activision și chiar Nintendo, care a încercat fără succes să invalideze brevetele în 1985.\n\nProducția s-a încheiat în 1975 din cauza inflației și costurilor ridicate de fabricație. Magnavox a trecut la console dedicate cu circuite integrate Texas Instruments. În 1978 a venit succesorul propriu-zis, Magnavox Odyssey 2.\n\nRalph Baer, recunoscut ca \"Tatăl Jocurilor Video\", a primit Medalia Națională de Tehnologie în 2004. Prototipurile originale sunt conservate la Smithsonian Institution. Consola Odyssey face parte din colecția permanentă a Museum of Modern Art (MoMA) din New York."
+    },
+    {
+        "id":  "atari-home-pong",
+        "nume":  "Atari Home Pong",
+        "producator":  "Atari",
+        "generatie":  1,
+        "lansare":  1975,
+        "imagine":  "assets/images/consoles/atari-home-pong.webp",
+        "cpu":  {
+                    "arhitectura":  "LSI integrated circuits",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "N/A",
+                    "frecventa":  "N/A",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Analog",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Black-white display, digital score, audio synthesis"
+                },
+        "memorie":  {
+                        "tip":  "N/A",
+                        "capacitate":  "N/A",
+                        "magistrala":  "N/A",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "N/A",
+                        "interfata":  "N/A",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "RF output",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "LSI chip, integrated circuits, RF output, digital score"
+                       },
+        "avantaje":  [
+                         "Primul joc video cu succes comercial din istorie",
+                         "Venituri de 4 ori mai mari decât arcade-urile standard",
+                         "Parteneriat Sears: 150.000 unități vândute în 1975",
+                         "Cip LSI cel mai performant din piață de consum",
+                         "Recunoscut permanent de Smithsonian și Hall of Fame"
+                     ],
+        "dezavantaje":  [
+                            "Rapid inundat de clonuri (Nintendo, Coleco, Taito)",
+                            "Litigiu Magnavox a costat 1,5 milioane dolari",
+                            "Limitat la tenis electronic ca principal gameplay",
+                            "Marje de profit erodată de competiție rapidă"
+                        ],
+        "istorie":  "Geneza unei Industrii: PONG și Revoluția Jocurilor Video\n\nPONG nu este doar un joc video istoric — este punctul de pornire al unei industrii de miliarde de dolari. Lansat în iunie 1972, acest joc aparent simplu de tenis pe ecran alb-negru a transformat o competență de inginerie în fenomen cultural și economic. Dezvoltat de Atari sub conducerea lui Nolan Bushnell și Ted Dabney, PONG a fost conceput inițial ca exercițiu de instruire pentru inginerul Allan Alcorn, devenind rapid catalizatorul pentru industria modernă a jocurilor video.\n\nOrigini și Inovație Tehnică\n\nInspirul direct al lui Bushnell provenea din demonstrația Magnavox Odyssey din mai 1972, unde a jucat versiunea digitală a tenisului electronic creată de Ralph Baer. Diferența decisivă a venit de la Allan Alcorn, care a adus trei inovații fundamentale. Prima a fost divizarea paletei în opt segmente cu comportament diferit — segmentele centrale returnau mingea la 90 de grade, iar capetele ofereau unghiuri mai ascuțite, adăugând strategie în gameplay. A doua inovație a fost accelerarea progresivă — mingea se mișca mai repede pe măsură ce jocul dura mai mult, creând tensiune crescândă. A treia a fost generarea sunetului direct din circuitul de sincronizare video, producând tonuri caracteristice în loc de circuite audio dedicate, o soluție elegantă de design constrangeri în limitări de spațiu.\n\nSucces Arcade Fără Precedent\n\nPrimul prototip a fost instalat în august 1972 la Andy Capp's Tavern. Răspunsul consumatorilor a fost instantaneu — mecanismul de acceptare a monedelor s-a blocat din cauza supraîncărcării cu sferturi de dolar. Fiecare consolă arcade PONG genera venituri zilnice de 35 la 40 de dolari, echivalent cu aproximativ 140 la 160 de jocuri zilnic. Prețul de vânzare era de trei ori mai mare decât costul de producție. Comanda din 1973 pentru 2.500 de unități a marcat doar începutul unei expansiuni masive — peste 35.000 de unități arcade PONG au fost eventual vândute și instalate.\n\nRevoluția Casnică: Home Pong\n\nÎn 1974, inginerul Harold Lee a propus un pas radical — o versiune PONG care se conecta direct la televizoarele casnice, codenumită Darlene. Inovația utilizat cip LSI (Large-Scale Integration), cel mai performant cip dintr-un produs de consum de larg răspândire la acea vreme. Acest design oferea scor digital pe ecran și sunet real, caracteristici anteriormente considerate inaccesibile pentru produse casnice.\n\nTehnologia LSI a oferit avantaje decisive. Producția în masă a devenit mai ieftină, permițând marje de profit substanțiale, iar designul cu cip era mult mai greu de copiat prin inginerie inversă decât versiunile arcade. După finalizare, Atari a descoperit că detailiștii tradiționale considerau prețul prohibitiv. Soluția a venit printr-un parteneriat strategic cu Sears, retailerul american lider. Sears a vândut Home Pong sub Brand propriu — Sears Tele-Games — și a plasat o comandă inițială de 150.000 de unități pentru sezonul Crăciunului 1975. Comanda a fost onorată integral, transformând Home Pong în cel mai vândut produs Sears din acel an.\n\nProvocări Legale și Competiție\n\nSuccesul PONG a atras și atenție juridică negativă. În aprilie 1974, Magnavox a dat în judecată Atari, susținând că jocul încalcă brevetele Sanders Associates referitoare la jocurile video pe televizor. Dovezile au inclus un detaliu devastator — jurnal de oaspeți semnat de Bushnell la demonstrația Magnavox Odyssey din mai 1972. Costurile legale estimate ar fi epuizat resursele unei companii în dezvoltare, dar Bushnell a ales pragmatismul. În iunie 1976, Atari a ajuns la o înțelegere care plătea 1,5 milioane de dolari în opt rate.\n\nSuccesul PONG a generat și o piață vastă de imitații — ceea ce Bushnell a numim „șacali”. Nintendo, Coleco și Taito au lansat propriile console dedicate de tenis electronic, inundând piața cu variante. Această explozie de produse concurente a eroza profitabilitatea pe termen mediu, dar a legitimat și categoria pe care Atari a creat-o.\n\nVariante și Moștenire\n\nAtari a continuat să lanseze sisteme dedicate PONG sub diferite marci și pachete — PONG Original (1976), PONG Doubles cu patru jucători, Super PONG cu patru variante, Super PONG Ten cu zece variante, Ultra PONG cu șaisprezece jocuri. Fiecare era produs dedicat cu hardware și ROM-uri proprii, demonstrând capacitatea Atari de a diferenția oferta în fața competiției crescânde. Notabil, varianta Sears Motocross a combinat Stunt Cycle cu 16 variante PONG, o caracteristică unică pe care versiunea Atari nu o deținea.\n\nImpact Cultural și Social\n\nCeea ce a făcut PONG special nu a fost doar tehnologia sau veniturile. Nolan Bushnell a subliniat un aspect psihosocial crucial — designul jocului necesita o singură mână și era exclusiv pentru doi jucători, transformând-o într-o activitate de interacțiune socială. În baruri și săli de jocuri, PONG a devenit catalizator pentru discuție și competiție amicală — ceea ce Bushnell numea „lubrifiant social”.\n\nAstazi, PONG ocupă un loc permanent în colecția Smithsonian Institution din Washington, D.C. În 2015, a fost inclus în World Video Game Hall of Fame. Jocul a apărut în producții culturale precum That '70s Show și Saturday Night Live. Relevanta continuă a été demonstrată prin lansări moderne — Pong World pe iOS în 2012 și Pong Quest în 2020 — dovadă că designul original rămâne fundamental în DNA al industriei."
+    },
+    {
+        "id":  "coleco-telstar",
+        "nume":  "Coleco Telstar",
+        "producator":  "Coleco",
+        "generatie":  1,
+        "lansare":  1976,
+        "imagine":  "assets/images/consoles/coleco-telstar.webp",
+        "cpu":  {
+                    "arhitectura":  "GI AY-3-8500 (Telstar), AY-3-8700 (Combat), MOS Technology MPS-7600 (Arcade)",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "Single integrated chip",
+                    "frecventa":  "N/A",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Integrated graphics",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Ball & paddle games, color variants (Colortron), cartridge-based (Arcade)"
+                },
+        "memorie":  {
+                        "tip":  "N/A",
+                        "capacitate":  "N/A",
+                        "magistrala":  "N/A",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridges (Arcade model only)",
+                        "interfata":  "Proprietary (Arcade)",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "RF output",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Detachable controllers, light gun (Nintendo Co Gen Sue), partial user assembly, cartridge support (Arcade)"
+                       },
+        "avantaje":  [
+                         "Peste un milion de unități vândute la preț de 50 dolari",
+                         "14+ variante unice adresând diverse segmente de piață",
+                         "Telstar Arcade cu inovație de cartușe interschimbabile",
+                         "Parteneriat cu Nintendo pentru componente optice",
+                         "Design geometric futurist apreciat de colecționari",
+                         "Asigurare constantă a cipurilor ca preferatul General Instrument"
+                     ],
+        "dezavantaje":  [
+                            "14-15 modele lansate în doi ani inundând piața",
+                            "Limitate la jocuri simple de tip Pong și derivate",
+                            "Erori de programare: punctaje infinite și bucle nesfârșite",
+                            "Criză de inventar masivă aducând compania la prag faliment",
+                            "Ruptura totală cu arhitectura ColecoVision succesor",
+                            "Dominanță de piață erodată rapid de saturație piață"
+                        ],
+        "istorie":  "Seria Coleco Telstar marcheaza un capitol semnificativ în istoria timpurie a jocurilor video de acasă. Lansată în 1976, această familie de console a demonstrat cum inovația tehnologică și o strategie comercială agresivă pot duce atât la succes spectaculos, cât și la o criză neașteptată. Parteneriatul dintre Coleco și General Instrument a permis companiei să devină primul beneficiar major al cipului revoluționar AY-3-8500, propulsând vânzările primului model Telstar la peste un milion de unități la un preț atractiv de 50 de dolari.\n\nGeneza parteneriatului strategic\n\nGeneza seriei este strâns legată de inovația componentelor din mijlocul anilor '70. În 1975, inginerii General Instrument din Scoția au dezvoltat cipul AY-3-8500, cunoscut și sub numele Ball & Paddle, care integra logica completă a jocurilor de tenis electronic într-o singură bucată de silicon. Ralph Baer, inventatorul celebrei Magnavox Odyssey, a facilitat o întâlnire crucială între președintele Coleco, Arnold Greenberg, și conducerea GI. Această conexiune s-a dovedit transformatoare pentru industrie.\n\nColeco a devenit rapid clientul preferat al General Instrument, asigurând-și aprovizionarea constantă cu cipuri în perioadele când deficiturile de componente paralizau alți producători. Acest avantaj logistic s-a tradus în capacitatea de a lansa modelul original Telstar cu o jumătate din costul unui sistem Atari Home Pong. O particularitate interesantă a strategiei de producție Coleco era asamblarea parțială de către utilizator—consolele veneau aproape finalizate din punct de vedere electronic, dar cumpărătorii trebuiau să monteze butoanele de control și să aplice abțibildurile decorative. Această abordare a redus semnificativ costurile de fabricație și a permis marje de profit substanțiale.\n\nDiversificarea și proliferarea modelelor\n\nÎntre 1976 și 1978, Coleco a lansat cel puțin 14 variante ale seriei Telstar, fiecare adresând un segment diferit de piață. Modelul Telstar Classic oferea o carcasă de lux din lemn pentru consumatorii mai sofisticați. Telstar Ranger era echipat cu un pistol optic și controlere detașabile pentru mai multă versatilitate. Telstar Alpha featured servire automată și trei niveluri de dificultate. Telstar Combat! utiliza un cip diferit (AY-3-8700) și oferea jocuri cu tancuri cu patru joystick-uri fixe. Telstar Colortron, lansat în 1978, a fost primul din serie cu grafică color și sunet integrat.\n\nInovația Telstar Arcade\n\nModelul Telstar Arcade, lansat în 1977, reprezintă cea mai ambiționată și neobișnuită consolă din întreaga familie. Consola prezintă o formă geometric unică—un triunghi cu trei laturi, fiecare dedicată unui stil de joc diferit. Prima latură include un volan detașabil și schimbător de viteze pentru jocuri de conducere. A doua este echipată cu un pistol optic pentru jocuri de tragere și țintă. A treia oferă două butoane rotative (paddles) clasice pentru jocuri cu minge.\n\nCe a făcut Telstar Arcade cu adevărat revoluționar era arhitectura sa de cartușe. Spre deosebire de generațiile ulterioare de console, fiecare cartuș conținea propriul cip MOS Technology MPS-7600. Consola în sine funcționa mai mult ca un set sofisticat de controlere—procesarea jocului avea loc direct pe cipul din interiorul cartușului. Doar patru cartușe oficiale au fost produse pentru acest sistem inovator.\n\nParteneriatul cu Nintendo\n\nUn detaliu remarcabil în istoria Telstar este implicarea Nintendo. Pistolul optic (light gun) utilizat pentru multiple modele Telstar, inclusiv Arcade, nu era o creație a General Instrument, ci de fapt o inovație Nintendo. Coleco a achiziționat aceste componente și le-a integrat în sistemele sale, evidențiind prezența timpurie a Nintendo în industria jocurilor video, cu mult înainte de lansarea Game Boy sau NES.\n\nLimitări tehnice și defecte de design\n\nÎn ciuda succesului comercial inițial, sursele documentează erori evidente în design și programare ale jocurilor Telstar Arcade. În Road Race, jucătorul putea parca mașina în partea de sus a ecranului pentru a evita orice coliziune, acumulând puncte la infinit fără niciun risc real. În Speedball, sistemul putea intra într-o buclă infinită în care mingea ricoșa constant între obstacole, forțând jucătorul să piardă intenționat puncte pentru a debloca situația.\n\nCăderea și succesiune\n\nDurabilitatea avantajului Coleco s-a dovedit efemeră. Strategia de a lansa 14-15 modele în doar doi ani a inundat piața cu prea multe variante, iar interesul publicului pentru jocurile de tip Pong a scăzut accelerat. Până în 1980, Coleco s-a confruntat cu o criză de inventar severă din cauza stocurilor masive de sisteme Telstar nevândute. Doar o reformulare radicală a companiei—lansarea ColecoVision în 1982, o consolă de generație nouă cu arhitectură complet diferită—a salvat-o de faliment.\n\nMoștenirea și aprecierea contemporană\n\nAstazi, seria Telstar este apreciată de colecționari pentru designul futurist și locul unic în evoluția tehnologiei jocurilor video. Modelul Arcade, cu forma sa distinctă și cartușele interschimbabile, este o piesă de colecție rară. Exemplarele în stare bună variază între 120 și peste 200 de dolari, fiind prețuite pentru inovația pe care o reprezentau și pentru rolul istoric în demonstrarea riscurilor unei piețe prea saturate."
+    },
+    {
+        "id":  "atari-2600",
+        "nume":  "Atari 2600",
+        "producator":  "Atari",
+        "generatie":  2,
+        "lansare":  1977,
+        "imagine":  "assets/images/consoles/atari-2600.webp",
+        "cpu":  {
+                    "arhitectura":  "MOS 6507",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.19 MHz",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "TIA",
+                    "unitati":  "Custom",
+                    "frecventa":  "1.19 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Sprite/playfield"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "128 bytes",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×192",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Cartridge pioneer"
+                       },
+        "avantaje":  [
+                         "Prima care a popularizat cartușe interschimbabile la scară",
+                         "Peste 30 de milioane de unități vândute (1977-1992)",
+                         "Bibliotecă de 523 de jocuri oficiale",
+                         "Space Invaders ca aplicație decisivă pentru adopție",
+                         "Porturi de control compatibile cu MSX, Commodore 64, Amiga",
+                         "Pionere în dezvoltare third-party (Activision)",
+                         "Carol Shaw: prima femeie designer de jocuri video"
+                     ],
+        "dezavantaje":  [
+                            "128 bytes RAM extrem de limitant",
+                            "Criza jocurilor video 1983 din Pac-Man și E.T.",
+                            "Multe jocuri necesitau manuale pentru context",
+                            "Preț inițial ridicat $199.99 (echiv. $1.064 în 2025)",
+                            "Grafică primitivă comparativ cu arcade originals",
+                            "Paletă de culori și capacități sprite limitate"
+                        ],
+        "istorie":  "Atari 2600: Consola care a Definit o Generație\n\nLansată în octombrie 1977 ca Video Computer System (VCS), consola Atari 2600 nu a fost prima cu cartușe interschimbabile, dar a fost cea care a popularizat conceptul la scară masivă. Transformând jocurile video dintr-un sistem hardware dedicat într-o platformă software versatilă, Atari 2600 a consolidat o industrie care abia se dezvolta. Cu vânzări estimate la peste 30 de milioane de unități pe parcursul unui ciclu de viață extins de 15 ani (1977-1992), a devenit definiția generației a doua de console și sinonim cu jocurile video în anii '80.\n\nLansare și Piață de Consum\n\nPrețul inițial de 199,99 USD a fost considerabil pentru epoca — ajustat la valoarea din 2025, ar echivala cu aproximativ 1.064,50 USD. Pentru consola originală VCS, aceasta era poziționa ca produs premium. Adevăratul catalizator comercial a venit în 1980 cu portarea Space Invaders, prima «killer app» (aplicație decisivă) a sistemului. Succesul acestui joc a transformar percepția consumatorilor asupra potențialului software pentru platformă. În noiembrie 1982, consola a fost oficial redenumită Atari 2600, pentru a o diferenția de succesorul planificat Atari 5200.\n\nHardware și Limitări Tehnice\n\nProcesor MOS 6507 funcționând la 1,19 MHz și 128 bytes de RAM — cifre care par imposibile astăzi. Pentru context, aceasta este semnificativ mai mic decât memoria unui simplu text editor modern. Totuși, aceasta nu a fost o barieră insurmontabilă — programatorii au explorat fiecare bit cu inovație remarcabilă. Cartușele au crescut de la 2 KB inițiali la 32 KB la finalul ciclului de viață, iar River Raid a demonstrat cum formule matematice pentru generarea de nivele și distribuția inamicilor pot economisi spațiu radical. Titluri precum Enduro au introdus efecte meteo și cicluri zi-noapte care creeau imersivitate în ciuda limitărilor hardware.\n\nBiblioteca Jocurilor și Evoluția Calității\n\nCu 523 de titluri oficiale, Atari 2600 a oferit varietate remarcabilă. Pac-Man, cel mai bine vândut joc cu 7-8 milioane de unități, a fost criticat pentru calitatea inferioară versiunii arcade, însă acest lucru nu a diminuat atracția sa comercială. Jocuri precum Combat (inclus în pachetul consacru) și Space Invaders au demonstrat potențialul portărilor. Pitfall II: Lost Caverns a reprezentat un salt tehnic cu ROM de patru ori mai mare pentru a oferi aventuri complexe cu scrolling. Fatal Run, lansat în 1990, a fost cel mai mare joc creat pentru platformă cu 32 KB, evidențiind evoluția constant a capabilităților sistemului.\n\nCalitatea Percepută și Descoperire\n\nDeși mulți consideră jocurile Atari 2600 ca «primitive», analiza mai atentă relevă nuanțe importante. Manualele jocurilor nu erau simple instrucțiuni — erau cheia pentru a debloca experiența reală. River Raid de Carol Shaw este recunoscut ca precursor al jocurilor generate procedural. Frogs and Flies și alte titluri simple și-au păstrat atractivitatea prin dinamica multiplayer subtilă și schimbările ambianța care creeau progresie perceptibilă. Aceasta nu era doar «trecut primitiv» — era design deliberat și constrangat de limitări hardware care forța inovație.\n\nProvocări Comerciale și Criza 1983\n\nSuccesul inicial a atraga mii de dezvoltatori și editori, dar nu toți au înțeles necesitatea de calitate. Criza jocurilor video din 1983 a fost determinată parțial de eșecruri comerciale majore — adaptarea Pac-Man a lui Atari și E.T. The Extra-Terrestrial de Atari au fost dezamăgitoare din punct de vedere tehnic și design. Inventarelor nevândute și pierderii de încredere a consumatorilor au urmat. Suportul oficial pentru consolă a fost întrerupt în 1992, dar relevanța sa a persistat.\n\nMoștenire și Influență Tehnică\n\nÎn 1982, Activision a devenit primul dezvoltator third-party major, stabilind un precedent ce a transformat industria în ecosistem de distribuție. Carol Shaw, cu River Raid, a fost recunoscută ca prima femeie designer major de jocuri video. Atari 2600+ (2023), o replică modernă lansat de actuala companie Atari Inc., demonstrează relevanța continuă — capabilă să ruleze cartușe originale de 2600 și 7800, aceasta conectează trecutul la prezent.\n\nJoystick-urile standard Atari au fost compatibile chiar și cu computerele MSX, Commodore 64, Amiga, Atari ST și Sega Master System, o demonstrație surprinzătoare a standardizării timpurii. Acest lucru nu a fost accident — a fost design deliberat care a facilitat adopția. Atari 2600 a stabilit paradigme de consum și dezvoltare care sunt valabile și în prezent: platforme software, ecosisteme third-party, și cicluri de viață extinsă. Nu este doar o notă de curs despre trecut — este fundamentul pe care industria jocurilor video a fost construită."
+    },
+    {
+        "id":  "magnavox-odyssey-2",
+        "nume":  "Magnavox Odyssey 2",
+        "producator":  "Magnavox",
+        "generatie":  2,
+        "lansare":  1978,
+        "imagine":  "assets/images/consoles/magnavox-odyssey-2.webp",
+        "cpu":  {
+                    "arhitectura":  "Intel 8048",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "5.37 MHz",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Intel 8244/8245",
+                    "unitati":  "Custom",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "4 sprites 8x8, 16 culori, caractere bitmap"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "128 bytes",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge ROM",
+                        "interfata":  "Cartridge",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×200",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Tastatură membrană QWERTY, modul sinteză vocală, jocuri hibride board game"
+                       },
+        "avantaje":  [
+                         "Tastatură membrană QWERTY unică pe piață",
+                         "Modul sinteză vocală The Voice cu sunet îmbunătățit",
+                         "Jocuri educaționale și Master Strategy hibride",
+                         "Suport internațional (Videopac G7000 în Europa)",
+                         "Câmpionul în Brazilia și Europa",
+                         "50 titluri lansate cu identitate vizuală distinctivă"
+                     ],
+        "dezavantaje":  [
+                            "Doar 128 bytes RAM extern extrem de limitant",
+                            "Grafică folosind caractere BIOS predefinite",
+                            "Doar 4 sprite-uri monocolore 8x8",
+                            "Procesul K.C. Munchkin vs Atari (retras de pe piață)",
+                            "Sprijin limitat third-party în America de Nord",
+                            "Joystick-uri cu formă în stea limitând mișcarea fluidă"
+                        ],
+        "istorie":  "Magnavox Odyssey 2: Hibridul Visionar\n\nLansată în septembrie 1978, Magnavox Odyssey 2 a reprezentat succesorul primei console de jocuri video din istorie, dar cu o abordare radical diferită. Poziționată ca o fuziune între o consolă de jocuri și un computer personal, Odyssey 2 s-a distins prin includerea unei tastaturi alfanumerice cu membrană QWERTY — o caracteristică unică care a separat-o clar de competitorii direcți. Cu aproximativ 2 milioane de unități vândute și un plasman onorabil pe locul trei în topul vânzărilor pre-1983, consola a demonstrat o viziune alternativă asupra viitorului jocurilor video.\n\nLansare și Prezență Globală\n\nMagnavox, un pioneer care a pierdut teren în fața Atari în anii '70, a încercat să recupereze prin Odyssey 2. Consola a purtat denumiri diferite în funcție de piață, reflectând prezența globală a corporației Philips. În America de Nord, a fost Magnavox Odyssey 2. În Europa, a devenit Philips Videopac G7000, lansat în decembrie 1978. Japonia a primit consola în septembrie 1982 la un preț ridicat de 49.800 yeni, transformând-o într-o raritate pentru colecționari. Brazilia și Peru au primi versiones traduse, cu jocuri localizate în portugheză.\n\nArhitectură și Limitări Hardware\n\nProcesor Intel 8048 pe 8 biți rulând la 5.37 MHz (NTSC) cu 64 bytes RAM intern și 1024 bytes ROM pentru BIOS — cifre care evidențiază constrângerile severe ale erei. RAM extern era de 128 bytes, plus alți 128 bytes dedicați audio/video. Cip video Intel 8244 (NTSC) sau 8245 (PAL) oferea 160×200 pixeli, 16 culori fixe (8 culori de bază cu variații de luminozitate), și doar 4 sprite-uri monocolore de 8×8 pixeli. Pentru text, consola se baza pe 12 caractere predefinite în BIOS, cu un set de 64 forme total disponibile — litere, cifre, și obiecte simple precum copaci sau avioane.\n\nControlele consoanei au evoluat în timp. Primele modele aveau joystick-uri argintii detașabile cu conector DB9, iar modelele ulterioare aveau joystick-uri negre cablate direct. Caracteristic, manetele aveau o carcasă în formă de stea cu 8 puncte, care limita uneori fluiditatea mișcării. Tastaura membrană QWERTY era integrată direct în consolă, oferind posibilitatea introducerii numelor pentru scoruri mari și acces la programare simplă prin cartușul Computer Intro!.\n\nInovații și Diferențiation\n\nOdyssey 2 a încercat să transcende jocurile de arcade prin mai multe căi. Seria Master Strategy (Quest for the Rings! și altele) oferea o fuziune neobișnuită — plăci fizice, jetoane și piese de joc care completau experiența digitală, oferind o profunzime narativă rară pentru acea perioadă. Modulul sinteză vocală The Voice era un upgrade major, adăugând vorbire, muzică și efecte sonore îmbunătățite. Spre deosebire de alte sisteme, jocurile compatibile nu necesitau obligatoriu acest modul pentru a funcționa — acesta era o caracteristică opțională.\n\nEn Europa, consola a primit suport mai sofisticat. Moduleul de șah C7010 conținea propriul procesor secundar (NSC800) pentru a compensa memoria limitată. Această abordare de hardware personalizat pentru anumite jocuri a fost inovatoare, dar și costly.\n\nBiblioteca de Software și Recepții Miste\n\nApibrox. 50 de jocuri au fost lansate în America de Nord. Magnavox a fost celebră pentru adăugarea unui semn de exclamare la finalul aproape fiecărui titlu — K.C. Munchkin!, Killer Bees!, Pick-axe Pete! — o strategie de marketing distinctivă care a devenit iconică. Ed Averett, un programator prolific, a fost responsabil singur pentru 24 de titluri, aproape jumătate din biblioteca nord-americană.\n\nK.C. Munchkin! a fost pentru Odyssey 2 ceea ce Pac-Man a fost pentru arcade, dar cu un element dramatic — Atari a dat în judecată Magnavox, susținând că jocul era o copie. Inițial Magnavox a câștigat, dar Atari a învins în apel, iar jocul a fost retras de pe piață. Parker Brothers a oferit apoi suport prin portări de celebre titluri ca Popeye, Frogger și Qbert.\n\nRecepție Geografică\n\nSituația comercială a variat drastic după regiune. În Statele Unite, Odyssey 2 a dominat împreună cu Atari 2600 până în 1980, dar a căzut pe locul trei după lansarea Intellivision. Marketingul a pus accent pe sloganul «The Ultimate Computer Video Game System», o aluzie clara la componentele computerului. În Europa și Brazilia, consola a avut un succes mult mai mare. În Brazilia, jocurile au fost traduse în portugheză și turneele erau evenimente comune. Producția a încetat oficial pe 20 martie 1984.\n\nMoștenire și Impactul Designului\n\nMagnavox Odyssey 2 este amintită ca o consolă care a încercat să depășească barierele jocurilor de arcade simple. Limitările grafice (caracterele predefinite din BIOS care făceau ca multe jocuri să arate similar) au împiedicat-o să iasă în evidență în fața Atari. Totuși, inovațiile în sinteză vocală și fuziunea jocurilor de strategie hibridă rămân puncte de referință în evoluția hardware-ului video. Biblioteca sa emană o identitate vizuală distinctivă și inconfundabilă, cu box art care a devenit o marcă registrată a erei."
+    },
+    {
+        "id":  "intellivision",
+        "nume":  "Intellivision",
+        "producator":  "Mattel",
+        "generatie":  2,
+        "lansare":  1979,
+        "imagine":  "assets/images/consoles/intellivision.webp",
+        "cpu":  {
+                    "arhitectura":  "General Instrument CP1610",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "2 MHz",
+                    "tdp":  "~10W"
+                },
+        "gpu":  {
+                    "arhitectura":  "STIC (Standard Television Interface Chip)",
+                    "unitati":  "8 sprites hardware",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Tile-based playfield, 16 culori"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "1456 bytes",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge ROM",
+                        "interfata":  "Cartridge",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "159×96",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Controller disc 16 direcții, tastatură numerică, Intellivoice, PlayCable"
+                       },
+        "avantaje":  [
+                         "Prima consolă 16-biți cu CP1610",
+                         "Grafică tile-based superioară altor platforme",
+                         "Controller disc capabil de 16 direcții",
+                         "Syntheza vocală integrată (Intellivoice)",
+                         "PlayCable: primul serviciu descărcare jocuri TV (1981)",
+                         "Las Vegas Poker & Blackjack: 1,939 milioane unități"
+                     ],
+        "dezavantaje":  [
+                            "Doar 1456 bytes RAM extrem de limitant",
+                            "Controller disc dificil de folosit pentru unii jucători",
+                            "Keyboard Component (Blue Whale) anulat, doar 4.000 unități",
+                            "Frecvența cadru limitată la 20 Hz prin Exec ROM",
+                            "Pierderi financiare masive ($280 milioane) în 1983",
+                            "Acorduri de licență au forțat întreruperea producției în 1990"
+                        ],
+        "istorie":  "Intellivision: Primul Crai al Consolelor\n\nLansat în 1979 de Mattel Electronics, Intellivision (o contracție a cuvintelor \"intelligent\" și \"television\") a reprezentat o provocare frontală Atari 2600 și a inițiat primul \"război al consolelor\" din istoria jocurilor video. Cu o arhitectură pe 16 biți și promisiuni de grafică și sunet superioare, consola a consolidat piața jocurilor de acasă și a redefinit standardele pentru generația care urmează.\n\nInovație Tehnologică și Arhitectură\n\nCeea ce a plasat Intellivision în poziția de pionier a fost deciza de a folosi microprocesor General Instrument CP1610 pe 16 biți la 2 MHz în locul alternativelor pe 8 biți. Deși frecvența pare mică în zilele noastre, aceasta era un salt semnificativ în 1979. Cip grafic STIC (Standard Television Interface Chip) utiliza o abordare inovatoare: tile-based playfield, unde peisajele erau construite din celule mici în loc să se stockeze fiecare pixel individual. Aceasta economia sever și din RAM-ul extrem de limitat (1456 bytes) și din puterea de procesare. Consola suporta 8 sprite-uri hardware și o paletă de 16 culori.\n\nControllerul Unic și Tastatură\n\nMattel a reinventat controlul prin introducerea unui disc direcțional (nu joystick-ul tradițional) care detecta 16 direcții, oferind precizie mult mai mare. Peste disc se montau suprapuneri din plastic unice pentru fiecare joc, transformând butoanele simple din plastic în interfețe contextuale. Acest design era inovator, dar controvers — unii utilizatori îl găseau neintuitiv. Tastaura numerică cu 12 butoane permitea input-uri complexe, necesare pentru jocurile de strategie și simulări.\n\nDominația Segmentului Sportiv\n\nIntellivision și-a făcut o reputație pe simulari sportive precise. Major League Baseball și World Series Major League Baseball au introdus perspecive multiple și statistici reale, revolucionând genul. Las Vegas Poker & Blackjack a devenit cel mai vândut joc al consoanei cu aproximativ 1,939 milioane de unități. Utopia (1982) este recunoscut de istoriografi ca precursor al genului de simulare a managementului și construcției. Aceste titluri nu depășeau doar în gameplay competitia — grafica Intellivision, deși raster-based, era vizibil superioară adaptărilor arcade pe platforma Atari.\n\nEcosistemul Software și Exec ROM\n\nDezvoltorii au beneficiat de \"Exec\", un cod ROM rezident de 4K care accelera crearea jocurilor. Cu toate acestea aceasta avea un cost — frecvența cadrelor era limitată la 20 Hz pentru jocurile care foloseau Exec, față de 60 Hz pentru jocurile care ocoleau acest sistem. Diferența era perceptibilă, dar trade-off-ul permitea dezvoltatorilor să creeze experiențe mai complexe cu puțini recursos.\n\nPerifericele Ambițioase și Controversele\n\nMattel a încercat să transforme consola într-o mașină de uz general prin numeroase extensii. Keyboard Component (supranumit \"Blue Whale\" din cauza volumului ridicol) a fost promis ca allowing acces la computer, dar a suferit întârzieri masive și a dus la investigație FTC pentru publicitate falsă. Doar aproximativ 4.000 de unități au fost produse înainte de anulare în 1982. Entertainment Computer System (ECS) a fost propus ca alternativă mai ieftină, oferind cip audio GI AY-3-8914 și suport BASIC. Intellivoice a adus sinteză vocală reală în jocuri. Cel mai inovator a fost PlayCable (1981), care permitea descărcarea jocurilor prin cablul TV — un concept revoluționar care a precedat cu decenii modelul de distribuție digital.\n\nPrăbușirea și Revitalizare Moderă\n\nPe vârful succesului comercial (peste 3,75 milioane de unități între 1980-1983), Intellivision a fost lovit de criza jocurilor video din 1983. Pierderi financiare masive depășind 280 milioane USD au forțat Mattel să vândă activele. INTV Corporation a preluat apoi consola, dar acorduri de licență cu Nintendo și Sega au forțat întreruperea producției în 1990. După decenii de conservare prin Intellivision Productions, brandul a fost achiziționat de Atari în mai 2024, marcând simbolic sfârșitul celui mai lung conflict comercial din istoria consolelor.\n\nIntellivision Sprint și Moștenire Contemporană\n\nSub conducerea Atari, brandul s-a revitalizat prin Intellivision Sprint, programat pentru lansare în decembrie 2025. Consola modernă păstrează esenția originalului — controller cu disc și tastatură — dar cu upgrades: 45 de jocuri preinstalate, wireless Bluetooth, ieșire HDMI și capacitatea de a rula ROM-uri proprii. Sistemul pe Rockchip și suportul mai de 90 de suprapuneri din plastic demonstrează aprecierea pentru istoria și designul original. Intellivision rămâne respectat în comunitatea retrogaming, fiind clasată de IGN pe locul 14 în topul absolut al tuturor consolelor. Moștenirea sa continuă prin standarde în jocurile sportive bazate pe date și prin comunitatea activate de \"homebrew\" development."
+    },
+    {
+        "id":  "microvision",
+        "nume":  "Microvision",
+        "producator":  "Milton Bradley",
+        "generatie":  2,
+        "lansare":  1979,
+        "imagine":  "assets/images/consoles/microvision.webp",
+        "cpu":  {
+                    "arhitectura":  "Intel 8021 / TI TMS1100 (pe cartuș)",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "100 kHz",
+                    "tdp":  "1 W / 110 mW"
+                },
+        "gpu":  {
+                    "arhitectura":  "LCD direct",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "LCD 16×16 pixeli"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "64 bytes",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartuș ROM",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "16×16 pixeli",
+                             "refresh":  "N/A",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "CPU pe cartuș, difuzor piezo, tastatură 12 butoane, paddle, 1-2 baterii 9V"
+                       },
+        "avantaje":  [
+                         "Prima consolă portabilă cu cartușe interschimbabile",
+                         "Concept reprogramabil cu zece ani înainte de Game Boy",
+                         "Cost redus al unității de bază",
+                         "Revizia TI a îmbunătățit eficiența energetică"
+                     ],
+        "dezavantaje":  [
+                            "Ecranul de 16×16 pixeli limita claritatea jocurilor",
+                            "Screen rot făcea multe unități ilizibile",
+                            "Cartușele erau vulnerabile la descărcări electrostatice",
+                            "Tastatura se uza rapid la utilizare repetată",
+                            "Bibliotecă oficială restrânsă, cu doar 12 titluri"
+                        ],
+        "istorie":  "Microvision: începutul erei handheld cu cartușe<br><br><strong>Origine și context</strong><br><br>Lansată în noiembrie 1979 de Milton Bradley, Microvision a schimbat direcția pieței portabile printr-o idee simplă și puternică: jocuri pe cartușe interschimbabile. Într-o perioadă dominată de dispozitive cu joc unic, sistemul a introdus un model reprogramabil cu un deceniu înainte de Game Boy. Prețul de lansare de 49,99 USD a poziționat consola ca alternativă accesibilă pentru publicul larg. În primul an, proiectul a generat venituri semnificative pentru Smith Engineering și a validat interesul pentru formatul handheld modular.<br><br><strong>Arhitectură și decizii tehnice</strong><br><br>Microvision avea o arhitectură atipică: unitatea de bază nu includea CPU, iar procesorul era montat direct pe cartuș, împreună cu codul jocului. În practică, consola funcționa ca interfață hardware, cu ecran LCD, alimentare pe baterii, controale și difuzor piezo-electric. Platforma a folosit procesoare Intel 8021 sau TI TMS1100, la 100 kHz, cu 64 bytes RAM integrați în CPU. Cartușele ofereau 1K ROM pe Intel 8021 sau 2K ROM pe TMS1100. Ecranul LCD de 16×16 pixeli și tastatura cu 12 butoane, plus rotița de tip paddle, defineau experiența de joc.<br><br><strong>Revizii hardware și bibliotecă</strong><br><br>Primele unități, bazate pe Intel 8021, consumau aproximativ 1 W și necesitau două baterii de 9V. Trecerea la TI TMS1100 a redus consumul la aproximativ 110 mW și a permis funcționarea cu o singură baterie de 9V. Din motive de cost, compartimentul pentru a doua baterie a rămas în carcasă, dar fără terminale active. Biblioteca oficială a fost redusă, cu 12 titluri lansate, inclusiv Block Buster, Connect Four, Pinball, Sea Duel și Cosmic Hunter. Acest catalog a demonstrat potențialul formatului, dar nu a fost suficient pentru extinderea pe termen lung a platformei.<br><br><strong>Fiabilitate, retragere și moștenire</strong><br><br>Microvision a fost afectată de trei probleme critice de fiabilitate: degradarea ecranului LCD (screen rot), vulnerabilitatea cartușelor la descărcări electrostatice și uzura rapidă a tastaturii. În sezonul de sărbători 1979, rata mare de retururi a confirmat limitele de fabricație ale primei generații. Sistemul a fost retras în 1981, după o perioadă comercială scurtă, dar relevantă istoric. Impactul său a rămas major: Nintendo a folosit lecțiile Microvision pentru a evita aceleași compromisuri în dezvoltarea Game Boy. Astăzi, consola este privită ca un pionier tehnic cu execuție imperfectă, dar cu influență clară asupra designului handheld modern."
+    },
+    {
+        "id":  "atari-5200",
+        "nume":  "Atari 5200",
+        "producator":  "Atari",
+        "generatie":  2,
+        "lansare":  1982,
+        "imagine":  "assets/images/consoles/atari-5200.webp",
+        "cpu":  {
+                    "arhitectura":  "MOS 6502C",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.79 MHz",
+                    "tdp":  "~10W"
+                },
+        "gpu":  {
+                    "arhitectura":  "ANTIC/GTIA",
+                    "unitati":  "Custom",
+                    "frecventa":  "1.79 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Player/missile"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "16 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "320×192",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Analog controller"
+                       },
+        "avantaje":  [
+                         "Grafică superioară față de 2600",
+                         "Paletă bogată (128/256 culori)",
+                         "Hardware bazat pe calculatoare Atari"
+                     ],
+        "dezavantaje":  [
+                            "Controlere defecte fără auto-center",
+                            "Fiabilitate redusă joystick",
+                            "Incompatibil inițial cu biblioteca 2600"
+                        ],
+        "istorie":  "Atari 5200 SuperSystem, lansat în octombrie 1982, a fost conceput ca un succesor high-end pentru popularul Atari 2600. Bazat pe arhitectura superioară a computerelor Atari pe 8 biți (400/800), sistemul se poziționa direct împotriva concurenților Intellivision și ColecoVision. Cu un procesor MOS 6502C, 16 KB RAM și chipset-urile video ANTIC/GTIA, consola oferea capabilități grafice remarcabile pentru acea epocă, cu rezoluții până la 320×192 și suport pentru palete de 128 sau 256 culori.\n\nCu toate avantajele hardware, decizia Atari de a nu păstra compatibilitatea directă cu biblioteca vastă de jocuri pentru 2600 a fost un pas strategic dubios. Consola venea inițial fără aceasta capacitate, forțând noii proprietari să reinvestească în jocuri noi. Titlul pachet ales—Super Breakout—nu reușea să demonstreze puterea grafică a sistemului, în contrast cu alegerea ColecoVision de a include Donkey Kong, o experiență arcade authentică.\n\nControlerul Atari 5200 rămâne punctul critic al sistemului. Joystick-ul analogic la 360 de grade era inovator pentru epoca sa, dar mecanismul de auto-centrare defectuos (un burduf de cauciuc slab în loc de arcuri metalice) a făcut controlul imprecis și nefidabil. Circuitele interne flexibile era susceptibile la defecțiuni, transformând găsirea unui controler funcțional într-o provocare chiar și pentru colecționarii de astazi.\n\nLansarea lentă și limitată—doar în magazine mari până în ianuarie 1983—combinată cu prețul ridicat de 269 USD au creat un mediu ostil. Când prăbușirea pieței din 1983 a lovit, mulți producători terți și-au retras suportul. Biblioteca de jocuri rămânea redusă în comparație cu 2600, iar concurența internă a computerului Atari 400, care era mai ieftin și oferea aceleași capabilități plus o tastatură, a subminat pozițiile sistemului. Atari a anunțat oficial discontinuarea pe 21 mai 1984, după doar 19 luni pe piață.\n\nAstazi, Atari 5200 este apreciat de colecționari ca un studiu de caz fascinant—un hardware puternic submarmat de ergonomie deficitară și viziune fragmentată. Comunitatea homebrew și colecționarii moderni au găsit soluții creative prin adaptoare de controler, modificări video și multi-cartușe cumMulticard Ultimate SD, menținând sistemul în viață pentru noile generații de entuziaști."
+    },
+    {
+        "id":  "colecovision",
+        "nume":  "ColecoVision",
+        "producator":  "Coleco",
+        "generatie":  2,
+        "lansare":  1982,
+        "imagine":  "assets/images/consoles/colecovision.webp",
+        "cpu":  {
+                    "arhitectura":  "Zilog Z80",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "3.58 MHz",
+                    "tdp":  "~10W"
+                },
+        "gpu":  {
+                    "arhitectura":  "TMS9918A",
+                    "unitati":  "Custom",
+                    "frecventa":  "10.74 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "32 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "1 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×192",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Atari 2600 (adapter)",
+                           "altele":  "Arcade ports"
+                       },
+        "avantaje":  [
+                         "Conversii arcade fidele",
+                         "Donkey Kong ca titlu pachet",
+                         "Compatibilitate Atari 2600",
+                         "Componente hardware performante"
+                     ],
+        "dezavantaje":  [
+                            "Controller ergonomic deficient",
+                            "Adam Computer eșec fiabil",
+                            "Vulnerabilă la crash 1983"
+                        ],
+        "istorie":  "ColecoVision, lansată în august 1982 de Coleco Industries, a reprezentat o schimbare semnificativă în industria jocurilor video de a doua generație. Construită cu componente de înaltă performanță—procesorul Zilog Z80 și chipset-ul grafic TI TMS9918A—consola a depășit capacitățile rivale precum Atari 2600 și Intellivision. Succesul inițial s-a datorat majorității parteneriatului strategic cu Nintendo, care a permis includerea jocului Donkey Kong ca titlu pachet, transformând consola într-un simbol al fidelității arcade în locuință.\n\nRăspânzirea rapidă a ColecoVision a fost susținută de bibliotecă solidă de conversii arcade. Titluri precum Zaxxon, Smurf: Rescue in Gargamel's Castle și o impresionantă serie de portări arcade—Lady Bug, Venture, Mousetrap—au demonstrat puterea brută a sistemului. Arhitectura bazată pe componente standard a facilitat, de asemenea, compatibilitatea cu jocuri MSX, lărgind biblioteca disponibilă.\n\nSistemul de expansiune a ColecoVision a fost inovator pentru era sa. Modulul de expansiune #1 permitea rularea întregii biblioteci Atari 2600, o caracteristică rară de compatibilitate inversă. Modulul #2 oferea control de conducere cu volan și pedală. Cu toate acestea, eșecul strategic al computerului Adam—care suferea de defecte tehnice grave și probleme de fiabilitate—a consumat resursele companiei și a deteriorat încrederea consumatorilor.\n\nDup prăbușirea pieței din 1983 și retragerea Coleco din domeniu, consola a exercitat o influență durabilă. Inginerii Nintendo au citat ColecoVision ca punctul de referință pentru arhitectura Famicom, în special pentru eliminarea scintilației grafice. Astazi, consola rămâne apreciată de colecționari și comunitatea homebrew, care continuă să producă jocuri noi pe o platformă care s-a dovedit remarcabil de durabilă din punct de vedere tehnic."
+    },
+    {
+        "id":  "vectrex",
+        "nume":  "Vectrex",
+        "producator":  "GCE",
+        "generatie":  2,
+        "lansare":  1982,
+        "imagine":  "assets/images/consoles/vectrex.webp",
+        "cpu":  {
+                    "arhitectura":  "Motorola 68A09",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.5 MHz",
+                    "tdp":  "~20W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Vector display",
+                    "unitati":  "CRT vector",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Vector graphics"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "1 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "Vector (no pixels)",
+                             "refresh":  "Analog",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Built-in monitor"
+                       },
+        "avantaje":  [
+                         "Display vector integrat, claritate extremă",
+                         "Fără pixelație, imagini crisp și fluide",
+                         "Prim periferic 3D pentru console",
+                         "Portări arcade fidele și inovatoare"
+                     ],
+        "dezavantaje":  [
+                            "Afișaj monocrom, carență perceput major",
+                            "Bibliotecă limitată, doar ~28 titluri",
+                            "Zgomot electromagnetic constant (The Buzz)",
+                            "Timing nefavorabil cu crash 1983"
+                        ],
+        "istorie":  "Vectrex, lansat în octombrie 1982, rămâne singura consolă de jocuri pentru acasă care folosește tehnologia afișajului vectorial. Dezvoltată de Smith Engineering, o firmă din Santa Monica cu o cultură organizațională neconvențională care prioritiza creativitatea, consola a fost comercializată inițial de General Consumer Electronics și ulterior de Milton Bradley. Sistemul era unic prin monitorul CRT integrat de 9 inchi, eliminând necesitatea unui televizor, și prin capacitatea de a reda grafică cu o claritate și o viteză neîntrecută pentru era acelui timp.\n\nTehnic, Vectrex utiliza procesorul Motorola 68A09 la 1,5 MHz cu 1 KB RAM și 8 KB ROM, ceea ce părea modest. Însă natura afișajului vectorial permitea imagini extraordinar de crisp și lipsite de pixelație, înconjurate de liniile luminoase pe un fond negru complet. Pentru a compensa absența culorii native, fiecare joc include o folie de plastic colorată care se fixează pe ecran—o soluție ingenioasă care oferea iluzia culorii și servea ca element de HUD static fără a consuma resurse de procesor.\n\nVectrex a introdus inovații remarcabile. 3-D Imager-ul a fost primul periferic 3D pentru orice consolă, funcționând printr-un disc rotativ cu filtre ce sincronizau imagini pentru fiecare ochi. Light Pen-ul permitea desenarea directă pe ecran. Jocul inclus în ROM, Mine Storm (clonă de Asteroids), a devenit faimos pentru un bug la nivelul 13 care bloca sistemul—utilizatorii care raportau problema primeau gratuit varianta corectată, Mine Storm II, astazi o piesă extrem de rară.\n\nBiblioteca oficială cuprindea aproximativ 28 de titluri, multe portări fidele de jocuri arcade de la Cinematronics și Konami. Cosmic Chasm a fost remarcabilă ca prim joc portat invers, din consolă în arcade. Cu toate acestea, timing-ul catastrofal a coincis cu prăbușirea pieței din 1983. Presa vremii criticase dur absența culorii native, iar prețurile computerelor precum Commodore 64 au scăzut drastic, oferind mult mai multă funcționalitate la prețuri similare.\n\nÎn februarie 1984, Milton Bradley a retras consola din producție, generând pierderi de 31,6 milioane de dolari. Astazi, Vectrex supraviețuiește printr-o comunitate pasionată de homebrew. Programatori independenți continuă să creeze jocuri noi. Recent, proiectul Vectrex Mini pe Kickstarter a strâns peste 1,3 milioane de dolari pentru o versiune la scară redusă cu ecran AMOLED, relansând inovația vectorială în era modernă."
+    },
+    {
+        "id":  "famicom",
+        "nume":  "Nintendo Famicom",
+        "producator":  "Nintendo",
+        "generatie":  3,
+        "lansare":  1983,
+        "imagine":  "assets/images/consoles/famicom.webp",
+        "cpu":  {
+                    "arhitectura":  "Ricoh 2A03",
+                    "proces_nm":  "2.0 µm",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.79 MHz",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "PPU",
+                    "unitati":  "Custom",
+                    "frecventa":  "5.37 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "64 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "2 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×240",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Famicom Disk System, D-pad, Control riguros al librăriei"
+                       },
+        "avantaje":  [
+                         "Platform integrator pentru piața japoneză",
+                         "Controler D-pad revolutionar și rezistent",
+                         "Expunere Famicom Disk System inovativă",
+                         "Biblioteca masivă de peste 700 titluri",
+                         "Design compact și elegant roșu-crem"
+                     ],
+        "dezavantaje":  [
+                            "Controlere permanent fixate la consolă",
+                            "Doar ieșire RF disponibilă",
+                            "Memorie foarte limitată (2 KB RAM)",
+                            "Incompatibilitate cu cartușele NES internaționale"
+                        ],
+        "istorie":  "Lansarea Famicom (Family Computer) pe 15 iulie 1983 în Japonia marchează începutul unei ere noi în istoria industriei jocurilor video. Conceput sub conducerea președintelui Nintendo, Hiroshi Yamauchi, sistemul avea scopul de a aduce succesul arcade Donkey Kong direct în sufrageriile consumatorilor japonezi. Cu peste 60 de milioane de unități vândute la nivel global și francize emblematice precum Super Mario Bros. și The Legend of Zelda, platforma pe 8 biți nu doar a dominat piața japoneză timp de două decenii, ci a stabilit fundația pentru imperiul Nintendo de divertisment digital.\n\nDebutul a fost dramatic. În aceeași zi, 15 iulie 1983, Sega a lansat SG-1000, prima sa consolă de casă. Cu toate că SG-1000 era o mașină decenț, superioritatea arhitecturii Nintendo s-a impus rapid. Famicom a fost vândut la prețul inițial de 14.800 yeni, o strategie de preț agresivă care a accelerat adoptarea pe piață. Expansiunea după Japonia a urmat o cale calculată: testare în New York (1985), Los Angeles (1986), lansare națională în SUA (septembrie 1986) sub rebranding-ul Nintendo Entertainment System, și apoi sosire în Europa în valuri succesive între 1986 și 1987.\n\nO intrigă fascinantă din această perioadă: Nintendo a negociat inițial cu Atari pentru distribuția în America de Nord. Parteneriat s-a prăbușit într-o dispută asupra licenței pentru Donkey Kong pe Coleco Adam, un rival comercial la acel moment. Această ruptură a forțat-o pe Nintendo să-și controleze propria distribuție internațională, decizie care s-a dovedit transformatoare pentru structura industriei.\n\nConsola se baza pe procesorul Ricoh pe 8 biți (derivat din arhitectura MOS Technology 6502) cuplat cu o unitate PPU (Picture Processing Unit) personalizată Ricoh, dedicată animațiilor fluide. Memoria era arhitecturată strategic: 2 KB RAM pentru CPU și 2 KB RAM dedicați procesării video. Aceste limitări aparente s-au dovedit remarcabil de eficiente în practică, permițând inginerilor Nintendo să construiască lumi complexe cu resurse minime.\n\nDesignul fizic a fost influențat direct de preferințele estetice ale conducerii. Schema roșu-crem a Famicom a fost inspirată iconic de un fular purtat personal de Yamauchi, detaliu care ilustrează implicarea directă a leadershipului în fiecare decizie. Controlere erano permanent hardwired (fixate) la unitate, o alegere deliberată pentru simplitate și robustețe—mulți copii țineau controlerele pe podea. Al doilea controler includea un microfon încorporat, caracteristică unică folosită în jocuri precum The Legend of Zelda.\n\nDesignul D-pad-ului merită detaliu special. Pionierat de Nintendo cu seria Game & Watch, d-pad-ul a fost ales pentru supremă durabilitate comparativ cu joystick-urile tradiționale care se deteriorau rapid sub presiune constantă. Această decizie de design a devenit standard industrial care persistă și astazi.\n\nBiblioteca de jocuri a Famicom nu doar a dominat piața japoneză, ci a redefinit posibilități creative pentru platformă. Super Mario Bros. s-a vândut în aproximativ 40 de milioane copii, frecvent inclus în bundle cu consola. Duck Hunt a atins 28-30 milioane copii, profitând masiv de pistolul Zapper inclus. Super Mario Bros. 3 (1990) a reprezentat progres tehnic semnificativ și a vândut 18 milioane copii. Jocurile au evoluat exponențial în complexitate hardware: de la 32 KB inițiali la 1 MB la sfârșitul ciclului de viață, cu Metal Slader Glory (1991) atingând recordul pentru cartușa mai mare—aproximativ 500 ori mai mare decât primele titluri.\n\nFamicom Disk System (FDS), lansat în 1986 exclusiv în Japonia, a reprezentat inovație distributivă. Folosea dischete de 2,8 inchi cu 112 KB capacitate și oferea avantaje semnificative: costuri de producție reduse și canal audio suplimentar (wave table primitiv). Conceptul de distribuție digitală rudimentară a permis jucătorilor să rescrie jocuri la chioșcurile de retail pentru fracțiuni din prețul unei casete noi, o practică care prevedea direkt distribuce digitale modernă.\n\nNintendo a implementat control riguros asupra calității software. Spre deosebire de libertatea chaotică care caracterizase piața din anii 70, Nintendo curatoria activ biblioteca. Jocurile trebuiau să respecte standarde tehniche și creative stricte, o disciplină care a protejat reputația platformei și a prevenit inundarea pieței cu titluri de slabă calitate.\n\nSucesul global al Famicom/NES a fost transformator. Nintendo s-a transformat dintr-o companie de cărți de joc și jucării într-un lider global al divertismentului digital. Impactul depășește numerele comerciale brute: Famicom a popularizat conceptul save game-ului prin baterii și parole, a introdus RPG-uri și jocuri de aventură complexe la mainstream, și a stabilit standardul controlerului cu butoane multiple care persistă pâna astazi. Producția Famicom în Japonia a continuat până septembrie 2003, cu programe de service oferite până 2007—testament la durabilitate și iubire consumatorilor pentru platformă."
+    },
+    {
+        "id":  "sega-sg-1000",
+        "nume":  "Sega SG-1000",
+        "producator":  "Sega",
+        "generatie":  3,
+        "lansare":  1983,
+        "imagine":  "assets/images/consoles/sega-sg-1000.webp",
+        "cpu":  {
+                    "arhitectura":  "Zilog Z80A",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "3.58 MHz",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Texas Instruments TMS9918A",
+                    "unitati":  "Custom",
+                    "frecventa":  "10.74 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "256×192, 16 culori, 32 sprite-uri"
+                },
+        "memorie":  {
+                        "tip":  "RAM + VRAM",
+                        "capacitate":  "1 KB RAM + 16 KB VRAM",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge + Sega My Card",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×192",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "RF switch, Sega My Card (cu Card Catcher), SN76489AN"
+                       },
+        "avantaje":  [
+                         "A depășit estimările de vânzări în primul an",
+                         "A pus baza tehnologică pentru Master System",
+                         "Costuri reduse prin componente standard",
+                         "Disponibilă pe cartușe și Sega My Card"
+                     ],
+        "dezavantaje":  [
+                            "Inferioară tehnic față de Famicom la lansare",
+                            "Distribuție oficială limitată în afara Japoniei",
+                            "Joystick-ul inițial avea ergonomie slabă",
+                            "Fără suport hardware pentru scrolling de fundal"
+                        ],
+        "istorie":  "Origine\nSega SG-1000 a apărut într-un moment în care piața arcade intra într-un declin vizibil, iar compania căuta o direcție nouă pentru segmentul de consum. Sub coordonarea lui Hayao Nakayama, Sega a decis să transfere expertiza hardware din arcade către o consolă de domiciliu. Lansarea din 15 iulie 1983 a marcat primul pas oficial al companiei în acest teritoriu. În aceeași zi, Nintendo lansa Famicom, ceea ce a transformat debutul SG-1000 într-o confruntare directă încă din prima zi.\n\nLansare\nConsola a intrat pe piață la prețul de 15.000 yeni, iar estimările interne erau prudente. În practică, rezultatul inițial a fost peste așteptări: aproximativ 160.000 de unități vândute în primul an, față de prognoza de 50.000. Chiar dacă avantajul tehnic era de partea Nintendo, SG-1000 a demonstrat că Sega poate construi un produs relevant pentru publicul de acasă. Acest rezultat a oferit companiei încrederea necesară pentru a continua investițiile în hardware dedicat consolelor.\n\nArhitectură\nSG-1000 a fost proiectată cu componente standard, o alegere clară pentru controlul costurilor și pentru producție rapidă. Configurația includea un procesor Zilog Z80A la 3,58 MHz, un VDP Texas Instruments TMS9918A, 1 KB RAM de sistem și 16 KB VRAM. Pentru grafică, consola livra rezoluție 256 × 192, 16 culori și până la 32 de sprite-uri, iar sunetul era gestionat de cipul SN76489AN. La nivel de conectivitate video, epoca era reprezentată de ieșirea prin comutator RF.\n\nEcosistem\nPlatforma a folosit două formate de stocare: cartușe ROM și Sega My Card, cel din urmă necesitând accesoriul Card Catcher. Biblioteca includea titluri arcade adaptate și proiecte care au devenit relevante istoric, inclusiv primul joc al lui Yuji Naka. În paralel, Sega a extins ideea hardware prin SC-3000, apoi prin SG-1000 II, iar ulterior prin Mark III. Această progresie a transformat SG-1000 într-un punct de plecare real pentru generațiile Sega care au urmat.\n\nPiață și moștenire\nPrezența oficială a SG-1000 a rămas concentrată în Japonia, cu distribuție limitată în câteva piețe externe și cu apariția unor clone compatibile. Comercial, sistemul nu a reușit să egaleze forța Famicom, iar criticile au vizat în special diferențele de capabilități și biblioteca mai puțin vizibilă. Totuși, impactul strategic este clar: seria SG-1000 a deschis drumul către Master System și a marcat tranziția Sega de la arcade la ecosistemul consolelor de domiciliu. Pentru istoria companiei, SG-1000 rămâne punctul de început care a făcut posibilă etapa de maturitate hardware din anii următori."
+    },
+    {
+        "id":  "nes",
+        "nume":  "Nintendo NES",
+        "producator":  "Nintendo",
+        "generatie":  3,
+        "lansare":  1985,
+        "imagine":  "assets/images/consoles/nes.webp",
+        "cpu":  {
+                    "arhitectura":  "Ricoh 2A03 / 2A07 (bazat pe MOS 6502)",
+                    "proces_nm":  "2.0 µm",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.79 / 1.66 MHz",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Ricoh 2C02",
+                    "unitati":  "Custom",
+                    "frecventa":  "5.37 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "256×240, 54 culori, max. 25 simultan"
+                },
+        "memorie":  {
+                        "tip":  "RAM + VRAM + sprite RAM",
+                        "capacitate":  "2 KB RAM + 2 KB VRAM + 256 bytes sprite RAM",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge + Famicom Disk System",
+                        "interfata":  "ROM + dischetă proprietară 3 inchi",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×240",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "D-pad, Zapper, R.O.B., 10NES, Sigiliul Oficial de Calitate"
+                       },
+        "avantaje":  [
+                         "A relansat piața nord-americană după criza din 1983",
+                         "Bibliotecă extinsă cu francize definitorii",
+                         "Model strict de licențiere third-party",
+                         "Accesorii și D-pad cu impact major"
+                     ],
+        "dezavantaje":  [
+                            "Conectorul de 72 de pini era predispus la defecte",
+                            "10NES provoca frecvent eroarea cu lumină roșie intermitentă",
+                            "Practicile comerciale au atras investigații antitrust",
+                            "Master System oferea hardware superior"
+                        ],
+        "istorie":  "Origine\nNintendo Entertainment System a pornit în Japonia, în 1983, sub numele Family Computer, ca un sistem accesibil construit pentru piața de masă. Lansarea a inclus un episod dificil, cu o rechemare timpurie cauzată de un circuit integrat defect, dar platforma și-a revenit rapid. În scurt timp, Famicom a urcat în poziția de lider local și a depășit rivali direcți ai momentului. Din acest punct, Nintendo a tratat extinderea internațională ca pe un proces atent controlat, nu ca pe o expansiune grăbită.\n\nLansare globală\nIntrarea în America de Nord a fost calibrată strategic, printr-un test inițial în New York, urmat de lansarea națională în 1986. Pentru a reduce reticența retailerilor după colapsul pieței din 1983, consola a fost reproiectată vizual și promovată într-o zonă mai apropiată de electronicele de consum. Extinderea către Europa și Australia a urmat în 1987, iar în alte regiuni sistemul a apărut mai târziu, uneori sub branding local licențiat. Această secvențiere pe etape a consolidat treptat încrederea comercială în platformă.\n\nArhitectură și design\nLa nivel tehnic, NES a folosit procesorul Ricoh 2A03/2A07 bazat pe MOS 6502, împreună cu PPU-ul Ricoh 2C02, configurat pentru 256×240 pixeli. Memoria includea 2 KB RAM de lucru, 2 KB RAM video și 256 bytes pentru sprite RAM, iar subsistemul audio oferea cinci canale distincte. Designul american cu încărcare frontală de tip ZIF a fost memorabil, dar a adus și costuri de fiabilitate în timp. Conectorul de 72 de pini și interacțiunea cu cipul 10NES au contribuit la problema bine-cunoscută a luminii roșii intermitente.\n\nEcosistem și piață\nForța reală a platformei a venit din combinația dintre bibliotecă și control editorial strict. Nintendo a impus un cadru de licențiere dur pentru third-party, cu reguli clare de aprobare și limitări de publicare, menite să evite repetarea haosului din anii anteriori. În paralel, accesorii precum D-pad-ul, Zapper și R.O.B. au diferențiat produsul atât la nivel de utilizare, cât și de marketing. Chiar dacă Sega Master System avea argumente hardware solide, NES a dominat prin jocuri și distribuție, obținând cote foarte mari în piețele-cheie.\n\nMoștenire\nCu peste 61 de milioane de unități vândute, NES a devenit fundamentul multor francize care definesc și astăzi industria. Platforma a normalizat ideea de standard de calitate pentru software și a stabilit un model de business care a influențat întreaga generație următoare de console. După oprirea producției, moștenirea a continuat prin emulare oficială, hardware retro modern și o comunitate homebrew activă. Privit retrospectiv, NES nu este doar un succes comercial, ci momentul în care piața consolelor a intrat într-o etapă matură și predictibilă."
+    },
+    {
+        "id":  "sega-master-system",
+        "nume":  "Sega Master System",
+        "producator":  "Sega",
+        "generatie":  3,
+        "lansare":  1985,
+        "imagine":  "assets/images/consoles/sega-master-system.webp",
+        "cpu":  {
+                    "arhitectura":  "Zilog Z80A",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "3.58 MHz",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "VDP (bazat pe TMS9918, Modul IV)",
+                    "unitati":  "Custom",
+                    "frecventa":  "10.74 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "256×192, 32 culori simultan din 64, 64 sprite-uri"
+                },
+        "memorie":  {
+                        "tip":  "RAM + VRAM",
+                        "capacitate":  "8 KB RAM + 16 KB VRAM",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge + Sega Card",
+                        "interfata":  "ROM + card",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×192",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "SG-1000",
+                           "altele":  "YM2413 FM (Japonia), SegaScope 3-D Glasses, Light Phaser, BIOS 8 KB, TMR SEGA"
+                       },
+        "avantaje":  [
+                         "Hardware grafic superior NES în era 8-biți",
+                         "Paletă mai bogată: 32 culori simultan din 64",
+                         "Succes comercial solid în Europa",
+                         "Longevitate excepțională pe piața braziliană"
+                     ],
+        "dezavantaje":  [
+                            "Vânzări slabe în Japonia și America de Nord",
+                            "Politicile Nintendo au limitat suportul third-party",
+                            "Distribuția Tonka a afectat localizarea jocurilor",
+                            "Butonul Pause pe consolă era incomod"
+                        ],
+        "istorie":  "Origini\nSega Master System pornește din linia SG-1000, iar punctul de plecare real este Mark III, lansată în Japonia pe 20 octombrie 1985. Sega a tratat această generație ca pe o corecție directă a limitărilor grafice ale modelelor anterioare și a investit într-un cip video proiectat intern. Din perspectivă strategică, consola a reprezentat pasul prin care compania a încercat să transfere experiența din arcade în sufrageria publicului larg.\n\nRepoziționare pentru Vest\nÎn 1986, Sega a reproiectat platforma pentru piața americană și a introdus numele Master System, împreună cu un design vizual orientat spre electronice moderne. Ambalajul cu grilă albă a fost memorabil, dar recepția nu a fost uniformă, iar impactul de marketing a rămas sub așteptări în unele segmente. În 1987, drepturile de distribuție din SUA au fost transferate către Tonka, însă lipsa de experiență în electronice a încetinit localizarea unor titluri importante și a slăbit poziționarea comercială a platformei.\n\nArhitectură\nLa nivel hardware, Master System a fost o platformă robustă pentru epocă: Zilog Z80A la 3,58 MHz, 8 KB RAM de sistem și 16 KB VRAM. VDP-ul, bazat pe designul TMS9918 și extins în Modul IV, oferea rezoluție 256×192 și putea afișa 32 de culori simultan dintr-o paletă de 64. Sistemul gestiona până la 64 de sprite-uri, cu limită de 8 pe linie pentru controlul flicker-ului. Sunetul standard venea din SN76489, iar varianta japoneză putea adăuga YM2413 FM pentru o semnătură audio net superioară.\n\nEcosistem și accesorii\nConsola a susținut atât cartușe, cât și Sega Cards, un format compact și mai accesibil pentru jocuri timpurii. Sega a completat ecosistemul cu periferice neobișnuite pentru acea perioadă, inclusiv Light Phaser și SegaScope 3-D Glasses. În același timp, integrarea unui BIOS de 8 KB și verificarea codului TMR SEGA au oferit un mecanism de control al boot-ului și al licențierii. Unele decizii de design, precum butonul Pause plasat pe consolă, au rămas însă discutabile în utilizarea de zi cu zi.\n\nPiață și moștenire\nDeși NES a câștigat competiția globală la nivel de volum, Master System a construit o identitate puternică în Europa și mai ales în Brazilia. Distribuția regională eficientă, împreună cu adaptările locale, a făcut ca sistemul să rămână relevant mult peste ciclul obișnuit al generației sale. Relația cu Tectoy a transformat consola într-un fenomen de durată, cu producție extinsă pe termen lung. În retrospectivă, Master System rămâne o platformă esențială pentru înțelegerea tranziției Sega către succesul din era Mega Drive."
+    },
+    {
+        "id":  "atari-7800",
+        "nume":  "Atari 7800",
+        "producator":  "Atari",
+        "generatie":  3,
+        "lansare":  1986,
+        "imagine":  "assets/images/consoles/atari-7800.webp",
+        "cpu":  {
+                    "arhitectura":  "Atari SALLY (6502 personalizat)",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.79 MHz (1.19 MHz în modul 2600)",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "MARIA",
+                    "unitati":  "Custom",
+                    "frecventa":  "7.16 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "100 sprite-uri, 256 culori, 25 culori/linie"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "4 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM (cu semnătură digitală Atari pentru modul 7800)",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×240 / 320×240",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Atari 2600",
+                           "altele":  "Cip MARIA, semnătură digitală cartușe, POKEY opțional în cartuș"
+                       },
+        "avantaje":  [
+                         "Compatibilitate retroactivă nativă cu aproape toate jocurile 2600",
+                         "Cipul MARIA gestionează multe obiecte cu flicker redus",
+                         "Conversii arcade solide pentru perioada sa",
+                         "A fost profitabilă datorită costurilor reduse"
+                     ],
+        "dezavantaje":  [
+                            "Lansarea a întârziat aproape doi ani",
+                            "Sunetul TIA era deja învechit în 1986",
+                            "Suport third-party limitat de exclusivitățile Nintendo",
+                            "Marketingul redus a limitat vânzările"
+                        ],
+        "istorie":  "Origine\nAtari 7800 ProSystem s-a născut într-un moment în care compania căuta un răspuns tehnic clar pentru generația nouă de console. Proiectul a fost dezvoltat de General Computer Corporation, sub coordonarea lui Steve Golson, cu obiectivul de a depăși rapid limitele modelelor Atari 2600 și 5200. Direcția de design a fost influențată de experiența GCC în zona arcade, ceea ce a orientat sistemul spre randare eficientă a obiectelor pe ecran. În faza inițială, platforma a fost cunoscută intern ca Atari 3600.\n\nLansare și blocaj corporativ\nDeși consola a fost anunțată în 1984, schimbarea de proprietate dintre Warner și Atari Corporation a blocat lansarea efectivă. Disputele financiare dintre noua conducere și GCC au ținut proiectul pe loc aproape doi ani, iar unități deja produse au rămas în depozit până în 1986. Când sistemul a ajuns pe piață la scară largă, NES și Master System câștigaseră deja poziții solide în retail. Această întârziere a transformat un avantaj tehnic într-un start comercial dificil.\n\nArhitectură\nAtari 7800 folosește procesorul Atari SALLY la 1,79 MHz, cu reducere la 1,19 MHz în modul de compatibilitate 2600. Elementul central este cipul MARIA la 7,16 MHz, capabil să gestioneze până la 100 de sprite-uri și să folosească o paletă de 256 de culori, cu 25 afișabile pe o linie de scanare. Sistemul oferă moduri video 160×240 și 320×240, iar memoria internă rămâne la 4 KB. Pentru a păstra costurile jos și compatibilitatea, secțiunea audio a rămas bazată pe TIA, cu posibilitatea adăugării cipului POKEY direct în anumite cartușe.\n\nFuncții și ecosistem\nUn punct major de diferențiere a fost compatibilitatea retroactivă nativă cu aproape toate cartușele Atari 2600, o premieră importantă pentru industrie. În modul 2600, consola schimbă comportamentul intern: procesorul este încetinit, iar TIA preia controlul graficii și sunetului. Atari a introdus și un mecanism de semnătură digitală pentru cartușe, pentru a limita software-ul neautorizat în modul 7800. Biblioteca oficială a rămas compactă, dar a inclus conversii arcade remarcabile și câteva titluri care au rămas reprezentative pentru platformă.\n\nImpact\nComercial, Atari 7800 nu a reușit să recupereze terenul pierdut în fața competitorilor direcți, chiar dacă a fost un produs profitabil pentru companie. Bugetul de marketing modest și contextul de piață deja stabilizat au limitat extinderea pe termen lung, iar retragerea oficială a venit la începutul lui 1992. Totuși, moștenirea tehnică a consolei rămâne relevantă: a validat ideea de backward compatibility ca argument strategic real. În ecosistemul retro actual, interesul pentru platformă confirmă că designul ei a avut valoare dincolo de performanța comercială inițială."
+    },
+    {
+        "id":  "pc-engine",
+        "nume":  "PC Engine",
+        "producator":  "NEC/Hudson",
+        "generatie":  4,
+        "lansare":  1987,
+        "imagine":  "assets/images/consoles/pc-engine.webp",
+        "cpu":  {
+                    "arhitectura":  "HuC6280 (derivat MOS 6502/WDC 65C02)",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.79 MHz / 7.16 MHz",
+                    "tdp":  "~5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "HuC6270 (VDC) + HuC6260 (VCE)",
+                    "unitati":  "GPU dual pe 16 biți",
+                    "frecventa":  "7.16 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "VRAM 64 KB, 64 sprite-uri (max. 16/linie), 512 culori (482 simultan)"
+                },
+        "memorie":  {
+                        "tip":  "RAM + MMU",
+                        "capacitate":  "8 KB RAM; adresare până la 2 MB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "HuCard + CD-ROM² (extensie)",
+                        "interfata":  "HuCard / CD-ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×224 până la 512×240",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "CD-ROM², Super CD-ROM², Arcade Card, blocare regională HuCard"
+                       },
+        "avantaje":  [
+                         "Consolă extrem de compactă pentru perioada sa.",
+                         "A introdus CD-ROM-ul pe console prin extensie opțională.",
+                         "Grafică competitivă cu sistemele promovate ca 16-biți.",
+                         "Audio flexibil cu 6 canale și panning stereo."
+                     ],
+        "dezavantaje":  [
+                            "Lansarea întârziată în Occident a redus impactul comercial.",
+                            "Fragmentarea hardware a creat confuzie pentru cumpărători.",
+                            "Marketingul 16-biți a eclipsat arhitectura hibridă reală.",
+                            "Blocarea regională HuCard a limitat accesul la importuri."
+                        ],
+        "istorie":  "Origine\nPC Engine a apărut în 1987 ca rezultat al colaborării dintre Hudson Soft și NEC, într-un moment în care piața începea tranziția spre generația a patra. Sistemul a fost gândit ca o platformă compactă, dar capabilă tehnic, iar dimensiunile carcasei au rămas un reper în industrie. În Japonia, lansarea a fost puternică, iar consola a reușit pentru o perioadă să depășească ritmul unor competitori consacrați.\n\nLansare internațională\nÎn America de Nord, consola a fost relansată sub numele TurboGrafx-16, cu un design diferit și cu o poziționare orientată spre discursul „16-biți”. Intrarea întârziată pe piață a redus însă avantajul inițial, iar competiția era deja bine instalată. În plus, alegerea pachetului de lansare și mesajele de marketing au slăbit claritatea produsului pentru publicul occidental.\n\nArhitectură\nLa nivel tehnic, PC Engine folosește procesorul HuC6280, derivat din familia 6502/65C02, cu două moduri de frecvență: aproximativ 1.79 MHz și 7.16 MHz. Deși CPU-ul era pe 8 biți, consola compensa prin subsistemul grafic format din HuC6270 (VDC) și HuC6260 (VCE), configurat ca soluție hibridă cu capabilități de nivel 16-biți. Configurația include 64 KB VRAM, rezoluții între 256×224 și 512×240, plus o paletă de 512 culori, dintre care 482 pot fi afișate simultan.\n\nMemorie, audio și medii\nHuC6280 integrează și o MMU care extinde adresarea la 21 biți, permițând acces la până la 2 MB de memorie fizică, în timp ce RAM-ul de bază rămâne 8 KB. Sunetul este asigurat de un PSG cu 6 canale, forme de undă programabile, panning stereo și opțiuni avansate precum zgomot, LFO și redare PCM prin DDA. Platforma a folosit HuCard-uri compacte, dar a devenit pionieră mai ales prin extensia CD-ROM², urmată de Super CD-ROM² și Arcade Card.\n\nEcosistem și moștenire\nPortofoliul hardware a crescut rapid, de la versiunile CoreGrafx până la SuperGrafx, TurboExpress și modelele Duo, ceea ce a oferit flexibilitate, dar a introdus și fragmentare. În Japonia, acest ecosistem a susținut o bibliotecă importantă, în special în zona shooterelor. În Occident, aceeași complexitate a redus adopția, însă valoarea platformei a rămas relevantă pentru colecționari și pentru soluțiile moderne de acces, de la emulare la replicare FPGA și flash cart-uri pe hardware original."
+    },
+    {
+        "id":  "sega-genesis",
+        "nume":  "Sega Genesis",
+        "producator":  "Sega",
+        "generatie":  4,
+        "lansare":  1988,
+        "imagine":  "assets/images/consoles/sega-genesis.webp",
+        "cpu":  {
+                    "arhitectura":  "Motorola 68000 (16/32-bit) + Zilog Z80",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "7.6-7.67 MHz (68000); 3.55-3.58 MHz (Z80)",
+                    "tdp":  "~10W"
+                },
+        "gpu":  {
+                    "arhitectura":  "VDP (Yamaha), derivat din System 16",
+                    "unitati":  "Custom",
+                    "frecventa":  "7.6 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Paletă 512 culori; 61 culori simultan"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "64 KB RAM + 64 KB VRAM + 8 KB RAM audio",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge + Sega CD (add-on)",
+                        "interfata":  "ROM / CD-ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "320×224",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Master System (Power Base Converter)",
+                           "altele":  "Blast Processing, Sega Channel, VRC (GA/MA-13/MA-17), Sega CD, 32X"
+                       },
+        "avantaje":  [
+                         "A spart dominația Nintendo pe piețele occidentale.",
+                         "Bibliotecă puternică pentru acțiune, sport și arcade.",
+                         "Sonic a devenit motor major de vânzări.",
+                         "Sega Channel a anticipat distribuția digitală modernă."
+                     ],
+        "dezavantaje":  [
+                            "Performanțe comerciale slabe pe piața japoneză.",
+                            "Add-on-urile Sega CD și 32X au fragmentat piața.",
+                            "Controversele jocurilor au atras presiune politică.",
+                            "Mesajul tehnic a fost eclipsat de marketing agresiv."
+                        ],
+        "istorie":  "Origine\nMega Drive a fost proiectată de echipa Sega condusă de Hideki Sato și Masami Ishikawa, ca răspuns direct la dominația Nintendo din anii ’80. Platforma a fost gândită pentru a aduce acasă ritmul jocurilor arcade, folosind o arhitectură inspirată de placa System 16. Sega a urmărit încă de la început un profil mai matur al produsului, inclusiv prin designul industrial influențat de echipamente hi-fi și estetica auto.\n\nLansare și expansiune\nConsola a debutat în Japonia pe 29 octombrie 1988, însă acolo a rămas în urma competitorilor principali. În America de Nord, lansarea din 1989 sub numele Genesis a fost susținută de o strategie comercială mult mai agresivă și de parteneriate cu nume puternice din sport și entertainment. În Europa și Brazilia, distribuția locală a transformat sistemul într-un lider regional, chiar dacă performanța globală a rămas inegală între piețe.\n\nArhitectură și tehnologie\nLa nivel tehnic, Genesis folosește CPU-ul Motorola 68000 la 7.6-7.67 MHz, asistat de un Zilog Z80 la 3.55-3.58 MHz pentru sunet și compatibilitate cu Master System. Configurația de memorie include 64 KB RAM principală, 64 KB VRAM și 8 KB RAM audio, iar partea grafică operează cu o paletă de 512 culori, dintre care 61 simultan pe ecran. Conceptul „Blast Processing” a fost folosit ca mesaj de marketing pentru a evidenția viteza percepută a sistemului în jocurile de acțiune.\n\nEcosistem, add-on-uri și impact\nSega a extins platforma prin Sega CD și 32X, încercând să prelungească ciclul de viață al consolei, dar aceste add-on-uri au fragmentat publicul și oferta software. În paralel, Power Base Converter a oferit compatibilitate cu jocurile de Master System, iar Sega Channel a introdus devreme ideea distribuției digitale prin cablu TV. Identitatea comercială a sistemului a fost consolidată de titluri precum Sonic the Hedgehog, John Madden Football și Mortal Kombat, care au diferențiat clar consola pe piața occidentală.\n\nControverse, rating și moștenire\nGenesis a fost implicată în momente juridice și culturale importante, inclusiv cazul Sega v. Accolade și dezbaterile din SUA despre violența în jocuri, alimentate de titluri precum Mortal Kombat și Night Trap. Ca răspuns, Sega a introdus Videogame Rating Council (GA, MA-13, MA-17), un precursor direct al sistemelor moderne de rating. Deși producția oficială s-a încheiat în 1997, moștenirea consolei rămâne activă prin reeditări hardware, jocuri noi pe cartuș și prezență constantă pe platforme digitale. Figura lui Hideki Sato rămâne centrală în această istorie, inclusiv după dispariția sa recentă la vârsta de 75 de ani."
+    },
+    {
+        "id":  "game-boy",
+        "nume":  "Game Boy",
+        "producator":  "Nintendo",
+        "generatie":  4,
+        "lansare":  1989,
+        "imagine":  "assets/images/consoles/game-boy.webp",
+        "cpu":  {
+                    "arhitectura":  "Sharp LR35902",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "4.19 MHz",
+                    "tdp":  "~0.5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom LCD",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "40 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "8 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×144",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Link Cable"
+                       },
+        "avantaje":  [
+                         "Portabilitate revoluționară",
+                         "Baterie durabilă",
+                         "Tetris bundle",
+                         "Bibliotecă imensă"
+                     ],
+        "dezavantaje":  [
+                            "Ecran monocrom fără backlight",
+                            "Grafică limitată",
+                            "Fără color"
+                        ],
+        "istorie":  "Game Boy: Revoluția Portabilă - Consola care a Redefinit Jocurile Portabile<br><br><strong>Lansare și Context Istoric</strong><br><br>Lansat în aprilie 1989 de Nintendo, Game Boy a devenit cel mai vândut consol portabil al deceniului '90, cu peste 118 milioane de unități vândute pe parcursul a aproximativ 15 ani. Proiectat de Gunpei Yokoi și echipa R&D1 de la Nintendo, Game Boy a depășit concurenții tehnic superiori, cum ar fi Atari Lynx și Sega Game Gear, prin trei factori decisivi: durabilitate extremă, autonomie de baterie de 15-30 de ore, și o bibliotecă de jocuri remarcabilă inițiată de Tetris.<br><br><strong>Design și Hardware</strong><br><br>Cu procesor Zilog Z80 la 4.19 MHz, 32 KB RAM și 8 KB VRAM, Game Boy nu era o minune tehnică. Puterea de procesor putea fi considerată modestă chiar pentru epocă, dar aceasta a fost o alegere deliberată. Ecranul LCD de 160x144 pixeli afișa doar două tonuri de gri (plus câteva variații), reducând puterea necesară și costurile de fabricație. Consola era cade-proof: carcasa din plastic cost robust rezista la căderi, iar bateria AA oferea autonomie pe care concurența nu o putea egala (Atari Lynx consuma 6 baterii AA și funcționa doar 4-5 ore).<br><br><strong>Tetris: Aplicația Decisivă</strong><br><br>Bundlul cu Tetris în majoritatea regiunilor (cu excepția Japoniei inițial) a fost transformator. Jocul simplu dar hipnotic a demonstrat potențialul Game Boy la audiență non-gameri - părinți, bunici, oameni de birou. Tetris pe Game Boy s-a vândut cu 30-35 de milioane de copii, generând suficiente venituri pentru a justifica investiția Nintendo în ecosistem portabil. Era prima dată când un joc portabil transcendea gaming-ul și devenea fenomen cultural de masă.<br><br><strong>Evoluție și Moștenire</strong><br><br>Game Boy Pocket (1996) a oferit ecran mai puternic cu contrast îmbunătățit. Game Boy Color (1998) a introdus culoare (56-color palette) cu compatibilitate inversă completă cu cartușele originale - o decizie rară în industrie care a menținut baza de utilizatori. Game Boy Advance (2001) a marcat tranziția la 32-bit cu putere grafică semnificativ mai mare, dar formula Game Boy original a dominat portabilul pentru peste o decadă. Biblioteca de 1000+ jocuri a inclus The Legend of Zelda: Link's Awakening, Pokemon Red/Blue, Super Mario Land - fiecare devenind cult classic. Game Boy nu a fost doar aparat de joc; a stabilit standardele pentru gaming portabil pe care alții au încercat să le egalizeze, dar rareori s-au reușit."
+    },
+    {
+        "id":  "atari-lynx",
+        "nume":  "Atari Lynx",
+        "producator":  "Atari",
+        "generatie":  4,
+        "lansare":  1989,
+        "imagine":  "assets/images/consoles/atari-lynx.webp",
+        "cpu":  {
+                    "arhitectura":  "VL65NC02 (Mikey)",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "4 MHz (medie 3,6 MHz)",
+                    "tdp":  "~2W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom Suzy (16-bit CMOS)",
+                    "unitati":  "N/A",
+                    "frecventa":  "16 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Scalare, rotire și distorsionare sprite-uri"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "64 KB",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartuș",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×102 color LCD (3.5\")",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Comlynx (până la 17/18 jucători), design ambidextru 180°, 4 canale audio"
+                       },
+        "avantaje":  [
+                         "Primul handheld cu ecran LCD color iluminat",
+                         "Scalare și distorsionare hardware a sprite-urilor",
+                         "Design ambidextru cu rotire 180°",
+                         "Comlynx permite multiplayer extins"
+                     ],
+        "dezavantaje":  [
+                            "Prețul de lansare a fost foarte ridicat",
+                            "Șase baterii AA țineau aproximativ 4-5 ore",
+                            "Carcasa voluminoasă reducea portabilitatea",
+                            "Biblioteca era mai mică decât la Game Boy",
+                            "Suportul third-party a rămas limitat"
+                        ],
+        "istorie":  "Atari Lynx: pionier color, strategie comercială fragilă<br><br><strong>Origine și dezvoltare</strong><br><br>Atari Lynx a pornit ca proiectul „Handy”, creat de Epyx în a doua jumătate a anilor ’80. Dave Morse, RJ Mical și Dave Needle au construit un sistem portabil orientat spre performanță, cu prototipuri realizate inițial pe plăci mari de test. Echipa a ales ecranul color, deși știa că această decizie va crește costurile și consumul energetic. După dificultățile financiare ale Epyx, Atari a preluat producția și lansarea comercială în septembrie 1989.<br><br><strong>Arhitectură și inovații</strong><br><br>Hardware-ul Lynx combina un CPU VL65NC02 (Mikey) la 4 MHz, cu medie de lucru în jur de 3,6 MHz, și un cip grafic Suzy pe 16-bit la 16 MHz. Sistemul integra 64 KB RAM, ecran color LCD de 3.5\" la 160×102 și o paletă de 4.096 culori, cu 16 culori pe linie de scanare. Consola s-a remarcat prin scalare, rotire și distorsionare hardware a sprite-urilor, plus coprocesare matematică. Audio-ul pe 4 canale și designul ambidextru, cu rotire software a imaginii la 180°, au consolidat profilul tehnic avansat.<br><br><strong>Modele și software</strong><br><br>Lynx I a debutat ca un model mare, cu preț de 179,99 USD și autonomie limitată la aproximativ 4-5 ore din șase baterii AA. Lynx II, lansat în 1991, a redus dimensiunea, a adăugat sunet stereo în căști și un mod Power Save pentru economie de energie, urcând autonomia spre 5-6 ore. Platforma a primit 73 de jocuri oficiale, incluzând California Games, Blue Lightning, Stunrunner și Batman Returns. Comlynx a permis multiplayer prin cablu, cu suport teoretic până la 17 sau 18 jucători, deși implementările practice au fost mai restrânse.<br><br><strong>Declin și moștenire</strong><br><br>În piață, avantajele tehnice nu au compensat prețul ridicat, consumul energetic mare și dimensiunile voluminoase. Nintendo Game Boy a oferit un pachet mai accesibil, cu autonomie superioară și bibliotecă mai puternică, iar Sega Game Gear a adăugat presiune directă pe segmentul color. Atari a mutat treptat atenția către Jaguar, iar Lynx a rămas fără susținere consistentă până la finalul ciclului comercial. Astăzi, consola are relevanță prin scena homebrew, modding-ul cu ecrane moderne și recunoașterea istorică drept primul handheld color iluminat cu funcții grafice înaintea timpului său."
+    },
+    {
+        "id":  "sega-game-gear",
+        "nume":  "Sega Game Gear",
+        "producator":  "Sega",
+        "generatie":  4,
+        "lansare":  1990,
+        "imagine":  "assets/images/consoles/sega-game-gear.webp",
+        "cpu":  {
+                    "arhitectura":  "Zilog Z80",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "3.58 MHz",
+                    "tdp":  "~2W"
+                },
+        "gpu":  {
+                    "arhitectura":  "VDP (SMS)",
+                    "unitati":  "Custom",
+                    "frecventa":  "10.74 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "64 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "8 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×144 color",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "SMS (adapter)",
+                           "altele":  "Backlit color"
+                       },
+        "avantaje":  [
+                         "Ecran color cu backlight",
+                         "Compatibil SMS (adapter)",
+                         "Hardware solid"
+                     ],
+        "dezavantaje":  [
+                            "6 baterii AA, 3-5 ore",
+                            "Greu și mare",
+                            "Bibliotecă mai mică decât GB"
+                        ],
+        "istorie":  "Sega Game Gear: Putere Master System în Buzunar - Totuși Incapabil de a Învinge Game Boy<br><br>Lansat în aprilie 1990 de Sega, Game Gear a oferit experiență Master System portabilă cu procesor Zilog Z80 la 3.579 MHz, 8 KB RAM, și display LCD de 3.5 inchi la 160×144 pixeli cu 4096 culori. Adapter inclus permitea rularea cartușelor Master System purtate, extinzând efectiv biblioteca. Hardware-ul era performant, iar jocurile - Sonic Triple Trouble, Columns, Gunstar Heroes - arată capacitățile sistemului. Phantom Battler Bradna și alte titluri exclusive au avut calitate.<br><br>Problema: Consumul de putere era extrem. Game Gear necesita 6 baterii AA cu durată de numai 3-5 ore de joc, comparativ cu 15-30 de ore ale Game Boy. Dimensiuni mari și greutate semnificativă făceau portabilitatea incomodă. Vânzări: 11+ milioane unități vs Game Boy 118+ milioane. Sega a dominat acasă cu Genesis dar nu handheld. Moștenire: Game Gear a dovedit din nou că puterea hardware nu compensa durata de baterie și comoditate de transport. Studiu de caz în design industrial: autonomia este feature mai importantă decât performanța brută."
+    },
+    {
+        "id":  "neo-geo-aes",
+        "nume":  "Neo Geo AES",
+        "producator":  "SNK",
+        "generatie":  4,
+        "lansare":  1990,
+        "imagine":  "assets/images/consoles/neo-geo-aes.webp",
+        "cpu":  {
+                    "arhitectura":  "Motorola 68000 (16/32-bit) + Zilog Z80",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "12 MHz (68000); 4 MHz (Z80)",
+                    "tdp":  "~15W"
+                },
+        "gpu":  {
+                    "arhitectura":  "SNK Custom",
+                    "unitati":  "N/A",
+                    "frecventa":  "12 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "65.536 culori (3.840 simultan), până la 380 sprite-uri, scaling în timp real"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "64 KB",
+                        "magistrala":  "24-bit (date grafice)",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM (max 330 Mb, ulterior peste 700 Mb)",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "320×224",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Paritate MVS/AES, card de memorie JEIDA ver. 3, benzi de sprite-uri"
+                       },
+        "avantaje":  [
+                         "Paritate reală între arcade și experiența de acasă.",
+                         "Performanță 2D superioară rivalilor direcți ai epocii.",
+                         "MVS a oferit suport oficial până în 2004.",
+                         "Serii SNK au definit genul fighting în anii ’90."
+                     ],
+        "dezavantaje":  [
+                            "Prețul consolei a fost prohibitiv pentru piața de masă.",
+                            "Jocurile costau mult peste media concurenței.",
+                            "Neo Geo CD a suferit din cauza încărcărilor lente.",
+                            "Hyper Neo Geo 64 a fost un eșec comercial rapid."
+                        ],
+        "istorie":  "Origine\nNeo Geo a fost lansat de SNK în 1990 ca o platformă construită pe ideea de paritate totală între arcade și acasă. Sistemul a fost gândit în două formate complementare: MVS pentru operatorii comerciali și AES pentru utilizatorii casnici. În locul compromisurilor obișnuite ale epocii, SNK a livrat aceeași bază tehnică, ceea ce a făcut din Neo Geo un produs distinct încă de la debut.\n\nPoziționare și model comercial\nAES a fost conceput inițial pentru închiriere, din cauza costurilor ridicate de producție, dar cererea pieței l-a transformat într-o consolă premium. Lansarea din SUA la 649,99 USD, alături de jocuri la 200-300 USD, a definit clar poziționarea de lux a platformei. În paralel, succesul MVS în sălile de jocuri a susținut ecosistemul pe termen lung și a redus presiunea portărilor între medii diferite.\n\nArhitectură\nConfigurația tehnică combină un Motorola 68000 la 12 MHz cu un Zilog Z80 la 4 MHz, folosit în principal pentru sunet. Sistemul operează la 320×224 și utilizează o paletă de 65.536 culori, cu până la 3.840 afișate simultan, plus până la 380 de sprite-uri pe ecran și scaling în timp real. Neo Geo a fost promovat ca „24-bit”, reflectând magistrala de date grafice și orientarea clară către performanță 2D avansată.\n\nEvoluție hardware\nMVS a introdus un avantaj operațional major prin suportul pentru mai multe cartușe într-o singură cabină, cu suport oficial extins până în 2004. AES a păstrat paritatea cu arcadele, dar a folosit un format fizic diferit al cartușelor față de MVS. Ulterior, Neo Geo CD a încercat să reducă costurile software prin CD-ROM, însă unitatea single-speed a adus timpi de încărcare prea mari, iar Hyper Neo Geo 64 nu a reușit tranziția planificată spre 3D.\n\nMoștenire\nBiblioteca Neo Geo a consolidat serii majore precum The King of Fighters, Samurai Shodown și Metal Slug, cu accent pe fighting și acțiune 2D de înaltă calitate. După reorganizarea SNK, brandul a continuat prin produse moderne ca Neo Geo Mini și Arcade Stick Pro, iar piața de colecționari a crescut constant. Astăzi, platforma rămâne relevantă prin reeditări, comunități active și dezvoltări noi pentru hardware-ul original."
+    },
+    {
+        "id":  "snes",
+        "nume":  "Super Nintendo",
+        "producator":  "Nintendo",
+        "generatie":  4,
+        "lansare":  1990,
+        "imagine":  "assets/images/consoles/snes.webp",
+        "cpu":  {
+                    "arhitectura":  "Ricoh 5A22 (derivat WDC 65C816)",
+                    "proces_nm":  "1.0 µm",
+                    "nuclee":  "1C",
+                    "frecventa":  "1.79-3.58 MHz",
+                    "tdp":  "~10W"
+                },
+        "gpu":  {
+                    "arhitectura":  "PPU (dual)",
+                    "unitati":  "2 PPU chips",
+                    "frecventa":  "3.58 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Mode 7, 32.768 culori (256 simultan), 128 sprite-uri"
+                },
+        "memorie":  {
+                        "tip":  "WRAM + VRAM + RAM audio",
+                        "capacitate":  "128 KB RAM, 64 KB VRAM, 64 KB RAM audio",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×224",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Mode 7, Super FX/Super FX2, DSP, SA-1, subsistem audio Sony"
+                       },
+        "avantaje":  [
+                         "Grafică și audio superioare pentru generația sa.",
+                         "Mode 7 a permis efecte pseudo-3D convingătoare.",
+                         "Bibliotecă solidă de platformere, RPG-uri și fighting.",
+                         "Cipurile din cartuș au extins viața platformei."
+                     ],
+        "dezavantaje":  [
+                            "Lansarea a venit după rivalii 16-biți principali.",
+                            "Politicile stricte pentru terți au creat tensiuni.",
+                            "Cenzura inițială a afectat percepția unor jocuri.",
+                            "Cartușele au menținut costuri ridicate la software."
+                        ],
+        "istorie":  "Origine\nSuper Nintendo, lansat inițial ca Super Famicom în 1990, a fost răspunsul calculat al Nintendo la presiunea noii generații pe 16 biți. Compania venea dintr-o poziție dominantă pe piața nord-americană, dar apariția PC Engine și Mega Drive a schimbat ritmul competiției. Proiectul anunțat de Hiroshi Yamauchi în 1987 a urmărit o direcție clară: un sistem de bază echilibrat, extensibil prin cipuri suplimentare integrate în cartușe.\n\nLansare și poziționare\nDebutul japonez din 21 noiembrie 1990 a avut efect imediat, cu stocul inițial de 300.000 de unități epuizat în câteva ore. În anii următori, SNES a devenit nucleul confruntării comerciale cu Sega, într-un context în care marketingul și percepția publică contau aproape la fel de mult ca specificațiile. Nintendo a mizat pe control strict al calității software și pe titluri first-party puternice, pentru a păstra consistența ecosistemului.\n\nArhitectură\nPlatforma folosește procesorul Ricoh 5A22, derivat din WDC 65C816, cu frecvență variabilă între 1.79 și 3.58 MHz. Subsistemul video, bazat pe PPU, gestionează 32.768 de culori, cu 256 afișabile simultan, și până la 128 de sprite-uri pe ecran. SNES include 128 KB RAM principală, 64 KB VRAM și un subsistem audio proiectat cu implicarea Sony, cu procesor dedicat, DSP și 64 KB RAM pentru sunet.\n\nInovație modulară\nUn element definitoriu a fost abordarea modulară prin cipuri de îmbunătățire în cartușe. Super FX și Super FX2 au făcut posibilă randarea 3D în timp real în titluri precum Star Fox, în timp ce DSP-ul a accelerat calculele pentru rotații și scalări. Cipul SA-1 a extins performanța în jocuri complexe, iar Mode 7 a devenit semnătura vizuală a platformei în jocuri precum F-Zero și Pilotwings.\n\nBibliotecă, controverse și moștenire\nCatalogul SNES a consolidat standarde în platforming, RPG și jocuri de luptă, prin titluri precum Super Mario World, Donkey Kong Country, Final Fantasy și Street Fighter II. În paralel, perioada a inclus controverse comerciale și legislative: politici restrictive pentru terți, sancțiuni FTC privind prețurile și dezbateri politice despre conținut violent. În final, SNES rămâne un reper tehnologic al erei 2D, prin echilibrul dintre hardware-ul de bază, extensiile inteligente și consistența bibliotecii de jocuri."
+    },
+    {
+        "id":  "philips-cd-i",
+        "nume":  "Philips CD-i",
+        "producator":  "Philips",
+        "generatie":  4,
+        "lansare":  1991,
+        "imagine":  "assets/images/consoles/philips-cd-i.webp",
+        "cpu":  {
+                    "arhitectura":  "Philips SCC68070 (16/32-bit)",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "15.5 MHz",
+                    "tdp":  "~20W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "384×280 până la 768×560, 16,7 milioane culori (32.768 simultan)"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "1 MB (extensibil; +1,5 MB cu DVC)",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "CD-ROM",
+                        "interfata":  "CD-ROM Single Speed",
+                        "viteza":  "1x"
+                    },
+        "output_video":  {
+                             "rezolutie":  "384×280 până la 768×560",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Green Book, CD-RTOS, Video CD prin DVC (MPEG-1), CD-Online/Web-i, TeleCD-i"
+                       },
+        "avantaje":  [
+                         "A pionierat conceptul de centru multimedia pentru acasă.",
+                         "A introdus Video CD prin modulul DVC.",
+                         "A oferit servicii online timpurii pe televizor.",
+                         "A inclus conținut educațional și cultural interactiv."
+                     ],
+        "dezavantaje":  [
+                            "Prețul inițial a limitat puternic adopția.",
+                            "Identitatea de produs a rămas confuză pentru public.",
+                            "Controllerul standard era slab pentru jocuri dinamice.",
+                            "Hardware-ul părea depășit față de noile console și PC-uri."
+                        ],
+        "istorie":  "Origine\nPhilips CD-i a apărut din ambiția Philips și Sony de a extinde discul compact dincolo de audio, către un format interactiv pentru locuințe. Standardul Green Book, definit în a doua jumătate a anilor ’80, a pus bazele tehnice pentru integrarea conținutului audio, video și aplicații pe același mediu optic. La lansarea din 1991, platforma a fost prezentată ca un centru multimedia complet, nu ca o consolă clasică de jocuri.\n\nArhitectură\nSistemul folosește procesorul Philips SCC68070 la 15,5 MHz, 1 MB RAM și o unitate CD-ROM single-speed, într-o configurație apropiată de un echipament hi-fi. Partea video acoperă rezoluții între 384×280 și 768×560, cu suport pentru 16,7 milioane de culori și 32.768 simultan. Pentru redare MPEG-1 și Video CD, CD-i avea nevoie de Digital Video Cartridge, care adăuga procesare pe 32 de biți și 1,5 MB memorie suplimentară.\n\nConținut și servicii\nÎn prima etapă, Philips a mizat pe enciclopedii interactive, tururi culturale și produse edutainment, încercând să poziționeze platforma ca instrument de informare și auto-învățare. Ulterior, direcția s-a mutat spre jocuri, inclusiv proiecte rezultate din acordul cu Nintendo, care au rămas controversate. CD-i a experimentat devreme și zona online prin CD-Online/Web-i, cu navigare web, e-mail și Usenet, plus inițiative comerciale precum TeleCD-i.\n\nDeclin și moștenire\nÎn practică, prețul foarte ridicat, mesajul de marketing neclar și controlerul slab pentru jocuri au redus rapid atractivitatea produsului. În același timp, evoluția consolelor dedicate și scăderea prețurilor PC-urilor multimedia au erodat principalul argument al sistemului. CD-i a fost retras în 1998, după pierderi majore pentru Philips. Chiar și așa, platforma rămâne relevantă istoric prin rolul de precursor pentru consumul video digital pe disc optic și pentru ideea de hub multimedia de sufragerie."
+    },
+    {
+        "id":  "3do",
+        "nume":  "3DO Interactive",
+        "producator":  "Panasonic",
+        "generatie":  5,
+        "lansare":  1993,
+        "imagine":  "assets/images/consoles/3do.webp",
+        "cpu":  {
+                    "arhitectura":  "ARM60 (32-bit RISC)",
+                    "proces_nm":  "600 nm",
+                    "nuclee":  "1C",
+                    "frecventa":  "12.5 MHz",
+                    "tdp":  "~20W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Două co-procesoare video",
+                    "unitati":  "9-16 milioane pixeli/sec",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "640×480 interpolat, 320×240 nativ, grafică 3D texturată"
+                },
+        "memorie":  {
+                        "tip":  "DRAM + VRAM + SRAM",
+                        "capacitate":  "2 MB DRAM, 1 MB VRAM, 32 KB SRAM",
+                        "magistrala":  "32-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "CD-ROM",
+                        "interfata":  "CD-ROM double-speed",
+                        "viteza":  "2x (300 KB/s)"
+                    },
+        "output_video":  {
+                             "rezolutie":  "640×480",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Dolby Surround, Photo CD, Video CD (MPEG), daisy-chaining, fără blocare regională"
+                       },
+        "avantaje":  [
+                         "Prima consolă pe 32 de biți lansată pe piață.",
+                         "Grafică 3D texturată nativă fără cipuri suplimentare.",
+                         "Redevențe mici pentru dezvoltatori au atras many third-party.",
+                         "Multimedia avansat: CD audio, Photo CD, Video CD."
+                     ],
+        "dezavantaje":  [
+                            "Prețul de 699 USD a limitat adopția la nișă.",
+                            "Model de licențiere a împiedicat scăderea rapidă a prețurilor.",
+                            "Biblioteca dominată de FMV de calitate slabă.",
+                            "PlayStation și Saturn au neutralizat avantajul inițial rapid."
+                        ],
+        "istorie":  "Origine\n3DO Interactive Multiplayer a apărut din viziunea lui Trip Hawkins, fondatorul Electronic Arts, care a părăsit compania în 1991 pentru a înființa The 3DO Company. Scopul principal era crearea unui standard universal pentru divertismentul digital, pe principiul VHS: o specificație hardware licențiată către mai mulți producători, în loc de o platformă controlată central. Dave Needle și RJ Mical, creatorii Atari Lynx, au proiectat arhitectura tehnică, vizând capacități grafice 3D native și multimedia avansate.\n\nModel de afaceri și lansare\n3DO nu a produs propriul hardware, ci a licențiat specificațiile către parteneri precum Panasonic, GoldStar, Sanyo și alții. Acest model a creat o problemă mayoră: producătorii trebuiau să obțină profit direct din hardware, spre deosebire de Sony sau Sega care compensau prin vânzări software. Rezultatul a fost prețul de lansare de 699 USD în octombrie 1993, nivel care a limitat rapid piața doar la early adopters. În paralel, redevențele mici pentru editoare (3 USD/joc) au atras mulți dezvoltatori.\n\nArhitectură\nPlatforma folosește un procesor ARM60 RISC pe 32 de biți la 12,5 MHz, combinat cu două co-procesoare video capabile să proceseze 9-16 milioane pixeli/secundă. Configurația include 2 MB DRAM, 1 MB VRAM și 32 KB SRAM pentru salvări. Unitatea CD-ROM double-speed oferă 300 KB/s, iar sunetul DSP pe 16 biți suportă Dolby Surround și stereo 44,1 kHz. 3DO a fost promovat drept Multiplayer Interactiv, cu suport pentru Photo CD, Video CD (prin adaptor MPEG) și daisy-chaining până la 8 controllere.\n\nBibliotecă și declin\nLansarea a avut un singur joc (Crash 'N Burn), iar biblioteca s-a extins ulterior cu titluri precum Gex, Samurai Shodown, Super Street Fighter II Turbo, Need for Speed și Myst. Din păcate, dominația jocurilor bazate pe FMV de calitate slabă a afectat percepția platformei. În 1994-1995, apariția PlayStation și Saturn, cu hardware superior și prețuri mai mici, a neutralizat rapid avantajul 3DO. Modelul de licențiere, fără control centralizat, a împiedicat coordonarea și reducerea rapidă a costurilor.\n\nMoștenire\nProducția s-a încheiat în 1996, iar The 3DO Company a abandonat hardware-ul pentru a deveni dezvoltator software, intrând în faliment în 2003. Deși a vândut între 1,38 și 2 milioane de unități, 3DO rămâne o lecție despre ambiția tehnologică care nu a putut fi susținută economic. Cu toate acestea, principiile sale — standardizare, multimedia și grafică 3D nativă — au influențat generațiile ulterioare de console."
+    },
+    {
+        "id":  "atari-jaguar",
+        "nume":  "Atari Jaguar",
+        "producator":  "Atari",
+        "generatie":  5,
+        "lansare":  1993,
+        "imagine":  "assets/images/consoles/atari-jaguar.webp",
+        "cpu":  {
+                    "arhitectura":  "Motorola 68000 (16-bit) + Tom (32-bit GPU) + Jerry (32-bit DSP)",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C + 2 RISC",
+                    "frecventa":  "13.295 MHz (68000); 26.591 MHz (Tom/Jerry)",
+                    "tdp":  "~15W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Tom (GPU + Object Processor + Blitter)",
+                    "unitati":  "32-bit RISC GPU, 64-bit Object Processor, 64-bit Blitter",
+                    "frecventa":  "26.591 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Magistrală date 64-bit către memorie externă"
+                },
+        "memorie":  {
+                        "tip":  "DRAM",
+                        "capacitate":  "2 MB",
+                        "magistrala":  "64-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge + Jaguar CD (add-on)",
+                        "interfata":  "ROM / CD-ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "720×576",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Jaglink (LAN), sunet CD 16-bit stereo, platformă deschisă din 1999"
+                       },
+        "avantaje":  [
+                         "Promovată ca prima consolă de 64 de biți.",
+                         "Tempest 2000 este considerat aproape universal cel mai bun joc.",
+                         "Eliberată ca platformă deschisă în 1999 pentru homebrew.",
+                         "Prețul de lansare competitiv: 249,95 USD."
+                     ],
+        "dezavantaje":  [
+                            "Arhitectură multi-cip extrem de complexă pentru programare.",
+                            "Bug-uri hardware și instrumente de dezvoltare neterminate.",
+                            "Bibliotecă de doar 63 titluri licențiate, multe slabe calitativ.",
+                            "Sub 150.000 unități vândute, eșec comercial total."
+                        ],
+        "istorie":  "Origine\nAtari Jaguar a fost dezvoltată de Flare Technology (Martin Brennan și John Mathieson) la începutul anilor '90, ca parte a efortului Atari de a reveni în competiție după declinul din generația anterioară. Proiectul a progresat atât de rapid încât Atari a anulat consola Panther pentru a se concentra exclusiv pe tehnologia mai avansată a Jaguar. Decizia a implicat și oprirea suportului pentru linia de calculatoare Atari ST și pentru sistemele pe 8 biți.\n\nLansare și poziționare\nConsola a debutat pe 23 noiembrie 1993 la 249,95 USD, prin piețe-test în New York și San Francisco, urmată de lansarea națională în 1994. IBM a primit un contract de 500 de milioane de dolari pentru fabricație. Atari a promovat intensiv mesajul \"Do the Math!\", prezentând Jaguar drept prima consolă de 64 de biți, în contrast cu rivalii de 16 biți. Controversa tehnică privind această afirmație a apărut imediat, deoarece doar magistrala de date și procesorul de obiecte erau pe 64 de biți, în timp ce procesoarele principale executau seturi de instrucțiuni pe 32 sau 16 biți.\n\nArhitectură\nSistemul folosește cinci procesoare distribuite în trei cipuri: Tom la 26,591 MHz conține un GPU RISC pe 32 de biți, un procesor de obiecte pe 64 de biți și un Blitter pe 64 de biți, în timp ce Jerry la aceeași frecvență include un DSP pe 32 de biți pentru sunet stereo pe 16 biți. Motorola 68000 la 13,295 MHz acționează ca manager de sistem. Configurația include 2 MB DRAM și o magistrală de date pe 64 de biți către memoria externă, însă sincronizarea manuală a cipurilor Tom și Jerry și bug-urile hardware au transformat programarea într-o provocare majoră.\n\nBibliotecă și recepție\nLibraria s-a limitat la 63 de titluri licențiate (50 pe cartuș, 13 pe CD). Tempest 2000 a fost considerat aproape universal cel mai bun joc, iar Alien vs Predator a fost cel mai bine vândut cu 52.223 unități. Multe titluri arătau ca jocuri de 16 biți, eșuând să demonstreze puterea hardware-ului. Absența dezvoltatorilor majori precum Capcom sau Konami a slăbit și mai mult oferta.\n\nDeclin și moștenire\nÎn 1995, Jaguar deținea 0% cotă de piață în segmentul 32/64 de biți, depășită chiar și de 3DO. Lansarea PlayStation și Saturn a marginalizat complet sistemul. Producția a încetat în noiembrie 1995, iar în aprilie 1996 Atari Corporation a fuzionat cu JTS. În 1999, Hasbro a eliberat patentele Jaguar în domeniul public, transformând-o într-o platformă deschisă pentru homebrew. Astăzi, comunitatea activă și emularea modernă (BigPEmu) mențin platforma relevantă pentru colecționari și pasionați."
+    },
+    {
+        "id":  "playstation-1",
+        "nume":  "PlayStation 1",
+        "producator":  "Sony",
+        "generatie":  5,
+        "lansare":  1994,
+        "imagine":  "assets/images/consoles/ps1.webp",
+        "cpu":  {
+                    "arhitectura":  "R3000A 32-bit RISC",
+                    "proces_nm":  "0.8 µm",
+                    "nuclee":  "1C",
+                    "frecventa":  "33.86 MHz",
+                    "tdp":  "~10W"
+                },
+        "gpu":  {
+                    "arhitectura":  "GPU custom",
+                    "unitati":  "360.000 poligoane/sec",
+                    "frecventa":  "33.8 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "16,7 milioane culori (True Color), texture mapping"
+                },
+        "memorie":  {
+                        "tip":  "RAM + VRAM",
+                        "capacitate":  "2 MB RAM, 1 MB VRAM",
+                        "magistrala":  "32-bit",
+                        "bandwidth":  "132 MB/s"
+                    },
+        "stocare":  {
+                        "tip":  "CD-ROM",
+                        "interfata":  "CD-ROM (650 MB)",
+                        "viteza":  "2x"
+                    },
+        "output_video":  {
+                             "rezolutie":  "640×480",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Audio 16-bit 24 canale, DualShock (1997), simboluri geometrice pe butoane"
+                       },
+        "avantaje":  [
+                         "Prima platformă care a depășit 100 milioane unități vândute.",
+                         "CD-ROM mai ieftin și cu capacitate de 650 MB.",
+                         "Catalog de peste 3.000 jocuri, aproape 1 miliard vândute.",
+                         "DualShock a devenit standard industrial pentru controllere."
+                     ],
+        "dezavantaje":  [
+                            "Încărcări mai lente de pe CD comparativ cu cartușe.",
+                            "Texturi instabile (wobble) din lipsa RAM dedicată texturi.",
+                            "Concentrarea pe 3D a lăsat 2D în plan secundar.",
+                            "Jocuri pe discuri multiple (până la 5) pentru titluri complexe."
+                        ],
+        "istorie":  "Origine\nPlayStation a apărut din cenușa unui parteneriat eșuat între Sony și Nintendo. În anii '90, Sony, sub conducerea lui Ken Kutaragi, lucra la o unitate CD-ROM pentru Super Famicom. În 1991, la CES, Sony a anunțat proiectul \"Play Station\", dar Nintendo a rupt public acordul a doua zi, alegând să colaboreze cu Philips. Președintele Sony, Norio Ohga, infuriat de umilință, l-a însărcinat pe Kutaragi să dezvolte un sistem propriu pentru a rivaliza cu Nintendo. Sony Computer Entertainment Inc. a fost înființată în noiembrie 1993 ca entitate separată.\n\nLansare și poziționare\nConsola a debutat în Japonia pe 3 decembrie 1994, marcând intrarea Sony pe piața jocurilor video. Strategia s-a bazat pe trecerea la CD-ROM, oferind capacitate de 650 MB față de 12 MB pe cartușe, costuri reduse de producție și posibilitatea de a include secvențe video și muzică de calitate CD. La E3 1995, Steve Race a urcat pe scenă și a rostit doar \"299\", prețul în dolari, cu 100 USD mai ieftin decât Sega Saturn, declanșând un avantaj competitiv instantaneu.\n\nArhitectură\nPlatforma folosește un procesor R3000A RISC pe 32 de biți la 33,86 MHz, combinat cu 2 MB RAM și 1 MB VRAM. Partea grafică procesează 360.000 poligoane pe secundă și suportă 16,7 milioane de culori (True Color). Audio-ul oferă 16-bit sound pe 24 canale. Designul controllerului a trecut prin peste 200 de prototipuri, iar mânerele au fost inspirate de manșa avioanelor. Simbolurile geometrice (triunghi, pătrat, cerc, X) au înlocuit butoanele literale, fiecare cu semnificații specifice: triunghiul pentru perspectivă, pătratul pentru meniuri, cercul pentru confirmare în Japonia, X pentru anulare.\n\nBibliotecă și impact\nCu aproape 1 miliard de discuri vândute și peste 3.000 de jocuri, biblioteca PS1 a fost extrem de diversă. Gran Turismo a devenit cel mai vândut joc cu 10,85 milioane unități, iar Final Fantasy VII a mutat seria de la Nintendo la Sony datorită capacității CD-ului. Jocuri precum Crash Bandicoot au devenit mascote neoficiale, deși Ken Kutaragi dorea ca PlayStation să fie percepută ca o consolă matură. Controllerul DualShock, lansat în 1997 cu două stick-uri analogice și motoare de vibrație, a devenit standardul industrial.\n\nMoștenire\nProducția a continuat 12 ani (1994-2006), iar în 2000 a fost lansată versiunea redesenată PSone, mult mai mică și compatibilă cu ecran LCD de 5 inci pentru portabilitate. PlayStation a depășit pragul de 100 milioane de unități, redefinind divertismentul digital și stabilind standarde pentru branding, controllere și distribuție. În 2006, NASA a ales procesorul PS1 pentru sonda New Horizons datorită fiabilității sale, iar modelele timpurii sunt considerate de audiofili printre cele mai bune CD-playere create vreodată."
+    },
+    {
+        "id":  "sega-saturn",
+        "nume":  "Sega Saturn",
+        "producator":  "Sega",
+        "generatie":  5,
+        "lansare":  1994,
+        "imagine":  "assets/images/consoles/sega-saturn.webp",
+        "cpu":  {
+                    "arhitectura":  "2 × Hitachi SH-2 RISC (32-bit)",
+                    "proces_nm":  "350 nm",
+                    "nuclee":  "2C",
+                    "frecventa":  "28.6 MHz × 2",
+                    "tdp":  "~25W"
+                },
+        "gpu":  {
+                    "arhitectura":  "VDP1 (sprite-uri/poligoane) + VDP2 (fundaluri)",
+                    "unitati":  "Dual video processors",
+                    "frecventa":  "28.6 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Patrulatere ca primitive de bază, VSD software"
+                },
+        "memorie":  {
+                        "tip":  "Work RAM + VRAM + Sound RAM",
+                        "capacitate":  "2 MB WRAM, 1.5 MB VRAM, 512 KB Sound RAM",
+                        "magistrala":  "32-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "CD-ROM",
+                        "interfata":  "CD-ROM (cu procesor Hitachi SH-1)",
+                        "viteza":  "2x"
+                    },
+        "output_video":  {
+                             "rezolutie":  "704×480",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Motorola 68EC000 audio @ 11.3 MHz, Yamaha YMF292 SCSP (32 canale), cartuș 4MB RAM"
+                       },
+        "avantaje":  [
+                         "Excelență în jocuri 2D și portări arcade.",
+                         "Controllerul Model 2 cu cel mai bun D-pad.",
+                         "A depășit Nintendo 64 pe piața japoneză.",
+                         "Hardware dedicat audio de înaltă calitate (32 canale)."
+                     ],
+        "dezavantaje":  [
+                            "Arhitectură cu 8 procesoare extrem de complexă.",
+                            "Lansarea surpriză la E3 1995 a alienat retailerii.",
+                            "Absența unui joc Sonic 3D a fost critică.",
+                            "Patrulatere în loc de triunghiuri au descurajat third-party."
+                        ],
+        "istorie":  "Origine\nSega Saturn a început dezvoltarea în 1992 sub coordonarea lui Hideki Sato, ca răspuns direct la succesul hardware-ului arcade 3D de la Sega și la amenințarea emergentă a consolei Sony PlayStation. Proiectul s-a concentrat inițial pe un procesor Hitachi SH-1, dar arhitectura a fost extinsă în 1994 prin adăugarea unui al doilea VDP pentru performanță 2D îmbunătățită și mapare texturilor 3D mai bună. Decizia de a folosi două procesoare Hitachi SH-2 a fost luată pentru eficiență și cost, deși aceasta a adăugat complexitate semnificativă.\n\nLansare și poziționare\nConfruntată cu presiunea PlayStation, Sega of America a organizat o lansare surpriză la E3 1995, anunțând disponibilitatea imediată la 399 USD, cu patru luni înainte de calendarul planificat. Decizia a avut efecte negative majore: retailerii neincluși în lansarea limitată au reacționat dur, iar dezvoltatorii third-party nu erau pregătiți. Sony a replicat imediat cu un preț de 299 USD pentru PlayStation, stabilind un avantaj crucial. Această tactică a afectat relațiile comerciale și a limitat biblioteca de jocuri la lansare la doar șase titluri Sega.\n\nArhitectură\nSaturn folosește o configurație complexă cu opt procesoare, distribuită în patru subsisteme: CPU, Video, Audio și CD-ROM. Partea centrală include două procesoare Hitachi SH-2 RISC pe 32 de biți la 28,6 MHz, care partajează același bus, generând congestii. Subsistemul video combină VDP1 pentru sprite-uri și poligoane cu VDP2 pentru fundaluri, în timp ce audio-ul este gestionat de un Motorola 68EC000 la 11,3 MHz și un Yamaha YMF292 cu 32 canale. Unitatea CD-ROM 2x este controlată de un procesor dedicat Hitachi SH-1. Sistemul folosește 2 MB Work RAM, 1,5 MB VRAM și 512 KB Sound RAM.\n\nLibrarie și recepție\nBiblioteca Saturn este polarizată între succesul din Japonia și dificultățile din Occident. Consola a devenit regele jocurilor 2D, cu portări arcade aproape perfecte de la Capcom și SNK, susținute de cartușul de expansiune de 4MB RAM. Titluri precum Nights into Dreams, Panzer Dragoon și Virtua Fighter 2 au demonstrat capabilitățile unice ale sistemului. În Japonia, unde cultura arcade era mai puternică, Saturn a depășit Nintendo 64. Totuși, absența unui joc Sonic 3D (Sonic X-treme a fost anulat în 1997) și dificultățile de programare cu patrulatere în loc de triunghiuri au descurajat dezvoltatorii occidentali.\n\nDeclin și moștenire\nÎn 1997, Saturn deținea doar 12% din piața SUA, pierzând clar în fața Sony și Nintendo. Sega a retras consola de pe piața americană în 1998 pentru a se concentra pe Dreamcast, lăsând fanii fără titluri noi timp de un an. În ciuda vânzărilor de doar 9,26 milioane de unități la nivel mondial, Saturn păstrează un statut de cult datorită bibliotecii remarcabile de jocuri 2D și experimentale, precum și pentru Controllerul Model 2 și introducerea stick-ului analogic prin 3D Pad. Comunitatea dedicată de fani continuă să celebreze platforma pentru originalitatea și inovația sa."
+    },
+    {
+        "id":  "nintendo-64",
+        "nume":  "Nintendo 64",
+        "producator":  "Nintendo",
+        "generatie":  5,
+        "lansare":  1996,
+        "imagine":  "assets/images/consoles/nintendo-64.webp",
+        "cpu":  {
+                    "arhitectura":  "NEC VR4300 (bazat pe MIPS R4300i)",
+                    "proces_nm":  "350 nm",
+                    "nuclee":  "1C",
+                    "frecventa":  "93.75 MHz",
+                    "tdp":  "~15W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Reality Coprocessor (RCP)",
+                    "unitati":  "Reality Immersion Technology",
+                    "frecventa":  "62.5 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Z-buffer, AA, filtrare triliniară, memorie unificată"
+                },
+        "memorie":  {
+                        "tip":  "RDRAM (Rambus)",
+                        "capacitate":  "4 MB (extensibil la 8 MB via Expansion Pak)",
+                        "magistrala":  "9-bit",
+                        "bandwidth":  "562 MB/s"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge (Game Paks)",
+                        "interfata":  "ROM (până la 64 MB)",
+                        "viteza":  "~5 MB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×224 până la 640×480",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Stick analogic standard, 4 porturi jucători, audio 16-bit 44.1 kHz, Dolby Pro Logic, format 16:9"
+                       },
+        "avantaje":  [
+                         "Primul cu stick analogic ca dotare standard.",
+                         "Patru porturi pentru jucători integrate nativ.",
+                         "Timpi de încărcare aproape inexistenți datorită cartușelor.",
+                         "Filtrare triliniară pentru texturi netede și anti-aliasing.",
+                         "Bibliotecă cu jocuri de înaltă calitate și inovații majore."
+                     ],
+        "dezavantaje":  [
+                            "Capacitate limitată: 64 MB cartuș vs 650 MB CD.",
+                            "Costuri de producție ridicate au crescut prețurile la jocuri.",
+                            "Alienarea dezvoltatorilor terți (Square, Enix migrează la Sony).",
+                            "Bibliotecă mică: doar 388 titluri oficiale.",
+                            "Compresie agresivă pentru texturi și sunet, fără FMV."
+                        ],
+        "istorie":  "Origine\nNintendo 64 a început dezvoltarea în 1993 sub numele de cod \"Project Reality\", printr-un parteneriat strategic cu Silicon Graphics (SGI), lider în calculul de înaltă performanță. Scopul era adaptarea tehnologiei supercomputerelor într-un produs de consum accesibil. SGI a furnizat chipset-ul de bază, cunoscut ca \"Reality Immersion Technology\", iar arhitectura finală a fost concepută pentru a domina grafica 3D. Inițial denumită \"Ultra 64\", consola a fost redenumită \"Nintendo 64\" pentru a evita conflictele de marcă și a unifica branding-ul global.\n\nLansare și poziționare\nConsola a debutat în Japonia pe 23 iunie 1996, urmată de America de Nord pe 29 septembrie 1996 și Europa pe 1 martie 1997. Nintendo a utilizat campanii de marketing precum \"Wait for it...\" și \"Get 'N' or get out\" pentru a menține interesul consumatorilor în fața concurenței deja lansate (Sega Saturn și Sony PlayStation). Promovată ca prima consolă pe 64 de biți, N64 a beneficiat de aclamarea revistei Time, care a numit-o \"Mașina Anului 1996\" pentru realismul experienței 3D.\n\nArhitectură și inovație\nPlatforma folosește un procesor NEC VR4300 bazat pe MIPS R4300i la 93,75 MHz, combinat cu Reality Coprocessor la 62,5 MHz pentru procesare grafică și audio. Sistemul include 4 MB RDRAM extensibil la 8 MB prin Expansion Pak, iar arhitectura memoriei unificate elimină băncile separate pentru CPU, audio și video. N64 a fost prima consolă care a oferit filtrare triliniară pentru netezirea texturilor și suport nativ pentru rezoluții între 256×224 și 640×480, inclusiv format 16:9. Audio-ul oferă 16-bit stereo la 44,1 kHz cu suport Dolby Pro Logic surround.\n\nController și format\nControlerul N64, cu designul distinctiv în formă de \"M\", a introdus stick-ul analogic ca dotare standard, oferind control pe 360 de grade și redefinind interacțiunea cu spațiile 3D. Include 10 butoane, un D-pad și un Z-trigger pe spate. Consola a fost construită pentru multiplayer local, fiind prima capabilă să ruleze patru ecrane divizate fără încetiniri majore. Decizia de a rămâne la cartușe ROM (până la 64 MB) în loc de CD-ROM (650 MB) a fost controversată: cartușele ofereau timpi de încărcare aproape inexistenți și protecție anti-piraterie, dar costuri ridicate și spațiu limitat au alienat dezvoltatori terți importanți precum Square și Enix.\n\nBibliotecă și moștenire\nCu 388 de titluri oficiale, biblioteca N64 a fost relativ mică, dar excepțional de calitativă. Super Mario 64 a vândut 11,62 milioane unități și a pionierat controlul camerei și mișcarea 3D, în timp ce The Legend of Zelda: Ocarina of Time a stabilit standardele moderne pentru action-adventure. GoldenEye 007 a revoluționat shooter-ele pe console, iar parteneriatul cu Rare a adus hituri critice precum Banjo-Kazooie și Perfect Dark. Cu 32,93 milioane de unități vândute (20,63 în America de Nord), N64 a dominat piața nord-americană, dar a fost depășită global de PlayStation. Producția s-a încheiat în 2002-2003, iar moștenirea sa continuă prin emulare modernă și hardware FPGA precum Analogue 3D."
+    },
+    {
+        "id":  "game-boy-color",
+        "nume":  "Game Boy Color",
+        "producator":  "Nintendo",
+        "generatie":  5,
+        "lansare":  1998,
+        "imagine":  "assets/images/consoles/game-boy-color.webp",
+        "cpu":  {
+                    "arhitectura":  "Sharp LR35902",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "8.39 MHz",
+                    "tdp":  "~0.6W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom LCD",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "40 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "32 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×144 color",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Game Boy",
+                           "altele":  "Infrared"
+                       },
+        "avantaje":  [
+                         "Ecran color",
+                         "Backward compat GB",
+                         "Pokémon Gold/Silver",
+                         "Baterie bună"
+                     ],
+        "dezavantaje":  [
+                            "Fără backlight",
+                            "Hardware modest",
+                            "Upgrade incremental"
+                        ],
+        "istorie":  "Game Boy Color: Culoarea Care a Menținut Dominația Portabilă<br><br>Lansat în octombrie 1998, Game Boy Color a adus culoare la ecosistemul Game Boy cu 56-color palette și backward compatibility completă cu jocurile originale Game Boy. Procesor Zilog Z80 la 8.38 MHz (dual-speed), 32 KB RAM dual-bank, și display de 2.9 inchi - Game Boy Color oferea upgrade incremental dar strategic. Pokémon Gold/Silver exclusive pe Color a fost killer app. Vânzări: 118.69 milioane cumulative (GB + GBC combinate). Moștenire: GBC a demonstrat că evoluție graduală cu backward compatibility bate revolutionary inovație cu compatibilitate limitată."
+    },
+    {
+        "id":  "neo-geo-pocket",
+        "nume":  "Neo Geo Pocket",
+        "producator":  "SNK",
+        "generatie":  5,
+        "lansare":  1998,
+        "imagine":  "assets/images/consoles/neo-geo-pocket.webp",
+        "cpu":  {
+                    "arhitectura":  "Toshiba TLCS-900H",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "6.144 MHz",
+                    "tdp":  "~1W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "64 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "12 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×152 mono",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Clicky joystick"
+                       },
+        "avantaje":  [
+                         "Joystick clicky excelent",
+                         "Baterie durabilă",
+                         "Jocuri SNK"
+                     ],
+        "dezavantaje":  [
+                            "Doar monocrom",
+                            "Scurtă durată",
+                            "Bibliotecă mică"
+                        ],
+        "istorie":  "Neo Geo Pocket: SNK Portabil Monocrom - A Challenger to Game Boy Never Was<br><br>Lansat în martie 1999, Neo Geo Pocket a fost încercare de SNK de a competi cu Game Boy pe portabil utilizând joystick microswitch proprietary clicky (prețios). Procesor 6.144 MHz, display LCD monocrom 160×152 - Neo Geo Pocket oferia calitate SNK cu autonomie 30+ ore. Combat Games (King of Fighters, Fatal Fury) exclusive au fost atracție. Totuși, vânzări au ajuns doar la 1.2 milioane vs Game Boy 118+ milioane. Moștenire: design excelent, piață greșită, timp greșit."
+    },
+    {
+        "id":  "sega-dreamcast",
+        "nume":  "Sega Dreamcast",
+        "producator":  "Sega",
+        "generatie":  6,
+        "lansare":  1998,
+        "imagine":  "assets/images/consoles/sega-dreamcast.webp",
+        "cpu":  {
+                    "arhitectura":  "Hitachi SH-4",
+                    "proces_nm":  "180 nm",
+                    "nuclee":  "1C",
+                    "frecventa":  "200 MHz",
+                    "tdp":  "~30W"
+                },
+        "gpu":  {
+                    "arhitectura":  "NEC PowerVR2 CLX2",
+                    "unitati":  "3-7M poly/s",
+                    "frecventa":  "100 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "T&L, deferred rendering"
+                },
+        "memorie":  {
+                        "tip":  "SDRAM",
+                        "capacitate":  "16 MB + 8 MB video + 2 MB audio",
+                        "magistrala":  "64-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "GD-ROM",
+                        "interfata":  "Yamaha GD-ROM (1.0-1.2 GB)",
+                        "viteza":  "12x"
+                    },
+        "output_video":  {
+                             "rezolutie":  "640×480",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Modem integrat (33.6k/56k), VMU, Windows CE, NAOMI arcade hardware"
+                       },
+        "avantaje":  [
+                         "Prima consolă cu modem și jocuri online integrate",
+                         "VMU revoluționar: ecran, jocuri portabile, salvări",
+                         "Arhitectură standard facilitând port-uri arcade perfecte",
+                         "Biblioteca creativă și experimentală (600+ jocuri)",
+                         "Jocuri iconice: Sonic Adventure, Shenmue, PSO, Soulcalibur"
+                     ],
+        "dezavantaje":  [
+                            "Anunțul PS2 cu DVD integrat a distrus perspectivele",
+                            "Lipsa suportului Electronic Arts și jocuri sportive",
+                            "Formatul GD-ROM vs capacitate DVD limitată",
+                            "Fără protecție DRM: piraterie ușoară și MIL-CD exploit",
+                            "Pierderile financiare au forțat retragerea in 15 luni"
+                        ],
+        "istorie":  "Sega Dreamcast reprezintă o poveste paradoxală în istoria jocurilor video: o platformă inovatoare, mult înaintea timpului său, practic distrusă de forțe externe pe care nici măcar puterea creativității sale nu a putut să le contracareze. Lansată în 1998 în Japonia și septembrie 1999 la nivel mondial, Dreamcast a fost prima consolă din a șasea generație, devansând PlayStation 2 în lansare cu peste un an. Cu 9,13 milioane de unități vândute și o bibliotecă de peste 600 titluri, consola rămâne o piesă de cult și punct de referință pentru inovație pură.\n\nProiectul a fost născut din necesitate. După succesul masiv al Genesis (30,75 milioane unități), Saturn-ul (1994) s-a dovedit o greșeală arhitecturală. Doi procesoare, programare complexă, pierdere de teren în fața PlayStation. Până în 1997, Sega avea doar 12% din piața consolidelor, forțând conducerea să pregătească un succesor radical diferit. Dezvoltarea a implicat două echipe rivale: echipa din SUA propunea Hitachi SH-4 cu 3dfx Voodoo 2, iar echipa japoneză susținea aceeași CPU cu NEC PowerVR2. Sega a ales designul japonez, decizie ce a generat o dispută cu 3dfx, soluționată ulterior.\n\nHardware-ul Dreamcast a reprezentat o schimbare fundamentală de filosofie. În loc de componente cu scop special, Sega a ales piese standard, apropiate de arhitectura unui PC. Procesorul Hitachi SH-4 rulând la 200 MHz (360 MIPS), cuplat cu NEC PowerVR2 la 100 MHz capabil de 3-7 milioane poligoane pe secundă, oferea performanță solida pentru 1999. Memoria era arhitecturată strategic: 16 MB RAM principal, 8 MB video, 2 MB audio. Unitatea Yamaha GD-ROM oferea 1.0-1.2 GB, mai mult decât Saturn dar mai puțin decât viitoarele DVD-uri.\n\nCeea ce a făcut Dreamcast cu adevărat revoluționar au fost inovațiile periferice și conectivitate. Visual Memory Unit (VMU) era, în esență, o cartă de memorie cu ecran LCD, difuzor și butoane. Putea afișa statutul jocului în timp real (vață în Resident Evil 2, muniție în alte jocuri) și funcționa ca dispozitiv portabil independent—jucători puteau crește creaturile Chao din Sonic Adventure pe VMU în timp ce se gândeau la altceva. Conexiunea prin modem integrat (33.6k sau 56k modular) a deschis primul capitol serios al jocului online pe consolă prin servicii precum SegaNet și Dreamarena. Compatibilitatea Windows CE și DirectX API-urile au ușurat munca developers de pe PC care doreau să facă jocuri de consolă.\n\nLansarea din Japonia (noiembrie 1998) a fost marcată de probleme de fabricație ale chipset-urilor PowerVR, rate mari de defecte și stocuri limitate. Doar Virtua Fighter 3tb a reușit să genereze buzz. Urmase o lansare legendară în America de Nord pe 9 septembrie 1999 la $199—o dată devenită iconica „9/9/99”. În primele 24 de ore, Sega a vândut 225.000 de unități și a generat 98,4 milioane de dolari. Peter Moore descria acest eveniment drept „cele mai mari 24 de ore din istoria retail-ului de divertisment”. Europa a primit consola pe 14 octombrie 1999, atingând 1 milion de unități vândute până octombrie 2000.\n\nBiblioteca de jocuri a Dreamcast s-a dovedit remarcabil de creativă. Sonic Adventure devenea cel mai vândut titlu (2,5 milioane copii). Soulcalibur era considerat pur și simplu unul dintre cele mai bune jocuri de lupte ale tuturor timpurilor. Shenmue, o epopee cu buget record de 50-70 milioane de dolari, introducea concept modern al Quick Time Events (QTE) și stabilea standardul pentru narrativa cinematică pe consolă. Phantasy Star Online a fost primul RPG online pe consolă. Jet Set Radio a popularizat grafică cel-shaded inovatoare. Sega Sports (NFL 2K, NBA 2K) depășea adesea ofertele EA, create ca răspuns la boicotul Electronic Arts din cauza neînțelegerilor privind licențierea exclusivă.\n\nDeclinul a venit rapid și nemilos. Sony a anunțat PlayStation 2cu mult înainte de lansare, promițând putere grafică superioară și, crucial, player DVD integrat—mai ieftin decât un player DVD dedicat la acea vreme. Sega a ales sa evite costurile licenței DVD, rămânând la GD-ROM, decizie care a limitat capacitatea și funcționalitatea multimedia. Strategiile aggressive de reducere de preț ($149, apoi $99) combinată cu campanii de marketing masive au generat pierderi nete de sute de milioane de dolari. Reputația Sega era sfărâmată din eșecurile Sega CD, 32X și Saturn. Retailerii și consumatorii rămâneau prudenți.\n\nPe 31 ianuarie 2001, Sega a anunțat oficial oprirea producției de hardware Dreamcast, efectivă 31 martie. Compania s-ar restructura ca developer terț. Isao Okawa, president Sega, într-un gest de sacrificiu rar, a iertat datoriile companiei către lui personal și a returnat acțiunile sale în valoare de 695 milioane de dolari în chiar înainte de decesul în 2001, ajutând compania să supraviețuiască tranziției.\n\nMoștenirea Dreamcast depășește cu mult cifrele comerciale. Consola a stabilit fundația pentru serviciile moderne de jocuri online, concepte care ar deveni Xbox Live și PlayStation Network. Exploit-ul MIL-CD a permis rularea de software de pe CD-uri obișnuite fără modchips, facilitând atât pirateria cât și dezvoltarea homebrew masivă. Chiar și în 2026, entuziaști mențin servere private pentru jocuri precum Phantasy Star Online. Jocurile sale rămân experimentale și creative—Seaman (pește AI care vorbește), Rez (sincronizare audio-vizuală), Space Channel 5—reflectând o eră de aur a creativității Sega."
+    },
+    {
+        "id":  "neo-geo-pocket-color",
+        "nume":  "Neo Geo Pocket Color",
+        "producator":  "SNK",
+        "generatie":  5,
+        "lansare":  1999,
+        "imagine":  "assets/images/consoles/neo-geo-pocket-color.webp",
+        "cpu":  {
+                    "arhitectura":  "Toshiba TLCS-900H",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "6.144 MHz",
+                    "tdp":  "~1W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "64 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "12 KB",
+                        "magistrala":  "8-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "160×152 color",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "NGP",
+                           "altele":  "Dreamcast link"
+                       },
+        "avantaje":  [
+                         "Ecran color",
+                         "Joystick superb",
+                         "Jocuri fighting excelente",
+                         "Dreamcast connectivity"
+                     ],
+        "dezavantaje":  [
+                            "Bibliotecă mică",
+                            "Fără backlight",
+                            "SNK a dat faliment"
+                        ],
+        "istorie":  "Neo Geo Pocket Color: SNK Color Handheld - 2000 Trei Ani Prea Târziu<br><br>Lansat în martie 1999 în Japonia și februarie 2000 în alte regiuni, Neo Geo Pocket Color a upgrade-ul color al monochrom Neo Geo Pocket cu display LCD color 160×152, același joystick superior, și gaming SNK quality. Conectivitate Dreamcast permitea transfer de date. Vânzări: 1.5 milioane - incomparabil vs Game Boy Color. De Facto: SNK a dat faliment în 2001datorită pierderii financiare. Moștenire: tehnologie bună, strategic timing fatal, piață controlată complet de concurență."
+    },
+    {
+        "id":  "wonderswan",
+        "nume":  "WonderSwan",
+        "producator":  "Bandai",
+        "generatie":  5,
+        "lansare":  1999,
+        "imagine":  "assets/images/consoles/wonderswan.webp",
+        "cpu":  {
+                    "arhitectura":  "NEC V30MZ",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "3.072 MHz",
+                    "tdp":  "~0.5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "128 sprites"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "16 KB",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "224×144",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Vertical/Horizontal play"
+                       },
+        "avantaje":  [
+                         "Design ultra-slim",
+                         "O baterie AA (30h+)",
+                         "Orientare rotativă"
+                     ],
+        "dezavantaje":  [
+                            "Doar monocrom",
+                            "Doar Japonia",
+                            "Fără localizare"
+                        ],
+        "istorie":  "WonderSwan: Bandai Portabil Japonez - Inovație Design fără Impact Global<br><br>Lansat în martie 1999 în Japonia, WonderSwan de Bandai a fost portabil revoluționar din perspectiva design cu orientare rotativă (portrait vs landscape), ultra-slim 10.3 cm, și baterie AA single cu 30+ ore autonomie. Display monocrom 224×144 -  pentru 1999, performanță respectabilă. Jocuri Bandai exclusive (Final Fantasy, Gundam) au fost atractive. Vânzări Japonia: 3+ milioane. Problema: Nu a ieșit din Japonia vreodată - localizare comun era expensive, piața portabilă internațională era Game Boy dominată. Moștenire: design inovativ nesuportat de servicii de multiplicare globale."
+    },
+    {
+        "id":  "playstation-2",
+        "nume":  "PlayStation 2",
+        "producator":  "Sony",
+        "generatie":  6,
+        "lansare":  2000,
+        "imagine":  "assets/images/consoles/ps2.webp",
+        "cpu":  {
+                    "arhitectura":  "Emotion Engine",
+                    "proces_nm":  "180 nm",
+                    "nuclee":  "8 unități",
+                    "frecventa":  "294 MHz",
+                    "tdp":  "~50W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Graphics Synthesizer",
+                    "unitati":  "N/A",
+                    "frecventa":  "147 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "N/A"
+                },
+        "memorie":  {
+                        "tip":  "RDRAM",
+                        "capacitate":  "32 MB",
+                        "magistrala":  "128-bit",
+                        "bandwidth":  "3.2 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "DVD-ROM",
+                        "interfata":  "ATA",
+                        "viteza":  "10x"
+                    },
+        "output_video":  {
+                             "rezolutie":  "480i/480p",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "PS1",
+                           "altele":  "DVD playback, Network Adaptor, EyeToy"
+                       },
+        "avantaje":  [
+                         "Cea mai vândută consolă, peste 160 milioane unități",
+                         "DVD player integrat a accelerat adoptarea formatului",
+                         "Compatibilitate PS1 cu peste 1.100 jocuri",
+                         "Bibliotecă uriașă, peste 3.800 titluri",
+                         "Durată de viață excepțională, 13 ani"
+                     ],
+        "dezavantaje":  [
+                            "Arhitectura Emotion Engine a fost dificilă pentru echipe mici",
+                            "Online-ul a venit mai târziu decât rivalii",
+                            "Modelele originale necesitau Network Adaptor pentru Ethernet"
+                        ],
+        "istorie":  "Origine și lansare\n\nPlayStation 2 a debutat în 2000 și a devenit cea mai bine vândută consolă din istorie, cu aproximativ 160 de milioane de unități distribuite pe durata unui ciclu de viață excepțional de 13 ani (2000–2013). Lansările globale au urmat un calendar precis: Japonia pe 4 martie 2000, America de Nord pe 26 octombrie 2000, Europa pe 24 noiembrie 2000 și România pe 15 martie 2001. Succesul a fost alimentat de convergența mediilor: PS2 nu era doar o consolă, ci și un player DVD competitiv, la 299 USD, accelerând adoptarea DVD-ului la scară globală.\n\nArhitectură și convergență\n\nLa baza consolei stătea „Emotion Engine”, un CPU cu opt unități, 294 MHz și o putere declarată de 6,2 gigaflopi, suficient de avansat pentru a fi clasificat temporar drept supercomputer de guvernul SUA. Sony a integrat cipul grafic al PlayStation ca procesor de intrare/ieșire, decizie care a asigurat compatibilitate perfectă cu peste 1.100 de jocuri PS1. La nivel de identitate, secvența de boot cu „turnuri” de cuburi reflecta numărul de jocuri și timpul petrecut de utilizator pe sistem.\n\nEcosistem software și accesorii\n\nBiblioteca PS2 a depășit 3.800 de titluri și a definit o eră de maturizare a jocurilor. Grand Theft Auto: San Andreas a devenit cel mai vândut titlu al platformei (17,33 milioane copii), în timp ce God of War, Shadow of the Colossus, Ico, Metal Gear Solid 2 & 3 și Persona 3 & 4 au demonstrat potențialul narativ și artistic al consolei. Accesoriile au extins utilizarea: EyeToy a introdus interacțiunea prin mișcare, SingStar și microfoanele au transformat PS2 într-un sistem de karaoke, iar Buzz! și Guitar Hero au popularizat periferiile dedicate.\n\nOnline și moștenire\n\nDeși a intrat mai târziu în online, PS2 a pus baze solide prin Network Adaptor (2001) și titluri pionier precum Tony Hawk’s Pro Skater 3, SOCOM cu chat vocal, Final Fantasy XI și Star Wars: Battlefront. Producția s-a încheiat oficial pe 4 ianuarie 2013, iar ultimul joc a fost Pro Evolution Soccer 2014. Modelul de convergență al PS2 a prefigurat dispozitivele moderne, însă arhitectura complexă a făcut dezvoltarea dificilă pentru echipele mici, o provocare amplificată ulterior de PlayStation 3. Impactul cultural rămâne vizibil prin comunități care traduc și conservă titluri precum Boku no Natsuyasumi 2."
+    },
+    {
+        "id":  "game-boy-advance",
+        "nume":  "Game Boy Advance",
+        "producator":  "Nintendo",
+        "generatie":  6,
+        "lansare":  2001,
+        "imagine":  "assets/images/consoles/game-boy-advance.webp",
+        "cpu":  {
+                    "arhitectura":  "ARM7TDMI",
+                    "proces_nm":  "N/A",
+                    "nuclee":  "1C",
+                    "frecventa":  "16.78 MHz",
+                    "tdp":  "~0.5W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom 2D",
+                    "unitati":  "N/A",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "128 sprites, rotation"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "256 KB + 96 KB VRAM",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "240×160",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Game Boy/Color",
+                           "altele":  "GC Link"
+                       },
+        "avantaje":  [
+                         "Grafică aproape SNES",
+                         "Backward compat GB/GBC",
+                         "Bibliotecă excelentă",
+                         "Formă ergonomică"
+                     ],
+        "dezavantaje":  [
+                            "Fără backlight (original)",
+                            "Ecran mic",
+                            "Baterie AA"
+                        ],
+        "istorie":  "Game Boy Advance: 32-bit Portabilă - Puterea SNES în Buzunar<br><br>Lansat în iunie 2001 de Nintendo, Game Boy Advance a reprezentat upgrade generațional masiv cu procesor ARM7TDMI 32-bit la 16.78 MHz, GPU custom, 32 KB internal RAM, și 216 KB VRAM. Display LCD de 2.7 inchi la 240×160 pixeli cu suport color 32,768 putea afișa grafică comparabilă cu SNES original. Cartridges ROM până la 32 MB permiteau portări fidele ale jocurilor console. Bibliotecă 1500+ jocuri: Fire Emblem, Metroid Fusion, Mario Kart Super Circuit, Final Fantasy VI port legendary.<br><br>SP variant (2003) cu ecran backlit și design flip revolutionary. Micro (2005) ultra-compact era niche. Vânzări cumulative: 81.51 milioane unități. GBA Advance a extins Game Boy era-ul prin încă generație din 2001-2008. SP a mentinut relevanța vs Nintendo DS concurent (2004). Moștenire: tranziție majestuetă de la portabil 8-bit la 32-bit: GBA a demonstrat că Game Boy linie putea evolua fără a deveni anacronist."
+    },
+    {
+        "id":  "nintendo-gamecube",
+        "nume":  "Nintendo GameCube",
+        "producator":  "Nintendo",
+        "generatie":  6,
+        "lansare":  2001,
+        "imagine":  "assets/images/consoles/nintendo-gamecube.webp",
+        "cpu":  {
+                    "arhitectura":  "IBM Gekko",
+                    "proces_nm":  "180 nm",
+                    "nuclee":  "1C",
+                    "frecventa":  "485 MHz",
+                    "tdp":  "~35W"
+                },
+        "gpu":  {
+                    "arhitectura":  "ATI Flipper",
+                    "unitati":  "6-12M poly/s",
+                    "frecventa":  "162 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "T\u0026L"
+                },
+        "memorie":  {
+                        "tip":  "MoSys 1T-SRAM",
+                        "capacitate":  "24 MB (Main) + 3 MB (Video) + 16 MB (A/D Buffer)",
+                        "magistrala":  "64-bit",
+                        "bandwidth":  "2.6 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "GameCube Game Disc (8 cm, 1.5 GB)",
+                        "interfata":  "Proprietary",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "480i/480p (NTSC), 576i (PAL)",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "WaveBird (RF), GBA link, Game Boy Player"
+                       },
+        "avantaje":  [
+                         "Preț de lansare competitiv (199 USD)",
+                         "Hardware puternic, cu CPU 485 MHz și GPU 162 MHz",
+                         "Controler ergonomic cu triggere analogice și C-Stick",
+                         "Bibliotecă first-party solidă: Melee, Mario Kart, Wind Waker",
+                         "Conectivitate GBA și Game Boy Player pentru biblioteca portabilă"
+                     ],
+        "dezavantaje":  [
+                            "Fără DVD playback, într-o piață dominată de DVD",
+                            "Discurile de 1,5 GB au forțat jocuri pe două discuri",
+                            "Percepția de jucărie a limitat atractivitatea pentru adulți",
+                            "Avantajul PS2 la lansare și compatibilitatea PS1",
+                            "Focus divizat între GameCube și Game Boy Advance"
+                        ],
+        "istorie":  "Origine și lansare\n\nGameCube a fost proiectul „Dolphin”, născut din parteneriatul Nintendo–ArtX–IBM, anunțat oficial în mai 1999 și redenumit public la SpaceWorld pe 24 august 2000. Lansarea globală a început în Japonia pe 14 septembrie 2001, a continuat în America de Nord pe 18 noiembrie 2001, apoi în Europa pe 3 mai 2002, iar în România consola a fost distribuită oficial din 2002 de Skin Media. Cu un preț de 199 USD și hardware superior PS2, GameCube a intrat pe piață ca răspuns direct la dominația Sony și la intrarea Microsoft. În ciuda unui start competitiv, a încheiat generația pe locul al treilea, cu aproximativ 22 milioane unități vândute.\n\nArhitectură și design\n\nA fost prima consolă Nintendo care a abandonat cartușele, adoptând GameCube Game Disc (8 cm, 1,5 GB), un format proprietar care a limitat capacitatea față de DVD. Platforma combina CPU-ul IBM Gekko la 485 MHz cu GPU-ul ATI Flipper la 162 MHz, susținută de 24 MB RAM principal, 3 MB video și 16 MB A/D Buffer, pentru performanțe reale de 6–12 milioane poligoane pe secundă. Ieșirea video oferea 480i/480p pe NTSC și 576i pe PAL. Designul cuboid (11,4 x 15 x 16 cm) includea mâner pentru portabilitate, patru porturi de controler și două sloturi de carduri, fără stocare internă. O raritate notabilă a fost Panasonic Q, un hibrid GameCube cu player DVD standard, disponibil doar în Japonia.\n\nControler și periferice\n\nControlerul a renunțat la forma cu trei brațe a N64 și a devenit un reper de ergonomie. Butonul A, supradimensionat, era în centrul schemei, asistat de X, Y și B pentru acces rapid, iar triggerele analogice L/R ofereau control gradual. C-Stick-ul a înlocuit grupul de butoane „C” cu un al doilea stick analogic. În 2002, WaveBird a introdus conectivitate wireless prin RF, fără linie de vizibilitate. Conectivitatea cu Game Boy Advance a permis utilizarea GBA ca ecran secundar, iar Game Boy Player a adus întreaga bibliotecă portabilă pe televizor.\n\nEcosistem și impact\n\nGameCube a găzduit peste 600 de titluri, cu first-party-uri puternice precum Super Smash Bros. Melee, Mario Kart: Double Dash!!, The Wind Waker și Luigi’s Mansion, plus inițiative precum Capcom 5 și exclusivități temporare de tip Resident Evil 4. Totuși, formatul de 1,5 GB a forțat unele jocuri pe două discuri, iar absența DVD-ului video a slăbit poziționarea multimedia. Percepția de „jucărie” și avantajul temporal al PS2, care acumulase deja 10 milioane de unități, au erodat atractivitatea pentru publicul larg. În 2001, Nintendo a împărțit resursele între GameCube și Game Boy Advance, ceea ce a diluat focusul de piață.\n\nMoștenire\n\nGameCube a fost ultima consolă Nintendo care a concurat direct pe specificații brute, iar lecțiile sale au dus la strategia „Blue Ocean” și la tranziția către Wii. Pentru mulți jucători, rămâne „ultima consolă pură”, o epocă pre-digitală în care experiența pornea imediat ce discul era introdus."
+    },
+    {
+        "id":  "xbox",
+        "nume":  "Xbox",
+        "producator":  "Microsoft",
+        "generatie":  6,
+        "lansare":  2001,
+        "imagine":  "assets/images/consoles/xbox.webp",
+        "cpu":  {
+                    "arhitectura":  "Intel Pentium III",
+                    "proces_nm":  "180 nm",
+                    "nuclee":  "1C/1T",
+                    "frecventa":  "733 MHz",
+                    "tdp":  "~60W"
+                },
+        "gpu":  {
+                    "arhitectura":  "NVIDIA NV2A",
+                    "unitati":  "4 pipelines",
+                    "frecventa":  "233 MHz",
+                    "tflops":  "~0.02 TFLOPS",
+                    "capabilitati":  "T\u0026L, PS"
+                },
+        "memorie":  {
+                        "tip":  "DDR",
+                        "capacitate":  "64 MB",
+                        "magistrala":  "128-bit",
+                        "bandwidth":  "6.4 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "HDD",
+                        "interfata":  "ATA",
+                        "viteza":  "8 GB"
+                    },
+        "output_video":  {
+                             "rezolutie":  "480p/720p/1080i",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Xbox Live pioneer"
+                       },
+        "avantaje":  [
+                         "Cea mai puternică consolă la lansare",
+                         "Xbox Live - serviciu online revoluționar",
+                         "Hard disk integrat de 8 GB",
+                         "Arhitectură PC ușoară pentru dezvoltatori",
+                         "Halo: Combat Evolved - killer app definitoriu"
+                     ],
+        "dezavantaje":  [
+                            "Controller Duke - dimensiuni masive",
+                            "Dimensiuni generoase ale consolei",
+                            "Pierderi financiare de 125$/unitate",
+                            "Eșec comercial în Japonia",
+                            "Condensator ceas defect în unitățile timpurii"
+                        ],
+        "istorie":  "<strong>Origine și Geneza Proiectului</strong><br><br>Xbox a luat naștere în 1998, când patru ingineri din echipa DirectX a Microsoft – Kevin Bachus, Seamus Blackley, Ted Hase și Otto Berkes – au propus un concept radical: o consolă bazată pe arhitectura PC care să rivalizeze cu dominația japoneză pe piața hardware-ului de gaming. Proiectul, denumit intern „Midway” în referință la bătălia istorică, a fost motivat de temerile lui Bill Gates că PlayStation 2 ar putea transforma consola într-un înlocuitor pentru PC-ul din sufragerie, amenințând astfel ecosistemul Windows.<br><br>Microsoft a ales conceptul DirectX în detrimentul alternativei WebTV (Windows CE) deoarece permitea utilizarea componentelor standard de PC și oferea o cale de tranziție simplă pentru dezvoltatori. Pentru a asigura succesul platformei, compania a achiziționat Bungie în iunie 2000, transformând Halo: Combat Evolved dintr-un titlu PC într-o exclusivitate care va deveni killer app-ul consolei. Lansarea oficială a avut loc la CES 2001, unde Bill Gates și luptătorul profesionist Dwayne „The Rock” Johnson au prezentat consola unui public sceptic.<br><br><strong>Arhitectură și Inovații Hardware</strong><br><br>Xbox a devenit prima consolă mainstream care incorpora un hard disk intern de 8 GB, permițând salvarea jocurilor fără carduri de memorie și oferind funcții avansate precum coloane sonore personalizate prin extragerea muzicii de pe CD-uri audio. Arhitectura se baza pe un procesor Intel Pentium III la 733 MHz și un GPU Nvidia NV2A la 233 MHz (derivat din GeForce 3), făcând-o cea mai puternică consolă de pe piață la data lansării. Această putere venea însă la pachet cu dimensiuni generoase și un cost de producție problematic.<br><br>Consola includea 64 MB de DDR SDRAM unificată și suporta rezoluții progresive până la 720p și 1080i, depășind standardul 480i al competitorilor. Portul Ethernet 100 Mbit/s integrat anticipa viitorul conectivității online, în timp ce unitatea DVD-ROM și interfața Dashboard bazată pe Windows 2000 completau pachetul tehnologic. Controllerul original, porecit „The Duke”, a fost criticat pentru dimensiunile sale masive, primind ironic premiul „Eroarea Anului” în 2001, ceea ce a forțat Microsoft să lanseze varianta compactă „Controller S” ca standard global.<br><br><strong>Ecosistem de Software și Xbox Live</strong><br><br>Biblioteca de jocuri a exploatat hardware-ul superior prin titluri definitorii precum Halo: Combat Evolved, care a vândut peste 1 milion de unități până în aprilie 2002 și a redefinit shooter-ele pe console. Halo 2 a devenit cel mai bine vândut joc al platformei cu 8,46 milioane de unități, generând 125 de milioane de dolari în prima zi. Alte exclusivități cheie – Dead or Alive 3, Project Gotham Racing, Star Wars: Knights of the Old Republic, Fable și Forza Motorsport – au consolidat identitatea platformei.<br><br>Lansarea Xbox Live pe 15 noiembrie 2002 a revoluționat gaming-ul pe consolă prin introducerea unui serviciu online unificat cu liste de prieteni globale, matchmaking centralizat și conceptul de conținut descărcabil (DLC). Serviciul a atins 1 milion de abonați în iulie 2004 și 20 de milioane până în mai 2009. Un moment simbolic a fost grupul „Noble 14”, jucători care au refuzat să se deconecteze de la Halo 2 timp de aproape o lună după închiderea oficială a serviciului pentru consola originală în aprilie 2010.<br><br><strong>Performanță Comercială și Provocări</strong><br><br>Xbox a vândut 24 de milioane de unități la nivel global, cu 16 milioane în America de Nord (piața sa principală), 6 milioane în Europa și doar 2 milioane în regiunea Asia-Pacific. Japonia a reprezentat un eșec notabil, cu sub 500.000 de unități vândute din cauza dimensiunilor mari și lipsei de titluri adaptate gusturilor locale. Din perspectivă financiară, proiectul a acumulat pierderi de aproximativ 4 miliarde de dolari, Microsoft pierzând circa 125 de dolari pentru fiecare consolă vândută la prețul de 299 de dolari (costul de fabricație era de 425 de dolari).<br><br>Strategia companiei a fost deliberată: sacrificarea profitului pe hardware pentru a câștiga cotă de piață și a genera venituri din vânzările de software și servicii. Această abordare, deși costisitoare pe termen scurt, a permis Microsoft să își stabilească prezența în industrie și să creeze fundația pentru succesul viitor al platformei Xbox.<br><br><strong>Probleme Tehnice și Moștenire</strong><br><br>Unitățile fabricate înainte de versiunea 1.6 au prezentat o problemă critică legată de condensatorul de ceas, care avea tendința de a se scurge și de a coroda placa de bază, distrugând traseele electrice. Unitățile optice Thomson au fost, de asemenea, predispuse la erori de citire. În ciuda acestor defecte, arhitectura similară cu PC-ul a făcut Xbox o țintă populară pentru modding, comunitatea dezvoltând soluții precum XBMC (Xbox Media Center), care transforma consola modată într-un centru multimedia complet.<br><br>Producția a încetat între 2005 și 2007 pentru a face loc succesorului Xbox 360, dar moștenirea consolei originale continuă prin programele de compatibilitate retroactivă oferite de Microsoft pe platformele actuale. Xbox a dovedit că un nou venit poate perturba o industrie consolidată prin inovație tehnologică și servicii online robuste, stabilind standardele care definesc gaming-ul modern: conectivitate broadband, stocare internă și ecosisteme digitale integrate."
+    },
+    {
+        "id":  "nintendo-ds",
+        "nume":  "Nintendo DS",
+        "producator":  "Nintendo",
+        "generatie":  7,
+        "lansare":  2004,
+        "imagine":  "assets/images/consoles/nintendo-ds.webp",
+        "cpu":  {
+                    "arhitectura":  "ARM9 + ARM7",
+                    "proces_nm":  "130 nm",
+                    "nuclee":  "2C",
+                    "frecventa":  "67 + 33 MHz",
+                    "tdp":  "~1W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Custom 3D",
+                    "unitati":  "N/A",
+                    "frecventa":  "67 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Basic 3D"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "4 MB",
+                        "magistrala":  "16-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "256×192 × 2",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "GBA",
+                           "altele":  "Touch screen, Wi-Fi"
+                       },
+        "avantaje":  [
+                         "Dual screen cu touch",
+                         "Backward compat GBA",
+                         "Wi-Fi integrat",
+                         "Microfon"
+                     ],
+        "dezavantaje":  [
+                            "3D graphics limitate",
+                            "Rezoluție mică",
+                            "Build plastic"
+                        ],
+        "istorie":  "Nintendo DS: Revoluția Ecranului Tactil - Jocul în Mâinile Dumneavoastră<br><br><strong>Inovație Radicală în Design</strong><br><br>Lansat în noiembrie 2004 în America de Nord, Nintendo DS a introdus un concept revoluționar de dual-screen portabil, transformând design-ul consolei. Sub conducerea lui Satoru Iwata și echipa Nintendo, consola a fost concepută nu ca succesor liniar al Game Boy Advance, ci ca reinvenție radicală. Denumirea \"DS\" (Dual Screen) era deliberat non-secvențială, sugerând un nou tip de gameplay posibilități. Cu ecran de aproximativ 3 inchi pe ambele panouri și rezoluție de 256x192 pixeli, DS putea afișa diferite conținuturi pe fiecare display.<br><br><strong>Ecranul Tactil: Revoluție de Control</strong><br><br>Ceea ce a făcut DS special era ecranul tactil cu digitizor rezistiv pe panoul inferior. Aceasta a deschis mecanici de input complet noi: stylus-based drawing, direct manipulation, gesture recognition. Jocuri ca PictureBook, Brain Age permiteau interacțiune inedită. Zoom și pan pe hartă în conducere, gesture-based spellcasting în RPG - aceste mecanici erau imposibile pe controlerele tradiționale.<br><br><strong>Brain Age Phenomenon</strong><br><br>Brain Age (Eu Train My Brain More) a fost fenomen similar cu Tetris pentru Game Boy. Jocul simplu de exerciții cerebrale - calcul mental, desen cifre, test de memorie - a vândut peste 35 de milioane de copii combinate (multiple versiuni). Adulți și părinți care nu se gândeau vreodată că vor juca Nintendo au fost atrași. DS nu a fost despre gaming hardcore - era despre wellness gaming, transformând Nintendo din jucătorul de jocuri în healthcare provider din perspectiva consumatorului.<br><br><strong>Bibliotecă și Succesele Comerciale</strong><br><br>Cu 2149 de jocuri oficiale, DS a avut cea mai mare bibliotecă portabilă din era sa. Pokemon Diamond/Pearl, Kingdom Hearts 358/2 Days, Grand Theft Auto: Chinatown Wars, Mario Kart DS - fiecare a vândut milioane. DS Lite (2006) cu luminozitate îmbunătățită și DSi (2008) cu două camere integrate au menținut sistemul relevant. Vânzări cumulative: 154.88 milioane de unități - consola cea mai vândută din lume după Nintendo Wii. DS a redefinit gaming portabil și a extins audiența la generații care nu au jucat niciodată."
+    },
+    {
+        "id":  "psp",
+        "nume":  "PlayStation Portable",
+        "producator":  "Sony",
+        "generatie":  7,
+        "lansare":  2004,
+        "imagine":  "assets/images/consoles/psp.webp",
+        "cpu":  {
+                    "arhitectura":  "MIPS R4000",
+                    "proces_nm":  "90 nm",
+                    "nuclee":  "1",
+                    "frecventa":  "333 MHz",
+                    "tdp":  "~2W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Graphics Core",
+                    "unitati":  "N/A",
+                    "frecventa":  "166 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "PS2-like graphics"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "32 MB (64 MB PSP-2000+)",
+                        "magistrala":  "128-bit",
+                        "bandwidth":  "2.6 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "UMD (1.8 GB)",
+                        "interfata":  "Optical + Memory Stick PRO Duo",
+                        "viteza":  "~2 MB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "480×272 (16:9)",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Wi-Fi, Remote Play, XMB Interface, Browser Web"
+                       },
+        "avantaje":  [
+                         "Peste 80 milioane de unități vândute",
+                         "Experiență multimedia completă (jocuri, filme UMD, muzică, internet)",
+                         "Ecran widescreen 4.3 inchi de calitate superioară",
+                         "Bibliotecă solidă cu francize AAA (God of War, GTA, MGS)",
+                         "Remote Play pentru conectare cu PlayStation 3"
+                     ],
+        "dezavantaje":  [
+                            "Competiție pierdută în fața Nintendo DS (150M+ unități)",
+                            "Probleme masive de piraterie via Custom Firmware",
+                            "Formatul UMD lent și abandonat pentru video",
+                            "Ascensiunea smartphone-urilor (iPhone) a eliminat nevoia de dispozitiv dedicat"
+                        ],
+        "istorie":  "PlayStation Portable: Walkman-ul Secolului XXI<br><br><strong>Viziunea Sony pentru Jocurile Portabile</strong><br><br>Anunțat la E3 2003 și lansat global între 2004-2005, PlayStation Portable a reprezentat prima incursiune majoră a Sony pe piața dispozitivelor portabile. Conceput ca un „Walkman al secolului XXI”, PSP și-a propus să fie mai mult decât o consolă de jocuri — era un sistem complet de divertisment portabil. Cu un ecran LCD TFT widescreen de 4.3 inchi (480×272 pixeli, format 16:9) și capabilități grafice apropiate de PS2, PSP aducea experiențe de tip consolă de acasă într-un format portabil. Procesor MIPS R4000 la 333 MHz și 32 MB de RAM ofereau o putere de procesare fără precedent pentru dispozitivele mobile ale epocii.<br><br><strong>Universal Media Disc și Evoluția Hardware-ului</strong><br><br>Sony a introdus Universal Media Disc (UMD), un format optic proprietar capabil să stocheze 1.8 GB de date, încapsulat în plastic protector. Deși revoluționar pentru jocuri, formatul a fost utilizat și pentru filme și muzică, însă consumatorii au preferat treptat fișierele digitale stocate pe carduri Memory Stick PRO Duo. Platforma a evoluat prin cinci modele principale: PSP-1000 (original, robust, cu baterie de 1800 mAh), PSP-2000 Slim & Lite (2007, cu 19% mai subțire, 33% mai ușor și RAM dublat la 64 MB), PSP-3000 Brite (ecran îmbunătățit anti-reflexie și microfon încorporat), PSP Go (design slider fără UMD, cu 16GB stocare internă și Bluetooth) și PSP-E1000 Street (model economic din 2011, fără Wi-Fi).<br><br><strong>Software și Ecosistem Multimedia</strong><br><br>Biblioteca PSP a oferit experiențe AAA autentice: God of War: Chains of Olympus, Grand Theft Auto: Liberty City Stories și Vice City Stories, Metal Gear Solid: Peace Walker și Gran Turismo. Titluri inovatoare precum LocoRoco și Patapon au demonstrat creativitatea Sony în design-ul bazat pe ritm și fizică. Interfața XrossMediaBar (XMB), curată și minimalistă, permitea navigarea facilă între jocuri, muzică, fotografii și setări. PSP includea browser web NetFront, conectivitate Wi-Fi pentru moduri Infrastructure și Ad-hoc, și funcția Remote Play pentru conectare la PlayStation 3. Cu peste 80 de milioane de unități vândute, PSP a fost un succes comercial considerabil.<br><br><strong>Competiție și Provocări Strategice</strong><br><br>În ciuda performanței tehnice impresionante, PSP s-a confruntat cu provocări majore. Nintendo DS a atras un public mai larg și familial, depășind 150 de milioane de unități vândute. Formatul UMD pentru filme a fost abandonat treptat de retailers, deoarece utilizatorii preferau să stocheze fișiere digitale pe carduri de memorie. Pirateria a devenit o problemă critică — facilitatea de a utiliza Custom Firmware pentru a rula jocuri copiate a afectat drastic veniturile dezvoltatorilor third-party. Cel mai semnificativ, apariția iPhone-ului în 2007 a oferit un dispozitiv totul-în-unu (telefon, media player, internet și jocuri la prețuri mici), eliminând pentru mulți consumatori nevoia unui dispozitiv portabil dedicat. Suportul oficial s-a încheiat în martie 2014.<br><br><strong>Moștenire și Impact</strong><br><br>PSP a demonstrat că dispozitivele portabile pot oferi experiențe grafice și de gameplay comparabile cu consolele de acasă. A forțat limitele tehnologiei mobile și a introdus conceptul de convergență multimedia în gaming portabil. Deși a cedat în fața convergenței tehnologice și a strategiilor mai incluzive ale competitorilor, moștenirea PSP în materie de design, calitate a jocurilor și viziune multimedia rămâne un punct de referință în istoria industriei. Sony a învățat lecții valoroase despre echilibrul dintre putere brută și accesibilitate, lecții care au influențat dezvoltarea PlayStation Vita."
+    },
+    {
+        "id":  "xbox-360",
+        "nume":  "Xbox 360",
+        "producator":  "Microsoft",
+        "generatie":  7,
+        "lansare":  2005,
+        "imagine":  "assets/images/consoles/xbox360.webp",
+        "cpu":  {
+                    "arhitectura":  "PowerPC Xenon",
+                    "proces_nm":  "90 nm",
+                    "nuclee":  "3C/6T",
+                    "frecventa":  "3.2 GHz",
+                    "tdp":  "~175W"
+                },
+        "gpu":  {
+                    "arhitectura":  "ATI Xenos",
+                    "unitati":  "240 shaders",
+                    "frecventa":  "500 MHz",
+                    "tflops":  "0.24 TFLOPS",
+                    "capabilitati":  "Unified shaders, 10 MB eDRAM"
+                },
+        "memorie":  {
+                        "tip":  "GDDR3",
+                        "capacitate":  "512 MB",
+                        "magistrala":  "128-bit",
+                        "bandwidth":  "22.4 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "2.5\" HDD",
+                        "interfata":  "SATA",
+                        "viteza":  "~100 MB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "1080p",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Xbox (select)",
+                           "altele":  "Kinect"
+                       },
+        "avantaje":  [
+                         "Xbox Live revoluționar - 30M+ abonați până în 2011",
+                         "Achievement system - standard industrie nou",
+                         "Kinect - cel mai rapid vândut dispozitiv electronic",
+                         "Xbox Live Arcade - platformă indie pioneră",
+                         "84 milioane unități vândute global"
+                     ],
+        "dezavantaje":  [
+                            "Red Ring of Death - rată ridicată eșec hardware",
+                            "Cost remediere RROD: 1.15 miliarde dolari",
+                            "Probleme stress termic GPU și lipituri",
+                            "DVD în loc de Blu-ray față de PS3",
+                            "Model original zgomotos și supraîncălzit"
+                        ],
+        "istorie":  "<strong>Arhitectură și Salt Tehnologic</strong><br><br>Lansat pe 22 noiembrie 2005, Xbox 360 a marcat a doua incursiune a Microsoft pe piața consolelor, abandonând arhitectura tip PC a originalului în favoarea unei soluții personalizate bazate pe PowerPC. Consola integra un procesor IBM „Xenon” triple-core tactat la 3,2 GHz, capabil să ruleze șase fire de execuție simultan, împreună cu un GPU ATI „Xenos” la 500 MHz echipat cu 10 MB de eDRAM cache și 240 de unități shader. Decizia de a include 512 MB de memorie unificată GDDR3 a fost crucială: inițial planificată cu doar 256 MB, dublarea cantității la cererea dezvoltatorilor Epic Games a costat aproximativ un miliard de dolari, dar a asigurat viabilitatea pe termen lung.<br><br>Sistemul suporta rezoluții HD native (720p și 1080i, ulterior 1080p prin HDMI sau VGA) și audio surround Dolby Digital 5.1, fiind printre primele console mainstream orientate către home theater. Unitățile de stocare detașabile variabile (20, 60, 120, 250, 320 sau 500 GB) permiteau flexibilitate în gestionarea bibliotecii digitale, iar introducerea capacității de a instala jocuri pe HDD prin actualizarea New Xbox Experience din 2008 a redus timpii de încărcare și zgomotul mecanic.<br><br><strong>Evoluția Hardware și Modelele</strong><br><br>Microsoft a lansat multiple revizii pentru a corecta deficiențele și pentru a atrage diverse segmente de consumatori. Modelul original a fost urmat de Xbox 360 Elite (2007) în culoare neagră cu HDD de 120 GB și port HDMI standard, apoi de varianta Arcade (2007) orientată către jucători casual cu memorie internă de 256 MB. Redesign-ul major a venit în 2010 cu Xbox 360 S (Slim), care aducea un chassis angular mai compact, funcionare mai silențioasă, Wi-Fi integrat și port dedicat Kinect. Versiunea finală, Xbox 360 E (2013), a adoptat estetica Xbox One și a simplificat conectivitatea prin eliminarea unui port USB.<br><br><strong>Ecosistemul Xbox Live și Transformarea Digitală</strong><br><br>Xbox Live a reprezentat diferențiatorul fundamental față de competiție, transformând gaming-ul într-o experiență socială și digitală. Serviciul era structurat în două niveluri: Silver gratuit pentru profil și acces la Marketplace, și Gold prin abonament pentru multiplayer online și beneficii exclusive. Până în 2011, serviciul depășise 30 de milioane de abonați, demonstrând viabilitatea modelului de servicii recurente în gaming. Interfața vizuală a evoluat de la sistemul „Blades” original la New Xbox Experience (NXE) din 2008, care introducea avatare digitale și instalare pe HDD, culminând cu stilul Metro inspirat din Windows 8, optimizat pentru control vocal Kinect.<br><br>Consola s-a transformat treptat dintr-o mașină de gaming pură într-un hub multimedia pentru sufragerie, oferind aplicații de streaming (Netflix, YouTube), închiriere de filme prin Xbox Video și integrare cu Windows Media Center pentru streaming de pe PC. Xbox Live Arcade (XBLA) a revoluționat distribuția digitală prin oferirea unei platforme viabile pentru jocuri indie și retro precum Geometry Wars, Braid și Castle Crashers, prefigurând modelul de distribuție digitală care domină astăzi industria.<br><br><strong>Biblioteca de Jocuri și Inovații Periferice</strong><br><br>Succesul platformei s-a construit pe un portofoliu robust de titluri exclusive și cross-platform. Halo 3 a devenit un fenomen cultural, seria Gears of War a definit genul cover-shooter, iar titluri precum BioShock, Mass Effect și Call of Duty 2 au exploatat puterea hardware pentru experiențe cinematice. Sistemul de „Achievements” cu punctajul Gamerscore a creat un nou tip de engagement, fiind rapid adoptat de întreaga industrie ca standard pentru măsurarea progresului și crearea comunității.<br><br>Kinect, lansat în 2010 sub numele de cod „Project Natal”, a devenit cel mai rapid vândut dispozitiv electronic de consum din istorie la acea vreme. Senzorul de mișcare permitea control gestual și vocal, extinzând durata de viață a consolei și atrăgând un demografic casual. Deși impactul său pe gaming hardcore a fost limitat, tehnologia a demonstrat potențialul interacțiunii naturale și a influențat dezvoltarea ulterioară a interfețelor intuitive.<br><br><strong>Criza Red Ring of Death</strong><br><br>Cea mai semnificativă provocare tehnică a fost rata alarmant de ridicată a defecțiunilor hardware în modelele timpurii, manifestată prin trei cadrane roșii luminoase în jurul butonului de pornire – celebrul „Red Ring of Death” (RROD). Cauza primară a fost fracturarea îmbinărilor de lipit ale GPU-ului din cauza stresului termic repetat și a utilizării aliajelor fără plumb impuse de reglementările RoHS. Fostul șef Xbox, Peter Moore, a confirmat că remedierea acestei crize a costat Microsoft 1,15 miliarde de dolari, sumă alocată pentru extinderea garanției la trei ani specifică pentru RROD și logistica reparațiilor globale.<br><br>Deși controversa a afectat temporar imaginea brandului, răspunsul rapid și transparent al Microsoft a permis platformei să își mențină impulsul comercial. Reviziile hardware ulterioare (în special modelul Slim din 2010) au rezolvat problemele de termodinamic prin redesign complet al sistemului de răcire și a layoutului intern.<br><br><strong>Moștenire și Impact Industrial</strong><br><br>Xbox 360 a vândut peste 84 de milioane de unități la nivel mondial, consolidând Microsoft ca jucător major alături de Sony și Nintendo în cea de-a șaptea generație. Platforma a transformat brandul Xbox dintr-un experiment riscant într-o forță dominantă, stabilind standardele moderne pentru servicii online, distribuție digitală și engagement al comunității prin sisteme de realizări. Producția hardware s-a încheiat oficial pe 20 aprilie 2016, iar magazinul digital (Marketplace) a fost programat pentru închidere pe 29 iulie 2024, deși jocurile achiziționate anterior rămân descărcabile.<br><br>Programul de retrocompatibilitate implementat pe Xbox One și Xbox Series X/S a păstrat relevanța bibliotecii, permițând jucătorilor să își transfere salvările în cloud și să acceseze titluri clasice cu îmbunătățiri de performanță pe hardware modern. Xbox 360 rămâne una dintre cele mai influente console din istorie, definind paradigma serviciilor online și a ecosistemelor digitale care domină industria contemporană."
+    },
+    {
+        "id":  "nintendo-wii",
+        "nume":  "Nintendo Wii",
+        "producator":  "Nintendo",
+        "generatie":  7,
+        "lansare":  2006,
+        "imagine":  "assets/images/consoles/nintendo-wii.webp",
+        "cpu":  {
+                    "arhitectura":  "IBM Broadway",
+                    "proces_nm":  "90 nm",
+                    "nuclee":  "1C",
+                    "frecventa":  "729 MHz",
+                    "tdp":  "~18W"
+                },
+        "gpu":  {
+                    "arhitectura":  "ATI Hollywood",
+                    "unitati":  "N/A",
+                    "frecventa":  "243 MHz",
+                    "tflops":  "~0.01 TFLOPS",
+                    "capabilitati":  "N/A"
+                },
+        "memorie":  {
+                        "tip":  "GDDR3",
+                        "capacitate":  "88 MB",
+                        "magistrala":  "64-bit",
+                        "bandwidth":  "3.9 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "Flash intern 512 MB",
+                        "interfata":  "NAND + card SD",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "480p (NTSC) / 576i (PAL)",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "GameCube (RVL-001)",
+                           "altele":  "Wii Remote, MotionPlus, Balance Board"
+                       },
+        "avantaje":  [
+                         "Controlul prin mișcare este intuitiv pentru public larg",
+                         "Bibliotecă vastă cu titluri first-party foarte puternice",
+                         "Modelul RVL-001 rulează nativ jocuri de GameCube",
+                         "Cost mic și opțiuni solide de modding"
+                     ],
+        "dezavantaje":  [
+                            "Nu oferă ieșire HD nativă",
+                            "Serviciile online oficiale sunt închise",
+                            "Unele revizii au eliminat suportul GameCube",
+                            "Mișcările repetitive pot provoca disconfort"
+                        ],
+        "istorie":  "<strong>Origine și strategie</strong><br><br>Lansată în noiembrie 2006, Nintendo Wii a fost construită în jurul filozofiei \"Blue Ocean\", promovată de Satoru Iwata. În locul competiției directe pe putere brută, Nintendo a urmărit să extindă publicul: familii, părinți și jucători ocazionali. Numele \"Wii\", apropiat fonetic de \"we\", a susținut această direcție: o consolă gândită pentru joc social și accesibil.<br><br>Designul compact, consumul redus de energie și interfața simplă au făcut sistemul ușor de integrat în living. În practică, Wii a devenit rapid un produs de masă, nu doar un hardware pentru publicul tradițional de gaming.<br><br><strong>Arhitectură și modele</strong><br><br>Din punct de vedere tehnic, consola folosea un CPU IBM Broadway la 729 MHz și un GPU ATI Hollywood la 243 MHz, cu 88 MB RAM totală. Stocarea internă era de 512 MB flash, cu extindere prin card SD. La ieșire video, Wii era limitată la 480p (NTSC) / 576i (PAL), un compromis asumat pentru costuri mai mici.<br><br>Pe parcursul ciclului de viață au existat mai multe revizii hardware. Modelul RVL-001 a rămas cel mai apreciat pentru compatibilitatea completă cu GameCube, în timp ce versiunile ulterioare au redus costurile, dar au eliminat unele funcții legacy.<br><br><strong>Control și bibliotecă</strong><br><br>Elementul care a definit platforma a fost Wii Remote, bazat pe accelerometru și senzor infraroșu. MotionPlus a crescut precizia, Nunchuk a extins controlul analogic, iar Balance Board a deschis zona de fitness și recuperare. Împreună, aceste accesorii au schimbat modul în care utilizatorii interacționau cu jocul.<br><br>Wii Sports a devenit titlul-simbol al generației, cu 82,9 milioane de copii vândute, și a accelerat adopția consolei la scară globală. Biblioteca a inclus atât jocuri casual populare, cât și producții first-party majore, precum Super Mario Galaxy, Twilight Princess și Metroid Prime 3.<br><br><strong>Relevanță în 2025/2026</strong><br><br>La aproape două decenii de la lansare, Wii rămâne una dintre cele mai accesibile intrări în retro-gaming. Prețul hardware este redus, multe jocuri rămân ieftine, iar modelul RVL-001 oferă valoare suplimentară prin rularea nativă a jocurilor GameCube.<br><br>Deși serviciile online oficiale sunt închise, ecosistemul comunității menține consola activă prin soft-modding, rulare de pe stocare externă și integrare facilă cu televizoare moderne prin adaptoare HDMI. Pentru imagine mai clară, emularea prin Dolphin completează experiența pe PC."
+    },
+    {
+        "id":  "playstation-3",
+        "nume":  "PlayStation 3",
+        "producator":  "Sony",
+        "generatie":  7,
+        "lansare":  2006,
+        "imagine":  "assets/images/consoles/ps3.webp",
+        "cpu":  {
+                    "arhitectura":  "Cell BE",
+                    "proces_nm":  "90/65 nm",
+                    "nuclee":  "1 PPE + 7 SPE",
+                    "frecventa":  "3.2 GHz",
+                    "tdp":  "~200W"
+                },
+        "gpu":  {
+                    "arhitectura":  "RSX Reality Synthesizer",
+                    "unitati":  "24 ROPs",
+                    "frecventa":  "500 MHz",
+                    "tflops":  "0.23 TFLOPS",
+                    "capabilitati":  "256 MB GDDR3 VRAM"
+                },
+        "memorie":  {
+                        "tip":  "XDR + GDDR3",
+                        "capacitate":  "256 + 256 MB",
+                        "magistrala":  "64 + 128-bit",
+                        "bandwidth":  "25.6 + 22.4 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "2.5\" HDD",
+                        "interfata":  "SATA",
+                        "viteza":  "~100 MB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "1080p",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "PS1/PS2 (modele timpurii)",
+                           "altele":  "Blu-ray"
+                       },
+        "avantaje":  [
+                         "Blu-ray player integrat - catalizator format HD",
+                         "Cell BE: 204.8 GFLOPS performanță teoretică",
+                         "PlayStation Network gratuită pentru multiplayer",
+                         "Exclusive legendare: Uncharted, The Last of Us",
+                         "87 milioane unități vândute"
+                     ],
+        "dezavantaje":  [
+                            "Arhitectură Cell extrem de dificilă pentru dezvoltatori",
+                            "Preț lansare: $499-$599 considerat excesiv",
+                            "Breșă securitate PSN 2011: 77M conturi compromise",
+                            "Investiție dezvoltare Cell: 400 milioane dolari",
+                            "Vândut inițial în pierdere financiară"
+                        ],
+        "istorie":  "<strong>Arhitectura Cell și Ambiția Tehnologică</strong><br><br>Dezvoltarea PlayStation 3 a început în 2001 printr-un parteneriat strategic între Sony, IBM și Toshiba, materializat în procesorul Cell Broadband Engine – o investiție de aproximativ 400 de milioane de dolari care urmărea să redefinească puterea de calcul în gaming. Arhitectura includea un nucleu Power Processing Element (PPE) la 3,2 GHz și șapte Synergistic Processing Elements (SPEs) funcționale din opt produse, o tactică pentru a crește randamentul fabricației. Cell putea atinge un maxim teoretic de 204,8 GFLOPS în precizie simplă, cifre impresionante pentru epoca sa.<br><br>Consola integra un GPU RSX „Reality Synthesizer” dezvoltat de NVIDIA, bazat pe 256 MB de GDDR3 VRAM, împreună cu 256 MB de Rambus XDR DRAM pentru procesor. Această arhitectură unică, deși puternică, s-a dovedit extrem de dificil de programat. Gabe Newell de la Valve a descris-o faimos ca fiind o „pierdere de timp”, iar această complexitate a dus la versiuni inițiale ale jocurilor third-party adesea inferioare celor de pe platformele concurente, afectând percepția consolei în primii ani.<br><br><strong>Lansarea și Provocările Inițiale</strong><br><br>PlayStation 3 a fost lansat în noiembrie 2006 în Japonia și America de Nord, urmând în martie 2007 în Europa. Strategia de pricing a fost agresivă: modelul cu 20 GB la 499 dolari și cel cu 60 GB la 599 dolari, prețuri considerate ridicate față de generațiile anterioare și față de competitorul Xbox 360. În ciuda acestor prețuri, Sony vindea consola în pierdere din cauza costurilor enorme ale procesorului Cell și ale unității Blu-ray integrate, pariul companiei pentru victoria în războiul formatelor HD.<br><br>Modelul original „Fat” prezenta un finisaj „piano black”, până la patru porturi USB (în versiunile inițiale), suport pentru SACD și cititor de carduri pe anumite configurații. Primele versiuni includeau hardware de emulare PS2 pentru retrocompatibilitate completă, o caracteristică eliminată ulterior din considerente de cost. Procesorul era fabricat pe nod de 90 nm, contribuind la un consum ridicat de energie și generare de căldură semnificativă.<br><br><strong>Evoluția Hardware și Optimizări</strong><br><br>Sony a lansat trei iterații principale pentru a reduce costurile, consumul și dimensiunile. Modelul Slim din 2009 era cu 33% mai mic și 36% mai ușor, utilizând procese de fabricație de 45 nm pentru Cell și 40 nm pentru RSX, reducând consumul cu până la 45%. Designul a eliminat butonul fizic de oprire și a simplificat estetica. Versiunea Super Slim din 2012 a introdus un design ultra-compact cu capac glisant pentru discuri (top-loading), ajungând la o greutate de aproximativ 2,1 kg, iar ultimele variante (CECH-43xx) integrau un procesor RSX fabricat pe 28 nm.<br><br>Hard disk-urile SATA de 2,5 inci erau upgradabile, Sony oferind variante de la 20 GB până la 500 GB de-a lungul ciclului de viață. Suportul HDMI permitea ieșiri video de până la 1080p, claritate superioară care s-a sincronizat perfect cu adoptarea televizoarelor HD în perioada 2007-2010, transformând PS3 dintr-o consolă de gaming în centrul de divertisment al sufrageriei.<br><br><strong>Ecosistemul Digital și PlayStation Network</strong><br><br>PlayStation Network (PSN), lansat în 2006, a reprezentat tranziția Sony către o platformă digitală permanent conectată, oferind joc online gratuit (spre deosebire de Xbox Live Gold), descărcări digitale și servicii de streaming. PlayStation Store (2008) a unificat interfața pentru achiziționarea de conținut digital pe PS3 și dispozitivele portabile PSP. PlayStation Plus, introdus în 2010, a pionerit modelul de abonament cu jocuri lunare gratuite și stocare în cloud, un blueprint adoptat ulterior de întreaga industrie.<br><br>PlayStation Home (2008) a fost un experiment ambițios – un spațiu social virtual 3D care a atras 41 de milioane de utilizatori înainte de închiderea din 2015. Deși controversat în execuție, a demonstrat viziunea Sony pentru comunități digitale integrate. Incidentul de securitate din 17-19 aprilie 2011 a umbrit această viziune: o breșă masivă a compromis aproximativ 77 de milioane de conturi, oprindu-se serviciul timp de săptămâni și generând pierderi de 171 de milioane de dolari, precum și investigații oficiale privind protecția datelor.<br><br><strong>Inovații Multimedia și Control</strong><br><br>Integrarea unui player Blu-ray a fost decisivă în victoria formatului împotriva HD DVD, oferind capacitate de stocare de până la 50 GB (de 5 ori mai mult decât DVD-ul) și redare de filme HD la un preț mai accesibil decât playerele dedicate. Interfața XMB (XrossMediaBar) organiza conținutul pe axe orizontale și verticale, un sistem de navigare premiat pentru intuitivitate și eleganță vizuală, adoptat și de alte produse Sony din epoca respectivă.<br><br>Controllerul Sixaxis a fost primul fără fir cu senzori de mișcare integrati, dar lipsa vibrațiilor a fost criticată. DualShock 3 (2008) a reintrodus funcția de vibrație, devenind standardul consolei. PlayStation Move (2010) a reprezentat intrarea Sony în controlul prin mișcare, folosind camera PlayStation Eye pentru urmărire precisă în spațiu, competind direct cu Nintendo Wii și Microsoft Kinect.<br><br><strong>Biblioteca de Jocuri și Moștenirea Culturală</strong><br><br>Biblioteca PS3 a definit numeroase francize iconice care au împins limitele cinematografice ale jocurilor. Uncharted: Drake's Fortune a introdus personajul Nathan Drake și a stabilit standardul pentru aventurile cinetice, culminând cu The Last of Us (2013) – un titlu care a împins hardware-ul la limită și a demonstrat maturitatea narativă a mediului. God of War III, Infamous, LittleBigPlanet (pionier în conținut creat de utilizatori) și seria Gran Turismo au consolidat identitatea platformei.<br><br>Succese third-party precum Grand Theft Auto V (fenomen global lansat în 2013) și seria Assassin's Creed au beneficiat de puterea Cell odată ce dezvoltatorii au învățat să exploateze arhitectura unică. MotorStorm a definit cursele off-road la începutul generației, demonstrând capabilitățile grafice ale consolei. PlayStation 3 a vândut peste 87 de milioane de unități la nivel mondial, consolidându-și poziția alături de Xbox 360 în cea de-a șaptea generație.<br><br><strong>Starea Actuală și Relevanța Retrospectivă</strong><br><br>Deși producția hardware s-a încheiat, PS3 rămâne relevantă pentru colecționari și fanii gaming-ului retro. Magazinul digital prezintă limitări semnificative: utilizatorii trebuie să adauge fonduri în portofel prin alte dispozitive (PS4, PS5 sau web), performanța este scăzută cu erori de afișare și categorii repetitive, iar multe titluri vechi păstrează prețuri ridicate (jocuri Call of Duty la 50-80 dolari) comparativ cu variantele fizice. Primele modele cu hardware PS2 rămân singura metodă oficială de a rula discuri PlayStation 2 pe hardware Sony modern.<br><br>PlayStation 3 a demonstrat dorința Sony de a inova radical, acceptând riscuri financiare și tehnice majore. Procesorul Cell, deși problematic inițial, a permis experiențe grafice și fizice remarcabile odată perfecționată dezvoltarea. Integrarea Blu-ray, serviciile digitale PSN și PlayStation Plus, precum și biblioteca de exclusive legendare au definit standardele de divertisment digital care guvernează industria contemporană. PS3 rămâne un monument al ambiției tehnologice și al transformării consolelor de gaming în huburi multimedia complete."
+    },
+    {
+        "id":  "nintendo-3ds",
+        "nume":  "Nintendo 3DS",
+        "producator":  "Nintendo",
+        "generatie":  8,
+        "lansare":  2011,
+        "imagine":  "assets/images/consoles/nintendo-3ds.webp",
+        "cpu":  {
+                    "arhitectura":  "ARM11 MPCore",
+                    "proces_nm":  "40 nm",
+                    "nuclee":  "2C",
+                    "frecventa":  "268 MHz",
+                    "tdp":  "~2W"
+                },
+        "gpu":  {
+                    "arhitectura":  "PICA200",
+                    "unitati":  "N/A",
+                    "frecventa":  "268 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Autostereoscopic 3D"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "128 MB",
+                        "magistrala":  "64-bit",
+                        "bandwidth":  "N/A"
+                    },
+        "stocare":  {
+                        "tip":  "Cartridge + SD",
+                        "interfata":  "ROM",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "800×240 (3D)",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "DS",
+                           "altele":  "3D fără ochelari"
+                       },
+        "avantaje":  [
+                         "3D fără ochelari",
+                         "Backward compat DS",
+                         "StreetPass",
+                         "Bibliotecă vastă"
+                     ],
+        "dezavantaje":  [
+                            "3D obositor pentru ochi",
+                            "Hardware modest",
+                            "Baterie slabă"
+                        ],
+        "istorie":  "Nintendo 3DS: Immersiunea în 3D Fără Ochelari<br><br><strong>Inovație 3D Glassladderfree</strong><br><br>Lansat în martie 2011 în Japonia și februarie 2011 în alte regiuni, Nintendo 3DS a introdus tehnologia 3D autostereoscopică pe ecran portabil - prima consolă de larg consum care oferea 3D nativ fără ochelari. Procesor ARM at 268 MHz, 128 MB RAM, și dual processors (ARM9 + ARM7) permiteau grafică 3D software-rendered. Display dual cu parte superioară 3.53 inchi la 800x240 pixeli (mode 3D) și inferioară tactilă de 3.02 inchi la 320x240 pixeli oferia noi posibilități.<br><br><strong>3D Display și Design Inovator</strong><br><br>Afișajul autostereoscopic pe 3DS era remarcabil din perspectiva tehnică. Utilizad paralax barrier (o rețea de linii mica care dirija raze de lumina la ochi din unghiuri diferite), consola putea afișa imagini 3D fără ochelari speciali. Controler analog («C-stick») și motion sensors (gyroscope, accelerometru) permiteau gameplay inovator. Tehnologia AM-3D a lui Nintendo permitea reglarea adâncimii 3D sau chiar dezactivarea 3D complet, resolving oculara fatigue concerns.<br><br><strong>Bibliotecă Hybridă si Evolucție Hardware</strong><br><br>3DS a fost un hibrid unique: era compatible înapoi cu jocuri DS (cu câteva excepții), extindand biblioteca la 1000+ jocuri deja disponibile. Biblioteca 3DS a inclus Animal Crossing: New Leaf (12+ milioane vândute), Monster Hunter Portable (phenomenon in Japonia), Super Mario 3D Land, Street Fighter IV 3D Edition. 3DS XL (2012) cu ecran mai mare (4.88 inchi vs 3.53 inchi) a fost prim inițiator, urmat de New 3DS (2014) cu procesor mai rapid și stabilizator 3D automat pentru a reduce oboseala oculară.<br><br><strong>Vânzări si Moștenire</strong><br><br>Vânzări cumulative: 75.5 milioane de unități - al treilea consol portabil cea mai vânduta după DS și Game Boy. 3DS ND a extins reinos portabil in era post-smartphone, competiționând direct cu jocurile mobile dar oferind experiență superioară. StreetPass - caracteristică care permitea jucătorilor să facă schimb de date wireless în mod inactiv - a creat fenomen social. 3DS a marcat tranziția Nintendo către Nintendo Switch în 2017."
+    },
+    {
+        "id":  "ps-vita",
+        "nume":  "PlayStation Vita",
+        "producator":  "Sony",
+        "generatie":  8,
+        "lansare":  2011,
+        "imagine":  "assets/images/consoles/ps-vita.webp",
+        "cpu":  {
+                    "arhitectura":  "ARM Cortex-A9",
+                    "proces_nm":  "40 nm",
+                    "nuclee":  "4C",
+                    "frecventa":  "2 GHz",
+                    "tdp":  "~3W"
+                },
+        "gpu":  {
+                    "arhitectura":  "PowerVR SGX543MP4+",
+                    "unitati":  "128 cores",
+                    "frecventa":  "200 MHz",
+                    "tflops":  "N/A",
+                    "capabilitati":  "PS3-like graphics"
+                },
+        "memorie":  {
+                        "tip":  "RAM",
+                        "capacitate":  "512 MB",
+                        "magistrala":  "128-bit",
+                        "bandwidth":  "3.2 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "Game Card + Memory Card",
+                        "interfata":  "Proprietary (până 32GB)",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "960×544 (220 ppi)",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "PSP (digital), PS1",
+                           "altele":  "Ecran tactil frontal + touchpad spate, Sixaxis, Remote Play PS4/PS3"
+                       },
+        "avantaje":  [
+                         "Ecran OLED de 5 inchi cu culori vibrante (model original)",
+                         "Stick-uri analogice duale și controale Sixaxis complete",
+                         "Remote Play pentru streaming jocuri de pe PS4",
+                         "Ecosistem indie puternic și bibliotecă JRPG valoroasă",
+                         "Comunitate activă de modding și homebrew în 2025-2026"
+                     ],
+        "dezavantaje":  [
+                            "Eșec comercial cu doar 15-16 milioane unități vândute",
+                            "Carduri de memorie proprietare extrem de scumpe (32GB = 120 USD)",
+                            "Sony a oprit dezvoltarea jocurilor AAA în 2015",
+                            "Competiție pierdută în fața smartphone-urilor și Nintendo 3DS"
+                        ],
+        "istorie":  "PlayStation Vita: Miracolul Tehnologic Care Nu A Fost<br><br><strong>Puterea Consolei într-un Format Portabil</strong><br><br>Lansată în Japonia în decembrie 2011 și global în februarie 2012, PlayStation Vita a reprezentat vârful tehnologic al gamingului portabil. Cu un ecran OLED de 5 inchi (960×544 pixeli, 220 ppi) pe modelul original PCH-1000, stick-uri analogice duale, touchscreen frontal și touchpad pe spate, plus senzori Sixaxis completi (giroscop și accelerometru), Vita promitea experiențe de „calitate consolă” într-un dispozitiv portabil. Procesorul ARM Cortex-A9 quad-core și GPU-ul PowerVR SGX543MP4+ cu 512 MB de RAM ofereau capabilități grafice comparabile cu PS3, depășind cu mult orice competitor portabil al epocii. Versiunea slim PCH-2000, lansată ulterior, a redus greutatea de la 260g la 219g și a schimbat ecranul OLED cu LCD pentru reducerea costurilor.<br><br><strong>Inovații și Remote Play</strong><br><br>Vita a introdus concepte avansate de interacțiune multimodală: ecran tactil frontal pentru meniuri intuitive, touchpad pe spate pentru gestionarea inventarului și controale inovatoare, și senzori de mișcare pentru gameplay dinamic. Funcția Remote Play a permis streaming-ul jocurilor de pe PS4 (și un număr limitat de pe PS3) direct pe ecranul portabil, transformând Vita într-un „dispozitiv însoțitor” valoroș. Conectivitatea Wi-Fi, Bluetooth și chiar 3G (pe anumite modele) completau pachetul tehnologic. Biblioteca de aproximativ 3700 de jocuri includea titluri definitorii precum Uncharted: Golden Abyss, Gravity Rush, Persona 4 Golden și Tearaway, alături de un ecosistem indie puternic cu porturi ale jocurilor Hotline Miami, Spelunky și Limbo.<br><br><strong>Barierele Prețului și Eșecul Comercial</strong><br><br>În ciuda hardware-ului impresionant, Vita s-a confruntat cu obstacole insurmontabile. Cea mai criticată decizie a fost impunerea cardurilor de memorie proprietare extrem de scumpe: un card de 4GB costa 30 USD, 8GB costa 45 USD, 16GB costa 70 USD, iar 32GB ajungea la 120 USD — aproape jumătate din prețul consolei la lansare de 250 USD. Această politică a alienat consumatorii și a limitat adopția platformei. Competiția din partea smartphone-urilor (iPhone și Android ofereau jocuri ieftine și portabile) și Nintendo 3DS (care a beneficiat de reduceri rapide de preț și francize puternice precum Monster Hunter) a erodat și mai mult piața. Vânzările cumulative au ajuns la doar 15-16 milioane de unități, un eșec dramatic comparativ cu cele 80 de milioane ale PSP.<br><br><strong>Abandonul Sony și Renașterea de Nișă</strong><br><br>În 2015, Sony a declarat oficial că nu va mai dezvolta jocuri AAA pentru Vita, concentrându-se exclusiv pe PS4. Suportul oficial s-a încheiat, deși PlayStation Store a rămas activ până în 2023. Totuși, Vita a supraviețuit ca o platformă de nișă iubită: comunitatea de modding a dezvoltat adaptorul SD2Vita care permite utilizarea cardurilor micro SD standard, eliminând costurile prohibitive. În 2025-2026, Vita se bucură de o „renaștere” în rândul colecționarilor, prețurile pe piața second-hand variind între 100-150 GBP. Consola este utilizată extensiv pentru emularea jocurilor PSP și PS1, iar referințele culturale (precum apariția în The Last of Us Part II) mențin vie memoria platformei.<br><br><strong>Moștenirea: Specificații Versus Strategie</strong><br><br>PlayStation Vita rămâne un paradox al industriei: cea mai puternică consolă portabilă a generației sale, dar un eșec comercial dramatic. Platforma a demonstrat că hardware-ul superior nu poate compensa deciziile strategice proaste (carduri de memorie scumpe), lipsa suportului first-party consistent și schimbarea fundamentală a pieței către gaming pe smartphone. Comunitatea pasionată continuă să o considere un simbol al potențialului neîmplinit, iar moștenirea sa influențează discuțiile despre echilibrul dintre tehnologie și accesibilitate. În cuvintele unei analize retrospective din 2026: „PS Vita nu a eșuat în fața Sony; Sony a eșuat în fața PS Vita.”"
+    },
+    {
+        "id":  "nintendo-wii-u",
+        "nume":  "Nintendo Wii U",
+        "producator":  "Nintendo",
+        "generatie":  8,
+        "lansare":  2012,
+        "imagine":  "assets/images/consoles/nintendo-wii-u.webp",
+        "cpu":  {
+                    "arhitectura":  "IBM Espresso",
+                    "proces_nm":  "45 nm",
+                    "nuclee":  "3C/3T",
+                    "frecventa":  "1.24 GHz",
+                    "tdp":  "~75W"
+                },
+        "gpu":  {
+                    "arhitectura":  "AMD GX2",
+                    "unitati":  "320 shaders",
+                    "frecventa":  "550 MHz",
+                    "tflops":  "0.35 TFLOPS",
+                    "capabilitati":  "N/A"
+                },
+        "memorie":  {
+                        "tip":  "DDR3",
+                        "capacitate":  "2 GB",
+                        "magistrala":  "64-bit",
+                        "bandwidth":  "12.8 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "Flash",
+                        "interfata":  "eMMC",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "1080p",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Wii",
+                           "altele":  "GamePad 6,2 inchi (480p), Off-TV Play, gameplay asimetric"
+                       },
+        "avantaje":  [
+                         "Permite Off-TV Play direct pe GamePad",
+                         "Este compatibilă cu jocuri și accesorii Wii",
+                         "Bibliotecă first-party valoroasă pentru ecosistemul Nintendo"
+                     ],
+        "dezavantaje":  [
+                            "Marketingul confuz a limitat adoptarea",
+                            "Vânzările au rămas mult sub așteptări",
+                            "Suportul third-party a fost redus",
+                            "Autonomia GamePad este modestă"
+                        ],
+        "istorie":  "<strong>Tranziția către HD</strong><br><br>Lansată în 2012, Nintendo Wii U a fost prima consolă Nintendo orientată clar spre experiență HD, păstrând în același timp compatibilitatea cu ecosistemul Wii. Platforma a încercat să continue direcția accesibilă a generației precedente, dar cu un nivel tehnic și o prezentare mai apropiate de noile standarde de imagine.<br><br>În practică, poziționarea pe piață a fost complicată: produsul venea după succesul major al Wii, iar mesajul comercial nu a explicat suficient de clar diferența dintre un succesor complet și o simplă extindere a platformei existente.<br><br><strong>GamePad și noul tip de interacțiune</strong><br><br>Elementul central al sistemului a fost Wii U GamePad, un controller cu ecran tactil de 6,2 inchi la 480p. Acesta a introdus Off-TV Play, adică posibilitatea de a continua jocul direct pe controller, fără a folosi televizorul. În plus, anumite titluri au folosit modelul de gameplay asimetric, unde jucătorii aveau roluri diferite pe GamePad și pe ecranul principal.<br><br>Conceptul a fost inovator și a influențat direcția ulterioară a companiei, însă în utilizare de zi cu zi au apărut limite clare, în special la autonomie și la modul în care dezvoltatorii third-party au valorificat constant acest format.<br><br><strong>Bibliotecă și impact</strong><br><br>Deși ciclul comercial a fost scurt, Wii U a găzduit titluri care au devenit repere pentru Nintendo: Mario Kart 8, Splatoon și Super Mario Maker. În aceeași perioadă, The Legend of Zelda: Breath of the Wild a marcat puntea dintre Wii U și Nintendo Switch, fiind lansat simultan pe ambele platforme.<br><br>Acest catalog a confirmat că platforma avea idei solide și proprietăți intelectuale puternice, chiar dacă rezultatul de piață nu a fost pe măsura valorii software-ului livrat.<br><br><strong>Relevanță în 2025/2026</strong><br><br>Cu aproximativ 13,5 milioane de unități vândute, Wii U rămâne una dintre consolele Nintendo cu performanță comercială modestă. Totuși, în zona de colecționare și retro-gaming, interesul rămâne stabil datorită identității sale distincte, compatibilității cu Wii și rolului de precursor direct pentru formula hibridă perfecționată pe Switch.<br><br>Privită retrospectiv, Wii U este mai puțin o deviație și mai mult o etapă de tranziție: o platformă care a testat idei importante, din care Nintendo a păstrat ce funcționa și a simplificat restul în generația următoare."
+    },
+    {
+        "id":  "playstation-4",
+        "nume":  "PlayStation 4",
+        "producator":  "Sony",
+        "generatie":  8,
+        "lansare":  2013,
+        "imagine":  "assets/images/consoles/ps4.webp",
+        "cpu":  {
+                    "arhitectura":  "Semi-custom AMD Jaguar (APU)",
+                    "proces_nm":  "28 nm",
+                    "nuclee":  "8C/8T",
+                    "frecventa":  "1.6 GHz",
+                    "tdp":  "~150W"
+                },
+        "gpu":  {
+                    "arhitectura":  "Semi-custom AMD Radeon",
+                    "unitati":  "18 CUs",
+                    "frecventa":  "800 MHz",
+                    "tflops":  "1.84 TFLOPS",
+                    "capabilitati":  "Compute"
+                },
+        "memorie":  {
+                        "tip":  "GDDR5",
+                        "capacitate":  "8 GB",
+                        "magistrala":  "256-bit",
+                        "bandwidth":  "176 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "HDD 500 GB / 1 TB",
+                        "interfata":  "SATA II",
+                        "viteza":  "5.400 RPM"
+                    },
+        "output_video":  {
+                             "rezolutie":  "1080p",
+                             "refresh":  "60 Hz",
+                             "hdr":  "PS4 Pro only",
+                             "upscaling":  "Checkerboard (Pro)"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Orbis OS, Share Play, PS VR"
+                       },
+        "avantaje":  [
+                         "Bibliotecă uriașă la cost redus",
+                         "Rulează încă titluri cross-gen importante",
+                         "Exclusive Sony puternice și variate",
+                         "Accesibilă pentru intrarea în PlayStation VR"
+                     ],
+        "dezavantaje":  [
+                            "Timpi de încărcare mari pe HDD",
+                            "Ventilator zgomotos în jocuri solicitante",
+                            "Framerate instabil în titluri competitive noi",
+                            "Unele servere live-service se închid în 2026"
+                        ],
+        "istorie":  "<strong>Context și relevanță în 2025-2026</strong><br><br>La peste un deceniu de la lansare, PlayStation 4 rămâne o prezență importantă în segmentul de buget. Cu peste 100 de milioane de unități vândute, consola continuă să ofere acces la o bibliotecă foarte mare, la costuri mult mai mici decât pe hardware-ul actual. Pentru mulți jucători, PS4 funcționează încă drept punct de intrare practic în ecosistemul PlayStation.<br><br>În această perioadă, rolul său nu mai este de platformă principală pentru noutăți tehnologice, ci de sistem matur, stabil și economic. Chiar și așa, unele lansări cross-gen, inclusiv Call of Duty: Black Ops 7, rămân jucabile pe PS4, ceea ce prelungește utilitatea consolei în mod concret.<br><br><strong>Arhitectură și design</strong><br><br>PS4 folosește un APU semi-custom AMD Jaguar cu 8 nuclee la 1.6 GHz, un GPU AMD Radeon evaluat la 1.84 TFLOPS și 8 GB memorie GDDR5. Combinația a fost concepută pentru o integrare eficientă între CPU și GPU, oferind o bază tehnică solidă pentru generația a opta. Sistemul rulează Orbis OS, iar interfața este recunoscută pentru claritate și navigare rapidă.<br><br>La nivel fizic, consola păstrează un design compact, cu porturi USB 3.0 frontale și unitate Blu-ray/DVD. Configurațiile standard includ HDD de 500 GB sau 1 TB la 5.400 RPM, o alegere care a fost adecvată la lansare, dar care limitează viteza de răspuns în 2026 comparativ cu sistemele pe SSD.<br><br><strong>Ecosistem de jocuri și servicii</strong><br><br>Punctul forte al PS4 rămâne biblioteca: exclusive Sony precum The Last of Us Part II, God of War, Horizon Zero Dawn și Ghost of Tsushima, alături de titluri third-party majore precum GTA V, Red Dead Redemption 2 sau Battlefield. Diversitatea catalogului păstrează consola relevantă atât pentru jucătorii noi, cât și pentru cei care își completează colecțiile la preț redus.<br><br>Pe partea de servicii, PlayStation Network rămâne funcțional pentru nevoile esențiale, iar PS4 este în continuare platforma de bază pentru PlayStation VR în zona de buget. Totuși, eliminarea treptată a jocurilor PS4 din PlayStation Plus și închiderea unor servere live-service arată clar că ecosistemul intră în etapa finală de suport.<br><br><strong>Performanță practică și valoare actuală</strong><br><br>În utilizarea reală, limitele sunt evidente: timpi mari de încărcare pe HDD, zgomot ridicat în sarcini grele și framerate variabil în titluri competitive noi. Multe jocuri single-player rămân ancorate la 30 FPS, iar în multiplayer apar fluctuații vizibile. Pentru utilizatorii existenți, înlocuirea HDD-ului cu un SSD SATA îmbunătățește semnificativ reacția interfeței și timpii de încărcare.<br><br>Din punct de vedere economic, PS4 rămâne una dintre cele mai bune opțiuni pentru bugete limitate, în special pe piața second-hand. În 2026, consola nu mai reprezintă standardul tehnic, dar continuă să ofere valoare reală prin cost redus, catalog extins și compatibilitate cu jocuri relevante din ultimul deceniu." 
+    },
+    {
+        "id":  "xbox-one",
+        "nume":  "Xbox One",
+        "producator":  "Microsoft",
+        "generatie":  8,
+        "lansare":  2013,
+        "imagine":  "assets/images/consoles/xbox-one.webp",
+        "cpu":  {
+                    "arhitectura":  "AMD Jaguar",
+                    "proces_nm":  "28 nm",
+                    "nuclee":  "8C/8T",
+                    "frecventa":  "1.75 GHz",
+                    "tdp":  "~120W"
+                },
+        "gpu":  {
+                    "arhitectura":  "GCN 1.1",
+                    "unitati":  "12 CUs",
+                    "frecventa":  "853 MHz",
+                    "tflops":  "1.3 TFLOPS",
+                    "capabilitati":  "N/A"
+                },
+        "memorie":  {
+                        "tip":  "DDR3",
+                        "capacitate":  "8 GB",
+                        "magistrala":  "256-bit",
+                        "bandwidth":  "68.3 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "2.5\" HDD",
+                        "interfata":  "SATA II",
+                        "viteza":  "~100 MB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "1080p",
+                             "refresh":  "60 Hz",
+                             "hdr":  "One S/X",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "Original Xbox + Xbox 360 (select)",
+                           "altele":  "HDMI-In, Kinect 2.0, 4K UHD Blu-ray (S/X)"
+                       },
+        "avantaje":  [
+                         "Preț second-hand accesibil pentru intrarea în ecosistem Xbox",
+                         "Rulează jocuri fizice ieftine pe piața locală",
+                         "Funcționează excelent ca centru media de sufragerie",
+                         "Compatibilitate retroactivă pentru trei generații Xbox"
+                     ],
+        "dezavantaje":  [
+                            "Timpi de încărcare mari din cauza HDD-ului mecanic",
+                            "Nu mai primește majoritatea lansărilor noi",
+                            "Lipsește funcția modernă Quick Resume",
+                            "Modelul original este voluminos și mai greu de integrat"
+                        ],
+        "istorie":  "<strong>Context în 2025-2026</strong><br><br>Deși linia Xbox One a ieșit oficial din producție în decembrie 2020, platforma rămâne relevantă în 2025-2026 pentru utilizatorii care prioritizează costul și versatilitatea. Într-o piață în care consolele actuale au prețuri mai ridicate, Xbox One continuă să fie o opțiune realistă pentru gaming de buget, streaming și consum media pe disc.<br><br>În practică, interesul pentru această generație este alimentat de piața second-hand, unde hardware-ul și jocurile fizice sunt accesibile. Pentru mulți utilizatori, consola funcționează ca un sistem complet de sufragerie, nu doar ca dispozitiv pentru jocuri.<br><br><strong>Evoluția modelelor</strong><br><br>Familia a evoluat semnificativ între 2013 și 2017. Modelul original a fost lansat ca sistem 1080p, cu sursă externă și carcasă masivă. Xbox One S a rafinat formula prin sursă internă, suport HDR10 și redare 4K UHD Blu-ray, devenind varianta cea mai echilibrată la nivel de preț și funcții.<br><br>Xbox One X a reprezentat vârful tehnic al generației, cu target 4K nativ și un salt clar de putere grafică. În paralel, varianta One S All-Digital a eliminat unitatea optică pentru utilizatorii orientați exclusiv spre achiziții digitale, dar cu compromisuri evidente pentru piața de jocuri fizice ieftine.<br><br><strong>Arhitectură și experiență de utilizare</strong><br><br>Modelul de bază folosește un CPU Jaguar cu 8 nuclee la 1.75 GHz, GPU de 1.3 TFLOPS și 8 GB DDR3. Configurația rămâne funcțională pentru titlurile generației sale, însă depinde de HDD mecanic, ceea ce produce timpi de încărcare mai mari față de platformele moderne pe SSD.<br><br>În utilizarea zilnică, consola rămâne apreciată pentru capabilitățile media: redare Blu-ray, streaming și integrare simplă cu aplicații populare. În plus, modelul original oferă HDMI-In, un detaliu util pentru setup-uri cu porturi limitate pe monitor sau TV.<br><br><strong>Valoare actuală și limite</strong><br><br>În 2026, Xbox One rămâne atractivă pentru jucătorii cu buget redus, în special prin accesul la o bibliotecă mare și la jocuri fizice ieftine. Compatibilitatea retroactivă extinde semnificativ catalogul disponibil, iar sistemul poate acoperi atât divertismentul video, cât și gaming-ul casual sau mid-core.<br><br>Limitările sunt însă clare: nu mai primește majoritatea lansărilor noi, nu oferă funcții moderne precum Quick Resume, iar performanța și timpii de încărcare reflectă vârsta hardware-ului. Pentru utilizatorii care urmăresc exclusiv jocurile de ultimă generație, tranziția către Series X/S rămâne direcția naturală pe termen mediu." 
+    },
+    {
+        "id":  "nintendo-switch",
+        "nume":  "Nintendo Switch",
+        "producator":  "Nintendo",
+        "generatie":  8,
+        "lansare":  2017,
+        "imagine":  "assets/images/consoles/nintendo-switch.webp",
+        "cpu":  {
+                    "arhitectura":  "NVIDIA Tegra X1 / X1+",
+                    "proces_nm":  "20 nm",
+                    "nuclee":  "4C/4T",
+                    "frecventa":  "1.02 GHz",
+                    "tdp":  "~40W"
+                },
+        "gpu":  {
+                    "arhitectura":  "NVIDIA Maxwell",
+                    "unitati":  "256 CUDA",
+                    "frecventa":  "768 MHz (docked)",
+                    "tflops":  "0.4 TFLOPS",
+                    "capabilitati":  "N/A"
+                },
+        "memorie":  {
+                        "tip":  "LPDDR4",
+                        "capacitate":  "4 GB",
+                        "magistrala":  "64-bit",
+                        "bandwidth":  "25.6 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "Flash intern 32 GB / 64 GB (OLED)",
+                        "interfata":  "eMMC",
+                        "viteza":  "~100 MB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "1080p via HDMI",
+                             "refresh":  "60 Hz",
+                             "hdr":  "N/A",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  false,
+                           "vrr":  false,
+                           "backwards_compatibility":  "N/A",
+                           "altele":  "Joy-Con cu HD Rumble, cameră IR, Nintendo Switch Online"
+                       },
+        "avantaje":  [
+                         "Concept hibrid matur, cu trecere instant între moduri",
+                         "Bibliotecă first-party foarte puternică și variată",
+                         "Piață second-hand accesibilă pentru hardware și accesorii",
+                         "Ecosistem solid pentru jocuri indie și locale"
+                     ],
+        "dezavantaje":  [
+                            "Prețurile jocurilor Nintendo scad rar semnificativ",
+                            "Cipul Tegra X1 este depășit tehnologic",
+                            "Joy-Con drift rămâne o problemă recurentă",
+                            "Performanța e inferioară handheld-urilor PC moderne"
+                        ],
+        "istorie":  "<strong>Context și relevanță în 2025</strong><br><br>Nintendo Switch rămâne una dintre cele mai influente platforme ale ultimului deceniu, chiar și după lansarea succesorului din iunie 2025. Cu 155,37 milioane de unități livrate până la finalul lui 2025, consola a depășit toate pragurile istorice pentru Nintendo și a rămas un reper comercial în industrie.<br><br>În practică, modelul original continuă să fie viabil datorită bibliotecii foarte mari și bazei active de utilizatori. Pentru mulți jucători, Switch 1 rămâne platforma de buget care oferă cel mai simplu acces la titluri first-party și indie într-un format portabil stabil.<br><br><strong>Portofoliu hardware și direcție de design</strong><br><br>Ecosistemul este construit pe trei versiuni principale: modelul standard/V2, Switch Lite și Switch OLED. Toate păstrează logica hibridă Nintendo, dar diferențele de ecran, autonomie și stocare internă au permis adresarea unor segmente distincte de piață, de la utilizatorii exclusiv handheld până la publicul care alternează frecvent între TV și mobilitate.<br><br>Reviziile pe Tegra X1+ au îmbunătățit eficiența energetică, iar OLED a adus un ecran mai mare și dock cu port LAN. În același timp, conceptul de bază a rămas neschimbat: trecere instant între moduri, controlere detașabile și experiență locală multiplayer rapidă.<br><br><strong>Software, servicii și piață</strong><br><br>Succesul Switch a fost susținut de cadența software constantă: Mario Kart 8 Deluxe, Animal Crossing: New Horizons, Smash Bros. Ultimate, Breath of the Wild și Super Mario Odyssey au menținut interesul la scară globală, în timp ce ecosistemul \"Nindies\" a consolidat oferta digitală pe termen lung.<br><br>Nintendo Switch Online a evoluat de la un serviciu de bază la un hub de conservare pentru cataloage clasice, iar funcția Virtual Game Cards introdusă în 2025 a adăugat flexibilitate pentru distribuția digitală în familie. Aceste elemente au extins durata de viață comercială a platformei, chiar într-un context de tranziție spre noua generație.<br><br><strong>Limite tehnice și moștenire</strong><br><br>În 2025, limitele hardware sunt vizibile: cipul Tegra X1 este depășit de noile handheld-uri PC, iar titlurile complexe rulează adesea cu compromisuri de performanță. În plus, problema Joy-Con drift rămâne un punct sensibil în percepția publică, iar prețurile jocurilor Nintendo scad lent comparativ cu alte ecosisteme.<br><br>Totuși, Switch își păstrează relevanța prin echilibrul dintre cost, portabilitate și bibliotecă. Moștenirea sa este clară: a validat definitiv modelul hibrid ca direcție majoră în designul modern de console și a demonstrat că experiența de utilizare poate cântări mai mult decât puterea brută."
+    },
+    {
+        "id":  "playstation-5",
+        "nume":  "PlayStation 5",
+        "producator":  "Sony",
+        "generatie":  9,
+        "lansare":  2020,
+        "imagine":  "assets/images/consoles/ps5.webp",
+        "cpu":  {
+                    "arhitectura":  "AMD Zen 2",
+                    "proces_nm":  "7 nm",
+                    "nuclee":  "8C/16T",
+                    "frecventa":  "până la 3.5 GHz (variabil)",
+                    "tdp":  "~200W"
+                },
+        "gpu":  {
+                    "arhitectura":  "RDNA 2",
+                    "unitati":  "36 CUs (PS5), +45% performanță pe PS5 Pro",
+                    "frecventa":  "2.23 GHz",
+                    "tflops":  "10.28 TFLOPS (PS5)",
+                    "capabilitati":  "Ray tracing avansat (2-3x mai rapid pe Pro), PSSR"
+                },
+        "memorie":  {
+                        "tip":  "GDDR6",
+                        "capacitate":  "16 GB",
+                        "magistrala":  "256-bit",
+                        "bandwidth":  "448 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "Custom NVMe SSD 825 GB/1 TB (PS5), 2 TB (PS5 Pro)",
+                        "interfata":  "PCIe 4.0",
+                        "viteza":  "5.5 GB/s (raw), 8-9 GB/s efectiv (compresie)"
+                    },
+        "output_video":  {
+                             "rezolutie":  "4K (țintă 60-120 FPS), 8K în cazuri selectate",
+                             "refresh":  "120 Hz",
+                             "hdr":  "HDR10",
+                             "upscaling":  "PSSR (PS5 Pro), metode clasice pe PS5"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  true,
+                           "vrr":  true,
+                           "backwards_compatibility":  "PS4 (peste 99% din bibliotecă)",
+                           "altele":  "Tempest 3D AudioTech, DualSense haptic/adaptive triggers, Wi-Fi 6/7"
+                       },
+        "avantaje":  [
+                         "Bibliotecă PS4 compatibilă în proporție foarte mare",
+                         "SSD-ul reduce semnificativ timpii de încărcare",
+                         "DualSense oferă feedback haptic și triggere adaptive",
+                         "PS5 Pro susține mai bine 4K la 60-120 FPS"
+                     ],
+        "dezavantaje":  [
+                            "PS5 Pro are preț ridicat față de modelul standard",
+                            "Unitatea optică este opțională pe PS5 Pro",
+                            "PS VR2 are adopție software limitată",
+                            "PlayStation Portal depinde de conexiune Wi-Fi stabilă"
+                        ],
+        "istorie":  "<strong>Poziționare și evoluție</strong><br><br>PlayStation 5 a intrat pe piață în 2020 și a devenit rapid platforma centrală din ecosistemul Sony. În anii următori, strategia hardware a fost clară: modelul inițial a fost urmat de PS5 Slim, iar apoi de PS5 Pro, o variantă orientată către performanță ridicată. În 2025-2026, consola rămâne relevantă atât prin baza de utilizatori, cât și prin lansările majore anunțate pentru generația curentă.<br><br>Diferențele dintre modele răspund unor nevoi distincte. PS5 Slim reduce dimensiunea și crește stocarea standard la 1 TB, în timp ce PS5 Pro aduce un profil clar pentru utilizatorii care urmăresc fidelitate vizuală la frame rate ridicat. Astfel, platforma a evoluat de la un singur produs la un portofoliu coerent, fără a fragmenta experiența software.<br><br><strong>Arhitectură hardware</strong><br><br>La bază, PS5 folosește arhitectura AMD Zen 2 cu 8 nuclee și 16 fire de execuție, cu frecvență variabilă de până la 3.5 GHz. GPU-ul RDNA 2 al modelului standard livrează 10.28 TFLOPS prin 36 unități de calcul, iar PS5 Pro crește puterea grafică semnificativ, cu un avans de aproximativ 45% și un ray tracing de 2-3 ori mai rapid în scenarii compatibile. Rezultatul practic este reducerea compromisurilor dintre modurile Fidelity și Performance.<br><br>Subsistemul de stocare rămâne unul dintre pilonii generației: SSD-ul personalizat atinge 5.5 GB/s brut, iar cu compresie eficientă poate livra 8-9 GB/s efectiv. Capacitatea variază de la 825 GB pe modelul original la 1 TB pe Slim, respectiv 2 TB pe Pro. Acest design susține încărcări foarte rapide și permite fluxuri de date mai dense în jocurile moderne.<br><br><strong>Software, servicii și experiență</strong><br><br>Interfața PS5 a fost gândită pentru utilizare rapidă, cu acces direct la funcții de joc și la PlayStation Store integrat. Cardurile de activitate și centrul de control reduc pașii dintre sesiuni, iar suportul pentru peste 99% din biblioteca PS4 menține valoarea platformei pe termen lung. În practică, jucătorii pot trece între titluri noi și colecția existentă fără bariere majore.<br><br>DualSense completează acest ecosistem prin feedback haptic și triggere adaptive, două elemente care influențează direct senzația de control în joc. Pe zona de servicii, PS Plus rămâne important pentru multiplayer și pentru accesul la un catalog extins. Împreună, hardware-ul și serviciile definesc o experiență matură, nu doar o creștere de putere brută.<br><br><strong>Viabilitate în 2026</strong><br><br>PS5 Pro este o opțiune potrivită pentru utilizatorii cu ecrane 4K/120Hz care vor claritate mai bună la 60-120 FPS, inclusiv prin PSSR. Pentru majoritatea jucătorilor, PS5 Slim păstrează un raport calitate-preț mai echilibrat. În contextul zvonurilor despre PS6 pentru 2027-2028, generația actuală are încă un ciclu solid de utilizare și suport comercial."
+    },
+    {
+        "id":  "xbox-series-x",
+        "nume":  "Xbox Series X",
+        "producator":  "Microsoft",
+        "generatie":  9,
+        "lansare":  2020,
+        "imagine":  "assets/images/consoles/xbox-series-x.webp",
+        "cpu":  {
+                    "arhitectura":  "AMD Zen 2",
+                    "proces_nm":  "7 nm",
+                    "nuclee":  "8C/16T",
+                    "frecventa":  "3.8 GHz",
+                    "tdp":  "~200W"
+                },
+        "gpu":  {
+                    "arhitectura":  "RDNA 2",
+                    "unitati":  "52 CUs",
+                    "frecventa":  "1.825 GHz",
+                    "tflops":  "12 TFLOPS",
+                    "capabilitati":  "RT, mesh, VRS"
+                },
+        "memorie":  {
+                        "tip":  "GDDR6",
+                        "capacitate":  "16 GB",
+                        "magistrala":  "320-bit",
+                        "bandwidth":  "560 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "NVMe SSD",
+                        "interfata":  "PCIe 4.0",
+                        "viteza":  "2.4 GB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "4K",
+                             "refresh":  "120 Hz",
+                             "hdr":  "HDR10, Dolby Vision",
+                             "upscaling":  "Auto HDR"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  true,
+                           "vrr":  true,
+                           "backwards_compatibility":  "Xbox/360/One",
+                           "altele":  "Quick Resume"
+                       },
+        "avantaje":  [
+                         "12 TFLOPS - cea mai puternică",
+                         "Game Pass valoare excelentă",
+                         "Backward compatibility extinsă",
+                         "1 TB stocare standard"
+                     ],
+        "dezavantaje":  [
+                            "SSD mai lent decât PS5",
+                            "Puține exclusive la lansare",
+                            "Design polarizant"
+                        ],
+        "istorie":  "Xbox Series X: Puterea Pură pentru Generația Nouă<br><br><strong>Foc Compet la PS5: Spec Bragging Rights</strong><br><br>Lansat în noiembrie 2020 concurent cu PS5, Xbox Series X a reprezentat strategie Microsoft diametralmente opusă: maximize putere brută, nu inovație storage. Procesor AMD Ryzen Zen 2 octa-core la 3.8 GHz, GPU custom RDNA la 12 TFLOPS (vs PS5 10.28 TFLOPS), 16 GB RAM GDDR6, și 1 TB SSD. Dacă pe hârtie, Xbox Series X era mai puternic, teoretic delivering superior frame rates și rezoluții.<br><br><strong>Strategia Game Pass: Serviciu peste Hardware</strong><br><br>Cu toate acestea, Microsoft a învățat lecția Xbox One: servicii sunt victorie reală, nu spec-sheets. Xbox Game Pass pe lansat cu 100+ titluri day-one, inclusiv Bethesda games (Starfield, Elder Scrolls VI) prin achiziție 7.5B. Halo Infinite a fost amânat (lansat fără Forge mode) dar campaign oferit pe Game Pass. Serviciul a crescut la 34+ milioane abonați, generând revenue recurent care PS Plus nu putea egaliza rapid.<br><br><strong>Bibliotecă Hibridă și Backward Compatibility Masivă</strong><br><br>Series X oferia backward compatibility cu Xbox One, Xbox 360, și chiar jocuri originale Xbox - un feature unic. Bibliotecă: Halo, Forza, Gears of War Series X|S (ver noi), ID@Xbox indie support. Cu toate acestea, vânzări au fost inferioare PS5: 20-30 milioane unități cumulative prezente vs 50M+ PS5, parțial datorită Game Pass saturation (service diminuished new game sales).<br><br><strong>Camera TV-Mic: Design și Dimensiuni</strong><br><br>Design noir minimalista de 156 × 151 × 301 mm (tower format) vs PS5 curb alienă - Series X fit în livingrooms tradițional. Ventilație optimizată, ventilator redus zgomot, și design discrete era advantage. PS5 necesita planificare spatiala mai atentă datorita forme curbe și dimensiuni mai mari.<br><br><strong>Subscriptie Dominație</strong><br><br>Xbox Game Pass cu cloud gaming (Xbox Cloud Gaming cu Play Anywhere) a oferit acces 300+ jocuri pe console, PC, tablet, phone. Aceasta era paradigm-shift spiritual fără precedent. PlayStation Plus Premium a trebuit să răspundă, oferind PlayStation Classics și cloud gaming (Plus Premium tier la 18USD), dar Game Pass a mers mai devreme și mai agresiv.<br><br><strong>Moștenire: Servicii Triumph Over Specs</strong><br><br>Xbox Series X a fost paradoxul tehnologic: hardware mai puternic decât competitor (PS5 12 TFLOPS vs 10.28), dar vânzări mai slabe. Lecția: consumatori nu cumpara TFLOPS, cumpara servicii, exclusives, comunitate. Xbox Game Pass a câștigat batalia serviciilor vs PlayStation Plus. Series X rămâne platform premium pentru enthusiasts, dar Xbox ca brand a învațat: puterea serviciilor > puterea hardware bruta, piață moderna cere amandoua."
+    },
+    {
+        "id":  "xbox-series-s",
+        "nume":  "Xbox Series S",
+        "producator":  "Microsoft",
+        "generatie":  9,
+        "lansare":  2020,
+        "imagine":  "assets/images/consoles/xbox-series-s.webp",
+        "cpu":  {
+                    "arhitectura":  "AMD Zen 2",
+                    "proces_nm":  "7 nm",
+                    "nuclee":  "8C/16T",
+                    "frecventa":  "3.6 GHz",
+                    "tdp":  "~100W"
+                },
+        "gpu":  {
+                    "arhitectura":  "RDNA 2",
+                    "unitati":  "20 CUs",
+                    "frecventa":  "1.565 GHz",
+                    "tflops":  "4 TFLOPS",
+                    "capabilitati":  "RT, VRS"
+                },
+        "memorie":  {
+                        "tip":  "GDDR6",
+                        "capacitate":  "10 GB",
+                        "magistrala":  "128-bit",
+                        "bandwidth":  "224 GB/s"
+                    },
+        "stocare":  {
+                        "tip":  "NVMe SSD",
+                        "interfata":  "PCIe 4.0",
+                        "viteza":  "2.4 GB/s"
+                    },
+        "output_video":  {
+                             "rezolutie":  "1440p",
+                             "refresh":  "120 Hz",
+                             "hdr":  "HDR10",
+                             "upscaling":  "N/A"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  true,
+                           "vrr":  true,
+                           "backwards_compatibility":  "Xbox One",
+                           "altele":  "All-Digital"
+                       },
+        "avantaje":  [
+                         "Preț accesibil",
+                         "Compactă și silențioasă",
+                         "Game Pass inclus",
+                         "Next-gen la buget redus"
+                     ],
+        "dezavantaje":  [
+                            "Doar 4 TFLOPS",
+                            "Fără disc optic",
+                            "512 GB stocare limitată"
+                        ],
+        "istorie":  "Xbox Series S: All-Digital Bargain Breaker - Putere Next-Gen la Preț Accesibil<br><br><strong>Strategie Preț Agresiv: Democratizarea Gaming</strong><br><br>Lansat în noiembrie 2020 concurent cu Series X, Xbox Series S a avut preț shockingly agresiv: 299 USD (vs Series X 499 USD, PS5 499 USD). Design minimalistă alb (vs negru Series X) și fără disc optic, dar cu procesor identic AMD Ryzen Zen 2, GPU custom RDNA la 4 TFLOPS, 10 GB RAM GDDR6, și 512 GB SSD. Strategie Microsoft: democratize next-gen gaming. Se putea argumenta: pentru jumătate din preț, primești aceeași generație, doar performanță redusă.<br><br><strong>Compromisuri Tehnice și Trade-off</strong><br><br>4 TFLOPS vs Series X 12 TFLOPS și PS5 10.28 TFLOPS arata scădere 67-62%. Jocuri putea rula 1440p/1080p res la 120Hz vs 4K stabilă pe Series X, dar pentru casual gamers și media consumers, diferența vizuală era acceptabilă. SSD 512 GB vs standard 1 TB reducea spațiu disponibil, necesitând ștergeri frecvente de jocuri. Design compact biased la living room accessibility vs Series X tower.\n\n<strong>Game Pass Democratizer</strong><br><br>Series S a fost arma Game Pass finală: 299 USD + Game Pass 9.99/luna permiteau jucatori cu buget redus acces la 300+ jocuri. Calcul: después 30+ luni de Game Pass (299 USD initial), Utilizatorul plătise 599 USD pentru 300+ jocuri libere. Strategy perfect aliniată Microsoft: profit din serviciu, nu hardware. Vânzări au fost surprinzător de puternice: 11+ milioane unități cumulative par (combinat din analytics publicat).<br><br><strong>DeveloperSi Optimization Challenges</strong><br><br>Developerele au fost forțati să optimize bine pentru Series S: jocuri rula pe Series X la 4K 60fps, Series S la 1440p 60fps cu compromisuri. Unreal Engine 5, Frostbite, jocuri indie au trebuit să target performance variable. Early criticism: RDNA cores partajat cu GPU (nu dedicated compute) facea ai challenging vs PS5 dedicated Compute Units. Cu toate acestea, developers au navigat destul de bine.<br><br><strong>Success Commercial si Legacy</strong><br><br>Xbox Series S a dovedit ceva importante: accessible pricing pentru next-gen gaming era cerință, nu opțiune. Consumatori care n-aveau 500 USD dar aveau 300 USD au ales Series S, devenind Game Pass adopters. Vânzări: 11+ milioane unități - nu dominant vs PS5 50M+, dar suficient pentru Microsoft să menține Xbox relevanta. Model dual Series X + Series S (premium + budget) a fost successful.\n\n<strong>Moștenire: Democratizarea Generațional Accels</strong><br><br>Xbox Series S a demonstrat că gaming viitor necesita multiple price points. PlayStation 5 fără disc (499 USD) a venit mai târziu. Nintendo Switch OLED (349 USD) vs Switch standard. Industria a învață: price segmentation nu este luxury, este necesitate. Series S rămâne console de opțiune cu cel mai bun preț-la-performance din generația 9, schimbând expectativa consumatorilor asupra gaming accessibility."
+    },
+    {
+        "id":  "nintendo-switch-2",
+        "nume":  "Nintendo Switch 2",
+        "producator":  "Nintendo",
+        "generatie":  9,
+        "lansare":  2025,
+        "imagine":  "assets/images/consoles/nintendo-switch-2.webp",
+        "cpu":  {
+                    "arhitectura":  "NVIDIA Tegra T239 (Ampere)",
+                    "proces_nm":  "8 nm",
+                    "nuclee":  "8C (Cortex-A78C)",
+                    "frecventa":  "N/A",
+                    "tdp":  "~50W"
+                },
+        "gpu":  {
+                    "arhitectura":  "NVIDIA Ampere",
+                    "unitati":  "1.536 CUDA cores",
+                    "frecventa":  "N/A",
+                    "tflops":  "N/A",
+                    "capabilitati":  "Ray Tracing, DLSS, VRR"
+                },
+        "memorie":  {
+                        "tip":  "LPDDR5X",
+                        "capacitate":  "12 GB",
+                        "magistrala":  "N/A",
+                        "bandwidth":  "102 GB/s (docked), 68 GB/s (mobile)"
+                    },
+        "stocare":  {
+                        "tip":  "UFS 3.1",
+                        "capacitate":  "256 GB",
+                        "interfata":  "microSD Express",
+                        "viteza":  "N/A"
+                    },
+        "output_video":  {
+                             "rezolutie":  "4K @ 60 fps (Docked via DLSS) / 1080p (Handheld)",
+                             "refresh":  "120 Hz",
+                             "hdr":  "HDR10",
+                             "upscaling":  "DLSS"
+                         },
+        "tehnologii":  {
+                           "ray_tracing":  true,
+                           "vrr":  true,
+                           "backwards_compatibility":  "Nintendo Switch Gen 1",
+                           "altele":  "Magnetic Joy-Con, GameChat (voice/video/screen share), File Decompression Engine, Wi-Fi 6, Bluetooth 5.2"
+                       },
+        "avantaje":  [
+                         "Integrare socială avansată prin GameChat",
+                         "Ecran LCD 7,9 inchi cu rată 120 Hz",
+                         "Ray Tracing și DLSS pentru performanță 4K",
+                         "Joy-Con magnetici cu acces rapid GameChat",
+                         "Compatibilitate extinsă cu biblioteca Switch 1",
+                         "Design robust al kickstand-ului"
+                     ],
+        "dezavantaje":  [
+                            "Preț ridicat (449,99 USD)",
+                            "Jocuri premium scumpe (până la 80 USD)",
+                            "Autonomie limitată (2-6,5 ore)",
+                            "Joy-Con stick drift riskuri persistente",
+                            "Prețul ecranului crește așteptările de calitate"
+                        ],
+        "istorie":  "<strong>Lansare și impactul comercial</strong><br><br>Nintendo Switch 2 (cod intern „Ounce”) a fost lansat la nivel mondial pe 5 iunie 2025, consolidând poziția Nintendo ca producător de hardware hibrid. Consola a depășit rapid recordurile de lansare, atingând 17,37 milioane de unități vândute până la finele anului 2025 și devenind cel mai rapid vândut dispozitiv din istoria Nintendo. Această performanță comercială a demonstrat că piața acceptă încă modelul Switch, chiar și la un preț mai ridicat și cu jocuri la 80 USD.<br><br>Tranziția a fost intenționată liniară. Președintele Nintendo, Shuntaro Furukawa, a declarat că prioritatea era să îi permită jucătorilor să joace software-ul deja achiziționat pe succesorul noii generații, ceea ce a pus compatibilitatea retroactivă în centrul designului. Dezvoltarea formală a demarat în 2019 sub conducerea lui Kouichi Kawamoto (producător), Takuhiro Dohta (director hardware) și Tetsuya Sasaki (director tehnic).<br><br><strong>Inovații hardware și arhitectură</strong><br><br>Switch 2 folosește procesorul NVIDIA Tegra T239 (Drake), o saltă masivă de generație față de Tegra X1. Arhitectura Ampere oferi octa-core ARM Cortex-A78C, 1.536 nuclee CUDA cu suport Ray Tracing și DLSS, 12 GB LPDDR5X RAM și 256 GB stocare UFS 3.1. Ecranul LCD de 7,9 inchi cu rată de reîmprospătare de 120 Hz și suport HDR10 oferă o experiență vizuală mult mai agerică decât generația anterioară, în timp ce redarea în regim docked atinge 4K la 60 fps prin DLSS.<br><br>O adăugire importantă este motorul de decompresie hardware dedicat (FDE), care gestionează fișiere comprimate și reduce timpii de încărcare. Sistemul de răcire improved în dock acum include propriul ventilator pentru a gestiona căldura din modul 4K. Conectivitatea s-a modernizat: Wi-Fi 6, Bluetooth 5.2, dual USB-C, iar dock-ul include port Gigabit Ethernet pentru stabilitate online optimală.<br><br><strong>Joy-Con 2 și control</strong><br><br>Noile controllere Joy-Con au fost reproiectate pentru a rezolva problemele generației anterioare. Sistemul de șine a fost înlocuit cu magneți puternici și mecanism de eliberare mecanică, producând un sunet caracteristic (snap) la conectare. Aceasta nu este doar o schimbare estetică—feedback-ul physics ajută utilizatorii să confirme conectarea și reintroduce autenticitate în interacțiune fizică.<br><br>Moda mouse permite utilizarea Joy-Con-urilor ca mouse-uri de calculator în jocuri compatibile, extinzând controlul atunci când consola este în dock. HD Rumble 2 intensifică vibrațiile la niveluri comparable cu feedback-ul GameCube. Butonul nou „C” pe Joy-Con-ul drept oferă acces rapid la funcția GameChat, integrând comunicarea socială direct în hardware.<br><br><strong>Software și servicii noi</strong><br><br>GameChat este inovația caracteristică a generației. Permite chat vocal, video și partajarea ecranului între utilizatori, răspunzând unei nevoi identificate intern la Nintendo în perioada pandemiei. Serviciul Nintendo Switch Online s-a extins cu Nintendo Classics, aducând jocuri GameCube exclusiv pe Switch 2. De asemenea, Virtual Game Cards permite transferul sau împrumutul temporar al jocurilor digitale între console, complexitate nouă în distribuția software.<br><br>Compatibilitatea retroactivă funcționează prin hibrid între emulare software și hardware. Majoritatea jocurilor Switch 1 rulează direct, beneficiind de funcții noi, iar titluri majore cum ar fi Breath of the Wild și Super Mario Odyssey au primit actualizări pentru îmbunătățiri grafice. Noile game cards colorate în roșu (versus gri anterior) introduc Game-Key system, unde cardul fizic conține doar o licență digitală, restul datelor descărcând prin internet—o metodă pentru a permite vânzarea la retail a jocurilor care depășesc capacitatea fizică.<br><br><strong>Recepție pe piață și limitări</strong><br><br>Reacția critică a fost mixtă. Punctele forte includ integrarea socială prin GameChat, calitatea ecranului în ciuda alegerii LCD (nu OLED), performanța tehnică prin DLSS și Ray Tracing, și designul robust al kickstand-ului. Punctele slabe: prețul ridicat (449,99 USD în SUA, 469,99 EUR în Europa), jocuri scumpe (până la 80 USD pentru titluri premium), autonomie limitată (2-6,5 ore) și persistența riscului Joy-Con stick drift. Mario Kart World a devenit cel mai bine vândut titlu cu peste 14 milioane de unități, validând interesul pentru platformă.<br><br><strong>Poziție în 2026</strong><br><br>Switch 2 demonstrează că Nintendo rămâne pe direcția hibridă intenționată și acceptată de piață. Consola nu este o rupere radicală, ci o evoluție deliberată: mai multă putere de calcul pentru dezvoltatori, fără schimbări radicale în modul de utilizare. În contextul unei piețe distribuite între diferite segmente—PS5/Xbox pentru gaming hardcore, Switch 2 pentru portabilitate și comoditate socială—consola și-a consolidat rolul ca dispozitiv de tranziție accesibil între moduri."
+    }
+]
+;

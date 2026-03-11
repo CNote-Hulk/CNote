@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 3.3 � Flip-flop ?i registre">
+    <meta name="description" content="Lecția 3.3 — Flip-flop și registre">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 3.3 � Flip-flop ?i registre � Console Notebook</title>
+    <title>Lecția 3.3 — Flip-flop și registre — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,134 +30,142 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 � LOGICA DIGITALA</p>
-            <h1>Lec?ia 3.3 � Flip-flop ?i registre</h1>
-            <p>memorie digitala, latch, bistabile, registre</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 — LOGICĂ DIGITALĂ</p>
+            <h1>Lecția 3.3 — Flip-flop și registre</h1>
+            <p>memorie digitală, latch, bistabile, registre</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-                                                <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Flip-flops ?i latches sunt circuite care au doua stari stabile ce pot stoca informa?ie de stare � bistable multivibrator</p>
-                <p>Aceasta lec?ie acopera: <strong>memorie digitala</strong>, <strong>latch</strong>, <strong>bistabile</strong>, <strong>registre</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Porțile logice procesează date, dar nu le pot reține — output-ul dispare imediat ce input-ul se schimbă. Pentru a stoca un bit permanent, avem nevoie de un circuit care își păstrează starea: flip-flop-ul. Fiecare registru din procesorul unui PlayStation 5 și fiecare celulă din memoria cache L1 se bazează pe acest principiu: un circuit bistabil care stochează un 0 sau un 1 până când este comandat explicit să se schimbe.
+                </p>
+                <p>
+                    Această lecție acoperă memoria digitală la nivel elementar: <strong>latch-ul</strong> (circuit sensibil la nivel), <strong>flip-flop-ul</strong> (circuit sensibil la front, sincronizat cu ceasul), <strong>bistabilele</strong> (SR, D, JK, T) și <strong>registrele</strong> — grupuri de flip-flop-uri care stochează cuvinte de date.
+                </p>
+                <p>
+                    Scopul nu este memorarea schemei unui flip-flop D, ci înțelegerea <em>de ce</em> procesorul din Xbox Series X conține milioane de flip-flop-uri organizate în registre de 64 de biți, <em>cum</em> aceste registre captează date la fiecare ciclu de ceas și <em>de ce</em> fără ele procesorul ar fi incapabil să mențină starea.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.1 � Defini?ie ?i principii fundamentale</h3>
+                <h3>3.3.1 — Definiție și principii fundamentale</h3>
                 <ul class="specs-list">
-                    <li>Flip-flops ?i latches sunt circuite care au doua stari stabile ce pot stoca informa?ie de stare � bistable multivibrator</li>
-                    <li>Circuitul poate fi schimbat prin semnale aplicate la una sau mai multe intrari de control ?i va furniza starea sa (plus complementul logic) la ie?ire</li>
-                    <li>Este elementul fundamental de stocare &#238;n logica secven?iala</li>
-                    <li>Stocheaza un singur bit (cifra binara) de date; una din cele doua stari reprezinta 1, cealalta reprezinta 0</li>
-                    <li><strong>Utilizari:</strong> stocare de stare, numarare de impulsuri, sincronizare a semnalelor de intrare</li>
-                    <li>Termenul flip-flop se refera modern exclusiv la circuitele edge-triggered (sincrone, cu ceas)</li>
-                    <li>Termenul latch se refera la circuitele level-triggered (asincrone, transparente)</li>
-                    <li>Primul latch electronic inventat &#238;n 1918 de William Eccles ?i F. W. Jordan (trigger circuit Eccles�Jordan, cu tuburi vidate)</li>
-                    <li>Utilizat &#238;n computerul Colossus (1943) pentru spargerea codurilor</li>
+                    <li>Flip-flops și latches sunt circuite care au două stări stabile ce pot stoca informație de stare – bistable multivibrator</li>
+                    <li>Circuitul poate fi schimbat prin semnale aplicate la una sau mai multe intrări de control și va furniza starea sa (plus complementul logic) la ieșire</li>
+                    <li>Este elementul fundamental de stocare în logica secvențială</li>
+                    <li>Stochează un singur bit (cifră binară) de date; una din cele două stări reprezintă 1, cealaltă reprezintă 0</li>
+                    <li><strong>Utilizări:</strong> stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare</li>
+                    <li>Termenul flip-flop se referă modern exclusiv la circuitele edge-triggered (sincrone, cu ceas)</li>
+                    <li>Termenul latch se referă la circuitele level-triggered (asincrone, transparente)</li>
+                    <li>Primul latch electronic inventat în 1918 de William Eccles și F. W. Jordan (trigger circuit Eccles–Jordan, cu tuburi vidate)</li>
+                    <li>Utilizat în computerul Colossus (1943) pentru spargerea codurilor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.2 � Implementare</h3>
+                <h3>3.3.2 — Implementare</h3>
                 <ul class="specs-list">
                     <li>Latches transparente (asincrone) se construiesc din perechi de inversoare cross-coupled</li>
-                    <li><strong>Elemente active utilizate:</strong> tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</li>
+                    <li><strong>Elemente active utilizate:</strong> tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</li>
                     <li>Flip-flop-urile cu ceas sunt proiectate pentru sisteme sincrone</li>
-                    <li>Ignora intrarile cu excep?ia tranzi?iei semnalului de ceas dedicat (clocking/pulsing/strobing)</li>
-                    <li><strong>La tranzi?ia ceasului:</strong> flip-flop-ul fie schimba fie re?ine semnalul de ie?ire pe baza intrarilor</li>
-                    <li>Unele flip-flop-uri schimba pe rising edge, altele pe falling edge</li>
-                    <li>Doua etape de amplificare inversoare conectate &#238;n cascada formeaza amplificatorul neinversor necesar</li>
+                    <li>Ignoră intrările cu excepția tranziției semnalului de ceas dedicat (clocking/pulsing/strobing)</li>
+                    <li><strong>La tranziția ceasului:</strong> flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor</li>
+                    <li>Unele flip-flop-uri schimbă pe rising edge, altele pe falling edge</li>
+                    <li>Două etape de amplificare inversoare conectate în cascadă formează amplificatorul neinversor necesar</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.3 � Latch SR (Set-Reset)</h3>
+                <h3>3.3.3 — Latch SR (Set-Reset)</h3>
                 <ul class="specs-list">
                     <li><strong>Cel mai fundamental latch:</strong> SR asincron (Set-Reset)</li>
                     <li><strong>S=1, R=0:</strong> Set (Q=1)</li>
                     <li><strong>S=0, R=1:</strong> Reset (Q=0)</li>
-                    <li><strong>S=0, R=0:</strong> Hold state (men?ine starea anterioara)</li>
-                    <li><strong>S=1, R=1:</strong> Combina?ie restric?ionata (nevalida)</li>
-                    <li><strong>SR NOR latch:</strong> doua por?i NOR cross-coupled cu feedback</li>
-                    <li>NOR cu control 1 fixeaza ie?irea la 0; NOR cu control 0 ac?ioneaza ca NOT</li>
-                    <li>Q ?i Q� sunt complementare &#238;n mod normal</li>
-                    <li>S=R=1 for?eaza ambele ie?iri la 0, rup&#226;nd ecua?ia Q = NOT Q�</li>
+                    <li><strong>S=0, R=0:</strong> Hold state (menține starea anterioară)</li>
+                    <li><strong>S=1, R=1:</strong> Combinație restricționată (nevalidă)</li>
+                    <li><strong>SR NOR latch:</strong> două porți NOR cross-coupled cu feedback</li>
+                    <li>NOR cu control 1 fixează ieșirea la 0; NOR cu control 0 acționează ca NOT</li>
+                    <li>Q și Q̄ sunt complementare în mod normal</li>
+                    <li>S=R=1 forțează ambele ieșiri la 0, rupând ecuația Q = NOT Q̄</li>
                     <li>Poate duce la metastabilitate (race condition)</li>
-                    <li><strong>Ecua?ie caracteristica:</strong> Q_next = R�&#183;Q + R�&#183;S sau Q_next = S + R�&#183;Q (cu S&#183;R = 0)</li>
-                    <li><strong>SR NAND latch:</strong> acelea?i feedback-uri, por?i NAND; intrari active-low (inversate)</li>
-                    <li>S=R=0 produce starea invalida (opusul NOR)</li>
-                    <li><strong>JK latch:</strong> SR latch cu comportament toggle pentru combina?ia J=K=1</li>
+                    <li><strong>Ecuație caracteristică:</strong> Q_next = R̄·Q + R̄·S sau Q_next = S + R̄·Q (cu S·R = 0)</li>
+                    <li><strong>SR NAND latch:</strong> aceleași feedback-uri, porți NAND; intrări active-low (inversate)</li>
+                    <li>S=R=0 produce starea invalidă (opusul NOR)</li>
+                    <li><strong>JK latch:</strong> SR latch cu comportament toggle pentru combinația J=K=1</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.4 � Latches cu poarta (Gated) ?i transparen?a</h3>
+                <h3>3.3.4 — Latches cu poartă (Gated) și transparență</h3>
                 <ul class="specs-list">
-                    <li><strong>Gated SR latch:</strong> nivel suplimentar de por?i NAND/AND adaugat la SR latch</li>
-                    <li><strong>Intrare Enable (E):</strong> E=1 permite semnalelor sa treaca (transparent), E=0 blocheaza (opac, men?ine starea)</li>
-                    <li>Semnalul periodic Enable se nume?te write strobe</li>
-                    <li>C&#226;nd Enable = clock signal ? latch level-sensitive (nu edge-sensitive)</li>
+                    <li><strong>Gated SR latch:</strong> nivel suplimentar de porți NAND/AND adăugat la SR latch</li>
+                    <li><strong>Intrare Enable (E):</strong> E=1 permite semnalelor să treacă (transparent), E=0 blochează (opac, menține starea)</li>
+                    <li>Semnalul periodic Enable se numește write strobe</li>
+                    <li>Când Enable = clock signal → latch level-sensitive (nu edge-sensitive)</li>
                     <li>Gated D latch (transparent latch / data latch):</li>
-                    <li>Exploateaza faptul ca &#238;n combina?iile active (01, 10) ale SR, R = complement S</li>
-                    <li><strong>Un singur input D + Enable:</strong> elimina combina?ia restric?ionata S=R=1</li>
-                    <li><strong>E=0:</strong> ie?irea nu se schimba (hold); E=1: Q urmeaza D</li>
-                    <li>Utilizat ca porturi I/O, &#238;n sisteme asincrone, sau sisteme sincrone cu doua faze</li>
-                    <li><strong>Tabel:</strong> E=0,D=X ? Q_prev (no change); E=1,D=0 ? Reset; E=1,D=1 ? Set</li>
-                    <li><strong>Earle latch:</strong> alternativa cu propagare constanta de 2 gate delays</li>
+                    <li>Exploatează faptul că în combinațiile active (01, 10) ale SR, R = complement S</li>
+                    <li><strong>Un singur input D + Enable:</strong> elimină combinația restricționată S=R=1</li>
+                    <li><strong>E=0:</strong> ieșirea nu se schimbă (hold); E=1: Q urmează D</li>
+                    <li>Utilizat ca porturi I/O, în sisteme asincrone, sau sisteme sincrone cu două faze</li>
+                    <li><strong>Tabel:</strong> E=0,D=X → Q_prev (no change); E=1,D=0 → Reset; E=1,D=1 → Set</li>
+                    <li><strong>Earle latch:</strong> alternativă cu propagare constantă de 2 gate delays</li>
                     <li>Dezvoltat de John G. Earle pentru IBM System/360 Model 91</li>
-                    <li>Hazard-free; poate fi fuzionat cu nivelurile de por?i ale circuitelor precedente (pipelining)</li>
-                    <li><strong>Master-slave:</strong> latch transparent-high urmat de transparent-low (sau invers) ? starea se schimba doar pe fronturile ceasului</li>
+                    <li>Hazard-free; poate fi fuzionat cu nivelurile de porți ale circuitelor precedente (pipelining)</li>
+                    <li><strong>Master-slave:</strong> latch transparent-high urmat de transparent-low (sau invers) → starea se schimbă doar pe fronturile ceasului</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.5 � D Flip-Flop</h3>
+                <h3>3.3.5 — D Flip-Flop</h3>
                 <ul class="specs-list">
                     <li><strong>Cel mai utilizat flip-flop:</strong> D flip-flop (data flip-flop)</li>
-                    <li>Capteaza valoarea D-input la o por?iune definita a ciclului de ceas (ex. rising edge)</li>
-                    <li>Valoarea capturata devine ie?irea Q; &#238;n restul timpului Q nu se schimba</li>
-                    <li>Poate fi vazut ca celula de memorie, zero-order hold, sau delay line</li>
-                    <li><strong>Tabel de adevar:</strong> Rising edge + D=0 ? Q=0; Rising edge + D=1 ? Q=1; Non-rising ? Q_prev</li>
-                    <li>Majoritatea au capacitate de Set/Reset for?at (ignora D ?i ceasul)</li>
-                    <li>Formeaza baza shift registers (registre de deplasare)</li>
+                    <li>Captează valoarea D-input la o porțiune definită a ciclului de ceas (ex. rising edge)</li>
+                    <li>Valoarea capturată devine ieșirea Q; în restul timpului Q nu se schimbă</li>
+                    <li>Poate fi văzut ca celulă de memorie, zero-order hold, sau delay line</li>
+                    <li><strong>Tabel de adevăr:</strong> Rising edge + D=0 → Q=0; Rising edge + D=1 → Q=1; Non-rising → Q_prev</li>
+                    <li>Majoritatea au capacitate de Set/Reset forțat (ignoră D și ceasul)</li>
+                    <li>Formează baza shift registers (registre de deplasare)</li>
                     <li>Classical positive-edge-triggered D flip-flop:</li>
-                    <li>Doua etape implementate cu SR NAND latches (input stage + output stage)</li>
-                    <li><strong>Clock low:</strong> ambele ie?iri ale input stage sunt high ? output latch neafectat (stocheaza starea anterioara)</li>
-                    <li><strong>Clock rising edge:</strong> una dintre ie?iri scade ? seteaza/reseteaza output latch</li>
-                    <li><strong>Clock high:</strong> orice schimbare D este ignorata</li>
+                    <li>Două etape implementate cu SR NAND latches (input stage + output stage)</li>
+                    <li><strong>Clock low:</strong> ambele ieșiri ale input stage sunt high → output latch neafectat (stochează starea anterioară)</li>
+                    <li><strong>Clock rising edge:</strong> una dintre ieșiri scade → setează/resetează output latch</li>
+                    <li><strong>Clock high:</strong> orice schimbare D este ignorată</li>
                     <li>Master-slave edge-triggered D flip-flop:</li>
-                    <li>Doi gated D latches &#238;n serie cu enable inversat</li>
-                    <li>Master latch controleaza slave latch; slave copiaza mereu de la master</li>
-                    <li><strong>Positive-edge:</strong> clock low ? master accepta date; clock rising ? master se blocheaza, slave se actualizeaza</li>
-                    <li>Clock returneaza low ? slave se blocheaza, master accepta date noi</li>
-                    <li><strong>Dual-edge-triggered:</strong> cite?te pe ambele fronturi (rising + falling)</li>
-                    <li>Construit din doi single-edge D flip-flops + multiplexor sau + 3 por?i XOR</li>
+                    <li>Doi gated D latches în serie cu enable inversat</li>
+                    <li>Master latch controlează slave latch; slave copiază mereu de la master</li>
+                    <li><strong>Positive-edge:</strong> clock low → master acceptă date; clock rising → master se blochează, slave se actualizează</li>
+                    <li>Clock returnează low → slave se blochează, master acceptă date noi</li>
+                    <li><strong>Dual-edge-triggered:</strong> citește pe ambele fronturi (rising + falling)</li>
+                    <li>Construit din doi single-edge D flip-flops + multiplexor sau + 3 porți XOR</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.6 � T Flip-Flop ?i JK Flip-Flop</h3>
+                <h3>3.3.6 — T Flip-Flop și JK Flip-Flop</h3>
                 <ul class="specs-list">
                     <li>T flip-flop (Toggle):</li>
-                    <li>T=1 + clock strobe ? schimba starea (toggle)</li>
-                    <li>T=0 ? men?ine starea anterioara</li>
-                    <li><strong>Ecua?ie:</strong> Q_next = T ? Q = T&#183;Q� + T�&#183;Q</li>
-                    <li>T men?inut high ? divide frecven?a ceasului la 2 (4 MHz ? 2 MHz)</li>
-                    <li><strong>Aplica?ii:</strong> contoare digitale</li>
-                    <li>Se poate construi din JK (J=K conectate) sau din D (T XOR Q_prev ? D)</li>
+                    <li>T=1 + clock strobe → schimbă starea (toggle)</li>
+                    <li>T=0 → menține starea anterioară</li>
+                    <li><strong>Ecuație:</strong> Q_next = T ⊕ Q = T·Q̄ + T̄·Q</li>
+                    <li>T menținut high → divide frecvența ceasului la 2 (4 MHz → 2 MHz)</li>
+                    <li><strong>Aplicații:</strong> contoare digitale</li>
+                    <li>Se poate construi din JK (J=K conectate) sau din D (T XOR Q_prev → D)</li>
                     <li>JK flip-flop:</li>
-                    <li><strong>Augmenteaza SR:</strong> J=1,K=0 ? Set; J=0,K=1 ? Reset; J=K=1 ? Toggle; J=K=0 ? Hold</li>
-                    <li><strong>Ecua?ie:</strong> Q_next = J&#183;Q� + K�&#183;Q</li>
+                    <li><strong>Augmentează SR:</strong> J=1,K=0 → Set; J=0,K=1 → Reset; J=K=1 → Toggle; J=K=0 → Hold</li>
+                    <li><strong>Ecuație:</strong> Q_next = J·Q̄ + K̄·Q</li>
                     <li><strong>Universal flip-flop:</strong> poate fi configurat ca SR, D sau T</li>
                     <li><strong>D flip-flop:</strong> K = complement J</li>
                     <li><strong>T flip-flop:</strong> K = J</li>
@@ -165,81 +173,81 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.7 � Parametri de timing</h3>
+                <h3>3.3.7 — Parametri de timing</h3>
                 <ul class="specs-list">
-                    <li><strong>Setup time (tsu):</strong> timpul minim &#238;n care datele trebuie men?inute stabile &#206;NAINTE de frontul ceasului</li>
-                    <li><strong>Hold time (th):</strong> timpul minim &#238;n care datele trebuie men?inute stabile DUPA frontul ceasului</li>
-                    <li><strong>Aperture:</strong> suma setup time + hold time; datele trebuie stabile pe toata aceasta perioada</li>
-                    <li><strong>Recovery time:</strong> similar cu setup, dar pentru intrarile asincrone (set/reset)</li>
-                    <li><strong>Removal time:</strong> similar cu hold, dar pentru intrarile asincrone</li>
-                    <li><strong>Metastabilitate:</strong> problema c&#226;nd doua intrari (data+clock sau clock+reset) se schimba aproape simultan</li>
-                    <li>Ie?irea poate oscila sau ram&#226;ne &#238;ntr-o stare nepredictibila</li>
-                    <li>Teoretic, timpul de stabilizare nu are limita superioara</li>
-                    <li><strong>Solu?ie:</strong> lan? de flip-flop-uri cascadate (dual-ranked = 2 &#238;n serie)</li>
-                    <li><strong>Metastable-hardened flip-flops:</strong> reduc setup/hold dar nu elimina problema complet</li>
-                    <li><strong>Propagation delay (tCO / tP):</strong> timpul dintre frontul ceasului ?i schimbarea ie?irii</li>
+                    <li><strong>Setup time (tsu):</strong> timpul minim în care datele trebuie menținute stabile ÎNAINTE de frontul ceasului</li>
+                    <li><strong>Hold time (th):</strong> timpul minim în care datele trebuie menținute stabile DUPĂ frontul ceasului</li>
+                    <li><strong>Aperture:</strong> suma setup time + hold time; datele trebuie stabile pe toată această perioadă</li>
+                    <li><strong>Recovery time:</strong> similar cu setup, dar pentru intrările asincrone (set/reset)</li>
+                    <li><strong>Removal time:</strong> similar cu hold, dar pentru intrările asincrone</li>
+                    <li><strong>Metastabilitate:</strong> problemă când două intrări (data+clock sau clock+reset) se schimbă aproape simultan</li>
+                    <li>Ieșirea poate oscila sau rămâne într-o stare nepredictibilă</li>
+                    <li>Teoretic, timpul de stabilizare nu are limită superioară</li>
+                    <li><strong>Soluție:</strong> lanț de flip-flop-uri cascadate (dual-ranked = 2 în serie)</li>
+                    <li><strong>Metastable-hardened flip-flops:</strong> reduc setup/hold dar nu elimină problema complet</li>
+                    <li><strong>Propagation delay (tCO / tP):</strong> timpul dintre frontul ceasului și schimbarea ieșirii</li>
                     <li>tPHL (high-to-low) poate diferi de tPLH (low-to-high)</li>
-                    <li><strong>&#206;n shift registers:</strong> tCO al precedentului trebuie &gt; th al succesorului</li>
+                    <li><strong>În shift registers:</strong> tCO al precedentului trebuie &gt; th al succesorului</li>
                     <li>Perioada ceasului trebuie &gt; tsu + th</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.8 � Defini?ie ?i structura</h3>
+                <h3>3.3.8 — Definiție și structură</h3>
                 <ul class="specs-list">
-                    <li>Registrul = un grup de celule de memorie ce stocheaza o colec?ie de bi?i ?i furnizeaza continuu datele stocate</li>
-                    <li>Format din grup sincronizat de flip-flop-uri; fiecare flip-flop stocheaza ?i furnizeaza un bit</li>
-                    <li>Numarul de bi?i = word size = numarul de flip-flop-uri (ex. &quot;registru de 32 bi?i&quot;)</li>
-                    <li><strong>Memorie volatila:</strong> pierde datele la pierderea alimentarii</li>
-                    <li><strong>Caracterizat prin:</strong> capacitate de stocare, polarita?i de semnal, nivele logice, tensiuni, parametri de timing</li>
+                    <li>Registrul = un grup de celule de memorie ce stochează o colecție de biți și furnizează continuu datele stocate</li>
+                    <li>Format din grup sincronizat de flip-flop-uri; fiecare flip-flop stochează și furnizează un bit</li>
+                    <li>Numărul de biți = word size = numărul de flip-flop-uri (ex. &quot;registru de 32 biți&quot;)</li>
+                    <li><strong>Memorie volatilă:</strong> pierde datele la pierderea alimentării</li>
+                    <li><strong>Caracterizat prin:</strong> capacitate de stocare, polarități de semnal, nivele logice, tensiuni, parametri de timing</li>
                     <li>Bloc fundamental al sistemelor digitale</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.9 � Semnale</h3>
+                <h3>3.3.9 — Semnale</h3>
                 <ul class="specs-list">
-                    <li>Intrari:</li>
-                    <li><strong>Reset:</strong> ini?ializeaza toate flip-flop-urile la stari cunoscute (tipic &#39;0&#39;), sincron sau asincron</li>
-                    <li><strong>Clock:</strong> la frontul activ (rising/falling), datele de la intrari sunt stocate &#238;n flip-flop-uri</li>
-                    <li><strong>Data in:</strong> date de stocat, un bit per flip-flop, D0 la D_{n-1}</li>
-                    <li>Ie?iri:</li>
-                    <li><strong>Data out:</strong> datele stocate curent, un bit per flip-flop, Q0 la Q_{n-1}</li>
-                    <li>Continuu emise, stabile cu excep?ia tranzi?iilor</li>
-                    <li>Unele registre furnizeaza ie?iri true ?i complementare (ex. 74175: 4 flip-flop-uri cu Q ?i Q�)</li>
-                    <li><strong>Intrari neutilizate:</strong> conectate la nivele logice fixe (prevenire floating ? comportament imprevizibil)</li>
+                    <li>Intrări:</li>
+                    <li><strong>Reset:</strong> inițializează toate flip-flop-urile la stări cunoscute (tipic '0'), sincron sau asincron</li>
+                    <li><strong>Clock:</strong> la frontul activ (rising/falling), datele de la intrări sunt stocate în flip-flop-uri</li>
+                    <li><strong>Data in:</strong> date de stocat, un bit per flip-flop, D₀ la D_{n-1}</li>
+                    <li>Ieșiri:</li>
+                    <li><strong>Data out:</strong> datele stocate curent, un bit per flip-flop, Q₀ la Q_{n-1}</li>
+                    <li>Continuu emise, stabile cu excepția tranzițiilor</li>
+                    <li>Unele registre furnizează ieșiri true și complementare (ex. 74175: 4 flip-flop-uri cu Q și Q̄)</li>
+                    <li><strong>Intrări neutilizate:</strong> conectate la nivele logice fixe (prevenire floating → comportament imprevizibil)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.10 � Implementare ?i aplica?ii</h3>
+                <h3>3.3.10 — Implementare și aplicații</h3>
                 <ul class="specs-list">
-                    <li><strong>Implementari:</strong> MSI IC standalone, registre integrate &#238;n ASIC-uri ?i procesoare, blocuri IP &#238;n FPGA</li>
+                    <li><strong>Implementări:</strong> MSI IC standalone, registre integrate în ASIC-uri și procesoare, blocuri IP în FPGA</li>
                     <li><strong>FPGA:</strong> sintetizate din descrieri VHDL/Verilog/alt HDL</li>
-                    <li><strong>Load enable:</strong> permite stocarea de date noi doar &#238;n cicluri de ceas specifice</li>
-                    <li><strong>Implementare:</strong> multiplexor 2-to-1 controlat de LD ruteaza D sau Q curent la intrarea flip-flop-ului</li>
-                    <li><strong>Alternativ cu JK flip-flop:</strong> LD controleaza set/clear</li>
-                    <li><strong>Registre adresabile:</strong> fiecare registru prime?te adresa binara unica</li>
-                    <li><strong>Write:</strong> adresa trimisa la decoder binar ? activeaza LD al registrului ? date stocate de pe bus comun la clock edge</li>
-                    <li><strong>Read:</strong> multiplexor sau buffere tri-state ruteaza ie?irea registrului pe bus comun</li>
-                    <li><strong>Read port:</strong> instan?a de mecanism gating pentru citire concurenta</li>
-                    <li><strong>Aplica?ii &#238;n computere:</strong> CPU (processor registers), configurare, buffer storage (ex. video memory), I/O, &#238;ntreruperi, status periferic</li>
-                    <li><strong>Peripheral registers:</strong> software scrie/cite?te prin load/store cu adrese memory-mapped I/O sau port-mapped I/O</li>
-                    <li><strong>Shift register:</strong> logica transfera fiecare bit stocat la flip-flop-ul adiacent (deplasare cu 1 pozi?ie per ciclu de ceas)</li>
-                    <li><strong>Contor binar sincron:</strong> logica produce secven?a de numarare</li>
+                    <li><strong>Load enable:</strong> permite stocarea de date noi doar în cicluri de ceas specifice</li>
+                    <li><strong>Implementare:</strong> multiplexor 2-to-1 controlat de LD rutează D sau Q curent la intrarea flip-flop-ului</li>
+                    <li><strong>Alternativ cu JK flip-flop:</strong> LD controlează set/clear</li>
+                    <li><strong>Registre adresabile:</strong> fiecare registru primește adresă binară unică</li>
+                    <li><strong>Write:</strong> adresa trimisă la decoder binar → activează LD al registrului → date stocate de pe bus comun la clock edge</li>
+                    <li><strong>Read:</strong> multiplexor sau buffere tri-state rutează ieșirea registrului pe bus comun</li>
+                    <li><strong>Read port:</strong> instanță de mecanism gating pentru citire concurentă</li>
+                    <li><strong>Aplicații în computere:</strong> CPU (processor registers), configurare, buffer storage (ex. video memory), I/O, întreruperi, status periferic</li>
+                    <li><strong>Peripheral registers:</strong> software scrie/citește prin load/store cu adrese memory-mapped I/O sau port-mapped I/O</li>
+                    <li><strong>Shift register:</strong> logică transferă fiecare bit stocat la flip-flop-ul adiacent (deplasare cu 1 poziție per ciclu de ceas)</li>
+                    <li><strong>Contor binar sincron:</strong> logică produce secvența de numărare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.3.11 � Opera?ii atomice ?i registre de &#238;ntreruperi</h3>
+                <h3>3.3.11 — Operații atomice și registre de întreruperi</h3>
                 <ul class="specs-list">
-                    <li><strong>Opera?ii atomice pe bi?i:</strong> set/clear/complement bi?i individuali fara read-modify-write</li>
-                    <li>Evita necesitatea memory barriers, instruc?iuni atomice, semafoare</li>
-                    <li><strong>MODE pe 2 bi?i:</strong> mode 0 = store necondi?ionat, mode 1 = set, mode 2 = clear, mode 3 = complement</li>
-                    <li>Bi?ii sunt modifica?i doar c&#226;nd D=&#39;1&#39; pentru acel bit</li>
-                    <li><strong>Interrupt status register:</strong> flip-flop setat la REQ (cerere &#238;ntrerupere), resetat la ACK (confirmare)</li>
-                    <li>AND gate previne pierderea cererilor noi &#238;n timpul confirmarii</li>
-                    <li>PEND + INTEN activ ? IRQ trimis la interrupt controller</li>
+                    <li><strong>Operații atomice pe biți:</strong> set/clear/complement biți individuali fără read-modify-write</li>
+                    <li>Evită necesitatea memory barriers, instrucțiuni atomice, semafoare</li>
+                    <li><strong>MODE pe 2 biți:</strong> mode 0 = store necondiționat, mode 1 = set, mode 2 = clear, mode 3 = complement</li>
+                    <li>Biții sunt modificați doar când D='1' pentru acel bit</li>
+                    <li><strong>Interrupt status register:</strong> flip-flop setat la REQ (cerere întrerupere), resetat la ACK (confirmare)</li>
+                    <li>AND gate previne pierderea cererilor noi în timpul confirmării</li>
+                    <li>PEND + INTEN activ → IRQ trimis la interrupt controller</li>
                 </ul>
             </div>
 
@@ -248,29 +256,29 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie ?i principii fundamentale</h3>
+                <h3>Definiție și principii fundamentale</h3>
                 <ul class="specs-list">
-                    <li>Este elementul fundamental de stocare &#238;n logica secven?iala</li>
-                    <li>Stocheaza un singur bit (cifra binara) de date; una din cele doua stari reprezinta 1, cealalta reprezinta 0</li>
-                    <li>Utilizat &#238;n computerul Colossus (1943) pentru spargerea codurilor</li>
+                    <li>Este elementul fundamental de stocare în logica secvențială</li>
+                    <li>Stochează un singur bit (cifră binară) de date; una din cele două stări reprezintă 1, cealaltă reprezintă 0</li>
+                    <li>Utilizat în computerul Colossus (1943) pentru spargerea codurilor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>T Flip-Flop ?i JK Flip-Flop</h3>
+                <h3>T Flip-Flop și JK Flip-Flop</h3>
                 <ul class="specs-list">
-                    <li><strong>Aplica?ii:</strong> contoare digitale</li>
+                    <li><strong>Aplicații:</strong> contoare digitale</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie ?i structura</h3>
+                <h3>Definiție și structură</h3>
                 <ul class="specs-list">
-                    <li>Format din grup sincronizat de flip-flop-uri; fiecare flip-flop stocheaza ?i furnizeaza un bit</li>
-                    <li><strong>Caracterizat prin:</strong> capacitate de stocare, polarita?i de semnal, nivele logice, tensiuni, parametri de timing</li>
+                    <li>Format din grup sincronizat de flip-flop-uri; fiecare flip-flop stochează și furnizează un bit</li>
+                    <li><strong>Caracterizat prin:</strong> capacitate de stocare, polarități de semnal, nivele logice, tensiuni, parametri de timing</li>
                     <li>Bloc fundamental al sistemelor digitale</li>
                 </ul>
             </div>
@@ -278,16 +286,16 @@
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Semnale</h3>
                 <ul class="specs-list">
-                    <li><strong>Data in:</strong> date de stocat, un bit per flip-flop, D0 la D_{n-1}</li>
-                    <li><strong>Data out:</strong> datele stocate curent, un bit per flip-flop, Q0 la Q_{n-1}</li>
-                    <li><strong>Intrari neutilizate:</strong> conectate la nivele logice fixe (prevenire floating ? comportament imprevizibil)</li>
+                    <li><strong>Data in:</strong> date de stocat, un bit per flip-flop, D₀ la D_{n-1}</li>
+                    <li><strong>Data out:</strong> datele stocate curent, un bit per flip-flop, Q₀ la Q_{n-1}</li>
+                    <li><strong>Intrări neutilizate:</strong> conectate la nivele logice fixe (prevenire floating → comportament imprevizibil)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Opera?ii atomice ?i registre de &#238;ntreruperi</h3>
+                <h3>Operații atomice și registre de întreruperi</h3>
                 <ul class="specs-list">
-                    <li>Bi?ii sunt modifica?i doar c&#226;nd D=&#39;1&#39; pentru acel bit</li>
+                    <li>Biții sunt modificați doar când D='1' pentru acel bit</li>
                 </ul>
             </div>
         </div>
@@ -295,37 +303,37 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Implementare</h3>
                 <ul class="specs-list">
                     <li>Latches transparente (asincrone) se construiesc din perechi de inversoare cross-coupled</li>
-                    <li><strong>Elemente active utilizate:</strong> tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</li>
+                    <li><strong>Elemente active utilizate:</strong> tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</li>
                     <li>Flip-flop-urile cu ceas sunt proiectate pentru sisteme sincrone</li>
-                    <li>Ignora intrarile cu excep?ia tranzi?iei semnalului de ceas dedicat (clocking/pulsing/strobing)</li>
-                    <li><strong>La tranzi?ia ceasului:</strong> flip-flop-ul fie schimba fie re?ine semnalul de ie?ire pe baza intrarilor</li>
-                    <li>Unele flip-flop-uri schimba pe rising edge, altele pe falling edge</li>
-                    <li>Doua etape de amplificare inversoare conectate &#238;n cascada formeaza amplificatorul neinversor necesar</li>
+                    <li>Ignoră intrările cu excepția tranziției semnalului de ceas dedicat (clocking/pulsing/strobing)</li>
+                    <li><strong>La tranziția ceasului:</strong> flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor</li>
+                    <li>Unele flip-flop-uri schimbă pe rising edge, altele pe falling edge</li>
+                    <li>Două etape de amplificare inversoare conectate în cascadă formează amplificatorul neinversor necesar</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Implementare ?i aplica?ii</h3>
+                <h3>Implementare și aplicații</h3>
                 <ul class="specs-list">
-                    <li><strong>Implementari:</strong> MSI IC standalone, registre integrate &#238;n ASIC-uri ?i procesoare, blocuri IP &#238;n FPGA</li>
+                    <li><strong>Implementări:</strong> MSI IC standalone, registre integrate în ASIC-uri și procesoare, blocuri IP în FPGA</li>
                     <li><strong>FPGA:</strong> sintetizate din descrieri VHDL/Verilog/alt HDL</li>
-                    <li><strong>Load enable:</strong> permite stocarea de date noi doar &#238;n cicluri de ceas specifice</li>
-                    <li><strong>Implementare:</strong> multiplexor 2-to-1 controlat de LD ruteaza D sau Q curent la intrarea flip-flop-ului</li>
-                    <li><strong>Alternativ cu JK flip-flop:</strong> LD controleaza set/clear</li>
-                    <li><strong>Registre adresabile:</strong> fiecare registru prime?te adresa binara unica</li>
-                    <li><strong>Write:</strong> adresa trimisa la decoder binar ? activeaza LD al registrului ? date stocate de pe bus comun la clock edge</li>
-                    <li><strong>Read:</strong> multiplexor sau buffere tri-state ruteaza ie?irea registrului pe bus comun</li>
-                    <li><strong>Read port:</strong> instan?a de mecanism gating pentru citire concurenta</li>
-                    <li><strong>Aplica?ii &#238;n computere:</strong> CPU (processor registers), configurare, buffer storage (ex. video memory), I/O, &#238;ntreruperi, status periferic</li>
-                    <li><strong>Peripheral registers:</strong> software scrie/cite?te prin load/store cu adrese memory-mapped I/O sau port-mapped I/O</li>
-                    <li><strong>Shift register:</strong> logica transfera fiecare bit stocat la flip-flop-ul adiacent (deplasare cu 1 pozi?ie per ciclu de ceas)</li>
-                    <li><strong>Contor binar sincron:</strong> logica produce secven?a de numarare</li>
+                    <li><strong>Load enable:</strong> permite stocarea de date noi doar în cicluri de ceas specifice</li>
+                    <li><strong>Implementare:</strong> multiplexor 2-to-1 controlat de LD rutează D sau Q curent la intrarea flip-flop-ului</li>
+                    <li><strong>Alternativ cu JK flip-flop:</strong> LD controlează set/clear</li>
+                    <li><strong>Registre adresabile:</strong> fiecare registru primește adresă binară unică</li>
+                    <li><strong>Write:</strong> adresa trimisă la decoder binar → activează LD al registrului → date stocate de pe bus comun la clock edge</li>
+                    <li><strong>Read:</strong> multiplexor sau buffere tri-state rutează ieșirea registrului pe bus comun</li>
+                    <li><strong>Read port:</strong> instanță de mecanism gating pentru citire concurentă</li>
+                    <li><strong>Aplicații în computere:</strong> CPU (processor registers), configurare, buffer storage (ex. video memory), I/O, întreruperi, status periferic</li>
+                    <li><strong>Peripheral registers:</strong> software scrie/citește prin load/store cu adrese memory-mapped I/O sau port-mapped I/O</li>
+                    <li><strong>Shift register:</strong> logică transferă fiecare bit stocat la flip-flop-ul adiacent (deplasare cu 1 poziție per ciclu de ceas)</li>
+                    <li><strong>Contor binar sincron:</strong> logică produce secvența de numărare</li>
                 </ul>
             </div>
         </div>
@@ -338,7 +346,7 @@
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>D Flip-Flop</h3>
                 <ul class="specs-list">
-                    <li>Doi gated D latches &#238;n serie cu enable inversat</li>
+                    <li>Doi gated D latches în serie cu enable inversat</li>
                 </ul>
             </div>
         </div>
@@ -350,8 +358,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Parametri de timing</h3>
-                    <p>Metastable-hardened flip-flops: reduc setup/hold dar nu elimina problema complet</p>
+                    <h3>⚠️ Parametri de timing</h3>
+                    <p>Metastable-hardened flip-flops: reduc setup/hold dar nu elimină problema complet</p>
                 </div>
             </div>
         </div>
@@ -362,17 +370,17 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Defini?ie ?i principii fundamentale:</strong> Flip-flops ?i latches sunt circuite care au doua stari stabile ce pot stoca informa?ie de stare � bistable multivibrator</li>
+                    <li><strong>Definiție și principii fundamentale:</strong> Flip-flops și latches sunt circuite care au două stări stabile ce pot stoca informație de stare – bistable multivibrator</li>
                     <li><strong>Implementare:</strong> Latches transparente (asincrone) se construiesc din perechi de inversoare cross-coupled</li>
                     <li><strong>Latch SR (Set-Reset):</strong> Cel mai fundamental latch: SR asincron (Set-Reset)</li>
-                    <li><strong>Latches cu poarta (Gated) ?i transparen?a:</strong> Gated SR latch: nivel suplimentar de por?i NAND/AND adaugat la SR latch</li>
+                    <li><strong>Latches cu poartă (Gated) și transparență:</strong> Gated SR latch: nivel suplimentar de porți NAND/AND adăugat la SR latch</li>
                     <li><strong>D Flip-Flop:</strong> Cel mai utilizat flip-flop: D flip-flop (data flip-flop)</li>
-                    <li><strong>T Flip-Flop ?i JK Flip-Flop:</strong> T flip-flop (Toggle):</li>
-                    <li><strong>Parametri de timing:</strong> Setup time (tsu): timpul minim &#238;n care datele trebuie men?inute stabile &#206;NAINTE de frontul ceasului</li>
-                    <li><strong>Defini?ie ?i structura:</strong> Registrul = un grup de celule de memorie ce stocheaza o colec?ie de bi?i ?i furnizeaza continuu datele stocate</li>
-                    <li><strong>Semnale:</strong> Reset: ini?ializeaza toate flip-flop-urile la stari cunoscute (tipic &#39;0&#39;), sincron sau asincron</li>
-                    <li><strong>Implementare ?i aplica?ii:</strong> Implementari: MSI IC standalone, registre integrate &#238;n ASIC-uri ?i procesoare, blocuri IP &#238;n FPGA</li>
-                    <li><strong>Opera?ii atomice ?i registre de &#238;ntreruperi:</strong> Opera?ii atomice pe bi?i: set/clear/complement bi?i individuali fara read-modify-write</li>
+                    <li><strong>T Flip-Flop și JK Flip-Flop:</strong> T flip-flop (Toggle):</li>
+                    <li><strong>Parametri de timing:</strong> Setup time (tsu): timpul minim în care datele trebuie menținute stabile ÎNAINTE de frontul ceasului</li>
+                    <li><strong>Definiție și structură:</strong> Registrul = un grup de celule de memorie ce stochează o colecție de biți și furnizează continuu datele stocate</li>
+                    <li><strong>Semnale:</strong> Reset: inițializează toate flip-flop-urile la stări cunoscute (tipic '0'), sincron sau asincron</li>
+                    <li><strong>Implementare și aplicații:</strong> Implementări: MSI IC standalone, registre integrate în ASIC-uri și procesoare, blocuri IP în FPGA</li>
+                    <li><strong>Operații atomice și registre de întreruperi:</strong> Operații atomice pe biți: set/clear/complement biți individuali fără read-modify-write</li>
                 </ul>
             </div>
         </div>
@@ -380,80 +388,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: Utilizari?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Utilizări?</strong></p>
                 <ul class="specs-list">
                     <li>a) SR asincron (Set-Reset)</li>
-                    <li>b) stocare de stare, numarare de impulsuri, sincronizare a semnalelor de intrare</li>
-                    <li>c) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</li>
-                    <li>d) flip-flop-ul fie schimba fie re?ine semnalul de ie?ire pe baza intrarilor</li>
+                    <li>b) stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare</li>
+                    <li>c) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</li>
+                    <li>d) flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � stocare de stare, numarare de impulsuri, sincronizare a semnalelor de intrare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Elemente active utilizate?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Elemente active utilizate?</strong></p>
                 <ul class="specs-list">
-                    <li>a) flip-flop-ul fie schimba fie re?ine semnalul de ie?ire pe baza intrarilor</li>
+                    <li>a) flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor</li>
                     <li>b) SR asincron (Set-Reset)</li>
-                    <li>c) stocare de stare, numarare de impulsuri, sincronizare a semnalelor de intrare</li>
-                    <li>d) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</li>
+                    <li>c) stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare</li>
+                    <li>d) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Cel mai fundamental latch?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Cel mai fundamental latch?</strong></p>
                 <ul class="specs-list">
-                    <li>a) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</li>
+                    <li>a) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</li>
                     <li>b) SR asincron (Set-Reset)</li>
-                    <li>c) flip-flop-ul fie schimba fie re?ine semnalul de ie?ire pe baza intrarilor</li>
-                    <li>d) stocare de stare, numarare de impulsuri, sincronizare a semnalelor de intrare</li>
+                    <li>c) flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor</li>
+                    <li>d) stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � SR asincron (Set-Reset)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — SR asincron (Set-Reset)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Gated SR latch?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Gated SR latch?</strong></p>
                 <ul class="specs-list">
-                    <li>a) stocare de stare, numarare de impulsuri, sincronizare a semnalelor de intrare</li>
-                    <li>b) flip-flop-ul fie schimba fie re?ine semnalul de ie?ire pe baza intrarilor</li>
-                    <li>c) nivel suplimentar de por?i NAND/AND adaugat la SR latch</li>
-                    <li>d) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</li>
+                    <li>a) stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare</li>
+                    <li>b) flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor</li>
+                    <li>c) nivel suplimentar de porți NAND/AND adăugat la SR latch</li>
+                    <li>d) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � nivel suplimentar de por?i NAND/AND adaugat la SR latch</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — nivel suplimentar de porți NAND/AND adăugat la SR latch</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Cel mai utilizat flip-flop?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Cel mai utilizat flip-flop?</strong></p>
                 <ul class="specs-list">
-                    <li>a) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, por?i logice inversoare</li>
-                    <li>b) stocare de stare, numarare de impulsuri, sincronizare a semnalelor de intrare</li>
-                    <li>c) flip-flop-ul fie schimba fie re?ine semnalul de ie?ire pe baza intrarilor</li>
+                    <li>a) tuburi vidate, tranzistori bipolari, FET-uri, inversoare, porți logice inversoare</li>
+                    <li>b) stocare de stare, numărare de impulsuri, sincronizare a semnalelor de intrare</li>
+                    <li>c) flip-flop-ul fie schimbă fie reține semnalul de ieșire pe baza intrărilor</li>
                     <li>d) D flip-flop (data flip-flop)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � D flip-flop (data flip-flop)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — D flip-flop (data flip-flop)</strong></p>
                 </details>
             </div>
         </div>
@@ -461,20 +469,20 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Flip-flop ?i registre</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de memorie digitala. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Flip-flop și registre</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de memorie digitală. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>1. Defineste pe scurt: memorie digitala.</li>
-                    <li>2. Ce rol are latch �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre memorie digitala ?i bistabile.</li>
+                    <li>1. Defineste pe scurt: memorie digitală.</li>
+                    <li>2. Ce rol are latch în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre memorie digitală și bistabile.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Flip-flops ?i latches sunt circuite care au doua stari stabile ce pot stoca informa?ie de stare � bistable multivibrator</p>
+                        <p><strong>1.</strong> Flip-flops și latches sunt circuite care au două stări stabile ce pot stoca informație de stare – bistable multivibrator</p>
                         <p><strong>2.</strong> Latches transparente (asincrone) se construiesc din perechi de inversoare cross-coupled</p>
                         <p><strong>3.</strong> Cel mai fundamental latch: SR asincron (Set-Reset)</p>
                     </div>
@@ -505,7 +513,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-3-2.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 3.2 &mdash; Por&#x21B;i Logice</a>
@@ -562,14 +570,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Electronica digitala: flip-flop-uri, registre ?i latch-uri � cum se stocheaza un bit �n circuitele digitale.</p>
+                <p class="video-description">Electronică digitală: flip-flop-uri, registre și latch-uri — cum se stochează un bit în circuitele digitale.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

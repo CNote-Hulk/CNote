@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 1.3 � Circuite electrice">
+    <meta name="description" content="Lecția 1.3 — Circuite electrice">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 1.3 � Circuite electrice � Console Notebook</title>
+    <title>Lecția 1.3 — Circuite electrice — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -23,9 +23,9 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -35,56 +35,64 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 � ELECTRICITATE FUNDAMENTALA</p>
-            <h1>Lec?ia 1.3 � Circuite electrice</h1>
-            <p>circuit deschis, circuit &#238;nchis, scurtcircuit, conductor</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — ELECTRICITATE FUNDAMENTALĂ</p>
+            <h1>Lecția 1.3 — Circuite electrice</h1>
+            <p>circuit deschis, circuit închis, scurtcircuit, conductor</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- INTRODUCERE -->
-                                                                <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>O re?ea electrica este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectari, format din elemente electrice (ex: surse de tensiune, surse de curent, rezisten?e, inductan?e, capacita?i).</p>
-                <p>Aceasta lec?ie acopera: <strong>circuit deschis</strong>, <strong>circuit &#238;nchis</strong>, <strong>scurtcircuit</strong>, <strong>conductor</strong>, <strong>sarcina</strong>, <strong>sursa de energie</strong>, <strong>GND</strong>, <strong>referin?a de poten?ial</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Un SoC cu 16 miliarde de tranzistori este inutil fără un traseu complet de la sursă la componentă și înapoi. Fiecare pin de pe chipul unui Xbox Series X face parte dintr-o buclă electrică — un circuit — care trebuie să rămână intact pentru ca datele să circule. Când o lipitură cedează și bucla se rupe, consola se oprește. Când două trasee se ating accidental, curentul explodează. Totul pornește de la un principiu simplu: circuitul electric.
+                </p>
+                <p>
+                    Această lecție acoperă cele trei stări fundamentale ale unui circuit: <strong>circuitul deschis</strong> (întreruperea care oprește curentul), <strong>circuitul închis</strong> (bucla completă necesară funcționării) și <strong>scurtcircuitul</strong> (calea accidentală care distruge componente) — plus noțiunile de <strong>conductor</strong>, <strong>sarcină</strong>, <strong>sursă de energie</strong>, <strong>GND</strong> și <strong>referință de potențial</strong>.
+                </p>
+                <p>
+                    Scopul nu este memorarea definițiilor, ci înțelegerea <em>de ce</em> un circuit deschis oprește consola, <em>de ce</em> un scurtcircuit activează protecțiile PSU-ului și <em>ce verifică</em> un tehnician când testează continuitatea cu multimetrul. Fiecare diagnostic hardware începe cu o întrebare simplă: circuitul este închis sau nu?
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.3.1 � Prezentare generala</h3>
-                <p>O re?ea electrica este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectari, format din elemente electrice (ex: surse de tensiune, surse de curent, rezisten?e, inductan?e, capacita?i).</p>
-                <p>Un circuit electric este o re?ea formata dintr-o bucla &#238;nchisa, oferind o cale de retur pentru curent. Astfel, toate circuitele sunt re?ele, dar nu toate re?elele sunt circuite (re?elele fara bucla &#238;nchisa sunt adesea numite circuite deschise).</p>
-                <p>O re?ea activa con?ine cel pu?in o sursa de tensiune sau o sursa de curent care poate furniza energie re?elei la nesf&#226;r?it. Exemple practice: baterie, generator. Elementele active pot injecta putere &#238;n circuit, pot oferi amplificare de putere ?i pot controla fluxul de curent.</p>
-                <p>Re?elele pasive nu con?in surse de for?a electromotoare. Sunt formate din elemente pasive precum rezistoare ?i condensatoare.</p>
-                <p>Legea curen?ilor a lui Kirchhoff: Suma tuturor curen?ilor care intra &#238;ntr-un nod este egala cu suma tuturor curen?ilor care ies din nod.</p>
-                <p>Legea tensiunilor a lui Kirchhoff: Suma algebrica direc?ionata a diferen?elor de poten?ial electric de-a lungul unei bucle trebuie sa fie zero.</p>
-                <p>Un scurtcircuit este un circuit electric care permite curentului electric sa circule pe o cale neplanificata cu impedan?a electrica zero sau foarte scazuta. Aceasta rezulta &#238;ntr-un curent excesiv care curge prin circuit.</p>
-                <p>Opusul unui scurtcircuit este circuitul deschis, care prezinta o rezisten?a infinita (sau impedan?a foarte mare) &#238;ntre doua noduri.</p>
-                <p>Un scurtcircuit este o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite. Aceasta rezulta &#238;ntr-un curent limitat doar de rezisten?a echivalenta Th&#233;venin a restului re?elei, ceea ce poate cauza deteriorarea circuitului, supra&#238;ncalzire, incendiu sau explozie.</p>
-                <p>&#206;n analiza circuitelor, un scurtcircuit este definit ca o conexiune &#238;ntre doua noduri care le for?eaza sa fie la aceea?i tensiune. &#206;ntr-un scurtcircuit �ideal&quot;, aceasta &#238;nseamna ca nu exista rezisten?a ?i, prin urmare, nu exista cadere de tensiune pe conexiune.</p>
-                <p>Un tip comun de scurtcircuit apare atunci c&#226;nd terminalele pozitiv ?i negativ ale unei baterii sunt conectate cu un conductor cu rezisten?a scazuta, precum un fir. Cu o rezisten?a scazuta &#238;n conexiune, va curge un curent mare, provoc&#226;nd livrarea unei cantita?i mari de energie &#238;ntr-o perioada scurta de timp.</p>
-                <p>Protec?ie: Daunele cauzate de scurtcircuite pot fi reduse prin utilizarea siguran?elor fuzibile, &#238;ntrerupatoarelor automate sau a altor dispozitive de protec?ie la suprasarcina, care deconecteaza alimentarea ca reac?ie la curentul excesiv.</p>
+                <h3>1.3.1 — Prezentare generala</h3>
+                <p>O rețea electrică este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectări, format din elemente electrice (ex: surse de tensiune, surse de curent, rezistențe, inductanțe, capacități).</p>
+                <p>Un circuit electric este o rețea formată dintr-o buclă închisă, oferind o cale de retur pentru curent. Astfel, toate circuitele sunt rețele, dar nu toate rețelele sunt circuite (rețelele fără buclă închisă sunt adesea numite circuite deschise).</p>
+                <p>O rețea activă conține cel puțin o sursă de tensiune sau o sursă de curent care poate furniza energie rețelei la nesfârșit. Exemple practice: baterie, generator. Elementele active pot injecta putere în circuit, pot oferi amplificare de putere și pot controla fluxul de curent.</p>
+                <p>Rețelele pasive nu conțin surse de forță electromotoare. Sunt formate din elemente pasive precum rezistoare și condensatoare.</p>
+                <p>Legea curenților a lui Kirchhoff: Suma tuturor curenților care intră într-un nod este egală cu suma tuturor curenților care ies din nod.</p>
+                <p>Legea tensiunilor a lui Kirchhoff: Suma algebrică direcționată a diferențelor de potențial electric de-a lungul unei bucle trebuie să fie zero.</p>
+                <p>Un scurtcircuit este un circuit electric care permite curentului electric să circule pe o cale neplanificată cu impedanță electrică zero sau foarte scăzută. Aceasta rezultă într-un curent excesiv care curge prin circuit.</p>
+                <p>Opusul unui scurtcircuit este circuitul deschis, care prezintă o rezistență infinită (sau impedanță foarte mare) între două noduri.</p>
+                <p>Un scurtcircuit este o conexiune anormală între două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite. Aceasta rezultă într-un curent limitat doar de rezistența echivalentă Thévenin a restului rețelei, ceea ce poate cauza deteriorarea circuitului, supraîncălzire, incendiu sau explozie.</p>
+                <p>În analiza circuitelor, un scurtcircuit este definit ca o conexiune între două noduri care le forțează să fie la aceeași tensiune. Într-un scurtcircuit „ideal&quot;, aceasta înseamnă că nu există rezistență și, prin urmare, nu există cădere de tensiune pe conexiune.</p>
+                <p>Un tip comun de scurtcircuit apare atunci când terminalele pozitiv și negativ ale unei baterii sunt conectate cu un conductor cu rezistență scăzută, precum un fir. Cu o rezistență scăzută în conexiune, va curge un curent mare, provocând livrarea unei cantități mari de energie într-o perioadă scurtă de timp.</p>
+                <p>Protecție: Daunele cauzate de scurtcircuite pot fi reduse prin utilizarea siguranțelor fuzibile, întrerupătoarelor automate sau a altor dispozitive de protecție la suprasarcină, care deconectează alimentarea ca reacție la curentul excesiv.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.3.2 � &#206;n ingineria electrica, masa sau &#238;mpam&#226;ntare (ground/earth) se poate referi la</h3>
+                <h3>1.3.2 — În ingineria electrică, masă sau împământare (ground/earth) se poate referi la</h3>
                 <ul class="specs-list">
-                    <li><strong>masa de referin?a (reference ground):</strong> un punct de referin?a &#238;ntr-un circuit electric de la care se masoara tensiunile</li>
-                    <li><strong>&#238;mpam&#226;ntare fizica (earth ground):</strong> un nod neutru electric care are multe sarcini disponibile (ex: pam&#226;ntul fizic al Terrei)</li>
-                    <li><strong>masa comuna (common ground):</strong> o cale de retur comuna pentru curentul electric (numita ?i neutru &#238;n sistemele de alimentare electrica)</li>
+                    <li><strong>masă de referință (reference ground):</strong> un punct de referință într-un circuit electric de la care se măsoară tensiunile</li>
+                    <li><strong>împământare fizică (earth ground):</strong> un nod neutru electric care are multe sarcini disponibile (ex: pământul fizic al Terrei)</li>
+                    <li><strong>masă comună (common ground):</strong> o cale de retur comună pentru curentul electric (numită și neutru în sistemele de alimentare electrică)</li>
                 </ul>
-                <p>Tensiunea este definita ca diferen?a de poten?iale electrice &#238;ntre puncte &#238;ntr-un c&#226;mp electric. Un voltmetru este utilizat pentru a masura diferen?a de poten?ial &#238;ntre un punct ?i un punct de referin?a convenabil, dar altfel arbitrar. Acest punct de referin?a comun este denumit �masa&quot; ?i este desemnat ca av&#226;nd un poten?ial nominal zero.</p>
-                <p>Masele de semnal servesc drept cai de retur pentru semnale ?i alimentare &#238;n interiorul echipamentelor. De obicei, exista un conductor mare ata?at la o parte a sursei de alimentare (precum �planul de masa&quot; de pe o placa de circuit imprimat), care serve?te drept masa comuna, calea de retur comuna pentru curentul de la multe componente diferite din circuit.</p>
-                <p>Circuitele din dispozitivele electronice portabile (telefoane mobile, playere media) ?i din vehicule au o masa de referin?a (numita ?i masa de ?asiu).</p>
-                <p>&#206;n teoria circuitelor electronice, masa de semnal este masa comuna ?i masa de referin?a pentru semnalul electric; iar masa de alimentare este masa comuna pentru curentul de alimentare.</p>
+                <p>Tensiunea este definită ca diferența de potențiale electrice între puncte într-un câmp electric. Un voltmetru este utilizat pentru a măsura diferența de potențial între un punct și un punct de referință convenabil, dar altfel arbitrar. Acest punct de referință comun este denumit „masă&quot; și este desemnat ca având un potențial nominal zero.</p>
+                <p>Masele de semnal servesc drept căi de retur pentru semnale și alimentare în interiorul echipamentelor. De obicei, există un conductor mare atașat la o parte a sursei de alimentare (precum „planul de masă&quot; de pe o placă de circuit imprimat), care servește drept masă comună, calea de retur comună pentru curentul de la multe componente diferite din circuit.</p>
+                <p>Circuitele din dispozitivele electronice portabile (telefoane mobile, playere media) și din vehicule au o masă de referință (numită și masă de șasiu).</p>
+                <p>În teoria circuitelor electronice, masa de semnal este masa comună și masa de referință pentru semnalul electric; iar masa de alimentare este masa comună pentru curentul de alimentare.</p>
             </div>
 
         </div>
@@ -92,21 +100,21 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Conceptele din aceasta lec?ie � Circuite electrice � reprezinta fundamentul fizic al tehnologiei digitale utilizate �n consolele moderne.</p>
+                <p>Conceptele din această lecție — Circuite electrice — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>&#206;n ingineria electrica, masa sau &#238;mpam&#226;ntare (ground/earth) se poate referi la</h3>
-                <p>Masele de semnal servesc drept cai de retur pentru semnale ?i alimentare &#238;n interiorul echipamentelor. De obicei, exista un conductor mare ata?at la o parte a sursei de alimentare (precum �planul de masa&quot; de pe o placa de circuit imprimat), care serve?te drept masa comuna, calea de retur comuna pentru curentul de la multe componente diferite din circuit.</p>
+                <h3>În ingineria electrică, masă sau împământare (ground/earth) se poate referi la</h3>
+                <p>Masele de semnal servesc drept căi de retur pentru semnale și alimentare în interiorul echipamentelor. De obicei, există un conductor mare atașat la o parte a sursei de alimentare (precum „planul de masă&quot; de pe o placă de circuit imprimat), care servește drept masă comună, calea de retur comună pentru curentul de la multe componente diferite din circuit.</p>
             </div>
         </div>
     </section>
@@ -116,7 +124,7 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Componentele reale care utilizeaza circuit deschis se regasesc �n toate consolele moderne.</p>
+                <p>Componentele reale care utilizează circuit deschis se regăsesc în toate consolele moderne.</p>
             </div>
         </div>
     </section>
@@ -127,14 +135,14 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Prezentare generala</h3>
-                    <p>Un circuit electric este o re?ea formata dintr-o bucla &#238;nchisa, oferind o cale de retur pentru curent. Astfel, toate circuitele sunt re?ele, dar nu toate re?elele sunt circuite (re?elele fara bucla &#238;nchisa sunt adesea numite circuite deschise).</p>
-                    <p>Un scurtcircuit este un circuit electric care permite curentului electric sa circule pe o cale neplanificata cu impedan?a electrica zero sau foarte scazuta. Aceasta rezulta &#238;ntr-un curent excesiv care curge prin circuit.</p>
-                    <p>Opusul unui scurtcircuit este circuitul deschis, care prezinta o rezisten?a infinita (sau impedan?a foarte mare) &#238;ntre doua noduri.</p>
-                    <p>Un scurtcircuit este o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite. Aceasta rezulta &#238;ntr-un curent limitat doar de rezisten?a echivalenta Th&#233;venin a restului re?elei, ceea ce poate cauza deteriorarea circuitului, supra&#238;ncalzire, incendiu sau explozie.</p>
-                    <p>&#206;n analiza circuitelor, un scurtcircuit este definit ca o conexiune &#238;ntre doua noduri care le for?eaza sa fie la aceea?i tensiune. &#206;ntr-un scurtcircuit �ideal&quot;, aceasta &#238;nseamna ca nu exista rezisten?a ?i, prin urmare, nu exista cadere de tensiune pe conexiune.</p>
-                    <p>Un tip comun de scurtcircuit apare atunci c&#226;nd terminalele pozitiv ?i negativ ale unei baterii sunt conectate cu un conductor cu rezisten?a scazuta, precum un fir. Cu o rezisten?a scazuta &#238;n conexiune, va curge un curent mare, provoc&#226;nd livrarea unei cantita?i mari de energie &#238;ntr-o perioada scurta de timp.</p>
-                    <p>Protec?ie: Daunele cauzate de scurtcircuite pot fi reduse prin utilizarea siguran?elor fuzibile, &#238;ntrerupatoarelor automate sau a altor dispozitive de protec?ie la suprasarcina, care deconecteaza alimentarea ca reac?ie la curentul excesiv.</p>
+                    <h3>⚠️ Prezentare generala</h3>
+                    <p>Un circuit electric este o rețea formată dintr-o buclă închisă, oferind o cale de retur pentru curent. Astfel, toate circuitele sunt rețele, dar nu toate rețelele sunt circuite (rețelele fără buclă închisă sunt adesea numite circuite deschise).</p>
+                    <p>Un scurtcircuit este un circuit electric care permite curentului electric să circule pe o cale neplanificată cu impedanță electrică zero sau foarte scăzută. Aceasta rezultă într-un curent excesiv care curge prin circuit.</p>
+                    <p>Opusul unui scurtcircuit este circuitul deschis, care prezintă o rezistență infinită (sau impedanță foarte mare) între două noduri.</p>
+                    <p>Un scurtcircuit este o conexiune anormală între două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite. Aceasta rezultă într-un curent limitat doar de rezistența echivalentă Thévenin a restului rețelei, ceea ce poate cauza deteriorarea circuitului, supraîncălzire, incendiu sau explozie.</p>
+                    <p>În analiza circuitelor, un scurtcircuit este definit ca o conexiune între două noduri care le forțează să fie la aceeași tensiune. Într-un scurtcircuit „ideal&quot;, aceasta înseamnă că nu există rezistență și, prin urmare, nu există cădere de tensiune pe conexiune.</p>
+                    <p>Un tip comun de scurtcircuit apare atunci când terminalele pozitiv și negativ ale unei baterii sunt conectate cu un conductor cu rezistență scăzută, precum un fir. Cu o rezistență scăzută în conexiune, va curge un curent mare, provocând livrarea unei cantități mari de energie într-o perioadă scurtă de timp.</p>
+                    <p>Protecție: Daunele cauzate de scurtcircuite pot fi reduse prin utilizarea siguranțelor fuzibile, întrerupătoarelor automate sau a altor dispozitive de protecție la suprasarcină, care deconectează alimentarea ca reacție la curentul excesiv.</p>
                 </div>
             </div>
         </div>
@@ -145,8 +153,8 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Prezentare generala:</strong> O re?ea electrica este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectari, format din...</li>
-                    <li><strong>&#206;n ingineria electrica, masa sau &#238;mpam&#226;ntare (ground/earth) se poate referi la:</strong> masa de referin?a (reference ground): un punct de referin?a &#238;ntr-un circuit electric de la care se masoara tensiunile</li>
+                    <li><strong>Prezentare generala:</strong> O rețea electrică este o interconectare de componente electrice (ex: baterii, rezistoare, bobine, condensatoare, comutatoare, tranzistoare) sau un model al unei astfel de interconectări, format din...</li>
+                    <li><strong>În ingineria electrică, masă sau împământare (ground/earth) se poate referi la:</strong> masă de referință (reference ground): un punct de referință într-un circuit electric de la care se măsoară tensiunile</li>
                 </ul>
             </div>
         </div>
@@ -154,50 +162,50 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: masa de referin?a (reference ground)?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: masă de referință (reference ground)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) o cale de retur comuna pentru curentul electric (numita ?i neutru &#238;n sistemele de alimentare electrica)</li>
-                    <li>b) un punct de referin?a &#238;ntr-un circuit electric de la care se masoara tensiunile</li>
-                    <li>c) Aceasta proprietate nu este relevanta pentru acest concept</li>
-                    <li>d) un nod neutru electric care are multe sarcini disponibile (ex: pam&#226;ntul fizic al Terrei)</li>
+                    <li>a) o cale de retur comună pentru curentul electric (numită și neutru în sistemele de alimentare electrică)</li>
+                    <li>b) un punct de referință într-un circuit electric de la care se măsoară tensiunile</li>
+                    <li>c) Această proprietate nu este relevantă pentru acest concept</li>
+                    <li>d) un nod neutru electric care are multe sarcini disponibile (ex: pământul fizic al Terrei)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � un punct de referin?a &#238;ntr-un circuit electric de la care se masoara tensiunile</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — un punct de referință într-un circuit electric de la care se măsoară tensiunile</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: &#238;mpam&#226;ntare fizica (earth ground)?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: împământare fizică (earth ground)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) un punct de referin?a &#238;ntr-un circuit electric de la care se masoara tensiunile</li>
-                    <li>b) Aceasta proprietate nu este relevanta pentru acest concept</li>
-                    <li>c) un nod neutru electric care are multe sarcini disponibile (ex: pam&#226;ntul fizic al Terrei)</li>
-                    <li>d) o cale de retur comuna pentru curentul electric (numita ?i neutru &#238;n sistemele de alimentare electrica)</li>
+                    <li>a) un punct de referință într-un circuit electric de la care se măsoară tensiunile</li>
+                    <li>b) Această proprietate nu este relevantă pentru acest concept</li>
+                    <li>c) un nod neutru electric care are multe sarcini disponibile (ex: pământul fizic al Terrei)</li>
+                    <li>d) o cale de retur comună pentru curentul electric (numită și neutru în sistemele de alimentare electrică)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � un nod neutru electric care are multe sarcini disponibile (ex: pam&#226;ntul fizic al Terrei)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — un nod neutru electric care are multe sarcini disponibile (ex: pământul fizic al Terrei)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: masa comuna (common ground)?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: masă comună (common ground)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) un nod neutru electric care are multe sarcini disponibile (ex: pam&#226;ntul fizic al Terrei)</li>
-                    <li>b) un punct de referin?a &#238;ntr-un circuit electric de la care se masoara tensiunile</li>
-                    <li>c) o cale de retur comuna pentru curentul electric (numita ?i neutru &#238;n sistemele de alimentare electrica)</li>
-                    <li>d) Aceasta proprietate nu este relevanta pentru acest concept</li>
+                    <li>a) un nod neutru electric care are multe sarcini disponibile (ex: pământul fizic al Terrei)</li>
+                    <li>b) un punct de referință într-un circuit electric de la care se măsoară tensiunile</li>
+                    <li>c) o cale de retur comună pentru curentul electric (numită și neutru în sistemele de alimentare electrică)</li>
+                    <li>d) Această proprietate nu este relevantă pentru acest concept</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � o cale de retur comuna pentru curentul electric (numita ?i neutru &#238;n sistemele de alimentare electrica)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — o cale de retur comună pentru curentul electric (numită și neutru în sistemele de alimentare electrică)</strong></p>
                 </details>
             </div>
         </div>
@@ -205,22 +213,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Circuite electrice</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de circuit deschis. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Circuite electrice</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de circuit deschis. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: circuit deschis.</li>
-                    <li>2. Ce rol are circuit &#238;nchis �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre circuit deschis ?i scurtcircuit.</li>
+                    <li>2. Ce rol are circuit închis în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre circuit deschis și scurtcircuit.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Re?elele pasive nu con?in surse de for?a electromotoare. Sunt formate din elemente pasive precum rezistoare ?i condensatoare.</p>
-                        <p><strong>2.</strong> masa de referin?a (reference ground): un punct de referin?a &#238;ntr-un circuit electric de la care se masoara tensiunile</p>
-                        <p><strong>3.</strong> Conceptele studiate sunt aplicate direct &#238;n proiectarea hardware-ului consolelor.</p>
+                        <p><strong>1.</strong> Rețelele pasive nu conțin surse de forță electromotoare. Sunt formate din elemente pasive precum rezistoare și condensatoare.</p>
+                        <p><strong>2.</strong> masă de referință (reference ground): un punct de referință într-un circuit electric de la care se măsoară tensiunile</p>
+                        <p><strong>3.</strong> Conceptele studiate sunt aplicate direct în proiectarea hardware-ului consolelor.</p>
                     </div>
                 </details>
             </div>
@@ -257,7 +265,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-1-2.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 1.2 &mdash; Tensiune, Curent, Rezisten&#x21B;&#x103;</a>
@@ -314,7 +322,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Legea lui Ohm explicata simplu: rela?ia dintre tensiune, curent ?i rezisten?a �n circuitele electrice, cu exemple practice.</p>
+                <p class="video-description">Legea lui Ohm explicată simplu: relația dintre tensiune, curent și rezistență în circuitele electrice, cu exemple practice.</p>
             </div>
         </div>
     </section>
@@ -324,7 +332,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatica</p>
+                <p class="footer-sub">Proiect Atestat Informatică</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

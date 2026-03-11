@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 2.3 � Diode">
+    <meta name="description" content="Lecția 2.3 — Diode">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 2.3 � Diode � Console Notebook</title>
+    <title>Lecția 2.3 — Diode — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,200 +30,208 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 � ELECTRONICA DE BAZA</p>
-            <h1>Lec?ia 2.3 � Diode</h1>
-            <p>jonc?iune PN, redresare, protec?ie polaritate</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
+            <h1>Lecția 2.3 — Diode</h1>
+            <p>joncțiune PN, redresare, protecție polaritate</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-                                                        <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>� Siliciu Schottky: 0.15 V � 0.45 V</p>
-                <p>Aceasta lec?ie acopera: <strong>jonc?iune PN</strong>, <strong>redresare</strong>, <strong>protec?ie polaritate</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    În interiorul fiecărei surse de alimentare de consolă, curentul alternativ din priză trebuie transformat în curent continuu. Prima componentă care face această conversie posibilă este dioda — un dispozitiv semiconductor care permite curentului să treacă într-o singură direcție. Patru diode aranjate într-o punte de redresare transformă unda sinusoidală AC într-un flux unidirecțional — primul pas critic spre alimentarea stabilă a procesorului.
+                </p>
+                <p>
+                    Această lecție acoperă componenta care face posibilă conversia AC → DC: <strong>joncțiunea PN</strong> (mecanismul fizic din spatele diodei), <strong>redresarea</strong> (conversia AC în flux unidirecțional) și <strong>protecția de polaritate</strong> — circuitele care previn distrugerea componentelor când tensiunea este aplicată invers.
+                </p>
+                <p>
+                    Scopul nu este memorarea caracteristicii I-V a diodei, ci înțelegerea <em>de ce</em> PSU-ul folosește diode pentru redresare, <em>de ce</em> există diode de protecție pe placa de bază și <em>cum</em> identifici o diodă defectă cu multimetrul în modul diodă.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.1 � DEFINI?IE ?I FUNC?IE PRINCIPALA</h3>
+                <h3>2.3.1 — DEFINIȚIE ȘI FUNCȚIE PRINCIPALĂ</h3>
                 <ul class="specs-list">
-                    <li>Dioda = component electronic cu doua terminale care conduce curentul electric predominant &#238;ntr-o singura direc?ie (conductan?a asimetrica)</li>
-                    <li>Rezisten?a joasa (ideal zero) &#238;ntr-o direc?ie, rezisten?a mare (ideal infinita) &#238;n cealalta</li>
-                    <li><strong>Analogia hidraulica:</strong> supapa de sens unic (check valve)</li>
-                    <li><strong>Func?ia principala:</strong> permite curentul &#238;n direc?ia forward, &#238;l blocheaza &#238;n direc?ia reverse</li>
-                    <li>Poate converti curent alternativ (AC) &#238;n curent continuu (DC) � proces numit redresare (rectification)</li>
+                    <li>Dioda = component electronic cu două terminale care conduce curentul electric predominant într-o singură direcție (conductanță asimetrică)</li>
+                    <li>Rezistență joasă (ideal zero) într-o direcție, rezistență mare (ideal infinită) în cealaltă</li>
+                    <li><strong>Analogia hidraulică:</strong> supapă de sens unic (check valve)</li>
+                    <li><strong>Funcția principală:</strong> permite curentul în direcția forward, îl blochează în direcția reverse</li>
+                    <li>Poate converti curent alternativ (AC) în curent continuu (DC) – proces numit redresare (rectification)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.2 � JONC?IUNE PN � DIODA SEMICONDUCTOARE</h3>
+                <h3>2.3.2 — JONCȚIUNE PN – DIODA SEMICONDUCTOARE</h3>
                 <ul class="specs-list">
-                    <li>Dioda semiconductoare = bucata cristalina de material semiconductor (uzual siliciu) cu jonc?iune p-n conectata la doua terminale electrice</li>
-                    <li><strong>Pe o parte:</strong> semiconductor de tip n (con?ine purtatori de sarcina negativi � electroni liberi)</li>
-                    <li><strong>Pe cealalta parte:</strong> semiconductor de tip p (con?ine purtatori de sarcina pozitivi � goluri/holes)</li>
-                    <li>C&#226;nd n ?i p sunt alaturate, electronii din zona n difuzeaza &#238;n zona p ?i se recombina cu golurile</li>
-                    <li>Se formeaza zona de golire (depletion region) � o regiune fara purtatori de sarcina mobili, care ac?ioneaza ca izolator</li>
-                    <li>Se creeaza un poten?ial electric intern (built-in potential) care opre?te difuzia ulterioara</li>
+                    <li>Dioda semiconductoare = bucată cristalină de material semiconductor (uzual siliciu) cu joncțiune p-n conectată la două terminale electrice</li>
+                    <li><strong>Pe o parte:</strong> semiconductor de tip n (conține purtători de sarcină negativi – electroni liberi)</li>
+                    <li><strong>Pe cealaltă parte:</strong> semiconductor de tip p (conține purtători de sarcină pozitivi – goluri/holes)</li>
+                    <li>Când n și p sunt alăturate, electronii din zona n difuzează în zona p și se recombină cu golurile</li>
+                    <li>Se formează zona de golire (depletion region) – o regiune fără purtători de sarcină mobili, care acționează ca izolator</li>
+                    <li>Se creează un potențial electric intern (built-in potential) care oprește difuzia ulterioară</li>
                     <li>Anod = terminalul conectat la partea p; Catod = terminalul conectat la partea n</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.3 � POLARIZARE DIRECTA (FORWARD BIAS)</h3>
+                <h3>2.3.3 — POLARIZARE DIRECTĂ (FORWARD BIAS)</h3>
                 <ul class="specs-list">
-                    <li>C&#226;nd se aplica tensiune pozitiva pe anod (partea p) fa?a de catod (partea n)</li>
-                    <li>Zona de golire se mic?oreaza ? permite trecerea electronilor de la n la p</li>
-                    <li>Curentul cre?te exponen?ial cu tensiunea (ecua?ia Shockley)</li>
+                    <li>Când se aplică tensiune pozitivă pe anod (partea p) față de catod (partea n)</li>
+                    <li>Zona de golire se micșorează → permite trecerea electronilor de la n la p</li>
+                    <li>Curentul crește exponențial cu tensiunea (ecuația Shockley)</li>
                     <li>Tensiunea de prag (forward threshold voltage/turn-on voltage):</li>
                 </ul>
-                <p>� Siliciu Schottky: 0.15 V � 0.45 V</p>
-                <p>� Germaniu p-n: 0.25 V � 0.3 V</p>
-                <p>� Siliciu p-n: 0.6 V � 0.7 V</p>
-                <p>� LED infraro?u (GaAs): ~1.2 V</p>
-                <p>� LED-uri: 1.6 V (ro?u) � 4 V (violet)</p>
+                <p>• Siliciu Schottky: 0.15 V – 0.45 V</p>
+                <p>• Germaniu p-n: 0.25 V – 0.3 V</p>
+                <p>• Siliciu p-n: 0.6 V – 0.7 V</p>
+                <p>• LED infraroșu (GaAs): ~1.2 V</p>
+                <p>• LED-uri: 1.6 V (roșu) – 4 V (violet)</p>
                 <ul class="specs-list">
-                    <li>La curen?i mari, caderea de tensiune cre?te (1 V � 1.5 V la curent nominal pentru diode de putere din siliciu)</li>
+                    <li>La curenți mari, căderea de tensiune crește (1 V – 1.5 V la curent nominal pentru diode de putere din siliciu)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.4 � POLARIZARE INVERSA (REVERSE BIAS)</h3>
+                <h3>2.3.4 — POLARIZARE INVERSĂ (REVERSE BIAS)</h3>
                 <ul class="specs-list">
-                    <li>C&#226;nd se aplica tensiune negativa pe anod fa?a de catod</li>
-                    <li>Zona de golire se large?te ? curent foarte mic (micro-amperi)</li>
-                    <li>La tensiune inversa suficient de mare ? breakdown (avalan?a sau efect Zener)</li>
-                    <li><strong>Avalanche breakdown:</strong> c&#226;mpul electric provoaca ionizare &#238;n cascada</li>
-                    <li><strong>Zener breakdown:</strong> tunelare cuantica prin jonc?iunea puternic dopata, la tensiuni &lt; 5 V</li>
-                    <li>Breakdown poate fi distructiv (diode normale) sau controlat (diode Zener, diode avalan?a)</li>
+                    <li>Când se aplică tensiune negativă pe anod față de catod</li>
+                    <li>Zona de golire se lărgește → curent foarte mic (micro-amperi)</li>
+                    <li>La tensiune inversă suficient de mare → breakdown (avalanșă sau efect Zener)</li>
+                    <li><strong>Avalanche breakdown:</strong> câmpul electric provoacă ionizare în cascadă</li>
+                    <li><strong>Zener breakdown:</strong> tunelare cuantică prin joncțiunea puternic dopată, la tensiuni &lt; 5 V</li>
+                    <li>Breakdown poate fi distructiv (diode normale) sau controlat (diode Zener, diode avalanșă)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.5 � REDRESARE (RECTIFICATION)</h3>
+                <h3>2.3.5 — REDRESARE (RECTIFICATION)</h3>
                 <ul class="specs-list">
-                    <li>Convertirea AC ? DC folosind conductan?a unidirec?ionala a diodei</li>
-                    <li><strong>Redresare half-wave:</strong> folose?te o singura dioda</li>
-                    <li><strong>Redresare full-wave:</strong> folose?te 4 diode &#238;n configura?ie bridge rectifier</li>
-                    <li>Diodele redresoare sunt folosite &#238;n surse de alimentare, alternatoare auto, multiplicatoare de tensiune</li>
+                    <li>Convertirea AC → DC folosind conductanța unidirecțională a diodei</li>
+                    <li><strong>Redresare half-wave:</strong> folosește o singură diodă</li>
+                    <li><strong>Redresare full-wave:</strong> folosește 4 diode în configurație bridge rectifier</li>
+                    <li>Diodele redresoare sunt folosite în surse de alimentare, alternatoare auto, multiplicatoare de tensiune</li>
                     <li><strong>Seria 1N400x:</strong> diode redresoare siliciu 1A (foarte populare)</li>
                     <li><strong>Seria 1N580x:</strong> diode redresoare siliciu 3A</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.6 � PROTEC?IE POLARITATE (REVERSE VOLTAGE PROTECTION)</h3>
+                <h3>2.3.6 — PROTECȚIE POLARITATE (REVERSE VOLTAGE PROTECTION)</h3>
                 <ul class="specs-list">
-                    <li>O dioda &#238;n serie cu alimentarea protejeaza circuitul c&#226;nd polaritatea este inversata</li>
+                    <li>O diodă în serie cu alimentarea protejează circuitul când polaritatea este inversată</li>
                     <li>Previne daune la componente electronice sensibile</li>
-                    <li><strong>Cunoscut ?i ca:</strong> reverse polarity protection, reverse battery protection</li>
-                    <li>Protec?ie supratensiune (over-voltage protection):</li>
+                    <li><strong>Cunoscut și ca:</strong> reverse polarity protection, reverse battery protection</li>
+                    <li>Protecție supratensiune (over-voltage protection):</li>
                 </ul>
-                <p>� Diodele deviaza tensiunile ridicate de la circuitele sensibile</p>
-                <p>� Flyback diode: protejeaza la deenergizarea bobinelor (motoare, relee)</p>
-                <p>� TVS (Transient Voltage Suppression): diode avalan?a cu sec?iune mare, proiectate pentru protec?ie</p>
-                <p>� Multe circuite integrate au diode de protec?ie integrate pe pinii de conectare</p>
+                <p>• Diodele deviază tensiunile ridicate de la circuitele sensibile</p>
+                <p>• Flyback diode: protejează la deenergizarea bobinelor (motoare, relee)</p>
+                <p>• TVS (Transient Voltage Suppression): diode avalanșă cu secțiune mare, proiectate pentru protecție</p>
+                <p>• Multe circuite integrate au diode de protecție integrate pe pinii de conectare</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.7 � TIPURI DE DIODE SEMICONDUCTOARE</h3>
+                <h3>2.3.7 — TIPURI DE DIODE SEMICONDUCTOARE</h3>
                 <ul class="specs-list">
-                    <li><strong>Dioda p-n standard (siliciu):</strong> cea mai comuna, 0.6-0.7 V forward voltage</li>
-                    <li><strong>Dioda Schottky:</strong> jonc?iune metal-semiconductor, forward voltage mai mic (0.15-0.45 V), comutare rapida, fara efect de stocare de purtatori minoritari; folosita &#238;n SMPS, mixere RF, detectoare</li>
-                    <li><strong>Dioda Zener:</strong> tensiune de breakdown precisa (&lt;5 V prin efect Zener), folosita ca referin?a de tensiune</li>
-                    <li><strong>Dioda avalan?a:</strong> breakdown controlat &gt;6.2 V, protec?ie supratensiune</li>
-                    <li><strong>LED (Light-Emitting Diode):</strong> emite fotoni la recombinare, culori de la infraro?u la ultraviolet</li>
-                    <li><strong>Fotodioda:</strong> detecteaza lumina, folosita &#238;n celule solare, comunica?ii optice</li>
-                    <li><strong>Dioda laser:</strong> LED &#238;ntr-o cavitate rezonanta, pentru stocare optica ?i comunica?ii rapide</li>
-                    <li><strong>Dioda tunel (Esaki):</strong> rezisten?a diferen?iala negativa, tunelare cuantica, folosita &#238;n nave spa?iale</li>
-                    <li><strong>Varicap/varactor:</strong> capacitate variabila controlata de tensiune, pentru circuite PLL</li>
-                    <li><strong>PIN diode:</strong> strat intrinsec &#238;ntre p ?i n, switchuri RF, detectoare de radia?ie</li>
-                    <li><strong>TVS diode:</strong> protec?ie tranzien?i de tensiune</li>
+                    <li><strong>Dioda p-n standard (siliciu):</strong> cea mai comună, 0.6-0.7 V forward voltage</li>
+                    <li><strong>Dioda Schottky:</strong> joncțiune metal-semiconductor, forward voltage mai mic (0.15-0.45 V), comutare rapidă, fără efect de stocare de purtători minoritari; folosită în SMPS, mixere RF, detectoare</li>
+                    <li><strong>Dioda Zener:</strong> tensiune de breakdown precisă (&lt;5 V prin efect Zener), folosită ca referință de tensiune</li>
+                    <li><strong>Dioda avalanșă:</strong> breakdown controlat &gt;6.2 V, protecție supratensiune</li>
+                    <li><strong>LED (Light-Emitting Diode):</strong> emite fotoni la recombinare, culori de la infraroșu la ultraviolet</li>
+                    <li><strong>Fotodioda:</strong> detectează lumina, folosită în celule solare, comunicații optice</li>
+                    <li><strong>Dioda laser:</strong> LED într-o cavitate rezonantă, pentru stocare optică și comunicații rapide</li>
+                    <li><strong>Dioda tunel (Esaki):</strong> rezistență diferențială negativă, tunelare cuantică, folosită în nave spațiale</li>
+                    <li><strong>Varicap/varactor:</strong> capacitate variabilă controlată de tensiune, pentru circuite PLL</li>
+                    <li><strong>PIN diode:</strong> strat intrinsec între p și n, switchuri RF, detectoare de radiație</li>
+                    <li><strong>TVS diode:</strong> protecție tranzienți de tensiune</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.8 � APLICA?II &#206;N CIRCUITE</h3>
+                <h3>2.3.8 — APLICAȚII ÎN CIRCUITE</h3>
                 <ul class="specs-list">
-                    <li>Redresoare &#238;n surse de alimentare</li>
+                    <li>Redresoare în surse de alimentare</li>
                     <li>Demodulare radio (AM)</li>
-                    <li><strong>Por?i logice (diode-resistor logic:</strong> AND ?i OR)</li>
-                    <li><strong>Director de curent (current steering):</strong> alimentare ne&#238;ntreruptibila, protec?ie baterie</li>
-                    <li><strong>Limitare forma de unda (clipper):</strong> limiteaza excursia semnalului</li>
-                    <li><strong>Clamper:</strong> deplaseaza semnalul AC vertical</li>
-                    <li><strong>Senzor de temperatura:</strong> caderea forward variaza cu ~-2 mV/&#176;C</li>
-                    <li>Detectoare de radia?ii ionizante</li>
+                    <li><strong>Porți logice (diode-resistor logic:</strong> AND și OR)</li>
+                    <li><strong>Director de curent (current steering):</strong> alimentare neîntreruptibilă, protecție baterie</li>
+                    <li><strong>Limitare formă de undă (clipper):</strong> limitează excursia semnalului</li>
+                    <li><strong>Clamper:</strong> deplasează semnalul AC vertical</li>
+                    <li><strong>Senzor de temperatură:</strong> căderea forward variază cu ~-2 mV/°C</li>
+                    <li>Detectoare de radiații ionizante</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.9 � DEFINI?IE JONC?IUNE P-N</h3>
+                <h3>2.3.9 — DEFINIȚIE JONCȚIUNE P-N</h3>
                 <ul class="specs-list">
-                    <li>Combina?ie de doua tipuri de materiale semiconductoare (p-type ?i n-type) &#238;ntr-un singur cristal</li>
-                    <li><strong>Partea &quot;n&quot; (negativa):</strong> con?ine electroni liberi</li>
-                    <li><strong>Partea &quot;p&quot; (pozitiva):</strong> con?ine goluri/holes libere</li>
-                    <li>Conectarea celor doua materiale creeaza o zona de golire (depletion region) la limita</li>
-                    <li>Electronii liberi umplu golurile disponibile ? permite curentul doar &#238;ntr-o direc?ie</li>
-                    <li>Inventata de Russell Ohl (Bell Labs) &#238;n 1939</li>
-                    <li><strong>Teorie moderna:</strong> William Shockley, &quot;Electrons and Holes in Semiconductors&quot; (1950)</li>
+                    <li>Combinație de două tipuri de materiale semiconductoare (p-type și n-type) într-un singur cristal</li>
+                    <li><strong>Partea &quot;n&quot; (negativă):</strong> conține electroni liberi</li>
+                    <li><strong>Partea &quot;p&quot; (pozitivă):</strong> conține goluri/holes libere</li>
+                    <li>Conectarea celor două materiale creează o zonă de golire (depletion region) la limită</li>
+                    <li>Electronii liberi umplu golurile disponibile → permite curentul doar într-o direcție</li>
+                    <li>Inventată de Russell Ohl (Bell Labs) în 1939</li>
+                    <li><strong>Teorie modernă:</strong> William Shockley, &quot;Electrons and Holes in Semiconductors&quot; (1950)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.10 � ECHILIBRU (ZERO BIAS)</h3>
+                <h3>2.3.10 — ECHILIBRU (ZERO BIAS)</h3>
                 <ul class="specs-list">
-                    <li>Se formeaza poten?ialul intern (built-in potential) Vbi</li>
-                    <li>Electroni din zona n difuzeaza &#238;n zona p (din cauza migrarii termice aleatorii)</li>
-                    <li>Se recombina cu golurile ? ambii purtatori dispar</li>
-                    <li><strong>Atomii dopan?i ram&#226;n fic?i:</strong> donori (+) &#238;n n, acceptori (-) &#238;n p</li>
-                    <li><strong>Rezultat:</strong> zona golita de purtatori mobili = depletion layer</li>
-                    <li>C&#226;mpul electric creat contracareaza difuzia ulterioara ? echilibru</li>
+                    <li>Se formează potențialul intern (built-in potential) Vbi</li>
+                    <li>Electroni din zona n difuzează în zona p (din cauza migrării termice aleatorii)</li>
+                    <li>Se recombină cu golurile → ambii purtători dispar</li>
+                    <li><strong>Atomii dopanți rămân ficși:</strong> donori (+) în n, acceptori (-) în p</li>
+                    <li><strong>Rezultat:</strong> zonă golită de purtători mobili = depletion layer</li>
+                    <li>Câmpul electric creat contracarează difuzia ulterioară → echilibru</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.11 � FORWARD BIAS (POLARIZARE DIRECTA)</h3>
+                <h3>2.3.11 — FORWARD BIAS (POLARIZARE DIRECTĂ)</h3>
                 <ul class="specs-list">
                     <li>Terminalul pozitiv conectat la p, negativ la n</li>
-                    <li>Zona de golire se reduce ? bariera energetica scade</li>
-                    <li>Electronii traverseaza din n &#238;n p, golurile din p &#238;n n</li>
-                    <li>Curentul cre?te exponen?ial conform ecua?iei Shockley</li>
+                    <li>Zona de golire se reduce → bariera energetică scade</li>
+                    <li>Electronii traversează din n în p, golurile din p în n</li>
+                    <li>Curentul crește exponențial conform ecuației Shockley</li>
                     <li><strong>Lungime medie de difuzie:</strong> ordinul micrometrilor</li>
-                    <li>Curentul total constant &#238;n spa?iu (legea lui Kirchhoff)</li>
+                    <li>Curentul total constant în spațiu (legea lui Kirchhoff)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.12 � REVERSE BIAS (POLARIZARE INVERSA)</h3>
+                <h3>2.3.12 — REVERSE BIAS (POLARIZARE INVERSĂ)</h3>
                 <ul class="specs-list">
                     <li>Terminalul negativ la p, pozitiv la n</li>
-                    <li>Golurile sunt trase de jonc?iune ? zona de golire se large?te</li>
-                    <li>Rezisten?a foarte mare ? curent minim</li>
-                    <li><strong>La tensiune inversa critica:</strong> breakdown</li>
+                    <li>Golurile sunt trase de joncțiune → zona de golire se lărgește</li>
+                    <li>Rezistență foarte mare → curent minim</li>
+                    <li><strong>La tensiune inversă critică:</strong> breakdown</li>
                 </ul>
-                <p>� Zener breakdown: tunelare cuantica (diode puternic dopate)</p>
-                <p>� Avalanche breakdown: ionizare &#238;n cascada</p>
-                <p>� Ambele procese sunt reversibile daca curentul nu depa?e?te limita termica</p>
+                <p>• Zener breakdown: tunelare cuantică (diode puternic dopate)</p>
+                <p>• Avalanche breakdown: ionizare în cascadă</p>
+                <p>• Ambele procese sunt reversibile dacă curentul nu depășește limita termică</p>
                 <ul class="specs-list">
-                    <li><strong>Aplica?ie Zener:</strong> stabilizare la tensiune precisa (ex. 5.6 V)</li>
-                    <li><strong>Aplica?ie varactor:</strong> capacitate variabila prin controlul la?imii zonei de golire</li>
+                    <li><strong>Aplicație Zener:</strong> stabilizare la tensiune precisă (ex. 5.6 V)</li>
+                    <li><strong>Aplicație varactor:</strong> capacitate variabilă prin controlul lățimii zonei de golire</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3.13 � DIMENSIUNEA ZONEI DE GOLIRE</h3>
+                <h3>2.3.13 — DIMENSIUNEA ZONEI DE GOLIRE</h3>
                 <ul class="specs-list">
-                    <li><strong>Formula:</strong> d = sqrt(2e/q &#215; (CA+CD)/(CA&#215;CD) &#215; ?V)</li>
-                    <li><strong>Depinde de:</strong> permitivitate (e), concentra?ie dopan?i (CA, CD), tensiune aplicata (?V)</li>
-                    <li><strong>Poten?ial de echilibru:</strong> ?V0 = kT/q &#215; ln(CA&#215;CD/ni&#178;)</li>
-                    <li>Zona de golire se extinde mai mult pe partea mai slab dopata</li>
+                    <li><strong>Formula:</strong> d = sqrt(2ε/q × (CA+CD)/(CA×CD) × ΔV)</li>
+                    <li><strong>Depinde de:</strong> permitivitate (ε), concentrație dopanți (CA, CD), tensiune aplicată (ΔV)</li>
+                    <li><strong>Potențial de echilibru:</strong> ΔV₀ = kT/q × ln(CA×CD/ni²)</li>
+                    <li>Zona de golire se extinde mai mult pe partea mai slab dopată</li>
                 </ul>
             </div>
 
@@ -232,12 +240,12 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>APLICA?II &#206;N CIRCUITE</h3>
+                <h3>APLICAȚII ÎN CIRCUITE</h3>
                 <ul class="specs-list">
-                    <li><strong>Por?i logice (diode-resistor logic:</strong> AND ?i OR)</li>
+                    <li><strong>Porți logice (diode-resistor logic:</strong> AND și OR)</li>
                 </ul>
             </div>
         </div>
@@ -245,12 +253,12 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>TIPURI DE DIODE SEMICONDUCTOARE</h3>
                 <ul class="specs-list">
-                    <li><strong>Dioda Schottky:</strong> jonc?iune metal-semiconductor, forward voltage mai mic (0.15-0.45 V), comutare rapida, fara efect de stocare de purtatori minoritari; folosita &#238;n SMPS, mixere RF, detectoare</li>
+                    <li><strong>Dioda Schottky:</strong> joncțiune metal-semiconductor, forward voltage mai mic (0.15-0.45 V), comutare rapidă, fără efect de stocare de purtători minoritari; folosită în SMPS, mixere RF, detectoare</li>
                 </ul>
             </div>
         </div>
@@ -261,9 +269,9 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>PROTEC?IE POLARITATE (REVERSE VOLTAGE PROTECTION)</h3>
+                <h3>PROTECȚIE POLARITATE (REVERSE VOLTAGE PROTECTION)</h3>
                 <ul class="specs-list">
-                    <li>O dioda &#238;n serie cu alimentarea protejeaza circuitul c&#226;nd polaritatea este inversata</li>
+                    <li>O diodă în serie cu alimentarea protejează circuitul când polaritatea este inversată</li>
                 </ul>
             </div>
         </div>
@@ -275,8 +283,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Probleme asociate cu Diode</h3>
-                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
+                    <h3>⚠️ Probleme asociate cu Diode</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
                 </div>
             </div>
         </div>
@@ -287,19 +295,19 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>DEFINI?IE ?I FUNC?IE PRINCIPALA:</strong> Dioda = component electronic cu doua terminale care conduce curentul electric predominant &#238;ntr-o singura direc?ie (conductan?a asimetrica)</li>
-                    <li><strong>JONC?IUNE PN � DIODA SEMICONDUCTOARE:</strong> Dioda semiconductoare = bucata cristalina de material semiconductor (uzual siliciu) cu jonc?iune p-n conectata la doua terminale electrice</li>
-                    <li><strong>POLARIZARE DIRECTA (FORWARD BIAS):</strong> C&#226;nd se aplica tensiune pozitiva pe anod (partea p) fa?a de catod (partea n)</li>
-                    <li><strong>POLARIZARE INVERSA (REVERSE BIAS):</strong> C&#226;nd se aplica tensiune negativa pe anod fa?a de catod</li>
-                    <li><strong>REDRESARE (RECTIFICATION):</strong> Convertirea AC ? DC folosind conductan?a unidirec?ionala a diodei</li>
-                    <li><strong>PROTEC?IE POLARITATE (REVERSE VOLTAGE PROTECTION):</strong> O dioda &#238;n serie cu alimentarea protejeaza circuitul c&#226;nd polaritatea este inversata</li>
-                    <li><strong>TIPURI DE DIODE SEMICONDUCTOARE:</strong> Dioda p-n standard (siliciu): cea mai comuna, 0.6-0.7 V forward voltage</li>
-                    <li><strong>APLICA?II &#206;N CIRCUITE:</strong> Redresoare &#238;n surse de alimentare</li>
-                    <li><strong>DEFINI?IE JONC?IUNE P-N:</strong> Combina?ie de doua tipuri de materiale semiconductoare (p-type ?i n-type) &#238;ntr-un singur cristal</li>
-                    <li><strong>ECHILIBRU (ZERO BIAS):</strong> Se formeaza poten?ialul intern (built-in potential) Vbi</li>
-                    <li><strong>FORWARD BIAS (POLARIZARE DIRECTA):</strong> Terminalul pozitiv conectat la p, negativ la n</li>
-                    <li><strong>REVERSE BIAS (POLARIZARE INVERSA):</strong> Terminalul negativ la p, pozitiv la n</li>
-                    <li><strong>DIMENSIUNEA ZONEI DE GOLIRE:</strong> Formula: d = sqrt(2e/q &#215; (CA+CD)/(CA&#215;CD) &#215; ?V)</li>
+                    <li><strong>DEFINIȚIE ȘI FUNCȚIE PRINCIPALĂ:</strong> Dioda = component electronic cu două terminale care conduce curentul electric predominant într-o singură direcție (conductanță asimetrică)</li>
+                    <li><strong>JONCȚIUNE PN – DIODA SEMICONDUCTOARE:</strong> Dioda semiconductoare = bucată cristalină de material semiconductor (uzual siliciu) cu joncțiune p-n conectată la două terminale electrice</li>
+                    <li><strong>POLARIZARE DIRECTĂ (FORWARD BIAS):</strong> Când se aplică tensiune pozitivă pe anod (partea p) față de catod (partea n)</li>
+                    <li><strong>POLARIZARE INVERSĂ (REVERSE BIAS):</strong> Când se aplică tensiune negativă pe anod față de catod</li>
+                    <li><strong>REDRESARE (RECTIFICATION):</strong> Convertirea AC → DC folosind conductanța unidirecțională a diodei</li>
+                    <li><strong>PROTECȚIE POLARITATE (REVERSE VOLTAGE PROTECTION):</strong> O diodă în serie cu alimentarea protejează circuitul când polaritatea este inversată</li>
+                    <li><strong>TIPURI DE DIODE SEMICONDUCTOARE:</strong> Dioda p-n standard (siliciu): cea mai comună, 0.6-0.7 V forward voltage</li>
+                    <li><strong>APLICAȚII ÎN CIRCUITE:</strong> Redresoare în surse de alimentare</li>
+                    <li><strong>DEFINIȚIE JONCȚIUNE P-N:</strong> Combinație de două tipuri de materiale semiconductoare (p-type și n-type) într-un singur cristal</li>
+                    <li><strong>ECHILIBRU (ZERO BIAS):</strong> Se formează potențialul intern (built-in potential) Vbi</li>
+                    <li><strong>FORWARD BIAS (POLARIZARE DIRECTĂ):</strong> Terminalul pozitiv conectat la p, negativ la n</li>
+                    <li><strong>REVERSE BIAS (POLARIZARE INVERSĂ):</strong> Terminalul negativ la p, pozitiv la n</li>
+                    <li><strong>DIMENSIUNEA ZONEI DE GOLIRE:</strong> Formula: d = sqrt(2ε/q × (CA+CD)/(CA×CD) × ΔV)</li>
                 </ul>
             </div>
         </div>
@@ -307,80 +315,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: Analogia hidraulica?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Analogia hidraulică?</strong></p>
                 <ul class="specs-list">
-                    <li>a) semiconductor de tip p (con?ine purtatori de sarcina pozitivi � goluri/holes)</li>
-                    <li>b) supapa de sens unic (check valve)</li>
-                    <li>c) semiconductor de tip n (con?ine purtatori de sarcina negativi � electroni liberi)</li>
-                    <li>d) permite curentul &#238;n direc?ia forward, &#238;l blocheaza &#238;n direc?ia reverse</li>
+                    <li>a) semiconductor de tip p (conține purtători de sarcină pozitivi – goluri/holes)</li>
+                    <li>b) supapă de sens unic (check valve)</li>
+                    <li>c) semiconductor de tip n (conține purtători de sarcină negativi – electroni liberi)</li>
+                    <li>d) permite curentul în direcția forward, îl blochează în direcția reverse</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � supapa de sens unic (check valve)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — supapă de sens unic (check valve)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Pe o parte?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Pe o parte?</strong></p>
                 <ul class="specs-list">
-                    <li>a) supapa de sens unic (check valve)</li>
-                    <li>b) semiconductor de tip n (con?ine purtatori de sarcina negativi � electroni liberi)</li>
-                    <li>c) permite curentul &#238;n direc?ia forward, &#238;l blocheaza &#238;n direc?ia reverse</li>
-                    <li>d) semiconductor de tip p (con?ine purtatori de sarcina pozitivi � goluri/holes)</li>
+                    <li>a) supapă de sens unic (check valve)</li>
+                    <li>b) semiconductor de tip n (conține purtători de sarcină negativi – electroni liberi)</li>
+                    <li>c) permite curentul în direcția forward, îl blochează în direcția reverse</li>
+                    <li>d) semiconductor de tip p (conține purtători de sarcină pozitivi – goluri/holes)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � semiconductor de tip n (con?ine purtatori de sarcina negativi � electroni liberi)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — semiconductor de tip n (conține purtători de sarcină negativi – electroni liberi)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Avalanche breakdown?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Avalanche breakdown?</strong></p>
                 <ul class="specs-list">
-                    <li>a) supapa de sens unic (check valve)</li>
-                    <li>b) semiconductor de tip n (con?ine purtatori de sarcina negativi � electroni liberi)</li>
-                    <li>c) permite curentul &#238;n direc?ia forward, &#238;l blocheaza &#238;n direc?ia reverse</li>
-                    <li>d) c&#226;mpul electric provoaca ionizare &#238;n cascada</li>
+                    <li>a) supapă de sens unic (check valve)</li>
+                    <li>b) semiconductor de tip n (conține purtători de sarcină negativi – electroni liberi)</li>
+                    <li>c) permite curentul în direcția forward, îl blochează în direcția reverse</li>
+                    <li>d) câmpul electric provoacă ionizare în cascadă</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � c&#226;mpul electric provoaca ionizare &#238;n cascada</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — câmpul electric provoacă ionizare în cascadă</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Redresare half-wave?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Redresare half-wave?</strong></p>
                 <ul class="specs-list">
-                    <li>a) permite curentul &#238;n direc?ia forward, &#238;l blocheaza &#238;n direc?ia reverse</li>
-                    <li>b) folose?te o singura dioda</li>
-                    <li>c) semiconductor de tip n (con?ine purtatori de sarcina negativi � electroni liberi)</li>
-                    <li>d) supapa de sens unic (check valve)</li>
+                    <li>a) permite curentul în direcția forward, îl blochează în direcția reverse</li>
+                    <li>b) folosește o singură diodă</li>
+                    <li>c) semiconductor de tip n (conține purtători de sarcină negativi – electroni liberi)</li>
+                    <li>d) supapă de sens unic (check valve)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � folose?te o singura dioda</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — folosește o singură diodă</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Cunoscut ?i ca?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Cunoscut și ca?</strong></p>
                 <ul class="specs-list">
                     <li>a) reverse polarity protection, reverse battery protection</li>
-                    <li>b) permite curentul &#238;n direc?ia forward, &#238;l blocheaza &#238;n direc?ia reverse</li>
-                    <li>c) supapa de sens unic (check valve)</li>
-                    <li>d) semiconductor de tip n (con?ine purtatori de sarcina negativi � electroni liberi)</li>
+                    <li>b) permite curentul în direcția forward, îl blochează în direcția reverse</li>
+                    <li>c) supapă de sens unic (check valve)</li>
+                    <li>d) semiconductor de tip n (conține purtători de sarcină negativi – electroni liberi)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � reverse polarity protection, reverse battery protection</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — reverse polarity protection, reverse battery protection</strong></p>
                 </details>
             </div>
         </div>
@@ -388,22 +396,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Diode</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de jonc?iune PN. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Diode</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de joncțiune PN. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>1. Defineste pe scurt: jonc?iune PN.</li>
-                    <li>2. Ce rol are redresare �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre jonc?iune PN ?i protec?ie polaritate.</li>
+                    <li>1. Defineste pe scurt: joncțiune PN.</li>
+                    <li>2. Ce rol are redresare în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre joncțiune PN și protecție polaritate.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Dioda = component electronic cu doua terminale care conduce curentul electric predominant &#238;ntr-o singura direc?ie (conductan?a asimetrica)</p>
-                        <p><strong>2.</strong> Dioda semiconductoare = bucata cristalina de material semiconductor (uzual siliciu) cu jonc?iune p-n conectata la doua terminale electrice</p>
-                        <p><strong>3.</strong> C&#226;nd se aplica tensiune pozitiva pe anod (partea p) fa?a de catod (partea n)</p>
+                        <p><strong>1.</strong> Dioda = component electronic cu două terminale care conduce curentul electric predominant într-o singură direcție (conductanță asimetrică)</p>
+                        <p><strong>2.</strong> Dioda semiconductoare = bucată cristalină de material semiconductor (uzual siliciu) cu joncțiune p-n conectată la două terminale electrice</p>
+                        <p><strong>3.</strong> Când se aplică tensiune pozitivă pe anod (partea p) față de catod (partea n)</p>
                     </div>
                 </details>
             </div>
@@ -436,7 +444,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-2-2.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 2.2 &mdash; Diode</a>
@@ -493,14 +501,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Tranzistoare: cum func?ioneaza, la ce sunt folosite ?i de ce sunt esen?iale �n electronica moderna.</p>
+                <p class="video-description">Tranzistoare: cum funcționează, la ce sunt folosite și de ce sunt esențiale în electronică modernă.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

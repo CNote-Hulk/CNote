@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 3.1 � Bit ?i sistem binar">
+    <meta name="description" content="Lecția 3.1 — Bit și sistem binar">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 3.1 � Bit ?i sistem binar � Console Notebook</title>
+    <title>Lecția 3.1 — Bit și sistem binar — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,170 +30,178 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 � LOGICA DIGITALA</p>
-            <h1>Lec?ia 3.1 � Bit ?i sistem binar</h1>
-            <p>reprezentare binara, codificare, bit, byte</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 — LOGICĂ DIGITALĂ</p>
+            <h1>Lecția 3.1 — Bit și sistem binar</h1>
+            <p>reprezentare binară, codificare, bit, byte</p>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-                                                <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Bit = cea mai elementara unitate de informa?ie &#238;n calcul ?i comunica?ie digitala</p>
-                <p>Aceasta lec?ie acopera: <strong>reprezentare binara</strong>, <strong>codificare</strong>, <strong>bit</strong>, <strong>byte</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Tot ce face un procesor de consolă — calculul fizicii, renderizarea graficii, decodarea audio — se reduce la operații pe numere binare: secvențe de 0 și 1. Un bit — fie 0, fie 1 — este cea mai mică unitate de informație din universul digital. SoC-ul din Xbox Series X procesează date în blocuri de 64 de biți, cu miliarde de operații pe secundă. Dar ce este, fizic, un bit?
+                </p>
+                <p>
+                    Această lecție acoperă fundamentul informaticii: <strong>reprezentarea binară</strong> (cum numerele și textul devin secvențe de 0 și 1), <strong>codificarea</strong> informației, structura unui <strong>bit</strong> (realizat fizic prin tensiuni pe un tranzistor) și a unui <strong>byte</strong> (grupul de 8 biți care formează unitatea standard de date).
+                </p>
+                <p>
+                    Scopul nu este memorarea conversiilor binar-zecimal, ci înțelegerea <em>de ce</em> procesoarele operează exclusiv în binar, <em>cum</em> un tranzistor comutând între 0V și 1V devine un bit de informație și <em>de ce</em> fiecare byte din memoria GDDR6 a consolei este o secvență de exact 8 biți.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.1 � Defini?ie bit</h3>
+                <h3>3.1.1 — Definiție bit</h3>
                 <ul class="specs-list">
-                    <li>Bit = cea mai elementara unitate de informa?ie &#238;n calcul ?i comunica?ie digitala</li>
-                    <li>Numele este un portmanteau de �binary digit&quot; (cifra binara)</li>
-                    <li>Reprezinta o stare logica cu una din doua valori posibile</li>
-                    <li><strong>Valori comune:</strong> 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</li>
-                    <li>Rela?ia dintre aceste valori ?i starile fizice este o chestiune de conven?ie</li>
-                    <li>Termen inventat de John W. Tukey pe 9 ianuarie 1947 (prescurtare a �binary information digit&quot;)</li>
-                    <li><strong>Prima utilizare publicata:</strong> Claude E. Shannon, 1948, �A Mathematical Theory of Communication&quot;</li>
-                    <li><strong>Simbol:</strong> �bit&quot; (standard IEC 80000-13:2008) sau �b&quot; (standard IEEE 1541-2002)</li>
-                    <li><strong>&#206;n teoria informa?iei:</strong> un bit = entropia informa?ionala a unei variabile binare aleatoare cu probabilitate egala 0 sau 1</li>
+                    <li>Bit = cea mai elementară unitate de informație în calcul și comunicație digitală</li>
+                    <li>Numele este un portmanteau de „binary digit&quot; (cifră binară)</li>
+                    <li>Reprezintă o stare logică cu una din două valori posibile</li>
+                    <li><strong>Valori comune:</strong> 1 și 0, dar și true/false, yes/no, on/off, +/−</li>
+                    <li>Relația dintre aceste valori și stările fizice este o chestiune de convenție</li>
+                    <li>Termen inventat de John W. Tukey pe 9 ianuarie 1947 (prescurtare a „binary information digit&quot;)</li>
+                    <li><strong>Prima utilizare publicată:</strong> Claude E. Shannon, 1948, „A Mathematical Theory of Communication&quot;</li>
+                    <li><strong>Simbol:</strong> „bit&quot; (standard IEC 80000-13:2008) sau „b&quot; (standard IEEE 1541-2002)</li>
+                    <li><strong>În teoria informației:</strong> un bit = entropia informațională a unei variabile binare aleatoare cu probabilitate egală 0 sau 1</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.2 � Reprezentare fizica</h3>
+                <h3>3.1.2 — Reprezentare fizică</h3>
                 <ul class="specs-list">
-                    <li>Un bit poate fi stocat de orice dispozitiv care exista &#238;n una din doua stari mutual exclusive</li>
-                    <li><strong>Exemple:</strong> flip-flop (doua stari stabile), comutator electric, doua niveluri de tensiune/curent, direc?ii de magnetizare</li>
-                    <li><strong>Cartele perforate (Basile Bouchon, 1732):</strong> prezen?a/absen?a gaurii = un bit</li>
-                    <li><strong>Cod Morse (1844):</strong> codificare text prin bi?i</li>
-                    <li><strong>Relee electrice:</strong> �deschis&quot; sau �&#238;nchis&quot;</li>
-                    <li><strong>Tuburi vidate (1940s):</strong> diverse metode de stocare (linie de &#238;nt&#226;rziere cu mercur, tub catodic)</li>
-                    <li><strong>Stocare magnetica (1950s-1960s):</strong> miez magnetic, banda, disc � bit = polaritate de magnetizare</li>
-                    <li><strong>Memorie semiconductoare moderna:</strong> DRAM = sarcina electrica &#238;n condensator; SSD = MOSFET cu poarta flotanta</li>
-                    <li><strong>Disc optic:</strong> prezen?a/absen?a unui micro-pit pe suprafa?a reflectiva</li>
+                    <li>Un bit poate fi stocat de orice dispozitiv care există în una din două stări mutual exclusive</li>
+                    <li><strong>Exemple:</strong> flip-flop (două stări stabile), comutator electric, două niveluri de tensiune/curent, direcții de magnetizare</li>
+                    <li><strong>Cartele perforate (Basile Bouchon, 1732):</strong> prezența/absența găurii = un bit</li>
+                    <li><strong>Cod Morse (1844):</strong> codificare text prin biți</li>
+                    <li><strong>Relee electrice:</strong> „deschis&quot; sau „închis&quot;</li>
+                    <li><strong>Tuburi vidate (1940s):</strong> diverse metode de stocare (linie de întârziere cu mercur, tub catodic)</li>
+                    <li><strong>Stocare magnetică (1950s-1960s):</strong> miez magnetic, bandă, disc – bit = polaritate de magnetizare</li>
+                    <li><strong>Memorie semiconductoare modernă:</strong> DRAM = sarcină electrică în condensator; SSD = MOSFET cu poartă flotantă</li>
+                    <li><strong>Disc optic:</strong> prezența/absența unui micro-pit pe suprafață reflectivă</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.3 � Bi?i multipli</h3>
+                <h3>3.1.3 — Biți multipli</h3>
                 <ul class="specs-list">
-                    <li>Grup de 8 bi?i = un byte (termen inventat de Werner Buchholz, iunie 1956)</li>
-                    <li>Grup de 4 bi?i = nibble (nybble)</li>
-                    <li>Cuv&#226;nt (word) = grupuri de bi?i pe care procesorul le manipuleaza simultan (8-80 bi?i; modern: 32 sau 64 bi?i)</li>
+                    <li>Grup de 8 biți = un byte (termen inventat de Werner Buchholz, iunie 1956)</li>
+                    <li>Grup de 4 biți = nibble (nybble)</li>
+                    <li>Cuvânt (word) = grupuri de biți pe care procesorul le manipulează simultan (8-80 biți; modern: 32 sau 64 biți)</li>
                     <li><strong>Prefixe SI (puteri de 10):</strong> kilobit (kbit), megabit (Mbit), gigabit (Gbit)</li>
                     <li><strong>Prefixe binare IEC (puteri de 2):</strong> kibibit (Kibit), mebibit (Mibit)</li>
-                    <li><strong>Transmisie:</strong> serial (bit cu bit) vs. paralel (mai mul?i bi?i simultan)</li>
+                    <li><strong>Transmisie:</strong> serial (bit cu bit) vs. paralel (mai mulți biți simultan)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.4 � Defini?ie sistem binar</h3>
+                <h3>3.1.4 — Definiție sistem binar</h3>
                 <ul class="specs-list">
-                    <li>Sistem binar = sistem de numera?ie &#238;n baza 2, folosind doar simbolurile 0 ?i 1</li>
-                    <li>Sistem de nota?ie pozi?ionala cu radacina (radix) 2</li>
-                    <li>Fiecare cifra se nume?te bit (binary digit)</li>
-                    <li>Utilizat de aproape toate computerele moderne datorita implementarii directe &#238;n circuite electronice digitale cu por?i logice</li>
-                    <li><strong>Tabel decimal?binar:</strong> 0?0, 1?1, 2?10, 3?11, 4?100, 5?101, ..., 15?1111</li>
+                    <li>Sistem binar = sistem de numerație în baza 2, folosind doar simbolurile 0 și 1</li>
+                    <li>Sistem de notație pozițională cu rădăcina (radix) 2</li>
+                    <li>Fiecare cifră se numește bit (binary digit)</li>
+                    <li>Utilizat de aproape toate computerele moderne datorită implementării directe în circuite electronice digitale cu porți logice</li>
+                    <li><strong>Tabel decimal→binar:</strong> 0→0, 1→1, 2→10, 3→11, 4→100, 5→101, ..., 15→1111</li>
                     <li><strong>Leibniz (1679/1703):</strong> primul studiu sistematic al sistemului binar modern</li>
-                    <li><strong>George Boole (1854):</strong> algebra booleana � fundamentul circuitelor digitale</li>
+                    <li><strong>George Boole (1854):</strong> algebra booleană – fundamentul circuitelor digitale</li>
                     <li><strong>Claude Shannon (1937):</strong> implementarea algebrei booleene cu relee electrice</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.5 � Reprezentare binara</h3>
+                <h3>3.1.5 — Reprezentare binară</h3>
                 <ul class="specs-list">
-                    <li>Orice numar poate fi reprezentat printr-o secven?a de bi?i</li>
-                    <li><strong>Nota?ii:</strong> 100101b (sufix), 0b100101 (prefix programare), %100101 (Motorola), 1001012 (subscript)</li>
-                    <li><strong>Valoarea:</strong> suma puterilor lui 2 reprezentate de fiecare �1&quot;</li>
-                    <li><strong>Exemplu:</strong> 1001012 = 1&#215;25 + 0&#215;24 + 0&#215;2&#179; + 1&#215;2&#178; + 0&#215;2&#185; + 1&#215;2� = 32+4+1 = 3710</li>
-                    <li>Bitul cel mai din dreapta = LSB (Least Significant Bit), cel mai din st&#226;nga = MSB (Most Significant Bit)</li>
+                    <li>Orice număr poate fi reprezentat printr-o secvență de biți</li>
+                    <li><strong>Notații:</strong> 100101b (sufix), 0b100101 (prefix programare), %100101 (Motorola), 1001012 (subscript)</li>
+                    <li><strong>Valoarea:</strong> suma puterilor lui 2 reprezentate de fiecare „1&quot;</li>
+                    <li><strong>Exemplu:</strong> 1001012 = 1×2⁵ + 0×2⁴ + 0×2³ + 1×2² + 0×2¹ + 1×2⁰ = 32+4+1 = 37₁₀</li>
+                    <li>Bitul cel mai din dreapta = LSB (Least Significant Bit), cel mai din stânga = MSB (Most Significant Bit)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.6 � Numarare binara</h3>
+                <h3>3.1.6 — Numărare binară</h3>
                 <ul class="specs-list">
-                    <li><strong>Similar cu numararea &#238;n orice alt sistem:</strong> c&#226;nd simbolurile disponibile se epuizeaza, cifra se reseteaza la 0 ?i cifra urmatoare se incrementeaza</li>
-                    <li>0000 ? 0001 ? 0010 ? 0011 ? 0100 ? 0101 ? 0110 ? 0111 ? 1000 ? ...</li>
-                    <li><strong>Fiecare bit reprezinta o putere crescatoare a lui 2:</strong> 2�=1, 2&#185;=2, 2&#178;=4, 2&#179;=8, ...</li>
+                    <li><strong>Similar cu numărarea în orice alt sistem:</strong> când simbolurile disponibile se epuizează, cifra se resetează la 0 și cifra următoare se incrementează</li>
+                    <li>0000 → 0001 → 0010 → 0011 → 0100 → 0101 → 0110 → 0111 → 1000 → ...</li>
+                    <li><strong>Fiecare bit reprezintă o putere crescătoare a lui 2:</strong> 2⁰=1, 2¹=2, 2²=4, 2³=8, ...</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.7 � Aritmetica binara</h3>
+                <h3>3.1.7 — Aritmetică binară</h3>
                 <ul class="specs-list">
                     <li><strong>Adunare:</strong> 0+0=0, 0+1=1, 1+0=1, 1+1=0 cu transport 1</li>
-                    <li><strong>Scadere:</strong> 0-0=0, 1-0=1, 1-1=0, 0-1=1 cu &#238;mprumut 1</li>
-                    <li><strong>&#206;nmul?ire:</strong> tabel identic cu conjunc?ia logica AND (0&#215;0=0, 0&#215;1=0, 1&#215;0=0, 1&#215;1=1)</li>
-                    <li><strong>XOR:</strong> x xor y = (x + y) mod 2 ? permite calcul foarte rapid &#238;n computere</li>
-                    <li><strong>Half adder:</strong> circuit care aduna doi bi?i produc&#226;nd suma ?i transport (carry)</li>
+                    <li><strong>Scădere:</strong> 0-0=0, 1-0=1, 1-1=0, 0-1=1 cu împrumut 1</li>
+                    <li><strong>Înmulțire:</strong> tabel identic cu conjuncția logică AND (0×0=0, 0×1=0, 1×0=0, 1×1=1)</li>
+                    <li><strong>XOR:</strong> x xor y = (x + y) mod 2 → permite calcul foarte rapid în computere</li>
+                    <li><strong>Half adder:</strong> circuit care adună doi biți producând sumă și transport (carry)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.8 � Conversii</h3>
+                <h3>3.1.8 — Conversii</h3>
                 <ul class="specs-list">
-                    <li><strong>Decimal ? Binar:</strong> &#238;mpar?ire repetata la 2, resturile citite invers formeaza numarul binar</li>
-                    <li><strong>Exemplu:</strong> 35710 = 1011001012</li>
-                    <li><strong>Binar ? Decimal:</strong> metoda lui Horner � valoare=0, se dubleaza ?i se adauga bitul urmator</li>
-                    <li><strong>Exemplu:</strong> 100101011012 = 119710</li>
-                    <li><strong>Binar ? Hexadecimal:</strong> fiecare 4 bi?i = o cifra hex (16 = 24)</li>
-                    <li><strong>Exemplu:</strong> 3A16 = 0011 10102</li>
-                    <li><strong>Binar ? Octal:</strong> fiecare 3 bi?i = o cifra octala (8 = 2&#179;)</li>
-                    <li><strong>Exemplu:</strong> 658 = 110 1012</li>
+                    <li><strong>Decimal → Binar:</strong> împărțire repetată la 2, resturile citite invers formează numărul binar</li>
+                    <li><strong>Exemplu:</strong> 357₁₀ = 101100101₂</li>
+                    <li><strong>Binar → Decimal:</strong> metoda lui Horner – valoare=0, se dublează și se adaugă bitul următor</li>
+                    <li><strong>Exemplu:</strong> 100101011012 = 1197₁₀</li>
+                    <li><strong>Binar ↔ Hexadecimal:</strong> fiecare 4 biți = o cifră hex (16 = 2⁴)</li>
+                    <li><strong>Exemplu:</strong> 3A₁₆ = 0011 1010₂</li>
+                    <li><strong>Binar ↔ Octal:</strong> fiecare 3 biți = o cifră octală (8 = 2³)</li>
+                    <li><strong>Exemplu:</strong> 65₈ = 110 101₂</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.9 � Opera?ii pe bi?i (bitwise)</h3>
+                <h3>3.1.9 — Operații pe biți (bitwise)</h3>
                 <ul class="specs-list">
-                    <li>AND, OR, XOR, NOT aplicate pe bi?i corespunzatori</li>
-                    <li>Shift aritmetic la st&#226;nga = echivalent cu &#238;nmul?irea cu o putere a lui 2</li>
-                    <li>Manipularea secven?elor de bi?i = opera?ie pe bi?i (bitwise operation)</li>
+                    <li>AND, OR, XOR, NOT aplicate pe biți corespunzători</li>
+                    <li>Shift aritmetic la stânga = echivalent cu înmulțirea cu o putere a lui 2</li>
+                    <li>Manipularea secvențelor de biți = operație pe biți (bitwise operation)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.10 � Defini?ie byte</h3>
+                <h3>3.1.10 — Definiție byte</h3>
                 <ul class="specs-list">
-                    <li>Byte = unitate de informa?ie digitala, cel mai frecvent 8 bi?i</li>
-                    <li><strong>Istoric:</strong> numarul de bi?i folosit pentru codificarea unui singur caracter de text</li>
-                    <li>Cea mai mica unitate adresabila de memorie &#238;n multe arhitecturi de computer</li>
-                    <li>Termen inventat de Werner Buchholz, iunie 1956, la IBM, &#238;n timpul proiectului Stretch</li>
-                    <li>Cuv&#226;ntul este o rescriere deliberata a �bite&quot; pentru a evita confuzia cu �bit&quot;</li>
-                    <li>Octet = termen care specifica neambiguu exact 8 bi?i (utilizat &#238;n protocoale de re?ea)</li>
-                    <li><strong>Simbol:</strong> B (majuscula) � conform IEC 80000-13 ?i IEEE 1541</li>
-                    <li><strong>Standard modern de facto:</strong> 8 bi?i per byte (ISO/IEC 2382-1:1993), permi?&#226;nd valori 0-255 (28 = 256)</li>
+                    <li>Byte = unitate de informație digitală, cel mai frecvent 8 biți</li>
+                    <li><strong>Istoric:</strong> numărul de biți folosit pentru codificarea unui singur caracter de text</li>
+                    <li>Cea mai mică unitate adresabilă de memorie în multe arhitecturi de computer</li>
+                    <li>Termen inventat de Werner Buchholz, iunie 1956, la IBM, în timpul proiectului Stretch</li>
+                    <li>Cuvântul este o rescriere deliberată a „bite&quot; pentru a evita confuzia cu „bit&quot;</li>
+                    <li>Octet = termen care specifică neambiguu exact 8 biți (utilizat în protocoale de rețea)</li>
+                    <li><strong>Simbol:</strong> B (majusculă) – conform IEC 80000-13 și IEEE 1541</li>
+                    <li><strong>Standard modern de facto:</strong> 8 biți per byte (ISO/IEC 2382-1:1993), permițând valori 0-255 (2⁸ = 256)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.11 � Multiplii byte-ului</h3>
+                <h3>3.1.11 — Multiplii byte-ului</h3>
                 <ul class="specs-list">
-                    <li><strong>Prefixe SI (puteri de 10):</strong> 1 KB = 1000 B, 1 MB = 1.000.000 B, 1 GB = 10? B, 1 TB = 10&#185;&#178; B</li>
-                    <li><strong>Prefixe binare IEC (puteri de 2):</strong> 1 KiB = 1024 B, 1 MiB = 1.048.576 B, 1 GiB = 2&#179;� B</li>
-                    <li><strong>Confuzie istorica:</strong> &#238;n trecut, K=1024 era comun, dar acum standardele distinge KB (1000) de KiB (1024)</li>
-                    <li><strong>Diferen?a cre?te cu marimea:</strong> KB/KiB ~2%, TB/TiB ~9%</li>
-                    <li><strong>Exemple practice:</strong> 1 byte � 1 caracter latin, 1 KB � un text scurt, 1 MB � text Harry Potter, 1 GB � 20 min video DVD</li>
+                    <li><strong>Prefixe SI (puteri de 10):</strong> 1 KB = 1000 B, 1 MB = 1.000.000 B, 1 GB = 10⁹ B, 1 TB = 10¹² B</li>
+                    <li><strong>Prefixe binare IEC (puteri de 2):</strong> 1 KiB = 1024 B, 1 MiB = 1.048.576 B, 1 GiB = 2³⁰ B</li>
+                    <li><strong>Confuzie istorică:</strong> în trecut, K=1024 era comun, dar acum standardele distinge KB (1000) de KiB (1024)</li>
+                    <li><strong>Diferența crește cu mărimea:</strong> KB/KiB ~2%, TB/TiB ~9%</li>
+                    <li><strong>Exemple practice:</strong> 1 byte ≈ 1 caracter latin, 1 KB ≈ un text scurt, 1 MB ≈ text Harry Potter, 1 GB ≈ 20 min video DVD</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.1.12 � Utilizare &#238;n programare</h3>
+                <h3>3.1.12 — Utilizare în programare</h3>
                 <ul class="specs-list">
-                    <li>Aproape toate limbajele moderne definesc byte ca 8 bi?i (Java, C#, Python, Rust, Go, etc.)</li>
-                    <li><strong>POSIX:</strong> �A byte is composed of a contiguous sequence of 8 bits&quot;</li>
-                    <li><strong>Arhitecturi moderne:</strong> cuvinte de 32 sau 64 bi?i = 4 sau 8 bytes</li>
-                    <li>Nibble = 4 bi?i = jumatate de byte = o cifra hexadecimala</li>
+                    <li>Aproape toate limbajele moderne definesc byte ca 8 biți (Java, C#, Python, Rust, Go, etc.)</li>
+                    <li><strong>POSIX:</strong> „A byte is composed of a contiguous sequence of 8 bits&quot;</li>
+                    <li><strong>Arhitecturi moderne:</strong> cuvinte de 32 sau 64 biți = 4 sau 8 bytes</li>
+                    <li>Nibble = 4 biți = jumătate de byte = o cifră hexadecimală</li>
                 </ul>
             </div>
 
@@ -202,97 +210,97 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie bit</h3>
+                <h3>Definiție bit</h3>
                 <ul class="specs-list">
-                    <li>Bit = cea mai elementara unitate de informa?ie &#238;n calcul ?i comunica?ie digitala</li>
-                    <li>Numele este un portmanteau de �binary digit&quot; (cifra binara)</li>
-                    <li>Reprezinta o stare logica cu una din doua valori posibile</li>
-                    <li><strong>Valori comune:</strong> 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</li>
-                    <li>Rela?ia dintre aceste valori ?i starile fizice este o chestiune de conven?ie</li>
-                    <li>Termen inventat de John W. Tukey pe 9 ianuarie 1947 (prescurtare a �binary information digit&quot;)</li>
-                    <li><strong>Prima utilizare publicata:</strong> Claude E. Shannon, 1948, �A Mathematical Theory of Communication&quot;</li>
-                    <li><strong>Simbol:</strong> �bit&quot; (standard IEC 80000-13:2008) sau �b&quot; (standard IEEE 1541-2002)</li>
-                    <li><strong>&#206;n teoria informa?iei:</strong> un bit = entropia informa?ionala a unei variabile binare aleatoare cu probabilitate egala 0 sau 1</li>
+                    <li>Bit = cea mai elementară unitate de informație în calcul și comunicație digitală</li>
+                    <li>Numele este un portmanteau de „binary digit&quot; (cifră binară)</li>
+                    <li>Reprezintă o stare logică cu una din două valori posibile</li>
+                    <li><strong>Valori comune:</strong> 1 și 0, dar și true/false, yes/no, on/off, +/−</li>
+                    <li>Relația dintre aceste valori și stările fizice este o chestiune de convenție</li>
+                    <li>Termen inventat de John W. Tukey pe 9 ianuarie 1947 (prescurtare a „binary information digit&quot;)</li>
+                    <li><strong>Prima utilizare publicată:</strong> Claude E. Shannon, 1948, „A Mathematical Theory of Communication&quot;</li>
+                    <li><strong>Simbol:</strong> „bit&quot; (standard IEC 80000-13:2008) sau „b&quot; (standard IEEE 1541-2002)</li>
+                    <li><strong>În teoria informației:</strong> un bit = entropia informațională a unei variabile binare aleatoare cu probabilitate egală 0 sau 1</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Reprezentare fizica</h3>
+                <h3>Reprezentare fizică</h3>
                 <ul class="specs-list">
-                    <li>Un bit poate fi stocat de orice dispozitiv care exista &#238;n una din doua stari mutual exclusive</li>
-                    <li><strong>Cartele perforate (Basile Bouchon, 1732):</strong> prezen?a/absen?a gaurii = un bit</li>
-                    <li><strong>Stocare magnetica (1950s-1960s):</strong> miez magnetic, banda, disc � bit = polaritate de magnetizare</li>
+                    <li>Un bit poate fi stocat de orice dispozitiv care există în una din două stări mutual exclusive</li>
+                    <li><strong>Cartele perforate (Basile Bouchon, 1732):</strong> prezența/absența găurii = un bit</li>
+                    <li><strong>Stocare magnetică (1950s-1960s):</strong> miez magnetic, bandă, disc – bit = polaritate de magnetizare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Bi?i multipli</h3>
+                <h3>Biți multipli</h3>
                 <ul class="specs-list">
-                    <li>Cuv&#226;nt (word) = grupuri de bi?i pe care procesorul le manipuleaza simultan (8-80 bi?i; modern: 32 sau 64 bi?i)</li>
+                    <li>Cuvânt (word) = grupuri de biți pe care procesorul le manipulează simultan (8-80 biți; modern: 32 sau 64 biți)</li>
                     <li><strong>Prefixe binare IEC (puteri de 2):</strong> kibibit (Kibit), mebibit (Mibit)</li>
-                    <li><strong>Transmisie:</strong> serial (bit cu bit) vs. paralel (mai mul?i bi?i simultan)</li>
+                    <li><strong>Transmisie:</strong> serial (bit cu bit) vs. paralel (mai mulți biți simultan)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie sistem binar</h3>
+                <h3>Definiție sistem binar</h3>
                 <ul class="specs-list">
-                    <li>Sistem binar = sistem de numera?ie &#238;n baza 2, folosind doar simbolurile 0 ?i 1</li>
-                    <li>Fiecare cifra se nume?te bit (binary digit)</li>
-                    <li>Utilizat de aproape toate computerele moderne datorita implementarii directe &#238;n circuite electronice digitale cu por?i logice</li>
-                    <li><strong>Tabel decimal?binar:</strong> 0?0, 1?1, 2?10, 3?11, 4?100, 5?101, ..., 15?1111</li>
+                    <li>Sistem binar = sistem de numerație în baza 2, folosind doar simbolurile 0 și 1</li>
+                    <li>Fiecare cifră se numește bit (binary digit)</li>
+                    <li>Utilizat de aproape toate computerele moderne datorită implementării directe în circuite electronice digitale cu porți logice</li>
+                    <li><strong>Tabel decimal→binar:</strong> 0→0, 1→1, 2→10, 3→11, 4→100, 5→101, ..., 15→1111</li>
                     <li><strong>Leibniz (1679/1703):</strong> primul studiu sistematic al sistemului binar modern</li>
-                    <li><strong>George Boole (1854):</strong> algebra booleana � fundamentul circuitelor digitale</li>
+                    <li><strong>George Boole (1854):</strong> algebra booleană – fundamentul circuitelor digitale</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Reprezentare binara</h3>
+                <h3>Reprezentare binară</h3>
                 <ul class="specs-list">
-                    <li>Bitul cel mai din dreapta = LSB (Least Significant Bit), cel mai din st&#226;nga = MSB (Most Significant Bit)</li>
+                    <li>Bitul cel mai din dreapta = LSB (Least Significant Bit), cel mai din stânga = MSB (Most Significant Bit)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Numarare binara</h3>
+                <h3>Numărare binară</h3>
                 <ul class="specs-list">
-                    <li><strong>Fiecare bit reprezinta o putere crescatoare a lui 2:</strong> 2�=1, 2&#185;=2, 2&#178;=4, 2&#179;=8, ...</li>
+                    <li><strong>Fiecare bit reprezintă o putere crescătoare a lui 2:</strong> 2⁰=1, 2¹=2, 2²=4, 2³=8, ...</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Aritmetica binara</h3>
+                <h3>Aritmetică binară</h3>
                 <ul class="specs-list">
-                    <li><strong>XOR:</strong> x xor y = (x + y) mod 2 ? permite calcul foarte rapid &#238;n computere</li>
+                    <li><strong>XOR:</strong> x xor y = (x + y) mod 2 → permite calcul foarte rapid în computere</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Conversii</h3>
                 <ul class="specs-list">
-                    <li><strong>Decimal ? Binar:</strong> &#238;mpar?ire repetata la 2, resturile citite invers formeaza numarul binar</li>
-                    <li><strong>Binar ? Decimal:</strong> metoda lui Horner � valoare=0, se dubleaza ?i se adauga bitul urmator</li>
-                    <li><strong>Binar ? Hexadecimal:</strong> fiecare 4 bi?i = o cifra hex (16 = 24)</li>
-                    <li><strong>Binar ? Octal:</strong> fiecare 3 bi?i = o cifra octala (8 = 2&#179;)</li>
+                    <li><strong>Decimal → Binar:</strong> împărțire repetată la 2, resturile citite invers formează numărul binar</li>
+                    <li><strong>Binar → Decimal:</strong> metoda lui Horner – valoare=0, se dublează și se adaugă bitul următor</li>
+                    <li><strong>Binar ↔ Hexadecimal:</strong> fiecare 4 biți = o cifră hex (16 = 2⁴)</li>
+                    <li><strong>Binar ↔ Octal:</strong> fiecare 3 biți = o cifră octală (8 = 2³)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ie byte</h3>
+                <h3>Definiție byte</h3>
                 <ul class="specs-list">
-                    <li>Byte = unitate de informa?ie digitala, cel mai frecvent 8 bi?i</li>
-                    <li>Cea mai mica unitate adresabila de memorie &#238;n multe arhitecturi de computer</li>
-                    <li>Cuv&#226;ntul este o rescriere deliberata a �bite&quot; pentru a evita confuzia cu �bit&quot;</li>
+                    <li>Byte = unitate de informație digitală, cel mai frecvent 8 biți</li>
+                    <li>Cea mai mică unitate adresabilă de memorie în multe arhitecturi de computer</li>
+                    <li>Cuvântul este o rescriere deliberată a „bite&quot; pentru a evita confuzia cu „bit&quot;</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Multiplii byte-ului</h3>
                 <ul class="specs-list">
-                    <li><strong>Prefixe binare IEC (puteri de 2):</strong> 1 KiB = 1024 B, 1 MiB = 1.048.576 B, 1 GiB = 2&#179;� B</li>
+                    <li><strong>Prefixe binare IEC (puteri de 2):</strong> 1 KiB = 1024 B, 1 MiB = 1.048.576 B, 1 GiB = 2³⁰ B</li>
                 </ul>
             </div>
         </div>
@@ -300,15 +308,15 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Utilizare &#238;n programare</h3>
+                <h3>Utilizare în programare</h3>
                 <ul class="specs-list">
-                    <li>Aproape toate limbajele moderne definesc byte ca 8 bi?i (Java, C#, Python, Rust, Go, etc.)</li>
-                    <li><strong>POSIX:</strong> �A byte is composed of a contiguous sequence of 8 bits&quot;</li>
-                    <li><strong>Arhitecturi moderne:</strong> cuvinte de 32 sau 64 bi?i = 4 sau 8 bytes</li>
-                    <li>Nibble = 4 bi?i = jumatate de byte = o cifra hexadecimala</li>
+                    <li>Aproape toate limbajele moderne definesc byte ca 8 biți (Java, C#, Python, Rust, Go, etc.)</li>
+                    <li><strong>POSIX:</strong> „A byte is composed of a contiguous sequence of 8 bits&quot;</li>
+                    <li><strong>Arhitecturi moderne:</strong> cuvinte de 32 sau 64 biți = 4 sau 8 bytes</li>
+                    <li>Nibble = 4 biți = jumătate de byte = o cifră hexadecimală</li>
                 </ul>
             </div>
         </div>
@@ -319,7 +327,7 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Componentele reale care utilizeaza reprezentare binara se regasesc �n toate consolele moderne.</p>
+                <p>Componentele reale care utilizează reprezentare binară se regăsesc în toate consolele moderne.</p>
             </div>
         </div>
     </section>
@@ -330,8 +338,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Probleme asociate cu Bit ?i sistem binar</h3>
-                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
+                    <h3>⚠️ Probleme asociate cu Bit și sistem binar</h3>
+                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
                 </div>
             </div>
         </div>
@@ -342,18 +350,18 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Defini?ie bit:</strong> Bit = cea mai elementara unitate de informa?ie &#238;n calcul ?i comunica?ie digitala</li>
-                    <li><strong>Reprezentare fizica:</strong> Un bit poate fi stocat de orice dispozitiv care exista &#238;n una din doua stari mutual exclusive</li>
-                    <li><strong>Bi?i multipli:</strong> Grup de 8 bi?i = un byte (termen inventat de Werner Buchholz, iunie 1956)</li>
-                    <li><strong>Defini?ie sistem binar:</strong> Sistem binar = sistem de numera?ie &#238;n baza 2, folosind doar simbolurile 0 ?i 1</li>
-                    <li><strong>Reprezentare binara:</strong> Orice numar poate fi reprezentat printr-o secven?a de bi?i</li>
-                    <li><strong>Numarare binara:</strong> Similar cu numararea &#238;n orice alt sistem: c&#226;nd simbolurile disponibile se epuizeaza, cifra se reseteaza la 0 ?i cifra urmatoare se incrementeaza</li>
-                    <li><strong>Aritmetica binara:</strong> Adunare: 0+0=0, 0+1=1, 1+0=1, 1+1=0 cu transport 1</li>
-                    <li><strong>Conversii:</strong> Decimal ? Binar: &#238;mpar?ire repetata la 2, resturile citite invers formeaza numarul binar</li>
-                    <li><strong>Opera?ii pe bi?i (bitwise):</strong> AND, OR, XOR, NOT aplicate pe bi?i corespunzatori</li>
-                    <li><strong>Defini?ie byte:</strong> Byte = unitate de informa?ie digitala, cel mai frecvent 8 bi?i</li>
-                    <li><strong>Multiplii byte-ului:</strong> Prefixe SI (puteri de 10): 1 KB = 1000 B, 1 MB = 1.000.000 B, 1 GB = 10? B, 1 TB = 10&#185;&#178; B</li>
-                    <li><strong>Utilizare &#238;n programare:</strong> Aproape toate limbajele moderne definesc byte ca 8 bi?i (Java, C#, Python, Rust, Go, etc.)</li>
+                    <li><strong>Definiție bit:</strong> Bit = cea mai elementară unitate de informație în calcul și comunicație digitală</li>
+                    <li><strong>Reprezentare fizică:</strong> Un bit poate fi stocat de orice dispozitiv care există în una din două stări mutual exclusive</li>
+                    <li><strong>Biți multipli:</strong> Grup de 8 biți = un byte (termen inventat de Werner Buchholz, iunie 1956)</li>
+                    <li><strong>Definiție sistem binar:</strong> Sistem binar = sistem de numerație în baza 2, folosind doar simbolurile 0 și 1</li>
+                    <li><strong>Reprezentare binară:</strong> Orice număr poate fi reprezentat printr-o secvență de biți</li>
+                    <li><strong>Numărare binară:</strong> Similar cu numărarea în orice alt sistem: când simbolurile disponibile se epuizează, cifra se resetează la 0 și cifra următoare se incrementează</li>
+                    <li><strong>Aritmetică binară:</strong> Adunare: 0+0=0, 0+1=1, 1+0=1, 1+1=0 cu transport 1</li>
+                    <li><strong>Conversii:</strong> Decimal → Binar: împărțire repetată la 2, resturile citite invers formează numărul binar</li>
+                    <li><strong>Operații pe biți (bitwise):</strong> AND, OR, XOR, NOT aplicate pe biți corespunzători</li>
+                    <li><strong>Definiție byte:</strong> Byte = unitate de informație digitală, cel mai frecvent 8 biți</li>
+                    <li><strong>Multiplii byte-ului:</strong> Prefixe SI (puteri de 10): 1 KB = 1000 B, 1 MB = 1.000.000 B, 1 GB = 10⁹ B, 1 TB = 10¹² B</li>
+                    <li><strong>Utilizare în programare:</strong> Aproape toate limbajele moderne definesc byte ca 8 biți (Java, C#, Python, Rust, Go, etc.)</li>
                 </ul>
             </div>
         </div>
@@ -361,80 +369,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: Valori comune?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Valori comune?</strong></p>
                 <ul class="specs-list">
-                    <li>a) un bit = entropia informa?ionala a unei variabile binare aleatoare cu probabilitate egala 0 sau 1</li>
-                    <li>b) Claude E. Shannon, 1948, �A Mathematical Theory of Communication&quot;</li>
-                    <li>c) 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</li>
-                    <li>d) �bit&quot; (standard IEC 80000-13:2008) sau �b&quot; (standard IEEE 1541-2002)</li>
+                    <li>a) un bit = entropia informațională a unei variabile binare aleatoare cu probabilitate egală 0 sau 1</li>
+                    <li>b) Claude E. Shannon, 1948, „A Mathematical Theory of Communication&quot;</li>
+                    <li>c) 1 și 0, dar și true/false, yes/no, on/off, +/−</li>
+                    <li>d) „bit&quot; (standard IEC 80000-13:2008) sau „b&quot; (standard IEEE 1541-2002)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — 1 și 0, dar și true/false, yes/no, on/off, +/−</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Exemple?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Exemple?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Claude E. Shannon, 1948, �A Mathematical Theory of Communication&quot;</li>
-                    <li>b) 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</li>
-                    <li>c) �bit&quot; (standard IEC 80000-13:2008) sau �b&quot; (standard IEEE 1541-2002)</li>
-                    <li>d) flip-flop (doua stari stabile), comutator electric, doua niveluri de tensiune/curent, direc?ii de magnetizare</li>
+                    <li>a) Claude E. Shannon, 1948, „A Mathematical Theory of Communication&quot;</li>
+                    <li>b) 1 și 0, dar și true/false, yes/no, on/off, +/−</li>
+                    <li>c) „bit&quot; (standard IEC 80000-13:2008) sau „b&quot; (standard IEEE 1541-2002)</li>
+                    <li>d) flip-flop (două stări stabile), comutator electric, două niveluri de tensiune/curent, direcții de magnetizare</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � flip-flop (doua stari stabile), comutator electric, doua niveluri de tensiune/curent, direc?ii de magnetizare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — flip-flop (două stări stabile), comutator electric, două niveluri de tensiune/curent, direcții de magnetizare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Bi?i multipli?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Biți multipli?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Grup de 8 bi?i = un byte (termen inventat de Werner Buchholz, iunie 1956)</li>
-                    <li>b) �bit&quot; (standard IEC 80000-13:2008) sau �b&quot; (standard IEEE 1541-2002)</li>
-                    <li>c) Claude E. Shannon, 1948, �A Mathematical Theory of Communication&quot;</li>
-                    <li>d) 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</li>
+                    <li>a) Grup de 8 biți = un byte (termen inventat de Werner Buchholz, iunie 1956)</li>
+                    <li>b) „bit&quot; (standard IEC 80000-13:2008) sau „b&quot; (standard IEEE 1541-2002)</li>
+                    <li>c) Claude E. Shannon, 1948, „A Mathematical Theory of Communication&quot;</li>
+                    <li>d) 1 și 0, dar și true/false, yes/no, on/off, +/−</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � Grup de 8 bi?i = un byte (termen inventat de Werner Buchholz, iunie 1956)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — Grup de 8 biți = un byte (termen inventat de Werner Buchholz, iunie 1956)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Defini?ie sistem binar?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Definiție sistem binar?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</li>
-                    <li>b) Sistem binar = sistem de numera?ie &#238;n baza 2, folosind doar simbolurile 0 ?i 1</li>
-                    <li>c) �bit&quot; (standard IEC 80000-13:2008) sau �b&quot; (standard IEEE 1541-2002)</li>
-                    <li>d) Claude E. Shannon, 1948, �A Mathematical Theory of Communication&quot;</li>
+                    <li>a) 1 și 0, dar și true/false, yes/no, on/off, +/−</li>
+                    <li>b) Sistem binar = sistem de numerație în baza 2, folosind doar simbolurile 0 și 1</li>
+                    <li>c) „bit&quot; (standard IEC 80000-13:2008) sau „b&quot; (standard IEEE 1541-2002)</li>
+                    <li>d) Claude E. Shannon, 1948, „A Mathematical Theory of Communication&quot;</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � Sistem binar = sistem de numera?ie &#238;n baza 2, folosind doar simbolurile 0 ?i 1</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — Sistem binar = sistem de numerație în baza 2, folosind doar simbolurile 0 și 1</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Nota?ii?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Notații?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 1 ?i 0, dar ?i true/false, yes/no, on/off, +/-</li>
-                    <li>b) �bit&quot; (standard IEC 80000-13:2008) sau �b&quot; (standard IEEE 1541-2002)</li>
-                    <li>c) Claude E. Shannon, 1948, �A Mathematical Theory of Communication&quot;</li>
+                    <li>a) 1 și 0, dar și true/false, yes/no, on/off, +/−</li>
+                    <li>b) „bit&quot; (standard IEC 80000-13:2008) sau „b&quot; (standard IEEE 1541-2002)</li>
+                    <li>c) Claude E. Shannon, 1948, „A Mathematical Theory of Communication&quot;</li>
                     <li>d) 100101b (sufix), 0b100101 (prefix programare), %100101 (Motorola), 1001012 (subscript)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � 100101b (sufix), 0b100101 (prefix programare), %100101 (Motorola), 1001012 (subscript)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — 100101b (sufix), 0b100101 (prefix programare), %100101 (Motorola), 1001012 (subscript)</strong></p>
                 </details>
             </div>
         </div>
@@ -442,22 +450,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Bit ?i sistem binar</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de reprezentare binara. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Bit și sistem binar</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de reprezentare binară. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
-                    <li>1. Defineste pe scurt: reprezentare binara.</li>
-                    <li>2. Ce rol are codificare �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre reprezentare binara ?i bit.</li>
+                    <li>1. Defineste pe scurt: reprezentare binară.</li>
+                    <li>2. Ce rol are codificare în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre reprezentare binară și bit.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Bit = cea mai elementara unitate de informa?ie &#238;n calcul ?i comunica?ie digitala</p>
-                        <p><strong>2.</strong> Un bit poate fi stocat de orice dispozitiv care exista &#238;n una din doua stari mutual exclusive</p>
-                        <p><strong>3.</strong> Grup de 8 bi?i = un byte (termen inventat de Werner Buchholz, iunie 1956)</p>
+                        <p><strong>1.</strong> Bit = cea mai elementară unitate de informație în calcul și comunicație digitală</p>
+                        <p><strong>2.</strong> Un bit poate fi stocat de orice dispozitiv care există în una din două stări mutual exclusive</p>
+                        <p><strong>3.</strong> Grup de 8 biți = un byte (termen inventat de Werner Buchholz, iunie 1956)</p>
                     </div>
                 </details>
             </div>
@@ -486,7 +494,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-2-5.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 2.5 &mdash; Surse &#xEE;n Comuta&#x21B;ie</a>
@@ -543,14 +551,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">De ce folosesc calculatoarele sistemul binar? O explica?ie clara de la Computerphile despre fundamentele informaticii.</p>
+                <p class="video-description">De ce folosesc calculatoarele sistemul binar? O explicație clară de la Computerphile despre fundamentele informaticii.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

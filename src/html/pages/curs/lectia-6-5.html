@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 6.5 � Protec?ii electrice">
+    <meta name="description" content="Lecția 6.5 — Protecții electrice">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 6.5 � Protec?ii electrice � Console Notebook</title>
+    <title>Lecția 6.5 — Protecții electrice — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
 
@@ -23,9 +23,9 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -35,144 +35,152 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 � ALIMENTARE ?I PROBLEME REALE</p>
-            <h1>Lec?ia 6.5 � Protec?ii electrice</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — ALIMENTARE ȘI PROBLEME REALE</p>
+            <h1>Lecția 6.5 — Protecții electrice</h1>
             <p>OCP, OVP, OTP, SCP</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
     <!-- ===========================
          CAPITOLUL 1: INTRODUCERE
          =========================== -->
-                                            <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>limitatoare de curent (current limiters)</p>
-                <p>Aceasta lec?ie acopera: <strong>OCP</strong>, <strong>OVP</strong>, <strong>OTP</strong>, <strong>SCP</strong>, <strong>Power Good</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Ce se întâmplă când curentul depășește limita de siguranță? Când tensiunea crește peste pragul maxim? Când temperatura atinge un nivel periculos? PSU-urile și VRM-urile consolelor moderne au protecții hardware integrate care opresc alimentarea în microsecunde — salvând componentele de distrugere. Aceste circuite de protecție sunt ultima linie de apărare între un defect și o placă de bază arsă.
+                </p>
+                <p>
+                    Această lecție acoperă cele patru protecții electrice fundamentale: <strong>OCP</strong> (Over-Current Protection — limitarea curentului), <strong>OVP</strong> (Over-Voltage Protection — limitarea tensiunii), <strong>OTP</strong> (Over-Temperature Protection — oprirea la supraîncălzire) și <strong>SCP</strong> (Short-Circuit Protection — deconectarea la scurtcircuit), plus semnalul <strong>Power Good</strong> care confirmă că toate tensiunile sunt stabile.
+                </p>
+                <p>
+                    Scopul nu este memorarea acronimelor, ci înțelegerea <em>de ce</em> o consolă care pulsează (pornește și se oprește imediat) are adesea o protecție activată, <em>cum</em> identifici care protecție s-a declanșat și <em>ce defect</em> fizic a cauzat activarea ei.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.1 � Defini?ia semnalului Power Good</h3>
+                <h3>6.5.1 — Definiția semnalului Power Good</h3>
                 <ul class="specs-list">
-                    <li><strong>Power Good (power-good):</strong> semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
-                    <li>Indica faptul ca toate tensiunile sunt conform specifica?iilor</li>
-                    <li>Sistemul poate proceda la pornire (boot) ?i operare</li>
+                    <li><strong>Power Good (power-good):</strong> semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>Indică faptul că toate tensiunile sunt conform specificațiilor</li>
+                    <li>Sistemul poate proceda la pornire (boot) și operare</li>
                     <li>Este un semnal de +5V generat de sursa de alimentare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.2 � Specifica?ia ATX Power Good</h3>
+                <h3>6.5.2 — Specificația ATX Power Good</h3>
                 <ul class="specs-list">
-                    <li>Specifica?ia ATX define?te PWR_OK (Power Good) ca semnal de +5V</li>
-                    <li>Se genereaza c&#226;nd sursa a trecut testele interne ?i ie?irile s-au stabilizat</li>
-                    <li><strong>Timp de stabilizare:</strong> &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</li>
-                    <li>Semnalul este trimis placii de baza unde este recep?ionat de chip-ul timer al procesorului</li>
-                    <li>Timer-ul controleaza linia de reset a procesorului</li>
+                    <li>Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</li>
+                    <li>Se generează când sursa a trecut testele interne și ieșirile s-au stabilizat</li>
+                    <li><strong>Timp de stabilizare:</strong> între 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>Semnalul este trimis plăcii de bază unde este recepționat de chip-ul timer al procesorului</li>
+                    <li>Timer-ul controlează linia de reset a procesorului</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.3 � Cerin?e ATX pentru PWR_OK</h3>
+                <h3>6.5.3 — Cerințe ATX pentru PWR_OK</h3>
                 <ul class="specs-list">
-                    <li>PWR_OK trebuie sa devina HIGH nu mai devreme de 100 ms dupa stabilizarea liniilor de tensiune</li>
-                    <li>Trebuie sa ram&#226;na HIGH pentru cel pu?in 16 ms dupa pierderea alimentarii AC</li>
-                    <li>Trebuie sa scada (sub 0.4V) cu cel pu?in 1 ms &#238;nainte ca liniile de tensiune sa iasa din specifica?ii</li>
-                    <li><strong>Specifica?ia:</strong> liniile de tensiune la 95% din valoarea nominala</li>
+                    <li>PWR_OK trebuie să devină HIGH nu mai devreme de 100 ms după stabilizarea liniilor de tensiune</li>
+                    <li>Trebuie să rămână HIGH pentru cel puțin 16 ms după pierderea alimentării AC</li>
+                    <li>Trebuie să scadă (sub 0.4V) cu cel puțin 1 ms înainte ca liniile de tensiune să iasă din specificații</li>
+                    <li><strong>Specificația:</strong> liniile de tensiune la 95% din valoarea nominală</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.4 � Surse de calitate inferioara</h3>
+                <h3>6.5.4 — Surse de calitate inferioară</h3>
                 <ul class="specs-list">
-                    <li>Sursele ieftine/de calitate scazuta nu urmeaza specifica?ia ATX</li>
-                    <li>&#206;n loc de circuit de monitorizare separat, conecteaza Power Good la una din liniile de +5V</li>
-                    <li><strong>Consecin?a:</strong> procesorul nu se va reseta niciodata la tensiune deficitara</li>
-                    <li>Linia de +5V trebuie sa scada foarte mult pentru a opri trigger-ul</li>
-                    <li>Aceasta poate fi prea jos pentru operare corecta</li>
+                    <li>Sursele ieftine/de calitate scăzută nu urmează specificația ATX</li>
+                    <li>În loc de circuit de monitorizare separat, conectează Power Good la una din liniile de +5V</li>
+                    <li><strong>Consecință:</strong> procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>Linia de +5V trebuie să scadă foarte mult pentru a opri trigger-ul</li>
+                    <li>Aceasta poate fi prea jos pentru operare corectă</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.5 � Valorile Power Good</h3>
+                <h3>6.5.5 — Valorile Power Good</h3>
                 <ul class="specs-list">
-                    <li>Bazate pe &#238;nt&#226;rzierea &#238;n milisecunde p&#226;na la gata completa</li>
+                    <li>Bazate pe întârzierea în milisecunde până la gata completă</li>
                     <li><strong>Valori considerate anormale:</strong> sub 100 ms sau peste 500 ms</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.6 � Defini?ia supracurentului (OCP)</h3>
+                <h3>6.5.6 — Definiția supracurentului (OCP)</h3>
                 <ul class="specs-list">
-                    <li><strong>Overcurrent (supracurent):</strong> situa?ie &#238;n care un curent electric mai mare dec&#226;t cel inten?ionat</li>
+                    <li><strong>Overcurrent (supracurent):</strong> situație în care un curent electric mai mare decât cel intenționat</li>
                 </ul>
-                <p>exista printr-un conductor</p>
+                <p>există printr-un conductor</p>
                 <ul class="specs-list">
-                    <li>Duce la generare excesiva de caldura ?i risc de incendiu sau deteriorare echipament</li>
-                    <li><strong>Cauze posibile:</strong> scurtcircuit, sarcina excesiva, design incorect, arc fault, ground fault</li>
-                    <li><strong>Mecanisme de protec?ie OCP:</strong> siguran?e (fuses), &#238;ntreruptoare de circuit (circuit breakers),</li>
+                    <li>Duce la generare excesivă de căldură și risc de incendiu sau deteriorare echipament</li>
+                    <li><strong>Cauze posibile:</strong> scurtcircuit, sarcină excesivă, design incorect, arc fault, ground fault</li>
+                    <li><strong>Mecanisme de protecție OCP:</strong> siguranțe (fuses), întreruptoare de circuit (circuit breakers),</li>
                 </ul>
                 <p>limitatoare de curent (current limiters)</p>
                 <ul class="specs-list">
-                    <li>Protejeaza cablajul circuitului de deteriorare cauzata de supracurent</li>
+                    <li>Protejează cablajul circuitului de deteriorare cauzată de supracurent</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.7 � Supracurent &#238;n re?eaua electrica</h3>
+                <h3>6.5.7 — Supracurent în rețeaua electrică</h3>
                 <ul class="specs-list">
-                    <li>Lipsa capacita?ii de supracurent (short circuit ratio scazut) creeaza probleme multiple:</li>
-                    <li>Tranzien?i la schimbari mari de sarcina ? varia?ii mari de tensiune</li>
-                    <li>Unele motoare nu pot porni &#238;n condi?ii de subtensiune</li>
-                    <li>Dispozitivele de protec?ie sunt proiectate pentru un nivel suficient de supracurent</li>
-                    <li>&#206;n sisteme slabe, curentul de scurtcircuit e greu de distins de tranzien?i normali</li>
+                    <li>Lipsa capacității de supracurent (short circuit ratio scăzut) creează probleme multiple:</li>
+                    <li>Tranzienți la schimbări mari de sarcină → variații mari de tensiune</li>
+                    <li>Unele motoare nu pot porni în condiții de subtensiune</li>
+                    <li>Dispozitivele de protecție sunt proiectate pentru un nivel suficient de supracurent</li>
+                    <li>În sisteme slabe, curentul de scurtcircuit e greu de distins de tranzienți normali</li>
                     <li>La black start, curentul mare de inrush poate fi necesar pentru energizarea componentelor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.8 � Defini?ia supratensiunii (OVP)</h3>
+                <h3>6.5.8 — Definiția supratensiunii (OVP)</h3>
                 <ul class="specs-list">
                     <li><strong>Overvoltage (supratensiune):</strong> ridicarea tensiunii peste limita de design a circuitului</li>
-                    <li>Poate fi tranzienta (milisecunde � spike de tensiune) sau sus?inuta (power frequency overvoltage)</li>
-                    <li>Dispozitivele sunt proiectate pentru o tensiune maxima de alimentare</li>
-                    <li>Depa?irea poate cauza daune considerabile</li>
-                    <li><strong>Exemplu:</strong> un bec are un fir care la tensiunea nominala duce un curent suficient</li>
+                    <li>Poate fi tranzientă (milisecunde – spike de tensiune) sau susținută (power frequency overvoltage)</li>
+                    <li>Dispozitivele sunt proiectate pentru o tensiune maximă de alimentare</li>
+                    <li>Depășirea poate cauza daune considerabile</li>
+                    <li><strong>Exemplu:</strong> un bec are un fir care la tensiunea nominală duce un curent suficient</li>
                 </ul>
-                <p>? tensiune prea mare = firul se tope?te = becul arde</p>
+                <p>→ tensiune prea mare = firul se topește = becul arde</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.9 � Surse de supratensiune</h3>
+                <h3>6.5.9 — Surse de supratensiune</h3>
                 <ul class="specs-list">
-                    <li><strong>Naturale:</strong> fulgere, rafale de v&#226;nt solar dupa erup?ii solare</li>
-                    <li><strong>Artificiale:</strong> induc?ie electromagnetica la pornirea/oprirea sarcinilor inductive</li>
+                    <li><strong>Naturale:</strong> fulgere, rafale de vânt solar după erupții solare</li>
+                    <li><strong>Artificiale:</strong> inducție electromagnetică la pornirea/oprirea sarcinilor inductive</li>
                 </ul>
-                <p>(motoare electrice, electromagne?i)</p>
+                <p>(motoare electrice, electromagneți)</p>
                 <ul class="specs-list">
-                    <li>Comutarea sarcinilor rezistive AC grele fara circuite zero-crossing</li>
-                    <li>Generatoare diesel/benzina cu viteza instabila ? supratensiune scurta dar daunatoare</li>
-                    <li>Regulator de tensiune defect ? supratensiune</li>
+                    <li>Comutarea sarcinilor rezistive AC grele fără circuite zero-crossing</li>
+                    <li>Generatoare diesel/benzină cu viteză instabilă → supratensiune scurtă dar dăunătoare</li>
+                    <li>Regulator de tensiune defect → supratensiune</li>
                     <li><strong>Exemplu real:</strong> East Palo Alto 2011, tensiunea a crescut de la 110V la 400V timp de 80 minute</li>
                 </ul>
-                <p>? echipamente electronice, becuri ?i contoare smart deteriorate</p>
+                <p>→ echipamente electronice, becuri și contoare smart deteriorate</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.10 � Dispozitive de protec?ie la supratensiune</h3>
+                <h3>6.5.10 — Dispozitive de protecție la supratensiune</h3>
                 <ul class="specs-list">
                     <li>Avalanche diode</li>
                     <li>Gas-filled tube (tub cu gaz)</li>
-                    <li>Lightning rod (paratrasnet)</li>
+                    <li>Lightning rod (paratrăsnet)</li>
                     <li>Metal-oxide varistor (MOV)</li>
                     <li>Spark gap</li>
                     <li>Transient-voltage-suppression diode (TVS)</li>
@@ -182,77 +190,77 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.11 � Circuitul Crowbar � protec?ie la supratensiune</h3>
+                <h3>6.5.11 — Circuitul Crowbar – protecție la supratensiune</h3>
                 <ul class="specs-list">
-                    <li>Circuit electric pentru prevenirea deteriorarii circuitelor de o condi?ie de supratensiune</li>
-                    <li><strong>Func?ionare:</strong> pune un scurtcircuit sau o cale de rezisten?a mica pe ie?irea de tensiune</li>
+                    <li>Circuit electric pentru prevenirea deteriorării circuitelor de o condiție de supratensiune</li>
+                    <li><strong>Funcționare:</strong> pune un scurtcircuit sau o cale de rezistență mică pe ieșirea de tensiune</li>
                     <li><strong>Implementare:</strong> thyristor, TRIAC, trisil sau thyratron ca dispozitiv de scurtcircuitare</li>
-                    <li>Odata declan?at, depinde de circuitul de limitare a curentului de la sursa de alimentare</li>
-                    <li>Daca limitarea curentului e?ueaza ? siguran?a se arde sau breaker-ul se declan?eaza</li>
+                    <li>Odată declanșat, depinde de circuitul de limitare a curentului de la sursa de alimentare</li>
+                    <li>Dacă limitarea curentului eșuează → siguranța se arde sau breaker-ul se declanșează</li>
                     <li>Numele vine de la efectul similar cu aruncarea unui crowbar peste terminalele expuse</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.12 � Crowbar vs Clamp</h3>
+                <h3>6.5.12 — Crowbar vs Clamp</h3>
                 <ul class="specs-list">
-                    <li><strong>Crowbar:</strong> odata declan?at, trage tensiunea sub nivelul de declan?are (aproape de ground)</li>
-                    <li><strong>Clamp:</strong> previne depa?irea unui nivel preset de tensiune</li>
-                    <li>Crowbar nu revine automat la operare normala c&#226;nd supratensiunea dispare</li>
-                    <li>Alimentarea trebuie scoasa complet pentru resetare</li>
-                    <li><strong>Active crowbar:</strong> poate scoate scurtcircuitul c&#226;nd tranzientul s-a &#238;ncheiat</li>
+                    <li><strong>Crowbar:</strong> odată declanșat, trage tensiunea sub nivelul de declanșare (aproape de ground)</li>
+                    <li><strong>Clamp:</strong> previne depășirea unui nivel preset de tensiune</li>
+                    <li>Crowbar nu revine automat la operare normală când supratensiunea dispare</li>
+                    <li>Alimentarea trebuie scoasă complet pentru resetare</li>
+                    <li><strong>Active crowbar:</strong> poate scoate scurtcircuitul când tranzientul s-a încheiat</li>
                 </ul>
-                <p>? folose?te tranzistor sau GTO thyristor &#238;n loc de thyristor simplu</p>
+                <p>→ folosește tranzistor sau GTO thyristor în loc de thyristor simplu</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.13 � Avantajele crowbar-ului</h3>
+                <h3>6.5.13 — Avantajele crowbar-ului</h3>
                 <ul class="specs-list">
-                    <li>Tensiunea de men?inere scazuta permite transportul unui curent de defect mai mare</li>
+                    <li>Tensiunea de menținere scăzută permite transportul unui curent de defect mai mare</li>
                 </ul>
-                <p>fara disipare excesiva de putere (evita supra&#238;ncalzirea)</p>
+                <p>fără disipare excesivă de putere (evită supraîncălzirea)</p>
                 <ul class="specs-list">
-                    <li>Mai probabil sa dezactiveze dispozitivul (prin arderea siguran?ei/declan?area breaker-ului)</li>
-                    <li>Atrage aten?ia asupra echipamentului defect</li>
-                    <li><strong>Aplica?ii:</strong> protec?ia tuburilor HV (klystron, IOT), surse de alimentare de laborator</li>
-                </ul>
-            </div>
-
-            <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.14 � Protec?ii &#238;n sursa de alimentare ATX (din date anterioare)</h3>
-                <ul class="specs-list">
-                    <li><strong>OCP (Overcurrent Protection):</strong> protec?ie la supracurent</li>
-                    <li>Limiteaza curentul pe fiecare linie de ie?ire</li>
-                    <li>Opre?te sursa sau reduce ie?irea c&#226;nd curentul depa?e?te limita</li>
-                    <li><strong>OVP (Overvoltage Protection):</strong> protec?ie la supratensiune</li>
-                    <li>Monitorizeaza toate liniile de ie?ire (+3.3V, +5V, +12V)</li>
-                    <li>Opre?te sursa c&#226;nd tensiunea depa?e?te un prag (de obicei 110-120% din nominal)</li>
-                    <li><strong>OTP (Overtemperature Protection):</strong> protec?ie la supra&#238;ncalzire</li>
-                    <li>Senzor de temperatura intern</li>
-                    <li>Opre?te sursa c&#226;nd temperatura interna depa?e?te limita de siguran?a</li>
-                    <li><strong>SCP (Short Circuit Protection):</strong> protec?ie la scurtcircuit</li>
-                    <li>Detecteaza scurtcircuitul pe orice linie de ie?ire</li>
-                    <li>Opre?te sursa instant pentru a preveni deteriorarea componentelor</li>
+                    <li>Mai probabil să dezactiveze dispozitivul (prin arderea siguranței/declanșarea breaker-ului)</li>
+                    <li>Atrage atenția asupra echipamentului defect</li>
+                    <li><strong>Aplicații:</strong> protecția tuburilor HV (klystron, IOT), surse de alimentare de laborator</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.15 � Conectorul ATX 24-pin ?i semnale relevante</h3>
+                <h3>6.5.14 — Protecții în sursa de alimentare ATX (din date anterioare)</h3>
+                <ul class="specs-list">
+                    <li><strong>OCP (Overcurrent Protection):</strong> protecție la supracurent</li>
+                    <li>Limitează curentul pe fiecare linie de ieșire</li>
+                    <li>Oprește sursa sau reduce ieșirea când curentul depășește limita</li>
+                    <li><strong>OVP (Overvoltage Protection):</strong> protecție la supratensiune</li>
+                    <li>Monitorizează toate liniile de ieșire (+3.3V, +5V, +12V)</li>
+                    <li>Oprește sursa când tensiunea depășește un prag (de obicei 110-120% din nominal)</li>
+                    <li><strong>OTP (Overtemperature Protection):</strong> protecție la supraîncălzire</li>
+                    <li>Senzor de temperatură intern</li>
+                    <li>Oprește sursa când temperatura internă depășește limita de siguranță</li>
+                    <li><strong>SCP (Short Circuit Protection):</strong> protecție la scurtcircuit</li>
+                    <li>Detectează scurtcircuitul pe orice linie de ieșire</li>
+                    <li>Oprește sursa instant pentru a preveni deteriorarea componentelor</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>6.5.15 — Conectorul ATX 24-pin și semnale relevante</h3>
                 <ul class="specs-list">
                     <li><strong>Pin 16 (PS_ON, verde):</strong> semnal de pornire, activ LOW (conectat la ground pentru pornire)</li>
                     <li><strong>Pin 8 (Power Good, gri):</strong> semnal PWR_OK de +5V</li>
-                    <li><strong>Pin 9 (+5VSB, mov):</strong> tensiune standby permanenta de +5V (chiar ?i &#238;n standby)</li>
-                    <li><strong>Testul paperclip:</strong> conectarea PS_ON la ground pentru testarea sursei &#238;n afara sistemului</li>
+                    <li><strong>Pin 9 (+5VSB, mov):</strong> tensiune standby permanentă de +5V (chiar și în standby)</li>
+                    <li><strong>Testul paperclip:</strong> conectarea PS_ON la ground pentru testarea sursei în afara sistemului</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.5.16 � Simptome de defec?iune PSU (din date anterioare)</h3>
+                <h3>6.5.16 — Simptome de defecțiune PSU (din date anterioare)</h3>
                 <ul class="specs-list">
-                    <li><strong>Miros de ars:</strong> componenta interna deteriorata</li>
-                    <li><strong>Reporniri aleatorii:</strong> tensiune instabila sau protec?ie OCP/OVP declan?ata intermitent</li>
-                    <li><strong>Ventilator PSU nefunc?ional:</strong> risc de supra&#238;ncalzire interna ? declan?are OTP</li>
-                    <li>Chirping/squealing la scurtcircuit pe linia de ie?ire</li>
+                    <li><strong>Miros de ars:</strong> componentă internă deteriorată</li>
+                    <li><strong>Reporniri aleatorii:</strong> tensiune instabilă sau protecție OCP/OVP declanșată intermitent</li>
+                    <li><strong>Ventilator PSU nefuncțional:</strong> risc de supraîncălzire internă → declanșare OTP</li>
+                    <li>Chirping/squealing la scurtcircuit pe linia de ieșire</li>
                     <li><strong>MTBF (Mean Time Between Failures):</strong> ~100.000 ore pentru surse de calitate</li>
                 </ul>
             </div>
@@ -262,12 +270,12 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Surse de calitate inferioara</h3>
+                <h3>Surse de calitate inferioară</h3>
                 <ul class="specs-list">
-                    <li><strong>Consecin?a:</strong> procesorul nu se va reseta niciodata la tensiune deficitara</li>
+                    <li><strong>Consecință:</strong> procesorul nu se va reseta niciodată la tensiune deficitară</li>
                 </ul>
             </div>
         </div>
@@ -275,20 +283,20 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Defini?ia semnalului Power Good</h3>
+                <h3>Definiția semnalului Power Good</h3>
                 <ul class="specs-list">
-                    <li><strong>Power Good (power-good):</strong> semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
+                    <li><strong>Power Good (power-good):</strong> semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
                     <li>Este un semnal de +5V generat de sursa de alimentare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Circuitul Crowbar � protec?ie la supratensiune</h3>
+                <h3>Circuitul Crowbar – protecție la supratensiune</h3>
                 <ul class="specs-list">
-                    <li>Odata declan?at, depinde de circuitul de limitare a curentului de la sursa de alimentare</li>
+                    <li>Odată declanșat, depinde de circuitul de limitare a curentului de la sursa de alimentare</li>
                 </ul>
             </div>
         </div>
@@ -299,13 +307,13 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Specifica?ia ATX Power Good</h3>
+                <h3>Specificația ATX Power Good</h3>
                 <ul class="specs-list">
-                    <li>Specifica?ia ATX define?te PWR_OK (Power Good) ca semnal de +5V</li>
-                    <li>Se genereaza c&#226;nd sursa a trecut testele interne ?i ie?irile s-au stabilizat</li>
-                    <li><strong>Timp de stabilizare:</strong> &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</li>
-                    <li>Semnalul este trimis placii de baza unde este recep?ionat de chip-ul timer al procesorului</li>
-                    <li>Timer-ul controleaza linia de reset a procesorului</li>
+                    <li>Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</li>
+                    <li>Se generează când sursa a trecut testele interne și ieșirile s-au stabilizat</li>
+                    <li><strong>Timp de stabilizare:</strong> între 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>Semnalul este trimis plăcii de bază unde este recepționat de chip-ul timer al procesorului</li>
+                    <li>Timer-ul controlează linia de reset a procesorului</li>
                 </ul>
             </div>
         </div>
@@ -317,47 +325,47 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Defini?ia supracurentului (OCP)</h3>
-                    <p>Duce la generare excesiva de caldura ?i risc de incendiu sau deteriorare echipament</p>
-                    <p>Cauze posibile: scurtcircuit, sarcina excesiva, design incorect, arc fault, ground fault</p>
-                    <p>Protejeaza cablajul circuitului de deteriorare cauzata de supracurent</p>
+                    <h3>⚠️ Definiția supracurentului (OCP)</h3>
+                    <p>Duce la generare excesivă de căldură și risc de incendiu sau deteriorare echipament</p>
+                    <p>Cauze posibile: scurtcircuit, sarcină excesivă, design incorect, arc fault, ground fault</p>
+                    <p>Protejează cablajul circuitului de deteriorare cauzată de supracurent</p>
                 </div>
                 <div class="card">
-                    <h3>?? Supracurent &#238;n re?eaua electrica</h3>
-                    <p>&#206;n sisteme slabe, curentul de scurtcircuit e greu de distins de tranzien?i normali</p>
+                    <h3>⚠️ Supracurent în rețeaua electrică</h3>
+                    <p>În sisteme slabe, curentul de scurtcircuit e greu de distins de tranzienți normali</p>
                 </div>
                 <div class="card">
-                    <h3>?? Surse de supratensiune</h3>
-                    <p>Regulator de tensiune defect ? supratensiune</p>
-                    <p>? echipamente electronice, becuri ?i contoare smart deteriorate</p>
+                    <h3>⚠️ Surse de supratensiune</h3>
+                    <p>Regulator de tensiune defect → supratensiune</p>
+                    <p>→ echipamente electronice, becuri și contoare smart deteriorate</p>
                 </div>
                 <div class="card">
-                    <h3>?? Circuitul Crowbar � protec?ie la supratensiune</h3>
-                    <p>Func?ionare: pune un scurtcircuit sau o cale de rezisten?a mica pe ie?irea de tensiune</p>
+                    <h3>⚠️ Circuitul Crowbar – protecție la supratensiune</h3>
+                    <p>Funcționare: pune un scurtcircuit sau o cale de rezistență mică pe ieșirea de tensiune</p>
                     <p>Implementare: thyristor, TRIAC, trisil sau thyratron ca dispozitiv de scurtcircuitare</p>
                 </div>
                 <div class="card">
-                    <h3>?? Crowbar vs Clamp</h3>
-                    <p>Active crowbar: poate scoate scurtcircuitul c&#226;nd tranzientul s-a &#238;ncheiat</p>
+                    <h3>⚠️ Crowbar vs Clamp</h3>
+                    <p>Active crowbar: poate scoate scurtcircuitul când tranzientul s-a încheiat</p>
                 </div>
                 <div class="card">
-                    <h3>?? Avantajele crowbar-ului</h3>
-                    <p>Tensiunea de men?inere scazuta permite transportul unui curent de defect mai mare</p>
-                    <p>Mai probabil sa dezactiveze dispozitivul (prin arderea siguran?ei/declan?area breaker-ului)</p>
-                    <p>Atrage aten?ia asupra echipamentului defect</p>
+                    <h3>⚠️ Avantajele crowbar-ului</h3>
+                    <p>Tensiunea de menținere scăzută permite transportul unui curent de defect mai mare</p>
+                    <p>Mai probabil să dezactiveze dispozitivul (prin arderea siguranței/declanșarea breaker-ului)</p>
+                    <p>Atrage atenția asupra echipamentului defect</p>
                 </div>
                 <div class="card">
-                    <h3>?? Protec?ii &#238;n sursa de alimentare ATX (din date anterioare)</h3>
-                    <p>SCP (Short Circuit Protection): protec?ie la scurtcircuit</p>
-                    <p>Detecteaza scurtcircuitul pe orice linie de ie?ire</p>
-                    <p>Opre?te sursa instant pentru a preveni deteriorarea componentelor</p>
+                    <h3>⚠️ Protecții în sursa de alimentare ATX (din date anterioare)</h3>
+                    <p>SCP (Short Circuit Protection): protecție la scurtcircuit</p>
+                    <p>Detectează scurtcircuitul pe orice linie de ieșire</p>
+                    <p>Oprește sursa instant pentru a preveni deteriorarea componentelor</p>
                 </div>
                 <div class="card">
-                    <h3>?? Simptome de defec?iune PSU (din date anterioare)</h3>
-                    <p>Miros de ars: componenta interna deteriorata</p>
-                    <p>Reporniri aleatorii: tensiune instabila sau protec?ie OCP/OVP declan?ata intermitent</p>
-                    <p>Ventilator PSU nefunc?ional: risc de supra&#238;ncalzire interna ? declan?are OTP</p>
-                    <p>Chirping/squealing la scurtcircuit pe linia de ie?ire</p>
+                    <h3>⚠️ Simptome de defecțiune PSU (din date anterioare)</h3>
+                    <p>Miros de ars: componentă internă deteriorată</p>
+                    <p>Reporniri aleatorii: tensiune instabilă sau protecție OCP/OVP declanșată intermitent</p>
+                    <p>Ventilator PSU nefuncțional: risc de supraîncălzire internă → declanșare OTP</p>
+                    <p>Chirping/squealing la scurtcircuit pe linia de ieșire</p>
                     <p>MTBF (Mean Time Between Failures): ~100.000 ore pentru surse de calitate</p>
                 </div>
             </div>
@@ -369,22 +377,22 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Defini?ia semnalului Power Good:</strong> Power Good (power-good): semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
-                    <li><strong>Specifica?ia ATX Power Good:</strong> Specifica?ia ATX define?te PWR_OK (Power Good) ca semnal de +5V</li>
-                    <li><strong>Cerin?e ATX pentru PWR_OK:</strong> PWR_OK trebuie sa devina HIGH nu mai devreme de 100 ms dupa stabilizarea liniilor de tensiune</li>
-                    <li><strong>Surse de calitate inferioara:</strong> Sursele ieftine/de calitate scazuta nu urmeaza specifica?ia ATX</li>
-                    <li><strong>Valorile Power Good:</strong> Bazate pe &#238;nt&#226;rzierea &#238;n milisecunde p&#226;na la gata completa</li>
-                    <li><strong>Defini?ia supracurentului (OCP):</strong> Overcurrent (supracurent): situa?ie &#238;n care un curent electric mai mare dec&#226;t cel inten?ionat</li>
-                    <li><strong>Supracurent &#238;n re?eaua electrica:</strong> Lipsa capacita?ii de supracurent (short circuit ratio scazut) creeaza probleme multiple:</li>
-                    <li><strong>Defini?ia supratensiunii (OVP):</strong> Overvoltage (supratensiune): ridicarea tensiunii peste limita de design a circuitului</li>
-                    <li><strong>Surse de supratensiune:</strong> Naturale: fulgere, rafale de v&#226;nt solar dupa erup?ii solare</li>
-                    <li><strong>Dispozitive de protec?ie la supratensiune:</strong> Avalanche diode</li>
-                    <li><strong>Circuitul Crowbar � protec?ie la supratensiune:</strong> Circuit electric pentru prevenirea deteriorarii circuitelor de o condi?ie de supratensiune</li>
-                    <li><strong>Crowbar vs Clamp:</strong> Crowbar: odata declan?at, trage tensiunea sub nivelul de declan?are (aproape de ground)</li>
-                    <li><strong>Avantajele crowbar-ului:</strong> Tensiunea de men?inere scazuta permite transportul unui curent de defect mai mare</li>
-                    <li><strong>Protec?ii &#238;n sursa de alimentare ATX (din date anterioare):</strong> OCP (Overcurrent Protection): protec?ie la supracurent</li>
-                    <li><strong>Conectorul ATX 24-pin ?i semnale relevante:</strong> Pin 16 (PS_ON, verde): semnal de pornire, activ LOW (conectat la ground pentru pornire)</li>
-                    <li><strong>Simptome de defec?iune PSU (din date anterioare):</strong> Miros de ars: componenta interna deteriorata</li>
+                    <li><strong>Definiția semnalului Power Good:</strong> Power Good (power-good): semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li><strong>Specificația ATX Power Good:</strong> Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</li>
+                    <li><strong>Cerințe ATX pentru PWR_OK:</strong> PWR_OK trebuie să devină HIGH nu mai devreme de 100 ms după stabilizarea liniilor de tensiune</li>
+                    <li><strong>Surse de calitate inferioară:</strong> Sursele ieftine/de calitate scăzută nu urmează specificația ATX</li>
+                    <li><strong>Valorile Power Good:</strong> Bazate pe întârzierea în milisecunde până la gata completă</li>
+                    <li><strong>Definiția supracurentului (OCP):</strong> Overcurrent (supracurent): situație în care un curent electric mai mare decât cel intenționat</li>
+                    <li><strong>Supracurent în rețeaua electrică:</strong> Lipsa capacității de supracurent (short circuit ratio scăzut) creează probleme multiple:</li>
+                    <li><strong>Definiția supratensiunii (OVP):</strong> Overvoltage (supratensiune): ridicarea tensiunii peste limita de design a circuitului</li>
+                    <li><strong>Surse de supratensiune:</strong> Naturale: fulgere, rafale de vânt solar după erupții solare</li>
+                    <li><strong>Dispozitive de protecție la supratensiune:</strong> Avalanche diode</li>
+                    <li><strong>Circuitul Crowbar – protecție la supratensiune:</strong> Circuit electric pentru prevenirea deteriorării circuitelor de o condiție de supratensiune</li>
+                    <li><strong>Crowbar vs Clamp:</strong> Crowbar: odată declanșat, trage tensiunea sub nivelul de declanșare (aproape de ground)</li>
+                    <li><strong>Avantajele crowbar-ului:</strong> Tensiunea de menținere scăzută permite transportul unui curent de defect mai mare</li>
+                    <li><strong>Protecții în sursa de alimentare ATX (din date anterioare):</strong> OCP (Overcurrent Protection): protecție la supracurent</li>
+                    <li><strong>Conectorul ATX 24-pin și semnale relevante:</strong> Pin 16 (PS_ON, verde): semnal de pornire, activ LOW (conectat la ground pentru pornire)</li>
+                    <li><strong>Simptome de defecțiune PSU (din date anterioare):</strong> Miros de ars: componentă internă deteriorată</li>
                 </ul>
             </div>
         </div>
@@ -392,80 +400,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: Power Good (power-good)?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Power Good (power-good)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</li>
-                    <li>b) procesorul nu se va reseta niciodata la tensiune deficitara</li>
-                    <li>c) semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
-                    <li>d) liniile de tensiune la 95% din valoarea nominala</li>
+                    <li>a) între 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>b) procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>c) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>d) liniile de tensiune la 95% din valoarea nominală</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � semnal furnizat de sursa de alimentare (PSU) catre placa de baza</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — semnal furnizat de sursa de alimentare (PSU) către placa de bază</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: Timp de stabilizare?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: Timp de stabilizare?</strong></p>
                 <ul class="specs-list">
-                    <li>a) semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
-                    <li>b) &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</li>
-                    <li>c) liniile de tensiune la 95% din valoarea nominala</li>
-                    <li>d) procesorul nu se va reseta niciodata la tensiune deficitara</li>
+                    <li>a) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>b) între 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>c) liniile de tensiune la 95% din valoarea nominală</li>
+                    <li>d) procesorul nu se va reseta niciodată la tensiune deficitară</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — între 0.1 și 0.5 secunde după pornirea sursei</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Specifica?ia?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Specificația?</strong></p>
                 <ul class="specs-list">
-                    <li>a) procesorul nu se va reseta niciodata la tensiune deficitara</li>
-                    <li>b) liniile de tensiune la 95% din valoarea nominala</li>
-                    <li>c) &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</li>
-                    <li>d) semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
+                    <li>a) procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>b) liniile de tensiune la 95% din valoarea nominală</li>
+                    <li>c) între 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>d) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � liniile de tensiune la 95% din valoarea nominala</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — liniile de tensiune la 95% din valoarea nominală</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Consecin?a?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Consecință?</strong></p>
                 <ul class="specs-list">
-                    <li>a) procesorul nu se va reseta niciodata la tensiune deficitara</li>
-                    <li>b) liniile de tensiune la 95% din valoarea nominala</li>
-                    <li>c) semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
-                    <li>d) &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</li>
+                    <li>a) procesorul nu se va reseta niciodată la tensiune deficitară</li>
+                    <li>b) liniile de tensiune la 95% din valoarea nominală</li>
+                    <li>c) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>d) între 0.1 și 0.5 secunde după pornirea sursei</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � procesorul nu se va reseta niciodata la tensiune deficitara</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — procesorul nu se va reseta niciodată la tensiune deficitară</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Valori considerate anormale?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Valori considerate anormale?</strong></p>
                 <ul class="specs-list">
                     <li>a) sub 100 ms sau peste 500 ms</li>
-                    <li>b) &#238;ntre 0.1 ?i 0.5 secunde dupa pornirea sursei</li>
-                    <li>c) semnal furnizat de sursa de alimentare (PSU) catre placa de baza</li>
-                    <li>d) liniile de tensiune la 95% din valoarea nominala</li>
+                    <li>b) între 0.1 și 0.5 secunde după pornirea sursei</li>
+                    <li>c) semnal furnizat de sursa de alimentare (PSU) către placa de bază</li>
+                    <li>d) liniile de tensiune la 95% din valoarea nominală</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � sub 100 ms sau peste 500 ms</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — sub 100 ms sau peste 500 ms</strong></p>
                 </details>
             </div>
         </div>
@@ -473,22 +481,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Protec?ii electrice</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de OCP. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Protecții electrice</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de OCP. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: OCP.</li>
-                    <li>2. Ce rol are OVP �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre OCP ?i OTP.</li>
+                    <li>2. Ce rol are OVP în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre OCP și OTP.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Power Good (power-good): semnal furnizat de sursa de alimentare (PSU) catre placa de baza</p>
-                        <p><strong>2.</strong> Specifica?ia ATX define?te PWR_OK (Power Good) ca semnal de +5V</p>
-                        <p><strong>3.</strong> PWR_OK trebuie sa devina HIGH nu mai devreme de 100 ms dupa stabilizarea liniilor de tensiune</p>
+                        <p><strong>1.</strong> Power Good (power-good): semnal furnizat de sursa de alimentare (PSU) către placa de bază</p>
+                        <p><strong>2.</strong> Specificația ATX definește PWR_OK (Power Good) ca semnal de +5V</p>
+                        <p><strong>3.</strong> PWR_OK trebuie să devină HIGH nu mai devreme de 100 ms după stabilizarea liniilor de tensiune</p>
                     </div>
                 </details>
             </div>
@@ -515,7 +523,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-6-4.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 6.4 &mdash; Instabilitate</a>
@@ -572,7 +580,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Protec?iile electrice OVP, OCP ?i OTP din sursa de alimentare: ce sunt ?i cum protejeaza componentele.</p>
+                <p class="video-description">Protecțiile electrice OVP, OCP și OTP din sursa de alimentare: ce sunt și cum protejează componentele.</p>
             </div>
         </div>
     </section>
@@ -582,7 +590,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatica</p>
+                <p class="footer-sub">Proiect Atestat Informatică</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

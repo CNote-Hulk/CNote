@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lec?ia 8.4 � Studii de caz">
+    <meta name="description" content="Lecția 8.4 — Studii de caz">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lec?ia 8.4 � Studii de caz � Console Notebook</title>
+    <title>Lecția 8.4 — Studii de caz — Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+    <link rel="stylesheet" href="../../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">�nva?a</a></li>
-                <li><a href="../evolutie.html">Evolu?ie</a></li>
-                <li><a href="../comparatie.html">Compara?ie</a></li>
+                <li><a href="../invata.html" class="active">Învață</a></li>
+                <li><a href="../evolutie.html">Evoluție</a></li>
+                <li><a href="../comparatie.html">Comparație</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,30 +30,38 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 � DIAGNOSTIC HARDWARE</p>
-            <h1>Lec?ia 8.4 � Studii de caz</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 — DIAGNOSTIC HARDWARE</p>
+            <h1>Lecția 8.4 — Studii de caz</h1>
             <p>YLOD, RROD, BLOD</p>
-            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
+            <a href="#introducere" class="hero-button">Incepe Lecția</a>
         </div>
     </section>
 
-                                            <section class="section" id="introducere">
+
+    <section class="section" id="introducere">
         <div class="container">
             <h2 class="section-title">Introducere</h2>
+
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Red Ring of Death (RROD) = trei LED-uri rosii pe fata consolei Xbox 360 care indica &quot;General Hardware Failure&quot;</p>
-                <p>Aceasta lec?ie acopera: <strong>YLOD</strong>, <strong>RROD</strong>, <strong>BLOD</strong>.</p>
-                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
+                <p>
+                    Istoria consolelor este marcată de defecte hardware care au definit generații întregi: Red Ring of Death pe Xbox 360 (lipitură fără plumb care cedează termic), Yellow Light of Death pe PS3 (eșecul BGA-urilor sub stres termic), Blue Light of Death pe PS4 (probleme HDMI sau APU). Aceste studii de caz reale demonstrează cum principiile din lecțiile anterioare — tensiune, temperatură, lipitură, protecții — converg într-un singur punct de eșec.
+                </p>
+                <p>
+                    Această lecție analizează cele mai cunoscute defecte hardware din istoria consolelor: <strong>YLOD</strong> (Yellow Light of Death — PS3), <strong>RROD</strong> (Red Ring of Death — Xbox 360) și <strong>BLOD</strong> (Blue Light of Death — PS4) — cauzele reale, diagnosticul și soluțiile de reparare.
+                </p>
+                <p>
+                    Scopul nu este memorarea acronimelor, ci înțelegerea <em>de ce</em> fiecare din aceste defecte celebre are o cauză fizică precisă explicabilă prin conceptele din acest curs: <em>stres termic</em>, <em>lipitură fragilă</em>, <em>design termic inadecvat</em> — și cum analiza lor transformă teoria în practică.
+                </p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurata</h2>
+            <h2 class="section-title">Teorie Structurată</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.1 � Definitie si manifestare RROD</h3>
+                <h3>8.4.1 — Definitie si manifestare RROD</h3>
                 <ul class="specs-list">
                     <li>Red Ring of Death (RROD) = trei LED-uri rosii pe fata consolei Xbox 360 care indica &quot;General Hardware Failure&quot;</li>
                     <li>Termenul a fost creat dupa analogia cu Blue Screen of Death (BSOD) din Windows</li>
@@ -63,7 +71,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.2 � Rate de defectare</h3>
+                <h3>8.4.2 — Rate de defectare</h3>
                 <ul class="specs-list">
                     <li><strong>SquareTrade (2009):</strong> rata de defectare de 23.7% in doua luni de utilizare</li>
                     <li><strong>Game Informer:</strong> 54.2% din respondenti au raportat cel putin un RROD</li>
@@ -74,19 +82,19 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.3 � Cauza radacina (confirmata oficial 2021)</h3>
+                <h3>8.4.3 — Cauza radacina (confirmata oficial 2021)</h3>
                 <ul class="specs-list">
                     <li><strong>Cauza principala:</strong> fisurarea imbinarilor de lipitura (solder joints) din interiorul pachetului flip chip al GPU-ului</li>
                     <li>Fisurile apareau intre GPU si substratul interposer</li>
                     <li><strong>Cauza stresului termic:</strong> cicluri de pornire/oprire (incalzire/racire repetata)</li>
                     <li>Lipitura fara plumb (lead-free solder) adoptata din cauza regulamentelor EU</li>
-                    <li>Aliajul alternativ ales a devenit fragil la temperaturi ridicate ? fisuri microscopice aproape ireparabile</li>
-                    <li>Microsoft a proiectat cipul intern pentru a economisi costurile furnizorului ASIC ? dupa esecuri s-au intors la furnizorul ASIC pentru reproiectare cu disipare termica imbunatatita</li>
+                    <li>Aliajul alternativ ales a devenit fragil la temperaturi ridicate → fisuri microscopice aproape ireparabile</li>
+                    <li>Microsoft a proiectat cipul intern pentru a economisi costurile furnizorului ASIC → dupa esecuri s-au intors la furnizorul ASIC pentru reproiectare cu disipare termica imbunatatita</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.4 � Istoricul problemei</h3>
+                <h3>8.4.4 — Istoricul problemei</h3>
                 <ul class="specs-list">
                     <li>Xbox 360 lansat in noiembrie 2005 cu design grabit si schimbari tardive (adaugarea HDD-ului a compromis fluxul de aer)</li>
                     <li>Testare insuficienta inainte de lansare</li>
@@ -97,7 +105,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.5 � Costul crizei si rezolvarea</h3>
+                <h3>8.4.5 — Costul crizei si rezolvarea</h3>
                 <ul class="specs-list">
                     <li><strong>Peter Moore (VP Microsoft):</strong> costul total al crizei = 1.15 miliarde dolari (din care 240 milioane $ doar pentru FedEx)</li>
                     <li>Steve Ballmer a aprobat cheltuielile fara ezitare</li>
@@ -110,7 +118,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.6 � Alte defecte conexe</h3>
+                <h3>8.4.6 — Alte defecte conexe</h3>
                 <ul class="specs-list">
                     <li><strong>Discuri zgriate:</strong> defect separat (unitatea de disc nu avea mecanism de securizare), necorect prin revizii; inginerii stiau din sept-oct 2005, bumperele ar fi costat 0.50$/unitate</li>
                     <li>Actualizarea din noiembrie 2006 a blocat console (eroarea E71)</li>
@@ -120,7 +128,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.7 � Definitie YLOD</h3>
+                <h3>8.4.7 — Definitie YLOD</h3>
                 <ul class="specs-list">
                     <li>Yellow Light of Death (YLOD) = LED galben pe consola PS3 care indica defectiune hardware generala</li>
                     <li>Consola refuza sa porneasca dupa aparitia luminii galbene</li>
@@ -129,7 +137,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.8 � Raportare si rata de defectare</h3>
+                <h3>8.4.8 — Raportare si rata de defectare</h3>
                 <ul class="specs-list">
                     <li><strong>BBC Watchdog (2009):</strong> consolele afectate cedau de obicei la 18-24 luni de la cumparare</li>
                     <li>Perioada de defectare depasea garantia Sony de 1 an</li>
@@ -141,7 +149,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.9 � Hardware PS3 � context tehnic</h3>
+                <h3>8.4.9 — Hardware PS3 – context tehnic</h3>
                 <ul class="specs-list">
                     <li><strong>Procesor:</strong> Cell Broadband Engine la 3.2 GHz (PowerPC PPE + 7 SPE-uri, 1 dezactivat pentru randament)</li>
                     <li><strong>GPU:</strong> RSX Reality Synthesizer (Nvidia, 256 MB GDDR3)</li>
@@ -152,7 +160,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.10 � Cauza tehnica YLOD</h3>
+                <h3>8.4.10 — Cauza tehnica YLOD</h3>
                 <ul class="specs-list">
                     <li><strong>Cauza principala:</strong> deteriorarea imbinarilor de lipitura fara plumb (lead-free solder) pe GPU sau CPU</li>
                     <li>Stresul termic din cicluri de incalzire/racire cauza fisuri in imbinarile BGA (Ball Grid Array)</li>
@@ -162,7 +170,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.11 � Bug conex � ApocalyPS3</h3>
+                <h3>8.4.11 — Bug conex – ApocalyPS3</h3>
                 <ul class="specs-list">
                     <li><strong>Bug de an bisect (1 martie 2010):</strong> stocarea datei in format BCD a identificat gresit 2010 ca an bisect</li>
                     <li>Eroarea 8001050F a afectat consolele PS3 mai vechi (Fat)</li>
@@ -171,7 +179,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.12 � Definitie BLOD</h3>
+                <h3>8.4.12 — Definitie BLOD</h3>
                 <ul class="specs-list">
                     <li>Blue Light of Death (BLOD) = lumina albastra pulsata pe partea superioara a consolei PlayStation 4</li>
                     <li>Consola nu reuseste sa treaca de la lumina albastra la lumina alba (care indica functionarea normala)</li>
@@ -180,7 +188,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.13 � Cauze posibile identificate de iFixit</h3>
+                <h3>8.4.13 — Cauze posibile identificate de iFixit</h3>
                 <ul class="specs-list">
                     <li><strong>Sursa de alimentare defecta (Faulty Power Supply):</strong> se recomanda verificarea cablului AC si a portului de alimentare, apoi inlocuirea sursei</li>
                     <li><strong>Hard disk defect (Faulty Hard Drive):</strong> se recomanda oprirea sistemului (7 secunde power button), deconectarea cablurilor, apoi inlocuirea HDD</li>
@@ -189,9 +197,9 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.14 � Cauze tehnice detaliate (din comunitatea de reparatii)</h3>
+                <h3>8.4.14 — Cauze tehnice detaliate (din comunitatea de reparatii)</h3>
                 <ul class="specs-list">
-                    <li><strong>Cipul encoder HDMI defect:</strong> Panasonic MN864729 � responsabil pentru conversia semnalului video in format HDMI; defectarea acestuia cauzeaza absenta semnalului video</li>
+                    <li><strong>Cipul encoder HDMI defect:</strong> Panasonic MN864729 – responsabil pentru conversia semnalului video in format HDMI; defectarea acestuia cauzeaza absenta semnalului video</li>
                     <li><strong>Portul HDMI deteriorat fizic:</strong> pini indoiti sau rupti impiedica transmisia semnalului</li>
                     <li>Imbinari de lipitura defecte pe APU (AMD Accelerated Processing Unit): similar cu RROD/YLOD, stresul termic poate cauza fisurarea lipiturilor BGA sub procesorul principal</li>
                     <li><strong>Management termic insuficient:</strong> supraincalzirea duce la deteriorarea componentelor si a lipiturilor</li>
@@ -200,7 +208,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.4.15 � Specificatii hardware PS4</h3>
+                <h3>8.4.15 — Specificatii hardware PS4</h3>
                 <ul class="specs-list">
                     <li>APU dezvoltat de AMD in cooperare cu Sony</li>
                     <li><strong>CPU:</strong> doua module quad-core Jaguar = 8 nuclee x86-64 la 1.6 GHz (2.13 GHz pe PS4 Pro)</li>
@@ -220,7 +228,7 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legatura Fizica � Informatica</h2>
+            <h2 class="section-title">Legătura Fizică — Informatică</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Cauza radacina (confirmata oficial 2021)</h3>
@@ -234,7 +242,7 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directa �n Console</h2>
+            <h2 class="section-title">Aplicare Directă în Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Definitie si manifestare RROD</h3>
@@ -259,7 +267,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Hardware PS3 � context tehnic</h3>
+                <h3>Hardware PS3 – context tehnic</h3>
                 <ul class="specs-list">
                     <li><strong>Procesor:</strong> Cell Broadband Engine la 3.2 GHz (PowerPC PPE + 7 SPE-uri, 1 dezactivat pentru randament)</li>
                     <li><strong>GPU:</strong> RSX Reality Synthesizer (Nvidia, 256 MB GDDR3)</li>
@@ -270,7 +278,7 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Bug conex � ApocalyPS3</h3>
+                <h3>Bug conex – ApocalyPS3</h3>
                 <ul class="specs-list">
                     <li><strong>Bug de an bisect (1 martie 2010):</strong> stocarea datei in format BCD a identificat gresit 2010 ca an bisect</li>
                     <li>Eroarea 8001050F a afectat consolele PS3 mai vechi (Fat)</li>
@@ -310,7 +318,7 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Componentele reale care utilizeaza YLOD se regasesc �n toate consolele moderne.</p>
+                <p>Componentele reale care utilizează YLOD se regăsesc în toate consolele moderne.</p>
             </div>
         </div>
     </section>
@@ -321,12 +329,12 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>?? Definitie si manifestare RROD</h3>
+                    <h3>⚠️ Definitie si manifestare RROD</h3>
                     <p>Trei cadrane rosii din patru aprinse simultan = eroare hardware generala</p>
                     <p>Un singur cadran rosu = eroare E74, legata de conexiunea GPU</p>
                 </div>
                 <div class="card">
-                    <h3>?? Rate de defectare</h3>
+                    <h3>⚠️ Rate de defectare</h3>
                     <p>SquareTrade (2009): rata de defectare de 23.7% in doua luni de utilizare</p>
                     <p>Game Informer: 54.2% din respondenti au raportat cel putin un RROD</p>
                     <p>Angajatii Joystiq: 90% au experimentat RROD pana la sfarsitul lui 2007</p>
@@ -334,7 +342,7 @@
                     <p>Randamentul productiei a scazut pana la 32% (rata de defectare de 68%)</p>
                 </div>
                 <div class="card">
-                    <h3>?? Istoricul problemei</h3>
+                    <h3>⚠️ Istoricul problemei</h3>
                     <p>Xbox 360 lansat in noiembrie 2005 cu design grabit si schimbari tardive (adaugarea HDD-ului a compromis fluxul de aer)</p>
                     <p>Testare insuficienta inainte de lansare</p>
                     <p>Inginerii erau constienti de probleme din august 2005: supraincalzire cipuri grafice, fisurarea radiatoarelor, cipuri de memorie Infineon cu performante sub asteptari, probleme cu unitatea DVD</p>
@@ -342,23 +350,23 @@
                     <p>Microsoft a considerat initial rapoartele &quot;cazuri izolate&quot;</p>
                 </div>
                 <div class="card">
-                    <h3>?? Costul crizei si rezolvarea</h3>
+                    <h3>⚠️ Costul crizei si rezolvarea</h3>
                     <p>Eroarea E74 (conexiune GPU defecta, un singur cadran rosu) acoperita de garantia extinsa din 2009</p>
                     <p>Xbox 360 S (2010): rate de defectare semnificativ mai mici</p>
                 </div>
                 <div class="card">
-                    <h3>?? Alte defecte conexe</h3>
+                    <h3>⚠️ Alte defecte conexe</h3>
                     <p>Discuri zgriate: defect separat (unitatea de disc nu avea mecanism de securizare), necorect prin revizii; inginerii stiau din sept-oct 2005, bumperele ar fi costat 0.50$/unitate</p>
                     <p>Actualizarea din noiembrie 2006 a blocat console (eroarea E71)</p>
                     <p>NXE (New Xbox Experience) a cauzat probleme cu mediile optice si HDMI</p>
                     <p>Periferice: Wireless Racing Wheel (&quot;Hotwheels&quot;) supraincalzire; Nyko Intercooler putea cauza RROD</p>
                 </div>
                 <div class="card">
-                    <h3>?? Definitie YLOD</h3>
+                    <h3>⚠️ Definitie YLOD</h3>
                     <p>Yellow Light of Death (YLOD) = LED galben pe consola PS3 care indica defectiune hardware generala</p>
                 </div>
                 <div class="card">
-                    <h3>?? Raportare si rata de defectare</h3>
+                    <h3>⚠️ Raportare si rata de defectare</h3>
                     <p>BBC Watchdog (2009): consolele afectate cedau de obicei la 18-24 luni de la cumparare</p>
                     <p>Perioada de defectare depasea garantia Sony de 1 an</p>
                     <p>SquareTrade (2009): rata de defectare de 10% in doi ani</p>
@@ -367,18 +375,18 @@
                     <p>Sony a contestat raportul Watchdog ca fiind &quot;inselator&quot;</p>
                 </div>
                 <div class="card">
-                    <h3>?? Cauza tehnica YLOD</h3>
+                    <h3>⚠️ Cauza tehnica YLOD</h3>
                     <p>Cauza principala: deteriorarea imbinarilor de lipitura fara plumb (lead-free solder) pe GPU sau CPU</p>
                 </div>
                 <div class="card">
-                    <h3>?? Cauze posibile identificate de iFixit</h3>
+                    <h3>⚠️ Cauze posibile identificate de iFixit</h3>
                     <p>Sursa de alimentare defecta (Faulty Power Supply): se recomanda verificarea cablului AC si a portului de alimentare, apoi inlocuirea sursei</p>
                     <p>Hard disk defect (Faulty Hard Drive): se recomanda oprirea sistemului (7 secunde power button), deconectarea cablurilor, apoi inlocuirea HDD</p>
                     <p>Hardware defect generic: daca solutiile de mai sus nu functioneaza, se recomanda contactarea Sony pentru garantie</p>
                 </div>
                 <div class="card">
-                    <h3>?? Cauze tehnice detaliate (din comunitatea de reparatii)</h3>
-                    <p>Cipul encoder HDMI defect: Panasonic MN864729 � responsabil pentru conversia semnalului video in format HDMI; defectarea acestuia cauzeaza absenta semnalului video</p>
+                    <h3>⚠️ Cauze tehnice detaliate (din comunitatea de reparatii)</h3>
+                    <p>Cipul encoder HDMI defect: Panasonic MN864729 – responsabil pentru conversia semnalului video in format HDMI; defectarea acestuia cauzeaza absenta semnalului video</p>
                     <p>Portul HDMI deteriorat fizic: pini indoiti sau rupti impiedica transmisia semnalului</p>
                     <p>Imbinari de lipitura defecte pe APU (AMD Accelerated Processing Unit): similar cu RROD/YLOD, stresul termic poate cauza fisurarea lipiturilor BGA sub procesorul principal</p>
                     <p>Management termic insuficient: supraincalzirea duce la deteriorarea componentelor si a lipiturilor</p>
@@ -401,12 +409,12 @@
                     <li><strong>Alte defecte conexe:</strong> Discuri zgriate: defect separat (unitatea de disc nu avea mecanism de securizare), necorect prin revizii; inginerii stiau din sept-oct 2005, bumperele ar fi costat 0.50$/unitate</li>
                     <li><strong>Definitie YLOD:</strong> Yellow Light of Death (YLOD) = LED galben pe consola PS3 care indica defectiune hardware generala</li>
                     <li><strong>Raportare si rata de defectare:</strong> BBC Watchdog (2009): consolele afectate cedau de obicei la 18-24 luni de la cumparare</li>
-                    <li><strong>Hardware PS3 � context tehnic:</strong> Procesor: Cell Broadband Engine la 3.2 GHz (PowerPC PPE + 7 SPE-uri, 1 dezactivat pentru randament)</li>
+                    <li><strong>Hardware PS3 – context tehnic:</strong> Procesor: Cell Broadband Engine la 3.2 GHz (PowerPC PPE + 7 SPE-uri, 1 dezactivat pentru randament)</li>
                     <li><strong>Cauza tehnica YLOD:</strong> Cauza principala: deteriorarea imbinarilor de lipitura fara plumb (lead-free solder) pe GPU sau CPU</li>
-                    <li><strong>Bug conex � ApocalyPS3:</strong> Bug de an bisect (1 martie 2010): stocarea datei in format BCD a identificat gresit 2010 ca an bisect</li>
+                    <li><strong>Bug conex – ApocalyPS3:</strong> Bug de an bisect (1 martie 2010): stocarea datei in format BCD a identificat gresit 2010 ca an bisect</li>
                     <li><strong>Definitie BLOD:</strong> Blue Light of Death (BLOD) = lumina albastra pulsata pe partea superioara a consolei PlayStation 4</li>
                     <li><strong>Cauze posibile identificate de iFixit:</strong> Sursa de alimentare defecta (Faulty Power Supply): se recomanda verificarea cablului AC si a portului de alimentare, apoi inlocuirea sursei</li>
-                    <li><strong>Cauze tehnice detaliate (din comunitatea de reparatii):</strong> Cipul encoder HDMI defect: Panasonic MN864729 � responsabil pentru conversia semnalului video in format HDMI; defectarea acestuia cauzeaza absenta semnalului video</li>
+                    <li><strong>Cauze tehnice detaliate (din comunitatea de reparatii):</strong> Cipul encoder HDMI defect: Panasonic MN864729 – responsabil pentru conversia semnalului video in format HDMI; defectarea acestuia cauzeaza absenta semnalului video</li>
                     <li><strong>Specificatii hardware PS4:</strong> APU dezvoltat de AMD in cooperare cu Sony</li>
                 </ul>
             </div>
@@ -415,11 +423,11 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
+            <h2 class="section-title">Quiz — 5 Întrebări</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 1</h3>
-                <p><strong>Care afirma?ie este corecta despre: Definitie si manifestare RROD?</strong></p>
+                <h3>Întrebarea 1</h3>
+                <p><strong>Care afirmație este corectă despre: Definitie si manifestare RROD?</strong></p>
                 <ul class="specs-list">
                     <li>a) 54.2% din respondenti au raportat cel putin un RROD</li>
                     <li>b) Trei cadrane rosii din patru aprinse simultan = eroare hardware generala</li>
@@ -427,14 +435,14 @@
                     <li>d) Un singur cadran rosu = eroare E74, legata de conexiunea GPU</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) � Trei cadrane rosii din patru aprinse simultan = eroare hardware generala</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) — Trei cadrane rosii din patru aprinse simultan = eroare hardware generala</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 2</h3>
-                <p><strong>Care afirma?ie este corecta despre: SquareTrade (2009)?</strong></p>
+                <h3>Întrebarea 2</h3>
+                <p><strong>Care afirmație este corectă despre: SquareTrade (2009)?</strong></p>
                 <ul class="specs-list">
                     <li>a) rata de defectare de 23.7% in doua luni de utilizare</li>
                     <li>b) 54.2% din respondenti au raportat cel putin un RROD</li>
@@ -442,14 +450,14 @@
                     <li>d) Un singur cadran rosu = eroare E74, legata de conexiunea GPU</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � rata de defectare de 23.7% in doua luni de utilizare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — rata de defectare de 23.7% in doua luni de utilizare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 3</h3>
-                <p><strong>Care afirma?ie este corecta despre: Cauza principala?</strong></p>
+                <h3>Întrebarea 3</h3>
+                <p><strong>Care afirmație este corectă despre: Cauza principala?</strong></p>
                 <ul class="specs-list">
                     <li>a) rata de defectare de 23.7% in doua luni de utilizare</li>
                     <li>b) Un singur cadran rosu = eroare E74, legata de conexiunea GPU</li>
@@ -457,14 +465,14 @@
                     <li>d) fisurarea imbinarilor de lipitura (solder joints) din interiorul pachetului flip chip al GPU-ului</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) � fisurarea imbinarilor de lipitura (solder joints) din interiorul pachetului flip chip al GPU-ului</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) — fisurarea imbinarilor de lipitura (solder joints) din interiorul pachetului flip chip al GPU-ului</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 4</h3>
-                <p><strong>Care afirma?ie este corecta despre: Inginerii erau constienti de probleme din august 2005?</strong></p>
+                <h3>Întrebarea 4</h3>
+                <p><strong>Care afirmație este corectă despre: Inginerii erau constienti de probleme din august 2005?</strong></p>
                 <ul class="specs-list">
                     <li>a) supraincalzire cipuri grafice, fisurarea radiatoarelor, cipuri de memorie Infineon cu performante sub asteptari, probleme cu unitatea DVD</li>
                     <li>b) Un singur cadran rosu = eroare E74, legata de conexiunea GPU</li>
@@ -472,14 +480,14 @@
                     <li>d) Trei cadrane rosii din patru aprinse simultan = eroare hardware generala</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) � supraincalzire cipuri grafice, fisurarea radiatoarelor, cipuri de memorie Infineon cu performante sub asteptari, probleme cu unitatea DVD</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) — supraincalzire cipuri grafice, fisurarea radiatoarelor, cipuri de memorie Infineon cu performante sub asteptari, probleme cu unitatea DVD</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>�ntrebarea 5</h3>
-                <p><strong>Care afirma?ie este corecta despre: Peter Moore (VP Microsoft)?</strong></p>
+                <h3>Întrebarea 5</h3>
+                <p><strong>Care afirmație este corectă despre: Peter Moore (VP Microsoft)?</strong></p>
                 <ul class="specs-list">
                     <li>a) rata de defectare de 23.7% in doua luni de utilizare</li>
                     <li>b) Trei cadrane rosii din patru aprinse simultan = eroare hardware generala</li>
@@ -487,8 +495,8 @@
                     <li>d) Un singur cadran rosu = eroare E74, legata de conexiunea GPU</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) � costul total al crizei = 1.15 miliarde dolari (din care 240 milioane $ doar pentru FedEx)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) — costul total al crizei = 1.15 miliarde dolari (din care 240 milioane $ doar pentru FedEx)</strong></p>
                 </details>
             </div>
         </div>
@@ -496,18 +504,18 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
+            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>?? Exerci?iu: Studii de caz</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de YLOD. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
+                <h3>🧠 Exercițiu: Studii de caz</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de YLOD. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: YLOD.</li>
-                    <li>2. Ce rol are RROD �n contextul hardware-ului?</li>
-                    <li>3. Explica rela?ia dintre YLOD ?i BLOD.</li>
+                    <li>2. Ce rol are RROD în contextul hardware-ului?</li>
+                    <li>3. Explică relația dintre YLOD și BLOD.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
                     <div style="margin-top: 1rem;">
                         <p><strong>1.</strong> Red Ring of Death (RROD) = trei LED-uri rosii pe fata consolei Xbox 360 care indica &quot;General Hardware Failure&quot;</p>
                         <p><strong>2.</strong> SquareTrade (2009): rata de defectare de 23.7% in doua luni de utilizare</p>
@@ -538,7 +546,7 @@
 
 
 
-    <!-- NAVIGARE LEC?II -->
+    <!-- NAVIGARE LECȚII -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-8-3.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 8.3 &mdash; Identificare componente</a>
@@ -595,14 +603,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Repararea PS3 (YLOD) ?i Xbox 360 (RROD): diagnosticarea ?i rezolvarea celor mai celebre defecte de console.</p>
+                <p class="video-description">Repararea PS3 (YLOD) și Xbox 360 (RROD): diagnosticarea și rezolvarea celor mai celebre defecte de console.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

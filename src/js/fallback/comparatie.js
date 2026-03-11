@@ -68,6 +68,10 @@
     }
 
     function tryFetchJson() {
+        // Use pre-loaded global data first (works on file://)
+        if (window.CONSOLES_DATA) {
+            return Promise.resolve(window.CONSOLES_DATA);
+        }
         const path = '../../js/data/consoles.json';
         if (window.location.protocol === 'file:') {
             return loadJsonWithXhr(path).catch(() => null);
