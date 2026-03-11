@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 4.6 — Ierarhia sistemului complet">
+    <meta name="description" content="Lec?ia 4.6 � Ierarhia sistemului complet">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 4.6 — Ierarhia sistemului complet — Console Notebook</title>
+    <title>Lec?ia 4.6 � Ierarhia sistemului complet � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
 
@@ -23,9 +23,9 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -35,10 +35,10 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — ARHITECTURĂ HARDWARE</p>
-            <h1>Lecția 4.6 — Ierarhia sistemului complet</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 � ARHITECTURA HARDWARE</p>
+            <h1>Lec?ia 4.6 � Ierarhia sistemului complet</h1>
             <p>CPU, GPU, RAM, Storage</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -49,130 +49,130 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>1. ISA (Instruction Set Architecture) – interfața software-hardware: machine code, word size, adresare, registre, tipuri de date</p>
-                <p>Această lecție acoperă: <strong>CPU</strong>, <strong>GPU</strong>, <strong>RAM</strong>, <strong>Storage</strong>, <strong>I/O</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>1. ISA (Instruction Set Architecture) � interfa?a software-hardware: machine code, word size, adresare, registre, tipuri de date</p>
+                <p>Aceasta lec?ie acopera: <strong>CPU</strong>, <strong>GPU</strong>, <strong>RAM</strong>, <strong>Storage</strong>, <strong>I/O</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.1 — Definiție și componente fundamentale</h3>
+                <h3>4.6.1 � Defini?ie ?i componente fundamentale</h3>
                 <ul class="specs-list">
-                    <li>Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetică centrală (ALU), unitate de control centrală, memorie (date + instrucțiuni), mediu de &#238;nregistrare extern (stocare), organe de intrare/ieșire</li>
-                    <li><strong>Model stored-program:</strong> instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
-                    <li>Spre deosebire de calculatoarele cu program fix (ENIAC – 3 săptăm&#226;ni reprogramare), stored-program permite schimbarea programului fără recablare hardware</li>
-                    <li><strong>Originea:</strong> First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
-                    <li><strong>Terminologia originală:</strong> „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
-                    <li>Majoritatea calculatoarelor moderne folosesc arhitectura Von Neumann cu modificări (Modified Harvard – cache-uri separate instrucțiuni/date)</li>
+                    <li>Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetica centrala (ALU), unitate de control centrala, memorie (date + instruc?iuni), mediu de &#238;nregistrare extern (stocare), organe de intrare/ie?ire</li>
+                    <li><strong>Model stored-program:</strong> instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</li>
+                    <li>Spre deosebire de calculatoarele cu program fix (ENIAC � 3 saptam&#226;ni reprogramare), stored-program permite schimbarea programului fara recablare hardware</li>
+                    <li><strong>Originea:</strong> First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert ?i Mauchly</li>
+                    <li><strong>Terminologia originala:</strong> �high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>Majoritatea calculatoarelor moderne folosesc arhitectura Von Neumann cu modificari (Modified Harvard � cache-uri separate instruc?iuni/date)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.2 — Von Neumann Bottleneck</h3>
+                <h3>4.6.2 � Von Neumann Bottleneck</h3>
                 <ul class="specs-list">
-                    <li>Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
-                    <li>CPU-ul nu poate accesa simultan instrucțiuni și date (partajează același bus)</li>
-                    <li>CPU trebuie să aștepte transferul datelor din/&#238;n memorie</li>
-                    <li>Severitatea crește cu fiecare generație de CPU (viteza CPU crește mai repede dec&#226;t bandwidth-ul memoriei)</li>
-                    <li><strong>Descris de John Backus (1977 Turing Award):</strong> „pushing vast numbers of words back and forth through the von Neumann bottleneck&quot;</li>
+                    <li>Bottleneck = bus-ul comun pentru instruc?iuni ?i date limiteaza throughput-ul</li>
+                    <li>CPU-ul nu poate accesa simultan instruc?iuni ?i date (partajeaza acela?i bus)</li>
+                    <li>CPU trebuie sa a?tepte transferul datelor din/&#238;n memorie</li>
+                    <li>Severitatea cre?te cu fiecare genera?ie de CPU (viteza CPU cre?te mai repede dec&#226;t bandwidth-ul memoriei)</li>
+                    <li><strong>Descris de John Backus (1977 Turing Award):</strong> �pushing vast numbers of words back and forth through the von Neumann bottleneck&quot;</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.3 — Mitigări ale bottleneck-ului</h3>
+                <h3>4.6.3 � Mitigari ale bottleneck-ului</h3>
                 <ul class="specs-list">
-                    <li>Cache &#238;ntre CPU și memoria principală</li>
-                    <li>Cache-uri separate pentru date și instrucțiuni (Modified Harvard Architecture)</li>
+                    <li>Cache &#238;ntre CPU ?i memoria principala</li>
+                    <li>Cache-uri separate pentru date ?i instruc?iuni (Modified Harvard Architecture)</li>
                     <li>Branch predictor</li>
                     <li>Scratchpad memory pe chip</li>
-                    <li>System on Chip (SoC) – CPU + ierarhia memoriei pe același chip, reduce latența</li>
+                    <li>System on Chip (SoC) � CPU + ierarhia memoriei pe acela?i chip, reduce laten?a</li>
                     <li>Parallel computing, NUMA (Non-Uniform Memory Access)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.4 — Evoluția arhitecturii</h3>
+                <h3>4.6.4 � Evolu?ia arhitecturii</h3>
                 <ul class="specs-list">
-                    <li><strong>1960-1970:</strong> Memory-mapped I/O – dispozitivele I/O tratate ca memorie</li>
-                    <li>System bus unic – modularitate la cost redus</li>
-                    <li>Microcontrolerele simple omit funcții pentru cost/dimensiune reduse</li>
-                    <li>Calculatoarele mari adaugă funcții pentru performanță</li>
+                    <li><strong>1960-1970:</strong> Memory-mapped I/O � dispozitivele I/O tratate ca memorie</li>
+                    <li>System bus unic � modularitate la cost redus</li>
+                    <li>Microcontrolerele simple omit func?ii pentru cost/dimensiune reduse</li>
+                    <li>Calculatoarele mari adauga func?ii pentru performan?a</li>
                     <li><strong>Primele calculatoare Von Neumann:</strong> Manchester Baby (1948), EDSAC (1949), EDVAC (1951)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.5 — Definiția și subcategoriile</h3>
+                <h3>4.6.5 � Defini?ia ?i subcategoriile</h3>
                 <ul class="specs-list">
                     <li>Arhitectura calculatorului = structura unui sistem de calcul din componente</li>
                     <li>3 subcategorii principale:</li>
                 </ul>
-                <p>1. ISA (Instruction Set Architecture) – interfața software-hardware: machine code, word size, adresare, registre, tipuri de date</p>
-                <p>2. Microarhitectură (Computer Organization) – cum un procesor specific implementează ISA-ul (ex: dimensiunea cache-ului)</p>
-                <p>3. Systems Design – toate componentele hardware &#238;n afara CPU: DMA, virtualizare, multiprocessing</p>
+                <p>1. ISA (Instruction Set Architecture) � interfa?a software-hardware: machine code, word size, adresare, registre, tipuri de date</p>
+                <p>2. Microarhitectura (Computer Organization) � cum un procesor specific implementeaza ISA-ul (ex: dimensiunea cache-ului)</p>
+                <p>3. Systems Design � toate componentele hardware &#238;n afara CPU: DMA, virtualizare, multiprocessing</p>
                 <ul class="specs-list">
-                    <li>Termenul „arhitectură&quot; folosit prima dată de Lyle R. Johnson și Frederick P. Brooks Jr. (IBM, 1959) pentru proiectul Stretch</li>
+                    <li>Termenul �arhitectura&quot; folosit prima data de Lyle R. Johnson ?i Frederick P. Brooks Jr. (IBM, 1959) pentru proiectul Stretch</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.6 — Performanță</h3>
+                <h3>4.6.6 � Performan?a</h3>
                 <ul class="specs-list">
-                    <li><strong>IPC (Instructions Per Cycle) – măsura eficienței:</strong> calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
-                    <li><strong>Clock rate (MHz/GHz) – metric &#238;nșelător:</strong> mașină cu clock mai mare nu e neapărat mai rapidă</li>
-                    <li><strong>Alți factori:</strong> functional units, bus speeds, memoria disponibilă, tipul instrucțiunilor</li>
-                    <li><strong>Două tipuri de viteză:</strong> latency (timp start→finalizare) și throughput (lucru/unitate timp)</li>
+                    <li><strong>IPC (Instructions Per Cycle) � masura eficien?ei:</strong> calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
+                    <li><strong>Clock rate (MHz/GHz) � metric &#238;n?elator:</strong> ma?ina cu clock mai mare nu e neaparat mai rapida</li>
+                    <li><strong>Al?i factori:</strong> functional units, bus speeds, memoria disponibila, tipul instruc?iunilor</li>
+                    <li><strong>Doua tipuri de viteza:</strong> latency (timp start?finalizare) ?i throughput (lucru/unitate timp)</li>
                     <li><strong>Pipeline:</strong> latency mai mare, throughput mai bun</li>
-                    <li><strong>Benchmarking:</strong> măsoară timpul pe suite de teste standardizate</li>
+                    <li><strong>Benchmarking:</strong> masoara timpul pe suite de teste standardizate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.7 — Eficiență energetică și tendințe</h3>
+                <h3>4.6.7 � Eficien?a energetica ?i tendin?e</h3>
                 <ul class="specs-list">
-                    <li>MIPS/W (millions of instructions per second per watt) – metric clasic</li>
-                    <li>Performance-per-watt – metric modern</li>
-                    <li>Circuitele integrate moderne consumă mai multă putere totală &#238;n ciuda &#238;mbunătățirilor per-tranzistor</li>
-                    <li>Densitatea de putere (watts/cm&#178;) crește pe măsură ce nod-ul de fabricație scade → management termic mai dificil</li>
-                    <li>Temperatura ridicată crește rezistența interconexiunilor → feedback pozitiv putere-căldură</li>
-                    <li><strong>Tendința:</strong> focusul s-a mutat de la clock speed la eficiență energetică (Intel Haswell: 30-40W → 10-20W)</li>
-                    <li><strong>Procesoare:</strong> frecvența 3→4 GHz (2002-2006), dar puterea scăzută cu 50% &#238;n Haswell</li>
+                    <li>MIPS/W (millions of instructions per second per watt) � metric clasic</li>
+                    <li>Performance-per-watt � metric modern</li>
+                    <li>Circuitele integrate moderne consuma mai multa putere totala &#238;n ciuda &#238;mbunata?irilor per-tranzistor</li>
+                    <li>Densitatea de putere (watts/cm&#178;) cre?te pe masura ce nod-ul de fabrica?ie scade ? management termic mai dificil</li>
+                    <li>Temperatura ridicata cre?te rezisten?a interconexiunilor ? feedback pozitiv putere-caldura</li>
+                    <li><strong>Tendin?a:</strong> focusul s-a mutat de la clock speed la eficien?a energetica (Intel Haswell: 30-40W ? 10-20W)</li>
+                    <li><strong>Procesoare:</strong> frecven?a 3?4 GHz (2002-2006), dar puterea scazuta cu 50% &#238;n Haswell</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.8 — Definiție și rol</h3>
+                <h3>4.6.8 � Defini?ie ?i rol</h3>
                 <ul class="specs-list">
                     <li>Motherboard (mainboard, system board, logic board) = PCB principal &#238;ntr-un calculator</li>
                     <li>Permite comunicarea &#238;ntre componentele electronice cruciale: CPU, memorie, periferice</li>
-                    <li><strong>Conține subsisteme semnificative:</strong> CPU, chipset I/O, memory controller, conectori interfață</li>
-                    <li>Termenul „motherboard&quot; documentat din 1965 (revista Electronics)</li>
+                    <li><strong>Con?ine subsisteme semnificative:</strong> CPU, chipset I/O, memory controller, conectori interfa?a</li>
+                    <li>Termenul �motherboard&quot; documentat din 1965 (revista Electronics)</li>
                     <li><strong>Primul motherboard:</strong> Planar Breadboard, designat de Patty McHugh (IBM, 1981 PC)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.9 — Componentele unui motherboard modern</h3>
+                <h3>4.6.9 � Componentele unui motherboard modern</h3>
                 <ul class="specs-list">
-                    <li>CPU socket(s) – montarea procesorului (sau BGA lipit direct)</li>
-                    <li><strong>Memory slots – DIMM:</strong> DDR3/DDR4/DDR5 sau LPDDRx onboard</li>
-                    <li>Chipset – interfață CPU↔memorie principală↔bus-uri periferice</li>
-                    <li>Non-volatile memory (flash) – firmware/BIOS</li>
-                    <li>Clock generator – semnal de ceas pentru sincronizare</li>
-                    <li>Expansion slots – PCIe x16 (GPU), PCIe x1, legacy PCI</li>
-                    <li>Power connectors – distribuie alimentarea la CPU, chipset, RAM, sloturi</li>
-                    <li>Storage connectors – SATA, NVMe (M.2)</li>
-                    <li>I/O connectors – USB, Ethernet, audio, display output</li>
+                    <li>CPU socket(s) � montarea procesorului (sau BGA lipit direct)</li>
+                    <li><strong>Memory slots � DIMM:</strong> DDR3/DDR4/DDR5 sau LPDDRx onboard</li>
+                    <li>Chipset � interfa?a CPU?memorie principala?bus-uri periferice</li>
+                    <li>Non-volatile memory (flash) � firmware/BIOS</li>
+                    <li>Clock generator � semnal de ceas pentru sincronizare</li>
+                    <li>Expansion slots � PCIe x16 (GPU), PCIe x1, legacy PCI</li>
+                    <li>Power connectors � distribuie alimentarea la CPU, chipset, RAM, sloturi</li>
+                    <li>Storage connectors � SATA, NVMe (M.2)</li>
+                    <li>I/O connectors � USB, Ethernet, audio, display output</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.10 — Periferice integrate (onboard)</h3>
+                <h3>4.6.10 � Periferice integrate (onboard)</h3>
                 <ul class="specs-list">
                     <li>Disk controllers (SATA, istoric PATA)</li>
                     <li>Integrated GPU (2D/3D cu VGA/DVI/HDMI/DisplayPort/TV)</li>
@@ -180,78 +180,78 @@
                     <li>Ethernet controller</li>
                     <li>USB controller</li>
                     <li>Wi-Fi + Bluetooth</li>
-                    <li>Senzori temperatură, tensiune, viteză ventilatoare</li>
+                    <li>Senzori temperatura, tensiune, viteza ventilatoare</li>
                     <li>Power management IC (PMIC)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.11 — Form factor și evoluție</h3>
+                <h3>4.6.11 � Form factor ?i evolu?ie</h3>
                 <ul class="specs-list">
-                    <li><strong>ATX – cel mai comun form factor desktop (2024):</strong> microATX, mini-ITX, EATX</li>
-                    <li>Case + motherboard + PSU trebuie să aibă form factor compatibil</li>
+                    <li><strong>ATX � cel mai comun form factor desktop (2024):</strong> microATX, mini-ITX, EATX</li>
+                    <li>Case + motherboard + PSU trebuie sa aiba form factor compatibil</li>
                     <li><strong>Laptopuri:</strong> motherboard integrat, miniaturizat, greu de upgrade</li>
-                    <li>Evoluția integrării:</li>
-                    <li><strong>1980s:</strong> Super I/O chips – keyboard, mouse, floppy, serial, parallel</li>
+                    <li>Evolu?ia integrarii:</li>
+                    <li><strong>1980s:</strong> Super I/O chips � keyboard, mouse, floppy, serial, parallel</li>
                     <li><strong>Late 1990s:</strong> audio, video, storage, networking integrate pe motherboard</li>
-                    <li><strong>2000s+:</strong> laptopuri integrează practici toate perifericele</li>
-                    <li><strong>Tableta/netbook:</strong> memorie, procesor, networking, storage – totul pe o singură placă</li>
+                    <li><strong>2000s+:</strong> laptopuri integreaza practici toate perifericele</li>
+                    <li><strong>Tableta/netbook:</strong> memorie, procesor, networking, storage � totul pe o singura placa</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.12 — Bootstrapping (Power-On)</h3>
+                <h3>4.6.12 � Bootstrapping (Power-On)</h3>
                 <ul class="specs-list">
                     <li>Firmware (BIOS/UEFI) stocat &#238;n flash non-volatil pe motherboard</li>
-                    <li><strong>La pornire:</strong> POST (Power-On Self Test) – testează și inițializează hardware</li>
-                    <li><strong>POST verifică:</strong> video card, expansion cards, temperaturi/tensiuni/ventilatoare, CMOS, keyboard, mouse, sound card, network, storage (HDD/SSD), USB</li>
+                    <li><strong>La pornire:</strong> POST (Power-On Self Test) � testeaza ?i ini?ializeaza hardware</li>
+                    <li><strong>POST verifica:</strong> video card, expansion cards, temperaturi/tensiuni/ventilatoare, CMOS, keyboard, mouse, sound card, network, storage (HDD/SSD), USB</li>
                     <li>UEFI a &#238;nlocuit BIOS-ul clasic (obligatoriu Windows 8+)</li>
-                    <li><strong>Boot sequence:</strong> firmware → POST → detectare boot device → &#238;ncărcare OS</li>
+                    <li><strong>Boot sequence:</strong> firmware ? POST ? detectare boot device ? &#238;ncarcare OS</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.13 — Definiție și rol</h3>
+                <h3>4.6.13 � Defini?ie ?i rol</h3>
                 <ul class="specs-list">
-                    <li>Chipset = set de circuite integrate pe motherboard care gestionează fluxul de date &#238;ntre procesor, memorie și periferice</li>
-                    <li><strong>Determină performanța sistemului:</strong> controlează comunicarea CPU↔dispozitive externe</li>
+                    <li>Chipset = set de circuite integrate pe motherboard care gestioneaza fluxul de date &#238;ntre procesor, memorie ?i periferice</li>
+                    <li><strong>Determina performan?a sistemului:</strong> controleaza comunicarea CPU?dispozitive externe</li>
                     <li><strong>Primul chipset PC:</strong> NEAT chipset (Chips and Technologies, 1984) pentru IBM PC AT cu Intel 80286</li>
-                    <li>Designat să funcționeze cu o familie specifică de microprocesoare</li>
+                    <li>Designat sa func?ioneze cu o familie specifica de microprocesoare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.14 — Arhitectura Northbridge/Southbridge</h3>
+                <h3>4.6.14 � Arhitectura Northbridge/Southbridge</h3>
                 <ul class="specs-list">
-                    <li><strong>Northbridge:</strong> legătură CPU ↔ dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
+                    <li><strong>Northbridge:</strong> legatura CPU ? dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
                     <li><strong>Southbridge:</strong> periferice lower-speed (USB, SATA, audio, serial, parallel, PCI)</li>
-                    <li><strong>Front-Side Bus (FSB):</strong> conexiunea CPU ↔ Northbridge</li>
-                    <li>Northbridge era intermediar &#238;ntre CPU și Southbridge</li>
-                    <li><strong>Interfața Northbridge↔Southbridge:</strong> bus-ul PCI (anii 1990-2000)</li>
-                    <li>Performanța CPU era foarte dependentă de chipset-ul northbridge (memory performance)</li>
+                    <li><strong>Front-Side Bus (FSB):</strong> conexiunea CPU ? Northbridge</li>
+                    <li>Northbridge era intermediar &#238;ntre CPU ?i Southbridge</li>
+                    <li><strong>Interfa?a Northbridge?Southbridge:</strong> bus-ul PCI (anii 1990-2000)</li>
+                    <li>Performan?a CPU era foarte dependenta de chipset-ul northbridge (memory performance)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.15 — Evoluția către integrare &#238;n procesor</h3>
+                <h3>4.6.15 � Evolu?ia catre integrare &#238;n procesor</h3>
                 <ul class="specs-list">
-                    <li><strong>2003:</strong> AMD Athlon 64 – primul cu memory controller integrat &#238;n CPU → nu mai e nevoie de northbridge pentru acces memorie</li>
-                    <li><strong>2008:</strong> Intel Core i series + X58 – Intel integrează și el memory controller</li>
-                    <li><strong>Progresiv:</strong> PCIe controller și GPU integrat direct pe CPU die</li>
-                    <li>Intel Platform Controller Hub (PCH) = northbridge+southbridge condensate &#238;ntr-un singur chip (de fapt un southbridge &#238;mbunătățit)</li>
-                    <li>AMD Fusion Controller Hub (FCH) – echivalentul AMD</li>
-                    <li>PCH-ul a fost integrat &#238;n package-ul procesorului (Skylake mobile – al doilea die)</li>
-                    <li><strong>AMD Zen:</strong> chipset-ul gestionează doar I/O de viteză mică (USB, SATA); toate conexiunile PCIe merg direct la CPU</li>
-                    <li><strong>AMD EPYC server:</strong> SoC complet, nu mai necesită chipset extern</li>
-                    <li><strong>Interfețe moderne:</strong> DMI (Intel), UMI (AMD) – legătura procesor↔chipset</li>
+                    <li><strong>2003:</strong> AMD Athlon 64 � primul cu memory controller integrat &#238;n CPU ? nu mai e nevoie de northbridge pentru acces memorie</li>
+                    <li><strong>2008:</strong> Intel Core i series + X58 � Intel integreaza ?i el memory controller</li>
+                    <li><strong>Progresiv:</strong> PCIe controller ?i GPU integrat direct pe CPU die</li>
+                    <li>Intel Platform Controller Hub (PCH) = northbridge+southbridge condensate &#238;ntr-un singur chip (de fapt un southbridge &#238;mbunata?it)</li>
+                    <li>AMD Fusion Controller Hub (FCH) � echivalentul AMD</li>
+                    <li>PCH-ul a fost integrat &#238;n package-ul procesorului (Skylake mobile � al doilea die)</li>
+                    <li><strong>AMD Zen:</strong> chipset-ul gestioneaza doar I/O de viteza mica (USB, SATA); toate conexiunile PCIe merg direct la CPU</li>
+                    <li><strong>AMD EPYC server:</strong> SoC complet, nu mai necesita chipset extern</li>
+                    <li><strong>Interfe?e moderne:</strong> DMI (Intel), UMI (AMD) � legatura procesor?chipset</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.6.16 — Console și sisteme mobile</h3>
+                <h3>4.6.16 � Console ?i sisteme mobile</h3>
                 <ul class="specs-list">
-                    <li><strong>Home computers, console, arcade (1980-1990):</strong> chipset = cipuri custom audio/grafică (ex: Original Amiga chipset, Sega System 16)</li>
-                    <li><strong>Smartphone-uri moderne:</strong> SoC (System on Chip) – CPU+GPU+modem+I/O pe un singur chip (ex: Qualcomm Snapdragon, Apple A-series)</li>
+                    <li><strong>Home computers, console, arcade (1980-1990):</strong> chipset = cipuri custom audio/grafica (ex: Original Amiga chipset, Sega System 16)</li>
+                    <li><strong>Smartphone-uri moderne:</strong> SoC (System on Chip) � CPU+GPU+modem+I/O pe un singur chip (ex: Qualcomm Snapdragon, Apple A-series)</li>
                 </ul>
             </div>
 
@@ -260,53 +260,53 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și componente fundamentale</h3>
+                <h3>Defini?ie ?i componente fundamentale</h3>
                 <ul class="specs-list">
-                    <li>Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetică centrală (ALU), unitate de control centrală, memorie (date + instrucțiuni), mediu de &#238;nregistrare extern (stocare), organe de intrare/ieșire</li>
+                    <li>Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetica centrala (ALU), unitate de control centrala, memorie (date + instruc?iuni), mediu de &#238;nregistrare extern (stocare), organe de intrare/ie?ire</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Von Neumann Bottleneck</h3>
                 <ul class="specs-list">
-                    <li>CPU-ul nu poate accesa simultan instrucțiuni și date (partajează același bus)</li>
-                    <li>CPU trebuie să aștepte transferul datelor din/&#238;n memorie</li>
-                    <li>Severitatea crește cu fiecare generație de CPU (viteza CPU crește mai repede dec&#226;t bandwidth-ul memoriei)</li>
+                    <li>CPU-ul nu poate accesa simultan instruc?iuni ?i date (partajeaza acela?i bus)</li>
+                    <li>CPU trebuie sa a?tepte transferul datelor din/&#238;n memorie</li>
+                    <li>Severitatea cre?te cu fiecare genera?ie de CPU (viteza CPU cre?te mai repede dec&#226;t bandwidth-ul memoriei)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Mitigări ale bottleneck-ului</h3>
+                <h3>Mitigari ale bottleneck-ului</h3>
                 <ul class="specs-list">
-                    <li>Cache &#238;ntre CPU și memoria principală</li>
+                    <li>Cache &#238;ntre CPU ?i memoria principala</li>
                     <li>Parallel computing, NUMA (Non-Uniform Memory Access)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiția și subcategoriile</h3>
-                <p>2. Microarhitectură (Computer Organization) – cum un procesor specific implementează ISA-ul (ex: dimensiunea cache-ului)</p>
-                <p>3. Systems Design – toate componentele hardware &#238;n afara CPU: DMA, virtualizare, multiprocessing</p>
+                <h3>Defini?ia ?i subcategoriile</h3>
+                <p>2. Microarhitectura (Computer Organization) � cum un procesor specific implementeaza ISA-ul (ex: dimensiunea cache-ului)</p>
+                <p>3. Systems Design � toate componentele hardware &#238;n afara CPU: DMA, virtualizare, multiprocessing</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și rol</h3>
+                <h3>Defini?ie ?i rol</h3>
                 <ul class="specs-list">
                     <li>Permite comunicarea &#238;ntre componentele electronice cruciale: CPU, memorie, periferice</li>
-                    <li><strong>Conține subsisteme semnificative:</strong> CPU, chipset I/O, memory controller, conectori interfață</li>
+                    <li><strong>Con?ine subsisteme semnificative:</strong> CPU, chipset I/O, memory controller, conectori interfa?a</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Componentele unui motherboard modern</h3>
                 <ul class="specs-list">
-                    <li>CPU socket(s) – montarea procesorului (sau BGA lipit direct)</li>
-                    <li>Chipset – interfață CPU↔memorie principală↔bus-uri periferice</li>
-                    <li>Expansion slots – PCIe x16 (GPU), PCIe x1, legacy PCI</li>
-                    <li>Power connectors – distribuie alimentarea la CPU, chipset, RAM, sloturi</li>
+                    <li>CPU socket(s) � montarea procesorului (sau BGA lipit direct)</li>
+                    <li>Chipset � interfa?a CPU?memorie principala?bus-uri periferice</li>
+                    <li>Expansion slots � PCIe x16 (GPU), PCIe x1, legacy PCI</li>
+                    <li>Power connectors � distribuie alimentarea la CPU, chipset, RAM, sloturi</li>
                 </ul>
             </div>
 
@@ -318,36 +318,36 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Form factor și evoluție</h3>
+                <h3>Form factor ?i evolu?ie</h3>
                 <ul class="specs-list">
-                    <li><strong>Tableta/netbook:</strong> memorie, procesor, networking, storage – totul pe o singură placă</li>
+                    <li><strong>Tableta/netbook:</strong> memorie, procesor, networking, storage � totul pe o singura placa</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și rol</h3>
+                <h3>Defini?ie ?i rol</h3>
                 <ul class="specs-list">
-                    <li>Chipset = set de circuite integrate pe motherboard care gestionează fluxul de date &#238;ntre procesor, memorie și periferice</li>
-                    <li><strong>Determină performanța sistemului:</strong> controlează comunicarea CPU↔dispozitive externe</li>
+                    <li>Chipset = set de circuite integrate pe motherboard care gestioneaza fluxul de date &#238;ntre procesor, memorie ?i periferice</li>
+                    <li><strong>Determina performan?a sistemului:</strong> controleaza comunicarea CPU?dispozitive externe</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Arhitectura Northbridge/Southbridge</h3>
                 <ul class="specs-list">
-                    <li><strong>Northbridge:</strong> legătură CPU ↔ dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
-                    <li><strong>Front-Side Bus (FSB):</strong> conexiunea CPU ↔ Northbridge</li>
-                    <li>Northbridge era intermediar &#238;ntre CPU și Southbridge</li>
-                    <li>Performanța CPU era foarte dependentă de chipset-ul northbridge (memory performance)</li>
+                    <li><strong>Northbridge:</strong> legatura CPU ? dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
+                    <li><strong>Front-Side Bus (FSB):</strong> conexiunea CPU ? Northbridge</li>
+                    <li>Northbridge era intermediar &#238;ntre CPU ?i Southbridge</li>
+                    <li>Performan?a CPU era foarte dependenta de chipset-ul northbridge (memory performance)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Evoluția către integrare &#238;n procesor</h3>
+                <h3>Evolu?ia catre integrare &#238;n procesor</h3>
                 <ul class="specs-list">
-                    <li><strong>Progresiv:</strong> PCIe controller și GPU integrat direct pe CPU die</li>
-                    <li>PCH-ul a fost integrat &#238;n package-ul procesorului (Skylake mobile – al doilea die)</li>
-                    <li><strong>Interfețe moderne:</strong> DMI (Intel), UMI (AMD) – legătura procesor↔chipset</li>
+                    <li><strong>Progresiv:</strong> PCIe controller ?i GPU integrat direct pe CPU die</li>
+                    <li>PCH-ul a fost integrat &#238;n package-ul procesorului (Skylake mobile � al doilea die)</li>
+                    <li><strong>Interfe?e moderne:</strong> DMI (Intel), UMI (AMD) � legatura procesor?chipset</li>
                 </ul>
             </div>
         </div>
@@ -355,41 +355,41 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Mitigări ale bottleneck-ului</h3>
+                <h3>Mitigari ale bottleneck-ului</h3>
                 <ul class="specs-list">
-                    <li>System on Chip (SoC) – CPU + ierarhia memoriei pe același chip, reduce latența</li>
+                    <li>System on Chip (SoC) � CPU + ierarhia memoriei pe acela?i chip, reduce laten?a</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și rol</h3>
+                <h3>Defini?ie ?i rol</h3>
                 <ul class="specs-list">
                     <li>Motherboard (mainboard, system board, logic board) = PCB principal &#238;ntr-un calculator</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Form factor și evoluție</h3>
+                <h3>Form factor ?i evolu?ie</h3>
                 <ul class="specs-list">
-                    <li>Case + motherboard + PSU trebuie să aibă form factor compatibil</li>
+                    <li>Case + motherboard + PSU trebuie sa aiba form factor compatibil</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Evoluția către integrare &#238;n procesor</h3>
+                <h3>Evolu?ia catre integrare &#238;n procesor</h3>
                 <ul class="specs-list">
-                    <li><strong>AMD EPYC server:</strong> SoC complet, nu mai necesită chipset extern</li>
+                    <li><strong>AMD EPYC server:</strong> SoC complet, nu mai necesita chipset extern</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Console și sisteme mobile</h3>
+                <h3>Console ?i sisteme mobile</h3>
                 <ul class="specs-list">
-                    <li><strong>Home computers, console, arcade (1980-1990):</strong> chipset = cipuri custom audio/grafică (ex: Original Amiga chipset, Sega System 16)</li>
-                    <li><strong>Smartphone-uri moderne:</strong> SoC (System on Chip) – CPU+GPU+modem+I/O pe un singur chip (ex: Qualcomm Snapdragon, Apple A-series)</li>
+                    <li><strong>Home computers, console, arcade (1980-1990):</strong> chipset = cipuri custom audio/grafica (ex: Original Amiga chipset, Sega System 16)</li>
+                    <li><strong>Smartphone-uri moderne:</strong> SoC (System on Chip) � CPU+GPU+modem+I/O pe un singur chip (ex: Qualcomm Snapdragon, Apple A-series)</li>
                 </ul>
             </div>
         </div>
@@ -400,34 +400,34 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Eficiență energetică și tendințe</h3>
+                <h3>Eficien?a energetica ?i tendin?e</h3>
                 <ul class="specs-list">
-                    <li><strong>Tendința:</strong> focusul s-a mutat de la clock speed la eficiență energetică (Intel Haswell: 30-40W → 10-20W)</li>
+                    <li><strong>Tendin?a:</strong> focusul s-a mutat de la clock speed la eficien?a energetica (Intel Haswell: 30-40W ? 10-20W)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Componentele unui motherboard modern</h3>
                 <ul class="specs-list">
-                    <li><strong>Memory slots – DIMM:</strong> DDR3/DDR4/DDR5 sau LPDDRx onboard</li>
+                    <li><strong>Memory slots � DIMM:</strong> DDR3/DDR4/DDR5 sau LPDDRx onboard</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și rol</h3>
+                <h3>Defini?ie ?i rol</h3>
                 <ul class="specs-list">
                     <li><strong>Primul chipset PC:</strong> NEAT chipset (Chips and Technologies, 1984) pentru IBM PC AT cu Intel 80286</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Evoluția către integrare &#238;n procesor</h3>
+                <h3>Evolu?ia catre integrare &#238;n procesor</h3>
                 <ul class="specs-list">
-                    <li><strong>2003:</strong> AMD Athlon 64 – primul cu memory controller integrat &#238;n CPU → nu mai e nevoie de northbridge pentru acces memorie</li>
-                    <li><strong>2008:</strong> Intel Core i series + X58 – Intel integrează și el memory controller</li>
-                    <li>Intel Platform Controller Hub (PCH) = northbridge+southbridge condensate &#238;ntr-un singur chip (de fapt un southbridge &#238;mbunătățit)</li>
-                    <li>AMD Fusion Controller Hub (FCH) – echivalentul AMD</li>
-                    <li><strong>AMD Zen:</strong> chipset-ul gestionează doar I/O de viteză mică (USB, SATA); toate conexiunile PCIe merg direct la CPU</li>
+                    <li><strong>2003:</strong> AMD Athlon 64 � primul cu memory controller integrat &#238;n CPU ? nu mai e nevoie de northbridge pentru acces memorie</li>
+                    <li><strong>2008:</strong> Intel Core i series + X58 � Intel integreaza ?i el memory controller</li>
+                    <li>Intel Platform Controller Hub (PCH) = northbridge+southbridge condensate &#238;ntr-un singur chip (de fapt un southbridge &#238;mbunata?it)</li>
+                    <li>AMD Fusion Controller Hub (FCH) � echivalentul AMD</li>
+                    <li><strong>AMD Zen:</strong> chipset-ul gestioneaza doar I/O de viteza mica (USB, SATA); toate conexiunile PCIe merg direct la CPU</li>
                 </ul>
             </div>
         </div>
@@ -439,8 +439,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Probleme asociate cu Ierarhia sistemului complet</h3>
-                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                    <h3>?? Probleme asociate cu Ierarhia sistemului complet</h3>
+                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
                 </div>
             </div>
         </div>
@@ -451,22 +451,22 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție și componente fundamentale:</strong> Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetică centrală (ALU), unitate de control centrală, memorie (date + instrucțiuni), mediu de &#238;nregistra...</li>
-                    <li><strong>Von Neumann Bottleneck:</strong> Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
-                    <li><strong>Mitigări ale bottleneck-ului:</strong> Cache &#238;ntre CPU și memoria principală</li>
-                    <li><strong>Evoluția arhitecturii:</strong> 1960-1970: Memory-mapped I/O – dispozitivele I/O tratate ca memorie</li>
-                    <li><strong>Definiția și subcategoriile:</strong> Arhitectura calculatorului = structura unui sistem de calcul din componente</li>
-                    <li><strong>Performanță:</strong> IPC (Instructions Per Cycle) – măsura eficienței: calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
-                    <li><strong>Eficiență energetică și tendințe:</strong> MIPS/W (millions of instructions per second per watt) – metric clasic</li>
-                    <li><strong>Definiție și rol:</strong> Motherboard (mainboard, system board, logic board) = PCB principal &#238;ntr-un calculator</li>
-                    <li><strong>Componentele unui motherboard modern:</strong> CPU socket(s) – montarea procesorului (sau BGA lipit direct)</li>
+                    <li><strong>Defini?ie ?i componente fundamentale:</strong> Arhitectura Von Neumann (1945) descrie un calculator digital cu 5 componente: unitate aritmetica centrala (ALU), unitate de control centrala, memorie (date + instruc?iuni), mediu de &#238;nregistra...</li>
+                    <li><strong>Von Neumann Bottleneck:</strong> Bottleneck = bus-ul comun pentru instruc?iuni ?i date limiteaza throughput-ul</li>
+                    <li><strong>Mitigari ale bottleneck-ului:</strong> Cache &#238;ntre CPU ?i memoria principala</li>
+                    <li><strong>Evolu?ia arhitecturii:</strong> 1960-1970: Memory-mapped I/O � dispozitivele I/O tratate ca memorie</li>
+                    <li><strong>Defini?ia ?i subcategoriile:</strong> Arhitectura calculatorului = structura unui sistem de calcul din componente</li>
+                    <li><strong>Performan?a:</strong> IPC (Instructions Per Cycle) � masura eficien?ei: calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
+                    <li><strong>Eficien?a energetica ?i tendin?e:</strong> MIPS/W (millions of instructions per second per watt) � metric clasic</li>
+                    <li><strong>Defini?ie ?i rol:</strong> Motherboard (mainboard, system board, logic board) = PCB principal &#238;ntr-un calculator</li>
+                    <li><strong>Componentele unui motherboard modern:</strong> CPU socket(s) � montarea procesorului (sau BGA lipit direct)</li>
                     <li><strong>Periferice integrate (onboard):</strong> Disk controllers (SATA, istoric PATA)</li>
-                    <li><strong>Form factor și evoluție:</strong> ATX – cel mai comun form factor desktop (2024): microATX, mini-ITX, EATX</li>
+                    <li><strong>Form factor ?i evolu?ie:</strong> ATX � cel mai comun form factor desktop (2024): microATX, mini-ITX, EATX</li>
                     <li><strong>Bootstrapping (Power-On):</strong> Firmware (BIOS/UEFI) stocat &#238;n flash non-volatil pe motherboard</li>
-                    <li><strong>Definiție și rol:</strong> Chipset = set de circuite integrate pe motherboard care gestionează fluxul de date &#238;ntre procesor, memorie și periferice</li>
-                    <li><strong>Arhitectura Northbridge/Southbridge:</strong> Northbridge: legătură CPU ↔ dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
-                    <li><strong>Evoluția către integrare &#238;n procesor:</strong> 2003: AMD Athlon 64 – primul cu memory controller integrat &#238;n CPU → nu mai e nevoie de northbridge pentru acces memorie</li>
-                    <li><strong>Console și sisteme mobile:</strong> Home computers, console, arcade (1980-1990): chipset = cipuri custom audio/grafică (ex: Original Amiga chipset, Sega System 16)</li>
+                    <li><strong>Defini?ie ?i rol:</strong> Chipset = set de circuite integrate pe motherboard care gestioneaza fluxul de date &#238;ntre procesor, memorie ?i periferice</li>
+                    <li><strong>Arhitectura Northbridge/Southbridge:</strong> Northbridge: legatura CPU ? dispozitive high-speed (RAM, GPU/AGP/PCIe)</li>
+                    <li><strong>Evolu?ia catre integrare &#238;n procesor:</strong> 2003: AMD Athlon 64 � primul cu memory controller integrat &#238;n CPU ? nu mai e nevoie de northbridge pentru acces memorie</li>
+                    <li><strong>Console ?i sisteme mobile:</strong> Home computers, console, arcade (1980-1990): chipset = cipuri custom audio/grafica (ex: Original Amiga chipset, Sega System 16)</li>
                 </ul>
             </div>
         </div>
@@ -474,80 +474,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Model stored-program?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Model stored-program?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
-                    <li>b) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
-                    <li>c) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
-                    <li>d) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>a) Bottleneck = bus-ul comun pentru instruc?iuni ?i date limiteaza throughput-ul</li>
+                    <li>b) instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</li>
+                    <li>c) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert ?i Mauchly</li>
+                    <li>d) �high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — instrucțiunile și datele sunt stocate &#238;n aceeași memorie</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Von Neumann Bottleneck?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Von Neumann Bottleneck?</strong></p>
                 <ul class="specs-list">
-                    <li>a) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
-                    <li>b) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
-                    <li>c) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
-                    <li>d) Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</li>
+                    <li>a) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert ?i Mauchly</li>
+                    <li>b) �high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>c) instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</li>
+                    <li>d) Bottleneck = bus-ul comun pentru instruc?iuni ?i date limiteaza throughput-ul</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � Bottleneck = bus-ul comun pentru instruc?iuni ?i date limiteaza throughput-ul</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: 1960-1970?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: 1960-1970?</strong></p>
                 <ul class="specs-list">
-                    <li>a) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
-                    <li>b) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
-                    <li>c) Memory-mapped I/O – dispozitivele I/O tratate ca memorie</li>
-                    <li>d) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
+                    <li>a) �high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>b) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert ?i Mauchly</li>
+                    <li>c) Memory-mapped I/O � dispozitivele I/O tratate ca memorie</li>
+                    <li>d) instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — Memory-mapped I/O – dispozitivele I/O tratate ca memorie</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � Memory-mapped I/O � dispozitivele I/O tratate ca memorie</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Definiția și subcategoriile?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Defini?ia ?i subcategoriile?</strong></p>
                 <ul class="specs-list">
-                    <li>a) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
-                    <li>b) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
+                    <li>a) �high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>b) instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</li>
                     <li>c) Arhitectura calculatorului = structura unui sistem de calcul din componente</li>
-                    <li>d) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
+                    <li>d) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert ?i Mauchly</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — Arhitectura calculatorului = structura unui sistem de calcul din componente</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � Arhitectura calculatorului = structura unui sistem de calcul din componente</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: IPC (Instructions Per Cycle) – măsura eficienței?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: IPC (Instructions Per Cycle) � masura eficien?ei?</strong></p>
                 <ul class="specs-list">
-                    <li>a) „high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
-                    <li>b) instrucțiunile și datele sunt stocate &#238;n aceeași memorie</li>
-                    <li>c) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert și Mauchly</li>
+                    <li>a) �high-speed memory M, central arithmetic unit CA, outside recording medium R, input organ I, output organ O, central control CC&quot;</li>
+                    <li>b) instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</li>
+                    <li>c) First Draft of a Report on the EDVAC (John von Neumann, 1945), bazat pe munca lui Eckert ?i Mauchly</li>
                     <li>d) calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � calculatoare vechi ~0.1 IPC, moderne ~1, superscalar 3-5 IPC</strong></p>
                 </details>
             </div>
         </div>
@@ -555,22 +555,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Ierarhia sistemului complet</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de CPU. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Ierarhia sistemului complet</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de CPU. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: CPU.</li>
-                    <li>2. Ce rol are GPU în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre CPU și RAM.</li>
+                    <li>2. Ce rol are GPU �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre CPU ?i RAM.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Model stored-program: instrucțiunile și datele sunt stocate &#238;n aceeași memorie</p>
-                        <p><strong>2.</strong> Bottleneck = bus-ul comun pentru instrucțiuni și date limitează throughput-ul</p>
-                        <p><strong>3.</strong> Cache &#238;ntre CPU și memoria principală</p>
+                        <p><strong>1.</strong> Model stored-program: instruc?iunile ?i datele sunt stocate &#238;n aceea?i memorie</p>
+                        <p><strong>2.</strong> Bottleneck = bus-ul comun pentru instruc?iuni ?i date limiteaza throughput-ul</p>
+                        <p><strong>3.</strong> Cache &#238;ntre CPU ?i memoria principala</p>
                     </div>
                 </details>
             </div>
@@ -601,7 +601,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-4-4.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 4.4 &mdash; Bus &#x219;i Interconect&#x103;ri</a>
@@ -658,7 +658,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cum funcționează hardware-ul unui computer? Un teardown animat 3D care arată ierarhia completă a sistemului (Branch Education).</p>
+                <p class="video-description">Cum func?ioneaza hardware-ul unui computer? Un teardown animat 3D care arata ierarhia completa a sistemului (Branch Education).</p>
             </div>
         </div>
     </section>
@@ -668,7 +668,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatică</p>
+                <p class="footer-sub">Proiect Atestat Informatica</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

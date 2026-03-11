@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 8.3 — Detectarea scurtcircuitelor">
+    <meta name="description" content="Lec?ia 8.3 � Detectarea scurtcircuitelor">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 8.3 — Detectarea scurtcircuitelor — Console Notebook</title>
+    <title>Lec?ia 8.3 � Detectarea scurtcircuitelor � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 — DIAGNOSTIC HARDWARE</p>
-            <h1>Lecția 8.3 — Detectarea scurtcircuitelor</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 � DIAGNOSTIC HARDWARE</p>
+            <h1>Lec?ia 8.3 � Detectarea scurtcircuitelor</h1>
             <p>identificarea scurtcircuitelor, metode de testare</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,123 +41,123 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>1. P&#226;rghie de acționare (manuală)</p>
-                <p>Această lecție acoperă: <strong>identificarea scurtcircuitelor</strong>, <strong>metode de testare</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>1. P&#226;rghie de ac?ionare (manuala)</p>
+                <p>Aceasta lec?ie acopera: <strong>identificarea scurtcircuitelor</strong>, <strong>metode de testare</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.1 — Definiție și principii de bază</h3>
+                <h3>8.3.1 � Defini?ie ?i principii de baza</h3>
                 <ul class="specs-list">
-                    <li>Un scurtcircuit (short circuit, abreviat &quot;short&quot; sau &quot;s/c&quot;) este un circuit electric care permite curentului electric să călătorească pe o cale neintenționdă cu impedanță electrică foarte mică sau zero</li>
-                    <li>Rezultă un curent excesiv care curge prin circuit</li>
-                    <li>Opusul scurtcircuitului este circuitul deschis (open circuit) = rezistență infinită sau impedanță foarte mare &#238;ntre două noduri</li>
-                    <li><strong>Definiție formală:</strong> o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite</li>
-                    <li>Curentul rezultat este limitat doar de rezistența echivalentă Th&#233;venin a restului rețelei</li>
-                    <li>Poate cauza deteriorarea circuitului, supra&#238;ncălzire, incendiu sau explozie</li>
-                    <li><strong>Există cazuri de scurtcircuite intenționate (ex:</strong> protectoare de circuit crowbar pentru detectarea supratensiunii)</li>
-                    <li>&#206;ntr-un scurtcircuit &quot;ideal&quot; nu există rezistență și deci nicio cădere de tensiune pe conexiune</li>
+                    <li>Un scurtcircuit (short circuit, abreviat &quot;short&quot; sau &quot;s/c&quot;) este un circuit electric care permite curentului electric sa calatoreasca pe o cale neinten?ionda cu impedan?a electrica foarte mica sau zero</li>
+                    <li>Rezulta un curent excesiv care curge prin circuit</li>
+                    <li>Opusul scurtcircuitului este circuitul deschis (open circuit) = rezisten?a infinita sau impedan?a foarte mare &#238;ntre doua noduri</li>
+                    <li><strong>Defini?ie formala:</strong> o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite</li>
+                    <li>Curentul rezultat este limitat doar de rezisten?a echivalenta Th&#233;venin a restului re?elei</li>
+                    <li>Poate cauza deteriorarea circuitului, supra&#238;ncalzire, incendiu sau explozie</li>
+                    <li><strong>Exista cazuri de scurtcircuite inten?ionate (ex:</strong> protectoare de circuit crowbar pentru detectarea supratensiunii)</li>
+                    <li>&#206;ntr-un scurtcircuit &quot;ideal&quot; nu exista rezisten?a ?i deci nicio cadere de tensiune pe conexiune</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.2 — Exemple și cauze comune</h3>
+                <h3>8.3.2 � Exemple ?i cauze comune</h3>
                 <ul class="specs-list">
-                    <li><strong>Tipul comun:</strong> terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</li>
-                    <li>Cu rezistență mică, curentul mare va cauza livrarea unei cantități mari de energie &#238;ntr-o perioadă scurtă</li>
-                    <li>Curent mare prin baterie → creștere rapidă de temperatură → posibilă explozie cu eliberare de hidrogen și electrolit (acid/bază) care poate arde țesuturi și cauza orbire</li>
-                    <li>Firele supra&#238;ncărcate → supra&#238;ncălzire → deteriorarea izolației firului sau declanșarea unui incendiu</li>
-                    <li><strong>Cauze &#238;n dispozitive electrice:</strong> deteriorarea izolației unui fir, sau introducerea unui alt material conductor</li>
-                    <li><strong>&#206;n circuite de rețea:</strong> scurtcircuite &#238;ntre două faze, &#238;ntre fază și nul, sau &#238;ntre fază și păm&#226;nt</li>
-                    <li>Scurtcircuitele fază-nul sau fază-păm&#226;nt = curent foarte mare → declanșare rapidă a protecției de supracurent</li>
-                    <li>Scurtcircuite nul-păm&#226;nt sau &#238;ntre conductori de aceeași fază = periculoase deoarece nu produc curent mare imediat</li>
-                    <li>Transformatoarele de distribuție au reactanță de dispersie deliberată (5-10% din impedanța la sarcină plină) pentru a limita amplitudinea și rata de creștere a curentului de defect</li>
+                    <li><strong>Tipul comun:</strong> terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</li>
+                    <li>Cu rezisten?a mica, curentul mare va cauza livrarea unei cantita?i mari de energie &#238;ntr-o perioada scurta</li>
+                    <li>Curent mare prin baterie ? cre?tere rapida de temperatura ? posibila explozie cu eliberare de hidrogen ?i electrolit (acid/baza) care poate arde ?esuturi ?i cauza orbire</li>
+                    <li>Firele supra&#238;ncarcate ? supra&#238;ncalzire ? deteriorarea izola?iei firului sau declan?area unui incendiu</li>
+                    <li><strong>Cauze &#238;n dispozitive electrice:</strong> deteriorarea izola?iei unui fir, sau introducerea unui alt material conductor</li>
+                    <li><strong>&#206;n circuite de re?ea:</strong> scurtcircuite &#238;ntre doua faze, &#238;ntre faza ?i nul, sau &#238;ntre faza ?i pam&#226;nt</li>
+                    <li>Scurtcircuitele faza-nul sau faza-pam&#226;nt = curent foarte mare ? declan?are rapida a protec?iei de supracurent</li>
+                    <li>Scurtcircuite nul-pam&#226;nt sau &#238;ntre conductori de aceea?i faza = periculoase deoarece nu produc curent mare imediat</li>
+                    <li>Transformatoarele de distribu?ie au reactan?a de dispersie deliberata (5-10% din impedan?a la sarcina plina) pentru a limita amplitudinea ?i rata de cre?tere a curentului de defect</li>
                     <li>Un scurtcircuit poate duce la formarea unui arc electric</li>
-                    <li>Arcul = canal de plasmă ionizată foarte conductiv, poate persista chiar după evaporarea materialului original al conductoarelor</li>
-                    <li><strong>Temperatura arcului electric:</strong> zeci de mii de grade, cauz&#226;nd topirea, migrarea și evaporarea metalului de pe suprafețele de contact</li>
+                    <li>Arcul = canal de plasma ionizata foarte conductiv, poate persista chiar dupa evaporarea materialului original al conductoarelor</li>
+                    <li><strong>Temperatura arcului electric:</strong> zeci de mii de grade, cauz&#226;nd topirea, migrarea ?i evaporarea metalului de pe suprafe?ele de contact</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.3 — Daune cauzate de scurtcircuite</h3>
+                <h3>8.3.3 � Daune cauzate de scurtcircuite</h3>
                 <ul class="specs-list">
-                    <li>&#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de funcționare</li>
-                    <li>&#206;ntr-o instalație necorespunzătoare, supracurentul cauzează &#238;ncălzire ohmică (Joule) &#238;n părțile cu conductivitate slabă:</li>
-                    <li>&#206;mbinări defectuoase &#238;n cablaj</li>
+                    <li>&#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de func?ionare</li>
+                    <li>&#206;ntr-o instala?ie necorespunzatoare, supracurentul cauzeaza &#238;ncalzire ohmica (Joule) &#238;n par?ile cu conductivitate slaba:</li>
+                    <li>&#206;mbinari defectuoase &#238;n cablaj</li>
                     <li>Contacte defectuoase &#238;n prize</li>
                     <li>Chiar locul scurtcircuitului</li>
-                    <li>Supra&#238;ncălzirea = cauză frecventă de incendii</li>
-                    <li>Arcul electric produce căldură mare și poate aprinde substanțe combustibile</li>
-                    <li>&#206;n sisteme industriale, forțele dinamice generate de curenți mari de scurtcircuit fac conductoarele să se depărteze</li>
-                    <li>Bare colectoare, cabluri și aparataj pot fi deteriorate de forțele generate</li>
+                    <li>Supra&#238;ncalzirea = cauza frecventa de incendii</li>
+                    <li>Arcul electric produce caldura mare ?i poate aprinde substan?e combustibile</li>
+                    <li>&#206;n sisteme industriale, for?ele dinamice generate de curen?i mari de scurtcircuit fac conductoarele sa se departeze</li>
+                    <li>Bare colectoare, cabluri ?i aparataj pot fi deteriorate de for?ele generate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.4 — Protecția &#238;mpotriva scurtcircuitelor</h3>
+                <h3>8.3.4 � Protec?ia &#238;mpotriva scurtcircuitelor</h3>
                 <ul class="specs-list">
-                    <li><strong>Daunele pot fi reduse sau prevenite prin:</strong> siguranțe fuzibile, &#238;ntrerupătoare de circuit (circuit breakers), sau alte dispozitive de protecție la suprasarcină</li>
-                    <li>Acestea deconectează alimentarea ca reacție la curentul excesiv</li>
-                    <li>Protecția la suprasarcină trebuie aleasă conform curentului nominal al circuitului</li>
-                    <li>Circuitele pentru aparate mari de uz casnic necesită dispozitive setate/evaluate la curenți mai mari dec&#226;t circuitele de iluminat</li>
-                    <li>Calibrele de s&#226;rmă specificate &#238;n codurile de construcție asigură funcționarea sigură &#238;n conjuncție cu protecția la suprasarcină</li>
-                    <li>Un dispozitiv de protecție la supracurent trebuie evaluat pentru a &#238;ntrerupe &#238;n siguranță curentul maxim prospectiv de scurtcircuit</li>
+                    <li><strong>Daunele pot fi reduse sau prevenite prin:</strong> siguran?e fuzibile, &#238;ntrerupatoare de circuit (circuit breakers), sau alte dispozitive de protec?ie la suprasarcina</li>
+                    <li>Acestea deconecteaza alimentarea ca reac?ie la curentul excesiv</li>
+                    <li>Protec?ia la suprasarcina trebuie aleasa conform curentului nominal al circuitului</li>
+                    <li>Circuitele pentru aparate mari de uz casnic necesita dispozitive setate/evaluate la curen?i mai mari dec&#226;t circuitele de iluminat</li>
+                    <li>Calibrele de s&#226;rma specificate &#238;n codurile de construc?ie asigura func?ionarea sigura &#238;n conjunc?ie cu protec?ia la suprasarcina</li>
+                    <li>Un dispozitiv de protec?ie la supracurent trebuie evaluat pentru a &#238;ntrerupe &#238;n siguran?a curentul maxim prospectiv de scurtcircuit</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.5 — Definiția și funcția &#238;ntrerupătorului de circuit</h3>
+                <h3>8.3.5 � Defini?ia ?i func?ia &#238;ntrerupatorului de circuit</h3>
                 <ul class="specs-list">
-                    <li>Dispozitiv de siguranță electrică proiectat pentru a proteja un circuit electric de deteriorarea cauzată de supracurent</li>
-                    <li><strong>Funcția de bază:</strong> &#238;ntreruperea curentului pentru protejarea echipamentului și prevenirea incendiilor</li>
-                    <li>Spre deosebire de siguranțe fuzibile (care se &#238;ntrerup o dată și trebuie &#238;nlocuite), un circuit breaker poate fi resetat manual sau automat</li>
-                    <li>Sunt instalate &#238;n tablouri de distribuție (distribution boards)</li>
-                    <li>Sunt fabricate pentru diferite valori de curent, de la protecția circuitelor de curent mic la switchgear pentru protecția circuitelor de &#238;naltă tensiune</li>
+                    <li>Dispozitiv de siguran?a electrica proiectat pentru a proteja un circuit electric de deteriorarea cauzata de supracurent</li>
+                    <li><strong>Func?ia de baza:</strong> &#238;ntreruperea curentului pentru protejarea echipamentului ?i prevenirea incendiilor</li>
+                    <li>Spre deosebire de siguran?e fuzibile (care se &#238;ntrerup o data ?i trebuie &#238;nlocuite), un circuit breaker poate fi resetat manual sau automat</li>
+                    <li>Sunt instalate &#238;n tablouri de distribu?ie (distribution boards)</li>
+                    <li>Sunt fabricate pentru diferite valori de curent, de la protec?ia circuitelor de curent mic la switchgear pentru protec?ia circuitelor de &#238;nalta tensiune</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.6 — Funcționarea – detectarea defectului</h3>
+                <h3>8.3.6 � Func?ionarea � detectarea defectului</h3>
                 <ul class="specs-list">
                     <li>Toate sistemele de circuit breaker au caracteristici comune de operare</li>
-                    <li><strong>Primul pas:</strong> detectarea condiției de defect</li>
-                    <li><strong>&#206;n circuite de joasă tensiune:</strong> detectarea se face &#238;n interiorul dispozitivului</li>
-                    <li>Se utilizează efectele termice sau magnetice ale curentului electric</li>
-                    <li><strong>Circuit breakers pentru curenți mari sau tensiuni mari:</strong> se folosesc relee de protecție cu dispozitive pilot pentru a detecta defectul</li>
-                    <li>Odată detectat defectul, contactele trebuie să se deschidă pentru a &#238;ntrerupe circuitul</li>
-                    <li>Se folosește energie stocată mecanic (arc/resort sau aer comprimat) pentru separarea contactelor</li>
-                    <li>Curentul mai mare din defect poate fi folosit el &#238;nsuși pentru separarea contactelor (prin dilatare termică sau c&#226;mp magnetic crescut)</li>
+                    <li><strong>Primul pas:</strong> detectarea condi?iei de defect</li>
+                    <li><strong>&#206;n circuite de joasa tensiune:</strong> detectarea se face &#238;n interiorul dispozitivului</li>
+                    <li>Se utilizeaza efectele termice sau magnetice ale curentului electric</li>
+                    <li><strong>Circuit breakers pentru curen?i mari sau tensiuni mari:</strong> se folosesc relee de protec?ie cu dispozitive pilot pentru a detecta defectul</li>
+                    <li>Odata detectat defectul, contactele trebuie sa se deschida pentru a &#238;ntrerupe circuitul</li>
+                    <li>Se folose?te energie stocata mecanic (arc/resort sau aer comprimat) pentru separarea contactelor</li>
+                    <li>Curentul mai mare din defect poate fi folosit el &#238;nsu?i pentru separarea contactelor (prin dilatare termica sau c&#226;mp magnetic crescut)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.7 — Tipuri de circuit breakers relevante pentru detectarea scurtcircuitelor</h3>
+                <h3>8.3.7 � Tipuri de circuit breakers relevante pentru detectarea scurtcircuitelor</h3>
                 <ul class="specs-list">
-                    <li><strong>MCB (Miniature Circuit Breaker):</strong> curent nominal p&#226;nă la 125 A, operare termică sau termo-magnetică</li>
-                    <li><strong>MCCB (Molded Case Circuit Breaker):</strong> curent nominal p&#226;nă la 1600 A</li>
-                    <li><strong>Thermal-magnetic:</strong> cel mai comun tip, combină ambele tehnici:</li>
-                    <li><strong>Electromagnet:</strong> răspuns instantaneu la creșteri mari de curent (scurtcircuite)</li>
-                    <li><strong>Bandă bimetalică:</strong> răspuns la suprasarcini pe termen mai lung, dar de amplitudine mai mică</li>
+                    <li><strong>MCB (Miniature Circuit Breaker):</strong> curent nominal p&#226;na la 125 A, operare termica sau termo-magnetica</li>
+                    <li><strong>MCCB (Molded Case Circuit Breaker):</strong> curent nominal p&#226;na la 1600 A</li>
+                    <li><strong>Thermal-magnetic:</strong> cel mai comun tip, combina ambele tehnici:</li>
+                    <li><strong>Electromagnet:</strong> raspuns instantaneu la cre?teri mari de curent (scurtcircuite)</li>
+                    <li><strong>Banda bimetalica:</strong> raspuns la suprasarcini pe termen mai lung, dar de amplitudine mai mica</li>
                     <li>Permite v&#226;rfuri scurte de curent (pornire motor)</li>
-                    <li>La supracurent foarte mare (scurtcircuit), elementul magnetic declanșează fără &#238;nt&#226;rziere</li>
+                    <li>La supracurent foarte mare (scurtcircuit), elementul magnetic declan?eaza fara &#238;nt&#226;rziere</li>
                     <li>Componente MCB DIN-rail:</li>
                 </ul>
-                <p>1. P&#226;rghie de acționare (manuală)</p>
-                <p>2. Mecanism de acționare</p>
+                <p>1. P&#226;rghie de ac?ionare (manuala)</p>
+                <p>2. Mecanism de ac?ionare</p>
                 <p>3. Contacte</p>
                 <p>4. Terminale</p>
-                <p>5. Bandă bimetalică (suprasarcini mai mici, pe termen mai lung)</p>
-                <p>6. Șurub de calibrare</p>
-                <p>7. Solenoid (deconectare rapidă la supracurenți mari)</p>
+                <p>5. Banda bimetalica (suprasarcini mai mici, pe termen mai lung)</p>
+                <p>6. ?urub de calibrare</p>
+                <p>7. Solenoid (deconectare rapida la supracuren?i mari)</p>
                 <p>8. Divizor/extinctor de arc</p>
                 <ul class="specs-list">
-                    <li>Tipuri B/C/D/K/Z cu multiplii diferiți ai curentului nominal pentru declanșare instantanee:</li>
+                    <li>Tipuri B/C/D/K/Z cu multiplii diferi?i ai curentului nominal pentru declan?are instantanee:</li>
                     <li><strong>B:</strong> 3-5&#215; curentul nominal</li>
                     <li><strong>C:</strong> 5-10&#215; curentul nominal</li>
                     <li><strong>D:</strong> 10-14&#215; curentul nominal</li>
@@ -165,85 +165,85 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.8 — Alte dispozitive de protecție</h3>
+                <h3>8.3.8 � Alte dispozitive de protec?ie</h3>
                 <ul class="specs-list">
-                    <li><strong>RCD (Residual-Current Device) / GFCI:</strong> detectează dezechilibrul de curent (defecte la păm&#226;nt)</li>
-                    <li><strong>RCBO:</strong> combină RCD + MCB &#238;ntr-un singur pachet</li>
-                    <li><strong>AFCI (Arc-Fault Circuit Interrupter):</strong> detectează arcuri electrice de la fire slăbite</li>
-                    <li><strong>Solid-State Circuit Breakers (SSCB):</strong> &#238;ntrerupere &#238;n fracțiuni de microsecundă, monitorizare &#238;n timp real</li>
+                    <li><strong>RCD (Residual-Current Device) / GFCI:</strong> detecteaza dezechilibrul de curent (defecte la pam&#226;nt)</li>
+                    <li><strong>RCBO:</strong> combina RCD + MCB &#238;ntr-un singur pachet</li>
+                    <li><strong>AFCI (Arc-Fault Circuit Interrupter):</strong> detecteaza arcuri electrice de la fire slabite</li>
+                    <li><strong>Solid-State Circuit Breakers (SSCB):</strong> &#238;ntrerupere &#238;n frac?iuni de microsecunda, monitorizare &#238;n timp real</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.9 — Funcționarea siguranței fuzibile</h3>
+                <h3>8.3.9 � Func?ionarea siguran?ei fuzibile</h3>
                 <ul class="specs-list">
-                    <li><strong>Componentă esențială:</strong> fir sau bandă metalică care se topește c&#226;nd curentul este prea mare</li>
-                    <li><strong>Dispozitiv sacrificial:</strong> odată acționat = circuit deschis, trebuie &#238;nlocuit</li>
-                    <li><strong>Construcție:</strong> element fuzibil din zinc, cupru, argint, aluminiu sau aliaje, montat &#238;ntre terminale, de obicei &#238;ntr-o carcasă necombustibilă</li>
-                    <li>Siguranța este conectată &#238;n serie pentru a transporta tot curentul prin circuitul protejat</li>
-                    <li>Rezistența elementului generează căldură. La curenți normali, temperatura nu atinge valori periculoase</li>
-                    <li>La curent prea mare, elementul se topește (direct sau printr-o sudură cu aliaj) = deschide circuitul</li>
+                    <li><strong>Componenta esen?iala:</strong> fir sau banda metalica care se tope?te c&#226;nd curentul este prea mare</li>
+                    <li><strong>Dispozitiv sacrificial:</strong> odata ac?ionat = circuit deschis, trebuie &#238;nlocuit</li>
+                    <li><strong>Construc?ie:</strong> element fuzibil din zinc, cupru, argint, aluminiu sau aliaje, montat &#238;ntre terminale, de obicei &#238;ntr-o carcasa necombustibila</li>
+                    <li>Siguran?a este conectata &#238;n serie pentru a transporta tot curentul prin circuitul protejat</li>
+                    <li>Rezisten?a elementului genereaza caldura. La curen?i normali, temperatura nu atinge valori periculoase</li>
+                    <li>La curent prea mare, elementul se tope?te (direct sau printr-o sudura cu aliaj) = deschide circuitul</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.10 — Caracteristici timp-curent</h3>
+                <h3>8.3.10 � Caracteristici timp-curent</h3>
                 <ul class="specs-list">
-                    <li>Viteza de ardere depinde de curentul care curge și de materialul siguranței</li>
-                    <li><strong>Timp de operare:</strong> nu este un interval fix, scade pe măsură ce curentul crește</li>
-                    <li><strong>Siguranță standard:</strong> necesită 2&#215; curentul nominal pentru a se arde &#238;n 1 secundă</li>
+                    <li>Viteza de ardere depinde de curentul care curge ?i de materialul siguran?ei</li>
+                    <li><strong>Timp de operare:</strong> nu este un interval fix, scade pe masura ce curentul cre?te</li>
+                    <li><strong>Siguran?a standard:</strong> necesita 2&#215; curentul nominal pentru a se arde &#238;n 1 secunda</li>
                     <li><strong>Fast-blow:</strong> 2&#215; curentul nominal pentru ardere &#238;n 0.1 secunde</li>
-                    <li><strong>Slow-blow (anti-surge):</strong> permite curent peste valoarea nominală pentru perioade scurte (pornirea motoarelor)</li>
-                    <li>Siguranța fuzibilă poate &#238;ntrerupe defect &#238;n un sfert de ciclu al curentului de defect (vs. jumătate sau un ciclu pentru circuit breaker)</li>
-                    <li><strong>Timp de răspuns:</strong> siguranță ≈ 0.002 secunde; circuit breaker ≈ 0.02 - 0.05 secunde</li>
-                    <li><strong>HRC (High Rupture Capacity):</strong> pot fi evaluate pentru &#238;ntreruperea curenților de p&#226;nă la 300.000 A</li>
-                    <li><strong>Siguranțe current-limiting:</strong> operează at&#226;t de rapid &#238;nc&#226;t limitează energia totală &quot;let-through&quot;</li>
+                    <li><strong>Slow-blow (anti-surge):</strong> permite curent peste valoarea nominala pentru perioade scurte (pornirea motoarelor)</li>
+                    <li>Siguran?a fuzibila poate &#238;ntrerupe defect &#238;n un sfert de ciclu al curentului de defect (vs. jumatate sau un ciclu pentru circuit breaker)</li>
+                    <li><strong>Timp de raspuns:</strong> siguran?a � 0.002 secunde; circuit breaker � 0.02 - 0.05 secunde</li>
+                    <li><strong>HRC (High Rupture Capacity):</strong> pot fi evaluate pentru &#238;ntreruperea curen?ilor de p&#226;na la 300.000 A</li>
+                    <li><strong>Siguran?e current-limiting:</strong> opereaza at&#226;t de rapid &#238;nc&#226;t limiteaza energia totala &quot;let-through&quot;</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.11 — Siguranțe speciale și comparație cu circuit breakers</h3>
+                <h3>8.3.11 � Siguran?e speciale ?i compara?ie cu circuit breakers</h3>
                 <ul class="specs-list">
-                    <li><strong>Siguranțe rezistibile (PPTC):</strong> element termoplastic conductiv care crește rezistența la supracurent; se resetează la răcire; folosite &#238;n aerospațial/nuclear și pe plăci de bază</li>
-                    <li><strong>Siguranțe termice:</strong> conțin compoziție fuzibilă sensibilă la temperatură; &#238;nt&#226;lnite &#238;n aparate de cafea, uscătoare de păr</li>
-                    <li><strong>Avantaje siguranțe vs. circuit breakers:</strong> cost mai mic, mai simple, răspuns mai rapid, forțează &#238;nlocuirea</li>
-                    <li><strong>Dezavantaje:</strong> nu se pot reseta, nu pot detecta defecte la păm&#226;nt independent</li>
+                    <li><strong>Siguran?e rezistibile (PPTC):</strong> element termoplastic conductiv care cre?te rezisten?a la supracurent; se reseteaza la racire; folosite &#238;n aerospa?ial/nuclear ?i pe placi de baza</li>
+                    <li><strong>Siguran?e termice:</strong> con?in compozi?ie fuzibila sensibila la temperatura; &#238;nt&#226;lnite &#238;n aparate de cafea, uscatoare de par</li>
+                    <li><strong>Avantaje siguran?e vs. circuit breakers:</strong> cost mai mic, mai simple, raspuns mai rapid, for?eaza &#238;nlocuirea</li>
+                    <li><strong>Dezavantaje:</strong> nu se pot reseta, nu pot detecta defecte la pam&#226;nt independent</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.12 — Termografia ca metodă de detectare a scurtcircuitelor</h3>
+                <h3>8.3.12 � Termografia ca metoda de detectare a scurtcircuitelor</h3>
                 <ul class="specs-list">
-                    <li>Termografia infraroșu (IRT) = tehnică de măsurare și imagistică &#238;n care o cameră termică detectează radiația infraroșu de la suprafața obiectelor</li>
-                    <li>Imaginea vizuală rezultată se numește termogramă</li>
-                    <li>Obiectele la temperaturi diferite emit cantități diferite de radiație infraroșu</li>
+                    <li>Termografia infraro?u (IRT) = tehnica de masurare ?i imagistica &#238;n care o camera termica detecteaza radia?ia infraro?u de la suprafa?a obiectelor</li>
+                    <li>Imaginea vizuala rezultata se nume?te termograma</li>
+                    <li>Obiectele la temperaturi diferite emit cantita?i diferite de radia?ie infraro?u</li>
                     <li>Obiectele calde se disting clar de fundalul rece</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.13 — Aplicații industriale relevante pentru scurtcircuite</h3>
+                <h3>8.3.13 � Aplica?ii industriale relevante pentru scurtcircuite</h3>
                 <ul class="specs-list">
-                    <li>Diagnosticarea și &#238;ntreținerea echipamentelor de distribuție electrică (transformatoare, panouri de distribuție)</li>
-                    <li>Detectarea &#238;mbinărilor supra&#238;ncălzite &#238;n sisteme electrice</li>
-                    <li><strong>Predictive maintenance (avertizare timpurie a defecțiunilor):</strong> părți mai calde = semn de defecțiune iminentă</li>
-                    <li>Fault diagnosis și troubleshooting</li>
-                    <li>Prin setări corespunzătoare ale camerei, sistemele electrice pot fi scanate și problemele pot fi găsite</li>
-                    <li>Identificarea zonelor supra&#238;ncălzite și a surselor de pierderi termice</li>
-                    <li><strong>Termografie activă vs. pasivă:</strong> pasivă = obiectele au temperatură mai mare/mică natural; activă = se aplică o sursă de energie externă</li>
+                    <li>Diagnosticarea ?i &#238;ntre?inerea echipamentelor de distribu?ie electrica (transformatoare, panouri de distribu?ie)</li>
+                    <li>Detectarea &#238;mbinarilor supra&#238;ncalzite &#238;n sisteme electrice</li>
+                    <li><strong>Predictive maintenance (avertizare timpurie a defec?iunilor):</strong> par?i mai calde = semn de defec?iune iminenta</li>
+                    <li>Fault diagnosis ?i troubleshooting</li>
+                    <li>Prin setari corespunzatoare ale camerei, sistemele electrice pot fi scanate ?i problemele pot fi gasite</li>
+                    <li>Identificarea zonelor supra&#238;ncalzite ?i a surselor de pierderi termice</li>
+                    <li><strong>Termografie activa vs. pasiva:</strong> pasiva = obiectele au temperatura mai mare/mica natural; activa = se aplica o sursa de energie externa</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.3.14 — Metode de detectare a scurtcircuitelor – sinteză</h3>
+                <h3>8.3.14 � Metode de detectare a scurtcircuitelor � sinteza</h3>
                 <ul class="specs-list">
-                    <li><strong>Inspecție vizuală:</strong> urme de arsură, izolație topită, decolorare a componentelor</li>
-                    <li><strong>Testul de continuitate cu multimetru:</strong> verificarea rezistenței &#238;ntre puncte care nu ar trebui să fie conectate</li>
-                    <li><strong>Măsurarea rezistenței:</strong> rezistență foarte mică (aproape de 0 Ω) &#238;ntre două puncte care ar trebui izolate = indicator de scurtcircuit</li>
-                    <li><strong>Testare cu alimentare deconectată:</strong> obligatorie pentru siguranță</li>
-                    <li><strong>Termografia:</strong> identificarea punctelor fierbinți (hotspots) care indică curenți exceesivi sau conexiuni defectuoase</li>
-                    <li><strong>&#206;mpărțirea circuitului (half-splitting):</strong> deconectarea secțiunilor pentru a izola zona defectă</li>
-                    <li><strong>Verificarea siguranțelor/&#238;ntrerupătoarelor:</strong> o siguranță arsă sau un circuit breaker declanșat indică posibil scurtcircuit</li>
+                    <li><strong>Inspec?ie vizuala:</strong> urme de arsura, izola?ie topita, decolorare a componentelor</li>
+                    <li><strong>Testul de continuitate cu multimetru:</strong> verificarea rezisten?ei &#238;ntre puncte care nu ar trebui sa fie conectate</li>
+                    <li><strong>Masurarea rezisten?ei:</strong> rezisten?a foarte mica (aproape de 0 O) &#238;ntre doua puncte care ar trebui izolate = indicator de scurtcircuit</li>
+                    <li><strong>Testare cu alimentare deconectata:</strong> obligatorie pentru siguran?a</li>
+                    <li><strong>Termografia:</strong> identificarea punctelor fierbin?i (hotspots) care indica curen?i exceesivi sau conexiuni defectuoase</li>
+                    <li><strong>&#206;mpar?irea circuitului (half-splitting):</strong> deconectarea sec?iunilor pentru a izola zona defecta</li>
+                    <li><strong>Verificarea siguran?elor/&#238;ntrerupatoarelor:</strong> o siguran?a arsa sau un circuit breaker declan?at indica posibil scurtcircuit</li>
                 </ul>
             </div>
 
@@ -252,20 +252,20 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Conceptele din această lecție — Detectarea scurtcircuitelor — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
+                <p>Conceptele din aceasta lec?ie � Detectarea scurtcircuitelor � reprezinta fundamentul fizic al tehnologiei digitale utilizate �n consolele moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>În contextul consolelor de jocuri, detectarea scurtcircuitelor joacă un rol esențial în funcționarea hardware-ului.</p>
+                <p>�n contextul consolelor de jocuri, detectarea scurtcircuitelor joaca un rol esen?ial �n func?ionarea hardware-ului.</p>
             </div>
         </div>
     </section>
@@ -275,26 +275,26 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiția și funcția &#238;ntrerupătorului de circuit</h3>
+                <h3>Defini?ia ?i func?ia &#238;ntrerupatorului de circuit</h3>
                 <ul class="specs-list">
-                    <li>Sunt fabricate pentru diferite valori de curent, de la protecția circuitelor de curent mic la switchgear pentru protecția circuitelor de &#238;naltă tensiune</li>
+                    <li>Sunt fabricate pentru diferite valori de curent, de la protec?ia circuitelor de curent mic la switchgear pentru protec?ia circuitelor de &#238;nalta tensiune</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Funcționarea siguranței fuzibile</h3>
+                <h3>Func?ionarea siguran?ei fuzibile</h3>
                 <ul class="specs-list">
-                    <li>Siguranța este conectată &#238;n serie pentru a transporta tot curentul prin circuitul protejat</li>
+                    <li>Siguran?a este conectata &#238;n serie pentru a transporta tot curentul prin circuitul protejat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Siguranțe speciale și comparație cu circuit breakers</h3>
+                <h3>Siguran?e speciale ?i compara?ie cu circuit breakers</h3>
                 <ul class="specs-list">
-                    <li><strong>Siguranțe rezistibile (PPTC):</strong> element termoplastic conductiv care crește rezistența la supracurent; se resetează la răcire; folosite &#238;n aerospațial/nuclear și pe plăci de bază</li>
-                    <li><strong>Siguranțe termice:</strong> conțin compoziție fuzibilă sensibilă la temperatură; &#238;nt&#226;lnite &#238;n aparate de cafea, uscătoare de păr</li>
-                    <li><strong>Avantaje siguranțe vs. circuit breakers:</strong> cost mai mic, mai simple, răspuns mai rapid, forțează &#238;nlocuirea</li>
-                    <li><strong>Dezavantaje:</strong> nu se pot reseta, nu pot detecta defecte la păm&#226;nt independent</li>
+                    <li><strong>Siguran?e rezistibile (PPTC):</strong> element termoplastic conductiv care cre?te rezisten?a la supracurent; se reseteaza la racire; folosite &#238;n aerospa?ial/nuclear ?i pe placi de baza</li>
+                    <li><strong>Siguran?e termice:</strong> con?in compozi?ie fuzibila sensibila la temperatura; &#238;nt&#226;lnite &#238;n aparate de cafea, uscatoare de par</li>
+                    <li><strong>Avantaje siguran?e vs. circuit breakers:</strong> cost mai mic, mai simple, raspuns mai rapid, for?eaza &#238;nlocuirea</li>
+                    <li><strong>Dezavantaje:</strong> nu se pot reseta, nu pot detecta defecte la pam&#226;nt independent</li>
                 </ul>
             </div>
         </div>
@@ -306,85 +306,85 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Definiție și principii de bază</h3>
-                    <p>Un scurtcircuit (short circuit, abreviat &quot;short&quot; sau &quot;s/c&quot;) este un circuit electric care permite curentului electric să călătorească pe o cale neintenționdă cu impedanță electrică foarte mică sau zero</p>
-                    <p>Opusul scurtcircuitului este circuitul deschis (open circuit) = rezistență infinită sau impedanță foarte mare &#238;ntre două noduri</p>
-                    <p>Poate cauza deteriorarea circuitului, supra&#238;ncălzire, incendiu sau explozie</p>
-                    <p>Există cazuri de scurtcircuite intenționate (ex: protectoare de circuit crowbar pentru detectarea supratensiunii)</p>
-                    <p>&#206;ntr-un scurtcircuit &quot;ideal&quot; nu există rezistență și deci nicio cădere de tensiune pe conexiune</p>
+                    <h3>?? Defini?ie ?i principii de baza</h3>
+                    <p>Un scurtcircuit (short circuit, abreviat &quot;short&quot; sau &quot;s/c&quot;) este un circuit electric care permite curentului electric sa calatoreasca pe o cale neinten?ionda cu impedan?a electrica foarte mica sau zero</p>
+                    <p>Opusul scurtcircuitului este circuitul deschis (open circuit) = rezisten?a infinita sau impedan?a foarte mare &#238;ntre doua noduri</p>
+                    <p>Poate cauza deteriorarea circuitului, supra&#238;ncalzire, incendiu sau explozie</p>
+                    <p>Exista cazuri de scurtcircuite inten?ionate (ex: protectoare de circuit crowbar pentru detectarea supratensiunii)</p>
+                    <p>&#206;ntr-un scurtcircuit &quot;ideal&quot; nu exista rezisten?a ?i deci nicio cadere de tensiune pe conexiune</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Exemple și cauze comune</h3>
-                    <p>Firele supra&#238;ncărcate → supra&#238;ncălzire → deteriorarea izolației firului sau declanșarea unui incendiu</p>
-                    <p>Cauze &#238;n dispozitive electrice: deteriorarea izolației unui fir, sau introducerea unui alt material conductor</p>
-                    <p>&#206;n circuite de rețea: scurtcircuite &#238;ntre două faze, &#238;ntre fază și nul, sau &#238;ntre fază și păm&#226;nt</p>
-                    <p>Scurtcircuitele fază-nul sau fază-păm&#226;nt = curent foarte mare → declanșare rapidă a protecției de supracurent</p>
-                    <p>Scurtcircuite nul-păm&#226;nt sau &#238;ntre conductori de aceeași fază = periculoase deoarece nu produc curent mare imediat</p>
-                    <p>Transformatoarele de distribuție au reactanță de dispersie deliberată (5-10% din impedanța la sarcină plină) pentru a limita amplitudinea și rata de creștere a curentului de defect</p>
+                    <h3>?? Exemple ?i cauze comune</h3>
+                    <p>Firele supra&#238;ncarcate ? supra&#238;ncalzire ? deteriorarea izola?iei firului sau declan?area unui incendiu</p>
+                    <p>Cauze &#238;n dispozitive electrice: deteriorarea izola?iei unui fir, sau introducerea unui alt material conductor</p>
+                    <p>&#206;n circuite de re?ea: scurtcircuite &#238;ntre doua faze, &#238;ntre faza ?i nul, sau &#238;ntre faza ?i pam&#226;nt</p>
+                    <p>Scurtcircuitele faza-nul sau faza-pam&#226;nt = curent foarte mare ? declan?are rapida a protec?iei de supracurent</p>
+                    <p>Scurtcircuite nul-pam&#226;nt sau &#238;ntre conductori de aceea?i faza = periculoase deoarece nu produc curent mare imediat</p>
+                    <p>Transformatoarele de distribu?ie au reactan?a de dispersie deliberata (5-10% din impedan?a la sarcina plina) pentru a limita amplitudinea ?i rata de cre?tere a curentului de defect</p>
                     <p>Un scurtcircuit poate duce la formarea unui arc electric</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Daune cauzate de scurtcircuite</h3>
-                    <p>&#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de funcționare</p>
-                    <p>&#206;mbinări defectuoase &#238;n cablaj</p>
+                    <h3>?? Daune cauzate de scurtcircuite</h3>
+                    <p>&#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de func?ionare</p>
+                    <p>&#206;mbinari defectuoase &#238;n cablaj</p>
                     <p>Contacte defectuoase &#238;n prize</p>
                     <p>Chiar locul scurtcircuitului</p>
-                    <p>&#206;n sisteme industriale, forțele dinamice generate de curenți mari de scurtcircuit fac conductoarele să se depărteze</p>
-                    <p>Bare colectoare, cabluri și aparataj pot fi deteriorate de forțele generate</p>
+                    <p>&#206;n sisteme industriale, for?ele dinamice generate de curen?i mari de scurtcircuit fac conductoarele sa se departeze</p>
+                    <p>Bare colectoare, cabluri ?i aparataj pot fi deteriorate de for?ele generate</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Protecția &#238;mpotriva scurtcircuitelor</h3>
-                    <p>Daunele pot fi reduse sau prevenite prin: siguranțe fuzibile, &#238;ntrerupătoare de circuit (circuit breakers), sau alte dispozitive de protecție la suprasarcină</p>
-                    <p>Protecția la suprasarcină trebuie aleasă conform curentului nominal al circuitului</p>
-                    <p>Calibrele de s&#226;rmă specificate &#238;n codurile de construcție asigură funcționarea sigură &#238;n conjuncție cu protecția la suprasarcină</p>
-                    <p>Un dispozitiv de protecție la supracurent trebuie evaluat pentru a &#238;ntrerupe &#238;n siguranță curentul maxim prospectiv de scurtcircuit</p>
+                    <h3>?? Protec?ia &#238;mpotriva scurtcircuitelor</h3>
+                    <p>Daunele pot fi reduse sau prevenite prin: siguran?e fuzibile, &#238;ntrerupatoare de circuit (circuit breakers), sau alte dispozitive de protec?ie la suprasarcina</p>
+                    <p>Protec?ia la suprasarcina trebuie aleasa conform curentului nominal al circuitului</p>
+                    <p>Calibrele de s&#226;rma specificate &#238;n codurile de construc?ie asigura func?ionarea sigura &#238;n conjunc?ie cu protec?ia la suprasarcina</p>
+                    <p>Un dispozitiv de protec?ie la supracurent trebuie evaluat pentru a &#238;ntrerupe &#238;n siguran?a curentul maxim prospectiv de scurtcircuit</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Definiția și funcția &#238;ntrerupătorului de circuit</h3>
-                    <p>Dispozitiv de siguranță electrică proiectat pentru a proteja un circuit electric de deteriorarea cauzată de supracurent</p>
+                    <h3>?? Defini?ia ?i func?ia &#238;ntrerupatorului de circuit</h3>
+                    <p>Dispozitiv de siguran?a electrica proiectat pentru a proteja un circuit electric de deteriorarea cauzata de supracurent</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Funcționarea – detectarea defectului</h3>
+                    <h3>?? Func?ionarea � detectarea defectului</h3>
                     <p>Toate sistemele de circuit breaker au caracteristici comune de operare</p>
-                    <p>Primul pas: detectarea condiției de defect</p>
-                    <p>&#206;n circuite de joasă tensiune: detectarea se face &#238;n interiorul dispozitivului</p>
-                    <p>Se utilizează efectele termice sau magnetice ale curentului electric</p>
-                    <p>Circuit breakers pentru curenți mari sau tensiuni mari: se folosesc relee de protecție cu dispozitive pilot pentru a detecta defectul</p>
-                    <p>Odată detectat defectul, contactele trebuie să se deschidă pentru a &#238;ntrerupe circuitul</p>
-                    <p>Se folosește energie stocată mecanic (arc/resort sau aer comprimat) pentru separarea contactelor</p>
-                    <p>Curentul mai mare din defect poate fi folosit el &#238;nsuși pentru separarea contactelor (prin dilatare termică sau c&#226;mp magnetic crescut)</p>
+                    <p>Primul pas: detectarea condi?iei de defect</p>
+                    <p>&#206;n circuite de joasa tensiune: detectarea se face &#238;n interiorul dispozitivului</p>
+                    <p>Se utilizeaza efectele termice sau magnetice ale curentului electric</p>
+                    <p>Circuit breakers pentru curen?i mari sau tensiuni mari: se folosesc relee de protec?ie cu dispozitive pilot pentru a detecta defectul</p>
+                    <p>Odata detectat defectul, contactele trebuie sa se deschida pentru a &#238;ntrerupe circuitul</p>
+                    <p>Se folose?te energie stocata mecanic (arc/resort sau aer comprimat) pentru separarea contactelor</p>
+                    <p>Curentul mai mare din defect poate fi folosit el &#238;nsu?i pentru separarea contactelor (prin dilatare termica sau c&#226;mp magnetic crescut)</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Tipuri de circuit breakers relevante pentru detectarea scurtcircuitelor</h3>
-                    <p>Electromagnet: răspuns instantaneu la creșteri mari de curent (scurtcircuite)</p>
-                    <p>Bandă bimetalică: răspuns la suprasarcini pe termen mai lung, dar de amplitudine mai mică</p>
-                    <p>La supracurent foarte mare (scurtcircuit), elementul magnetic declanșează fără &#238;nt&#226;rziere</p>
-                    <p>5. Bandă bimetalică (suprasarcini mai mici, pe termen mai lung)</p>
+                    <h3>?? Tipuri de circuit breakers relevante pentru detectarea scurtcircuitelor</h3>
+                    <p>Electromagnet: raspuns instantaneu la cre?teri mari de curent (scurtcircuite)</p>
+                    <p>Banda bimetalica: raspuns la suprasarcini pe termen mai lung, dar de amplitudine mai mica</p>
+                    <p>La supracurent foarte mare (scurtcircuit), elementul magnetic declan?eaza fara &#238;nt&#226;rziere</p>
+                    <p>5. Banda bimetalica (suprasarcini mai mici, pe termen mai lung)</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Alte dispozitive de protecție</h3>
-                    <p>RCD (Residual-Current Device) / GFCI: detectează dezechilibrul de curent (defecte la păm&#226;nt)</p>
+                    <h3>?? Alte dispozitive de protec?ie</h3>
+                    <p>RCD (Residual-Current Device) / GFCI: detecteaza dezechilibrul de curent (defecte la pam&#226;nt)</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Funcționarea siguranței fuzibile</h3>
-                    <p>Dispozitiv sacrificial: odată acționat = circuit deschis, trebuie &#238;nlocuit</p>
+                    <h3>?? Func?ionarea siguran?ei fuzibile</h3>
+                    <p>Dispozitiv sacrificial: odata ac?ionat = circuit deschis, trebuie &#238;nlocuit</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Caracteristici timp-curent</h3>
-                    <p>Viteza de ardere depinde de curentul care curge și de materialul siguranței</p>
+                    <h3>?? Caracteristici timp-curent</h3>
+                    <p>Viteza de ardere depinde de curentul care curge ?i de materialul siguran?ei</p>
                     <p>Fast-blow: 2&#215; curentul nominal pentru ardere &#238;n 0.1 secunde</p>
-                    <p>Siguranța fuzibilă poate &#238;ntrerupe defect &#238;n un sfert de ciclu al curentului de defect (vs. jumătate sau un ciclu pentru circuit breaker)</p>
+                    <p>Siguran?a fuzibila poate &#238;ntrerupe defect &#238;n un sfert de ciclu al curentului de defect (vs. jumatate sau un ciclu pentru circuit breaker)</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Aplicații industriale relevante pentru scurtcircuite</h3>
-                    <p>Diagnosticarea și &#238;ntreținerea echipamentelor de distribuție electrică (transformatoare, panouri de distribuție)</p>
+                    <h3>?? Aplica?ii industriale relevante pentru scurtcircuite</h3>
+                    <p>Diagnosticarea ?i &#238;ntre?inerea echipamentelor de distribu?ie electrica (transformatoare, panouri de distribu?ie)</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Metode de detectare a scurtcircuitelor – sinteză</h3>
-                    <p>Măsurarea rezistenței: rezistență foarte mică (aproape de 0 Ω) &#238;ntre două puncte care ar trebui izolate = indicator de scurtcircuit</p>
-                    <p>Termografia: identificarea punctelor fierbinți (hotspots) care indică curenți exceesivi sau conexiuni defectuoase</p>
-                    <p>&#206;mpărțirea circuitului (half-splitting): deconectarea secțiunilor pentru a izola zona defectă</p>
-                    <p>Verificarea siguranțelor/&#238;ntrerupătoarelor: o siguranță arsă sau un circuit breaker declanșat indică posibil scurtcircuit</p>
+                    <h3>?? Metode de detectare a scurtcircuitelor � sinteza</h3>
+                    <p>Masurarea rezisten?ei: rezisten?a foarte mica (aproape de 0 O) &#238;ntre doua puncte care ar trebui izolate = indicator de scurtcircuit</p>
+                    <p>Termografia: identificarea punctelor fierbin?i (hotspots) care indica curen?i exceesivi sau conexiuni defectuoase</p>
+                    <p>&#206;mpar?irea circuitului (half-splitting): deconectarea sec?iunilor pentru a izola zona defecta</p>
+                    <p>Verificarea siguran?elor/&#238;ntrerupatoarelor: o siguran?a arsa sau un circuit breaker declan?at indica posibil scurtcircuit</p>
                 </div>
             </div>
         </div>
@@ -395,20 +395,20 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție și principii de bază:</strong> Un scurtcircuit (short circuit, abreviat &quot;short&quot; sau &quot;s/c&quot;) este un circuit electric care permite curentului electric să călătorească pe o cale neintenționdă cu impedanță electr...</li>
-                    <li><strong>Exemple și cauze comune:</strong> Tipul comun: terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</li>
-                    <li><strong>Daune cauzate de scurtcircuite:</strong> &#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de funcționare</li>
-                    <li><strong>Protecția &#238;mpotriva scurtcircuitelor:</strong> Daunele pot fi reduse sau prevenite prin: siguranțe fuzibile, &#238;ntrerupătoare de circuit (circuit breakers), sau alte dispozitive de protecție la suprasarcină</li>
-                    <li><strong>Definiția și funcția &#238;ntrerupătorului de circuit:</strong> Dispozitiv de siguranță electrică proiectat pentru a proteja un circuit electric de deteriorarea cauzată de supracurent</li>
-                    <li><strong>Funcționarea – detectarea defectului:</strong> Toate sistemele de circuit breaker au caracteristici comune de operare</li>
-                    <li><strong>Tipuri de circuit breakers relevante pentru detectarea scurtcircuitelor:</strong> MCB (Miniature Circuit Breaker): curent nominal p&#226;nă la 125 A, operare termică sau termo-magnetică</li>
-                    <li><strong>Alte dispozitive de protecție:</strong> RCD (Residual-Current Device) / GFCI: detectează dezechilibrul de curent (defecte la păm&#226;nt)</li>
-                    <li><strong>Funcționarea siguranței fuzibile:</strong> Componentă esențială: fir sau bandă metalică care se topește c&#226;nd curentul este prea mare</li>
-                    <li><strong>Caracteristici timp-curent:</strong> Viteza de ardere depinde de curentul care curge și de materialul siguranței</li>
-                    <li><strong>Siguranțe speciale și comparație cu circuit breakers:</strong> Siguranțe rezistibile (PPTC): element termoplastic conductiv care crește rezistența la supracurent; se resetează la răcire; folosite &#238;n aerospațial/nuclear și pe plăci de bază</li>
-                    <li><strong>Termografia ca metodă de detectare a scurtcircuitelor:</strong> Termografia infraroșu (IRT) = tehnică de măsurare și imagistică &#238;n care o cameră termică detectează radiația infraroșu de la suprafața obiectelor</li>
-                    <li><strong>Aplicații industriale relevante pentru scurtcircuite:</strong> Diagnosticarea și &#238;ntreținerea echipamentelor de distribuție electrică (transformatoare, panouri de distribuție)</li>
-                    <li><strong>Metode de detectare a scurtcircuitelor – sinteză:</strong> Inspecție vizuală: urme de arsură, izolație topită, decolorare a componentelor</li>
+                    <li><strong>Defini?ie ?i principii de baza:</strong> Un scurtcircuit (short circuit, abreviat &quot;short&quot; sau &quot;s/c&quot;) este un circuit electric care permite curentului electric sa calatoreasca pe o cale neinten?ionda cu impedan?a electr...</li>
+                    <li><strong>Exemple ?i cauze comune:</strong> Tipul comun: terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</li>
+                    <li><strong>Daune cauzate de scurtcircuite:</strong> &#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de func?ionare</li>
+                    <li><strong>Protec?ia &#238;mpotriva scurtcircuitelor:</strong> Daunele pot fi reduse sau prevenite prin: siguran?e fuzibile, &#238;ntrerupatoare de circuit (circuit breakers), sau alte dispozitive de protec?ie la suprasarcina</li>
+                    <li><strong>Defini?ia ?i func?ia &#238;ntrerupatorului de circuit:</strong> Dispozitiv de siguran?a electrica proiectat pentru a proteja un circuit electric de deteriorarea cauzata de supracurent</li>
+                    <li><strong>Func?ionarea � detectarea defectului:</strong> Toate sistemele de circuit breaker au caracteristici comune de operare</li>
+                    <li><strong>Tipuri de circuit breakers relevante pentru detectarea scurtcircuitelor:</strong> MCB (Miniature Circuit Breaker): curent nominal p&#226;na la 125 A, operare termica sau termo-magnetica</li>
+                    <li><strong>Alte dispozitive de protec?ie:</strong> RCD (Residual-Current Device) / GFCI: detecteaza dezechilibrul de curent (defecte la pam&#226;nt)</li>
+                    <li><strong>Func?ionarea siguran?ei fuzibile:</strong> Componenta esen?iala: fir sau banda metalica care se tope?te c&#226;nd curentul este prea mare</li>
+                    <li><strong>Caracteristici timp-curent:</strong> Viteza de ardere depinde de curentul care curge ?i de materialul siguran?ei</li>
+                    <li><strong>Siguran?e speciale ?i compara?ie cu circuit breakers:</strong> Siguran?e rezistibile (PPTC): element termoplastic conductiv care cre?te rezisten?a la supracurent; se reseteaza la racire; folosite &#238;n aerospa?ial/nuclear ?i pe placi de baza</li>
+                    <li><strong>Termografia ca metoda de detectare a scurtcircuitelor:</strong> Termografia infraro?u (IRT) = tehnica de masurare ?i imagistica &#238;n care o camera termica detecteaza radia?ia infraro?u de la suprafa?a obiectelor</li>
+                    <li><strong>Aplica?ii industriale relevante pentru scurtcircuite:</strong> Diagnosticarea ?i &#238;ntre?inerea echipamentelor de distribu?ie electrica (transformatoare, panouri de distribu?ie)</li>
+                    <li><strong>Metode de detectare a scurtcircuitelor � sinteza:</strong> Inspec?ie vizuala: urme de arsura, izola?ie topita, decolorare a componentelor</li>
                 </ul>
             </div>
         </div>
@@ -416,80 +416,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Definiție formală?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Defini?ie formala?</strong></p>
                 <ul class="specs-list">
-                    <li>a) terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</li>
+                    <li>a) terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</li>
                     <li>b) protectoare de circuit crowbar pentru detectarea supratensiunii)</li>
-                    <li>c) o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite</li>
-                    <li>d) deteriorarea izolației unui fir, sau introducerea unui alt material conductor</li>
+                    <li>c) o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite</li>
+                    <li>d) deteriorarea izola?iei unui fir, sau introducerea unui alt material conductor</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Tipul comun?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Tipul comun?</strong></p>
                 <ul class="specs-list">
-                    <li>a) deteriorarea izolației unui fir, sau introducerea unui alt material conductor</li>
+                    <li>a) deteriorarea izola?iei unui fir, sau introducerea unui alt material conductor</li>
                     <li>b) protectoare de circuit crowbar pentru detectarea supratensiunii)</li>
-                    <li>c) terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</li>
-                    <li>d) o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite</li>
+                    <li>c) terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</li>
+                    <li>d) o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Daune cauzate de scurtcircuite?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Daune cauzate de scurtcircuite?</strong></p>
                 <ul class="specs-list">
-                    <li>a) o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite</li>
-                    <li>b) Supra&#238;ncălzirea = cauză frecventă de incendii</li>
-                    <li>c) terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</li>
+                    <li>a) o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite</li>
+                    <li>b) Supra&#238;ncalzirea = cauza frecventa de incendii</li>
+                    <li>c) terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</li>
                     <li>d) protectoare de circuit crowbar pentru detectarea supratensiunii)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — Supra&#238;ncălzirea = cauză frecventă de incendii</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � Supra&#238;ncalzirea = cauza frecventa de incendii</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Daunele pot fi reduse sau prevenite prin?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Daunele pot fi reduse sau prevenite prin?</strong></p>
                 <ul class="specs-list">
-                    <li>a) o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite</li>
-                    <li>b) siguranțe fuzibile, &#238;ntrerupătoare de circuit (circuit breakers), sau alte dispozitive de protecție la suprasarcină</li>
+                    <li>a) o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite</li>
+                    <li>b) siguran?e fuzibile, &#238;ntrerupatoare de circuit (circuit breakers), sau alte dispozitive de protec?ie la suprasarcina</li>
                     <li>c) protectoare de circuit crowbar pentru detectarea supratensiunii)</li>
-                    <li>d) terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</li>
+                    <li>d) terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — siguranțe fuzibile, &#238;ntrerupătoare de circuit (circuit breakers), sau alte dispozitive de protecție la suprasarcină</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � siguran?e fuzibile, &#238;ntrerupatoare de circuit (circuit breakers), sau alte dispozitive de protec?ie la suprasarcina</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: Funcția de bază?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: Func?ia de baza?</strong></p>
                 <ul class="specs-list">
-                    <li>a) terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</li>
-                    <li>b) &#238;ntreruperea curentului pentru protejarea echipamentului și prevenirea incendiilor</li>
+                    <li>a) terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</li>
+                    <li>b) &#238;ntreruperea curentului pentru protejarea echipamentului ?i prevenirea incendiilor</li>
                     <li>c) protectoare de circuit crowbar pentru detectarea supratensiunii)</li>
-                    <li>d) o conexiune anormală &#238;ntre două noduri ale unui circuit electric care ar trebui să fie la tensiuni diferite</li>
+                    <li>d) o conexiune anormala &#238;ntre doua noduri ale unui circuit electric care ar trebui sa fie la tensiuni diferite</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — &#238;ntreruperea curentului pentru protejarea echipamentului și prevenirea incendiilor</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � &#238;ntreruperea curentului pentru protejarea echipamentului ?i prevenirea incendiilor</strong></p>
                 </details>
             </div>
         </div>
@@ -497,22 +497,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Detectarea scurtcircuitelor</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de identificarea scurtcircuitelor. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Detectarea scurtcircuitelor</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de identificarea scurtcircuitelor. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: identificarea scurtcircuitelor.</li>
-                    <li>2. Ce rol are metode de testare în contextul hardware-ului?</li>
-                    <li>3. Cum se aplică această noțiune în ingineria consolelor?</li>
+                    <li>2. Ce rol are metode de testare �n contextul hardware-ului?</li>
+                    <li>3. Cum se aplica aceasta no?iune �n ingineria consolelor?</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Rezultă un curent excesiv care curge prin circuit</p>
-                        <p><strong>2.</strong> Tipul comun: terminalele pozitiv și negativ ale unei baterii sau condensator conectate cu un conductor de rezistență mică (s&#226;rmă)</p>
-                        <p><strong>3.</strong> &#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de funcționare</p>
+                        <p><strong>1.</strong> Rezulta un curent excesiv care curge prin circuit</p>
+                        <p><strong>2.</strong> Tipul comun: terminalele pozitiv ?i negativ ale unei baterii sau condensator conectate cu un conductor de rezisten?a mica (s&#226;rma)</p>
+                        <p><strong>3.</strong> &#206;n milisecunde, un scurtcircuit poate livra un curent de defect de sute sau mii de ori mai mare dec&#226;t curentul normal de func?ionare</p>
                     </div>
                 </details>
             </div>
@@ -539,7 +539,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-8-2.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 8.2 &mdash; Multimetru</a>
@@ -596,14 +596,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cum găsești un scurtcircuit pe orice placă de bază: identificarea rapidă a componentelor defecte cu multimetrul.</p>
+                <p class="video-description">Cum gase?ti un scurtcircuit pe orice placa de baza: identificarea rapida a componentelor defecte cu multimetrul.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

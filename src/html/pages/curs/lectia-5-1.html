@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 5.1 — Placa de bază (PCB)">
+    <meta name="description" content="Lec?ia 5.1 � Placa de baza (PCB)">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 5.1 — Placa de bază (PCB) — Console Notebook</title>
+    <title>Lec?ia 5.1 � Placa de baza (PCB) � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — ANATOMIA UNEI CONSOLE</p>
-            <h1>Lecția 5.1 — Placa de bază (PCB)</h1>
-            <p>PCB, straturile unei plăci de bază, trasee electrice, ground plane</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 � ANATOMIA UNEI CONSOLE</p>
+            <h1>Lec?ia 5.1 � Placa de baza (PCB)</h1>
+            <p>PCB, straturile unei placi de baza, trasee electrice, ground plane</p>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,133 +41,133 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>1. FR4 (substrat): fibră de sticlă, dă rigiditate și grosime. Grosime comună: 1.6mm (0.063&quot;). Alternative: 0.8mm. PCB-uri flexibile: Kapton</p>
-                <p>Această lecție acoperă: <strong>PCB</strong>, <strong>straturile unei plăci de bază</strong>, <strong>trasee electrice</strong>, <strong>ground plane</strong>, <strong>distribuția alimentării pe PCB</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>1. FR4 (substrat): fibra de sticla, da rigiditate ?i grosime. Grosime comuna: 1.6mm (0.063&quot;). Alternative: 0.8mm. PCB-uri flexibile: Kapton</p>
+                <p>Aceasta lec?ie acopera: <strong>PCB</strong>, <strong>straturile unei placi de baza</strong>, <strong>trasee electrice</strong>, <strong>ground plane</strong>, <strong>distribu?ia alimentarii pe PCB</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.1 — Definiție și structură de bază</h3>
+                <h3>5.1.1 � Defini?ie ?i structura de baza</h3>
                 <ul class="specs-list">
-                    <li>PCB (Printed Circuit Board) = structură laminată sandwich din straturi conductoare și izolante</li>
-                    <li>Fiecare strat are un pattern de trasee (traces), plane și alte elemente, gravate chimic din foi de cupru</li>
+                    <li>PCB (Printed Circuit Board) = structura laminata sandwich din straturi conductoare ?i izolante</li>
+                    <li>Fiecare strat are un pattern de trasee (traces), plane ?i alte elemente, gravate chimic din foi de cupru</li>
                     <li>Cuprul este laminat pe/&#238;ntre straturi de substrat non-conductiv</li>
                     <li>Componentele electronice sunt fixate pe pad-uri conductive prin lipire (soldering)</li>
-                    <li>Vias = găuri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
-                    <li><strong>Alternativele la PCB:</strong> wire wrap, construcție point-to-point (rare astăzi)</li>
-                    <li><strong>Piața globală PCB:</strong> &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
+                    <li>Vias = gauri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
+                    <li><strong>Alternativele la PCB:</strong> wire wrap, construc?ie point-to-point (rare astazi)</li>
+                    <li><strong>Pia?a globala PCB:</strong> &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.2 — Straturi (Layers)</h3>
+                <h3>5.1.2 � Straturi (Layers)</h3>
                 <ul class="specs-list">
                     <li><strong>PCB poate fi:</strong> single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)</li>
-                    <li><strong>Multi-layer:</strong> straturi alternante cupru-substrat-cupru-substrat, laminate &#238;mpreună</li>
-                    <li><strong>Cel mai simplu:</strong> 2-layer board (cupru pe ambele fețe = straturi externe)</li>
-                    <li><strong>4-layer board:</strong> adaugă semnificativ mai multe opțiuni de rutare internă</li>
+                    <li><strong>Multi-layer:</strong> straturi alternante cupru-substrat-cupru-substrat, laminate &#238;mpreuna</li>
+                    <li><strong>Cel mai simplu:</strong> 2-layer board (cupru pe ambele fe?e = straturi externe)</li>
+                    <li><strong>4-layer board:</strong> adauga semnificativ mai multe op?iuni de rutare interna</li>
                     <li>Straturile interne folosite frecvent ca ground plane sau power plane</li>
-                    <li><strong>Ground plane:</strong> strat complet de cupru pentru ecranare, integritate semnal, frecvențe mai mari, EMI redus, decuplare alimentare</li>
+                    <li><strong>Ground plane:</strong> strat complet de cupru pentru ecranare, integritate semnal, frecven?e mai mari, EMI redus, decuplare alimentare</li>
                     <li><strong>Internal vias:</strong> metalizate &#238;nainte de laminare; straturile interne protejate de substratul adiacent</li>
-                    <li>Mai multe straturi = mai multe opțiuni rutare + control integritate semnal, dar cost și timp fabricație mai mari</li>
+                    <li>Mai multe straturi = mai multe op?iuni rutare + control integritate semnal, dar cost ?i timp fabrica?ie mai mari</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.3 — Proprietăți electrice ale traseelor</h3>
+                <h3>5.1.3 � Proprieta?i electrice ale traseelor</h3>
                 <ul class="specs-list">
-                    <li>Trace = parte plată, &#238;ngustă din folia de cupru rămasă după gravare</li>
-                    <li><strong>Rezistența traseului:</strong> determinată de lățime, grosime și lungime</li>
-                    <li><strong>Trasee de putere și ground:</strong> trebuie mai late dec&#226;t traseele de semnal</li>
-                    <li><strong>Ground plane:</strong> un strat complet de cupru solid pentru ecranare și return de putere</li>
-                    <li><strong>La frecvențe &#238;nalte/semnale rapide:</strong> traseele funcționează ca linii de transmisie (stripline, microstrip)</li>
-                    <li><strong>Impedanță controlată:</strong> dimensiuni precise necesare pentru consistență</li>
-                    <li>Inductanța și capacitanța traseelor devin semnificative la frecvențe mari</li>
-                    <li><strong>HDI (High Density Interconnect):</strong> trasee/vias sub 152 μm</li>
+                    <li>Trace = parte plata, &#238;ngusta din folia de cupru ramasa dupa gravare</li>
+                    <li><strong>Rezisten?a traseului:</strong> determinata de la?ime, grosime ?i lungime</li>
+                    <li><strong>Trasee de putere ?i ground:</strong> trebuie mai late dec&#226;t traseele de semnal</li>
+                    <li><strong>Ground plane:</strong> un strat complet de cupru solid pentru ecranare ?i return de putere</li>
+                    <li><strong>La frecven?e &#238;nalte/semnale rapide:</strong> traseele func?ioneaza ca linii de transmisie (stripline, microstrip)</li>
+                    <li><strong>Impedan?a controlata:</strong> dimensiuni precise necesare pentru consisten?a</li>
+                    <li>Inductan?a ?i capacitan?a traseelor devin semnificative la frecven?e mari</li>
+                    <li><strong>HDI (High Density Interconnect):</strong> trasee/vias sub 152 �m</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.4 — Materiale și substraturi</h3>
+                <h3>5.1.4 � Materiale ?i substraturi</h3>
                 <ul class="specs-list">
-                    <li><strong>FR-4 = cel mai comun substrat:</strong> fibră de sticlă țesută impregnată cu rășină epoxidică</li>
-                    <li><strong>Proprietăți FR-4:</strong> absorbție apă scăzută (~0.15%), izolație bună, rezistență la arc, rating 130&#176;C</li>
-                    <li><strong>FR-2 = h&#226;rtie fenolică:</strong> mai ieftin, electronice consumer low-end, proprietăți electrice inferioare</li>
-                    <li><strong>Substraturi flexibile:</strong> Kapton (poliimidă) – rezistent la temperaturi &#238;nalte, electronice miniaturizate</li>
+                    <li><strong>FR-4 = cel mai comun substrat:</strong> fibra de sticla ?esuta impregnata cu ra?ina epoxidica</li>
+                    <li><strong>Proprieta?i FR-4:</strong> absorb?ie apa scazuta (~0.15%), izola?ie buna, rezisten?a la arc, rating 130&#176;C</li>
+                    <li><strong>FR-2 = h&#226;rtie fenolica:</strong> mai ieftin, electronice consumer low-end, proprieta?i electrice inferioare</li>
+                    <li><strong>Substraturi flexibile:</strong> Kapton (poliimida) � rezistent la temperaturi &#238;nalte, electronice miniaturizate</li>
                     <li><strong>Substraturi aluminiu (IMS):</strong> pentru componente de putere mare (LED-uri, comutatoare putere)</li>
-                    <li><strong>Parametri cheie substrat:</strong> Tg (glass transition temperature), constanta dielectrică, loss tangent, rezistența la tracțiune</li>
-                    <li>La Tg rășina se &#238;nmoaie → expansiune termică crește → stres pe vias și componente</li>
-                    <li><strong>Constanta dielectrică:</strong> determină viteza propagare semnal, variază cu frecvența</li>
+                    <li><strong>Parametri cheie substrat:</strong> Tg (glass transition temperature), constanta dielectrica, loss tangent, rezisten?a la trac?iune</li>
+                    <li>La Tg ra?ina se &#238;nmoaie ? expansiune termica cre?te ? stres pe vias ?i componente</li>
+                    <li><strong>Constanta dielectrica:</strong> determina viteza propagare semnal, variaza cu frecven?a</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.5 — Grosimea cuprului</h3>
+                <h3>5.1.5 � Grosimea cuprului</h3>
                 <ul class="specs-list">
-                    <li><strong>Specificată &#238;n oz/ft&#178; (uncii/picior pătrat):</strong> 1 oz/ft&#178; = 34.1 μm = 35 μm</li>
-                    <li><strong>Grosimi comune:</strong> 0.5 oz (17 μm), 1 oz (34 μm), 2 oz (68 μm), 3 oz (102 μm)</li>
-                    <li><strong>Heavy copper:</strong> &gt;3 oz/ft&#178; (~105 μm) – pentru curenți mari sau disipare căldură</li>
-                    <li>1 oz/ft&#178; este cea mai frecventă grosime</li>
+                    <li><strong>Specificata &#238;n oz/ft&#178; (uncii/picior patrat):</strong> 1 oz/ft&#178; = 34.1 �m = 35 �m</li>
+                    <li><strong>Grosimi comune:</strong> 0.5 oz (17 �m), 1 oz (34 �m), 2 oz (68 �m), 3 oz (102 �m)</li>
+                    <li><strong>Heavy copper:</strong> &gt;3 oz/ft&#178; (~105 �m) � pentru curen?i mari sau disipare caldura</li>
+                    <li>1 oz/ft&#178; este cea mai frecventa grosime</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.6 — Montarea componentelor</h3>
+                <h3>5.1.6 � Montarea componentelor</h3>
                 <ul class="specs-list">
-                    <li><strong>Through-hole (THT):</strong> pinii componentei trec prin găuri și sunt lipiți pe partea opusă</li>
-                    <li><strong>Surface-mount (SMT):</strong> componentele sunt lipite direct pe suprafața PCB-ului (fără găuri)</li>
-                    <li><strong>SMT dominantă din anii 1990:</strong> componente &#188; – 1/10 din dimensiunea THT</li>
-                    <li>SMT permite automatizare, producție rapidă, densitate mai mare</li>
+                    <li><strong>Through-hole (THT):</strong> pinii componentei trec prin gauri ?i sunt lipi?i pe partea opusa</li>
+                    <li><strong>Surface-mount (SMT):</strong> componentele sunt lipite direct pe suprafa?a PCB-ului (fara gauri)</li>
+                    <li><strong>SMT dominanta din anii 1990:</strong> componente &#188; � 1/10 din dimensiunea THT</li>
+                    <li>SMT permite automatizare, produc?ie rapida, densitate mai mare</li>
                     <li><strong>PCB-uri moderne:</strong> predominant SMT, cu THT doar pentru componente mari (condensatoare electrolitice, conectori)</li>
                     <li><strong>Wave soldering:</strong> PCB-ul trece peste un val de aliaj topit (pentru THT)</li>
-                    <li><strong>Reflow soldering:</strong> pasta de lipire se topește &#238;n cuptor (pentru SMT)</li>
+                    <li><strong>Reflow soldering:</strong> pasta de lipire se tope?te &#238;n cuptor (pentru SMT)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.7 — Istorie</h3>
+                <h3>5.1.7 � Istorie</h3>
                 <ul class="specs-list">
-                    <li><strong>1903:</strong> Albert Hanson – conductori plați laminați pe substrat izolant, straturi multiple</li>
-                    <li><strong>1936:</strong> Paul Eisler (Austria/UK) – inventează circuitul imprimat ca parte dintr-un radio</li>
+                    <li><strong>1903:</strong> Albert Hanson � conductori pla?i lamina?i pe substrat izolant, straturi multiple</li>
+                    <li><strong>1936:</strong> Paul Eisler (Austria/UK) � inventeaza circuitul imprimat ca parte dintr-un radio</li>
                     <li><strong>1941:</strong> PCB multi-layer folosit &#238;n mine navale germane</li>
-                    <li><strong>~1943:</strong> SUA adoptă tehnologia pe scară largă pentru fuzee de proximitate (WWII)</li>
+                    <li><strong>~1943:</strong> SUA adopta tehnologia pe scara larga pentru fuzee de proximitate (WWII)</li>
                     <li><strong>1948:</strong> eliberare pentru uz comercial</li>
-                    <li><strong>1950s:</strong> Motorola – adopție &#238;n electronice consumer</li>
-                    <li><strong>1980s:</strong> SMT &#238;nlocuiește progresiv through-hole</li>
-                    <li><strong>1990s:</strong> plăci multi-layer + HDI cu microvia</li>
+                    <li><strong>1950s:</strong> Motorola � adop?ie &#238;n electronice consumer</li>
+                    <li><strong>1980s:</strong> SMT &#238;nlocuie?te progresiv through-hole</li>
+                    <li><strong>1990s:</strong> placi multi-layer + HDI cu microvia</li>
                     <li><strong>2020s:</strong> 3D printing pe PCB, HDI avansat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.8 — Compoziția PCB (structură lasagna)</h3>
+                <h3>5.1.8 � Compozi?ia PCB (structura lasagna)</h3>
                 <ul class="specs-list">
-                    <li>PCB = structură tip lasagna din straturi alternante laminate cu căldură și adeziv</li>
+                    <li>PCB = structura tip lasagna din straturi alternante laminate cu caldura ?i adeziv</li>
                     <li>Straturile (de la interior la exterior):</li>
                 </ul>
-                <p>1. FR4 (substrat): fibră de sticlă, dă rigiditate și grosime. Grosime comună: 1.6mm (0.063&quot;). Alternative: 0.8mm. PCB-uri flexibile: Kapton</p>
-                <p>2. Cupru: folie subțire de cupru laminată pe substrat. Double-sided = cupru pe ambele fețe. Poate fi 1-16+ straturi. 1 oz/ft&#178; = ~35 μm grosime</p>
-                <p>3. Soldermask: strat protector peste cupru, previne scurtcircuite accidentale și coroziune. De obicei verde, dar orice culoare posibilă. Lasă expuse pad-urile pentru lipire</p>
+                <p>1. FR4 (substrat): fibra de sticla, da rigiditate ?i grosime. Grosime comuna: 1.6mm (0.063&quot;). Alternative: 0.8mm. PCB-uri flexibile: Kapton</p>
+                <p>2. Cupru: folie sub?ire de cupru laminata pe substrat. Double-sided = cupru pe ambele fe?e. Poate fi 1-16+ straturi. 1 oz/ft&#178; = ~35 �m grosime</p>
+                <p>3. Soldermask: strat protector peste cupru, previne scurtcircuite accidentale ?i coroziune. De obicei verde, dar orice culoare posibila. Lasa expuse pad-urile pentru lipire</p>
                 <p>4. Silkscreen: litere, numere, simboluri pentru identificare componente. De obicei alb</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.1.9 — Terminologie cheie PCB</h3>
+                <h3>5.1.9 � Terminologie cheie PCB</h3>
                 <ul class="specs-list">
-                    <li><strong>Trace:</strong> cale continuă de cupru pe PCB (echivalent fir electric)</li>
-                    <li><strong>Pad:</strong> zonă expusă de metal pentru lipirea componentelor (PTH = plated through-hole, SMD = surface mount)</li>
-                    <li><strong>Via:</strong> gaură metalizată pentru transmiterea semnalului &#238;ntre straturi. Tented via = acoperită cu soldermask</li>
+                    <li><strong>Trace:</strong> cale continua de cupru pe PCB (echivalent fir electric)</li>
+                    <li><strong>Pad:</strong> zona expusa de metal pentru lipirea componentelor (PTH = plated through-hole, SMD = surface mount)</li>
+                    <li><strong>Via:</strong> gaura metalizata pentru transmiterea semnalului &#238;ntre straturi. Tented via = acoperita cu soldermask</li>
                     <li><strong>Annular ring:</strong> inelul de cupru &#238;n jurul unui through-hole metalizat</li>
                     <li><strong>Plane (pour):</strong> bloc continuu de cupru definit de limite, nu de traseu (ex: ground pour)</li>
-                    <li><strong>Thermal:</strong> traseu mic care conectează un pad la un plane – necesare pentru lipire corectă</li>
+                    <li><strong>Thermal:</strong> traseu mic care conecteaza un pad la un plane � necesare pentru lipire corecta</li>
                     <li><strong>DRC (Design Rule Check):</strong> verificare software a design-ului</li>
-                    <li><strong>Drill hit:</strong> locuri de găurire pe PCB</li>
+                    <li><strong>Drill hit:</strong> locuri de gaurire pe PCB</li>
                     <li><strong>Solder paste:</strong> bilute mici de aliaj suspendate &#238;ntr-un gel, aplicate pe pad-uri SMD</li>
                 </ul>
             </div>
@@ -177,24 +177,24 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Conceptele din această lecție — Placa de bază (PCB) — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
+                <p>Conceptele din aceasta lec?ie � Placa de baza (PCB) � reprezinta fundamentul fizic al tehnologiei digitale utilizate �n consolele moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și structură de bază</h3>
+                <h3>Defini?ie ?i structura de baza</h3>
                 <ul class="specs-list">
-                    <li>PCB (Printed Circuit Board) = structură laminată sandwich din straturi conductoare și izolante</li>
-                    <li><strong>Alternativele la PCB:</strong> wire wrap, construcție point-to-point (rare astăzi)</li>
-                    <li><strong>Piața globală PCB:</strong> &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
+                    <li>PCB (Printed Circuit Board) = structura laminata sandwich din straturi conductoare ?i izolante</li>
+                    <li><strong>Alternativele la PCB:</strong> wire wrap, construc?ie point-to-point (rare astazi)</li>
+                    <li><strong>Pia?a globala PCB:</strong> &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
                 </ul>
             </div>
 
@@ -208,7 +208,7 @@
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Montarea componentelor</h3>
                 <ul class="specs-list">
-                    <li><strong>Surface-mount (SMT):</strong> componentele sunt lipite direct pe suprafața PCB-ului (fără găuri)</li>
+                    <li><strong>Surface-mount (SMT):</strong> componentele sunt lipite direct pe suprafa?a PCB-ului (fara gauri)</li>
                     <li><strong>PCB-uri moderne:</strong> predominant SMT, cu THT doar pentru componente mari (condensatoare electrolitice, conectori)</li>
                     <li><strong>Wave soldering:</strong> PCB-ul trece peste un val de aliaj topit (pentru THT)</li>
                 </ul>
@@ -217,25 +217,25 @@
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Istorie</h3>
                 <ul class="specs-list">
-                    <li><strong>1936:</strong> Paul Eisler (Austria/UK) – inventează circuitul imprimat ca parte dintr-un radio</li>
+                    <li><strong>1936:</strong> Paul Eisler (Austria/UK) � inventeaza circuitul imprimat ca parte dintr-un radio</li>
                     <li><strong>1941:</strong> PCB multi-layer folosit &#238;n mine navale germane</li>
                     <li><strong>2020s:</strong> 3D printing pe PCB, HDI avansat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Compoziția PCB (structură lasagna)</h3>
+                <h3>Compozi?ia PCB (structura lasagna)</h3>
                 <ul class="specs-list">
-                    <li>PCB = structură tip lasagna din straturi alternante laminate cu căldură și adeziv</li>
+                    <li>PCB = structura tip lasagna din straturi alternante laminate cu caldura ?i adeziv</li>
                 </ul>
-                <p>1. FR4 (substrat): fibră de sticlă, dă rigiditate și grosime. Grosime comună: 1.6mm (0.063&quot;). Alternative: 0.8mm. PCB-uri flexibile: Kapton</p>
+                <p>1. FR4 (substrat): fibra de sticla, da rigiditate ?i grosime. Grosime comuna: 1.6mm (0.063&quot;). Alternative: 0.8mm. PCB-uri flexibile: Kapton</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Terminologie cheie PCB</h3>
                 <ul class="specs-list">
-                    <li><strong>Trace:</strong> cale continuă de cupru pe PCB (echivalent fir electric)</li>
-                    <li><strong>Drill hit:</strong> locuri de găurire pe PCB</li>
+                    <li><strong>Trace:</strong> cale continua de cupru pe PCB (echivalent fir electric)</li>
+                    <li><strong>Drill hit:</strong> locuri de gaurire pe PCB</li>
                 </ul>
             </div>
         </div>
@@ -248,7 +248,7 @@
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Grosimea cuprului</h3>
                 <ul class="specs-list">
-                    <li><strong>Specificată &#238;n oz/ft&#178; (uncii/picior pătrat):</strong> 1 oz/ft&#178; = 34.1 μm = 35 μm</li>
+                    <li><strong>Specificata &#238;n oz/ft&#178; (uncii/picior patrat):</strong> 1 oz/ft&#178; = 34.1 �m = 35 �m</li>
                 </ul>
             </div>
         </div>
@@ -260,8 +260,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Compoziția PCB (structură lasagna)</h3>
-                    <p>3. Soldermask: strat protector peste cupru, previne scurtcircuite accidentale și coroziune. De obicei verde, dar orice culoare posibilă. Lasă expuse pad-urile pentru lipire</p>
+                    <h3>?? Compozi?ia PCB (structura lasagna)</h3>
+                    <p>3. Soldermask: strat protector peste cupru, previne scurtcircuite accidentale ?i coroziune. De obicei verde, dar orice culoare posibila. Lasa expuse pad-urile pentru lipire</p>
                 </div>
             </div>
         </div>
@@ -272,15 +272,15 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție și structură de bază:</strong> PCB (Printed Circuit Board) = structură laminată sandwich din straturi conductoare și izolante</li>
+                    <li><strong>Defini?ie ?i structura de baza:</strong> PCB (Printed Circuit Board) = structura laminata sandwich din straturi conductoare ?i izolante</li>
                     <li><strong>Straturi (Layers):</strong> PCB poate fi: single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)</li>
-                    <li><strong>Proprietăți electrice ale traseelor:</strong> Trace = parte plată, &#238;ngustă din folia de cupru rămasă după gravare</li>
-                    <li><strong>Materiale și substraturi:</strong> FR-4 = cel mai comun substrat: fibră de sticlă țesută impregnată cu rășină epoxidică</li>
-                    <li><strong>Grosimea cuprului:</strong> Specificată &#238;n oz/ft&#178; (uncii/picior pătrat): 1 oz/ft&#178; = 34.1 μm = 35 μm</li>
-                    <li><strong>Montarea componentelor:</strong> Through-hole (THT): pinii componentei trec prin găuri și sunt lipiți pe partea opusă</li>
-                    <li><strong>Istorie:</strong> 1903: Albert Hanson – conductori plați laminați pe substrat izolant, straturi multiple</li>
-                    <li><strong>Compoziția PCB (structură lasagna):</strong> PCB = structură tip lasagna din straturi alternante laminate cu căldură și adeziv</li>
-                    <li><strong>Terminologie cheie PCB:</strong> Trace: cale continuă de cupru pe PCB (echivalent fir electric)</li>
+                    <li><strong>Proprieta?i electrice ale traseelor:</strong> Trace = parte plata, &#238;ngusta din folia de cupru ramasa dupa gravare</li>
+                    <li><strong>Materiale ?i substraturi:</strong> FR-4 = cel mai comun substrat: fibra de sticla ?esuta impregnata cu ra?ina epoxidica</li>
+                    <li><strong>Grosimea cuprului:</strong> Specificata &#238;n oz/ft&#178; (uncii/picior patrat): 1 oz/ft&#178; = 34.1 �m = 35 �m</li>
+                    <li><strong>Montarea componentelor:</strong> Through-hole (THT): pinii componentei trec prin gauri ?i sunt lipi?i pe partea opusa</li>
+                    <li><strong>Istorie:</strong> 1903: Albert Hanson � conductori pla?i lamina?i pe substrat izolant, straturi multiple</li>
+                    <li><strong>Compozi?ia PCB (structura lasagna):</strong> PCB = structura tip lasagna din straturi alternante laminate cu caldura ?i adeziv</li>
+                    <li><strong>Terminologie cheie PCB:</strong> Trace: cale continua de cupru pe PCB (echivalent fir electric)</li>
                 </ul>
             </div>
         </div>
@@ -288,80 +288,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Definiție și structură de bază?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Defini?ie ?i structura de baza?</strong></p>
                 <ul class="specs-list">
                     <li>a) single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)</li>
                     <li>b) &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
-                    <li>c) Vias = găuri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
-                    <li>d) wire wrap, construcție point-to-point (rare astăzi)</li>
+                    <li>c) Vias = gauri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
+                    <li>d) wire wrap, construc?ie point-to-point (rare astazi)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — Vias = găuri metalizate care permit conexiuni electrice &#238;ntre straturi</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � Vias = gauri metalizate care permit conexiuni electrice &#238;ntre straturi</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: PCB poate fi?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: PCB poate fi?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Vias = găuri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
+                    <li>a) Vias = gauri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
                     <li>b) &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
                     <li>c) single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)</li>
-                    <li>d) wire wrap, construcție point-to-point (rare astăzi)</li>
+                    <li>d) wire wrap, construc?ie point-to-point (rare astazi)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Proprietăți electrice ale traseelor?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Proprieta?i electrice ale traseelor?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Vias = găuri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
-                    <li>b) Trace = parte plată, &#238;ngustă din folia de cupru rămasă după gravare</li>
-                    <li>c) wire wrap, construcție point-to-point (rare astăzi)</li>
+                    <li>a) Vias = gauri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
+                    <li>b) Trace = parte plata, &#238;ngusta din folia de cupru ramasa dupa gravare</li>
+                    <li>c) wire wrap, construc?ie point-to-point (rare astazi)</li>
                     <li>d) &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — Trace = parte plată, &#238;ngustă din folia de cupru rămasă după gravare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � Trace = parte plata, &#238;ngusta din folia de cupru ramasa dupa gravare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: FR-4 = cel mai comun substrat?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: FR-4 = cel mai comun substrat?</strong></p>
                 <ul class="specs-list">
                     <li>a) &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
-                    <li>b) fibră de sticlă țesută impregnată cu rășină epoxidică</li>
-                    <li>c) wire wrap, construcție point-to-point (rare astăzi)</li>
-                    <li>d) Vias = găuri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
+                    <li>b) fibra de sticla ?esuta impregnata cu ra?ina epoxidica</li>
+                    <li>c) wire wrap, construc?ie point-to-point (rare astazi)</li>
+                    <li>d) Vias = gauri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — fibră de sticlă țesută impregnată cu rășină epoxidică</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � fibra de sticla ?esuta impregnata cu ra?ina epoxidica</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: Specificată &#238;n oz/ft&#178; (uncii/picior pătrat)?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: Specificata &#238;n oz/ft&#178; (uncii/picior patrat)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 1 oz/ft&#178; = 34.1 μm = 35 μm</li>
+                    <li>a) 1 oz/ft&#178; = 34.1 �m = 35 �m</li>
                     <li>b) &gt;$60.2 miliarde (2014), estimat $80.33 miliarde (2024), prognozat $96.57 miliarde (2029)</li>
-                    <li>c) Vias = găuri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
-                    <li>d) wire wrap, construcție point-to-point (rare astăzi)</li>
+                    <li>c) Vias = gauri metalizate care permit conexiuni electrice &#238;ntre straturi</li>
+                    <li>d) wire wrap, construc?ie point-to-point (rare astazi)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — 1 oz/ft&#178; = 34.1 μm = 35 μm</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � 1 oz/ft&#178; = 34.1 �m = 35 �m</strong></p>
                 </details>
             </div>
         </div>
@@ -369,22 +369,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Placa de bază (PCB)</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de PCB. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Placa de baza (PCB)</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de PCB. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: PCB.</li>
-                    <li>2. Ce rol are straturile unei plăci de bază în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre PCB și trasee electrice.</li>
+                    <li>2. Ce rol are straturile unei placi de baza �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre PCB ?i trasee electrice.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> PCB (Printed Circuit Board) = structură laminată sandwich din straturi conductoare și izolante</p>
+                        <p><strong>1.</strong> PCB (Printed Circuit Board) = structura laminata sandwich din straturi conductoare ?i izolante</p>
                         <p><strong>2.</strong> PCB poate fi: single-sided (1 strat cupru), double-sided (2 straturi cupru), multi-layer (straturi stivuite)</p>
-                        <p><strong>3.</strong> Trace = parte plată, &#238;ngustă din folia de cupru rămasă după gravare</p>
+                        <p><strong>3.</strong> Trace = parte plata, &#238;ngusta din folia de cupru ramasa dupa gravare</p>
                     </div>
                 </details>
             </div>
@@ -415,7 +415,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-4-6.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 4.6 &mdash; Ierarhia Sistemului</a>
@@ -472,14 +472,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Anatomia unei plăci de bază: componente, conectori și funcția fiecărui element — de la northbridge la sloturile de expansiune.</p>
+                <p class="video-description">Anatomia unei placi de baza: componente, conectori ?i func?ia fiecarui element � de la northbridge la sloturile de expansiune.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

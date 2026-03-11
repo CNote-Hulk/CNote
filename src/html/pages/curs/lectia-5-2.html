@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 5.2 — APU (CPU + GPU)">
+    <meta name="description" content="Lec?ia 5.2 � APU (CPU + GPU)">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 5.2 — APU (CPU + GPU) — Console Notebook</title>
+    <title>Lec?ia 5.2 � APU (CPU + GPU) � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 — ANATOMIA UNEI CONSOLE</p>
-            <h1>Lecția 5.2 — APU (CPU + GPU)</h1>
-            <p>APU, integrarea CPU și GPU, comunicarea cu memoria</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 5 � ANATOMIA UNEI CONSOLE</p>
+            <h1>Lec?ia 5.2 � APU (CPU + GPU)</h1>
+            <p>APU, integrarea CPU ?i GPU, comunicarea cu memoria</p>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,43 +41,43 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>AMD Accelerated Processing Unit (APU), cunoscută anterior ca Fusion, este o serie de microprocesoare pe 64 de biți de la AMD</p>
-                <p>Această lecție acoperă: <strong>APU</strong>, <strong>integrarea CPU și GPU</strong>, <strong>comunicarea cu memoria</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>AMD Accelerated Processing Unit (APU), cunoscuta anterior ca Fusion, este o serie de microprocesoare pe 64 de bi?i de la AMD</p>
+                <p>Aceasta lec?ie acopera: <strong>APU</strong>, <strong>integrarea CPU ?i GPU</strong>, <strong>comunicarea cu memoria</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2.1 — Definiție și concept APU</h3>
+                <h3>5.2.1 � Defini?ie ?i concept APU</h3>
                 <ul class="specs-list">
-                    <li>AMD Accelerated Processing Unit (APU), cunoscută anterior ca Fusion, este o serie de microprocesoare pe 64 de biți de la AMD</li>
-                    <li>Combină un CPU general-purpose (AMD64) și un GPU integrat (IGPU) pe un singur die</li>
-                    <li>Proiectul AMD Fusion a &#238;nceput &#238;n 2006, accelerat de achiziția ATI Technologies &#238;n 2006</li>
-                    <li><strong>Dificultăți tehnice:</strong> combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
-                    <li><strong>Prima generație (Llano):</strong> lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1</li>
-                    <li>AMD APU-urile au module CPU, cache și un procesor grafic de clasă discretă, toate pe același die folosind același bus</li>
-                    <li><strong>Scopul:</strong> crearea unui APU „complet integrat&quot; cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU</li>
+                    <li>AMD Accelerated Processing Unit (APU), cunoscuta anterior ca Fusion, este o serie de microprocesoare pe 64 de bi?i de la AMD</li>
+                    <li>Combina un CPU general-purpose (AMD64) ?i un GPU integrat (IGPU) pe un singur die</li>
+                    <li>Proiectul AMD Fusion a &#238;nceput &#238;n 2006, accelerat de achizi?ia ATI Technologies &#238;n 2006</li>
+                    <li><strong>Dificulta?i tehnice:</strong> combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
+                    <li><strong>Prima genera?ie (Llano):</strong> lansata ianuarie 2011 la CES, cu nuclee K10 ?i GPU Radeon HD 6000, pe socket FM1</li>
+                    <li>AMD APU-urile au module CPU, cache ?i un procesor grafic de clasa discreta, toate pe acela?i die folosind acela?i bus</li>
+                    <li><strong>Scopul:</strong> crearea unui APU �complet integrat&quot; cu nuclee heterogene capabile sa proceseze automat sarcini CPU ?i GPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2.2 — Evoluția APU – generații și console</h3>
+                <h3>5.2.2 � Evolu?ia APU � genera?ii ?i console</h3>
                 <ul class="specs-list">
-                    <li><strong>Gen 1 – Llano (2011):</strong> K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
-                    <li><strong>Gen 1 low-power – Brazos/Bobcat (2011):</strong> 1-2 nuclee Bobcat, Radeon Evergreen GPU, 9W (Ontario) / 18W (Zacate)</li>
-                    <li><strong>Gen 2 – Trinity (2012):</strong> Piledriver cores, Radeon HD 7000, Socket FM2, TDP 65-100W</li>
-                    <li><strong>Gen 2 – Richland (2013):</strong> Enhanced Piledriver, Temperature Smart Turbo Core</li>
-                    <li><strong>Console semi-custom:</strong> PS4 și Xbox One = APU-uri semi-custom bazate pe Jaguar (8 nuclee, 28 nm, GCN GPU)</li>
-                    <li><strong>Ulterior:</strong> Xbox Series X|S și PlayStation 5 = APU-uri semi-custom AMD</li>
-                    <li><strong>Gen 3 – Kaveri (2014):</strong> Steamroller cores, GCN 2nd gen GPU, Socket FM2+, HSA-enabled zero-copy</li>
-                    <li>CPU+GPU partajează același spațiu de adrese de memorie (Heterogeneous Memory Management)</li>
+                    <li><strong>Gen 1 � Llano (2011):</strong> K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
+                    <li><strong>Gen 1 low-power � Brazos/Bobcat (2011):</strong> 1-2 nuclee Bobcat, Radeon Evergreen GPU, 9W (Ontario) / 18W (Zacate)</li>
+                    <li><strong>Gen 2 � Trinity (2012):</strong> Piledriver cores, Radeon HD 7000, Socket FM2, TDP 65-100W</li>
+                    <li><strong>Gen 2 � Richland (2013):</strong> Enhanced Piledriver, Temperature Smart Turbo Core</li>
+                    <li><strong>Console semi-custom:</strong> PS4 ?i Xbox One = APU-uri semi-custom bazate pe Jaguar (8 nuclee, 28 nm, GCN GPU)</li>
+                    <li><strong>Ulterior:</strong> Xbox Series X|S ?i PlayStation 5 = APU-uri semi-custom AMD</li>
+                    <li><strong>Gen 3 � Kaveri (2014):</strong> Steamroller cores, GCN 2nd gen GPU, Socket FM2+, HSA-enabled zero-copy</li>
+                    <li>CPU+GPU partajeaza acela?i spa?iu de adrese de memorie (Heterogeneous Memory Management)</li>
                     <li><strong>Kabini/Temash (2013):</strong> Jaguar cores, primele SoC-uri quad-core x86, 28 nm TSMC</li>
-                    <li><strong>Gen 4 – Carrizo (2015):</strong> Excavator cores, GCN 3rd gen, integrare southbridge, 15-35W TDP</li>
+                    <li><strong>Gen 4 � Carrizo (2015):</strong> Excavator cores, GCN 3rd gen, integrare southbridge, 15-35W TDP</li>
                     <li><strong>Era Zen:</strong> APU-urile redenumite Ryzen with Radeon Graphics</li>
                     <li><strong>Raven Ridge (2017):</strong> Zen + Vega GPU, 14 nm, Socket AM4/FP5</li>
                     <li><strong>Picasso (2018):</strong> Zen+, 12 nm refresh</li>
@@ -90,51 +90,51 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2.3 — Heterogeneous System Architecture (HSA) și comunicarea cu memoria</h3>
+                <h3>5.2.3 � Heterogeneous System Architecture (HSA) ?i comunicarea cu memoria</h3>
                 <ul class="specs-list">
                     <li>AMD este membru fondator al HSA Foundation</li>
-                    <li>Evoluția HSA &#238;n APU-uri:</li>
-                    <li><strong>2012 (Trinity):</strong> GPU Compute C++ Support – CPU și GPU lucrează &#238;mpreună pentru sarcini paralele (OpenCL C++, C++ AMP)</li>
+                    <li>Evolu?ia HSA &#238;n APU-uri:</li>
+                    <li><strong>2012 (Trinity):</strong> GPU Compute C++ Support � CPU ?i GPU lucreaza &#238;mpreuna pentru sarcini paralele (OpenCL C++, C++ AMP)</li>
                     <li><strong>HSA-aware MMU:</strong> GPU poate accesa &#238;ntreaga memorie de sistem prin serviciile de traducere ale MMU-ului HSA</li>
-                    <li><strong>Shared Power Management:</strong> CPU și GPU partajează bugetul de putere, prioritate merge la procesorul potrivit sarcinii curente</li>
-                    <li><strong>2014 (PS4, Kaveri):</strong> Architectural Integration – MMU-ul CPU și IOMMU-ul GPU partajează același spațiu de adrese</li>
-                    <li>CPU și GPU accesează memoria cu același spațiu de adrese</li>
-                    <li>Pointerii pot fi trecuți liber &#238;ntre CPU și GPU → zero-copy</li>
-                    <li><strong>Memorie complet coerentă:</strong> GPU accesează date din regiuni coerente de memorie + referință cache CPU</li>
-                    <li>GPU folosește memorie paginabilă prin pointeri CPU (fără copiere/pinning)</li>
+                    <li><strong>Shared Power Management:</strong> CPU ?i GPU partajeaza bugetul de putere, prioritate merge la procesorul potrivit sarcinii curente</li>
+                    <li><strong>2014 (PS4, Kaveri):</strong> Architectural Integration � MMU-ul CPU ?i IOMMU-ul GPU partajeaza acela?i spa?iu de adrese</li>
+                    <li>CPU ?i GPU acceseaza memoria cu acela?i spa?iu de adrese</li>
+                    <li>Pointerii pot fi trecu?i liber &#238;ntre CPU ?i GPU ? zero-copy</li>
+                    <li><strong>Memorie complet coerenta:</strong> GPU acceseaza date din regiuni coerente de memorie + referin?a cache CPU</li>
+                    <li>GPU folose?te memorie paginabila prin pointeri CPU (fara copiere/pinning)</li>
                     <li><strong>2015 (Carrizo):</strong> System Integration</li>
                     <li>GPU compute context switch (multitasking)</li>
-                    <li>GPU graphics pre-emption (latență scăzută)</li>
+                    <li>GPU graphics pre-emption (laten?a scazuta)</li>
                     <li><strong>Quality of service:</strong> resurse hardware echilibrate/prioritizate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2.4 — Comunicarea cu memoria – specificații tehnice</h3>
+                <h3>5.2.4 � Comunicarea cu memoria � specifica?ii tehnice</h3>
                 <ul class="specs-list">
-                    <li><strong>Memorie RAM:</strong> evoluție de la DDR3-1866 (Llano) → DDR3-2133 → DDR4-2400 → DDR4-3200 → DDR5-5600, LPDDR5x-7500</li>
+                    <li><strong>Memorie RAM:</strong> evolu?ie de la DDR3-1866 (Llano) ? DDR3-2133 ? DDR4-2400 ? DDR4-3200 ? DDR5-5600, LPDDR5x-7500</li>
                     <li><strong>Canale de memorie:</strong> 2 canale per APU (mainstream), 1 canal (low-power)</li>
-                    <li><strong>Bandwidth maxim (stock):</strong> 29.8 GB/s (Llano DDR3) → 102.4 GB/s (Zen 4 DDR5) → 120 GB/s (Zen 5)</li>
-                    <li><strong>Controller de memorie integrat:</strong> arbitrare &#238;ntre cereri coerente și non-coerente</li>
-                    <li><strong>Llano:</strong> memoria fizică partiționată &#238;ntre GPU (max 512 MB) și CPU (restul)</li>
-                    <li><strong>Kaveri+:</strong> spațiu de adrese unificat CPU/GPU (HSA), fără partiționare</li>
-                    <li><strong>GPU microarchitecturi integrate:</strong> TeraScale 2/3 → GCN (2nd-5th gen) → RDNA 2/3/3.5</li>
+                    <li><strong>Bandwidth maxim (stock):</strong> 29.8 GB/s (Llano DDR3) ? 102.4 GB/s (Zen 4 DDR5) ? 120 GB/s (Zen 5)</li>
+                    <li><strong>Controller de memorie integrat:</strong> arbitrare &#238;ntre cereri coerente ?i non-coerente</li>
+                    <li><strong>Llano:</strong> memoria fizica parti?ionata &#238;ntre GPU (max 512 MB) ?i CPU (restul)</li>
+                    <li><strong>Kaveri+:</strong> spa?iu de adrese unificat CPU/GPU (HSA), fara parti?ionare</li>
+                    <li><strong>GPU microarchitecturi integrate:</strong> TeraScale 2/3 ? GCN (2nd-5th gen) ? RDNA 2/3/3.5</li>
                     <li><strong>Cache:</strong> L1 data 16-64 KiB/core, L2 1-16 MiB total, L3 4-128 MiB (inclusiv 3D V-Cache la Zen 4+)</li>
                     <li><strong>TDP:</strong> de la 4.5W (ultra-low-power) la 170W (desktop performance)</li>
-                    <li><strong>Die area:</strong> 75-250 mm&#178;, tranzistori de la 1.178B (Llano) la mai mulți B (Phoenix la 4nm)</li>
+                    <li><strong>Die area:</strong> 75-250 mm&#178;, tranzistori de la 1.178B (Llano) la mai mul?i B (Phoenix la 4nm)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>5.2.5 — APU &#238;n console de jocuri</h3>
+                <h3>5.2.5 � APU &#238;n console de jocuri</h3>
                 <ul class="specs-list">
-                    <li><strong>PS4 (2013):</strong> 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificată 8 GB</li>
+                    <li><strong>PS4 (2013):</strong> 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificata 8 GB</li>
                     <li><strong>Xbox One (2013):</strong> 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm</li>
                     <li><strong>PS5 (2020):</strong> Zen 2 + RDNA 2 semi-custom, 7 nm</li>
                     <li><strong>Xbox Series X|S (2020):</strong> Zen 2 + RDNA 2 semi-custom</li>
-                    <li>Toate consolele moderne folosesc APU-uri semi-custom AMD cu memorie unificată</li>
-                    <li><strong>Avantaj console:</strong> memorie partajată/unificată &#238;ntre CPU și GPU = lățime de bandă maximă, latență minimă</li>
-                    <li><strong>Turbo Core bidirectional:</strong> puterea se redistribuie automat &#238;ntre CPU și GPU &#238;n funcție de sarcină</li>
+                    <li>Toate consolele moderne folosesc APU-uri semi-custom AMD cu memorie unificata</li>
+                    <li><strong>Avantaj console:</strong> memorie partajata/unificata &#238;ntre CPU ?i GPU = la?ime de banda maxima, laten?a minima</li>
+                    <li><strong>Turbo Core bidirectional:</strong> puterea se redistribuie automat &#238;ntre CPU ?i GPU &#238;n func?ie de sarcina</li>
                 </ul>
             </div>
 
@@ -143,29 +143,29 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și concept APU</h3>
+                <h3>Defini?ie ?i concept APU</h3>
                 <ul class="specs-list">
-                    <li>Combină un CPU general-purpose (AMD64) și un GPU integrat (IGPU) pe un singur die</li>
-                    <li><strong>Dificultăți tehnice:</strong> combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
-                    <li><strong>Prima generație (Llano):</strong> lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1</li>
+                    <li>Combina un CPU general-purpose (AMD64) ?i un GPU integrat (IGPU) pe un singur die</li>
+                    <li><strong>Dificulta?i tehnice:</strong> combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
+                    <li><strong>Prima genera?ie (Llano):</strong> lansata ianuarie 2011 la CES, cu nuclee K10 ?i GPU Radeon HD 6000, pe socket FM1</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Heterogeneous System Architecture (HSA) și comunicarea cu memoria</h3>
+                <h3>Heterogeneous System Architecture (HSA) ?i comunicarea cu memoria</h3>
                 <ul class="specs-list">
-                    <li><strong>2012 (Trinity):</strong> GPU Compute C++ Support – CPU și GPU lucrează &#238;mpreună pentru sarcini paralele (OpenCL C++, C++ AMP)</li>
+                    <li><strong>2012 (Trinity):</strong> GPU Compute C++ Support � CPU ?i GPU lucreaza &#238;mpreuna pentru sarcini paralele (OpenCL C++, C++ AMP)</li>
                     <li><strong>HSA-aware MMU:</strong> GPU poate accesa &#238;ntreaga memorie de sistem prin serviciile de traducere ale MMU-ului HSA</li>
-                    <li><strong>Shared Power Management:</strong> CPU și GPU partajează bugetul de putere, prioritate merge la procesorul potrivit sarcinii curente</li>
-                    <li>CPU și GPU accesează memoria cu același spațiu de adrese</li>
-                    <li>Pointerii pot fi trecuți liber &#238;ntre CPU și GPU → zero-copy</li>
-                    <li><strong>Memorie complet coerentă:</strong> GPU accesează date din regiuni coerente de memorie + referință cache CPU</li>
-                    <li>GPU folosește memorie paginabilă prin pointeri CPU (fără copiere/pinning)</li>
+                    <li><strong>Shared Power Management:</strong> CPU ?i GPU partajeaza bugetul de putere, prioritate merge la procesorul potrivit sarcinii curente</li>
+                    <li>CPU ?i GPU acceseaza memoria cu acela?i spa?iu de adrese</li>
+                    <li>Pointerii pot fi trecu?i liber &#238;ntre CPU ?i GPU ? zero-copy</li>
+                    <li><strong>Memorie complet coerenta:</strong> GPU acceseaza date din regiuni coerente de memorie + referin?a cache CPU</li>
+                    <li>GPU folose?te memorie paginabila prin pointeri CPU (fara copiere/pinning)</li>
                     <li>GPU compute context switch (multitasking)</li>
-                    <li>GPU graphics pre-emption (latență scăzută)</li>
+                    <li>GPU graphics pre-emption (laten?a scazuta)</li>
                 </ul>
             </div>
         </div>
@@ -173,30 +173,30 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și concept APU</h3>
+                <h3>Defini?ie ?i concept APU</h3>
                 <ul class="specs-list">
-                    <li>AMD Accelerated Processing Unit (APU), cunoscută anterior ca Fusion, este o serie de microprocesoare pe 64 de biți de la AMD</li>
-                    <li>AMD APU-urile au module CPU, cache și un procesor grafic de clasă discretă, toate pe același die folosind același bus</li>
-                    <li><strong>Scopul:</strong> crearea unui APU „complet integrat&quot; cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU</li>
+                    <li>AMD Accelerated Processing Unit (APU), cunoscuta anterior ca Fusion, este o serie de microprocesoare pe 64 de bi?i de la AMD</li>
+                    <li>AMD APU-urile au module CPU, cache ?i un procesor grafic de clasa discreta, toate pe acela?i die folosind acela?i bus</li>
+                    <li><strong>Scopul:</strong> crearea unui APU �complet integrat&quot; cu nuclee heterogene capabile sa proceseze automat sarcini CPU ?i GPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Evoluția APU – generații și console</h3>
+                <h3>Evolu?ia APU � genera?ii ?i console</h3>
                 <ul class="specs-list">
-                    <li><strong>Gen 1 – Llano (2011):</strong> K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
-                    <li><strong>Gen 1 low-power – Brazos/Bobcat (2011):</strong> 1-2 nuclee Bobcat, Radeon Evergreen GPU, 9W (Ontario) / 18W (Zacate)</li>
-                    <li><strong>Gen 2 – Trinity (2012):</strong> Piledriver cores, Radeon HD 7000, Socket FM2, TDP 65-100W</li>
-                    <li><strong>Gen 2 – Richland (2013):</strong> Enhanced Piledriver, Temperature Smart Turbo Core</li>
-                    <li><strong>Console semi-custom:</strong> PS4 și Xbox One = APU-uri semi-custom bazate pe Jaguar (8 nuclee, 28 nm, GCN GPU)</li>
-                    <li><strong>Ulterior:</strong> Xbox Series X|S și PlayStation 5 = APU-uri semi-custom AMD</li>
-                    <li><strong>Gen 3 – Kaveri (2014):</strong> Steamroller cores, GCN 2nd gen GPU, Socket FM2+, HSA-enabled zero-copy</li>
-                    <li>CPU+GPU partajează același spațiu de adrese de memorie (Heterogeneous Memory Management)</li>
+                    <li><strong>Gen 1 � Llano (2011):</strong> K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
+                    <li><strong>Gen 1 low-power � Brazos/Bobcat (2011):</strong> 1-2 nuclee Bobcat, Radeon Evergreen GPU, 9W (Ontario) / 18W (Zacate)</li>
+                    <li><strong>Gen 2 � Trinity (2012):</strong> Piledriver cores, Radeon HD 7000, Socket FM2, TDP 65-100W</li>
+                    <li><strong>Gen 2 � Richland (2013):</strong> Enhanced Piledriver, Temperature Smart Turbo Core</li>
+                    <li><strong>Console semi-custom:</strong> PS4 ?i Xbox One = APU-uri semi-custom bazate pe Jaguar (8 nuclee, 28 nm, GCN GPU)</li>
+                    <li><strong>Ulterior:</strong> Xbox Series X|S ?i PlayStation 5 = APU-uri semi-custom AMD</li>
+                    <li><strong>Gen 3 � Kaveri (2014):</strong> Steamroller cores, GCN 2nd gen GPU, Socket FM2+, HSA-enabled zero-copy</li>
+                    <li>CPU+GPU partajeaza acela?i spa?iu de adrese de memorie (Heterogeneous Memory Management)</li>
                     <li><strong>Kabini/Temash (2013):</strong> Jaguar cores, primele SoC-uri quad-core x86, 28 nm TSMC</li>
-                    <li><strong>Gen 4 – Carrizo (2015):</strong> Excavator cores, GCN 3rd gen, integrare southbridge, 15-35W TDP</li>
+                    <li><strong>Gen 4 � Carrizo (2015):</strong> Excavator cores, GCN 3rd gen, integrare southbridge, 15-35W TDP</li>
                     <li><strong>Era Zen:</strong> APU-urile redenumite Ryzen with Radeon Graphics</li>
                     <li><strong>Raven Ridge (2017):</strong> Zen + Vega GPU, 14 nm, Socket AM4/FP5</li>
                     <li><strong>Picasso (2018):</strong> Zen+, 12 nm refresh</li>
@@ -209,23 +209,23 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Heterogeneous System Architecture (HSA) și comunicarea cu memoria</h3>
+                <h3>Heterogeneous System Architecture (HSA) ?i comunicarea cu memoria</h3>
                 <ul class="specs-list">
-                    <li>Evoluția HSA &#238;n APU-uri:</li>
-                    <li><strong>2014 (PS4, Kaveri):</strong> Architectural Integration – MMU-ul CPU și IOMMU-ul GPU partajează același spațiu de adrese</li>
+                    <li>Evolu?ia HSA &#238;n APU-uri:</li>
+                    <li><strong>2014 (PS4, Kaveri):</strong> Architectural Integration � MMU-ul CPU ?i IOMMU-ul GPU partajeaza acela?i spa?iu de adrese</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>APU &#238;n console de jocuri</h3>
                 <ul class="specs-list">
-                    <li><strong>PS4 (2013):</strong> 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificată 8 GB</li>
+                    <li><strong>PS4 (2013):</strong> 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificata 8 GB</li>
                     <li><strong>Xbox One (2013):</strong> 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm</li>
                     <li><strong>PS5 (2020):</strong> Zen 2 + RDNA 2 semi-custom, 7 nm</li>
                     <li><strong>Xbox Series X|S (2020):</strong> Zen 2 + RDNA 2 semi-custom</li>
-                    <li>Toate consolele moderne folosesc APU-uri semi-custom AMD cu memorie unificată</li>
-                    <li><strong>Avantaj console:</strong> memorie partajată/unificată &#238;ntre CPU și GPU = lățime de bandă maximă, latență minimă</li>
-                    <li><strong>Turbo Core bidirectional:</strong> puterea se redistribuie automat &#238;ntre CPU și GPU &#238;n funcție de sarcină</li>
+                    <li>Toate consolele moderne folosesc APU-uri semi-custom AMD cu memorie unificata</li>
+                    <li><strong>Avantaj console:</strong> memorie partajata/unificata &#238;ntre CPU ?i GPU = la?ime de banda maxima, laten?a minima</li>
+                    <li><strong>Turbo Core bidirectional:</strong> puterea se redistribuie automat &#238;ntre CPU ?i GPU &#238;n func?ie de sarcina</li>
                 </ul>
             </div>
         </div>
@@ -236,32 +236,32 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și concept APU</h3>
+                <h3>Defini?ie ?i concept APU</h3>
                 <ul class="specs-list">
-                    <li>Proiectul AMD Fusion a &#238;nceput &#238;n 2006, accelerat de achiziția ATI Technologies &#238;n 2006</li>
+                    <li>Proiectul AMD Fusion a &#238;nceput &#238;n 2006, accelerat de achizi?ia ATI Technologies &#238;n 2006</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Heterogeneous System Architecture (HSA) și comunicarea cu memoria</h3>
+                <h3>Heterogeneous System Architecture (HSA) ?i comunicarea cu memoria</h3>
                 <ul class="specs-list">
                     <li>AMD este membru fondator al HSA Foundation</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Comunicarea cu memoria – specificații tehnice</h3>
+                <h3>Comunicarea cu memoria � specifica?ii tehnice</h3>
                 <ul class="specs-list">
-                    <li><strong>Memorie RAM:</strong> evoluție de la DDR3-1866 (Llano) → DDR3-2133 → DDR4-2400 → DDR4-3200 → DDR5-5600, LPDDR5x-7500</li>
+                    <li><strong>Memorie RAM:</strong> evolu?ie de la DDR3-1866 (Llano) ? DDR3-2133 ? DDR4-2400 ? DDR4-3200 ? DDR5-5600, LPDDR5x-7500</li>
                     <li><strong>Canale de memorie:</strong> 2 canale per APU (mainstream), 1 canal (low-power)</li>
-                    <li><strong>Bandwidth maxim (stock):</strong> 29.8 GB/s (Llano DDR3) → 102.4 GB/s (Zen 4 DDR5) → 120 GB/s (Zen 5)</li>
-                    <li><strong>Controller de memorie integrat:</strong> arbitrare &#238;ntre cereri coerente și non-coerente</li>
-                    <li><strong>Llano:</strong> memoria fizică partiționată &#238;ntre GPU (max 512 MB) și CPU (restul)</li>
-                    <li><strong>Kaveri+:</strong> spațiu de adrese unificat CPU/GPU (HSA), fără partiționare</li>
-                    <li><strong>GPU microarchitecturi integrate:</strong> TeraScale 2/3 → GCN (2nd-5th gen) → RDNA 2/3/3.5</li>
+                    <li><strong>Bandwidth maxim (stock):</strong> 29.8 GB/s (Llano DDR3) ? 102.4 GB/s (Zen 4 DDR5) ? 120 GB/s (Zen 5)</li>
+                    <li><strong>Controller de memorie integrat:</strong> arbitrare &#238;ntre cereri coerente ?i non-coerente</li>
+                    <li><strong>Llano:</strong> memoria fizica parti?ionata &#238;ntre GPU (max 512 MB) ?i CPU (restul)</li>
+                    <li><strong>Kaveri+:</strong> spa?iu de adrese unificat CPU/GPU (HSA), fara parti?ionare</li>
+                    <li><strong>GPU microarchitecturi integrate:</strong> TeraScale 2/3 ? GCN (2nd-5th gen) ? RDNA 2/3/3.5</li>
                     <li><strong>Cache:</strong> L1 data 16-64 KiB/core, L2 1-16 MiB total, L3 4-128 MiB (inclusiv 3D V-Cache la Zen 4+)</li>
                     <li><strong>TDP:</strong> de la 4.5W (ultra-low-power) la 170W (desktop performance)</li>
-                    <li><strong>Die area:</strong> 75-250 mm&#178;, tranzistori de la 1.178B (Llano) la mai mulți B (Phoenix la 4nm)</li>
+                    <li><strong>Die area:</strong> 75-250 mm&#178;, tranzistori de la 1.178B (Llano) la mai mul?i B (Phoenix la 4nm)</li>
                 </ul>
             </div>
         </div>
@@ -273,8 +273,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Probleme asociate cu APU (CPU + GPU)</h3>
-                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                    <h3>?? Probleme asociate cu APU (CPU + GPU)</h3>
+                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
                 </div>
             </div>
         </div>
@@ -285,11 +285,11 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție și concept APU:</strong> AMD Accelerated Processing Unit (APU), cunoscută anterior ca Fusion, este o serie de microprocesoare pe 64 de biți de la AMD</li>
-                    <li><strong>Evoluția APU – generații și console:</strong> Gen 1 – Llano (2011): K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
-                    <li><strong>Heterogeneous System Architecture (HSA) și comunicarea cu memoria:</strong> AMD este membru fondator al HSA Foundation</li>
-                    <li><strong>Comunicarea cu memoria – specificații tehnice:</strong> Memorie RAM: evoluție de la DDR3-1866 (Llano) → DDR3-2133 → DDR4-2400 → DDR4-3200 → DDR5-5600, LPDDR5x-7500</li>
-                    <li><strong>APU &#238;n console de jocuri:</strong> PS4 (2013): 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificată 8 GB</li>
+                    <li><strong>Defini?ie ?i concept APU:</strong> AMD Accelerated Processing Unit (APU), cunoscuta anterior ca Fusion, este o serie de microprocesoare pe 64 de bi?i de la AMD</li>
+                    <li><strong>Evolu?ia APU � genera?ii ?i console:</strong> Gen 1 � Llano (2011): K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
+                    <li><strong>Heterogeneous System Architecture (HSA) ?i comunicarea cu memoria:</strong> AMD este membru fondator al HSA Foundation</li>
+                    <li><strong>Comunicarea cu memoria � specifica?ii tehnice:</strong> Memorie RAM: evolu?ie de la DDR3-1866 (Llano) ? DDR3-2133 ? DDR4-2400 ? DDR4-3200 ? DDR5-5600, LPDDR5x-7500</li>
+                    <li><strong>APU &#238;n console de jocuri:</strong> PS4 (2013): 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificata 8 GB</li>
                 </ul>
             </div>
         </div>
@@ -297,80 +297,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Dificultăți tehnice?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Dificulta?i tehnice?</strong></p>
                 <ul class="specs-list">
-                    <li>a) crearea unui APU „complet integrat&quot; cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU</li>
-                    <li>b) combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
-                    <li>c) lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1</li>
+                    <li>a) crearea unui APU �complet integrat&quot; cu nuclee heterogene capabile sa proceseze automat sarcini CPU ?i GPU</li>
+                    <li>b) combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
+                    <li>c) lansata ianuarie 2011 la CES, cu nuclee K10 ?i GPU Radeon HD 6000, pe socket FM1</li>
                     <li>d) K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Gen 1 – Llano (2011)?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Gen 1 � Llano (2011)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
-                    <li>b) lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1</li>
-                    <li>c) crearea unui APU „complet integrat&quot; cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU</li>
+                    <li>a) combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
+                    <li>b) lansata ianuarie 2011 la CES, cu nuclee K10 ?i GPU Radeon HD 6000, pe socket FM1</li>
+                    <li>c) crearea unui APU �complet integrat&quot; cu nuclee heterogene capabile sa proceseze automat sarcini CPU ?i GPU</li>
                     <li>d) K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: 2012 (Trinity)?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: 2012 (Trinity)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1</li>
-                    <li>b) crearea unui APU „complet integrat&quot; cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU</li>
-                    <li>c) GPU Compute C++ Support – CPU și GPU lucrează &#238;mpreună pentru sarcini paralele (OpenCL C++, C++ AMP)</li>
-                    <li>d) combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
+                    <li>a) lansata ianuarie 2011 la CES, cu nuclee K10 ?i GPU Radeon HD 6000, pe socket FM1</li>
+                    <li>b) crearea unui APU �complet integrat&quot; cu nuclee heterogene capabile sa proceseze automat sarcini CPU ?i GPU</li>
+                    <li>c) GPU Compute C++ Support � CPU ?i GPU lucreaza &#238;mpreuna pentru sarcini paralele (OpenCL C++, C++ AMP)</li>
+                    <li>d) combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — GPU Compute C++ Support – CPU și GPU lucrează &#238;mpreună pentru sarcini paralele (OpenCL C++, C++ AMP)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � GPU Compute C++ Support � CPU ?i GPU lucreaza &#238;mpreuna pentru sarcini paralele (OpenCL C++, C++ AMP)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Memorie RAM?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Memorie RAM?</strong></p>
                 <ul class="specs-list">
-                    <li>a) lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1</li>
-                    <li>b) combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
-                    <li>c) evoluție de la DDR3-1866 (Llano) → DDR3-2133 → DDR4-2400 → DDR4-3200 → DDR5-5600, LPDDR5x-7500</li>
-                    <li>d) crearea unui APU „complet integrat&quot; cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU</li>
+                    <li>a) lansata ianuarie 2011 la CES, cu nuclee K10 ?i GPU Radeon HD 6000, pe socket FM1</li>
+                    <li>b) combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
+                    <li>c) evolu?ie de la DDR3-1866 (Llano) ? DDR3-2133 ? DDR4-2400 ? DDR4-3200 ? DDR5-5600, LPDDR5x-7500</li>
+                    <li>d) crearea unui APU �complet integrat&quot; cu nuclee heterogene capabile sa proceseze automat sarcini CPU ?i GPU</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — evoluție de la DDR3-1866 (Llano) → DDR3-2133 → DDR4-2400 → DDR4-3200 → DDR5-5600, LPDDR5x-7500</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � evolu?ie de la DDR3-1866 (Llano) ? DDR3-2133 ? DDR4-2400 ? DDR4-3200 ? DDR5-5600, LPDDR5x-7500</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: PS4 (2013)?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: PS4 (2013)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) crearea unui APU „complet integrat&quot; cu nuclee heterogene capabile să proceseze automat sarcini CPU și GPU</li>
-                    <li>b) combinarea CPU + GPU pe același die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
-                    <li>c) lansată ianuarie 2011 la CES, cu nuclee K10 și GPU Radeon HD 6000, pe socket FM1</li>
-                    <li>d) 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificată 8 GB</li>
+                    <li>a) crearea unui APU �complet integrat&quot; cu nuclee heterogene capabile sa proceseze automat sarcini CPU ?i GPU</li>
+                    <li>b) combinarea CPU + GPU pe acela?i die la procesul de 45 nm, viziuni diferite asupra rolurilor CPU/GPU</li>
+                    <li>c) lansata ianuarie 2011 la CES, cu nuclee K10 ?i GPU Radeon HD 6000, pe socket FM1</li>
+                    <li>d) 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificata 8 GB</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificată 8 GB</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � 8 nuclee Jaguar semi-custom, GCN GPU, 28 nm, memorie GDDR5 unificata 8 GB</strong></p>
                 </details>
             </div>
         </div>
@@ -378,21 +378,21 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: APU (CPU + GPU)</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de APU. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: APU (CPU + GPU)</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de APU. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: APU.</li>
-                    <li>2. Ce rol are integrarea CPU și GPU în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre APU și comunicarea cu memoria.</li>
+                    <li>2. Ce rol are integrarea CPU ?i GPU �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre APU ?i comunicarea cu memoria.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> AMD Accelerated Processing Unit (APU), cunoscută anterior ca Fusion, este o serie de microprocesoare pe 64 de biți de la AMD</p>
-                        <p><strong>2.</strong> Gen 1 – Llano (2011): K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</p>
+                        <p><strong>1.</strong> AMD Accelerated Processing Unit (APU), cunoscuta anterior ca Fusion, este o serie de microprocesoare pe 64 de bi?i de la AMD</p>
+                        <p><strong>2.</strong> Gen 1 � Llano (2011): K10 cores, Radeon HD 6000, 32 nm, TDP 65-100W, Socket FM1</p>
                         <p><strong>3.</strong> AMD este membru fondator al HSA Foundation</p>
                     </div>
                 </details>
@@ -420,7 +420,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-5-1.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 5.1 &mdash; Placa de baz&#x103;</a>
@@ -477,14 +477,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">APU vs CPU vs GPU: ce diferă între ele și când se folosește fiecare tip de procesor, cu exemple practice.</p>
+                <p class="video-description">APU vs CPU vs GPU: ce difera �ntre ele ?i c�nd se folose?te fiecare tip de procesor, cu exemple practice.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

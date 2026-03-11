@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 6.1 — Secvența de pornire">
+    <meta name="description" content="Lec?ia 6.1 � Secven?a de pornire">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 6.1 — Secvența de pornire — Console Notebook</title>
+    <title>Lec?ia 6.1 � Secven?a de pornire � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 — ALIMENTARE ȘI PROBLEME REALE</p>
-            <h1>Lecția 6.1 — Secvența de pornire</h1>
-            <p>power sequence, inițializare hardware, semnale de pornire</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 6 � ALIMENTARE ?I PROBLEME REALE</p>
+            <h1>Lec?ia 6.1 � Secven?a de pornire</h1>
+            <p>power sequence, ini?ializare hardware, semnale de pornire</p>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,172 +41,172 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>POST (Power-On Self-Test) este o secvență de teste de diagnostic efectuată de firmware-ul computerului imediat după pornire. Scopul este verificarea funcționării corecte a componentelor hardware &#238;nainte de &#238;ncărcarea sistemului de operare.</p>
-                <p>Această lecție acoperă: <strong>power sequence</strong>, <strong>inițializare hardware</strong>, <strong>semnale de pornire</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>POST (Power-On Self-Test) este o secven?a de teste de diagnostic efectuata de firmware-ul computerului imediat dupa pornire. Scopul este verificarea func?ionarii corecte a componentelor hardware &#238;nainte de &#238;ncarcarea sistemului de operare.</p>
+                <p>Aceasta lec?ie acopera: <strong>power sequence</strong>, <strong>ini?ializare hardware</strong>, <strong>semnale de pornire</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.1 — Definiție POST</h3>
-                <p>POST (Power-On Self-Test) este o secvență de teste de diagnostic efectuată de firmware-ul computerului imediat după pornire. Scopul este verificarea funcționării corecte a componentelor hardware &#238;nainte de &#238;ncărcarea sistemului de operare.</p>
+                <h3>6.1.1 � Defini?ie POST</h3>
+                <p>POST (Power-On Self-Test) este o secven?a de teste de diagnostic efectuata de firmware-ul computerului imediat dupa pornire. Scopul este verificarea func?ionarii corecte a componentelor hardware &#238;nainte de &#238;ncarcarea sistemului de operare.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.2 — POST &#238;ndeplinește următoarele funcții</h3>
+                <h3>6.1.2 � POST &#238;ndepline?te urmatoarele func?ii</h3>
                 <ul class="specs-list">
                     <li>Verificarea registrelor CPU</li>
-                    <li>Verificarea integrității codului BIOS</li>
-                    <li>Verificarea funcționării controlerului DMA (Direct Memory Access)</li>
-                    <li>Verificarea funcționării timerului și controlerului de &#238;ntreruperi</li>
-                    <li>Inițializarea, dimensionarea și verificarea memoriei principale (RAM)</li>
-                    <li>Inițializarea BIOS-ului</li>
-                    <li>Transferul controlului către extension BIOS (Option ROM)</li>
-                    <li>Identificarea, organizarea și selectarea dispozitivelor de boot</li>
+                    <li>Verificarea integrita?ii codului BIOS</li>
+                    <li>Verificarea func?ionarii controlerului DMA (Direct Memory Access)</li>
+                    <li>Verificarea func?ionarii timerului ?i controlerului de &#238;ntreruperi</li>
+                    <li>Ini?ializarea, dimensionarea ?i verificarea memoriei principale (RAM)</li>
+                    <li>Ini?ializarea BIOS-ului</li>
+                    <li>Transferul controlului catre extension BIOS (Option ROM)</li>
+                    <li>Identificarea, organizarea ?i selectarea dispozitivelor de boot</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.3 — Ulterior, POST a fost extins pentru a include</h3>
+                <h3>6.1.3 � Ulterior, POST a fost extins pentru a include</h3>
                 <ul class="specs-list">
-                    <li>Inițializarea chipset-ului</li>
-                    <li>Descoperirea, inițializarea și catalogarea magistralelor de sistem și dispozitivelor</li>
-                    <li>Furnizarea unei interfețe utilizator pentru configurare</li>
+                    <li>Ini?ializarea chipset-ului</li>
+                    <li>Descoperirea, ini?ializarea ?i catalogarea magistralelor de sistem ?i dispozitivelor</li>
+                    <li>Furnizarea unei interfe?e utilizator pentru configurare</li>
                     <li>Construirea mediului pentru sistemul de operare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.4 — Procesul de pornire al CPU</h3>
-                <p>La resetare, CPU-ul execută instrucțiunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-biți, aceasta este la adresa fizică FFFFFFF0h. Northbridge-ul direcționează această cerere de citire către memoria flash BIOS (la cold boot) sau RAM (la warm boot). CPU-ul &#238;ncepe execuția codului BIOS care rulează POST.</p>
+                <h3>6.1.4 � Procesul de pornire al CPU</h3>
+                <p>La resetare, CPU-ul executa instruc?iunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-bi?i, aceasta este la adresa fizica FFFFFFF0h. Northbridge-ul direc?ioneaza aceasta cerere de citire catre memoria flash BIOS (la cold boot) sau RAM (la warm boot). CPU-ul &#238;ncepe execu?ia codului BIOS care ruleaza POST.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.5 — Cold boot vs warm boot</h3>
-                <p>Cold boot = pornire completă de la zero, POST complet efectuat.</p>
-                <p>Warm boot (Ctrl+Alt+Delete) = repornire fără a opri alimentarea; poate ocoli anumite teste POST prin intermediul unui flag CMOS.</p>
+                <h3>6.1.5 � Cold boot vs warm boot</h3>
+                <p>Cold boot = pornire completa de la zero, POST complet efectuat.</p>
+                <p>Warm boot (Ctrl+Alt+Delete) = repornire fara a opri alimentarea; poate ocoli anumite teste POST prin intermediul unui flag CMOS.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.6 — IBM</h3>
+                <h3>6.1.6 � IBM</h3>
                 <ul class="specs-list">
                     <li>1 scurt = POST OK, toate testele trecute</li>
-                    <li>2 scurte = eroare POST afișată pe ecran</li>
-                    <li>Continuu = eroare sursă alimentare / placă de bază / RAM</li>
+                    <li>2 scurte = eroare POST afi?ata pe ecran</li>
+                    <li>Continuu = eroare sursa alimentare / placa de baza / RAM</li>
                     <li>1 lung + 2 scurte = eroare adaptor video/display</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.7 — AMI (American Megatrends)</h3>
+                <h3>6.1.7 � AMI (American Megatrends)</h3>
                 <ul class="specs-list">
-                    <li>1 beep = eroare re&#238;mprospătare memorie</li>
+                    <li>1 beep = eroare re&#238;mprospatare memorie</li>
                     <li>2 beeps = eroare paritate memorie</li>
                     <li>3 beeps = eroare read/write memorie</li>
                     <li>4 beeps = eroare timer</li>
                     <li>5 beeps = eroare procesor</li>
                 </ul>
-                <p>POST card: dispozitiv de diagnostic tehnic, placă de interfață dedicată care afișează codul de pe portul I/O 0x80.</p>
+                <p>POST card: dispozitiv de diagnostic tehnic, placa de interfa?a dedicata care afi?eaza codul de pe portul I/O 0x80.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.8 — Definiția BIOS</h3>
-                <p>BIOS (Basic Input/Output System) este firmware-ul stocat pe placa de bază, responsabil pentru inițializarea hardware-ului și furnizarea serviciilor runtime. Inițial stocat &#238;n ROM, acum se folosește memorie flash.</p>
+                <h3>6.1.8 � Defini?ia BIOS</h3>
+                <p>BIOS (Basic Input/Output System) este firmware-ul stocat pe placa de baza, responsabil pentru ini?ializarea hardware-ului ?i furnizarea serviciilor runtime. Ini?ial stocat &#238;n ROM, acum se folose?te memorie flash.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.9 — Secvența de pornire a sistemului</h3>
-                <p>La pornire, procesoarele x86 &#238;ncep execuția de la adresa FFFFFFF0h (pe 80386+). Prima instrucțiune din BIOS ROM este de obicei un jump către programul principal de start-up. Acest program rulează POST, care identifică, testează și inițializează:</p>
+                <h3>6.1.9 � Secven?a de pornire a sistemului</h3>
+                <p>La pornire, procesoarele x86 &#238;ncep execu?ia de la adresa FFFFFFF0h (pe 80386+). Prima instruc?iune din BIOS ROM este de obicei un jump catre programul principal de start-up. Acest program ruleaza POST, care identifica, testeaza ?i ini?ializeaza:</p>
                 <ul class="specs-list">
                     <li>CPU</li>
                     <li>Chipset</li>
-                    <li>RAM (unul dintre cei mai complecși pași, setare DRAM prin SPD)</li>
-                    <li>Placa de bază</li>
+                    <li>RAM (unul dintre cei mai complec?i pa?i, setare DRAM prin SPD)</li>
+                    <li>Placa de baza</li>
                     <li>Placa video</li>
                     <li>Tastatura</li>
                     <li>Mouse</li>
                     <li>Hard disk</li>
-                    <li>Unitate optică</li>
+                    <li>Unitate optica</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.10 — Scanarea Option ROM</h3>
-                <p>După POST, BIOS-ul scanează pentru Option ROM-uri &#238;n zona de adrese 0x0C0000–0x0F0000 pe granițe de 2KB. Fiecare ROM trebuie să conțină semnătura 0x55 0xAA. Dacă este găsită, BIOS-ul execută codul ROM-ului respectiv, care inițializează hardware-ul asociat și &#238;nregistrează vectori de &#238;ntrerupere.</p>
+                <h3>6.1.10 � Scanarea Option ROM</h3>
+                <p>Dupa POST, BIOS-ul scaneaza pentru Option ROM-uri &#238;n zona de adrese 0x0C0000�0x0F0000 pe grani?e de 2KB. Fiecare ROM trebuie sa con?ina semnatura 0x55 0xAA. Daca este gasita, BIOS-ul executa codul ROM-ului respectiv, care ini?ializeaza hardware-ul asociat ?i &#238;nregistreaza vectori de &#238;ntrerupere.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.11 — După POST și scanarea Option ROM</h3>
-                <p>1. BIOS-ul apelează interrupt 19h</p>
-                <p>2. &#206;ncearcă dispozitivele de boot &#238;n ordinea configurată</p>
-                <p>3. &#206;ncarcă primul sector (boot sector, 512 bytes) de pe dispozitivul bootabil</p>
-                <p>4. Verifică semnătura 0x55 0xAA la sf&#226;rșitul sectorului</p>
-                <p>5. Transferă controlul la boot loader-ul din sectorul de boot</p>
+                <h3>6.1.11 � Dupa POST ?i scanarea Option ROM</h3>
+                <p>1. BIOS-ul apeleaza interrupt 19h</p>
+                <p>2. &#206;ncearca dispozitivele de boot &#238;n ordinea configurata</p>
+                <p>3. &#206;ncarca primul sector (boot sector, 512 bytes) de pe dispozitivul bootabil</p>
+                <p>4. Verifica semnatura 0x55 0xAA la sf&#226;r?itul sectorului</p>
+                <p>5. Transfera controlul la boot loader-ul din sectorul de boot</p>
                 <p>6. CPU-ul este &#238;n real mode, CS:IP la 0x07C00</p>
-                <p>7. Boot loader-ul &#238;ncarcă kernel-ul OS</p>
+                <p>7. Boot loader-ul &#238;ncarca kernel-ul OS</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.12 — Actualizări microcode</h3>
-                <p>&#206;n timpul POST, actualizări de microcode sunt &#238;ncărcate din BIOS &#238;n SRAM-ul procesorului. Aceste actualizări nu sunt persistente – se re&#238;ncarcă la fiecare pornire.</p>
+                <h3>6.1.12 � Actualizari microcode</h3>
+                <p>&#206;n timpul POST, actualizari de microcode sunt &#238;ncarcate din BIOS &#238;n SRAM-ul procesorului. Aceste actualizari nu sunt persistente � se re&#238;ncarca la fiecare pornire.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.13 — UEFI - succesorul BIOS</h3>
-                <p>UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy &#238;ncep&#226;nd din 2020. UEFI nu se bazează pe boot sectors; &#238;ncarcă direct boot loader-ul (fișier EFI application) de pe partiția EFI System Partition.</p>
+                <h3>6.1.13 � UEFI - succesorul BIOS</h3>
+                <p>UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy &#238;ncep&#226;nd din 2020. UEFI nu se bazeaza pe boot sectors; &#238;ncarca direct boot loader-ul (fi?ier EFI application) de pe parti?ia EFI System Partition.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.14 — Definiție Power Good</h3>
-                <p>Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului către placa de bază, indic&#226;nd că toate tensiunile sunt &#238;n specificații și că sistemul poate proceda la boot și operare.</p>
+                <h3>6.1.14 � Defini?ie Power Good</h3>
+                <p>Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului catre placa de baza, indic&#226;nd ca toate tensiunile sunt &#238;n specifica?ii ?i ca sistemul poate proceda la boot ?i operare.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.15 — Conform specificației ATX</h3>
+                <h3>6.1.15 � Conform specifica?iei ATX</h3>
                 <ul class="specs-list">
                     <li>Semnalul Power-Good este un semnal de +5V generat de sursa de alimentare</li>
-                    <li>Se generează după ce sursa a trecut testele interne și ieșirile s-au stabilizat</li>
-                    <li><strong>Timpul de stabilizare:</strong> &#238;ntre 0.1 și 0.5 secunde (100ms – 500ms) după pornirea sursei</li>
-                    <li>Semnalul este trimis la placa de bază, unde este recepționat de cip-ul timer al procesorului care controlează linia de reset a procesorului</li>
-                    <li>PWR_OK trebuie să devină HIGH nu mai devreme de 100ms după stabilizarea rail-urilor</li>
-                    <li>PWR_OK trebuie să răm&#226;nă HIGH pentru cel puțin 16ms după pierderea alimentării AC</li>
-                    <li>PWR_OK trebuie să cadă (sub 0.4V) cu cel puțin 1ms &#238;nainte ca rail-urile să iasă din specificații (95% din valoarea nominală)</li>
+                    <li>Se genereaza dupa ce sursa a trecut testele interne ?i ie?irile s-au stabilizat</li>
+                    <li><strong>Timpul de stabilizare:</strong> &#238;ntre 0.1 ?i 0.5 secunde (100ms � 500ms) dupa pornirea sursei</li>
+                    <li>Semnalul este trimis la placa de baza, unde este recep?ionat de cip-ul timer al procesorului care controleaza linia de reset a procesorului</li>
+                    <li>PWR_OK trebuie sa devina HIGH nu mai devreme de 100ms dupa stabilizarea rail-urilor</li>
+                    <li>PWR_OK trebuie sa ram&#226;na HIGH pentru cel pu?in 16ms dupa pierderea alimentarii AC</li>
+                    <li>PWR_OK trebuie sa cada (sub 0.4V) cu cel pu?in 1ms &#238;nainte ca rail-urile sa iasa din specifica?ii (95% din valoarea nominala)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.16 — Surse de calitate scăzută</h3>
-                <p>Sursele ieftine/de calitate scăzută nu urmează specificația ATX de circuit de monitorizare separat; &#238;n schimb, conectează ieșirea Power Good direct la una din liniile de 5V. Acest lucru &#238;nseamnă că procesorul nu va primi niciodată reset la alimentare necorespunzătoare dec&#226;t dacă linia de 5V scade suficient de mult.</p>
+                <h3>6.1.16 � Surse de calitate scazuta</h3>
+                <p>Sursele ieftine/de calitate scazuta nu urmeaza specifica?ia ATX de circuit de monitorizare separat; &#238;n schimb, conecteaza ie?irea Power Good direct la una din liniile de 5V. Acest lucru &#238;nseamna ca procesorul nu va primi niciodata reset la alimentare necorespunzatoare dec&#226;t daca linia de 5V scade suficient de mult.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.17 — Definiția procesului de boot</h3>
-                <p>Booting (bootstrapping) este procesul de pornire a unui computer inițiat prin hardware (buton fizic) sau comandă software. După pornire, CPU-ul nu are software &#238;n memoria principală, deci un proces trebuie să &#238;ncarce software-ul &#238;n memorie &#238;nainte de execuție. Termenul vine de la expresia &quot;to pull oneself up by one&#39;s bootstraps&quot;.</p>
+                <h3>6.1.17 � Defini?ia procesului de boot</h3>
+                <p>Booting (bootstrapping) este procesul de pornire a unui computer ini?iat prin hardware (buton fizic) sau comanda software. Dupa pornire, CPU-ul nu are software &#238;n memoria principala, deci un proces trebuie sa &#238;ncarce software-ul &#238;n memorie &#238;nainte de execu?ie. Termenul vine de la expresia &quot;to pull oneself up by one&#39;s bootstraps&quot;.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.18 — La pornirea unui PC IBM-compatibil</h3>
-                <p>1. CPU x86 execută instrucțiunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)</p>
-                <p>2. Aceasta indică de obicei către punctul de intrare al firmware-ului (UEFI sau BIOS) din ROM</p>
-                <p>3. Locația de memorie conține de obicei o instrucțiune jump către programul de start-up</p>
-                <p>4. Programul rulează POST pentru verificarea și inițializarea dispozitivelor necesare (DRAM, bus PCI, dispozitive PCI, Option ROM-uri)</p>
-                <p>5. Setarea DRAM prin SPD = unul dintre cei mai complecși pași</p>
-                <p>6. După inițializarea hardware-ului, firmware-ul parcurge lista preconfigurată de dispozitive de boot</p>
+                <h3>6.1.18 � La pornirea unui PC IBM-compatibil</h3>
+                <p>1. CPU x86 executa instruc?iunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)</p>
+                <p>2. Aceasta indica de obicei catre punctul de intrare al firmware-ului (UEFI sau BIOS) din ROM</p>
+                <p>3. Loca?ia de memorie con?ine de obicei o instruc?iune jump catre programul de start-up</p>
+                <p>4. Programul ruleaza POST pentru verificarea ?i ini?ializarea dispozitivelor necesare (DRAM, bus PCI, dispozitive PCI, Option ROM-uri)</p>
+                <p>5. Setarea DRAM prin SPD = unul dintre cei mai complec?i pa?i</p>
+                <p>6. Dupa ini?ializarea hardware-ului, firmware-ul parcurge lista preconfigurata de dispozitive de boot</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>6.1.19 — Procesul de boot folosește adesea &#238;ncărcare &#238;n etape (multi-stage)</h3>
+                <h3>6.1.19 � Procesul de boot folose?te adesea &#238;ncarcare &#238;n etape (multi-stage)</h3>
                 <ul class="specs-list">
-                    <li><strong>First-stage boot loaders:</strong> BIOS, UEFI, coreboot, Libreboot, Das U-Boot (inițializare hardware)</li>
-                    <li><strong>Second-stage boot loaders:</strong> GNU GRUB, rEFInd, BOOTMGR, Syslinux, NTLDR (&#238;ncărcare OS)</li>
+                    <li><strong>First-stage boot loaders:</strong> BIOS, UEFI, coreboot, Libreboot, Das U-Boot (ini?ializare hardware)</li>
+                    <li><strong>Second-stage boot loaders:</strong> GNU GRUB, rEFInd, BOOTMGR, Syslinux, NTLDR (&#238;ncarcare OS)</li>
                 </ul>
-                <p>Boot sector pe MBR: limitat la 446 bytes (restul: tabelă partiții 64 bytes + semnătură boot 2 bytes)</p>
-                <p>UEFI nu se bazează pe boot sectors; &#238;ncarcă direct boot loader-ul EFI de pe EFI System Partition.</p>
+                <p>Boot sector pe MBR: limitat la 446 bytes (restul: tabela parti?ii 64 bytes + semnatura boot 2 bytes)</p>
+                <p>UEFI nu se bazeaza pe boot sectors; &#238;ncarca direct boot loader-ul EFI de pe EFI System Partition.</p>
             </div>
 
         </div>
@@ -214,10 +214,10 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>POST &#238;ndeplinește următoarele funcții</h3>
+                <h3>POST &#238;ndepline?te urmatoarele func?ii</h3>
                 <ul class="specs-list">
                     <li>Verificarea registrelor CPU</li>
                 </ul>
@@ -225,50 +225,50 @@
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Procesul de pornire al CPU</h3>
-                <p>La resetare, CPU-ul execută instrucțiunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-biți, aceasta este la adresa fizică FFFFFFF0h. Northbridge-ul direcționează această cerere de citire către memoria flash BIOS (la cold boot) sau RAM (la warm boot). CPU-ul &#238;ncepe execuția codului BIOS care rulează POST.</p>
+                <p>La resetare, CPU-ul executa instruc?iunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-bi?i, aceasta este la adresa fizica FFFFFFF0h. Northbridge-ul direc?ioneaza aceasta cerere de citire catre memoria flash BIOS (la cold boot) sau RAM (la warm boot). CPU-ul &#238;ncepe execu?ia codului BIOS care ruleaza POST.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Secvența de pornire a sistemului</h3>
+                <h3>Secven?a de pornire a sistemului</h3>
                 <ul class="specs-list">
                     <li>CPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>După POST și scanarea Option ROM</h3>
+                <h3>Dupa POST ?i scanarea Option ROM</h3>
                 <p>6. CPU-ul este &#238;n real mode, CS:IP la 0x07C00</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Actualizări microcode</h3>
-                <p>&#206;n timpul POST, actualizări de microcode sunt &#238;ncărcate din BIOS &#238;n SRAM-ul procesorului. Aceste actualizări nu sunt persistente – se re&#238;ncarcă la fiecare pornire.</p>
+                <h3>Actualizari microcode</h3>
+                <p>&#206;n timpul POST, actualizari de microcode sunt &#238;ncarcate din BIOS &#238;n SRAM-ul procesorului. Aceste actualizari nu sunt persistente � se re&#238;ncarca la fiecare pornire.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Surse de calitate scăzută</h3>
-                <p>Sursele ieftine/de calitate scăzută nu urmează specificația ATX de circuit de monitorizare separat; &#238;n schimb, conectează ieșirea Power Good direct la una din liniile de 5V. Acest lucru &#238;nseamnă că procesorul nu va primi niciodată reset la alimentare necorespunzătoare dec&#226;t dacă linia de 5V scade suficient de mult.</p>
+                <h3>Surse de calitate scazuta</h3>
+                <p>Sursele ieftine/de calitate scazuta nu urmeaza specifica?ia ATX de circuit de monitorizare separat; &#238;n schimb, conecteaza ie?irea Power Good direct la una din liniile de 5V. Acest lucru &#238;nseamna ca procesorul nu va primi niciodata reset la alimentare necorespunzatoare dec&#226;t daca linia de 5V scade suficient de mult.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiția procesului de boot</h3>
-                <p>Booting (bootstrapping) este procesul de pornire a unui computer inițiat prin hardware (buton fizic) sau comandă software. După pornire, CPU-ul nu are software &#238;n memoria principală, deci un proces trebuie să &#238;ncarce software-ul &#238;n memorie &#238;nainte de execuție. Termenul vine de la expresia &quot;to pull oneself up by one&#39;s bootstraps&quot;.</p>
+                <h3>Defini?ia procesului de boot</h3>
+                <p>Booting (bootstrapping) este procesul de pornire a unui computer ini?iat prin hardware (buton fizic) sau comanda software. Dupa pornire, CPU-ul nu are software &#238;n memoria principala, deci un proces trebuie sa &#238;ncarce software-ul &#238;n memorie &#238;nainte de execu?ie. Termenul vine de la expresia &quot;to pull oneself up by one&#39;s bootstraps&quot;.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>La pornirea unui PC IBM-compatibil</h3>
-                <p>1. CPU x86 execută instrucțiunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)</p>
+                <p>1. CPU x86 executa instruc?iunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție Power Good</h3>
-                <p>Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului către placa de bază, indic&#226;nd că toate tensiunile sunt &#238;n specificații și că sistemul poate proceda la boot și operare.</p>
+                <h3>Defini?ie Power Good</h3>
+                <p>Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului catre placa de baza, indic&#226;nd ca toate tensiunile sunt &#238;n specifica?ii ?i ca sistemul poate proceda la boot ?i operare.</p>
             </div>
         </div>
     </section>
@@ -279,19 +279,19 @@
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>UEFI - succesorul BIOS</h3>
-                <p>UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy &#238;ncep&#226;nd din 2020. UEFI nu se bazează pe boot sectors; &#238;ncarcă direct boot loader-ul (fișier EFI application) de pe partiția EFI System Partition.</p>
+                <p>UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy &#238;ncep&#226;nd din 2020. UEFI nu se bazeaza pe boot sectors; &#238;ncarca direct boot loader-ul (fi?ier EFI application) de pe parti?ia EFI System Partition.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Conform specificației ATX</h3>
+                <h3>Conform specifica?iei ATX</h3>
                 <ul class="specs-list">
                     <li>Semnalul Power-Good este un semnal de +5V generat de sursa de alimentare</li>
-                    <li>Se generează după ce sursa a trecut testele interne și ieșirile s-au stabilizat</li>
-                    <li><strong>Timpul de stabilizare:</strong> &#238;ntre 0.1 și 0.5 secunde (100ms – 500ms) după pornirea sursei</li>
-                    <li>Semnalul este trimis la placa de bază, unde este recepționat de cip-ul timer al procesorului care controlează linia de reset a procesorului</li>
-                    <li>PWR_OK trebuie să devină HIGH nu mai devreme de 100ms după stabilizarea rail-urilor</li>
-                    <li>PWR_OK trebuie să răm&#226;nă HIGH pentru cel puțin 16ms după pierderea alimentării AC</li>
-                    <li>PWR_OK trebuie să cadă (sub 0.4V) cu cel puțin 1ms &#238;nainte ca rail-urile să iasă din specificații (95% din valoarea nominală)</li>
+                    <li>Se genereaza dupa ce sursa a trecut testele interne ?i ie?irile s-au stabilizat</li>
+                    <li><strong>Timpul de stabilizare:</strong> &#238;ntre 0.1 ?i 0.5 secunde (100ms � 500ms) dupa pornirea sursei</li>
+                    <li>Semnalul este trimis la placa de baza, unde este recep?ionat de cip-ul timer al procesorului care controleaza linia de reset a procesorului</li>
+                    <li>PWR_OK trebuie sa devina HIGH nu mai devreme de 100ms dupa stabilizarea rail-urilor</li>
+                    <li>PWR_OK trebuie sa ram&#226;na HIGH pentru cel pu?in 16ms dupa pierderea alimentarii AC</li>
+                    <li>PWR_OK trebuie sa cada (sub 0.4V) cu cel pu?in 1ms &#238;nainte ca rail-urile sa iasa din specifica?ii (95% din valoarea nominala)</li>
                 </ul>
             </div>
         </div>
@@ -303,23 +303,23 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Definiție POST</h3>
-                    <p>POST (Power-On Self-Test) este o secvență de teste de diagnostic efectuată de firmware-ul computerului imediat după pornire. Scopul este verificarea funcționării corecte a componentelor hardware &#238;nainte de &#238;ncărcarea sistemului de operare.</p>
+                    <h3>?? Defini?ie POST</h3>
+                    <p>POST (Power-On Self-Test) este o secven?a de teste de diagnostic efectuata de firmware-ul computerului imediat dupa pornire. Scopul este verificarea func?ionarii corecte a componentelor hardware &#238;nainte de &#238;ncarcarea sistemului de operare.</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ IBM</h3>
-                    <p>2 scurte = eroare POST afișată pe ecran</p>
-                    <p>Continuu = eroare sursă alimentare / placă de bază / RAM</p>
+                    <h3>?? IBM</h3>
+                    <p>2 scurte = eroare POST afi?ata pe ecran</p>
+                    <p>Continuu = eroare sursa alimentare / placa de baza / RAM</p>
                     <p>1 lung + 2 scurte = eroare adaptor video/display</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ AMI (American Megatrends)</h3>
-                    <p>1 beep = eroare re&#238;mprospătare memorie</p>
+                    <h3>?? AMI (American Megatrends)</h3>
+                    <p>1 beep = eroare re&#238;mprospatare memorie</p>
                     <p>2 beeps = eroare paritate memorie</p>
                     <p>3 beeps = eroare read/write memorie</p>
                     <p>4 beeps = eroare timer</p>
                     <p>5 beeps = eroare procesor</p>
-                    <p>POST card: dispozitiv de diagnostic tehnic, placă de interfață dedicată care afișează codul de pe portul I/O 0x80.</p>
+                    <p>POST card: dispozitiv de diagnostic tehnic, placa de interfa?a dedicata care afi?eaza codul de pe portul I/O 0x80.</p>
                 </div>
             </div>
         </div>
@@ -330,25 +330,25 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție POST:</strong> POST (Power-On Self-Test) este o secvență de teste de diagnostic efectuată de firmware-ul computerului imediat după pornire. Scopul este verificarea funcționării corecte a componentelor hardware &#...</li>
-                    <li><strong>POST &#238;ndeplinește următoarele funcții:</strong> Verificarea registrelor CPU</li>
-                    <li><strong>Ulterior, POST a fost extins pentru a include:</strong> Inițializarea chipset-ului</li>
-                    <li><strong>Procesul de pornire al CPU:</strong> La resetare, CPU-ul execută instrucțiunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-biți, aceasta este la adresa fizică FFFFFFF0h. Northbridge-ul direcționează această cerere de citir...</li>
-                    <li><strong>Cold boot vs warm boot:</strong> Cold boot = pornire completă de la zero, POST complet efectuat.</li>
+                    <li><strong>Defini?ie POST:</strong> POST (Power-On Self-Test) este o secven?a de teste de diagnostic efectuata de firmware-ul computerului imediat dupa pornire. Scopul este verificarea func?ionarii corecte a componentelor hardware &#...</li>
+                    <li><strong>POST &#238;ndepline?te urmatoarele func?ii:</strong> Verificarea registrelor CPU</li>
+                    <li><strong>Ulterior, POST a fost extins pentru a include:</strong> Ini?ializarea chipset-ului</li>
+                    <li><strong>Procesul de pornire al CPU:</strong> La resetare, CPU-ul executa instruc?iunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-bi?i, aceasta este la adresa fizica FFFFFFF0h. Northbridge-ul direc?ioneaza aceasta cerere de citir...</li>
+                    <li><strong>Cold boot vs warm boot:</strong> Cold boot = pornire completa de la zero, POST complet efectuat.</li>
                     <li><strong>IBM:</strong> 1 scurt = POST OK, toate testele trecute</li>
-                    <li><strong>AMI (American Megatrends):</strong> 1 beep = eroare re&#238;mprospătare memorie</li>
-                    <li><strong>Definiția BIOS:</strong> BIOS (Basic Input/Output System) este firmware-ul stocat pe placa de bază, responsabil pentru inițializarea hardware-ului și furnizarea serviciilor runtime. Inițial stocat &#238;n ROM, acum se folo...</li>
-                    <li><strong>Secvența de pornire a sistemului:</strong> La pornire, procesoarele x86 &#238;ncep execuția de la adresa FFFFFFF0h (pe 80386+). Prima instrucțiune din BIOS ROM este de obicei un jump către programul principal de start-up. Acest program rule...</li>
-                    <li><strong>Scanarea Option ROM:</strong> După POST, BIOS-ul scanează pentru Option ROM-uri &#238;n zona de adrese 0x0C0000–0x0F0000 pe granițe de 2KB. Fiecare ROM trebuie să conțină semnătura 0x55 0xAA. Dacă este găsită, BIOS-ul execută c...</li>
-                    <li><strong>După POST și scanarea Option ROM:</strong> 1. BIOS-ul apelează interrupt 19h</li>
-                    <li><strong>Actualizări microcode:</strong> &#206;n timpul POST, actualizări de microcode sunt &#238;ncărcate din BIOS &#238;n SRAM-ul procesorului. Aceste actualizări nu sunt persistente – se re&#238;ncarcă la fiecare pornire.</li>
-                    <li><strong>UEFI - succesorul BIOS:</strong> UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy &#238;ncep&#226;nd din 2020. UEFI nu se bazează pe boot sectors; &#238;ncarcă di...</li>
-                    <li><strong>Definiție Power Good:</strong> Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului către placa de bază, indic&#226;nd că toate tensiunile sunt &#238;n specificații și că sistemul poate proceda la bo...</li>
-                    <li><strong>Conform specificației ATX:</strong> Semnalul Power-Good este un semnal de +5V generat de sursa de alimentare</li>
-                    <li><strong>Surse de calitate scăzută:</strong> Sursele ieftine/de calitate scăzută nu urmează specificația ATX de circuit de monitorizare separat; &#238;n schimb, conectează ieșirea Power Good direct la una din liniile de 5V. Acest lucru &#238;...</li>
-                    <li><strong>Definiția procesului de boot:</strong> Booting (bootstrapping) este procesul de pornire a unui computer inițiat prin hardware (buton fizic) sau comandă software. După pornire, CPU-ul nu are software &#238;n memoria principală, deci un p...</li>
-                    <li><strong>La pornirea unui PC IBM-compatibil:</strong> 1. CPU x86 execută instrucțiunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)</li>
-                    <li><strong>Procesul de boot folosește adesea &#238;ncărcare &#238;n etape (multi-stage):</strong> First-stage boot loaders: BIOS, UEFI, coreboot, Libreboot, Das U-Boot (inițializare hardware)</li>
+                    <li><strong>AMI (American Megatrends):</strong> 1 beep = eroare re&#238;mprospatare memorie</li>
+                    <li><strong>Defini?ia BIOS:</strong> BIOS (Basic Input/Output System) este firmware-ul stocat pe placa de baza, responsabil pentru ini?ializarea hardware-ului ?i furnizarea serviciilor runtime. Ini?ial stocat &#238;n ROM, acum se folo...</li>
+                    <li><strong>Secven?a de pornire a sistemului:</strong> La pornire, procesoarele x86 &#238;ncep execu?ia de la adresa FFFFFFF0h (pe 80386+). Prima instruc?iune din BIOS ROM este de obicei un jump catre programul principal de start-up. Acest program rule...</li>
+                    <li><strong>Scanarea Option ROM:</strong> Dupa POST, BIOS-ul scaneaza pentru Option ROM-uri &#238;n zona de adrese 0x0C0000�0x0F0000 pe grani?e de 2KB. Fiecare ROM trebuie sa con?ina semnatura 0x55 0xAA. Daca este gasita, BIOS-ul executa c...</li>
+                    <li><strong>Dupa POST ?i scanarea Option ROM:</strong> 1. BIOS-ul apeleaza interrupt 19h</li>
+                    <li><strong>Actualizari microcode:</strong> &#206;n timpul POST, actualizari de microcode sunt &#238;ncarcate din BIOS &#238;n SRAM-ul procesorului. Aceste actualizari nu sunt persistente � se re&#238;ncarca la fiecare pornire.</li>
+                    <li><strong>UEFI - succesorul BIOS:</strong> UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy &#238;ncep&#226;nd din 2020. UEFI nu se bazeaza pe boot sectors; &#238;ncarca di...</li>
+                    <li><strong>Defini?ie Power Good:</strong> Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului catre placa de baza, indic&#226;nd ca toate tensiunile sunt &#238;n specifica?ii ?i ca sistemul poate proceda la bo...</li>
+                    <li><strong>Conform specifica?iei ATX:</strong> Semnalul Power-Good este un semnal de +5V generat de sursa de alimentare</li>
+                    <li><strong>Surse de calitate scazuta:</strong> Sursele ieftine/de calitate scazuta nu urmeaza specifica?ia ATX de circuit de monitorizare separat; &#238;n schimb, conecteaza ie?irea Power Good direct la una din liniile de 5V. Acest lucru &#238;...</li>
+                    <li><strong>Defini?ia procesului de boot:</strong> Booting (bootstrapping) este procesul de pornire a unui computer ini?iat prin hardware (buton fizic) sau comanda software. Dupa pornire, CPU-ul nu are software &#238;n memoria principala, deci un p...</li>
+                    <li><strong>La pornirea unui PC IBM-compatibil:</strong> 1. CPU x86 executa instruc?iunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)</li>
+                    <li><strong>Procesul de boot folose?te adesea &#238;ncarcare &#238;n etape (multi-stage):</strong> First-stage boot loaders: BIOS, UEFI, coreboot, Libreboot, Das U-Boot (ini?ializare hardware)</li>
                 </ul>
             </div>
         </div>
@@ -356,80 +356,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Cold boot vs warm boot?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Cold boot vs warm boot?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Cold boot = pornire completă de la zero, POST complet efectuat.</li>
+                    <li>a) Cold boot = pornire completa de la zero, POST complet efectuat.</li>
                     <li>b) 1 scurt = POST OK, toate testele trecute</li>
-                    <li>c) Continuu = eroare sursă alimentare / placă de bază / RAM</li>
-                    <li>d) 2 scurte = eroare POST afișată pe ecran</li>
+                    <li>c) Continuu = eroare sursa alimentare / placa de baza / RAM</li>
+                    <li>d) 2 scurte = eroare POST afi?ata pe ecran</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — Cold boot = pornire completă de la zero, POST complet efectuat.</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � Cold boot = pornire completa de la zero, POST complet efectuat.</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: IBM?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: IBM?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Cold boot = pornire completă de la zero, POST complet efectuat.</li>
+                    <li>a) Cold boot = pornire completa de la zero, POST complet efectuat.</li>
                     <li>b) 1 scurt = POST OK, toate testele trecute</li>
-                    <li>c) 2 scurte = eroare POST afișată pe ecran</li>
-                    <li>d) Continuu = eroare sursă alimentare / placă de bază / RAM</li>
+                    <li>c) 2 scurte = eroare POST afi?ata pe ecran</li>
+                    <li>d) Continuu = eroare sursa alimentare / placa de baza / RAM</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — 1 scurt = POST OK, toate testele trecute</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � 1 scurt = POST OK, toate testele trecute</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: AMI (American Megatrends)?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: AMI (American Megatrends)?</strong></p>
                 <ul class="specs-list">
                     <li>a) 1 scurt = POST OK, toate testele trecute</li>
-                    <li>b) 2 scurte = eroare POST afișată pe ecran</li>
-                    <li>c) Cold boot = pornire completă de la zero, POST complet efectuat.</li>
-                    <li>d) 1 beep = eroare re&#238;mprospătare memorie</li>
+                    <li>b) 2 scurte = eroare POST afi?ata pe ecran</li>
+                    <li>c) Cold boot = pornire completa de la zero, POST complet efectuat.</li>
+                    <li>d) 1 beep = eroare re&#238;mprospatare memorie</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — 1 beep = eroare re&#238;mprospătare memorie</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � 1 beep = eroare re&#238;mprospatare memorie</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Timpul de stabilizare?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Timpul de stabilizare?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 2 scurte = eroare POST afișată pe ecran</li>
-                    <li>b) &#238;ntre 0.1 și 0.5 secunde (100ms – 500ms) după pornirea sursei</li>
-                    <li>c) Cold boot = pornire completă de la zero, POST complet efectuat.</li>
+                    <li>a) 2 scurte = eroare POST afi?ata pe ecran</li>
+                    <li>b) &#238;ntre 0.1 ?i 0.5 secunde (100ms � 500ms) dupa pornirea sursei</li>
+                    <li>c) Cold boot = pornire completa de la zero, POST complet efectuat.</li>
                     <li>d) 1 scurt = POST OK, toate testele trecute</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — &#238;ntre 0.1 și 0.5 secunde (100ms – 500ms) după pornirea sursei</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � &#238;ntre 0.1 ?i 0.5 secunde (100ms � 500ms) dupa pornirea sursei</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: La pornirea unui PC IBM-compatibil?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: La pornirea unui PC IBM-compatibil?</strong></p>
                 <ul class="specs-list">
                     <li>a) 1 scurt = POST OK, toate testele trecute</li>
-                    <li>b) Cold boot = pornire completă de la zero, POST complet efectuat.</li>
-                    <li>c) 5. Setarea DRAM prin SPD = unul dintre cei mai complecși pași</li>
-                    <li>d) 2 scurte = eroare POST afișată pe ecran</li>
+                    <li>b) Cold boot = pornire completa de la zero, POST complet efectuat.</li>
+                    <li>c) 5. Setarea DRAM prin SPD = unul dintre cei mai complec?i pa?i</li>
+                    <li>d) 2 scurte = eroare POST afi?ata pe ecran</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — 5. Setarea DRAM prin SPD = unul dintre cei mai complecși pași</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � 5. Setarea DRAM prin SPD = unul dintre cei mai complec?i pa?i</strong></p>
                 </details>
             </div>
         </div>
@@ -437,22 +437,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Secvența de pornire</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de power sequence. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Secven?a de pornire</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de power sequence. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: power sequence.</li>
-                    <li>2. Ce rol are inițializare hardware în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre power sequence și semnale de pornire.</li>
+                    <li>2. Ce rol are ini?ializare hardware �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre power sequence ?i semnale de pornire.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
                         <p><strong>1.</strong> Verificarea registrelor CPU</p>
                         <p><strong>2.</strong> Verificarea registrelor CPU</p>
-                        <p><strong>3.</strong> Inițializarea chipset-ului</p>
+                        <p><strong>3.</strong> Ini?ializarea chipset-ului</p>
                     </div>
                 </details>
             </div>
@@ -479,7 +479,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-5-5.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 5.5 &mdash; Surse &#x219;i Rail-uri</a>
@@ -536,14 +536,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Procesul de pornire al computerului: de la apăsarea butonului la încărcarea sistemului de operare, pas cu pas.</p>
+                <p class="video-description">Procesul de pornire al computerului: de la apasarea butonului la �ncarcarea sistemului de operare, pas cu pas.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 3.5 — Construcția logică a unui procesor">
+    <meta name="description" content="Lec?ia 3.5 � Construc?ia logica a unui procesor">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 3.5 — Construcția logică a unui procesor — Console Notebook</title>
+    <title>Lec?ia 3.5 � Construc?ia logica a unui procesor � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 — LOGICĂ DIGITALĂ</p>
-            <h1>Lecția 3.5 — Construcția logică a unui procesor</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 3 � LOGICA DIGITALA</p>
+            <h1>Lec?ia 3.5 � Construc?ia logica a unui procesor</h1>
             <p>ALU, registre, pipeline</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,65 +41,65 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>1. Instruction Fetch (IF): citirea instrucțiunii din memorie</p>
-                <p>Această lecție acoperă: <strong>ALU</strong>, <strong>registre</strong>, <strong>pipeline</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>1. Instruction Fetch (IF): citirea instruc?iunii din memorie</p>
+                <p>Aceasta lec?ie acopera: <strong>ALU</strong>, <strong>registre</strong>, <strong>pipeline</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.1 — Definiție și structură</h3>
+                <h3>3.5.1 � Defini?ie ?i structura</h3>
                 <ul class="specs-list">
-                    <li>ALU (Arithmetic Logic Unit) = circuit digital combinațional care efectuează operații aritmetice și pe biți asupra numerelor binare &#238;ntregi</li>
-                    <li>Diferit de FPU (Floating-Point Unit), care operează pe numere cu virgulă mobilă</li>
-                    <li>Bloc fundamental al CPU, FPU și GPU</li>
-                    <li><strong>Intrări:</strong> operanzi (date de procesat) + opcode (cod operație)</li>
-                    <li><strong>Ieșire:</strong> rezultatul operației</li>
-                    <li><strong>Status inputs/outputs:</strong> informații despre operații anterioare sau curente, &#238;ntre ALU și status registers</li>
+                    <li>ALU (Arithmetic Logic Unit) = circuit digital combina?ional care efectueaza opera?ii aritmetice ?i pe bi?i asupra numerelor binare &#238;ntregi</li>
+                    <li>Diferit de FPU (Floating-Point Unit), care opereaza pe numere cu virgula mobila</li>
+                    <li>Bloc fundamental al CPU, FPU ?i GPU</li>
+                    <li><strong>Intrari:</strong> operanzi (date de procesat) + opcode (cod opera?ie)</li>
+                    <li><strong>Ie?ire:</strong> rezultatul opera?iei</li>
+                    <li><strong>Status inputs/outputs:</strong> informa?ii despre opera?ii anterioare sau curente, &#238;ntre ALU ?i status registers</li>
                     <li>Concept propus de John von Neumann &#238;n 1945, &#238;n raportul despre EDVAC</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.2 — Semnale</h3>
+                <h3>3.5.2 � Semnale</h3>
                 <ul class="specs-list">
-                    <li><strong>Bus-uri de date:</strong> A (operand 1), B (operand 2), Y (rezultat) – paralele</li>
-                    <li><strong>Lățimile busurilor A, B, Y:</strong> identice, corespund word size-ului circuitului extern (CPU)</li>
-                    <li><strong>Opcode:</strong> bus paralel cu cod de selecție a operației (valoare enumerată)</li>
-                    <li>Lățimea opcode determină nr. maxim de operații (4 biți → 16 operații)</li>
+                    <li><strong>Bus-uri de date:</strong> A (operand 1), B (operand 2), Y (rezultat) � paralele</li>
+                    <li><strong>La?imile busurilor A, B, Y:</strong> identice, corespund word size-ului circuitului extern (CPU)</li>
+                    <li><strong>Opcode:</strong> bus paralel cu cod de selec?ie a opera?iei (valoare enumerata)</li>
+                    <li>La?imea opcode determina nr. maxim de opera?ii (4 bi?i ? 16 opera?ii)</li>
                     <li>Status outputs:</li>
-                    <li><strong>Carry-out:</strong> carry din adunare, borrow din scădere, overflow din shift</li>
-                    <li><strong>Zero:</strong> toți biții Y sunt 0</li>
+                    <li><strong>Carry-out:</strong> carry din adunare, borrow din scadere, overflow din shift</li>
+                    <li><strong>Zero:</strong> to?i bi?ii Y sunt 0</li>
                     <li><strong>Negative:</strong> rezultatul aritmetic este negativ</li>
-                    <li><strong>Overflow:</strong> rezultatul depășește rangul numeric al Y</li>
-                    <li><strong>Parity:</strong> nr. par/impar de biți 1 &#238;n Y</li>
-                    <li><strong>Status input:</strong> tipic un singur &quot;carry-in&quot; (carry stocat de la operația anterioară)</li>
+                    <li><strong>Overflow:</strong> rezultatul depa?e?te rangul numeric al Y</li>
+                    <li><strong>Parity:</strong> nr. par/impar de bi?i 1 &#238;n Y</li>
+                    <li><strong>Status input:</strong> tipic un singur &quot;carry-in&quot; (carry stocat de la opera?ia anterioara)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.3 — Operații</h3>
+                <h3>3.5.3 � Opera?ii</h3>
                 <ul class="specs-list">
-                    <li>Operații aritmetice:</li>
-                    <li><strong>Add:</strong> A+B → Y + carry-out</li>
-                    <li><strong>Add with carry:</strong> A+B+carry-in → Y + carry-out</li>
-                    <li><strong>Subtract:</strong> A-B → Y + carry-out (borrow) – utilizat și pentru comparare</li>
+                    <li>Opera?ii aritmetice:</li>
+                    <li><strong>Add:</strong> A+B ? Y + carry-out</li>
+                    <li><strong>Add with carry:</strong> A+B+carry-in ? Y + carry-out</li>
+                    <li><strong>Subtract:</strong> A-B ? Y + carry-out (borrow) � utilizat ?i pentru comparare</li>
                     <li>Subtract with borrow</li>
-                    <li><strong>Two&#39;s complement:</strong> negația A apare la Y</li>
-                    <li><strong>Increment:</strong> A+1 → Y</li>
-                    <li><strong>Decrement:</strong> A-1 → Y</li>
-                    <li>Operații logice pe biți:</li>
-                    <li><strong>AND:</strong> AND bit-cu-bit (utilizat și pentru TEST biți)</li>
+                    <li><strong>Two&#39;s complement:</strong> nega?ia A apare la Y</li>
+                    <li><strong>Increment:</strong> A+1 ? Y</li>
+                    <li><strong>Decrement:</strong> A-1 ? Y</li>
+                    <li>Opera?ii logice pe bi?i:</li>
+                    <li><strong>AND:</strong> AND bit-cu-bit (utilizat ?i pentru TEST bi?i)</li>
                     <li><strong>OR:</strong> OR bit-cu-bit</li>
                     <li><strong>XOR:</strong> XOR bit-cu-bit</li>
-                    <li><strong>NOT/Ones&#39; complement:</strong> inversarea tuturor biților</li>
-                    <li>Operații de shift:</li>
-                    <li><strong>Arithmetic shift:</strong> păstrează bitul de semn (two&#39;s complement)</li>
+                    <li><strong>NOT/Ones&#39; complement:</strong> inversarea tuturor bi?ilor</li>
+                    <li>Opera?ii de shift:</li>
+                    <li><strong>Arithmetic shift:</strong> pastreaza bitul de semn (two&#39;s complement)</li>
                     <li><strong>Logical shift:</strong> introduce 0 (pentru unsigned integers)</li>
                     <li><strong>Rotate:</strong> buffer circular</li>
                     <li><strong>Rotate through carry:</strong> carry + operand ca buffer circular</li>
@@ -108,107 +108,107 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.4 — Funcționare și aplicații</h3>
+                <h3>3.5.4 � Func?ionare ?i aplica?ii</h3>
                 <ul class="specs-list">
-                    <li><strong>ALU = circuit combinațional:</strong> ieșirile se schimbă asincron la schimbarea intrărilor</li>
-                    <li><strong>Propagation delay:</strong> timpul necesar semnalelor să parcurgă circuitul ALU</li>
-                    <li>Circuitul extern asigură stabilitatea intrărilor și lasă timp suficient pentru propagare</li>
-                    <li>Logica secvențială externă controlează ALU, sincronizată cu clock signal</li>
-                    <li><strong>CPU:</strong> rutează operanzii din processor registers la intrările ALU + aplică opcode</li>
-                    <li>Simultan activează registrul destinație pentru a stoca rezultatul</li>
-                    <li>La următorul clock, registrul destinație stochează rezultatul ALU</li>
-                    <li><strong>Status register (condition code register):</strong> stochează semnalele de status pentru operații viitoare și branching condițional</li>
-                    <li>Carry-out stocat → conectat la carry-in → propagare eficientă carry &#238;n operații multi-precision</li>
-                    <li><strong>GPU-uri:</strong> conțin sute/mii de ALU-uri care operează concurent (ex. rendering paralel pe pixeli)</li>
+                    <li><strong>ALU = circuit combina?ional:</strong> ie?irile se schimba asincron la schimbarea intrarilor</li>
+                    <li><strong>Propagation delay:</strong> timpul necesar semnalelor sa parcurga circuitul ALU</li>
+                    <li>Circuitul extern asigura stabilitatea intrarilor ?i lasa timp suficient pentru propagare</li>
+                    <li>Logica secven?iala externa controleaza ALU, sincronizata cu clock signal</li>
+                    <li><strong>CPU:</strong> ruteaza operanzii din processor registers la intrarile ALU + aplica opcode</li>
+                    <li>Simultan activeaza registrul destina?ie pentru a stoca rezultatul</li>
+                    <li>La urmatorul clock, registrul destina?ie stocheaza rezultatul ALU</li>
+                    <li><strong>Status register (condition code register):</strong> stocheaza semnalele de status pentru opera?ii viitoare ?i branching condi?ional</li>
+                    <li>Carry-out stocat ? conectat la carry-in ? propagare eficienta carry &#238;n opera?ii multi-precision</li>
+                    <li><strong>GPU-uri:</strong> con?in sute/mii de ALU-uri care opereaza concurent (ex. rendering paralel pe pixeli)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.5 — Istorie</h3>
+                <h3>3.5.5 � Istorie</h3>
                 <ul class="specs-list">
                     <li><strong>1945:</strong> John von Neumann propune conceptul ALU pentru EDVAC</li>
-                    <li><strong>1951:</strong> Whirlwind I – primul computer cu multiple ALU-uri paralele pe un singur bit (16 &quot;math units&quot; → 16-bit word)</li>
-                    <li><strong>1967:</strong> Fairchild 3800 – primul ALU ca circuit integrat (8-bit, doar add/subtract, fără logică)</li>
-                    <li><strong>Am2901, 74181:</strong> ALU-uri complete pe 4 biți, &quot;bit slice&quot; capable</li>
-                    <li><strong>Zilog Z80:</strong> adunări pe 8 biți cu ALU de 4 biți (multiple cicluri per instrucțiune)</li>
-                    <li><strong>Modern:</strong> ALU-uri largi cu barrel shifters și binary multipliers, operații complexe &#238;ntr-un singur ciclu</li>
+                    <li><strong>1951:</strong> Whirlwind I � primul computer cu multiple ALU-uri paralele pe un singur bit (16 &quot;math units&quot; ? 16-bit word)</li>
+                    <li><strong>1967:</strong> Fairchild 3800 � primul ALU ca circuit integrat (8-bit, doar add/subtract, fara logica)</li>
+                    <li><strong>Am2901, 74181:</strong> ALU-uri complete pe 4 bi?i, &quot;bit slice&quot; capable</li>
+                    <li><strong>Zilog Z80:</strong> adunari pe 8 bi?i cu ALU de 4 bi?i (multiple cicluri per instruc?iune)</li>
+                    <li><strong>Modern:</strong> ALU-uri largi cu barrel shifters ?i binary multipliers, opera?ii complexe &#238;ntr-un singur ciclu</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.6 — Concept și motivație</h3>
+                <h3>3.5.6 � Concept ?i motiva?ie</h3>
                 <ul class="specs-list">
-                    <li>Instruction pipelining = tehnică de implementare a paralelismului la nivel de instrucțiuni &#238;ntr-un singur procesor</li>
-                    <li>&#206;mparte instrucțiunile &#238;n pași secvențiali (etape de pipeline) executate de unități diferite ale procesorului</li>
-                    <li><strong>Pipeline registers:</strong> stochează informații &#238;ntre etape (date instrucțiuni + calcule)</li>
-                    <li>Permite CPU să completeze o instrucțiune la fiecare ciclu de ceas</li>
-                    <li>Etapele pare pe un front al ceasului, etapele impare pe celălalt → throughput crescut</li>
-                    <li>Mai multe etape → fiecare etapă face mai puțin → poate rula la frecvență mai mare</li>
-                    <li>Cea mai economică organizare (cost = porți logice per instrucțiune per secundă)</li>
-                    <li><strong>Dezavantaje:</strong> mai complex, mai costisitor, mai multe porți logice și registre</li>
+                    <li>Instruction pipelining = tehnica de implementare a paralelismului la nivel de instruc?iuni &#238;ntr-un singur procesor</li>
+                    <li>&#206;mparte instruc?iunile &#238;n pa?i secven?iali (etape de pipeline) executate de unita?i diferite ale procesorului</li>
+                    <li><strong>Pipeline registers:</strong> stocheaza informa?ii &#238;ntre etape (date instruc?iuni + calcule)</li>
+                    <li>Permite CPU sa completeze o instruc?iune la fiecare ciclu de ceas</li>
+                    <li>Etapele pare pe un front al ceasului, etapele impare pe celalalt ? throughput crescut</li>
+                    <li>Mai multe etape ? fiecare etapa face mai pu?in ? poate rula la frecven?a mai mare</li>
+                    <li>Cea mai economica organizare (cost = por?i logice per instruc?iune per secunda)</li>
+                    <li><strong>Dezavantaje:</strong> mai complex, mai costisitor, mai multe por?i logice ?i registre</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.7 — Etape clasice</h3>
+                <h3>3.5.7 � Etape clasice</h3>
                 <ul class="specs-list">
                     <li><strong>IBM Stretch (1956-61):</strong> termenele Fetch, Decode, Execute (devenite standard)</li>
                     <li>Classic RISC pipeline (5 etape):</li>
                 </ul>
-                <p>1. Instruction Fetch (IF): citirea instrucțiunii din memorie</p>
+                <p>1. Instruction Fetch (IF): citirea instruc?iunii din memorie</p>
                 <p>2. Instruction Decode + Register Fetch (ID): decodare + citire registre</p>
-                <p>3. Execute (EX): execuția operației (ALU)</p>
+                <p>3. Execute (EX): execu?ia opera?iei (ALU)</p>
                 <p>4. Memory Access (MEM): acces la memorie (load/store)</p>
                 <p>5. Register Write Back (WB): scrierea rezultatului &#238;n registru</p>
                 <ul class="specs-list">
-                    <li><strong>Pipeline-ul generic cu 4 etape:</strong> Fetch → Decode → Execute → Write-back</li>
-                    <li><strong>Ciclul 4:</strong> toate 4 etapele active simultan (4 instrucțiuni diferite &#238;n procesare)</li>
-                    <li>4 instrucțiuni completate &#238;n 7 cicluri (vs. 16 cicluri fără pipeline)</li>
-                    <li><strong>Variații:</strong> 2 etape (Atmel AVR, PIC), 7-10-20 (Intel Pentium 4), 31 (NetBurst Prescott/Cedar Mill)</li>
-                    <li><strong>Superpipeline:</strong> pipeline mai &quot;ad&#226;nc&quot; (mai multe etape) → circuite mai simple per etapă → frecvență mai mare</li>
-                    <li><strong>Fully pipelined:</strong> poate fetch instrucțiune la fiecare ciclu</li>
+                    <li><strong>Pipeline-ul generic cu 4 etape:</strong> Fetch ? Decode ? Execute ? Write-back</li>
+                    <li><strong>Ciclul 4:</strong> toate 4 etapele active simultan (4 instruc?iuni diferite &#238;n procesare)</li>
+                    <li>4 instruc?iuni completate &#238;n 7 cicluri (vs. 16 cicluri fara pipeline)</li>
+                    <li><strong>Varia?ii:</strong> 2 etape (Atmel AVR, PIC), 7-10-20 (Intel Pentium 4), 31 (NetBurst Prescott/Cedar Mill)</li>
+                    <li><strong>Superpipeline:</strong> pipeline mai &quot;ad&#226;nc&quot; (mai multe etape) ? circuite mai simple per etapa ? frecven?a mai mare</li>
+                    <li><strong>Fully pipelined:</strong> poate fetch instruc?iune la fiecare ciclu</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.8 — Hazards (riscuri de pipeline)</h3>
+                <h3>3.5.8 � Hazards (riscuri de pipeline)</h3>
                 <ul class="specs-list">
-                    <li><strong>Hazard:</strong> situație &#238;n care presupunerea de execuție secvențială este &#238;ncălcată</li>
-                    <li><strong>Exemplu:</strong> instrucțiunea 2 citește registrul R5 &#238;nainte ca instrucțiunea 1 să-l fi scris</li>
-                    <li><strong>Data hazard:</strong> dependență de date &#238;ntre instrucțiuni care se suprapun &#238;n pipeline</li>
-                    <li>Soluții:</li>
+                    <li><strong>Hazard:</strong> situa?ie &#238;n care presupunerea de execu?ie secven?iala este &#238;ncalcata</li>
+                    <li><strong>Exemplu:</strong> instruc?iunea 2 cite?te registrul R5 &#238;nainte ca instruc?iunea 1 sa-l fi scris</li>
+                    <li><strong>Data hazard:</strong> dependen?a de date &#238;ntre instruc?iuni care se suprapun &#238;n pipeline</li>
+                    <li>Solu?ii:</li>
                 </ul>
-                <p>1. Pipeline stall (bubble): oprirea programării de instrucțiuni noi → cicluri goale</p>
+                <p>1. Pipeline stall (bubble): oprirea programarii de instruc?iuni noi ? cicluri goale</p>
                 <ul class="specs-list">
-                    <li><strong>Bubble:</strong> slot gol unde nu se face muncă utilă</li>
-                    <li><strong>4 instrucțiuni:</strong> 8 cicluri cu bubble vs. 7 fără</li>
+                    <li><strong>Bubble:</strong> slot gol unde nu se face munca utila</li>
+                    <li><strong>4 instruc?iuni:</strong> 8 cicluri cu bubble vs. 7 fara</li>
                 </ul>
-                <p>2. Operand forwarding: rutarea directă a valorii calculate spre instrucțiuni viitoare (fără a aștepta write-back complet)</p>
-                <p>3. Out-of-order execution: procesorul găsește instrucțiuni independente care pot fi executate imediat</p>
+                <p>2. Operand forwarding: rutarea directa a valorii calculate spre instruc?iuni viitoare (fara a a?tepta write-back complet)</p>
+                <p>3. Out-of-order execution: procesorul gase?te instruc?iuni independente care pot fi executate imediat</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.9 — Branch hazards</h3>
+                <h3>3.5.9 � Branch hazards</h3>
                 <ul class="specs-list">
-                    <li><strong>Branch:</strong> salt din secvența normală de instrucțiuni → pipeline continuă fetch secvențial</li>
-                    <li><strong>Conditional branch:</strong> procesorul nu știe dacă va sări sau nu (calculul nu s-a terminat)</li>
-                    <li><strong>Branch prediction:</strong> predicție a direcției branch → minimizează penalizarea de performanță</li>
-                    <li>Predicție greșită → pipeline flush (anularea lucrului din path-ul greșit)</li>
-                    <li><strong>Eager execution:</strong> &#238;ncepe execuția pe ambele path-uri, renunță la cel greșit</li>
-                    <li>Programatorii evită branching pentru a minimiza pierderea de viteză</li>
+                    <li><strong>Branch:</strong> salt din secven?a normala de instruc?iuni ? pipeline continua fetch secven?ial</li>
+                    <li><strong>Conditional branch:</strong> procesorul nu ?tie daca va sari sau nu (calculul nu s-a terminat)</li>
+                    <li><strong>Branch prediction:</strong> predic?ie a direc?iei branch ? minimizeaza penalizarea de performan?a</li>
+                    <li>Predic?ie gre?ita ? pipeline flush (anularea lucrului din path-ul gre?it)</li>
+                    <li><strong>Eager execution:</strong> &#238;ncepe execu?ia pe ambele path-uri, renun?a la cel gre?it</li>
+                    <li>Programatorii evita branching pentru a minimiza pierderea de viteza</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>3.5.10 — Considerații de design</h3>
+                <h3>3.5.10 � Considera?ii de design</h3>
                 <ul class="specs-list">
-                    <li><strong>Viteză:</strong> pipelining menține toate porțiunile procesorului ocupate → throughput crescut la clock rate dat</li>
-                    <li>Avantajul de viteză scade cu c&#226;t mai multe hazards apar</li>
-                    <li><strong>Processor non-pipelined:</strong> o singură instrucțiune la un moment dat</li>
-                    <li><strong>Economie:</strong> etape modulare mai simple permit operații complexe mai economic</li>
-                    <li><strong>Predictibilitate:</strong> procesor non-pipelined → timing mai ușor de prezis</li>
-                    <li><strong>Stall:</strong> c&#226;nd programul schimbă secvența de instrucțiuni, pipeline-ul trebuie golit și re&#238;ncărcat</li>
-                    <li><strong>Control unit:</strong> orchestrează fluxul, pornire-continuare-oprire, asigură că etapele nu interferează</li>
+                    <li><strong>Viteza:</strong> pipelining men?ine toate por?iunile procesorului ocupate ? throughput crescut la clock rate dat</li>
+                    <li>Avantajul de viteza scade cu c&#226;t mai multe hazards apar</li>
+                    <li><strong>Processor non-pipelined:</strong> o singura instruc?iune la un moment dat</li>
+                    <li><strong>Economie:</strong> etape modulare mai simple permit opera?ii complexe mai economic</li>
+                    <li><strong>Predictibilitate:</strong> procesor non-pipelined ? timing mai u?or de prezis</li>
+                    <li><strong>Stall:</strong> c&#226;nd programul schimba secven?a de instruc?iuni, pipeline-ul trebuie golit ?i re&#238;ncarcat</li>
+                    <li><strong>Control unit:</strong> orchestreaza fluxul, pornire-continuare-oprire, asigura ca etapele nu interfereaza</li>
                 </ul>
             </div>
 
@@ -217,75 +217,75 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și structură</h3>
+                <h3>Defini?ie ?i structura</h3>
                 <ul class="specs-list">
-                    <li>ALU (Arithmetic Logic Unit) = circuit digital combinațional care efectuează operații aritmetice și pe biți asupra numerelor binare &#238;ntregi</li>
-                    <li>Bloc fundamental al CPU, FPU și GPU</li>
+                    <li>ALU (Arithmetic Logic Unit) = circuit digital combina?ional care efectueaza opera?ii aritmetice ?i pe bi?i asupra numerelor binare &#238;ntregi</li>
+                    <li>Bloc fundamental al CPU, FPU ?i GPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Semnale</h3>
                 <ul class="specs-list">
-                    <li><strong>Lățimile busurilor A, B, Y:</strong> identice, corespund word size-ului circuitului extern (CPU)</li>
+                    <li><strong>La?imile busurilor A, B, Y:</strong> identice, corespund word size-ului circuitului extern (CPU)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Operații</h3>
+                <h3>Opera?ii</h3>
                 <ul class="specs-list">
-                    <li>Operații logice pe biți:</li>
-                    <li><strong>AND:</strong> AND bit-cu-bit (utilizat și pentru TEST biți)</li>
+                    <li>Opera?ii logice pe bi?i:</li>
+                    <li><strong>AND:</strong> AND bit-cu-bit (utilizat ?i pentru TEST bi?i)</li>
                     <li><strong>OR:</strong> OR bit-cu-bit</li>
                     <li><strong>XOR:</strong> XOR bit-cu-bit</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Funcționare și aplicații</h3>
+                <h3>Func?ionare ?i aplica?ii</h3>
                 <ul class="specs-list">
-                    <li>Logica secvențială externă controlează ALU, sincronizată cu clock signal</li>
-                    <li><strong>CPU:</strong> rutează operanzii din processor registers la intrările ALU + aplică opcode</li>
-                    <li><strong>GPU-uri:</strong> conțin sute/mii de ALU-uri care operează concurent (ex. rendering paralel pe pixeli)</li>
+                    <li>Logica secven?iala externa controleaza ALU, sincronizata cu clock signal</li>
+                    <li><strong>CPU:</strong> ruteaza operanzii din processor registers la intrarile ALU + aplica opcode</li>
+                    <li><strong>GPU-uri:</strong> con?in sute/mii de ALU-uri care opereaza concurent (ex. rendering paralel pe pixeli)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Istorie</h3>
                 <ul class="specs-list">
-                    <li><strong>1951:</strong> Whirlwind I – primul computer cu multiple ALU-uri paralele pe un singur bit (16 &quot;math units&quot; → 16-bit word)</li>
-                    <li><strong>1967:</strong> Fairchild 3800 – primul ALU ca circuit integrat (8-bit, doar add/subtract, fără logică)</li>
-                    <li><strong>Am2901, 74181:</strong> ALU-uri complete pe 4 biți, &quot;bit slice&quot; capable</li>
-                    <li><strong>Modern:</strong> ALU-uri largi cu barrel shifters și binary multipliers, operații complexe &#238;ntr-un singur ciclu</li>
+                    <li><strong>1951:</strong> Whirlwind I � primul computer cu multiple ALU-uri paralele pe un singur bit (16 &quot;math units&quot; ? 16-bit word)</li>
+                    <li><strong>1967:</strong> Fairchild 3800 � primul ALU ca circuit integrat (8-bit, doar add/subtract, fara logica)</li>
+                    <li><strong>Am2901, 74181:</strong> ALU-uri complete pe 4 bi?i, &quot;bit slice&quot; capable</li>
+                    <li><strong>Modern:</strong> ALU-uri largi cu barrel shifters ?i binary multipliers, opera?ii complexe &#238;ntr-un singur ciclu</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Concept și motivație</h3>
+                <h3>Concept ?i motiva?ie</h3>
                 <ul class="specs-list">
-                    <li>Instruction pipelining = tehnică de implementare a paralelismului la nivel de instrucțiuni &#238;ntr-un singur procesor</li>
-                    <li>&#206;mparte instrucțiunile &#238;n pași secvențiali (etape de pipeline) executate de unități diferite ale procesorului</li>
-                    <li>Permite CPU să completeze o instrucțiune la fiecare ciclu de ceas</li>
-                    <li>Cea mai economică organizare (cost = porți logice per instrucțiune per secundă)</li>
-                    <li><strong>Dezavantaje:</strong> mai complex, mai costisitor, mai multe porți logice și registre</li>
+                    <li>Instruction pipelining = tehnica de implementare a paralelismului la nivel de instruc?iuni &#238;ntr-un singur procesor</li>
+                    <li>&#206;mparte instruc?iunile &#238;n pa?i secven?iali (etape de pipeline) executate de unita?i diferite ale procesorului</li>
+                    <li>Permite CPU sa completeze o instruc?iune la fiecare ciclu de ceas</li>
+                    <li>Cea mai economica organizare (cost = por?i logice per instruc?iune per secunda)</li>
+                    <li><strong>Dezavantaje:</strong> mai complex, mai costisitor, mai multe por?i logice ?i registre</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Branch hazards</h3>
                 <ul class="specs-list">
-                    <li><strong>Conditional branch:</strong> procesorul nu știe dacă va sări sau nu (calculul nu s-a terminat)</li>
+                    <li><strong>Conditional branch:</strong> procesorul nu ?tie daca va sari sau nu (calculul nu s-a terminat)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Considerații de design</h3>
+                <h3>Considera?ii de design</h3>
                 <ul class="specs-list">
-                    <li><strong>Viteză:</strong> pipelining menține toate porțiunile procesorului ocupate → throughput crescut la clock rate dat</li>
-                    <li><strong>Predictibilitate:</strong> procesor non-pipelined → timing mai ușor de prezis</li>
+                    <li><strong>Viteza:</strong> pipelining men?ine toate por?iunile procesorului ocupate ? throughput crescut la clock rate dat</li>
+                    <li><strong>Predictibilitate:</strong> procesor non-pipelined ? timing mai u?or de prezis</li>
                 </ul>
             </div>
         </div>
@@ -293,10 +293,10 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>În contextul consolelor de jocuri, construcția logică a unui procesor joacă un rol esențial în funcționarea hardware-ului.</p>
+                <p>�n contextul consolelor de jocuri, construc?ia logica a unui procesor joaca un rol esen?ial �n func?ionarea hardware-ului.</p>
             </div>
         </div>
     </section>
@@ -308,7 +308,7 @@
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Etape clasice</h3>
                 <ul class="specs-list">
-                    <li><strong>Variații:</strong> 2 etape (Atmel AVR, PIC), 7-10-20 (Intel Pentium 4), 31 (NetBurst Prescott/Cedar Mill)</li>
+                    <li><strong>Varia?ii:</strong> 2 etape (Atmel AVR, PIC), 7-10-20 (Intel Pentium 4), 31 (NetBurst Prescott/Cedar Mill)</li>
                 </ul>
             </div>
         </div>
@@ -320,20 +320,20 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Etape clasice</h3>
+                    <h3>?? Etape clasice</h3>
                     <p>Classic RISC pipeline (5 etape):</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Hazards (riscuri de pipeline)</h3>
-                    <p>Hazard: situație &#238;n care presupunerea de execuție secvențială este &#238;ncălcată</p>
-                    <p>Exemplu: instrucțiunea 2 citește registrul R5 &#238;nainte ca instrucțiunea 1 să-l fi scris</p>
-                    <p>Data hazard: dependență de date &#238;ntre instrucțiuni care se suprapun &#238;n pipeline</p>
-                    <p>Soluții:</p>
-                    <p>1. Pipeline stall (bubble): oprirea programării de instrucțiuni noi → cicluri goale</p>
-                    <p>Bubble: slot gol unde nu se face muncă utilă</p>
-                    <p>4 instrucțiuni: 8 cicluri cu bubble vs. 7 fără</p>
-                    <p>2. Operand forwarding: rutarea directă a valorii calculate spre instrucțiuni viitoare (fără a aștepta write-back complet)</p>
-                    <p>3. Out-of-order execution: procesorul găsește instrucțiuni independente care pot fi executate imediat</p>
+                    <h3>?? Hazards (riscuri de pipeline)</h3>
+                    <p>Hazard: situa?ie &#238;n care presupunerea de execu?ie secven?iala este &#238;ncalcata</p>
+                    <p>Exemplu: instruc?iunea 2 cite?te registrul R5 &#238;nainte ca instruc?iunea 1 sa-l fi scris</p>
+                    <p>Data hazard: dependen?a de date &#238;ntre instruc?iuni care se suprapun &#238;n pipeline</p>
+                    <p>Solu?ii:</p>
+                    <p>1. Pipeline stall (bubble): oprirea programarii de instruc?iuni noi ? cicluri goale</p>
+                    <p>Bubble: slot gol unde nu se face munca utila</p>
+                    <p>4 instruc?iuni: 8 cicluri cu bubble vs. 7 fara</p>
+                    <p>2. Operand forwarding: rutarea directa a valorii calculate spre instruc?iuni viitoare (fara a a?tepta write-back complet)</p>
+                    <p>3. Out-of-order execution: procesorul gase?te instruc?iuni independente care pot fi executate imediat</p>
                 </div>
             </div>
         </div>
@@ -344,16 +344,16 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție și structură:</strong> ALU (Arithmetic Logic Unit) = circuit digital combinațional care efectuează operații aritmetice și pe biți asupra numerelor binare &#238;ntregi</li>
-                    <li><strong>Semnale:</strong> Bus-uri de date: A (operand 1), B (operand 2), Y (rezultat) – paralele</li>
-                    <li><strong>Operații:</strong> Operații aritmetice:</li>
-                    <li><strong>Funcționare și aplicații:</strong> ALU = circuit combinațional: ieșirile se schimbă asincron la schimbarea intrărilor</li>
+                    <li><strong>Defini?ie ?i structura:</strong> ALU (Arithmetic Logic Unit) = circuit digital combina?ional care efectueaza opera?ii aritmetice ?i pe bi?i asupra numerelor binare &#238;ntregi</li>
+                    <li><strong>Semnale:</strong> Bus-uri de date: A (operand 1), B (operand 2), Y (rezultat) � paralele</li>
+                    <li><strong>Opera?ii:</strong> Opera?ii aritmetice:</li>
+                    <li><strong>Func?ionare ?i aplica?ii:</strong> ALU = circuit combina?ional: ie?irile se schimba asincron la schimbarea intrarilor</li>
                     <li><strong>Istorie:</strong> 1945: John von Neumann propune conceptul ALU pentru EDVAC</li>
-                    <li><strong>Concept și motivație:</strong> Instruction pipelining = tehnică de implementare a paralelismului la nivel de instrucțiuni &#238;ntr-un singur procesor</li>
+                    <li><strong>Concept ?i motiva?ie:</strong> Instruction pipelining = tehnica de implementare a paralelismului la nivel de instruc?iuni &#238;ntr-un singur procesor</li>
                     <li><strong>Etape clasice:</strong> IBM Stretch (1956-61): termenele Fetch, Decode, Execute (devenite standard)</li>
-                    <li><strong>Hazards (riscuri de pipeline):</strong> Hazard: situație &#238;n care presupunerea de execuție secvențială este &#238;ncălcată</li>
-                    <li><strong>Branch hazards:</strong> Branch: salt din secvența normală de instrucțiuni → pipeline continuă fetch secvențial</li>
-                    <li><strong>Considerații de design:</strong> Viteză: pipelining menține toate porțiunile procesorului ocupate → throughput crescut la clock rate dat</li>
+                    <li><strong>Hazards (riscuri de pipeline):</strong> Hazard: situa?ie &#238;n care presupunerea de execu?ie secven?iala este &#238;ncalcata</li>
+                    <li><strong>Branch hazards:</strong> Branch: salt din secven?a normala de instruc?iuni ? pipeline continua fetch secven?ial</li>
+                    <li><strong>Considera?ii de design:</strong> Viteza: pipelining men?ine toate por?iunile procesorului ocupate ? throughput crescut la clock rate dat</li>
                 </ul>
             </div>
         </div>
@@ -361,80 +361,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Intrări?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Intrari?</strong></p>
                 <ul class="specs-list">
-                    <li>a) rezultatul operației</li>
-                    <li>b) A (operand 1), B (operand 2), Y (rezultat) – paralele</li>
-                    <li>c) operanzi (date de procesat) + opcode (cod operație)</li>
-                    <li>d) informații despre operații anterioare sau curente, &#238;ntre ALU și status registers</li>
+                    <li>a) rezultatul opera?iei</li>
+                    <li>b) A (operand 1), B (operand 2), Y (rezultat) � paralele</li>
+                    <li>c) operanzi (date de procesat) + opcode (cod opera?ie)</li>
+                    <li>d) informa?ii despre opera?ii anterioare sau curente, &#238;ntre ALU ?i status registers</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — operanzi (date de procesat) + opcode (cod operație)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � operanzi (date de procesat) + opcode (cod opera?ie)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Bus-uri de date?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Bus-uri de date?</strong></p>
                 <ul class="specs-list">
-                    <li>a) A (operand 1), B (operand 2), Y (rezultat) – paralele</li>
-                    <li>b) operanzi (date de procesat) + opcode (cod operație)</li>
-                    <li>c) rezultatul operației</li>
-                    <li>d) informații despre operații anterioare sau curente, &#238;ntre ALU și status registers</li>
+                    <li>a) A (operand 1), B (operand 2), Y (rezultat) � paralele</li>
+                    <li>b) operanzi (date de procesat) + opcode (cod opera?ie)</li>
+                    <li>c) rezultatul opera?iei</li>
+                    <li>d) informa?ii despre opera?ii anterioare sau curente, &#238;ntre ALU ?i status registers</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — A (operand 1), B (operand 2), Y (rezultat) – paralele</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � A (operand 1), B (operand 2), Y (rezultat) � paralele</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Add?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Add?</strong></p>
                 <ul class="specs-list">
-                    <li>a) A+B → Y + carry-out</li>
-                    <li>b) informații despre operații anterioare sau curente, &#238;ntre ALU și status registers</li>
-                    <li>c) rezultatul operației</li>
-                    <li>d) operanzi (date de procesat) + opcode (cod operație)</li>
+                    <li>a) A+B ? Y + carry-out</li>
+                    <li>b) informa?ii despre opera?ii anterioare sau curente, &#238;ntre ALU ?i status registers</li>
+                    <li>c) rezultatul opera?iei</li>
+                    <li>d) operanzi (date de procesat) + opcode (cod opera?ie)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — A+B → Y + carry-out</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � A+B ? Y + carry-out</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: ALU = circuit combinațional?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: ALU = circuit combina?ional?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ieșirile se schimbă asincron la schimbarea intrărilor</li>
-                    <li>b) informații despre operații anterioare sau curente, &#238;ntre ALU și status registers</li>
-                    <li>c) operanzi (date de procesat) + opcode (cod operație)</li>
-                    <li>d) rezultatul operației</li>
+                    <li>a) ie?irile se schimba asincron la schimbarea intrarilor</li>
+                    <li>b) informa?ii despre opera?ii anterioare sau curente, &#238;ntre ALU ?i status registers</li>
+                    <li>c) operanzi (date de procesat) + opcode (cod opera?ie)</li>
+                    <li>d) rezultatul opera?iei</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — ieșirile se schimbă asincron la schimbarea intrărilor</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � ie?irile se schimba asincron la schimbarea intrarilor</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: 1945?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: 1945?</strong></p>
                 <ul class="specs-list">
                     <li>a) John von Neumann propune conceptul ALU pentru EDVAC</li>
-                    <li>b) rezultatul operației</li>
-                    <li>c) operanzi (date de procesat) + opcode (cod operație)</li>
-                    <li>d) informații despre operații anterioare sau curente, &#238;ntre ALU și status registers</li>
+                    <li>b) rezultatul opera?iei</li>
+                    <li>c) operanzi (date de procesat) + opcode (cod opera?ie)</li>
+                    <li>d) informa?ii despre opera?ii anterioare sau curente, &#238;ntre ALU ?i status registers</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — John von Neumann propune conceptul ALU pentru EDVAC</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � John von Neumann propune conceptul ALU pentru EDVAC</strong></p>
                 </details>
             </div>
         </div>
@@ -442,22 +442,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Construcția logică a unui procesor</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de ALU. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Construc?ia logica a unui procesor</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de ALU. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: ALU.</li>
-                    <li>2. Ce rol are registre în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre ALU și pipeline.</li>
+                    <li>2. Ce rol are registre �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre ALU ?i pipeline.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> ALU (Arithmetic Logic Unit) = circuit digital combinațional care efectuează operații aritmetice și pe biți asupra numerelor binare &#238;ntregi</p>
-                        <p><strong>2.</strong> Bus-uri de date: A (operand 1), B (operand 2), Y (rezultat) – paralele</p>
-                        <p><strong>3.</strong> Add: A+B → Y + carry-out</p>
+                        <p><strong>1.</strong> ALU (Arithmetic Logic Unit) = circuit digital combina?ional care efectueaza opera?ii aritmetice ?i pe bi?i asupra numerelor binare &#238;ntregi</p>
+                        <p><strong>2.</strong> Bus-uri de date: A (operand 1), B (operand 2), Y (rezultat) � paralele</p>
+                        <p><strong>3.</strong> Add: A+B ? Y + carry-out</p>
                     </div>
                 </details>
             </div>
@@ -486,7 +486,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-3-4.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 3.4 &mdash; Ceas &#x219;i Frecven&#x21B;&#x103;</a>
@@ -543,14 +543,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cum funcționează un procesor (CPU) — explicat pas cu pas, de la tranzistoare la instrucțiuni.</p>
+                <p class="video-description">Cum func?ioneaza un procesor (CPU) � explicat pas cu pas, de la tranzistoare la instruc?iuni.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

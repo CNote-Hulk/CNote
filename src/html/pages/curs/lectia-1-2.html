@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 1.2 — Tensiune, Curent și Rezistență">
+    <meta name="description" content="Lec?ia 1.2 � Tensiune, Curent ?i Rezisten?a">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 1.2 — Tensiune, Curent și Rezistență — Console Notebook</title>
+    <title>Lec?ia 1.2 � Tensiune, Curent ?i Rezisten?a � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
 
@@ -23,9 +23,9 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -35,10 +35,10 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — ELECTRICITATE FUNDAMENTALĂ</p>
-            <h1>Lecția 1.2 — Tensiune, Curent și Rezistență</h1>
-            <p>tensiunea electrică, curentul electric, rezistența electrică, legea lui Ohm</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 � ELECTRICITATE FUNDAMENTALA</p>
+            <h1>Lec?ia 1.2 � Tensiune, Curent ?i Rezisten?a</h1>
+            <p>tensiunea electrica, curentul electric, rezisten?a electrica, legea lui Ohm</p>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -49,60 +49,60 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Tensiunea electrică, cunoscută și ca diferență de potențial electric, presiune electrică sau tensiune electromotoare, este diferența de potențial electric &#238;ntre două puncte. &#206;ntr-un c&#226;mp electric static, aceasta corespunde lucrului mecanic necesar per unitate de sarcină pentru a deplasa o sarcină de test pozitivă de la primul punct la al doilea. &#206;n Sistemul Internațional de Unități (SI), unitatea derivată pentru tensiune este voltul (V).</p>
-                <p>Această lecție acoperă: <strong>tensiunea electrică</strong>, <strong>curentul electric</strong>, <strong>rezistența electrică</strong>, <strong>legea lui Ohm</strong>, <strong>puterea electrică</strong>, <strong>triunghiul lui Ohm</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>Tensiunea electrica, cunoscuta ?i ca diferen?a de poten?ial electric, presiune electrica sau tensiune electromotoare, este diferen?a de poten?ial electric &#238;ntre doua puncte. &#206;ntr-un c&#226;mp electric static, aceasta corespunde lucrului mecanic necesar per unitate de sarcina pentru a deplasa o sarcina de test pozitiva de la primul punct la al doilea. &#206;n Sistemul Interna?ional de Unita?i (SI), unitatea derivata pentru tensiune este voltul (V).</p>
+                <p>Aceasta lec?ie acopera: <strong>tensiunea electrica</strong>, <strong>curentul electric</strong>, <strong>rezisten?a electrica</strong>, <strong>legea lui Ohm</strong>, <strong>puterea electrica</strong>, <strong>triunghiul lui Ohm</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.2.1 — Prezentare generala</h3>
-                <p>Tensiunea electrică, cunoscută și ca diferență de potențial electric, presiune electrică sau tensiune electromotoare, este diferența de potențial electric &#238;ntre două puncte. &#206;ntr-un c&#226;mp electric static, aceasta corespunde lucrului mecanic necesar per unitate de sarcină pentru a deplasa o sarcină de test pozitivă de la primul punct la al doilea. &#206;n Sistemul Internațional de Unități (SI), unitatea derivată pentru tensiune este voltul (V).</p>
-                <p>Tensiunea &#238;ntre două puncte poate fi cauzată de acumularea de sarcină electrică (ex: un condensator) și de o forță electromotoare (ex: inducție electromagnetică &#238;ntr-un generator). La scară macroscopică, o diferență de potențial poate fi cauzată de procese electrochimice (ex: celule și baterii), efectul piezoelectric, efectul fotovoltaic și efectul termoelectric.</p>
-                <p>Simboluri comune: V, ∆V, U, ∆U.</p>
+                <h3>1.2.1 � Prezentare generala</h3>
+                <p>Tensiunea electrica, cunoscuta ?i ca diferen?a de poten?ial electric, presiune electrica sau tensiune electromotoare, este diferen?a de poten?ial electric &#238;ntre doua puncte. &#206;ntr-un c&#226;mp electric static, aceasta corespunde lucrului mecanic necesar per unitate de sarcina pentru a deplasa o sarcina de test pozitiva de la primul punct la al doilea. &#206;n Sistemul Interna?ional de Unita?i (SI), unitatea derivata pentru tensiune este voltul (V).</p>
+                <p>Tensiunea &#238;ntre doua puncte poate fi cauzata de acumularea de sarcina electrica (ex: un condensator) ?i de o for?a electromotoare (ex: induc?ie electromagnetica &#238;ntr-un generator). La scara macroscopica, o diferen?a de poten?ial poate fi cauzata de procese electrochimice (ex: celule ?i baterii), efectul piezoelectric, efectul fotovoltaic ?i efectul termoelectric.</p>
+                <p>Simboluri comune: V, ?V, U, ?U.</p>
                 <p>Unitate SI: volt.</p>
-                <p>Derivare: Tensiune = Energie / sarcină.</p>
-                <p>&#206;n unități SI de bază: kg⋅m&#178;⋅s⁻&#179;⋅A⁻&#185;.</p>
-                <p>Unitatea SI de lucru mecanic per unitate de sarcină este joulul per coulomb, unde 1 volt = 1 joule (de lucru mecanic) per 1 coulomb de sarcină.</p>
-                <p>Tensiunea este definită astfel &#238;nc&#226;t obiectele &#238;ncărcate negativ sunt atrase spre tensiuni mai mari, iar obiectele &#238;ncărcate pozitiv sunt atrase spre tensiuni mai mici. Prin urmare, curentul convențional &#238;ntr-un fir sau rezistor curge &#238;ntotdeauna de la tensiune mai mare la tensiune mai mică.</p>
-                <p>Un voltmetru poate fi utilizat pentru a măsura tensiunea &#238;ntre două puncte dintr-un sistem. Adesea se folosește un potențial de referință comun, precum masa (ground) sistemului, ca unul dintre puncte.</p>
-                <p>Analogia hidraulică: O analogie simplă pentru un circuit electric este apa care curge &#238;ntr-un circuit &#238;nchis de conducte, &#238;mpinsă de o pompă mecanică. Diferența de potențial &#238;ntre două puncte corespunde diferenței de presiune &#238;ntre cele două puncte. Dacă pompa creează o diferență de presiune, apa care curge de la un punct la altul va putea efectua lucru mecanic.</p>
-                <p>Tensiuni tipice: baterii lanternă 1,5V CC; baterii auto 12V CC; rețea electrică 110-120V CA (America de Nord) sau 220-240V CA (Europa); linii de transmisie 110-1200 kV CA.</p>
-                <p>Legea lui Ohm afirmă că curentul electric printr-un conductor &#238;ntre două puncte este direct proporțional cu tensiunea dintre cele două puncte. Introduc&#226;nd constanta de proporționalitate — rezistența — se obțin cele trei ecuații matematice:</p>
+                <p>Derivare: Tensiune = Energie / sarcina.</p>
+                <p>&#206;n unita?i SI de baza: kg�m&#178;�s?&#179;�A?&#185;.</p>
+                <p>Unitatea SI de lucru mecanic per unitate de sarcina este joulul per coulomb, unde 1 volt = 1 joule (de lucru mecanic) per 1 coulomb de sarcina.</p>
+                <p>Tensiunea este definita astfel &#238;nc&#226;t obiectele &#238;ncarcate negativ sunt atrase spre tensiuni mai mari, iar obiectele &#238;ncarcate pozitiv sunt atrase spre tensiuni mai mici. Prin urmare, curentul conven?ional &#238;ntr-un fir sau rezistor curge &#238;ntotdeauna de la tensiune mai mare la tensiune mai mica.</p>
+                <p>Un voltmetru poate fi utilizat pentru a masura tensiunea &#238;ntre doua puncte dintr-un sistem. Adesea se folose?te un poten?ial de referin?a comun, precum masa (ground) sistemului, ca unul dintre puncte.</p>
+                <p>Analogia hidraulica: O analogie simpla pentru un circuit electric este apa care curge &#238;ntr-un circuit &#238;nchis de conducte, &#238;mpinsa de o pompa mecanica. Diferen?a de poten?ial &#238;ntre doua puncte corespunde diferen?ei de presiune &#238;ntre cele doua puncte. Daca pompa creeaza o diferen?a de presiune, apa care curge de la un punct la altul va putea efectua lucru mecanic.</p>
+                <p>Tensiuni tipice: baterii lanterna 1,5V CC; baterii auto 12V CC; re?ea electrica 110-120V CA (America de Nord) sau 220-240V CA (Europa); linii de transmisie 110-1200 kV CA.</p>
+                <p>Legea lui Ohm afirma ca curentul electric printr-un conductor &#238;ntre doua puncte este direct propor?ional cu tensiunea dintre cele doua puncte. Introduc&#226;nd constanta de propor?ionalitate � rezisten?a � se ob?in cele trei ecua?ii matematice:</p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
                     $$V = I\cdot R \text{ sau } I = V/R \text{ sau } R = V/I$$
                 </p>
-                <p>unde I este curentul prin conductor, V este tensiunea măsurată pe conductor și R este rezistența conductorului.</p>
-                <p>Mai precis, Legea lui Ohm afirmă că R &#238;n această relație este constantă, independentă de curent. Dacă rezistența nu este constantă, ecuația nu poate fi numită Legea lui Ohm, dar poate fi folosită ca definiție a rezistenței statice/CC.</p>
-                <p>Legea lui Ohm este o relație empirică care descrie cu precizie conductivitatea marii majorități a materialelor conductive electric, pe mai multe ordine de mărime ale curentului. Totuși, unele materiale nu respectă Legea lui Ohm; acestea sunt numite non-ohmice.</p>
-                <p>Legea a fost numită după fizicianul german Georg Ohm, care &#238;n 1827 a publicat măsurători prin circuite electrice simple conțin&#226;nd diverse lungimi de fir.</p>
-                <p>Triunghiul lui Ohm (mnemonic pentru analiza circuitelor): Interschimbabilitatea ecuației poate fi reprezentată printr-un triunghi, unde V (tensiunea) este plasată &#238;n secțiunea superioară, I (curentul) &#238;n secțiunea din st&#226;nga, iar R (rezistența) &#238;n secțiunea din dreapta. Separatorul &#238;ntre secțiunile superioară și inferioară indică &#238;mpărțirea. Acoperind necunoscuta se obține formula &#238;n funcție de parametrii rămași.</p>
-                <p>Circuite rezistive: Legea lui Ohm este valabilă pentru circuite care conțin doar elemente rezistive (fără capacități sau inductanțe) pentru toate formele de tensiune sau curent de excitare, indiferent dacă tensiunea sau curentul de excitare este constant (CC) sau variabil &#238;n timp, precum CA.</p>
-                <p>Rezistoarele &#238;n serie sau paralel pot fi grupate &#238;ntr-o singură „rezistență echivalentă&quot; pentru a aplica Legea lui Ohm &#238;n analiza circuitului.</p>
-                <p>Analogia hidraulică: Presiunea apei (pascali) este analogul tensiunii. Debitul volumetric al apei (litri pe secundă) este analogul curentului. Restricțiile de debit (deschideri &#238;n conducte) sunt analogul rezistoarelor.</p>
-                <p>Puterea electrică este rata de transfer a energiei electrice &#238;ntr-un circuit. Unitatea sa SI este wattul, definit ca un joule pe secundă.</p>
-                <p>Puterea electrică &#238;n wați produsă de un curent electric I format dintr-o sarcină de Q coulombi la fiecare t secunde, trec&#226;nd printr-o diferență de potențial electric (tensiune) V, este:</p>
+                <p>unde I este curentul prin conductor, V este tensiunea masurata pe conductor ?i R este rezisten?a conductorului.</p>
+                <p>Mai precis, Legea lui Ohm afirma ca R &#238;n aceasta rela?ie este constanta, independenta de curent. Daca rezisten?a nu este constanta, ecua?ia nu poate fi numita Legea lui Ohm, dar poate fi folosita ca defini?ie a rezisten?ei statice/CC.</p>
+                <p>Legea lui Ohm este o rela?ie empirica care descrie cu precizie conductivitatea marii majorita?i a materialelor conductive electric, pe mai multe ordine de marime ale curentului. Totu?i, unele materiale nu respecta Legea lui Ohm; acestea sunt numite non-ohmice.</p>
+                <p>Legea a fost numita dupa fizicianul german Georg Ohm, care &#238;n 1827 a publicat masuratori prin circuite electrice simple con?in&#226;nd diverse lungimi de fir.</p>
+                <p>Triunghiul lui Ohm (mnemonic pentru analiza circuitelor): Interschimbabilitatea ecua?iei poate fi reprezentata printr-un triunghi, unde V (tensiunea) este plasata &#238;n sec?iunea superioara, I (curentul) &#238;n sec?iunea din st&#226;nga, iar R (rezisten?a) &#238;n sec?iunea din dreapta. Separatorul &#238;ntre sec?iunile superioara ?i inferioara indica &#238;mpar?irea. Acoperind necunoscuta se ob?ine formula &#238;n func?ie de parametrii rama?i.</p>
+                <p>Circuite rezistive: Legea lui Ohm este valabila pentru circuite care con?in doar elemente rezistive (fara capacita?i sau inductan?e) pentru toate formele de tensiune sau curent de excitare, indiferent daca tensiunea sau curentul de excitare este constant (CC) sau variabil &#238;n timp, precum CA.</p>
+                <p>Rezistoarele &#238;n serie sau paralel pot fi grupate &#238;ntr-o singura �rezisten?a echivalenta&quot; pentru a aplica Legea lui Ohm &#238;n analiza circuitului.</p>
+                <p>Analogia hidraulica: Presiunea apei (pascali) este analogul tensiunii. Debitul volumetric al apei (litri pe secunda) este analogul curentului. Restric?iile de debit (deschideri &#238;n conducte) sunt analogul rezistoarelor.</p>
+                <p>Puterea electrica este rata de transfer a energiei electrice &#238;ntr-un circuit. Unitatea sa SI este wattul, definit ca un joule pe secunda.</p>
+                <p>Puterea electrica &#238;n wa?i produsa de un curent electric I format dintr-o sarcina de Q coulombi la fiecare t secunde, trec&#226;nd printr-o diferen?a de poten?ial electric (tensiune) V, este:</p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
                     $$P = W/t = V \times I$$
                 </p>
-                <p>unde W este lucrul mecanic &#238;n jouli, t este timpul &#238;n secunde, Q este sarcina electrică &#238;n coulombi, V este potențialul electric sau tensiunea &#238;n volți, I este curentul electric &#238;n amperi.</p>
-                <p>Circuite rezistive: &#206;n cazul sarcinilor rezistive (ohmice), formula puterii (P = I&#183;V) și prima lege a lui Joule (P = I&#178;&#183;R) pot fi combinate cu Legea lui Ohm (V = I&#183;R) pentru a produce expresii alternative:</p>
+                <p>unde W este lucrul mecanic &#238;n jouli, t este timpul &#238;n secunde, Q este sarcina electrica &#238;n coulombi, V este poten?ialul electric sau tensiunea &#238;n vol?i, I este curentul electric &#238;n amperi.</p>
+                <p>Circuite rezistive: &#206;n cazul sarcinilor rezistive (ohmice), formula puterii (P = I&#183;V) ?i prima lege a lui Joule (P = I&#178;&#183;R) pot fi combinate cu Legea lui Ohm (V = I&#183;R) pentru a produce expresii alternative:</p>
                 <p style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--accent-color); margin: 1rem 0;">
                     $$P = I\cdot V = I^{2}\cdot R = V^{2}/R$$
                 </p>
-                <p>unde R este rezistența electrică.</p>
+                <p>unde R este rezisten?a electrica.</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>1.2.2 — Surse și sarcini</h3>
+                <h3>1.2.2 � Surse ?i sarcini</h3>
                 <ul class="specs-list">
-                    <li><strong>Dispozitive active (surse de putere):</strong> energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</li>
-                    <li><strong>Dispozitive pasive (sarcini):</strong> energia potențială a sarcinilor este convertită &#238;n energie cinetică. Exemple: becuri, motoare electrice, &#238;ncălzitoare electrice.</li>
+                    <li><strong>Dispozitive active (surse de putere):</strong> energia este convertita &#238;n energie poten?iala electrica din alt tip de energie (mecanica, chimica). Exemple: generatoare electrice, baterii.</li>
+                    <li><strong>Dispozitive pasive (sarcini):</strong> energia poten?iala a sarcinilor este convertita &#238;n energie cinetica. Exemple: becuri, motoare electrice, &#238;ncalzitoare electrice.</li>
                 </ul>
             </div>
 
@@ -111,20 +111,20 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Conceptele din această lecție — Tensiune, Curent și Rezistență — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
+                <p>Conceptele din aceasta lec?ie � Tensiune, Curent ?i Rezisten?a � reprezinta fundamentul fizic al tehnologiei digitale utilizate �n consolele moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>În contextul consolelor de jocuri, tensiune, curent și rezistență joacă un rol esențial în funcționarea hardware-ului.</p>
+                <p>�n contextul consolelor de jocuri, tensiune, curent ?i rezisten?a joaca un rol esen?ial �n func?ionarea hardware-ului.</p>
             </div>
         </div>
     </section>
@@ -135,8 +135,8 @@
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Prezentare generala</h3>
-                <p>Rezistoarele &#238;n serie sau paralel pot fi grupate &#238;ntr-o singură „rezistență echivalentă&quot; pentru a aplica Legea lui Ohm &#238;n analiza circuitului.</p>
-                <p>Puterea electrică &#238;n wați produsă de un curent electric I format dintr-o sarcină de Q coulombi la fiecare t secunde, trec&#226;nd printr-o diferență de potențial electric (tensiune) V, este:</p>
+                <p>Rezistoarele &#238;n serie sau paralel pot fi grupate &#238;ntr-o singura �rezisten?a echivalenta&quot; pentru a aplica Legea lui Ohm &#238;n analiza circuitului.</p>
+                <p>Puterea electrica &#238;n wa?i produsa de un curent electric I format dintr-o sarcina de Q coulombi la fiecare t secunde, trec&#226;nd printr-o diferen?a de poten?ial electric (tensiune) V, este:</p>
             </div>
         </div>
     </section>
@@ -147,8 +147,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Probleme asociate cu Tensiune, Curent și Rezistență</h3>
-                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                    <h3>?? Probleme asociate cu Tensiune, Curent ?i Rezisten?a</h3>
+                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
                 </div>
             </div>
         </div>
@@ -159,8 +159,8 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Prezentare generala:</strong> Tensiunea electrică, cunoscută și ca diferență de potențial electric, presiune electrică sau tensiune electromotoare, este diferența de potențial electric &#238;ntre două puncte. &#206;ntr-un c&#22...</li>
-                    <li><strong>Surse și sarcini:</strong> Dispozitive active (surse de putere): energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</li>
+                    <li><strong>Prezentare generala:</strong> Tensiunea electrica, cunoscuta ?i ca diferen?a de poten?ial electric, presiune electrica sau tensiune electromotoare, este diferen?a de poten?ial electric &#238;ntre doua puncte. &#206;ntr-un c&#22...</li>
+                    <li><strong>Surse ?i sarcini:</strong> Dispozitive active (surse de putere): energia este convertita &#238;n energie poten?iala electrica din alt tip de energie (mecanica, chimica). Exemple: generatoare electrice, baterii.</li>
                 </ul>
             </div>
         </div>
@@ -168,80 +168,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
                     <li>a) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
                     <li>b) P = W/t = V &#215; I</li>
-                    <li>c) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>c) Derivare: Tensiune = Energie / sarcina.</li>
                     <li>d) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — Derivare: Tensiune = Energie / sarcină.</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � Derivare: Tensiune = Energie / sarcina.</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Dispozitive active (surse de putere)?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Dispozitive active (surse de putere)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>a) Derivare: Tensiune = Energie / sarcina.</li>
                     <li>b) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
                     <li>c) P = W/t = V &#215; I</li>
-                    <li>d) energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</li>
+                    <li>d) energia este convertita &#238;n energie poten?iala electrica din alt tip de energie (mecanica, chimica). Exemple: generatoare electrice, baterii.</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � energia este convertita &#238;n energie poten?iala electrica din alt tip de energie (mecanica, chimica). Exemple: generatoare electrice, baterii.</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
                     <li>a) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
                     <li>b) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
                     <li>c) P = W/t = V &#215; I</li>
-                    <li>d) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>d) Derivare: Tensiune = Energie / sarcina.</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — V = I&#183;R  sau  I = V/R  sau  R = V/I</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � V = I&#183;R  sau  I = V/R  sau  R = V/I</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>a) Derivare: Tensiune = Energie / sarcina.</li>
                     <li>b) P = W/t = V &#215; I</li>
                     <li>c) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
                     <li>d) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — P = W/t = V &#215; I</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � P = W/t = V &#215; I</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: Prezentare generala?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: Prezentare generala?</strong></p>
                 <ul class="specs-list">
                     <li>a) P = W/t = V &#215; I</li>
                     <li>b) V = I&#183;R  sau  I = V/R  sau  R = V/I</li>
-                    <li>c) Derivare: Tensiune = Energie / sarcină.</li>
+                    <li>c) Derivare: Tensiune = Energie / sarcina.</li>
                     <li>d) P = I&#183;V = I&#178;&#183;R = V&#178;/R</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — P = I&#183;V = I&#178;&#183;R = V&#178;/R</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � P = I&#183;V = I&#178;&#183;R = V&#178;/R</strong></p>
                 </details>
             </div>
         </div>
@@ -249,21 +249,21 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Tensiune, Curent și Rezistență</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de tensiunea electrică. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Tensiune, Curent ?i Rezisten?a</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de tensiunea electrica. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
-                    <li>1. Defineste pe scurt: tensiunea electrică.</li>
-                    <li>2. Ce rol are curentul electric în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre tensiunea electrică și rezistența electrică.</li>
+                    <li>1. Defineste pe scurt: tensiunea electrica.</li>
+                    <li>2. Ce rol are curentul electric �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre tensiunea electrica ?i rezisten?a electrica.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Simboluri comune: V, ∆V, U, ∆U.</p>
-                        <p><strong>2.</strong> Dispozitive active (surse de putere): energia este convertită &#238;n energie potențială electrică din alt tip de energie (mecanică, chimică). Exemple: generatoare electrice, baterii.</p>
+                        <p><strong>1.</strong> Simboluri comune: V, ?V, U, ?U.</p>
+                        <p><strong>2.</strong> Dispozitive active (surse de putere): energia este convertita &#238;n energie poten?iala electrica din alt tip de energie (mecanica, chimica). Exemple: generatoare electrice, baterii.</p>
                         <p><strong>3.</strong> Conceptele studiate sunt aplicate direct &#238;n proiectarea hardware-ului consolelor.</p>
                     </div>
                 </details>
@@ -303,7 +303,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-1-1.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 1.1 &mdash; Atom la Electron</a>
@@ -360,7 +360,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cele trei mărimi electrice fundamentale — tensiune, curent și rezistență — explicate clar cu diagrame vizuale și analogii practice.</p>
+                <p class="video-description">Cele trei marimi electrice fundamentale � tensiune, curent ?i rezisten?a � explicate clar cu diagrame vizuale ?i analogii practice.</p>
             </div>
         </div>
     </section>
@@ -370,7 +370,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatică</p>
+                <p class="footer-sub">Proiect Atestat Informatica</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

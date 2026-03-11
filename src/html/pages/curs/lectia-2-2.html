@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 2.2 — Condensatoare">
+    <meta name="description" content="Lec?ia 2.2 � Condensatoare">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 2.2 — Condensatoare — Console Notebook</title>
+    <title>Lec?ia 2.2 � Condensatoare � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 — ELECTRONICĂ DE BAZĂ</p>
-            <h1>Lecția 2.2 — Condensatoare</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 2 � ELECTRONICA DE BAZA</p>
+            <h1>Lec?ia 2.2 � Condensatoare</h1>
             <p>capacitate, stocare de energie, filtrare, smoothing</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,159 +41,159 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</p>
-                <p>Această lecție acoperă: <strong>capacitate</strong>, <strong>stocare de energie</strong>, <strong>filtrare</strong>, <strong>smoothing</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>Un condensator este un dispozitiv care stocheaza energie electrica prin acumularea sarcinilor electrice pe doua suprafe?e apropiate, izolate una de alta</p>
+                <p>Aceasta lec?ie acopera: <strong>capacitate</strong>, <strong>stocare de energie</strong>, <strong>filtrare</strong>, <strong>smoothing</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.1 — DEFINIȚIE</h3>
+                <h3>2.2.1 � DEFINI?IE</h3>
                 <ul class="specs-list">
-                    <li>Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</li>
-                    <li>Componentă electronică pasivă cu două terminale</li>
-                    <li><strong>Termenul vechi:</strong> „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
-                    <li>Cele mai multe condensatoare conțin cel puțin doi conductori electrici (plăci metalice) separați de un dielectric</li>
+                    <li>Un condensator este un dispozitiv care stocheaza energie electrica prin acumularea sarcinilor electrice pe doua suprafe?e apropiate, izolate una de alta</li>
+                    <li>Componenta electronica pasiva cu doua terminale</li>
+                    <li><strong>Termenul vechi:</strong> �condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>Cele mai multe condensatoare con?in cel pu?in doi conductori electrici (placi metalice) separa?i de un dielectric</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.2 — CAPACITATE (C)</h3>
+                <h3>2.2.2 � CAPACITATE (C)</h3>
                 <ul class="specs-list">
-                    <li><strong>Definită ca raportul sarcinii Q la tensiunea V:</strong> C = Q / V</li>
-                    <li><strong>Unitate:</strong> farad (F) – 1 farad = 1 coulomb pe volt</li>
-                    <li>1 farad este o valoare foarte mare; &#238;n practică se folosesc:</li>
-                    <li>microfarad (μF = 10⁻⁶ F)</li>
-                    <li>nanofarad (nF = 10⁻⁹ F)</li>
-                    <li>picofarad (pF = 10⁻&#185;&#178; F)</li>
-                    <li><strong>Capacitatea unui condensator cu plăci paralele:</strong> C = ε &#215; A / d</li>
-                    <li>ε = permitivitatea dielectricului</li>
-                    <li>A = aria plăcilor</li>
-                    <li>d = distanța &#238;ntre plăci</li>
-                    <li>Capacitate mai mare = permitivitate mare, arie mare, distanță mică</li>
+                    <li><strong>Definita ca raportul sarcinii Q la tensiunea V:</strong> C = Q / V</li>
+                    <li><strong>Unitate:</strong> farad (F) � 1 farad = 1 coulomb pe volt</li>
+                    <li>1 farad este o valoare foarte mare; &#238;n practica se folosesc:</li>
+                    <li>microfarad (�F = 10?6 F)</li>
+                    <li>nanofarad (nF = 10?? F)</li>
+                    <li>picofarad (pF = 10?&#185;&#178; F)</li>
+                    <li><strong>Capacitatea unui condensator cu placi paralele:</strong> C = e &#215; A / d</li>
+                    <li>e = permitivitatea dielectricului</li>
+                    <li>A = aria placilor</li>
+                    <li>d = distan?a &#238;ntre placi</li>
+                    <li>Capacitate mai mare = permitivitate mare, arie mare, distan?a mica</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.3 — STOCARE DE ENERGIE</h3>
+                <h3>2.2.3 � STOCARE DE ENERGIE</h3>
                 <ul class="specs-list">
-                    <li><strong>Energia stocată:</strong> W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
-                    <li>Energia este stocată &#238;n c&#226;mpul electric dintre plăci</li>
-                    <li><strong>Densitatea energiei:</strong> W = &#189; &#215; ε &#215; E&#178; &#215; (volumul c&#226;mpului electric)</li>
-                    <li>Un condensator poate fi folosit ca o baterie temporară</li>
+                    <li><strong>Energia stocata:</strong> W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
+                    <li>Energia este stocata &#238;n c&#226;mpul electric dintre placi</li>
+                    <li><strong>Densitatea energiei:</strong> W = &#189; &#215; e &#215; E&#178; &#215; (volumul c&#226;mpului electric)</li>
+                    <li>Un condensator poate fi folosit ca o baterie temporara</li>
                     <li>Condensatoarele pot elibera energia foarte rapid (comparativ cu bateriile)</li>
-                    <li><strong>Energia specifică:</strong> condensatoare convenționale &lt; 360 J/kg vs. baterie alcalină ~590 kJ/kg</li>
-                    <li><strong>Supercondensatoare:</strong> pot accepta/livra sarcină mult mai rapid dec&#226;t bateriile</li>
+                    <li><strong>Energia specifica:</strong> condensatoare conven?ionale &lt; 360 J/kg vs. baterie alcalina ~590 kJ/kg</li>
+                    <li><strong>Supercondensatoare:</strong> pot accepta/livra sarcina mult mai rapid dec&#226;t bateriile</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.4 — TIPURI DE CONDENSATOARE (materiale dielectrice)</h3>
+                <h3>2.2.4 � TIPURI DE CONDENSATOARE (materiale dielectrice)</h3>
                 <ul class="specs-list">
-                    <li><strong>Ceramic:</strong> mici, ieftine, utile la frecvențe &#238;nalte</li>
-                    <li><strong>Clasa 1 (C0G/NP0):</strong> variație predictibilă cu temperatura</li>
+                    <li><strong>Ceramic:</strong> mici, ieftine, utile la frecven?e &#238;nalte</li>
+                    <li><strong>Clasa 1 (C0G/NP0):</strong> varia?ie predictibila cu temperatura</li>
                     <li><strong>Clasa 2:</strong> pot opera la tensiuni mai mari</li>
-                    <li><strong>Dezavantaje:</strong> capacitatea variază cu tensiunea și temperatura, &#238;mbătr&#226;nire</li>
+                    <li><strong>Dezavantaje:</strong> capacitatea variaza cu tensiunea ?i temperatura, &#238;mbatr&#226;nire</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.5 — b) Electrolitic (aluminiu sau tantal)</h3>
+                <h3>2.2.5 � b) Electrolitic (aluminiu sau tantal)</h3>
                 <ul class="specs-list">
-                    <li>Placă de aluminiu/tantal cu strat de oxid ca dielectric</li>
+                    <li>Placa de aluminiu/tantal cu strat de oxid ca dielectric</li>
                     <li>Al doilea electrod = electrolit lichid</li>
-                    <li>Capacitanțe foarte mari</li>
-                    <li><strong>Dezavantaje:</strong> toleranțe slabe, instabilitate, pierderi de capacitanță la căldură, curent de scurgere</li>
-                    <li>Se degradează dacă nu sunt utilizate ~1 an</li>
-                    <li>Polarizate (au + și -)</li>
-                    <li><strong>Tantal:</strong> mai bune caracteristici de frecvență și temperatură dec&#226;t aluminiu</li>
-                    <li>Absorbție dielectrică mai mare</li>
+                    <li>Capacitan?e foarte mari</li>
+                    <li><strong>Dezavantaje:</strong> toleran?e slabe, instabilitate, pierderi de capacitan?a la caldura, curent de scurgere</li>
+                    <li>Se degradeaza daca nu sunt utilizate ~1 an</li>
+                    <li>Polarizate (au + ?i -)</li>
+                    <li><strong>Tantal:</strong> mai bune caracteristici de frecven?a ?i temperatura dec&#226;t aluminiu</li>
+                    <li>Absorb?ie dielectrica mai mare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.6 — d) Film (plastic/polimer)</h3>
+                <h3>2.2.6 � d) Film (plastic/polimer)</h3>
                 <ul class="specs-list">
-                    <li>Stabilitate și &#238;mbătr&#226;nire mai bune dec&#226;t h&#226;rtia</li>
-                    <li>Folosite &#238;n circuite de suprimare, pornire motoare, corecție factor de putere</li>
-                    <li><strong>Sticlă și mică:</strong> extrem de fiabile, stabile, tolerante la temperaturi și tensiuni &#238;nalte</li>
-                    <li>Prea scumpe pentru aplicații standard</li>
+                    <li>Stabilitate ?i &#238;mbatr&#226;nire mai bune dec&#226;t h&#226;rtia</li>
+                    <li>Folosite &#238;n circuite de suprimare, pornire motoare, corec?ie factor de putere</li>
+                    <li><strong>Sticla ?i mica:</strong> extrem de fiabile, stabile, tolerante la temperaturi ?i tensiuni &#238;nalte</li>
+                    <li>Prea scumpe pentru aplica?ii standard</li>
                     <li><strong>Supercondensatoare:</strong> folosesc electrozi de carbon poros</li>
-                    <li>Capacitanțe p&#226;nă la 5 kF</li>
-                    <li>Pot &#238;nlocui bateriile re&#238;ncărcabile &#238;n unele aplicații</li>
+                    <li>Capacitan?e p&#226;na la 5 kF</li>
+                    <li>Pot &#238;nlocui bateriile re&#238;ncarcabile &#238;n unele aplica?ii</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.7 — FILTRARE (Power Conditioning)</h3>
+                <h3>2.2.7 � FILTRARE (Power Conditioning)</h3>
                 <ul class="specs-list">
-                    <li>Condensatoarele-rezervor sunt folosite &#238;n surse de alimentare pentru a netezi ieșirea unui redresor</li>
-                    <li>Conectate &#238;n paralel cu circuitele de putere pentru a elimina fluctuațiile de curent</li>
-                    <li>Oferă o sursă DC „curată&quot; pentru circuitele de semnal/control</li>
-                    <li>Filtrare zgomot de rețea (hum) din echipamentele audio</li>
-                    <li><strong>Condensatoare bypass:</strong> ocolesc componentele de impedanță mare, șunt&#226;nd curentul AC</li>
+                    <li>Condensatoarele-rezervor sunt folosite &#238;n surse de alimentare pentru a netezi ie?irea unui redresor</li>
+                    <li>Conectate &#238;n paralel cu circuitele de putere pentru a elimina fluctua?iile de curent</li>
+                    <li>Ofera o sursa DC �curata&quot; pentru circuitele de semnal/control</li>
+                    <li>Filtrare zgomot de re?ea (hum) din echipamentele audio</li>
+                    <li><strong>Condensatoare bypass:</strong> ocolesc componentele de impedan?a mare, ?unt&#226;nd curentul AC</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.8 — SMOOTHING (NETEZIRE)</h3>
+                <h3>2.2.8 � SMOOTHING (NETEZIRE)</h3>
                 <ul class="specs-list">
-                    <li>&#206;n circuitele DC rectificate, condensatoarele netezesc variațiile de tensiune</li>
-                    <li><strong>Analogia hidraulică:</strong> un condensator funcționează ca un acumulator hidraulic, amortiz&#226;nd variațiile de la pompa (redresorul)</li>
-                    <li>Condensatoarele-rezervor mențin tensiunea &#238;ntre ciclurile de redresare</li>
-                    <li>Curentul de ondulare (ripple current) = componenta AC dintr-o sursă comutată</li>
-                    <li>Generează căldură din pierderi dielectrice + ESR (rezistența echivalentă serie)</li>
+                    <li>&#206;n circuitele DC rectificate, condensatoarele netezesc varia?iile de tensiune</li>
+                    <li><strong>Analogia hidraulica:</strong> un condensator func?ioneaza ca un acumulator hidraulic, amortiz&#226;nd varia?iile de la pompa (redresorul)</li>
+                    <li>Condensatoarele-rezervor men?in tensiunea &#238;ntre ciclurile de redresare</li>
+                    <li>Curentul de ondulare (ripple current) = componenta AC dintr-o sursa comutata</li>
+                    <li>Genereaza caldura din pierderi dielectrice + ESR (rezisten?a echivalenta serie)</li>
                     <li><strong>Condensatoarele electroliticc tantalice:</strong> limitate de ripple, ESR cel mai mare</li>
-                    <li><strong>Condensatoarele electroliticc aluminiu:</strong> durata de viață scade la ripple mare</li>
-                    <li><strong>Condensatoarele ceramice:</strong> &#238;n general fără limitare de ripple, ESR scăzut</li>
-                    <li><strong>Condensatoarele film:</strong> ESR foarte scăzut</li>
+                    <li><strong>Condensatoarele electroliticc aluminiu:</strong> durata de via?a scade la ripple mare</li>
+                    <li><strong>Condensatoarele ceramice:</strong> &#238;n general fara limitare de ripple, ESR scazut</li>
+                    <li><strong>Condensatoarele film:</strong> ESR foarte scazut</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.9 — CONDENSATOARE &#206;N SERIE ȘI PARALEL</h3>
+                <h3>2.2.9 � CONDENSATOARE &#206;N SERIE ?I PARALEL</h3>
                 <ul class="specs-list">
-                    <li><strong>Paralel:</strong> Ceq = C1 + C2 + ... + Cn (capacitățile se adună)</li>
-                    <li><strong>Serie:</strong> 1/Ceq = 1/C1 + 1/C2 + ... + 1/Cn (se adună inversele)</li>
-                    <li><strong>&#206;n serie:</strong> se folosesc pentru a obține tensiune de lucru mai mare</li>
-                    <li>Condensatoarele &#238;n serie se comportă invers față de rezistoarele &#238;n serie</li>
+                    <li><strong>Paralel:</strong> Ceq = C1 + C2 + ... + Cn (capacita?ile se aduna)</li>
+                    <li><strong>Serie:</strong> 1/Ceq = 1/C1 + 1/C2 + ... + 1/Cn (se aduna inversele)</li>
+                    <li><strong>&#206;n serie:</strong> se folosesc pentru a ob?ine tensiune de lucru mai mare</li>
+                    <li>Condensatoarele &#238;n serie se comporta invers fa?a de rezistoarele &#238;n serie</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.10 — CIRCUIT RC</h3>
+                <h3>2.2.10 � CIRCUIT RC</h3>
                 <ul class="specs-list">
-                    <li><strong>Constanta de timp:</strong> τ = R &#215; C</li>
-                    <li><strong>&#206;ncărcare:</strong> V(t) = V₀(1 - e^(-t/τ))</li>
-                    <li><strong>Descărcare:</strong> V(t) = V₀ &#215; e^(-t/τ))</li>
-                    <li>Curentul scade exponențial pe măsură ce condensatorul se &#238;ncarcă</li>
+                    <li><strong>Constanta de timp:</strong> t = R &#215; C</li>
+                    <li><strong>&#206;ncarcare:</strong> V(t) = V0(1 - e^(-t/t))</li>
+                    <li><strong>Descarcare:</strong> V(t) = V0 &#215; e^(-t/t))</li>
+                    <li>Curentul scade exponen?ial pe masura ce condensatorul se &#238;ncarca</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.11 — COMPORTAMENT &#206;N AC</h3>
+                <h3>2.2.11 � COMPORTAMENT &#206;N AC</h3>
                 <ul class="specs-list">
-                    <li><strong>Reactanța capacitivă:</strong> Xc = 1/(ω&#215;C) = 1/(2πfC)</li>
-                    <li><strong>La frecvențe &#238;nalte:</strong> Xc → 0 (scurtcircuit AC)</li>
-                    <li><strong>La frecvențe joase:</strong> Xc → ∞ (circuit deschis)</li>
+                    <li><strong>Reactan?a capacitiva:</strong> Xc = 1/(?&#215;C) = 1/(2pfC)</li>
+                    <li><strong>La frecven?e &#238;nalte:</strong> Xc ? 0 (scurtcircuit AC)</li>
+                    <li><strong>La frecven?e joase:</strong> Xc ? 8 (circuit deschis)</li>
                     <li>Curentul conduce tensiunea cu 90&#176;</li>
-                    <li>Condensatoarele blochează DC dar permit trecerea AC</li>
+                    <li>Condensatoarele blocheaza DC dar permit trecerea AC</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2.12 — APLICAȚII</h3>
+                <h3>2.2.12 � APLICA?II</h3>
                 <ul class="specs-list">
                     <li>Stocare de energie (backup memorie, flash, supercondensatoare)</li>
-                    <li>Condiționare putere (smoothing, bypass, filtrare)</li>
-                    <li>Cuplare semnal (AC coupling – separă AC de DC)</li>
+                    <li>Condi?ionare putere (smoothing, bypass, filtrare)</li>
+                    <li>Cuplare semnal (AC coupling � separa AC de DC)</li>
                     <li>Decuplare (protejare de zgomot/tranzitoari)</li>
-                    <li>Filtre trece-sus și trece-jos</li>
+                    <li>Filtre trece-sus ?i trece-jos</li>
                     <li>Suprimare zgomot / snubber</li>
                     <li>Pornire motoare (condensator de pornire)</li>
                     <li>Circuite rezonante (tunare radio)</li>
@@ -207,20 +207,20 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Conceptele din această lecție — Condensatoare — reprezintă fundamentul fizic al tehnologiei digitale utilizate în consolele moderne.</p>
+                <p>Conceptele din aceasta lec?ie � Condensatoare � reprezinta fundamentul fizic al tehnologiei digitale utilizate �n consolele moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>În contextul consolelor de jocuri, condensatoare joacă un rol esențial în funcționarea hardware-ului.</p>
+                <p>�n contextul consolelor de jocuri, condensatoare joaca un rol esen?ial �n func?ionarea hardware-ului.</p>
             </div>
         </div>
     </section>
@@ -230,9 +230,9 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>CONDENSATOARE &#206;N SERIE ȘI PARALEL</h3>
+                <h3>CONDENSATOARE &#206;N SERIE ?I PARALEL</h3>
                 <ul class="specs-list">
-                    <li>Condensatoarele &#238;n serie se comportă invers față de rezistoarele &#238;n serie</li>
+                    <li>Condensatoarele &#238;n serie se comporta invers fa?a de rezistoarele &#238;n serie</li>
                 </ul>
             </div>
         </div>
@@ -244,9 +244,9 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ COMPORTAMENT &#206;N AC</h3>
-                    <p>La frecvențe &#238;nalte: Xc → 0 (scurtcircuit AC)</p>
-                    <p>La frecvențe joase: Xc → ∞ (circuit deschis)</p>
+                    <h3>?? COMPORTAMENT &#206;N AC</h3>
+                    <p>La frecven?e &#238;nalte: Xc ? 0 (scurtcircuit AC)</p>
+                    <p>La frecven?e joase: Xc ? 8 (circuit deschis)</p>
                 </div>
             </div>
         </div>
@@ -257,18 +257,18 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>DEFINIȚIE:</strong> Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</li>
-                    <li><strong>CAPACITATE (C):</strong> Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
-                    <li><strong>STOCARE DE ENERGIE:</strong> Energia stocată: W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
-                    <li><strong>TIPURI DE CONDENSATOARE (materiale dielectrice):</strong> Ceramic: mici, ieftine, utile la frecvențe &#238;nalte</li>
-                    <li><strong>b) Electrolitic (aluminiu sau tantal):</strong> Placă de aluminiu/tantal cu strat de oxid ca dielectric</li>
-                    <li><strong>d) Film (plastic/polimer):</strong> Stabilitate și &#238;mbătr&#226;nire mai bune dec&#226;t h&#226;rtia</li>
-                    <li><strong>FILTRARE (Power Conditioning):</strong> Condensatoarele-rezervor sunt folosite &#238;n surse de alimentare pentru a netezi ieșirea unui redresor</li>
-                    <li><strong>SMOOTHING (NETEZIRE):</strong> &#206;n circuitele DC rectificate, condensatoarele netezesc variațiile de tensiune</li>
-                    <li><strong>CONDENSATOARE &#206;N SERIE ȘI PARALEL:</strong> Paralel: Ceq = C1 + C2 + ... + Cn (capacitățile se adună)</li>
-                    <li><strong>CIRCUIT RC:</strong> Constanta de timp: τ = R &#215; C</li>
-                    <li><strong>COMPORTAMENT &#206;N AC:</strong> Reactanța capacitivă: Xc = 1/(ω&#215;C) = 1/(2πfC)</li>
-                    <li><strong>APLICAȚII:</strong> Stocare de energie (backup memorie, flash, supercondensatoare)</li>
+                    <li><strong>DEFINI?IE:</strong> Un condensator este un dispozitiv care stocheaza energie electrica prin acumularea sarcinilor electrice pe doua suprafe?e apropiate, izolate una de alta</li>
+                    <li><strong>CAPACITATE (C):</strong> Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li><strong>STOCARE DE ENERGIE:</strong> Energia stocata: W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
+                    <li><strong>TIPURI DE CONDENSATOARE (materiale dielectrice):</strong> Ceramic: mici, ieftine, utile la frecven?e &#238;nalte</li>
+                    <li><strong>b) Electrolitic (aluminiu sau tantal):</strong> Placa de aluminiu/tantal cu strat de oxid ca dielectric</li>
+                    <li><strong>d) Film (plastic/polimer):</strong> Stabilitate ?i &#238;mbatr&#226;nire mai bune dec&#226;t h&#226;rtia</li>
+                    <li><strong>FILTRARE (Power Conditioning):</strong> Condensatoarele-rezervor sunt folosite &#238;n surse de alimentare pentru a netezi ie?irea unui redresor</li>
+                    <li><strong>SMOOTHING (NETEZIRE):</strong> &#206;n circuitele DC rectificate, condensatoarele netezesc varia?iile de tensiune</li>
+                    <li><strong>CONDENSATOARE &#206;N SERIE ?I PARALEL:</strong> Paralel: Ceq = C1 + C2 + ... + Cn (capacita?ile se aduna)</li>
+                    <li><strong>CIRCUIT RC:</strong> Constanta de timp: t = R &#215; C</li>
+                    <li><strong>COMPORTAMENT &#206;N AC:</strong> Reactan?a capacitiva: Xc = 1/(?&#215;C) = 1/(2pfC)</li>
+                    <li><strong>APLICA?II:</strong> Stocare de energie (backup memorie, flash, supercondensatoare)</li>
                 </ul>
             </div>
         </div>
@@ -276,80 +276,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Termenul vechi?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Termenul vechi?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
-                    <li>b) farad (F) – 1 farad = 1 coulomb pe volt</li>
-                    <li>c) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
-                    <li>d) microfarad (μF = 10⁻⁶ F)</li>
+                    <li>a) Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>b) farad (F) � 1 farad = 1 coulomb pe volt</li>
+                    <li>c) �condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>d) microfarad (�F = 10?6 F)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � �condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: CAPACITATE (C)?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: CAPACITATE (C)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) farad (F) – 1 farad = 1 coulomb pe volt</li>
-                    <li>b) microfarad (μF = 10⁻⁶ F)</li>
-                    <li>c) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
-                    <li>d) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>a) farad (F) � 1 farad = 1 coulomb pe volt</li>
+                    <li>b) microfarad (�F = 10?6 F)</li>
+                    <li>c) Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>d) �condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Energia stocată?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Energia stocata?</strong></p>
                 <ul class="specs-list">
                     <li>a) W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</li>
-                    <li>b) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
-                    <li>c) farad (F) – 1 farad = 1 coulomb pe volt</li>
-                    <li>d) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>b) �condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>c) farad (F) � 1 farad = 1 coulomb pe volt</li>
+                    <li>d) Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Ceramic?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Ceramic?</strong></p>
                 <ul class="specs-list">
-                    <li>a) mici, ieftine, utile la frecvențe &#238;nalte</li>
-                    <li>b) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
-                    <li>c) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
-                    <li>d) farad (F) – 1 farad = 1 coulomb pe volt</li>
+                    <li>a) mici, ieftine, utile la frecven?e &#238;nalte</li>
+                    <li>b) �condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>c) Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>d) farad (F) � 1 farad = 1 coulomb pe volt</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — mici, ieftine, utile la frecvențe &#238;nalte</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � mici, ieftine, utile la frecven?e &#238;nalte</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: b) Electrolitic (aluminiu sau tantal)?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: b) Electrolitic (aluminiu sau tantal)?</strong></p>
                 <ul class="specs-list">
                     <li>a) Al doilea electrod = electrolit lichid</li>
-                    <li>b) farad (F) – 1 farad = 1 coulomb pe volt</li>
-                    <li>c) Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
-                    <li>d) „condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
+                    <li>b) farad (F) � 1 farad = 1 coulomb pe volt</li>
+                    <li>c) Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</li>
+                    <li>d) �condenser&quot; (condensator), inventat de Alessandro Volta &#238;n 1780</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — Al doilea electrod = electrolit lichid</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � Al doilea electrod = electrolit lichid</strong></p>
                 </details>
             </div>
         </div>
@@ -357,22 +357,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Condensatoare</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de capacitate. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Condensatoare</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de capacitate. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: capacitate.</li>
-                    <li>2. Ce rol are stocare de energie în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre capacitate și filtrare.</li>
+                    <li>2. Ce rol are stocare de energie �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre capacitate ?i filtrare.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Un condensator este un dispozitiv care stochează energie electrică prin acumularea sarcinilor electrice pe două suprafețe apropiate, izolate una de alta</p>
-                        <p><strong>2.</strong> Definită ca raportul sarcinii Q la tensiunea V: C = Q / V</p>
-                        <p><strong>3.</strong> Energia stocată: W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</p>
+                        <p><strong>1.</strong> Un condensator este un dispozitiv care stocheaza energie electrica prin acumularea sarcinilor electrice pe doua suprafe?e apropiate, izolate una de alta</p>
+                        <p><strong>2.</strong> Definita ca raportul sarcinii Q la tensiunea V: C = Q / V</p>
+                        <p><strong>3.</strong> Energia stocata: W = &#189; &#215; C &#215; V&#178; = &#189; &#215; Q&#178; / C = &#189; &#215; V &#215; Q</p>
                     </div>
                 </details>
             </div>
@@ -405,7 +405,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-2-1.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 2.1 &mdash; Rezisten&#x21B;e &#x219;i Condensatori</a>
@@ -462,7 +462,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cum funcționează diodele, tipurile principale și aplicațiile lor practice în circuitele electronice.</p>
+                <p class="video-description">Cum func?ioneaza diodele, tipurile principale ?i aplica?iile lor practice �n circuitele electronice.</p>
             </div>
         </div>
     </section>
@@ -471,7 +471,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatică</p>
+                <p class="footer-sub">Proiect Atestat Informatica</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

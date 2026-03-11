@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 7.1 — Pipeline grafic">
+    <meta name="description" content="Lec?ia 7.1 � Pipeline grafic">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 7.1 — Pipeline grafic — Console Notebook</title>
+    <title>Lec?ia 7.1 � Pipeline grafic � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — PERFORMANȚĂ ȘI GRAFICĂ</p>
-            <h1>Lecția 7.1 — Pipeline grafic</h1>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 � PERFORMAN?A ?I GRAFICA</p>
+            <h1>Lec?ia 7.1 � Pipeline grafic</h1>
             <p>etapele pipeline-ului grafic, procesarea geometriei, rasterizare, shading</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,234 +41,234 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>1. Definirea vertecșilor și primitivelor</p>
-                <p>Această lecție acoperă: <strong>etapele pipeline-ului grafic</strong>, <strong>procesarea geometriei</strong>, <strong>rasterizare</strong>, <strong>shading</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>1. Definirea vertec?ilor ?i primitivelor</p>
+                <p>Aceasta lec?ie acopera: <strong>etapele pipeline-ului grafic</strong>, <strong>procesarea geometriei</strong>, <strong>rasterizare</strong>, <strong>shading</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.1 — Definiție pipeline grafic</h3>
+                <h3>7.1.1 � Defini?ie pipeline grafic</h3>
                 <ul class="specs-list">
-                    <li>Pipeline-ul grafic (graphics pipeline / rendering pipeline) este un cadru &#238;n grafica computerizată care definește procedurile necesare pentru transformarea unei scene 3D &#238;ntr-o reprezentare 2D pe ecran</li>
-                    <li>Odată generat un model 3D, pipeline-ul convertește modelul &#238;ntr-un format vizual perceptibil pe display</li>
-                    <li>Nu există un pipeline grafic universal aplicabil – depinde de software, configurația hardware și atributele dorite de afișare</li>
-                    <li>API-uri grafice (Direct3D, OpenGL, Vulkan) au fost dezvoltate pentru a standardiza procedurile comune și a supraveghea pipeline-ul grafic</li>
-                    <li>Aceste API-uri oferă un strat de abstractizare peste hardware-ul subiacent (AMD, Intel, Nvidia)</li>
+                    <li>Pipeline-ul grafic (graphics pipeline / rendering pipeline) este un cadru &#238;n grafica computerizata care define?te procedurile necesare pentru transformarea unei scene 3D &#238;ntr-o reprezentare 2D pe ecran</li>
+                    <li>Odata generat un model 3D, pipeline-ul converte?te modelul &#238;ntr-un format vizual perceptibil pe display</li>
+                    <li>Nu exista un pipeline grafic universal aplicabil � depinde de software, configura?ia hardware ?i atributele dorite de afi?are</li>
+                    <li>API-uri grafice (Direct3D, OpenGL, Vulkan) au fost dezvoltate pentru a standardiza procedurile comune ?i a supraveghea pipeline-ul grafic</li>
+                    <li>Aceste API-uri ofera un strat de abstractizare peste hardware-ul subiacent (AMD, Intel, Nvidia)</li>
                     <li>Pipeline-ul grafic este folosit de obicei &#238;n randarea &#238;n timp real (real-time rendering)</li>
-                    <li>Majoritatea pașilor sunt implementați &#238;n hardware pentru optimizare specială</li>
-                    <li>Pașii individuali rulează &#238;n paralel (similar cu pipeline-ul procesoarelor)</li>
+                    <li>Majoritatea pa?ilor sunt implementa?i &#238;n hardware pentru optimizare speciala</li>
+                    <li>Pa?ii individuali ruleaza &#238;n paralel (similar cu pipeline-ul procesoarelor)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.2 — Cele 3 etape principale</h3>
+                <h3>7.1.2 � Cele 3 etape principale</h3>
                 <ul class="specs-list">
-                    <li>Pipeline-ul grafic se &#238;mparte &#238;n 3 părți principale: Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
+                    <li>Pipeline-ul grafic se &#238;mparte &#238;n 3 par?i principale: Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.3 — Etapa Aplicație</h3>
+                <h3>7.1.3 � Etapa Aplica?ie</h3>
                 <ul class="specs-list">
-                    <li>Executată de software pe procesorul principal (CPU)</li>
-                    <li>Se fac modificări ale scenei (interacțiune utilizator, animație)</li>
-                    <li>Scena cu toate primitivele (triunghiuri, linii, puncte) este transmisă etapei următoare</li>
-                    <li><strong>Sarcini tipice:</strong> detecția coliziunilor, animație, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
-                    <li>Lumea unui joc modern este mult prea mare pentru a &#238;ncăpea &#238;n memorie simultan</li>
+                    <li>Executata de software pe procesorul principal (CPU)</li>
+                    <li>Se fac modificari ale scenei (interac?iune utilizator, anima?ie)</li>
+                    <li>Scena cu toate primitivele (triunghiuri, linii, puncte) este transmisa etapei urmatoare</li>
+                    <li><strong>Sarcini tipice:</strong> detec?ia coliziunilor, anima?ie, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
+                    <li>Lumea unui joc modern este mult prea mare pentru a &#238;ncapea &#238;n memorie simultan</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.4 — Etapa Geometrie – Definiții</h3>
+                <h3>7.1.4 � Etapa Geometrie � Defini?ii</h3>
                 <ul class="specs-list">
-                    <li><strong>Un vertex (plural:</strong> vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</li>
-                    <li>Triunghiul este cea mai comună primitivă geometrică &#238;n grafica computerizată</li>
-                    <li>Definit de 3 vertecși și un vector normal (perpendicular pe suprafață, indică fața frontală)</li>
-                    <li>Triunghiul poate avea culoare sau textură (imagine „lipită&quot; pe suprafață)</li>
-                    <li>Triunghiurile sunt preferate față de dreptunghiuri deoarece orice 3 puncte &#238;n spațiu 3D formează &#238;ntotdeauna un triunghi plat</li>
+                    <li><strong>Un vertex (plural:</strong> vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</li>
+                    <li>Triunghiul este cea mai comuna primitiva geometrica &#238;n grafica computerizata</li>
+                    <li>Definit de 3 vertec?i ?i un vector normal (perpendicular pe suprafa?a, indica fa?a frontala)</li>
+                    <li>Triunghiul poate avea culoare sau textura (imagine �lipita&quot; pe suprafa?a)</li>
+                    <li>Triunghiurile sunt preferate fa?a de dreptunghiuri deoarece orice 3 puncte &#238;n spa?iu 3D formeaza &#238;ntotdeauna un triunghi plat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.5 — Geometrie – Sistemul de coordonate și transformări</h3>
+                <h3>7.1.5 � Geometrie � Sistemul de coordonate ?i transformari</h3>
                 <ul class="specs-list">
-                    <li>Sistemul de coordonate mondial (world coordinate system) – coordonate rectangulare carteziene cu axe la scară egală</li>
+                    <li>Sistemul de coordonate mondial (world coordinate system) � coordonate rectangulare carteziene cu axe la scara egala</li>
                     <li>Obiectele sunt modelate &#238;n sisteme de coordonate proprii (object/model/local coordinate system)</li>
-                    <li>Coordonatele obiectelor sunt transformate prin translație, rotație sau scalare (multiplicarea cu matrice de transformare)</li>
-                    <li><strong>Instancing:</strong> mai multe copii transformate diferit dintr-un singur obiect (ex: o pădure din copaci)</li>
-                    <li>Se folosesc matrice 4&#215;4 (matrice omogene) pentru lucrul &#238;n spațiu 3D</li>
-                    <li><strong>3 matrice de rotație (una pentru fiecare axă:</strong> X, Y, Z) + 1 matrice de translație</li>
-                    <li>Matricele se multiplică &#238;ntre ele &#238;nainte de aplicarea pe vertecși (eficiență)</li>
-                    <li>Ordinea multiplicării matricelor contează – multiplicarea matricială nu este comutativă</li>
-                    <li>Matricea rezultantă se numește „world matrix&quot; – se determină pentru fiecare obiect</li>
+                    <li>Coordonatele obiectelor sunt transformate prin transla?ie, rota?ie sau scalare (multiplicarea cu matrice de transformare)</li>
+                    <li><strong>Instancing:</strong> mai multe copii transformate diferit dintr-un singur obiect (ex: o padure din copaci)</li>
+                    <li>Se folosesc matrice 4&#215;4 (matrice omogene) pentru lucrul &#238;n spa?iu 3D</li>
+                    <li><strong>3 matrice de rota?ie (una pentru fiecare axa:</strong> X, Y, Z) + 1 matrice de transla?ie</li>
+                    <li>Matricele se multiplica &#238;ntre ele &#238;nainte de aplicarea pe vertec?i (eficien?a)</li>
+                    <li>Ordinea multiplicarii matricelor conteaza � multiplicarea matriciala nu este comutativa</li>
+                    <li>Matricea rezultanta se nume?te �world matrix&quot; � se determina pentru fiecare obiect</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.6 — Geometrie – Transformarea camerei</h3>
+                <h3>7.1.6 � Geometrie � Transformarea camerei</h3>
                 <ul class="specs-list">
-                    <li>Scena definește o cameră virtuală (poziție + direcție de vizualizare)</li>
-                    <li>Scena este transformată astfel &#238;nc&#226;t camera să fie la origine, privind de-a lungul axei Z</li>
+                    <li>Scena define?te o camera virtuala (pozi?ie + direc?ie de vizualizare)</li>
+                    <li>Scena este transformata astfel &#238;nc&#226;t camera sa fie la origine, privind de-a lungul axei Z</li>
                     <li>Sistemul rezultat = sistema de coordonate a camerei</li>
                     <li>Transformarea = Camera Transformation / View Transformation</li>
-                    <li><strong>View matrix se determină din:</strong> poziția camerei, punctul țintă, vectorul „sus&quot;</li>
+                    <li><strong>View matrix se determina din:</strong> pozi?ia camerei, punctul ?inta, vectorul �sus&quot;</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.7 — Geometrie – Proiecție</h3>
+                <h3>7.1.7 � Geometrie � Proiec?ie</h3>
                 <ul class="specs-list">
-                    <li>Proiecția 3D transformă volumul de vizualizare &#238;ntr-un cub cu coordonate (-1,-1,0) la (1,1,1)</li>
-                    <li><strong>Proiecție perspectivă:</strong> folosește proiecție centrală, volumul vizual = piramidă trunchiată (frustum)</li>
-                    <li><strong>Proiecție paralelă/ortogonală:</strong> folosită &#238;n reprezentări tehnice, păstrează paralelismul</li>
-                    <li><strong>Parametri:</strong> c&#226;mp vizual (field of view), raport de aspect, distanța near și far</li>
-                    <li>Z-buffer are rezoluție limitată (adesea 16 biți) → diferența prea mare near/far cauzează Z-fighting</li>
-                    <li>Valoarea near nu poate fi 0 (punct focal al proiecției)</li>
-                    <li>Camera și proiecția se combină de obicei &#238;ntr-o singură matrice de transformare</li>
+                    <li>Proiec?ia 3D transforma volumul de vizualizare &#238;ntr-un cub cu coordonate (-1,-1,0) la (1,1,1)</li>
+                    <li><strong>Proiec?ie perspectiva:</strong> folose?te proiec?ie centrala, volumul vizual = piramida trunchiata (frustum)</li>
+                    <li><strong>Proiec?ie paralela/ortogonala:</strong> folosita &#238;n reprezentari tehnice, pastreaza paralelismul</li>
+                    <li><strong>Parametri:</strong> c&#226;mp vizual (field of view), raport de aspect, distan?a near ?i far</li>
+                    <li>Z-buffer are rezolu?ie limitata (adesea 16 bi?i) ? diferen?a prea mare near/far cauzeaza Z-fighting</li>
+                    <li>Valoarea near nu poate fi 0 (punct focal al proiec?iei)</li>
+                    <li>Camera ?i proiec?ia se combina de obicei &#238;ntr-o singura matrice de transformare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.8 — Geometrie – Iluminare</h3>
+                <h3>7.1.8 � Geometrie � Iluminare</h3>
                 <ul class="specs-list">
-                    <li>Surse de lumină plasate la diferite poziții pentru iluminare realistă</li>
-                    <li>Factor de c&#226;știg calculat pentru fiecare vertex pe baza surselor de lumină și proprietăților materialelor</li>
-                    <li>Lumină ambientală (ambient light) – aplicată tuturor suprafețelor, luminozitate difuză, independentă de direcție</li>
-                    <li>Soarele = sursă de lumină direcțională (asumată la infinit)</li>
-                    <li>Iluminarea suprafeței = produsul scalar &#238;ntre vectorul direcției soarelui și normalul suprafeței</li>
+                    <li>Surse de lumina plasate la diferite pozi?ii pentru iluminare realista</li>
+                    <li>Factor de c&#226;?tig calculat pentru fiecare vertex pe baza surselor de lumina ?i proprieta?ilor materialelor</li>
+                    <li>Lumina ambientala (ambient light) � aplicata tuturor suprafe?elor, luminozitate difuza, independenta de direc?ie</li>
+                    <li>Soarele = sursa de lumina direc?ionala (asumata la infinit)</li>
+                    <li>Iluminarea suprafe?ei = produsul scalar &#238;ntre vectorul direc?iei soarelui ?i normalul suprafe?ei</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.9 — Geometrie – Clipping</h3>
+                <h3>7.1.9 � Geometrie � Clipping</h3>
                 <ul class="specs-list">
                     <li>Doar primitivele din volumul vizual trebuie rasterizate</li>
-                    <li><strong>Frustum culling:</strong> eliminarea completă a primitivelor complet &#238;n afara volumului vizual</li>
-                    <li><strong>Back-face culling:</strong> reducerea numărului de primitive considerate</li>
-                    <li>Primitivele parțial &#238;n volum sunt decupate (clipped) contra cubului normalizat</li>
+                    <li><strong>Frustum culling:</strong> eliminarea completa a primitivelor complet &#238;n afara volumului vizual</li>
+                    <li><strong>Back-face culling:</strong> reducerea numarului de primitive considerate</li>
+                    <li>Primitivele par?ial &#238;n volum sunt decupate (clipped) contra cubului normalizat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.10 — Geometrie – Transformarea Window-Viewport</h3>
+                <h3>7.1.10 � Geometrie � Transformarea Window-Viewport</h3>
                 <ul class="specs-list">
-                    <li>Transformare pentru afișarea imaginii &#238;n zona țintă (viewport) a ecranului</li>
+                    <li>Transformare pentru afi?area imaginii &#238;n zona ?inta (viewport) a ecranului</li>
                     <li>Deplasare + scalare</li>
                     <li>Coordonatele rezultante = coordonate dispozitiv (device coordinates)</li>
-                    <li><strong>Viewport-ul conține 6 valori:</strong> &#238;nălțime, lățime (pixeli), colțul st&#226;nga-sus, Z min/max</li>
-                    <li>Pe hardware modern, majoritatea calculelor geometrice se execută &#238;n vertex shader</li>
+                    <li><strong>Viewport-ul con?ine 6 valori:</strong> &#238;nal?ime, la?ime (pixeli), col?ul st&#226;nga-sus, Z min/max</li>
+                    <li>Pe hardware modern, majoritatea calculelor geometrice se executa &#238;n vertex shader</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.11 — Geometrie – Rezumat sub-pași</h3>
+                <h3>7.1.11 � Geometrie � Rezumat sub-pa?i</h3>
                 <ul class="specs-list">
-                    <li>Etapa Geometrie (responsabilă de operațiile cu poligoane și vertecși) se &#238;mparte &#238;n 5 sub-sarcini:</li>
+                    <li>Etapa Geometrie (responsabila de opera?iile cu poligoane ?i vertec?i) se &#238;mparte &#238;n 5 sub-sarcini:</li>
                 </ul>
-                <p>1. Definirea vertecșilor și primitivelor</p>
+                <p>1. Definirea vertec?ilor ?i primitivelor</p>
                 <p>2. Transformarea &#238;n coordonate mondiale (World Coordinate System)</p>
                 <p>3. Transformarea camerei (Camera/View Transformation)</p>
-                <p>4. Proiecția (Projection)</p>
+                <p>4. Proiec?ia (Projection)</p>
                 <p>5. Iluminarea (Lighting)</p>
-                <p>Plus: Clipping și Window-Viewport Transformation</p>
+                <p>Plus: Clipping ?i Window-Viewport Transformation</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.12 — Shadere</h3>
+                <h3>7.1.12 � Shadere</h3>
                 <ul class="specs-list">
-                    <li>Plăcile grafice clasice erau aproape de pipeline-ul grafic rigid</li>
-                    <li>Cu cerințe cresc&#226;nde → restricțiile au fost eliminate gradual pentru mai multă flexibilitate</li>
+                    <li>Placile grafice clasice erau aproape de pipeline-ul grafic rigid</li>
+                    <li>Cu cerin?e cresc&#226;nde ? restric?iile au fost eliminate gradual pentru mai multa flexibilitate</li>
                     <li>GPU-urile moderne folosesc un pipeline controlat de shadere, programabil liber</li>
-                    <li><strong>Unitățile shader cele mai importante:</strong> vertex shaders, geometry shaders, pixel shaders</li>
-                    <li><strong>Unified Shader:</strong> un singur pool mare de unități shader, divizat dinamic după necesități</li>
-                    <li>Separarea strictă &#238;ntre tipurile de shader nu mai este utilă</li>
-                    <li><strong>Compute shader:</strong> calcule arbitrare pe GPU (GPGPU – General-Purpose Computing on GPU)</li>
-                    <li><strong>Mesh shaders:</strong> adăugare recentă pentru depășirea bottleneck-urilor pipeline-ului geometric</li>
+                    <li><strong>Unita?ile shader cele mai importante:</strong> vertex shaders, geometry shaders, pixel shaders</li>
+                    <li><strong>Unified Shader:</strong> un singur pool mare de unita?i shader, divizat dinamic dupa necesita?i</li>
+                    <li>Separarea stricta &#238;ntre tipurile de shader nu mai este utila</li>
+                    <li><strong>Compute shader:</strong> calcule arbitrare pe GPU (GPGPU � General-Purpose Computing on GPU)</li>
+                    <li><strong>Mesh shaders:</strong> adaugare recenta pentru depa?irea bottleneck-urilor pipeline-ului geometric</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.13 — Definiție rasterizare</h3>
+                <h3>7.1.13 � Defini?ie rasterizare</h3>
                 <ul class="specs-list">
                     <li>Rasterizarea (rasterisation/rasterization) = conversia unei imagini descrise &#238;n format vectorial (forme) &#238;ntr-o imagine raster (pixeli, puncte, linii)</li>
-                    <li><strong>Etimologie:</strong> din germanul „Raster&quot; (grilă, model) și latinescul „rāstrum&quot; (greblă)</li>
-                    <li>Poate fi 2D (linii, cercuri) sau 3D (poligoane → pixeli)</li>
+                    <li><strong>Etimologie:</strong> din germanul �Raster&quot; (grila, model) ?i latinescul �rastrum&quot; (grebla)</li>
+                    <li>Poate fi 2D (linii, cercuri) sau 3D (poligoane ? pixeli)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.14 — Rasterizarea 3D</h3>
+                <h3>7.1.14 � Rasterizarea 3D</h3>
                 <ul class="specs-list">
                     <li>Rasterizarea este una dintre tehnicile tipice de randare a modelelor 3D</li>
-                    <li>Este extrem de rapidă comparativ cu ray tracing → folosită &#238;n majoritatea motoarelor 3D &#238;n timp real</li>
-                    <li>Rasterizarea calculează maparea din geometria scenei la pixeli, dar nu prescrie cum se calculează culoarea</li>
-                    <li>Culoarea fiecărui pixel este atribuită de un pixel shader (complet programabil pe GPU-uri moderne)</li>
-                    <li>Shading-ul poate lua &#238;n considerare efecte fizice (poziția luminii) sau intenție artistică</li>
-                    <li>Procesul este efectuat de obicei de hardware funcțional fix (non-programabil) &#238;n pipeline-ul grafic</li>
-                    <li>Hardware specializat permite eficiență ridicată</li>
+                    <li>Este extrem de rapida comparativ cu ray tracing ? folosita &#238;n majoritatea motoarelor 3D &#238;n timp real</li>
+                    <li>Rasterizarea calculeaza maparea din geometria scenei la pixeli, dar nu prescrie cum se calculeaza culoarea</li>
+                    <li>Culoarea fiecarui pixel este atribuita de un pixel shader (complet programabil pe GPU-uri moderne)</li>
+                    <li>Shading-ul poate lua &#238;n considerare efecte fizice (pozi?ia luminii) sau inten?ie artistica</li>
+                    <li>Procesul este efectuat de obicei de hardware func?ional fix (non-programabil) &#238;n pipeline-ul grafic</li>
+                    <li>Hardware specializat permite eficien?a ridicata</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.15 — Rasterizarea triunghiurilor</h3>
+                <h3>7.1.15 � Rasterizarea triunghiurilor</h3>
                 <ul class="specs-list">
                     <li>Poligoanele sunt de obicei descompuse &#238;n triunghiuri</li>
-                    <li><strong>Cerințe:</strong> fără goluri &#238;ntre triunghiuri adiacente, fără rasterizare multiplă a aceluiași pixel</li>
-                    <li><strong>Regulă top-left:</strong> un pixel este rasterizat dacă centrul este complet &#238;n interiorul triunghiului sau pe muchia superioară/st&#226;ngă</li>
-                    <li>Implementată de Direct3D și multe implementări OpenGL</li>
+                    <li><strong>Cerin?e:</strong> fara goluri &#238;ntre triunghiuri adiacente, fara rasterizare multipla a aceluia?i pixel</li>
+                    <li><strong>Regula top-left:</strong> un pixel este rasterizat daca centrul este complet &#238;n interiorul triunghiului sau pe muchia superioara/st&#226;nga</li>
+                    <li>Implementata de Direct3D ?i multe implementari OpenGL</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.16 — Calitate</h3>
+                <h3>7.1.16 � Calitate</h3>
                 <ul class="specs-list">
-                    <li>Calitatea rasterizării poate fi &#238;mbunătățită prin antialiasing (margini „netede&quot;)</li>
-                    <li><strong>Sub-pixel precision:</strong> metodă care ia &#238;n considerare poziții pe o scară mai fină dec&#226;t grila de pixeli</li>
-                    <li><strong>Exemplu:</strong> PlayStation 1 nu avea precizie sub-pixel → animații mai puțin fluide</li>
-                    <li><strong>Dublu buffering:</strong> rasterizarea se face &#238;ntr-o zonă specială de memorie, apoi se copiază &#238;n zona vizibilă</li>
+                    <li>Calitatea rasterizarii poate fi &#238;mbunata?ita prin antialiasing (margini �netede&quot;)</li>
+                    <li><strong>Sub-pixel precision:</strong> metoda care ia &#238;n considerare pozi?ii pe o scara mai fina dec&#226;t grila de pixeli</li>
+                    <li><strong>Exemplu:</strong> PlayStation 1 nu avea precizie sub-pixel ? anima?ii mai pu?in fluide</li>
+                    <li><strong>Dublu buffering:</strong> rasterizarea se face &#238;ntr-o zona speciala de memorie, apoi se copiaza &#238;n zona vizibila</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.17 — Definiție shader</h3>
+                <h3>7.1.17 � Defini?ie shader</h3>
                 <ul class="specs-list">
-                    <li>Un shader este o operație programabilă aplicată datelor &#238;n timp ce parcurg pipeline-ul de randare</li>
-                    <li>Shaderele pot acționa asupra vertecșilor și primitivelor (pentru a genera/modifica geometria) și asupra fragmentelor (pentru a calcula valorile &#238;ntr-o imagine randată)</li>
-                    <li>&#206;n grafica computerizată modernă &#238;n timp real, shaderele rulează pe GPU-uri – hardware dedicat cu execuție &#238;nalt paralelă</li>
-                    <li>Randarea unei imagini este „embarrassingly parallel&quot; → fragment/pixel shaders se scalează bine pe hardware SIMD</li>
-                    <li>Primul termen „shader&quot; introdus de Pixar &#238;n 1988 (RenderMan Interface Specification v3.0)</li>
+                    <li>Un shader este o opera?ie programabila aplicata datelor &#238;n timp ce parcurg pipeline-ul de randare</li>
+                    <li>Shaderele pot ac?iona asupra vertec?ilor ?i primitivelor (pentru a genera/modifica geometria) ?i asupra fragmentelor (pentru a calcula valorile &#238;ntr-o imagine randata)</li>
+                    <li>&#206;n grafica computerizata moderna &#238;n timp real, shaderele ruleaza pe GPU-uri � hardware dedicat cu execu?ie &#238;nalt paralela</li>
+                    <li>Randarea unei imagini este �embarrassingly parallel&quot; ? fragment/pixel shaders se scaleaza bine pe hardware SIMD</li>
+                    <li>Primul termen �shader&quot; introdus de Pixar &#238;n 1988 (RenderMan Interface Specification v3.0)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.18 — Tipuri de shadere grafice</h3>
+                <h3>7.1.18 � Tipuri de shadere grafice</h3>
                 <ul class="specs-list">
-                    <li><strong>Vertex shaders:</strong> rulează o dată pentru fiecare vertex 3D; transformă poziția 3D &#238;n coordonata 2D de ecran + valoare de ad&#226;ncime (Z-buffer); pot manipula poziție, culoare, coordonate textură, dar NU pot crea vertecși noi</li>
-                    <li><strong>Fragment/Pixel shaders:</strong> calculează culoarea și atributele fiecărui fragment (unitate de randare afect&#226;nd maxim un pixel); pot face bump mapping, umbre, reflexii speculare, transluciditate; operează pe un singur fragment fără cunoașterea geometriei scenei</li>
-                    <li><strong>Geometry shaders:</strong> introduse cu Direct3D 10 și OpenGL 3.2; pot genera NOI primitive (puncte, linii, triunghiuri); executate după vertex shaders; primesc ca input o primitivă completă</li>
-                    <li><strong>Tessellation shaders:</strong> OpenGL 4.0 / Direct3D 11; subdivid meshuri simple &#238;n meshuri mai fine la runtime; permit LOD (level-of-detail) activ bazat pe distanța camerei</li>
-                    <li><strong>Mesh shaders:</strong> AMD Vega (2017) - primitive shaders; Nvidia Turing (2018) - mesh + task shaders; AMD RDNA 2 și Nvidia Ampere (2020) - mesh shading prin DirectX 12 Ultimate</li>
+                    <li><strong>Vertex shaders:</strong> ruleaza o data pentru fiecare vertex 3D; transforma pozi?ia 3D &#238;n coordonata 2D de ecran + valoare de ad&#226;ncime (Z-buffer); pot manipula pozi?ie, culoare, coordonate textura, dar NU pot crea vertec?i noi</li>
+                    <li><strong>Fragment/Pixel shaders:</strong> calculeaza culoarea ?i atributele fiecarui fragment (unitate de randare afect&#226;nd maxim un pixel); pot face bump mapping, umbre, reflexii speculare, transluciditate; opereaza pe un singur fragment fara cunoa?terea geometriei scenei</li>
+                    <li><strong>Geometry shaders:</strong> introduse cu Direct3D 10 ?i OpenGL 3.2; pot genera NOI primitive (puncte, linii, triunghiuri); executate dupa vertex shaders; primesc ca input o primitiva completa</li>
+                    <li><strong>Tessellation shaders:</strong> OpenGL 4.0 / Direct3D 11; subdivid meshuri simple &#238;n meshuri mai fine la runtime; permit LOD (level-of-detail) activ bazat pe distan?a camerei</li>
+                    <li><strong>Mesh shaders:</strong> AMD Vega (2017) - primitive shaders; Nvidia Turing (2018) - mesh + task shaders; AMD RDNA 2 ?i Nvidia Ampere (2020) - mesh shading prin DirectX 12 Ultimate</li>
                     <li><strong>Ray-tracing shaders:</strong> suportate prin DirectX Raytracing, Vulkan, Metal</li>
-                    <li><strong>Compute shaders:</strong> nu sunt limitați la aplicații grafice, folosesc aceleași resurse de execuție pentru GPGPU</li>
+                    <li><strong>Compute shaders:</strong> nu sunt limita?i la aplica?ii grafice, folosesc acelea?i resurse de execu?ie pentru GPGPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.1.19 — Unified shader model și evoluție hardware</h3>
+                <h3>7.1.19 � Unified shader model ?i evolu?ie hardware</h3>
                 <ul class="specs-list">
-                    <li>Primele GPU-uri cu shadere suportau doar pixel shading → apoi vertex shaders rapid adăugate</li>
-                    <li><strong>Prima placă video cu pixel shader programabil:</strong> Nvidia GeForce 3 (NV20), 2001</li>
+                    <li>Primele GPU-uri cu shadere suportau doar pixel shading ? apoi vertex shaders rapid adaugate</li>
+                    <li><strong>Prima placa video cu pixel shader programabil:</strong> Nvidia GeForce 3 (NV20), 2001</li>
                     <li><strong>Geometry shaders:</strong> Direct3D 10 / OpenGL 3.2</li>
-                    <li><strong>Unified Shader Model:</strong> un singur pool de unități shader &#238;mpărțit dinamic pe tipuri</li>
+                    <li><strong>Unified Shader Model:</strong> un singur pool de unita?i shader &#238;mpar?it dinamic pe tipuri</li>
                     <li><strong>Limbaje de programare shadere:</strong> GLSL (OpenGL), HLSL (Direct3D), Metal Shading Language (Apple)</li>
-                    <li><strong>SPIR-V:</strong> limbaj intermediar, compilația shaderelor &#238;nainte de distribuție</li>
-                    <li>Mesh shaders pot crește framerate-ul sau numărul de triunghiuri cu un ordin de mărime</li>
+                    <li><strong>SPIR-V:</strong> limbaj intermediar, compila?ia shaderelor &#238;nainte de distribu?ie</li>
+                    <li>Mesh shaders pot cre?te framerate-ul sau numarul de triunghiuri cu un ordin de marime</li>
                 </ul>
             </div>
 
@@ -277,26 +277,26 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție pipeline grafic</h3>
+                <h3>Defini?ie pipeline grafic</h3>
                 <ul class="specs-list">
-                    <li>Pipeline-ul grafic (graphics pipeline / rendering pipeline) este un cadru &#238;n grafica computerizată care definește procedurile necesare pentru transformarea unei scene 3D &#238;ntr-o reprezentare 2D pe ecran</li>
+                    <li>Pipeline-ul grafic (graphics pipeline / rendering pipeline) este un cadru &#238;n grafica computerizata care define?te procedurile necesare pentru transformarea unei scene 3D &#238;ntr-o reprezentare 2D pe ecran</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Etapa Aplicație</h3>
+                <h3>Etapa Aplica?ie</h3>
                 <ul class="specs-list">
-                    <li>Executată de software pe procesorul principal (CPU)</li>
+                    <li>Executata de software pe procesorul principal (CPU)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Etapa Geometrie – Definiții</h3>
+                <h3>Etapa Geometrie � Defini?ii</h3>
                 <ul class="specs-list">
-                    <li>Triunghiul este cea mai comună primitivă geometrică &#238;n grafica computerizată</li>
+                    <li>Triunghiul este cea mai comuna primitiva geometrica &#238;n grafica computerizata</li>
                 </ul>
             </div>
 
@@ -304,35 +304,35 @@
                 <h3>Shadere</h3>
                 <ul class="specs-list">
                     <li>GPU-urile moderne folosesc un pipeline controlat de shadere, programabil liber</li>
-                    <li><strong>Compute shader:</strong> calcule arbitrare pe GPU (GPGPU – General-Purpose Computing on GPU)</li>
+                    <li><strong>Compute shader:</strong> calcule arbitrare pe GPU (GPGPU � General-Purpose Computing on GPU)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Rasterizarea 3D</h3>
                 <ul class="specs-list">
-                    <li>Culoarea fiecărui pixel este atribuită de un pixel shader (complet programabil pe GPU-uri moderne)</li>
+                    <li>Culoarea fiecarui pixel este atribuita de un pixel shader (complet programabil pe GPU-uri moderne)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție shader</h3>
+                <h3>Defini?ie shader</h3>
                 <ul class="specs-list">
-                    <li>&#206;n grafica computerizată modernă &#238;n timp real, shaderele rulează pe GPU-uri – hardware dedicat cu execuție &#238;nalt paralelă</li>
+                    <li>&#206;n grafica computerizata moderna &#238;n timp real, shaderele ruleaza pe GPU-uri � hardware dedicat cu execu?ie &#238;nalt paralela</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Tipuri de shadere grafice</h3>
                 <ul class="specs-list">
-                    <li><strong>Compute shaders:</strong> nu sunt limitați la aplicații grafice, folosesc aceleași resurse de execuție pentru GPGPU</li>
+                    <li><strong>Compute shaders:</strong> nu sunt limita?i la aplica?ii grafice, folosesc acelea?i resurse de execu?ie pentru GPGPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Unified shader model și evoluție hardware</h3>
+                <h3>Unified shader model ?i evolu?ie hardware</h3>
                 <ul class="specs-list">
-                    <li>Primele GPU-uri cu shadere suportau doar pixel shading → apoi vertex shaders rapid adăugate</li>
+                    <li>Primele GPU-uri cu shadere suportau doar pixel shading ? apoi vertex shaders rapid adaugate</li>
                 </ul>
             </div>
         </div>
@@ -340,12 +340,12 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Calitate</h3>
                 <ul class="specs-list">
-                    <li><strong>Exemplu:</strong> PlayStation 1 nu avea precizie sub-pixel → animații mai puțin fluide</li>
+                    <li><strong>Exemplu:</strong> PlayStation 1 nu avea precizie sub-pixel ? anima?ii mai pu?in fluide</li>
                 </ul>
             </div>
         </div>
@@ -356,30 +356,30 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție pipeline grafic</h3>
+                <h3>Defini?ie pipeline grafic</h3>
                 <ul class="specs-list">
-                    <li>Aceste API-uri oferă un strat de abstractizare peste hardware-ul subiacent (AMD, Intel, Nvidia)</li>
+                    <li>Aceste API-uri ofera un strat de abstractizare peste hardware-ul subiacent (AMD, Intel, Nvidia)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție shader</h3>
+                <h3>Defini?ie shader</h3>
                 <ul class="specs-list">
-                    <li>Primul termen „shader&quot; introdus de Pixar &#238;n 1988 (RenderMan Interface Specification v3.0)</li>
+                    <li>Primul termen �shader&quot; introdus de Pixar &#238;n 1988 (RenderMan Interface Specification v3.0)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Tipuri de shadere grafice</h3>
                 <ul class="specs-list">
-                    <li><strong>Mesh shaders:</strong> AMD Vega (2017) - primitive shaders; Nvidia Turing (2018) - mesh + task shaders; AMD RDNA 2 și Nvidia Ampere (2020) - mesh shading prin DirectX 12 Ultimate</li>
+                    <li><strong>Mesh shaders:</strong> AMD Vega (2017) - primitive shaders; Nvidia Turing (2018) - mesh + task shaders; AMD RDNA 2 ?i Nvidia Ampere (2020) - mesh shading prin DirectX 12 Ultimate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Unified shader model și evoluție hardware</h3>
+                <h3>Unified shader model ?i evolu?ie hardware</h3>
                 <ul class="specs-list">
-                    <li><strong>Prima placă video cu pixel shader programabil:</strong> Nvidia GeForce 3 (NV20), 2001</li>
+                    <li><strong>Prima placa video cu pixel shader programabil:</strong> Nvidia GeForce 3 (NV20), 2001</li>
                 </ul>
             </div>
         </div>
@@ -391,8 +391,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Probleme asociate cu Pipeline grafic</h3>
-                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                    <h3>?? Probleme asociate cu Pipeline grafic</h3>
+                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
                 </div>
             </div>
         </div>
@@ -403,25 +403,25 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție pipeline grafic:</strong> Pipeline-ul grafic (graphics pipeline / rendering pipeline) este un cadru &#238;n grafica computerizată care definește procedurile necesare pentru transformarea unei scene 3D &#238;ntr-o reprezenta...</li>
-                    <li><strong>Cele 3 etape principale:</strong> Pipeline-ul grafic se &#238;mparte &#238;n 3 părți principale: Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
-                    <li><strong>Etapa Aplicație:</strong> Executată de software pe procesorul principal (CPU)</li>
-                    <li><strong>Etapa Geometrie – Definiții:</strong> Un vertex (plural: vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</li>
-                    <li><strong>Geometrie – Sistemul de coordonate și transformări:</strong> Sistemul de coordonate mondial (world coordinate system) – coordonate rectangulare carteziene cu axe la scară egală</li>
-                    <li><strong>Geometrie – Transformarea camerei:</strong> Scena definește o cameră virtuală (poziție + direcție de vizualizare)</li>
-                    <li><strong>Geometrie – Proiecție:</strong> Proiecția 3D transformă volumul de vizualizare &#238;ntr-un cub cu coordonate (-1,-1,0) la (1,1,1)</li>
-                    <li><strong>Geometrie – Iluminare:</strong> Surse de lumină plasate la diferite poziții pentru iluminare realistă</li>
-                    <li><strong>Geometrie – Clipping:</strong> Doar primitivele din volumul vizual trebuie rasterizate</li>
-                    <li><strong>Geometrie – Transformarea Window-Viewport:</strong> Transformare pentru afișarea imaginii &#238;n zona țintă (viewport) a ecranului</li>
-                    <li><strong>Geometrie – Rezumat sub-pași:</strong> Etapa Geometrie (responsabilă de operațiile cu poligoane și vertecși) se &#238;mparte &#238;n 5 sub-sarcini:</li>
-                    <li><strong>Shadere:</strong> Plăcile grafice clasice erau aproape de pipeline-ul grafic rigid</li>
-                    <li><strong>Definiție rasterizare:</strong> Rasterizarea (rasterisation/rasterization) = conversia unei imagini descrise &#238;n format vectorial (forme) &#238;ntr-o imagine raster (pixeli, puncte, linii)</li>
+                    <li><strong>Defini?ie pipeline grafic:</strong> Pipeline-ul grafic (graphics pipeline / rendering pipeline) este un cadru &#238;n grafica computerizata care define?te procedurile necesare pentru transformarea unei scene 3D &#238;ntr-o reprezenta...</li>
+                    <li><strong>Cele 3 etape principale:</strong> Pipeline-ul grafic se &#238;mparte &#238;n 3 par?i principale: Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
+                    <li><strong>Etapa Aplica?ie:</strong> Executata de software pe procesorul principal (CPU)</li>
+                    <li><strong>Etapa Geometrie � Defini?ii:</strong> Un vertex (plural: vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</li>
+                    <li><strong>Geometrie � Sistemul de coordonate ?i transformari:</strong> Sistemul de coordonate mondial (world coordinate system) � coordonate rectangulare carteziene cu axe la scara egala</li>
+                    <li><strong>Geometrie � Transformarea camerei:</strong> Scena define?te o camera virtuala (pozi?ie + direc?ie de vizualizare)</li>
+                    <li><strong>Geometrie � Proiec?ie:</strong> Proiec?ia 3D transforma volumul de vizualizare &#238;ntr-un cub cu coordonate (-1,-1,0) la (1,1,1)</li>
+                    <li><strong>Geometrie � Iluminare:</strong> Surse de lumina plasate la diferite pozi?ii pentru iluminare realista</li>
+                    <li><strong>Geometrie � Clipping:</strong> Doar primitivele din volumul vizual trebuie rasterizate</li>
+                    <li><strong>Geometrie � Transformarea Window-Viewport:</strong> Transformare pentru afi?area imaginii &#238;n zona ?inta (viewport) a ecranului</li>
+                    <li><strong>Geometrie � Rezumat sub-pa?i:</strong> Etapa Geometrie (responsabila de opera?iile cu poligoane ?i vertec?i) se &#238;mparte &#238;n 5 sub-sarcini:</li>
+                    <li><strong>Shadere:</strong> Placile grafice clasice erau aproape de pipeline-ul grafic rigid</li>
+                    <li><strong>Defini?ie rasterizare:</strong> Rasterizarea (rasterisation/rasterization) = conversia unei imagini descrise &#238;n format vectorial (forme) &#238;ntr-o imagine raster (pixeli, puncte, linii)</li>
                     <li><strong>Rasterizarea 3D:</strong> Rasterizarea este una dintre tehnicile tipice de randare a modelelor 3D</li>
                     <li><strong>Rasterizarea triunghiurilor:</strong> Poligoanele sunt de obicei descompuse &#238;n triunghiuri</li>
-                    <li><strong>Calitate:</strong> Calitatea rasterizării poate fi &#238;mbunătățită prin antialiasing (margini „netede&quot;)</li>
-                    <li><strong>Definiție shader:</strong> Un shader este o operație programabilă aplicată datelor &#238;n timp ce parcurg pipeline-ul de randare</li>
-                    <li><strong>Tipuri de shadere grafice:</strong> Vertex shaders: rulează o dată pentru fiecare vertex 3D; transformă poziția 3D &#238;n coordonata 2D de ecran + valoare de ad&#226;ncime (Z-buffer); pot manipula poziție, culoare, coordonate textur...</li>
-                    <li><strong>Unified shader model și evoluție hardware:</strong> Primele GPU-uri cu shadere suportau doar pixel shading → apoi vertex shaders rapid adăugate</li>
+                    <li><strong>Calitate:</strong> Calitatea rasterizarii poate fi &#238;mbunata?ita prin antialiasing (margini �netede&quot;)</li>
+                    <li><strong>Defini?ie shader:</strong> Un shader este o opera?ie programabila aplicata datelor &#238;n timp ce parcurg pipeline-ul de randare</li>
+                    <li><strong>Tipuri de shadere grafice:</strong> Vertex shaders: ruleaza o data pentru fiecare vertex 3D; transforma pozi?ia 3D &#238;n coordonata 2D de ecran + valoare de ad&#226;ncime (Z-buffer); pot manipula pozi?ie, culoare, coordonate textur...</li>
+                    <li><strong>Unified shader model ?i evolu?ie hardware:</strong> Primele GPU-uri cu shadere suportau doar pixel shading ? apoi vertex shaders rapid adaugate</li>
                 </ul>
             </div>
         </div>
@@ -429,80 +429,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Pipeline-ul grafic se &#238;mparte &#238;n 3 părți principale?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Pipeline-ul grafic se &#238;mparte &#238;n 3 par?i principale?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
-                    <li>b) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</li>
-                    <li>c) detecția coliziunilor, animație, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
-                    <li>d) mai multe copii transformate diferit dintr-un singur obiect (ex: o pădure din copaci)</li>
+                    <li>a) Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
+                    <li>b) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</li>
+                    <li>c) detec?ia coliziunilor, anima?ie, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
+                    <li>d) mai multe copii transformate diferit dintr-un singur obiect (ex: o padure din copaci)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Sarcini tipice?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Sarcini tipice?</strong></p>
                 <ul class="specs-list">
-                    <li>a) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</li>
-                    <li>b) mai multe copii transformate diferit dintr-un singur obiect (ex: o pădure din copaci)</li>
-                    <li>c) Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
-                    <li>d) detecția coliziunilor, animație, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
+                    <li>a) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</li>
+                    <li>b) mai multe copii transformate diferit dintr-un singur obiect (ex: o padure din copaci)</li>
+                    <li>c) Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
+                    <li>d) detec?ia coliziunilor, anima?ie, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — detecția coliziunilor, animație, morphing, tehnici de accelerare (Quadtrees, Octrees)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � detec?ia coliziunilor, anima?ie, morphing, tehnici de accelerare (Quadtrees, Octrees)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Un vertex (plural?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Un vertex (plural?</strong></p>
                 <ul class="specs-list">
-                    <li>a) mai multe copii transformate diferit dintr-un singur obiect (ex: o pădure din copaci)</li>
-                    <li>b) detecția coliziunilor, animație, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
-                    <li>c) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</li>
-                    <li>d) Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
+                    <li>a) mai multe copii transformate diferit dintr-un singur obiect (ex: o padure din copaci)</li>
+                    <li>b) detec?ia coliziunilor, anima?ie, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
+                    <li>c) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</li>
+                    <li>d) Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Instancing?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Instancing?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
-                    <li>b) detecția coliziunilor, animație, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
-                    <li>c) mai multe copii transformate diferit dintr-un singur obiect (ex: o pădure din copaci)</li>
-                    <li>d) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</li>
+                    <li>a) Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
+                    <li>b) detec?ia coliziunilor, anima?ie, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
+                    <li>c) mai multe copii transformate diferit dintr-un singur obiect (ex: o padure din copaci)</li>
+                    <li>d) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — mai multe copii transformate diferit dintr-un singur obiect (ex: o pădure din copaci)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � mai multe copii transformate diferit dintr-un singur obiect (ex: o padure din copaci)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: Geometrie – Transformarea camerei?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: Geometrie � Transformarea camerei?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
-                    <li>b) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafețe</li>
-                    <li>c) detecția coliziunilor, animație, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
+                    <li>a) Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</li>
+                    <li>b) vertices) este un punct &#238;n lume. Mai multe puncte sunt unite pentru a forma suprafe?e</li>
+                    <li>c) detec?ia coliziunilor, anima?ie, morphing, tehnici de accelerare (Quadtrees, Octrees)</li>
                     <li>d) Sistemul rezultat = sistema de coordonate a camerei</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — Sistemul rezultat = sistema de coordonate a camerei</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � Sistemul rezultat = sistema de coordonate a camerei</strong></p>
                 </details>
             </div>
         </div>
@@ -510,22 +510,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Pipeline grafic</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de etapele pipeline-ului grafic. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Pipeline grafic</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de etapele pipeline-ului grafic. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: etapele pipeline-ului grafic.</li>
-                    <li>2. Ce rol are procesarea geometriei în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre etapele pipeline-ului grafic și rasterizare.</li>
+                    <li>2. Ce rol are procesarea geometriei �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre etapele pipeline-ului grafic ?i rasterizare.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Odată generat un model 3D, pipeline-ul convertește modelul &#238;ntr-un format vizual perceptibil pe display</p>
-                        <p><strong>2.</strong> Pipeline-ul grafic se &#238;mparte &#238;n 3 părți principale: Aplicație (Application), Geometrie (Geometry), Rasterizare (Rasterization)</p>
-                        <p><strong>3.</strong> Executată de software pe procesorul principal (CPU)</p>
+                        <p><strong>1.</strong> Odata generat un model 3D, pipeline-ul converte?te modelul &#238;ntr-un format vizual perceptibil pe display</p>
+                        <p><strong>2.</strong> Pipeline-ul grafic se &#238;mparte &#238;n 3 par?i principale: Aplica?ie (Application), Geometrie (Geometry), Rasterizare (Rasterization)</p>
+                        <p><strong>3.</strong> Executata de software pe procesorul principal (CPU)</p>
                     </div>
                 </details>
             </div>
@@ -552,7 +552,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-6-5.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 6.5 &mdash; Protec&#x21B;ii Electrice</a>
@@ -609,14 +609,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Cum funcționează randarea grafică în jocuri: pipeline-ul grafic de la vertex la pixel, explicat vizual.</p>
+                <p class="video-description">Cum func?ioneaza randarea grafica �n jocuri: pipeline-ul grafic de la vertex la pixel, explicat vizual.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

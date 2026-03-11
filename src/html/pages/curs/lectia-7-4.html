@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 7.4 — Throttling">
+    <meta name="description" content="Lec?ia 7.4 � Throttling">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 7.4 — Throttling — Console Notebook</title>
+    <title>Lec?ia 7.4 � Throttling � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 — PERFORMANȚĂ ȘI GRAFICĂ</p>
-            <h1>Lecția 7.4 — Throttling</h1>
-            <p>thermal throttling, reducerea frecvenței, protecție termică</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 7 � PERFORMAN?A ?I GRAFICA</p>
+            <h1>Lec?ia 7.4 � Throttling</h1>
+            <p>thermal throttling, reducerea frecven?ei, protec?ie termica</p>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,183 +41,183 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>C = capacitatea comutată per ciclu de ceas</p>
-                <p>Această lecție acoperă: <strong>thermal throttling</strong>, <strong>reducerea frecvenței</strong>, <strong>protecție termică</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>C = capacitatea comutata per ciclu de ceas</p>
+                <p>Aceasta lec?ie acopera: <strong>thermal throttling</strong>, <strong>reducerea frecven?ei</strong>, <strong>protec?ie termica</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.1 — Definiția Dynamic Frequency Scaling (CPU Throttling)</h3>
+                <h3>7.4.1 � Defini?ia Dynamic Frequency Scaling (CPU Throttling)</h3>
                 <ul class="specs-list">
-                    <li>Dynamic frequency scaling (cunoscut și ca CPU throttling) = tehnică de power management &#238;n arhitectura calculatoarelor</li>
-                    <li>Frecvența unui microprocesor poate fi ajustată automat &quot;on the fly&quot; &#238;n funcție de nevoile reale</li>
-                    <li><strong>Scopuri:</strong> conservarea energiei, reducerea căldurii generate</li>
-                    <li><strong>Ajută la:</strong> prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de răcire și zgomot (sisteme silențioase), măsură de securitate pentru sisteme supra&#238;ncălzite (ex: overclocking necorespunzător)</li>
-                    <li>Aproape &#238;ntotdeauna combinat cu Dynamic Voltage Scaling (DVS) – frecvențe mai mari necesită tensiuni de alimentare mai mari</li>
-                    <li><strong>Combinația:</strong> DVFS (Dynamic Voltage and Frequency Scaling)</li>
+                    <li>Dynamic frequency scaling (cunoscut ?i ca CPU throttling) = tehnica de power management &#238;n arhitectura calculatoarelor</li>
+                    <li>Frecven?a unui microprocesor poate fi ajustata automat &quot;on the fly&quot; &#238;n func?ie de nevoile reale</li>
+                    <li><strong>Scopuri:</strong> conservarea energiei, reducerea caldurii generate</li>
+                    <li><strong>Ajuta la:</strong> prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de racire ?i zgomot (sisteme silen?ioase), masura de securitate pentru sisteme supra&#238;ncalzite (ex: overclocking necorespunzator)</li>
+                    <li>Aproape &#238;ntotdeauna combinat cu Dynamic Voltage Scaling (DVS) � frecven?e mai mari necesita tensiuni de alimentare mai mari</li>
+                    <li><strong>Combina?ia:</strong> DVFS (Dynamic Voltage and Frequency Scaling)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.2 — Funcționare – formula puterii dinamice</h3>
+                <h3>7.4.2 � Func?ionare � formula puterii dinamice</h3>
                 <ul class="specs-list">
-                    <li><strong>Puterea dinamică (switching power) disipată:</strong> P = C &#215; V&#178; &#215; A &#215; f</li>
+                    <li><strong>Puterea dinamica (switching power) disipata:</strong> P = C &#215; V&#178; &#215; A &#215; f</li>
                 </ul>
-                <p>C = capacitatea comutată per ciclu de ceas</p>
+                <p>C = capacitatea comutata per ciclu de ceas</p>
                 <p>V = tensiunea</p>
-                <p>A = factorul de activitate (numărul mediu de comutări per ciclu)</p>
-                <p>f = frecvența de ceas</p>
+                <p>A = factorul de activitate (numarul mediu de comutari per ciclu)</p>
+                <p>f = frecven?a de ceas</p>
                 <ul class="specs-list">
-                    <li>Tensiunea (V) este determinantul principal al consumului de energie și &#238;ncălzirii (V&#178; &#238;n formulă)</li>
-                    <li>Tensiunea necesară pentru funcționare stabilă este determinată de frecvență – poate fi redusă dacă frecvența scade</li>
-                    <li><strong>Puterea statică (leakage currents):</strong> a devenit din ce &#238;n ce mai importantă pe măsură ce tranzistoarele s-au micșorat</li>
-                    <li><strong>Acum un deceniu:</strong> puterea dinamică = ~2/3 din puterea totală a chip-ului</li>
-                    <li><strong>Astăzi:</strong> pierderile prin curenți de scurgere tind să domine consumul total &#238;n CPU-uri și SoC-uri contemporane</li>
+                    <li>Tensiunea (V) este determinantul principal al consumului de energie ?i &#238;ncalzirii (V&#178; &#238;n formula)</li>
+                    <li>Tensiunea necesara pentru func?ionare stabila este determinata de frecven?a � poate fi redusa daca frecven?a scade</li>
+                    <li><strong>Puterea statica (leakage currents):</strong> a devenit din ce &#238;n ce mai importanta pe masura ce tranzistoarele s-au mic?orat</li>
+                    <li><strong>Acum un deceniu:</strong> puterea dinamica = ~2/3 din puterea totala a chip-ului</li>
+                    <li><strong>Astazi:</strong> pierderile prin curen?i de scurgere tind sa domine consumul total &#238;n CPU-uri ?i SoC-uri contemporane</li>
                     <li><strong>Metode de control:</strong> high-k metal-gates, power gating</li>
-                    <li>Eficiența componentelor (regulatoare de tensiune) scade cu creșterea temperaturii → consum crescut care crește temperatura (feedback pozitiv)</li>
-                    <li>Există o frecvență optimă CPU unde consumul de energie este minim (comportament convex al energiei)</li>
+                    <li>Eficien?a componentelor (regulatoare de tensiune) scade cu cre?terea temperaturii ? consum crescut care cre?te temperatura (feedback pozitiv)</li>
+                    <li>Exista o frecven?a optima CPU unde consumul de energie este minim (comportament convex al energiei)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.3 — Interfața standard ACPI</h3>
+                <h3>7.4.3 � Interfa?a standard ACPI</h3>
                 <ul class="specs-list">
-                    <li><strong>ACPI 1.0 (1996):</strong> definește &quot;C states&quot; (stări idle) pentru CPU, dar FĂRĂ sistem de scalare a frecvenței</li>
-                    <li><strong>ACPI 2.0 (2000):</strong> introduce P states (performance-power states) – procesorul comunică setările posibile frecvență-putere la OS</li>
+                    <li><strong>ACPI 1.0 (1996):</strong> define?te &quot;C states&quot; (stari idle) pentru CPU, dar FARA sistem de scalare a frecven?ei</li>
+                    <li><strong>ACPI 2.0 (2000):</strong> introduce P states (performance-power states) � procesorul comunica setarile posibile frecven?a-putere la OS</li>
                 </ul>
-                <p>• OS comută &#238;ntre stări după necesitate</p>
-                <p>• SpeedStep, PowerNow!/Cool&#39;n&#39;Quiet, PowerSaver funcționează prin P states</p>
-                <p>• Limită de maximum 16 stări</p>
+                <p>� OS comuta &#238;ntre stari dupa necesitate</p>
+                <p>� SpeedStep, PowerNow!/Cool&#39;n&#39;Quiet, PowerSaver func?ioneaza prin P states</p>
+                <p>� Limita de maximum 16 stari</p>
                 <ul class="specs-list">
                     <li><strong>ACPI 5.0 (2011):</strong> introduce CPPC (Collaborative Processor Performance Control)</li>
                 </ul>
-                <p>• Expune sute de niveluri de performanță la OS</p>
-                <p>• Abstracție de la frecvență → &quot;performance level&quot;</p>
-                <p>• Permite procesorului să ajusteze funcționarea prin alte metode dec&#226;t frecvența</p>
+                <p>� Expune sute de niveluri de performan?a la OS</p>
+                <p>� Abstrac?ie de la frecven?a ? &quot;performance level&quot;</p>
+                <p>� Permite procesorului sa ajusteze func?ionarea prin alte metode dec&#226;t frecven?a</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.4 — Scalare autonomă a frecvenței</h3>
+                <h3>7.4.4 � Scalare autonoma a frecven?ei</h3>
                 <ul class="specs-list">
-                    <li>CPU-uri moderne pot face frequency scaling autonom, folosind un interval de performanță și o preferință de eficiență/performanță de la OS</li>
-                    <li><strong>Intel:</strong> din Skylake – hardware-managed P-states (Speed Shift), bazat pe CPPC, control prin model-specific register (MSR)</li>
-                    <li><strong>AMD:</strong> din Zen 2 – funcție similară, depinde de CPPC; canal preferat MSR (introdus &#238;n Zen 3); Zen 2 folosește metoda ACPI AML</li>
+                    <li>CPU-uri moderne pot face frequency scaling autonom, folosind un interval de performan?a ?i o preferin?a de eficien?a/performan?a de la OS</li>
+                    <li><strong>Intel:</strong> din Skylake � hardware-managed P-states (Speed Shift), bazat pe CPPC, control prin model-specific register (MSR)</li>
+                    <li><strong>AMD:</strong> din Zen 2 � func?ie similara, depinde de CPPC; canal preferat MSR (introdus &#238;n Zen 3); Zen 2 folose?te metoda ACPI AML</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.5 — Impactul asupra performanței</h3>
+                <h3>7.4.5 � Impactul asupra performan?ei</h3>
                 <ul class="specs-list">
-                    <li>DFS reduce numărul de instrucțiuni pe care procesorul le poate emite pe unitate de timp → reduce performanța</li>
+                    <li>DFS reduce numarul de instruc?iuni pe care procesorul le poate emite pe unitate de timp ? reduce performan?a</li>
                     <li>De obicei folosit c&#226;nd sarcina NU este CPU-bound</li>
-                    <li><strong>Frequency scaling singur rar merită:</strong> economisirea maximă necesită și voltage scaling (datorită V&#178;)</li>
-                    <li><strong>&quot;Race to idle&quot; / computational sprinting:</strong> mai eficient să rulezi scurt la viteză maximă apoi să stai &#238;n idle profund, dec&#226;t să rulezi lung la viteză redusă</li>
-                    <li>Reducerea tensiunii &#238;mpreună cu frecvența schimbă calculele de eficiență</li>
-                    <li><strong>Overclocking:</strong> tehnica opusă – creșterea frecvenței peste specificații; static și pe FSB vs DFS dinamic pe multiplicator</li>
-                    <li><strong>T-states (ACPI):</strong> throttling care nu reduce frecvența reală, ci inserează semnale STPCLK (stop clock) omiț&#226;nd cicluri de lucru</li>
+                    <li><strong>Frequency scaling singur rar merita:</strong> economisirea maxima necesita ?i voltage scaling (datorita V&#178;)</li>
+                    <li><strong>&quot;Race to idle&quot; / computational sprinting:</strong> mai eficient sa rulezi scurt la viteza maxima apoi sa stai &#238;n idle profund, dec&#226;t sa rulezi lung la viteza redusa</li>
+                    <li>Reducerea tensiunii &#238;mpreuna cu frecven?a schimba calculele de eficien?a</li>
+                    <li><strong>Overclocking:</strong> tehnica opusa � cre?terea frecven?ei peste specifica?ii; static ?i pe FSB vs DFS dinamic pe multiplicator</li>
+                    <li><strong>T-states (ACPI):</strong> throttling care nu reduce frecven?a reala, ci insereaza semnale STPCLK (stop clock) omi?&#226;nd cicluri de lucru</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.6 — Suport la producători (CPU)</h3>
+                <h3>7.4.6 � Suport la producatori (CPU)</h3>
                 <ul class="specs-list">
-                    <li><strong>Intel:</strong> SpeedStep – folosit pe liniile de procesoare mobile și desktop</li>
-                    <li><strong>AMD CPU desktop/server:</strong> Cool&#39;n&#39;Quiet – scop: producere de mai puțină căldură → ventilator la viteze mai mici → funcționare mai răcoroasă și silențioasă</li>
+                    <li><strong>Intel:</strong> SpeedStep � folosit pe liniile de procesoare mobile ?i desktop</li>
+                    <li><strong>AMD CPU desktop/server:</strong> Cool&#39;n&#39;Quiet � scop: producere de mai pu?ina caldura ? ventilator la viteze mai mici ? func?ionare mai racoroasa ?i silen?ioasa</li>
                     <li><strong>AMD CPU mobile:</strong> PowerNow!</li>
-                    <li><strong>AMD GPU:</strong> PowerTune și ZeroCore Power (dynamic frequency scaling pentru GPU-uri)</li>
-                    <li>Diferite SoC-uri ARM oferă throttling pentru CPU și GPU</li>
+                    <li><strong>AMD GPU:</strong> PowerTune ?i ZeroCore Power (dynamic frequency scaling pentru GPU-uri)</li>
+                    <li>Diferite SoC-uri ARM ofera throttling pentru CPU ?i GPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.7 — Istoricul SpeedStep</h3>
+                <h3>7.4.7 � Istoricul SpeedStep</h3>
                 <ul class="specs-list">
-                    <li><strong>Enhanced SpeedStep (EIST):</strong> serie de tehnologii DFS (codename Geyserville) – SpeedStep, SpeedStep II, SpeedStep III</li>
-                    <li>Permite schimbarea dinamică a vitezei procesorului (&#238;n diferite P-states) de către software</li>
-                    <li><strong>Scop:</strong> satisfacerea nevoilor de performanță instantanee, minimiz&#226;nd consumul de energie și generarea de căldură</li>
+                    <li><strong>Enhanced SpeedStep (EIST):</strong> serie de tehnologii DFS (codename Geyserville) � SpeedStep, SpeedStep II, SpeedStep III</li>
+                    <li>Permite schimbarea dinamica a vitezei procesorului (&#238;n diferite P-states) de catre software</li>
+                    <li><strong>Scop:</strong> satisfacerea nevoilor de performan?a instantanee, minimiz&#226;nd consumul de energie ?i generarea de caldura</li>
                     <li>EIST (SpeedStep III) introdus &#238;n Q1 2005 &#238;n mai multe Prescott 6 series (Pentium 4 660)</li>
                     <li>Intel Speed Shift Technology (SST) introdus cu arhitectura Skylake (hardware-managed)</li>
-                    <li>Marca &quot;Intel SpeedStep&quot; anulată &#238;n 2012 (invalidată)</li>
+                    <li>Marca &quot;Intel SpeedStep&quot; anulata &#238;n 2012 (invalidata)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.8 — Explicația SpeedStep</h3>
+                <h3>7.4.8 � Explica?ia SpeedStep</h3>
                 <ul class="specs-list">
-                    <li><strong>La frecvențe mari:</strong> performanță mai bună; la frecvențe mici: mai puțină căldură, mai puțin consum</li>
-                    <li>Tensiunea de bază (core voltage) poate fi și ea redusă → reducere suplimentară a consumului și căldurii</li>
-                    <li><strong>Formula puterii:</strong> P = C &#215; V&#178; &#215; f (C fix pentru un procesor dat; V și f variabile)</li>
-                    <li><strong>Exemplu Pentium M 1.6 GHz:</strong> frecvența scade de la 1.6 la 0.6 GHz (pași de 200 MHz), tensiunea scade de la 1.484 V la 0.956 V</li>
+                    <li><strong>La frecven?e mari:</strong> performan?a mai buna; la frecven?e mici: mai pu?ina caldura, mai pu?in consum</li>
+                    <li>Tensiunea de baza (core voltage) poate fi ?i ea redusa ? reducere suplimentara a consumului ?i caldurii</li>
+                    <li><strong>Formula puterii:</strong> P = C &#215; V&#178; &#215; f (C fix pentru un procesor dat; V ?i f variabile)</li>
+                    <li><strong>Exemplu Pentium M 1.6 GHz:</strong> frecven?a scade de la 1.6 la 0.6 GHz (pa?i de 200 MHz), tensiunea scade de la 1.484 V la 0.956 V</li>
                 </ul>
-                <p>• Rezultat teoretic: consumul scade cu factor 6,4&#215;</p>
-                <p>• &#206;n practică: efect mai mic din cauza instrucțiunilor HLT (suspendă părți ale CPU-ului)</p>
+                <p>� Rezultat teoretic: consumul scade cu factor 6,4&#215;</p>
+                <p>� &#206;n practica: efect mai mic din cauza instruc?iunilor HLT (suspenda par?i ale CPU-ului)</p>
                 <ul class="specs-list">
-                    <li><strong>Suport OS:</strong> Windows XP – Power Management console, Linux – subsistemul &quot;cpufreq&quot;</li>
+                    <li><strong>Suport OS:</strong> Windows XP � Power Management console, Linux � subsistemul &quot;cpufreq&quot;</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.9 — Definiția Clock Gating</h3>
+                <h3>7.4.9 � Defini?ia Clock Gating</h3>
                 <ul class="specs-list">
-                    <li>Clock gating = tehnică populară de power management &#238;n circuite sincrone</li>
-                    <li>Reduce disiparea dinamică de putere prin eliminarea semnalului de ceas c&#226;nd circuitul (sau o sub-parte) este idle (inactiv)</li>
-                    <li>Economisește energie prin &quot;pruning&quot; (tăierea) unei părți din arborele de distribuție a ceasului</li>
-                    <li>Flip-flop-urile nu mai comută starea → consumul de switching power este redus</li>
+                    <li>Clock gating = tehnica populara de power management &#238;n circuite sincrone</li>
+                    <li>Reduce disiparea dinamica de putere prin eliminarea semnalului de ceas c&#226;nd circuitul (sau o sub-parte) este idle (inactiv)</li>
+                    <li>Economise?te energie prin &quot;pruning&quot; (taierea) unei par?i din arborele de distribu?ie a ceasului</li>
+                    <li>Flip-flop-urile nu mai comuta starea ? consumul de switching power este redus</li>
                     <li>Eficient &#238;n sisteme cu perioade semnificative de inactivitate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.10 — Detalii esențiale – puterea dinamică</h3>
+                <h3>7.4.10 � Detalii esen?iale � puterea dinamica</h3>
                 <ul class="specs-list">
                     <li><strong>Puterea medie &#238;ntr-un circuit CMOS:</strong> P_avg = P_dynamic + P_short + P_leakage + P_static</li>
                 </ul>
-                <p>• P_dynamic: &#238;ncărcarea/descărcarea sarcinilor capacitive (proporțională cu activitatea de comutare, capacitanță, V&#178;, frecvență)</p>
-                <p>• P_short: tranzistoarele PMOS și NMOS conduc simultan momentan (scurtcircuit temporar)</p>
-                <p>• P_leakage: curenți subthreshold și de poartă (chiar cu tranzistoarele oprite; cresc &#238;n tehnologii submicron)</p>
-                <p>• P_static: blocuri mereu active (circuite de polarizare, generatoare de referință)</p>
+                <p>� P_dynamic: &#238;ncarcarea/descarcarea sarcinilor capacitive (propor?ionala cu activitatea de comutare, capacitan?a, V&#178;, frecven?a)</p>
+                <p>� P_short: tranzistoarele PMOS ?i NMOS conduc simultan momentan (scurtcircuit temporar)</p>
+                <p>� P_leakage: curen?i subthreshold ?i de poarta (chiar cu tranzistoarele oprite; cresc &#238;n tehnologii submicron)</p>
+                <p>� P_static: blocuri mereu active (circuite de polarizare, generatoare de referin?a)</p>
                 <ul class="specs-list">
-                    <li><strong>Formula puterii dinamice:</strong> P_dynamic = α &#215; CL &#215; Vdd&#178; &#215; f</li>
+                    <li><strong>Formula puterii dinamice:</strong> P_dynamic = a &#215; CL &#215; Vdd&#178; &#215; f</li>
                 </ul>
-                <p>α = factorul de activitate de comutare</p>
-                <p>CL = capacitatea de sarcină</p>
+                <p>a = factorul de activitate de comutare</p>
+                <p>CL = capacitatea de sarcina</p>
                 <p>Vdd = tensiunea de alimentare</p>
-                <p>f = frecvența ceasului</p>
+                <p>f = frecven?a ceasului</p>
                 <ul class="specs-list">
-                    <li>Clock gating reduce α → scade consumul dinamic</li>
-                    <li><strong>Diferență față de power gating:</strong> power gating taie alimentarea complet, reduc&#226;nd multiple surse de putere</li>
+                    <li>Clock gating reduce a ? scade consumul dinamic</li>
+                    <li><strong>Diferen?a fa?a de power gating:</strong> power gating taie alimentarea complet, reduc&#226;nd multiple surse de putere</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.11 — Tehnici de clock gating</h3>
+                <h3>7.4.11 � Tehnici de clock gating</h3>
                 <ul class="specs-list">
-                    <li><strong>Glitch-free clock gating:</strong> folosește un latch sensibil la nivel pentru prevenirea glitch-urilor</li>
-                    <li>Semnalul de enable este capturat doar c&#226;nd ceasul este &#238;n faza inactivă</li>
-                    <li>Clock gating la granularitate mai mare → overhead mai mic, economii mai mari</li>
-                    <li><strong>Implementare:</strong> manuală (drivere software enable/disable), automată (hardware detectează inactivitatea), hibridă</li>
-                    <li><strong>Aplicații:</strong> telefoane mobile, dispozitive portabile, sisteme embedded – implementări multiple simultane</li>
-                    <li>Clock gating poate reduce și aria circuitului (&#238;nlocuiește multiplexoare 2:1 cu un singur ICG)</li>
+                    <li><strong>Glitch-free clock gating:</strong> folose?te un latch sensibil la nivel pentru prevenirea glitch-urilor</li>
+                    <li>Semnalul de enable este capturat doar c&#226;nd ceasul este &#238;n faza inactiva</li>
+                    <li>Clock gating la granularitate mai mare ? overhead mai mic, economii mai mari</li>
+                    <li><strong>Implementare:</strong> manuala (drivere software enable/disable), automata (hardware detecteaza inactivitatea), hibrida</li>
+                    <li><strong>Aplica?ii:</strong> telefoane mobile, dispozitive portabile, sisteme embedded � implementari multiple simultane</li>
+                    <li>Clock gating poate reduce ?i aria circuitului (&#238;nlocuie?te multiplexoare 2:1 cu un singur ICG)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>7.4.12 — Mecanisme de protecție termică (din surse 7.3)</h3>
+                <h3>7.4.12 � Mecanisme de protec?ie termica (din surse 7.3)</h3>
                 <ul class="specs-list">
-                    <li><strong>Throttling:</strong> reducerea frecvenței și tensiunii sau dezactivarea funcțiilor non-esențiale prin dynamic frequency scaling</li>
+                    <li><strong>Throttling:</strong> reducerea frecven?ei ?i tensiunii sau dezactivarea func?iilor non-esen?iale prin dynamic frequency scaling</li>
                     <li><strong>Clock gating, clock stretching:</strong> mecanisme de reducere a temperaturii detectate de senzori</li>
-                    <li><strong>Thermal shutdown:</strong> oprire completă c&#226;nd mecanismele de throttling nu compensează suficient</li>
-                    <li><strong>Therm-trip catastrofic:</strong> doar la defecțiune gravă a răcirii</li>
-                    <li>TDP depășit → throttling automat sau therm-trip</li>
-                    <li><strong>Procesoare moderne (Intel, AMD, Qualcomm):</strong> rețea de senzori de temperatură integrați</li>
-                    <li>Controlat la nivel BIOS (desktop/laptop), hardware (smartphone/tabletă)</li>
-                    <li><strong>Prevenire:</strong> inspecție vizuală cooler, curățare praf, &#238;nlocuire pastă termică</li>
+                    <li><strong>Thermal shutdown:</strong> oprire completa c&#226;nd mecanismele de throttling nu compenseaza suficient</li>
+                    <li><strong>Therm-trip catastrofic:</strong> doar la defec?iune grava a racirii</li>
+                    <li>TDP depa?it ? throttling automat sau therm-trip</li>
+                    <li><strong>Procesoare moderne (Intel, AMD, Qualcomm):</strong> re?ea de senzori de temperatura integra?i</li>
+                    <li>Controlat la nivel BIOS (desktop/laptop), hardware (smartphone/tableta)</li>
+                    <li><strong>Prevenire:</strong> inspec?ie vizuala cooler, cura?are praf, &#238;nlocuire pasta termica</li>
                 </ul>
             </div>
 
@@ -226,86 +226,86 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiția Dynamic Frequency Scaling (CPU Throttling)</h3>
+                <h3>Defini?ia Dynamic Frequency Scaling (CPU Throttling)</h3>
                 <ul class="specs-list">
-                    <li>Dynamic frequency scaling (cunoscut și ca CPU throttling) = tehnică de power management &#238;n arhitectura calculatoarelor</li>
+                    <li>Dynamic frequency scaling (cunoscut ?i ca CPU throttling) = tehnica de power management &#238;n arhitectura calculatoarelor</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Funcționare – formula puterii dinamice</h3>
+                <h3>Func?ionare � formula puterii dinamice</h3>
                 <ul class="specs-list">
-                    <li>Există o frecvență optimă CPU unde consumul de energie este minim (comportament convex al energiei)</li>
+                    <li>Exista o frecven?a optima CPU unde consumul de energie este minim (comportament convex al energiei)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Interfața standard ACPI</h3>
+                <h3>Interfa?a standard ACPI</h3>
                 <ul class="specs-list">
-                    <li><strong>ACPI 1.0 (1996):</strong> definește &quot;C states&quot; (stări idle) pentru CPU, dar FĂRĂ sistem de scalare a frecvenței</li>
-                    <li><strong>ACPI 2.0 (2000):</strong> introduce P states (performance-power states) – procesorul comunică setările posibile frecvență-putere la OS</li>
+                    <li><strong>ACPI 1.0 (1996):</strong> define?te &quot;C states&quot; (stari idle) pentru CPU, dar FARA sistem de scalare a frecven?ei</li>
+                    <li><strong>ACPI 2.0 (2000):</strong> introduce P states (performance-power states) � procesorul comunica setarile posibile frecven?a-putere la OS</li>
                 </ul>
-                <p>• Permite procesorului să ajusteze funcționarea prin alte metode dec&#226;t frecvența</p>
+                <p>� Permite procesorului sa ajusteze func?ionarea prin alte metode dec&#226;t frecven?a</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Scalare autonomă a frecvenței</h3>
+                <h3>Scalare autonoma a frecven?ei</h3>
                 <ul class="specs-list">
-                    <li>CPU-uri moderne pot face frequency scaling autonom, folosind un interval de performanță și o preferință de eficiență/performanță de la OS</li>
+                    <li>CPU-uri moderne pot face frequency scaling autonom, folosind un interval de performan?a ?i o preferin?a de eficien?a/performan?a de la OS</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Impactul asupra performanței</h3>
+                <h3>Impactul asupra performan?ei</h3>
                 <ul class="specs-list">
-                    <li>DFS reduce numărul de instrucțiuni pe care procesorul le poate emite pe unitate de timp → reduce performanța</li>
+                    <li>DFS reduce numarul de instruc?iuni pe care procesorul le poate emite pe unitate de timp ? reduce performan?a</li>
                     <li>De obicei folosit c&#226;nd sarcina NU este CPU-bound</li>
-                    <li><strong>&quot;Race to idle&quot; / computational sprinting:</strong> mai eficient să rulezi scurt la viteză maximă apoi să stai &#238;n idle profund, dec&#226;t să rulezi lung la viteză redusă</li>
+                    <li><strong>&quot;Race to idle&quot; / computational sprinting:</strong> mai eficient sa rulezi scurt la viteza maxima apoi sa stai &#238;n idle profund, dec&#226;t sa rulezi lung la viteza redusa</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Istoricul SpeedStep</h3>
                 <ul class="specs-list">
-                    <li>Permite schimbarea dinamică a vitezei procesorului (&#238;n diferite P-states) de către software</li>
+                    <li>Permite schimbarea dinamica a vitezei procesorului (&#238;n diferite P-states) de catre software</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Explicația SpeedStep</h3>
+                <h3>Explica?ia SpeedStep</h3>
                 <ul class="specs-list">
-                    <li><strong>Formula puterii:</strong> P = C &#215; V&#178; &#215; f (C fix pentru un procesor dat; V și f variabile)</li>
+                    <li><strong>Formula puterii:</strong> P = C &#215; V&#178; &#215; f (C fix pentru un procesor dat; V ?i f variabile)</li>
                 </ul>
-                <p>• &#206;n practică: efect mai mic din cauza instrucțiunilor HLT (suspendă părți ale CPU-ului)</p>
+                <p>� &#206;n practica: efect mai mic din cauza instruc?iunilor HLT (suspenda par?i ale CPU-ului)</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Funcționare – formula puterii dinamice</h3>
+                <h3>Func?ionare � formula puterii dinamice</h3>
                 <ul class="specs-list">
-                    <li><strong>Astăzi:</strong> pierderile prin curenți de scurgere tind să domine consumul total &#238;n CPU-uri și SoC-uri contemporane</li>
+                    <li><strong>Astazi:</strong> pierderile prin curen?i de scurgere tind sa domine consumul total &#238;n CPU-uri ?i SoC-uri contemporane</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Suport la producători (CPU)</h3>
+                <h3>Suport la producatori (CPU)</h3>
                 <ul class="specs-list">
-                    <li>Diferite SoC-uri ARM oferă throttling pentru CPU și GPU</li>
+                    <li>Diferite SoC-uri ARM ofera throttling pentru CPU ?i GPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Explicația SpeedStep</h3>
+                <h3>Explica?ia SpeedStep</h3>
                 <ul class="specs-list">
-                    <li><strong>Suport OS:</strong> Windows XP – Power Management console, Linux – subsistemul &quot;cpufreq&quot;</li>
+                    <li><strong>Suport OS:</strong> Windows XP � Power Management console, Linux � subsistemul &quot;cpufreq&quot;</li>
                 </ul>
             </div>
         </div>
@@ -316,26 +316,26 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Suport la producători (CPU)</h3>
+                <h3>Suport la producatori (CPU)</h3>
                 <ul class="specs-list">
-                    <li><strong>AMD CPU desktop/server:</strong> Cool&#39;n&#39;Quiet – scop: producere de mai puțină căldură → ventilator la viteze mai mici → funcționare mai răcoroasă și silențioasă</li>
+                    <li><strong>AMD CPU desktop/server:</strong> Cool&#39;n&#39;Quiet � scop: producere de mai pu?ina caldura ? ventilator la viteze mai mici ? func?ionare mai racoroasa ?i silen?ioasa</li>
                     <li><strong>AMD CPU mobile:</strong> PowerNow!</li>
-                    <li><strong>AMD GPU:</strong> PowerTune și ZeroCore Power (dynamic frequency scaling pentru GPU-uri)</li>
+                    <li><strong>AMD GPU:</strong> PowerTune ?i ZeroCore Power (dynamic frequency scaling pentru GPU-uri)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Istoricul SpeedStep</h3>
                 <ul class="specs-list">
-                    <li><strong>Enhanced SpeedStep (EIST):</strong> serie de tehnologii DFS (codename Geyserville) – SpeedStep, SpeedStep II, SpeedStep III</li>
+                    <li><strong>Enhanced SpeedStep (EIST):</strong> serie de tehnologii DFS (codename Geyserville) � SpeedStep, SpeedStep II, SpeedStep III</li>
                     <li>Intel Speed Shift Technology (SST) introdus cu arhitectura Skylake (hardware-managed)</li>
-                    <li>Marca &quot;Intel SpeedStep&quot; anulată &#238;n 2012 (invalidată)</li>
+                    <li>Marca &quot;Intel SpeedStep&quot; anulata &#238;n 2012 (invalidata)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Detalii esențiale – puterea dinamică</h3>
-                <p>• P_leakage: curenți subthreshold și de poartă (chiar cu tranzistoarele oprite; cresc &#238;n tehnologii submicron)</p>
+                <h3>Detalii esen?iale � puterea dinamica</h3>
+                <p>� P_leakage: curen?i subthreshold ?i de poarta (chiar cu tranzistoarele oprite; cresc &#238;n tehnologii submicron)</p>
             </div>
         </div>
     </section>
@@ -346,8 +346,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Detalii esențiale – puterea dinamică</h3>
-                    <p>• P_short: tranzistoarele PMOS și NMOS conduc simultan momentan (scurtcircuit temporar)</p>
+                    <h3>?? Detalii esen?iale � puterea dinamica</h3>
+                    <p>� P_short: tranzistoarele PMOS ?i NMOS conduc simultan momentan (scurtcircuit temporar)</p>
                 </div>
             </div>
         </div>
@@ -358,18 +358,18 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiția Dynamic Frequency Scaling (CPU Throttling):</strong> Dynamic frequency scaling (cunoscut și ca CPU throttling) = tehnică de power management &#238;n arhitectura calculatoarelor</li>
-                    <li><strong>Funcționare – formula puterii dinamice:</strong> Puterea dinamică (switching power) disipată: P = C &#215; V&#178; &#215; A &#215; f</li>
-                    <li><strong>Interfața standard ACPI:</strong> ACPI 1.0 (1996): definește &quot;C states&quot; (stări idle) pentru CPU, dar FĂRĂ sistem de scalare a frecvenței</li>
-                    <li><strong>Scalare autonomă a frecvenței:</strong> CPU-uri moderne pot face frequency scaling autonom, folosind un interval de performanță și o preferință de eficiență/performanță de la OS</li>
-                    <li><strong>Impactul asupra performanței:</strong> DFS reduce numărul de instrucțiuni pe care procesorul le poate emite pe unitate de timp → reduce performanța</li>
-                    <li><strong>Suport la producători (CPU):</strong> Intel: SpeedStep – folosit pe liniile de procesoare mobile și desktop</li>
-                    <li><strong>Istoricul SpeedStep:</strong> Enhanced SpeedStep (EIST): serie de tehnologii DFS (codename Geyserville) – SpeedStep, SpeedStep II, SpeedStep III</li>
-                    <li><strong>Explicația SpeedStep:</strong> La frecvențe mari: performanță mai bună; la frecvențe mici: mai puțină căldură, mai puțin consum</li>
-                    <li><strong>Definiția Clock Gating:</strong> Clock gating = tehnică populară de power management &#238;n circuite sincrone</li>
-                    <li><strong>Detalii esențiale – puterea dinamică:</strong> Puterea medie &#238;ntr-un circuit CMOS: P_avg = P_dynamic + P_short + P_leakage + P_static</li>
-                    <li><strong>Tehnici de clock gating:</strong> Glitch-free clock gating: folosește un latch sensibil la nivel pentru prevenirea glitch-urilor</li>
-                    <li><strong>Mecanisme de protecție termică (din surse 7.3):</strong> Throttling: reducerea frecvenței și tensiunii sau dezactivarea funcțiilor non-esențiale prin dynamic frequency scaling</li>
+                    <li><strong>Defini?ia Dynamic Frequency Scaling (CPU Throttling):</strong> Dynamic frequency scaling (cunoscut ?i ca CPU throttling) = tehnica de power management &#238;n arhitectura calculatoarelor</li>
+                    <li><strong>Func?ionare � formula puterii dinamice:</strong> Puterea dinamica (switching power) disipata: P = C &#215; V&#178; &#215; A &#215; f</li>
+                    <li><strong>Interfa?a standard ACPI:</strong> ACPI 1.0 (1996): define?te &quot;C states&quot; (stari idle) pentru CPU, dar FARA sistem de scalare a frecven?ei</li>
+                    <li><strong>Scalare autonoma a frecven?ei:</strong> CPU-uri moderne pot face frequency scaling autonom, folosind un interval de performan?a ?i o preferin?a de eficien?a/performan?a de la OS</li>
+                    <li><strong>Impactul asupra performan?ei:</strong> DFS reduce numarul de instruc?iuni pe care procesorul le poate emite pe unitate de timp ? reduce performan?a</li>
+                    <li><strong>Suport la producatori (CPU):</strong> Intel: SpeedStep � folosit pe liniile de procesoare mobile ?i desktop</li>
+                    <li><strong>Istoricul SpeedStep:</strong> Enhanced SpeedStep (EIST): serie de tehnologii DFS (codename Geyserville) � SpeedStep, SpeedStep II, SpeedStep III</li>
+                    <li><strong>Explica?ia SpeedStep:</strong> La frecven?e mari: performan?a mai buna; la frecven?e mici: mai pu?ina caldura, mai pu?in consum</li>
+                    <li><strong>Defini?ia Clock Gating:</strong> Clock gating = tehnica populara de power management &#238;n circuite sincrone</li>
+                    <li><strong>Detalii esen?iale � puterea dinamica:</strong> Puterea medie &#238;ntr-un circuit CMOS: P_avg = P_dynamic + P_short + P_leakage + P_static</li>
+                    <li><strong>Tehnici de clock gating:</strong> Glitch-free clock gating: folose?te un latch sensibil la nivel pentru prevenirea glitch-urilor</li>
+                    <li><strong>Mecanisme de protec?ie termica (din surse 7.3):</strong> Throttling: reducerea frecven?ei ?i tensiunii sau dezactivarea func?iilor non-esen?iale prin dynamic frequency scaling</li>
                 </ul>
             </div>
         </div>
@@ -377,80 +377,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Scopuri?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Scopuri?</strong></p>
                 <ul class="specs-list">
-                    <li>a) conservarea energiei, reducerea căldurii generate</li>
+                    <li>a) conservarea energiei, reducerea caldurii generate</li>
                     <li>b) DVFS (Dynamic Voltage and Frequency Scaling)</li>
                     <li>c) P = C &#215; V&#178; &#215; A &#215; f</li>
-                    <li>d) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de răcire și zgomot (sisteme silențioase), măsură de securitate pentru sist...</li>
+                    <li>d) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de racire ?i zgomot (sisteme silen?ioase), masura de securitate pentru sist...</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — conservarea energiei, reducerea căldurii generate</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � conservarea energiei, reducerea caldurii generate</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Puterea dinamică (switching power) disipată?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Puterea dinamica (switching power) disipata?</strong></p>
                 <ul class="specs-list">
                     <li>a) DVFS (Dynamic Voltage and Frequency Scaling)</li>
-                    <li>b) conservarea energiei, reducerea căldurii generate</li>
+                    <li>b) conservarea energiei, reducerea caldurii generate</li>
                     <li>c) P = C &#215; V&#178; &#215; A &#215; f</li>
-                    <li>d) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de răcire și zgomot (sisteme silențioase), măsură de securitate pentru sist...</li>
+                    <li>d) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de racire ?i zgomot (sisteme silen?ioase), masura de securitate pentru sist...</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — P = C &#215; V&#178; &#215; A &#215; f</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � P = C &#215; V&#178; &#215; A &#215; f</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: ACPI 1.0 (1996)?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: ACPI 1.0 (1996)?</strong></p>
                 <ul class="specs-list">
-                    <li>a) conservarea energiei, reducerea căldurii generate</li>
-                    <li>b) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de răcire și zgomot (sisteme silențioase), măsură de securitate pentru sist...</li>
+                    <li>a) conservarea energiei, reducerea caldurii generate</li>
+                    <li>b) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de racire ?i zgomot (sisteme silen?ioase), masura de securitate pentru sist...</li>
                     <li>c) DVFS (Dynamic Voltage and Frequency Scaling)</li>
-                    <li>d) definește &quot;C states&quot; (stări idle) pentru CPU, dar FĂRĂ sistem de scalare a frecvenței</li>
+                    <li>d) define?te &quot;C states&quot; (stari idle) pentru CPU, dar FARA sistem de scalare a frecven?ei</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — definește &quot;C states&quot; (stări idle) pentru CPU, dar FĂRĂ sistem de scalare a frecvenței</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � define?te &quot;C states&quot; (stari idle) pentru CPU, dar FARA sistem de scalare a frecven?ei</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: Intel?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: Intel?</strong></p>
                 <ul class="specs-list">
                     <li>a) DVFS (Dynamic Voltage and Frequency Scaling)</li>
-                    <li>b) din Skylake – hardware-managed P-states (Speed Shift), bazat pe CPPC, control prin model-specific register (MSR)</li>
-                    <li>c) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de răcire și zgomot (sisteme silențioase), măsură de securitate pentru sist...</li>
-                    <li>d) conservarea energiei, reducerea căldurii generate</li>
+                    <li>b) din Skylake � hardware-managed P-states (Speed Shift), bazat pe CPPC, control prin model-specific register (MSR)</li>
+                    <li>c) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de racire ?i zgomot (sisteme silen?ioase), masura de securitate pentru sist...</li>
+                    <li>d) conservarea energiei, reducerea caldurii generate</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — din Skylake – hardware-managed P-states (Speed Shift), bazat pe CPPC, control prin model-specific register (MSR)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � din Skylake � hardware-managed P-states (Speed Shift), bazat pe CPPC, control prin model-specific register (MSR)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: Frequency scaling singur rar merită?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: Frequency scaling singur rar merita?</strong></p>
                 <ul class="specs-list">
-                    <li>a) conservarea energiei, reducerea căldurii generate</li>
-                    <li>b) economisirea maximă necesită și voltage scaling (datorită V&#178;)</li>
+                    <li>a) conservarea energiei, reducerea caldurii generate</li>
+                    <li>b) economisirea maxima necesita ?i voltage scaling (datorita V&#178;)</li>
                     <li>c) DVFS (Dynamic Voltage and Frequency Scaling)</li>
-                    <li>d) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de răcire și zgomot (sisteme silențioase), măsură de securitate pentru sist...</li>
+                    <li>d) prelungirea duratei bateriei (dispozitive mobile), reducerea costurilor de racire ?i zgomot (sisteme silen?ioase), masura de securitate pentru sist...</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — economisirea maximă necesită și voltage scaling (datorită V&#178;)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � economisirea maxima necesita ?i voltage scaling (datorita V&#178;)</strong></p>
                 </details>
             </div>
         </div>
@@ -458,22 +458,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Throttling</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de thermal throttling. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Throttling</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de thermal throttling. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
                     <li>1. Defineste pe scurt: thermal throttling.</li>
-                    <li>2. Ce rol are reducerea frecvenței în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre thermal throttling și protecție termică.</li>
+                    <li>2. Ce rol are reducerea frecven?ei �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre thermal throttling ?i protec?ie termica.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Dynamic frequency scaling (cunoscut și ca CPU throttling) = tehnică de power management &#238;n arhitectura calculatoarelor</p>
-                        <p><strong>2.</strong> Puterea dinamică (switching power) disipată: P = C &#215; V&#178; &#215; A &#215; f</p>
-                        <p><strong>3.</strong> ACPI 1.0 (1996): definește &quot;C states&quot; (stări idle) pentru CPU, dar FĂRĂ sistem de scalare a frecvenței</p>
+                        <p><strong>1.</strong> Dynamic frequency scaling (cunoscut ?i ca CPU throttling) = tehnica de power management &#238;n arhitectura calculatoarelor</p>
+                        <p><strong>2.</strong> Puterea dinamica (switching power) disipata: P = C &#215; V&#178; &#215; A &#215; f</p>
+                        <p><strong>3.</strong> ACPI 1.0 (1996): define?te &quot;C states&quot; (stari idle) pentru CPU, dar FARA sistem de scalare a frecven?ei</p>
                     </div>
                 </details>
             </div>
@@ -500,7 +500,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-7-3.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 7.3 &mdash; TDP &#x219;i Temperatur&#x103;</a>
@@ -557,14 +557,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Thermal throttling: ce este, de ce apare și cum afectează performanța procesorului și plăcii video.</p>
+                <p class="video-description">Thermal throttling: ce este, de ce apare ?i cum afecteaza performan?a procesorului ?i placii video.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

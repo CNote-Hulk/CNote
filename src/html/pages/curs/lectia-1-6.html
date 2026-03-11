@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 1.6 — Circuite în Serie și Paralel: Configurații și Impactu">
+    <meta name="description" content="Lec?ia 1.6 � Circuite �n Serie ?i Paralel: Configura?ii ?i Impactu">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 1.6 — Serie vs Paralel — Console Notebook</title>
+    <title>Lec?ia 1.6 � Serie vs Paralel � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
 
@@ -23,9 +23,9 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -35,10 +35,10 @@
     <!-- HERO -->
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 — Electricitate Fundamentală</p>
-            <h1>Lecția 1.6 — Serie vs Paralel</h1>
-            <p>Cum componentele se conectează și cum asta afectează curent, tensiune, și rezistență.</p>
-            <a href="#introducere" class="hero-button">Începe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 1 � Electricitate Fundamentala</p>
+            <h1>Lec?ia 1.6 � Serie vs Paralel</h1>
+            <p>Cum componentele se conecteaza ?i cum asta afecteaza curent, tensiune, ?i rezisten?a.</p>
+            <a href="#introducere" class="hero-button">�ncepe Lec?ia</a>
         </div>
     </section>
 
@@ -49,22 +49,22 @@
 
             <div class="card" style="margin-bottom: 2rem;">
                 <p>
-                    Până acum am analizat componente izolate. Dar în realitate, în orice circuit, componentele sunt conectate în moduri diferite: <strong>serie</strong> și <strong>paralel</strong>.
+                    P�na acum am analizat componente izolate. Dar �n realitate, �n orice circuit, componentele sunt conectate �n moduri diferite: <strong>serie</strong> ?i <strong>paralel</strong>.
                 </p>
                 <p>
-                    <strong>Serie:</strong> Componente conectate una după alta, în linie. Curentul curge prin toate.
+                    <strong>Serie:</strong> Componente conectate una dupa alta, �n linie. Curentul curge prin toate.
                 </p>
                 <p>
-                    <strong>Paralel:</strong> Componente conectate cu aceeași doi terminali în două puncte diferite. Curentul se împarte.
+                    <strong>Paralel:</strong> Componente conectate cu aceea?i doi terminali �n doua puncte diferite. Curentul se �mparte.
                 </p>
                 <p>
-                    <strong>De ce contează?</strong>
+                    <strong>De ce conteaza?</strong>
                     <ul class="specs-list">
-                        <li>Rezistența totală se calculează diferit</li>
-                        <li>Curentul se comportă diferit</li>
+                        <li>Rezisten?a totala se calculeaza diferit</li>
+                        <li>Curentul se comporta diferit</li>
                         <li>Tensiunea se distribuie diferit</li>
-                        <li>Redundanță și siguranță diferite</li>
-                        <li>Într-o consolă, ambele sunt prezente</li>
+                        <li>Redundan?a ?i siguran?a diferite</li>
+                        <li>�ntr-o consola, ambele sunt prezente</li>
                     </ul>
                 </p>
             </div>
@@ -74,132 +74,132 @@
     <!-- TEORIE -->
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.1 — Circuite în Serie</h3>
+                <h3>2.1 � Circuite �n Serie</h3>
                 <p>
-                    <strong>Circuit în serie:</strong> Rezistence (sau orice componente) conectate una după alta.
+                    <strong>Circuit �n serie:</strong> Rezistence (sau orice componente) conectate una dupa alta.
                 </p>
                 <ul class="specs-list">
-                    <li><strong>Curentul:</strong> Același prin toate componentele</li>
-                    <li><strong>Tensiune:</strong> Se împarte între componente</li>
-                    <li><strong>Rezistență totală:</strong> R_total = R1 + R2 + R3 + ...</li>
+                    <li><strong>Curentul:</strong> Acela?i prin toate componentele</li>
+                    <li><strong>Tensiune:</strong> Se �mparte �ntre componente</li>
+                    <li><strong>Rezisten?a totala:</strong> R_total = R1 + R2 + R3 + ...</li>
                 </ul>
                 <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
                     V = V1 + V2 + V3 (Kirchhoff Voltage Law)
                 </p>
                 <p>
-                    <strong>Exemplu:</strong> Trei rezistoare de 10Ω, 20Ω, 30Ω în serie.
+                    <strong>Exemplu:</strong> Trei rezistoare de 10O, 20O, 30O �n serie.
                     <ul class="specs-list">
-                        <li>R_total = 10 + 20 + 30 = 60Ω</li>
-                        <li>Dacă V = 12V, atunci I = V / R = 12 / 60 = 0.2A (același peste tot)</li>
-                        <li>V1 = 0.2 × 10 = 2V</li>
-                        <li>V2 = 0.2 × 20 = 4V</li>
-                        <li>V3 = 0.2 × 30 = 6V</li>
-                        <li>Total: 2 + 4 + 6 = 12V ✓</li>
+                        <li>R_total = 10 + 20 + 30 = 60O</li>
+                        <li>Daca V = 12V, atunci I = V / R = 12 / 60 = 0.2A (acela?i peste tot)</li>
+                        <li>V1 = 0.2 � 10 = 2V</li>
+                        <li>V2 = 0.2 � 20 = 4V</li>
+                        <li>V3 = 0.2 � 30 = 6V</li>
+                        <li>Total: 2 + 4 + 6 = 12V ?</li>
                     </ul>
                 </p>
                 <p>
-                    <strong>Avantaj serie:</strong> Control curent ușor, protecție cu o singură sigură.
-                    <br><strong>Dezavantaj:</strong> Dacă break-ează o componentă (circuit deschis), totul se oprește.
+                    <strong>Avantaj serie:</strong> Control curent u?or, protec?ie cu o singura sigura.
+                    <br><strong>Dezavantaj:</strong> Daca break-eaza o componenta (circuit deschis), totul se opre?te.
                 </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.2 — Circuite în Paralel</h3>
+                <h3>2.2 � Circuite �n Paralel</h3>
                 <p>
-                    <strong>Circuit în paralel:</strong> Rezistoare conectate cu doi terminali comuni.
+                    <strong>Circuit �n paralel:</strong> Rezistoare conectate cu doi terminali comuni.
                 </p>
                 <ul class="specs-list">
-                    <li><strong>Curentul:</strong> Se împarte între componente (proporțional invers cu rezistență)</li>
-                    <li><strong>Tensiune:</strong> Aceeași peste toate componentele</li>
-                    <li><strong>Rezistență totală:</strong> Folosim formula: 1/R_total = 1/R1 + 1/R2 + 1/R3 + ...</li>
+                    <li><strong>Curentul:</strong> Se �mparte �ntre componente (propor?ional invers cu rezisten?a)</li>
+                    <li><strong>Tensiune:</strong> Aceea?i peste toate componentele</li>
+                    <li><strong>Rezisten?a totala:</strong> Folosim formula: 1/R_total = 1/R1 + 1/R2 + 1/R3 + ...</li>
                 </ul>
                 <p style="text-align: center; font-weight: 600; margin: 1rem 0; color: var(--accent-color);">
                     I = I1 + I2 + I3 (Kirchhoff Current Law)
                 </p>
                 <p>
-                    <strong>Exemplu:</strong> Trei rezistoare de 10Ω, 20Ω, 30Ω în paralel.
+                    <strong>Exemplu:</strong> Trei rezistoare de 10O, 20O, 30O �n paralel.
                     <ul class="specs-list">
                         <li>1/R_total = 1/10 + 1/20 + 1/30 = 0.1 + 0.05 + 0.0333 = 0.1833</li>
-                        <li>R_total = 1 / 0.1833 = 5.45Ω</li>
-                        <li>Dacă V = 12V (aceeași peste toate), atunci:</li>
+                        <li>R_total = 1 / 0.1833 = 5.45O</li>
+                        <li>Daca V = 12V (aceea?i peste toate), atunci:</li>
                         <li>I1 = 12 / 10 = 1.2A</li>
                         <li>I2 = 12 / 20 = 0.6A</li>
                         <li>I3 = 12 / 30 = 0.4A</li>
-                        <li>I_total = 1.2 + 0.6 + 0.4 = 2.2A ✓</li>
+                        <li>I_total = 1.2 + 0.6 + 0.4 = 2.2A ?</li>
                     </ul>
                 </p>
                 <p>
-                    <strong>Observație:</strong> Rezistența cu valoare mai mică "cântărește" mai mult (I1 = 1.2A, cel mai mare).
-                    <br><strong>Avantaj paralel:</strong> Dacă break-ează o componentă, altele continuă (redundanță).
-                    <br><strong>Dezavantaj:</strong> Curentul total crește, deci e mai greu de protejat.
+                    <strong>Observa?ie:</strong> Rezisten?a cu valoare mai mica "c�ntare?te" mai mult (I1 = 1.2A, cel mai mare).
+                    <br><strong>Avantaj paralel:</strong> Daca break-eaza o componenta, altele continua (redundan?a).
+                    <br><strong>Dezavantaj:</strong> Curentul total cre?te, deci e mai greu de protejat.
                 </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.3 — Circuite Mixte (Serie-Paralel)</h3>
+                <h3>2.3 � Circuite Mixte (Serie-Paralel)</h3>
                 <p>
-                    Majoritatea circuitelor reale sunt mixte: unele porți serie, unele paralel.
+                    Majoritatea circuitelor reale sunt mixte: unele por?i serie, unele paralel.
                 </p>
                 <p>
                     <strong>Exemplu PS5:</strong>
                     <ul class="specs-list">
-                        <li>Linia de 1.05V (CPU core) are 2-3 modul VRM în paralel (redundanță, curent mai mic pe fiecare)</li>
-                        <li>Fiecare modul are bobine și condensatori în serie și paralel</li>
-                        <li>Condensatorii de decuplare sunt în paralel pentru a reduce ripple</li>
+                        <li>Linia de 1.05V (CPU core) are 2-3 modul VRM �n paralel (redundan?a, curent mai mic pe fiecare)</li>
+                        <li>Fiecare modul are bobine ?i condensatori �n serie ?i paralel</li>
+                        <li>Condensatorii de decuplare sunt �n paralel pentru a reduce ripple</li>
                     </ul>
                 </p>
                 <p>
                     <strong>Regula de rezolvare:</strong>
                     <ol class="specs-list">
-                        <li>Identifică grupuri serie și paralel pe schemă</li>
-                        <li>Calculează R pentru fiecare grup</li>
-                        <li>Înlocuiți grupul cu R echivalentul</li>
-                        <li>Repetă până când rămâne o singură R</li>
+                        <li>Identifica grupuri serie ?i paralel pe schema</li>
+                        <li>Calculeaza R pentru fiecare grup</li>
+                        <li>�nlocui?i grupul cu R echivalentul</li>
+                        <li>Repeta p�na c�nd ram�ne o singura R</li>
                     </ol>
                 </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.4 — Puterea în Circuite Serie și Paralel</h3>
+                <h3>2.4 � Puterea �n Circuite Serie ?i Paralel</h3>
                 <p>
-                    Puterea totală se distribuie diferit:
+                    Puterea totala se distribuie diferit:
                 </p>
                 <ul class="specs-list">
-                    <li><strong>Serie:</strong> P_total = P1 + P2 + P3. Fiecare componentă disipă căldură proporțional cu rezistența și curent.</li>
-                    <li><strong>Paralel:</strong> P_total = P1 + P2 + P3. Tensiune aceeași, dar curenți diferiți.</li>
+                    <li><strong>Serie:</strong> P_total = P1 + P2 + P3. Fiecare componenta disipa caldura propor?ional cu rezisten?a ?i curent.</li>
+                    <li><strong>Paralel:</strong> P_total = P1 + P2 + P3. Tensiune aceea?i, dar curen?i diferi?i.</li>
                 </ul>
                 <p>
-                    <strong>Exemplu:</strong> Trei rezistoare de 10Ω în paralel la 12V.
+                    <strong>Exemplu:</strong> Trei rezistoare de 10O �n paralel la 12V.
                     <ul class="specs-list">
                         <li>I fiecare = 12 / 10 = 1.2A</li>
-                        <li>P fiecare = 1.2² × 10 = 14.4W</li>
+                        <li>P fiecare = 1.2� � 10 = 14.4W</li>
                         <li>P_total = 14.4 + 14.4 + 14.4 = 43.2W (mult comparativ cu seria)</li>
                     </ul>
                 </p>
                 <p>
-                    Paralel disipar mai multă putere decât seria cu aceleași rezistoare. De aceea paraleleismul e folosit când vrem să distribuim curent (și căldură) pe mai mulți "braț".
+                    Paralel disipar mai multa putere dec�t seria cu acelea?i rezistoare. De aceea paraleleismul e folosit c�nd vrem sa distribuim curent (?i caldura) pe mai mul?i "bra?".
                 </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>2.5 — Aplicatul în Protecții si Redundantă</h3>
+                <h3>2.5 � Aplicatul �n Protec?ii si Redundanta</h3>
                 <p>
-                    <strong>Serie:</strong> O sigură (fuse) în serie protejează întreg circuitul. Dacă curent prea mare, sigura se arde, circuit se deschide. Simplu, dar risc — dacă sigura defectuoasă, nimic nu funcționează.
+                    <strong>Serie:</strong> O sigura (fuse) �n serie protejeaza �ntreg circuitul. Daca curent prea mare, sigura se arde, circuit se deschide. Simplu, dar risc � daca sigura defectuoasa, nimic nu func?ioneaza.
                 </p>
                 <p>
-                    <strong>Paralel:</strong> Dacă o componentă defectuoasă (scurtcircuit), altele în paralel continuă. Dar curentul crește (suma curenților), deci OCP se declanșează igual. Redundanță până la punct.
+                    <strong>Paralel:</strong> Daca o componenta defectuoasa (scurtcircuit), altele �n paralel continua. Dar curentul cre?te (suma curen?ilor), deci OCP se declan?eaza igual. Redundan?a p�na la punct.
                 </p>
                 <p>
                     <strong>Exemplu VRM PS5:</strong> 
                     <ul class="specs-list">
-                        <li>5 modul VRM pe linia de 1.05V în paralel</li>
+                        <li>5 modul VRM pe linia de 1.05V �n paralel</li>
                         <li>Fiecare poate furniza ~20A</li>
                         <li>Total: 100A (suficient pentru CPU)</li>
-                        <li>Dacă 1 modul moare (scurtcircuit intern), alte 4 continuă, I_total = 80A (suficient)</li>
-                        <li>Dacă 2 mort, I_total = 60A (CPU throttle, dar nu se oprește)</li>
+                        <li>Daca 1 modul moare (scurtcircuit intern), alte 4 continua, I_total = 80A (suficient)</li>
+                        <li>Daca 2 mort, I_total = 60A (CPU throttle, dar nu se opre?te)</li>
                     </ul>
                 </p>
             </div>
@@ -209,17 +209,17 @@
     <!-- LEGATURA FIZICA-INFORMATICA -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică – Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <p>
-                    <strong>Fizica:</strong> Serie vs paralel sunt moduri diferite de conectare componentelor cu efecte directe pe curent, tensiune, rezistență, putere.
+                    <strong>Fizica:</strong> Serie vs paralel sunt moduri diferite de conectare componentelor cu efecte directe pe curent, tensiune, rezisten?a, putere.
                 </p>
                 <p>
-                    <strong>Informatica:</strong> Logica digitală și memoria sunt conectate cu protecții în serie, alimentare în paralel. CPU are miliarde de tranzistori în paralel la aceeași linie de 1.05V. Dacă rezistență distribuției cade (VRM bun), CPU e stabil. Dacă VRM defect (R crește din cauza condensatori defecți), tensiunea CPU scade, logica se rupe.
+                    <strong>Informatica:</strong> Logica digitala ?i memoria sunt conectate cu protec?ii �n serie, alimentare �n paralel. CPU are miliarde de tranzistori �n paralel la aceea?i linie de 1.05V. Daca rezisten?a distribu?iei cade (VRM bun), CPU e stabil. Daca VRM defect (R cre?te din cauza condensatori defec?i), tensiunea CPU scade, logica se rupe.
                 </p>
                 <p>
-                    Firmware-ul poate detecta neuniformitated în curenți (unii VRM-uri au mai mult I decât altele), dar nu poate corecta fizic problema.
+                    Firmware-ul poate detecta neuniformitated �n curen?i (unii VRM-uri au mai mult I dec�t altele), dar nu poate corecta fizic problema.
                 </p>
             </div>
         </div>
@@ -228,32 +228,32 @@
     <!-- APLICARE DIRECTA -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 1: Condensatori Decuplare în Paralel</h3>
+                <h3>Exemplu 1: Condensatori Decuplare �n Paralel</h3>
                 <p>
-                    Pe placa PS5, sunt > 1000 condensatori de 10µF, 100nF conectați în paralel la CPU, GPU, RAM.
+                    Pe placa PS5, sunt > 1000 condensatori de 10�F, 100nF conecta?i �n paralel la CPU, GPU, RAM.
                 </p>
                 <p>
-                    De ce paralel? Pentru a reduce rezistența ESR (Equivalent Series Resistance). Dacă R_total = 10mΩ cu 1000 condensatori vs 10Ω cu 1 condensator, reducere uriașă. Asta permite curenți mari fără cădere de tensiune.
+                    De ce paralel? Pentru a reduce rezisten?a ESR (Equivalent Series Resistance). Daca R_total = 10mO cu 1000 condensatori vs 10O cu 1 condensator, reducere uria?a. Asta permite curen?i mari fara cadere de tensiune.
                 </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 2: VRM-uri în Paralel pe Linia de CPU</h3>
+                <h3>Exemplu 2: VRM-uri �n Paralel pe Linia de CPU</h3>
                 <p>
-                    PS5 linia CPU te nevoie de 90A. Dacă folosi un singur VRM, ar trebui să furnizeze singur toți 90A. E dificil.
+                    PS5 linia CPU te nevoie de 90A. Daca folosi un singur VRM, ar trebui sa furnizeze singur to?i 90A. E dificil.
                 </p>
                 <p>
-                    Soluție: 5 VRM în paralel, fiecare cu 20A. Curent distribuit, deformații mici, nici un punct de eșec unic (mostly).
+                    Solu?ie: 5 VRM �n paralel, fiecare cu 20A. Curent distribuit, deforma?ii mici, nici un punct de e?ec unic (mostly).
                 </p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Exemplu 3: Sigure în Serie cu PSU</h3>
+                <h3>Exemplu 3: Sigure �n Serie cu PSU</h3>
                 <p>
-                    Cablul PSU are o sigură (fuse) în serie. Dacă curentul depășiți (scurtcircuit bruscă), sigura se arde, circuit se deschide, consola se oprește. Protecție clasică.
+                    Cablul PSU are o sigura (fuse) �n serie. Daca curentul depa?i?i (scurtcircuit brusca), sigura se arde, circuit se deschide, consola se opre?te. Protec?ie clasica.
                 </p>
             </div>
         </div>
@@ -265,26 +265,26 @@
             <h2 class="section-title">Exemplu Real: Analiza Circuit Mixt PS5</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p><strong>Scenar simplificat:</strong> Linia CPU 1.05V cu 4 modul VRM în paralel, fiecare cu bobina 0.1µH serie și condensator 100µF paralel.</p>
+                <p><strong>Scenar simplificat:</strong> Linia CPU 1.05V cu 4 modul VRM �n paralel, fiecare cu bobina 0.1�H serie ?i condensator 100�F paralel.</p>
                 
-                <p><strong>Calculare rezistență:</strong></p>
+                <p><strong>Calculare rezisten?a:</strong></p>
                 <ul class="specs-list">
-                    <li>Rezistență bobina/PCB per VRM: 1mΩ (estimare)</li>
-                    <li>4 VRM în paralel: R_eq = 1mΩ / 4 = 0.25mΩ</li>
-                    <li>Condensator ESR (per 100µF): ~5mΩ</li>
-                    <li>4 Condensatori în paralel: R_eq = 5mΩ / 4 = 1.25mΩ</li>
-                    <li>Total circuit: 0.25 + 1.25 = 1.5mΩ</li>
+                    <li>Rezisten?a bobina/PCB per VRM: 1mO (estimare)</li>
+                    <li>4 VRM �n paralel: R_eq = 1mO / 4 = 0.25mO</li>
+                    <li>Condensator ESR (per 100�F): ~5mO</li>
+                    <li>4 Condensatori �n paralel: R_eq = 5mO / 4 = 1.25mO</li>
+                    <li>Total circuit: 0.25 + 1.25 = 1.5mO</li>
                 </ul>
 
-                <p><strong>Cădere de tensiune cu 90A:</strong></p>
-                <p>V_drop = I × R = 90A × 1.5mΩ = 0.135V</p>
-                <p>CPU primește: 1.05 - 0.135 = <strong>0.915V</strong> (prea mic!)</p>
+                <p><strong>Cadere de tensiune cu 90A:</strong></p>
+                <p>V_drop = I � R = 90A � 1.5mO = 0.135V</p>
+                <p>CPU prime?te: 1.05 - 0.135 = <strong>0.915V</strong> (prea mic!)</p>
 
-                <p><strong>Problemă:</strong> Estimării me e prea pesimistă. De fapt, PS5-ul are ~30mΩ per VRM-ul bun și PCB optimizat. Cu valori adevărate: 7.5mΩ / 4 = ~2mΩ total.</p>
-                <p>V_drop = 90 × 2mΩ = 0.18V</p>
-                <p>CPU primește: 1.05 - 0.18 = <strong>0.87V</strong> — jup, prea mic încă!</p>
+                <p><strong>Problema:</strong> Estimarii me e prea pesimista. De fapt, PS5-ul are ~30mO per VRM-ul bun ?i PCB optimizat. Cu valori adevarate: 7.5mO / 4 = ~2mO total.</p>
+                <p>V_drop = 90 � 2mO = 0.18V</p>
+                <p>CPU prime?te: 1.05 - 0.18 = <strong>0.87V</strong> � jup, prea mic �nca!</p>
 
-                <p><strong>Adevărul:</strong> VRM-urile modern au eficientă mai bună, și are mai mult feedback (VRM-ul măsoară V la CPU și ajustează). De fapt, V cade doar ~0.05V.</p>
+                <p><strong>Adevarul:</strong> VRM-urile modern au eficienta mai buna, ?i are mai mult feedback (VRM-ul masoara V la CPU ?i ajusteaza). De fapt, V cade doar ~0.05V.</p>
             </div>
         </div>
     </section>
@@ -295,23 +295,23 @@
             <h2 class="section-title">Probleme Frecvente Asociate</h2>
 
             <div class="card">
-                <h3>⚠️ Condensator defect în paralel</h3>
+                <h3>?? Condensator defect �n paralel</h3>
                 <p>
-                    Cauza: Unu din scrisoare condensatori defect, capacitate cade. ESR crește. Cu 999 de condensatori în loc de 1000, ripple crește puțin. Dacă mai mulți defecți, ripple devine vizibil, consola instabilă.
+                    Cauza: Unu din scrisoare condensatori defect, capacitate cade. ESR cre?te. Cu 999 de condensatori �n loc de 1000, ripple cre?te pu?in. Daca mai mul?i defec?i, ripple devine vizibil, consola instabila.
                 </p>
             </div>
 
             <div class="card">
-                <h3>⚠️ VRM defect cauzeaza imbalance curent</h3>
+                <h3>?? VRM defect cauzeaza imbalance curent</h3>
                 <p>
-                    Cauza: Unu din VRM defect (bobina fisurată, MOSFET mort), curentul se concentrează pe altele. VRM sănătos se pun în overload, se încălzesc, rezistență crește din cauza temperaturii.
+                    Cauza: Unu din VRM defect (bobina fisurata, MOSFET mort), curentul se concentreaza pe altele. VRM sanatos se pun �n overload, se �ncalzesc, rezisten?a cre?te din cauza temperaturii.
                 </p>
             </div>
 
             <div class="card">
-                <h3>⚠️ Sigură arsă se face intr-o funcție}</h3>
+                <h3>?? Sigura arsa se face intr-o func?ie}</h3>
                 <p>
-                    Cauza: Scurtcircuit în circuit (posibil din apă, impact care crease defect, etc.). Sigura se arde. Protecția lucreaza. Soluție: găsește scurtcircuitul și repara.
+                    Cauza: Scurtcircuit �n circuit (posibil din apa, impact care crease defect, etc.). Sigura se arde. Protec?ia lucreaza. Solu?ie: gase?te scurtcircuitul ?i repara.
                 </p>
             </div>
         </div>
@@ -324,15 +324,15 @@
 
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Serie:</strong> Componente în linie, curent aceeași, tensiune se împarte: R_total = R1 + R2 + ...</li>
-                    <li><strong>Paralel:</strong> Componente cu doi terminali comuni, curent se împarte, tensiune aceeași: 1/R_total = 1/R1 + 1/R2 + ...</li>
-                    <li><strong>Rezistență paralel:</strong> Întotdeauna mai mică decât cea mai mică componentă únică</li>
-                    <li>Serie: protecție ușoară (o sigură), risc unic punct de eșec</li>
-                    <li>Paralel: redundanță, dar curent total crește</li>
-                    <li>Putere: P = V × I, distribuie diferit în serie/paralel</li>
-                    <li>PS5 folosește mix: VRM în paralel, componente pe schemă în seria-paralel</li>
-                    <li>Condensatori în paralel reduc ESR, permit curenți mari</li>
-                    <li>Defect într-o componentă paralel = incărcare crește pe altele</li>
+                    <li><strong>Serie:</strong> Componente �n linie, curent aceea?i, tensiune se �mparte: R_total = R1 + R2 + ...</li>
+                    <li><strong>Paralel:</strong> Componente cu doi terminali comuni, curent se �mparte, tensiune aceea?i: 1/R_total = 1/R1 + 1/R2 + ...</li>
+                    <li><strong>Rezisten?a paralel:</strong> �ntotdeauna mai mica dec�t cea mai mica componenta �nica</li>
+                    <li>Serie: protec?ie u?oara (o sigura), risc unic punct de e?ec</li>
+                    <li>Paralel: redundan?a, dar curent total cre?te</li>
+                    <li>Putere: P = V � I, distribuie diferit �n serie/paralel</li>
+                    <li>PS5 folose?te mix: VRM �n paralel, componente pe schema �n seria-paralel</li>
+                    <li>Condensatori �n paralel reduc ESR, permit curen?i mari</li>
+                    <li>Defect �ntr-o componenta paralel = incarcare cre?te pe altele</li>
                 </ul>
             </div>
         </div>
@@ -341,80 +341,80 @@
     <!-- QUIZ -->
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>În circuit în serie, cum se comportă curentul?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>�n circuit �n serie, cum se comporta curentul?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Se împarte între componente</li>
-                    <li>b) Rămâne aceeași prin toate componentele</li>
-                    <li>c) Crește pe măsură ce treacă componentele</li>
-                    <li>d) E zero dacă alta componentă defectă</li>
+                    <li>a) Se �mparte �ntre componente</li>
+                    <li>b) Ram�ne aceea?i prin toate componentele</li>
+                    <li>c) Cre?te pe masura ce treaca componentele</li>
+                    <li>d) E zero daca alta componenta defecta</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Rămâne aceeași prin toate componentele</strong> — Kirchhoff Current Law: I_in = I_out în fiecare nod.</p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) Ram�ne aceea?i prin toate componentele</strong> � Kirchhoff Current Law: I_in = I_out �n fiecare nod.</p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Cum se calculează rezistență totală în serie?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Cum se calculeaza rezisten?a totala �n serie?</strong></p>
                 <ul class="specs-list">
                     <li>a) R_total = 1/R1 + 1/R2</li>
-                    <li>b) R_total = R1 × R2</li>
+                    <li>b) R_total = R1 � R2</li>
                     <li>c) R_total = R1 + R2 + R3 + ...</li>
                     <li>d) R_total = R1 - R2</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) R_total = R1 + R2 + R3 + ...</strong> — Rezistențe în serie se adună direct.</p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) R_total = R1 + R2 + R3 + ...</strong> � Rezisten?e �n serie se aduna direct.</p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>În circuit paralel, cum se comportă tensiunea?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>�n circuit paralel, cum se comporta tensiunea?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Se împarte între componente</li>
-                    <li>b) Aceeași pe toate componentele</li>
-                    <li>c) Crește pe măsură ce treacă componentele</li>
-                    <li>d) E zero dacă o componentă defectă</li>
+                    <li>a) Se �mparte �ntre componente</li>
+                    <li>b) Aceea?i pe toate componentele</li>
+                    <li>c) Cre?te pe masura ce treaca componentele</li>
+                    <li>d) E zero daca o componenta defecta</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Aceeași pe toate componentele</strong> — Kirchhoff Voltage Law: V peste terminali comuni e identic.</p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) Aceea?i pe toate componentele</strong> � Kirchhoff Voltage Law: V peste terminali comuni e identic.</p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Doi rezistoare de 10Ω și 20Ω în paralel. Ce-i rezistență totală?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Doi rezistoare de 10O ?i 20O �n paralel. Ce-i rezisten?a totala?</strong></p>
                 <ul class="specs-list">
-                    <li>a) 30Ω</li>
-                    <li>b) 200Ω</li>
-                    <li>c) 6.67Ω</li>
-                    <li>d) 15Ω</li>
+                    <li>a) 30O</li>
+                    <li>b) 200O</li>
+                    <li>c) 6.67O</li>
+                    <li>d) 15O</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) 6.67Ω</strong> — 1/R = 1/10 + 1/20 = 0.15,  R = 6.67Ω.</p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) 6.67O</strong> � 1/R = 1/10 + 1/20 = 0.15,  R = 6.67O.</p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>De ce PS5 folosește multiple VRM-uri în paralel?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>De ce PS5 folose?te multiple VRM-uri �n paralel?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Pentru a crește tensiunea</li>
-                    <li>b) Pentru a reduce rezistență și distribui curent pe mai mulți "braț"</li>
-                    <li>c) Pentru a consuma mai multă putere</li>
-                    <li>d) E o convențe, nu-i funcțional</li>
+                    <li>a) Pentru a cre?te tensiunea</li>
+                    <li>b) Pentru a reduce rezisten?a ?i distribui curent pe mai mul?i "bra?"</li>
+                    <li>c) Pentru a consuma mai multa putere</li>
+                    <li>d) E o conven?e, nu-i func?ional</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) Pentru a reduce rezistență și distribui curent pe mai mulți "braț"</strong> — Paralel reduc R_eq și permite curenți mari fără cădere de tensiune prea mare.</p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) Pentru a reduce rezisten?a ?i distribui curent pe mai mul?i "bra?"</strong> � Paralel reduc R_eq ?i permite curen?i mari fara cadere de tensiune prea mare.</p>
                 </details>
             </div>
         </div>
@@ -423,60 +423,60 @@
     <!-- EXERCITIU -->
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Proiectare Linie Alimentare Multi-VRM</h3>
+                <h3>?? Exerci?iu: Proiectare Linie Alimentare Multi-VRM</h3>
                 <p>
-                    <strong>Scenariu:</strong> Trebuie să proiectezi linia de 1.05V pentru CPU care consuma 90A. Ai alegerea între 3, 4, sau 5 VRM-uri identice.
+                    <strong>Scenariu:</strong> Trebuie sa proiectezi linia de 1.05V pentru CPU care consuma 90A. Ai alegerea �ntre 3, 4, sau 5 VRM-uri identice.
                 </p>
                 <p><strong>Date:</strong></p>
                 <ul class="specs-list">
-                    <li>Fiecare VRM individual poate furniza 25A maxim înainte de throttling</li>
-                    <li>Rezistență internă per VRM: 2mΩ (calculată de la MOSFETs, bobine, PCB)</li>
-                    <li>Cădere de tensiune maximă acceptabilă: 50mV (4.76%)</li>
+                    <li>Fiecare VRM individual poate furniza 25A maxim �nainte de throttling</li>
+                    <li>Rezisten?a interna per VRM: 2mO (calculata de la MOSFETs, bobine, PCB)</li>
+                    <li>Cadere de tensiune maxima acceptabila: 50mV (4.76%)</li>
                     <li>Curent necesar: 90A</li>
                 </ul>
                 <p><strong>Sarcini:</strong></p>
                 <ul class="specs-list">
-                    <li>1. Poți folosi 3 VRM? Calculează curent pe fiecare și caz worst-case</li>
-                    <li>2. Cu 4 VRM: calculează curent distribuit și cădere de tensiune</li>
-                    <li>3. Cu 5 VRM: același calcul</li>
-                    <li>4. Care e configurația ideală și de ce?</li>
-                    <li>5. Dacă unu din VRM moare (scurtcircuit), ce se întâmplă cu configurația 4VRM?</li>
+                    <li>1. Po?i folosi 3 VRM? Calculeaza curent pe fiecare ?i caz worst-case</li>
+                    <li>2. Cu 4 VRM: calculeaza curent distribuit ?i cadere de tensiune</li>
+                    <li>3. Cu 5 VRM: acela?i calcul</li>
+                    <li>4. Care e configura?ia ideala ?i de ce?</li>
+                    <li>5. Daca unu din VRM moare (scurtcircuit), ce se �nt�mpla cu configura?ia 4VRM?</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
                         <p><strong>1. 3 VRM configurat:</strong></p>
                         <ul class="specs-list">
                             <li>Curent per VRM = 90A / 3 = 30A</li>
                             <li>Maximum per VRM = 25A, dar noi avem nevoie de 30A. Throttling !</li>
-                            <li>Neadekvat. Configurația nu merge.</li>
+                            <li>Neadekvat. Configura?ia nu merge.</li>
                         </ul>
-                        <p><strong>2. 4 VRM configurată:</strong></p>
+                        <p><strong>2. 4 VRM configurata:</strong></p>
                         <ul class="specs-list">
-                            <li>Curent per VRM = 90A / 4 = 22.5A (sub 25A ✓)</li>
-                            <li>R_total în paralel = 2mΩ / 4 = 0.5mΩ</li>
-                            <li>V_drop = 90A × 0.5mΩ = 0.045V = 45mV</li>
-                            <li>CPU primește: 1.05 - 0.045 = 1.005V ✓ (bun)</li>
-                            <li>Marjă: limita e 50mV, noi 45mV — OK cu 10% marjă</li>
+                            <li>Curent per VRM = 90A / 4 = 22.5A (sub 25A ?)</li>
+                            <li>R_total �n paralel = 2mO / 4 = 0.5mO</li>
+                            <li>V_drop = 90A � 0.5mO = 0.045V = 45mV</li>
+                            <li>CPU prime?te: 1.05 - 0.045 = 1.005V ? (bun)</li>
+                            <li>Marja: limita e 50mV, noi 45mV � OK cu 10% marja</li>
                         </ul>
-                        <p><strong>3. 5 VRM configurată:</strong></p>
+                        <p><strong>3. 5 VRM configurata:</strong></p>
                         <ul class="specs-list">
-                            <li>Curent per VRM = 90A / 5 = 18A (sub 25A ✓)</li>
-                            <li>R_total = 2mΩ / 5 = 0.4mΩ</li>
-                            <li>V_drop = 90A × 0.4mΩ = 0.036V = 36mV</li>
-                            <li>CPU primește: 1.05 - 0.036 = 1.014V ✓ (mai bun)</li>
-                            <li>Marjă: mai mult spațiu</li>
+                            <li>Curent per VRM = 90A / 5 = 18A (sub 25A ?)</li>
+                            <li>R_total = 2mO / 5 = 0.4mO</li>
+                            <li>V_drop = 90A � 0.4mO = 0.036V = 36mV</li>
+                            <li>CPU prime?te: 1.05 - 0.036 = 1.014V ? (mai bun)</li>
+                            <li>Marja: mai mult spa?iu</li>
                         </ul>
-                        <p><strong>4. Configurație ideală:</strong> <strong>4 VRM</strong> — sweet spot între cost și performanță. 5 VRM e mai bun electric, dar mai scump și complex.</p>
-                        <p><strong>5. 4 VRM, dar unu moare:</strong> Rămân 3VRM pentru 90A. </p>
+                        <p><strong>4. Configura?ie ideala:</strong> <strong>4 VRM</strong> � sweet spot �ntre cost ?i performan?a. 5 VRM e mai bun electric, dar mai scump ?i complex.</p>
+                        <p><strong>5. 4 VRM, dar unu moare:</strong> Ram�n 3VRM pentru 90A. </p>
                         <ul class="specs-list">
-                            <li>Curent per VRM = 90A / 3 = 30A (> 25A max!) — Throttling!</li>
-                            <li>R_total = 2mΩ / 3 = 0.67mΩ</li>
-                            <li>V_drop = 90A × 0.67mΩ = 0.060V = 60mV (> 50mV limit) — Unstabil!</li>
-                            <li>CPU throttle, eventual reboot. Redundanța falează la componenta defectă.</li>
+                            <li>Curent per VRM = 90A / 3 = 30A (> 25A max!) � Throttling!</li>
+                            <li>R_total = 2mO / 3 = 0.67mO</li>
+                            <li>V_drop = 90A � 0.67mO = 0.060V = 60mV (> 50mV limit) � Unstabil!</li>
+                            <li>CPU throttle, eventual reboot. Redundan?a faleaza la componenta defecta.</li>
                         </ul>
                     </div>
                 </details>
@@ -484,7 +484,7 @@
         </div>
     </section>
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-1-5.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 1.5 &mdash; AC vs DC</a>
@@ -541,7 +541,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Circuite serie vs. paralele: diferențe, avantaje și cum funcționează fiecare configurație, cu diagrame clare.</p>
+                <p class="video-description">Circuite serie vs. paralele: diferen?e, avantaje ?i cum func?ioneaza fiecare configura?ie, cu diagrame clare.</p>
             </div>
         </div>
     </section>
@@ -551,7 +551,7 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main">&copy; 2026 Console Notebook</p>
-                <p class="footer-sub">Proiect Atestat Informatică</p>
+                <p class="footer-sub">Proiect Atestat Informatica</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>

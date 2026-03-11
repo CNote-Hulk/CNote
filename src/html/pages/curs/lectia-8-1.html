@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 8.1 — Metodologia de diagnostic">
+    <meta name="description" content="Lec?ia 8.1 � Metodologia de diagnostic">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 8.1 — Metodologia de diagnostic — Console Notebook</title>
+    <title>Lec?ia 8.1 � Metodologia de diagnostic � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 — DIAGNOSTIC HARDWARE</p>
-            <h1>Lecția 8.1 — Metodologia de diagnostic</h1>
-            <p>pașii diagnosticului hardware, analiza simptomelor</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 8 � DIAGNOSTIC HARDWARE</p>
+            <h1>Lec?ia 8.1 � Metodologia de diagnostic</h1>
+            <p>pa?ii diagnosticului hardware, analiza simptomelor</p>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -41,227 +41,227 @@
         <div class="container">
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
-                <p>1. Să poți REPRODUCE problema la cerere</p>
-                <p>Această lecție acoperă: <strong>pașii diagnosticului hardware</strong>, <strong>analiza simptomelor</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>1. Sa po?i REPRODUCE problema la cerere</p>
+                <p>Aceasta lec?ie acopera: <strong>pa?ii diagnosticului hardware</strong>, <strong>analiza simptomelor</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.1 — Definiția troubleshooting-ului</h3>
+                <h3>8.1.1 � Defini?ia troubleshooting-ului</h3>
                 <ul class="specs-list">
-                    <li>Troubleshooting = formă de problem solving, aplicată la repararea produselor sau proceselor defecte</li>
-                    <li>Căutare logică și sistematică a sursei unei probleme pentru a o rezolva</li>
-                    <li>Necesar să identifice simptomele, să determine cauza cea mai probabilă, apoi să confirme soluția</li>
-                    <li>Procesul de eliminare (process of elimination) pentru excluderea sistematică a cauzelor potențiale</li>
-                    <li>O strategie = set organizat de activități exprim&#226;nd o modalitate plauzibilă de a atinge un obiectiv</li>
-                    <li>Strategiile NU sunt algoritmi rigizi – rezolvatorii se adaptează oportunistic</li>
+                    <li>Troubleshooting = forma de problem solving, aplicata la repararea produselor sau proceselor defecte</li>
+                    <li>Cautare logica ?i sistematica a sursei unei probleme pentru a o rezolva</li>
+                    <li>Necesar sa identifice simptomele, sa determine cauza cea mai probabila, apoi sa confirme solu?ia</li>
+                    <li>Procesul de eliminare (process of elimination) pentru excluderea sistematica a cauzelor poten?iale</li>
+                    <li>O strategie = set organizat de activita?i exprim&#226;nd o modalitate plauzibila de a atinge un obiectiv</li>
+                    <li>Strategiile NU sunt algoritmi rigizi � rezolvatorii se adapteaza oportunistic</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.2 — Diagnosticul – două tipuri de strategii</h3>
+                <h3>8.1.2 � Diagnosticul � doua tipuri de strategii</h3>
                 <ul class="specs-list">
-                    <li><strong>Doi pași esențiali:</strong> cunoștințe de domeniu apriorice + strategii de căutare</li>
-                    <li><strong>Strategia topografică:</strong> ghidată de funcționarea CORECTĂ a dispozitivului (&quot;ce se &#238;nt&#226;mplă?&quot;)</li>
+                    <li><strong>Doi pa?i esen?iali:</strong> cuno?tin?e de domeniu apriorice + strategii de cautare</li>
+                    <li><strong>Strategia topografica:</strong> ghidata de func?ionarea CORECTA a dispozitivului (&quot;ce se &#238;nt&#226;mpla?&quot;)</li>
                     <li>Deep reasoning, reasoning from first principles</li>
-                    <li>Necesită cunoaștere profundă/cauzală/model-based a sistemului</li>
-                    <li>Folosită la defecte noi (novel faults) c&#226;nd experiența nu ajunge</li>
-                    <li><strong>Strategia simptomatică:</strong> ghidată de funcționarea ANORMALĂ (&quot;ce e greșit?&quot;)</li>
+                    <li>Necesita cunoa?tere profunda/cauzala/model-based a sistemului</li>
+                    <li>Folosita la defecte noi (novel faults) c&#226;nd experien?a nu ajunge</li>
+                    <li><strong>Strategia simptomatica:</strong> ghidata de func?ionarea ANORMALA (&quot;ce e gre?it?&quot;)</li>
                     <li>Case-based reasoning sau shallow reasoning</li>
-                    <li>Bazată pe experiență anterioară – conexiuni stabilite &#238;ntre simptome și cauze</li>
-                    <li>Expertul cunoaște cauza pentru că a &#238;nt&#226;lnit cazuri similare</li>
-                    <li>CEA MAI PUTERNICĂ strategie, cea mai folosită</li>
-                    <li>NU funcționează independent cu probleme cu adevărat noi</li>
-                    <li>Cele două strategii se completează reciproc – simptomatica are nevoie de topografică și invers</li>
+                    <li>Bazata pe experien?a anterioara � conexiuni stabilite &#238;ntre simptome ?i cauze</li>
+                    <li>Expertul cunoa?te cauza pentru ca a &#238;nt&#226;lnit cazuri similare</li>
+                    <li>CEA MAI PUTERNICA strategie, cea mai folosita</li>
+                    <li>NU func?ioneaza independent cu probleme cu adevarat noi</li>
+                    <li>Cele doua strategii se completeaza reciproc � simptomatica are nevoie de topografica ?i invers</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.3 — Aspecte fundamentale ale troubleshooting-ului</h3>
+                <h3>8.1.3 � Aspecte fundamentale ale troubleshooting-ului</h3>
                 <ul class="specs-list">
-                    <li><strong>Focus inițial:</strong> schimbări recente ale sistemului sau mediului</li>
-                    <li><strong>PRINCIPIU:</strong> corelația NU implică cauzalitate (exemplu: dispozitiv defect după mutare)</li>
-                    <li>Necesită g&#226;ndire critică (critical thinking), NU g&#226;ndire magică (magical thinking)</li>
+                    <li><strong>Focus ini?ial:</strong> schimbari recente ale sistemului sau mediului</li>
+                    <li><strong>PRINCIPIU:</strong> corela?ia NU implica cauzalitate (exemplu: dispozitiv defect dupa mutare)</li>
+                    <li>Necesita g&#226;ndire critica (critical thinking), NU g&#226;ndire magica (magical thinking)</li>
                     <li>CELE TREI PRINCIPII FUNDAMENTALE:</li>
                 </ul>
-                <p>1. Să poți REPRODUCE problema la cerere</p>
-                <p>2. Să reduci sistemul la cea mai simplă formă care &#238;ncă prezintă problema</p>
-                <p>3. Să CUNOȘTI cum ar trebui să funcționeze sistemul (pentru a &quot;observa&quot; eroarea)</p>
+                <p>1. Sa po?i REPRODUCE problema la cerere</p>
+                <p>2. Sa reduci sistemul la cea mai simpla forma care &#238;nca prezinta problema</p>
+                <p>3. Sa CUNO?TI cum ar trebui sa func?ioneze sistemul (pentru a &quot;observa&quot; eroarea)</p>
                 <ul class="specs-list">
-                    <li><strong>Substituția serială:</strong> verificarea componentelor una c&#226;te una, &#238;nlocuind cu componente bune</li>
-                    <li>Considerată degenerată dacă se face fără ipoteză despre cum defectul produce simptomele</li>
-                    <li><strong>Sistemele simple/intermediare:</strong> liste sau arbori de dependențe</li>
-                    <li><strong>Sisteme complexe:</strong> dependențe ciclice, bucle de feedback – mai greu de biselat</li>
-                    <li>Repornirea (reboot) = pornire de la o stare cunoscută bună</li>
-                    <li><strong>Troubleshooting poate fi organizat ca:</strong> checklist, procedură, flowchart, tabel</li>
-                    <li>Dezvoltate &#206;NAINTE de apariția problemei pentru eficiență maximă</li>
+                    <li><strong>Substitu?ia seriala:</strong> verificarea componentelor una c&#226;te una, &#238;nlocuind cu componente bune</li>
+                    <li>Considerata degenerata daca se face fara ipoteza despre cum defectul produce simptomele</li>
+                    <li><strong>Sistemele simple/intermediare:</strong> liste sau arbori de dependen?e</li>
+                    <li><strong>Sisteme complexe:</strong> dependen?e ciclice, bucle de feedback � mai greu de biselat</li>
+                    <li>Repornirea (reboot) = pornire de la o stare cunoscuta buna</li>
+                    <li><strong>Troubleshooting poate fi organizat ca:</strong> checklist, procedura, flowchart, tabel</li>
+                    <li>Dezvoltate &#206;NAINTE de apari?ia problemei pentru eficien?a maxima</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.4 — Metoda Half-splitting (bisecția)</h3>
+                <h3>8.1.4 � Metoda Half-splitting (bisec?ia)</h3>
                 <ul class="specs-list">
-                    <li><strong>Troubleshooting eficient:</strong> &#238;nțelegerea clară a comportamentului așteptat + simptomele observate</li>
-                    <li>Formularea ipotezelor → teste pentru eliminarea cauzelor → &quot;divide and conquer&quot;</li>
-                    <li>Două strategii comune:</li>
+                    <li><strong>Troubleshooting eficient:</strong> &#238;n?elegerea clara a comportamentului a?teptat + simptomele observate</li>
+                    <li>Formularea ipotezelor ? teste pentru eliminarea cauzelor ? &quot;divide and conquer&quot;</li>
+                    <li>Doua strategii comune:</li>
                 </ul>
-                <p>1. Verifică &#206;NT&#194;I condițiile frecvente sau ușor de testat (&quot;milking the front panel&quot;)</p>
+                <p>1. Verifica &#206;NT&#194;I condi?iile frecvente sau u?or de testat (&quot;milking the front panel&quot;)</p>
                 <p>Exemplu: verificarea LED-ului imprimantei, cablul bine conectat</p>
-                <p>2. &quot;Bisecția&quot; sistemului – verificare la jumătatea lanțului de dependențe</p>
-                <p>Exemplu: a ajuns job-ul la server? → problema e &quot;spre utilizator&quot; sau &quot;spre dispozitiv&quot;</p>
+                <p>2. &quot;Bisec?ia&quot; sistemului � verificare la jumatatea lan?ului de dependen?e</p>
+                <p>Exemplu: a ajuns job-ul la server? ? problema e &quot;spre utilizator&quot; sau &quot;spre dispozitiv&quot;</p>
                 <ul class="specs-list">
-                    <li>Half-splitting = aplicarea binary search pe dependențe serializate</li>
-                    <li><strong>Similar jocului &quot;20 de &#238;ntrebări&quot;:</strong> 1 opțiune din 1 milion izolată &#238;n 20 de bisecții</li>
-                    <li>Eficient mai ales &#238;n sisteme cu lanțuri lungi de dependențe</li>
+                    <li>Half-splitting = aplicarea binary search pe dependen?e serializate</li>
+                    <li><strong>Similar jocului &quot;20 de &#238;ntrebari&quot;:</strong> 1 op?iune din 1 milion izolata &#238;n 20 de bisec?ii</li>
+                    <li>Eficient mai ales &#238;n sisteme cu lan?uri lungi de dependen?e</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.5 — Reproducerea simptomelor</h3>
+                <h3>8.1.5 � Reproducerea simptomelor</h3>
                 <ul class="specs-list">
-                    <li>Problemele reproductibile pot fi izolate și rezolvate &#238;n mod fiabil</li>
-                    <li>Efort considerabil se depune adesea pentru a găsi o procedură de reproducere</li>
+                    <li>Problemele reproductibile pot fi izolate ?i rezolvate &#238;n mod fiabil</li>
+                    <li>Efort considerabil se depune adesea pentru a gasi o procedura de reproducere</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.6 — Probleme intermitente</h3>
+                <h3>8.1.6 � Probleme intermitente</h3>
                 <ul class="specs-list">
                     <li>Cele mai dificile probleme de troubleshooting</li>
-                    <li><strong>&#206;n electronică:</strong> componente sensibile termic (rezistența variază cu temperatura)</li>
-                    <li>Aer comprimat pentru răcirea punctuală + pistol de căldură pentru &#238;ncălzire</li>
-                    <li>Intermitent = &quot;problemă pentru care nu există o procedură cunoscută de reproducere consistentă&quot;</li>
-                    <li>Frecvența apariției ≠ procedura cunoscută de reproducere</li>
+                    <li><strong>&#206;n electronica:</strong> componente sensibile termic (rezisten?a variaza cu temperatura)</li>
+                    <li>Aer comprimat pentru racirea punctuala + pistol de caldura pentru &#238;ncalzire</li>
+                    <li>Intermitent = &quot;problema pentru care nu exista o procedura cunoscuta de reproducere consistenta&quot;</li>
+                    <li>Frecven?a apari?iei ? procedura cunoscuta de reproducere</li>
                     <li>Uneori trebuie resort la metode statistice</li>
-                    <li>Testele de stres pot determina dacă componente specifice au cedat</li>
+                    <li>Testele de stres pot determina daca componente specifice au cedat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.7 — Probleme multiple</h3>
+                <h3>8.1.7 � Probleme multiple</h3>
                 <ul class="specs-list">
-                    <li>Multe probleme apar din cauza defecțiunilor MULTIPLE</li>
-                    <li>Mai ales &#238;n sisteme fault-tolerant cu redundanță</li>
-                    <li>Substituția serială poate eșua cu defecte multiple</li>
-                    <li>&#206;nlocuirea cu componente defecte poate CREȘTE numărul de probleme</li>
-                    <li>&quot;&#206;nlocuire&quot; include și ajustare, reglare sau alte modificări</li>
-                    <li>Contactele murdare sau slăbite pot necesita doar curățare/str&#226;ngere</li>
+                    <li>Multe probleme apar din cauza defec?iunilor MULTIPLE</li>
+                    <li>Mai ales &#238;n sisteme fault-tolerant cu redundan?a</li>
+                    <li>Substitu?ia seriala poate e?ua cu defecte multiple</li>
+                    <li>&#206;nlocuirea cu componente defecte poate CRE?TE numarul de probleme</li>
+                    <li>&quot;&#206;nlocuire&quot; include ?i ajustare, reglare sau alte modificari</li>
+                    <li>Contactele murdare sau slabite pot necesita doar cura?are/str&#226;ngere</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.8 — Definiția Root Cause Analysis (RCA)</h3>
+                <h3>8.1.8 � Defini?ia Root Cause Analysis (RCA)</h3>
                 <ul class="specs-list">
-                    <li>RCA = metodă de problem solving pentru identificarea cauzelor fundamentale ale defecțiunilor</li>
-                    <li><strong>Folosită &#238;n:</strong> IT operations, manufacturing, telecom, industrial process control, accident analysis</li>
-                    <li>Combină abducția (generare ipoteze bazate pe dovezi empirice) și inferența deductivă (testare teorie)</li>
-                    <li>CEI 4 PAȘI AI RCA:</li>
+                    <li>RCA = metoda de problem solving pentru identificarea cauzelor fundamentale ale defec?iunilor</li>
+                    <li><strong>Folosita &#238;n:</strong> IT operations, manufacturing, telecom, industrial process control, accident analysis</li>
+                    <li>Combina abduc?ia (generare ipoteze bazate pe dovezi empirice) ?i inferen?a deductiva (testare teorie)</li>
+                    <li>CEI 4 PA?I AI RCA:</li>
                 </ul>
-                <p>1. Identificarea și descrierea clară a problemei</p>
-                <p>2. Stabilirea unui timeline de la situația normală la apariția problemei</p>
-                <p>3. Distingerea &#238;ntre cauza fundamentală și alți factori cauzali (prin event correlation)</p>
-                <p>4. Stabilirea unui graf cauzal &#238;ntre cauza fundamentală și problemă</p>
+                <p>1. Identificarea ?i descrierea clara a problemei</p>
+                <p>2. Stabilirea unui timeline de la situa?ia normala la apari?ia problemei</p>
+                <p>3. Distingerea &#238;ntre cauza fundamentala ?i al?i factori cauzali (prin event correlation)</p>
+                <p>4. Stabilirea unui graf cauzal &#238;ntre cauza fundamentala ?i problema</p>
                 <ul class="specs-list">
                     <li><strong>Tehnici RCA (conform ISO/IEC 31010):</strong> Five Whys, FMEA, Fault Tree Analysis, Ishikawa diagrams, Pareto analysis</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.9 — Management reactiv vs proactiv</h3>
+                <h3>8.1.9 � Management reactiv vs proactiv</h3>
                 <ul class="specs-list">
-                    <li><strong>Management REACTIV:</strong> reacție rapidă după apariția problemei, tratarea simptomelor</li>
+                    <li><strong>Management REACTIV:</strong> reac?ie rapida dupa apari?ia problemei, tratarea simptomelor</li>
                     <li><strong>Management PROACTIV:</strong> prevenirea problemelor</li>
-                    <li>Root cause = factorul a cărui eliminare PREVINE recurența problemei</li>
-                    <li>Factor cauzal = contribuie dar eliminarea sa nu previne recurența cu certitudine</li>
-                    <li><strong>Exemplu clasic:</strong> mașina s-a oprit → siguranța arsă → suprasarcină → lubrifiant insuficient → pompă uzată → resturi metalice &#238;n pompă → cauza fundamentală = lipsa filtrului</li>
-                    <li>RCA servește ca input pentru procesul de remediere → acțiuni corective</li>
+                    <li>Root cause = factorul a carui eliminare PREVINE recuren?a problemei</li>
+                    <li>Factor cauzal = contribuie dar eliminarea sa nu previne recuren?a cu certitudine</li>
+                    <li><strong>Exemplu clasic:</strong> ma?ina s-a oprit ? siguran?a arsa ? suprasarcina ? lubrifiant insuficient ? pompa uzata ? resturi metalice &#238;n pompa ? cauza fundamentala = lipsa filtrului</li>
+                    <li>RCA serve?te ca input pentru procesul de remediere ? ac?iuni corective</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.10 — Principiile generale ale RCA</h3>
+                <h3>8.1.10 � Principiile generale ale RCA</h3>
                 <ul class="specs-list">
-                    <li>Problem statement clar = &quot;steaua polară&quot; a RCA</li>
-                    <li><strong>Adunarea factelor:</strong> declarații martori, cronologie, cerințe aplicabile</li>
+                    <li>Problem statement clar = &quot;steaua polara&quot; a RCA</li>
+                    <li><strong>Adunarea factelor:</strong> declara?ii martori, cronologie, cerin?e aplicabile</li>
                     <li><strong>Instrumente analitice:</strong> Pareto charts, process maps, fault trees, control charts</li>
-                    <li><strong>Analiza apărărilor (Barrier Analysis):</strong> listarea apărărilor, căutarea dovezilor de eficacitate</li>
-                    <li>&#206;ntrebări focalizate, nebiased → linii de investigație</li>
-                    <li><strong>Analiză cauză-efect:</strong> &#238;ntrebări socratice p&#226;nă se epuizează răspunsurile</li>
-                    <li><strong>ATENȚIE:</strong> Fishbone (1940s) și 5-Whys (1930s) nu sunt suficient de riguroase</li>
-                    <li>Acțiuni corective bazate pe Hierarchy of Hazard Controls</li>
-                    <li><strong>Effectiveness review:</strong> evaluarea eficacității acțiunilor corective după implementare</li>
+                    <li><strong>Analiza apararilor (Barrier Analysis):</strong> listarea apararilor, cautarea dovezilor de eficacitate</li>
+                    <li>&#206;ntrebari focalizate, nebiased ? linii de investiga?ie</li>
+                    <li><strong>Analiza cauza-efect:</strong> &#238;ntrebari socratice p&#226;na se epuizeaza raspunsurile</li>
+                    <li><strong>ATEN?IE:</strong> Fishbone (1940s) ?i 5-Whys (1930s) nu sunt suficient de riguroase</li>
+                    <li>Ac?iuni corective bazate pe Hierarchy of Hazard Controls</li>
+                    <li><strong>Effectiveness review:</strong> evaluarea eficacita?ii ac?iunilor corective dupa implementare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.11 — POST – definiție și funcționare</h3>
+                <h3>8.1.11 � POST � defini?ie ?i func?ionare</h3>
                 <ul class="specs-list">
-                    <li>POST = Power-On Self-Test, proces efectuat de firmware/software imediat după pornire</li>
-                    <li>Setează starea inițială a dispozitivului din firmware</li>
-                    <li>Detectează componente hardware nefuncționale</li>
-                    <li><strong>Rezultatele:</strong> afișaj pe panel, output extern, sau stocate pentru diagnostic ulterior</li>
-                    <li><strong>Eșecuri indicate prin:</strong> LED-uri intermitente sau coduri de bipuri (beep codes)</li>
-                    <li>Dacă POST reușește → se &#238;ncarcă bootstrap loader → sistem de operare</li>
-                    <li>Responsabilități principale POST (IBM PC):</li>
+                    <li>POST = Power-On Self-Test, proces efectuat de firmware/software imediat dupa pornire</li>
+                    <li>Seteaza starea ini?iala a dispozitivului din firmware</li>
+                    <li>Detecteaza componente hardware nefunc?ionale</li>
+                    <li><strong>Rezultatele:</strong> afi?aj pe panel, output extern, sau stocate pentru diagnostic ulterior</li>
+                    <li><strong>E?ecuri indicate prin:</strong> LED-uri intermitente sau coduri de bipuri (beep codes)</li>
+                    <li>Daca POST reu?e?te ? se &#238;ncarca bootstrap loader ? sistem de operare</li>
+                    <li>Responsabilita?i principale POST (IBM PC):</li>
                 </ul>
-                <p>• Verificarea registrelor CPU</p>
-                <p>• Verificarea integrității codului BIOS</p>
-                <p>• Verificarea componentelor de bază: DMA, timer, interrupt controller</p>
-                <p>• Inițializarea, dimensionarea și verificarea memoriei principale</p>
-                <p>• Inițializarea BIOS</p>
-                <p>• Transferul controlului la extension BIOS (video, SCSI etc.)</p>
-                <p>• Identificarea și organizarea dispozitivelor de boot</p>
+                <p>� Verificarea registrelor CPU</p>
+                <p>� Verificarea integrita?ii codului BIOS</p>
+                <p>� Verificarea componentelor de baza: DMA, timer, interrupt controller</p>
+                <p>� Ini?ializarea, dimensionarea ?i verificarea memoriei principale</p>
+                <p>� Ini?ializarea BIOS</p>
+                <p>� Transferul controlului la extension BIOS (video, SCSI etc.)</p>
+                <p>� Identificarea ?i organizarea dispozitivelor de boot</p>
                 <ul class="specs-list">
-                    <li><strong>Versiuni BIOS ulterioare adaugă:</strong> inițializare chipset, descoperire și catalogare busuri și dispozitive, UI configurare, construirea mediului pentru OS</li>
+                    <li><strong>Versiuni BIOS ulterioare adauga:</strong> ini?ializare chipset, descoperire ?i catalogare busuri ?i dispozitive, UI configurare, construirea mediului pentru OS</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.12 — Evoluția istorică a POST</h3>
+                <h3>8.1.12 � Evolu?ia istorica a POST</h3>
                 <ul class="specs-list">
-                    <li><strong>BIOS-urile inițiale:</strong> test complet de memorie la fiecare pornire (inspirat de mainframe-uri IBM)</li>
-                    <li><strong>IBM PC original:</strong> 16 KB–640 KB RAM, 4.77 MHz 8088, POST: 5s–1.5 min, fără skip</li>
-                    <li><strong>De la IBM XT:</strong> afișaj numărătoare memorie &#238;n loc de ecran gol</li>
-                    <li><strong>PC-uri clone:</strong> posibilitatea de a sări testul RAM prin apăsarea unei taste</li>
-                    <li><strong>Mașini moderne (2000+):</strong> adesea fără test RAM implicit (activabil din BIOS setup)</li>
+                    <li><strong>BIOS-urile ini?iale:</strong> test complet de memorie la fiecare pornire (inspirat de mainframe-uri IBM)</li>
+                    <li><strong>IBM PC original:</strong> 16 KB�640 KB RAM, 4.77 MHz 8088, POST: 5s�1.5 min, fara skip</li>
+                    <li><strong>De la IBM XT:</strong> afi?aj numaratoare memorie &#238;n loc de ecran gol</li>
+                    <li><strong>PC-uri clone:</strong> posibilitatea de a sari testul RAM prin apasarea unei taste</li>
+                    <li><strong>Ma?ini moderne (2000+):</strong> adesea fara test RAM implicit (activabil din BIOS setup)</li>
                     <li>DRAM modern semnificativ mai fiabil dec&#226;t &#238;n anii 1980</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.13 — Coduri de eroare POST (beep codes)</h3>
+                <h3>8.1.13 � Coduri de eroare POST (beep codes)</h3>
                 <ul class="specs-list">
                     <li><strong>Original IBM:</strong> coduri numerice pe portul I/O 0x80, vizibile cu POST card sau logic analyzer</li>
-                    <li><strong>Ulterior:</strong> secvențe de bipuri de la PC speaker</li>
-                    <li>Codurile variază &#238;ntre producători de BIOS și chiar &#238;ntre versiuni</li>
+                    <li><strong>Ulterior:</strong> secven?e de bipuri de la PC speaker</li>
+                    <li>Codurile variaza &#238;ntre producatori de BIOS ?i chiar &#238;ntre versiuni</li>
                     <li>IBM original POST beep codes:</li>
                 </ul>
-                <p>• 1 bip scurt = POST normal, sistem OK</p>
-                <p>• 2 bipuri scurte = eroare POST, cod pe ecran</p>
-                <p>• Fără bip = alimentare, system board, CPU deconectat</p>
-                <p>• Bip continuu = alimentare, system board, RAM sau tastatură</p>
-                <p>• 1 lung + 2 scurte = problemă display adapter</p>
+                <p>� 1 bip scurt = POST normal, sistem OK</p>
+                <p>� 2 bipuri scurte = eroare POST, cod pe ecran</p>
+                <p>� Fara bip = alimentare, system board, CPU deconectat</p>
+                <p>� Bip continuu = alimentare, system board, RAM sau tastatura</p>
+                <p>� 1 lung + 2 scurte = problema display adapter</p>
                 <ul class="specs-list">
                     <li>AMI BIOS beep codes:</li>
                 </ul>
-                <p>• 1 = Memory refresh timer error</p>
-                <p>• 2 = Parity error in base memory (primii 64 KiB)</p>
-                <p>• 3 = Base memory read/write test error</p>
-                <p>• 5 = Processor failure</p>
-                <p>• 8 = Display memory error</p>
-                <p>• Bipuri continue = niciun modul RAM detectat</p>
+                <p>� 1 = Memory refresh timer error</p>
+                <p>� 2 = Parity error in base memory (primii 64 KiB)</p>
+                <p>� 3 = Base memory read/write test error</p>
+                <p>� 5 = Processor failure</p>
+                <p>� 8 = Display memory error</p>
+                <p>� Bipuri continue = niciun modul RAM detectat</p>
                 <ul class="specs-list">
                     <li>CompTIA A+ (examen):</li>
                 </ul>
-                <p>• Bipuri scurte constante = alimentare defectă</p>
-                <p>• Ton lung continuu = defecțiune memorie</p>
-                <p>• Un lung + două scurte = defecțiune placă video</p>
+                <p>� Bipuri scurte constante = alimentare defecta</p>
+                <p>� Ton lung continuu = defec?iune memorie</p>
+                <p>� Un lung + doua scurte = defec?iune placa video</p>
                 <ul class="specs-list">
                     <li>IBM POST diagnostic codes (intervale numerice):</li>
                 </ul>
@@ -271,51 +271,51 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.14 — POST pe alte platforme</h3>
+                <h3>8.1.14 � POST pe alte platforme</h3>
                 <ul class="specs-list">
-                    <li><strong>Macintosh (pre-1987):</strong> crash silențios + Sad Mac icon + string hexazecimal</li>
-                    <li><strong>Macintosh (1987-1998):</strong> death chime (bip, crash mașină, geam spart, ton muzical)</li>
+                    <li><strong>Macintosh (pre-1987):</strong> crash silen?ios + Sad Mac icon + string hexazecimal</li>
+                    <li><strong>Macintosh (1987-1998):</strong> death chime (bip, crash ma?ina, geam spart, ton muzical)</li>
                 </ul>
                 <p>+ Sad Mac icon + 2 string-uri hexazecimale</p>
                 <ul class="specs-list">
-                    <li><strong>New World Mac (1998+):</strong> 1 bip=no RAM, 2=RAM incompatibil, 3=nicio bancă OK, 4=ROM bad, 5=CPU bad</li>
-                    <li><strong>Apple Silicon:</strong> fără coduri audio/vizuale la erori fatale hardware</li>
-                    <li><strong>Amiga:</strong> secvențe de culori pe ecran &#238;n loc de bipuri</li>
+                    <li><strong>New World Mac (1998+):</strong> 1 bip=no RAM, 2=RAM incompatibil, 3=nicio banca OK, 4=ROM bad, 5=CPU bad</li>
+                    <li><strong>Apple Silicon:</strong> fara coduri audio/vizuale la erori fatale hardware</li>
+                    <li><strong>Amiga:</strong> secven?e de culori pe ecran &#238;n loc de bipuri</li>
                 </ul>
-                <p>• Roșu = ROM bad, Galben = CPU exception, Verde = Chip RAM bad, Negru = no CPU</p>
-                <p>• LED tastatură: 1 flash=ROM, 2=RAM, 3=Watchdog, 4=scurtcircuit</p>
+                <p>� Ro?u = ROM bad, Galben = CPU exception, Verde = Chip RAM bad, Negru = no CPU</p>
+                <p>� LED tastatura: 1 flash=ROM, 2=RAM, 3=Watchdog, 4=scurtcircuit</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.15 — FDIR – Fault Detection, Isolation and Recovery</h3>
+                <h3>8.1.15 � FDIR � Fault Detection, Isolation and Recovery</h3>
                 <ul class="specs-list">
-                    <li><strong>Subdomeniu al ingineriei de control:</strong> monitorizarea unui sistem, identificarea defecțiunii, localizarea</li>
-                    <li><strong>Două abordări:</strong> recunoaștere directă a pattern-urilor senzorilor și analiza discrepanței vs valori așteptate</li>
-                    <li>Defect detectat = c&#226;nd discrepanța (rezidualul) depășește un prag</li>
-                    <li>Izolarea defectului = categorizarea tipului și localizării defecțiunii</li>
+                    <li><strong>Subdomeniu al ingineriei de control:</strong> monitorizarea unui sistem, identificarea defec?iunii, localizarea</li>
+                    <li><strong>Doua abordari:</strong> recunoa?tere directa a pattern-urilor senzorilor ?i analiza discrepan?ei vs valori a?teptate</li>
+                    <li>Defect detectat = c&#226;nd discrepan?a (rezidualul) depa?e?te un prag</li>
+                    <li>Izolarea defectului = categorizarea tipului ?i localizarii defec?iunii</li>
                     <li><strong>Tehnici FDI bazate pe model:</strong> observer-based, parity-space, parameter identification</li>
-                    <li><strong>Tehnici FDI bazate pe procesarea semnalelor:</strong> operații matematice/statistice, rețele neuronale</li>
-                    <li><strong>Exemplu:</strong> TDR (Time Domain Reflectometry) – semnal trimis pe cablu, reflecție analizată</li>
-                    <li><strong>Fault Recovery:</strong> acțiune după detectare și izolare</li>
+                    <li><strong>Tehnici FDI bazate pe procesarea semnalelor:</strong> opera?ii matematice/statistice, re?ele neuronale</li>
+                    <li><strong>Exemplu:</strong> TDR (Time Domain Reflectometry) � semnal trimis pe cablu, reflec?ie analizata</li>
+                    <li><strong>Fault Recovery:</strong> ac?iune dupa detectare ?i izolare</li>
                 </ul>
-                <p>• Oprirea echipamentului defect</p>
-                <p>• Comutare la echipament redundant</p>
-                <p>• Trecerea sistemului &#238;ntr-un Safe Mode cu funcționalități limitate</p>
+                <p>� Oprirea echipamentului defect</p>
+                <p>� Comutare la echipament redundant</p>
+                <p>� Trecerea sistemului &#238;ntr-un Safe Mode cu func?ionalita?i limitate</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>8.1.16 — Diagnosticul defectelor &#238;n mașini</h3>
+                <h3>8.1.16 � Diagnosticul defectelor &#238;n ma?ini</h3>
                 <ul class="specs-list">
-                    <li><strong>Metode de colectare date:</strong> monitorizarea vibrațiilor, imaging termic, analiza particulelor din ulei</li>
-                    <li><strong>Procesare:</strong> analiză spectrală, wavelets, Fourier transform</li>
-                    <li><strong>Root cause failure analysis:</strong> identificarea cauzei originale (ex. rulment defect → aliniere greșită la montaj)</li>
-                    <li>Diagnosticul stării nu este suficient → trebuie identificată cauza fundamentală</li>
-                    <li>Strategii de mentenanță:</li>
+                    <li><strong>Metode de colectare date:</strong> monitorizarea vibra?iilor, imaging termic, analiza particulelor din ulei</li>
+                    <li><strong>Procesare:</strong> analiza spectrala, wavelets, Fourier transform</li>
+                    <li><strong>Root cause failure analysis:</strong> identificarea cauzei originale (ex. rulment defect ? aliniere gre?ita la montaj)</li>
+                    <li>Diagnosticul starii nu este suficient ? trebuie identificata cauza fundamentala</li>
+                    <li>Strategii de mentenan?a:</li>
                 </ul>
-                <p>• Condition-based maintenance (pe baza stării)</p>
-                <p>• Planned preventive maintenance</p>
-                <p>• Preventive maintenance</p>
-                <p>• Corrective maintenance (fără diagnostic)</p>
+                <p>� Condition-based maintenance (pe baza starii)</p>
+                <p>� Planned preventive maintenance</p>
+                <p>� Preventive maintenance</p>
+                <p>� Corrective maintenance (fara diagnostic)</p>
             </div>
 
         </div>
@@ -323,36 +323,36 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Metoda Half-splitting (bisecția)</h3>
+                <h3>Metoda Half-splitting (bisec?ia)</h3>
                 <ul class="specs-list">
-                    <li>Half-splitting = aplicarea binary search pe dependențe serializate</li>
+                    <li>Half-splitting = aplicarea binary search pe dependen?e serializate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>POST – definiție și funcționare</h3>
-                <p>• Verificarea registrelor CPU</p>
+                <h3>POST � defini?ie ?i func?ionare</h3>
+                <p>� Verificarea registrelor CPU</p>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>POST pe alte platforme</h3>
                 <ul class="specs-list">
-                    <li><strong>New World Mac (1998+):</strong> 1 bip=no RAM, 2=RAM incompatibil, 3=nicio bancă OK, 4=ROM bad, 5=CPU bad</li>
+                    <li><strong>New World Mac (1998+):</strong> 1 bip=no RAM, 2=RAM incompatibil, 3=nicio banca OK, 4=ROM bad, 5=CPU bad</li>
                 </ul>
-                <p>• Roșu = ROM bad, Galben = CPU exception, Verde = Chip RAM bad, Negru = no CPU</p>
+                <p>� Ro?u = ROM bad, Galben = CPU exception, Verde = Chip RAM bad, Negru = no CPU</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>În contextul consolelor de jocuri, metodologia de diagnostic joacă un rol esențial în funcționarea hardware-ului.</p>
+                <p>�n contextul consolelor de jocuri, metodologia de diagnostic joaca un rol esen?ial �n func?ionarea hardware-ului.</p>
             </div>
         </div>
     </section>
@@ -362,7 +362,7 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <p>Componentele reale care utilizează pașii diagnosticului hardware se regăsesc în toate consolele moderne.</p>
+                <p>Componentele reale care utilizeaza pa?ii diagnosticului hardware se regasesc �n toate consolele moderne.</p>
             </div>
         </div>
     </section>
@@ -373,119 +373,119 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Definiția troubleshooting-ului</h3>
-                    <p>Troubleshooting = formă de problem solving, aplicată la repararea produselor sau proceselor defecte</p>
-                    <p>Necesar să identifice simptomele, să determine cauza cea mai probabilă, apoi să confirme soluția</p>
+                    <h3>?? Defini?ia troubleshooting-ului</h3>
+                    <p>Troubleshooting = forma de problem solving, aplicata la repararea produselor sau proceselor defecte</p>
+                    <p>Necesar sa identifice simptomele, sa determine cauza cea mai probabila, apoi sa confirme solu?ia</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Diagnosticul – două tipuri de strategii</h3>
-                    <p>Doi pași esențiali: cunoștințe de domeniu apriorice + strategii de căutare</p>
-                    <p>Strategia topografică: ghidată de funcționarea CORECTĂ a dispozitivului (&quot;ce se &#238;nt&#226;mplă?&quot;)</p>
+                    <h3>?? Diagnosticul � doua tipuri de strategii</h3>
+                    <p>Doi pa?i esen?iali: cuno?tin?e de domeniu apriorice + strategii de cautare</p>
+                    <p>Strategia topografica: ghidata de func?ionarea CORECTA a dispozitivului (&quot;ce se &#238;nt&#226;mpla?&quot;)</p>
                     <p>Deep reasoning, reasoning from first principles</p>
-                    <p>Necesită cunoaștere profundă/cauzală/model-based a sistemului</p>
-                    <p>Folosită la defecte noi (novel faults) c&#226;nd experiența nu ajunge</p>
-                    <p>Strategia simptomatică: ghidată de funcționarea ANORMALĂ (&quot;ce e greșit?&quot;)</p>
+                    <p>Necesita cunoa?tere profunda/cauzala/model-based a sistemului</p>
+                    <p>Folosita la defecte noi (novel faults) c&#226;nd experien?a nu ajunge</p>
+                    <p>Strategia simptomatica: ghidata de func?ionarea ANORMALA (&quot;ce e gre?it?&quot;)</p>
                     <p>Case-based reasoning sau shallow reasoning</p>
-                    <p>Bazată pe experiență anterioară – conexiuni stabilite &#238;ntre simptome și cauze</p>
-                    <p>Expertul cunoaște cauza pentru că a &#238;nt&#226;lnit cazuri similare</p>
-                    <p>CEA MAI PUTERNICĂ strategie, cea mai folosită</p>
-                    <p>NU funcționează independent cu probleme cu adevărat noi</p>
-                    <p>Cele două strategii se completează reciproc – simptomatica are nevoie de topografică și invers</p>
+                    <p>Bazata pe experien?a anterioara � conexiuni stabilite &#238;ntre simptome ?i cauze</p>
+                    <p>Expertul cunoa?te cauza pentru ca a &#238;nt&#226;lnit cazuri similare</p>
+                    <p>CEA MAI PUTERNICA strategie, cea mai folosita</p>
+                    <p>NU func?ioneaza independent cu probleme cu adevarat noi</p>
+                    <p>Cele doua strategii se completeaza reciproc � simptomatica are nevoie de topografica ?i invers</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Aspecte fundamentale ale troubleshooting-ului</h3>
-                    <p>PRINCIPIU: corelația NU implică cauzalitate (exemplu: dispozitiv defect după mutare)</p>
-                    <p>1. Să poți REPRODUCE problema la cerere</p>
-                    <p>2. Să reduci sistemul la cea mai simplă formă care &#238;ncă prezintă problema</p>
-                    <p>3. Să CUNOȘTI cum ar trebui să funcționeze sistemul (pentru a &quot;observa&quot; eroarea)</p>
-                    <p>Considerată degenerată dacă se face fără ipoteză despre cum defectul produce simptomele</p>
+                    <h3>?? Aspecte fundamentale ale troubleshooting-ului</h3>
+                    <p>PRINCIPIU: corela?ia NU implica cauzalitate (exemplu: dispozitiv defect dupa mutare)</p>
+                    <p>1. Sa po?i REPRODUCE problema la cerere</p>
+                    <p>2. Sa reduci sistemul la cea mai simpla forma care &#238;nca prezinta problema</p>
+                    <p>3. Sa CUNO?TI cum ar trebui sa func?ioneze sistemul (pentru a &quot;observa&quot; eroarea)</p>
+                    <p>Considerata degenerata daca se face fara ipoteza despre cum defectul produce simptomele</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Metoda Half-splitting (bisecția)</h3>
-                    <p>Troubleshooting eficient: &#238;nțelegerea clară a comportamentului așteptat + simptomele observate</p>
-                    <p>Exemplu: a ajuns job-ul la server? → problema e &quot;spre utilizator&quot; sau &quot;spre dispozitiv&quot;</p>
+                    <h3>?? Metoda Half-splitting (bisec?ia)</h3>
+                    <p>Troubleshooting eficient: &#238;n?elegerea clara a comportamentului a?teptat + simptomele observate</p>
+                    <p>Exemplu: a ajuns job-ul la server? ? problema e &quot;spre utilizator&quot; sau &quot;spre dispozitiv&quot;</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Reproducerea simptomelor</h3>
-                    <p>Problemele reproductibile pot fi izolate și rezolvate &#238;n mod fiabil</p>
-                    <p>Efort considerabil se depune adesea pentru a găsi o procedură de reproducere</p>
+                    <h3>?? Reproducerea simptomelor</h3>
+                    <p>Problemele reproductibile pot fi izolate ?i rezolvate &#238;n mod fiabil</p>
+                    <p>Efort considerabil se depune adesea pentru a gasi o procedura de reproducere</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Probleme intermitente</h3>
+                    <h3>?? Probleme intermitente</h3>
                     <p>Cele mai dificile probleme de troubleshooting</p>
-                    <p>&#206;n electronică: componente sensibile termic (rezistența variază cu temperatura)</p>
-                    <p>Aer comprimat pentru răcirea punctuală + pistol de căldură pentru &#238;ncălzire</p>
-                    <p>Intermitent = &quot;problemă pentru care nu există o procedură cunoscută de reproducere consistentă&quot;</p>
-                    <p>Frecvența apariției ≠ procedura cunoscută de reproducere</p>
+                    <p>&#206;n electronica: componente sensibile termic (rezisten?a variaza cu temperatura)</p>
+                    <p>Aer comprimat pentru racirea punctuala + pistol de caldura pentru &#238;ncalzire</p>
+                    <p>Intermitent = &quot;problema pentru care nu exista o procedura cunoscuta de reproducere consistenta&quot;</p>
+                    <p>Frecven?a apari?iei ? procedura cunoscuta de reproducere</p>
                     <p>Uneori trebuie resort la metode statistice</p>
-                    <p>Testele de stres pot determina dacă componente specifice au cedat</p>
+                    <p>Testele de stres pot determina daca componente specifice au cedat</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Probleme multiple</h3>
-                    <p>Multe probleme apar din cauza defecțiunilor MULTIPLE</p>
-                    <p>Mai ales &#238;n sisteme fault-tolerant cu redundanță</p>
-                    <p>Substituția serială poate eșua cu defecte multiple</p>
-                    <p>&#206;nlocuirea cu componente defecte poate CREȘTE numărul de probleme</p>
-                    <p>&quot;&#206;nlocuire&quot; include și ajustare, reglare sau alte modificări</p>
-                    <p>Contactele murdare sau slăbite pot necesita doar curățare/str&#226;ngere</p>
+                    <h3>?? Probleme multiple</h3>
+                    <p>Multe probleme apar din cauza defec?iunilor MULTIPLE</p>
+                    <p>Mai ales &#238;n sisteme fault-tolerant cu redundan?a</p>
+                    <p>Substitu?ia seriala poate e?ua cu defecte multiple</p>
+                    <p>&#206;nlocuirea cu componente defecte poate CRE?TE numarul de probleme</p>
+                    <p>&quot;&#206;nlocuire&quot; include ?i ajustare, reglare sau alte modificari</p>
+                    <p>Contactele murdare sau slabite pot necesita doar cura?are/str&#226;ngere</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Management reactiv vs proactiv</h3>
-                    <p>Management REACTIV: reacție rapidă după apariția problemei, tratarea simptomelor</p>
-                    <p>Exemplu clasic: mașina s-a oprit → siguranța arsă → suprasarcină → lubrifiant insuficient → pompă uzată → resturi metalice &#238;n pompă → cauza fundamentală = lipsa filtrului</p>
+                    <h3>?? Management reactiv vs proactiv</h3>
+                    <p>Management REACTIV: reac?ie rapida dupa apari?ia problemei, tratarea simptomelor</p>
+                    <p>Exemplu clasic: ma?ina s-a oprit ? siguran?a arsa ? suprasarcina ? lubrifiant insuficient ? pompa uzata ? resturi metalice &#238;n pompa ? cauza fundamentala = lipsa filtrului</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ POST – definiție și funcționare</h3>
-                    <p>Rezultatele: afișaj pe panel, output extern, sau stocate pentru diagnostic ulterior</p>
+                    <h3>?? POST � defini?ie ?i func?ionare</h3>
+                    <p>Rezultatele: afi?aj pe panel, output extern, sau stocate pentru diagnostic ulterior</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Coduri de eroare POST (beep codes)</h3>
+                    <h3>?? Coduri de eroare POST (beep codes)</h3>
                     <p>Original IBM: coduri numerice pe portul I/O 0x80, vizibile cu POST card sau logic analyzer</p>
-                    <p>Ulterior: secvențe de bipuri de la PC speaker</p>
-                    <p>Codurile variază &#238;ntre producători de BIOS și chiar &#238;ntre versiuni</p>
+                    <p>Ulterior: secven?e de bipuri de la PC speaker</p>
+                    <p>Codurile variaza &#238;ntre producatori de BIOS ?i chiar &#238;ntre versiuni</p>
                     <p>IBM original POST beep codes:</p>
-                    <p>• 1 bip scurt = POST normal, sistem OK</p>
-                    <p>• 2 bipuri scurte = eroare POST, cod pe ecran</p>
-                    <p>• Fără bip = alimentare, system board, CPU deconectat</p>
-                    <p>• Bip continuu = alimentare, system board, RAM sau tastatură</p>
-                    <p>• 1 lung + 2 scurte = problemă display adapter</p>
+                    <p>� 1 bip scurt = POST normal, sistem OK</p>
+                    <p>� 2 bipuri scurte = eroare POST, cod pe ecran</p>
+                    <p>� Fara bip = alimentare, system board, CPU deconectat</p>
+                    <p>� Bip continuu = alimentare, system board, RAM sau tastatura</p>
+                    <p>� 1 lung + 2 scurte = problema display adapter</p>
                     <p>AMI BIOS beep codes:</p>
-                    <p>• 1 = Memory refresh timer error</p>
-                    <p>• 2 = Parity error in base memory (primii 64 KiB)</p>
-                    <p>• 3 = Base memory read/write test error</p>
-                    <p>• 5 = Processor failure</p>
-                    <p>• 8 = Display memory error</p>
-                    <p>• Bipuri continue = niciun modul RAM detectat</p>
+                    <p>� 1 = Memory refresh timer error</p>
+                    <p>� 2 = Parity error in base memory (primii 64 KiB)</p>
+                    <p>� 3 = Base memory read/write test error</p>
+                    <p>� 5 = Processor failure</p>
+                    <p>� 8 = Display memory error</p>
+                    <p>� Bipuri continue = niciun modul RAM detectat</p>
                     <p>CompTIA A+ (examen):</p>
-                    <p>• Bipuri scurte constante = alimentare defectă</p>
-                    <p>• Ton lung continuu = defecțiune memorie</p>
-                    <p>• Un lung + două scurte = defecțiune placă video</p>
+                    <p>� Bipuri scurte constante = alimentare defecta</p>
+                    <p>� Ton lung continuu = defec?iune memorie</p>
+                    <p>� Un lung + doua scurte = defec?iune placa video</p>
                     <p>IBM POST diagnostic codes (intervale numerice):</p>
                     <p>100-199 = System boards, 200-299 = Memory, 300-399 = Keyboard</p>
                     <p>400-499 = Monochrome display, 500-599 = Color/graphics display</p>
                     <p>1700-1799 = Hard drive/adapter</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ POST pe alte platforme</h3>
-                    <p>• LED tastatură: 1 flash=ROM, 2=RAM, 3=Watchdog, 4=scurtcircuit</p>
+                    <h3>?? POST pe alte platforme</h3>
+                    <p>� LED tastatura: 1 flash=ROM, 2=RAM, 3=Watchdog, 4=scurtcircuit</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ FDIR – Fault Detection, Isolation and Recovery</h3>
-                    <p>Defect detectat = c&#226;nd discrepanța (rezidualul) depășește un prag</p>
-                    <p>Izolarea defectului = categorizarea tipului și localizării defecțiunii</p>
-                    <p>• Oprirea echipamentului defect</p>
+                    <h3>?? FDIR � Fault Detection, Isolation and Recovery</h3>
+                    <p>Defect detectat = c&#226;nd discrepan?a (rezidualul) depa?e?te un prag</p>
+                    <p>Izolarea defectului = categorizarea tipului ?i localizarii defec?iunii</p>
+                    <p>� Oprirea echipamentului defect</p>
                 </div>
                 <div class="card">
-                    <h3>⚠️ Diagnosticul defectelor &#238;n mașini</h3>
-                    <p>Metode de colectare date: monitorizarea vibrațiilor, imaging termic, analiza particulelor din ulei</p>
-                    <p>Procesare: analiză spectrală, wavelets, Fourier transform</p>
-                    <p>Root cause failure analysis: identificarea cauzei originale (ex. rulment defect → aliniere greșită la montaj)</p>
-                    <p>Diagnosticul stării nu este suficient → trebuie identificată cauza fundamentală</p>
-                    <p>Strategii de mentenanță:</p>
-                    <p>• Condition-based maintenance (pe baza stării)</p>
-                    <p>• Planned preventive maintenance</p>
-                    <p>• Preventive maintenance</p>
-                    <p>• Corrective maintenance (fără diagnostic)</p>
+                    <h3>?? Diagnosticul defectelor &#238;n ma?ini</h3>
+                    <p>Metode de colectare date: monitorizarea vibra?iilor, imaging termic, analiza particulelor din ulei</p>
+                    <p>Procesare: analiza spectrala, wavelets, Fourier transform</p>
+                    <p>Root cause failure analysis: identificarea cauzei originale (ex. rulment defect ? aliniere gre?ita la montaj)</p>
+                    <p>Diagnosticul starii nu este suficient ? trebuie identificata cauza fundamentala</p>
+                    <p>Strategii de mentenan?a:</p>
+                    <p>� Condition-based maintenance (pe baza starii)</p>
+                    <p>� Planned preventive maintenance</p>
+                    <p>� Preventive maintenance</p>
+                    <p>� Corrective maintenance (fara diagnostic)</p>
                 </div>
             </div>
         </div>
@@ -496,22 +496,22 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiția troubleshooting-ului:</strong> Troubleshooting = formă de problem solving, aplicată la repararea produselor sau proceselor defecte</li>
-                    <li><strong>Diagnosticul – două tipuri de strategii:</strong> Doi pași esențiali: cunoștințe de domeniu apriorice + strategii de căutare</li>
-                    <li><strong>Aspecte fundamentale ale troubleshooting-ului:</strong> Focus inițial: schimbări recente ale sistemului sau mediului</li>
-                    <li><strong>Metoda Half-splitting (bisecția):</strong> Troubleshooting eficient: &#238;nțelegerea clară a comportamentului așteptat + simptomele observate</li>
-                    <li><strong>Reproducerea simptomelor:</strong> Problemele reproductibile pot fi izolate și rezolvate &#238;n mod fiabil</li>
+                    <li><strong>Defini?ia troubleshooting-ului:</strong> Troubleshooting = forma de problem solving, aplicata la repararea produselor sau proceselor defecte</li>
+                    <li><strong>Diagnosticul � doua tipuri de strategii:</strong> Doi pa?i esen?iali: cuno?tin?e de domeniu apriorice + strategii de cautare</li>
+                    <li><strong>Aspecte fundamentale ale troubleshooting-ului:</strong> Focus ini?ial: schimbari recente ale sistemului sau mediului</li>
+                    <li><strong>Metoda Half-splitting (bisec?ia):</strong> Troubleshooting eficient: &#238;n?elegerea clara a comportamentului a?teptat + simptomele observate</li>
+                    <li><strong>Reproducerea simptomelor:</strong> Problemele reproductibile pot fi izolate ?i rezolvate &#238;n mod fiabil</li>
                     <li><strong>Probleme intermitente:</strong> Cele mai dificile probleme de troubleshooting</li>
-                    <li><strong>Probleme multiple:</strong> Multe probleme apar din cauza defecțiunilor MULTIPLE</li>
-                    <li><strong>Definiția Root Cause Analysis (RCA):</strong> RCA = metodă de problem solving pentru identificarea cauzelor fundamentale ale defecțiunilor</li>
-                    <li><strong>Management reactiv vs proactiv:</strong> Management REACTIV: reacție rapidă după apariția problemei, tratarea simptomelor</li>
-                    <li><strong>Principiile generale ale RCA:</strong> Problem statement clar = &quot;steaua polară&quot; a RCA</li>
-                    <li><strong>POST – definiție și funcționare:</strong> POST = Power-On Self-Test, proces efectuat de firmware/software imediat după pornire</li>
-                    <li><strong>Evoluția istorică a POST:</strong> BIOS-urile inițiale: test complet de memorie la fiecare pornire (inspirat de mainframe-uri IBM)</li>
+                    <li><strong>Probleme multiple:</strong> Multe probleme apar din cauza defec?iunilor MULTIPLE</li>
+                    <li><strong>Defini?ia Root Cause Analysis (RCA):</strong> RCA = metoda de problem solving pentru identificarea cauzelor fundamentale ale defec?iunilor</li>
+                    <li><strong>Management reactiv vs proactiv:</strong> Management REACTIV: reac?ie rapida dupa apari?ia problemei, tratarea simptomelor</li>
+                    <li><strong>Principiile generale ale RCA:</strong> Problem statement clar = &quot;steaua polara&quot; a RCA</li>
+                    <li><strong>POST � defini?ie ?i func?ionare:</strong> POST = Power-On Self-Test, proces efectuat de firmware/software imediat dupa pornire</li>
+                    <li><strong>Evolu?ia istorica a POST:</strong> BIOS-urile ini?iale: test complet de memorie la fiecare pornire (inspirat de mainframe-uri IBM)</li>
                     <li><strong>Coduri de eroare POST (beep codes):</strong> Original IBM: coduri numerice pe portul I/O 0x80, vizibile cu POST card sau logic analyzer</li>
-                    <li><strong>POST pe alte platforme:</strong> Macintosh (pre-1987): crash silențios + Sad Mac icon + string hexazecimal</li>
-                    <li><strong>FDIR – Fault Detection, Isolation and Recovery:</strong> Subdomeniu al ingineriei de control: monitorizarea unui sistem, identificarea defecțiunii, localizarea</li>
-                    <li><strong>Diagnosticul defectelor &#238;n mașini:</strong> Metode de colectare date: monitorizarea vibrațiilor, imaging termic, analiza particulelor din ulei</li>
+                    <li><strong>POST pe alte platforme:</strong> Macintosh (pre-1987): crash silen?ios + Sad Mac icon + string hexazecimal</li>
+                    <li><strong>FDIR � Fault Detection, Isolation and Recovery:</strong> Subdomeniu al ingineriei de control: monitorizarea unui sistem, identificarea defec?iunii, localizarea</li>
+                    <li><strong>Diagnosticul defectelor &#238;n ma?ini:</strong> Metode de colectare date: monitorizarea vibra?iilor, imaging termic, analiza particulelor din ulei</li>
                 </ul>
             </div>
         </div>
@@ -519,80 +519,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Doi pași esențiali?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Doi pa?i esen?iali?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ghidată de funcționarea ANORMALĂ (&quot;ce e greșit?&quot;)</li>
-                    <li>b) cunoștințe de domeniu apriorice + strategii de căutare</li>
-                    <li>c) ghidată de funcționarea CORECTĂ a dispozitivului (&quot;ce se &#238;nt&#226;mplă?&quot;)</li>
-                    <li>d) schimbări recente ale sistemului sau mediului</li>
+                    <li>a) ghidata de func?ionarea ANORMALA (&quot;ce e gre?it?&quot;)</li>
+                    <li>b) cuno?tin?e de domeniu apriorice + strategii de cautare</li>
+                    <li>c) ghidata de func?ionarea CORECTA a dispozitivului (&quot;ce se &#238;nt&#226;mpla?&quot;)</li>
+                    <li>d) schimbari recente ale sistemului sau mediului</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — cunoștințe de domeniu apriorice + strategii de căutare</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � cuno?tin?e de domeniu apriorice + strategii de cautare</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Focus inițial?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Focus ini?ial?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ghidată de funcționarea CORECTĂ a dispozitivului (&quot;ce se &#238;nt&#226;mplă?&quot;)</li>
-                    <li>b) schimbări recente ale sistemului sau mediului</li>
-                    <li>c) ghidată de funcționarea ANORMALĂ (&quot;ce e greșit?&quot;)</li>
-                    <li>d) cunoștințe de domeniu apriorice + strategii de căutare</li>
+                    <li>a) ghidata de func?ionarea CORECTA a dispozitivului (&quot;ce se &#238;nt&#226;mpla?&quot;)</li>
+                    <li>b) schimbari recente ale sistemului sau mediului</li>
+                    <li>c) ghidata de func?ionarea ANORMALA (&quot;ce e gre?it?&quot;)</li>
+                    <li>d) cuno?tin?e de domeniu apriorice + strategii de cautare</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>b) — schimbări recente ale sistemului sau mediului</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>b) � schimbari recente ale sistemului sau mediului</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Troubleshooting eficient?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Troubleshooting eficient?</strong></p>
                 <ul class="specs-list">
-                    <li>a) &#238;nțelegerea clară a comportamentului așteptat + simptomele observate</li>
-                    <li>b) ghidată de funcționarea ANORMALĂ (&quot;ce e greșit?&quot;)</li>
-                    <li>c) cunoștințe de domeniu apriorice + strategii de căutare</li>
-                    <li>d) ghidată de funcționarea CORECTĂ a dispozitivului (&quot;ce se &#238;nt&#226;mplă?&quot;)</li>
+                    <li>a) &#238;n?elegerea clara a comportamentului a?teptat + simptomele observate</li>
+                    <li>b) ghidata de func?ionarea ANORMALA (&quot;ce e gre?it?&quot;)</li>
+                    <li>c) cuno?tin?e de domeniu apriorice + strategii de cautare</li>
+                    <li>d) ghidata de func?ionarea CORECTA a dispozitivului (&quot;ce se &#238;nt&#226;mpla?&quot;)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — &#238;nțelegerea clară a comportamentului așteptat + simptomele observate</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � &#238;n?elegerea clara a comportamentului a?teptat + simptomele observate</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: &#206;n electronică?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: &#206;n electronica?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ghidată de funcționarea CORECTĂ a dispozitivului (&quot;ce se &#238;nt&#226;mplă?&quot;)</li>
-                    <li>b) cunoștințe de domeniu apriorice + strategii de căutare</li>
-                    <li>c) componente sensibile termic (rezistența variază cu temperatura)</li>
-                    <li>d) ghidată de funcționarea ANORMALĂ (&quot;ce e greșit?&quot;)</li>
+                    <li>a) ghidata de func?ionarea CORECTA a dispozitivului (&quot;ce se &#238;nt&#226;mpla?&quot;)</li>
+                    <li>b) cuno?tin?e de domeniu apriorice + strategii de cautare</li>
+                    <li>c) componente sensibile termic (rezisten?a variaza cu temperatura)</li>
+                    <li>d) ghidata de func?ionarea ANORMALA (&quot;ce e gre?it?&quot;)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — componente sensibile termic (rezistența variază cu temperatura)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � componente sensibile termic (rezisten?a variaza cu temperatura)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: Folosită &#238;n?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: Folosita &#238;n?</strong></p>
                 <ul class="specs-list">
-                    <li>a) ghidată de funcționarea CORECTĂ a dispozitivului (&quot;ce se &#238;nt&#226;mplă?&quot;)</li>
-                    <li>b) ghidată de funcționarea ANORMALĂ (&quot;ce e greșit?&quot;)</li>
+                    <li>a) ghidata de func?ionarea CORECTA a dispozitivului (&quot;ce se &#238;nt&#226;mpla?&quot;)</li>
+                    <li>b) ghidata de func?ionarea ANORMALA (&quot;ce e gre?it?&quot;)</li>
                     <li>c) IT operations, manufacturing, telecom, industrial process control, accident analysis</li>
-                    <li>d) cunoștințe de domeniu apriorice + strategii de căutare</li>
+                    <li>d) cuno?tin?e de domeniu apriorice + strategii de cautare</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — IT operations, manufacturing, telecom, industrial process control, accident analysis</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � IT operations, manufacturing, telecom, industrial process control, accident analysis</strong></p>
                 </details>
             </div>
         </div>
@@ -600,22 +600,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: Metodologia de diagnostic</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de pașii diagnosticului hardware. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: Metodologia de diagnostic</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de pa?ii diagnosticului hardware. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
-                    <li>1. Defineste pe scurt: pașii diagnosticului hardware.</li>
-                    <li>2. Ce rol are analiza simptomelor în contextul hardware-ului?</li>
-                    <li>3. Cum se aplică această noțiune în ingineria consolelor?</li>
+                    <li>1. Defineste pe scurt: pa?ii diagnosticului hardware.</li>
+                    <li>2. Ce rol are analiza simptomelor �n contextul hardware-ului?</li>
+                    <li>3. Cum se aplica aceasta no?iune �n ingineria consolelor?</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
-                        <p><strong>1.</strong> Troubleshooting = formă de problem solving, aplicată la repararea produselor sau proceselor defecte</p>
-                        <p><strong>2.</strong> Doi pași esențiali: cunoștințe de domeniu apriorice + strategii de căutare</p>
-                        <p><strong>3.</strong> Focus inițial: schimbări recente ale sistemului sau mediului</p>
+                        <p><strong>1.</strong> Troubleshooting = forma de problem solving, aplicata la repararea produselor sau proceselor defecte</p>
+                        <p><strong>2.</strong> Doi pa?i esen?iali: cuno?tin?e de domeniu apriorice + strategii de cautare</p>
+                        <p><strong>3.</strong> Focus ini?ial: schimbari recente ale sistemului sau mediului</p>
                     </div>
                 </details>
             </div>
@@ -642,7 +642,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-7-5.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 7.5 &mdash; Bandwidth</a>
@@ -699,14 +699,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Metodologia de troubleshooting: procesul sistematic de diagnosticare și rezolvare a problemelor IT (CompTIA).</p>
+                <p class="video-description">Metodologia de troubleshooting: procesul sistematic de diagnosticare ?i rezolvare a problemelor IT (CompTIA).</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>

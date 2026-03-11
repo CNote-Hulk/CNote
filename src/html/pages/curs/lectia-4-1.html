@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lecția 4.1 — CPU">
+    <meta name="description" content="Lec?ia 4.1 � CPU">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <title>Lecția 4.1 — CPU — Console Notebook</title>
+    <title>Lec?ia 4.1 � CPU � Console Notebook</title>
     <link rel="stylesheet" href="../../../css/production.css">
     <!-- KaTeX - randare formule matematice -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -19,9 +19,9 @@
             <a href="../index.html" class="logo">Console Notebook</a>
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
             <ul class="nav-links">
-                <li><a href="../invata.html" class="active">Învață</a></li>
-                <li><a href="../evolutie.html">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
+                <li><a href="../invata.html" class="active">�nva?a</a></li>
+                <li><a href="../evolutie.html">Evolu?ie</a></li>
+                <li><a href="../comparatie.html">Compara?ie</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="../bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -30,10 +30,10 @@
 
     <section class="hero hero-cinematic hero-invata">
         <div class="hero-content">
-            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 — ARHITECTURĂ HARDWARE</p>
-            <h1>Lecția 4.1 — CPU</h1>
-            <p>execuția instrucțiunilor, pipeline, cache</p>
-            <a href="#introducere" class="hero-button">Incepe Lecția</a>
+            <p style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(237,233,227,0.5); margin-bottom: 0.5rem;">Modul 4 � ARHITECTURA HARDWARE</p>
+            <h1>Lec?ia 4.1 � CPU</h1>
+            <p>execu?ia instruc?iunilor, pipeline, cache</p>
+            <a href="#introducere" class="hero-button">Incepe Lec?ia</a>
         </div>
     </section>
 
@@ -42,146 +42,146 @@
             <h2 class="section-title">Introducere</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <p>CPU (Central Processing Unit) = procesorul principal dintr-un computer</p>
-                <p>Această lecție acoperă: <strong>execuția instrucțiunilor</strong>, <strong>pipeline</strong>, <strong>cache</strong>.</p>
-                <p>Fiecare concept prezentat este esențial pentru înțelegerea modului în care funcționează hardware-ul consolelor moderne.</p>
+                <p>Aceasta lec?ie acopera: <strong>execu?ia instruc?iunilor</strong>, <strong>pipeline</strong>, <strong>cache</strong>.</p>
+                <p>Fiecare concept prezentat este esen?ial pentru �n?elegerea modului �n care func?ioneaza hardware-ul consolelor moderne.</p>
             </div>
         </div>
     </section>
 
     <section class="section" id="teorie">
         <div class="container">
-            <h2 class="section-title">Teorie Structurată</h2>
+            <h2 class="section-title">Teorie Structurata</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.1 — Definiție și componente principale</h3>
+                <h3>4.1.1 � Defini?ie ?i componente principale</h3>
                 <ul class="specs-list">
                     <li>CPU (Central Processing Unit) = procesorul principal dintr-un computer</li>
-                    <li><strong>Execută instrucțiuni ale unui program:</strong> aritmetice, logice, control, I/O</li>
-                    <li><strong>Componente principale:</strong> ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)</li>
+                    <li><strong>Executa instruc?iuni ale unui program:</strong> aritmetice, logice, control, I/O</li>
+                    <li><strong>Componente principale:</strong> ALU (opera?ii aritmetice ?i logice), registre procesor (furnizeaza operanzi ?i stocheaza rezultate), control unit (orchestreaza fetch/decode/execute)</li>
                     <li><strong>Von Neumann:</strong> raportul EDVAC 1945, program stocat &#238;n memorie</li>
-                    <li><strong>Harvard architecture:</strong> separare memorie instrucțiuni/date (ex. Atmel AVR)</li>
+                    <li><strong>Harvard architecture:</strong> separare memorie instruc?iuni/date (ex. Atmel AVR)</li>
                     <li><strong>Modern:</strong> multi-core (mai multe CPU-uri pe un singur chip), multithreading</li>
                     <li><strong>Microprocesor:</strong> CPU implementat pe un singur circuit integrat</li>
                     <li><strong>Intel 4004 (1971):</strong> primul microprocesor comercial, integra ALU + control unit + registre</li>
-                    <li><strong>Moore&#39;s Law:</strong> creșterea complexității/nr. tranzistori pe IC</li>
+                    <li><strong>Moore&#39;s Law:</strong> cre?terea complexita?ii/nr. tranzistori pe IC</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.2 — Ciclul de execuție al instrucțiunilor (Fetch-Decode-Execute)</h3>
+                <h3>4.1.2 � Ciclul de execu?ie al instruc?iunilor (Fetch-Decode-Execute)</h3>
                 <ul class="specs-list">
-                    <li><strong>Operația fundamentală:</strong> fetch → decode → execute (instruction cycle)</li>
-                    <li><strong>FETCH:</strong> citirea instrucțiunii din memorie; adresa determinată de program counter (PC/instruction pointer)</li>
-                    <li>PC incrementat cu lungimea instrucțiunii după fetch</li>
-                    <li>Instrucțiunea trebuie adusă din memorie (potențial lentă) → cache și pipeline rezolvă</li>
-                    <li><strong>DECODE:</strong> circuitul instruction decoder convertește instrucțiunea &#238;n semnale de control</li>
-                    <li><strong>Opcode:</strong> c&#226;mpul care indică operația; restul c&#226;mpurilor = operanzi</li>
+                    <li><strong>Opera?ia fundamentala:</strong> fetch ? decode ? execute (instruction cycle)</li>
+                    <li><strong>FETCH:</strong> citirea instruc?iunii din memorie; adresa determinata de program counter (PC/instruction pointer)</li>
+                    <li>PC incrementat cu lungimea instruc?iunii dupa fetch</li>
+                    <li>Instruc?iunea trebuie adusa din memorie (poten?ial lenta) ? cache ?i pipeline rezolva</li>
+                    <li><strong>DECODE:</strong> circuitul instruction decoder converte?te instruc?iunea &#238;n semnale de control</li>
+                    <li><strong>Opcode:</strong> c&#226;mpul care indica opera?ia; restul c&#226;mpurilor = operanzi</li>
                     <li><strong>Operanzii pot fi:</strong> valori imediate, registre procesor, adrese de memorie</li>
                     <li><strong>Implementare:</strong> hardwired (circuit fix) sau microprogram (microcode, reprogramabil)</li>
-                    <li><strong>EXECUTE:</strong> semnale de control activează/dezactivează părți ale CPU</li>
-                    <li>ALU efectuează operația; rezultatul → registru intern sau memorie</li>
-                    <li>Overflow flag setat dacă rezultatul depășește word size</li>
-                    <li><strong>Jump instructions:</strong> modifică PC → permit bucle, condiții, funcții</li>
-                    <li><strong>Status register (flags register):</strong> stochează rezultatul comparațiilor → branching condițional</li>
+                    <li><strong>EXECUTE:</strong> semnale de control activeaza/dezactiveaza par?i ale CPU</li>
+                    <li>ALU efectueaza opera?ia; rezultatul ? registru intern sau memorie</li>
+                    <li>Overflow flag setat daca rezultatul depa?e?te word size</li>
+                    <li><strong>Jump instructions:</strong> modifica PC ? permit bucle, condi?ii, func?ii</li>
+                    <li><strong>Status register (flags register):</strong> stocheaza rezultatul compara?iilor ? branching condi?ional</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.3 — Pipeline și paralelism</h3>
+                <h3>4.1.3 � Pipeline ?i paralelism</h3>
                 <ul class="specs-list">
-                    <li><strong>Instruction pipelining:</strong> primii pași (fetch/decode) ai instrucțiunii următoare &#238;ncep &#238;nainte de finalizarea celei curente</li>
-                    <li><strong>Comparat cu linia de asamblare:</strong> fiecare etapă face instrucțiunea &quot;mai completată&quot;</li>
-                    <li><strong>Data dependency conflict:</strong> rezultatul operației anterioare necesar pentru următoarea</li>
+                    <li><strong>Instruction pipelining:</strong> primii pa?i (fetch/decode) ai instruc?iunii urmatoare &#238;ncep &#238;nainte de finalizarea celei curente</li>
+                    <li><strong>Comparat cu linia de asamblare:</strong> fiecare etapa face instruc?iunea &quot;mai completata&quot;</li>
+                    <li><strong>Data dependency conflict:</strong> rezultatul opera?iei anterioare necesar pentru urmatoarea</li>
                     <li><strong>Pipeline stall:</strong> CPU devine aproape scalar, inhibat doar de stalls</li>
                     <li><strong>Superscalar:</strong> pipeline lung + multiple execution units identice (ALU, FPU, load-store, AGU)</li>
-                    <li><strong>Dispatcher:</strong> decide dacă instrucțiunile pot fi executate &#238;n paralel</li>
-                    <li><strong>Necesită:</strong> branch prediction, speculative execution, register renaming, out-of-order execution</li>
-                    <li><strong>IPC (Instructions Per Clock):</strong> măsoară eficiența; subscalar (IPC &lt; 1), scalar (IPC = 1), superscalar (IPC &gt; 1)</li>
-                    <li><strong>VLIW (Very Long Instruction Word):</strong> mută o parte din ILP &#238;n software/ISA</li>
+                    <li><strong>Dispatcher:</strong> decide daca instruc?iunile pot fi executate &#238;n paralel</li>
+                    <li><strong>Necesita:</strong> branch prediction, speculative execution, register renaming, out-of-order execution</li>
+                    <li><strong>IPC (Instructions Per Clock):</strong> masoara eficien?a; subscalar (IPC &lt; 1), scalar (IPC = 1), superscalar (IPC &gt; 1)</li>
+                    <li><strong>VLIW (Very Long Instruction Word):</strong> muta o parte din ILP &#238;n software/ISA</li>
                     <li><strong>Task-level parallelism:</strong> multithreading (temporal MT, simultaneous MT/SMT), multi-core</li>
-                    <li><strong>Exemple consolă:</strong> Xbox 360 triple-core PowerPC, PS3 Cell 7-core</li>
-                    <li><strong>Data parallelism:</strong> SIMD (Single Instruction, Multiple Data) – ex. Intel SSE, PowerPC AltiVec</li>
+                    <li><strong>Exemple consola:</strong> Xbox 360 triple-core PowerPC, PS3 Cell 7-core</li>
+                    <li><strong>Data parallelism:</strong> SIMD (Single Instruction, Multiple Data) � ex. Intel SSE, PowerPC AltiVec</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.4 — Structura și implementarea</h3>
+                <h3>4.1.4 � Structura ?i implementarea</h3>
                 <ul class="specs-list">
-                    <li><strong>ISA (Instruction Set Architecture):</strong> setul de operații de bază hardwired &#238;n CPU</li>
-                    <li>Opcode → binary decoder → semnale de control</li>
-                    <li><strong>Control Unit:</strong> dirijează operația procesorului, timing și semnale de control</li>
-                    <li><strong>ALU:</strong> circuit digital, operații aritmetice/logice &#238;ntregi; modern CPU-uri au multiple ALU-uri</li>
-                    <li><strong>AGU (Address Generation Unit):</strong> calculează adrese memorie &#238;n paralel cu CPU</li>
-                    <li><strong>MMU (Memory Management Unit):</strong> traduce adrese logice → fizice, memory protection, paging, virtual memory</li>
+                    <li><strong>ISA (Instruction Set Architecture):</strong> setul de opera?ii de baza hardwired &#238;n CPU</li>
+                    <li>Opcode ? binary decoder ? semnale de control</li>
+                    <li><strong>Control Unit:</strong> dirijeaza opera?ia procesorului, timing ?i semnale de control</li>
+                    <li><strong>ALU:</strong> circuit digital, opera?ii aritmetice/logice &#238;ntregi; modern CPU-uri au multiple ALU-uri</li>
+                    <li><strong>AGU (Address Generation Unit):</strong> calculeaza adrese memorie &#238;n paralel cu CPU</li>
+                    <li><strong>MMU (Memory Management Unit):</strong> traduce adrese logice ? fizice, memory protection, paging, virtual memory</li>
                     <li><strong>VRM (Voltage Regulator Module):</strong> module integrate pe die pentru reglare tensiune</li>
-                    <li><strong>Word size:</strong> 8/16/32/64 biți; determină rangul de numere &#238;ntregi și adrese</li>
-                    <li><strong>Clock rate:</strong> semnal de ceas determină viteza operațiilor secvențiale</li>
+                    <li><strong>Word size:</strong> 8/16/32/64 bi?i; determina rangul de numere &#238;ntregi ?i adrese</li>
+                    <li><strong>Clock rate:</strong> semnal de ceas determina viteza opera?iilor secven?iale</li>
                     <li><strong>Clock gating:</strong> oprirea semnalului de ceas pentru componentele inactive (economie energie)</li>
-                    <li><strong>Ex:</strong> IBM PowerPC Xenon (Xbox 360) folosește clock gating extensiv</li>
+                    <li><strong>Ex:</strong> IBM PowerPC Xenon (Xbox 360) folose?te clock gating extensiv</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.5 — Definiție și principii</h3>
+                <h3>4.1.5 � Defini?ie ?i principii</h3>
                 <ul class="specs-list">
-                    <li>CPU cache = memorie hardware folosită de CPU pentru reducerea timpului/energiei de acces la main memory</li>
-                    <li>Cache = memorie mai mică, mai rapidă, mai aproape de nucleul procesorului</li>
-                    <li>Stochează copii ale datelor din locații de memorie frecvent utilizate</li>
-                    <li><strong>SRAM (Static RAM):</strong> necesită 4-6 tranzistori per bit; rapidă dar costisitoare</li>
-                    <li><strong>DRAM:</strong> 1 tranzistor + 1 capacitor per bit; lentă dar densitate mare</li>
-                    <li><strong>Cache hit:</strong> datele căutate sunt &#238;n cache → acces rapid</li>
-                    <li><strong>Cache miss:</strong> datele nu sunt &#238;n cache → acces la main memory (latență mare)</li>
+                    <li>CPU cache = memorie hardware folosita de CPU pentru reducerea timpului/energiei de acces la main memory</li>
+                    <li>Cache = memorie mai mica, mai rapida, mai aproape de nucleul procesorului</li>
+                    <li>Stocheaza copii ale datelor din loca?ii de memorie frecvent utilizate</li>
+                    <li><strong>SRAM (Static RAM):</strong> necesita 4-6 tranzistori per bit; rapida dar costisitoare</li>
+                    <li><strong>DRAM:</strong> 1 tranzistor + 1 capacitor per bit; lenta dar densitate mare</li>
+                    <li><strong>Cache hit:</strong> datele cautate sunt &#238;n cache ? acces rapid</li>
+                    <li><strong>Cache miss:</strong> datele nu sunt &#238;n cache ? acces la main memory (laten?a mare)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.6 — Ierarhia cache (niveluri L1, L2, L3)</h3>
+                <h3>4.1.6 � Ierarhia cache (niveluri L1, L2, L3)</h3>
                 <ul class="specs-list">
-                    <li><strong>Majoritatea CPU-urilor:</strong> cel puțin 3 niveluri independente (L1, L2, L3)</li>
-                    <li><strong>L1:</strong> cea mai rapidă, cea mai aproape de core, cea mai mică</li>
-                    <li><strong>Split:</strong> L1i (instrucțiuni) + L1d (date) – standard din IBM 801 (1976)</li>
+                    <li><strong>Majoritatea CPU-urilor:</strong> cel pu?in 3 niveluri independente (L1, L2, L3)</li>
+                    <li><strong>L1:</strong> cea mai rapida, cea mai aproape de core, cea mai mica</li>
+                    <li><strong>Split:</strong> L1i (instruc?iuni) + L1d (date) � standard din IBM 801 (1976)</li>
                     <li><strong>Dimensiuni tipice:</strong> 32-96 KiB per core</li>
-                    <li><strong>L2:</strong> mai mare, mai lentă; de obicei unificată (instrucțiuni + date); dedicată per core</li>
-                    <li><strong>L3:</strong> partajată &#238;ntre toate core-urile (last-level cache/LLC); poate fi zeci de MiB</li>
+                    <li><strong>L2:</strong> mai mare, mai lenta; de obicei unificata (instruc?iuni + date); dedicata per core</li>
+                    <li><strong>L3:</strong> partajata &#238;ntre toate core-urile (last-level cache/LLC); poate fi zeci de MiB</li>
                     <li><strong>L4:</strong> rar, de obicei eDRAM pe modul separat (ex. Intel Haswell Crystalwell 128 MiB)</li>
-                    <li><strong>Tradeoff:</strong> cache mai mare = hit rate mai bun dar latență mai mare</li>
-                    <li><strong>Register file:</strong> cea mai mică și rapidă &quot;cache&quot; din sistem</li>
-                    <li><strong>Istorie:</strong> Atlas 2 și IBM System/360 Model 85 (anii 1960); 486 = primul cache L1 on-die (8 KiB)</li>
+                    <li><strong>Tradeoff:</strong> cache mai mare = hit rate mai bun dar laten?a mai mare</li>
+                    <li><strong>Register file:</strong> cea mai mica ?i rapida &quot;cache&quot; din sistem</li>
+                    <li><strong>Istorie:</strong> Atlas 2 ?i IBM System/360 Model 85 (anii 1960); 486 = primul cache L1 on-die (8 KiB)</li>
                     <li><strong>x86:</strong> 386 cache extern; 486 L1 on-die; Pentium Pro L2 on-package; modern = totul on-die</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.7 — Funcționare cache</h3>
+                <h3>4.1.7 � Func?ionare cache</h3>
                 <ul class="specs-list">
-                    <li><strong>Cache line (cache block):</strong> unitatea de transfer &#238;ntre memorie și cache (dimensiune fixă, tipic 64 bytes)</li>
-                    <li><strong>Cache entry:</strong> tag (adresă) + data block + flag bits</li>
-                    <li><strong>Tag:</strong> identifică locația din main memory stocată</li>
-                    <li><strong>Cache hit/miss:</strong> procesorul verifică tag-urile pentru adresa căutată</li>
+                    <li><strong>Cache line (cache block):</strong> unitatea de transfer &#238;ntre memorie ?i cache (dimensiune fixa, tipic 64 bytes)</li>
+                    <li><strong>Cache entry:</strong> tag (adresa) + data block + flag bits</li>
+                    <li><strong>Tag:</strong> identifica loca?ia din main memory stocata</li>
+                    <li><strong>Cache hit/miss:</strong> procesorul verifica tag-urile pentru adresa cautata</li>
                     <li><strong>Replacement policies:</strong> LRU (Least Recently Used) cel mai popular</li>
                     <li>Write policies:</li>
-                    <li><strong>Write-through:</strong> fiecare scriere &#238;n cache → scriere imediată &#238;n memorie</li>
-                    <li><strong>Write-back (copy-back):</strong> scrierile nu sunt reflectate imediat; dirty bit marchează modificările</li>
+                    <li><strong>Write-through:</strong> fiecare scriere &#238;n cache ? scriere imediata &#238;n memorie</li>
+                    <li><strong>Write-back (copy-back):</strong> scrierile nu sunt reflectate imediat; dirty bit marcheaza modificarile</li>
                     <li>Associativity:</li>
-                    <li><strong>Direct-mapped:</strong> fiecare adresă → exact o locație &#238;n cache</li>
-                    <li><strong>N-way set associative:</strong> fiecare adresă → N locații posibile (ex. 8-way la CPU-uri moderne)</li>
-                    <li><strong>Fully associative:</strong> orice locație (practic doar pentru cache-uri mici)</li>
-                    <li>2&#215; associativity ≈ 2&#215; cache size &#238;n termeni de hit rate</li>
+                    <li><strong>Direct-mapped:</strong> fiecare adresa ? exact o loca?ie &#238;n cache</li>
+                    <li><strong>N-way set associative:</strong> fiecare adresa ? N loca?ii posibile (ex. 8-way la CPU-uri moderne)</li>
+                    <li><strong>Fully associative:</strong> orice loca?ie (practic doar pentru cache-uri mici)</li>
+                    <li>2&#215; associativity � 2&#215; cache size &#238;n termeni de hit rate</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>4.1.8 — Cache misses și stalls</h3>
+                <h3>4.1.8 � Cache misses ?i stalls</h3>
                 <ul class="specs-list">
                     <li><strong>3 tipuri de cache miss:</strong> instruction read miss (cel mai costisitor), data read miss, data write miss</li>
-                    <li><strong>CPU stall:</strong> procesorul răm&#226;ne fără lucru &#238;n așteptarea datelor din memorie</li>
-                    <li>CPU-urile moderne pot executa sute de instrucțiuni &#238;n timpul unui singur fetch din main memory</li>
-                    <li><strong>Soluții:</strong> out-of-order execution (execută instrucțiuni independente), SMT (alt thread pe core)</li>
-                    <li><strong>Cache-uri specializate:</strong> TLB (adresse virtuale → fizice), instruction cache, data cache, μop cache</li>
-                    <li><strong>μop cache:</strong> stochează micro-operații decodate (Intel Sandy Bridge+, AMD Zen+)</li>
-                    <li><strong>Trace cache:</strong> Intel Pentium 4, stochează secvențe de instrucțiuni decodate</li>
+                    <li><strong>CPU stall:</strong> procesorul ram&#226;ne fara lucru &#238;n a?teptarea datelor din memorie</li>
+                    <li>CPU-urile moderne pot executa sute de instruc?iuni &#238;n timpul unui singur fetch din main memory</li>
+                    <li><strong>Solu?ii:</strong> out-of-order execution (executa instruc?iuni independente), SMT (alt thread pe core)</li>
+                    <li><strong>Cache-uri specializate:</strong> TLB (adresse virtuale ? fizice), instruction cache, data cache, �op cache</li>
+                    <li><strong>�op cache:</strong> stocheaza micro-opera?ii decodate (Intel Sandy Bridge+, AMD Zen+)</li>
+                    <li><strong>Trace cache:</strong> Intel Pentium 4, stocheaza secven?e de instruc?iuni decodate</li>
                     <li><strong>Multi-core:</strong> L1 dedicat per core; L2 uneori partajat per pereche; L3 partajat global (LLC)</li>
-                    <li><strong>Inclusive vs exclusive:</strong> inclusive = date L1 replicate și &#238;n L2; exclusive = date &#238;n max un nivel (AMD Athlon)</li>
+                    <li><strong>Inclusive vs exclusive:</strong> inclusive = date L1 replicate ?i &#238;n L2; exclusive = date &#238;n max un nivel (AMD Athlon)</li>
                 </ul>
             </div>
 
@@ -190,65 +190,65 @@
 
     <section class="section" id="legatura">
         <div class="container">
-            <h2 class="section-title">Legătura Fizică — Informatică</h2>
+            <h2 class="section-title">Legatura Fizica � Informatica</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și componente principale</h3>
+                <h3>Defini?ie ?i componente principale</h3>
                 <ul class="specs-list">
                     <li>CPU (Central Processing Unit) = procesorul principal dintr-un computer</li>
-                    <li><strong>Execută instrucțiuni ale unui program:</strong> aritmetice, logice, control, I/O</li>
-                    <li><strong>Componente principale:</strong> ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)</li>
+                    <li><strong>Executa instruc?iuni ale unui program:</strong> aritmetice, logice, control, I/O</li>
+                    <li><strong>Componente principale:</strong> ALU (opera?ii aritmetice ?i logice), registre procesor (furnizeaza operanzi ?i stocheaza rezultate), control unit (orchestreaza fetch/decode/execute)</li>
                     <li><strong>Modern:</strong> multi-core (mai multe CPU-uri pe un singur chip), multithreading</li>
                     <li><strong>Microprocesor:</strong> CPU implementat pe un singur circuit integrat</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Ciclul de execuție al instrucțiunilor (Fetch-Decode-Execute)</h3>
+                <h3>Ciclul de execu?ie al instruc?iunilor (Fetch-Decode-Execute)</h3>
                 <ul class="specs-list">
                     <li><strong>Operanzii pot fi:</strong> valori imediate, registre procesor, adrese de memorie</li>
-                    <li><strong>EXECUTE:</strong> semnale de control activează/dezactivează părți ale CPU</li>
+                    <li><strong>EXECUTE:</strong> semnale de control activeaza/dezactiveaza par?i ale CPU</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Pipeline și paralelism</h3>
+                <h3>Pipeline ?i paralelism</h3>
                 <ul class="specs-list">
                     <li><strong>Pipeline stall:</strong> CPU devine aproape scalar, inhibat doar de stalls</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și principii</h3>
+                <h3>Defini?ie ?i principii</h3>
                 <ul class="specs-list">
-                    <li>CPU cache = memorie hardware folosită de CPU pentru reducerea timpului/energiei de acces la main memory</li>
-                    <li>Cache = memorie mai mică, mai rapidă, mai aproape de nucleul procesorului</li>
-                    <li><strong>SRAM (Static RAM):</strong> necesită 4-6 tranzistori per bit; rapidă dar costisitoare</li>
-                    <li><strong>DRAM:</strong> 1 tranzistor + 1 capacitor per bit; lentă dar densitate mare</li>
+                    <li>CPU cache = memorie hardware folosita de CPU pentru reducerea timpului/energiei de acces la main memory</li>
+                    <li>Cache = memorie mai mica, mai rapida, mai aproape de nucleul procesorului</li>
+                    <li><strong>SRAM (Static RAM):</strong> necesita 4-6 tranzistori per bit; rapida dar costisitoare</li>
+                    <li><strong>DRAM:</strong> 1 tranzistor + 1 capacitor per bit; lenta dar densitate mare</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
                 <h3>Ierarhia cache (niveluri L1, L2, L3)</h3>
                 <ul class="specs-list">
-                    <li><strong>Majoritatea CPU-urilor:</strong> cel puțin 3 niveluri independente (L1, L2, L3)</li>
+                    <li><strong>Majoritatea CPU-urilor:</strong> cel pu?in 3 niveluri independente (L1, L2, L3)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Funcționare cache</h3>
+                <h3>Func?ionare cache</h3>
                 <ul class="specs-list">
-                    <li><strong>Cache hit/miss:</strong> procesorul verifică tag-urile pentru adresa căutată</li>
-                    <li><strong>Write-back (copy-back):</strong> scrierile nu sunt reflectate imediat; dirty bit marchează modificările</li>
-                    <li><strong>N-way set associative:</strong> fiecare adresă → N locații posibile (ex. 8-way la CPU-uri moderne)</li>
+                    <li><strong>Cache hit/miss:</strong> procesorul verifica tag-urile pentru adresa cautata</li>
+                    <li><strong>Write-back (copy-back):</strong> scrierile nu sunt reflectate imediat; dirty bit marcheaza modificarile</li>
+                    <li><strong>N-way set associative:</strong> fiecare adresa ? N loca?ii posibile (ex. 8-way la CPU-uri moderne)</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Cache misses și stalls</h3>
+                <h3>Cache misses ?i stalls</h3>
                 <ul class="specs-list">
-                    <li><strong>CPU stall:</strong> procesorul răm&#226;ne fără lucru &#238;n așteptarea datelor din memorie</li>
-                    <li>CPU-urile moderne pot executa sute de instrucțiuni &#238;n timpul unui singur fetch din main memory</li>
+                    <li><strong>CPU stall:</strong> procesorul ram&#226;ne fara lucru &#238;n a?teptarea datelor din memorie</li>
+                    <li>CPU-urile moderne pot executa sute de instruc?iuni &#238;n timpul unui singur fetch din main memory</li>
                 </ul>
             </div>
         </div>
@@ -256,29 +256,29 @@
 
     <section class="section" id="aplicare">
         <div class="container">
-            <h2 class="section-title">Aplicare Directă în Console</h2>
+            <h2 class="section-title">Aplicare Directa �n Console</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Pipeline și paralelism</h3>
+                <h3>Pipeline ?i paralelism</h3>
                 <ul class="specs-list">
-                    <li><strong>Exemple consolă:</strong> Xbox 360 triple-core PowerPC, PS3 Cell 7-core</li>
+                    <li><strong>Exemple consola:</strong> Xbox 360 triple-core PowerPC, PS3 Cell 7-core</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Structura și implementarea</h3>
+                <h3>Structura ?i implementarea</h3>
                 <ul class="specs-list">
-                    <li><strong>ISA (Instruction Set Architecture):</strong> setul de operații de bază hardwired &#238;n CPU</li>
-                    <li>Opcode → binary decoder → semnale de control</li>
-                    <li><strong>Control Unit:</strong> dirijează operația procesorului, timing și semnale de control</li>
-                    <li><strong>ALU:</strong> circuit digital, operații aritmetice/logice &#238;ntregi; modern CPU-uri au multiple ALU-uri</li>
-                    <li><strong>AGU (Address Generation Unit):</strong> calculează adrese memorie &#238;n paralel cu CPU</li>
-                    <li><strong>MMU (Memory Management Unit):</strong> traduce adrese logice → fizice, memory protection, paging, virtual memory</li>
+                    <li><strong>ISA (Instruction Set Architecture):</strong> setul de opera?ii de baza hardwired &#238;n CPU</li>
+                    <li>Opcode ? binary decoder ? semnale de control</li>
+                    <li><strong>Control Unit:</strong> dirijeaza opera?ia procesorului, timing ?i semnale de control</li>
+                    <li><strong>ALU:</strong> circuit digital, opera?ii aritmetice/logice &#238;ntregi; modern CPU-uri au multiple ALU-uri</li>
+                    <li><strong>AGU (Address Generation Unit):</strong> calculeaza adrese memorie &#238;n paralel cu CPU</li>
+                    <li><strong>MMU (Memory Management Unit):</strong> traduce adrese logice ? fizice, memory protection, paging, virtual memory</li>
                     <li><strong>VRM (Voltage Regulator Module):</strong> module integrate pe die pentru reglare tensiune</li>
-                    <li><strong>Word size:</strong> 8/16/32/64 biți; determină rangul de numere &#238;ntregi și adrese</li>
-                    <li><strong>Clock rate:</strong> semnal de ceas determină viteza operațiilor secvențiale</li>
+                    <li><strong>Word size:</strong> 8/16/32/64 bi?i; determina rangul de numere &#238;ntregi ?i adrese</li>
+                    <li><strong>Clock rate:</strong> semnal de ceas determina viteza opera?iilor secven?iale</li>
                     <li><strong>Clock gating:</strong> oprirea semnalului de ceas pentru componentele inactive (economie energie)</li>
-                    <li><strong>Ex:</strong> IBM PowerPC Xenon (Xbox 360) folosește clock gating extensiv</li>
+                    <li><strong>Ex:</strong> IBM PowerPC Xenon (Xbox 360) folose?te clock gating extensiv</li>
                 </ul>
             </div>
         </div>
@@ -289,16 +289,16 @@
             <h2 class="section-title">Exemplu Real de Hardware</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Definiție și componente principale</h3>
+                <h3>Defini?ie ?i componente principale</h3>
                 <ul class="specs-list">
                     <li><strong>Intel 4004 (1971):</strong> primul microprocesor comercial, integra ALU + control unit + registre</li>
                 </ul>
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Pipeline și paralelism</h3>
+                <h3>Pipeline ?i paralelism</h3>
                 <ul class="specs-list">
-                    <li><strong>Data parallelism:</strong> SIMD (Single Instruction, Multiple Data) – ex. Intel SSE, PowerPC AltiVec</li>
+                    <li><strong>Data parallelism:</strong> SIMD (Single Instruction, Multiple Data) � ex. Intel SSE, PowerPC AltiVec</li>
                 </ul>
             </div>
 
@@ -310,11 +310,11 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>Cache misses și stalls</h3>
+                <h3>Cache misses ?i stalls</h3>
                 <ul class="specs-list">
-                    <li><strong>μop cache:</strong> stochează micro-operații decodate (Intel Sandy Bridge+, AMD Zen+)</li>
-                    <li><strong>Trace cache:</strong> Intel Pentium 4, stochează secvențe de instrucțiuni decodate</li>
-                    <li><strong>Inclusive vs exclusive:</strong> inclusive = date L1 replicate și &#238;n L2; exclusive = date &#238;n max un nivel (AMD Athlon)</li>
+                    <li><strong>�op cache:</strong> stocheaza micro-opera?ii decodate (Intel Sandy Bridge+, AMD Zen+)</li>
+                    <li><strong>Trace cache:</strong> Intel Pentium 4, stocheaza secven?e de instruc?iuni decodate</li>
+                    <li><strong>Inclusive vs exclusive:</strong> inclusive = date L1 replicate ?i &#238;n L2; exclusive = date &#238;n max un nivel (AMD Athlon)</li>
                 </ul>
             </div>
         </div>
@@ -326,8 +326,8 @@
 
             <div class="cards-grid">
                 <div class="card">
-                    <h3>⚠️ Probleme asociate cu CPU</h3>
-                    <p>Problemele frecvente asociate cu această temă vor fi detaliate pe măsură ce cursul avansează.</p>
+                    <h3>?? Probleme asociate cu CPU</h3>
+                    <p>Problemele frecvente asociate cu aceasta tema vor fi detaliate pe masura ce cursul avanseaza.</p>
                 </div>
             </div>
         </div>
@@ -338,14 +338,14 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție și componente principale:</strong> CPU (Central Processing Unit) = procesorul principal dintr-un computer</li>
-                    <li><strong>Ciclul de execuție al instrucțiunilor (Fetch-Decode-Execute):</strong> Operația fundamentală: fetch → decode → execute (instruction cycle)</li>
-                    <li><strong>Pipeline și paralelism:</strong> Instruction pipelining: primii pași (fetch/decode) ai instrucțiunii următoare &#238;ncep &#238;nainte de finalizarea celei curente</li>
-                    <li><strong>Structura și implementarea:</strong> ISA (Instruction Set Architecture): setul de operații de bază hardwired &#238;n CPU</li>
-                    <li><strong>Definiție și principii:</strong> CPU cache = memorie hardware folosită de CPU pentru reducerea timpului/energiei de acces la main memory</li>
-                    <li><strong>Ierarhia cache (niveluri L1, L2, L3):</strong> Majoritatea CPU-urilor: cel puțin 3 niveluri independente (L1, L2, L3)</li>
-                    <li><strong>Funcționare cache:</strong> Cache line (cache block): unitatea de transfer &#238;ntre memorie și cache (dimensiune fixă, tipic 64 bytes)</li>
-                    <li><strong>Cache misses și stalls:</strong> 3 tipuri de cache miss: instruction read miss (cel mai costisitor), data read miss, data write miss</li>
+                    <li><strong>Defini?ie ?i componente principale:</strong> CPU (Central Processing Unit) = procesorul principal dintr-un computer</li>
+                    <li><strong>Ciclul de execu?ie al instruc?iunilor (Fetch-Decode-Execute):</strong> Opera?ia fundamentala: fetch ? decode ? execute (instruction cycle)</li>
+                    <li><strong>Pipeline ?i paralelism:</strong> Instruction pipelining: primii pa?i (fetch/decode) ai instruc?iunii urmatoare &#238;ncep &#238;nainte de finalizarea celei curente</li>
+                    <li><strong>Structura ?i implementarea:</strong> ISA (Instruction Set Architecture): setul de opera?ii de baza hardwired &#238;n CPU</li>
+                    <li><strong>Defini?ie ?i principii:</strong> CPU cache = memorie hardware folosita de CPU pentru reducerea timpului/energiei de acces la main memory</li>
+                    <li><strong>Ierarhia cache (niveluri L1, L2, L3):</strong> Majoritatea CPU-urilor: cel pu?in 3 niveluri independente (L1, L2, L3)</li>
+                    <li><strong>Func?ionare cache:</strong> Cache line (cache block): unitatea de transfer &#238;ntre memorie ?i cache (dimensiune fixa, tipic 64 bytes)</li>
+                    <li><strong>Cache misses ?i stalls:</strong> 3 tipuri de cache miss: instruction read miss (cel mai costisitor), data read miss, data write miss</li>
                 </ul>
             </div>
         </div>
@@ -353,80 +353,80 @@
 
     <section class="section" id="quiz">
         <div class="container">
-            <h2 class="section-title">Quiz — 5 Întrebări</h2>
+            <h2 class="section-title">Quiz � 5 �ntrebari</h2>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 1</h3>
-                <p><strong>Care afirmație este corectă despre: Execută instrucțiuni ale unui program?</strong></p>
+                <h3>�ntrebarea 1</h3>
+                <p><strong>Care afirma?ie este corecta despre: Executa instruc?iuni ale unui program?</strong></p>
                 <ul class="specs-list">
                     <li>a) raportul EDVAC 1945, program stocat &#238;n memorie</li>
-                    <li>b) separare memorie instrucțiuni/date (ex. Atmel AVR)</li>
-                    <li>c) ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)</li>
+                    <li>b) separare memorie instruc?iuni/date (ex. Atmel AVR)</li>
+                    <li>c) ALU (opera?ii aritmetice ?i logice), registre procesor (furnizeaza operanzi ?i stocheaza rezultate), control unit (orchestreaza fetch/decode/execute)</li>
                     <li>d) aritmetice, logice, control, I/O</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — aritmetice, logice, control, I/O</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � aritmetice, logice, control, I/O</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 2</h3>
-                <p><strong>Care afirmație este corectă despre: Operația fundamentală?</strong></p>
+                <h3>�ntrebarea 2</h3>
+                <p><strong>Care afirma?ie este corecta despre: Opera?ia fundamentala?</strong></p>
                 <ul class="specs-list">
                     <li>a) raportul EDVAC 1945, program stocat &#238;n memorie</li>
-                    <li>b) ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)</li>
-                    <li>c) fetch → decode → execute (instruction cycle)</li>
+                    <li>b) ALU (opera?ii aritmetice ?i logice), registre procesor (furnizeaza operanzi ?i stocheaza rezultate), control unit (orchestreaza fetch/decode/execute)</li>
+                    <li>c) fetch ? decode ? execute (instruction cycle)</li>
                     <li>d) aritmetice, logice, control, I/O</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — fetch → decode → execute (instruction cycle)</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � fetch ? decode ? execute (instruction cycle)</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 3</h3>
-                <p><strong>Care afirmație este corectă despre: Instruction pipelining?</strong></p>
+                <h3>�ntrebarea 3</h3>
+                <p><strong>Care afirma?ie este corecta despre: Instruction pipelining?</strong></p>
                 <ul class="specs-list">
                     <li>a) aritmetice, logice, control, I/O</li>
                     <li>b) raportul EDVAC 1945, program stocat &#238;n memorie</li>
-                    <li>c) primii pași (fetch/decode) ai instrucțiunii următoare &#238;ncep &#238;nainte de finalizarea celei curente</li>
-                    <li>d) ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)</li>
+                    <li>c) primii pa?i (fetch/decode) ai instruc?iunii urmatoare &#238;ncep &#238;nainte de finalizarea celei curente</li>
+                    <li>d) ALU (opera?ii aritmetice ?i logice), registre procesor (furnizeaza operanzi ?i stocheaza rezultate), control unit (orchestreaza fetch/decode/execute)</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>c) — primii pași (fetch/decode) ai instrucțiunii următoare &#238;ncep &#238;nainte de finalizarea celei curente</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>c) � primii pa?i (fetch/decode) ai instruc?iunii urmatoare &#238;ncep &#238;nainte de finalizarea celei curente</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 4</h3>
-                <p><strong>Care afirmație este corectă despre: ISA (Instruction Set Architecture)?</strong></p>
+                <h3>�ntrebarea 4</h3>
+                <p><strong>Care afirma?ie este corecta despre: ISA (Instruction Set Architecture)?</strong></p>
                 <ul class="specs-list">
                     <li>a) aritmetice, logice, control, I/O</li>
-                    <li>b) ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)</li>
+                    <li>b) ALU (opera?ii aritmetice ?i logice), registre procesor (furnizeaza operanzi ?i stocheaza rezultate), control unit (orchestreaza fetch/decode/execute)</li>
                     <li>c) raportul EDVAC 1945, program stocat &#238;n memorie</li>
-                    <li>d) setul de operații de bază hardwired &#238;n CPU</li>
+                    <li>d) setul de opera?ii de baza hardwired &#238;n CPU</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>d) — setul de operații de bază hardwired &#238;n CPU</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>d) � setul de opera?ii de baza hardwired &#238;n CPU</strong></p>
                 </details>
             </div>
 
             <div class="card" style="margin-bottom: 1.5rem;">
-                <h3>Întrebarea 5</h3>
-                <p><strong>Care afirmație este corectă despre: Definiție și principii?</strong></p>
+                <h3>�ntrebarea 5</h3>
+                <p><strong>Care afirma?ie este corecta despre: Defini?ie ?i principii?</strong></p>
                 <ul class="specs-list">
-                    <li>a) Cache = memorie mai mică, mai rapidă, mai aproape de nucleul procesorului</li>
+                    <li>a) Cache = memorie mai mica, mai rapida, mai aproape de nucleul procesorului</li>
                     <li>b) raportul EDVAC 1945, program stocat &#238;n memorie</li>
-                    <li>c) ALU (operații aritmetice și logice), registre procesor (furnizează operanzi și stochează rezultate), control unit (orchestrează fetch/decode/execute)</li>
+                    <li>c) ALU (opera?ii aritmetice ?i logice), registre procesor (furnizeaza operanzi ?i stocheaza rezultate), control unit (orchestreaza fetch/decode/execute)</li>
                     <li>d) aritmetice, logice, control, I/O</li>
                 </ul>
                 <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată răspunsul</summary>
-                    <p style="margin-top: 0.5rem;"><strong>a) — Cache = memorie mai mică, mai rapidă, mai aproape de nucleul procesorului</strong></p>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata raspunsul</summary>
+                    <p style="margin-top: 0.5rem;"><strong>a) � Cache = memorie mai mica, mai rapida, mai aproape de nucleul procesorului</strong></p>
                 </details>
             </div>
         </div>
@@ -434,22 +434,22 @@
 
     <section class="section" id="exercitiu">
         <div class="container">
-            <h2 class="section-title">Exercițiu Aplicat de Gândire</h2>
+            <h2 class="section-title">Exerci?iu Aplicat de G�ndire</h2>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3>🧠 Exercițiu: CPU</h3>
-                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizează conceptul de execuția instrucțiunilor. Pe baza cunoștințelor din această lecție, răspunde la următoarele întrebări:</p>
+                <h3>?? Exerci?iu: CPU</h3>
+                <p><strong>Scenariu:</strong> Analizezi un sistem hardware care utilizeaza conceptul de execu?ia instruc?iunilor. Pe baza cuno?tin?elor din aceasta lec?ie, raspunde la urmatoarele �ntrebari:</p>
                 <ul class="specs-list">
-                    <li>1. Defineste pe scurt: execuția instrucțiunilor.</li>
-                    <li>2. Ce rol are pipeline în contextul hardware-ului?</li>
-                    <li>3. Explică relația dintre execuția instrucțiunilor și cache.</li>
+                    <li>1. Defineste pe scurt: execu?ia instruc?iunilor.</li>
+                    <li>2. Ce rol are pipeline �n contextul hardware-ului?</li>
+                    <li>3. Explica rela?ia dintre execu?ia instruc?iunilor ?i cache.</li>
                 </ul>
                 <details style="margin-top: 1.5rem;">
-                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arată rezolvarea</summary>
+                    <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">Arata rezolvarea</summary>
                     <div style="margin-top: 1rem;">
                         <p><strong>1.</strong> CPU (Central Processing Unit) = procesorul principal dintr-un computer</p>
-                        <p><strong>2.</strong> Operația fundamentală: fetch → decode → execute (instruction cycle)</p>
-                        <p><strong>3.</strong> Instruction pipelining: primii pași (fetch/decode) ai instrucțiunii următoare &#238;ncep &#238;nainte de finalizarea celei curente</p>
+                        <p><strong>2.</strong> Opera?ia fundamentala: fetch ? decode ? execute (instruction cycle)</p>
+                        <p><strong>3.</strong> Instruction pipelining: primii pa?i (fetch/decode) ai instruc?iunii urmatoare &#238;ncep &#238;nainte de finalizarea celei curente</p>
                     </div>
                 </details>
             </div>
@@ -478,7 +478,7 @@
 
 
 
-    <!-- NAVIGARE LECȚII -->
+    <!-- NAVIGARE LEC?II -->
     <section class="section" id="navigare">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <a href="lectia-3-5.html" class="hero-button" style="font-size: 0.9rem;">&larr; Lec&#x21B;ia 3.5 &mdash; Construc&#x21B;ia unui Procesor</a>
@@ -535,14 +535,14 @@
                         </div>
                     </div>
                 </div>
-                <p class="video-description">Ciclul Fetch-Decode-Execute: cum procesorul preia, decodifică și execută instrucțiunile — mecanismul central al oricărui CPU.</p>
+                <p class="video-description">Ciclul Fetch-Decode-Execute: cum procesorul preia, decodifica ?i executa instruc?iunile � mecanismul central al oricarui CPU.</p>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-inner container">
-            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatică</p></div>
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p><p class="footer-sub">Proiect Atestat Informatica</p></div>
             <div class="footer-right"><a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a><a href="tel:+40758464907">+40 758 464 907</a></div>
         </div>
     </footer>
