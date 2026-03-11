@@ -1092,6 +1092,42 @@ mark {
  * Card Component - Refined Documentary Style
  */
 
+/* KaTeX Math Formula - Responsive overflow */
+.katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0;
+}
+
+.katex-display > .katex {
+    white-space: nowrap;
+}
+
+/* Paragraphs containing formulas (inline style wrappers) */
+.card p:has(.katex-display),
+.card p:has(.katex) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+    .katex-display > .katex {
+        font-size: 1.1em;
+    }
+    
+    /* Override inline font-size on formula wrappers */
+    .card p[style*="font-size"] .katex-display .katex {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .katex-display > .katex {
+        font-size: 0.95em;
+    }
+}
+
 .card {
     /* Warm background */
     background: var(--card-bg);
@@ -1102,6 +1138,9 @@ mark {
     
     /* Generous spacing */
     padding: 2.5rem;
+    
+    /* Prevent content overflow */
+    overflow: hidden;
     
     /* Documentary shadow */
     box-shadow: 
@@ -2714,38 +2753,50 @@ input:focus-visible {
    ==================== */
 .console-grid {
     display: grid;
-    grid-template-columns: repeat(6, 240px);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 0.75rem;
     max-width: 100%;
     margin: 0 auto;
 }
 
 /* ====================
-   CONSOLE CARD
+   CONSOLE CARD (with image)
    ==================== */
 .console-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     text-decoration: none;
-    padding: 0.75rem 0.85rem;
-    width: 240px;
+    width: 100%;
     height: auto;
-    min-height: 110px;
     
     /* Glassmorphism */
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
+    border-radius: 14px;
     
     /* Inner highlight */
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     
-    transition: all 0.25s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+}
+
+/* Console image thumbnail */
+.console-card-img {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    padding: 12px 16px 8px;
+    opacity: 0.85;
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.console-card:hover .console-card-img {
+    opacity: 1;
+    transform: scale(1.05);
 }
 
 .console-card::before {
@@ -2754,22 +2805,22 @@ input:focus-visible {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px;
     background: linear-gradient(90deg, 
-        transparent,
-        rgba(212, 175, 122, 0.3),
-        transparent
+        rgba(212, 175, 122, 0.5),
+        rgba(212, 175, 122, 0.15)
     );
     opacity: 1;
     transition: opacity 0.3s ease;
 }
 
 .console-card:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(212, 175, 122, 0.2);
+    transform: translateY(-4px);
     box-shadow: 
-        0 8px 24px rgba(0, 0, 0, 0.2),
+        0 12px 32px rgba(0, 0, 0, 0.25),
+        0 0 16px rgba(212, 175, 122, 0.06),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -2798,25 +2849,27 @@ input:focus-visible {
 
 /* Card Contents */
 .console-year {
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.72rem;
+    font-weight: 700;
     color: var(--accent-color);
-    letter-spacing: 0.2px;
-    margin-bottom: 0.1rem;
+    letter-spacing: 0.5px;
+    padding: 0 14px;
 }
 
 .console-name {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-light);
-    margin: 0;
-    line-height: 1.15;
+    margin: 2px 0 0;
+    line-height: 1.2;
+    padding: 0 14px;
 }
 
 .console-maker {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-gray);
     margin-top: auto;
+    padding: 8px 14px 12px;
     line-height: 1;
 }
 
@@ -2867,115 +2920,196 @@ input:focus-visible {
 }
 
 /* ====================
-   RESPONSIVE - FIXED COLUMNS
+   RESPONSIVE
    ==================== */
 
-/* 1200px-1300px: 5 coloane */
-@media (max-width: 1300px) {
-    .console-grid {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
-
-/* 1000px-1200px: 4 coloane */
-@media (max-width: 1200px) {
-    .console-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-/* 768px-1000px: 3 coloane */
+/* ≤1000px: 3 coloane */
 @media (max-width: 1000px) {
     .console-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+    .console-card-img {
+        height: 120px;
+    }
 }
 
-/* 600px-768px: 2 coloane */
-@media (max-width: 900px) {
+/* ≤768px: 2 coloane */
+@media (max-width: 768px) {
     .console-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.65rem;
+        gap: 10px;
     }
-    .console-card {
-        width: 100%;
-        height: auto;
-        min-height: 90px;
-    }
-    .section#index .container {
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
-    }
-}
-
-/* Tablet: 3 coloane */
-@media (max-width: 680px) {
-    .console-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.65rem;
-    }
-    .console-card {
-        width: 100%;
-        height: auto;
-        min-height: 90px;
+    .console-card-img {
+        height: 100px;
+        padding: 10px 12px 6px;
     }
     .section#index .container {
         padding-left: 1rem;
         padding-right: 1rem;
     }
-    .generation-block {
-        margin-bottom: 1.5rem;
-    }
-    .generation-header {
-        gap: 0.65rem;
-        margin-bottom: 0.65rem;
-    }
-    .generation-icon {
-        font-size: 1.5rem;
-    }
-    .generation-info h2 {
-        font-size: 1.1rem;
-    }
-    .console-name {
-        font-size: 0.75rem;
-    }
-    .console-year {
-        font-size: 0.6rem;
-    }
-    .console-maker {
-        font-size: 0.65rem;
-    }
 }
 
-/* <480px: 1 coloană */
-@media (max-width: 480px) {
+/* ===== MOBILE ≤ 680px: Premium Image Cards ===== */
+@media (max-width: 680px) {
+
+    /* --- Grid: 2 coloane --- */
     .console-grid {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
+
+    /* --- Cards cu imagine --- */
     .console-card {
-        width: 100%;
-        height: auto;
-        min-height: 80px;
-        padding: 0.6rem 0.7rem;
+        border-radius: 16px;
+        background: linear-gradient(
+            160deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.015) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        box-shadow:
+            0 2px 12px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
-    .generation-block {
-        margin-bottom: 1.25rem;
+
+    /* Imagine mai mică pe mobile */
+    .console-card-img {
+        height: 90px;
+        padding: 10px 14px 4px;
     }
-    .generation-icon {
-        font-size: 1.35rem;
+
+    /* Glow accent bar */
+    .console-card::before {
+        height: 2px;
+        background: linear-gradient(90deg,
+            rgba(212, 175, 122, 0.6),
+            rgba(212, 175, 122, 0.1)
+        );
+        box-shadow: 0 0 8px rgba(212, 175, 122, 0.1);
     }
-    .generation-info h2 {
-        font-size: 1rem;
+
+    /* Tap / hover */
+    .console-card:hover,
+    .console-card:active {
+        border-color: rgba(212, 175, 122, 0.2);
+        transform: translateY(-2px);
+        box-shadow:
+            0 8px 24px rgba(0, 0, 0, 0.35),
+            0 0 12px rgba(212, 175, 122, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
-    .console-name {
-        font-size: 0.7rem;
+
+    /* Featured */
+    .console-card.featured {
+        background: linear-gradient(
+            160deg,
+            rgba(212, 175, 122, 0.06) 0%,
+            rgba(212, 175, 122, 0.015) 100%
+        );
+        border-color: rgba(212, 175, 122, 0.12);
     }
+
+    .console-card.featured::before {
+        box-shadow: 0 0 12px rgba(212, 175, 122, 0.15);
+    }
+
+    /* Arrow: hidden on mobile */
+    .console-card::after {
+        display: none;
+    }
+
+    /* Text sizing */
     .console-year {
-        font-size: 0.6rem;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        padding: 0 12px;
     }
+
+    .console-name {
+        font-size: 0.78rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 2px 0 0;
+        padding: 0 12px;
+    }
+
     .console-maker {
-        font-size: 0.6rem;
+        font-size: 0.62rem;
+        padding: 6px 12px 10px;
+        opacity: 0.7;
+    }
+
+    /* --- Generation Headers: centrat cu iconița în cerc --- */
+    .generation-block {
+        margin-bottom: 1.75rem;
+    }
+
+    .generation-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+        border-bottom: none;
+        position: relative;
+    }
+
+    .generation-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg,
+            transparent,
+            var(--accent-color),
+            transparent
+        );
+    }
+
+    .generation-icon {
+        font-size: 1.6rem;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(212, 175, 122, 0.07);
+        border: 1px solid rgba(212, 175, 122, 0.1);
+        border-radius: 50%;
+    }
+
+    .generation-info h2 {
+        font-size: 1.15rem;
+        margin-bottom: 2px;
+    }
+
+    .generation-years {
+        font-size: 0.82rem;
+    }
+
+    .section#index .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .section-title {
+        font-size: 1.35rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .section-title--handheld {
+        margin-top: 2.5rem;
+    }
+
+    .section-intro {
+        font-size: 0.88rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
     }
 }
 

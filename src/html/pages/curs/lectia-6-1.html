@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -338,23 +338,23 @@
             <h2 class="section-title">Recapitulare</h2>
             <div class="card" style="margin-bottom: 2rem;">
                 <ul class="specs-list">
-                    <li><strong>Definiție POST:</strong> POST (Power-On Self-Test) este o secvență de teste de diagnostic efectuată de firmware-ul computerului imediat după pornire. Scopul este verificarea funcționării corecte a componentelor hardware &#...</li>
+                    <li><strong>Definiție POST:</strong> POST (Power-On Self-Test) este o secvență de teste de diagnostic efectuată de firmware-ul computerului imediat după pornire. Scopul este verificarea funcționării corecte a componentelor hardware înainte de încărcarea sistemului de operare.</li>
                     <li><strong>POST îndeplinește următoarele funcții:</strong> Verificarea registrelor CPU</li>
                     <li><strong>Ulterior, POST a fost extins pentru a include:</strong> Inițializarea chipset-ului</li>
-                    <li><strong>Procesul de pornire al CPU:</strong> La resetare, CPU-ul execută instrucțiunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-biți, aceasta este la adresa fizică FFFFFFF0h. Northbridge-ul direcționează această cerere de citir...</li>
+                    <li><strong>Procesul de pornire al CPU:</strong> La resetare, CPU-ul execută instrucțiunea de la adresa reset vector. Pe procesoarele x86 pe 32/64-biți, aceasta este la adresa fizică FFFFFFF0h. Northbridge-ul direcționează această cerere de citire către memoria flash BIOS (la cold boot) sau RAM (la warm boot). CPU-ul începe execuția codului BIOS care rulează POST.</li>
                     <li><strong>Cold boot vs warm boot:</strong> Cold boot = pornire completă de la zero, POST complet efectuat.</li>
                     <li><strong>IBM:</strong> 1 scurt = POST OK, toate testele trecute</li>
                     <li><strong>AMI (American Megatrends):</strong> 1 beep = eroare reîmprospătare memorie</li>
-                    <li><strong>Definiția BIOS:</strong> BIOS (Basic Input/Output System) este firmware-ul stocat pe placa de bază, responsabil pentru inițializarea hardware-ului și furnizarea serviciilor runtime. Inițial stocat în ROM, acum se folo...</li>
-                    <li><strong>Secvența de pornire a sistemului:</strong> La pornire, procesoarele x86 încep execuția de la adresa FFFFFFF0h (pe 80386+). Prima instrucțiune din BIOS ROM este de obicei un jump către programul principal de start-up. Acest program rule...</li>
-                    <li><strong>Scanarea Option ROM:</strong> După POST, BIOS-ul scanează pentru Option ROM-uri în zona de adrese 0x0C0000–0x0F0000 pe granițe de 2KB. Fiecare ROM trebuie să conțină semnătura 0x55 0xAA. Dacă este găsită, BIOS-ul execută c...</li>
+                    <li><strong>Definiția BIOS:</strong> BIOS (Basic Input/Output System) este firmware-ul stocat pe placa de bază, responsabil pentru inițializarea hardware-ului și furnizarea serviciilor runtime. Inițial stocat în ROM, acum se folosește memorie flash.</li>
+                    <li><strong>Secvența de pornire a sistemului:</strong> La pornire, procesoarele x86 încep execuția de la adresa FFFFFFF0h (pe 80386+). Prima instrucțiune din BIOS ROM este de obicei un jump către programul principal de start-up. Acest program rulează POST, care identifică, testează și inițializează:</li>
+                    <li><strong>Scanarea Option ROM:</strong> După POST, BIOS-ul scanează pentru Option ROM-uri în zona de adrese 0x0C0000–0x0F0000 pe granițe de 2KB. Fiecare ROM trebuie să conțină semnătura 0x55 0xAA. Dacă este găsită, BIOS-ul execută codul ROM-ului respectiv, care inițializează hardware-ul asociat și înregistrează vectori de întrerupere.</li>
                     <li><strong>După POST și scanarea Option ROM:</strong> 1. BIOS-ul apelează interrupt 19h</li>
                     <li><strong>Actualizări microcode:</strong> În timpul POST, actualizări de microcode sunt încărcate din BIOS în SRAM-ul procesorului. Aceste actualizări nu sunt persistente – se reîncarcă la fiecare pornire.</li>
-                    <li><strong>UEFI - succesorul BIOS:</strong> UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy începând din 2020. UEFI nu se bazează pe boot sectors; încarcă di...</li>
-                    <li><strong>Definiție Power Good:</strong> Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului către placa de bază, indicând că toate tensiunile sunt în specificații și că sistemul poate proceda la bo...</li>
+                    <li><strong>UEFI - succesorul BIOS:</strong> UEFI (Unified Extensible Firmware Interface) este succesorul BIOS-ului legacy. Intel a eliminat suportul BIOS legacy începând din 2020. UEFI nu se bazează pe boot sectors; încarcă direct boot loader-ul (fișier EFI application) de pe partiția EFI System Partition.</li>
+                    <li><strong>Definiție Power Good:</strong> Power Good (PWR_OK) este un semnal furnizat de sursa de alimentare a computerului către placa de bază, indicând că toate tensiunile sunt în specificații și că sistemul poate proceda la boot și operare.</li>
                     <li><strong>Conform specificației ATX:</strong> Semnalul Power-Good este un semnal de +5V generat de sursa de alimentare</li>
-                    <li><strong>Surse de calitate scăzută:</strong> Sursele ieftine/de calitate scăzută nu urmează specificația ATX de circuit de monitorizare separat; în schimb, conectează ieșirea Power Good direct la una din liniile de 5V. Acest lucru î...</li>
-                    <li><strong>Definiția procesului de boot:</strong> Booting (bootstrapping) este procesul de pornire a unui computer inițiat prin hardware (buton fizic) sau comandă software. După pornire, CPU-ul nu are software în memoria principală, deci un p...</li>
+                    <li><strong>Surse de calitate scăzută:</strong> Sursele ieftine/de calitate scăzută nu urmează specificația ATX de circuit de monitorizare separat; în schimb, conectează ieșirea Power Good direct la una din liniile de 5V. Acest lucru înseamnă că procesorul nu va primi niciodată reset la alimentare necorespunzătoare decât dacă linia de 5V scade suficient de mult.</li>
+                    <li><strong>Definiția procesului de boot:</strong> Booting (bootstrapping) este procesul de pornire a unui computer inițiat prin hardware (buton fizic) sau comandă software. După pornire, CPU-ul nu are software în memoria principală, deci un proces trebuie să încarce software-ul în memorie înainte de execuție. Termenul vine de la expresia "to pull oneself up by one's bootstraps".</li>
                     <li><strong>La pornirea unui PC IBM-compatibil:</strong> 1. CPU x86 execută instrucțiunea de la reset vector (FFFF0h pe 16-bit, FFFFFFF0h pe 32/64-bit)</li>
                     <li><strong>Procesul de boot folosește adesea încărcare în etape (multi-stage):</strong> First-stage boot loaders: BIOS, UEFI, coreboot, Libreboot, Das U-Boot (inițializare hardware)</li>
                 </ul>
