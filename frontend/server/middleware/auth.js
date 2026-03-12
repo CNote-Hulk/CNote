@@ -4,9 +4,9 @@
  */
 
 const jwt = require('jsonwebtoken');
-const db = require('../db');
+const pool = require('../db');
 
-function authRequired(req, res, next) {
+async function authRequired(req, res, next) {
     const token = extractToken(req);
     if (!token) {
         return res.status(401).json({ success: false, error: 'Autentificare necesară.' });
@@ -17,7 +17,8 @@ function authRequired(req, res, next) {
     // Try JWT first
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(decoded.userId);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
+        const user = userResult.rows[0];
         if (!user) {
             return res.status(401).json({ success: false, error: 'Utilizator inexistent.' });
         }
@@ -36,20 +37,21 @@ function authRequired(req, res, next) {
     }
 
     // Fallback: session token from cookie
-    const session = db.prepare(`
+    const sessionResult = await pool.query(`
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.email_verified, u.created_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
-        WHERE s.session_token = ? AND s.is_active = 1
-    `).get(token);
+        WHERE s.session_token = $1 AND s.is_active = 1
+    `, [token]);
+
+    const session = sessionResult.rows[0];
 
     if (!session) {
         return res.status(401).json({ success: false, error: 'Sesiune invalidă sau expirată.' });
     }
 
-    db.prepare(`UPDATE user_sessions SET last_activity = datetime('now') WHERE id = ?`)
-      .run(session.session_id);
+    await pool.query('UPDATE user_sessions SET last_activity = NOW() WHERE id = $1', [session.session_id]);
 
     req.user = {
         id: session.user_id,

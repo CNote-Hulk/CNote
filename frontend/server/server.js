@@ -43,7 +43,7 @@ function getMissingEnvVars(required) {
     });
 }
 
-const baseRequiredEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL'];
+const baseRequiredEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL', 'DATABASE_URL'];
 const productionRequiredEnv = [];
 const requiredEnv = process.env.NODE_ENV === 'production'
     ? baseRequiredEnv.concat(productionRequiredEnv)
@@ -127,7 +127,7 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log('Server running on port:', PORT);
-    console.log('Database path:', process.env.DB_PATH || path.join(__dirname, 'data', 'database.sqlite'));
+    console.log('Database: PostgreSQL (Supabase)');
     console.log('Allowed CORS origins:', allowedOrigins.join(', '));
     console.log(`Serving static files from: ${FRONTEND_ROOT}`);
     console.log(`API available at http://localhost:${PORT}/api`);

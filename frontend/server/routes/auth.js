@@ -16,7 +16,7 @@ const express = require('express');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../db');
+const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
 const emailService = require('../services/email');
@@ -87,19 +87,18 @@ router.post('/register', async (req, res) => {
         }
 
         const emailLower = email.toLowerCase().trim();
-        const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(emailLower);
-        if (existing) {
+        const existingResult = await pool.query('SELECT id FROM users WHERE email = $1', [emailLower]);
+        if (existingResult.rows[0]) {
             return res.status(409).json({ success: false, error: 'Există deja un cont cu acest email.' });
         }
 
         const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
-        const result = db.prepare(`
+        const insertResult = await pool.query(`
             INSERT INTO users (username, email, password_hash, email_verified)
-            VALUES (?, ?, ?, 1)
-        `).run(String(username).trim(), emailLower, passwordHash);
+            VALUES ($1, $2, $3, 1) RETURNING *
+        `, [String(username).trim(), emailLower, passwordHash]);
 
-        const userId = result.lastInsertRowid;
-        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
+        const user = insertResult.rows[0];
         console.log('User registered:', emailLower);
 
         res.status(201).json({
@@ -124,7 +123,8 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Completează toate câmpurile.' });
         }
 
-        const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
+        const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email.toLowerCase().trim()]);
+        const user = userResult.rows[0];
         console.log('User found:', !!user);
         if (!user) {
             return res.status(401).json({ success: false, error: 'Email sau parolă incorectă.' });
@@ -140,10 +140,10 @@ router.post('/login', async (req, res) => {
 
         // Create session
         const sessionToken = generateToken();
-        db.prepare(`
+        await pool.query(`
             INSERT INTO user_sessions (user_id, session_token, device_type, browser, operating_system, ip_address)
-            VALUES (?, ?, ?, ?, ?, ?)
-        `).run(user.id, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip);
+            VALUES ($1, $2, $3, $4, $5, $6)
+        `, [user.id, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]);
 
         setSessionCookie(res, sessionToken);
         console.log('Login successful:', email);
@@ -180,9 +180,9 @@ router.get('/profile', authRequired, (req, res) => {
 
 // ─── POST /api/logout ───────────────────────────────────
 
-router.post('/logout', authRequired, (req, res) => {
+router.post('/logout', authRequired, async (req, res) => {
     if (req.sessionId) {
-        db.prepare('UPDATE user_sessions SET is_active = 0 WHERE id = ?').run(req.sessionId);
+        await pool.query('UPDATE user_sessions SET is_active = 0 WHERE id = $1', [req.sessionId]);
     }
     clearSessionCookie(res);
     res.json({ success: true });
@@ -196,21 +196,22 @@ router.get('/me', authRequired, (req, res) => {
 
 // ─── PUT /api/me ────────────────────────────────────────
 
-router.put('/me', authRequired, (req, res) => {
+router.put('/me', authRequired, async (req, res) => {
     const { username, bio, avatar } = req.body;
     const updates = [];
     const params = [];
+    let paramIndex = 1;
 
     if (username !== undefined) {
-        updates.push('username = ?');
+        updates.push(`username = $${paramIndex++}`);
         params.push(String(username).trim());
     }
     if (bio !== undefined) {
-        updates.push('bio = ?');
+        updates.push(`bio = $${paramIndex++}`);
         params.push(String(bio));
     }
     if (avatar !== undefined) {
-        updates.push('avatar = ?');
+        updates.push(`avatar = $${paramIndex++}`);
         params.push(String(avatar));
     }
 
@@ -218,13 +219,13 @@ router.put('/me', authRequired, (req, res) => {
         return res.status(400).json({ success: false, error: 'Nimic de actualizat.' });
     }
 
-    updates.push("updated_at = datetime('now')");
+    updates.push('updated_at = NOW()');
     params.push(req.user.id);
 
-    db.prepare(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`).run(...params);
+    await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = $${paramIndex}`, params);
 
-    const updated = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
-    res.json({ success: true, user: sanitizeUser(updated) });
+    const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+    res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
 });
 
 // ─── PUT /api/me/email ──────────────────────────────────
@@ -240,23 +241,23 @@ router.put('/me/email', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Introdu parola curentă pentru schimbarea emailului.' });
         }
 
-        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
         const valid = await bcrypt.compare(currentPassword, user.password_hash);
         if (!valid) {
             return res.status(403).json({ success: false, error: 'Parola curentă este incorectă.' });
         }
 
         const emailLower = newEmail.toLowerCase().trim();
-        const dup = db.prepare('SELECT id FROM users WHERE email = ? AND id != ?').get(emailLower, req.user.id);
-        if (dup) {
+        const dupResult = await pool.query('SELECT id FROM users WHERE email = $1 AND id != $2', [emailLower, req.user.id]);
+        if (dupResult.rows[0]) {
             return res.status(409).json({ success: false, error: 'Există deja un cont cu acest email.' });
         }
 
-        db.prepare("UPDATE users SET email = ?, updated_at = datetime('now') WHERE id = ?")
-          .run(emailLower, req.user.id);
+        await pool.query('UPDATE users SET email = $1, updated_at = NOW() WHERE id = $2', [emailLower, req.user.id]);
 
-        const updated = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
-        res.json({ success: true, user: sanitizeUser(updated) });
+        const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+        res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
     } catch (err) {
         console.error('Update email error:', err);
         res.status(500).json({ success: false, error: 'Eroare internă.' });
@@ -276,15 +277,15 @@ router.put('/me/password', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Parola nouă trebuie să aibă minim 6 caractere.' });
         }
 
-        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
         const valid = await bcrypt.compare(currentPassword, user.password_hash);
         if (!valid) {
             return res.status(403).json({ success: false, error: 'Parola curentă este incorectă.' });
         }
 
         const hash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
-        db.prepare("UPDATE users SET password_hash = ?, updated_at = datetime('now') WHERE id = ?")
-          .run(hash, req.user.id);
+        await pool.query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2', [hash, req.user.id]);
 
         res.json({ success: true });
     } catch (err) {
@@ -295,11 +296,13 @@ router.put('/me/password', authRequired, async (req, res) => {
 
 // ─── POST /api/request-reset ────────────────────────────
 
-router.post('/request-reset', (req, res) => {
+router.post('/request-reset', async (req, res) => {
+    try {
     const { email } = req.body;
     if (!email) return res.status(400).json({ success: false, error: 'Emailul este obligatoriu.' });
 
-    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
+    const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email.toLowerCase().trim()]);
+    const user = userResult.rows[0];
 
     // Always return success to prevent email enumeration
     if (!user) {
@@ -307,19 +310,23 @@ router.post('/request-reset', (req, res) => {
     }
 
     // Delete old reset tokens
-    db.prepare('DELETE FROM password_reset_tokens WHERE user_id = ?').run(user.id);
+    await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [user.id]);
 
     const token = generateToken();
-    db.prepare(`
+    await pool.query(`
         INSERT INTO password_reset_tokens (user_id, token, expires_at)
-        VALUES (?, ?, ?)
-    `).run(user.id, token, expiresAt());
+        VALUES ($1, $2, $3)
+    `, [user.id, token, expiresAt()]);
 
     emailService.sendPasswordResetEmail(user.email, user.username, token).catch(err => {
         console.error('Failed to send reset email:', err.message);
     });
 
     res.json({ success: true, message: 'Dacă există un cont cu acest email, vei primi un link de resetare.' });
+    } catch (err) {
+        console.error('Request reset error:', err);
+        res.status(500).json({ success: false, error: 'Eroare internă.' });
+    }
 });
 
 // ─── POST /api/reset-password ───────────────────────────
@@ -333,25 +340,25 @@ router.post('/reset-password', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Parola trebuie să aibă minim 6 caractere.' });
         }
 
-        const row = db.prepare('SELECT * FROM password_reset_tokens WHERE token = ?').get(token);
+        const rowResult = await pool.query('SELECT * FROM password_reset_tokens WHERE token = $1', [token]);
+        const row = rowResult.rows[0];
         if (!row) {
             return res.status(400).json({ success: false, error: 'Token invalid sau expirat.' });
         }
 
         if (new Date(row.expires_at) < new Date()) {
-            db.prepare('DELETE FROM password_reset_tokens WHERE id = ?').run(row.id);
+            await pool.query('DELETE FROM password_reset_tokens WHERE id = $1', [row.id]);
             return res.status(400).json({ success: false, error: 'Tokenul a expirat. Solicită un link nou.' });
         }
 
         const hash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
-        db.prepare("UPDATE users SET password_hash = ?, updated_at = datetime('now') WHERE id = ?")
-          .run(hash, row.user_id);
+        await pool.query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2', [hash, row.user_id]);
 
         // Clean up all reset tokens for this user
-        db.prepare('DELETE FROM password_reset_tokens WHERE user_id = ?').run(row.user_id);
+        await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [row.user_id]);
 
         // Invalidate all existing sessions
-        db.prepare('UPDATE user_sessions SET is_active = 0 WHERE user_id = ?').run(row.user_id);
+        await pool.query('UPDATE user_sessions SET is_active = 0 WHERE user_id = $1', [row.user_id]);
 
         res.json({ success: true, message: 'Parola a fost resetată. Te poți autentifica cu noua parolă.' });
     } catch (err) {

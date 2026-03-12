@@ -7,24 +7,24 @@
  */
 
 const express = require('express');
-const db = require('../db');
+const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
 // ─── GET /api/sessions ──────────────────────────────────
 
-router.get('/', authRequired, (req, res) => {
-    const sessions = db.prepare(`
+router.get('/', authRequired, async (req, res) => {
+    const result = await pool.query(`
         SELECT id, device_type, browser, operating_system, ip_address, country,
                login_time, last_activity, is_active,
-               (session_token = ?) AS is_current
+               (session_token = $1)::int AS is_current
         FROM user_sessions
-        WHERE user_id = ? AND is_active = 1
+        WHERE user_id = $2 AND is_active = 1
         ORDER BY last_activity DESC
-    `).all(req.sessionToken, req.user.id);
+    `, [req.sessionToken || '', req.user.id]);
 
-    const formatted = sessions.map(s => ({
+    const formatted = result.rows.map(s => ({
         id: s.id,
         device_type: s.device_type,
         browser: s.browser,
@@ -41,33 +41,34 @@ router.get('/', authRequired, (req, res) => {
 
 // ─── DELETE /api/sessions/:id ───────────────────────────
 
-router.delete('/:id', authRequired, (req, res) => {
+router.delete('/:id', authRequired, async (req, res) => {
     const sessionId = parseInt(req.params.id, 10);
     if (isNaN(sessionId)) {
         return res.status(400).json({ success: false, error: 'ID sesiune invalid.' });
     }
 
     // Ensure session belongs to current user
-    const session = db.prepare(
-        'SELECT id FROM user_sessions WHERE id = ? AND user_id = ? AND is_active = 1'
-    ).get(sessionId, req.user.id);
+    const sessionResult = await pool.query(
+        'SELECT id FROM user_sessions WHERE id = $1 AND user_id = $2 AND is_active = 1',
+        [sessionId, req.user.id]
+    );
 
-    if (!session) {
+    if (!sessionResult.rows[0]) {
         return res.status(404).json({ success: false, error: 'Sesiunea nu a fost găsită.' });
     }
 
-    db.prepare('UPDATE user_sessions SET is_active = 0 WHERE id = ?').run(sessionId);
+    await pool.query('UPDATE user_sessions SET is_active = 0 WHERE id = $1', [sessionId]);
 
     res.json({ success: true, message: 'Sesiunea a fost închisă.' });
 });
 
 // ─── DELETE /api/sessions (all except current) ──────────
 
-router.delete('/', authRequired, (req, res) => {
-    db.prepare(`
+router.delete('/', authRequired, async (req, res) => {
+    await pool.query(`
         UPDATE user_sessions SET is_active = 0
-        WHERE user_id = ? AND id != ? AND is_active = 1
-    `).run(req.user.id, req.sessionId);
+        WHERE user_id = $1 AND id != $2 AND is_active = 1
+    `, [req.user.id, req.sessionId || 0]);
 
     res.json({ success: true, message: 'Toate celelalte sesiuni au fost închise.' });
 });
