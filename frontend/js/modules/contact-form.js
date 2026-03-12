@@ -104,7 +104,7 @@ export const ContactFormModule = {
                 'Mesaj:\n' + message
             );
 
-            window.location.href = 'mailto:console.notebook.app@gmail.com?subject=' + subject + '&body=' + body;
+            window.location.href = 'mailto:bgigi6104@gmail.com?subject=' + subject + '&body=' + body;
         };
 
         contactForm.addEventListener('submit', async (e) => {
@@ -153,7 +153,7 @@ export const ContactFormModule = {
                 formData.append('_subject', 'Mesaj nou de pe website');
                 formData.append('_template', 'table');
 
-                const response = await fetch('https://formsubmit.co/console.notebook.app@gmail.com', {
+                const response = await fetch('https://formsubmit.co/bgigi6104@gmail.com', {
                     method: 'POST',
                     body: formData
                 });
@@ -175,4 +175,5 @@ export const ContactFormModule = {
         });
     }
 };
+
 

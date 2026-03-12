@@ -35,7 +35,7 @@ function getTransporter() {
     return _transporter;
 }
 
-const FROM = () => process.env.SMTP_FROM || 'Console Notebook <console.notebook.app@gmail.com>';
+const FROM = () => process.env.SMTP_FROM || 'Console Notebook <bgigi6104@gmail.com>';
 const BASE_URL = () => process.env.BASE_URL || 'http://localhost:3000';
 
 /**
@@ -131,4 +131,5 @@ module.exports = {
     sendPasswordResetEmail,
     sendNewLoginAlert
 };
+
 

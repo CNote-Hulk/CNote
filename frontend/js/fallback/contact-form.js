@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'Mesaj:\n' + message
         );
 
-        window.location.href = 'mailto:console.notebook.app@gmail.com?subject=' + subject + '&body=' + body;
+        window.location.href = 'mailto:bgigi6104@gmail.com?subject=' + subject + '&body=' + body;
     }
 
     if (contactForm && submitBtn) {
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 formData.append('_subject', 'Mesaj nou de pe website');
                 formData.append('_template', 'table');
 
-                const response = await fetch('https://formsubmit.co/console.notebook.app@gmail.com', {
+                const response = await fetch('https://formsubmit.co/bgigi6104@gmail.com', {
                     method: 'POST',
                     body: formData
                 });
@@ -193,3 +193,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+

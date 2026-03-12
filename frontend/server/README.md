@@ -31,7 +31,7 @@ Copy `.env.example` to `.env` and configure:
 | `SMTP_PORT` | SMTP server port                   | `587`                     |
 | `SMTP_USER` | SMTP username                      | â€”                         |
 | `SMTP_PASS` | SMTP password                      | â€”                         |
-| `SMTP_FROM` | Sender email address               | `Console Notebook <console.notebook.app@gmail.com>` |
+| `SMTP_FROM` | Sender email address               | `Console Notebook <bgigi6104@gmail.com>` |
 
 If SMTP is not configured, all emails are printed to the server console (dev mode).
 
@@ -91,4 +91,5 @@ SQLite database is automatically created at `server/data/console_notebook.db` on
 - Session cookies are **httpOnly** with **SameSite=Lax**
 - All sessions invalidated on password reset
 - Email enumeration prevented on reset/resend endpoints
+
 

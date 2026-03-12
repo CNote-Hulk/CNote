@@ -14,7 +14,7 @@
  *   SMTP_PORT      â€” SMTP server port (default: 587)
  *   SMTP_USER      â€” SMTP username
  *   SMTP_PASS      â€” SMTP password
- *   SMTP_FROM      â€” Sender address (default: Console Notebook <console.notebook.app@gmail.com>)
+ *   SMTP_FROM      â€” Sender address (default: Console Notebook <bgigi6104@gmail.com>)
  */
 
 const express = require('express');
@@ -136,4 +136,5 @@ app.listen(PORT, () => {
     console.log(`  ðŸ“  Serving static files from: ${FRONTEND_ROOT}`);
     console.log(`  ðŸ”‘  API available at http://localhost:${PORT}/api\n`);
 });
+
 
