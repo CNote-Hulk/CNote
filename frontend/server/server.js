@@ -14,7 +14,7 @@
  *   SMTP_PORT      â€” SMTP server port (default: 587)
  *   SMTP_USER      â€” SMTP username
  *   SMTP_PASS      â€” SMTP password
- *   SMTP_FROM      â€” Sender address (default: Console Notebook <bgigi6104@gmail.com>)
+ *   SMTP_FROM      â€” Sender address (default: Console Notebook <andre.halcu.07@licmarghilomanbz.ro>)
  */
 
 const express = require('express');
@@ -39,7 +39,7 @@ function getMissingEnvVars(required) {
 }
 
 const baseRequiredEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL'];
-const productionRequiredEnv = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
+const productionRequiredEnv = ['RESEND_API_KEY'];
 const requiredEnv = process.env.NODE_ENV === 'production'
     ? baseRequiredEnv.concat(productionRequiredEnv)
     : baseRequiredEnv;
@@ -100,18 +100,22 @@ const emailService = require('./services/email');
 
 app.get('/api/test-email', async (req, res) => {
     try {
-        const transporter = emailService.getTransporter();
-        if (!transporter) {
-            return res.status(500).json({ error: 'SMTP not configured' });
+        const resend = emailService.getResend();
+        if (!resend) {
+            return res.status(500).json({ error: 'Resend API key not configured' });
         }
-        await transporter.sendMail({
-            from: process.env.SMTP_FROM,
-            to: process.env.SMTP_USER,
-            subject: 'SMTP Test Email',
-            text: 'This is a test email from Console Notebook.'
+        const { data, error } = await resend.emails.send({
+            from: 'Console Notebook <onboarding@resend.dev>',
+            to: process.env.SMTP_USER || process.env.RESEND_TEST_TO || 'test@example.com',
+            subject: 'Test Email',
+            html: '<p>This is a test email from Console Notebook.</p>'
         });
-        console.log('Test email sent successfully');
-        res.json({ success: true, message: 'Test email sent successfully' });
+        if (error) {
+            console.error('Test email failed:', error);
+            return res.status(500).json({ error: 'Email failed', details: error.message });
+        }
+        console.log('Test email sent:', data);
+        res.json({ success: true, message: 'Test email sent successfully', id: data?.id });
     } catch (error) {
         console.error('Test email failed:', error);
         res.status(500).json({ error: 'Email failed to send', details: error.message });
@@ -147,7 +151,8 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log('Server running on port:', PORT);
     console.log('Database path:', process.env.DB_PATH || path.join(__dirname, 'data', 'database.sqlite'));
-    console.log('SMTP host:', process.env.SMTP_HOST || '(not configured)');
+    console.log('Resend API key:', process.env.RESEND_API_KEY ? 'configured' : '(not configured)');
+    console.log('Resend email system ready');
     console.log('Allowed CORS origins:', allowedOrigins.join(', '));
     console.log(`Serving static files from: ${FRONTEND_ROOT}`);
     console.log(`API available at http://localhost:${PORT}/api`);
