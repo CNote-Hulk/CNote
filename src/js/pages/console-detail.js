@@ -4,6 +4,7 @@
  */
 
 import { getConsoleById, getConsoleIdFromUrl, resolveImagePath } from '../data/data-loader.js';
+import { AchievementsModule } from '../modules/achievements.js';
 
 function cleanupConsolePageChrome() {
     const homeLinkItem = document.querySelector('.nav-links a[href="../index.html"]')?.closest('li');
@@ -344,6 +345,11 @@ async function init() {
     renderHero(consola);
     renderHistory(consola);
     renderSpecs(consola);
+
+    AchievementsModule.trackConsoleVisit(consoleId);
+    window.dispatchEvent(new CustomEvent('cn:console-visited', {
+        detail: { consoleId }
+    }));
 }
 
 // Initialize when DOM is ready

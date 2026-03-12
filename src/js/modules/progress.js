@@ -63,6 +63,11 @@ export const ProgressModule = {
         return this._getAll(userId);
     },
 
+    /** Reset all progress for a user */
+    resetUserProgress(userId) {
+        this._saveAll(userId, {});
+    },
+
     /** Course definitions */
     COURSES: [
         { id: 'inginerie', name: 'Inginerie în Console', icon: '⚡', totalLessons: 42, prefix: 'lectia-' }

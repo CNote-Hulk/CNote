@@ -8,6 +8,12 @@
 (function () {
     'use strict';
 
+    var SESSION_KEY = 'cn_session';
+    var PROGRESS_STORAGE_KEY = 'cn_progress';
+    var QUIZ_STATS_KEY = 'cn_quiz_stats';
+    var LESSON_VISITS_KEY = 'cn_lesson_visits';
+    var COURSE_ID = 'inginerie';
+
     // Prevent double-init
     if (window.__QUIZ_INITIALIZED__) return;
 
@@ -28,6 +34,173 @@
         let totalQuestions = 0;
         let answeredCount = 0;
         let correctCount = 0;
+
+        function getCurrentUser() {
+            try {
+                var session = JSON.parse(localStorage.getItem(SESSION_KEY));
+                return session && session.id ? session : null;
+            } catch (_) {
+                return null;
+            }
+        }
+
+        function getLessonIdFromPath() {
+            var match = window.location.pathname.match(/lectia-(\d+)-(\d+)\.html$/i);
+            if (!match) return null;
+            var major = parseInt(match[1], 10);
+            var minor = parseInt(match[2], 10);
+            if (Number.isNaN(major) || Number.isNaN(minor)) return null;
+            return (major * 100) + minor;
+        }
+
+        function getVisitedLessons(userId) {
+            try {
+                var allVisits = JSON.parse(localStorage.getItem(LESSON_VISITS_KEY)) || {};
+                var userVisits = allVisits[userId] || {};
+                var lessons = userVisits[COURSE_ID] || [];
+                return Array.isArray(lessons) ? lessons : [];
+            } catch (_) {
+                return [];
+            }
+        }
+
+        function saveVisitedLessons(userId, lessons) {
+            try {
+                var allVisits = JSON.parse(localStorage.getItem(LESSON_VISITS_KEY)) || {};
+                if (!allVisits[userId] || typeof allVisits[userId] !== 'object') {
+                    allVisits[userId] = {};
+                }
+                allVisits[userId][COURSE_ID] = lessons;
+                localStorage.setItem(LESSON_VISITS_KEY, JSON.stringify(allVisits));
+            } catch (_) {
+                // noop
+            }
+        }
+
+        function isQuizCompleted(userId, lessonId) {
+            try {
+                var allStats = JSON.parse(localStorage.getItem(QUIZ_STATS_KEY)) || {};
+                var courseStats = (((allStats[userId] || {})[COURSE_ID]) || {});
+                var lessonStats = courseStats[String(lessonId)] || null;
+                return !!(lessonStats && Number(lessonStats.attempts || 0) > 0);
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function syncLessonProgress(userId, lessonId) {
+            if (!userId || !lessonId) return;
+
+            var user = getCurrentUser();
+            if (!user || user.id !== userId) return;
+
+            var visitedLessons = getVisitedLessons(userId);
+            var hasVisited = visitedLessons.includes(lessonId);
+            var hasQuiz = isQuizCompleted(userId, lessonId);
+
+            try {
+                var allData = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY)) || {};
+                if (!allData[userId] || typeof allData[userId] !== 'object') {
+                    allData[userId] = {};
+                }
+
+                if (!Array.isArray(allData[userId][COURSE_ID])) {
+                    allData[userId][COURSE_ID] = [];
+                }
+
+                var lessons = allData[userId][COURSE_ID];
+                var alreadyCompleted = lessons.includes(lessonId);
+                var shouldComplete = hasVisited && hasQuiz;
+
+                if (shouldComplete && !alreadyCompleted) {
+                    lessons.push(lessonId);
+                    lessons.sort(function (a, b) { return a - b; });
+                    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(allData));
+                    window.dispatchEvent(new CustomEvent('cn:lesson-completed', {
+                        detail: { courseId: COURSE_ID, lessonId: lessonId }
+                    }));
+                } else if (!shouldComplete && alreadyCompleted) {
+                    allData[userId][COURSE_ID] = lessons.filter(function (id) { return id !== lessonId; });
+                    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(allData));
+                }
+            } catch (_) {
+                // Silent fallback: quiz should still function even if storage fails.
+            }
+        }
+
+        function markLessonVisited() {
+            var user = getCurrentUser();
+            var lessonId = getLessonIdFromPath();
+            if (!user || !lessonId) return;
+
+            var visited = getVisitedLessons(user.id);
+            if (!visited.includes(lessonId)) {
+                visited.push(lessonId);
+                visited.sort(function (a, b) { return a - b; });
+                saveVisitedLessons(user.id, visited);
+                window.dispatchEvent(new CustomEvent('cn:lesson-visited', {
+                    detail: { courseId: COURSE_ID, lessonId: lessonId }
+                }));
+            }
+
+            syncLessonProgress(user.id, lessonId);
+        }
+
+        function bindNextLessonTracking() {
+            var navLinks = document.querySelectorAll('#navigare a.hero-button[href*="lectia-"]');
+            if (!navLinks.length) return;
+
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    markLessonVisited();
+                });
+            });
+        }
+
+        function storeQuizStats(total, correct) {
+            var user = getCurrentUser();
+            var lessonId = getLessonIdFromPath();
+            if (!user || !lessonId || total <= 0) return;
+
+            var percent = Math.round((correct / total) * 100);
+
+            try {
+                var allData = JSON.parse(localStorage.getItem(QUIZ_STATS_KEY)) || {};
+                if (!allData[user.id] || typeof allData[user.id] !== 'object') {
+                    allData[user.id] = {};
+                }
+                if (!allData[user.id][COURSE_ID] || typeof allData[user.id][COURSE_ID] !== 'object') {
+                    allData[user.id][COURSE_ID] = {};
+                }
+
+                var key = String(lessonId);
+                var current = allData[user.id][COURSE_ID][key] || {
+                    attempts: 0,
+                    best_percent: 0,
+                    last_percent: 0,
+                    first_completed_at: null,
+                    last_completed_at: null
+                };
+
+                current.attempts = Number(current.attempts || 0) + 1;
+                current.last_percent = percent;
+                current.best_percent = Math.max(Number(current.best_percent || 0), percent);
+                if (!current.first_completed_at) {
+                    current.first_completed_at = new Date().toISOString();
+                }
+                current.last_completed_at = new Date().toISOString();
+
+                allData[user.id][COURSE_ID][key] = current;
+                localStorage.setItem(QUIZ_STATS_KEY, JSON.stringify(allData));
+                syncLessonProgress(user.id, lessonId);
+
+                window.dispatchEvent(new CustomEvent('cn:quiz-finished', {
+                    detail: { courseId: COURSE_ID, lessonId: lessonId, percent: percent }
+                }));
+            } catch (_) {
+                // Keep quiz usable even when localStorage fails.
+            }
+        }
 
         // Data structure for each question
         const questions = [];
@@ -181,6 +354,7 @@
 
         // ── Show Final Result ──
         function showFinalResult() {
+            storeQuizStats(totalQuestions, correctCount);
             scoreBar.classList.add('quiz-complete');
 
             var percent = Math.round((correctCount / totalQuestions) * 100);
@@ -242,6 +416,9 @@
                 });
             });
         }
+
+        bindNextLessonTracking();
+        markLessonVisited();
     }
 
     // Initialize when DOM is ready

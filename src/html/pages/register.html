@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Creează cont — Console Notebook">
     <meta name="theme-color" content="#1B1714">
-    <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
     <title>Creează Cont — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
 </head>
@@ -45,6 +45,7 @@
             <p class="auth-card__subtitle">Înregistrează-te pentru a-ți urmări progresul</p>
             
             <div class="auth-error" id="register-error"></div>
+            <div class="auth-error" id="register-success" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
             
             <form class="auth-form" id="register-form" autocomplete="on">
                 <div class="auth-field">
@@ -77,19 +78,40 @@
             window.location.href = 'profil.html';
         }
         
-        document.getElementById('register-form').addEventListener('submit', (e) => {
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('reg-username').value;
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
             const errorEl = document.getElementById('register-error');
-            
-            const result = AuthModule.register(username, email, password);
-            if (result.success) {
-                window.location.href = 'profil.html';
-            } else {
-                errorEl.textContent = result.error;
+            const successEl = document.getElementById('register-success');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            errorEl.classList.remove('visible');
+            if (successEl) successEl.classList.remove('visible');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Se creează contul...';
+
+            try {
+                const result = await AuthModule.register(username, email, password);
+                if (result.success) {
+                    // Show success message — user must verify email before logging in
+                    if (successEl) {
+                        successEl.textContent = result.message || 'Cont creat! Verifică emailul pentru a activa contul.';
+                        successEl.classList.add('visible');
+                    }
+                    errorEl.classList.remove('visible');
+                    e.target.reset();
+                } else {
+                    errorEl.textContent = result.error;
+                    errorEl.classList.add('visible');
+                }
+            } catch {
+                errorEl.textContent = 'Nu s-a putut contacta serverul.';
                 errorEl.classList.add('visible');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Creează Cont';
             }
         });
     </script>
@@ -97,3 +119,4 @@
     <script src="../../js/fallback/search-profile.js"></script>
 </body>
 </html>
+

@@ -100,6 +100,21 @@
         return null;
     }
 
+    function trackConsoleVisit(consoleId) {
+        try {
+            var visited = JSON.parse(localStorage.getItem('cn_visited_consoles')) || [];
+            if (!visited.includes(consoleId)) {
+                visited.push(consoleId);
+                localStorage.setItem('cn_visited_consoles', JSON.stringify(visited));
+            }
+            window.dispatchEvent(new CustomEvent('cn:console-visited', {
+                detail: { consoleId: consoleId }
+            }));
+        } catch (_) {
+            // noop
+        }
+    }
+
     // Format a boolean value
     function formatBool(val) {
         if (val === true) return 'Da';
@@ -438,6 +453,7 @@
                 renderHero(consola);
                 renderHistory(consola);
                 renderSpecs(consola);
+                trackConsoleVisit(consoleId);
             })
             .catch(function (err) {
                 console.warn('Fallback: fetch failed', err);

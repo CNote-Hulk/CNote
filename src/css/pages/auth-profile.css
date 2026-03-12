@@ -10,7 +10,28 @@
     align-items: center;
     justify-content: center;
     padding: 80px 20px 40px;
-    background: var(--dark-bg, #1B1714) url('../../assets/images/wallpapers/login.png') center/cover no-repeat fixed;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        linear-gradient(rgba(21, 18, 16, 0.78), rgba(21, 18, 16, 0.88)),
+        linear-gradient(180deg, var(--dark-bg, #1B1714) 0%, var(--dark-bg-2, #151210) 100%);
+}
+
+.auth-page::after {
+    content: '';
+    position: fixed;
+    inset: -4px;
+    background: url('../../assets/images/wallpapers/login.png') center/cover no-repeat;
+    filter: blur(4px) brightness(0.58);
+    transform: scale(1.02);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.auth-page > * {
+    position: relative;
+    z-index: 1;
 }
 
 .auth-card {
@@ -95,6 +116,15 @@
     transform: translateY(-1px);
 }
 
+.auth-btn.auth-btn--danger {
+    background: #7f2f2f;
+    color: #ffeaea;
+}
+
+.auth-btn.auth-btn--danger:hover {
+    background: #9a3c3c;
+}
+
 .auth-error {
     background: rgba(229, 115, 115, 0.12);
     border: 1px solid rgba(229, 115, 115, 0.25);
@@ -130,7 +160,28 @@
 .profile-page {
     padding: 100px 20px 60px;
     min-height: 100vh;
-    background: var(--dark-bg, #1B1714) url('../../assets/images/wallpapers/login.png') center/cover no-repeat fixed;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        linear-gradient(rgba(21, 18, 16, 0.78), rgba(21, 18, 16, 0.88)),
+        linear-gradient(180deg, var(--dark-bg, #1B1714) 0%, var(--dark-bg-2, #151210) 100%);
+}
+
+.profile-page::after {
+    content: '';
+    position: fixed;
+    inset: -4px;
+    background: url('../../assets/images/wallpapers/login.png') center/cover no-repeat;
+    filter: blur(4px) brightness(0.58);
+    transform: scale(1.02);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.profile-page > * {
+    position: relative;
+    z-index: 1;
 }
 
 .profile-header {
@@ -157,6 +208,47 @@
     color: var(--accent-color);
     flex-shrink: 0;
     border: 2px solid rgba(212, 175, 122, 0.3);
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-avatar:hover {
+    transform: translateY(-1px);
+    border-color: rgba(212, 175, 122, 0.55);
+}
+
+.profile-avatar::after {
+    content: '✏️';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(21, 18, 16, 0.92);
+    border: 1px solid rgba(212, 175, 122, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    opacity: 0;
+    transform: translate(-50%, -46%);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.profile-avatar:hover::after,
+.profile-avatar:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+#profile-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-info {
@@ -169,6 +261,30 @@
     font-weight: 700;
     color: var(--text-light);
     margin-bottom: 4px;
+}
+
+.profile-name-row,
+.profile-bio-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-edit-shortcut {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-light);
+    border-radius: 8px;
+    padding: 4px 7px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.profile-edit-shortcut:hover {
+    border-color: rgba(212, 175, 122, 0.45);
+    transform: translateY(-1px);
 }
 
 .profile-bio {
@@ -379,6 +495,153 @@
     opacity: 0.5;
 }
 
+/* Achievement unlock toast (top-right) */
+.achievement-toast-stack {
+    position: fixed;
+    top: 84px;
+    right: 16px;
+    z-index: 1600;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.achievement-toast {
+    width: min(360px, calc(100vw - 24px));
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(36, 30, 26, 0.94);
+    border: 1px solid rgba(212, 175, 122, 0.35);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transform: translateX(24px);
+    transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.achievement-toast.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.achievement-toast__icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: rgba(212, 175, 122, 0.14);
+    border: 1px solid rgba(212, 175, 122, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.achievement-toast__label {
+    color: var(--accent-color);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    font-weight: 700;
+}
+
+.achievement-toast__title {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.achievement-toast__desc {
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    line-height: 1.35;
+    margin-top: 2px;
+}
+
+/* In-site confirmation modal */
+.modal-open {
+    overflow: hidden;
+}
+
+.app-modal[hidden] {
+    display: none !important;
+}
+
+.app-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.app-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 6, 5, 0.64);
+    backdrop-filter: blur(4px);
+}
+
+.app-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(520px, 100%);
+    background: rgba(42, 35, 32, 0.98);
+    border: 1px solid rgba(212, 175, 122, 0.26);
+    border-radius: 14px;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.app-modal__title {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.app-modal__text {
+    color: var(--text-gray);
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.app-modal__actions {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.app-modal__btn {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.app-modal__btn--ghost {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.16);
+    color: var(--text-light);
+}
+
+.app-modal__btn--danger {
+    background: #8d3a3a;
+    color: #fff2f2;
+}
+
+.app-modal__btn--danger:hover {
+    background: #a94747;
+}
+
 /* Mobile */
 @media (max-width: 600px) {
     .auth-card {
@@ -398,5 +661,18 @@
 
     .achievements-grid {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+
+    .achievement-toast-stack {
+        right: 8px;
+        top: 74px;
+    }
+
+    .app-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .app-modal__btn {
+        width: 100%;
     }
 }

@@ -96,6 +96,42 @@
     border-left-color: rgba(212, 175, 122, 0.8);
 }
 
+/* Course progress block (used in Invata page cards) */
+.course-progress {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    text-align: left;
+}
+
+.course-progress__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    margin-bottom: 8px;
+}
+
+.course-progress__title {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+}
+
+.course-progress__value {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    font-weight: 700;
+}
+
+.course-progress__hint {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 0.82rem;
+    color: var(--text-gray);
+}
+
 /* Card Grid */
 .cards-grid {
     display: grid;

@@ -10,6 +10,8 @@ import { ContactFormModule } from './modules/contact-form.js';
 import { DiacriticsModule } from './modules/diacritics.js';
 import { SearchModule } from './modules/search.js';
 import { ProfileDropdownModule } from './modules/profile-dropdown.js';
+import { AuthModule } from './modules/auth.js';
+import { AchievementsModule } from './modules/achievements.js';
 
 /**
  * App Class - Orchestrates all modules
@@ -51,12 +53,31 @@ class App {
 
             ProfileDropdownModule.init();
             console.log('✓ Profile dropdown module initialized');
+
+            this.initAchievements();
+            console.log('✓ Achievements module initialized');
             
             console.log('✅ All modules initialized successfully');
             this.initMathRendering();
         } catch (error) {
             console.error('❌ Error initializing modules:', error);
         }
+    }
+
+    initAchievements() {
+        const checkAndNotify = () => {
+            const user = AuthModule.getCurrentUser();
+            if (!user) return;
+            const awarded = AchievementsModule.checkAndAward(user.id);
+            if (awarded.length) {
+                AchievementsModule.showUnlockNotifications(awarded);
+            }
+        };
+
+        checkAndNotify();
+        window.addEventListener('cn:lesson-completed', checkAndNotify);
+        window.addEventListener('cn:console-visited', checkAndNotify);
+        window.addEventListener('cn:quiz-finished', checkAndNotify);
     }
 
     initMathRendering() {

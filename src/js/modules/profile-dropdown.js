@@ -10,6 +10,15 @@ export const ProfileDropdownModule = {
     _btn: null,
     _open: false,
 
+    _escapeHtml(value) {
+        if (value === null || value === undefined) return '';
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    },
+
     init() {
         this._btn = document.querySelector('.navbar-profile-btn');
         if (!this._btn) return;
@@ -27,13 +36,31 @@ export const ProfileDropdownModule = {
     },
 
     _createDropdown() {
+        const user = AuthModule.getCurrentUser() || {};
+        const name = this._escapeHtml(user.username || 'Utilizator');
+        const email = this._escapeHtml(user.email || 'Fara email');
+        const avatar = user.avatar ? this._escapeHtml(user.avatar) : '';
+        const profilePath = this._resolvePagePath('profil.html');
+        const avatarMarkup = avatar
+            ? `<img src="${avatar}" alt="Avatar utilizator" class="profile-dropdown__avatar-img">`
+            : `<span class="profile-dropdown__avatar-fallback" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+               </span>`;
+
         const dd = document.createElement('div');
         dd.className = 'profile-dropdown';
         dd.innerHTML = `
-            <a href="${this._resolvePagePath('profil.html')}" class="profile-dropdown__item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Profil
+            <a href="${profilePath}" class="profile-dropdown__profile">
+                <span class="profile-dropdown__avatar">${avatarMarkup}</span>
+                <span class="profile-dropdown__meta">
+                    <span class="profile-dropdown__name">${name}</span>
+                    <span class="profile-dropdown__email">${email}</span>
+                </span>
             </a>
+            <div class="profile-dropdown__divider profile-dropdown__divider--profile"></div>
             <a href="${this._resolvePagePath('profil.html')}#cursuri" class="profile-dropdown__item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                 Cursurile Mele
@@ -45,6 +72,10 @@ export const ProfileDropdownModule = {
             <a href="${this._resolvePagePath('profil.html')}#setari" class="profile-dropdown__item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 Setări
+            </a>
+            <a href="${this._resolvePagePath('statistici.html')}" class="profile-dropdown__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                Statistici
             </a>
             <div class="profile-dropdown__divider"></div>
             <button class="profile-dropdown__item profile-dropdown__logout">
@@ -77,8 +108,8 @@ export const ProfileDropdownModule = {
         // Logout
         const logoutBtn = this._dropdown.querySelector('.profile-dropdown__logout');
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                AuthModule.logout();
+            logoutBtn.addEventListener('click', async () => {
+                await AuthModule.logout();
                 window.location.reload();
             });
         }

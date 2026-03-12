@@ -3,20 +3,64 @@
  * Badge system tracked in localStorage
  */
 
-import { AuthModule } from './auth.js';
 import { ProgressModule } from './progress.js';
 
 export const AchievementsModule = {
     STORAGE_KEY: 'cn_achievements',
+    VISITED_STORAGE_KEY: 'cn_visited_consoles',
+    QUIZ_STATS_KEY: 'cn_quiz_stats',
 
     BADGES: [
-        { id: 'first_steps', name: 'Primii Pași', description: 'Ai completat prima lecție.', icon: '🎯' },
-        { id: 'tech_explorer', name: 'Explorator Tech', description: 'Ai citit 5 lecții.', icon: '🔬' },
-        { id: 'console_doctor', name: 'Doctor de Console', description: 'Ai terminat un curs de reparare.', icon: '🔧' },
-        { id: 'retro_master', name: 'Maestru Retro', description: 'Ai vizitat 10 pagini de console.', icon: '🕹️' },
-        { id: 'bookworm', name: 'Cititor Pasionat', description: 'Ai citit 15 lecții.', icon: '📚' },
-        { id: 'halfway', name: 'La Jumătate', description: 'Ai completat 50% dintr-un curs.', icon: '⭐' }
+        { id: 'first_steps', name: 'Primii Pași', description: 'Completează 1 lecție (termină quiz-ul unei lecții).', icon: '🎯' },
+        { id: 'starter_pack', name: 'Starter Pack', description: 'Completează 3 lecții.', icon: '🧩' },
+        { id: 'tech_explorer', name: 'Explorator Tech', description: 'Completează 5 lecții.', icon: '🔬' },
+        { id: 'bookworm', name: 'Cititor Pasionat', description: 'Completează 15 lecții.', icon: '📚' },
+        { id: 'grinder_25', name: 'Grinder', description: 'Completează 25 lecții.', icon: '⚙️' },
+        { id: 'halfway', name: 'La Jumătate', description: 'Atinge 50% progres într-un curs.', icon: '⭐' },
+        { id: 'almost_there', name: 'Aproape Gata', description: 'Atinge 80% progres într-un curs.', icon: '🚀' },
+        { id: 'console_doctor', name: 'Doctor de Console', description: 'Termină complet cursul (100%).', icon: '🔧' },
+        { id: 'quiz_rookie', name: 'Quiz Rookie', description: 'Finalizează primul quiz.', icon: '❓' },
+        { id: 'quiz_veteran', name: 'Quiz Veteran', description: 'Finalizează 20 de quiz-uri în total.', icon: '🧠' },
+        { id: 'perfect_hit', name: 'Lovitură Perfectă', description: 'Ia 100% la un quiz.', icon: '💯' },
+        { id: 'perfect_streak', name: 'Serie Perfectă', description: 'Ia 100% la 5 quiz-uri diferite.', icon: '🏅' },
+        { id: 'console_scout', name: 'Console Scout', description: 'Vizitează 3 pagini de console.', icon: '🧭' },
+        { id: 'retro_master', name: 'Maestru Retro', description: 'Vizitează 10 pagini de console.', icon: '🕹️' },
+        { id: 'archive_hunter', name: 'Archive Hunter', description: 'Vizitează 25 pagini de console.', icon: '🗂️' },
+        { id: 'all_rounder', name: 'All-Rounder', description: 'Completează 15 lecții și vizitează 10 console.', icon: '👑' }
     ],
+
+    _getQuizStats(userId) {
+        try {
+            const data = JSON.parse(localStorage.getItem(this.QUIZ_STATS_KEY)) || {};
+            return data[userId] || {};
+        } catch { return {}; }
+    },
+
+    _getVisitedCount() {
+        try {
+            const visited = JSON.parse(localStorage.getItem(this.VISITED_STORAGE_KEY)) || [];
+            return Array.isArray(visited) ? visited.length : 0;
+        } catch { return 0; }
+    },
+
+    _getQuizSummary(userId) {
+        const byCourse = this._getQuizStats(userId);
+        let attempts = 0;
+        let perfectLessons = 0;
+
+        Object.values(byCourse).forEach((courseStats) => {
+            if (!courseStats || typeof courseStats !== 'object') return;
+            Object.values(courseStats).forEach((lessonStats) => {
+                if (!lessonStats || typeof lessonStats !== 'object') return;
+                attempts += Number(lessonStats.attempts || 0);
+                if (Number(lessonStats.best_percent || 0) >= 100) {
+                    perfectLessons += 1;
+                }
+            });
+        });
+
+        return { attempts, perfectLessons };
+    },
 
     /** Get earned achievements for a user */
     getEarned(userId) {
@@ -43,6 +87,8 @@ export const AchievementsModule = {
         const awarded = [];
         const progress = ProgressModule.getAllProgress(userId);
         let totalCompleted = 0;
+        const visitedCount = this._getVisitedCount();
+        const quiz = this._getQuizSummary(userId);
 
         for (const courseId in progress) {
             const lessons = progress[courseId] || [];
@@ -52,18 +98,25 @@ export const AchievementsModule = {
                 const pct = Math.round((lessons.length / course.totalLessons) * 100);
                 if (pct >= 100 && this.award(userId, 'console_doctor')) awarded.push('console_doctor');
                 if (pct >= 50 && this.award(userId, 'halfway')) awarded.push('halfway');
+                if (pct >= 80 && this.award(userId, 'almost_there')) awarded.push('almost_there');
             }
         }
 
         if (totalCompleted >= 1 && this.award(userId, 'first_steps')) awarded.push('first_steps');
+        if (totalCompleted >= 3 && this.award(userId, 'starter_pack')) awarded.push('starter_pack');
         if (totalCompleted >= 5 && this.award(userId, 'tech_explorer')) awarded.push('tech_explorer');
         if (totalCompleted >= 15 && this.award(userId, 'bookworm')) awarded.push('bookworm');
+        if (totalCompleted >= 25 && this.award(userId, 'grinder_25')) awarded.push('grinder_25');
 
-        // Retro master: check visited consoles
-        try {
-            const visited = JSON.parse(localStorage.getItem('cn_visited_consoles')) || [];
-            if (visited.length >= 10 && this.award(userId, 'retro_master')) awarded.push('retro_master');
-        } catch { /* noop */ }
+        if (quiz.attempts >= 1 && this.award(userId, 'quiz_rookie')) awarded.push('quiz_rookie');
+        if (quiz.attempts >= 20 && this.award(userId, 'quiz_veteran')) awarded.push('quiz_veteran');
+        if (quiz.perfectLessons >= 1 && this.award(userId, 'perfect_hit')) awarded.push('perfect_hit');
+        if (quiz.perfectLessons >= 5 && this.award(userId, 'perfect_streak')) awarded.push('perfect_streak');
+
+        if (visitedCount >= 3 && this.award(userId, 'console_scout')) awarded.push('console_scout');
+        if (visitedCount >= 10 && this.award(userId, 'retro_master')) awarded.push('retro_master');
+        if (visitedCount >= 25 && this.award(userId, 'archive_hunter')) awarded.push('archive_hunter');
+        if (visitedCount >= 10 && totalCompleted >= 15 && this.award(userId, 'all_rounder')) awarded.push('all_rounder');
 
         return awarded;
     },
@@ -71,14 +124,76 @@ export const AchievementsModule = {
     /** Track a console page visit */
     trackConsoleVisit(consoleId) {
         try {
-            const visited = JSON.parse(localStorage.getItem('cn_visited_consoles')) || [];
+            const visited = JSON.parse(localStorage.getItem(this.VISITED_STORAGE_KEY)) || [];
             if (!visited.includes(consoleId)) {
                 visited.push(consoleId);
-                localStorage.setItem('cn_visited_consoles', JSON.stringify(visited));
+                localStorage.setItem(this.VISITED_STORAGE_KEY, JSON.stringify(visited));
             }
-            const user = AuthModule.getCurrentUser();
-            if (user) this.checkAndAward(user.id);
+            return visited.length;
         } catch { /* noop */ }
+        return 0;
+    },
+
+    showUnlockNotifications(awardedIds) {
+        if (!Array.isArray(awardedIds) || awardedIds.length === 0) return;
+
+        let stack = document.querySelector('.achievement-toast-stack');
+        if (!stack) {
+            stack = document.createElement('div');
+            stack.className = 'achievement-toast-stack';
+            document.body.appendChild(stack);
+        }
+
+        awardedIds.forEach((badgeId, index) => {
+            const badge = this.BADGES.find(b => b.id === badgeId);
+            if (!badge) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'achievement-toast';
+            toast.innerHTML = `
+                <div class="achievement-toast__icon">${badge.icon}</div>
+                <div class="achievement-toast__content">
+                    <div class="achievement-toast__label">Achievement Deblocat</div>
+                    <div class="achievement-toast__title">${badge.name}</div>
+                    <div class="achievement-toast__desc">${badge.description}</div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                stack.appendChild(toast);
+                requestAnimationFrame(() => toast.classList.add('visible'));
+            }, index * 180);
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => {
+                    toast.remove();
+                    if (stack && !stack.children.length) {
+                        stack.remove();
+                    }
+                }, 260);
+            }, 4200 + index * 220);
+        });
+    },
+
+    resetUserAchievements(userId) {
+        try {
+            const data = JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || {};
+            data[userId] = [];
+            localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+        } catch { /* noop */ }
+    },
+
+    resetUserQuizStats(userId) {
+        try {
+            const data = JSON.parse(localStorage.getItem(this.QUIZ_STATS_KEY)) || {};
+            data[userId] = {};
+            localStorage.setItem(this.QUIZ_STATS_KEY, JSON.stringify(data));
+        } catch { /* noop */ }
+    },
+
+    resetVisitedConsoles() {
+        localStorage.setItem(this.VISITED_STORAGE_KEY, JSON.stringify([]));
     },
 
     /** Get full badge info with earned status */

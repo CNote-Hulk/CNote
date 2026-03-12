@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Statistici personale de progres - Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <title>Statistici â€” Console Notebook</title>
+    <link rel="stylesheet" href="../../css/production.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="CautÄƒ" type="button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="index.html" class="logo">Console Notebook</a>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="invata.html">ÃŽnvaÈ›Äƒ</a></li>
+                <li><a href="evolutie.html">EvoluÈ›ie</a></li>
+                <li><a href="comparatie.html">ComparaÈ›ie</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="bibliografie.html">Bibliografie</a></li>
+            </ul>
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stats-page">
+        <section class="section stats-hero">
+            <div class="container">
+                <h1 class="section-title">Statistici Personale</h1>
+                <p class="section-intro">Panoul tÄƒu de progres: lecÈ›ii, quiz-uri, realizÄƒri È™i explorarea consolelor.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="stats-grid">
+                    <article class="stats-card">
+                        <div class="stats-label">LecÈ›ii Completate</div>
+                        <div class="stats-value" id="stat-lessons-completed">0</div>
+                        <div class="stats-sub" id="stat-lessons-sub">din 0 lecÈ›ii</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar__fill" id="stat-lessons-fill" style="width: 0%;"></div>
+                        </div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">LecÈ›ii Vizitate</div>
+                        <div class="stats-value" id="stat-lessons-visited">0</div>
+                        <div class="stats-sub" id="stat-lessons-visited-sub">din 0 lecÈ›ii</div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">Curs Finalizat</div>
+                        <div class="stats-value" id="stat-courses-completed">0</div>
+                        <div class="stats-sub" id="stat-courses-sub">din 0 cursuri</div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">RealizÄƒri Deblocate</div>
+                        <div class="stats-value" id="stat-achievements-earned">0</div>
+                        <div class="stats-sub" id="stat-achievements-sub">din 0 badge-uri</div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">Quiz-uri Finalizate</div>
+                        <div class="stats-value" id="stat-quiz-attempts">0</div>
+                        <div class="stats-sub" id="stat-quiz-sub">best score mediu: 0%</div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">Quiz-uri Perfecte</div>
+                        <div class="stats-value" id="stat-perfect-lessons">0</div>
+                        <div class="stats-sub">lecÈ›ii cu scor maxim 100%</div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">Console Vizitate</div>
+                        <div class="stats-value" id="stat-consoles-visited">0</div>
+                        <div class="stats-sub">pagini unice explorate</div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">Zile Ã®n PlatformÄƒ</div>
+                        <div class="stats-value" id="stat-days-member">0</div>
+                        <div class="stats-sub">de la crearea contului</div>
+                    </article>
+
+                    <article class="stats-card">
+                        <div class="stats-label">Nivel General</div>
+                        <div class="stats-value" id="stat-level">Novice</div>
+                        <div class="stats-sub" id="stat-level-sub">Continua pentru rank mai mare</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="course-card">
+                    <h2 class="stats-section-title">Obiective UrmÄƒtoare</h2>
+                    <div id="next-goals" class="next-goals"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner container">
+            <div class="footer-left">
+                <p class="footer-main"> 2026 Console Notebook</p>
+                <a class="footer-sub" href="index.html#despre">Proiect Atestat Informatica</a>
+            </div>
+            <div class="footer-right">
+                <a href="mailto:andrei.halcu.07@licmarghilomanbz.ro">andrei.halcu.07@licmarghilomanbz.ro</a>
+                <a href="tel:+40758464907">+40 758 464 907</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/data/consoles-data.js"></script>
+    <script type="module" src="../../js/main.js"></script>
+    <script type="module">
+        import { AuthModule } from '../../js/modules/auth.js';
+        import { ProgressModule } from '../../js/modules/progress.js';
+        import { AchievementsModule } from '../../js/modules/achievements.js';
+
+        const user = AuthModule.getCurrentUser();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        function getVisitedConsolesCount() {
+            try {
+                const visited = JSON.parse(localStorage.getItem('cn_visited_consoles')) || [];
+                return Array.isArray(visited) ? visited.length : 0;
+            } catch {
+                return 0;
+            }
+        }
+
+        function getQuizStatsSummary(userId) {
+            try {
+                const all = JSON.parse(localStorage.getItem('cn_quiz_stats')) || {};
+                const byCourse = all[userId] || {};
+                let attempts = 0;
+                let bestSum = 0;
+                let bestCount = 0;
+                let perfectLessons = 0;
+
+                Object.values(byCourse).forEach((courseStats) => {
+                    if (!courseStats || typeof courseStats !== 'object') return;
+                    Object.values(courseStats).forEach((lessonStats) => {
+                        if (!lessonStats || typeof lessonStats !== 'object') return;
+                        attempts += Number(lessonStats.attempts || 0);
+
+                        const best = Number(lessonStats.best_percent || 0);
+                        if (!Number.isNaN(best)) {
+                            bestSum += best;
+                            bestCount += 1;
+                        }
+
+                        if (best >= 100) perfectLessons += 1;
+                    });
+                });
+
+                return {
+                    attempts,
+                    bestAverage: bestCount > 0 ? Math.round(bestSum / bestCount) : 0,
+                    perfectLessons
+                };
+            } catch {
+                return { attempts: 0, bestAverage: 0, perfectLessons: 0 };
+            }
+        }
+
+        function getVisitedLessonsCount(userId) {
+            try {
+                const all = JSON.parse(localStorage.getItem('cn_lesson_visits')) || {};
+                const userVisits = all[userId] || {};
+                const unique = new Set();
+
+                Object.values(userVisits).forEach((courseVisits) => {
+                    if (!Array.isArray(courseVisits)) return;
+                    courseVisits.forEach((lessonId) => unique.add(String(lessonId)));
+                });
+
+                return unique.size;
+            } catch {
+                return 0;
+            }
+        }
+
+        function computeLevel(lessonsPct, achievementsPct, quizAverage) {
+            const score = Math.round((lessonsPct * 0.45) + (achievementsPct * 0.35) + (quizAverage * 0.20));
+            if (score >= 90) return { name: 'Legend', sub: 'Ai stÄƒpÃ¢nit complet platforma.' };
+            if (score >= 75) return { name: 'Expert', sub: 'PerformanÈ›Äƒ foarte bunÄƒ pe toate zonele.' };
+            if (score >= 55) return { name: 'Avansat', sub: 'Progres solid, ritm excelent.' };
+            if (score >= 35) return { name: 'Intermediar', sub: 'BazÄƒ bunÄƒ, continuÄƒ sÄƒ consolidezi.' };
+            return { name: 'Novice', sub: 'EÈ™ti la Ã®nceput. ContinuÄƒ lecÈ›iile È™i quiz-urile.' };
+        }
+
+        function renderGoals(badges) {
+            const container = document.getElementById('next-goals');
+            const locked = badges.filter((b) => !b.earned).slice(0, 6);
+            if (!locked.length) {
+                container.innerHTML = '<div class="next-goal-item">âœ… Ai deblocat toate realizÄƒrile disponibile.</div>';
+                return;
+            }
+
+            container.innerHTML = locked.map((b) => `
+                <div class="next-goal-item">
+                    <span class="next-goal-item__icon">${b.icon}</span>
+                    <div>
+                        <div class="next-goal-item__name">${b.name}</div>
+                        <div class="next-goal-item__desc">${b.description}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderStats() {
+            const courses = ProgressModule.COURSES;
+            const allProgress = ProgressModule.getAllProgress(user.id);
+
+            const totalLessons = courses.reduce((sum, c) => sum + Number(c.totalLessons || 0), 0);
+            const completedLessons = courses.reduce((sum, c) => {
+                const done = allProgress[c.id] || [];
+                return sum + done.length;
+            }, 0);
+
+            const completedCourses = courses.reduce((sum, c) => {
+                const done = allProgress[c.id] || [];
+                return sum + (done.length >= Number(c.totalLessons || 0) ? 1 : 0);
+            }, 0);
+
+            const lessonsPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+            const allBadges = AchievementsModule.getAllBadges(user.id);
+            const earnedBadges = allBadges.filter((b) => b.earned).length;
+            const achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
+
+            const quiz = getQuizStatsSummary(user.id);
+            const visitedConsoles = getVisitedConsolesCount();
+            const visitedLessons = getVisitedLessonsCount(user.id);
+
+            const createdAt = new Date(user.created_at);
+            const now = new Date();
+            const daysMember = Math.max(1, Math.floor((now - createdAt) / (1000 * 60 * 60 * 24)) + 1);
+
+            const level = computeLevel(lessonsPct, achievementsPct, quiz.bestAverage);
+
+            document.getElementById('stat-lessons-completed').textContent = String(completedLessons);
+            document.getElementById('stat-lessons-sub').textContent = `din ${totalLessons} lecÈ›ii (${lessonsPct}%)`;
+            document.getElementById('stat-lessons-fill').style.width = `${lessonsPct}%`;
+            document.getElementById('stat-lessons-visited').textContent = String(visitedLessons);
+            document.getElementById('stat-lessons-visited-sub').textContent = `din ${totalLessons} lecÈ›ii`;
+
+            document.getElementById('stat-courses-completed').textContent = String(completedCourses);
+            document.getElementById('stat-courses-sub').textContent = `din ${courses.length} cursuri`;
+
+            document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
+            document.getElementById('stat-achievements-sub').textContent = `din ${allBadges.length} badge-uri (${achievementsPct}%)`;
+
+            document.getElementById('stat-quiz-attempts').textContent = String(quiz.attempts);
+            document.getElementById('stat-quiz-sub').textContent = `best score mediu: ${quiz.bestAverage}%`;
+
+            document.getElementById('stat-perfect-lessons').textContent = String(quiz.perfectLessons);
+            document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);
+            document.getElementById('stat-days-member').textContent = String(daysMember);
+
+            document.getElementById('stat-level').textContent = level.name;
+            document.getElementById('stat-level-sub').textContent = level.sub;
+
+            renderGoals(allBadges);
+        }
+
+        renderStats();
+    </script>
+    <script src="../../js/fallback/hamburger.js" defer></script>
+    <script src="../../js/fallback/search-profile.js"></script>
+</body>
+</html>
+
