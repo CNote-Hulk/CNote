@@ -112,13 +112,14 @@ app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 
 // â”€â”€â”€ Static files (frontend) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Serve the entire project root so paths like /src/html/pages/login.html work
-const ROOT = path.resolve(__dirname, '..');
-app.use(express.static(ROOT));
+// Serve static frontend from /frontend in project root.
+const PROJECT_ROOT = path.join(__dirname, '..', '..');
+const FRONTEND_ROOT = path.join(PROJECT_ROOT, 'frontend');
+app.use(express.static(FRONTEND_ROOT));
 
 // â”€â”€â”€ Fallback to index â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/', (req, res) => {
-    res.sendFile(path.join(ROOT, 'index.html'));
+    res.sendFile(path.join(FRONTEND_ROOT, 'index.html'));
 });
 
 // â”€â”€â”€ Start server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -126,7 +127,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log('Server running on port ' + PORT);
     console.log(`\n  âœ…  Console Notebook server running at http://localhost:${PORT}`);
-    console.log(`  ðŸ“  Serving static files from: ${ROOT}`);
+    console.log(`  ðŸ“  Serving static files from: ${FRONTEND_ROOT}`);
     console.log(`  ðŸ”‘  API available at http://localhost:${PORT}/api\n`);
 });
 
