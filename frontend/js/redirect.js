@@ -3,4 +3,4 @@
  * Keeps index.html free of inline scripts
  */
 
-window.location.href = 'src/html/pages/';
+window.location.href = 'frontend/html/pages/';
