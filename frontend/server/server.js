@@ -23,11 +23,35 @@ const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
+require('dotenv').config();
+
 const authRoutes = require('./routes/auth');
 const sessionRoutes = require('./routes/sessions');
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '3000', 10);
+const PORT = process.env.PORT || 3000;
+
+function getMissingEnvVars(required) {
+    return required.filter((name) => {
+        const value = process.env[name];
+        return !value || String(value).trim().length === 0;
+    });
+}
+
+const baseRequiredEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL'];
+const productionRequiredEnv = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'SMTP_FROM'];
+const requiredEnv = process.env.NODE_ENV === 'production'
+    ? baseRequiredEnv.concat(productionRequiredEnv)
+    : baseRequiredEnv;
+
+const missingEnv = getMissingEnvVars(requiredEnv);
+if (missingEnv.length > 0) {
+    console.error('Missing required environment variables: ' + missingEnv.join(', '));
+    process.exit(1);
+}
+
+// Render runs behind a reverse proxy.
+app.set('trust proxy', 1);
 
 // ─── Security headers ───────────────────────────────────
 
@@ -39,7 +63,7 @@ app.use(helmet({
 // ─── CORS (allow same-origin, needed if frontend runs separately) ──
 
 app.use(cors({
-    origin: true,
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 
@@ -100,6 +124,7 @@ app.get('/', (req, res) => {
 // ─── Start server ───────────────────────────────────────
 
 app.listen(PORT, () => {
+    console.log('Server running on port ' + PORT);
     console.log(`\n  ✅  Console Notebook server running at http://localhost:${PORT}`);
     console.log(`  📁  Serving static files from: ${ROOT}`);
     console.log(`  🔑  API available at http://localhost:${PORT}/api\n`);

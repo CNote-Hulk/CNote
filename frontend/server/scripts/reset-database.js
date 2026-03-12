@@ -6,7 +6,9 @@
 const path = require('path');
 const Database = require('better-sqlite3');
 
-const DB_PATH = path.join(__dirname, '..', 'data', 'console_notebook.db');
+require('dotenv').config();
+
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '..', 'data', 'console_notebook.db');
 
 try {
     const db = new Database(DB_PATH);

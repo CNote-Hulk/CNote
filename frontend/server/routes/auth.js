@@ -39,22 +39,21 @@ function expiresAt(hours = TOKEN_EXPIRY_HOURS) {
 }
 
 function setSessionCookie(res, token) {
-    const cookieOptions = {
+    res.cookie('cn_session_token', token, {
         httpOnly: true,
-        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         path: '/'
-    };
-
-    if (process.env.NODE_ENV === 'production') {
-        cookieOptions.secure = true;
-    }
-
-    res.cookie('cn_session_token', token, cookieOptions);
+    });
 }
 
 function clearSessionCookie(res) {
-    res.clearCookie('cn_session_token', { path: '/' });
+    res.clearCookie('cn_session_token', {
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none'
+    });
 }
 
 function sanitizeUser(user) {
