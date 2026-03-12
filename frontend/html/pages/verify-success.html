@@ -1,19 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
+    <!-- ===========================
+         EMAIL VERIFICATION SUCCESS PAGE
+         Confirmation after email verification
+         =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Verificare Email â€” Console Notebook">
+    <meta name="description" content="Verificare Email — Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
-    <title>Verificare Email â€” Console Notebook</title>
+    <title>Verificare Email — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
 </head>
 <body>
     <!-- NAVIGATION BAR -->
     <nav class="navbar">
         <div class="container">
-            <button class="navbar-search-btn" aria-label="CautÄƒ" type="button">
+            <button class="navbar-search-btn" aria-label="Caută" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <a href="index.html" class="logo">Console Notebook</a>
@@ -23,9 +27,9 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="invata.html">ÃŽnvaÈ›Äƒ</a></li>
-                <li><a href="evolutie.html">EvoluÈ›ie</a></li>
-                <li><a href="comparatie.html">ComparaÈ›ie</a></li>
+                <li><a href="invata.html">Învață</a></li>
+                <li><a href="evolutie.html">Evoluție</a></li>
+                <li><a href="comparatie.html">Comparație</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
                 <li><a href="bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -40,18 +44,18 @@
     <div class="auth-page">
         <div class="auth-card">
             <div id="verify-loading">
-                <h1 class="auth-card__title">Se verificÄƒ...</h1>
-                <p class="auth-card__subtitle">AÈ™teptÄƒ cÃ¢teva secunde.</p>
+                <h1 class="auth-card__title">Se verifică...</h1>
+                <p class="auth-card__subtitle">Așteptă câteva secunde.</p>
             </div>
             <div id="verify-success" hidden>
-                <h1 class="auth-card__title">âœ… Email Verificat</h1>
-                <p class="auth-card__subtitle" id="verify-success-msg">Emailul tÄƒu a fost verificat cu succes!</p>
+                <h1 class="auth-card__title">✅ Email Verificat</h1>
+                <p class="auth-card__subtitle" id="verify-success-msg">Emailul tău a fost verificat cu succes!</p>
                 <a href="login.html" class="auth-btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:16px;">Conectare</a>
             </div>
             <div id="verify-error" hidden>
-                <h1 class="auth-card__title">âŒ Verificare EÈ™uatÄƒ</h1>
+                <h1 class="auth-card__title">❌ Verificare Eșuată</h1>
                 <p class="auth-card__subtitle" id="verify-error-msg">Tokenul este invalid sau a expirat.</p>
-                <a href="login.html" class="auth-btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:16px;">ÃŽnapoi la Autentificare</a>
+                <a href="login.html" class="auth-btn" style="display:inline-block;text-align:center;text-decoration:none;margin-top:16px;">Înapoi la Autentificare</a>
             </div>
         </div>
     </div>
@@ -72,7 +76,7 @@
             if (!token) {
                 loadingEl.hidden = true;
                 errorEl.hidden = false;
-                document.getElementById('verify-error-msg').textContent = 'Link invalid â€” lipseÈ™te tokenul de verificare.';
+                document.getElementById('verify-error-msg').textContent = 'Link invalid — lipsește tokenul de verificare.';
                 return;
             }
 
@@ -83,15 +87,15 @@
                 loadingEl.hidden = true;
                 if (data.success) {
                     successEl.hidden = false;
-                    document.getElementById('verify-success-msg').textContent = data.message || 'Emailul tÄƒu a fost verificat cu succes!';
+                    document.getElementById('verify-success-msg').textContent = data.message || 'Emailul tău a fost verificat cu succes!';
                 } else {
                     errorEl.hidden = false;
-                    document.getElementById('verify-error-msg').textContent = data.error || 'Verificarea a eÈ™uat.';
+                    document.getElementById('verify-error-msg').textContent = data.error || 'Verificarea a eșuat.';
                 }
             } catch {
                 loadingEl.hidden = true;
                 errorEl.hidden = false;
-                document.getElementById('verify-error-msg').textContent = 'Nu s-a putut contacta serverul. ÃŽncearcÄƒ din nou.';
+                document.getElementById('verify-error-msg').textContent = 'Nu s-a putut contacta serverul. Încearcă din nou.';
             }
         })();
     </script>

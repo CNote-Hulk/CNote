@@ -1,4 +1,8 @@
-/* Statistics Page */
+/**
+ * Statistics Page
+ * Personal progress dashboard with animated charts
+ */
+
 .stats-page {
     position: relative;
     isolation: isolate;

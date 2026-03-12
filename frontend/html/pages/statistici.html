@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
+    <!-- ===========================
+         STATISTICS PAGE
+         Personal progress and learning statistics
+         =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Statistici personale de progres - Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
-    <title>Statistici â€” Console Notebook</title>
+    <title>Statistici — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
-            <button class="navbar-search-btn" aria-label="CautÄƒ" type="button">
+            <button class="navbar-search-btn" aria-label="Caută" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <a href="index.html" class="logo">Console Notebook</a>
@@ -22,9 +26,9 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="invata.html">ÃŽnvaÈ›Äƒ</a></li>
-                <li><a href="evolutie.html">EvoluÈ›ie</a></li>
-                <li><a href="comparatie.html">ComparaÈ›ie</a></li>
+                <li><a href="invata.html">Învață</a></li>
+                <li><a href="evolutie.html">Evoluție</a></li>
+                <li><a href="comparatie.html">Comparație</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
                 <li><a href="bibliografie.html">Bibliografie</a></li>
             </ul>
@@ -40,7 +44,7 @@
         <section class="section stats-hero">
             <div class="container">
                 <h1 class="section-title">Statistici Personale</h1>
-                <p class="section-intro">Panoul tÄƒu de progres: lecÈ›ii, quiz-uri, realizÄƒri È™i explorarea consolelor.</p>
+                <p class="section-intro">Panoul tău de progres: lecții, quiz-uri, realizări și explorarea consolelor.</p>
             </div>
         </section>
 
@@ -48,18 +52,18 @@
             <div class="container">
                 <div class="stats-grid">
                     <article class="stats-card">
-                        <div class="stats-label">LecÈ›ii Completate</div>
+                        <div class="stats-label">Lecții Completate</div>
                         <div class="stats-value" id="stat-lessons-completed">0</div>
-                        <div class="stats-sub" id="stat-lessons-sub">din 0 lecÈ›ii</div>
+                        <div class="stats-sub" id="stat-lessons-sub">din 0 lecții</div>
                         <div class="progress-bar">
                             <div class="progress-bar__fill" id="stat-lessons-fill" style="width: 0%;"></div>
                         </div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">LecÈ›ii Vizitate</div>
+                        <div class="stats-label">Lecții Vizitate</div>
                         <div class="stats-value" id="stat-lessons-visited">0</div>
-                        <div class="stats-sub" id="stat-lessons-visited-sub">din 0 lecÈ›ii</div>
+                        <div class="stats-sub" id="stat-lessons-visited-sub">din 0 lecții</div>
                     </article>
 
                     <article class="stats-card">
@@ -69,7 +73,7 @@
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">RealizÄƒri Deblocate</div>
+                        <div class="stats-label">Realizări Deblocate</div>
                         <div class="stats-value" id="stat-achievements-earned">0</div>
                         <div class="stats-sub" id="stat-achievements-sub">din 0 badge-uri</div>
                     </article>
@@ -83,7 +87,7 @@
                     <article class="stats-card">
                         <div class="stats-label">Quiz-uri Perfecte</div>
                         <div class="stats-value" id="stat-perfect-lessons">0</div>
-                        <div class="stats-sub">lecÈ›ii cu scor maxim 100%</div>
+                        <div class="stats-sub">lecții cu scor maxim 100%</div>
                     </article>
 
                     <article class="stats-card">
@@ -93,7 +97,7 @@
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Zile Ã®n PlatformÄƒ</div>
+                        <div class="stats-label">Zile în Platformă</div>
                         <div class="stats-value" id="stat-days-member">0</div>
                         <div class="stats-sub">de la crearea contului</div>
                     </article>
@@ -110,7 +114,7 @@
         <section class="section">
             <div class="container">
                 <div class="course-card">
-                    <h2 class="stats-section-title">Obiective UrmÄƒtoare</h2>
+                    <h2 class="stats-section-title">Obiective Următoare</h2>
                     <div id="next-goals" class="next-goals"></div>
                 </div>
             </div>
@@ -205,18 +209,18 @@
 
         function computeLevel(lessonsPct, achievementsPct, quizAverage) {
             const score = Math.round((lessonsPct * 0.45) + (achievementsPct * 0.35) + (quizAverage * 0.20));
-            if (score >= 90) return { name: 'Legend', sub: 'Ai stÄƒpÃ¢nit complet platforma.' };
-            if (score >= 75) return { name: 'Expert', sub: 'PerformanÈ›Äƒ foarte bunÄƒ pe toate zonele.' };
+            if (score >= 90) return { name: 'Legend', sub: 'Ai stăpânit complet platforma.' };
+            if (score >= 75) return { name: 'Expert', sub: 'Performanță foarte bună pe toate zonele.' };
             if (score >= 55) return { name: 'Avansat', sub: 'Progres solid, ritm excelent.' };
-            if (score >= 35) return { name: 'Intermediar', sub: 'BazÄƒ bunÄƒ, continuÄƒ sÄƒ consolidezi.' };
-            return { name: 'Novice', sub: 'EÈ™ti la Ã®nceput. ContinuÄƒ lecÈ›iile È™i quiz-urile.' };
+            if (score >= 35) return { name: 'Intermediar', sub: 'Bază bună, continuă să consolidezi.' };
+            return { name: 'Novice', sub: 'Ești la început. Continuă lecțiile și quiz-urile.' };
         }
 
         function renderGoals(badges) {
             const container = document.getElementById('next-goals');
             const locked = badges.filter((b) => !b.earned).slice(0, 6);
             if (!locked.length) {
-                container.innerHTML = '<div class="next-goal-item">âœ… Ai deblocat toate realizÄƒrile disponibile.</div>';
+                container.innerHTML = '<div class="next-goal-item">✅ Ai deblocat toate realizările disponibile.</div>';
                 return;
             }
 
@@ -263,10 +267,10 @@
             const level = computeLevel(lessonsPct, achievementsPct, quiz.bestAverage);
 
             document.getElementById('stat-lessons-completed').textContent = String(completedLessons);
-            document.getElementById('stat-lessons-sub').textContent = `din ${totalLessons} lecÈ›ii (${lessonsPct}%)`;
+            document.getElementById('stat-lessons-sub').textContent = `din ${totalLessons} lecții (${lessonsPct}%)`;
             document.getElementById('stat-lessons-fill').style.width = `${lessonsPct}%`;
             document.getElementById('stat-lessons-visited').textContent = String(visitedLessons);
-            document.getElementById('stat-lessons-visited-sub').textContent = `din ${totalLessons} lecÈ›ii`;
+            document.getElementById('stat-lessons-visited-sub').textContent = `din ${totalLessons} lecții`;
 
             document.getElementById('stat-courses-completed').textContent = String(completedCourses);
             document.getElementById('stat-courses-sub').textContent = `din ${courses.length} cursuri`;
