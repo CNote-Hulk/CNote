@@ -197,8 +197,6 @@ router.get('/consoles/list', async (req, res) => {
 // ─── GET /api/owned-consoles ────────────────────────────
 // Get current user's owned consoles from the new table
 
-const { authRequired } = require('../middleware/auth');
-
 router.get('/owned-consoles', authRequired, async (req, res) => {
     try {
         const result = await pool.query(
