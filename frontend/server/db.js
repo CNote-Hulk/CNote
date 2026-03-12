@@ -9,11 +9,17 @@ const fs = require('fs');
 
 require('dotenv').config();
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data', 'console_notebook.db');
+const DB_PATH = process.env.DB_PATH || '/var/data/database.sqlite';
 
 // Ensure data directory exists
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 const dbExisted = fs.existsSync(DB_PATH);
+
+if (dbExisted) {
+    console.log('Database loaded from:', DB_PATH);
+} else {
+    console.log('Database not found. Creating new database at:', DB_PATH);
+}
 
 const db = new Database(DB_PATH);
 
@@ -70,10 +76,7 @@ function initializeSchema() {
   `);
 }
 
-if (!dbExisted) {
-  console.log('Database file not found. Creating new SQLite database and tables...');
-}
-
 initializeSchema();
+console.log('Database schema initialized.');
 
 module.exports = db;

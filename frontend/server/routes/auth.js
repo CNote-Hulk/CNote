@@ -73,6 +73,7 @@ function sanitizeUser(user) {
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
+        console.log('Register attempt:', email);
 
         // Validation
         if (!username || String(username).trim().length < 1) {
@@ -108,8 +109,11 @@ router.post('/register', async (req, res) => {
 
         // Send verification email (non-blocking)
         const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
-        emailService.sendVerificationEmail(emailLower, String(username).trim(), token).catch(err => {
-            console.error('Failed to send verification email:', err.message);
+        console.log('Sending verification email to:', emailLower);
+        emailService.sendVerificationEmail(emailLower, String(username).trim(), token).then(() => {
+            console.log('Verification email sent successfully to:', emailLower);
+        }).catch(err => {
+            console.error('Failed to send verification email to:', emailLower, err.message);
         });
 
         res.status(201).json({
@@ -128,23 +132,28 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
+        console.log('Login attempt:', email);
 
         if (!email || !password) {
             return res.status(400).json({ success: false, error: 'Completează toate câmpurile.' });
         }
 
         const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
+        console.log('User found:', !!user);
         if (!user) {
             return res.status(401).json({ success: false, error: 'Email sau parolă incorectă.' });
         }
 
         const valid = await bcrypt.compare(password, user.password_hash);
+        console.log('Password valid:', valid);
         if (!valid) {
             return res.status(401).json({ success: false, error: 'Email sau parolă incorectă.' });
         }
 
         // Check email verified
+        console.log('User verified:', !!user.email_verified);
         if (!user.email_verified) {
+            console.log('Login rejected: email not verified for', email);
             return res.status(403).json({
                 success: false,
                 error: 'Emailul nu a fost verificat. Verifică inbox-ul sau solicită un email nou.',

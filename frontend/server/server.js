@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Console Notebook â€” Backend Server
  *
  * Serves the static frontend AND exposes API routes for authentication,
@@ -62,8 +62,21 @@ app.use(helmet({
 
 // â”€â”€â”€ CORS (allow same-origin, needed if frontend runs separately) â”€â”€
 
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    process.env.FRONTEND_URL,
+    'https://atestat-info-68by.onrender.com'
+].filter(Boolean);
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: function(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 
@@ -73,38 +86,8 @@ app.use(express.json({ limit: '2mb' }));  // avatar uploads can be large data-UR
 app.use(express.urlencoded({ extended: false }));
 
 // â”€â”€â”€ Cookie parser â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Simple cookie parser middleware (avoids adding cookie-parser dependency)
-app.use((req, res, next) => {
-    const cookieStr = req.headers.cookie || '';
-    req.cookies = {};
-    cookieStr.split(';').forEach(pair => {
-        const [key, ...vals] = pair.trim().split('=');
-        if (key) req.cookies[key.trim()] = decodeURIComponent(vals.join('='));
-    });
 
-    // Add res.cookie helper if not present
-    if (!res.cookie) {
-        res.cookie = (name, value, options = {}) => {
-            let cookie = `${name}=${encodeURIComponent(value)}`;
-            if (options.maxAge) cookie += `; Max-Age=${Math.floor(options.maxAge / 1000)}`;
-            if (options.httpOnly) cookie += '; HttpOnly';
-            if (options.sameSite) cookie += `; SameSite=${options.sameSite}`;
-            if (options.path) cookie += `; Path=${options.path}`;
-            if (options.secure) cookie += '; Secure';
-            res.append('Set-Cookie', cookie);
-            return res;
-        };
-    }
-
-    if (!res.clearCookie) {
-        res.clearCookie = (name, options = {}) => {
-            res.cookie(name, '', { ...options, maxAge: 0 });
-            return res;
-        };
-    }
-
-    next();
-});
+app.use(cookieParser());
 
 // â”€â”€â”€ API routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -125,16 +108,25 @@ app.use(express.static(FRONTEND_ROOT));
 
 // â”€â”€â”€ Fallback to index â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/', (req, res) => {
-    res.redirect('/html/pages/index.html');
+    res.sendFile(path.join(FRONTEND_ROOT, 'html', 'pages', 'index.html'));
+});
+
+// âââ Global error handler âââââââââââââââââââââââââââââââââ
+
+app.use((err, req, res, next) => {
+    console.error('Unhandled server error:', err);
+    res.status(500).json({ error: 'Internal server error' });
 });
 
 // â”€â”€â”€ Start server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.listen(PORT, () => {
-    console.log('Server running on port ' + PORT);
-    console.log(`\n  âœ…  Console Notebook server running at http://localhost:${PORT}`);
-    console.log(`  ðŸ“  Serving static files from: ${FRONTEND_ROOT}`);
-    console.log(`  ðŸ”‘  API available at http://localhost:${PORT}/api\n`);
+    console.log('Server running on port:', PORT);
+    console.log('Database path:', process.env.DB_PATH || '/var/data/database.sqlite');
+    console.log('SMTP host:', process.env.SMTP_HOST || '(not configured)');
+    console.log('Allowed CORS origins:', allowedOrigins.join(', '));
+    console.log(`Serving static files from: ${FRONTEND_ROOT}`);
+    console.log(`API available at http://localhost:${PORT}/api`);
 });
 
 
