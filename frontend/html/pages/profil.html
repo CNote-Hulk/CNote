@@ -574,9 +574,9 @@
             container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Se încarcă evaluările...</p>';
 
             try {
-                const token = AuthModule.getToken();
+                const token = localStorage.getItem('cn_token');
                 const res = await fetch(`${API_BASE_URL}/ratings/user/all`, {
-                    headers: { 'Authorization': `Bearer ${token}` },
+                    headers: token ? { 'Authorization': `Bearer ${token}` } : {},
                     credentials: 'include'
                 });
                 if (!res.ok) throw new Error('fetch failed');
