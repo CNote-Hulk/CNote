@@ -1,1 +1,1 @@
-module.exports = require('../server/db.js');
+module.exports = require('../frontend/server/db.js');

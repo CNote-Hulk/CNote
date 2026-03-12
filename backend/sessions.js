@@ -1,1 +1,1 @@
-module.exports = require('../server/routes/sessions.js');
+module.exports = require('../frontend/server/routes/sessions.js');

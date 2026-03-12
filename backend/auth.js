@@ -1,1 +1,1 @@
-module.exports = require('../server/routes/auth.js');
+module.exports = require('../frontend/server/routes/auth.js');

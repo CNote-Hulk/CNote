@@ -2,8 +2,8 @@
   "name": "console-notebook",
   "private": true,
   "scripts": {
-    "postinstall": "npm --prefix server install",
-    "start": "npm --prefix server start",
-    "reset-db": "node scripts/reset-database.js"
+    "postinstall": "npm --prefix frontend/server install",
+    "start": "npm --prefix frontend/server start",
+    "reset-db": "node frontend/scripts/reset-database.js"
   }
 }
