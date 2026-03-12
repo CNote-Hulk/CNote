@@ -28,6 +28,8 @@ async function authRequired(req, res, next) {
             email: user.email,
             bio: user.bio,
             avatar: user.avatar,
+            favorite_consoles: user.favorite_consoles,
+            owned_consoles: user.owned_consoles,
             email_verified: user.email_verified,
             created_at: user.created_at
         };
@@ -39,6 +41,7 @@ async function authRequired(req, res, next) {
     // Fallback: session token from cookie
     const sessionResult = await pool.query(`
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
+               u.favorite_consoles, u.owned_consoles,
                u.email_verified, u.created_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
@@ -59,6 +62,8 @@ async function authRequired(req, res, next) {
         email: session.email,
         bio: session.bio,
         avatar: session.avatar,
+        favorite_consoles: session.favorite_consoles,
+        owned_consoles: session.owned_consoles,
         email_verified: session.email_verified,
         created_at: session.created_at
     };

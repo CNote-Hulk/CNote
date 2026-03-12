@@ -62,10 +62,27 @@
             </div>
         </div>
 
+        <!-- Console Lists -->
+        <div class="profile-consoles-section" id="profile-consoles-section">
+            <div class="profile-console-list">
+                <h3 class="profile-console-list__title">🎮 Console Preferate</h3>
+                <div class="profile-console-list__items" id="profile-favorite-consoles">
+                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
+                </div>
+            </div>
+            <div class="profile-console-list">
+                <h3 class="profile-console-list__title">🕹️ Console Deținute</h3>
+                <div class="profile-console-list__items" id="profile-owned-consoles">
+                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
+                </div>
+            </div>
+        </div>
+
         <!-- Tabs -->
         <div class="profile-tabs">
             <button class="profile-tab active" data-tab="cursuri">Cursuri</button>
             <button class="profile-tab" data-tab="realizari">Realizări</button>
+            <button class="profile-tab" data-tab="evaluari">Evaluări</button>
             <button class="profile-tab" data-tab="setari">Setări</button>
         </div>
 
@@ -79,6 +96,11 @@
             <div class="achievements-grid" id="achievements-container"></div>
         </div>
 
+        <!-- Ratings Panel -->
+        <div class="profile-panel" id="panel-evaluari" data-panel="evaluari">
+            <div id="ratings-container"></div>
+        </div>
+
         <!-- Settings Panel -->
         <div class="profile-panel" id="panel-setari" data-panel="setari">
             <div class="course-card">
@@ -90,6 +112,14 @@
                     <div class="auth-field">
                         <label for="set-bio">Bio</label>
                         <input type="text" id="set-bio" placeholder="Scrie ceva despre tine..." maxlength="200">
+                    </div>
+                    <div class="auth-field">
+                        <label for="set-favorite-consoles">Console Preferate (separate prin virgulă)</label>
+                        <input type="text" id="set-favorite-consoles" placeholder="PS2, Xbox 360, PSP" maxlength="500">
+                    </div>
+                    <div class="auth-field">
+                        <label for="set-owned-consoles">Console Deținute (separate prin virgulă)</label>
+                        <input type="text" id="set-owned-consoles" placeholder="PS2 Slim, Xbox 360 Elite" maxlength="500">
                     </div>
                     <div class="auth-field">
                         <label for="set-email">Email</label>
@@ -144,6 +174,7 @@
         import { AchievementsModule } from '../../js/modules/achievements.js';
         import { SearchModule } from '../../js/modules/search.js';
         import { ProfileDropdownModule } from '../../js/modules/profile-dropdown.js';
+        import { API_BASE_URL } from '../../js/config.js';
 
         // Init search + profile dropdown
         SearchModule.init();
@@ -189,6 +220,19 @@
             document.getElementById('profile-name').textContent = user.username;
             document.getElementById('profile-bio').textContent = user.bio || 'Nicio descriere încă.';
             document.getElementById('profile-date').textContent = 'Membru din ' + new Date(user.created_at).toLocaleDateString('ro-RO', { year: 'numeric', month: 'long' });
+
+            // Render console lists
+            const renderConsoleList = (containerId, csv) => {
+                const el = document.getElementById(containerId);
+                const items = (csv || '').split(',').map(s => s.trim()).filter(Boolean);
+                if (items.length === 0) {
+                    el.innerHTML = '<span class="profile-console-list__empty">Nicio consolă adăugată.</span>';
+                } else {
+                    el.innerHTML = items.map(c => `<span class="profile-console-tag">${escapeHtml(c)}</span>`).join('');
+                }
+            };
+            renderConsoleList('profile-favorite-consoles', user.favorite_consoles);
+            renderConsoleList('profile-owned-consoles', user.owned_consoles);
 
             const avatarBtn = document.getElementById('profile-avatar');
             const avatarInput = document.getElementById('avatar-upload');
@@ -284,6 +328,8 @@
             // Settings
             document.getElementById('set-username').value = user.username;
             document.getElementById('set-bio').value = user.bio || '';
+            document.getElementById('set-favorite-consoles').value = user.favorite_consoles || '';
+            document.getElementById('set-owned-consoles').value = user.owned_consoles || '';
             document.getElementById('set-email').value = user.email || '';
 
             const settingsTabButton = document.querySelector('.profile-tab[data-tab="setari"]');
@@ -327,6 +373,8 @@
                 e.preventDefault();
                 const username = document.getElementById('set-username').value;
                 const bio = document.getElementById('set-bio').value;
+                const favorite_consoles = document.getElementById('set-favorite-consoles').value;
+                const owned_consoles = document.getElementById('set-owned-consoles').value;
                 const email = document.getElementById('set-email').value;
                 const currentPassword = document.getElementById('set-current-password').value;
                 const newPassword = document.getElementById('set-new-password').value;
@@ -345,9 +393,11 @@
                     return;
                 }
 
-                await AuthModule.updateProfile({ username, bio });
+                await AuthModule.updateProfile({ username, bio, favorite_consoles, owned_consoles });
                 document.getElementById('profile-name').textContent = username;
                 document.getElementById('profile-bio').textContent = bio || 'Nicio descriere încă.';
+                renderConsoleList('profile-favorite-consoles', favorite_consoles);
+                renderConsoleList('profile-owned-consoles', owned_consoles);
 
                 if (emailChanged) {
                     const emailResult = await AuthModule.updateEmail(email, currentPassword);
@@ -369,6 +419,8 @@
 
                 user.username = username.trim();
                 user.bio = bio;
+                user.favorite_consoles = favorite_consoles;
+                user.owned_consoles = owned_consoles;
                 user.email = email.trim().toLowerCase();
                 document.getElementById('set-current-password').value = '';
                 showSettingsMessage('Setările au fost actualizate cu succes.', true);
@@ -512,6 +564,53 @@
 
             // Load sessions when settings tab is first activated
             loadSessions();
+
+            // Load user ratings
+            renderUserRatings();
+        }
+
+        async function renderUserRatings() {
+            const container = document.getElementById('ratings-container');
+            container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Se încarcă evaluările...</p>';
+
+            try {
+                const token = AuthModule.getToken();
+                const res = await fetch(`${API_BASE_URL}/ratings/user/all`, {
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    credentials: 'include'
+                });
+                if (!res.ok) throw new Error('fetch failed');
+                const { ratings } = await res.json();
+
+                if (!ratings || ratings.length === 0) {
+                    container.innerHTML = '<div class="profile-empty"><span class="profile-empty__icon">⭐</span>Nu ai evaluat nicio consolă încă.</div>';
+                    return;
+                }
+
+                container.innerHTML = ratings.map(r => {
+                    const name = r.console_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    const stars = renderRatingStars(r.rating);
+                    const date = new Date(r.created_at).toLocaleDateString('ro-RO');
+                    const href = `consoles/${encodeURIComponent(r.console_id)}.html`;
+                    return `<a href="${href}" class="user-rating-card">
+                        <div class="user-rating-card__name">${escapeHtml(name)}</div>
+                        <div class="user-rating-card__stars">${stars}</div>
+                        <div class="user-rating-card__date">${date}</div>
+                    </a>`;
+                }).join('');
+            } catch {
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca evaluările.</p>';
+            }
+        }
+
+        function renderRatingStars(rating) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += i <= rating
+                    ? '<span class="star--filled">★</span>'
+                    : '<span class="star--empty">★</span>';
+            }
+            return html;
         }
 
         function renderCourses() {

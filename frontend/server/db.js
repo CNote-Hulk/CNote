@@ -25,6 +25,8 @@ async function initializeSchema() {
             password_hash   TEXT    NOT NULL,
             bio             TEXT    DEFAULT '',
             avatar          TEXT    DEFAULT '',
+            favorite_consoles TEXT  DEFAULT '',
+            owned_consoles  TEXT    DEFAULT '',
             email_verified  INTEGER DEFAULT 0,
             created_at      TIMESTAMP DEFAULT NOW(),
             updated_at      TIMESTAMP DEFAULT NOW()
@@ -57,7 +59,32 @@ async function initializeSchema() {
             last_activity     TIMESTAMP DEFAULT NOW(),
             is_active         INTEGER DEFAULT 1
         );
+
+        CREATE TABLE IF NOT EXISTS messages (
+            id          SERIAL PRIMARY KEY,
+            user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            message     TEXT    NOT NULL,
+            created_at  TIMESTAMP DEFAULT NOW()
+        );
+
+        CREATE TABLE IF NOT EXISTS console_ratings (
+            id          SERIAL PRIMARY KEY,
+            user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            console_id  TEXT    NOT NULL,
+            rating      INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+            created_at  TIMESTAMP DEFAULT NOW(),
+            UNIQUE(user_id, console_id)
+        );
     `);
+
+    // Add columns to existing tables if they don't exist yet
+    const migrations = [
+        `ALTER TABLE users ADD COLUMN IF NOT EXISTS favorite_consoles TEXT DEFAULT ''`,
+        `ALTER TABLE users ADD COLUMN IF NOT EXISTS owned_consoles TEXT DEFAULT ''`
+    ];
+    for (const sql of migrations) {
+        try { await pool.query(sql); } catch { /* column may already exist */ }
+    }
 }
 
 // Initialize schema and test connection

@@ -5,6 +5,8 @@
 
 import { getConsoleById, getConsoleIdFromUrl, resolveImagePath } from '../data/data-loader.js';
 import { AchievementsModule } from '../modules/achievements.js';
+import { AuthModule } from '../modules/auth.js';
+import { API_BASE_URL } from '../config.js';
 
 function cleanupConsolePageChrome() {
     const homeLinkItem = document.querySelector('.nav-links a[href="../index.html"]')?.closest('li');
@@ -323,6 +325,134 @@ function renderHero(consola) {
 }
 
 /**
+ * Render the community rating widget after specs
+ */
+function renderRatingWidget(consoleId) {
+    const specsSection = document.querySelector('.specs-section');
+    if (!specsSection) return;
+
+    // Create rating section
+    const section = document.createElement('section');
+    section.className = 'section rating-section';
+    section.innerHTML = `
+        <div class="container">
+            <h2 class="section-title">Rating Comunitate</h2>
+            <div class="rating-widget" id="rating-widget">
+                <div class="rating-summary" id="rating-summary">
+                    <div class="rating-stars-display" id="rating-stars-display"></div>
+                    <div class="rating-avg" id="rating-avg">— / 5</div>
+                    <div class="rating-count" id="rating-count">Se încarcă...</div>
+                </div>
+                <div class="rating-user" id="rating-user"></div>
+            </div>
+        </div>
+    `;
+    specsSection.parentNode.insertBefore(section, specsSection.nextSibling);
+
+    loadRating(consoleId);
+}
+
+function renderStars(rating, max = 5) {
+    let html = '';
+    for (let i = 1; i <= max; i++) {
+        if (i <= Math.floor(rating)) {
+            html += '<span class="star star--filled">★</span>';
+        } else if (i - rating < 1 && i - rating > 0) {
+            html += '<span class="star star--half">★</span>';
+        } else {
+            html += '<span class="star star--empty">★</span>';
+        }
+    }
+    return html;
+}
+
+function renderInteractiveStars(currentRating, consoleId) {
+    const user = AuthModule.getCurrentUser();
+    const container = document.getElementById('rating-user');
+    if (!container) return;
+
+    if (!user) {
+        container.innerHTML = '<p class="rating-login-msg">Conectează-te pentru a evalua această consolă. <a href="../login.html">Conectare</a></p>';
+        return;
+    }
+
+    const selected = currentRating || 0;
+    container.innerHTML = `
+        <p class="rating-your-label">${selected ? 'Rating-ul tău:' : 'Evaluează această consolă:'}</p>
+        <div class="rating-interactive" id="rating-interactive">
+            ${[1,2,3,4,5].map(i => `<button class="star-btn${i <= selected ? ' active' : ''}" data-value="${i}" title="${i} stea${i > 1 ? 'le' : ''}">★</button>`).join('')}
+        </div>
+    `;
+
+    const buttons = container.querySelectorAll('.star-btn');
+
+    // Hover effects
+    buttons.forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+            const val = parseInt(btn.dataset.value);
+            buttons.forEach(b => {
+                b.classList.toggle('hover', parseInt(b.dataset.value) <= val);
+            });
+        });
+        btn.addEventListener('mouseleave', () => {
+            buttons.forEach(b => b.classList.remove('hover'));
+        });
+        btn.addEventListener('click', () => submitRating(consoleId, parseInt(btn.dataset.value)));
+    });
+}
+
+async function loadRating(consoleId) {
+    try {
+        const token = localStorage.getItem('cn_token');
+        const headers = {};
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+
+        const res = await fetch(`${API_BASE_URL}/ratings/${encodeURIComponent(consoleId)}`, {
+            headers,
+            credentials: 'include'
+        });
+        const data = await res.json();
+        if (data.success) {
+            updateRatingDisplay(data.average, data.count);
+            renderInteractiveStars(data.userRating, consoleId);
+        }
+    } catch {
+        const countEl = document.getElementById('rating-count');
+        if (countEl) countEl.textContent = 'Nu s-a putut încărca rating-ul.';
+    }
+}
+
+async function submitRating(consoleId, rating) {
+    try {
+        const token = localStorage.getItem('cn_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+
+        const res = await fetch(`${API_BASE_URL}/ratings/${encodeURIComponent(consoleId)}`, {
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify({ rating })
+        });
+        const data = await res.json();
+        if (data.success) {
+            updateRatingDisplay(data.average, data.count);
+            renderInteractiveStars(data.userRating, consoleId);
+        }
+    } catch { /* silent */ }
+}
+
+function updateRatingDisplay(average, count) {
+    const starsEl = document.getElementById('rating-stars-display');
+    const avgEl = document.getElementById('rating-avg');
+    const countEl = document.getElementById('rating-count');
+
+    if (starsEl) starsEl.innerHTML = renderStars(average);
+    if (avgEl) avgEl.textContent = `${average} / 5`;
+    if (countEl) countEl.textContent = count === 1 ? '1 evaluare' : `${count} evaluări`;
+}
+
+/**
  * Initialize the console detail page
  */
 async function init() {
@@ -345,6 +475,7 @@ async function init() {
     renderHero(consola);
     renderHistory(consola);
     renderSpecs(consola);
+    renderRatingWidget(consoleId);
 
     AchievementsModule.trackConsoleVisit(consoleId);
     window.dispatchEvent(new CustomEvent('cn:console-visited', {

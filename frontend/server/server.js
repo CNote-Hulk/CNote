@@ -28,6 +28,8 @@ require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
 const sessionRoutes = require('./routes/sessions');
+const chatRoutes = require('./routes/chat');
+const ratingRoutes = require('./routes/ratings');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -98,6 +100,8 @@ app.use(cookieParser());
 
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/ratings', ratingRoutes);
 
 // Legacy URL compatibility: redirect old /src/... routes to current root routes.
 app.get('/src/*', (req, res) => {

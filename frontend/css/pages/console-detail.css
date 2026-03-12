@@ -459,3 +459,108 @@
         font-size: 1.1rem;
     }
 }
+
+/* === COMMUNITY RATING WIDGET === */
+
+.rating-section {
+    padding-bottom: 2rem;
+}
+
+.rating-widget {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    border: 1px solid rgba(212, 175, 122, 0.10);
+    border-radius: 14px;
+    padding: 2rem;
+    box-shadow: 0 8px 22px rgba(2,6,20,0.55);
+}
+
+.rating-summary {
+    margin-bottom: 1.5rem;
+}
+
+.rating-stars-display {
+    font-size: 2rem;
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.rating-stars-display .star--filled {
+    color: var(--accent-color, #D4AF7A);
+}
+
+.rating-stars-display .star--half {
+    color: var(--accent-color, #D4AF7A);
+    opacity: 0.5;
+}
+
+.rating-stars-display .star--empty {
+    color: rgba(255, 255, 255, 0.12);
+}
+
+.rating-avg {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-light, #F5F0E8);
+    margin-bottom: 0.25rem;
+}
+
+.rating-count {
+    font-size: 0.82rem;
+    color: var(--text-gray, #A89F94);
+}
+
+.rating-user {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 1.2rem;
+}
+
+.rating-your-label {
+    font-size: 0.85rem;
+    color: var(--text-gray, #A89F94);
+    margin-bottom: 0.75rem;
+}
+
+.rating-interactive {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.star-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+    padding: 4px;
+    line-height: 1;
+}
+
+.star-btn.active {
+    color: var(--accent-color, #D4AF7A);
+}
+
+.star-btn.hover {
+    color: var(--accent-light, #E6C48A);
+    transform: scale(1.15);
+}
+
+.rating-login-msg {
+    font-size: 0.88rem;
+    color: var(--text-gray, #A89F94);
+}
+
+.rating-login-msg a {
+    color: var(--accent-color, #D4AF7A);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.rating-login-msg a:hover {
+    text-decoration: underline;
+}

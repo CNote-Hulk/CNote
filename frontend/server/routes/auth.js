@@ -63,6 +63,8 @@ function sanitizeUser(user) {
         email: user.email,
         bio: user.bio || '',
         avatar: user.avatar || '',
+        favorite_consoles: user.favorite_consoles || '',
+        owned_consoles: user.owned_consoles || '',
         email_verified: !!user.email_verified,
         created_at: user.created_at
     };
@@ -197,7 +199,7 @@ router.get('/me', authRequired, (req, res) => {
 // ─── PUT /api/me ────────────────────────────────────────
 
 router.put('/me', authRequired, async (req, res) => {
-    const { username, bio, avatar } = req.body;
+    const { username, bio, avatar, favorite_consoles, owned_consoles } = req.body;
     const updates = [];
     const params = [];
     let paramIndex = 1;
@@ -213,6 +215,14 @@ router.put('/me', authRequired, async (req, res) => {
     if (avatar !== undefined) {
         updates.push(`avatar = $${paramIndex++}`);
         params.push(String(avatar));
+    }
+    if (favorite_consoles !== undefined) {
+        updates.push(`favorite_consoles = $${paramIndex++}`);
+        params.push(String(favorite_consoles));
+    }
+    if (owned_consoles !== undefined) {
+        updates.push(`owned_consoles = $${paramIndex++}`);
+        params.push(String(owned_consoles));
     }
 
     if (updates.length === 0) {

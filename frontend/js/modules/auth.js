@@ -26,6 +26,8 @@ export const AuthModule = {
             email: user.email,
             avatar: user.avatar || '',
             bio: user.bio || '',
+            favorite_consoles: user.favorite_consoles || '',
+            owned_consoles: user.owned_consoles || '',
             email_verified: user.email_verified,
             created_at: user.created_at
         };
@@ -108,6 +110,26 @@ export const AuthModule = {
         } catch {
             return { success: false, error: 'Nu s-a putut contacta serverul.' };
         }
+    },
+
+    // ─── Local Login (offline) ──────────────────────────
+
+    /**
+     * Create a local-only session (no server needed).
+     * Useful for file:// or offline usage.
+     */
+    localLogin(username) {
+        const session = {
+            id: 'local_' + Date.now(),
+            username: username,
+            email: '',
+            avatar: '',
+            bio: '',
+            email_verified: false,
+            created_at: new Date().toISOString(),
+            local: true
+        };
+        localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
     },
 
     // ─── Logout ─────────────────────────────────────────
