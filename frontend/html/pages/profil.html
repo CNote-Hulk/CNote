@@ -81,15 +81,87 @@
 
         <!-- Tabs -->
         <div class="profile-tabs">
-            <button class="profile-tab active" data-tab="cursuri">Cursuri</button>
+            <button class="profile-tab active" data-tab="acasa">Acasă</button>
+            <button class="profile-tab" data-tab="cursuri">Cursuri</button>
             <button class="profile-tab" data-tab="realizari">Realizări</button>
             <button class="profile-tab" data-tab="evaluari">Evaluări</button>
             <button class="profile-tab" data-tab="prieteni">Prieteni</button>
             <button class="profile-tab" data-tab="setari">Setări</button>
         </div>
 
+        <!-- Dashboard Panel -->
+        <div class="profile-panel active" id="panel-acasa" data-panel="acasa">
+            <!-- Stats Row -->
+            <div class="dash-stats">
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">📚</span>
+                    <span class="dash-stat__value" id="dash-courses-pct">0%</span>
+                    <span class="dash-stat__label">Progres Curs</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">🏆</span>
+                    <span class="dash-stat__value" id="dash-achievements">0 / 0</span>
+                    <span class="dash-stat__label">Realizări</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">⭐</span>
+                    <span class="dash-stat__value" id="dash-ratings">0</span>
+                    <span class="dash-stat__label">Evaluări</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">👥</span>
+                    <span class="dash-stat__value" id="dash-friends">0</span>
+                    <span class="dash-stat__label">Prieteni</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">❤️</span>
+                    <span class="dash-stat__value" id="dash-favorites">0</span>
+                    <span class="dash-stat__label">Favorite</span>
+                </div>
+            </div>
+
+            <!-- Quick Sections -->
+            <div class="dash-grid">
+                <!-- Course Progress -->
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>📚 Progres Curs</h3>
+                        <a href="#cursuri" class="dash-card__link">Vezi tot →</a>
+                    </div>
+                    <div id="dash-course-preview"></div>
+                </div>
+
+                <!-- Recent Ratings -->
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>⭐ Evaluări Recente</h3>
+                        <a href="#evaluari" class="dash-card__link">Vezi tot →</a>
+                    </div>
+                    <div id="dash-ratings-preview"></div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>🏆 Realizări</h3>
+                        <a href="#realizari" class="dash-card__link">Vezi tot →</a>
+                    </div>
+                    <div id="dash-achievements-preview"></div>
+                </div>
+
+                <!-- Friends -->
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>👥 Prieteni</h3>
+                        <a href="#prieteni" class="dash-card__link">Vezi tot →</a>
+                    </div>
+                    <div id="dash-friends-preview"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Courses Panel -->
-        <div class="profile-panel active" id="panel-cursuri" data-panel="cursuri">
+        <div class="profile-panel" id="panel-cursuri" data-panel="cursuri">
             <div id="courses-container"></div>
         </div>
 
@@ -219,6 +291,11 @@
         const user = AuthModule.getCurrentUser();
         if (!user) {
             window.location.href = 'login.html';
+        }
+
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         }
 
         function initProfile() {
@@ -360,6 +437,9 @@
 
             // Achievements
             renderAchievements();
+
+            // Dashboard
+            renderDashboard();
 
             // Settings
             document.getElementById('set-username').value = user.username;
@@ -593,11 +673,6 @@
                 if (hours < 24) return hours + ' ore în urmă';
                 const days = Math.floor(hours / 24);
                 return days + ' zile în urmă';
-            }
-
-            function escapeHtml(s) {
-                if (!s) return '';
-                return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
             }
 
             document.getElementById('logout-others-btn').addEventListener('click', async () => {
@@ -841,6 +916,113 @@
             }
         }
 
+        async function renderDashboard() {
+            // ── Stats: Course progress ──
+            const courses = ProgressModule.COURSES;
+            let totalLessons = 0, completedLessons = 0;
+            courses.forEach(c => {
+                const p = ProgressModule.getCourseProgress(user.id, c.id, c.totalLessons);
+                totalLessons += p.total_lessons;
+                completedLessons += p.completed_lessons.length;
+            });
+            const overallPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+            document.getElementById('dash-courses-pct').textContent = overallPct + '%';
+
+            // Course preview (progress bar)
+            const coursePreview = document.getElementById('dash-course-preview');
+            if (courses.length > 0) {
+                coursePreview.innerHTML = courses.map(c => {
+                    const p = ProgressModule.getCourseProgress(user.id, c.id, c.totalLessons);
+                    return `<div style="margin-bottom:10px;">
+                        <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-light);margin-bottom:4px;">
+                            <span>${c.icon} ${c.name}</span>
+                            <span>${p.completed_lessons.length}/${p.total_lessons}</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-bar__fill" style="width:${p.percentage}%"></div></div>
+                    </div>`;
+                }).join('');
+            } else {
+                coursePreview.innerHTML = '<p class="dash-empty">Niciun curs.</p>';
+            }
+
+            // ── Stats: Achievements ──
+            const badges = AchievementsModule.getAllBadges(user.id);
+            const earnedCount = badges.filter(b => b.earned).length;
+            document.getElementById('dash-achievements').textContent = `${earnedCount} / ${badges.length}`;
+
+            // Achievements preview (last 6)
+            const achPreview = document.getElementById('dash-achievements-preview');
+            const recentBadges = badges.filter(b => b.earned).slice(-6).reverse();
+            if (recentBadges.length > 0) {
+                achPreview.innerHTML = '<div class="dash-badges">' + recentBadges.map(b =>
+                    `<span class="dash-badge" title="${escapeHtml(b.name)}">${b.icon}</span>`
+                ).join('') + '</div>';
+                if (earnedCount === 0) {
+                    achPreview.innerHTML += '<p class="dash-empty">Explorează pentru a debloca realizări!</p>';
+                }
+            } else {
+                achPreview.innerHTML = '<p class="dash-empty">Nicio realizare încă.</p>';
+            }
+
+            // ── Stats: Ratings + Favorites + Friends (async) ──
+            const token = localStorage.getItem('cn_token');
+            const headers = {};
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            // Ratings
+            try {
+                const res = await fetch(`${API_BASE_URL}/ratings/user/all`, { headers, credentials: 'include' });
+                const data = await res.json();
+                const ratings = (data.ratings || []);
+                document.getElementById('dash-ratings').textContent = ratings.length;
+
+                const ratingsPreview = document.getElementById('dash-ratings-preview');
+                if (ratings.length > 0) {
+                    ratingsPreview.innerHTML = ratings.slice(0, 5).map(r => {
+                        const name = r.console_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        return `<a href="consoles/${encodeURIComponent(r.console_id)}.html" class="dash-rating-row">
+                            <span class="dash-rating-row__name">${escapeHtml(name)}</span>
+                            <span class="dash-rating-row__stars">${renderRatingStars(r.rating)}</span>
+                        </a>`;
+                    }).join('');
+                } else {
+                    ratingsPreview.innerHTML = '<p class="dash-empty">Nicio evaluare încă.</p>';
+                }
+            } catch {
+                document.getElementById('dash-ratings-preview').innerHTML = '<p class="dash-empty">—</p>';
+            }
+
+            // Favorites
+            try {
+                const res = await fetch(`${API_BASE_URL}/favorites`, { headers, credentials: 'include' });
+                const data = await res.json();
+                document.getElementById('dash-favorites').textContent = (data.favorites || []).length;
+            } catch { /* silent */ }
+
+            // Friends
+            try {
+                const res = await fetch(`${API_BASE_URL}/friends`, { headers, credentials: 'include' });
+                const data = await res.json();
+                const friends = data.friends || [];
+                document.getElementById('dash-friends').textContent = friends.length;
+
+                const friendsPreview = document.getElementById('dash-friends-preview');
+                if (friends.length > 0) {
+                    friendsPreview.innerHTML = '<div class="dash-friends-row">' + friends.slice(0, 8).map(f => {
+                        const hasAvatar = f.avatar && f.avatar.length > 10;
+                        const av = hasAvatar
+                            ? `<img src="${escapeHtml(f.avatar)}" alt="" class="dash-friend-av">`
+                            : `<span class="dash-friend-av dash-friend-av--fallback">👤</span>`;
+                        return `<a href="/user/${encodeURIComponent(f.username)}" class="dash-friend" title="${escapeHtml(f.username)}">${av}</a>`;
+                    }).join('') + '</div>';
+                } else {
+                    friendsPreview.innerHTML = '<p class="dash-empty">Niciun prieten încă.</p>';
+                }
+            } catch {
+                document.getElementById('dash-friends-preview').innerHTML = '<p class="dash-empty">—</p>';
+            }
+        }
+
         async function renderUserRatings() {
             const container = document.getElementById('ratings-container');
             container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Se încarcă evaluările...</p>';
@@ -958,14 +1140,23 @@
 
                 if (consolesData.success) allConsoles = consolesData.consoles;
                 if (ownedData.success) ownedData.consoles.forEach(id => selectedIds.add(id));
-
-                // Fallback: also include owned_consoles from user profile CSV
-                if (user.owned_consoles) {
-                    user.owned_consoles.split(',').map(s => s.trim()).filter(Boolean).forEach(id => selectedIds.add(id));
-                }
             } catch {
+                // API failed — silent, will try fallback below
+            }
+
+            // Fallback: use locally loaded CONSOLES_DATA if API returned nothing
+            if (allConsoles.length === 0 && window.CONSOLES_DATA && window.CONSOLES_DATA.length > 0) {
+                allConsoles = window.CONSOLES_DATA.map(c => ({ id: c.id, name: c.nume })).sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            if (allConsoles.length === 0) {
                 listEl.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca consolele.</p>';
                 return;
+            }
+
+            // Include owned_consoles from user profile CSV
+            if (user.owned_consoles) {
+                user.owned_consoles.split(',').map(s => s.trim()).filter(Boolean).forEach(id => selectedIds.add(id));
             }
 
             function updateHidden() {

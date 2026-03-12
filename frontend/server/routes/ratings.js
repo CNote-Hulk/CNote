@@ -28,6 +28,29 @@ router.get('/user/all', authRequired, async (req, res) => {
     }
 });
 
+// ─── GET /api/ratings/averages ──────────────────────────
+// Returns average rating + count for ALL consoles (for encyclopedia cards)
+
+router.get('/averages', async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT console_id,
+                    ROUND(AVG(rating)::numeric, 1) AS average,
+                    COUNT(*)::int AS count
+             FROM console_ratings
+             GROUP BY console_id`
+        );
+        const map = {};
+        result.rows.forEach(r => {
+            map[r.console_id] = { average: parseFloat(r.average), count: r.count };
+        });
+        res.json({ success: true, ratings: map });
+    } catch (err) {
+        console.error('Get all averages error:', err);
+        res.status(500).json({ success: false, error: 'Eroare internă.' });
+    }
+});
+
 // ─── GET /api/ratings/:consoleId ────────────────────────
 
 router.get('/:consoleId', async (req, res) => {

@@ -27,8 +27,8 @@ router.get('/users/search', authRequired, async (req, res) => {
             return res.json({ success: true, users: [] });
         }
 
-        // Sanitize: only allow alphanumeric, underscore, dash, dot
-        const safeQuery = query.replace(/[^a-zA-Z0-9_.\-]/g, '');
+        // Sanitize: allow alphanumeric, unicode letters, underscore, dash, dot, space
+        const safeQuery = query.replace(/[^\p{L}\p{N}_.\- ]/gu, '').trim();
         if (safeQuery.length < 2) {
             return res.json({ success: true, users: [] });
         }
@@ -181,13 +181,38 @@ router.get('/users/:username/friends', async (req, res) => {
 
 // ─── GET /api/consoles/list ─────────────────────────────
 // Returns a simple list of all console IDs and names for dropdowns
+// Cache the data at startup to avoid repeated file reads
+
+let _cachedConsoleList = null;
+
+function loadConsoleList() {
+    const candidates = [
+        path.join(__dirname, '..', '..', 'js', 'data', 'consoles.json'),
+        path.resolve(__dirname, '..', '..', 'js', 'data', 'consoles.json')
+    ];
+    for (const p of candidates) {
+        try {
+            if (fs.existsSync(p)) {
+                const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+                return data.map(c => ({ id: c.id, name: c.nume })).sort((a, b) => a.name.localeCompare(b.name));
+            }
+        } catch (err) {
+            console.error('Console list parse error at', p, err.message);
+        }
+    }
+    console.error('consoles.json not found. Tried:', candidates.join(', '));
+    return null;
+}
 
 router.get('/consoles/list', async (req, res) => {
     try {
-        const consolesPath = path.join(__dirname, '..', '..', 'js', 'data', 'consoles.json');
-        const data = JSON.parse(fs.readFileSync(consolesPath, 'utf8'));
-        const list = data.map(c => ({ id: c.id, name: c.nume })).sort((a, b) => a.name.localeCompare(b.name));
-        res.json({ success: true, consoles: list });
+        if (!_cachedConsoleList) {
+            _cachedConsoleList = loadConsoleList();
+        }
+        if (!_cachedConsoleList) {
+            return res.status(500).json({ success: false, error: 'Lista de console nu a fost găsită.' });
+        }
+        res.json({ success: true, consoles: _cachedConsoleList });
     } catch (err) {
         console.error('Console list error:', err);
         res.status(500).json({ success: false, error: 'Eroare internă.' });

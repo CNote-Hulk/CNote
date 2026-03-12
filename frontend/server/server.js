@@ -123,7 +123,7 @@ app.use(express.static(FRONTEND_ROOT));
 
 // â”€â”€â”€ Fallback to index â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/', (req, res) => {
-    res.sendFile(path.join(FRONTEND_ROOT, 'html', 'pages', 'index.html'));
+    res.redirect(302, '/html/pages/');
 });
 
 // Serve user profile page for /user/:username URLs
