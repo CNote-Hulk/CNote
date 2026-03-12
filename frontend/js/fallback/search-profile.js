@@ -10,6 +10,7 @@
     // ---- Minimal Auth helper (reads localStorage only) ----
     var AuthHelper = {
         SESSION_KEY: 'cn_session',
+        TOKEN_KEY: 'cn_token',
         isLoggedIn: function() { return !!this.getCurrentUser(); },
         getCurrentUser: function() {
             try {
@@ -17,7 +18,10 @@
                 return s && s.id ? s : null;
             } catch(e) { return null; }
         },
-        logout: function() { localStorage.removeItem(this.SESSION_KEY); }
+        logout: function() {
+            localStorage.removeItem(this.SESSION_KEY);
+            localStorage.removeItem(this.TOKEN_KEY);
+        }
     };
 
     // ---- Path helpers ----

@@ -58,7 +58,7 @@
                 <button type="submit" class="auth-btn">Conectare</button>
             </form>
             
-            <p class="auth-link" id="resend-verification" hidden>Emailul nu e verificat? <a href="#">Retrimite emailul</a></p>
+
             <p class="auth-link"><a href="request-password-reset.html">Ai uitat parola?</a></p>
             <p class="auth-link">Nu ai cont? <a href="register.html">Creează cont</a></p>
         </div>
@@ -70,21 +70,23 @@
     <script type="module">
         import { AuthModule } from '../../js/modules/auth.js';
         
-        // Redirect if already logged in
-        if (AuthModule.isLoggedIn()) {
-            window.location.href = 'profil.html';
-        }
+        // Auto-login: check if token is still valid
+        (async () => {
+            const user = await AuthModule.autoLogin();
+            if (user) {
+                window.location.href = 'profil.html';
+                return;
+            }
+        })();
         
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             const errorEl = document.getElementById('login-error');
-            const resendEl = document.getElementById('resend-verification');
             const submitBtn = e.target.querySelector('button[type="submit"]');
 
             errorEl.classList.remove('visible');
-            if (resendEl) resendEl.hidden = true;
             submitBtn.disabled = true;
             submitBtn.textContent = 'Se conectează...';
 
@@ -95,19 +97,6 @@
                 } else {
                     errorEl.textContent = result.error;
                     errorEl.classList.add('visible');
-                    // Show resend verification link if email not verified
-                    if (result.email_not_verified && resendEl) {
-                        resendEl.hidden = false;
-                        resendEl.querySelector('a').onclick = async (ev) => {
-                            ev.preventDefault();
-                            const r = await AuthModule.resendVerification(email);
-                            if (r.success) {
-                                errorEl.textContent = r.message || 'Email de verificare retrimis.';
-                                errorEl.style.color = 'var(--success)';
-                                resendEl.hidden = true;
-                            }
-                        };
-                    }
                 }
             } catch {
                 errorEl.textContent = 'Nu s-a putut contacta serverul.';

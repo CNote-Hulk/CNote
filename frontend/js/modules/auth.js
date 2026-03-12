@@ -11,6 +11,7 @@ import { API_BASE_URL } from '../config.js';
 
 export const AuthModule = {
     SESSION_KEY: 'cn_session',
+    TOKEN_KEY: 'cn_token',
 
     /** Base URL for API calls, configurable for production deployments */
     _apiBase: API_BASE_URL,
@@ -46,10 +47,15 @@ export const AuthModule = {
 
     /** Generic API call */
     async _api(method, path, body) {
+        const headers = { 'Content-Type': 'application/json' };
+        const token = localStorage.getItem(this.TOKEN_KEY);
+        if (token) {
+            headers['Authorization'] = 'Bearer ' + token;
+        }
         const opts = {
             method,
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'          // send cookies
+            headers,
+            credentials: 'include'
         };
         if (body !== undefined) opts.body = JSON.stringify(body);
         const res = await fetch(this._apiBase + path, opts);
@@ -83,8 +89,8 @@ export const AuthModule = {
     // ─── Login ──────────────────────────────────────────
 
     /**
-     * Login — creates server session + caches user locally.
-     * @returns {Promise<{success, error?, user?, email_not_verified?}>}
+     * Login — creates server session + caches user locally + stores JWT.
+     * @returns {Promise<{success, error?, user?, token?}>}
      */
     async login(email, password) {
         if (!email || !password)
@@ -94,6 +100,9 @@ export const AuthModule = {
             const data = await this._api('POST', '/login', { email, password });
             if (data.success && data.user) {
                 this._setSession(data.user);
+                if (data.token) {
+                    localStorage.setItem(this.TOKEN_KEY, data.token);
+                }
             }
             return data;
         } catch {
@@ -108,6 +117,7 @@ export const AuthModule = {
             await this._api('POST', '/logout');
         } catch { /* ignore network errors on logout */ }
         localStorage.removeItem(this.SESSION_KEY);
+        localStorage.removeItem(this.TOKEN_KEY);
     },
 
     // ─── Refresh session from server ────────────────────
@@ -115,13 +125,14 @@ export const AuthModule = {
     /** Fetch fresh user data from backend and update local cache */
     async refreshSession() {
         try {
-            const data = await this._api('GET', '/me');
+            const data = await this._api('GET', '/profile');
             if (data.success && data.user) {
                 this._setSession(data.user);
                 return data.user;
             }
             // Session invalid on server — clear local cache
             localStorage.removeItem(this.SESSION_KEY);
+            localStorage.removeItem(this.TOKEN_KEY);
             return null;
         } catch {
             return null;
@@ -210,13 +221,16 @@ export const AuthModule = {
         }
     },
 
-    // ─── Resend verification email ──────────────────────
+    // ─── Auto-login (check token on page load) ─────────
 
-    async resendVerification(email) {
-        try {
-            return await this._api('POST', '/resend-verification', { email });
-        } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
-        }
+    /**
+     * Check if a stored JWT token is still valid.
+     * Call this on page load to restore the session.
+     * @returns {Promise<user|null>}
+     */
+    async autoLogin() {
+        const token = localStorage.getItem(this.TOKEN_KEY);
+        if (!token) return null;
+        return this.refreshSession();
     }
 };

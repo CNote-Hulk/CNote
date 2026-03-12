@@ -22,6 +22,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
@@ -30,6 +31,10 @@ const sessionRoutes = require('./routes/sessions');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key';
+
+// Share JWT_SECRET with route files via app.locals
+app.set('JWT_SECRET', JWT_SECRET);
 
 function getMissingEnvVars(required) {
     return required.filter((name) => {

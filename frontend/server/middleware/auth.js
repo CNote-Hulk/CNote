@@ -1,8 +1,9 @@
 /**
- * Auth middleware — validates session token from cookie or Authorization header.
- * Attaches req.user and req.sessionId on success.
+ * Auth middleware — validates JWT from Authorization header or session cookie.
+ * Attaches req.user on success.
  */
 
+const jwt = require('jsonwebtoken');
 const db = require('../db');
 
 function authRequired(req, res, next) {
@@ -11,6 +12,30 @@ function authRequired(req, res, next) {
         return res.status(401).json({ success: false, error: 'Autentificare necesară.' });
     }
 
+    const JWT_SECRET = req.app.get('JWT_SECRET');
+
+    // Try JWT first
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(decoded.userId);
+        if (!user) {
+            return res.status(401).json({ success: false, error: 'Utilizator inexistent.' });
+        }
+        req.user = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            bio: user.bio,
+            avatar: user.avatar,
+            email_verified: user.email_verified,
+            created_at: user.created_at
+        };
+        return next();
+    } catch (jwtErr) {
+        // JWT invalid — fall through to session-based auth
+    }
+
+    // Fallback: session token from cookie
     const session = db.prepare(`
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.email_verified, u.created_at
@@ -23,7 +48,6 @@ function authRequired(req, res, next) {
         return res.status(401).json({ success: false, error: 'Sesiune invalidă sau expirată.' });
     }
 
-    // Update last_activity
     db.prepare(`UPDATE user_sessions SET last_activity = datetime('now') WHERE id = ?`)
       .run(session.session_id);
 
@@ -42,13 +66,13 @@ function authRequired(req, res, next) {
 }
 
 function extractToken(req) {
-    // 1. Cookie
-    const cookies = parseCookies(req.headers.cookie || '');
-    if (cookies['cn_session_token']) return cookies['cn_session_token'];
-
-    // 2. Authorization header
+    // 1. Authorization header (Bearer token)
     const auth = req.headers.authorization;
     if (auth && auth.startsWith('Bearer ')) return auth.slice(7);
+
+    // 2. Cookie
+    const cookies = parseCookies(req.headers.cookie || '');
+    if (cookies['cn_session_token']) return cookies['cn_session_token'];
 
     return null;
 }

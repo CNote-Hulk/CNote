@@ -15,6 +15,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const db = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
@@ -147,9 +148,18 @@ router.post('/login', async (req, res) => {
         setSessionCookie(res, sessionToken);
         console.log('Login successful:', email);
 
+        // Generate JWT
+        const JWT_SECRET = req.app.get('JWT_SECRET');
+        const jwtToken = jwt.sign(
+            { userId: user.id, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
         res.json({
             success: true,
             user: sanitizeUser(user),
+            token: jwtToken,
             session_token: sessionToken
         });
     } catch (err) {
@@ -158,10 +168,22 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// ─── GET /api/profile ───────────────────────────────────
+
+router.get('/profile', authRequired, (req, res) => {
+    res.json({
+        success: true,
+        message: 'User authenticated',
+        user: sanitizeUser(req.user)
+    });
+});
+
 // ─── POST /api/logout ───────────────────────────────────
 
 router.post('/logout', authRequired, (req, res) => {
-    db.prepare('UPDATE user_sessions SET is_active = 0 WHERE id = ?').run(req.sessionId);
+    if (req.sessionId) {
+        db.prepare('UPDATE user_sessions SET is_active = 0 WHERE id = ?').run(req.sessionId);
+    }
     clearSessionCookie(res);
     res.json({ success: true });
 });
