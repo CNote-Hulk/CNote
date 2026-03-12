@@ -9,7 +9,8 @@ const fs = require('fs');
 
 require('dotenv').config();
 
-const DB_PATH = process.env.DB_PATH || '/var/data/database.sqlite';
+const DB_DIR = path.join(__dirname, 'data');
+const DB_PATH = process.env.DB_PATH || path.join(DB_DIR, 'database.sqlite');
 
 // Ensure data directory exists
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });

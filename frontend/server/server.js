@@ -122,7 +122,7 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log('Server running on port:', PORT);
-    console.log('Database path:', process.env.DB_PATH || '/var/data/database.sqlite');
+    console.log('Database path:', process.env.DB_PATH || path.join(__dirname, 'data', 'database.sqlite'));
     console.log('SMTP host:', process.env.SMTP_HOST || '(not configured)');
     console.log('Allowed CORS origins:', allowedOrigins.join(', '));
     console.log(`Serving static files from: ${FRONTEND_ROOT}`);
