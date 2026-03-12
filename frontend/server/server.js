@@ -113,13 +113,13 @@ app.use('/api/sessions', sessionRoutes);
 
 // â”€â”€â”€ Static files (frontend) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Serve static frontend from /frontend in project root.
-const PROJECT_ROOT = path.join(__dirname, '..', '..');
-const FRONTEND_ROOT = path.join(PROJECT_ROOT, 'frontend');
+const FRONTEND_ROOT = path.join(__dirname, '..');
+const FRONTEND_INDEX = path.join(FRONTEND_ROOT, 'html', 'pages', 'index.html');
 app.use(express.static(FRONTEND_ROOT));
 
 // â”€â”€â”€ Fallback to index â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/', (req, res) => {
-    res.sendFile(path.join(FRONTEND_ROOT, 'index.html'));
+    res.sendFile(FRONTEND_INDEX);
 });
 
 // â”€â”€â”€ Start server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
