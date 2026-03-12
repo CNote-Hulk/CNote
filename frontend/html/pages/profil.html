@@ -105,8 +105,16 @@
 
         <!-- Settings Panel -->
         <div class="profile-panel" id="panel-prieteni" data-panel="prieteni">
+            <!-- Search Users -->
+            <div class="course-card" id="friend-search-card">
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Caută Utilizatori</h3>
+                <div class="friend-search-box">
+                    <input type="text" id="friend-search-input" class="profile-input" placeholder="Caută după nume de utilizator..." autocomplete="off" />
+                </div>
+                <div id="friend-search-results" class="friend-search-results"></div>
+            </div>
             <!-- Friend Requests -->
-            <div class="course-card" id="friend-requests-card">
+            <div class="course-card" id="friend-requests-card" style="margin-top: 16px;">
                 <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Cereri de Prietenie</h3>
                 <div id="friend-requests-container">
                     <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
@@ -616,6 +624,121 @@
             // Load friends data
             loadFriendRequests();
             loadMyFriends();
+            initFriendSearch();
+        }
+
+        // ─── Friend Search ──────────────────────────────────
+
+        function initFriendSearch() {
+            const input = document.getElementById('friend-search-input');
+            const resultsContainer = document.getElementById('friend-search-results');
+            let searchTimeout = null;
+
+            input.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                const query = input.value.trim();
+
+                if (query.length < 2) {
+                    resultsContainer.innerHTML = '';
+                    return;
+                }
+
+                searchTimeout = setTimeout(() => searchUsers(query), 300);
+            });
+
+            async function searchUsers(query) {
+                try {
+                    const token = localStorage.getItem('cn_token');
+                    const headers = {};
+                    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                    const res = await fetch(`${API_BASE_URL}/users/search?q=${encodeURIComponent(query)}`, {
+                        headers,
+                        credentials: 'include'
+                    });
+                    const data = await res.json();
+
+                    if (!data.success || !data.users || data.users.length === 0) {
+                        resultsContainer.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;padding:8px 0;">Niciun utilizator găsit.</p>';
+                        return;
+                    }
+
+                    // Get friendship status for each user
+                    const userCards = await Promise.all(data.users.map(async (u) => {
+                        let status = 'none';
+                        try {
+                            const statusRes = await fetch(`${API_BASE_URL}/friends/status/${u.id}`, {
+                                headers,
+                                credentials: 'include'
+                            });
+                            const statusData = await statusRes.json();
+                            if (statusData.success) status = statusData.status;
+                        } catch {}
+
+                        const hasAvatar = u.avatar && u.avatar.length > 10;
+                        const avatarHtml = hasAvatar
+                            ? `<img src="${escapeHtml(u.avatar)}" alt="" class="friend-card__avatar">`
+                            : `<span class="friend-card__avatar friend-card__avatar--fallback">👤</span>`;
+
+                        let actionBtn = '';
+                        if (status === 'friends') {
+                            actionBtn = `<span class="user-action-btn user-action-btn--friends" disabled>✓ Prieteni</span>`;
+                        } else if (status === 'request_sent') {
+                            actionBtn = `<span class="user-action-btn user-action-btn--pending" disabled>Cerere trimisă</span>`;
+                        } else if (status === 'request_received') {
+                            actionBtn = `<span class="user-action-btn user-action-btn--pending" disabled>Cerere primită</span>`;
+                        } else {
+                            actionBtn = `<button class="user-action-btn user-action-btn--add" data-user-id="${u.id}">Adaugă Prieten</button>`;
+                        }
+
+                        return `<div class="friend-search-result">
+                            <a href="/user/${encodeURIComponent(u.username)}" class="friend-search-result__info">
+                                ${avatarHtml}
+                                <div class="friend-search-result__text">
+                                    <span class="friend-card__name">${escapeHtml(u.username)}</span>
+                                    ${u.bio ? `<span class="friend-search-result__bio">${escapeHtml(u.bio)}</span>` : ''}
+                                </div>
+                            </a>
+                            ${actionBtn}
+                        </div>`;
+                    }));
+
+                    resultsContainer.innerHTML = userCards.join('');
+
+                    // Bind "Adaugă Prieten" buttons
+                    resultsContainer.querySelectorAll('.user-action-btn--add').forEach(btn => {
+                        btn.addEventListener('click', async () => {
+                            btn.disabled = true;
+                            btn.textContent = '...';
+                            try {
+                                const token = localStorage.getItem('cn_token');
+                                const headers = { 'Content-Type': 'application/json' };
+                                if (token) headers['Authorization'] = 'Bearer ' + token;
+                                const res = await fetch(`${API_BASE_URL}/friends/request/${btn.dataset.userId}`, {
+                                    method: 'POST', headers, credentials: 'include'
+                                });
+                                const data = await res.json();
+                                if (data.success) {
+                                    if (data.status === 'friends') {
+                                        btn.outerHTML = `<span class="user-action-btn user-action-btn--friends" disabled>✓ Prieteni</span>`;
+                                        loadMyFriends();
+                                    } else {
+                                        btn.outerHTML = `<span class="user-action-btn user-action-btn--pending" disabled>Cerere trimisă</span>`;
+                                    }
+                                } else {
+                                    btn.textContent = data.error || 'Eroare';
+                                    setTimeout(() => { btn.textContent = 'Adaugă Prieten'; btn.disabled = false; }, 2000);
+                                }
+                            } catch {
+                                btn.textContent = 'Eroare';
+                                setTimeout(() => { btn.textContent = 'Adaugă Prieten'; btn.disabled = false; }, 2000);
+                            }
+                        });
+                    });
+                } catch {
+                    resultsContainer.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Eroare la căutare.</p>';
+                }
+            }
         }
 
         async function loadFriendRequests() {

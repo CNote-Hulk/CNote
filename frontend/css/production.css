@@ -6750,6 +6750,55 @@ a.chat-message__username:hover {
     gap: 8px;
 }
 
+.friend-search-box {
+    margin-bottom: 12px;
+}
+
+.friend-search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.friend-search-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    transition: background 0.15s;
+}
+
+.friend-search-result:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.friend-search-result__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    min-width: 0;
+    flex: 1;
+}
+
+.friend-search-result__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.friend-search-result__bio {
+    font-size: 0.78rem;
+    color: var(--text-muted, #a89880);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 220px;
+}
+
 @media (max-width: 600px) {
     .user-profile-actions {
         flex-direction: column;

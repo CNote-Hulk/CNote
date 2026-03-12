@@ -1,6 +1,7 @@
 /**
  * User profile routes (public profiles)
  *
+ * GET /api/users/search?q=          — Search users by username
  * GET /api/users/:username          — Get public user profile by username
  * GET /api/users/:username/friends  — Get user's friend list
  * GET /api/users/id/:id             — Get public user profile by ID
@@ -13,8 +14,49 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const pool = require('../db');
+const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
+
+// ─── GET /api/users/search?q= ───────────────────────────
+
+router.get('/users/search', authRequired, async (req, res) => {
+    try {
+        const query = (req.query.q || '').trim();
+        if (query.length < 2) {
+            return res.json({ success: true, users: [] });
+        }
+
+        // Sanitize: only allow alphanumeric, underscore, dash, dot
+        const safeQuery = query.replace(/[^a-zA-Z0-9_.\-]/g, '');
+        if (safeQuery.length < 2) {
+            return res.json({ success: true, users: [] });
+        }
+
+        const result = await pool.query(
+            `SELECT id, username, avatar, bio
+             FROM users
+             WHERE LOWER(username) LIKE LOWER($1)
+             AND id != $2
+             ORDER BY username ASC
+             LIMIT 20`,
+            [`%${safeQuery}%`, req.user.id]
+        );
+
+        res.json({
+            success: true,
+            users: result.rows.map(u => ({
+                id: u.id,
+                username: u.username,
+                avatar: u.avatar || '',
+                bio: (u.bio || '').substring(0, 80)
+            }))
+        });
+    } catch (err) {
+        console.error('User search error:', err);
+        res.status(500).json({ success: false, error: 'Eroare internă.' });
+    }
+});
 
 // ─── GET /api/users/:username ───────────────────────────
 
