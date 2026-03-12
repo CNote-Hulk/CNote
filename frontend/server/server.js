@@ -30,6 +30,9 @@ const authRoutes = require('./routes/auth');
 const sessionRoutes = require('./routes/sessions');
 const chatRoutes = require('./routes/chat');
 const ratingRoutes = require('./routes/ratings');
+const favoriteRoutes = require('./routes/favorites');
+const friendRoutes = require('./routes/friends');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -102,6 +105,9 @@ app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/ratings', ratingRoutes);
+app.use('/api/favorites', favoriteRoutes);
+app.use('/api/friends', friendRoutes);
+app.use('/api', userRoutes);
 
 // Legacy URL compatibility: redirect old /src/... routes to current root routes.
 app.get('/src/*', (req, res) => {
@@ -118,6 +124,11 @@ app.use(express.static(FRONTEND_ROOT));
 // â”€â”€â”€ Fallback to index â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/', (req, res) => {
     res.sendFile(path.join(FRONTEND_ROOT, 'html', 'pages', 'index.html'));
+});
+
+// Serve user profile page for /user/:username URLs
+app.get('/user/:username', (req, res) => {
+    res.sendFile(path.join(FRONTEND_ROOT, 'html', 'pages', 'user-profile.html'));
 });
 
 // âââ Global error handler âââââââââââââââââââââââââââââââââ

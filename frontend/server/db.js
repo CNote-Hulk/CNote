@@ -75,6 +75,37 @@ async function initializeSchema() {
             created_at  TIMESTAMP DEFAULT NOW(),
             UNIQUE(user_id, console_id)
         );
+
+        CREATE TABLE IF NOT EXISTS user_favorites (
+            id          SERIAL PRIMARY KEY,
+            user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            console_id  TEXT    NOT NULL,
+            created_at  TIMESTAMP DEFAULT NOW(),
+            UNIQUE(user_id, console_id)
+        );
+
+        CREATE TABLE IF NOT EXISTS user_owned_consoles (
+            id          SERIAL PRIMARY KEY,
+            user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            console_id  TEXT    NOT NULL,
+            UNIQUE(user_id, console_id)
+        );
+
+        CREATE TABLE IF NOT EXISTS friend_requests (
+            id          SERIAL PRIMARY KEY,
+            sender_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            receiver_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            status      TEXT    NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected')),
+            created_at  TIMESTAMP DEFAULT NOW()
+        );
+
+        CREATE TABLE IF NOT EXISTS friends (
+            id          SERIAL PRIMARY KEY,
+            user1_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            user2_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            created_at  TIMESTAMP DEFAULT NOW(),
+            UNIQUE(user1_id, user2_id)
+        );
     `);
 
     // Add columns to existing tables if they don't exist yet

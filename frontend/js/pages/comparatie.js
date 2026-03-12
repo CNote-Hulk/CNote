@@ -211,7 +211,7 @@ function updateComparison() {
 
     const specsSection = specsHtml ? `
         <div class="specs-comparison">
-            <h3 class="specs-title">Fisa Tehnica</h3>
+            <h3 class="specs-title">Fișa Tehnică</h3>
             <div class="spec-sheet">${specsHtml}</div>
         </div>
     ` : '';

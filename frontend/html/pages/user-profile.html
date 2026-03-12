@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Profil Utilizator — Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico">
+    <title>Profil Utilizator — Console Notebook</title>
+    <link rel="stylesheet" href="/css/production.css">
+</head>
+<body>
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="Caută" type="button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="/html/pages/index.html" class="logo">Console Notebook</a>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="/html/pages/invata.html">Învață</a></li>
+                <li><a href="/html/pages/evolutie.html">Evoluție</a></li>
+                <li><a href="/html/pages/comparatie.html">Comparație</a></li>
+                <li><a href="/html/pages/index.html#contact">Contact</a></li>
+                <li><a href="/html/pages/bibliografie.html">Bibliografie</a></li>
+                <li><a href="/html/pages/community.html">Comunitate</a></li>
+            </ul>
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-page user-profile-page" id="user-profile-page">
+        <div class="user-profile-loading" id="user-profile-loading">Se încarcă profilul...</div>
+
+        <!-- Profile Header -->
+        <div class="profile-header" id="user-profile-header" hidden>
+            <div class="profile-avatar user-profile-avatar" id="user-avatar">
+                <img id="user-avatar-img" alt="Poza de profil" hidden>
+                <span id="user-avatar-fallback">👤</span>
+            </div>
+            <div class="profile-info">
+                <div class="profile-name" id="user-name">—</div>
+                <div class="profile-bio" id="user-bio"></div>
+                <div class="profile-date" id="user-date"></div>
+                <div class="user-profile-actions" id="user-profile-actions"></div>
+            </div>
+        </div>
+
+        <!-- Console Lists -->
+        <div class="profile-consoles-section" id="user-consoles-section" hidden>
+            <div class="profile-console-list">
+                <h3 class="profile-console-list__title">🎮 Console Preferate</h3>
+                <div class="profile-console-list__items" id="user-favorite-consoles">
+                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
+                </div>
+            </div>
+            <div class="profile-console-list">
+                <h3 class="profile-console-list__title">🕹️ Console Deținute</h3>
+                <div class="profile-console-list__items" id="user-owned-consoles">
+                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friends Section -->
+        <div class="profile-friends-section" id="user-friends-section" hidden>
+            <div class="profile-console-list">
+                <h3 class="profile-console-list__title">👥 Prieteni</h3>
+                <div class="friends-list" id="user-friends-list">
+                    <span class="profile-console-list__empty">Niciun prieten încă.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/data/consoles-data.js"></script>
+    <script type="module" src="/js/main.js"></script>
+    <script type="module">
+        import { AuthModule } from '/js/modules/auth.js';
+        import { API_BASE_URL } from '/js/config.js';
+
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Extract username from URL path: /user/:username
+        function getUsernameFromUrl() {
+            const path = window.location.pathname;
+            const match = path.match(/\/user\/([^/]+)/);
+            return match ? decodeURIComponent(match[1]) : null;
+        }
+
+        async function loadUserProfile() {
+            const username = getUsernameFromUrl();
+            const loadingEl = document.getElementById('user-profile-loading');
+
+            if (!username) {
+                loadingEl.textContent = 'URL invalid.';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(username)}`);
+                const data = await res.json();
+
+                if (!data.success || !data.user) {
+                    loadingEl.textContent = 'Utilizatorul nu a fost găsit.';
+                    return;
+                }
+
+                const profile = data.user;
+                loadingEl.hidden = true;
+
+                // Update page title
+                document.title = `${profile.username} — Console Notebook`;
+
+                // Show header
+                const headerEl = document.getElementById('user-profile-header');
+                headerEl.hidden = false;
+
+                // Avatar
+                const avatarImg = document.getElementById('user-avatar-img');
+                const avatarFallback = document.getElementById('user-avatar-fallback');
+                if (profile.avatar && profile.avatar.length > 10) {
+                    avatarImg.src = profile.avatar;
+                    avatarImg.hidden = false;
+                    avatarFallback.hidden = true;
+                }
+
+                // Info
+                document.getElementById('user-name').textContent = profile.username;
+                document.getElementById('user-bio').textContent = profile.bio || 'Nicio descriere.';
+                document.getElementById('user-date').textContent = 'Membru din ' + new Date(profile.created_at).toLocaleDateString('ro-RO', { year: 'numeric', month: 'long' });
+
+                // Console lists
+                const consolesSection = document.getElementById('user-consoles-section');
+                consolesSection.hidden = false;
+
+                // Favorite consoles - use favorite_console_ids from new table, fallback to CSV
+                const favContainer = document.getElementById('user-favorite-consoles');
+                const favIds = profile.favorite_console_ids || [];
+                const favCsv = (profile.favorite_consoles || '').split(',').map(s => s.trim()).filter(Boolean);
+                const allFavs = [...new Set([...favIds, ...favCsv])];
+
+                if (allFavs.length > 0) {
+                    // Try to resolve IDs to names
+                    let consoleNames = {};
+                    try {
+                        const cRes = await fetch(`${API_BASE_URL}/consoles/list`);
+                        const cData = await cRes.json();
+                        if (cData.success) {
+                            cData.consoles.forEach(c => { consoleNames[c.id] = c.name; });
+                        }
+                    } catch { /* ignore */ }
+
+                    favContainer.innerHTML = allFavs.map(id => {
+                        const name = consoleNames[id] || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        return `<span class="profile-console-tag">${escapeHtml(name)}</span>`;
+                    }).join('');
+                }
+
+                // Owned consoles
+                const ownedContainer = document.getElementById('user-owned-consoles');
+                const ownedIds = profile.owned_console_ids || [];
+                const ownedCsv = (profile.owned_consoles || '').split(',').map(s => s.trim()).filter(Boolean);
+                const allOwned = [...new Set([...ownedIds, ...ownedCsv])];
+
+                if (allOwned.length > 0) {
+                    let consoleNames = {};
+                    try {
+                        const cRes = await fetch(`${API_BASE_URL}/consoles/list`);
+                        const cData = await cRes.json();
+                        if (cData.success) {
+                            cData.consoles.forEach(c => { consoleNames[c.id] = c.name; });
+                        }
+                    } catch { /* ignore */ }
+
+                    ownedContainer.innerHTML = allOwned.map(id => {
+                        const name = consoleNames[id] || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        return `<span class="profile-console-tag">${escapeHtml(name)}</span>`;
+                    }).join('');
+                }
+
+                // Friend button
+                const actionsEl = document.getElementById('user-profile-actions');
+                const currentUser = AuthModule.getCurrentUser();
+
+                if (currentUser && currentUser.id !== profile.id) {
+                    await renderFriendButton(actionsEl, profile.id);
+                } else if (currentUser && currentUser.id === profile.id) {
+                    actionsEl.innerHTML = '<a href="/html/pages/profil.html#setari" class="user-action-btn user-action-btn--edit">Editează Profilul</a>';
+                }
+
+                // Friends list
+                await loadFriendsList(profile.username);
+
+            } catch (err) {
+                console.error('Profile load error:', err);
+                loadingEl.textContent = 'A apărut o eroare la încărcarea profilului.';
+            }
+        }
+
+        async function renderFriendButton(container, targetUserId) {
+            try {
+                const token = localStorage.getItem('cn_token');
+                const headers = {};
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const res = await fetch(`${API_BASE_URL}/friends/status/${targetUserId}`, {
+                    headers,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+
+                if (!data.success) return;
+
+                switch (data.status) {
+                    case 'friends':
+                        container.innerHTML = `
+                            <span class="user-action-btn user-action-btn--friends">✓ Prieteni</span>
+                            <button class="user-action-btn user-action-btn--remove" id="remove-friend-btn">Elimină Prieten</button>
+                        `;
+                        document.getElementById('remove-friend-btn').addEventListener('click', async () => {
+                            await fetch(`${API_BASE_URL}/friends/${targetUserId}`, {
+                                method: 'DELETE',
+                                headers,
+                                credentials: 'include'
+                            });
+                            renderFriendButton(container, targetUserId);
+                        });
+                        break;
+
+                    case 'request_sent':
+                        container.innerHTML = '<span class="user-action-btn user-action-btn--pending">⏳ Cerere Trimisă</span>';
+                        break;
+
+                    case 'request_received':
+                        container.innerHTML = `
+                            <button class="user-action-btn user-action-btn--accept" id="accept-friend-btn">Acceptă Cererea</button>
+                            <button class="user-action-btn user-action-btn--reject" id="reject-friend-btn">Refuză</button>
+                        `;
+                        document.getElementById('accept-friend-btn').addEventListener('click', async () => {
+                            await fetch(`${API_BASE_URL}/friends/accept/${data.requestId}`, {
+                                method: 'POST',
+                                headers,
+                                credentials: 'include'
+                            });
+                            renderFriendButton(container, targetUserId);
+                        });
+                        document.getElementById('reject-friend-btn').addEventListener('click', async () => {
+                            await fetch(`${API_BASE_URL}/friends/reject/${data.requestId}`, {
+                                method: 'POST',
+                                headers,
+                                credentials: 'include'
+                            });
+                            renderFriendButton(container, targetUserId);
+                        });
+                        break;
+
+                    default: // 'none'
+                        container.innerHTML = '<button class="user-action-btn user-action-btn--add" id="add-friend-btn">+ Adaugă Prieten</button>';
+                        document.getElementById('add-friend-btn').addEventListener('click', async () => {
+                            await fetch(`${API_BASE_URL}/friends/request/${targetUserId}`, {
+                                method: 'POST',
+                                headers,
+                                credentials: 'include'
+                            });
+                            renderFriendButton(container, targetUserId);
+                        });
+                        break;
+                }
+            } catch { /* ignore */ }
+        }
+
+        async function loadFriendsList(username) {
+            const section = document.getElementById('user-friends-section');
+            const list = document.getElementById('user-friends-list');
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(username)}/friends`);
+                const data = await res.json();
+
+                if (!data.success || !data.friends || data.friends.length === 0) {
+                    section.hidden = false;
+                    return;
+                }
+
+                section.hidden = false;
+                list.innerHTML = data.friends.map(f => {
+                    const hasAvatar = f.avatar && f.avatar.length > 10;
+                    const avatarHtml = hasAvatar
+                        ? `<img src="${escapeHtml(f.avatar)}" alt="" class="friend-card__avatar">`
+                        : `<span class="friend-card__avatar friend-card__avatar--fallback">👤</span>`;
+
+                    return `<a href="/user/${encodeURIComponent(f.username)}" class="friend-card">
+                        ${avatarHtml}
+                        <span class="friend-card__name">${escapeHtml(f.username)}</span>
+                    </a>`;
+                }).join('');
+            } catch {
+                section.hidden = false;
+            }
+        }
+
+        loadUserProfile();
+    </script>
+    <script src="/js/fallback/hamburger.js" defer></script>
+    <script src="/js/fallback/search-profile.js"></script>
+</body>
+</html>

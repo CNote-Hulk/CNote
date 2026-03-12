@@ -293,7 +293,18 @@ function renderHistory(consola) {
 function renderHero(consola) {
     // Update title
     const h1 = document.querySelector('.console-hero-text h1');
-    if (h1) h1.textContent = consola.nume;
+    if (h1) {
+        h1.textContent = consola.nume;
+        // Add favorite heart button next to title
+        const heartBtn = document.createElement('button');
+        heartBtn.className = 'favorite-heart-btn';
+        heartBtn.id = 'favorite-heart-btn';
+        heartBtn.type = 'button';
+        heartBtn.title = 'Adaugă la favorite';
+        heartBtn.innerHTML = '♡';
+        heartBtn.setAttribute('aria-label', 'Adaugă la favorite');
+        h1.appendChild(heartBtn);
+    }
 
     // Update meta info
     const metaContainer = document.querySelector('.console-hero-text .console-meta');
@@ -453,6 +464,61 @@ function updateRatingDisplay(average, count) {
 }
 
 /**
+ * Initialize the favorite heart button
+ */
+async function initFavoriteButton(consoleId) {
+    const btn = document.getElementById('favorite-heart-btn');
+    if (!btn) return;
+
+    const user = AuthModule.getCurrentUser();
+    if (!user) {
+        btn.title = 'Conectează-te pentru a adăuga la favorite';
+        btn.addEventListener('click', () => {
+            window.location.href = '../login.html';
+        });
+        return;
+    }
+
+    // Check current favorite status
+    try {
+        const token = localStorage.getItem('cn_token');
+        const headers = {};
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+
+        const res = await fetch(`${API_BASE_URL}/favorites/${encodeURIComponent(consoleId)}`, {
+            headers,
+            credentials: 'include'
+        });
+        const data = await res.json();
+        if (data.success && data.isFavorite) {
+            btn.classList.add('active');
+            btn.innerHTML = '♥';
+            btn.title = 'Elimină de la favorite';
+        }
+    } catch { /* ignore */ }
+
+    btn.addEventListener('click', async () => {
+        try {
+            const token = localStorage.getItem('cn_token');
+            const headers = {};
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            const res = await fetch(`${API_BASE_URL}/favorites/${encodeURIComponent(consoleId)}`, {
+                method: 'POST',
+                headers,
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (data.success) {
+                btn.classList.toggle('active', data.isFavorite);
+                btn.innerHTML = data.isFavorite ? '♥' : '♡';
+                btn.title = data.isFavorite ? 'Elimină de la favorite' : 'Adaugă la favorite';
+            }
+        } catch { /* ignore */ }
+    });
+}
+
+/**
  * Initialize the console detail page
  */
 async function init() {
@@ -476,6 +542,7 @@ async function init() {
     renderHistory(consola);
     renderSpecs(consola);
     renderRatingWidget(consoleId);
+    initFavoriteButton(consoleId);
 
     AchievementsModule.trackConsoleVisit(consoleId);
     window.dispatchEvent(new CustomEvent('cn:console-visited', {

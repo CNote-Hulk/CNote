@@ -84,7 +84,7 @@
     function startApp(data) {
         consolesData = data;
         if (!consolesData || consolesData.length === 0) {
-            display.innerHTML = '<p class="comparison-error">Nu s-au putut incarca datele consolelor. Folositi un server HTTP local.</p>';
+            display.innerHTML = '<p class="comparison-error">Nu s-au putut încarcă datele consolelor. Folosiți un server HTTP local.</p>';
             return;
         }
         populateSelects();
@@ -210,7 +210,7 @@
         const prosB = (b.avantaje || []).map(p => '<li class="pro-item"> ' + p + '</li>').join('');
         const consB = (b.dezavantaje || []).map(c => '<li class="con-item"> ' + c + '</li>').join('');
 
-        const specsSection = specsHtml ? '<div class="specs-comparison"><h3 class="specs-title">Fisa Tehnica</h3><div class="spec-sheet">' + specsHtml + '</div></div>' : '';
+        const specsSection = specsHtml ? '<div class="specs-comparison"><h3 class="specs-title">Fișa Tehnică</h3><div class="spec-sheet">' + specsHtml + '</div></div>' : '';
 
         const verdictSection = (prosA || consA || prosB || consB) ?
             '<div class="verdict-section"><h3 class="verdict-title">Overview Rapid</h3><div class="verdict-grid">' +

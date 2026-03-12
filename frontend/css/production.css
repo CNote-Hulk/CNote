@@ -6428,6 +6428,356 @@ body.search-open {
     color: var(--text-gray, #A89F94);
 }
 
+/* === FAVORITE HEART BUTTON (console detail pages) === */
+
+.favorite-heart-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--text-gray, #A89F94);
+    cursor: pointer;
+    padding: 4px 8px;
+    margin-left: 12px;
+    line-height: 1;
+    vertical-align: middle;
+    transition: color 0.2s ease, transform 0.15s ease;
+    position: relative;
+    top: -2px;
+}
+
+.favorite-heart-btn:hover {
+    color: #e57373;
+    transform: scale(1.15);
+}
+
+.favorite-heart-btn.active {
+    color: #e57373;
+}
+
+.favorite-heart-btn.active:hover {
+    transform: scale(1.2);
+}
+
+/* === OWNED CONSOLES MULTI-SELECT === */
+
+.owned-consoles-select {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md, 8px);
+    overflow: hidden;
+}
+
+.owned-consoles-search-wrap {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.owned-consoles-search {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-light, #F5F0E8);
+    font-size: 0.88rem;
+    font-family: var(--font-sans);
+    outline: none;
+}
+
+.owned-consoles-search::placeholder {
+    color: var(--text-gray, #A89F94);
+}
+
+.owned-consoles-list {
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 6px 0;
+}
+
+.owned-consoles-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.owned-consoles-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.owned-consoles-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.owned-console-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    font-size: 0.88rem;
+    color: var(--text-light, #F5F0E8);
+}
+
+.owned-console-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.owned-console-item.checked {
+    background: rgba(212, 175, 122, 0.08);
+}
+
+.owned-console-item input[type="checkbox"] {
+    display: none;
+}
+
+.owned-console-check {
+    font-size: 1rem;
+    color: var(--accent-color, #D4AF7A);
+    flex-shrink: 0;
+    width: 20px;
+}
+
+.owned-console-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.owned-consoles-loading {
+    color: var(--text-gray, #A89F94);
+    font-size: 0.85rem;
+    padding: 16px 14px;
+}
+
+/* === COMMUNITY CHAT FULLWIDTH === */
+
+.community-page--fullwidth {
+    padding-top: 80px;
+}
+
+.community-container--wide {
+    max-width: 1100px;
+}
+
+.chat-box--large .chat-messages {
+    min-height: 500px;
+    max-height: 70vh;
+}
+
+a.chat-message__username {
+    text-decoration: none;
+    color: var(--accent-color, #D4AF7A);
+}
+
+a.chat-message__username:hover {
+    text-decoration: underline;
+}
+
+/* === USER PROFILE PAGE (public) === */
+
+.user-profile-page {
+    padding: 100px 20px 60px;
+}
+
+.user-profile-loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-gray, #A89F94);
+    font-size: 0.95rem;
+}
+
+.user-profile-avatar {
+    cursor: default;
+}
+
+.user-profile-avatar::after {
+    display: none;
+}
+
+.user-profile-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.user-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+    text-decoration: none;
+}
+
+.user-action-btn--add {
+    background: var(--accent-color, #D4AF7A);
+    color: var(--primary-color, #1B1714);
+}
+
+.user-action-btn--add:hover {
+    background: var(--accent-light, #E6C48A);
+    transform: translateY(-1px);
+}
+
+.user-action-btn--friends {
+    background: rgba(74, 222, 128, 0.12);
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+    cursor: default;
+}
+
+.user-action-btn--pending {
+    background: rgba(251, 191, 36, 0.12);
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+    cursor: default;
+}
+
+.user-action-btn--accept {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+}
+
+.user-action-btn--accept:hover {
+    background: rgba(74, 222, 128, 0.25);
+}
+
+.user-action-btn--reject,
+.user-action-btn--remove {
+    background: rgba(229, 115, 115, 0.12);
+    color: #e57373;
+    border-color: rgba(229, 115, 115, 0.25);
+}
+
+.user-action-btn--reject:hover,
+.user-action-btn--remove:hover {
+    background: rgba(229, 115, 115, 0.22);
+}
+
+.user-action-btn--edit {
+    background: var(--accent-color, #D4AF7A);
+    color: var(--primary-color, #1B1714);
+}
+
+.user-action-btn--edit:hover {
+    background: var(--accent-light, #E6C48A);
+    transform: translateY(-1px);
+}
+
+/* === FRIENDS LIST === */
+
+.profile-friends-section {
+    max-width: 800px;
+    margin: 0 auto 24px;
+}
+
+.friends-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.friend-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md, 8px);
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+    min-width: 160px;
+}
+
+.friend-card:hover {
+    border-color: rgba(212, 175, 122, 0.3);
+    transform: translateY(-1px);
+}
+
+.friend-card__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.friend-card__avatar--fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.friend-card__name {
+    color: var(--text-light, #F5F0E8);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.friend-request-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.friend-request-item:last-child {
+    border-bottom: none;
+}
+
+.friend-request-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.friend-request-actions {
+    display: flex;
+    gap: 8px;
+}
+
+@media (max-width: 600px) {
+    .user-profile-actions {
+        flex-direction: column;
+    }
+
+    .friend-request-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .community-container--wide {
+        padding: 0 4px;
+    }
+
+    .chat-box--large .chat-messages {
+        min-height: 350px;
+        max-height: 60vh;
+    }
+
+    .friends-list {
+        flex-direction: column;
+    }
+
+    .friend-card {
+        min-width: unset;
+    }
+}
+
 /* === pages\stats.css === */
 .stats-page {
     position: relative;

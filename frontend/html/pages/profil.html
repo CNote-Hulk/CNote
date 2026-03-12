@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <!-- ===========================
@@ -32,6 +32,7 @@
                 <li><a href="comparatie.html">Comparație</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
                 <li><a href="bibliografie.html">Bibliografie</a></li>
+                <li><a href="community.html">Comunitate</a></li>
             </ul>
             <div class="navbar-profile-wrap">
                 <button class="navbar-profile-btn" aria-label="Profil" type="button">
@@ -83,6 +84,7 @@
             <button class="profile-tab active" data-tab="cursuri">Cursuri</button>
             <button class="profile-tab" data-tab="realizari">Realizări</button>
             <button class="profile-tab" data-tab="evaluari">Evaluări</button>
+            <button class="profile-tab" data-tab="prieteni">Prieteni</button>
             <button class="profile-tab" data-tab="setari">Setări</button>
         </div>
 
@@ -102,6 +104,24 @@
         </div>
 
         <!-- Settings Panel -->
+        <div class="profile-panel" id="panel-prieteni" data-panel="prieteni">
+            <!-- Friend Requests -->
+            <div class="course-card" id="friend-requests-card">
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Cereri de Prietenie</h3>
+                <div id="friend-requests-container">
+                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+                </div>
+            </div>
+            <!-- Friend List -->
+            <div class="course-card" style="margin-top: 16px;">
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Prietenii Tăi</h3>
+                <div class="friends-list" id="my-friends-list">
+                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Panel -->
         <div class="profile-panel" id="panel-setari" data-panel="setari">
             <div class="course-card">
                 <form class="settings-form" id="settings-form">
@@ -118,8 +138,16 @@
                         <input type="text" id="set-favorite-consoles" placeholder="PS2, Xbox 360, PSP" maxlength="500">
                     </div>
                     <div class="auth-field">
-                        <label for="set-owned-consoles">Console Deținute (separate prin virgulă)</label>
-                        <input type="text" id="set-owned-consoles" placeholder="PS2 Slim, Xbox 360 Elite" maxlength="500">
+                        <label>Console Deținute</label>
+                        <div class="owned-consoles-select" id="owned-consoles-select">
+                            <div class="owned-consoles-search-wrap">
+                                <input type="text" class="owned-consoles-search" id="owned-consoles-search" placeholder="Caută console..." autocomplete="off">
+                            </div>
+                            <div class="owned-consoles-list" id="owned-consoles-list">
+                                <p class="owned-consoles-loading">Se încarcă consolele...</p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="set-owned-consoles" value="">
                     </div>
                     <div class="auth-field">
                         <label for="set-email">Email</label>
@@ -329,8 +357,10 @@
             document.getElementById('set-username').value = user.username;
             document.getElementById('set-bio').value = user.bio || '';
             document.getElementById('set-favorite-consoles').value = user.favorite_consoles || '';
-            document.getElementById('set-owned-consoles').value = user.owned_consoles || '';
             document.getElementById('set-email').value = user.email || '';
+
+            // Initialize owned consoles multi-select
+            initOwnedConsolesSelect();
 
             const settingsTabButton = document.querySelector('.profile-tab[data-tab="setari"]');
             const goToSettingsAndFocus = (inputId) => {
@@ -394,6 +424,21 @@
                 }
 
                 await AuthModule.updateProfile({ username, bio, favorite_consoles, owned_consoles });
+
+                // Also save owned consoles to the new table
+                try {
+                    const ownedList = owned_consoles.split(',').map(s => s.trim()).filter(Boolean);
+                    const token = localStorage.getItem('cn_token');
+                    const headers = { 'Content-Type': 'application/json' };
+                    if (token) headers['Authorization'] = 'Bearer ' + token;
+                    await fetch(API_BASE_URL + '/owned-consoles', {
+                        method: 'PUT',
+                        headers,
+                        credentials: 'include',
+                        body: JSON.stringify({ consoles: ownedList })
+                    });
+                } catch { /* ignore */ }
+
                 document.getElementById('profile-name').textContent = username;
                 document.getElementById('profile-bio').textContent = bio || 'Nicio descriere încă.';
                 renderConsoleList('profile-favorite-consoles', favorite_consoles);
@@ -567,6 +612,110 @@
 
             // Load user ratings
             renderUserRatings();
+
+            // Load friends data
+            loadFriendRequests();
+            loadMyFriends();
+        }
+
+        async function loadFriendRequests() {
+            const container = document.getElementById('friend-requests-container');
+            try {
+                const token = localStorage.getItem('cn_token');
+                const headers = {};
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const res = await fetch(API_BASE_URL + '/friends/requests', {
+                    headers,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+
+                if (!data.success || !data.requests || data.requests.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Nicio cerere de prietenie.</p>';
+                    return;
+                }
+
+                container.innerHTML = data.requests.map(r => {
+                    const hasAvatar = r.avatar && r.avatar.length > 10;
+                    const avatarHtml = hasAvatar
+                        ? `<img src="${escapeHtml(r.avatar)}" alt="" class="friend-card__avatar">`
+                        : `<span class="friend-card__avatar friend-card__avatar--fallback">👤</span>`;
+
+                    return `<div class="friend-request-item">
+                        <a href="/user/${encodeURIComponent(r.username)}" class="friend-request-info">
+                            ${avatarHtml}
+                            <span class="friend-card__name">${escapeHtml(r.username)}</span>
+                        </a>
+                        <div class="friend-request-actions">
+                            <button class="user-action-btn user-action-btn--accept" data-request-id="${r.request_id}">Acceptă</button>
+                            <button class="user-action-btn user-action-btn--reject" data-request-id="${r.request_id}">Refuză</button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // Bind accept/reject buttons
+                container.querySelectorAll('.user-action-btn--accept').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const token = localStorage.getItem('cn_token');
+                        const headers = {};
+                        if (token) headers['Authorization'] = 'Bearer ' + token;
+                        await fetch(`${API_BASE_URL}/friends/accept/${btn.dataset.requestId}`, {
+                            method: 'POST', headers, credentials: 'include'
+                        });
+                        loadFriendRequests();
+                        loadMyFriends();
+                    });
+                });
+
+                container.querySelectorAll('.user-action-btn--reject').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const token = localStorage.getItem('cn_token');
+                        const headers = {};
+                        if (token) headers['Authorization'] = 'Bearer ' + token;
+                        await fetch(`${API_BASE_URL}/friends/reject/${btn.dataset.requestId}`, {
+                            method: 'POST', headers, credentials: 'include'
+                        });
+                        loadFriendRequests();
+                    });
+                });
+            } catch {
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca cererile.</p>';
+            }
+        }
+
+        async function loadMyFriends() {
+            const container = document.getElementById('my-friends-list');
+            try {
+                const token = localStorage.getItem('cn_token');
+                const headers = {};
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const res = await fetch(API_BASE_URL + '/friends', {
+                    headers,
+                    credentials: 'include'
+                });
+                const data = await res.json();
+
+                if (!data.success || !data.friends || data.friends.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Niciun prieten încă.</p>';
+                    return;
+                }
+
+                container.innerHTML = data.friends.map(f => {
+                    const hasAvatar = f.avatar && f.avatar.length > 10;
+                    const avatarHtml = hasAvatar
+                        ? `<img src="${escapeHtml(f.avatar)}" alt="" class="friend-card__avatar">`
+                        : `<span class="friend-card__avatar friend-card__avatar--fallback">👤</span>`;
+
+                    return `<a href="/user/${encodeURIComponent(f.username)}" class="friend-card">
+                        ${avatarHtml}
+                        <span class="friend-card__name">${escapeHtml(f.username)}</span>
+                    </a>`;
+                }).join('');
+            } catch {
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca prietenii.</p>';
+            }
         }
 
         async function renderUserRatings() {
@@ -661,6 +810,80 @@
                     ${b.earned ? `<div class="achievement-badge__date">Obținut pe ${date}</div>` : ''}
                 </div>`;
             }).join('');
+        }
+
+        async function initOwnedConsolesSelect() {
+            const listEl = document.getElementById('owned-consoles-list');
+            const searchEl = document.getElementById('owned-consoles-search');
+            const hiddenInput = document.getElementById('set-owned-consoles');
+            let allConsoles = [];
+            let selectedIds = new Set();
+
+            try {
+                // Fetch console list from server
+                const token = localStorage.getItem('cn_token');
+                const headers = {};
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+
+                const [consolesRes, ownedRes] = await Promise.all([
+                    fetch(API_BASE_URL + '/consoles/list', { headers, credentials: 'include' }),
+                    fetch(API_BASE_URL + '/owned-consoles', { headers, credentials: 'include' })
+                ]);
+
+                const consolesData = await consolesRes.json();
+                const ownedData = await ownedRes.json();
+
+                if (consolesData.success) allConsoles = consolesData.consoles;
+                if (ownedData.success) ownedData.consoles.forEach(id => selectedIds.add(id));
+
+                // Fallback: also include owned_consoles from user profile CSV
+                if (user.owned_consoles) {
+                    user.owned_consoles.split(',').map(s => s.trim()).filter(Boolean).forEach(id => selectedIds.add(id));
+                }
+            } catch {
+                listEl.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca consolele.</p>';
+                return;
+            }
+
+            function updateHidden() {
+                hiddenInput.value = Array.from(selectedIds).join(',');
+            }
+
+            function renderList(filter = '') {
+                const filtered = filter
+                    ? allConsoles.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
+                    : allConsoles;
+
+                if (filtered.length === 0) {
+                    listEl.innerHTML = '<p style="color:var(--text-gray);font-size:0.85rem;padding:8px;">Nicio consolă găsită.</p>';
+                    return;
+                }
+
+                listEl.innerHTML = filtered.map(c => {
+                    const checked = selectedIds.has(c.id);
+                    return `<label class="owned-console-item${checked ? ' checked' : ''}">
+                        <input type="checkbox" value="${escapeHtml(c.id)}" ${checked ? 'checked' : ''}>
+                        <span class="owned-console-check">${checked ? '☑' : '☐'}</span>
+                        <span class="owned-console-name">${escapeHtml(c.name)}</span>
+                    </label>`;
+                }).join('');
+
+                listEl.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        if (cb.checked) {
+                            selectedIds.add(cb.value);
+                        } else {
+                            selectedIds.delete(cb.value);
+                        }
+                        updateHidden();
+                        renderList(searchEl.value);
+                    });
+                });
+            }
+
+            searchEl.addEventListener('input', () => renderList(searchEl.value));
+            renderList();
+            updateHidden();
         }
 
         initProfile();

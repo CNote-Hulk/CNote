@@ -32,6 +32,7 @@
                 <li><a href="comparatie.html">Comparație</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
                 <li><a href="bibliografie.html">Bibliografie</a></li>
+                <li><a href="community.html" class="active">Comunitate</a></li>
             </ul>
             <div class="navbar-profile-wrap">
                 <button class="navbar-profile-btn" aria-label="Profil" type="button">
@@ -41,14 +42,14 @@
         </div>
     </nav>
 
-    <div class="community-page">
-        <div class="community-container">
+    <div class="community-page community-page--fullwidth">
+        <div class="community-container community-container--wide">
             <div class="community-header">
                 <h1 class="community-header__title">Community Chat</h1>
                 <p class="community-header__subtitle">Discută cu alți pasionați de console</p>
             </div>
 
-            <div class="chat-box" id="chat-box">
+            <div class="chat-box chat-box--large" id="chat-box">
                 <div class="chat-messages" id="chat-messages">
                     <div class="chat-loading" id="chat-loading">Se încarcă mesajele...</div>
                 </div>
@@ -139,7 +140,7 @@
                 <div class="chat-message__avatar-wrap">${avatarHtml}</div>
                 <div class="chat-message__body">
                     <div class="chat-message__header">
-                        <span class="chat-message__username">${escapeHtml(msg.user.username)}</span>
+                        <a href="/user/${encodeURIComponent(msg.user.username)}" class="chat-message__username">${escapeHtml(msg.user.username)}</a>
                         <span class="chat-message__time">${formatTime(msg.created_at)}</span>
                     </div>
                     <div class="chat-message__text">${escapeHtml(msg.message)}</div>
