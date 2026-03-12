@@ -55,8 +55,8 @@
             </div>
         </div>
 
-        <!-- Dashboard Overview -->
-        <div class="profile-panel user-dashboard-panel" id="user-dashboard-panel" hidden>
+        <!-- Dashboard Overview (identic cu Acasă) -->
+        <div class="profile-panel user-dashboard-panel" id="user-dashboard-panel" style="margin-bottom: 32px;">
             <div class="dash-stats">
                 <div class="dash-stat">
                     <span class="dash-stat__icon">📚</span>
@@ -89,55 +89,35 @@
                 <div class="dash-card">
                     <div class="dash-card__head">
                         <h3>📚 Progres Curs</h3>
+                        <!-- Link ascuns la profilul prietenilor -->
                     </div>
                     <div id="user-dash-course-preview"></div>
                 </div>
                 <div class="dash-card">
                     <div class="dash-card__head">
                         <h3>⭐ Evaluări Recente</h3>
+                        <a href="#" class="dash-card__link" style="pointer-events:none;opacity:0.5;">Doar vizualizare</a>
                     </div>
                     <div id="user-dash-ratings-preview"></div>
                 </div>
                 <div class="dash-card">
                     <div class="dash-card__head">
                         <h3>🏆 Realizări</h3>
+                        <a href="#" class="dash-card__link" style="pointer-events:none;opacity:0.5;">Doar vizualizare</a>
                     </div>
                     <div id="user-dash-achievements-preview"></div>
                 </div>
                 <div class="dash-card">
                     <div class="dash-card__head">
                         <h3>👥 Prieteni</h3>
+                        <a href="#" class="dash-card__link" style="pointer-events:none;opacity:0.5;">Doar vizualizare</a>
                     </div>
                     <div id="user-dash-friends-preview"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Console Lists -->
-        <div class="profile-consoles-section" id="user-consoles-section" hidden>
-            <div class="profile-console-list">
-                <h3 class="profile-console-list__title">🎮 Console Preferate</h3>
-                <div class="profile-console-list__items" id="user-favorite-consoles">
-                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
-                </div>
-            </div>
-            <div class="profile-console-list">
-                <h3 class="profile-console-list__title">🕹️ Console Deținute</h3>
-                <div class="profile-console-list__items" id="user-owned-consoles">
-                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Friends Section -->
-        <div class="profile-friends-section" id="user-friends-section" hidden>
-            <div class="profile-console-list">
-                <h3 class="profile-console-list__title">👥 Prieteni</h3>
-                <div class="friends-list" id="user-friends-list">
-                    <span class="profile-console-list__empty">Niciun prieten încă.</span>
-                </div>
-            </div>
-        </div>
+        <!-- Console Lists & Friends Section eliminate pentru dashboard identic -->
     </div>
 
     <!-- Scripts -->
