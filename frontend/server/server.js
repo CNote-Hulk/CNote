@@ -94,6 +94,30 @@ app.use(cookieParser());
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 
+// ─── Email test route ────────────────────────────────────
+
+const emailService = require('./services/email');
+
+app.get('/api/test-email', async (req, res) => {
+    try {
+        const transporter = emailService.getTransporter();
+        if (!transporter) {
+            return res.status(500).json({ error: 'SMTP not configured' });
+        }
+        await transporter.sendMail({
+            from: process.env.SMTP_FROM,
+            to: process.env.SMTP_USER,
+            subject: 'SMTP Test Email',
+            text: 'This is a test email from Console Notebook.'
+        });
+        console.log('Test email sent successfully');
+        res.json({ success: true, message: 'Test email sent successfully' });
+    } catch (error) {
+        console.error('Test email failed:', error);
+        res.status(500).json({ error: 'Email failed to send', details: error.message });
+    }
+});
+
 // Legacy URL compatibility: redirect old /src/... routes to current root routes.
 app.get('/src/*', (req, res) => {
     const target = req.originalUrl.replace(/^\/src\//, '/');

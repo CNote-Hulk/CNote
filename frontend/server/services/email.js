@@ -54,6 +54,7 @@ const BASE_URL = () => process.env.BASE_URL || 'http://localhost:3000';
  * Send an email. Falls back to console.log if SMTP is not configured.
  */
 async function sendMail(to, subject, html) {
+    console.log('Attempting to send email to:', to, '| Subject:', subject);
     const transporter = getTransporter();
 
     if (!transporter) {
@@ -65,12 +66,13 @@ async function sendMail(to, subject, html) {
         return true;
     }
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
         from: FROM(),
         to,
         subject,
         html
     });
+    console.log('Email sent successfully to:', to, '| MessageId:', info.messageId);
     return true;
 }
 
@@ -141,7 +143,8 @@ function escapeHtml(str) {
 module.exports = {
     sendVerificationEmail,
     sendPasswordResetEmail,
-    sendNewLoginAlert
+    sendNewLoginAlert,
+    getTransporter
 };
 
 
