@@ -1,14 +1,13 @@
 /**
  * Authentication routes
  *
- * POST /api/register        — Create account + send verification email
+ * POST /api/register        — Create account (auto-verified)
  * POST /api/login            — Authenticate + create session
  * POST /api/logout           — Invalidate current session
  * GET  /api/me               — Get current user info
  * PUT  /api/me               — Update profile (username, bio, avatar)
  * PUT  /api/me/email         — Change email (requires password)
  * PUT  /api/me/password      — Change password (requires current password)
- * GET  /api/verify-email     — Verify email with token
  * POST /api/request-reset    — Request password reset email
  * POST /api/reset-password   — Reset password with token
  */
@@ -94,32 +93,18 @@ router.post('/register', async (req, res) => {
 
         const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
         const result = db.prepare(`
-            INSERT INTO users (username, email, password_hash)
-            VALUES (?, ?, ?)
+            INSERT INTO users (username, email, password_hash, email_verified)
+            VALUES (?, ?, ?, 1)
         `).run(String(username).trim(), emailLower, passwordHash);
 
         const userId = result.lastInsertRowid;
-
-        // Create email verification token
-        const token = generateToken();
-        db.prepare(`
-            INSERT INTO email_verification_tokens (user_id, token, expires_at)
-            VALUES (?, ?, ?)
-        `).run(userId, token, expiresAt());
-
-        // Send verification email (non-blocking)
         const user = db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
-        console.log('Sending verification email to:', emailLower);
-        emailService.sendVerificationEmail(emailLower, String(username).trim(), token).then(() => {
-            console.log('Verification email sent successfully to:', emailLower);
-        }).catch(err => {
-            console.error('Failed to send verification email to:', emailLower, err.message);
-        });
+        console.log('User registered:', emailLower);
 
         res.status(201).json({
             success: true,
             user: sanitizeUser(user),
-            message: 'Cont creat cu succes! Verifică emailul pentru a activa contul.'
+            message: 'Cont creat cu succes! Te poți autentifica acum.'
         });
     } catch (err) {
         console.error('Register error:', err);
@@ -145,20 +130,8 @@ router.post('/login', async (req, res) => {
         }
 
         const valid = await bcrypt.compare(password, user.password_hash);
-        console.log('Password valid:', valid);
         if (!valid) {
             return res.status(401).json({ success: false, error: 'Email sau parolă incorectă.' });
-        }
-
-        // Check email verified
-        console.log('User verified:', !!user.email_verified);
-        if (!user.email_verified) {
-            console.log('Login rejected: email not verified for', email);
-            return res.status(403).json({
-                success: false,
-                error: 'Emailul nu a fost verificat. Verifică inbox-ul sau solicită un email nou.',
-                email_not_verified: true
-            });
         }
 
         // Parse device info
@@ -172,22 +145,7 @@ router.post('/login', async (req, res) => {
         `).run(user.id, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip);
 
         setSessionCookie(res, sessionToken);
-
-        // Check if this is a new device — send login alert
-        const previousSessions = db.prepare(`
-            SELECT browser, operating_system FROM user_sessions
-            WHERE user_id = ? AND is_active = 0
-        `).all(user.id);
-
-        const isNewDevice = !previousSessions.some(
-            s => s.browser === deviceInfo.browser && s.operating_system === deviceInfo.os
-        );
-
-        if (isNewDevice && previousSessions.length > 0) {
-            emailService.sendNewLoginAlert(user.email, user.username, deviceInfo).catch(err => {
-                console.error('Failed to send login alert:', err.message);
-            });
-        }
+        console.log('Login successful:', email);
 
         res.json({
             success: true,
@@ -311,69 +269,6 @@ router.put('/me/password', authRequired, async (req, res) => {
         console.error('Update password error:', err);
         res.status(500).json({ success: false, error: 'Eroare internă.' });
     }
-});
-
-// ─── GET /api/verify-email ──────────────────────────────
-
-router.get('/verify-email', (req, res) => {
-    const { token } = req.query;
-
-    if (!token) {
-        return res.status(400).json({ success: false, error: 'Token lipsă.' });
-    }
-
-    const row = db.prepare(`
-        SELECT * FROM email_verification_tokens WHERE token = ?
-    `).get(token);
-
-    if (!row) {
-        return res.status(400).json({ success: false, error: 'Token invalid sau expirat.' });
-    }
-
-    if (new Date(row.expires_at) < new Date()) {
-        db.prepare('DELETE FROM email_verification_tokens WHERE id = ?').run(row.id);
-        return res.status(400).json({ success: false, error: 'Tokenul a expirat. Solicită un email nou.' });
-    }
-
-    db.prepare("UPDATE users SET email_verified = 1, updated_at = datetime('now') WHERE id = ?")
-      .run(row.user_id);
-
-    // Clean up all verification tokens for this user
-    db.prepare('DELETE FROM email_verification_tokens WHERE user_id = ?').run(row.user_id);
-
-    res.json({ success: true, message: 'Email verificat cu succes! Acum te poți autentifica.' });
-});
-
-// ─── POST /api/resend-verification ──────────────────────
-
-router.post('/resend-verification', (req, res) => {
-    const { email } = req.body;
-    if (!email) return res.status(400).json({ success: false, error: 'Emailul este obligatoriu.' });
-
-    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
-    if (!user) {
-        // Don't reveal whether email exists
-        return res.json({ success: true, message: 'Dacă există un cont cu acest email, vei primi un link de verificare.' });
-    }
-
-    if (user.email_verified) {
-        return res.json({ success: true, message: 'Emailul este deja verificat.' });
-    }
-
-    // Delete old tokens
-    db.prepare('DELETE FROM email_verification_tokens WHERE user_id = ?').run(user.id);
-
-    const token = generateToken();
-    db.prepare(`
-        INSERT INTO email_verification_tokens (user_id, token, expires_at)
-        VALUES (?, ?, ?)
-    `).run(user.id, token, expiresAt());
-
-    emailService.sendVerificationEmail(user.email, user.username, token).catch(err => {
-        console.error('Failed to resend verification email:', err.message);
-    });
-
-    res.json({ success: true, message: 'Dacă există un cont cu acest email, vei primi un link de verificare.' });
 });
 
 // ─── POST /api/request-reset ────────────────────────────

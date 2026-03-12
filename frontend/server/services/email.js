@@ -1,6 +1,5 @@
 /**
- * Email service — sends verification, password-reset, and login-alert emails
- * using the Resend API.
+ * Email service — sends password-reset emails using the Resend API.
  *
  * Configure via environment variable:
  *   RESEND_API_KEY
@@ -62,23 +61,6 @@ async function sendMail(to, subject, html) {
 
 // --- Email templates ---
 
-async function sendVerificationEmail(email, username, token) {
-    const link = BASE_URL() + '/html/pages/verify-success.html?token=' + encodeURIComponent(token);
-
-    const html =
-    '<div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;background:#1e1a17;color:#e0d6cc;border-radius:12px;">' +
-        '<h2 style="color:#d4a24e;margin-bottom:8px;">Bine ai venit, ' + escapeHtml(username) + '!</h2>' +
-        '<p>Mul\u021bumim c\u0103 te-ai \u00eenregistrat pe <strong>Console Notebook</strong>.</p>' +
-        '<p>Confirm\u0103 adresa de email f\u0103c\u00e2nd click pe butonul de mai jos:</p>' +
-        '<p style="text-align:center;margin:24px 0;">' +
-            '<a href="' + link + '" style="display:inline-block;padding:12px 28px;background:#d4a24e;color:#1e1a17;text-decoration:none;font-weight:600;border-radius:8px;">Verific\u0103 Emailul</a>' +
-        '</p>' +
-        '<p style="font-size:13px;color:#a89880;">Linkul expir\u0103 \u00een 24 de ore. Dac\u0103 nu ai solicitat acest email, ignor\u0103-l.</p>' +
-    '</div>';
-
-    return sendMail(email, 'Verific\u0103 adresa de email \u2014 Console Notebook', html);
-}
-
 async function sendPasswordResetEmail(email, username, token) {
     const link = BASE_URL() + '/html/pages/reset-password.html?token=' + encodeURIComponent(token);
 
@@ -96,24 +78,6 @@ async function sendPasswordResetEmail(email, username, token) {
     return sendMail(email, 'Resetare parol\u0103 \u2014 Console Notebook', html);
 }
 
-async function sendNewLoginAlert(email, username, deviceInfo) {
-    const html =
-    '<div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;background:#1e1a17;color:#e0d6cc;border-radius:12px;">' +
-        '<h2 style="color:#d4a24e;margin-bottom:8px;">Autentificare nou\u0103 detectat\u0103</h2>' +
-        '<p>Salut, <strong>' + escapeHtml(username) + '</strong>!</p>' +
-        '<p>Contul t\u0103u a fost accesat de pe un dispozitiv nou:</p>' +
-        '<table style="margin:16px 0;font-size:14px;color:#e0d6cc;">' +
-            '<tr><td style="padding:4px 12px 4px 0;color:#a89880;">Browser:</td><td>' + escapeHtml(deviceInfo.browser) + '</td></tr>' +
-            '<tr><td style="padding:4px 12px 4px 0;color:#a89880;">Sistem:</td><td>' + escapeHtml(deviceInfo.os) + '</td></tr>' +
-            '<tr><td style="padding:4px 12px 4px 0;color:#a89880;">Dispozitiv:</td><td>' + escapeHtml(deviceInfo.deviceType) + '</td></tr>' +
-            '<tr><td style="padding:4px 12px 4px 0;color:#a89880;">IP:</td><td>' + escapeHtml(deviceInfo.ip) + '</td></tr>' +
-        '</table>' +
-        '<p style="font-size:13px;color:#a89880;">Dac\u0103 nu ai fost tu, schimb\u0103 imediat parola din Set\u0103rile contului.</p>' +
-    '</div>';
-
-    return sendMail(email, 'Autentificare nou\u0103 \u2014 Console Notebook', html);
-}
-
 /** Escape HTML to prevent XSS in email templates */
 function escapeHtml(str) {
     if (!str) return '';
@@ -125,8 +89,6 @@ function escapeHtml(str) {
 }
 
 module.exports = {
-    sendVerificationEmail,
     sendPasswordResetEmail,
-    sendNewLoginAlert,
     getResend
 };

@@ -2,7 +2,7 @@
  * Console Notebook â€” Backend Server
  *
  * Serves the static frontend AND exposes API routes for authentication,
- * email verification, password reset, and session management.
+ * password reset, and session management.
  *
  * Usage:
  *   cd server && npm install && npm start
@@ -39,7 +39,7 @@ function getMissingEnvVars(required) {
 }
 
 const baseRequiredEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL'];
-const productionRequiredEnv = ['RESEND_API_KEY'];
+const productionRequiredEnv = [];
 const requiredEnv = process.env.NODE_ENV === 'production'
     ? baseRequiredEnv.concat(productionRequiredEnv)
     : baseRequiredEnv;
@@ -94,34 +94,6 @@ app.use(cookieParser());
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 
-// ─── Email test route ────────────────────────────────────
-
-const emailService = require('./services/email');
-
-app.get('/api/test-email', async (req, res) => {
-    try {
-        const resend = emailService.getResend();
-        if (!resend) {
-            return res.status(500).json({ error: 'Resend API key not configured' });
-        }
-        const { data, error } = await resend.emails.send({
-            from: 'Console Notebook <onboarding@resend.dev>',
-            to: process.env.SMTP_USER || process.env.RESEND_TEST_TO || 'test@example.com',
-            subject: 'Test Email',
-            html: '<p>This is a test email from Console Notebook.</p>'
-        });
-        if (error) {
-            console.error('Test email failed:', error);
-            return res.status(500).json({ error: 'Email failed', details: error.message });
-        }
-        console.log('Test email sent:', data);
-        res.json({ success: true, message: 'Test email sent successfully', id: data?.id });
-    } catch (error) {
-        console.error('Test email failed:', error);
-        res.status(500).json({ error: 'Email failed to send', details: error.message });
-    }
-});
-
 // Legacy URL compatibility: redirect old /src/... routes to current root routes.
 app.get('/src/*', (req, res) => {
     const target = req.originalUrl.replace(/^\/src\//, '/');
@@ -151,8 +123,6 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log('Server running on port:', PORT);
     console.log('Database path:', process.env.DB_PATH || path.join(__dirname, 'data', 'database.sqlite'));
-    console.log('Resend API key:', process.env.RESEND_API_KEY ? 'configured' : '(not configured)');
-    console.log('Resend email system ready');
     console.log('Allowed CORS origins:', allowedOrigins.join(', '));
     console.log(`Serving static files from: ${FRONTEND_ROOT}`);
     console.log(`API available at http://localhost:${PORT}/api`);
