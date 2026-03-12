@@ -55,6 +55,64 @@
             </div>
         </div>
 
+        <!-- Dashboard Overview -->
+        <div class="profile-panel user-dashboard-panel" id="user-dashboard-panel" hidden>
+            <div class="dash-stats">
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">📚</span>
+                    <span class="dash-stat__value" id="user-dash-courses-pct">0%</span>
+                    <span class="dash-stat__label">Progres Curs</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">🏆</span>
+                    <span class="dash-stat__value" id="user-dash-achievements">0 / 0</span>
+                    <span class="dash-stat__label">Realizări</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">⭐</span>
+                    <span class="dash-stat__value" id="user-dash-ratings">0</span>
+                    <span class="dash-stat__label">Evaluări</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">👥</span>
+                    <span class="dash-stat__value" id="user-dash-friends">0</span>
+                    <span class="dash-stat__label">Prieteni</span>
+                </div>
+                <div class="dash-stat">
+                    <span class="dash-stat__icon">❤️</span>
+                    <span class="dash-stat__value" id="user-dash-favorites">0</span>
+                    <span class="dash-stat__label">Favorite</span>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>📚 Progres Curs</h3>
+                    </div>
+                    <div id="user-dash-course-preview"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>⭐ Evaluări Recente</h3>
+                    </div>
+                    <div id="user-dash-ratings-preview"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>🏆 Realizări</h3>
+                    </div>
+                    <div id="user-dash-achievements-preview"></div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card__head">
+                        <h3>👥 Prieteni</h3>
+                    </div>
+                    <div id="user-dash-friends-preview"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Console Lists -->
         <div class="profile-consoles-section" id="user-consoles-section" hidden>
             <div class="profile-console-list">
@@ -88,6 +146,8 @@
     <script type="module">
         import { AuthModule } from '/js/modules/auth.js';
         import { API_BASE_URL } from '/js/config.js';
+        import { ProgressModule } from '/js/modules/progress.js';
+        import { AchievementsModule } from '/js/modules/achievements.js';
 
         function escapeHtml(s) {
             if (!s) return '';
@@ -99,6 +159,109 @@
             const path = window.location.pathname;
             const match = path.match(/\/user\/([^/]+)/);
             return match ? decodeURIComponent(match[1]) : null;
+        }
+
+        function renderRatingStars(rating) {
+            const full = Math.floor(rating);
+            const half = rating - full >= 0.3 && rating - full < 0.8 ? 1 : 0;
+            const fullExtra = rating - full >= 0.8 ? 1 : 0;
+            const empty = 5 - full - fullExtra - half;
+            return '★'.repeat(full + fullExtra) + (half ? '½' : '') + '☆'.repeat(empty);
+        }
+
+        async function renderUserDashboard(profile) {
+            // Show dashboard
+            document.getElementById('user-dashboard-panel').hidden = false;
+
+            // Progress
+            const courses = ProgressModule.COURSES;
+            let totalLessons = 0, completedLessons = 0;
+            courses.forEach(c => {
+                const p = ProgressModule.getCourseProgress(profile.id, c.id, c.totalLessons);
+                totalLessons += p.total_lessons;
+                completedLessons += p.completed_lessons.length;
+            });
+            const overallPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+            document.getElementById('user-dash-courses-pct').textContent = overallPct + '%';
+            // Course preview
+            const coursePreview = document.getElementById('user-dash-course-preview');
+            if (courses.length > 0) {
+                coursePreview.innerHTML = courses.map(c => {
+                    const p = ProgressModule.getCourseProgress(profile.id, c.id, c.totalLessons);
+                    return `<div style="margin-bottom:10px;">
+                        <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-light);margin-bottom:4px;">
+                            <span>${c.icon} ${c.name}</span>
+                            <span>${p.completed_lessons.length}/${p.total_lessons}</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-bar__fill" style="width:${p.percentage}%"></div></div>
+                    </div>`;
+                }).join('');
+            } else {
+                coursePreview.innerHTML = '<p class="dash-empty">Niciun curs.</p>';
+            }
+
+            // Achievements
+            const badges = AchievementsModule.getAllBadges(profile.id);
+            const earnedCount = badges.filter(b => b.earned).length;
+            document.getElementById('user-dash-achievements').textContent = `${earnedCount} / ${badges.length}`;
+            // Achievements preview
+            const achPreview = document.getElementById('user-dash-achievements-preview');
+            const recentBadges = badges.filter(b => b.earned).slice(-6).reverse();
+            if (recentBadges.length > 0) {
+                achPreview.innerHTML = '<div class="dash-badges">' + recentBadges.map(b =>
+                    `<span class="dash-badge" title="${escapeHtml(b.name)}">${b.icon}</span>`
+                ).join('') + '</div>';
+            } else {
+                achPreview.innerHTML = '<p class="dash-empty">Nicio realizare încă.</p>';
+            }
+
+            // Ratings
+            try {
+                const res = await fetch(`${API_BASE_URL}/ratings/user/all?user_id=${encodeURIComponent(profile.id)}`);
+                const data = await res.json();
+                const ratings = (data.ratings || []);
+                document.getElementById('user-dash-ratings').textContent = ratings.length;
+                const ratingsPreview = document.getElementById('user-dash-ratings-preview');
+                if (ratings.length > 0) {
+                    ratingsPreview.innerHTML = ratings.slice(0, 5).map(r => {
+                        const name = r.console_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        return `<a href="/consoles/${encodeURIComponent(r.console_id)}.html" class="dash-rating-row">
+                            <span class="dash-rating-row__name">${escapeHtml(name)}</span>
+                            <span class="dash-rating-row__stars">${renderRatingStars(r.rating)}</span>
+                        </a>`;
+                    }).join('');
+                } else {
+                    ratingsPreview.innerHTML = '<p class="dash-empty">Nicio evaluare încă.</p>';
+                }
+            } catch {
+                document.getElementById('user-dash-ratings-preview').innerHTML = '<p class="dash-empty">—</p>';
+            }
+
+            // Favorites
+            const favCount = (profile.favorite_console_ids || []).length || (profile.favorite_consoles || '').split(',').filter(Boolean).length;
+            document.getElementById('user-dash-favorites').textContent = favCount;
+
+            // Friends
+            try {
+                const res = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(profile.username)}/friends`);
+                const data = await res.json();
+                const friends = data.friends || [];
+                document.getElementById('user-dash-friends').textContent = friends.length;
+                const friendsPreview = document.getElementById('user-dash-friends-preview');
+                if (friends.length > 0) {
+                    friendsPreview.innerHTML = '<div class="dash-friends-row">' + friends.slice(0, 8).map(f => {
+                        const hasAvatar = f.avatar && f.avatar.length > 10;
+                        const av = hasAvatar
+                            ? `<img src="${escapeHtml(f.avatar)}" alt="" class="dash-friend-av">`
+                            : `<span class="dash-friend-av dash-friend-av--fallback">👤</span>`;
+                        return `<a href="/user/${encodeURIComponent(f.username)}" class="dash-friend" title="${escapeHtml(f.username)}">${av}</a>`;
+                    }).join('') + '</div>';
+                } else {
+                    friendsPreview.innerHTML = '<p class="dash-empty">Niciun prieten încă.</p>';
+                }
+            } catch {
+                document.getElementById('user-dash-friends-preview').innerHTML = '<p class="dash-empty">—</p>';
+            }
         }
 
         async function loadUserProfile() {
@@ -128,6 +291,8 @@
                 // Show header
                 const headerEl = document.getElementById('user-profile-header');
                 headerEl.hidden = false;
+                // Show dashboard
+                await renderUserDashboard(profile);
 
                 // Avatar
                 const avatarImg = document.getElementById('user-avatar-img');
