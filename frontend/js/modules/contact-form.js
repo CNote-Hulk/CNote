@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Contact Form Module
  * Handles validation and submit in module-enabled environments
  */
@@ -81,7 +81,7 @@ export const ContactFormModule = {
         const setLoading = (isLoading) => {
             isSubmitting = isLoading;
             submitBtn.disabled = isLoading;
-            submitBtn.textContent = isLoading ? 'Se trimite…' : originalBtnText;
+            submitBtn.textContent = isLoading ? 'Se trimiteâ€¦' : originalBtnText;
             submitBtn.classList.toggle('button-loading', isLoading);
         };
 
@@ -104,7 +104,7 @@ export const ContactFormModule = {
                 'Mesaj:\n' + message
             );
 
-            window.location.href = 'mailto:andrei.halcu.07@licmarghilomanbz.ro?subject=' + subject + '&body=' + body;
+            window.location.href = 'mailto:console.notebook.app@gmail.com?subject=' + subject + '&body=' + body;
         };
 
         contactForm.addEventListener('submit', async (e) => {
@@ -153,7 +153,7 @@ export const ContactFormModule = {
                 formData.append('_subject', 'Mesaj nou de pe website');
                 formData.append('_template', 'table');
 
-                const response = await fetch('https://formsubmit.co/andrei.halcu.07@licmarghilomanbz.ro', {
+                const response = await fetch('https://formsubmit.co/console.notebook.app@gmail.com', {
                     method: 'POST',
                     body: formData
                 });
@@ -175,3 +175,4 @@ export const ContactFormModule = {
         });
     }
 };
+

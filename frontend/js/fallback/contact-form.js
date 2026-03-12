@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ===========================
  * CONTACT FORM HANDLER (Fallback Script)
  * ===========================
@@ -16,7 +16,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     if (window.__CONTACT_FORM_INITIALIZED__) {
-        console.log('✉️ Contact form already initialized by module, skipping fallback');
+        console.log('âœ‰ï¸ Contact form already initialized by module, skipping fallback');
         return;
     }
 
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!submitBtn) return;
         isSubmitting = isLoading;
         submitBtn.disabled = isLoading;
-        submitBtn.textContent = isLoading ? 'Se trimite…' : originalBtnText;
+        submitBtn.textContent = isLoading ? 'Se trimiteâ€¦' : originalBtnText;
         submitBtn.classList.toggle('button-loading', isLoading);
     }
 
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'Mesaj:\n' + message
         );
 
-        window.location.href = 'mailto:andrei.halcu.07@licmarghilomanbz.ro?subject=' + subject + '&body=' + body;
+        window.location.href = 'mailto:console.notebook.app@gmail.com?subject=' + subject + '&body=' + body;
     }
 
     if (contactForm && submitBtn) {
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 formData.append('_subject', 'Mesaj nou de pe website');
                 formData.append('_template', 'table');
 
-                const response = await fetch('https://formsubmit.co/andrei.halcu.07@licmarghilomanbz.ro', {
+                const response = await fetch('https://formsubmit.co/console.notebook.app@gmail.com', {
                     method: 'POST',
                     body: formData
                 });

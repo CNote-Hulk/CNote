@@ -1,5 +1,5 @@
-/**
- * Console Notebook — Backend Server
+﻿/**
+ * Console Notebook â€” Backend Server
  *
  * Serves the static frontend AND exposes API routes for authentication,
  * email verification, password reset, and session management.
@@ -8,13 +8,13 @@
  *   cd server && npm install && npm start
  *
  * Environment variables (optional):
- *   PORT           — Server port (default: 3000)
- *   BASE_URL       — Public URL for email links (default: http://localhost:3000)
- *   SMTP_HOST      — SMTP server host
- *   SMTP_PORT      — SMTP server port (default: 587)
- *   SMTP_USER      — SMTP username
- *   SMTP_PASS      — SMTP password
- *   SMTP_FROM      — Sender address (default: Console Notebook <noreply@consolenotebook.ro>)
+ *   PORT           â€” Server port (default: 3000)
+ *   BASE_URL       â€” Public URL for email links (default: http://localhost:3000)
+ *   SMTP_HOST      â€” SMTP server host
+ *   SMTP_PORT      â€” SMTP server port (default: 587)
+ *   SMTP_USER      â€” SMTP username
+ *   SMTP_PASS      â€” SMTP password
+ *   SMTP_FROM      â€” Sender address (default: Console Notebook <console.notebook.app@gmail.com>)
  */
 
 const express = require('express');
@@ -53,26 +53,26 @@ if (missingEnv.length > 0) {
 // Render runs behind a reverse proxy.
 app.set('trust proxy', 1);
 
-// ─── Security headers ───────────────────────────────────
+// â”€â”€â”€ Security headers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.use(helmet({
     contentSecurityPolicy: false,   // Let the static site handle CSP
     crossOriginEmbedderPolicy: false
 }));
 
-// ─── CORS (allow same-origin, needed if frontend runs separately) ──
+// â”€â”€â”€ CORS (allow same-origin, needed if frontend runs separately) â”€â”€
 
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 
-// ─── Body parsing ───────────────────────────────────────
+// â”€â”€â”€ Body parsing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.use(express.json({ limit: '2mb' }));  // avatar uploads can be large data-URLs
 app.use(express.urlencoded({ extended: false }));
 
-// ─── Cookie parser ──────────────────────────────────────
+// â”€â”€â”€ Cookie parser â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Simple cookie parser middleware (avoids adding cookie-parser dependency)
 app.use((req, res, next) => {
     const cookieStr = req.headers.cookie || '';
@@ -106,26 +106,27 @@ app.use((req, res, next) => {
     next();
 });
 
-// ─── API routes ─────────────────────────────────────────
+// â”€â”€â”€ API routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 
-// ─── Static files (frontend) ────────────────────────────
+// â”€â”€â”€ Static files (frontend) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Serve the entire project root so paths like /src/html/pages/login.html work
 const ROOT = path.resolve(__dirname, '..');
 app.use(express.static(ROOT));
 
-// ─── Fallback to index ──────────────────────────────────
+// â”€â”€â”€ Fallback to index â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/', (req, res) => {
     res.sendFile(path.join(ROOT, 'index.html'));
 });
 
-// ─── Start server ───────────────────────────────────────
+// â”€â”€â”€ Start server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 app.listen(PORT, () => {
     console.log('Server running on port ' + PORT);
-    console.log(`\n  ✅  Console Notebook server running at http://localhost:${PORT}`);
-    console.log(`  📁  Serving static files from: ${ROOT}`);
-    console.log(`  🔑  API available at http://localhost:${PORT}/api\n`);
+    console.log(`\n  âœ…  Console Notebook server running at http://localhost:${PORT}`);
+    console.log(`  ðŸ“  Serving static files from: ${ROOT}`);
+    console.log(`  ðŸ”‘  API available at http://localhost:${PORT}/api\n`);
 });
+
