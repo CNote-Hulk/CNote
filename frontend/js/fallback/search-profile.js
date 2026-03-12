@@ -26,7 +26,7 @@
         if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return '../../' + imgRelativePath;
         if (p.indexOf('/pages/curs/') !== -1 || p.indexOf('\\pages\\curs\\') !== -1) return '../../' + imgRelativePath;
         if (p.indexOf('/pages/') !== -1 || p.indexOf('\\pages\\') !== -1) return '../../' + imgRelativePath;
-        return 'src/' + imgRelativePath;
+        return '/' + String(imgRelativePath || '').replace(/^\/+/, '');
     }
 
     function resolveConsolePath(consoleId) {
@@ -34,7 +34,7 @@
         if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return consoleId + '.html';
         if (p.indexOf('/pages/curs/') !== -1 || p.indexOf('\\pages\\curs\\') !== -1) return '../consoles/' + consoleId + '.html';
         if (p.indexOf('/pages/') !== -1 || p.indexOf('\\pages\\') !== -1) return 'consoles/' + consoleId + '.html';
-        return 'src/html/pages/consoles/' + consoleId + '.html';
+        return '/html/pages/consoles/' + consoleId + '.html';
     }
 
     function resolvePagePath(page) {
@@ -42,7 +42,7 @@
         if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return '../' + page;
         if (p.indexOf('/pages/curs/') !== -1 || p.indexOf('\\pages\\curs\\') !== -1) return '../' + page;
         if (p.indexOf('/pages/') !== -1 || p.indexOf('\\pages\\') !== -1) return page;
-        return 'src/html/pages/' + page;
+        return '/html/pages/' + page;
     }
 
     function escapeHtml(value) {

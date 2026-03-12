@@ -32,7 +32,7 @@ export const ProfileDropdownModule = {
         if (path.includes('/pages/consoles/') || path.includes('\\pages\\consoles\\')) return '../' + page;
         if (path.includes('/pages/curs/') || path.includes('\\pages\\curs\\')) return '../' + page;
         if (path.includes('/pages/') || path.includes('\\pages\\')) return page;
-        return 'src/html/pages/' + page;
+        return '/html/pages/' + page;
     },
 
     _createDropdown() {

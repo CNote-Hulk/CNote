@@ -49,7 +49,7 @@ export const SearchModule = {
         if (path.includes('/pages/') || path.includes('\\pages\\')) {
             return '../../' + imgRelativePath;
         }
-        return 'src/' + imgRelativePath;
+        return '/' + String(imgRelativePath || '').replace(/^\/+/, '');
     },
 
     /** Resolve path to console detail page */
@@ -64,7 +64,7 @@ export const SearchModule = {
         if (path.includes('/pages/') || path.includes('\\pages\\')) {
             return 'consoles/' + consoleId + '.html';
         }
-        return 'src/html/pages/consoles/' + consoleId + '.html';
+        return '/html/pages/consoles/' + consoleId + '.html';
     },
 
     /** Create search overlay DOM */

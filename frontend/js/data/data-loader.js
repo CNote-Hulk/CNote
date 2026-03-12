@@ -38,20 +38,20 @@ function loadJsonWithXhr(path) {
 
 /**
  * Resolve the base path to the data directory depending on the current page depth.
- * Works for both /src/html/pages/*.html and /src/html/pages/consoles/*.html
+ * Works for both /html/pages/*.html and /html/pages/consoles/*.html
  */
 function resolveJsonPath() {
     const path = window.location.pathname;
-    // If we're in /src/html/pages/consoles/ -> go up 3 levels
+    // If we're in /html/pages/consoles/ -> go up 3 levels
     if (path.includes('/pages/consoles/') || path.includes('\\pages\\consoles\\')) {
         return '../../../js/data/consoles.json';
     }
-    // If we're in /src/html/pages/ -> go up 2 levels
+    // If we're in /html/pages/ -> go up 2 levels
     if (path.includes('/pages/') || path.includes('\\pages\\')) {
         return '../../js/data/consoles.json';
     }
     // Root level
-    return 'src/js/data/consoles.json';
+    return '/js/data/consoles.json';
 }
 
 /**
@@ -166,5 +166,5 @@ export function resolveImagePath(imagePath) {
     if (path.includes('/pages/') || path.includes('\\pages\\')) {
         return '../../' + imagePath;
     }
-    return 'src/' + imagePath;
+    return '/' + String(imagePath || '').replace(/^\/+/, '');
 }

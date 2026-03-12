@@ -65,7 +65,7 @@ async function sendMail(to, subject, html) {
 // â”€â”€â”€ Email templates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function sendVerificationEmail(email, username, token) {
-    const link = `${BASE_URL()}/src/html/pages/verify-success.html?token=${encodeURIComponent(token)}`;
+    const link = `${BASE_URL()}/html/pages/verify-success.html?token=${encodeURIComponent(token)}`;
 
     const html = `
     <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;background:#1e1a17;color:#e0d6cc;border-radius:12px;">
@@ -82,7 +82,7 @@ async function sendVerificationEmail(email, username, token) {
 }
 
 async function sendPasswordResetEmail(email, username, token) {
-    const link = `${BASE_URL()}/src/html/pages/reset-password.html?token=${encodeURIComponent(token)}`;
+    const link = `${BASE_URL()}/html/pages/reset-password.html?token=${encodeURIComponent(token)}`;
 
     const html = `
     <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;background:#1e1a17;color:#e0d6cc;border-radius:12px;">

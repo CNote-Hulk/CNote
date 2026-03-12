@@ -111,6 +111,12 @@ app.use((req, res, next) => {
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 
+// Legacy URL compatibility: redirect old /src/... routes to current root routes.
+app.get('/src/*', (req, res) => {
+    const target = req.originalUrl.replace(/^\/src\//, '/');
+    res.redirect(301, target);
+});
+
 // â”€â”€â”€ Static files (frontend) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Serve static frontend from /frontend in project root.
 const FRONTEND_ROOT = path.join(__dirname, '..');
@@ -119,7 +125,7 @@ app.use(express.static(FRONTEND_ROOT));
 
 // â”€â”€â”€ Fallback to index â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/', (req, res) => {
-    res.sendFile(FRONTEND_INDEX);
+    res.redirect('/html/pages/index.html');
 });
 
 // â”€â”€â”€ Start server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
