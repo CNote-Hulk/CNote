@@ -69,6 +69,3 @@ initializeSchema()
     });
 
 module.exports = pool;
-console.log('Database schema initialized.');
-
-module.exports = db;
