@@ -386,7 +386,7 @@
 
             function timeAgo(dateStr) {
                 if (!dateStr) return 'necunoscut';
-                const diff = Date.now() - new Date(dateStr + 'Z').getTime();
+                const diff = Date.now() - new Date(dateStr).getTime();
                 const mins = Math.floor(diff / 60000);
                 if (mins < 1) return 'chiar acum';
                 if (mins < 60) return mins + ' min în urmă';
