@@ -35,15 +35,15 @@ router.post('/contact', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Mesajul este prea lung.' });
         }
 
-        await emailService.sendContactEmail(cleanEmail, cleanName, cleanSubject, cleanMessage);
+        const contactResult = await emailService.sendContactEmail(cleanEmail, cleanName, cleanSubject, cleanMessage);
+        if (!contactResult.success) {
+            console.error('Contact email error:', contactResult.error);
+            return res.status(500).json({ success: false, error: 'Nu am putut trimite mesajul. Incearca din nou.' });
+        }
         return res.json({ success: true, message: 'Mesajul a fost trimis.' });
     } catch (err) {
         console.error('Contact form error:', err.message || err);
-        const isAuthError = /auth|login|credentials|password|username/i.test(String(err.message || ''));
-        const userMsg = isAuthError
-            ? 'Serviciul de email nu este configurat corect. Contacteaza administratorul.'
-            : 'Nu am putut trimite mesajul. Incearca din nou.';
-        return res.status(500).json({ success: false, error: userMsg });
+        return res.status(500).json({ success: false, error: 'Nu am putut trimite mesajul. Incearca din nou.' });
     }
 });
 
