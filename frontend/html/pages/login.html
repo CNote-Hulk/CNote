@@ -71,6 +71,31 @@
                     <button type="submit" class="auth-btn">Conectare</button>
                 </form>
 
+                <!-- 2FA Verification (hidden until needed) -->
+                <div id="two-factor-section" style="display: none;">
+                    <p class="auth-tab-info" id="two-factor-info">Introdu codul de verificare.</p>
+                    <div class="auth-error" id="two-factor-error"></div>
+                    <form class="auth-form" id="two-factor-form" autocomplete="off">
+                        <div class="auth-field">
+                            <label for="two-factor-code">Cod de verificare</label>
+                            <input type="text" id="two-factor-code" name="code" required autocomplete="one-time-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem;">
+                        </div>
+                        <button type="submit" class="auth-btn">Verifică</button>
+                    </form>
+                    <p class="auth-link"><a href="#" id="two-factor-back">Înapoi la autentificare</a></p>
+                </div>
+
+                <div class="auth-separator" style="display: flex; align-items: center; gap: 1rem; margin: 1.25rem 0;">
+                    <hr style="flex: 1; border: none; border-top: 1px solid var(--color-border, #333);">
+                    <span style="color: var(--color-text-muted, #888); font-size: 0.85rem;">sau</span>
+                    <hr style="flex: 1; border: none; border-top: 1px solid var(--color-border, #333);">
+                </div>
+
+                <button type="button" id="google-login-btn" class="auth-btn" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: #fff; color: #333; border: 1px solid #ddd;">
+                    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.0 24.0 0 0 0 0 21.56l7.98-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                    Conectare cu Google
+                </button>
+
                 <p class="auth-link"><a href="request-password-reset.html">Ai uitat parola?</a></p>
                 <p class="auth-link">Nu ai cont? <a href="register.html">Creează cont</a></p>
             </div>
@@ -96,6 +121,12 @@
     <script type="module" src="../../js/main.js"></script>
     <script type="module">
         import { AuthModule } from '../../js/modules/auth.js';
+
+        // ─── Handle Google OAuth redirect ────────────────
+        const googleData = AuthModule.handleGoogleRedirect();
+        if (googleData && googleData.user) {
+            window.location.href = 'profil.html';
+        }
         
         // Auto-login: check if token is still valid
         (async () => {
@@ -132,6 +163,21 @@
                 const result = await AuthModule.login(email, password);
                 if (result.success) {
                     window.location.href = 'profil.html';
+                } else if (result.twoFactorRequired) {
+                    // Show 2FA section, hide login form
+                    document.getElementById('login-form').style.display = 'none';
+                    document.querySelector('.auth-separator').style.display = 'none';
+                    document.getElementById('google-login-btn').style.display = 'none';
+                    document.querySelector('#tab-server > .auth-link:last-child').style.display = 'none';
+                    const tfSection = document.getElementById('two-factor-section');
+                    tfSection.style.display = 'block';
+                    const tfInfo = document.getElementById('two-factor-info');
+                    if (result.method === 'email') {
+                        tfInfo.textContent = 'Am trimis un cod de verificare pe email.';
+                    } else {
+                        tfInfo.textContent = 'Introdu codul din aplicația de autentificare.';
+                    }
+                    document.getElementById('two-factor-code').focus();
                 } else {
                     errorEl.textContent = result.error;
                     errorEl.classList.add('visible');
@@ -162,6 +208,67 @@
             AuthModule.localLogin(username);
             window.location.href = 'profil.html';
         });
+
+        // ─── 2FA verification ───────────────────────────
+        document.getElementById('two-factor-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const code = document.getElementById('two-factor-code').value.trim();
+            const errorEl = document.getElementById('two-factor-error');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            errorEl.classList.remove('visible');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Se verifică...';
+
+            try {
+                const result = await AuthModule.verifyTwoFactor(code);
+                if (result.success) {
+                    window.location.href = 'profil.html';
+                } else {
+                    errorEl.textContent = result.error || 'Cod invalid.';
+                    errorEl.classList.add('visible');
+                }
+            } catch {
+                errorEl.textContent = 'Nu s-a putut contacta serverul.';
+                errorEl.classList.add('visible');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verifică';
+            }
+        });
+
+        // ─── 2FA back button ────────────────────────────
+        document.getElementById('two-factor-back').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('cnote_temp_token');
+            document.getElementById('two-factor-section').style.display = 'none';
+            document.getElementById('login-form').style.display = '';
+            document.querySelector('.auth-separator').style.display = '';
+            document.getElementById('google-login-btn').style.display = '';
+            document.querySelector('#tab-server > .auth-link:last-child').style.display = '';
+            document.getElementById('two-factor-code').value = '';
+            document.getElementById('two-factor-error').classList.remove('visible');
+        });
+
+        // ─── Google login button ────────────────────────
+        document.getElementById('google-login-btn').addEventListener('click', () => {
+            AuthModule.loginWithGoogle();
+        });
+
+        // ─── Show error from URL params ─────────────────
+        const urlParams = new URLSearchParams(window.location.search);
+        const googleError = urlParams.get('error');
+        if (googleError) {
+            const errorEl = document.getElementById('login-error');
+            const errorMessages = {
+                'google_failed': 'Autentificarea Google a eșuat.',
+                'google_auth_failed': 'Eroare la autentificarea cu Google.',
+                'google_not_configured': 'Google OAuth nu este configurat.'
+            };
+            errorEl.textContent = errorMessages[googleError] || 'Eroare la autentificare.';
+            errorEl.classList.add('visible');
+            history.replaceState(null, '', window.location.pathname);
+        }
     </script>
     <script src="../../js/fallback/hamburger.js" defer></script>
     <script src="../../js/fallback/search-profile.js"></script>

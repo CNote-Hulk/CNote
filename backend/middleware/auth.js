@@ -29,6 +29,12 @@ async function authRequired(req, res, next) {
             favorite_consoles: user.favorite_consoles,
             owned_consoles: user.owned_consoles,
             email_verified: user.email_verified,
+            two_factor_enabled: user.two_factor_enabled,
+            two_factor_method: user.two_factor_method,
+            two_factor_secret: user.two_factor_secret,
+            google_id: user.google_id,
+            avatar_url: user.avatar_url,
+            password_hash: user.password_hash,
             created_at: user.created_at
         };
         return next();
@@ -40,7 +46,9 @@ async function authRequired(req, res, next) {
         sessionResult = await pool.query(`
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.favorite_consoles, u.owned_consoles,
-               u.email_verified, u.created_at
+               u.email_verified, u.two_factor_enabled, u.two_factor_method,
+               u.two_factor_secret, u.google_id, u.avatar_url, u.password_hash,
+               u.created_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = 1
@@ -66,6 +74,12 @@ async function authRequired(req, res, next) {
         favorite_consoles: session.favorite_consoles,
         owned_consoles: session.owned_consoles,
         email_verified: session.email_verified,
+        two_factor_enabled: session.two_factor_enabled,
+        two_factor_method: session.two_factor_method,
+        two_factor_secret: session.two_factor_secret,
+        google_id: session.google_id,
+        avatar_url: session.avatar_url,
+        password_hash: session.password_hash,
         created_at: session.created_at
     };
     req.sessionId = session.session_id;
