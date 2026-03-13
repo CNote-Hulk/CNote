@@ -103,13 +103,8 @@ router.post('/register', async (req, res) => {
             [user.id, verificationToken, verificationExpiry]
         );
 
-        let emailSent = true;
-        try {
-            await emailService.sendVerificationEmail(user.email, verificationToken, process.env.BASE_URL);
-        } catch (emailErr) {
-            emailSent = false;
-            console.error('Verification email error:', emailErr.message);
-        }
+        const emailResult = await emailService.sendVerificationEmail(user.email, verificationToken, process.env.BASE_URL);
+        const emailSent = emailResult.success;
 
         res.status(201).json({
             success: true,
@@ -182,11 +177,8 @@ router.post('/login', async (req, res) => {
                     'INSERT INTO two_factor_codes (user_id, code, expires_at) VALUES ($1, $2, $3)',
                     [user.id, code, codeExpiry]
                 );
-                try {
-                    await emailService.sendTwoFactorEmail(user.email, code);
-                } catch (err) {
-                    console.error('2FA email error:', err.message);
-                }
+                const emailResult = await emailService.sendTwoFactorEmail(user.email, code);
+                if (!emailResult.success) console.error('2FA email error:', emailResult.error);
             }
 
             return res.json({
@@ -283,7 +275,10 @@ router.post('/resend-verification', authRequired, async (req, res) => {
             [user.id, token, expiresAt()]
         );
 
-        await emailService.sendVerificationEmail(user.email, token, process.env.BASE_URL);
+        const emailResult = await emailService.sendVerificationEmail(user.email, token, process.env.BASE_URL);
+        if (!emailResult.success) {
+            return res.status(500).json({ success: false, error: 'Nu s-a putut trimite emailul de verificare.' });
+        }
         return res.json({ success: true, emailSent: true, message: 'Emailul de verificare a fost retrimis.' });
     } catch (err) {
         console.error('Resend verification error:', err);
@@ -319,6 +314,7 @@ router.post('/resend-verification-public', async (req, res) => {
         return res.json({ success: true, message: 'Daca exista un cont neverificat cu acest email, am retrimis linkul.' });
     } catch (err) {
         console.error('Public resend verification error:', err);
+        // Still return success to avoid leaking account existence
         return res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
@@ -408,11 +404,8 @@ router.put('/me/email', authRequired, async (req, res) => {
             'INSERT INTO email_verification_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
             [req.user.id, verificationToken, expiresAt()]
         );
-        try {
-            await emailService.sendVerificationEmail(emailLower, verificationToken, process.env.BASE_URL);
-        } catch (emailErr) {
-            console.error('Verification email after email change failed:', emailErr.message);
-        }
+        const vResult = await emailService.sendVerificationEmail(emailLower, verificationToken, process.env.BASE_URL);
+        if (!vResult.success) console.error('Verification email after email change failed:', vResult.error);
 
         const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
         res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]), message: 'Email schimbat. Verifica noul email pentru a-l confirma.' });
@@ -559,8 +552,8 @@ router.post('/request-reset', async (req, res) => {
         const token = generateToken();
         await pool.query('INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)', [user.id, token, expiresAt()]);
 
-        emailService.sendPasswordResetEmail(user.email, token, process.env.BASE_URL).catch(err => {
-            console.error('Failed to send reset email:', err.message);
+        emailService.sendPasswordResetEmail(user.email, token, process.env.BASE_URL).then(result => {
+            if (!result.success) console.error('Failed to send reset email:', result.error);
         });
 
         res.json({ success: true, message: 'Daca exista un cont cu acest email, vei primi un link de resetare.' });
@@ -748,10 +741,9 @@ router.post('/2fa/fallback-email', async (req, res) => {
             'INSERT INTO two_factor_codes (user_id, code, expires_at) VALUES ($1, $2, $3)',
             [user.id, code, codeExpiry]
         );
-        try {
-            await emailService.sendTwoFactorEmail(user.email, code);
-        } catch (err) {
-            console.error('2FA fallback email error:', err.message);
+        const fallbackResult = await emailService.sendTwoFactorEmail(user.email, code);
+        if (!fallbackResult.success) {
+            console.error('2FA fallback email error:', fallbackResult.error);
             return res.status(500).json({ success: false, error: 'Nu s-a putut trimite emailul.' });
         }
 
