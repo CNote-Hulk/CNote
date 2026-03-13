@@ -20,9 +20,9 @@ export const NavigationModule = {
         DOMUtils.onAll('a[href^="#"]', 'click', (e) => {
             const href = e.currentTarget.getAttribute('href');
             if (href !== '#') {
-                e.preventDefault();
                 const target = document.querySelector(href);
                 if (target) {
+                    e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     
                     // Închide meniul mobile după navigare
