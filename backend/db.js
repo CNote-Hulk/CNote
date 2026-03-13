@@ -1,5 +1,5 @@
 /**
- * Database setup - PostgreSQL via pg (node-postgres)
+ * Database setup - Supabase Postgres via pg (node-postgres)
  * Creates tables on first run and exposes the pool instance.
  */
 
@@ -115,7 +115,7 @@ async function initializeSchema() {
 }
 
 initializeSchema()
-	.then(() => console.log('Connected to PostgreSQL database'))
+	.then(() => console.log('Connected to Supabase Postgres database'))
 	.catch(err => {
 		console.error('Database connection/schema error:', err);
 		process.exit(1);
