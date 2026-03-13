@@ -27,17 +27,21 @@ function getMissingEnvVars(required) {
 	});
 }
 
-const baseRequiredEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL', 'DATABASE_URL'];
-const productionRequiredEnv = [];
-const requiredEnv = process.env.NODE_ENV === 'production'
-	? baseRequiredEnv.concat(productionRequiredEnv)
-	: baseRequiredEnv;
+// Only DATABASE_URL is strictly required — server cannot function without DB.
+// FRONTEND_URL, BASE_URL, etc. are optional CORS helpers.
+const requiredEnv = ['DATABASE_URL'];
 
 const missingEnv = getMissingEnvVars(requiredEnv);
 if (missingEnv.length > 0) {
 	console.error('Missing required environment variables: ' + missingEnv.join(', '));
 	process.exit(1);
 }
+
+// Warn about missing optional but important vars
+const optionalEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL', 'JWT_SECRET'];
+optionalEnv.forEach(name => {
+	if (!process.env[name]) console.warn(`Warning: ${name} is not set — using default.`);
+});
 
 app.set('trust proxy', 1);
 
@@ -75,6 +79,8 @@ app.use('/api/ratings', ratingRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api', userRoutes);
+
+app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 app.get('/src/*', (req, res) => {
 	const target = req.originalUrl.replace(/^\/src\//, '/');

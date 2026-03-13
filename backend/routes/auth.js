@@ -192,10 +192,14 @@ router.put('/me', authRequired, async (req, res) => {
     updates.push('updated_at = NOW()');
     params.push(req.user.id);
 
-    await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = $${paramIndex}`, params);
-
-    const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
-    res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
+    try {
+        await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = $${paramIndex}`, params);
+        const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+        res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
+    } catch (err) {
+        console.error('Update profile error:', err);
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
 });
 
 router.put('/me/email', authRequired, async (req, res) => {
