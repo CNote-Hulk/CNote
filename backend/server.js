@@ -27,6 +27,18 @@ function getMissingEnvVars(required) {
 	});
 }
 
+function normalizeOrigin(value) {
+	return String(value || '').trim().replace(/\/$/, '');
+}
+
+function getOriginHost(value) {
+	try {
+		return new URL(normalizeOrigin(value)).host.toLowerCase();
+	} catch {
+		return '';
+	}
+}
+
 // Only DATABASE_URL is strictly required — server cannot function without DB.
 // FRONTEND_URL, BASE_URL, etc. are optional CORS helpers.
 const requiredEnv = ['DATABASE_URL'];
@@ -53,24 +65,31 @@ app.use(helmet({
 const allowedOrigins = [
 	'http://localhost:3000',
 	'http://localhost:5173',
-	process.env.FRONTEND_URL,
-	process.env.BASE_URL
+	normalizeOrigin(process.env.FRONTEND_URL),
+	normalizeOrigin(process.env.BASE_URL)
 ].filter(Boolean);
 
-app.use(cors({
-	origin: function(origin, callback) {
-		if (!origin || allowedOrigins.includes(origin)) {
-			callback(null, true);
-		} else {
-			callback(new Error('Not allowed by CORS'));
-		}
-	},
-	credentials: true
-}));
+const allowedOriginHosts = allowedOrigins.map(getOriginHost).filter(Boolean);
 
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use('/api', (req, res, next) => {
+	const requestHost = String(req.get('host') || '').toLowerCase();
+	return cors({
+		origin: function(origin, callback) {
+			const normalizedOrigin = normalizeOrigin(origin);
+			const originHost = getOriginHost(origin);
+			if (!origin || normalizedOrigin === normalizeOrigin(process.env.BASE_URL) || normalizedOrigin === normalizeOrigin(process.env.FRONTEND_URL) || originHost === requestHost || allowedOrigins.includes(normalizedOrigin) || allowedOriginHosts.includes(originHost)) {
+				callback(null, true);
+			} else {
+				callback(null, false);
+			}
+		},
+		credentials: true
+	})(req, res, next);
+});
 
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);

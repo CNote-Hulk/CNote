@@ -23,7 +23,7 @@ function expiresAt(hours = TOKEN_EXPIRY_HOURS) {
 }
 
 function setSessionCookie(res, token) {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.NODE_ENV === 'production' || String(process.env.BASE_URL || '').startsWith('https://');
     res.cookie('cn_session_token', token, {
         httpOnly: true,
         secure: isProd,
@@ -34,7 +34,7 @@ function setSessionCookie(res, token) {
 }
 
 function clearSessionCookie(res) {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.NODE_ENV === 'production' || String(process.env.BASE_URL || '').startsWith('https://');
     res.clearCookie('cn_session_token', {
         path: '/',
         secure: isProd,
