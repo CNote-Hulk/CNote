@@ -77,6 +77,12 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Parola trebuie sa aiba minim 6 caractere.' });
         }
 
+        const usernameTrimmed = String(username).trim();
+        const usernameCheck = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [usernameTrimmed]);
+        if (usernameCheck.rows[0]) {
+            return res.status(409).json({ success: false, error: 'Username-ul este deja folosit. Alege altul.' });
+        }
+
         const emailLower = email.toLowerCase().trim();
         const existingResult = await pool.query('SELECT id FROM users WHERE email = $1', [emailLower]);
         if (existingResult.rows[0]) {
@@ -88,7 +94,7 @@ router.post('/register', async (req, res) => {
         const verificationExpiry = expiresAt();
         const insertResult = await pool.query(
             'INSERT INTO users (username, email, password_hash, email_verified) VALUES ($1, $2, $3, FALSE) RETURNING *',
-            [String(username).trim(), emailLower, passwordHash]
+            [usernameTrimmed, emailLower, passwordHash]
         );
 
         const user = insertResult.rows[0];
@@ -453,13 +459,41 @@ router.put('/me/password', authRequired, async (req, res) => {
     }
 });
 
+router.post('/account/set-password', authRequired, async (req, res) => {
+    try {
+        const { password, confirmPassword } = req.body || {};
+
+        const userResult = await pool.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'Utilizator inexistent.' });
+        }
+
+        if (user.password_hash) {
+            return res.status(400).json({ success: false, error: 'Ai deja o parol\u0103 setat\u0103. Folose\u0219te schimbarea parolei.' });
+        }
+
+        if (!password || String(password).length < 8) {
+            return res.status(400).json({ success: false, error: 'Parola trebuie s\u0103 aib\u0103 minim 8 caractere.' });
+        }
+        if (password !== confirmPassword) {
+            return res.status(400).json({ success: false, error: 'Parolele nu coincid.' });
+        }
+
+        const hash = await bcrypt.hash(String(password), BCRYPT_ROUNDS);
+        await pool.query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2', [hash, req.user.id]);
+
+        res.json({ success: true, message: 'Parola a fost setat\u0103 cu succes.' });
+    } catch (err) {
+        console.error('Set password error:', err);
+        res.status(500).json({ success: false, error: 'Eroare intern\u0103.' });
+    }
+});
+
 router.delete('/account', authRequired, async (req, res) => {
     const client = await pool.connect();
     try {
-        const { password } = req.body || {};
-        if (!password) {
-            return res.status(400).json({ success: false, error: 'Parola este obligatorie.' });
-        }
+        const { password, confirmText } = req.body || {};
 
         const userResult = await client.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
         const user = userResult.rows[0];
@@ -467,9 +501,18 @@ router.delete('/account', authRequired, async (req, res) => {
             return res.status(404).json({ success: false, error: 'Utilizator inexistent.' });
         }
 
-        const valid = await bcrypt.compare(String(password), user.password_hash);
-        if (!valid) {
-            return res.status(401).json({ success: false, error: 'Parola incorecta.' });
+        if (user.password_hash) {
+            if (!password) {
+                return res.status(400).json({ success: false, error: 'Parola este obligatorie.' });
+            }
+            const valid = await bcrypt.compare(String(password), user.password_hash);
+            if (!valid) {
+                return res.status(401).json({ success: false, error: 'Parolă incorectă.' });
+            }
+        } else {
+            if (confirmText !== 'STERGE') {
+                return res.status(400).json({ success: false, error: 'Scrie STERGE pentru a confirma.' });
+            }
         }
 
         await client.query('BEGIN');
