@@ -191,6 +191,17 @@
             // Initialize owned consoles multi-select
             initOwnedConsolesSelect();
 
+            // ─── Password section: toggle for Google-only users ──
+            const passwordSectionInfo = document.getElementById('password-section-info');
+            const currentPasswordField = document.getElementById('current-password-field');
+            if (!user.has_password) {
+                if (passwordSectionInfo) passwordSectionInfo.style.display = '';
+                if (currentPasswordField) currentPasswordField.style.display = 'none';
+            } else {
+                if (passwordSectionInfo) passwordSectionInfo.style.display = 'none';
+                if (currentPasswordField) currentPasswordField.style.display = '';
+            }
+
             const settingsPanel = document.getElementById('panel-setari');
             if (settingsPanel && !user.email_verified && !document.getElementById('email-verification-banner')) {
                 const verifyBanner = document.createElement('div');
@@ -355,8 +366,9 @@
 
                 const emailChanged = email.trim().toLowerCase() !== (user.email || '').toLowerCase();
                 const wantsPasswordChange = newPassword.length > 0 || confirmPassword.length > 0;
+                const isSetPasswordMode = !user.has_password;
 
-                if ((emailChanged || wantsPasswordChange) && !currentPassword) {
+                if (!isSetPasswordMode && (emailChanged || wantsPasswordChange) && !currentPassword) {
                     showSettingsMessage('Introdu parola curentă pentru schimbarea emailului/parolei.', false);
                     return;
                 }
@@ -396,10 +408,20 @@
                 }
 
                 if (wantsPasswordChange) {
-                    const passwordResult = await AuthModule.updatePassword(currentPassword, newPassword);
+                    let passwordResult;
+                    if (isSetPasswordMode) {
+                        passwordResult = await AuthModule.setPassword(newPassword, confirmPassword);
+                    } else {
+                        passwordResult = await AuthModule.updatePassword(currentPassword, newPassword);
+                    }
                     if (!passwordResult.success) {
                         showSettingsMessage(passwordResult.error || 'Nu s-a putut schimba parola.', false);
                         return;
+                    }
+                    if (isSetPasswordMode) {
+                        user.has_password = true;
+                        if (passwordSectionInfo) passwordSectionInfo.style.display = 'none';
+                        if (currentPasswordField) currentPasswordField.style.display = '';
                     }
                     document.getElementById('set-new-password').value = '';
                     document.getElementById('set-new-password-confirm').value = '';
@@ -418,7 +440,8 @@
                 message,
                 confirmLabel = 'Confirma',
                 cancelLabel = 'Anuleaza',
-                withPassword = false
+                withPassword = false,
+                withTextInput = false
             }) => {
                 const modal = document.getElementById('confirm-modal');
                 const titleEl = document.getElementById('confirm-modal-title');
@@ -428,20 +451,27 @@
                 const cancelBackdrop = modal.querySelector('[data-modal-cancel]');
                 const actionsEl = modal.querySelector('.app-modal__actions');
 
-                const existingInputWrap = modal.querySelector('.app-modal__password-wrap');
+                const existingInputWrap = modal.querySelector('.app-modal__input-wrap');
                 if (existingInputWrap) existingInputWrap.remove();
 
-                let passwordInput = null;
-                if (withPassword) {
+                let modalInput = null;
+                if (withPassword || withTextInput) {
                     const wrap = document.createElement('div');
-                    wrap.className = 'app-modal__password-wrap';
+                    wrap.className = 'app-modal__input-wrap';
                     wrap.style.margin = '12px 0 2px';
-                    wrap.innerHTML = `
-                        <label for="confirm-modal-password" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Parola</label>
-                        <input id="confirm-modal-password" type="password" autocomplete="current-password" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.2);color:var(--text-light,#f5eee6);outline:none;" />
-                    `;
+                    if (withPassword) {
+                        wrap.innerHTML = `
+                            <label for="confirm-modal-input" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Parola</label>
+                            <input id="confirm-modal-input" type="password" autocomplete="current-password" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.2);color:var(--text-light,#f5eee6);outline:none;" />
+                        `;
+                    } else {
+                        wrap.innerHTML = `
+                            <label for="confirm-modal-input" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Scrie STERGE pentru a confirma</label>
+                            <input id="confirm-modal-input" type="text" autocomplete="off" placeholder="STERGE" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.2);color:var(--text-light,#f5eee6);outline:none;text-transform:uppercase;letter-spacing:0.1em;" />
+                        `;
+                    }
                     modal.querySelector('.app-modal__dialog').insertBefore(wrap, actionsEl);
-                    passwordInput = wrap.querySelector('#confirm-modal-password');
+                    modalInput = wrap.querySelector('#confirm-modal-input');
                 }
 
                 titleEl.textContent = title;
@@ -452,8 +482,8 @@
                 modal.hidden = false;
                 document.body.classList.add('modal-open');
                 setTimeout(() => {
-                    if (passwordInput) {
-                        passwordInput.focus();
+                    if (modalInput) {
+                        modalInput.focus();
                     } else {
                         okBtn.focus();
                     }
@@ -467,29 +497,32 @@
                         cancelBtn.removeEventListener('click', onCancel);
                         cancelBackdrop.removeEventListener('click', onCancel);
                         document.removeEventListener('keydown', onKeydown);
-                        const cleanup = modal.querySelector('.app-modal__password-wrap');
+                        const cleanup = modal.querySelector('.app-modal__input-wrap');
                         if (cleanup) cleanup.remove();
                         resolve(value);
                     };
 
                     const onOk = () => {
                         if (withPassword) {
-                            const password = (passwordInput?.value || '').trim();
+                            const password = (modalInput?.value || '').trim();
                             close({ confirmed: true, password });
+                        } else if (withTextInput) {
+                            const textValue = (modalInput?.value || '').trim();
+                            close({ confirmed: true, textValue });
                         } else {
                             close(true);
                         }
                     };
                     const onCancel = () => {
-                        if (withPassword) {
-                            close({ confirmed: false, password: '' });
+                        if (withPassword || withTextInput) {
+                            close({ confirmed: false });
                         } else {
                             close(false);
                         }
                     };
                     const onKeydown = (event) => {
                         if (event.key === 'Escape') onCancel();
-                        if (withPassword && event.key === 'Enter') onOk();
+                        if ((withPassword || withTextInput) && event.key === 'Enter') onOk();
                     };
 
                     okBtn.addEventListener('click', onOk);
@@ -689,21 +722,38 @@
             const deleteAccountBtn = document.getElementById('delete-account-btn');
             if (deleteAccountBtn) {
                 deleteAccountBtn.addEventListener('click', async () => {
-                    const dialogResult = await showConfirmDialog({
-                        title: 'Sterge contul',
-                        message: 'Aceasta actiune este permanenta. Introdu parola pentru a confirma.',
-                        confirmLabel: 'Sterge contul',
-                        cancelLabel: 'Anuleaza',
-                        withPassword: true
-                    });
+                    let result;
 
-                    if (!dialogResult || !dialogResult.confirmed) return;
-                    if (!dialogResult.password) {
-                        showSettingsMessage('Introdu parola pentru confirmare.', false);
-                        return;
+                    if (user.has_password) {
+                        const dialogResult = await showConfirmDialog({
+                            title: 'Sterge contul',
+                            message: 'Aceasta actiune este permanenta. Introdu parola pentru a confirma.',
+                            confirmLabel: 'Sterge contul',
+                            cancelLabel: 'Anuleaza',
+                            withPassword: true
+                        });
+                        if (!dialogResult || !dialogResult.confirmed) return;
+                        if (!dialogResult.password) {
+                            showSettingsMessage('Introdu parola pentru confirmare.', false);
+                            return;
+                        }
+                        result = await AuthModule.deleteAccount({ password: dialogResult.password });
+                    } else {
+                        const dialogResult = await showConfirmDialog({
+                            title: 'Sterge contul',
+                            message: 'Contul tău este conectat doar prin Google și nu are o parolă. Scrie STERGE pentru a confirma ștergerea permanentă a contului.',
+                            confirmLabel: 'Sterge contul',
+                            cancelLabel: 'Anuleaza',
+                            withTextInput: true
+                        });
+                        if (!dialogResult || !dialogResult.confirmed) return;
+                        if (!dialogResult.textValue) {
+                            showSettingsMessage('Scrie STERGE pentru a confirma.', false);
+                            return;
+                        }
+                        result = await AuthModule.deleteAccount({ confirmText: dialogResult.textValue });
                     }
 
-                    const result = await AuthModule.deleteAccount(dialogResult.password);
                     if (!result.success) {
                         showSettingsMessage(result.error || 'Nu s-a putut sterge contul.', false);
                         return;

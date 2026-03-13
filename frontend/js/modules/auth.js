@@ -277,12 +277,33 @@ export const AuthModule = {
         return { success: true };
     },
 
-    async deleteAccount(password) {
-        if (!password) {
-            return { success: false, error: 'Parola este obligatorie.' };
+    async deleteAccount(body) {
+        if (!body || (!body.password && !body.confirmText)) {
+            return { success: false, error: 'Confirmarea este obligatorie.' };
         }
         try {
-            return await this._api('DELETE', '/account', { password });
+            return await this._api('DELETE', '/account', body);
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    /** Set initial password for Google-only accounts */
+    async setPassword(password, confirmPassword) {
+        if (!password || password.length < 8)
+            return { success: false, error: 'Parola trebuie s\u0103 aib\u0103 minim 8 caractere.' };
+        if (password !== confirmPassword)
+            return { success: false, error: 'Parolele nu coincid.' };
+        try {
+            const data = await this._api('POST', '/account/set-password', { password, confirmPassword });
+            if (data.success) {
+                const user = this.getCurrentUser();
+                if (user) {
+                    user.has_password = true;
+                    localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
+                }
+            }
+            return data;
         } catch {
             return { success: false, error: 'Nu s-a putut contacta serverul.' };
         }

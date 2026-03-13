@@ -229,7 +229,11 @@
                         <label for="set-email">Email</label>
                         <input type="email" id="set-email" placeholder="email@exemplu.com" autocomplete="email">
                     </div>
-                    <div class="auth-field">
+                    <div class="auth-field" id="password-section-info" style="display:none;">
+                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:4px;font-weight:600;">Setează o Parolă</p>
+                        <p style="color:var(--text-muted,#a89880);font-size:0.82rem;">Contul tău folosește Google pentru autentificare. Poți seta o parolă pentru a te putea conecta și fără Google.</p>
+                    </div>
+                    <div class="auth-field" id="current-password-field">
                         <label for="set-current-password">Parola curentă (obligatorie pentru email/parolă)</label>
                         <input type="password" id="set-current-password" placeholder="Parola curentă" autocomplete="current-password">
                     </div>
