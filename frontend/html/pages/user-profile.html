@@ -110,7 +110,7 @@
                 <div class="dash-card">
                     <div class="dash-card__head">
                         <h3>👥 Prieteni</h3>
-                        <a href="#" class="dash-card__link" style="pointer-events:none;opacity:0.5;">Doar vizualizare</a>
+                        <a href="#user-friends" class="dash-card__link" id="user-friends-link">Vezi tot →</a>
                     </div>
                     <div id="user-dash-friends-preview"></div>
                 </div>
@@ -118,12 +118,52 @@
         </div>
 
         <!-- Console Lists & Friends Section eliminate pentru dashboard identic -->
+        <!-- Friends Section (detaliat, ca în profil.html) -->
+        <div class="profile-panel" id="user-friends-panel" style="display:none;">
+            <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Prieteni</h3>
+            <div id="user-friends-section">
+                <div class="friends-list" id="user-friends-list">
+                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+                </div>
+            </div>
+            <button id="user-friends-back" style="margin-top:16px;" class="auth-btn">Înapoi la dashboard</button>
+        </div>
     </div>
 
     <!-- Scripts -->
     <script src="/js/data/consoles-data.js"></script>
     <script type="module" src="/js/main.js"></script>
     <script type="module">
+                // Friends panel logic
+                function showFriendsPanel() {
+                    document.getElementById('user-dashboard-panel').style.display = 'none';
+                    document.getElementById('user-friends-panel').style.display = '';
+                }
+                function showDashboardPanel() {
+                    document.getElementById('user-dashboard-panel').style.display = '';
+                    document.getElementById('user-friends-panel').style.display = 'none';
+                }
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const friendsLink = document.getElementById('user-friends-link');
+                    if (friendsLink) {
+                        friendsLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            showFriendsPanel();
+                            // Load friends list for current user
+                            const username = getUsernameFromUrl();
+                            loadFriendsList(username);
+                        });
+                    }
+                    const backBtn = document.getElementById('user-friends-back');
+                    if (backBtn) {
+                        backBtn.addEventListener('click', function() {
+                            showDashboardPanel();
+                        });
+                    }
+                    // Hide friends panel on load
+                    showDashboardPanel();
+                });
         import { AuthModule } from '/js/modules/auth.js';
         import { API_BASE_URL } from '/js/config.js';
         import { ProgressModule } from '/js/modules/progress.js';
