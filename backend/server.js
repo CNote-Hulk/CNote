@@ -50,7 +50,7 @@ const allowedOrigins = [
 	'http://localhost:3000',
 	'http://localhost:5173',
 	process.env.FRONTEND_URL,
-	'https://atestat-info-68by.onrender.com'
+	process.env.BASE_URL
 ].filter(Boolean);
 
 app.use(cors({

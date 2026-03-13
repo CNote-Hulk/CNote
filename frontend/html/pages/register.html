@@ -100,13 +100,13 @@
             try {
                 const result = await AuthModule.register(username, email, password);
                 if (result.success) {
-                    // Show success message — user must verify email before logging in
                     if (successEl) {
-                        successEl.textContent = result.message || 'Cont creat! Verifică emailul pentru a activa contul.';
+                        successEl.textContent = (result.message || 'Cont creat!') + ' Redirecționare...';
                         successEl.classList.add('visible');
                     }
                     errorEl.classList.remove('visible');
                     e.target.reset();
+                    setTimeout(() => { window.location.href = 'login.html'; }, 1800);
                 } else {
                     errorEl.textContent = result.error;
                     errorEl.classList.add('visible');
