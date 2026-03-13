@@ -23,20 +23,22 @@ function expiresAt(hours = TOKEN_EXPIRY_HOURS) {
 }
 
 function setSessionCookie(res, token) {
+    const isProd = process.env.NODE_ENV === 'production';
     res.cookie('cn_session_token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none',
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: '/'
     });
 }
 
 function clearSessionCookie(res) {
+    const isProd = process.env.NODE_ENV === 'production';
     res.clearCookie('cn_session_token', {
         path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none'
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax'
     });
 }
 
