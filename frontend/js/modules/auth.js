@@ -12,6 +12,9 @@ import { API_BASE_URL } from '../config.js';
 export const AuthModule = {
     SESSION_KEY: 'cn_session',
     TOKEN_KEY: 'cn_token',
+    SERVER_SESSION_TOKEN_KEY: 'cn_session_token',
+    _sessionEventSource: null,
+    _sessionWatchRetryTimer: null,
 
     /** Base URL for API calls, configurable for production deployments */
     _apiBase: API_BASE_URL,
@@ -105,6 +108,9 @@ export const AuthModule = {
                 if (data.token) {
                     localStorage.setItem(this.TOKEN_KEY, data.token);
                 }
+                if (data.session_token) {
+                    localStorage.setItem(this.SERVER_SESSION_TOKEN_KEY, data.session_token);
+                }
             }
             return data;
         } catch {
@@ -135,11 +141,13 @@ export const AuthModule = {
     // ─── Logout ─────────────────────────────────────────
 
     async logout() {
+        this.stopSessionWatch();
         try {
             await this._api('POST', '/logout');
         } catch { /* ignore network errors on logout */ }
         localStorage.removeItem(this.SESSION_KEY);
         localStorage.removeItem(this.TOKEN_KEY);
+        localStorage.removeItem(this.SERVER_SESSION_TOKEN_KEY);
     },
 
     // ─── Refresh session from server ────────────────────
@@ -252,6 +260,69 @@ export const AuthModule = {
         }
         await this.logout();
         return { success: true };
+    },
+
+    async deleteAccount(password) {
+        if (!password) {
+            return { success: false, error: 'Parola este obligatorie.' };
+        }
+        try {
+            return await this._api('DELETE', '/account', { password });
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    stopSessionWatch() {
+        if (this._sessionWatchRetryTimer) {
+            clearTimeout(this._sessionWatchRetryTimer);
+            this._sessionWatchRetryTimer = null;
+        }
+        if (this._sessionEventSource) {
+            this._sessionEventSource.close();
+            this._sessionEventSource = null;
+        }
+    },
+
+    startSessionWatch() {
+        if (window.location.protocol === 'file:') return;
+
+        this.stopSessionWatch();
+
+        const sessionToken = localStorage.getItem(this.SERVER_SESSION_TOKEN_KEY);
+        const jwtToken = localStorage.getItem(this.TOKEN_KEY);
+        const authToken = sessionToken || jwtToken;
+        if (!authToken) return;
+
+        const connect = () => {
+            const url = `${this._apiBase}/sessions/events?token=${encodeURIComponent(authToken)}`;
+            const source = new EventSource(url);
+            this._sessionEventSource = source;
+
+            source.onmessage = async (event) => {
+                try {
+                    const payload = JSON.parse(event.data || '{}');
+                    if (payload.event === 'session_terminated') {
+                        this.stopSessionWatch();
+                        await this.logout();
+                        window.location.href = '/html/pages/login.html';
+                    }
+                } catch {
+                    // Ignore malformed events.
+                }
+            };
+
+            source.onerror = () => {
+                source.close();
+                if (this._sessionWatchRetryTimer) clearTimeout(this._sessionWatchRetryTimer);
+                this._sessionWatchRetryTimer = setTimeout(() => {
+                    this._sessionWatchRetryTimer = null;
+                    if (this.getCurrentUser()) connect();
+                }, 5000);
+            };
+        };
+
+        connect();
     },
 
     // ─── Auto-login (check token on page load) ─────────

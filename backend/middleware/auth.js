@@ -80,6 +80,11 @@ function extractToken(req) {
     const cookies = parseCookies(req.headers.cookie || '');
     if (cookies['cn_session_token']) return cookies['cn_session_token'];
 
+    const queryToken = req.query && typeof req.query.token === 'string'
+        ? req.query.token.trim()
+        : '';
+    if (queryToken) return queryToken;
+
     return null;
 }
 

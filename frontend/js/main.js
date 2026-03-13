@@ -54,6 +54,11 @@ class App {
             ProfileDropdownModule.init();
             console.log('✓ Profile dropdown module initialized');
 
+            if (AuthModule.getCurrentUser()) {
+                AuthModule.startSessionWatch();
+                console.log('✓ Session watch initialized');
+            }
+
             this.initAchievements();
             console.log('✓ Achievements module initialized');
             

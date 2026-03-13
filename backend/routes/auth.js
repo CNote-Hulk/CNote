@@ -264,6 +264,51 @@ router.put('/me/password', authRequired, async (req, res) => {
     }
 });
 
+router.delete('/account', authRequired, async (req, res) => {
+    const client = await pool.connect();
+    try {
+        const { password } = req.body || {};
+        if (!password) {
+            return res.status(400).json({ success: false, error: 'Parola este obligatorie.' });
+        }
+
+        const userResult = await client.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'Utilizator inexistent.' });
+        }
+
+        const valid = await bcrypt.compare(String(password), user.password_hash);
+        if (!valid) {
+            return res.status(401).json({ success: false, error: 'Parola incorecta.' });
+        }
+
+        await client.query('BEGIN');
+
+        // Ordered cleanup to avoid FK errors.
+        await client.query('DELETE FROM user_sessions WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM user_favorites WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM user_owned_consoles WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM friends WHERE user1_id = $1 OR user2_id = $1', [req.user.id]);
+        await client.query('DELETE FROM friend_requests WHERE sender_id = $1 OR receiver_id = $1', [req.user.id]);
+        await client.query('DELETE FROM console_ratings WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM messages WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM email_verification_tokens WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM users WHERE id = $1', [req.user.id]);
+
+        await client.query('COMMIT');
+        clearSessionCookie(res);
+        return res.json({ success: true });
+    } catch (err) {
+        try { await client.query('ROLLBACK'); } catch { }
+        console.error('Delete account error:', err);
+        return res.status(500).json({ success: false, error: 'Eroare interna.' });
+    } finally {
+        client.release();
+    }
+});
+
 router.post('/request-reset', async (req, res) => {
     try {
         const { email } = req.body;
