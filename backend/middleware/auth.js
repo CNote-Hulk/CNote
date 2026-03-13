@@ -51,7 +51,7 @@ async function authRequired(req, res, next) {
                u.created_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
-        WHERE s.session_token = $1 AND s.is_active = 1
+        WHERE s.session_token = $1 AND s.is_active = true
         `, [token]);
     } catch (dbErr) {
         console.error('Auth session DB error:', dbErr);

@@ -60,7 +60,7 @@ async function initializeSchema() {
 			country           TEXT    DEFAULT '',
 			login_time        TIMESTAMP DEFAULT NOW(),
 			last_activity     TIMESTAMP DEFAULT NOW(),
-			is_active         INTEGER DEFAULT 1
+			is_active         BOOLEAN DEFAULT TRUE
 		);
 
 		CREATE TABLE IF NOT EXISTS messages (
@@ -134,6 +134,10 @@ async function initializeSchema() {
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }
 	}
+
+	// Migrate is_active from INTEGER to BOOLEAN if needed
+	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active TYPE BOOLEAN USING is_active::boolean`); } catch { }
+	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active SET DEFAULT TRUE`); } catch { }
 
 	// Make password_hash nullable for Google OAuth users
 	try { await pool.query('ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL'); } catch { }

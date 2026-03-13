@@ -210,7 +210,7 @@ router.get('/profile', authRequired, (req, res) => {
 
 router.post('/logout', authRequired, async (req, res) => {
     if (req.sessionId) {
-        await pool.query('UPDATE user_sessions SET is_active = 0 WHERE id = $1', [req.sessionId]);
+        await pool.query('UPDATE user_sessions SET is_active = false WHERE id = $1', [req.sessionId]);
     }
     clearSessionCookie(res);
     res.json({ success: true });
@@ -535,7 +535,7 @@ router.post('/reset-password', async (req, res) => {
         await pool.query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2', [hash, row.user_id]);
 
         await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [row.user_id]);
-        await pool.query('UPDATE user_sessions SET is_active = 0 WHERE user_id = $1', [row.user_id]);
+        await pool.query('UPDATE user_sessions SET is_active = false WHERE user_id = $1', [row.user_id]);
 
         res.json({ success: true, message: 'Parola a fost resetata. Te poti autentifica cu noua parola.' });
     } catch (err) {
