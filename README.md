@@ -161,4 +161,4 @@ This project is licensed under the MIT License.
 ## Author
 
 Created by **Andrei Halcu**
-GitHub: https://github.com/AndreiHulk07
+GitHub: https://github.com/CNote-Hulk
