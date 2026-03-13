@@ -192,6 +192,25 @@
             initOwnedConsolesSelect();
 
             const settingsPanel = document.getElementById('panel-setari');
+            if (settingsPanel && !user.email_verified && !document.getElementById('email-verification-banner')) {
+                const verifyBanner = document.createElement('div');
+                verifyBanner.className = 'course-card';
+                verifyBanner.id = 'email-verification-banner';
+                verifyBanner.style.marginBottom = '16px';
+                verifyBanner.style.border = '1px solid rgba(212, 162, 78, 0.28)';
+                verifyBanner.style.background = 'rgba(212, 162, 78, 0.08)';
+                verifyBanner.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;">
+                        <div>
+                            <div style="color:#f1d7a1;font-weight:700;margin-bottom:6px;">Email neverificat</div>
+                            <div style="color:var(--text-light);font-size:0.9rem;">Emailul tau nu este verificat. Verifica casuta de email.</div>
+                        </div>
+                        <button type="button" class="auth-btn" id="resend-verification-btn" style="white-space:nowrap;">Retrimite emailul de verificare</button>
+                    </div>
+                `;
+                settingsPanel.insertBefore(verifyBanner, settingsPanel.firstChild);
+            }
+
             if (settingsPanel && !document.getElementById('danger-zone-card')) {
                 const dangerCard = document.createElement('div');
                 dangerCard.className = 'course-card';
@@ -420,6 +439,31 @@
 
                 showSettingsMessage('Reset complet realizat.', true);
             });
+
+            const resendVerificationBtn = document.getElementById('resend-verification-btn');
+            if (resendVerificationBtn) {
+                resendVerificationBtn.addEventListener('click', async () => {
+                    resendVerificationBtn.disabled = true;
+                    resendVerificationBtn.textContent = 'Se trimite...';
+                    try {
+                        const result = await fetch(API_BASE_URL + '/resend-verification', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...(localStorage.getItem('cn_token') ? { Authorization: 'Bearer ' + localStorage.getItem('cn_token') } : {})
+                            },
+                            credentials: 'include'
+                        });
+                        const data = await result.json();
+                        showSettingsMessage(data.message || 'Emailul de verificare a fost retrimis.', !!data.success);
+                    } catch {
+                        showSettingsMessage('Nu s-a putut retrimite emailul de verificare.', false);
+                    } finally {
+                        resendVerificationBtn.disabled = false;
+                        resendVerificationBtn.textContent = 'Retrimite emailul de verificare';
+                    }
+                });
+            }
 
             const deleteAccountBtn = document.getElementById('delete-account-btn');
             if (deleteAccountBtn) {

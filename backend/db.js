@@ -24,7 +24,7 @@ async function initializeSchema() {
 			avatar          TEXT    DEFAULT '',
 			favorite_consoles TEXT  DEFAULT '',
 			owned_consoles  TEXT    DEFAULT '',
-			email_verified  INTEGER DEFAULT 0,
+			email_verified  BOOLEAN DEFAULT FALSE,
 			created_at      TIMESTAMP DEFAULT NOW(),
 			updated_at      TIMESTAMP DEFAULT NOW()
 		);
@@ -33,7 +33,8 @@ async function initializeSchema() {
 			id          SERIAL PRIMARY KEY,
 			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
 			token       TEXT    NOT NULL UNIQUE,
-			expires_at  TIMESTAMP NOT NULL
+			expires_at  TIMESTAMP NOT NULL,
+			created_at  TIMESTAMP DEFAULT NOW()
 		);
 
 		CREATE TABLE IF NOT EXISTS password_reset_tokens (
@@ -107,11 +108,24 @@ async function initializeSchema() {
 
 	const migrations = [
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS favorite_consoles TEXT DEFAULT ''`,
-		`ALTER TABLE users ADD COLUMN IF NOT EXISTS owned_consoles TEXT DEFAULT ''`
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS owned_consoles TEXT DEFAULT ''`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE`,
+		`ALTER TABLE email_verification_tokens ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }
 	}
+
+	try {
+		await pool.query(`
+			ALTER TABLE users
+			ALTER COLUMN email_verified TYPE BOOLEAN
+			USING CASE
+				WHEN email_verified::text IN ('1', 'true', 't') THEN TRUE
+				ELSE FALSE
+			END
+		`);
+	} catch { }
 }
 
 initializeSchema()
