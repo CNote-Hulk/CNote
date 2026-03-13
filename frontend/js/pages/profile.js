@@ -224,7 +224,7 @@
                         : 'Conecteaza contul cu Google pentru autentificare rapida.'}</p>
                     ${user.google_linked 
                         ? '<button type="button" class="auth-btn" id="google-unlink-btn" style="background:transparent;border:1px solid var(--color-border, #444);color:var(--text-light);">Deconecteaza Google</button>'
-                        : '<button type="button" class="auth-btn" id="google-link-btn" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;background:#fff;color:#333;border:1px solid #ddd;"><svg width="16" height="16" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.0 24.0 0 0 0 0 21.56l7.98-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Conecteaza cu Google</button>'
+                        : '<button type="button" class="auth-btn" id="google-link-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,0.05);color:var(--text-light,#F5F0E8);border:1px solid rgba(255,255,255,0.12);font-weight:600;" onmouseover="this.style.background=\'rgba(255,255,255,0.10)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.05)\'"><span style="font-weight:700;font-size:1.1rem;line-height:1;">G</span> Conecteaza cu Google</button>'
                     }
                 `;
                 settingsPanel.appendChild(googleCard);
@@ -237,20 +237,21 @@
                 tfCard.id = 'two-factor-card';
                 tfCard.style.marginTop = '24px';
 
-                if (user.two_factor_enabled) {
-                    const methodLabel = user.two_factor_method === 'totp' ? 'aplicatie de autentificare' : 'email';
-                    tfCard.innerHTML = `
-                        <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">AUTENTIFICARE IN DOI PASI (2FA)</h3>
-                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:14px;">2FA este activat prin <strong>${methodLabel}</strong>.</p>
-                        <button type="button" class="auth-btn auth-btn--danger" id="disable-2fa-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Dezactiveaza 2FA</button>
-                    `;
+                const totpEnabled = !!user.two_factor_totp_enabled;
+                const emailEnabled = !!user.two_factor_email_enabled;
+
+                let totpSection;
+                if (totpEnabled) {
+                    totpSection = `
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                            <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Aplicatie de autentificare — activ${emailEnabled ? ' (primar)' : ''}</span>
+                            <button type="button" class="auth-btn auth-btn--danger" id="disable-totp-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Dezactiveaza</button>
+                        </div>`;
                 } else {
-                    tfCard.innerHTML = `
-                        <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">AUTENTIFICARE IN DOI PASI (2FA)</h3>
-                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:14px;">Adauga un nivel suplimentar de securitate contului tau.</p>
-                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                            <button type="button" class="auth-btn" id="setup-email-2fa-btn">Activeaza prin Email</button>
-                            <button type="button" class="auth-btn" id="setup-totp-2fa-btn">Activeaza prin Aplicatie</button>
+                    totpSection = `
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                            <span style="color:var(--text-light);font-size:0.88rem;">Aplicatie de autentificare — inactiv</span>
+                            <button type="button" class="auth-btn" id="setup-totp-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Activeaza</button>
                         </div>
                         <div id="totp-setup-area" style="display:none;margin-top:16px;">
                             <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:10px;">Scaneaza codul QR cu aplicatia de autentificare (Google Authenticator, Authy, etc.):</p>
@@ -260,9 +261,33 @@
                                 <input type="text" id="totp-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align:center;font-size:1.2rem;letter-spacing:0.3rem;padding:8px 12px;border:1px solid var(--color-border, #444);border-radius:6px;background:var(--bg-card, #1a1a1a);color:var(--text-primary, #fff);width:140px;">
                                 <button type="button" class="auth-btn" id="totp-confirm-btn">Confirma</button>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 }
+
+                let emailSection;
+                if (emailEnabled) {
+                    emailSection = `
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                            <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Email — activ${totpEnabled ? ' (rezerva)' : ''}</span>
+                            <button type="button" class="auth-btn auth-btn--danger" id="disable-email-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Dezactiveaza</button>
+                        </div>`;
+                } else {
+                    emailSection = `
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                            <span style="color:var(--text-light);font-size:0.88rem;">Email — inactiv</span>
+                            <button type="button" class="auth-btn" id="setup-email-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Activeaza</button>
+                        </div>`;
+                }
+
+                tfCard.innerHTML = `
+                    <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">AUTENTIFICARE IN DOI PASI (2FA)</h3>
+                    <p style="color:var(--text-light);font-size:0.85rem;margin-bottom:14px;">Adauga un nivel suplimentar de securitate contului tau. Poti activa ambele metode — aplicatia este primara, emailul de rezerva.</p>
+                    <div style="display:flex;flex-direction:column;gap:12px;">
+                        ${totpSection}
+                        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:2px 0;">
+                        ${emailSection}
+                    </div>
+                `;
                 settingsPanel.appendChild(tfCard);
             }
 
@@ -551,6 +576,14 @@
             }
 
             // ─── 2FA handlers ───────────────────────────────
+            const refreshTwoFactorCard = () => {
+                const card = document.getElementById('two-factor-card');
+                if (card) card.remove();
+                // Re-run initProfile would be heavy; just reload the page settings tab
+                window.location.hash = 'setari';
+                window.location.reload();
+            };
+
             const setupEmail2faBtn = document.getElementById('setup-email-2fa-btn');
             if (setupEmail2faBtn) {
                 setupEmail2faBtn.addEventListener('click', async () => {
@@ -565,8 +598,7 @@
                     const result = await AuthModule.enableEmailTwoFactor();
                     if (result.success) {
                         showSettingsMessage('2FA prin email a fost activat!', true);
-                        const card = document.getElementById('two-factor-card');
-                        if (card) card.remove();
+                        refreshTwoFactorCard();
                     } else {
                         showSettingsMessage(result.error || 'Eroare.', false);
                     }
@@ -603,39 +635,44 @@
                     const result = await AuthModule.confirmTOTP(code, secret);
                     if (result.success) {
                         showSettingsMessage('2FA prin aplicatie a fost activat!', true);
-                        const card = document.getElementById('two-factor-card');
-                        if (card) card.remove();
+                        refreshTwoFactorCard();
                     } else {
                         showSettingsMessage(result.error || 'Cod invalid.', false);
                     }
                 });
             }
 
-            const disable2faBtn = document.getElementById('disable-2fa-btn');
-            if (disable2faBtn) {
-                disable2faBtn.addEventListener('click', async () => {
-                    const dialogResult = await showConfirmDialog({
-                        title: 'Dezactiveaza 2FA',
-                        message: 'Introdu parola pentru a dezactiva autentificarea in doi pasi.',
-                        confirmLabel: 'Dezactiveaza',
-                        cancelLabel: 'Anuleaza',
-                        withPassword: true
-                    });
-                    if (!dialogResult || !dialogResult.confirmed) return;
-                    if (!dialogResult.password) {
-                        showSettingsMessage('Introdu parola pentru confirmare.', false);
-                        return;
-                    }
-
-                    const result = await AuthModule.disableTwoFactor(dialogResult.password);
-                    if (result.success) {
-                        showSettingsMessage('2FA a fost dezactivat.', true);
-                        const card = document.getElementById('two-factor-card');
-                        if (card) card.remove();
-                    } else {
-                        showSettingsMessage(result.error || 'Eroare.', false);
-                    }
+            const disable2faHandler = async (method, label) => {
+                const dialogResult = await showConfirmDialog({
+                    title: 'Dezactiveaza 2FA prin ' + label,
+                    message: 'Introdu parola pentru a dezactiva autentificarea prin ' + label + '.',
+                    confirmLabel: 'Dezactiveaza',
+                    cancelLabel: 'Anuleaza',
+                    withPassword: true
                 });
+                if (!dialogResult || !dialogResult.confirmed) return;
+                if (!dialogResult.password) {
+                    showSettingsMessage('Introdu parola pentru confirmare.', false);
+                    return;
+                }
+
+                const result = await AuthModule.disableTwoFactor(dialogResult.password, method);
+                if (result.success) {
+                    showSettingsMessage(result.message || '2FA a fost dezactivat.', true);
+                    refreshTwoFactorCard();
+                } else {
+                    showSettingsMessage(result.error || 'Eroare.', false);
+                }
+            };
+
+            const disableTotpBtn = document.getElementById('disable-totp-btn');
+            if (disableTotpBtn) {
+                disableTotpBtn.addEventListener('click', () => disable2faHandler('totp', 'aplicatie'));
+            }
+
+            const disableEmailBtn = document.getElementById('disable-email-btn');
+            if (disableEmailBtn) {
+                disableEmailBtn.addEventListener('click', () => disable2faHandler('email', 'email'));
             }
 
             // ─── Google link success from URL params ────────

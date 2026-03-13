@@ -55,6 +55,8 @@ function sanitizeUser(user) {
         email_verified: !!user.email_verified,
         two_factor_enabled: !!user.two_factor_enabled,
         two_factor_method: user.two_factor_method || null,
+        two_factor_totp_enabled: !!user.two_factor_totp_enabled,
+        two_factor_email_enabled: !!user.two_factor_email_enabled,
         google_linked: !!user.google_id,
         has_password: !!user.password_hash,
         created_at: user.created_at
@@ -131,8 +133,8 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ success: false, error: 'Email sau parola incorecta.' });
         }
 
-        if (!user.email_verified) {
-            return res.status(403).json({ success: false, error: 'Verifica adresa de email inainte de autentificare.' });
+        if (!user.email_verified && !user.google_id) {
+            return res.status(403).json({ success: false, error: 'email_not_verified' });
         }
 
         if (!user.password_hash) {
@@ -153,7 +155,20 @@ router.post('/login', async (req, res) => {
                 { expiresIn: '10m' }
             );
 
-            if (user.two_factor_method === 'email') {
+            // Determine primary method: TOTP is primary if enabled, else email
+            let method;
+            let canFallbackToEmail = false;
+            if (user.two_factor_totp_enabled) {
+                method = 'totp';
+                canFallbackToEmail = !!user.two_factor_email_enabled;
+            } else if (user.two_factor_email_enabled) {
+                method = 'email';
+            } else {
+                // Legacy fallback: use two_factor_method
+                method = user.two_factor_method || 'email';
+            }
+
+            if (method === 'email') {
                 const code = String(crypto.randomInt(100000, 999999));
                 const codeExpiry = new Date(Date.now() + 10 * 60 * 1000).toISOString();
                 await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [user.id]);
@@ -171,7 +186,8 @@ router.post('/login', async (req, res) => {
             return res.json({
                 success: true,
                 twoFactorRequired: true,
-                method: user.two_factor_method,
+                method,
+                canFallbackToEmail,
                 tempToken
             });
         }
@@ -548,12 +564,15 @@ router.post('/reset-password', async (req, res) => {
 
 router.post('/2fa/verify', async (req, res) => {
     try {
+        // Accept tempToken from Authorization header OR request body
         const authHeader = req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        const tempToken = (authHeader && authHeader.startsWith('Bearer '))
+            ? authHeader.slice(7)
+            : req.body?.tempToken;
+
+        if (!tempToken) {
             return res.status(401).json({ success: false, error: 'Token lipsa.' });
         }
-
-        const tempToken = authHeader.slice(7);
         const JWT_SECRET = req.app.get('JWT_SECRET');
 
         let decoded;
@@ -567,7 +586,7 @@ router.post('/2fa/verify', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Token invalid.' });
         }
 
-        const { code } = req.body || {};
+        const { code, method: requestedMethod } = req.body || {};
         if (!code || String(code).trim().length !== 6) {
             return res.status(400).json({ success: false, error: 'Codul trebuie sa aiba 6 cifre.' });
         }
@@ -580,7 +599,21 @@ router.post('/2fa/verify', async (req, res) => {
 
         const cleanCode = String(code).trim();
 
-        if (user.two_factor_method === 'email') {
+        // Determine which method to verify: use requested method if valid, else detect
+        let verifyMethod = requestedMethod;
+        if (!verifyMethod || (verifyMethod !== 'email' && verifyMethod !== 'totp')) {
+            // Auto-detect: if user has totp enabled and no explicit email request, use totp
+            if (user.two_factor_totp_enabled) {
+                verifyMethod = 'totp';
+            } else if (user.two_factor_email_enabled) {
+                verifyMethod = 'email';
+            } else {
+                // Legacy fallback
+                verifyMethod = user.two_factor_method || 'email';
+            }
+        }
+
+        if (verifyMethod === 'email') {
             const codeResult = await pool.query(
                 'SELECT * FROM two_factor_codes WHERE user_id = $1 AND code = $2 AND used = FALSE AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1',
                 [user.id, cleanCode]
@@ -589,7 +622,7 @@ router.post('/2fa/verify', async (req, res) => {
                 return res.status(401).json({ success: false, error: 'Cod invalid sau expirat.' });
             }
             await pool.query('UPDATE two_factor_codes SET used = TRUE WHERE id = $1', [codeResult.rows[0].id]);
-        } else if (user.two_factor_method === 'totp') {
+        } else if (verifyMethod === 'totp') {
             const speakeasy = require('speakeasy');
             const isValid = speakeasy.totp.verify({
                 secret: user.two_factor_secret,
@@ -632,6 +665,60 @@ router.post('/2fa/verify', async (req, res) => {
     }
 });
 
+router.post('/2fa/fallback-email', async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        const tempToken = (authHeader && authHeader.startsWith('Bearer '))
+            ? authHeader.slice(7)
+            : req.body?.tempToken;
+
+        if (!tempToken) {
+            return res.status(401).json({ success: false, error: 'Token lipsa.' });
+        }
+        const JWT_SECRET = req.app.get('JWT_SECRET');
+
+        let decoded;
+        try {
+            decoded = jwt.verify(tempToken, JWT_SECRET);
+        } catch {
+            return res.status(401).json({ success: false, error: 'Sesiunea a expirat. Autentifica-te din nou.' });
+        }
+
+        if (!decoded.twoFactorPending) {
+            return res.status(400).json({ success: false, error: 'Token invalid.' });
+        }
+
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
+        const user = userResult.rows[0];
+        if (!user) {
+            return res.status(401).json({ success: false, error: 'Utilizator inexistent.' });
+        }
+
+        if (!user.two_factor_email_enabled) {
+            return res.status(400).json({ success: false, error: '2FA prin email nu este activat.' });
+        }
+
+        const code = String(crypto.randomInt(100000, 999999));
+        const codeExpiry = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+        await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [user.id]);
+        await pool.query(
+            'INSERT INTO two_factor_codes (user_id, code, expires_at) VALUES ($1, $2, $3)',
+            [user.id, code, codeExpiry]
+        );
+        try {
+            await emailService.sendTwoFactorEmail(user.email, code);
+        } catch (err) {
+            console.error('2FA fallback email error:', err.message);
+            return res.status(500).json({ success: false, error: 'Nu s-a putut trimite emailul.' });
+        }
+
+        res.json({ success: true, message: 'Codul a fost trimis pe email.' });
+    } catch (err) {
+        console.error('2FA fallback-email error:', err);
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
 router.post('/2fa/setup/totp', authRequired, async (req, res) => {
     try {
         const speakeasy = require('speakeasy');
@@ -658,6 +745,7 @@ router.post('/2fa/setup/totp', authRequired, async (req, res) => {
 router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
     try {
         const { code, secret } = req.body || {};
+        console.log('TOTP confirm req.body:', { code: code ? '***' : undefined, secret: secret ? '(set)' : undefined });
         if (!code || !secret) {
             return res.status(400).json({ success: false, error: 'Codul si secretul sunt obligatorii.' });
         }
@@ -675,7 +763,7 @@ router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
         }
 
         await pool.query(
-            'UPDATE users SET two_factor_enabled = TRUE, two_factor_method = $1, two_factor_secret = $2, updated_at = NOW() WHERE id = $3',
+            'UPDATE users SET two_factor_enabled = TRUE, two_factor_method = $1, two_factor_secret = $2, two_factor_totp_enabled = TRUE, updated_at = NOW() WHERE id = $3',
             ['totp', secret, req.user.id]
         );
 
@@ -688,9 +776,14 @@ router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
 
 router.post('/2fa/setup/email', authRequired, async (req, res) => {
     try {
+        // Determine method: if totp is also enabled, keep method as totp (primary)
+        const userResult = await pool.query('SELECT two_factor_totp_enabled FROM users WHERE id = $1', [req.user.id]);
+        const hasTotp = userResult.rows[0]?.two_factor_totp_enabled;
+        const method = hasTotp ? 'totp' : 'email';
+
         await pool.query(
-            'UPDATE users SET two_factor_enabled = TRUE, two_factor_method = $1, two_factor_secret = NULL, updated_at = NOW() WHERE id = $2',
-            ['email', req.user.id]
+            'UPDATE users SET two_factor_enabled = TRUE, two_factor_method = $1, two_factor_email_enabled = TRUE, updated_at = NOW() WHERE id = $2',
+            [method, req.user.id]
         );
         res.json({ success: true, message: '2FA prin Email a fost activat.' });
     } catch (err) {
@@ -701,9 +794,9 @@ router.post('/2fa/setup/email', authRequired, async (req, res) => {
 
 router.delete('/2fa/disable', authRequired, async (req, res) => {
     try {
-        const { password } = req.body || {};
+        const { password, method } = req.body || {};
 
-        const userResult = await pool.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+        const userResult = await pool.query('SELECT id, password_hash, two_factor_totp_enabled, two_factor_email_enabled FROM users WHERE id = $1', [req.user.id]);
         const user = userResult.rows[0];
 
         if (user.password_hash) {
@@ -716,13 +809,32 @@ router.delete('/2fa/disable', authRequired, async (req, res) => {
             }
         }
 
-        await pool.query(
-            'UPDATE users SET two_factor_enabled = FALSE, two_factor_method = NULL, two_factor_secret = NULL, updated_at = NOW() WHERE id = $1',
-            [req.user.id]
-        );
-        await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [req.user.id]);
-
-        res.json({ success: true, message: '2FA a fost dezactivat.' });
+        if (method === 'totp') {
+            // Disable only TOTP
+            const stillHasEmail = !!user.two_factor_email_enabled;
+            await pool.query(
+                'UPDATE users SET two_factor_totp_enabled = FALSE, two_factor_secret = NULL, two_factor_enabled = $1, two_factor_method = $2, updated_at = NOW() WHERE id = $3',
+                [stillHasEmail, stillHasEmail ? 'email' : null, req.user.id]
+            );
+            res.json({ success: true, message: '2FA prin aplicatie a fost dezactivat.' });
+        } else if (method === 'email') {
+            // Disable only email
+            const stillHasTotp = !!user.two_factor_totp_enabled;
+            await pool.query(
+                'UPDATE users SET two_factor_email_enabled = FALSE, two_factor_enabled = $1, two_factor_method = $2, updated_at = NOW() WHERE id = $3',
+                [stillHasTotp, stillHasTotp ? 'totp' : null, req.user.id]
+            );
+            await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [req.user.id]);
+            res.json({ success: true, message: '2FA prin email a fost dezactivat.' });
+        } else {
+            // Disable all
+            await pool.query(
+                'UPDATE users SET two_factor_enabled = FALSE, two_factor_method = NULL, two_factor_secret = NULL, two_factor_totp_enabled = FALSE, two_factor_email_enabled = FALSE, updated_at = NOW() WHERE id = $1',
+                [req.user.id]
+            );
+            await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [req.user.id]);
+            res.json({ success: true, message: '2FA a fost dezactivat complet.' });
+        }
     } catch (err) {
         console.error('2FA disable error:', err);
         res.status(500).json({ success: false, error: 'Eroare interna.' });

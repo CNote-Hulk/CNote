@@ -32,6 +32,8 @@ async function authRequired(req, res, next) {
             two_factor_enabled: user.two_factor_enabled,
             two_factor_method: user.two_factor_method,
             two_factor_secret: user.two_factor_secret,
+            two_factor_totp_enabled: user.two_factor_totp_enabled,
+            two_factor_email_enabled: user.two_factor_email_enabled,
             google_id: user.google_id,
             avatar_url: user.avatar_url,
             password_hash: user.password_hash,
@@ -47,7 +49,8 @@ async function authRequired(req, res, next) {
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.favorite_consoles, u.owned_consoles,
                u.email_verified, u.two_factor_enabled, u.two_factor_method,
-               u.two_factor_secret, u.google_id, u.avatar_url, u.password_hash,
+               u.two_factor_secret, u.two_factor_totp_enabled, u.two_factor_email_enabled,
+               u.google_id, u.avatar_url, u.password_hash,
                u.created_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
@@ -77,6 +80,8 @@ async function authRequired(req, res, next) {
         two_factor_enabled: session.two_factor_enabled,
         two_factor_method: session.two_factor_method,
         two_factor_secret: session.two_factor_secret,
+        two_factor_totp_enabled: session.two_factor_totp_enabled,
+        two_factor_email_enabled: session.two_factor_email_enabled,
         google_id: session.google_id,
         avatar_url: session.avatar_url,
         password_hash: session.password_hash,

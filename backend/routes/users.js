@@ -154,7 +154,10 @@ function loadConsoleList() {
     for (const p of candidates) {
         try {
             if (fs.existsSync(p)) {
-                const data = JSON.parse(fs.readFileSync(p, 'utf8'));
+                let raw = fs.readFileSync(p, 'utf8');
+                // Strip UTF-8 BOM if present
+                if (raw.charCodeAt(0) === 0xFEFF) raw = raw.slice(1);
+                const data = JSON.parse(raw);
                 return data.map(c => ({ id: c.id, name: c.nume })).sort((a, b) => a.name.localeCompare(b.name));
             }
         } catch (err) {
