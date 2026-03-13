@@ -25,6 +25,7 @@ Copy `.env.example` to `.env` and configure required values:
 - `DATABASE_URL` - Supabase Postgres connection string
 - `JWT_SECRET`
 - `RESEND_API_KEY` (optional for email sending)
+- `CONTACT_RECEIVER_EMAIL` (optional, defaults to console.notebook.app@gmail.com)
 
 ## Database
 
