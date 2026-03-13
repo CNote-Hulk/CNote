@@ -35,17 +35,22 @@ async function authRequired(req, res, next) {
     } catch (jwtErr) {
     }
 
-    const sessionResult = await pool.query(`
+    let sessionResult;
+    try {
+        sessionResult = await pool.query(`
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.favorite_consoles, u.owned_consoles,
                u.email_verified, u.created_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = 1
-    `, [token]);
+        `, [token]);
+    } catch (dbErr) {
+        console.error('Auth session DB error:', dbErr);
+        return res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
 
     const session = sessionResult.rows[0];
-
     if (!session) {
         return res.status(401).json({ success: false, error: 'Sesiune invalida sau expirata.' });
     }
