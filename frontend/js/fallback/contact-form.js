@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ===========================
  * CONTACT FORM HANDLER (Fallback Script)
  * ===========================
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'Mesaj:\n' + message
         );
 
-        window.location.href = 'mailto:andre.halcu.07@licmarghilomanbz.ro?subject=' + subject + '&body=' + body;
+        window.location.href = 'mailto:console.notebook.app@gmail.com?subject=' + subject + '&body=' + body;
     }
 
     if (contactForm && submitBtn) {
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 formData.append('_subject', 'Mesaj nou de pe website');
                 formData.append('_template', 'table');
 
-                const response = await fetch('https://formsubmit.co/andre.halcu.07@licmarghilomanbz.ro', {
+                const response = await fetch('https://formsubmit.co/console.notebook.app@gmail.com', {
                     method: 'POST',
                     body: formData
                 });

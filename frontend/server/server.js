@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Console Notebook â€” Backend Server
  *
  * Serves the static frontend AND exposes API routes for authentication,
@@ -14,7 +14,7 @@
  *   SMTP_PORT      â€” SMTP server port (default: 587)
  *   SMTP_USER      â€” SMTP username
  *   SMTP_PASS      â€” SMTP password
- *   SMTP_FROM      â€” Sender address (default: Console Notebook <andre.halcu.07@licmarghilomanbz.ro>)
+ *   SMTP_FROM      â€” Sender address (default: Console Notebook <console.notebook.app@gmail.com>)
  */
 
 const express = require('express');
