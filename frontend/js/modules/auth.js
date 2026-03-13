@@ -35,6 +35,8 @@ export const AuthModule = {
             avatar_url: user.avatar_url || '',
             two_factor_enabled: !!user.two_factor_enabled,
             two_factor_method: user.two_factor_method || null,
+            two_factor_totp_enabled: !!user.two_factor_totp_enabled,
+            two_factor_email_enabled: !!user.two_factor_email_enabled,
             google_linked: !!user.google_linked,
             has_password: user.has_password !== false,
             created_at: user.created_at
@@ -57,7 +59,7 @@ export const AuthModule = {
 
     /** Generic API call */
     async _api(method, path, body) {
-        const headers = { 'Content-Type': 'application/json' };
+        const headers = {};
         const token = localStorage.getItem(this.TOKEN_KEY);
         if (token) {
             headers['Authorization'] = 'Bearer ' + token;
@@ -67,7 +69,10 @@ export const AuthModule = {
             headers,
             credentials: 'include'
         };
-        if (body !== undefined) opts.body = JSON.stringify(body);
+        if (body !== undefined) {
+            headers['Content-Type'] = 'application/json';
+            opts.body = JSON.stringify(body);
+        }
         const res = await fetch(this._apiBase + path, opts);
         return res.json();
     },
@@ -351,12 +356,14 @@ export const AuthModule = {
     // ─── Two-Factor Authentication ──────────────────────
 
     /** Verify 2FA code during login (uses temp token) */
-    async verifyTwoFactor(code) {
+    async verifyTwoFactor(code, method) {
         const tempToken = localStorage.getItem('cnote_temp_token');
         if (!tempToken) return { success: false, error: 'Sesiunea temporară a expirat.' };
 
         try {
-            const data = await this._api('POST', '/2fa/verify', { tempToken, code });
+            const body = { tempToken, code };
+            if (method) body.method = method;
+            const data = await this._api('POST', '/2fa/verify', body);
             if (data.success && data.user) {
                 localStorage.removeItem('cnote_temp_token');
                 this._setSession(data.user);
@@ -387,6 +394,7 @@ export const AuthModule = {
                 if (user) {
                     user.two_factor_enabled = true;
                     user.two_factor_method = 'totp';
+                    user.two_factor_totp_enabled = true;
                     localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
                 }
             }
@@ -404,7 +412,8 @@ export const AuthModule = {
                 const user = this.getCurrentUser();
                 if (user) {
                     user.two_factor_enabled = true;
-                    user.two_factor_method = 'email';
+                    if (!user.two_factor_totp_enabled) user.two_factor_method = 'email';
+                    user.two_factor_email_enabled = true;
                     localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
                 }
             }
@@ -414,15 +423,29 @@ export const AuthModule = {
         }
     },
 
-    /** Disable 2FA (requires password) */
-    async disableTwoFactor(password) {
+    /** Disable 2FA (requires password). Pass method='totp'|'email' for per-method, or omit for all. */
+    async disableTwoFactor(password, method) {
         try {
-            const data = await this._api('DELETE', '/2fa/disable', { password });
+            const body = { password };
+            if (method) body.method = method;
+            const data = await this._api('DELETE', '/2fa/disable', body);
             if (data.success) {
                 const user = this.getCurrentUser();
                 if (user) {
-                    user.two_factor_enabled = false;
-                    user.two_factor_method = null;
+                    if (method === 'totp') {
+                        user.two_factor_totp_enabled = false;
+                        user.two_factor_enabled = !!user.two_factor_email_enabled;
+                        user.two_factor_method = user.two_factor_email_enabled ? 'email' : null;
+                    } else if (method === 'email') {
+                        user.two_factor_email_enabled = false;
+                        user.two_factor_enabled = !!user.two_factor_totp_enabled;
+                        user.two_factor_method = user.two_factor_totp_enabled ? 'totp' : null;
+                    } else {
+                        user.two_factor_enabled = false;
+                        user.two_factor_method = null;
+                        user.two_factor_totp_enabled = false;
+                        user.two_factor_email_enabled = false;
+                    }
                     localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
                 }
             }
@@ -433,6 +456,17 @@ export const AuthModule = {
     },
 
     // ─── Google OAuth ───────────────────────────────────
+
+    /** Request email fallback code during 2FA login (switch from TOTP to email) */
+    async requestEmailFallback() {
+        const tempToken = localStorage.getItem('cnote_temp_token');
+        if (!tempToken) return { success: false, error: 'Sesiunea temporară a expirat.' };
+        try {
+            return await this._api('POST', '/2fa/fallback-email', { tempToken });
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
 
     /** Redirect to Google OAuth for login/register */
     loginWithGoogle() {

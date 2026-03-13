@@ -39,6 +39,8 @@ function sanitizeUser(user) {
         email_verified: !!user.email_verified,
         two_factor_enabled: !!user.two_factor_enabled,
         two_factor_method: user.two_factor_method || null,
+        two_factor_totp_enabled: !!user.two_factor_totp_enabled,
+        two_factor_email_enabled: !!user.two_factor_email_enabled,
         google_linked: !!user.google_id,
         has_password: !!user.password_hash,
         created_at: user.created_at

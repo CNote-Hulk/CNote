@@ -28,6 +28,8 @@ async function initializeSchema() {
 			two_factor_enabled BOOLEAN DEFAULT FALSE,
 			two_factor_method VARCHAR(10) DEFAULT NULL,
 			two_factor_secret VARCHAR(255) DEFAULT NULL,
+			two_factor_totp_enabled BOOLEAN DEFAULT FALSE,
+			two_factor_email_enabled BOOLEAN DEFAULT FALSE,
 			google_id       VARCHAR(255) DEFAULT NULL,
 			avatar_url      TEXT    DEFAULT NULL,
 			created_at      TIMESTAMP DEFAULT NOW(),
@@ -127,6 +129,8 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_enabled BOOLEAN DEFAULT FALSE`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_method VARCHAR(10) DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_secret VARCHAR(255) DEFAULT NULL`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_totp_enabled BOOLEAN DEFAULT FALSE`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_email_enabled BOOLEAN DEFAULT FALSE`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT DEFAULT NULL`,
 		`ALTER TABLE email_verification_tokens ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`
@@ -149,6 +153,12 @@ async function initializeSchema() {
 	// Migrate two_factor_enabled from INTEGER to BOOLEAN if needed
 	try { await pool.query(`ALTER TABLE users ALTER COLUMN two_factor_enabled TYPE BOOLEAN USING two_factor_enabled::int::boolean`); } catch { }
 	try { await pool.query(`ALTER TABLE users ALTER COLUMN two_factor_enabled SET DEFAULT FALSE`); } catch { }
+
+	// Backfill new dual-method 2FA columns from legacy single-method data
+	try {
+		await pool.query(`UPDATE users SET two_factor_totp_enabled = TRUE WHERE two_factor_enabled = TRUE AND two_factor_method = 'totp' AND two_factor_totp_enabled = FALSE`);
+		await pool.query(`UPDATE users SET two_factor_email_enabled = TRUE WHERE two_factor_enabled = TRUE AND two_factor_method = 'email' AND two_factor_email_enabled = FALSE`);
+	} catch { }
 }
 
 initializeSchema()
