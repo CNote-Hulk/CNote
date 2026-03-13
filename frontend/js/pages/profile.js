@@ -211,6 +211,61 @@
                 settingsPanel.insertBefore(verifyBanner, settingsPanel.firstChild);
             }
 
+            // ─── Google Account Card ────────────────────────────
+            if (settingsPanel && !document.getElementById('google-account-card')) {
+                const googleCard = document.createElement('div');
+                googleCard.className = 'course-card';
+                googleCard.id = 'google-account-card';
+                googleCard.style.marginTop = '24px';
+                googleCard.innerHTML = `
+                    <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">CONT GOOGLE</h3>
+                    <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:14px;">${user.google_linked 
+                        ? 'Contul tau este conectat cu Google.' 
+                        : 'Conecteaza contul cu Google pentru autentificare rapida.'}</p>
+                    ${user.google_linked 
+                        ? '<button type="button" class="auth-btn" id="google-unlink-btn" style="background:transparent;border:1px solid var(--color-border, #444);color:var(--text-light);">Deconecteaza Google</button>'
+                        : '<button type="button" class="auth-btn" id="google-link-btn" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;background:#fff;color:#333;border:1px solid #ddd;"><svg width="16" height="16" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.0 24.0 0 0 0 0 21.56l7.98-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Conecteaza cu Google</button>'
+                    }
+                `;
+                settingsPanel.appendChild(googleCard);
+            }
+
+            // ─── Two-Factor Authentication Card ─────────────────
+            if (settingsPanel && !document.getElementById('two-factor-card')) {
+                const tfCard = document.createElement('div');
+                tfCard.className = 'course-card';
+                tfCard.id = 'two-factor-card';
+                tfCard.style.marginTop = '24px';
+
+                if (user.two_factor_enabled) {
+                    const methodLabel = user.two_factor_method === 'totp' ? 'aplicatie de autentificare' : 'email';
+                    tfCard.innerHTML = `
+                        <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">AUTENTIFICARE IN DOI PASI (2FA)</h3>
+                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:14px;">2FA este activat prin <strong>${methodLabel}</strong>.</p>
+                        <button type="button" class="auth-btn auth-btn--danger" id="disable-2fa-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Dezactiveaza 2FA</button>
+                    `;
+                } else {
+                    tfCard.innerHTML = `
+                        <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">AUTENTIFICARE IN DOI PASI (2FA)</h3>
+                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:14px;">Adauga un nivel suplimentar de securitate contului tau.</p>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                            <button type="button" class="auth-btn" id="setup-email-2fa-btn">Activeaza prin Email</button>
+                            <button type="button" class="auth-btn" id="setup-totp-2fa-btn">Activeaza prin Aplicatie</button>
+                        </div>
+                        <div id="totp-setup-area" style="display:none;margin-top:16px;">
+                            <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:10px;">Scaneaza codul QR cu aplicatia de autentificare (Google Authenticator, Authy, etc.):</p>
+                            <div id="totp-qr-container" style="text-align:center;margin-bottom:12px;"></div>
+                            <p id="totp-secret-display" style="font-family:monospace;font-size:0.85rem;color:var(--text-light);word-break:break-all;margin-bottom:12px;text-align:center;"></p>
+                            <div style="display:flex;gap:8px;align-items:center;">
+                                <input type="text" id="totp-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align:center;font-size:1.2rem;letter-spacing:0.3rem;padding:8px 12px;border:1px solid var(--color-border, #444);border-radius:6px;background:var(--bg-card, #1a1a1a);color:var(--text-primary, #fff);width:140px;">
+                                <button type="button" class="auth-btn" id="totp-confirm-btn">Confirma</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                settingsPanel.appendChild(tfCard);
+            }
+
             if (settingsPanel && !document.getElementById('danger-zone-card')) {
                 const dangerCard = document.createElement('div');
                 dangerCard.className = 'course-card';
@@ -463,6 +518,135 @@
                         resendVerificationBtn.textContent = 'Retrimite emailul de verificare';
                     }
                 });
+            }
+
+            // ─── Google Link/Unlink handlers ────────────────
+            const googleLinkBtn = document.getElementById('google-link-btn');
+            if (googleLinkBtn) {
+                googleLinkBtn.addEventListener('click', () => {
+                    AuthModule.linkGoogle();
+                });
+            }
+
+            const googleUnlinkBtn = document.getElementById('google-unlink-btn');
+            if (googleUnlinkBtn) {
+                googleUnlinkBtn.addEventListener('click', async () => {
+                    const confirmed = await showConfirmDialog({
+                        title: 'Deconecteaza Google',
+                        message: 'Sigur vrei sa deconectezi contul Google?',
+                        confirmLabel: 'Deconecteaza',
+                        cancelLabel: 'Anuleaza'
+                    });
+                    if (!confirmed) return;
+
+                    const result = await AuthModule.unlinkGoogle();
+                    if (result.success) {
+                        showSettingsMessage('Google a fost deconectat.', true);
+                        const card = document.getElementById('google-account-card');
+                        if (card) card.remove();
+                    } else {
+                        showSettingsMessage(result.error || 'Eroare.', false);
+                    }
+                });
+            }
+
+            // ─── 2FA handlers ───────────────────────────────
+            const setupEmail2faBtn = document.getElementById('setup-email-2fa-btn');
+            if (setupEmail2faBtn) {
+                setupEmail2faBtn.addEventListener('click', async () => {
+                    const confirmed = await showConfirmDialog({
+                        title: 'Activeaza 2FA prin Email',
+                        message: 'La fiecare autentificare vei primi un cod pe email. Continui?',
+                        confirmLabel: 'Activeaza',
+                        cancelLabel: 'Anuleaza'
+                    });
+                    if (!confirmed) return;
+
+                    const result = await AuthModule.enableEmailTwoFactor();
+                    if (result.success) {
+                        showSettingsMessage('2FA prin email a fost activat!', true);
+                        const card = document.getElementById('two-factor-card');
+                        if (card) card.remove();
+                    } else {
+                        showSettingsMessage(result.error || 'Eroare.', false);
+                    }
+                });
+            }
+
+            const setupTotp2faBtn = document.getElementById('setup-totp-2fa-btn');
+            if (setupTotp2faBtn) {
+                setupTotp2faBtn.addEventListener('click', async () => {
+                    const result = await AuthModule.setupTOTP();
+                    if (!result.success) {
+                        showSettingsMessage(result.error || 'Eroare la generarea codului QR.', false);
+                        return;
+                    }
+                    const area = document.getElementById('totp-setup-area');
+                    const qrContainer = document.getElementById('totp-qr-container');
+                    const secretDisplay = document.getElementById('totp-secret-display');
+                    qrContainer.innerHTML = '<img src="' + result.qrCode + '" alt="QR Code" style="max-width:200px;border-radius:8px;">';
+                    secretDisplay.textContent = 'Cheie manuala: ' + result.secret;
+                    area.style.display = 'block';
+                    area.dataset.secret = result.secret;
+                });
+            }
+
+            const totpConfirmBtn = document.getElementById('totp-confirm-btn');
+            if (totpConfirmBtn) {
+                totpConfirmBtn.addEventListener('click', async () => {
+                    const code = document.getElementById('totp-confirm-code').value.trim();
+                    const secret = document.getElementById('totp-setup-area').dataset.secret;
+                    if (!code || code.length !== 6) {
+                        showSettingsMessage('Introdu codul de 6 cifre.', false);
+                        return;
+                    }
+                    const result = await AuthModule.confirmTOTP(code, secret);
+                    if (result.success) {
+                        showSettingsMessage('2FA prin aplicatie a fost activat!', true);
+                        const card = document.getElementById('two-factor-card');
+                        if (card) card.remove();
+                    } else {
+                        showSettingsMessage(result.error || 'Cod invalid.', false);
+                    }
+                });
+            }
+
+            const disable2faBtn = document.getElementById('disable-2fa-btn');
+            if (disable2faBtn) {
+                disable2faBtn.addEventListener('click', async () => {
+                    const dialogResult = await showConfirmDialog({
+                        title: 'Dezactiveaza 2FA',
+                        message: 'Introdu parola pentru a dezactiva autentificarea in doi pasi.',
+                        confirmLabel: 'Dezactiveaza',
+                        cancelLabel: 'Anuleaza',
+                        withPassword: true
+                    });
+                    if (!dialogResult || !dialogResult.confirmed) return;
+                    if (!dialogResult.password) {
+                        showSettingsMessage('Introdu parola pentru confirmare.', false);
+                        return;
+                    }
+
+                    const result = await AuthModule.disableTwoFactor(dialogResult.password);
+                    if (result.success) {
+                        showSettingsMessage('2FA a fost dezactivat.', true);
+                        const card = document.getElementById('two-factor-card');
+                        if (card) card.remove();
+                    } else {
+                        showSettingsMessage(result.error || 'Eroare.', false);
+                    }
+                });
+            }
+
+            // ─── Google link success from URL params ────────
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('google_linked') === '1') {
+                showSettingsMessage('Contul Google a fost conectat cu succes!', true);
+                history.replaceState(null, '', window.location.pathname + window.location.hash);
+            }
+            if (urlParams.get('error') === 'google_already_linked') {
+                showSettingsMessage('Acest cont Google este deja folosit de alt utilizator.', false);
+                history.replaceState(null, '', window.location.pathname + window.location.hash);
             }
 
             const deleteAccountBtn = document.getElementById('delete-account-btn');

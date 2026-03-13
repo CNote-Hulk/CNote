@@ -91,6 +91,31 @@ async function sendPasswordResetEmail(to, token, baseUrl) {
     return sendMail(to, 'Resetare parola - CNote', html);
 }
 
+function buildCodeEmail(title, intro, code, footer) {
+    return '' +
+        '<div style="font-family:Segoe UI,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;background:#16110f;color:#f5eee6;border-radius:16px;border:1px solid #2b221d;">' +
+            '<div style="margin-bottom:20px;">' +
+                '<div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#a89880;">CNote</div>' +
+                '<h2 style="margin:8px 0 0;color:#d4a24e;font-size:24px;line-height:1.2;">' + escapeHtml(title) + '</h2>' +
+            '</div>' +
+            '<p style="font-size:15px;line-height:1.7;color:#e0d6cc;margin:0 0 24px;">' + escapeHtml(intro) + '</p>' +
+            '<div style="margin:0 0 24px;text-align:center;">' +
+                '<div style="display:inline-block;padding:16px 32px;background:#211915;border:2px solid #d4a24e;border-radius:12px;font-size:32px;font-weight:700;letter-spacing:0.3em;color:#d4a24e;">' + escapeHtml(code) + '</div>' +
+            '</div>' +
+            '<p style="font-size:13px;line-height:1.6;color:#a89880;margin:0;">' + escapeHtml(footer) + '</p>' +
+        '</div>';
+}
+
+async function sendTwoFactorEmail(to, code) {
+    const html = buildCodeEmail(
+        'Codul tau de verificare',
+        'Foloseste codul de mai jos pentru a te autentifica in contul tau CNote.',
+        code,
+        'Codul expira in 10 minute. Daca nu ai solicitat acest cod, ignora mesajul.'
+    );
+    return sendMail(to, 'Codul tau de verificare - CNote', html);
+}
+
 async function sendContactEmail(from, name, subject, message) {
     const adminHtml = '' +
         '<div style="font-family:Segoe UI,Arial,sans-serif;max-width:620px;margin:0 auto;padding:24px;background:#16110f;color:#f5eee6;border-radius:16px;border:1px solid #2b221d;">' +
@@ -127,6 +152,7 @@ function escapeHtml(str) {
 module.exports = {
     sendVerificationEmail,
     sendPasswordResetEmail,
+    sendTwoFactorEmail,
     sendContactEmail,
     getTransporter
 };

@@ -32,6 +32,11 @@ export const AuthModule = {
             favorite_consoles: user.favorite_consoles || '',
             owned_consoles: user.owned_consoles || '',
             email_verified: user.email_verified,
+            avatar_url: user.avatar_url || '',
+            two_factor_enabled: !!user.two_factor_enabled,
+            two_factor_method: user.two_factor_method || null,
+            google_linked: !!user.google_linked,
+            has_password: user.has_password !== false,
             created_at: user.created_at
         };
         localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
@@ -103,6 +108,11 @@ export const AuthModule = {
 
         try {
             const data = await this._api('POST', '/login', { email, password });
+            if (data.twoFactorRequired) {
+                // Store temp token for 2FA verification
+                localStorage.setItem('cnote_temp_token', data.tempToken);
+                return data;
+            }
             if (data.success && data.user) {
                 this._setSession(data.user);
                 if (data.token) {
@@ -336,5 +346,141 @@ export const AuthModule = {
         const token = localStorage.getItem(this.TOKEN_KEY);
         if (!token) return null;
         return this.refreshSession();
+    },
+
+    // ─── Two-Factor Authentication ──────────────────────
+
+    /** Verify 2FA code during login (uses temp token) */
+    async verifyTwoFactor(code) {
+        const tempToken = localStorage.getItem('cnote_temp_token');
+        if (!tempToken) return { success: false, error: 'Sesiunea temporară a expirat.' };
+
+        try {
+            const data = await this._api('POST', '/2fa/verify', { tempToken, code });
+            if (data.success && data.user) {
+                localStorage.removeItem('cnote_temp_token');
+                this._setSession(data.user);
+                if (data.token) localStorage.setItem(this.TOKEN_KEY, data.token);
+                if (data.session_token) localStorage.setItem(this.SERVER_SESSION_TOKEN_KEY, data.session_token);
+            }
+            return data;
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    /** Request TOTP setup (returns QR code + secret) */
+    async setupTOTP() {
+        try {
+            return await this._api('POST', '/2fa/setup/totp');
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    /** Confirm TOTP setup with a verification code */
+    async confirmTOTP(code, secret) {
+        try {
+            const data = await this._api('POST', '/2fa/setup/totp/confirm', { code, secret });
+            if (data.success) {
+                const user = this.getCurrentUser();
+                if (user) {
+                    user.two_factor_enabled = true;
+                    user.two_factor_method = 'totp';
+                    localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
+                }
+            }
+            return data;
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    /** Enable email-based 2FA */
+    async enableEmailTwoFactor() {
+        try {
+            const data = await this._api('POST', '/2fa/setup/email');
+            if (data.success) {
+                const user = this.getCurrentUser();
+                if (user) {
+                    user.two_factor_enabled = true;
+                    user.two_factor_method = 'email';
+                    localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
+                }
+            }
+            return data;
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    /** Disable 2FA (requires password) */
+    async disableTwoFactor(password) {
+        try {
+            const data = await this._api('DELETE', '/2fa/disable', { password });
+            if (data.success) {
+                const user = this.getCurrentUser();
+                if (user) {
+                    user.two_factor_enabled = false;
+                    user.two_factor_method = null;
+                    localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
+                }
+            }
+            return data;
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    // ─── Google OAuth ───────────────────────────────────
+
+    /** Redirect to Google OAuth for login/register */
+    loginWithGoogle() {
+        window.location.href = this._apiBase + '/auth/google';
+    },
+
+    /** Redirect to Google OAuth for account linking */
+    linkGoogle() {
+        const token = localStorage.getItem(this.TOKEN_KEY);
+        if (!token) return;
+        window.location.href = this._apiBase + '/auth/google?link_token=' + encodeURIComponent(token);
+    },
+
+    /** Unlink Google from account */
+    async unlinkGoogle() {
+        try {
+            const data = await this._api('DELETE', '/auth/google/unlink');
+            if (data.success) {
+                const user = this.getCurrentUser();
+                if (user) {
+                    user.google_linked = false;
+                    localStorage.setItem(this.SESSION_KEY, JSON.stringify(user));
+                }
+            }
+            return data;
+        } catch {
+            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+        }
+    },
+
+    /** Handle Google OAuth redirect (call on login page load) */
+    handleGoogleRedirect() {
+        const hash = window.location.hash;
+        if (!hash.startsWith('#google_auth=')) return null;
+
+        try {
+            const base64 = hash.replace('#google_auth=', '');
+            const data = JSON.parse(atob(base64));
+            // Clear hash from URL
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+
+            if (data.token) localStorage.setItem(this.TOKEN_KEY, data.token);
+            if (data.session_token) localStorage.setItem(this.SERVER_SESSION_TOKEN_KEY, data.session_token);
+            if (data.user) this._setSession(data.user);
+
+            return data;
+        } catch {
+            return null;
+        }
     }
 };

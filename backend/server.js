@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const passport = require('passport');
 
 require('dotenv').config();
 
@@ -14,6 +15,7 @@ const favoriteRoutes = require('./routes/favorites');
 const friendRoutes = require('./routes/friends');
 const userRoutes = require('./routes/users');
 const contactRoutes = require('./routes/contact');
+const googleAuthRoutes = require('./routes/google-auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -75,6 +77,7 @@ const allowedOriginHosts = allowedOrigins.map(getOriginHost).filter(Boolean);
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(passport.initialize());
 
 app.use('/api', (req, res, next) => {
 	const requestHost = String(req.get('host') || '').toLowerCase();
@@ -100,6 +103,7 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api', userRoutes);
 app.use('/api', contactRoutes);
+app.use('/api/auth', googleAuthRoutes);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 

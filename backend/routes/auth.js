@@ -49,9 +49,14 @@ function sanitizeUser(user) {
         email: user.email,
         bio: user.bio || '',
         avatar: user.avatar || '',
+        avatar_url: user.avatar_url || '',
         favorite_consoles: user.favorite_consoles || '',
         owned_consoles: user.owned_consoles || '',
         email_verified: !!user.email_verified,
+        two_factor_enabled: !!user.two_factor_enabled,
+        two_factor_method: user.two_factor_method || null,
+        google_linked: !!user.google_id,
+        has_password: !!user.password_hash,
         created_at: user.created_at
     };
 }
@@ -130,9 +135,45 @@ router.post('/login', async (req, res) => {
             return res.status(403).json({ success: false, error: 'Verifica adresa de email inainte de autentificare.' });
         }
 
+        if (!user.password_hash) {
+            return res.status(401).json({ success: false, error: 'Acest cont foloseste Google pentru autentificare.' });
+        }
+
         const valid = await bcrypt.compare(password, user.password_hash);
         if (!valid) {
             return res.status(401).json({ success: false, error: 'Email sau parola incorecta.' });
+        }
+
+        // Check 2FA
+        if (user.two_factor_enabled) {
+            const JWT_SECRET = req.app.get('JWT_SECRET');
+            const tempToken = jwt.sign(
+                { userId: user.id, twoFactorPending: true },
+                JWT_SECRET,
+                { expiresIn: '10m' }
+            );
+
+            if (user.two_factor_method === 'email') {
+                const code = String(crypto.randomInt(100000, 999999));
+                const codeExpiry = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+                await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [user.id]);
+                await pool.query(
+                    'INSERT INTO two_factor_codes (user_id, code, expires_at) VALUES ($1, $2, $3)',
+                    [user.id, code, codeExpiry]
+                );
+                try {
+                    await emailService.sendTwoFactorEmail(user.email, code);
+                } catch (err) {
+                    console.error('2FA email error:', err.message);
+                }
+            }
+
+            return res.json({
+                success: true,
+                twoFactorRequired: true,
+                method: user.two_factor_method,
+                tempToken
+            });
         }
 
         const deviceInfo = parseDevice(req);
@@ -327,15 +368,32 @@ router.put('/me/email', authRequired, async (req, res) => {
         }
 
         const emailLower = newEmail.toLowerCase().trim();
+        if (emailLower === user.email) {
+            return res.status(400).json({ success: false, error: 'Noul email este identic cu cel curent.' });
+        }
+
         const dupResult = await pool.query('SELECT id FROM users WHERE email = $1 AND id != $2', [emailLower, req.user.id]);
         if (dupResult.rows[0]) {
             return res.status(409).json({ success: false, error: 'Exista deja un cont cu acest email.' });
         }
 
-        await pool.query('UPDATE users SET email = $1, updated_at = NOW() WHERE id = $2', [emailLower, req.user.id]);
+        await pool.query('UPDATE users SET email = $1, email_verified = FALSE, updated_at = NOW() WHERE id = $2', [emailLower, req.user.id]);
+
+        // Send verification email for the new address
+        await pool.query('DELETE FROM email_verification_tokens WHERE user_id = $1', [req.user.id]);
+        const verificationToken = generateToken();
+        await pool.query(
+            'INSERT INTO email_verification_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [req.user.id, verificationToken, expiresAt()]
+        );
+        try {
+            await emailService.sendVerificationEmail(emailLower, verificationToken, process.env.BASE_URL);
+        } catch (emailErr) {
+            console.error('Verification email after email change failed:', emailErr.message);
+        }
 
         const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
-        res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
+        res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]), message: 'Email schimbat. Verifica noul email pentru a-l confirma.' });
     } catch (err) {
         console.error('Update email error:', err);
         res.status(500).json({ success: false, error: 'Eroare interna.' });
@@ -346,15 +404,24 @@ router.put('/me/password', authRequired, async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
-        if (!currentPassword) {
-            return res.status(400).json({ success: false, error: 'Introdu parola curenta.' });
-        }
         if (!newPassword || String(newPassword).length < 6) {
             return res.status(400).json({ success: false, error: 'Parola noua trebuie sa aiba minim 6 caractere.' });
         }
 
         const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
         const user = userResult.rows[0];
+
+        // Google-only users can set initial password without current password
+        if (!user.password_hash) {
+            const hash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+            await pool.query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2', [hash, req.user.id]);
+            return res.json({ success: true, message: 'Parola a fost setata.' });
+        }
+
+        if (!currentPassword) {
+            return res.status(400).json({ success: false, error: 'Introdu parola curenta.' });
+        }
+
         const valid = await bcrypt.compare(currentPassword, user.password_hash);
         if (!valid) {
             return res.status(403).json({ success: false, error: 'Parola curenta este incorecta.' });
@@ -399,6 +466,7 @@ router.delete('/account', authRequired, async (req, res) => {
         await client.query('DELETE FROM friend_requests WHERE sender_id = $1 OR receiver_id = $1', [req.user.id]);
         await client.query('DELETE FROM console_ratings WHERE user_id = $1', [req.user.id]);
         await client.query('DELETE FROM messages WHERE user_id = $1', [req.user.id]);
+        await client.query('DELETE FROM two_factor_codes WHERE user_id = $1', [req.user.id]);
         await client.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [req.user.id]);
         await client.query('DELETE FROM email_verification_tokens WHERE user_id = $1', [req.user.id]);
         await client.query('DELETE FROM users WHERE id = $1', [req.user.id]);
@@ -472,6 +540,191 @@ router.post('/reset-password', async (req, res) => {
         res.json({ success: true, message: 'Parola a fost resetata. Te poti autentifica cu noua parola.' });
     } catch (err) {
         console.error('Reset password error:', err);
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
+// ─── Two-Factor Authentication Routes ───────────────────
+
+router.post('/2fa/verify', async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ success: false, error: 'Token lipsa.' });
+        }
+
+        const tempToken = authHeader.slice(7);
+        const JWT_SECRET = req.app.get('JWT_SECRET');
+
+        let decoded;
+        try {
+            decoded = jwt.verify(tempToken, JWT_SECRET);
+        } catch {
+            return res.status(401).json({ success: false, error: 'Sesiunea a expirat. Autentifica-te din nou.' });
+        }
+
+        if (!decoded.twoFactorPending) {
+            return res.status(400).json({ success: false, error: 'Token invalid.' });
+        }
+
+        const { code } = req.body || {};
+        if (!code || String(code).trim().length !== 6) {
+            return res.status(400).json({ success: false, error: 'Codul trebuie sa aiba 6 cifre.' });
+        }
+
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
+        const user = userResult.rows[0];
+        if (!user) {
+            return res.status(401).json({ success: false, error: 'Utilizator inexistent.' });
+        }
+
+        const cleanCode = String(code).trim();
+
+        if (user.two_factor_method === 'email') {
+            const codeResult = await pool.query(
+                'SELECT * FROM two_factor_codes WHERE user_id = $1 AND code = $2 AND used = FALSE AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1',
+                [user.id, cleanCode]
+            );
+            if (!codeResult.rows[0]) {
+                return res.status(401).json({ success: false, error: 'Cod invalid sau expirat.' });
+            }
+            await pool.query('UPDATE two_factor_codes SET used = TRUE WHERE id = $1', [codeResult.rows[0].id]);
+        } else if (user.two_factor_method === 'totp') {
+            const speakeasy = require('speakeasy');
+            const isValid = speakeasy.totp.verify({
+                secret: user.two_factor_secret,
+                encoding: 'base32',
+                token: cleanCode,
+                window: 1
+            });
+            if (!isValid) {
+                return res.status(401).json({ success: false, error: 'Cod invalid.' });
+            }
+        } else {
+            return res.status(400).json({ success: false, error: 'Metoda 2FA necunoscuta.' });
+        }
+
+        // 2FA verified — create real session
+        const deviceInfo = parseDevice(req);
+        const sessionToken = generateToken();
+        await pool.query(
+            'INSERT INTO user_sessions (user_id, session_token, device_type, browser, operating_system, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
+            [user.id, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
+        );
+
+        setSessionCookie(res, sessionToken);
+
+        const jwtToken = jwt.sign(
+            { userId: user.id, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+
+        res.json({
+            success: true,
+            user: sanitizeUser(user),
+            token: jwtToken,
+            session_token: sessionToken
+        });
+    } catch (err) {
+        console.error('2FA verify error:', err);
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
+router.post('/2fa/setup/totp', authRequired, async (req, res) => {
+    try {
+        const speakeasy = require('speakeasy');
+        const QRCode = require('qrcode');
+
+        const secret = speakeasy.generateSecret({
+            name: 'CNote (' + req.user.email + ')',
+            issuer: 'CNote'
+        });
+
+        const qrCode = await QRCode.toDataURL(secret.otpauth_url);
+
+        res.json({
+            success: true,
+            secret: secret.base32,
+            qrCode
+        });
+    } catch (err) {
+        console.error('TOTP setup error:', err);
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
+router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
+    try {
+        const { code, secret } = req.body || {};
+        if (!code || !secret) {
+            return res.status(400).json({ success: false, error: 'Codul si secretul sunt obligatorii.' });
+        }
+
+        const speakeasy = require('speakeasy');
+        const isValid = speakeasy.totp.verify({
+            secret,
+            encoding: 'base32',
+            token: String(code).trim(),
+            window: 1
+        });
+
+        if (!isValid) {
+            return res.status(400).json({ success: false, error: 'Codul nu este valid. Incearca din nou.' });
+        }
+
+        await pool.query(
+            'UPDATE users SET two_factor_enabled = TRUE, two_factor_method = $1, two_factor_secret = $2, updated_at = NOW() WHERE id = $3',
+            ['totp', secret, req.user.id]
+        );
+
+        res.json({ success: true, message: '2FA prin Authenticator a fost activat.' });
+    } catch (err) {
+        console.error('TOTP confirm error:', err);
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
+router.post('/2fa/setup/email', authRequired, async (req, res) => {
+    try {
+        await pool.query(
+            'UPDATE users SET two_factor_enabled = TRUE, two_factor_method = $1, two_factor_secret = NULL, updated_at = NOW() WHERE id = $2',
+            ['email', req.user.id]
+        );
+        res.json({ success: true, message: '2FA prin Email a fost activat.' });
+    } catch (err) {
+        console.error('Email 2FA setup error:', err);
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
+router.delete('/2fa/disable', authRequired, async (req, res) => {
+    try {
+        const { password } = req.body || {};
+
+        const userResult = await pool.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
+
+        if (user.password_hash) {
+            if (!password) {
+                return res.status(400).json({ success: false, error: 'Parola este obligatorie.' });
+            }
+            const valid = await bcrypt.compare(String(password), user.password_hash);
+            if (!valid) {
+                return res.status(401).json({ success: false, error: 'Parola incorecta.' });
+            }
+        }
+
+        await pool.query(
+            'UPDATE users SET two_factor_enabled = FALSE, two_factor_method = NULL, two_factor_secret = NULL, updated_at = NOW() WHERE id = $1',
+            [req.user.id]
+        );
+        await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [req.user.id]);
+
+        res.json({ success: true, message: '2FA a fost dezactivat.' });
+    } catch (err) {
+        console.error('2FA disable error:', err);
         res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });

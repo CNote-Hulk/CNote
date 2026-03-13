@@ -19,12 +19,17 @@ async function initializeSchema() {
 			id              SERIAL PRIMARY KEY,
 			username        TEXT    NOT NULL,
 			email           TEXT    NOT NULL UNIQUE,
-			password_hash   TEXT    NOT NULL,
+			password_hash   TEXT    DEFAULT NULL,
 			bio             TEXT    DEFAULT '',
 			avatar          TEXT    DEFAULT '',
 			favorite_consoles TEXT  DEFAULT '',
 			owned_consoles  TEXT    DEFAULT '',
 			email_verified  BOOLEAN DEFAULT FALSE,
+			two_factor_enabled BOOLEAN DEFAULT FALSE,
+			two_factor_method VARCHAR(10) DEFAULT NULL,
+			two_factor_secret VARCHAR(255) DEFAULT NULL,
+			google_id       VARCHAR(255) DEFAULT NULL,
+			avatar_url      TEXT    DEFAULT NULL,
 			created_at      TIMESTAMP DEFAULT NOW(),
 			updated_at      TIMESTAMP DEFAULT NOW()
 		);
@@ -104,18 +109,34 @@ async function initializeSchema() {
 			created_at  TIMESTAMP DEFAULT NOW(),
 			UNIQUE(user1_id, user2_id)
 		);
+
+		CREATE TABLE IF NOT EXISTS two_factor_codes (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			code        VARCHAR(10) NOT NULL,
+			expires_at  TIMESTAMP NOT NULL,
+			used        BOOLEAN DEFAULT FALSE,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
 	`);
 
 	const migrations = [
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS favorite_consoles TEXT DEFAULT ''`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS owned_consoles TEXT DEFAULT ''`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_enabled BOOLEAN DEFAULT FALSE`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_method VARCHAR(10) DEFAULT NULL`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_secret VARCHAR(255) DEFAULT NULL`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) DEFAULT NULL`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT DEFAULT NULL`,
 		`ALTER TABLE email_verification_tokens ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }
 	}
 
+	// Make password_hash nullable for Google OAuth users
+	try { await pool.query('ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL'); } catch { }
 	try {
 		await pool.query(`
 			ALTER TABLE users
