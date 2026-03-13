@@ -19,6 +19,25 @@
             return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         }
 
+        function formatConsoleDisplayName(value) {
+            if (!value) return '';
+            const words = String(value)
+                .trim()
+                .replace(/-/g, ' ')
+                .split(/\s+/)
+                .filter(Boolean)
+                .map((word) => {
+                    const lower = word.toLowerCase();
+                    if (lower === 'playstation') return 'PlayStation';
+                    if (lower === 'xbox') return 'Xbox';
+                    if (lower === 'nintendo') return 'Nintendo';
+                    if (lower === 'sega') return 'Sega';
+                    if (/^\d+$/.test(lower)) return lower;
+                    return lower.charAt(0).toUpperCase() + lower.slice(1);
+                });
+            return words.join(' ');
+        }
+
         function initProfile() {
             if (!user) return;
 
@@ -62,7 +81,9 @@
                 if (items.length === 0) {
                     el.innerHTML = '<span class="profile-console-list__empty">Nicio consolă adăugată.</span>';
                 } else {
-                    el.innerHTML = items.map(c => `<span class="profile-console-tag">${escapeHtml(c)}</span>`).join('');
+                    el.innerHTML = items
+                        .map(c => `<span class="profile-console-tag">${escapeHtml(formatConsoleDisplayName(c))}</span>`)
+                        .join('');
                 }
             };
             renderConsoleList('profile-favorite-consoles', user.favorite_consoles);
@@ -165,11 +186,26 @@
             // Settings
             document.getElementById('set-username').value = user.username;
             document.getElementById('set-bio').value = user.bio || '';
-            document.getElementById('set-favorite-consoles').value = user.favorite_consoles || '';
             document.getElementById('set-email').value = user.email || '';
 
             // Initialize owned consoles multi-select
             initOwnedConsolesSelect();
+
+            const settingsPanel = document.getElementById('panel-setari');
+            if (settingsPanel && !document.getElementById('danger-zone-card')) {
+                const dangerCard = document.createElement('div');
+                dangerCard.className = 'course-card';
+                dangerCard.id = 'danger-zone-card';
+                dangerCard.style.marginTop = '24px';
+                dangerCard.style.border = '1px solid rgba(229, 115, 115, 0.35)';
+                dangerCard.style.background = 'rgba(58, 23, 23, 0.35)';
+                dangerCard.innerHTML = `
+                    <h3 style="color:#f0b3b3;margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">ZONA PERICULOASA</h3>
+                    <p style="color:#c8a3a3;font-size:0.88rem;margin-bottom:14px;">Stergerea contului este permanenta si nu poate fi anulata.</p>
+                    <button type="button" class="auth-btn auth-btn--danger" id="delete-account-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Sterge contul</button>
+                `;
+                settingsPanel.appendChild(dangerCard);
+            }
 
             const settingsTabButton = document.querySelector('.profile-tab[data-tab="setari"]');
             const goToSettingsAndFocus = (inputId) => {
@@ -212,7 +248,6 @@
                 e.preventDefault();
                 const username = document.getElementById('set-username').value;
                 const bio = document.getElementById('set-bio').value;
-                const favorite_consoles = document.getElementById('set-favorite-consoles').value;
                 const owned_consoles = document.getElementById('set-owned-consoles').value;
                 const email = document.getElementById('set-email').value;
                 const currentPassword = document.getElementById('set-current-password').value;
@@ -232,7 +267,7 @@
                     return;
                 }
 
-                await AuthModule.updateProfile({ username, bio, favorite_consoles, owned_consoles });
+                await AuthModule.updateProfile({ username, bio, owned_consoles });
 
                 // Also save owned consoles to the new table
                 try {
@@ -250,7 +285,7 @@
 
                 document.getElementById('profile-name').textContent = username;
                 document.getElementById('profile-bio').textContent = bio || 'Nicio descriere încă.';
-                renderConsoleList('profile-favorite-consoles', favorite_consoles);
+                renderConsoleList('profile-favorite-consoles', user.favorite_consoles || '');
                 renderConsoleList('profile-owned-consoles', owned_consoles);
 
                 if (emailChanged) {
@@ -273,20 +308,42 @@
 
                 user.username = username.trim();
                 user.bio = bio;
-                user.favorite_consoles = favorite_consoles;
                 user.owned_consoles = owned_consoles;
                 user.email = email.trim().toLowerCase();
                 document.getElementById('set-current-password').value = '';
                 showSettingsMessage('Setările au fost actualizate cu succes.', true);
             });
 
-            const showConfirmDialog = ({ title, message, confirmLabel = 'Confirmă', cancelLabel = 'Anulează' }) => {
+            const showConfirmDialog = ({
+                title,
+                message,
+                confirmLabel = 'Confirma',
+                cancelLabel = 'Anuleaza',
+                withPassword = false
+            }) => {
                 const modal = document.getElementById('confirm-modal');
                 const titleEl = document.getElementById('confirm-modal-title');
                 const textEl = document.getElementById('confirm-modal-text');
                 const okBtn = document.getElementById('confirm-modal-ok');
                 const cancelBtn = document.getElementById('confirm-modal-cancel');
                 const cancelBackdrop = modal.querySelector('[data-modal-cancel]');
+                const actionsEl = modal.querySelector('.app-modal__actions');
+
+                const existingInputWrap = modal.querySelector('.app-modal__password-wrap');
+                if (existingInputWrap) existingInputWrap.remove();
+
+                let passwordInput = null;
+                if (withPassword) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'app-modal__password-wrap';
+                    wrap.style.margin = '12px 0 2px';
+                    wrap.innerHTML = `
+                        <label for="confirm-modal-password" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Parola</label>
+                        <input id="confirm-modal-password" type="password" autocomplete="current-password" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.2);color:var(--text-light,#f5eee6);outline:none;" />
+                    `;
+                    modal.querySelector('.app-modal__dialog').insertBefore(wrap, actionsEl);
+                    passwordInput = wrap.querySelector('#confirm-modal-password');
+                }
 
                 titleEl.textContent = title;
                 textEl.textContent = message;
@@ -295,7 +352,13 @@
 
                 modal.hidden = false;
                 document.body.classList.add('modal-open');
-                setTimeout(() => okBtn.focus(), 0);
+                setTimeout(() => {
+                    if (passwordInput) {
+                        passwordInput.focus();
+                    } else {
+                        okBtn.focus();
+                    }
+                }, 0);
 
                 return new Promise((resolve) => {
                     const close = (value) => {
@@ -305,13 +368,29 @@
                         cancelBtn.removeEventListener('click', onCancel);
                         cancelBackdrop.removeEventListener('click', onCancel);
                         document.removeEventListener('keydown', onKeydown);
+                        const cleanup = modal.querySelector('.app-modal__password-wrap');
+                        if (cleanup) cleanup.remove();
                         resolve(value);
                     };
 
-                    const onOk = () => close(true);
-                    const onCancel = () => close(false);
+                    const onOk = () => {
+                        if (withPassword) {
+                            const password = (passwordInput?.value || '').trim();
+                            close({ confirmed: true, password });
+                        } else {
+                            close(true);
+                        }
+                    };
+                    const onCancel = () => {
+                        if (withPassword) {
+                            close({ confirmed: false, password: '' });
+                        } else {
+                            close(false);
+                        }
+                    };
                     const onKeydown = (event) => {
-                        if (event.key === 'Escape') close(false);
+                        if (event.key === 'Escape') onCancel();
+                        if (withPassword && event.key === 'Enter') onOk();
                     };
 
                     okBtn.addEventListener('click', onOk);
@@ -341,6 +420,34 @@
 
                 showSettingsMessage('Reset complet realizat.', true);
             });
+
+            const deleteAccountBtn = document.getElementById('delete-account-btn');
+            if (deleteAccountBtn) {
+                deleteAccountBtn.addEventListener('click', async () => {
+                    const dialogResult = await showConfirmDialog({
+                        title: 'Sterge contul',
+                        message: 'Aceasta actiune este permanenta. Introdu parola pentru a confirma.',
+                        confirmLabel: 'Sterge contul',
+                        cancelLabel: 'Anuleaza',
+                        withPassword: true
+                    });
+
+                    if (!dialogResult || !dialogResult.confirmed) return;
+                    if (!dialogResult.password) {
+                        showSettingsMessage('Introdu parola pentru confirmare.', false);
+                        return;
+                    }
+
+                    const result = await AuthModule.deleteAccount(dialogResult.password);
+                    if (!result.success) {
+                        showSettingsMessage(result.error || 'Nu s-a putut sterge contul.', false);
+                        return;
+                    }
+
+                    await AuthModule.logout();
+                    window.location.href = '/html/pages/index.html';
+                });
+            }
 
             // ─── Active Sessions ────────────────────────────
             async function loadSessions() {
@@ -893,8 +1000,13 @@
             }
 
             function renderList(filter = '') {
+                const normalizedFilter = String(filter || '').trim().toLowerCase();
                 const filtered = filter
-                    ? allConsoles.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()))
+                    ? allConsoles.filter(c => {
+                        const idText = String(c.id || '').toLowerCase();
+                        const nameText = formatConsoleDisplayName(c.name || c.id || '').toLowerCase();
+                        return idText.includes(normalizedFilter) || nameText.includes(normalizedFilter);
+                    })
                     : allConsoles;
 
                 if (filtered.length === 0) {
@@ -904,10 +1016,11 @@
 
                 listEl.innerHTML = filtered.map(c => {
                     const checked = selectedIds.has(c.id);
+                    const displayName = formatConsoleDisplayName(c.name || c.id);
                     return `<label class="owned-console-item${checked ? ' checked' : ''}">
                         <input type="checkbox" value="${escapeHtml(c.id)}" ${checked ? 'checked' : ''}>
                         <span class="owned-console-check">${checked ? '☑' : '☐'}</span>
-                        <span class="owned-console-name">${escapeHtml(c.name)}</span>
+                        <span class="owned-console-name">${escapeHtml(displayName)}</span>
                     </label>`;
                 }).join('');
 
