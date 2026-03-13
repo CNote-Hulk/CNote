@@ -143,12 +143,12 @@ v0.1.0 (Beta)
 
 Planned improvements include:
 
-* expanding the console encyclopedia
 * improved search and filtering
 * deeper hardware comparison tools
 * more advanced repair tutorials
 * expanded community features
-* potential console marketplace
+* console marketplace
+* help section
 
 ---
 
