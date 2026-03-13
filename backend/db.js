@@ -136,21 +136,19 @@ async function initializeSchema() {
 	}
 
 	// Migrate is_active from INTEGER to BOOLEAN if needed
-	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active TYPE BOOLEAN USING is_active::boolean`); } catch { }
+	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active TYPE BOOLEAN USING is_active::int::boolean`); } catch { }
 	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active SET DEFAULT TRUE`); } catch { }
 
 	// Make password_hash nullable for Google OAuth users
 	try { await pool.query('ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL'); } catch { }
-	try {
-		await pool.query(`
-			ALTER TABLE users
-			ALTER COLUMN email_verified TYPE BOOLEAN
-			USING CASE
-				WHEN email_verified::text IN ('1', 'true', 't') THEN TRUE
-				ELSE FALSE
-			END
-		`);
-	} catch { }
+
+	// Migrate email_verified from INTEGER to BOOLEAN if needed
+	try { await pool.query(`ALTER TABLE users ALTER COLUMN email_verified TYPE BOOLEAN USING email_verified::int::boolean`); } catch { }
+	try { await pool.query(`ALTER TABLE users ALTER COLUMN email_verified SET DEFAULT FALSE`); } catch { }
+
+	// Migrate two_factor_enabled from INTEGER to BOOLEAN if needed
+	try { await pool.query(`ALTER TABLE users ALTER COLUMN two_factor_enabled TYPE BOOLEAN USING two_factor_enabled::int::boolean`); } catch { }
+	try { await pool.query(`ALTER TABLE users ALTER COLUMN two_factor_enabled SET DEFAULT FALSE`); } catch { }
 }
 
 initializeSchema()
