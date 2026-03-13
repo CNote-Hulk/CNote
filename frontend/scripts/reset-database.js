@@ -1,1 +1,1 @@
-require('../server/scripts/reset-database.js');
+require('../../backend/scripts/reset-database.js');

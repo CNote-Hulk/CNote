@@ -3,5 +3,5 @@ node_modules/
 *.db
 *.sqlite
 *.sqlite3
-frontend/server/node_modules/
-frontend/server/data/
+backend/node_modules/
+backend/data/

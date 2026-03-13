@@ -1,6 +1,5 @@
 /*
  * Reset database data for clean public deployment.
- * Deletes all records from auth/session related tables.
  */
 
 const { Pool } = require('pg');

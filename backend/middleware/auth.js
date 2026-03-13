@@ -1,6 +1,5 @@
 /**
- * Auth middleware — validates JWT from Authorization header or session cookie.
- * Attaches req.user on success.
+ * Auth middleware - validates JWT from Authorization header or session cookie.
  */
 
 const jwt = require('jsonwebtoken');
@@ -9,12 +8,11 @@ const pool = require('../db');
 async function authRequired(req, res, next) {
     const token = extractToken(req);
     if (!token) {
-        return res.status(401).json({ success: false, error: 'Autentificare necesară.' });
+        return res.status(401).json({ success: false, error: 'Autentificare necesara.' });
     }
 
     const JWT_SECRET = req.app.get('JWT_SECRET');
 
-    // Try JWT first
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
@@ -35,10 +33,8 @@ async function authRequired(req, res, next) {
         };
         return next();
     } catch (jwtErr) {
-        // JWT invalid — fall through to session-based auth
     }
 
-    // Fallback: session token from cookie
     const sessionResult = await pool.query(`
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.favorite_consoles, u.owned_consoles,
@@ -51,7 +47,7 @@ async function authRequired(req, res, next) {
     const session = sessionResult.rows[0];
 
     if (!session) {
-        return res.status(401).json({ success: false, error: 'Sesiune invalidă sau expirată.' });
+        return res.status(401).json({ success: false, error: 'Sesiune invalida sau expirata.' });
     }
 
     await pool.query('UPDATE user_sessions SET last_activity = NOW() WHERE id = $1', [session.session_id]);
@@ -73,11 +69,9 @@ async function authRequired(req, res, next) {
 }
 
 function extractToken(req) {
-    // 1. Authorization header (Bearer token)
     const auth = req.headers.authorization;
     if (auth && auth.startsWith('Bearer ')) return auth.slice(7);
 
-    // 2. Cookie
     const cookies = parseCookies(req.headers.cookie || '');
     if (cookies['cn_session_token']) return cookies['cn_session_token'];
 

@@ -1,15 +1,3 @@
-/**
- * User profile routes (public profiles)
- *
- * GET /api/users/search?q=          — Search users by username
- * GET /api/users/:username          — Get public user profile by username
- * GET /api/users/:username/friends  — Get user's friend list
- * GET /api/users/id/:id             — Get public user profile by ID
- * GET /api/consoles/list            — Get list of all console IDs and names
- * GET /api/users/:username/owned    — Get user's owned consoles
- * GET /api/users/:username/favorites — Get user's favorite consoles
- */
-
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -18,8 +6,6 @@ const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
-// ─── GET /api/users/search?q= ───────────────────────────
-
 router.get('/users/search', authRequired, async (req, res) => {
     try {
         const query = (req.query.q || '').trim();
@@ -27,7 +13,6 @@ router.get('/users/search', authRequired, async (req, res) => {
             return res.json({ success: true, users: [] });
         }
 
-        // Sanitize: allow alphanumeric, unicode letters, underscore, dash, dot, space
         const safeQuery = query.replace(/[^\p{L}\p{N}_.\- ]/gu, '').trim();
         if (safeQuery.length < 2) {
             return res.json({ success: true, users: [] });
@@ -54,11 +39,9 @@ router.get('/users/search', authRequired, async (req, res) => {
         });
     } catch (err) {
         console.error('User search error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
-
-// ─── GET /api/users/:username ───────────────────────────
 
 router.get('/users/:username', async (req, res) => {
     try {
@@ -70,27 +53,15 @@ router.get('/users/:username', async (req, res) => {
         );
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Utilizatorul nu a fost găsit.' });
+            return res.status(404).json({ success: false, error: 'Utilizatorul nu a fost gasit.' });
         }
 
         const user = result.rows[0];
 
-        // Get favorites from user_favorites table
-        const favResult = await pool.query(
-            'SELECT console_id FROM user_favorites WHERE user_id = $1',
-            [user.id]
-        );
-
-        // Get owned from user_owned_consoles table
-        const ownedResult = await pool.query(
-            'SELECT console_id FROM user_owned_consoles WHERE user_id = $1',
-            [user.id]
-        );
-
-        // Get friend count
+        const favResult = await pool.query('SELECT console_id FROM user_favorites WHERE user_id = $1', [user.id]);
+        const ownedResult = await pool.query('SELECT console_id FROM user_owned_consoles WHERE user_id = $1', [user.id]);
         const friendCount = await pool.query(
-            `SELECT COUNT(*) AS count FROM friends
-             WHERE user1_id = $1 OR user2_id = $1`,
+            'SELECT COUNT(*) AS count FROM friends WHERE user1_id = $1 OR user2_id = $1',
             [user.id]
         );
 
@@ -111,11 +82,9 @@ router.get('/users/:username', async (req, res) => {
         });
     } catch (err) {
         console.error('User profile error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
-
-// ─── GET /api/users/id/:id ──────────────────────────────
 
 router.get('/users/id/:id', async (req, res) => {
     try {
@@ -127,7 +96,7 @@ router.get('/users/id/:id', async (req, res) => {
         );
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Utilizatorul nu a fost găsit.' });
+            return res.status(404).json({ success: false, error: 'Utilizatorul nu a fost gasit.' });
         }
 
         const user = result.rows[0];
@@ -143,52 +112,44 @@ router.get('/users/id/:id', async (req, res) => {
         });
     } catch (err) {
         console.error('User profile by ID error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
-
-// ─── GET /api/users/:username/friends ───────────────────
 
 router.get('/users/:username/friends', async (req, res) => {
     try {
         const { username } = req.params;
-        const userResult = await pool.query(
-            'SELECT id FROM users WHERE LOWER(username) = LOWER($1)',
-            [username]
-        );
+        const userResult = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [username]);
 
         if (userResult.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Utilizatorul nu a fost găsit.' });
+            return res.status(404).json({ success: false, error: 'Utilizatorul nu a fost gasit.' });
         }
 
         const userId = userResult.rows[0].id;
-        const result = await pool.query(`
-            SELECT u.id, u.username, u.avatar
-            FROM friends f
-            JOIN users u ON (
+        const result = await pool.query(
+            `SELECT u.id, u.username, u.avatar
+             FROM friends f
+             JOIN users u ON (
                 (f.user1_id = $1 AND u.id = f.user2_id) OR
                 (f.user2_id = $1 AND u.id = f.user1_id)
-            )
-            ORDER BY f.created_at DESC
-        `, [userId]);
+             )
+             ORDER BY f.created_at DESC`,
+            [userId]
+        );
 
         res.json({ success: true, friends: result.rows });
     } catch (err) {
         console.error('User friends error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
-
-// ─── GET /api/consoles/list ─────────────────────────────
-// Returns a simple list of all console IDs and names for dropdowns
-// Cache the data at startup to avoid repeated file reads
 
 let _cachedConsoleList = null;
 
 function loadConsoleList() {
     const candidates = [
-        path.join(__dirname, '..', '..', 'js', 'data', 'consoles.json'),
-        path.resolve(__dirname, '..', '..', 'js', 'data', 'consoles.json')
+        path.join(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json'),
+        path.resolve(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json')
     ];
     for (const p of candidates) {
         try {
@@ -210,33 +171,24 @@ router.get('/consoles/list', async (req, res) => {
             _cachedConsoleList = loadConsoleList();
         }
         if (!_cachedConsoleList) {
-            return res.status(500).json({ success: false, error: 'Lista de console nu a fost găsită.' });
+            return res.status(500).json({ success: false, error: 'Lista de console nu a fost gasita.' });
         }
         res.json({ success: true, consoles: _cachedConsoleList });
     } catch (err) {
         console.error('Console list error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
-
-// ─── GET /api/owned-consoles ────────────────────────────
-// Get current user's owned consoles from the new table
 
 router.get('/owned-consoles', authRequired, async (req, res) => {
     try {
-        const result = await pool.query(
-            'SELECT console_id FROM user_owned_consoles WHERE user_id = $1',
-            [req.user.id]
-        );
+        const result = await pool.query('SELECT console_id FROM user_owned_consoles WHERE user_id = $1', [req.user.id]);
         res.json({ success: true, consoles: result.rows.map(r => r.console_id) });
     } catch (err) {
         console.error('Owned consoles GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
-
-// ─── PUT /api/owned-consoles ────────────────────────────
-// Update owned consoles (replace all)
 
 router.put('/owned-consoles', authRequired, async (req, res) => {
     try {
@@ -245,10 +197,8 @@ router.put('/owned-consoles', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Format invalid.' });
         }
 
-        // Delete existing
         await pool.query('DELETE FROM user_owned_consoles WHERE user_id = $1', [req.user.id]);
 
-        // Insert new ones
         for (const consoleId of consoles) {
             if (consoleId && String(consoleId).trim()) {
                 await pool.query(
@@ -261,7 +211,7 @@ router.put('/owned-consoles', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Owned consoles PUT error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Eroare interna.' });
     }
 });
 
