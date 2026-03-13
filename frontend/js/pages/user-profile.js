@@ -163,8 +163,10 @@ import { AuthModule } from '/js/modules/auth.js';
                 document.getElementById('user-date').textContent = 'Membru din ' + new Date(profile.created_at).toLocaleDateString('ro-RO', { year: 'numeric', month: 'long' });
 
                 // Console lists
-                const consolesSection = document.getElementById('user-consoles-section');
-                consolesSection.hidden = false;
+                const consolesSection = document.getElementById('user-profile-consoles');
+                if (consolesSection) {
+                    consolesSection.hidden = false;
+                }
 
                 // Favorite consoles - use favorite_console_ids from new table, fallback to CSV
                 const favContainer = document.getElementById('user-favorite-consoles');
