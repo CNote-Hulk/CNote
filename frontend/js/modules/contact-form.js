@@ -3,6 +3,8 @@
  * Handles validation and submit in module-enabled environments
  */
 
+import { API_BASE_URL } from '../config.js';
+
 export const ContactFormModule = {
     init() {
         if (window.__CONTACT_FORM_INITIALIZED__) return;
@@ -81,7 +83,7 @@ export const ContactFormModule = {
         const setLoading = (isLoading) => {
             isSubmitting = isLoading;
             submitBtn.disabled = isLoading;
-            submitBtn.textContent = isLoading ? 'Se trimiteâ€¦' : originalBtnText;
+            submitBtn.textContent = isLoading ? 'Se trimite...' : originalBtnText;
             submitBtn.classList.toggle('button-loading', isLoading);
         };
 
@@ -148,22 +150,28 @@ export const ContactFormModule = {
                     return;
                 }
 
-                const formData = new FormData(contactForm);
-                formData.append('_captcha', 'false');
-                formData.append('_subject', 'Mesaj nou de pe website');
-                formData.append('_template', 'table');
+                const payload = {
+                    name,
+                    email,
+                    message,
+                    _honey: honeypot ? honeypot.value : ''
+                };
 
-                const response = await fetch('https://formsubmit.co/console.notebook.app@gmail.com', {
+                const response = await fetch(API_BASE_URL + '/contact', {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
                 });
 
-                if (response.ok) {
+                const data = await response.json().catch(() => ({}));
+
+                if (response.ok && data.success) {
                     showMessage(successMessage, 5000);
                     smoothScrollToMessage(successMessage || contactForm);
                     contactForm.reset();
                 } else {
-                    throw new Error('Server responded with error');
+                    throw new Error(data.error || 'Server responded with error');
                 }
             } catch (error) {
                 console.error('Contact form error:', error);

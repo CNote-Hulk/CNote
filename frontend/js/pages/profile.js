@@ -381,7 +381,7 @@
 
                             if (isCurrent) {
                                 await AuthModule.logout();
-                                window.location.href = '/frontend/html/pages/login.html';
+                                window.location.href = '/html/pages/login.html';
                                 return;
                             }
 
@@ -415,7 +415,7 @@
                 if (!confirmed) return;
                 const result = await AuthModule.terminateAllSessions();
                 if (result.success) {
-                    window.location.href = '/frontend/html/pages/login.html';
+                    window.location.href = '/html/pages/login.html';
                 }
             });
 

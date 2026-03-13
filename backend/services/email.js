@@ -17,6 +17,7 @@ function getResend() {
 
 const FROM = 'Console Notebook <onboarding@resend.dev>';
 const BASE_URL = () => process.env.BASE_URL || 'http://localhost:3000';
+const CONTACT_TO = () => process.env.CONTACT_RECEIVER_EMAIL || 'console.notebook.app@gmail.com';
 
 async function sendMail(to, subject, html) {
     const resend = getResend();
@@ -63,6 +64,19 @@ async function sendPasswordResetEmail(email, username, token) {
     return sendMail(email, 'Resetare parola - Console Notebook', html);
 }
 
+async function sendContactMessageEmail(name, email, message) {
+    const html =
+    '<div style="font-family:sans-serif;max-width:620px;margin:0 auto;padding:24px;background:#1e1a17;color:#e0d6cc;border-radius:12px;">' +
+        '<h2 style="color:#d4a24e;margin-bottom:8px;">Mesaj nou din formularul de contact</h2>' +
+        '<p><strong>Nume:</strong> ' + escapeHtml(name) + '</p>' +
+        '<p><strong>Email:</strong> ' + escapeHtml(email) + '</p>' +
+        '<hr style="border:none;border-top:1px solid #3c3028;margin:16px 0;">' +
+        '<p style="white-space:pre-wrap;line-height:1.5;">' + escapeHtml(message) + '</p>' +
+    '</div>';
+
+    return sendMail(CONTACT_TO(), 'Mesaj contact - Console Notebook', html);
+}
+
 function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -74,5 +88,6 @@ function escapeHtml(str) {
 
 module.exports = {
     sendPasswordResetEmail,
+    sendContactMessageEmail,
     getResend
 };

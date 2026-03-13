@@ -13,6 +13,7 @@ const ratingRoutes = require('./routes/ratings');
 const favoriteRoutes = require('./routes/favorites');
 const friendRoutes = require('./routes/friends');
 const userRoutes = require('./routes/users');
+const contactRoutes = require('./routes/contact');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -98,6 +99,7 @@ app.use('/api/ratings', ratingRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api', userRoutes);
+app.use('/api', contactRoutes);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
