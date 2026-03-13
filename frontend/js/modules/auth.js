@@ -243,6 +243,17 @@ export const AuthModule = {
         }
     },
 
+    /** Terminate all sessions, including current, then clear local auth state */
+    async terminateAllSessions() {
+        try {
+            await this._api('DELETE', '/sessions');
+        } catch {
+            // Continue with local logout even if the API call fails.
+        }
+        await this.logout();
+        return { success: true };
+    },
+
     // ─── Auto-login (check token on page load) ─────────
 
     /**

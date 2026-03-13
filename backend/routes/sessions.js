@@ -52,11 +52,11 @@ router.delete('/:id', authRequired, async (req, res) => {
 router.delete('/', authRequired, async (req, res) => {
     await pool.query(
         `UPDATE user_sessions SET is_active = 0
-         WHERE user_id = $1 AND session_token != $2 AND is_active = 1`,
-        [req.user.id, req.sessionToken || '']
+         WHERE user_id = $1 AND is_active = 1`,
+        [req.user.id]
     );
 
-    res.json({ success: true, message: 'Toate celelalte sesiuni au fost inchise.' });
+    res.json({ success: true, message: 'Toate sesiunile au fost inchise.' });
 });
 
 module.exports = router;
