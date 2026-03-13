@@ -359,7 +359,7 @@
                         const ago = timeAgo(s.last_activity);
                         const icon = s.device_type === 'mobile' ? '📱' : s.device_type === 'tablet' ? '📱' : '💻';
                         const current = s.is_current ? ' <span style="color:var(--success);font-size:0.75rem;font-weight:600;">(sesiunea curentă)</span>' : '';
-                        const logoutBtn = s.is_current ? '' : `<button class="session-logout-btn" data-session-id="${s.id}" style="background:none;border:1px solid rgba(229,115,115,0.4);color:#e57373;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;margin-top:6px;">Deconectare</button>`;
+                        const logoutBtn = `<button class="session-logout-btn" data-session-id="${s.id}" data-is-current="${s.is_current ? '1' : '0'}" style="background:none;border:1px solid rgba(229,115,115,0.4);color:#e57373;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;margin-top:6px;">Deconectare</button>`;
 
                         return `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px;">
                             <div style="font-size:0.9rem;color:var(--text-light);">${icon} ${escapeHtml(s.browser)} pe ${escapeHtml(s.operating_system)}${current}</div>
@@ -368,15 +368,24 @@
                         </div>`;
                     }).join('');
 
-                    // Show "logout others" button if more than 1 session
-                    logoutOthersBtn.hidden = sessions.filter(s => !s.is_current).length === 0;
+                    // Show bulk logout button when at least one session exists
+                    logoutOthersBtn.hidden = sessions.length === 0;
 
                     // Bind individual session logout buttons
                     container.querySelectorAll('.session-logout-btn').forEach(btn => {
                         btn.addEventListener('click', async () => {
                             const sid = parseInt(btn.dataset.sessionId, 10);
+                            const isCurrent = btn.dataset.isCurrent === '1';
                             const result = await AuthModule.terminateSession(sid);
-                            if (result.success) loadSessions();
+                            if (!result.success) return;
+
+                            if (isCurrent) {
+                                await AuthModule.logout();
+                                window.location.href = '/frontend/html/pages/login.html';
+                                return;
+                            }
+
+                            loadSessions();
                         });
                     });
                 } catch {
@@ -404,10 +413,9 @@
                     cancelLabel: 'Anulează'
                 });
                 if (!confirmed) return;
-                const result = await AuthModule.terminateOtherSessions();
+                const result = await AuthModule.terminateAllSessions();
                 if (result.success) {
-                    showSettingsMessage('Toate celelalte sesiuni au fost închise.', true);
-                    loadSessions();
+                    window.location.href = '/frontend/html/pages/login.html';
                 }
             });
 
