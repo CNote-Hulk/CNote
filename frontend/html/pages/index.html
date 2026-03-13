@@ -161,7 +161,7 @@
 
     <!-- ===========================
          CONTACT SECTION
-         Contact form with FormSubmit.co integration
+         Contact form handled by backend API + Nodemailer
          Success/error messages handled by contact-form.js
          =========================== -->
     <section id="contact" class="section">
@@ -192,14 +192,14 @@
                     </div>
 
                     <div class="input-group">
+                        <label for="contact-subject">Subiect</label>
+                        <input id="contact-subject" name="subject" type="text" placeholder="Subiectul mesajului" required>
+                    </div>
+
+                    <div class="input-group">
                         <label for="contact-message">Mesaj</label>
                         <textarea id="contact-message" name="message" placeholder="Scrie mesajul tău aici" required></textarea>
                     </div>
-
-                    <!-- FormSubmit hidden fields -->
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_subject" value="Mesaj nou de pe website">
-                    <input type="hidden" name="_template" value="table">
                     
                     <!-- Honeypot anti-spam -->
                     <input type="text" name="_honey" class="honeypot-input" tabindex="-1" autocomplete="off">

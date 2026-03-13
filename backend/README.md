@@ -24,7 +24,8 @@ Copy `.env.example` to `.env` and configure required values:
 - `BASE_URL`
 - `DATABASE_URL` - Supabase Postgres connection string
 - `JWT_SECRET`
-- `RESEND_API_KEY` (optional for email sending)
+- `EMAIL_USER` (Gmail address used for Nodemailer)
+- `EMAIL_PASS` (Gmail app password used for Nodemailer)
 - `CONTACT_RECEIVER_EMAIL` (optional, defaults to console.notebook.app@gmail.com)
 
 ## Database

@@ -77,17 +77,34 @@ router.post('/register', async (req, res) => {
         }
 
         const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+        const verificationToken = generateToken();
+        const verificationExpiry = expiresAt();
         const insertResult = await pool.query(
-            'INSERT INTO users (username, email, password_hash, email_verified) VALUES ($1, $2, $3, 1) RETURNING *',
+            'INSERT INTO users (username, email, password_hash, email_verified) VALUES ($1, $2, $3, FALSE) RETURNING *',
             [String(username).trim(), emailLower, passwordHash]
         );
 
         const user = insertResult.rows[0];
+        await pool.query(
+            'INSERT INTO email_verification_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [user.id, verificationToken, verificationExpiry]
+        );
+
+        let emailSent = true;
+        try {
+            await emailService.sendVerificationEmail(user.email, verificationToken, process.env.BASE_URL);
+        } catch (emailErr) {
+            emailSent = false;
+            console.error('Verification email error:', emailErr.message);
+        }
 
         res.status(201).json({
             success: true,
             user: sanitizeUser(user),
-            message: 'Cont creat cu succes! Te poti autentifica acum.'
+            emailSent,
+            message: emailSent
+                ? 'Cont creat cu succes! Verifica emailul pentru a activa contul.'
+                : 'Cont creat, dar emailul de verificare nu a putut fi trimis momentan.'
         });
     } catch (err) {
         console.error('Register error:', err);
@@ -107,6 +124,10 @@ router.post('/login', async (req, res) => {
         const user = userResult.rows[0];
         if (!user) {
             return res.status(401).json({ success: false, error: 'Email sau parola incorecta.' });
+        }
+
+        if (!user.email_verified) {
+            return res.status(403).json({ success: false, error: 'Verifica adresa de email inainte de autentificare.' });
         }
 
         const valid = await bcrypt.compare(password, user.password_hash);
@@ -152,6 +173,91 @@ router.post('/logout', authRequired, async (req, res) => {
     }
     clearSessionCookie(res);
     res.json({ success: true });
+});
+
+router.get('/verify-email', async (req, res) => {
+    try {
+        const token = String(req.query.token || '').trim();
+        if (!token) {
+            return res.status(400).json({ success: false, error: 'Token invalid sau expirat.' });
+        }
+
+        const rowResult = await pool.query(
+            'SELECT * FROM email_verification_tokens WHERE token = $1 AND expires_at > NOW()',
+            [token]
+        );
+        const row = rowResult.rows[0];
+        if (!row) {
+            return res.status(400).json({ success: false, error: 'Token invalid sau expirat.' });
+        }
+
+        await pool.query('UPDATE users SET email_verified = TRUE, updated_at = NOW() WHERE id = $1', [row.user_id]);
+        await pool.query('DELETE FROM email_verification_tokens WHERE user_id = $1', [row.user_id]);
+
+        return res.json({ success: true, message: 'Email verificat cu succes! Poti acum sa te conectezi.' });
+    } catch (err) {
+        console.error('Verify email error:', err);
+        return res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
+router.post('/resend-verification', authRequired, async (req, res) => {
+    try {
+        const userResult = await pool.query('SELECT id, email, email_verified FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'Utilizator inexistent.' });
+        }
+        if (user.email_verified) {
+            return res.json({ success: true, message: 'Emailul este deja verificat.', emailSent: false });
+        }
+
+        await pool.query('DELETE FROM email_verification_tokens WHERE user_id = $1', [user.id]);
+
+        const token = generateToken();
+        await pool.query(
+            'INSERT INTO email_verification_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [user.id, token, expiresAt()]
+        );
+
+        await emailService.sendVerificationEmail(user.email, token, process.env.BASE_URL);
+        return res.json({ success: true, emailSent: true, message: 'Emailul de verificare a fost retrimis.' });
+    } catch (err) {
+        console.error('Resend verification error:', err);
+        return res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
+});
+
+router.post('/resend-verification-public', async (req, res) => {
+    try {
+        const email = String(req.body?.email || '').trim().toLowerCase();
+        if (!email) {
+            return res.status(400).json({ success: false, error: 'Emailul este obligatoriu.' });
+        }
+
+        const userResult = await pool.query(
+            'SELECT id, email, email_verified FROM users WHERE email = $1',
+            [email]
+        );
+        const user = userResult.rows[0];
+
+        if (!user || user.email_verified) {
+            return res.json({ success: true, message: 'Daca exista un cont neverificat cu acest email, am retrimis linkul.' });
+        }
+
+        await pool.query('DELETE FROM email_verification_tokens WHERE user_id = $1', [user.id]);
+        const token = generateToken();
+        await pool.query(
+            'INSERT INTO email_verification_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [user.id, token, expiresAt()]
+        );
+
+        await emailService.sendVerificationEmail(user.email, token, process.env.BASE_URL);
+        return res.json({ success: true, message: 'Daca exista un cont neverificat cu acest email, am retrimis linkul.' });
+    } catch (err) {
+        console.error('Public resend verification error:', err);
+        return res.status(500).json({ success: false, error: 'Eroare interna.' });
+    }
 });
 
 router.get('/me', authRequired, (req, res) => {
@@ -326,7 +432,7 @@ router.post('/request-reset', async (req, res) => {
         const token = generateToken();
         await pool.query('INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)', [user.id, token, expiresAt()]);
 
-        emailService.sendPasswordResetEmail(user.email, user.username, token).catch(err => {
+        emailService.sendPasswordResetEmail(user.email, token, process.env.BASE_URL).catch(err => {
             console.error('Failed to send reset email:', err.message);
         });
 

@@ -1,29 +1,37 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-let _resend = null;
+let _transporter = null;
 
-function getResend() {
-    if (_resend) return _resend;
+function getTransporter() {
+    if (_transporter) return _transporter;
 
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
         return null;
     }
 
-    _resend = new Resend(apiKey);
-    console.log('Resend email client initialized');
-    return _resend;
+    _transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    console.log('Nodemailer Gmail transporter initialized');
+    return _transporter;
 }
 
-const FROM = 'Console Notebook <onboarding@resend.dev>';
+const FROM = () => `Console Notebook <${process.env.EMAIL_USER || 'console.notebook.app@gmail.com'}>`;
 const BASE_URL = () => process.env.BASE_URL || 'http://localhost:3000';
 const CONTACT_TO = () => process.env.CONTACT_RECEIVER_EMAIL || 'console.notebook.app@gmail.com';
 
 async function sendMail(to, subject, html) {
-    const resend = getResend();
+    const transporter = getTransporter();
 
-    if (!resend) {
-        console.log('---- EMAIL (dev mode - no Resend API key) ----');
+    if (!transporter) {
+        console.log('---- EMAIL (dev mode - no Gmail credentials) ----');
         console.log('  To:      ' + to);
         console.log('  Subject: ' + subject);
         console.log('  Body:    ' + html.replace(/<[^>]+>/g, ' ').substring(0, 300) + '...');
@@ -31,50 +39,80 @@ async function sendMail(to, subject, html) {
         return true;
     }
 
-    const { data, error } = await resend.emails.send({
-        from: FROM,
+    const info = await transporter.sendMail({
+        from: FROM(),
         to,
         subject,
         html
     });
 
-    if (error) {
-        console.error('Resend email error:', error);
-        throw new Error(error.message || 'Email sending failed');
-    }
-
-    console.log('Email sent successfully to:', to, '| Id:', data?.id);
+    console.log('Email sent successfully to:', to, '| Id:', info?.messageId);
     return true;
 }
 
-async function sendPasswordResetEmail(email, username, token) {
-    const link = BASE_URL() + '/html/pages/reset-password.html?token=' + encodeURIComponent(token);
-
-    const html =
-    '<div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;background:#1e1a17;color:#e0d6cc;border-radius:12px;">' +
-        '<h2 style="color:#d4a24e;margin-bottom:8px;">Resetare parola</h2>' +
-        '<p>Salut, <strong>' + escapeHtml(username) + '</strong>!</p>' +
-        '<p>Am primit o cerere de resetare a parolei. Foloseste butonul de mai jos pentru a seta o parola noua:</p>' +
-        '<p style="text-align:center;margin:24px 0;">' +
-            '<a href="' + link + '" style="display:inline-block;padding:12px 28px;background:#d4a24e;color:#1e1a17;text-decoration:none;font-weight:600;border-radius:8px;">Reseteaza Parola</a>' +
-        '</p>' +
-        '<p style="font-size:13px;color:#a89880;">Linkul expira in 24 de ore. Daca nu ai solicitat resetarea, ignora acest email.</p>' +
-    '</div>';
-
-    return sendMail(email, 'Resetare parola - Console Notebook', html);
+function buildCardEmail(title, intro, buttonLabel, buttonLink, footer) {
+    return '' +
+        '<div style="font-family:Segoe UI,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;background:#16110f;color:#f5eee6;border-radius:16px;border:1px solid #2b221d;">' +
+            '<div style="margin-bottom:20px;">' +
+                '<div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#a89880;">CNote</div>' +
+                '<h2 style="margin:8px 0 0;color:#d4a24e;font-size:24px;line-height:1.2;">' + escapeHtml(title) + '</h2>' +
+            '</div>' +
+            '<p style="font-size:15px;line-height:1.7;color:#e0d6cc;margin:0 0 24px;">' + intro + '</p>' +
+            '<div style="margin:0 0 24px;">' +
+                '<a href="' + buttonLink + '" style="display:inline-block;padding:12px 24px;background:#d4a24e;color:#1a1411;text-decoration:none;font-weight:700;border-radius:10px;">' + escapeHtml(buttonLabel) + '</a>' +
+            '</div>' +
+            '<p style="font-size:13px;line-height:1.6;color:#a89880;margin:0;">' + footer + '</p>' +
+        '</div>';
 }
 
-async function sendContactMessageEmail(name, email, message) {
-    const html =
-    '<div style="font-family:sans-serif;max-width:620px;margin:0 auto;padding:24px;background:#1e1a17;color:#e0d6cc;border-radius:12px;">' +
-        '<h2 style="color:#d4a24e;margin-bottom:8px;">Mesaj nou din formularul de contact</h2>' +
-        '<p><strong>Nume:</strong> ' + escapeHtml(name) + '</p>' +
-        '<p><strong>Email:</strong> ' + escapeHtml(email) + '</p>' +
-        '<hr style="border:none;border-top:1px solid #3c3028;margin:16px 0;">' +
-        '<p style="white-space:pre-wrap;line-height:1.5;">' + escapeHtml(message) + '</p>' +
-    '</div>';
+async function sendVerificationEmail(to, token, baseUrl) {
+    const link = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/verify-success.html?token=' + encodeURIComponent(token);
+    const html = buildCardEmail(
+        'Verifica adresa de email',
+        'Bine ai venit in Console Notebook. Confirma adresa de email pentru a activa complet contul si a putea folosi toate functiile comunitatii.',
+        'Verifica emailul',
+        link,
+        'Linkul expira in 24 de ore. Daca nu ti-ai creat cont, poti ignora acest mesaj.'
+    );
 
-    return sendMail(CONTACT_TO(), 'Mesaj contact - Console Notebook', html);
+    return sendMail(to, 'Verifica adresa de email - CNote', html);
+}
+
+async function sendPasswordResetEmail(to, token, baseUrl) {
+    const link = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(token);
+    const html = buildCardEmail(
+        'Resetare parola',
+        'Am primit o cerere de resetare a parolei. Foloseste butonul de mai jos pentru a seta o parola noua pentru contul tau CNote.',
+        'Reseteaza parola',
+        link,
+        'Linkul expira in 24 de ore. Daca nu ai solicitat resetarea, ignora acest email.'
+    );
+
+    return sendMail(to, 'Resetare parola - CNote', html);
+}
+
+async function sendContactEmail(from, name, subject, message) {
+    const adminHtml = '' +
+        '<div style="font-family:Segoe UI,Arial,sans-serif;max-width:620px;margin:0 auto;padding:24px;background:#16110f;color:#f5eee6;border-radius:16px;border:1px solid #2b221d;">' +
+            '<div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#a89880;margin-bottom:8px;">CNote Contact</div>' +
+            '<h2 style="margin:0 0 12px;color:#d4a24e;font-size:24px;">Mesaj nou din formularul de contact</h2>' +
+            '<p style="margin:0 0 6px;"><strong>Nume:</strong> ' + escapeHtml(name) + '</p>' +
+            '<p style="margin:0 0 6px;"><strong>Email:</strong> ' + escapeHtml(from) + '</p>' +
+            '<p style="margin:0 0 16px;"><strong>Subiect:</strong> ' + escapeHtml(subject) + '</p>' +
+            '<div style="padding:16px;border-radius:12px;background:#211915;border:1px solid #352923;white-space:pre-wrap;line-height:1.6;">' + escapeHtml(message) + '</div>' +
+        '</div>';
+
+    const confirmationHtml = buildCardEmail(
+        'Am primit mesajul tau',
+        'Iti multumim ca ne-ai contactat. Iti vom raspunde in cel mai scurt timp.',
+        'Inapoi la site',
+        String(BASE_URL()).replace(/\/$/, '') + '/html/pages/index.html#contact',
+        'Acesta este un mesaj automat de confirmare din partea CNote.'
+    );
+
+    await sendMail(CONTACT_TO(), `CNote Contact: ${subject}`, adminHtml);
+    await sendMail(from, 'Am primit mesajul tau - CNote', confirmationHtml);
+    return true;
 }
 
 function escapeHtml(str) {
@@ -87,7 +125,8 @@ function escapeHtml(str) {
 }
 
 module.exports = {
+    sendVerificationEmail,
     sendPasswordResetEmail,
-    sendContactMessageEmail,
-    getResend
+    sendContactEmail,
+    getTransporter
 };
