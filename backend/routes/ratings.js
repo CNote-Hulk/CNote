@@ -135,7 +135,7 @@ async function resolveUserId(req, token) {
         return decoded.userId;
     } catch {
         const result = await pool.query(
-            'SELECT user_id FROM user_sessions WHERE session_token = $1 AND is_active = 1',
+            'SELECT user_id FROM user_sessions WHERE session_token = $1 AND is_active = true',
             [token]
         );
         return result.rows[0]?.user_id || null;

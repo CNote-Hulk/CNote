@@ -71,7 +71,7 @@ router.get('/', authRequired, async (req, res) => {
                 login_time, last_activity, is_active,
                 (session_token = $1)::int AS is_current
          FROM user_sessions
-         WHERE user_id = $2 AND is_active = 1
+         WHERE user_id = $2 AND is_active = true
          ORDER BY last_activity DESC`,
         [req.sessionToken || '', req.user.id]
     );
@@ -98,7 +98,7 @@ router.delete('/:id', authRequired, async (req, res) => {
     }
 
     const sessionResult = await pool.query(
-        'SELECT id, session_token FROM user_sessions WHERE id = $1 AND user_id = $2 AND is_active = 1',
+        'SELECT id, session_token FROM user_sessions WHERE id = $1 AND user_id = $2 AND is_active = true',
         [sessionId, req.user.id]
     );
 
@@ -107,15 +107,15 @@ router.delete('/:id', authRequired, async (req, res) => {
         return res.status(404).json({ success: false, error: 'Sesiunea nu a fost gasita.' });
     }
 
-    await pool.query('UPDATE user_sessions SET is_active = 0 WHERE id = $1', [sessionId]);
+    await pool.query('UPDATE user_sessions SET is_active = false WHERE id = $1', [sessionId]);
     notifySessionTerminated(session.session_token);
     res.json({ success: true, message: 'Sesiunea a fost inchisa.' });
 });
 
 router.delete('/', authRequired, async (req, res) => {
     const result = await pool.query(
-        `UPDATE user_sessions SET is_active = 0
-         WHERE user_id = $1 AND is_active = 1
+        `UPDATE user_sessions SET is_active = false
+         WHERE user_id = $1 AND is_active = true
          RETURNING session_token`,
         [req.user.id]
     );
