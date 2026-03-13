@@ -7,6 +7,6 @@
     "start": "npm run start:server",
     "start:server": "npm --prefix backend start",
     "dev:server": "npm --prefix backend run dev",
-    "reset-db": "node frontend/scripts/reset-database.js"
+    "reset-db": "node frontend/js/reset-database.js"
   }
 }

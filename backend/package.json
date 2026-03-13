@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "reset-db": "node scripts/reset-database.js"
+    "reset-db": "node js/reset-database.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
