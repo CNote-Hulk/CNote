@@ -63,7 +63,7 @@ async function sendVerificationEmail(to, token, baseUrl) {
 }
 
 async function sendPasswordResetEmail(to, token, baseUrl) {
-    const link = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/frontend/html/pages/reset-password.html?token=' + encodeURIComponent(token);
+    const link = String(baseUrl || BASE_URL()).replace(/\/$/, '') + 'html/pages/reset-password.html?token=' + encodeURIComponent(token);
     const html = wrapTemplate(`
     <p style="color:#e8d5b7;font-size:0.95rem;line-height:1.6;margin:0 0 24px;">
       Am primit o cerere de resetare a parolei. Folosește butonul de mai jos pentru a seta o parolă nouă pentru contul tău CNote.
