@@ -1761,11 +1761,10 @@
         width: 44px;
         height: 44px;
         padding: 10px;
-        background: rgba(42, 35, 32, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: transparent;
+        border: none;
         border-radius: 10px;
         cursor: pointer;
-        backdrop-filter: blur(8px);
     }
 
     .hub-mobile-hamburger span {
