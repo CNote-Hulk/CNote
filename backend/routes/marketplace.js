@@ -29,6 +29,7 @@ router.get('/listings', async (req, res) => {
         const category = VALID_CATEGORIES.includes(req.query.category) ? req.query.category : null;
         const condition = VALID_CONDITIONS.includes(req.query.condition) ? req.query.condition : null;
         const search = req.query.search ? String(req.query.search).trim().slice(0, 100) : null;
+        const console_type = req.query.console_type ? String(req.query.console_type).trim().slice(0, 100) : null;
 
         let where = ["COALESCE(l.status, 'active') = 'active'"];
         let params = [];
@@ -41,6 +42,10 @@ router.get('/listings', async (req, res) => {
         if (condition) {
             where.push(`l.condition = $${paramIdx++}`);
             params.push(condition);
+        }
+        if (console_type) {
+            where.push(`l.console_type = $${paramIdx++}`);
+            params.push(console_type);
         }
         if (search) {
             where.push(`(l.title ILIKE $${paramIdx} OR l.description ILIKE $${paramIdx})`);

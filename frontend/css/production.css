@@ -6403,6 +6403,7 @@ body.search-open {
     margin-bottom: 10px;
     align-items: center;
     transition: border-color 0.2s ease;
+    cursor: pointer;
 }
 
 .my-listing-row:hover {

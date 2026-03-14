@@ -1400,25 +1400,34 @@
             if (!container) return;
             container.addEventListener('click', async e => {
                 const btn = e.target.closest('.my-listing-action');
-                if (!btn) return;
-                const id = parseInt(btn.dataset.id, 10);
-                const action = btn.dataset.action;
+                if (btn) {
+                    const id = parseInt(btn.dataset.id, 10);
+                    const action = btn.dataset.action;
 
-                if (action === 'deactivate') {
-                    await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'inactive' });
-                    loadMyListings();
-                } else if (action === 'activate') {
-                    await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'active' });
-                    loadMyListings();
-                } else if (action === 'sold') {
-                    await mpApi('PATCH', `/marketplace/listings/${id}/sold`);
-                    loadMyListings();
-                } else if (action === 'delete') {
-                    if (!(await confirmModal('Sigur vrei să ștergi acest anunț? Acțiunea este permanentă.'))) return;
-                    await mpApi('DELETE', `/marketplace/listings/${id}`);
-                    loadMyListings();
-                } else if (action === 'edit') {
-                    openEditListingModal(id);
+                    if (action === 'deactivate') {
+                        await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'inactive' });
+                        loadMyListings();
+                    } else if (action === 'activate') {
+                        await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'active' });
+                        loadMyListings();
+                    } else if (action === 'sold') {
+                        await mpApi('PATCH', `/marketplace/listings/${id}/sold`);
+                        loadMyListings();
+                    } else if (action === 'delete') {
+                        if (!(await confirmModal('Sigur vrei să ștergi acest anunț? Acțiunea este permanentă.'))) return;
+                        await mpApi('DELETE', `/marketplace/listings/${id}`);
+                        loadMyListings();
+                    } else if (action === 'edit') {
+                        openEditListingModal(id);
+                    }
+                    return;
+                }
+
+                // Click on the listing row itself → navigate to listing detail
+                const row = e.target.closest('.my-listing-row');
+                if (row) {
+                    const id = row.dataset.listingId;
+                    if (id) window.location.href = `community.html#listing-${id}`;
                 }
             });
         })();
@@ -1523,10 +1532,16 @@
 
                 container.addEventListener('click', async e => {
                     const btn = e.target.closest('[data-action="unfav"]');
-                    if (!btn) return;
-                    const id = parseInt(btn.dataset.id, 10);
-                    await mpApi('POST', `/marketplace/listings/${id}/favorite`);
-                    loadFavorites();
+                    if (btn) {
+                        const id = parseInt(btn.dataset.id, 10);
+                        await mpApi('POST', `/marketplace/listings/${id}/favorite`);
+                        loadFavorites();
+                        return;
+                    }
+                    const row = e.target.closest('.my-listing-row');
+                    if (row && row.dataset.listingId) {
+                        window.location.href = `community.html#listing-${row.dataset.listingId}`;
+                    }
                 });
             } catch {
                 container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca favoritele.</p>';
