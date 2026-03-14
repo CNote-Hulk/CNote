@@ -157,7 +157,7 @@ router.post('/listings', authRequired, async (req, res) => {
     const safeLocation = String(location || '').trim().slice(0, 100);
     const safePhone = String(phone || '').trim().slice(0, 30);
     const safeOlx = String(olx_url || '').trim().slice(0, 500);
-    const safeImages = JSON.stringify(Array.isArray(images) ? images.slice(0, 5).map(u => String(u).slice(0, 500)) : []);
+    const safeImages = JSON.stringify(Array.isArray(images) ? images.slice(0, 8).map(u => String(u).slice(0, 200000)) : []);
 
     try {
         const result = await pool.query(`
@@ -202,7 +202,7 @@ router.put('/listings/:id', authRequired, async (req, res) => {
         if (olx_url !== undefined)     { sets.push(`olx_url = $${idx++}`);     params.push(String(olx_url).trim().slice(0, 500)); }
         if (images !== undefined && Array.isArray(images)) {
             sets.push(`images = $${idx++}`);
-            params.push(JSON.stringify(images.slice(0, 8).map(u => String(u).slice(0, 500))));
+            params.push(JSON.stringify(images.slice(0, 8).map(u => String(u).slice(0, 200000))));
         }
 
         if (sets.length === 0) return res.status(400).json({ success: false, error: 'Nimic de actualizat.' });

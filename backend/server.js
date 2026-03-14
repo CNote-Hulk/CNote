@@ -107,7 +107,7 @@ const allowedOrigins = [
 
 const allowedOriginHosts = allowedOrigins.map(getOriginHost).filter(Boolean);
 
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
