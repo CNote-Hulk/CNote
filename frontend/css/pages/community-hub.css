@@ -1748,6 +1748,15 @@
 
 @media (max-width: 768px) {
 
+    /* --- Search button next to hamburger --- */
+    body:has(.community-page--hub) .navbar-search-btn {
+        position: fixed;
+        left: 60px;
+        top: 14px;
+        z-index: 1102;
+        margin-right: 0;
+    }
+
     /* --- Mobile hamburger button (fixed top-left) --- */
     .hub-mobile-hamburger {
         display: flex;
