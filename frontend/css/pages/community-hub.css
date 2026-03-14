@@ -1748,14 +1748,47 @@
 
 @media (max-width: 768px) {
 
-    /* --- Search button next to profile icon (right side) --- */
+    /* --- Navbar adjustments for community page --- */
+    body:has(.community-page--hub) .navbar .container {
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 16px;
+    }
+
+    body:has(.community-page--hub) .navbar {
+        padding: 12px 0 0;
+    }
+
+    body:has(.community-page--hub) .logo {
+        padding-bottom: 10px;
+    }
+
     body:has(.community-page--hub) .navbar-search-btn {
         position: absolute;
         left: auto;
-        right: 60px;
-        top: 16px;
+        right: 50px;
+        top: 10px;
         z-index: 10;
         margin-right: 0;
+    }
+
+    body:has(.community-page--hub) .navbar-profile-wrap {
+        position: absolute;
+        right: 16px;
+        top: 10px;
+    }
+
+    body:has(.community-page--hub) .nav-links {
+        width: 100%;
+        padding: 0 10px 12px;
+        gap: 2px 0;
+        font-size: 0.82rem;
+    }
+
+    body:has(.community-page--hub) .nav-links a {
+        font-size: 0.82rem;
     }
 
     /* --- Mobile hamburger button (fixed top-left) --- */
