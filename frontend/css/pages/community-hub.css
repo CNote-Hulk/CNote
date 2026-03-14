@@ -1893,27 +1893,23 @@
     .hub-sidebar__mobile-header {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 16px 16px 12px;
+        justify-content: flex-end;
+        padding: 12px 12px 8px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .hub-sidebar__mobile-title {
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--text-light, #F5F0E8);
-        font-family: var(--font-sans);
+        display: none;
     }
 
     .hub-sidebar__close {
         background: none;
         border: none;
         color: var(--text-gray, #A89F94);
-        font-size: 0.85rem;
-        font-weight: 600;
-        font-family: var(--font-sans);
+        font-size: 1.3rem;
         cursor: pointer;
-        padding: 8px 12px;
+        width: 40px;
+        height: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2104,14 +2100,17 @@
 
     /* --- Marketplace grid on mobile --- */
     .hub-market-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        grid-template-columns: 1fr;
         padding: 12px;
-        gap: 10px;
+        gap: 12px;
     }
 
     .hub-market-filters {
         flex-direction: column;
         gap: 8px;
+        padding: 12px 14px;
+        background: rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .hub-market-filters input,
@@ -2119,6 +2118,15 @@
         width: 100%;
         font-size: 16px;
         min-height: 44px;
+        border-radius: 12px;
+    }
+
+    .hub-listing-card {
+        border-radius: 16px;
+    }
+
+    .hub-listing-img {
+        aspect-ratio: 16 / 10;
     }
 
     /* Marketplace FAB on mobile */
