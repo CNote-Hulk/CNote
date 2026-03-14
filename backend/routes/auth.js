@@ -63,21 +63,43 @@ function sanitizeUser(user) {
     };
 }
 
+router.get('/check-username', async (req, res) => {
+    try {
+        const username = String(req.query.username || '').trim();
+        if (username.length < 3) {
+            return res.json({ available: false });
+        }
+        const result = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [username]);
+        res.json({ available: !result.rows[0] });
+    } catch (err) {
+        console.error('Check username error:', err);
+        res.status(500).json({ available: false });
+    }
+});
+
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        if (!username || String(username).trim().length < 1) {
-            return res.status(400).json({ success: false, error: 'Numele de utilizator este obligatoriu.' });
+        // Username validation
+        const usernameTrimmed = String(username || '').trim();
+        if (usernameTrimmed.length < 3 || usernameTrimmed.length > 20) {
+            return res.status(400).json({ success: false, error: 'Numele de utilizator trebuie să aibă între 3 și 20 de caractere.' });
         }
+        if (!/^[a-zA-Z0-9_]+$/.test(usernameTrimmed)) {
+            return res.status(400).json({ success: false, error: 'Numele de utilizator poate conține doar litere, cifre și underscore.' });
+        }
+
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             return res.status(400).json({ success: false, error: 'Adresa de email nu este valida.' });
         }
-        if (!password || String(password).length < 6) {
-            return res.status(400).json({ success: false, error: 'Parola trebuie sa aiba minim 6 caractere.' });
+
+        // Password strength validation
+        const pwd = String(password || '');
+        if (pwd.length < 8 || !/[A-Z]/.test(pwd) || !/[a-z]/.test(pwd) || !/[0-9]/.test(pwd) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)) {
+            return res.status(400).json({ success: false, error: 'Parola trebuie să conțină cel puțin 8 caractere, o literă mare, o literă mică, un număr și un caracter special.' });
         }
 
-        const usernameTrimmed = String(username).trim();
         const usernameCheck = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [usernameTrimmed]);
         if (usernameCheck.rows[0]) {
             return res.status(409).json({ success: false, error: 'Username-ul este deja folosit. Alege altul.' });
