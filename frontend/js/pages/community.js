@@ -45,6 +45,7 @@ const S = {
     repairDesc: '',
     repairResult: null,
     repairCustomProblem: '',
+    favoriteIds: new Set(),
 };
 
 // ── DOM refs ───────────────────────────────────────────────
@@ -403,6 +404,16 @@ function renderMarketplace() {
 async function loadListings() {
     const grid = document.getElementById('market-grid');
     const pag  = document.getElementById('market-pagination');
+
+    // Load favorite IDs if user is logged in
+    const u = user();
+    if (u) {
+        try {
+            const favData = await api('GET', '/marketplace/favorites/ids');
+            if (favData.success) S.favoriteIds = new Set(favData.ids);
+        } catch {}
+    }
+
     try {
         const p = new URLSearchParams();
         if (S.category)        p.set('category',  S.category);
@@ -422,23 +433,42 @@ async function loadListings() {
         }
 
         grid.innerHTML = listings.map(l => {
-            let imgs = []; try { imgs = JSON.parse(l.images || '[]'); } catch {}
+            const imgs = Array.isArray(l.images) ? l.images : [];
+            const isFav = S.favoriteIds.has(l.id);
             return `
                 <button class="hub-listing-card" data-id="${l.id}">
                     <div class="hub-listing-img">
-                        ${imgs[0] ? `<img src="${esc(imgs[0])}" alt="" loading="lazy">` : '<span class="hub-listing-img__placeholder">📦</span>'}
+                        ${imgs[0] ? `<img src="${esc(imgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy" class="hub-listing-img__placeholder-img">'}
                         ${l.sold ? '<div class="hub-listing-sold-overlay"><span class="hub-listing-sold-badge">VÂNDUT</span></div>' : ''}
+                        <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
+                            ${isFav ? '❤️' : '🤍'}
+                        </span>
                     </div>
                     <div class="hub-listing-info">
                         <div class="hub-listing-info__top"><span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span></div>
                         <div class="hub-listing-info__title">${esc(l.title)}</div>
                         <div class="hub-listing-info__price">${Number(l.price).toFixed(0)} RON</div>
-                        <div class="hub-listing-info__seller">${esc(l.username)}${l.location ? ' · ' + esc(l.location) : ''}</div>
+                        <div class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</div>
                     </div>
                 </button>`;
         }).join('');
 
-        grid.addEventListener('click', e => {
+        // Favorite button click handler
+        grid.addEventListener('click', async e => {
+            const favBtn = e.target.closest('.hub-listing-fav-btn');
+            if (favBtn) {
+                e.stopPropagation();
+                if (!u) { alert('Autentifică-te pentru favorite'); return; }
+                const lid = +favBtn.dataset.favId;
+                favBtn.classList.add('hub-listing-fav-btn--pop');
+                const res = await api('POST', `/marketplace/listings/${lid}/favorite`);
+                if (res.success) {
+                    if (res.favorited) { S.favoriteIds.add(lid); favBtn.innerHTML = '❤️'; favBtn.classList.add('hub-listing-fav-btn--active'); }
+                    else { S.favoriteIds.delete(lid); favBtn.innerHTML = '🤍'; favBtn.classList.remove('hub-listing-fav-btn--active'); }
+                }
+                setTimeout(() => favBtn.classList.remove('hub-listing-fav-btn--pop'), 300);
+                return;
+            }
             const c = e.target.closest('.hub-listing-card');
             if (c) openListingDetail(+c.dataset.id);
         });
@@ -507,6 +537,12 @@ async function openListingDetail(id) {
                         ${own && !l.sold ? '<button class="hub-btn hub-btn--primary" id="listing-sold-btn">✓ Marchează vândut</button>' : ''}
                         ${own ? '<button class="hub-btn hub-btn--danger" id="listing-del-btn">Șterge</button>' : ''}
                     </div>
+                    <div class="hub-similar-section" id="similar-section">
+                        <h3 class="hub-similar-section__title">📋 Anunțuri similare</h3>
+                        <div class="hub-similar-grid" id="similar-grid">
+                            ${Array.from({length:4}, () => '<div class="hub-listing-card hub-listing-card--skeleton"><div class="hub-listing-img"></div><div class="hub-listing-info"><div class="hub-skeleton-line" style="width:60%"></div><div class="hub-skeleton-line" style="width:80%"></div><div class="hub-skeleton-line" style="width:40%"></div></div></div>').join('')}
+                        </div>
+                    </div>
                 </div>
             </div>`;
 
@@ -534,7 +570,66 @@ async function openListingDetail(id) {
             if (!confirm('Sigur vrei să ștergi acest anunț?')) return;
             if ((await api('DELETE', `/marketplace/listings/${id}`)).success) { showView('marketplace'); renderMarketplace(); loadListings(); }
         });
+
+        // Load similar listings
+        loadSimilarListings(id, v);
+
     } catch { v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Eroare la încărcare.</div>'; }
+}
+
+/** Fetch and render similar listings below the detail view */
+async function loadSimilarListings(listingId, container) {
+    const section = container.querySelector('#similar-section');
+    const grid = container.querySelector('#similar-grid');
+    try {
+        const data = await api('GET', `/marketplace/listings/${listingId}/similar`);
+        if (!data.success || !data.listings || data.listings.length === 0) {
+            section.hidden = true;
+            return;
+        }
+        const u = user();
+        grid.innerHTML = data.listings.map(l => {
+            const simImgs = Array.isArray(l.images) ? l.images : [];
+            const isFav = S.favoriteIds.has(l.id);
+            return `
+                <button class="hub-listing-card" data-id="${l.id}">
+                    <div class="hub-listing-img">
+                        ${simImgs[0] ? `<img src="${esc(simImgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy" class="hub-listing-img__placeholder-img">'}
+                        <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
+                            ${isFav ? '❤️' : '🤍'}
+                        </span>
+                    </div>
+                    <div class="hub-listing-info">
+                        <div class="hub-listing-info__top"><span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span></div>
+                        <div class="hub-listing-info__title">${esc(l.title)}</div>
+                        <div class="hub-listing-info__price">${Number(l.price).toFixed(0)} RON</div>
+                        <div class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</div>
+                    </div>
+                </button>`;
+        }).join('');
+
+        // Click handlers for similar listing cards
+        grid.addEventListener('click', async e => {
+            const favBtn = e.target.closest('.hub-listing-fav-btn');
+            if (favBtn) {
+                e.stopPropagation();
+                if (!u) { alert('Autentifică-te pentru favorite'); return; }
+                const lid = +favBtn.dataset.favId;
+                favBtn.classList.add('hub-listing-fav-btn--pop');
+                const res = await api('POST', `/marketplace/listings/${lid}/favorite`);
+                if (res.success) {
+                    if (res.favorited) { S.favoriteIds.add(lid); favBtn.innerHTML = '❤️'; favBtn.classList.add('hub-listing-fav-btn--active'); }
+                    else { S.favoriteIds.delete(lid); favBtn.innerHTML = '🤍'; favBtn.classList.remove('hub-listing-fav-btn--active'); }
+                }
+                setTimeout(() => favBtn.classList.remove('hub-listing-fav-btn--pop'), 300);
+                return;
+            }
+            const c = e.target.closest('.hub-listing-card');
+            if (c) openListingDetail(+c.dataset.id);
+        });
+    } catch {
+        section.hidden = true;
+    }
 }
 
 /** Open modal dialog to create a new marketplace listing */
