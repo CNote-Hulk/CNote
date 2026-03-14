@@ -3,7 +3,13 @@
    DESCRIPTION: Public user profiles, user search, console
    list loading (with caching), and owned console management.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
+const path = require('path');
 const fs = require('fs');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');

@@ -4,7 +4,13 @@
    middleware, CORS, mounts all API routes, and serves
    static frontend files. Uses PostgreSQL via Supabase.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
+const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');

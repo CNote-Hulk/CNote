@@ -3,6 +3,11 @@
    DESCRIPTION: Session management and Server-Sent Events (SSE)
    for real-time session termination notifications.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');

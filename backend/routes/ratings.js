@@ -3,6 +3,11 @@
    DESCRIPTION: Console rating system. Users can rate consoles
    1-5, view averages, and see their own ratings.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');

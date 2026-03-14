@@ -3,6 +3,11 @@
    DESCRIPTION: Friend management routes. Send/accept/reject
    friend requests, list friends, check friendship status.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
