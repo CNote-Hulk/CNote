@@ -40,16 +40,11 @@
 /* Fade gradient at the top of sidebar (like navbar) */
 .hub-sidebar::before {
     content: '';
-    position: sticky;
-    top: 0;
-    display: block;
-    width: calc(100% + 16px);
-    margin-left: -8px;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 260px;
     height: 28px;
-    min-height: 28px;
-    flex-shrink: 0;
-    margin-top: -14px;
-    margin-bottom: -28px;
     background: linear-gradient(to bottom, var(--dark-bg-2, #151210) 0%, rgba(21, 18, 16, 0.6) 55%, transparent 100%);
     pointer-events: none;
     z-index: 2;
