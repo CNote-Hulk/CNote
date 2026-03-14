@@ -139,4 +139,39 @@ function parseCookies(cookieStr) {
     return result;
 }
 
-module.exports = { authRequired };
+/**
+ * authOptional
+ * @description Like authRequired, but does NOT return 401 if no token.
+ *              If token is present and valid, attaches req.user.
+ *              If missing or invalid, req.user stays undefined and request continues.
+ */
+async function authOptional(req, res, next) {
+    const token = extractToken(req);
+    if (!token) return next();
+
+    const JWT_SECRET = req.app.get('JWT_SECRET');
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
+        if (userResult.rows[0]) {
+            req.user = { id: userResult.rows[0].id, username: userResult.rows[0].username };
+        }
+        return next();
+    } catch {}
+
+    try {
+        const sessionResult = await pool.query(`
+            SELECT s.user_id, u.username FROM user_sessions s
+            JOIN users u ON u.id = s.user_id
+            WHERE s.session_token = $1 AND s.is_active = true
+        `, [token]);
+        if (sessionResult.rows[0]) {
+            req.user = { id: sessionResult.rows[0].user_id, username: sessionResult.rows[0].username };
+        }
+    } catch {}
+
+    next();
+}
+
+module.exports = { authRequired, authOptional };

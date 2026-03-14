@@ -211,6 +211,14 @@ async function initializeSchema() {
 			read        BOOLEAN DEFAULT FALSE,
 			created_at  TIMESTAMP DEFAULT NOW()
 		);
+
+		CREATE TABLE IF NOT EXISTS listing_favorites (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			listing_id  INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+			created_at  TIMESTAMP DEFAULT NOW(),
+			UNIQUE(user_id, listing_id)
+		);
 	`);
 
 	// Column migrations — idempotent ALTER statements to evolve schema
@@ -226,7 +234,10 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS two_factor_email_enabled BOOLEAN DEFAULT FALSE`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT DEFAULT NULL`,
-		`ALTER TABLE email_verification_tokens ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`
+		`ALTER TABLE email_verification_tokens ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active'`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS favorites_count INTEGER DEFAULT 0`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }
