@@ -44,6 +44,7 @@ const S = {
     repairSymptoms: [],
     repairDesc: '',
     repairResult: null,
+    repairCustomProblem: '',
 };
 
 // ── DOM refs ───────────────────────────────────────────────
@@ -138,7 +139,7 @@ function navigate(view, con, cat) {
             break;
         case 'repair':
             S.console = con;
-            Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null });
+            Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
             showView('repair');
             renderRepair();
             break;
@@ -540,6 +541,9 @@ async function openListingDetail(id) {
 function openAddListingModal() {
     document.querySelector('.hub-modal-overlay')?.remove();
 
+    const MAX_IMAGES = 8;
+    let selectedFiles = [];
+
     const overlay = document.createElement('div');
     overlay.className = 'hub-modal-overlay';
     overlay.innerHTML = `
@@ -588,8 +592,14 @@ function openAddListingModal() {
                     <input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Link-uri imagini (câte unul pe linie)</label>
-                    <textarea class="hub-form-textarea" name="images" rows="3" placeholder="https://example.com/img1.jpg&#10;https://example.com/img2.jpg"></textarea>
+                    <label class="hub-form-label">Imagini (max ${MAX_IMAGES} fotografii)</label>
+                    <div class="hub-upload-zone" id="upload-zone">
+                        <input type="file" id="upload-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                        <span class="hub-upload-zone__icon">📁</span>
+                        <span class="hub-upload-zone__text">Trage fotografiile aici sau click pentru a alege</span>
+                    </div>
+                    <div class="hub-upload-counter" id="upload-counter">0 / ${MAX_IMAGES} imagini selectate</div>
+                    <div class="hub-upload-grid" id="upload-grid"></div>
                 </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
                     <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Anulează</button>
@@ -604,11 +614,76 @@ function openAddListingModal() {
     overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
 
+    const uploadZone = overlay.querySelector('#upload-zone');
+    const uploadInput = overlay.querySelector('#upload-input');
+    const uploadGrid = overlay.querySelector('#upload-grid');
+    const uploadCounter = overlay.querySelector('#upload-counter');
+
+    function updatePreviews() {
+        uploadGrid.innerHTML = '';
+        selectedFiles.forEach((file, i) => {
+            const thumb = document.createElement('div');
+            thumb.className = 'hub-upload-thumb';
+            thumb.innerHTML = `<img src="${URL.createObjectURL(file)}" alt=""><button type="button" class="hub-upload-thumb__remove" data-idx="${i}">&times;</button>`;
+            uploadGrid.appendChild(thumb);
+        });
+        uploadCounter.textContent = `${selectedFiles.length} / ${MAX_IMAGES} imagini selectate`;
+    }
+
+    function addFiles(files) {
+        for (const file of files) {
+            if (selectedFiles.length >= MAX_IMAGES) break;
+            if (!file.type.match(/^image\/(jpeg|png|webp)$/)) continue;
+            if (file.size > 10 * 1024 * 1024) continue;
+            selectedFiles.push(file);
+        }
+        updatePreviews();
+    }
+
+    uploadZone.addEventListener('click', () => uploadInput.click());
+    uploadInput.addEventListener('change', () => { addFiles(uploadInput.files); uploadInput.value = ''; });
+
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('hub-upload-zone--drag'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('hub-upload-zone--drag'));
+    uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('hub-upload-zone--drag'); addFiles(e.dataTransfer.files); });
+
+    uploadGrid.addEventListener('click', e => {
+        const btn = e.target.closest('.hub-upload-thumb__remove');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.idx, 10);
+        selectedFiles.splice(idx, 1);
+        updatePreviews();
+    });
+
+    /** Resize an image file to max 800px and return a base64 data URL */
+    function resizeImage(file) {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => {
+                const MAX = 800;
+                let w = img.width, h = img.height;
+                if (w > MAX || h > MAX) {
+                    if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+                    else { w = Math.round(w * MAX / h); h = MAX; }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                resolve(canvas.toDataURL('image/jpeg', 0.75));
+                URL.revokeObjectURL(img.src);
+            };
+            img.src = URL.createObjectURL(file);
+        });
+    }
+
     overlay.querySelector('#new-listing-form').addEventListener('submit', async e => {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
         btn.disabled = true;
-        const imageLines = f.images.value.split('\n').map(l => l.trim()).filter(Boolean);
+        btn.textContent = 'Se publică…';
+
+        const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
+
         const res = await api('POST', '/marketplace/listings', {
             title: f.title.value.trim(),
             description: f.description.value.trim(),
@@ -618,10 +693,10 @@ function openAddListingModal() {
             location: f.location.value.trim(),
             phone: f.phone.value.trim(),
             olx_url: f.olx_url.value.trim(),
-            images: imageLines,
+            images: imageUrls,
         });
         if (res.success) { close(); loadListings(); }
-        else { btn.disabled = false; alert(res.error || 'Eroare.'); }
+        else { btn.disabled = false; btn.textContent = 'Publică'; alert(res.error || 'Eroare.'); }
     });
 }
 
@@ -641,13 +716,20 @@ function renderRepair() {
     let body = '';
 
     if (step === 0) {
+        const hasCustom = S.repairSymptoms.includes('__custom__');
+        const canProceed = S.repairSymptoms.length > 0 && (!hasCustom || S.repairCustomProblem.trim());
         body = `
             <div class="hub-repair-question">Ce simptome are consola ta ${esc(cName)}?</div>
             <div class="hub-repair-hint">Selectează unul sau mai multe simptome:</div>
             <div class="hub-symptom-grid">
                 ${SYMPTOMS.map(s => `<button class="hub-symptom-btn${S.repairSymptoms.includes(s) ? ' hub-symptom-btn--selected' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('')}
+                <button class="hub-symptom-btn hub-symptom-btn--custom${hasCustom ? ' hub-symptom-btn--selected' : ''}" id="repair-custom-btn">✏️ Altă problemă</button>
             </div>
-            <button class="hub-btn hub-btn--primary" id="repair-next"${S.repairSymptoms.length ? '' : ' disabled'}>Continuă →</button>`;
+            ${hasCustom ? `<div class="hub-repair-custom-wrap">
+                <textarea class="hub-repair-textarea" id="repair-custom-text" rows="4" maxlength="500" placeholder="Descrie problema ta…">${esc(S.repairCustomProblem)}</textarea>
+                <div class="hub-repair-char-count"><span id="repair-custom-count">${S.repairCustomProblem.length}</span> / 500</div>
+            </div>` : ''}
+            <button class="hub-btn hub-btn--primary" id="repair-next"${canProceed ? '' : ' disabled'}>Continuă →</button>`;
     } else if (step === 1) {
         body = `
             <div class="hub-repair-question">Descrie problema mai detaliat</div>
@@ -702,12 +784,28 @@ function renderRepair() {
 
     // Events per step
     if (step === 0) {
-        v.querySelectorAll('.hub-symptom-btn').forEach(b => b.addEventListener('click', () => {
+        v.querySelectorAll('.hub-symptom-btn[data-s]').forEach(b => b.addEventListener('click', () => {
             const s = b.dataset.s;
             const i = S.repairSymptoms.indexOf(s);
             if (i >= 0) S.repairSymptoms.splice(i, 1); else S.repairSymptoms.push(s);
             renderRepair();
         }));
+        v.querySelector('#repair-custom-btn')?.addEventListener('click', () => {
+            const i = S.repairSymptoms.indexOf('__custom__');
+            if (i >= 0) { S.repairSymptoms.splice(i, 1); S.repairCustomProblem = ''; }
+            else S.repairSymptoms.push('__custom__');
+            renderRepair();
+        });
+        const cta = v.querySelector('#repair-custom-text');
+        if (cta) {
+            cta.addEventListener('input', e => {
+                S.repairCustomProblem = e.target.value;
+                v.querySelector('#repair-custom-count').textContent = e.target.value.length;
+                const ok = S.repairSymptoms.length > 0 && (!S.repairSymptoms.includes('__custom__') || S.repairCustomProblem.trim());
+                v.querySelector('#repair-next').disabled = !ok;
+            });
+            cta.focus();
+        }
         v.querySelector('#repair-next')?.addEventListener('click', () => { S.repairStep = 1; renderRepair(); });
     }
     if (step === 1) {
@@ -721,7 +819,7 @@ function renderRepair() {
     }
     if (step === 3) {
         v.querySelector('#repair-new')?.addEventListener('click', () => {
-            Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null });
+            Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
             renderRepair();
         });
     }
@@ -732,7 +830,10 @@ async function analyzeRepair() {
     S.repairStep = 2; S.repairResult = null; renderRepair();
     try {
         const data = await api('POST', '/repair/analyze', {
-            console: S.console, symptoms: S.repairSymptoms, description: S.repairDesc,
+            console: S.console,
+            symptoms: S.repairSymptoms.filter(s => s !== '__custom__'),
+            description: S.repairDesc,
+            customProblem: S.repairCustomProblem || undefined,
         });
         if (data.success) { S.repairResult = data.analysis; renderRepair(); }
         else throw 0;
