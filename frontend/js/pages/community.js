@@ -824,6 +824,13 @@ function openAddListingModal() {
                     </select>
                 </div>
                 <div class="hub-form-group">
+                    <label class="hub-form-label">Consolă</label>
+                    <select class="hub-form-select" name="console_type">
+                        <option value="">— Alege consola —</option>
+                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}">${c.nume}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="hub-form-group">
                     <label class="hub-form-label">Descriere</label>
                     <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Descrie produsul…"></textarea>
                 </div>
@@ -836,8 +843,8 @@ function openAddListingModal() {
                     <input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Link OLX</label>
-                    <input class="hub-form-input" name="olx_url" type="url" required placeholder="https://www.olx.ro/…">
+                    <label class="hub-form-label">Link OLX (opțional)</label>
+                    <input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…">
                 </div>
                 <div class="hub-form-group">
                     <label class="hub-form-label">Imagini (max ${MAX_IMAGES} fotografii)</label>
@@ -932,16 +939,24 @@ function openAddListingModal() {
 
         const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
 
+        // Default image: if no images uploaded but a console is selected, use console image
+        let finalImages = imageUrls;
+        if (finalImages.length === 0 && f.console_type.value) {
+            const consoleDef = (window.CONSOLES_DATA || []).find(c => c.id === f.console_type.value);
+            if (consoleDef && consoleDef.imagine) finalImages = [consoleDef.imagine];
+        }
+
         const res = await api('POST', '/marketplace/listings', {
             title: f.title.value.trim(),
             description: f.description.value.trim(),
             price: parseFloat(f.price.value),
             condition: f.condition.value,
             category: f.category.value,
+            console_type: f.console_type.value,
             location: f.location.value.trim(),
             phone: f.phone.value.trim(),
             olx_url: f.olx_url.value.trim(),
-            images: imageUrls,
+            images: finalImages,
         });
         if (res.success) { close(); loadListings(); }
         else { btn.disabled = false; btn.textContent = 'Publică'; alert(res.error || 'Eroare.'); }

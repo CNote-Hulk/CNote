@@ -22,8 +22,12 @@ export const ProfileDropdownModule = {
 
     /** Initialize the dropdown: find button, build DOM, bind events */
     init() {
+        if (this._dropdown) return;
         this._btn = document.querySelector('.navbar-profile-btn');
         if (!this._btn) return;
+
+        // Remove any pre-existing fallback dropdown
+        this._btn.parentElement.querySelectorAll('.profile-dropdown').forEach(d => d.remove());
 
         this._createDropdown();
         this._bind();

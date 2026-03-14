@@ -5801,6 +5801,13 @@ body.search-open {
     margin: 0 auto;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     margin-bottom: 30px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.profile-tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .profile-tab {
@@ -5814,6 +5821,8 @@ body.search-open {
     font-family: var(--font-sans);
     position: relative;
     transition: color 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .profile-tab:hover {
