@@ -30,6 +30,37 @@ function generateToken() {
     return crypto.randomBytes(32).toString('hex');
 }
 
+/**
+ * findOrCreateSession
+ * @description Finds an existing active session for the same user + browser + OS + IP.
+ *              If found, reuses it (updates last_activity). Otherwise creates a new one.
+ * @returns {string} session_token
+ */
+async function findOrCreateSession(userId, deviceInfo) {
+    // Look for an existing active session from the same device fingerprint
+    const existing = await pool.query(
+        `SELECT id, session_token FROM user_sessions
+         WHERE user_id = $1 AND browser = $2 AND operating_system = $3 AND ip_address = $4 AND is_active = true
+         ORDER BY last_activity DESC NULLS LAST
+         LIMIT 1`,
+        [userId, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
+    );
+
+    if (existing.rows.length > 0) {
+        // Reuse existing session — update last_activity
+        await pool.query('UPDATE user_sessions SET last_activity = NOW() WHERE id = $1', [existing.rows[0].id]);
+        return existing.rows[0].session_token;
+    }
+
+    // No matching session — create a new one
+    const sessionToken = generateToken();
+    await pool.query(
+        'INSERT INTO user_sessions (user_id, session_token, device_type, browser, operating_system, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
+        [userId, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
+    );
+    return sessionToken;
+}
+
 /** Calculate expiry date N hours from now */
 function expiresAt(hours = TOKEN_EXPIRY_HOURS) {
     const d = new Date();
@@ -236,11 +267,7 @@ router.post('/login', async (req, res) => {
         }
 
         const deviceInfo = parseDevice(req);
-        const sessionToken = generateToken();
-        await pool.query(
-            'INSERT INTO user_sessions (user_id, session_token, device_type, browser, operating_system, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [user.id, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
-        );
+        const sessionToken = await findOrCreateSession(user.id, deviceInfo);
 
         setSessionCookie(res, sessionToken);
 
@@ -736,11 +763,7 @@ router.post('/2fa/verify', async (req, res) => {
 
         // 2FA verified — create real session
         const deviceInfo = parseDevice(req);
-        const sessionToken = generateToken();
-        await pool.query(
-            'INSERT INTO user_sessions (user_id, session_token, device_type, browser, operating_system, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [user.id, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
-        );
+        const sessionToken = await findOrCreateSession(user.id, deviceInfo);
 
         setSessionCookie(res, sessionToken);
 
@@ -942,4 +965,5 @@ router.delete('/2fa/disable', authRequired, async (req, res) => {
     }
 });
 
+router.findOrCreateSession = findOrCreateSession;
 module.exports = router;
