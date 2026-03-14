@@ -40,6 +40,7 @@ const S = {
     marketSearch: '',
     marketSort: 'newest',
     marketCondition: '',
+    marketConsole: '',
     marketPage: 1,
     repairStep: 0,
     repairSymptoms: [],
@@ -185,7 +186,7 @@ function navigate(view, con, cat) {
             break;
         case 'marketplace':
             S.category = cat || '';
-            Object.assign(S, { marketSearch: '', marketSort: 'newest', marketCondition: '', marketPage: 1 });
+            Object.assign(S, { marketSearch: '', marketSort: 'newest', marketCondition: '', marketConsole: '', marketPage: 1 });
             showView('marketplace');
             renderMarketplace();
             loadListings();
@@ -418,6 +419,10 @@ function renderMarketplace() {
                 <option value="">Stare: Toate</option>
                 ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}
             </select>
+            <select class="hub-market-select" id="market-console">
+                <option value="">Consolă: Toate</option>
+                ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}">${c.nume}</option>`).join('')}
+            </select>
             <select class="hub-market-select" id="market-sort">
                 <option value="newest">Cele mai noi</option>
                 <option value="oldest">Cele mai vechi</option>
@@ -434,6 +439,7 @@ function renderMarketplace() {
         timer = setTimeout(() => { S.marketSearch = e.target.value.trim(); S.marketPage = 1; loadListings(); }, 300);
     });
     v.querySelector('#market-condition').addEventListener('change', e => { S.marketCondition = e.target.value; S.marketPage = 1; loadListings(); });
+    v.querySelector('#market-console').addEventListener('change', e => { S.marketConsole = e.target.value; S.marketPage = 1; loadListings(); });
     v.querySelector('#market-sort').addEventListener('change', e => { S.marketSort = e.target.value; S.marketPage = 1; loadListings(); });
     v.querySelector('#market-add-btn')?.addEventListener('click', openAddListingModal);
     v.querySelector('#market-dm-btn')?.addEventListener('click', () => navigate('dm'));
@@ -457,6 +463,7 @@ async function loadListings() {
         const p = new URLSearchParams();
         if (S.category)        p.set('category',  S.category);
         if (S.marketCondition) p.set('condition',  S.marketCondition);
+        if (S.marketConsole)   p.set('console_type', S.marketConsole);
         if (S.marketSearch)    p.set('search',     S.marketSearch);
         p.set('sort', S.marketSort);
         p.set('page', S.marketPage);
@@ -1324,3 +1331,13 @@ function initNotifications() {
 initSidebar();
 startUnreadPolling();
 initNotifications();
+
+// Deep link: #listing-{id} opens listing detail directly
+(function checkDeepLink() {
+    const hash = window.location.hash;
+    const m = hash.match(/^#listing-(\d+)$/);
+    if (m) {
+        showView('marketplace');
+        openListingDetail(+m[1]);
+    }
+})();
