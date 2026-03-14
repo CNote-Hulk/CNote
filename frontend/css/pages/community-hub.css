@@ -1748,12 +1748,13 @@
 
 @media (max-width: 768px) {
 
-    /* --- Search button next to hamburger --- */
+    /* --- Search button next to profile icon (right side) --- */
     body:has(.community-page--hub) .navbar-search-btn {
-        position: fixed;
-        left: 60px;
-        top: 14px;
-        z-index: 1102;
+        position: absolute;
+        left: auto;
+        right: 60px;
+        top: 16px;
+        z-index: 10;
         margin-right: 0;
     }
 
