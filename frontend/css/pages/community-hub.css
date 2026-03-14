@@ -1815,6 +1815,7 @@
     /* Background image fixed is janky on mobile — use scroll */
     .community-page--hub {
         background-attachment: scroll;
+        padding-top: 120px;
         height: 100vh;
         height: 100dvh;
         display: flex;
