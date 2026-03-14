@@ -491,10 +491,13 @@ async function loadListings() {
                         </span>
                     </div>
                     <div class="hub-listing-info">
-                        <div class="hub-listing-info__top"><span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span></div>
                         <div class="hub-listing-info__title">${esc(l.title)}</div>
                         <div class="hub-listing-info__price">${Number(l.price).toFixed(0)} RON</div>
-                        <div class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</div>
+                        ${l.description ? `<div class="hub-listing-info__desc">${esc(l.description.slice(0, 100))}${l.description.length > 100 ? '…' : ''}</div>` : ''}
+                        <div class="hub-listing-info__meta">
+                            <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
+                            <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
+                        </div>
                     </div>
                 </button>`;
         }).join('');
@@ -760,10 +763,12 @@ async function loadSimilarListings(listingId, container) {
                         </span>
                     </div>
                     <div class="hub-listing-info">
-                        <div class="hub-listing-info__top"><span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span></div>
                         <div class="hub-listing-info__title">${esc(l.title)}</div>
                         <div class="hub-listing-info__price">${Number(l.price).toFixed(0)} RON</div>
-                        <div class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</div>
+                        <div class="hub-listing-info__meta">
+                            <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
+                            <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
+                        </div>
                     </div>
                 </button>`;
         }).join('');
