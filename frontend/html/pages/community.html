@@ -126,11 +126,17 @@
                 <!-- General Chat (existing, shown by default) -->
                 <div class="hub-view hub-view--active hub-view--chat" id="view-chat">
                     <div class="community-container community-container--wide">
-                        <div class="community-header">
-                            <h1 class="community-header__title">Community Chat</h1>
-                            <p class="community-header__subtitle">Discută cu alți pasionați de console</p>
-                        </div>
                         <div class="chat-box chat-box--large" id="chat-box">
+                            <div class="chat-hdr">
+                                <div class="chat-hdr__left">
+                                    <span class="chat-hdr__icon">💬</span>
+                                    <span class="chat-hdr__title">Chat Comunitate</span>
+                                </div>
+                                <div class="chat-hdr__right">
+                                    <span class="chat-hdr__dot"></span>
+                                    <span class="chat-hdr__status">Chat activ</span>
+                                </div>
+                            </div>
                             <div class="chat-messages" id="chat-messages">
                                 <div class="chat-loading" id="chat-loading">Se încarcă mesajele...</div>
                             </div>
@@ -139,14 +145,15 @@
                                     <p>Trebuie să fii autentificat pentru a trimite mesaje. <a href="login.html">Conectare</a></p>
                                 </div>
                                 <form class="chat-form" id="chat-form" hidden>
-                                    <input type="text" class="chat-input" id="chat-input" placeholder="Scrie un mesaj..." maxlength="500" autocomplete="off">
-                                    <button type="submit" class="chat-send-btn" id="chat-send-btn" title="Trimite">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                    </button>
+                                    <div class="chat-input-pill">
+                                        <span class="chat-input-pill__attach" title="Atașament (în curând)">📎</span>
+                                        <textarea class="chat-input" id="chat-input" placeholder="Scrie un mesaj..." maxlength="500" rows="1" autocomplete="off"></textarea>
+                                        <span class="chat-input-pill__counter" id="chat-char-count"><span id="char-current">0</span>/500</span>
+                                        <button type="submit" class="chat-send-btn" id="chat-send-btn" title="Trimite">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                        </button>
+                                    </div>
                                 </form>
-                                <div class="chat-char-count" id="chat-char-count" hidden>
-                                    <span id="char-current">0</span> / 500
-                                </div>
                             </div>
                         </div>
                     </div>
