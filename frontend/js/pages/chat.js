@@ -8,6 +8,7 @@ import { API_BASE_URL } from '../config.js';
 
 const POLL_INTERVAL = 5000;
 const COOLDOWN_MS = 3000;
+const AVATAR_COLORS = ['#5B8CFF', '#43B581', '#9B59B6', '#FF6B6B', '#F0A830'];
 
 const messagesEl = document.getElementById('chat-messages');
 const loadingEl = document.getElementById('chat-loading');
@@ -21,6 +22,8 @@ const charCurrent = document.getElementById('char-current');
 const user = AuthModule.getCurrentUser();
 let lastMessageId = 0;
 let cooldownActive = false;
+let lastMsgUser = '';
+let lastMsgDate = '';
 
 // Show form or login notice
 if (user) {
@@ -30,9 +33,19 @@ if (user) {
     loginNotice.hidden = false;
 }
 
-// Character counter
+// Character counter + auto-resize textarea
 inputEl.addEventListener('input', () => {
     charCurrent.textContent = inputEl.value.length;
+    inputEl.style.height = 'auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+});
+
+// Enter to send, Shift+Enter for new line
+inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        formEl.requestSubmit();
+    }
 });
 
 /** Escape HTML special characters */
@@ -41,42 +54,92 @@ function escapeHtml(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-/** Format timestamp as relative Romanian time string */
-function formatTime(dateStr) {
+/** Get deterministic color for a username */
+function getUserColor(username) {
+    let hash = 0;
+    for (let i = 0; i < username.length; i++) hash = username.charCodeAt(i) + ((hash << 5) - hash);
+    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
+/** Get 2-letter uppercase initials */
+function getInitials(username) {
+    return username.slice(0, 2).toUpperCase();
+}
+
+/** Format timestamp as HH:MM */
+function formatTimeShort(dateStr) {
+    return new Date(dateStr).toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
+}
+
+/** Get date label for dividers */
+function getDateLabel(dateStr) {
     const d = new Date(dateStr);
     const now = new Date();
-    const diff = now - d;
-
-    if (diff < 60000) return 'chiar acum';
-    if (diff < 3600000) return Math.floor(diff / 60000) + ' min în urmă';
-    if (diff < 86400000) return Math.floor(diff / 3600000) + ' ore în urmă';
-
-    return d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' }) +
-           ' ' + d.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+    const msgDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    if (msgDate.getTime() === today.getTime()) return 'Astăzi';
+    if (msgDate.getTime() === yesterday.getTime()) return 'Ieri';
+    return d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 /** Render a single chat message DOM element */
-function renderMessage(msg) {
+function renderMessage(msg, grouped) {
     const div = document.createElement('div');
-    div.className = 'chat-message';
-    div.dataset.id = msg.id;
+    const color = getUserColor(msg.user.username);
+    const time = formatTimeShort(msg.created_at);
 
-    const hasAvatar = msg.user.avatar && msg.user.avatar.length > 10;
-    const avatarHtml = hasAvatar
-        ? `<img src="${escapeHtml(msg.user.avatar)}" alt="" class="chat-message__avatar">`
-        : `<span class="chat-message__avatar chat-message__avatar--fallback">👤</span>`;
-
-    div.innerHTML = `
-        <div class="chat-message__avatar-wrap">${avatarHtml}</div>
-        <div class="chat-message__body">
-            <div class="chat-message__header">
-                <a href="/user/${encodeURIComponent(msg.user.username)}" class="chat-message__username">${escapeHtml(msg.user.username)}</a>
-                <span class="chat-message__time">${formatTime(msg.created_at)}</span>
-            </div>
-            <div class="chat-message__text">${escapeHtml(msg.message)}</div>
-        </div>
-    `;
+    if (grouped) {
+        div.className = 'chat-msg chat-msg--grouped chat-msg--new';
+        div.dataset.id = msg.id;
+        div.dataset.user = msg.user.username;
+        div.innerHTML = `
+            <span class="chat-msg__time-hover">${time}</span>
+            <div class="chat-msg__text">${escapeHtml(msg.message)}</div>`;
+    } else {
+        div.className = 'chat-msg chat-msg--new';
+        div.dataset.id = msg.id;
+        div.dataset.user = msg.user.username;
+        div.innerHTML = `
+            <div class="chat-msg__avatar" style="background:${color}">${getInitials(msg.user.username)}</div>
+            <div class="chat-msg__body">
+                <div class="chat-msg__header">
+                    <a href="/user/${encodeURIComponent(msg.user.username)}" class="chat-msg__name" style="color:${color}">${escapeHtml(msg.user.username)}</a>
+                    <span class="chat-msg__time">${time}</span>
+                </div>
+                <div class="chat-msg__text">${escapeHtml(msg.message)}</div>
+            </div>`;
+    }
     return div;
+}
+
+/** Append a message with date divider + grouping logic */
+function appendMessage(msg) {
+    const dateLabel = getDateLabel(msg.created_at);
+    if (dateLabel !== lastMsgDate) {
+        const divider = document.createElement('div');
+        divider.className = 'chat-date-divider';
+        divider.innerHTML = `<span>${dateLabel}</span>`;
+        messagesEl.appendChild(divider);
+        lastMsgDate = dateLabel;
+        lastMsgUser = '';
+    }
+    const grouped = msg.user.username === lastMsgUser;
+    messagesEl.appendChild(renderMessage(msg, grouped));
+    lastMsgUser = msg.user.username;
+}
+
+/** Show the empty state */
+function showEmptyState() {
+    loadingEl.innerHTML = `
+        <div class="chat-empty-state">
+            <div class="chat-empty-state__circle"><span>💬</span></div>
+            <div class="chat-empty-state__title">Niciun mesaj încă</div>
+            <div class="chat-empty-state__subtitle">Fii primul care pornește conversația!</div>
+            <button class="chat-empty-state__btn" type="button">Scrie primul mesaj →</button>
+        </div>`;
+    loadingEl.hidden = false;
+    loadingEl.querySelector('.chat-empty-state__btn')?.addEventListener('click', () => inputEl.focus());
 }
 
 function scrollToBottom() {
@@ -100,17 +163,14 @@ async function fetchMessages() {
             loadingEl.hidden = true;
 
             if (data.messages.length === 0 && messagesEl.children.length <= 1) {
-                loadingEl.textContent = 'Niciun mesaj încă. Fii primul care scrie!';
-                loadingEl.hidden = false;
+                showEmptyState();
                 return;
             }
 
             // Only append new messages (after lastMessageId)
             const newMessages = data.messages.filter(m => m.id > lastMessageId);
             if (newMessages.length > 0) {
-                newMessages.forEach(msg => {
-                    messagesEl.appendChild(renderMessage(msg));
-                });
+                newMessages.forEach(appendMessage);
                 lastMessageId = newMessages[newMessages.length - 1].id;
                 scrollToBottom();
             }
@@ -145,9 +205,10 @@ formEl.addEventListener('submit', async (e) => {
         if (data.success && data.message) {
             // Hide the "no messages" text
             loadingEl.hidden = true;
-            messagesEl.appendChild(renderMessage(data.message));
+            appendMessage(data.message);
             lastMessageId = Math.max(lastMessageId, data.message.id);
             inputEl.value = '';
+            inputEl.style.height = 'auto';
             charCurrent.textContent = '0';
             scrollToBottom();
         } else {
