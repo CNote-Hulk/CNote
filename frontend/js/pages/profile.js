@@ -7,13 +7,11 @@
         import { ProgressModule } from '../../js/modules/progress.js';
         import { AchievementsModule } from '../../js/modules/achievements.js';
         import { SearchModule } from '../../js/modules/search.js';
-        import { ProfileDropdownModule } from '../../js/modules/profile-dropdown.js';
         import { API_BASE_URL } from '../../js/config.js';
         import { confirmModal } from '../../js/utils/confirm-modal.js';
 
         // Init search + profile dropdown
         SearchModule.init();
-        ProfileDropdownModule.init();
 
         const user = AuthModule.getCurrentUser();
         if (!user) {
@@ -1558,10 +1556,11 @@
                                 <div class="hub-form-group"><label class="hub-form-label">Stare</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
                             </div>
                             <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Consolă</label><select class="hub-form-select" name="console_type"><option value="">— Alege consola —</option>${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.nume}</option>`).join('')}</select></div>
                             <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${escapeHtml(l.description)}</textarea></div>
                             <div class="hub-form-group"><label class="hub-form-label">Locație</label><input class="hub-form-input" name="location" maxlength="100" required value="${escapeHtml(l.location || '')}"></div>
                             <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" required value="${escapeHtml(l.phone || '')}"></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Link OLX</label><input class="hub-form-input" name="olx_url" type="url" required value="${escapeHtml(l.olx_url || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Link OLX (opțional)</label><input class="hub-form-input" name="olx_url" type="url" value="${escapeHtml(l.olx_url || '')}"></div>
                             <div class="hub-modal__footer" style="padding:0;border:none">
                                 <button type="button" class="hub-btn hub-btn--secondary edit-listing-cancel">Anulează</button>
                                 <button type="submit" class="hub-btn hub-btn--primary">Salvează</button>
@@ -1619,7 +1618,7 @@
                         <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Descrie produsul…"></textarea></div>
                         <div class="hub-form-group"><label class="hub-form-label">Locație</label><input class="hub-form-input" name="location" maxlength="100" required placeholder="București"></div>
                         <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…"></div>
-                        <div class="hub-form-group"><label class="hub-form-label">Link OLX</label><input class="hub-form-input" name="olx_url" type="url" required placeholder="https://www.olx.ro/…"></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Link OLX (opțional)</label><input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…"></div>
                         <div class="hub-form-group">
                             <label class="hub-form-label">Imagini (max ${MAX_IMAGES} fotografii)</label>
                             <div class="hub-upload-zone" id="create-upload-zone">

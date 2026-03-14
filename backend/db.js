@@ -237,7 +237,8 @@ async function initializeSchema() {
 		`ALTER TABLE email_verification_tokens ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT NOW()`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active'`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0`,
-		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS favorites_count INTEGER DEFAULT 0`
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS favorites_count INTEGER DEFAULT 0`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS console_type TEXT DEFAULT ''`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }
