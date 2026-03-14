@@ -2,7 +2,7 @@ const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = 'Console Notebook <onboarding@resend.dev>';
+const FROM = 'Console Notebook <noreply@consolenotebook.com>';
 const BASE_URL = () => process.env.BASE_URL || 'http://localhost:3000';
 const CONTACT_TO = () => process.env.CONTACT_RECEIVER_EMAIL || 'console.notebook.app@gmail.com';
 
