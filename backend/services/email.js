@@ -15,33 +15,56 @@ function escapeHtml(str) {
         .replace(/"/g, '&quot;');
 }
 
-function wrapTemplate(content) {
+function wrapTemplate(title, content) {
     return `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"></head>
-<body style="background:#0f0f1a;color:#e8d5b7;font-family:sans-serif;padding:40px;margin:0;">
-  <div style="max-width:500px;margin:0 auto;background:#1a1a2e;border-radius:12px;padding:32px;border:1px solid rgba(232,213,183,0.1);">
-    <h1 style="color:#e8d5b7;font-size:1.4rem;margin-top:0;">CONSOLE NOTEBOOK</h1>
-    <hr style="border:none;border-top:1px solid rgba(232,213,183,0.1);margin:16px 0;">
-    ${content}
-    <p style="color:#a89880;font-size:0.8rem;margin-top:32px;">
-      Dacă nu ai solicitat acest email, îl poți ignora în siguranță.
-    </p>
-  </div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#0a0a14;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-bottom:1px solid rgba(232,213,183,0.1);">
+    <tr>
+      <td style="padding:32px 48px;">
+        <p style="margin:0;font-size:11px;letter-spacing:3px;color:#a89880;text-transform:uppercase;">Console Notebook</p>
+        <h1 style="margin:8px 0 0;font-size:26px;color:#e8d5b7;font-weight:600;">${title}</h1>
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a14;">
+    <tr>
+      <td style="padding:48px 48px 40px;">
+        ${content}
+      </td>
+    </tr>
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0d0d1a;border-top:1px solid rgba(232,213,183,0.07);">
+    <tr>
+      <td style="padding:24px 48px;">
+        <p style="margin:0;font-size:12px;color:#4a4060;line-height:1.6;">
+          Dacă nu ai solicitat acest email, îl poți ignora în siguranță.<br>
+          &copy; 2026 Console Notebook &middot; <a href="https://consolenotebook.com" style="color:#6a5a7a;text-decoration:none;">consolenotebook.com</a>
+        </p>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>`;
 }
 
 async function sendVerificationEmail(to, token, baseUrl) {
-    const link = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/frontend/html/pages/verify-success.html?token=' + encodeURIComponent(token);
-    const html = wrapTemplate(`
-    <p style="color:#e8d5b7;font-size:0.95rem;line-height:1.6;margin:0 0 24px;">
-      Bine ai venit în Console Notebook. Confirmă adresa de email pentru a activa complet contul și a putea folosi toate funcțiile comunității.
-    </p>
-    <div style="margin:0 0 24px;">
-      <a href="${link}" style="display:inline-block;padding:12px 24px;background:#d4a24e;color:#1a1411;text-decoration:none;font-weight:700;border-radius:10px;">Verifică emailul</a>
-    </div>
-    <p style="color:#a89880;font-size:0.82rem;">Linkul expiră în 24 de ore.</p>`);
+    const verifyLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/verify-success.html?token=' + encodeURIComponent(token);
+    const html = wrapTemplate('Verifică Adresa de Email', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                Bine ai venit pe Console Notebook! Pentru a-ți activa contul,
+                verifică adresa de email apăsând butonul de mai jos.
+              </p>
+              <a href="${verifyLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+                Verifică Emailul
+              </a>
+              <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+                Linkul expiră în 24 de ore.
+              </p>`);
 
     try {
         const { data, error } = await resend.emails.send({
@@ -63,15 +86,18 @@ async function sendVerificationEmail(to, token, baseUrl) {
 }
 
 async function sendPasswordResetEmail(to, token, baseUrl) {
-    const link = String(baseUrl || BASE_URL()).replace(/\/$/, '') + 'html/pages/reset-password.html?token=' + encodeURIComponent(token);
-    const html = wrapTemplate(`
-    <p style="color:#e8d5b7;font-size:0.95rem;line-height:1.6;margin:0 0 24px;">
-      Am primit o cerere de resetare a parolei. Folosește butonul de mai jos pentru a seta o parolă nouă pentru contul tău CNote.
-    </p>
-    <div style="margin:0 0 24px;">
-      <a href="${link}" style="display:inline-block;padding:12px 24px;background:#d4a24e;color:#1a1411;text-decoration:none;font-weight:700;border-radius:10px;">Resetează parola</a>
-    </div>
-    <p style="color:#a89880;font-size:0.82rem;">Linkul expiră în 24 de ore.</p>`);
+    const resetLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(token);
+    const html = wrapTemplate('Resetare Parolă', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                Am primit o cerere de resetare a parolei pentru contul tău CNote.
+                Dacă tu ai făcut această cerere, apasă butonul de mai jos.
+              </p>
+              <a href="${resetLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+                Resetează Parola
+              </a>
+              <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+                Linkul expiră în 24 de ore.
+              </p>`);
 
     try {
         const { data, error } = await resend.emails.send({
@@ -94,14 +120,18 @@ async function sendPasswordResetEmail(to, token, baseUrl) {
 
 async function sendTwoFactorEmail(to, code) {
     const safeCode = escapeHtml(String(code));
-    const html = wrapTemplate(`
-    <p style="color:#e8d5b7;font-size:0.95rem;line-height:1.6;margin:0 0 24px;">
-      Folosește codul de mai jos pentru a te autentifica în contul tău CNote.
-    </p>
-    <div style="margin:0 0 24px;text-align:center;">
-      <div style="display:inline-block;padding:16px 32px;background:rgba(212,162,78,0.1);border:2px solid #d4a24e;border-radius:12px;font-size:32px;font-weight:700;letter-spacing:0.3em;color:#d4a24e;">${safeCode}</div>
-    </div>
-    <p style="color:#a89880;font-size:0.82rem;">Codul expiră în 10 minute.</p>`);
+    const html = wrapTemplate('Cod de Verificare', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                Codul tău de verificare în doi pași este:
+              </p>
+              <div style="background:#0a0a14;border:1px solid rgba(232,213,183,0.15);border-radius:12px;padding:24px;text-align:center;margin:0 0 24px;">
+                <span style="font-size:36px;font-weight:700;letter-spacing:10px;color:#e8d5b7;font-family:monospace;">
+                  ${safeCode}
+                </span>
+              </div>
+              <p style="color:#5a5070;font-size:12px;margin:0;">
+                Codul este valabil 10 minute. Nu îl împărtăși nimănui.
+              </p>`);
 
     try {
         const { data, error } = await resend.emails.send({
@@ -123,21 +153,38 @@ async function sendTwoFactorEmail(to, code) {
 }
 
 async function sendContactEmail(from, name, subject, message) {
-    const adminHtml = wrapTemplate(`
-    <h2 style="color:#e8d5b7;font-size:1.1rem;margin:0 0 16px;">Mesaj nou din formularul de contact</h2>
-    <p style="color:#e8d5b7;font-size:0.9rem;margin:0 0 6px;"><strong>Nume:</strong> ${escapeHtml(name)}</p>
-    <p style="color:#e8d5b7;font-size:0.9rem;margin:0 0 6px;"><strong>Email:</strong> ${escapeHtml(from)}</p>
-    <p style="color:#e8d5b7;font-size:0.9rem;margin:0 0 16px;"><strong>Subiect:</strong> ${escapeHtml(subject)}</p>
-    <div style="padding:16px;border-radius:8px;background:rgba(232,213,183,0.05);border:1px solid rgba(232,213,183,0.1);white-space:pre-wrap;line-height:1.6;color:#e8d5b7;font-size:0.9rem;">${escapeHtml(message)}</div>`);
+    const safeName = escapeHtml(name);
+    const safeFrom = escapeHtml(from);
+    const safeSubject = escapeHtml(subject);
+    const safeMessage = escapeHtml(message);
 
-    const siteLink = String(BASE_URL()).replace(/\/$/, '') + '/frontend/html/pages/index.html#contact';
-    const confirmationHtml = wrapTemplate(`
-    <p style="color:#e8d5b7;font-size:0.95rem;line-height:1.6;margin:0 0 24px;">
-      Îți mulțumim că ne-ai contactat. Îți vom răspunde în cel mai scurt timp.
-    </p>
-    <div style="margin:0 0 24px;">
-      <a href="${siteLink}" style="display:inline-block;padding:12px 24px;background:#d4a24e;color:#1a1411;text-decoration:none;font-weight:700;border-radius:10px;">Înapoi la site</a>
-    </div>`);
+    const adminHtml = wrapTemplate('Mesaj Nou — Contact', `
+              <p style="color:#c8b99a;font-size:14px;margin:0 0 20px;">
+                Ai primit un mesaj nou prin formularul de contact.
+              </p>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">De la</span><br>
+                  <span style="color:#e8d5b7;font-size:14px;">${safeName} &middot; ${safeFrom}</span>
+                </td></tr>
+                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Subiect</span><br>
+                  <span style="color:#e8d5b7;font-size:14px;">${safeSubject}</span>
+                </td></tr>
+                <tr><td style="padding:16px 0 0;">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Mesaj</span><br>
+                  <p style="color:#c8b99a;font-size:14px;line-height:1.7;margin:8px 0 0;">${safeMessage}</p>
+                </td></tr>
+              </table>`);
+
+    const siteLink = String(BASE_URL()).replace(/\/$/, '') + '/html/pages/index.html#contact';
+    const confirmationHtml = wrapTemplate('Mulțumim pentru mesaj', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                Îți mulțumim că ne-ai contactat. Îți vom răspunde în cel mai scurt timp.
+              </p>
+              <a href="${siteLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+                Înapoi la site
+              </a>`);
 
     try {
         const { error: adminErr } = await resend.emails.send({
