@@ -5,6 +5,7 @@
    Uses custom state store to work without express-session.
    ───────────────────────────────────────── */
 const express = require('express');
+const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
