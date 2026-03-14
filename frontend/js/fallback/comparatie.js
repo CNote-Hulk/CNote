@@ -99,15 +99,15 @@
     }
 
     const GEN_LABELS = {
-        9: 'Generatia 9 (2020+)',
-        8: 'Generatia 8 (2012-2017)',
-        7: 'Generatia 7 (2005-2006)',
-        6: 'Generatia 6 (1998-2001)',
-        5: 'Generatia 5 (1993-1996)',
-        4: 'Generatia 4 (1988-1990)',
-        3: 'Generatia 3 (1983-1987)',
-        2: 'Generatia 2 (1976-1982)',
-        1: 'Generatia 1 (1972-1976)'
+        9: 'Generatia 9 (2020 – Prezent)',
+        8: 'Generatia 8 (2012 – 2020)',
+        7: 'Generatia 7 (2005 – 2013)',
+        6: 'Generatia 6 (1998 – 2006)',
+        5: 'Generatia 5 (1994 – 2001)',
+        4: 'Generatia 4 (1987 – 1996)',
+        3: 'Generatia 3 (1985 – 1990)',
+        2: 'Generatia 2 (1980 – 1984)',
+        1: 'Generatia 1 (1972 – 1980)'
     };
 
     /** Fill both <select> dropdowns with console options */

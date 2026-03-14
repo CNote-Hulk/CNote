@@ -181,7 +181,7 @@ window.CONSOLES_DATA = [
         "id":  "atari-2600",
         "nume":  "Atari 2600",
         "producator":  "Atari",
-        "generatie":  2,
+        "generatie":  1,
         "lansare":  1977,
         "imagine":  "assets/images/consoles/atari-2600.webp",
         "cpu":  {
@@ -244,7 +244,7 @@ window.CONSOLES_DATA = [
         "id":  "magnavox-odyssey-2",
         "nume":  "Magnavox Odyssey 2",
         "producator":  "Magnavox",
-        "generatie":  2,
+        "generatie":  1,
         "lansare":  1978,
         "imagine":  "assets/images/consoles/magnavox-odyssey-2.webp",
         "cpu":  {
@@ -306,7 +306,7 @@ window.CONSOLES_DATA = [
         "id":  "intellivision",
         "nume":  "Intellivision",
         "producator":  "Mattel",
-        "generatie":  2,
+        "generatie":  1,
         "lansare":  1979,
         "imagine":  "assets/images/consoles/intellivision.webp",
         "cpu":  {
@@ -598,7 +598,7 @@ window.CONSOLES_DATA = [
         "id":  "famicom",
         "nume":  "Nintendo Famicom",
         "producator":  "Nintendo",
-        "generatie":  3,
+        "generatie":  2,
         "lansare":  1983,
         "imagine":  "assets/images/consoles/famicom.webp",
         "cpu":  {
@@ -657,7 +657,7 @@ window.CONSOLES_DATA = [
         "id":  "sega-sg-1000",
         "nume":  "Sega SG-1000",
         "producator":  "Sega",
-        "generatie":  3,
+        "generatie":  2,
         "lansare":  1983,
         "imagine":  "assets/images/consoles/sega-sg-1000.webp",
         "cpu":  {
@@ -1351,7 +1351,7 @@ window.CONSOLES_DATA = [
         "id":  "3do",
         "nume":  "3DO Interactive",
         "producator":  "Panasonic",
-        "generatie":  5,
+        "generatie":  4,
         "lansare":  1993,
         "imagine":  "assets/images/consoles/3do.webp",
         "cpu":  {
@@ -1409,7 +1409,7 @@ window.CONSOLES_DATA = [
         "id":  "atari-jaguar",
         "nume":  "Atari Jaguar",
         "producator":  "Atari",
-        "generatie":  5,
+        "generatie":  4,
         "lansare":  1993,
         "imagine":  "assets/images/consoles/atari-jaguar.webp",
         "cpu":  {
