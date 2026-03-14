@@ -9,6 +9,7 @@
         import { SearchModule } from '../../js/modules/search.js';
         import { ProfileDropdownModule } from '../../js/modules/profile-dropdown.js';
         import { API_BASE_URL } from '../../js/config.js';
+        import { confirmModal } from '../../js/utils/confirm-modal.js';
 
         // Init search + profile dropdown
         SearchModule.init();
@@ -863,6 +864,9 @@
 
             // Load my marketplace listings
             loadMyListings();
+
+            // Load favorite listings
+            loadFavorites();
         }
 
         // ─── Friend Search ──────────────────────────────────
@@ -1392,6 +1396,35 @@
             return res.json();
         }
 
+        // Bind action buttons ONCE (event delegation)
+        (function bindMyListingsActions() {
+            const container = document.getElementById('my-listings-container');
+            if (!container) return;
+            container.addEventListener('click', async e => {
+                const btn = e.target.closest('.my-listing-action');
+                if (!btn) return;
+                const id = parseInt(btn.dataset.id, 10);
+                const action = btn.dataset.action;
+
+                if (action === 'deactivate') {
+                    await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'inactive' });
+                    loadMyListings();
+                } else if (action === 'activate') {
+                    await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'active' });
+                    loadMyListings();
+                } else if (action === 'sold') {
+                    await mpApi('PATCH', `/marketplace/listings/${id}/sold`);
+                    loadMyListings();
+                } else if (action === 'delete') {
+                    if (!(await confirmModal('Sigur vrei să ștergi acest anunț? Acțiunea este permanentă.'))) return;
+                    await mpApi('DELETE', `/marketplace/listings/${id}`);
+                    loadMyListings();
+                } else if (action === 'edit') {
+                    openEditListingModal(id);
+                }
+            });
+        })();
+
         /** Fetch and render the user's own marketplace listings */
         async function loadMyListings() {
             const container = document.getElementById('my-listings-container');
@@ -1403,7 +1436,8 @@
                 const listings = data.listings || [];
 
                 if (!listings.length) {
-                    container.innerHTML = '<div class="my-listings-empty"><div class="my-listings-empty__icon">📦</div><p>Nu ai niciun anunț postat.</p><a href="community.html" class="hub-btn hub-btn--primary hub-btn--sm" style="margin-top:12px">Publică primul anunț</a></div>';
+                    container.innerHTML = '<div class="my-listings-empty"><div class="my-listings-empty__icon">📦</div><p>Nu ai niciun anunț postat.</p><button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing-empty" style="margin-top:12px">Publică primul anunț</button></div>';
+                    document.getElementById('btn-create-listing-empty')?.addEventListener('click', openCreateListingModal);
                     return;
                 }
 
@@ -1439,33 +1473,65 @@
                         </div>
                     </div>`;
                 }).join('');
-
-                // Bind action buttons
-                container.addEventListener('click', async e => {
-                    const btn = e.target.closest('.my-listing-action');
-                    if (!btn) return;
-                    const id = parseInt(btn.dataset.id, 10);
-                    const action = btn.dataset.action;
-
-                    if (action === 'deactivate') {
-                        await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'inactive' });
-                        loadMyListings();
-                    } else if (action === 'activate') {
-                        await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'active' });
-                        loadMyListings();
-                    } else if (action === 'sold') {
-                        await mpApi('PATCH', `/marketplace/listings/${id}/sold`);
-                        loadMyListings();
-                    } else if (action === 'delete') {
-                        if (!confirm('Sigur vrei să ștergi acest anunț? Acțiunea este permanentă.')) return;
-                        await mpApi('DELETE', `/marketplace/listings/${id}`);
-                        loadMyListings();
-                    } else if (action === 'edit') {
-                        openEditListingModal(id);
-                    }
-                });
             } catch {
                 container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca anunțurile.</p>';
+            }
+        }
+
+        // ─── Favorite Listings ("Anunțuri apreciate") ────────
+
+        async function loadFavorites() {
+            const container = document.getElementById('favorites-container');
+            if (!container) return;
+
+            try {
+                const data = await mpApi('GET', '/marketplace/favorites');
+                if (!data.success) throw 0;
+                const listings = data.listings || [];
+
+                if (!listings.length) {
+                    container.innerHTML = `<div class="my-listings-empty">
+                        <div class="my-listings-empty__icon">❤️</div>
+                        <p>Nu ai niciun anunț apreciat încă.</p>
+                        <p style="color:var(--text-gray);font-size:0.82rem;margin-top:4px">Explorează Marketplace-ul și salvează ce îți place.</p>
+                        <a href="community.html" class="hub-btn hub-btn--primary hub-btn--sm" style="margin-top:12px">→ Mergi la Marketplace</a>
+                    </div>`;
+                    return;
+                }
+
+                container.innerHTML = listings.map(l => {
+                    const imgs = Array.isArray(l.images) ? l.images : [];
+                    const date = new Date(l.created_at).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
+                    return `<div class="my-listing-row" data-listing-id="${l.id}">
+                        <div class="my-listing-row__thumb">
+                            ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="">'}
+                        </div>
+                        <div class="my-listing-row__info">
+                            <div class="my-listing-row__title">${escapeHtml(l.title)}</div>
+                            <div class="my-listing-row__meta">
+                                <span class="my-listing-row__price">${Number(l.price).toFixed(0)} RON</span>
+                                <span class="my-listing-row__cat">${LISTING_CATEGORIES[l.category] || l.category}</span>
+                            </div>
+                            <div class="my-listing-row__stats">
+                                <span>🏪 ${escapeHtml(l.seller_name)}</span>
+                                <span>📅 ${date}</span>
+                            </div>
+                        </div>
+                        <div class="my-listing-row__actions">
+                            <button class="my-listing-action" data-action="unfav" data-id="${l.id}" title="Elimină din favorite">❤️</button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                container.addEventListener('click', async e => {
+                    const btn = e.target.closest('[data-action="unfav"]');
+                    if (!btn) return;
+                    const id = parseInt(btn.dataset.id, 10);
+                    await mpApi('POST', `/marketplace/listings/${id}/favorite`);
+                    loadFavorites();
+                });
+            } catch {
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca favoritele.</p>';
             }
         }
 
@@ -1493,9 +1559,9 @@
                             </div>
                             <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
                             <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${escapeHtml(l.description)}</textarea></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Locație</label><input class="hub-form-input" name="location" maxlength="100" value="${escapeHtml(l.location || '')}"></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" value="${escapeHtml(l.phone || '')}"></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Link OLX</label><input class="hub-form-input" name="olx_url" type="url" value="${escapeHtml(l.olx_url || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Locație</label><input class="hub-form-input" name="location" maxlength="100" required value="${escapeHtml(l.location || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" required value="${escapeHtml(l.phone || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Link OLX</label><input class="hub-form-input" name="olx_url" type="url" required value="${escapeHtml(l.olx_url || '')}"></div>
                             <div class="hub-modal__footer" style="padding:0;border:none">
                                 <button type="button" class="hub-btn hub-btn--secondary edit-listing-cancel">Anulează</button>
                                 <button type="submit" class="hub-btn hub-btn--primary">Salvează</button>
@@ -1528,5 +1594,135 @@
                 });
             } catch { alert('Eroare la încărcarea anunțului.'); }
         }
+
+        /** Open a modal to create a brand-new listing from the profile page */
+        function openCreateListingModal() {
+            const MAX_IMAGES = 8;
+            let selectedFiles = [];
+
+            document.querySelector('.create-listing-overlay')?.remove();
+            const overlay = document.createElement('div');
+            overlay.className = 'hub-modal-overlay create-listing-overlay';
+            overlay.innerHTML = `
+                <div class="hub-modal">
+                    <div class="hub-modal__header">
+                        <span class="hub-modal__title">Publică un anunț</span>
+                        <button class="hub-modal__close">&times;</button>
+                    </div>
+                    <form class="hub-modal__body" id="create-listing-form">
+                        <div class="hub-form-group"><label class="hub-form-label">Titlu</label><input class="hub-form-input" name="title" maxlength="100" required placeholder="ex: PlayStation 4 Slim 500GB"></div>
+                        <div class="hub-form-row">
+                            <div class="hub-form-group"><label class="hub-form-label">Preț (RON)</label><input class="hub-form-input" name="price" type="number" min="0" step="1" required placeholder="0"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Stare</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+                        </div>
+                        <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Descrie produsul…"></textarea></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Locație</label><input class="hub-form-input" name="location" maxlength="100" required placeholder="București"></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…"></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Link OLX</label><input class="hub-form-input" name="olx_url" type="url" required placeholder="https://www.olx.ro/…"></div>
+                        <div class="hub-form-group">
+                            <label class="hub-form-label">Imagini (max ${MAX_IMAGES} fotografii)</label>
+                            <div class="hub-upload-zone" id="create-upload-zone">
+                                <input type="file" id="create-upload-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                                <span class="hub-upload-zone__icon">📁</span>
+                                <span class="hub-upload-zone__text">Trage fotografiile aici sau click pentru a alege</span>
+                            </div>
+                            <div class="hub-upload-counter" id="create-upload-counter">0 / ${MAX_IMAGES} imagini selectate</div>
+                            <div class="hub-upload-grid" id="create-upload-grid"></div>
+                        </div>
+                        <div class="hub-modal__footer" style="padding:0;border:none">
+                            <button type="button" class="hub-btn hub-btn--secondary create-listing-cancel">Anulează</button>
+                            <button type="submit" class="hub-btn hub-btn--primary">Publică</button>
+                        </div>
+                    </form>
+                </div>`;
+            document.body.appendChild(overlay);
+
+            const close = () => overlay.remove();
+            overlay.querySelector('.hub-modal__close').addEventListener('click', close);
+            overlay.querySelector('.create-listing-cancel').addEventListener('click', close);
+            overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+            const uploadZone = overlay.querySelector('#create-upload-zone');
+            const uploadInput = overlay.querySelector('#create-upload-input');
+            const uploadGrid = overlay.querySelector('#create-upload-grid');
+            const uploadCounter = overlay.querySelector('#create-upload-counter');
+
+            function updatePreviews() {
+                uploadGrid.innerHTML = '';
+                selectedFiles.forEach((file, i) => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'hub-upload-thumb';
+                    thumb.innerHTML = `<img src="${URL.createObjectURL(file)}" alt=""><button type="button" class="hub-upload-thumb__remove" data-idx="${i}">&times;</button>`;
+                    uploadGrid.appendChild(thumb);
+                });
+                uploadCounter.textContent = `${selectedFiles.length} / ${MAX_IMAGES} imagini selectate`;
+            }
+
+            function addFiles(files) {
+                for (const file of files) {
+                    if (selectedFiles.length >= MAX_IMAGES) break;
+                    if (!file.type.match(/^image\/(jpeg|png|webp)$/)) continue;
+                    if (file.size > 10 * 1024 * 1024) continue;
+                    selectedFiles.push(file);
+                }
+                updatePreviews();
+            }
+
+            uploadZone.addEventListener('click', () => uploadInput.click());
+            uploadInput.addEventListener('change', () => { addFiles(uploadInput.files); uploadInput.value = ''; });
+            uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('hub-upload-zone--drag'); });
+            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('hub-upload-zone--drag'));
+            uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('hub-upload-zone--drag'); addFiles(e.dataTransfer.files); });
+            uploadGrid.addEventListener('click', e => {
+                const btn = e.target.closest('.hub-upload-thumb__remove');
+                if (!btn) return;
+                selectedFiles.splice(parseInt(btn.dataset.idx, 10), 1);
+                updatePreviews();
+            });
+
+            function resizeImage(file) {
+                return new Promise(resolve => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const MAX = 800;
+                        let w = img.width, h = img.height;
+                        if (w > MAX || h > MAX) {
+                            if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+                            else { w = Math.round(w * MAX / h); h = MAX; }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', 0.75));
+                        URL.revokeObjectURL(img.src);
+                    };
+                    img.src = URL.createObjectURL(file);
+                });
+            }
+
+            overlay.querySelector('#create-listing-form').addEventListener('submit', async e => {
+                e.preventDefault();
+                const f = e.target, btn = f.querySelector('[type="submit"]');
+                btn.disabled = true; btn.textContent = 'Se publică…';
+                const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
+                const res = await mpApi('POST', '/marketplace/listings', {
+                    title: f.title.value.trim(),
+                    description: f.description.value.trim(),
+                    price: parseFloat(f.price.value),
+                    condition: f.condition.value,
+                    category: f.category.value,
+                    location: f.location.value.trim(),
+                    phone: f.phone.value.trim(),
+                    olx_url: f.olx_url.value.trim(),
+                    images: imageUrls,
+                });
+                if (res.success) { close(); loadMyListings(); }
+                else { btn.disabled = false; btn.textContent = 'Publică'; alert(res.error || 'Eroare.'); }
+            });
+        }
+
+        // Bind header "+ Anunț nou" button
+        document.getElementById('btn-create-listing')?.addEventListener('click', openCreateListingModal);
 
         initProfile();

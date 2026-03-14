@@ -5,6 +5,7 @@
  */
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
+import { confirmModal } from '../utils/confirm-modal.js';
 
 // ── Constants ──────────────────────────────────────────────
 
@@ -104,13 +105,7 @@ function user() { return AuthModule.getCurrentUser(); }
 function showView(id) {
     content.querySelectorAll('.hub-view').forEach(v => v.classList.remove('hub-view--active'));
     const el = document.getElementById('view-' + id);
-    if (el) {
-        el.classList.add('hub-view--active');
-        // Re-trigger animation
-        el.style.animation = 'none';
-        el.offsetHeight;          // reflow
-        el.style.animation = '';
-    }
+    if (el) el.classList.add('hub-view--active');
     S.view = id;
 }
 
@@ -553,38 +548,40 @@ async function openListingDetail(id) {
             </div>
             <div class="hub-detail-scroll">
                 <div class="hub-detail-inner">
+                    ${imgs.length ? `
+                        <div class="hub-detail-gallery" id="listing-gallery">
+                            <div class="hub-detail-main-img" id="listing-main-img">
+                                <img src="${esc(imgs[0])}" alt="">
+                                ${imgs.length > 1 ? `
+                                    <button class="hub-gallery-arrow hub-gallery-arrow--left" id="gallery-prev" aria-label="Imaginea anterioară">‹</button>
+                                    <button class="hub-gallery-arrow hub-gallery-arrow--right" id="gallery-next" aria-label="Imaginea următoare">›</button>
+                                    <span class="hub-gallery-counter" id="gallery-counter">1 / ${imgs.length}</span>` : ''}
+                            </div>
+                            ${imgs.length > 1 ? `<div class="hub-detail-thumbs">${imgs.map((im, i) =>
+                                `<button class="hub-detail-thumb${i === 0 ? ' hub-detail-thumb--active' : ''}" data-idx="${i}"><img src="${esc(im)}" alt=""></button>`).join('')}</div>` : ''}
+                        </div>` : `
+                        <div class="hub-detail-gallery">
+                            <div class="hub-detail-main-img hub-detail-main-img--placeholder">
+                                <span class="hub-placeholder-icon">🖼️</span>
+                                <span class="hub-placeholder-text">Fără fotografii</span>
+                            </div>
+                        </div>`}
                     <div class="hub-detail-card hub-detail-card--main">
-                        ${imgs.length ? `
-                            <div class="hub-detail-gallery" id="listing-gallery">
-                                <div class="hub-detail-main-img" id="listing-main-img">
-                                    <img src="${esc(imgs[0])}" alt="">
-                                    ${imgs.length > 1 ? `
-                                        <button class="hub-gallery-arrow hub-gallery-arrow--left" id="gallery-prev" aria-label="Imaginea anterioară">‹</button>
-                                        <button class="hub-gallery-arrow hub-gallery-arrow--right" id="gallery-next" aria-label="Imaginea următoare">›</button>
-                                        <span class="hub-gallery-counter" id="gallery-counter">1 / ${imgs.length}</span>` : ''}
-                                </div>
-                                ${imgs.length > 1 ? `<div class="hub-detail-thumbs">${imgs.map((im, i) =>
-                                    `<button class="hub-detail-thumb${i === 0 ? ' hub-detail-thumb--active' : ''}" data-idx="${i}"><img src="${esc(im)}" alt=""></button>`).join('')}</div>` : ''}
-                            </div>` : `
-                            <div class="hub-detail-gallery">
-                                <div class="hub-detail-main-img hub-detail-main-img--placeholder">
-                                    <span class="hub-placeholder-icon">🖼️</span>
-                                    <span class="hub-placeholder-text">Fără fotografii</span>
-                                </div>
-                            </div>`}
                         <div class="hub-detail-body">
-                            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-                                <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
-                                    <div style="flex:1;min-width:0">
-                                        <h2 style="color:var(--text-light);font-size:1.2rem;margin:0 0 6px">${esc(l.title)}</h2>
+                            <div class="hub-detail-top">
+                                <div style="flex:1;min-width:0">
+                                    <h2 class="hub-detail-title">${esc(l.title)}</h2>
+                                    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px">
                                         <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
-                                        ${CATEGORIES[l.category] ? `<span style="color:var(--text-gray);font-size:.78rem;margin-left:8px">${CATEGORIES[l.category]}</span>` : ''}
+                                        ${CATEGORIES[l.category] ? `<span style="color:var(--text-gray);font-size:.78rem">${CATEGORIES[l.category]}</span>` : ''}
                                     </div>
-                                    <button class="hub-detail-fav-btn${isFavDetail ? ' hub-detail-fav-btn--active' : ''}" id="detail-fav-btn" title="${u ? (isFavDetail ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
-                                        ${isFavDetail ? '❤️' : '🤍'}
-                                    </button>
                                 </div>
                                 <div class="hub-detail-price">${Number(l.price).toFixed(0)} RON</div>
+                            </div>
+                            <div style="display:flex;justify-content:flex-end;margin-top:8px">
+                                <button class="hub-detail-fav-btn${isFavDetail ? ' hub-detail-fav-btn--active' : ''}" id="detail-fav-btn" title="${u ? (isFavDetail ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
+                                    ${isFavDetail ? '❤️' : '🤍'}
+                                </button>
                             </div>
                             <div class="hub-detail-desc" style="margin-top:16px">${esc(l.description)}</div>
                             ${l.location ? `<div class="hub-detail-location" style="margin-top:10px">📍 ${esc(l.location)}</div>` : ''}
@@ -629,12 +626,75 @@ async function openListingDetail(id) {
             if (counter) counter.textContent = `${currentImgIdx + 1} / ${imgs.length}`;
         };
 
-        v.querySelector('#gallery-prev')?.addEventListener('click', () => updateGalleryImg(currentImgIdx - 1));
-        v.querySelector('#gallery-next')?.addEventListener('click', () => updateGalleryImg(currentImgIdx + 1));
+        v.querySelector('#gallery-prev')?.addEventListener('click', (e) => { e.stopPropagation(); updateGalleryImg(currentImgIdx - 1); });
+        v.querySelector('#gallery-next')?.addEventListener('click', (e) => { e.stopPropagation(); updateGalleryImg(currentImgIdx + 1); });
 
         v.querySelectorAll('.hub-detail-thumb').forEach(thumb => {
             thumb.addEventListener('click', () => updateGalleryImg(+thumb.dataset.idx));
         });
+
+        // ── Fullscreen lightbox (OLX-style) ──
+        if (imgs.length) {
+            const mainImg = v.querySelector('#listing-main-img');
+            mainImg.style.cursor = 'zoom-in';
+            mainImg.addEventListener('click', (e) => {
+                if (e.target.closest('.hub-gallery-arrow') || e.target.closest('.hub-gallery-counter')) return;
+                openLightbox(imgs, currentImgIdx);
+            });
+        }
+
+        function openLightbox(images, startIdx) {
+            let lbIdx = startIdx;
+            const lb = document.createElement('div');
+            lb.className = 'hub-lightbox';
+            lb.innerHTML = `
+                <div class="hub-lightbox__backdrop"></div>
+                <button class="hub-lightbox__close" aria-label="Închide">✕</button>
+                <span class="hub-lightbox__counter">${lbIdx + 1} / ${images.length}</span>
+                <img class="hub-lightbox__img" src="${images[lbIdx]}" alt="">
+                ${images.length > 1 ? `
+                    <button class="hub-lightbox__arrow hub-lightbox__arrow--left" aria-label="Anterior">‹</button>
+                    <button class="hub-lightbox__arrow hub-lightbox__arrow--right" aria-label="Următorul">›</button>` : ''}`;
+            document.body.appendChild(lb);
+            document.body.classList.add('modal-open');
+            requestAnimationFrame(() => lb.classList.add('hub-lightbox--visible'));
+
+            const lbImg = lb.querySelector('.hub-lightbox__img');
+            const lbCounter = lb.querySelector('.hub-lightbox__counter');
+
+            const goTo = (idx) => {
+                lbIdx = ((idx % images.length) + images.length) % images.length;
+                lbImg.src = images[lbIdx];
+                lbCounter.textContent = `${lbIdx + 1} / ${images.length}`;
+                updateGalleryImg(lbIdx);
+            };
+
+            const close = () => {
+                lb.classList.remove('hub-lightbox--visible');
+                setTimeout(() => { lb.remove(); document.body.classList.remove('modal-open'); }, 250);
+            };
+
+            lb.querySelector('.hub-lightbox__close').addEventListener('click', close);
+            lb.querySelector('.hub-lightbox__backdrop').addEventListener('click', close);
+            lb.querySelector('.hub-lightbox__arrow--left')?.addEventListener('click', () => goTo(lbIdx - 1));
+            lb.querySelector('.hub-lightbox__arrow--right')?.addEventListener('click', () => goTo(lbIdx + 1));
+
+            const onKey = (e) => {
+                if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); }
+                else if (e.key === 'ArrowLeft') goTo(lbIdx - 1);
+                else if (e.key === 'ArrowRight') goTo(lbIdx + 1);
+            };
+            document.addEventListener('keydown', onKey);
+            lb.addEventListener('transitionend', () => { if (!lb.classList.contains('hub-lightbox--visible')) document.removeEventListener('keydown', onKey); });
+
+            // Swipe support
+            let touchStartX = 0;
+            lb.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+            lb.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 50) { dx > 0 ? goTo(lbIdx - 1) : goTo(lbIdx + 1); }
+            });
+        }
 
         v.querySelector('#listing-dm-btn')?.addEventListener('click', () => {
             S.dmPartner = l.seller_id;
@@ -647,7 +707,7 @@ async function openListingDetail(id) {
         });
 
         v.querySelector('#listing-del-btn')?.addEventListener('click', async () => {
-            if (!confirm('Sigur vrei să ștergi acest anunț?')) return;
+            if (!(await confirmModal('Sigur vrei să ștergi acest anunț?'))) return;
             if ((await api('DELETE', `/marketplace/listings/${id}`)).success) { showView('marketplace'); renderMarketplace(); loadListings(); }
         });
 
@@ -769,15 +829,15 @@ function openAddListingModal() {
                 </div>
                 <div class="hub-form-group">
                     <label class="hub-form-label">Locație</label>
-                    <input class="hub-form-input" name="location" maxlength="100" placeholder="București">
+                    <input class="hub-form-input" name="location" maxlength="100" required placeholder="București">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Telefon (opțional)</label>
-                    <input class="hub-form-input" name="phone" maxlength="20" placeholder="+40…">
+                    <label class="hub-form-label">Telefon</label>
+                    <input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Link OLX (opțional)</label>
-                    <input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…">
+                    <label class="hub-form-label">Link OLX</label>
+                    <input class="hub-form-input" name="olx_url" type="url" required placeholder="https://www.olx.ro/…">
                 </div>
                 <div class="hub-form-group">
                     <label class="hub-form-label">Imagini (max ${MAX_IMAGES} fotografii)</label>
