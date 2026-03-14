@@ -91,6 +91,7 @@ router.post('/messages', authRequired, async (req, res) => {
 
         // DB: insert message and return generated ID + timestamp
         const result = await pool.query(
+            'INSERT INTO messages (user_id, message) VALUES ($1, $2) RETURNING id, created_at',
             [req.user.id, text]
         );
 
