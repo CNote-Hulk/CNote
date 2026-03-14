@@ -1,20 +1,27 @@
+/**
+ * Public User Profile Page
+ * Displays another user's profile: progress, achievements,
+ * favorites, owned consoles, and friend request controls.
+ */
 import { AuthModule } from '/js/modules/auth.js';
         import { API_BASE_URL } from '/js/config.js';
         import { ProgressModule } from '/js/modules/progress.js';
         import { AchievementsModule } from '/js/modules/achievements.js';
 
+        /** Escape HTML special characters */
         function escapeHtml(s) {
             if (!s) return '';
             return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
-        // Extract username from URL path: /user/:username
+        /** Extract username from URL path: /user/:username */
         function getUsernameFromUrl() {
             const path = window.location.pathname;
             const match = path.match(/\/user\/([^/]+)/);
             return match ? decodeURIComponent(match[1]) : null;
         }
 
+        /** Convert numeric rating to star characters (★☆) */
         function renderRatingStars(rating) {
             const full = Math.floor(rating);
             const half = rating - full >= 0.3 && rating - full < 0.8 ? 1 : 0;
@@ -23,6 +30,7 @@ import { AuthModule } from '/js/modules/auth.js';
             return '★'.repeat(full + fullExtra) + (half ? '½' : '') + '☆'.repeat(empty);
         }
 
+        /** Render the user's dashboard: progress, achievements, ratings, favorites */
         async function renderUserDashboard(profile) {
             // Show dashboard
             document.getElementById('user-dashboard-panel').hidden = false;
@@ -118,6 +126,7 @@ import { AuthModule } from '/js/modules/auth.js';
             }
         }
 
+        /** Fetch public profile data by username and render the page */
         async function loadUserProfile() {
             const username = getUsernameFromUrl();
             const loadingEl = document.getElementById('user-profile-loading');
@@ -232,6 +241,7 @@ import { AuthModule } from '/js/modules/auth.js';
             }
         }
 
+        /** Render the Add/Remove/Accept Friend button with status checks */
         async function renderFriendButton(container, targetUserId) {
             try {
                 const token = localStorage.getItem('cn_token');
@@ -304,6 +314,7 @@ import { AuthModule } from '/js/modules/auth.js';
             } catch { /* ignore */ }
         }
 
+        /** Fetch and display user's friends list */
         async function loadFriendsList(username) {
             const section = document.getElementById('user-friends-section');
             const list = document.getElementById('user-friends-list');

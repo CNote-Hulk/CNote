@@ -10,6 +10,7 @@ export const ProfileDropdownModule = {
     _btn: null,
     _open: false,
 
+    /** Escape HTML special characters */
     _escapeHtml(value) {
         if (value === null || value === undefined) return '';
         return String(value)
@@ -19,6 +20,7 @@ export const ProfileDropdownModule = {
             .replace(/"/g, '&quot;');
     },
 
+    /** Initialize the dropdown: find button, build DOM, bind events */
     init() {
         this._btn = document.querySelector('.navbar-profile-btn');
         if (!this._btn) return;
@@ -27,6 +29,7 @@ export const ProfileDropdownModule = {
         this._bind();
     },
 
+    /** Resolve relative page path based on current location depth */
     _resolvePagePath(page) {
         const path = window.location.pathname;
         if (path.includes('/pages/consoles/') || path.includes('\\pages\\consoles\\')) return '../' + page;
@@ -35,6 +38,7 @@ export const ProfileDropdownModule = {
         return '/html/pages/' + page;
     },
 
+    /** Build the dropdown HTML: avatar, name, email, links, logout */
     _createDropdown() {
         const user = AuthModule.getCurrentUser() || {};
         const name = this._escapeHtml(user.username || 'Utilizator');
@@ -87,6 +91,7 @@ export const ProfileDropdownModule = {
         this._dropdown = dd;
     },
 
+    /** Bind click/keyboard events for open, close, outside-click */
     _bind() {
         this._btn.addEventListener('click', (e) => {
             e.preventDefault();

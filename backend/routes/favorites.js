@@ -1,11 +1,18 @@
+/* ─────────────────────────────────────────
+   FILE: favorites.js
+   DESCRIPTION: Console favorites management. Users can
+   list, check, and toggle favorite consoles.
+   ───────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
+// GET /api/favorites — List all favorited console IDs for current user
 router.get('/', authRequired, async (req, res) => {
     try {
+        // DB: fetch all favorite console IDs ordered by newest first
         const result = await pool.query(
             'SELECT console_id, created_at FROM user_favorites WHERE user_id = $1 ORDER BY created_at DESC',
             [req.user.id]
@@ -17,9 +24,11 @@ router.get('/', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/favorites/:consoleId — Check if a specific console is favorited
 router.get('/:consoleId', authRequired, async (req, res) => {
     try {
         const { consoleId } = req.params;
+        // DB: check if favorite record exists for this user + console pair
         const result = await pool.query(
             'SELECT id FROM user_favorites WHERE user_id = $1 AND console_id = $2',
             [req.user.id, consoleId]
@@ -31,6 +40,7 @@ router.get('/:consoleId', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/favorites/:consoleId — Toggle favorite (add if missing, remove if exists)
 router.post('/:consoleId', authRequired, async (req, res) => {
     try {
         const { consoleId } = req.params;
@@ -38,6 +48,7 @@ router.post('/:consoleId', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Console ID invalid.' });
         }
 
+        // DB: check if already favorited
         const existing = await pool.query(
             'SELECT id FROM user_favorites WHERE user_id = $1 AND console_id = $2',
             [req.user.id, consoleId]

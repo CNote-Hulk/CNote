@@ -29,6 +29,7 @@ export const AchievementsModule = {
         { id: 'all_rounder', name: 'All-Rounder', description: 'Completează 15 lecții și vizitează 10 console.', icon: '👑' }
     ],
 
+    /** Get quiz stats object from localStorage for a user */
     _getQuizStats(userId) {
         try {
             const data = JSON.parse(localStorage.getItem(this.QUIZ_STATS_KEY)) || {};
@@ -36,6 +37,7 @@ export const AchievementsModule = {
         } catch { return {}; }
     },
 
+    /** Get count of unique consoles visited (from localStorage) */
     _getVisitedCount() {
         try {
             const visited = JSON.parse(localStorage.getItem(this.VISITED_STORAGE_KEY)) || [];
@@ -43,6 +45,7 @@ export const AchievementsModule = {
         } catch { return 0; }
     },
 
+    /** Aggregate quiz stats: total quizzes, perfect scores, avg score */
     _getQuizSummary(userId) {
         const byCourse = this._getQuizStats(userId);
         let attempts = 0;
@@ -63,6 +66,7 @@ export const AchievementsModule = {
     },
 
     /** Get earned achievements for a user */
+    /** Get list of earned badge IDs for a user */
     getEarned(userId) {
         try {
             const data = JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || {};
@@ -71,6 +75,7 @@ export const AchievementsModule = {
     },
 
     /** Award an achievement */
+    /** Award a badge to a user (persists to localStorage) */
     award(userId, badgeId) {
         try {
             const data = JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || {};
@@ -83,6 +88,7 @@ export const AchievementsModule = {
     },
 
     /** Check and award achievements based on current state */
+    /** Check all badge conditions and award any newly earned ones */
     checkAndAward(userId) {
         const awarded = [];
         const progress = ProgressModule.getAllProgress(userId);
@@ -122,6 +128,7 @@ export const AchievementsModule = {
     },
 
     /** Track a console page visit */
+    /** Record a console page visit for the Explorer badge */
     trackConsoleVisit(consoleId) {
         try {
             const visited = JSON.parse(localStorage.getItem(this.VISITED_STORAGE_KEY)) || [];
@@ -134,6 +141,7 @@ export const AchievementsModule = {
         return 0;
     },
 
+    /** Show toast notifications for newly unlocked badges */
     showUnlockNotifications(awardedIds) {
         if (!Array.isArray(awardedIds) || awardedIds.length === 0) return;
 
@@ -197,6 +205,7 @@ export const AchievementsModule = {
     },
 
     /** Get full badge info with earned status */
+    /** Get all badges with earned status for display */
     getAllBadges(userId) {
         const earned = this.getEarned(userId);
         return this.BADGES.map(b => {

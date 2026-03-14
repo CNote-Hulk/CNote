@@ -42,6 +42,7 @@
     // Try fetching JSON first, fallback to inline
     let consolesData = null;
 
+    /** Load JSON via XHR (file:// protocol friendly, no fetch) */
     function loadJsonWithXhr(path) {
         return new Promise((resolve, reject) => {
             try {
@@ -67,6 +68,7 @@
         });
     }
 
+    /** Try loading console data via fetch first, fall back to XHR */
     function tryFetchJson() {
         // Use pre-loaded global data first (works on file://)
         if (window.CONSOLES_DATA) {
@@ -81,6 +83,7 @@
             .catch(() => null);
     }
 
+    /** Initialize comparison app with loaded console data */
     function startApp(data) {
         consolesData = data;
         if (!consolesData || consolesData.length === 0) {
@@ -107,6 +110,7 @@
         1: 'Generatia 1 (1972-1976)'
     };
 
+    /** Fill both <select> dropdowns with console options */
     function populateSelects() {
         const gens = {};
         consolesData.forEach(c => {
@@ -186,6 +190,7 @@
         return '../../' + imgPath;
     }
 
+    /** Update the comparison table when selections change */
     function update() {
         const a = consolesData.find(c => c.id === selectA.value);
         const b = consolesData.find(c => c.id === selectB.value);

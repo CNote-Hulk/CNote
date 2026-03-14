@@ -6,12 +6,14 @@
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
 
+/** Extract console slug from card link href (e.g. "playstation-5") */
 function getConsoleIdFromHref(href) {
     if (!href) return null;
     const match = href.match(/consoles\/([^/.]+)\.html/);
     return match ? match[1] : null;
 }
 
+/** Render filled star rating using Unicode star characters */
 function renderStarsFilled(avg) {
     const full = Math.floor(avg);
     const half = avg - full >= 0.3 && avg - full < 0.8 ? 1 : 0;
@@ -20,6 +22,7 @@ function renderStarsFilled(avg) {
     return '★'.repeat(full + fullExtra) + (half ? '½' : '') + '☆'.repeat(empty);
 }
 
+/** Init: inject favorite hearts and average star ratings into console cards */
 async function init() {
     const cards = document.querySelectorAll('.console-card');
     if (!cards.length) return;

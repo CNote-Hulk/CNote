@@ -1,9 +1,15 @@
+/* ─────────────────────────────────────────
+   FILE: friends.js
+   DESCRIPTION: Friend management routes. Send/accept/reject
+   friend requests, list friends, check friendship status.
+   ───────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
+// POST /api/friends/request/:userId — Send friend request (or auto-accept if mutual)
 router.post('/request/:userId', authRequired, async (req, res) => {
     try {
         const receiverId = parseInt(req.params.userId, 10);
@@ -25,8 +31,8 @@ router.post('/request/:userId', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Sunteti deja prieteni.' });
         }
 
+        // DB: check for existing pending request in either direction
         const existingRequest = await pool.query(
-            `SELECT id, status, sender_id FROM friend_requests
              WHERE ((sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1))
              AND status = 'pending'`,
             [req.user.id, receiverId]
@@ -35,7 +41,9 @@ router.post('/request/:userId', authRequired, async (req, res) => {
         if (existingRequest.rows.length > 0) {
             const existing = existingRequest.rows[0];
             if (existing.sender_id === receiverId) {
+                // Mutual request: auto-accept and create friendship
                 await pool.query('UPDATE friend_requests SET status = \'accepted\' WHERE id = $1', [existing.id]);
+                // DB: insert friendship — always store lower ID as user1_id
                 const [u1, u2] = req.user.id < receiverId ? [req.user.id, receiverId] : [receiverId, req.user.id];
                 await pool.query(
                     'INSERT INTO friends (user1_id, user2_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
@@ -54,6 +62,7 @@ router.post('/request/:userId', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/friends/accept/:requestId — Accept a pending friend request
 router.post('/accept/:requestId', authRequired, async (req, res) => {
     try {
         const requestId = parseInt(req.params.requestId, 10);
@@ -69,6 +78,7 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
         const request = result.rows[0];
         await pool.query('UPDATE friend_requests SET status = \'accepted\' WHERE id = $1', [requestId]);
 
+        // DB: create friendship record (lower ID always goes to user1_id)
         const [u1, u2] = request.sender_id < req.user.id
             ? [request.sender_id, req.user.id]
             : [req.user.id, request.sender_id];
@@ -84,6 +94,7 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/friends/reject/:requestId — Reject a pending friend request
 router.post('/reject/:requestId', authRequired, async (req, res) => {
     try {
         const requestId = parseInt(req.params.requestId, 10);
@@ -104,6 +115,7 @@ router.post('/reject/:requestId', authRequired, async (req, res) => {
     }
 });
 
+// DELETE /api/friends/:userId — Remove a friend (deletes friendship + request records)
 router.delete('/:userId', authRequired, async (req, res) => {
     try {
         const friendId = parseInt(req.params.userId, 10);
@@ -124,10 +136,11 @@ router.delete('/:userId', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/friends — List all friends of current user
 router.get('/', authRequired, async (req, res) => {
     try {
+        // DB: join friends table with users, finding both directions
         const result = await pool.query(
-            `SELECT u.id, u.username, u.avatar, u.bio, f.created_at AS friends_since
              FROM friends f
              JOIN users u ON (
                 (f.user1_id = $1 AND u.id = f.user2_id) OR
@@ -144,6 +157,7 @@ router.get('/', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/friends/requests — List pending friend requests received
 router.get('/requests', authRequired, async (req, res) => {
     try {
         const result = await pool.query(
@@ -163,6 +177,7 @@ router.get('/requests', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/friends/status/:userId — Check friendship status with a user
 router.get('/status/:userId', authRequired, async (req, res) => {
     try {
         const targetId = parseInt(req.params.userId, 10);

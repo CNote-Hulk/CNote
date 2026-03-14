@@ -1,3 +1,8 @@
+/* ─────────────────────────────────────────
+   FILE: chat.js
+   DESCRIPTION: Community chat. Paginated message retrieval
+   and posting with per-user rate-limit cooldown.
+   ───────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
@@ -5,17 +10,20 @@ const { authRequired } = require('../middleware/auth');
 const router = express.Router();
 
 const MAX_MESSAGE_LENGTH = 500;
-const COOLDOWN_MS = 3000;
-const lastMessageTime = new Map();
+const COOLDOWN_MS = 3000;          // Min interval between messages per user
+const lastMessageTime = new Map(); // In-memory cooldown tracker (userId → timestamp)
 
+// GET /api/chat/messages — Fetch recent messages with cursor-based pagination
 router.get('/messages', async (req, res) => {
     try {
+        // Pagination: ?limit=N&before=cursor_id
         const limit = Math.min(parseInt(req.query.limit) || 50, 100);
         const before = parseInt(req.query.before) || null;
 
         let query;
         let params;
         if (before) {
+            // DB: fetch messages older than cursor ID, newest first
             query = `
                 SELECT m.id, m.message, m.created_at,
                        u.id AS user_id, u.username, u.avatar
@@ -27,6 +35,7 @@ router.get('/messages', async (req, res) => {
             `;
             params = [before, limit];
         } else {
+            // DB: fetch newest N messages
             query = `
                 SELECT m.id, m.message, m.created_at,
                        u.id AS user_id, u.username, u.avatar
@@ -39,6 +48,7 @@ router.get('/messages', async (req, res) => {
         }
 
         const result = await pool.query(query, params);
+        // Reverse so messages appear in chronological order (oldest first)
         const messages = result.rows.reverse().map(row => ({
             id: row.id,
             message: row.message,
@@ -57,6 +67,7 @@ router.get('/messages', async (req, res) => {
     }
 });
 
+// POST /api/chat/messages — Send a new chat message (rate-limited)
 router.post('/messages', authRequired, async (req, res) => {
     try {
         const { message } = req.body;
@@ -70,6 +81,7 @@ router.post('/messages', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: `Mesajul nu poate depasi ${MAX_MESSAGE_LENGTH} caractere.` });
         }
 
+        // Cooldown check: prevent spam by enforcing minimum interval
         const now = Date.now();
         const lastTime = lastMessageTime.get(req.user.id) || 0;
         if (now - lastTime < COOLDOWN_MS) {
@@ -77,8 +89,8 @@ router.post('/messages', authRequired, async (req, res) => {
             return res.status(429).json({ success: false, error: `Asteapta ${wait} secunde inainte de a trimite alt mesaj.` });
         }
 
+        // DB: insert message and return generated ID + timestamp
         const result = await pool.query(
-            'INSERT INTO messages (user_id, message) VALUES ($1, $2) RETURNING id, created_at',
             [req.user.id, text]
         );
 

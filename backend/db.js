@@ -13,8 +13,13 @@ const pool = new Pool({
 	}
 });
 
+/**
+ * Create all tables and run schema migrations.
+ * Uses IF NOT EXISTS so it is safe to call on every startup.
+ */
 async function initializeSchema() {
 	await pool.query(`
+		/* ── Core user & auth tables ── */
 		CREATE TABLE IF NOT EXISTS users (
 			id              SERIAL PRIMARY KEY,
 			username        TEXT    NOT NULL,
@@ -65,6 +70,7 @@ async function initializeSchema() {
 			is_active         BOOLEAN DEFAULT TRUE
 		);
 
+		/* ── Chat ── */
 		CREATE TABLE IF NOT EXISTS messages (
 			id          SERIAL PRIMARY KEY,
 			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -72,6 +78,7 @@ async function initializeSchema() {
 			created_at  TIMESTAMP DEFAULT NOW()
 		);
 
+		/* ── Social (ratings, favorites, owned, friends) ── */
 		CREATE TABLE IF NOT EXISTS console_ratings (
 			id          SERIAL PRIMARY KEY,
 			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -112,6 +119,7 @@ async function initializeSchema() {
 			UNIQUE(user1_id, user2_id)
 		);
 
+		/* ── 2FA codes (email-based one-time codes) ── */
 		CREATE TABLE IF NOT EXISTS two_factor_codes (
 			id          SERIAL PRIMARY KEY,
 			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -120,9 +128,94 @@ async function initializeSchema() {
 			used        BOOLEAN DEFAULT FALSE,
 			created_at  TIMESTAMP DEFAULT NOW()
 		);
+
+		/* === ConsoleHub Tables === */
+
+		CREATE TABLE IF NOT EXISTS forum_threads (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			console     TEXT    NOT NULL,
+			title       TEXT    NOT NULL,
+			body        TEXT    NOT NULL,
+			tag         TEXT    DEFAULT 'General',
+			views       INTEGER DEFAULT 0,
+			upvotes     INTEGER DEFAULT 0,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS forum_replies (
+			id          SERIAL PRIMARY KEY,
+			thread_id   INTEGER NOT NULL REFERENCES forum_threads(id) ON DELETE CASCADE,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			body        TEXT    NOT NULL,
+			upvotes     INTEGER DEFAULT 0,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS forum_upvotes (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			thread_id   INTEGER REFERENCES forum_threads(id) ON DELETE CASCADE,
+			reply_id    INTEGER REFERENCES forum_replies(id) ON DELETE CASCADE,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS listings (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			title       TEXT    NOT NULL,
+			description TEXT    NOT NULL,
+			price       DECIMAL(10,2) NOT NULL,
+			condition   TEXT    DEFAULT 'good',
+			category    TEXT    DEFAULT 'consoles',
+			location    TEXT    DEFAULT '',
+			phone       TEXT    DEFAULT '',
+			olx_url     TEXT    DEFAULT '',
+			images      TEXT    DEFAULT '[]',
+			sold        BOOLEAN DEFAULT FALSE,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS repair_requests (
+			id                 SERIAL PRIMARY KEY,
+			user_id            INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			console            TEXT    NOT NULL,
+			symptoms           TEXT    NOT NULL,
+			description        TEXT    DEFAULT '',
+			severity           TEXT    DEFAULT 'unknown',
+			ai_diagnosis       TEXT    DEFAULT '',
+			estimated_cost_min INTEGER DEFAULT 0,
+			estimated_cost_max INTEGER DEFAULT 0,
+			estimated_time     TEXT    DEFAULT '',
+			recommendation     TEXT    DEFAULT '',
+			status             TEXT    DEFAULT 'draft',
+			created_at         TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS direct_messages (
+			id          SERIAL PRIMARY KEY,
+			sender_id   INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			receiver_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			message     TEXT    NOT NULL,
+			listing_id  INTEGER REFERENCES listings(id) ON DELETE SET NULL,
+			read        BOOLEAN DEFAULT FALSE,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS notifications (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			type        TEXT    NOT NULL,
+			message     TEXT    NOT NULL,
+			link        TEXT    DEFAULT '',
+			read        BOOLEAN DEFAULT FALSE,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
 	`);
 
+	// Column migrations — idempotent ALTER statements to evolve schema
 	const migrations = [
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS listing_id INTEGER REFERENCES listings(id) ON DELETE SET NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS favorite_consoles TEXT DEFAULT ''`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS owned_consoles TEXT DEFAULT ''`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE`,

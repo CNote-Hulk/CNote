@@ -8,6 +8,7 @@ import { AchievementsModule } from '../modules/achievements.js';
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
 
+/** Remove leftover Chrome UI elements from page template */
 function cleanupConsolePageChrome() {
     const homeLinkItem = document.querySelector('.nav-links a[href="../index.html"]')?.closest('li');
     if (homeLinkItem) homeLinkItem.remove();
@@ -25,6 +26,7 @@ let IMAGE_DIMENSIONS = {};
 /**
  * Load image dimensions from JSON file
  */
+/** Load pre-computed image dimensions from JSON (prevents CLS) */
 async function loadImageDimensions() {
     if (Object.keys(IMAGE_DIMENSIONS).length > 0) return;
     
@@ -129,6 +131,7 @@ function formatList(pairs) {
 /**
  * Render specs sections into the page
  */
+/** Render the specs accordion from section config */
 function renderSpecs(consola) {
     const specsContainer = document.querySelector('.specs-section .container');
     if (!specsContainer) return;
@@ -184,6 +187,7 @@ function renderSpecs(consola) {
  * Inserted between hero and specs sections
  * Normalizes both Pattern A (\n\n) and Pattern B (<br><br>) formats
  */
+/** Render the console history timeline section */
 function renderHistory(consola) {
     // Ensure we have a reference point: place before .specs-section
     const specsSection = document.querySelector('.specs-section');
@@ -290,6 +294,7 @@ function renderHistory(consola) {
 /**
  * Render the hero section with console data
  */
+/** Render the hero section: image, title, tagline, action buttons */
 function renderHero(consola) {
     // Update title
     const h1 = document.querySelector('.console-hero-text h1');
@@ -338,6 +343,7 @@ function renderHero(consola) {
 /**
  * Render the community rating widget after specs
  */
+/** Render the star rating widget with user interaction */
 function renderRatingWidget(consoleId) {
     const specsSection = document.querySelector('.specs-section');
     if (!specsSection) return;
@@ -363,6 +369,7 @@ function renderRatingWidget(consoleId) {
     loadRating(consoleId);
 }
 
+/** Generate star HTML for a given rating value */
 function renderStars(rating, max = 5) {
     let html = '';
     for (let i = 1; i <= max; i++) {
@@ -377,6 +384,7 @@ function renderStars(rating, max = 5) {
     return html;
 }
 
+/** Render clickable/hoverable rating stars for user input */
 function renderInteractiveStars(currentRating, consoleId) {
     const user = AuthModule.getCurrentUser();
     const container = document.getElementById('rating-user');
@@ -412,6 +420,7 @@ function renderInteractiveStars(currentRating, consoleId) {
     });
 }
 
+/** Fetch current rating data from API */
 async function loadRating(consoleId) {
     try {
         const token = localStorage.getItem('cn_token');
@@ -433,6 +442,7 @@ async function loadRating(consoleId) {
     }
 }
 
+/** Submit user's rating to API and refresh display */
 async function submitRating(consoleId, rating) {
     try {
         const token = localStorage.getItem('cn_token');
@@ -466,6 +476,7 @@ function updateRatingDisplay(average, count) {
 /**
  * Initialize the favorite heart button
  */
+/** Initialize the favorite (heart) toggle button for a console */
 async function initFavoriteButton(consoleId) {
     const btn = document.getElementById('favorite-heart-btn');
     if (!btn) return;
@@ -521,6 +532,7 @@ async function initFavoriteButton(consoleId) {
 /**
  * Initialize the console detail page
  */
+/** Main entry point: load console data and render all sections */
 async function init() {
     cleanupConsolePageChrome();
 

@@ -1,16 +1,31 @@
+/* ─────────────────────────────────────────
+   FILE: sessions.js
+   DESCRIPTION: Session management and Server-Sent Events (SSE)
+   for real-time session termination notifications.
+   ───────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
-const sseClientsBySessionToken = new Map();
+const sseClientsBySessionToken = new Map(); // sessionToken → Set of SSE clients
 
+/**
+ * registerSseClient
+ * @description Adds an SSE client connection to the tracking map.
+ * @param {string} sessionToken
+ * @param {{ res: import('express').Response, heartbeat: NodeJS.Timeout }} client
+ */
 function registerSseClient(sessionToken, client) {
     const set = sseClientsBySessionToken.get(sessionToken) || new Set();
     set.add(client);
     sseClientsBySessionToken.set(sessionToken, set);
 }
 
+/**
+ * unregisterSseClient
+ * @description Removes an SSE client and cleans up empty sets.
+ */
 function unregisterSseClient(sessionToken, client) {
     const set = sseClientsBySessionToken.get(sessionToken);
     if (!set) return;
@@ -20,6 +35,11 @@ function unregisterSseClient(sessionToken, client) {
     }
 }
 
+/**
+ * notifySessionTerminated
+ * @description Broadcasts a session_terminated event to all SSE clients
+ *              listening on the given session token.
+ */
 function notifySessionTerminated(sessionToken) {
     if (!sessionToken) return;
     const set = sseClientsBySessionToken.get(sessionToken);
@@ -36,6 +56,7 @@ function notifySessionTerminated(sessionToken) {
     });
 }
 
+// GET /api/sessions/events — SSE endpoint for real-time session termination alerts
 router.get('/events', authRequired, async (req, res) => {
     const sessionToken = req.sessionToken || (typeof req.query.token === 'string' ? req.query.token.trim() : '');
     if (!sessionToken) {
@@ -50,6 +71,7 @@ router.get('/events', authRequired, async (req, res) => {
 
     res.write(': connected\n\n');
 
+    // Heartbeat every 30s to keep connection alive
     const client = {
         res,
         heartbeat: setInterval(() => {
@@ -65,7 +87,9 @@ router.get('/events', authRequired, async (req, res) => {
     });
 });
 
+// GET /api/sessions — List all active sessions for current user
 router.get('/', authRequired, async (req, res) => {
+    // DB: fetch active sessions, flagging the current one via is_current
     const result = await pool.query(
         `SELECT id, device_type, browser, operating_system, ip_address, country,
                 login_time, last_activity, is_active,
@@ -91,6 +115,7 @@ router.get('/', authRequired, async (req, res) => {
     res.json({ success: true, sessions: formatted });
 });
 
+// DELETE /api/sessions/:id — Terminate a specific session
 router.delete('/:id', authRequired, async (req, res) => {
     const sessionId = parseInt(req.params.id, 10);
     if (isNaN(sessionId)) {
@@ -107,12 +132,15 @@ router.delete('/:id', authRequired, async (req, res) => {
         return res.status(404).json({ success: false, error: 'Sesiunea nu a fost gasita.' });
     }
 
+    // DB: deactivate session and notify via SSE
     await pool.query('UPDATE user_sessions SET is_active = false WHERE id = $1', [sessionId]);
     notifySessionTerminated(session.session_token);
     res.json({ success: true, message: 'Sesiunea a fost inchisa.' });
 });
 
+// DELETE /api/sessions — Terminate all active sessions for current user
 router.delete('/', authRequired, async (req, res) => {
+    // DB: deactivate all active sessions and collect their tokens
     const result = await pool.query(
         `UPDATE user_sessions SET is_active = false
          WHERE user_id = $1 AND is_active = true

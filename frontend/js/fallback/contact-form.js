@@ -29,12 +29,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const isLocalFile = window.location.protocol === 'file:';
     const API_BASE_URL = (window.CN_API_BASE_URL || '/api').replace(/\/$/, '');
 
+    /** Set text content with fallback value */
     function setMessageText(element, text, fallbackText) {
         if (!element) return;
         element.textContent = text || fallbackText;
     }
 
     // Form field validation helper
+    /** Validate a single form input and toggle valid/invalid CSS classes */
     function validateField(input) {
         if (!input) return false;
         const value = input.value.trim();
@@ -78,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Util: Show message with animation
+    /** Show a success/error message element with optional auto-hide */
     function showMessage(messageEl, duration = 5000) {
         if (!messageEl) return;
         messageEl.style.display = 'block';
@@ -94,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Util: Set loading state
+    /** Toggle loading spinner on submit button */
     function setLoading(isLoading) {
         if (!submitBtn) return;
         isSubmitting = isLoading;
@@ -114,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 120);
     }
 
+    /** Fallback: open mailto: link when API is unavailable (file:// mode) */
     function sendLocalMailto(name, email, subject, message) {
         const encodedSubject = encodeURIComponent(subject || 'Mesaj nou de pe website');
         const body = encodeURIComponent(

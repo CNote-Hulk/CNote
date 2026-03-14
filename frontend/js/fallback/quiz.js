@@ -17,6 +17,7 @@
     // Prevent double-init
     if (window.__QUIZ_INITIALIZED__) return;
 
+    /** Main quiz initializer — parses quiz HTML, builds interactive elements */
     function initQuiz() {
         const quizSection = document.getElementById('quiz');
         if (!quizSection) return;
