@@ -17,6 +17,7 @@ const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
+const { findOrCreateSession } = require('./auth');
 
 const router = express.Router();
 
@@ -202,11 +203,7 @@ router.get('/google/callback',
 
             // Create session
             const deviceInfo = parseDevice(req);
-            const sessionToken = generateToken();
-            await pool.query(
-                'INSERT INTO user_sessions (user_id, session_token, device_type, browser, operating_system, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-                [user.id, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
-            );
+            const sessionToken = await findOrCreateSession(user.id, deviceInfo);
 
             setSessionCookie(res, sessionToken);
 
