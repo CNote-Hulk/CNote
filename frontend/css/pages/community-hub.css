@@ -1778,6 +1778,7 @@
 
     body:has(.community-page--hub) .navbar {
         padding: 12px 0 0;
+        overflow: hidden;
     }
 
     body:has(.community-page--hub) .logo {
@@ -1808,6 +1809,38 @@
 
     body:has(.community-page--hub) .nav-links a {
         font-size: 0.82rem;
+    }
+
+    /* Extra-narrow screens: shrink nav text more */
+    @media (max-width: 360px) {
+        body:has(.community-page--hub) .logo {
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+        }
+
+        body:has(.community-page--hub) .nav-links {
+            padding: 0 6px 10px;
+            gap: 2px 0;
+        }
+
+        body:has(.community-page--hub) .nav-links a {
+            font-size: 0.72rem;
+        }
+
+        body:has(.community-page--hub) .nav-links li + li::before {
+            margin: 0 5px;
+            font-size: 0.72rem;
+        }
+
+        body:has(.community-page--hub) .navbar-search-btn {
+            right: 42px;
+            top: 8px;
+        }
+
+        body:has(.community-page--hub) .navbar-profile-wrap {
+            right: 10px;
+            top: 8px;
+        }
     }
 
     /* --- Mobile hamburger button (fixed top-left) --- */
