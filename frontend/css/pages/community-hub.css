@@ -2104,8 +2104,8 @@
     /* --- Marketplace grid on mobile --- */
     .hub-market-grid {
         grid-template-columns: 1fr;
-        padding: 12px;
-        gap: 12px;
+        padding: 14px 16px;
+        gap: 16px;
     }
 
     .hub-market-filters {
@@ -2129,9 +2129,11 @@
     }
 
     .hub-listing-card {
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
         overflow: hidden;
+        background: rgba(30, 26, 23, 0.95);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .hub-listing-img {
@@ -2139,15 +2141,30 @@
     }
 
     .hub-listing-info {
-        padding: 14px 16px;
+        padding: 14px 16px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
     }
 
     .hub-listing-info__title {
-        font-size: 0.95rem;
+        font-size: 1rem;
+        white-space: normal;
     }
 
     .hub-listing-info__price {
-        font-size: 1.1rem;
+        font-size: 1.15rem;
+    }
+
+    .hub-listing-info__seller {
+        font-size: 0.8rem;
+        margin-top: 2px;
+    }
+
+    .hub-listing-fav-btn {
+        top: 10px;
+        right: 10px;
+        font-size: 1.35rem;
     }
 
     /* Marketplace FAB on mobile */
