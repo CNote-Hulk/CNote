@@ -1905,11 +1905,14 @@
     .hub-sidebar__close {
         background: none;
         border: none;
-        color: var(--text-gray, #A89F94);
-        font-size: 1.3rem;
+        color: var(--accent-color, #D4AF7A);
+        font-size: 0.82rem;
+        font-weight: 600;
+        font-family: var(--font-sans);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
         cursor: pointer;
-        width: 40px;
-        height: 40px;
+        padding: 8px 14px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2107,26 +2110,44 @@
 
     .hub-market-filters {
         flex-direction: column;
-        gap: 8px;
-        padding: 12px 14px;
-        background: rgba(0, 0, 0, 0.2);
+        gap: 10px;
+        padding: 14px 16px;
+        background: rgba(13, 14, 20, 0.6);
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(6px);
     }
 
     .hub-market-filters input,
     .hub-market-filters select {
         width: 100%;
         font-size: 16px;
-        min-height: 44px;
+        min-height: 48px;
         border-radius: 12px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 14px;
     }
 
     .hub-listing-card {
         border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        overflow: hidden;
     }
 
     .hub-listing-img {
         aspect-ratio: 16 / 10;
+    }
+
+    .hub-listing-info {
+        padding: 14px 16px;
+    }
+
+    .hub-listing-info__title {
+        font-size: 0.95rem;
+    }
+
+    .hub-listing-info__price {
+        font-size: 1.1rem;
     }
 
     /* Marketplace FAB on mobile */
