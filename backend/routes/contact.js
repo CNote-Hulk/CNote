@@ -3,6 +3,11 @@
    DESCRIPTION: Contact form route. Validates input,
    checks honeypot for bots, and sends email via Resend.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
 const emailService = require('../services/email');
 

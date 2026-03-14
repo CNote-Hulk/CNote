@@ -17,8 +17,7 @@ Core features are implemented, but the platform is still under active developmen
 
 ## Live Website
 
-https://cnote-production.up.railway.app/
-
+https://consolenotebook.com/
 ---
 
 ## Current Features

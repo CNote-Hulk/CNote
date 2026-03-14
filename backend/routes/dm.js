@@ -3,7 +3,11 @@
  * Conversation list, message thread, send DM.
  * Uses PostgreSQL pool from db.js.
  */
-
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');

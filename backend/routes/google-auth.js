@@ -4,6 +4,11 @@
    Handles login, registration, account linking/unlinking.
    Uses custom state store to work without express-session.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;

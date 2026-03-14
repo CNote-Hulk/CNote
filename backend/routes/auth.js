@@ -4,6 +4,11 @@
    login (with 2FA support), email verification, password
    reset, profile management, and two-factor setup.
    ───────────────────────────────────────── */
+/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
+   If you add a new package:
+     1. require() it here
+     2. Add it to package.json dependencies
+   ────────────────────────────────────────── */
 const express = require('express');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
