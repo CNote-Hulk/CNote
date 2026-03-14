@@ -243,6 +243,9 @@ async function initializeSchema() {
 		try { await pool.query(sql); } catch { }
 	}
 
+	// Backfill listing status for pre-existing rows
+	try { await pool.query(`UPDATE listings SET status = 'active' WHERE status IS NULL`); } catch { }
+
 	// Migrate is_active from INTEGER to BOOLEAN if needed
 	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active TYPE BOOLEAN USING is_active::int::boolean`); } catch { }
 	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active SET DEFAULT TRUE`); } catch { }

@@ -44,9 +44,19 @@
     </nav>
 
     <div class="community-page community-page--fullwidth community-page--hub">
+        <!-- Mobile hamburger + overlay -->
+        <button class="hub-mobile-hamburger" id="hub-mobile-hamburger" aria-label="Deschide meniu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="hub-mobile-overlay" id="hub-mobile-overlay"></div>
+
         <div class="community-hub">
             <!-- Sidebar -->
             <aside class="hub-sidebar" id="hub-sidebar">
+                <div class="hub-sidebar__mobile-header">
+                    <span class="hub-sidebar__mobile-title">Meniu</span>
+                    <button class="hub-sidebar__close" id="hub-sidebar-close" aria-label="Închide meniu">✕</button>
+                </div>
                 <button class="hub-sidebar-toggle" id="hub-sidebar-toggle">☰ Meniu</button>
 
                 <div class="hub-sidebar__section">

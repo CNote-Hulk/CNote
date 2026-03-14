@@ -25,6 +25,11 @@ body {
     overflow-x: hidden;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Background Gradient — uses ::before so it stays fixed on iOS */
 body::before {
     content: '';

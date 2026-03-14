@@ -27,7 +27,7 @@ router.get('/:console/threads', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT t.id, t.title, t.tag, t.views, t.upvotes, t.created_at,
-                   u.username,
+                   u.username, u.avatar,
                    (SELECT COUNT(*) FROM forum_replies r WHERE r.thread_id = t.id) AS reply_count
             FROM forum_threads t
             JOIN users u ON u.id = t.user_id

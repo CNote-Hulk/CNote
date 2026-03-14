@@ -85,6 +85,7 @@
             <button class="profile-tab" data-tab="cursuri">Cursuri</button>
             <button class="profile-tab" data-tab="realizari">Realizări</button>
             <button class="profile-tab" data-tab="evaluari">Evaluări</button>
+            <button class="profile-tab" data-tab="anunturi">Anunțuri</button>
             <button class="profile-tab" data-tab="prieteni">Prieteni</button>
             <button class="profile-tab" data-tab="setari">Setări</button>
         </div>
@@ -175,7 +176,18 @@
             <div id="ratings-container"></div>
         </div>
 
-        <!-- Settings Panel -->
+        <!-- Listings Panel -->
+        <div class="profile-panel" id="panel-anunturi" data-panel="anunturi">
+            <div class="my-listings-header">
+                <h3 class="my-listings-header__title">📋 Anunțurile mele</h3>
+                <a href="community.html" class="hub-btn hub-btn--primary hub-btn--sm">+ Anunț nou</a>
+            </div>
+            <div id="my-listings-container">
+                <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+            </div>
+        </div>
+
+        <!-- Friends Panel -->
         <div class="profile-panel" id="panel-prieteni" data-panel="prieteni">
             <!-- Search Users -->
             <div class="course-card" id="friend-search-card">
