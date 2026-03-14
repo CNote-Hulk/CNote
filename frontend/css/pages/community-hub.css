@@ -1924,6 +1924,11 @@
         background: #0d0e14;
     }
 
+    /* Don't create stacking context — sidebar must be above overlay */
+    .community-page--hub .community-hub {
+        z-index: auto;
+    }
+
     /* --- Chat view on mobile --- */
     .hub-view--chat .community-container {
         padding: 0;
