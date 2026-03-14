@@ -73,6 +73,16 @@ function timeAgo(d) {
 /** Get 2-letter initials from a username */
 function ini(n) { return n ? n.slice(0, 2).toUpperCase() : '?'; }
 
+/** Render avatar: show image if available, fallback to initials with onerror */
+function avatarHtml(name, avatarUrl, size, extraStyle) {
+    const sz = size || 36;
+    const s = extraStyle || '';
+    if (avatarUrl) {
+        return `<img src="${esc(avatarUrl)}" alt="" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;${s}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;align-items:center;justify-content:center;font-size:${sz * 0.022}rem;font-weight:700;text-transform:uppercase;${s}">${ini(name)}</span>`;
+    }
+    return ini(name);
+}
+
 /** Authenticated API call helper — attaches JWT and returns parsed JSON */
 async function api(method, path, body) {
     const token = localStorage.getItem('cn_token');
@@ -117,12 +127,46 @@ function initSidebar() {
         sidebar.querySelectorAll('.hub-sidebar__item').forEach(b => b.classList.remove('hub-sidebar__item--active'));
         item.classList.add('hub-sidebar__item--active');
 
+        // Close mobile sidebar after navigation
+        closeMobileSidebar();
+
         navigate(item.dataset.view, item.dataset.console || null, item.dataset.category ?? '');
     });
 
-    // Mobile toggle
+    // Mobile sidebar: hamburger, overlay, close button
+    const hamburger = document.getElementById('hub-mobile-hamburger');
+    const overlay = document.getElementById('hub-mobile-overlay');
+    const closeBtn = document.getElementById('hub-sidebar-close');
+
+    if (hamburger) hamburger.addEventListener('click', toggleMobileSidebar);
+    if (overlay) overlay.addEventListener('click', closeMobileSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
+
+    // Legacy toggle (for non-mobile fallback)
     const toggle = document.getElementById('hub-sidebar-toggle');
     if (toggle) toggle.addEventListener('click', () => sidebar.classList.toggle('hub-sidebar--open'));
+}
+
+function toggleMobileSidebar() {
+    const hamburger = document.getElementById('hub-mobile-hamburger');
+    const overlay = document.getElementById('hub-mobile-overlay');
+    const isOpen = sidebar.classList.contains('hub-sidebar--open');
+    if (isOpen) closeMobileSidebar();
+    else {
+        sidebar.classList.add('hub-sidebar--open');
+        if (hamburger) hamburger.classList.add('active');
+        if (overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeMobileSidebar() {
+    const hamburger = document.getElementById('hub-mobile-hamburger');
+    const overlay = document.getElementById('hub-mobile-overlay');
+    sidebar.classList.remove('hub-sidebar--open');
+    if (hamburger) hamburger.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    document.body.style.overflow = '';
 }
 
 /** Navigate to a view, optionally filtering by console and category */
@@ -206,7 +250,7 @@ async function loadThreads() {
         }
         list.innerHTML = threads.map(t => `
             <button class="hub-thread-item" data-id="${t.id}">
-                <div class="hub-thread-avatar">${ini(t.username)}</div>
+                <div class="hub-thread-avatar">${avatarHtml(t.username, t.avatar, 36)}</div>
                 <div class="hub-thread-body">
                     <div class="hub-thread-title">
                         ${esc(t.title)}
@@ -248,7 +292,7 @@ async function openThread(id) {
             <div class="hub-thread-detail" id="thread-detail">
                 <div class="hub-thread-original">
                     <div class="hub-reply-header">
-                        <div class="hub-reply-avatar">${ini(t.username)}</div>
+                        <div class="hub-reply-avatar">${avatarHtml(t.username, t.avatar, 24)}</div>
                         <span class="hub-reply-user">${esc(t.username)}</span>
                         <span class="hub-reply-time">${timeAgo(t.created_at)}</span>
                         <span class="hub-tag hub-tag--${(t.tag || 'general').toLowerCase()}">${esc(t.tag || 'General')}</span>
@@ -262,7 +306,7 @@ async function openThread(id) {
                 ${replies.map(r => `
                     <div class="hub-reply-card">
                         <div class="hub-reply-header">
-                            <div class="hub-reply-avatar">${ini(r.username)}</div>
+                            <div class="hub-reply-avatar">${avatarHtml(r.username, r.avatar, 24)}</div>
                             <span class="hub-reply-user">${esc(r.username)}</span>
                             <span class="hub-reply-time">${timeAgo(r.created_at)}</span>
                         </div>
@@ -369,7 +413,7 @@ function renderMarketplace() {
         <div class="hub-view-header">
             <div class="hub-view-header__title">🛒 Marketplace</div>
             <div style="display:flex;gap:8px">
-                ${u ? '<button class="hub-btn hub-btn--primary" id="market-add-btn">+ Anunț nou</button>' : ''}
+                ${u ? '<button class="hub-btn hub-btn--primary hub-market-add-btn" id="market-add-btn"><span class="hub-market-add-btn__text">+ Anunț nou</span><span class="hub-market-add-btn__icon">+</span></button>' : ''}
                 ${u ? '<button class="hub-btn hub-btn--secondary" id="market-dm-btn">💬 Mesaje</button>' : ''}
             </div>
         </div>
@@ -495,8 +539,13 @@ async function openListingDetail(id) {
     try {
         const data = await api('GET', `/marketplace/listings/${id}`);
         if (!data.success) throw 0;
-        const l = data.listing, u = user(), own = u && u.id === l.user_id;
-        let imgs = []; try { imgs = JSON.parse(l.images || '[]'); } catch {}
+        const l = data.listing, u = user(), own = u && u.id === l.seller_id;
+        const imgs = Array.isArray(l.images) ? l.images : [];
+        const isFavDetail = S.favoriteIds.has(l.id);
+        console.log('[Marketplace] Listing detail:', l);
+
+        // Increment view count (non-owners only, fire-and-forget)
+        if (!own) api('PATCH', `/marketplace/listings/${id}/view`).catch(() => {});
 
         v.innerHTML = `
             <div class="hub-view-header">
@@ -504,29 +553,48 @@ async function openListingDetail(id) {
             </div>
             <div class="hub-detail-scroll">
                 <div class="hub-detail-inner">
-                    ${imgs.length ? `
-                        <div class="hub-detail-gallery">
-                            <div class="hub-detail-main-img" id="listing-main-img"><img src="${esc(imgs[0])}" alt=""></div>
-                            ${imgs.length > 1 ? `<div class="hub-detail-thumbs">${imgs.map((im, i) =>
-                                `<button class="hub-detail-thumb${i === 0 ? ' hub-detail-thumb--active' : ''}" data-idx="${i}"><img src="${esc(im)}" alt=""></button>`).join('')}</div>` : ''}
-                        </div>` : ''}
-                    <div class="hub-detail-card">
-                        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-                            <div>
-                                <h2 style="color:var(--text-light);font-size:1.2rem;margin:0 0 6px">${esc(l.title)}</h2>
-                                <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
-                                ${CATEGORIES[l.category] ? `<span style="color:var(--text-gray);font-size:.78rem;margin-left:8px">${CATEGORIES[l.category]}</span>` : ''}
+                    <div class="hub-detail-card hub-detail-card--main">
+                        ${imgs.length ? `
+                            <div class="hub-detail-gallery" id="listing-gallery">
+                                <div class="hub-detail-main-img" id="listing-main-img">
+                                    <img src="${esc(imgs[0])}" alt="">
+                                    ${imgs.length > 1 ? `
+                                        <button class="hub-gallery-arrow hub-gallery-arrow--left" id="gallery-prev" aria-label="Imaginea anterioară">‹</button>
+                                        <button class="hub-gallery-arrow hub-gallery-arrow--right" id="gallery-next" aria-label="Imaginea următoare">›</button>
+                                        <span class="hub-gallery-counter" id="gallery-counter">1 / ${imgs.length}</span>` : ''}
+                                </div>
+                                ${imgs.length > 1 ? `<div class="hub-detail-thumbs">${imgs.map((im, i) =>
+                                    `<button class="hub-detail-thumb${i === 0 ? ' hub-detail-thumb--active' : ''}" data-idx="${i}"><img src="${esc(im)}" alt=""></button>`).join('')}</div>` : ''}
+                            </div>` : `
+                            <div class="hub-detail-gallery">
+                                <div class="hub-detail-main-img hub-detail-main-img--placeholder">
+                                    <span class="hub-placeholder-icon">🖼️</span>
+                                    <span class="hub-placeholder-text">Fără fotografii</span>
+                                </div>
+                            </div>`}
+                        <div class="hub-detail-body">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+                                <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+                                    <div style="flex:1;min-width:0">
+                                        <h2 style="color:var(--text-light);font-size:1.2rem;margin:0 0 6px">${esc(l.title)}</h2>
+                                        <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
+                                        ${CATEGORIES[l.category] ? `<span style="color:var(--text-gray);font-size:.78rem;margin-left:8px">${CATEGORIES[l.category]}</span>` : ''}
+                                    </div>
+                                    <button class="hub-detail-fav-btn${isFavDetail ? ' hub-detail-fav-btn--active' : ''}" id="detail-fav-btn" title="${u ? (isFavDetail ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
+                                        ${isFavDetail ? '❤️' : '🤍'}
+                                    </button>
+                                </div>
+                                <div class="hub-detail-price">${Number(l.price).toFixed(0)} RON</div>
                             </div>
-                            <div class="hub-detail-price">${Number(l.price).toFixed(0)} RON</div>
+                            <div class="hub-detail-desc" style="margin-top:16px">${esc(l.description)}</div>
+                            ${l.location ? `<div class="hub-detail-location" style="margin-top:10px">📍 ${esc(l.location)}</div>` : ''}
+                            <div class="hub-detail-date" style="margin-top:6px">Publicat ${timeAgo(l.created_at)}</div>
                         </div>
-                        <div class="hub-detail-desc" style="margin-top:16px">${esc(l.description)}</div>
-                        ${l.location ? `<div class="hub-detail-location" style="margin-top:10px">📍 ${esc(l.location)}</div>` : ''}
-                        <div class="hub-detail-date" style="margin-top:6px">Publicat ${timeAgo(l.created_at)}</div>
                     </div>
                     <div class="hub-detail-card hub-detail-card--seller">
-                        <div class="hub-detail-seller-avatar">${ini(l.username)}</div>
+                        <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
                         <div style="flex:1">
-                            <div style="color:var(--text-light);font-weight:600">${esc(l.username)}</div>
+                            <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}</div>
                             <div style="color:var(--text-gray);font-size:.78rem">Vânzător</div>
                         </div>
                         ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contactează</button>' : ''}
@@ -548,18 +616,30 @@ async function openListingDetail(id) {
 
         v.querySelector('#listing-back').addEventListener('click', () => { showView('marketplace'); renderMarketplace(); loadListings(); });
 
-        v.querySelectorAll('.hub-detail-thumb').forEach(thumb => {
-            thumb.addEventListener('click', () => {
-                v.querySelector('#listing-main-img img').src = imgs[+thumb.dataset.idx];
-                v.querySelectorAll('.hub-detail-thumb').forEach(t => t.classList.remove('hub-detail-thumb--active'));
-                thumb.classList.add('hub-detail-thumb--active');
+        // Gallery navigation state
+        let currentImgIdx = 0;
+        const updateGalleryImg = (idx) => {
+            if (!imgs.length) return;
+            currentImgIdx = ((idx % imgs.length) + imgs.length) % imgs.length;
+            v.querySelector('#listing-main-img img').src = imgs[currentImgIdx];
+            v.querySelectorAll('.hub-detail-thumb').forEach((t, i) => {
+                t.classList.toggle('hub-detail-thumb--active', i === currentImgIdx);
             });
+            const counter = v.querySelector('#gallery-counter');
+            if (counter) counter.textContent = `${currentImgIdx + 1} / ${imgs.length}`;
+        };
+
+        v.querySelector('#gallery-prev')?.addEventListener('click', () => updateGalleryImg(currentImgIdx - 1));
+        v.querySelector('#gallery-next')?.addEventListener('click', () => updateGalleryImg(currentImgIdx + 1));
+
+        v.querySelectorAll('.hub-detail-thumb').forEach(thumb => {
+            thumb.addEventListener('click', () => updateGalleryImg(+thumb.dataset.idx));
         });
 
         v.querySelector('#listing-dm-btn')?.addEventListener('click', () => {
-            S.dmPartner = l.user_id;
+            S.dmPartner = l.seller_id;
             navigate('dm');
-            setTimeout(() => openConversation(l.user_id, l.username), 250);
+            setTimeout(() => openConversation(l.seller_id, l.seller_name), 250);
         });
 
         v.querySelector('#listing-sold-btn')?.addEventListener('click', async () => {
@@ -569,6 +649,19 @@ async function openListingDetail(id) {
         v.querySelector('#listing-del-btn')?.addEventListener('click', async () => {
             if (!confirm('Sigur vrei să ștergi acest anunț?')) return;
             if ((await api('DELETE', `/marketplace/listings/${id}`)).success) { showView('marketplace'); renderMarketplace(); loadListings(); }
+        });
+
+        // Favorite toggle on detail page
+        v.querySelector('#detail-fav-btn')?.addEventListener('click', async () => {
+            if (!u) { alert('Autentifică-te pentru favorite'); return; }
+            const btn = v.querySelector('#detail-fav-btn');
+            btn.classList.add('hub-detail-fav-btn--pop');
+            const res = await api('POST', `/marketplace/listings/${id}/favorite`);
+            if (res.success) {
+                if (res.favorited) { S.favoriteIds.add(id); btn.innerHTML = '❤️'; btn.classList.add('hub-detail-fav-btn--active'); }
+                else { S.favoriteIds.delete(id); btn.innerHTML = '🤍'; btn.classList.remove('hub-detail-fav-btn--active'); }
+            }
+            setTimeout(() => btn.classList.remove('hub-detail-fav-btn--pop'), 300);
         });
 
         // Load similar listings
@@ -974,8 +1067,8 @@ async function loadConversations() {
         if (!convs.length) { list.innerHTML = '<div class="hub-dm-list__empty">Nicio conversație</div>'; return; }
 
         list.innerHTML = convs.map(c => `
-            <button class="hub-dm-conv${S.dmPartner === c.partner_id ? ' hub-dm-conv--active' : ''}" data-id="${c.partner_id}" data-name="${esc(c.partner_name)}">
-                <div class="hub-dm-conv__avatar">${ini(c.partner_name)}</div>
+            <button class="hub-dm-conv${S.dmPartner === c.partner_id ? ' hub-dm-conv--active' : ''}" data-id="${c.partner_id}" data-name="${esc(c.partner_name)}" data-avatar="${esc(c.partner_avatar || '')}">
+                <div class="hub-dm-conv__avatar">${avatarHtml(c.partner_name, c.partner_avatar, 36)}</div>
                 <div class="hub-dm-conv__body">
                     <div class="hub-dm-conv__name">${esc(c.partner_name)}</div>
                     <div class="hub-dm-conv__preview">${esc(c.last_message)}</div>
@@ -985,31 +1078,34 @@ async function loadConversations() {
 
         list.addEventListener('click', e => {
             const c = e.target.closest('.hub-dm-conv');
-            if (c) openConversation(+c.dataset.id, c.dataset.name);
+            if (c) openConversation(+c.dataset.id, c.dataset.name, c.dataset.avatar);
         });
 
         if (S.dmPartner) {
             const found = convs.find(c => c.partner_id === S.dmPartner);
-            if (found) openConversation(S.dmPartner, found.partner_name);
+            if (found) openConversation(S.dmPartner, found.partner_name, found.partner_avatar);
         }
     } catch { list.innerHTML = '<div class="hub-dm-list__empty">Eroare la încărcare</div>'; }
 }
 
 /** Open a DM conversation thread with a specific user */
-async function openConversation(partnerId, partnerName) {
+async function openConversation(partnerId, partnerName, partnerAvatar) {
     S.dmPartner = partnerId;
     const thread = document.getElementById('dm-thread');
     if (!thread) return;
 
     document.querySelectorAll('.hub-dm-conv').forEach(c => {
         c.classList.toggle('hub-dm-conv--active', +c.dataset.id === partnerId);
-        if (+c.dataset.id === partnerId && !partnerName) partnerName = c.dataset.name;
+        if (+c.dataset.id === partnerId) {
+            if (!partnerName) partnerName = c.dataset.name;
+            if (!partnerAvatar) partnerAvatar = c.dataset.avatar;
+        }
     });
 
     const u = user();
     thread.innerHTML = `
         <div class="hub-dm-thread__header">
-            <div class="hub-dm-conv__avatar" style="width:30px;height:30px;font-size:.7rem">${ini(partnerName)}</div>
+            <div class="hub-dm-conv__avatar" style="width:30px;height:30px;font-size:.7rem">${avatarHtml(partnerName, partnerAvatar, 30)}</div>
             <span style="color:var(--text-light);font-weight:600;font-size:.9rem">${esc(partnerName || 'Utilizator')}</span>
         </div>
         <div class="hub-dm-messages" id="dm-messages"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div></div>

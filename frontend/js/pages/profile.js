@@ -860,6 +860,9 @@
             loadFriendRequests();
             loadMyFriends();
             initFriendSearch();
+
+            // Load my marketplace listings
+            loadMyListings();
         }
 
         // ─── Friend Search ──────────────────────────────────
@@ -1372,6 +1375,158 @@
             searchEl.addEventListener('input', () => renderList(searchEl.value));
             renderList();
             updateHidden();
+        }
+
+        // ─── My Listings ("Anunțurile mele") ─────────────────
+
+        const LISTING_CONDITIONS = { new: 'Nou', like_new: 'Ca nou', good: 'Bun', fair: 'Acceptabil', parts: 'Piese' };
+        const LISTING_CATEGORIES = { consoles: 'Console', games: 'Jocuri', accessories: 'Accesorii', parts: 'Piese / Reparații' };
+
+        /** Authenticated API helper for marketplace calls */
+        async function mpApi(method, path, body) {
+            const token = localStorage.getItem('cn_token');
+            const opts = { method, headers: {}, credentials: 'include' };
+            if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+            if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+            const res = await fetch(API_BASE_URL + path, opts);
+            return res.json();
+        }
+
+        /** Fetch and render the user's own marketplace listings */
+        async function loadMyListings() {
+            const container = document.getElementById('my-listings-container');
+            if (!container) return;
+
+            try {
+                const data = await mpApi('GET', '/marketplace/listings/mine');
+                if (!data.success) throw 0;
+                const listings = data.listings || [];
+
+                if (!listings.length) {
+                    container.innerHTML = '<div class="my-listings-empty"><div class="my-listings-empty__icon">📦</div><p>Nu ai niciun anunț postat.</p><a href="community.html" class="hub-btn hub-btn--primary hub-btn--sm" style="margin-top:12px">Publică primul anunț</a></div>';
+                    return;
+                }
+
+                container.innerHTML = listings.map(l => {
+                    const imgs = Array.isArray(l.images) ? l.images : [];
+                    const statusMap = { active: { label: 'Activ', cls: 'active' }, inactive: { label: 'Dezactivat', cls: 'inactive' }, sold: { label: 'Vândut', cls: 'sold' } };
+                    const st = statusMap[l.status] || statusMap.active;
+                    const date = new Date(l.created_at).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
+
+                    return `<div class="my-listing-row" data-listing-id="${l.id}">
+                        <div class="my-listing-row__thumb">
+                            ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="">'}
+                        </div>
+                        <div class="my-listing-row__info">
+                            <div class="my-listing-row__title">${escapeHtml(l.title)}</div>
+                            <div class="my-listing-row__meta">
+                                <span class="my-listing-status my-listing-status--${st.cls}">${st.label}</span>
+                                <span class="my-listing-row__price">${Number(l.price).toFixed(0)} RON</span>
+                                <span class="my-listing-row__cat">${LISTING_CATEGORIES[l.category] || l.category}</span>
+                            </div>
+                            <div class="my-listing-row__stats">
+                                <span>👁 ${l.views || 0}</span>
+                                <span>❤️ ${l.favorites_count || 0}</span>
+                                <span>📅 ${date}</span>
+                            </div>
+                        </div>
+                        <div class="my-listing-row__actions">
+                            ${l.status === 'active' ? `<button class="my-listing-action my-listing-action--deactivate" data-action="deactivate" data-id="${l.id}" title="Dezactivează">⏸️</button>` : ''}
+                            ${l.status === 'inactive' ? `<button class="my-listing-action my-listing-action--activate" data-action="activate" data-id="${l.id}" title="Activează">▶️</button>` : ''}
+                            ${l.status === 'active' ? `<button class="my-listing-action my-listing-action--sold" data-action="sold" data-id="${l.id}" title="Marchează vândut">✓</button>` : ''}
+                            <button class="my-listing-action my-listing-action--edit" data-action="edit" data-id="${l.id}" title="Editează">✏️</button>
+                            <button class="my-listing-action my-listing-action--delete" data-action="delete" data-id="${l.id}" title="Șterge">🗑️</button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // Bind action buttons
+                container.addEventListener('click', async e => {
+                    const btn = e.target.closest('.my-listing-action');
+                    if (!btn) return;
+                    const id = parseInt(btn.dataset.id, 10);
+                    const action = btn.dataset.action;
+
+                    if (action === 'deactivate') {
+                        await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'inactive' });
+                        loadMyListings();
+                    } else if (action === 'activate') {
+                        await mpApi('PATCH', `/marketplace/listings/${id}/status`, { status: 'active' });
+                        loadMyListings();
+                    } else if (action === 'sold') {
+                        await mpApi('PATCH', `/marketplace/listings/${id}/sold`);
+                        loadMyListings();
+                    } else if (action === 'delete') {
+                        if (!confirm('Sigur vrei să ștergi acest anunț? Acțiunea este permanentă.')) return;
+                        await mpApi('DELETE', `/marketplace/listings/${id}`);
+                        loadMyListings();
+                    } else if (action === 'edit') {
+                        openEditListingModal(id);
+                    }
+                });
+            } catch {
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca anunțurile.</p>';
+            }
+        }
+
+        /** Open a modal pre-filled with listing data for editing */
+        async function openEditListingModal(id) {
+            try {
+                const data = await mpApi('GET', `/marketplace/listings/${id}`);
+                if (!data.success) { alert('Nu s-a putut încărca anunțul.'); return; }
+                const l = data.listing;
+
+                document.querySelector('.edit-listing-overlay')?.remove();
+                const overlay = document.createElement('div');
+                overlay.className = 'hub-modal-overlay edit-listing-overlay';
+                overlay.innerHTML = `
+                    <div class="hub-modal">
+                        <div class="hub-modal__header">
+                            <span class="hub-modal__title">Editează anunțul</span>
+                            <button class="hub-modal__close">&times;</button>
+                        </div>
+                        <form class="hub-modal__body" id="edit-listing-form">
+                            <div class="hub-form-group"><label class="hub-form-label">Titlu</label><input class="hub-form-input" name="title" maxlength="100" required value="${escapeHtml(l.title)}"></div>
+                            <div class="hub-form-row">
+                                <div class="hub-form-group"><label class="hub-form-label">Preț (RON)</label><input class="hub-form-input" name="price" type="number" min="0" step="1" required value="${l.price}"></div>
+                                <div class="hub-form-group"><label class="hub-form-label">Stare</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+                            </div>
+                            <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${escapeHtml(l.description)}</textarea></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Locație</label><input class="hub-form-input" name="location" maxlength="100" value="${escapeHtml(l.location || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" value="${escapeHtml(l.phone || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Link OLX</label><input class="hub-form-input" name="olx_url" type="url" value="${escapeHtml(l.olx_url || '')}"></div>
+                            <div class="hub-modal__footer" style="padding:0;border:none">
+                                <button type="button" class="hub-btn hub-btn--secondary edit-listing-cancel">Anulează</button>
+                                <button type="submit" class="hub-btn hub-btn--primary">Salvează</button>
+                            </div>
+                        </form>
+                    </div>`;
+                document.body.appendChild(overlay);
+
+                const close = () => overlay.remove();
+                overlay.querySelector('.hub-modal__close').addEventListener('click', close);
+                overlay.querySelector('.edit-listing-cancel').addEventListener('click', close);
+                overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+                overlay.querySelector('#edit-listing-form').addEventListener('submit', async e => {
+                    e.preventDefault();
+                    const f = e.target, btn = f.querySelector('[type="submit"]');
+                    btn.disabled = true; btn.textContent = 'Se salvează…';
+                    const res = await mpApi('PUT', `/marketplace/listings/${id}`, {
+                        title: f.title.value.trim(),
+                        description: f.description.value.trim(),
+                        price: parseFloat(f.price.value),
+                        condition: f.condition.value,
+                        category: f.category.value,
+                        location: f.location.value.trim(),
+                        phone: f.phone.value.trim(),
+                        olx_url: f.olx_url.value.trim(),
+                    });
+                    if (res.success) { close(); loadMyListings(); }
+                    else { btn.disabled = false; btn.textContent = 'Salvează'; alert(res.error || 'Eroare.'); }
+                });
+            } catch { alert('Eroare la încărcarea anunțului.'); }
         }
 
         initProfile();

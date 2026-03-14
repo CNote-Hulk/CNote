@@ -100,8 +100,11 @@ function renderMessage(msg, grouped) {
         div.className = 'chat-msg chat-msg--new';
         div.dataset.id = msg.id;
         div.dataset.user = msg.user.username;
+        const avatarInner = msg.user.avatar
+            ? `<img src="${escapeHtml(msg.user.avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:100%;height:100%;align-items:center;justify-content:center">${getInitials(msg.user.username)}</span>`
+            : getInitials(msg.user.username);
         div.innerHTML = `
-            <div class="chat-msg__avatar" style="background:${color}">${getInitials(msg.user.username)}</div>
+            <div class="chat-msg__avatar" style="background:${color}">${avatarInner}</div>
             <div class="chat-msg__body">
                 <div class="chat-msg__header">
                     <a href="/user/${encodeURIComponent(msg.user.username)}" class="chat-msg__name" style="color:${color}">${escapeHtml(msg.user.username)}</a>
@@ -176,7 +179,10 @@ async function fetchMessages() {
             }
         }
     } catch {
-        loadingEl.textContent = 'Nu s-au putut încărca mesajele.';
+        // On error, show empty state instead of stuck spinner
+        if (loadingEl && !loadingEl.hidden && !loadingEl.querySelector('.chat-empty-state')) {
+            showEmptyState();
+        }
     }
 }
 
@@ -228,3 +234,10 @@ formEl.addEventListener('submit', async (e) => {
 // Initial load + auto-refresh polling
 fetchMessages();
 setInterval(fetchMessages, POLL_INTERVAL);
+
+// Timeout fallback — if first load fails or hangs, show empty state after 5s
+setTimeout(() => {
+    if (loadingEl && !loadingEl.hidden && !loadingEl.querySelector('.chat-empty-state')) {
+        showEmptyState();
+    }
+}, 5000);

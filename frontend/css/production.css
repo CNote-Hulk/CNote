@@ -105,6 +105,11 @@ body {
     overflow-x: hidden;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Background Gradient — uses ::before so it stays fixed on iOS */
 body::before {
     content: '';
@@ -6126,25 +6131,95 @@ body.search-open {
     background: #a94747;
 }
 
-/* Mobile */
+/* ── Mobile ≤ 600px ───────────────────────────────────── */
 @media (max-width: 600px) {
-    .auth-card {
-        padding: 32px 24px;
+
+    /* ── Global inputs: 48px touch target, 16px prevents iOS zoom ── */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    textarea,
+    select {
+        min-height: 48px;
+        font-size: 16px;
     }
 
+    /* ── Auth pages ── */
+    .auth-card {
+        padding: 28px 18px;
+        border-radius: 10px;
+    }
+
+    .auth-card__title {
+        font-size: 1.25rem;
+    }
+
+    .auth-field input {
+        min-height: 48px;
+        font-size: 16px;
+    }
+
+    .auth-btn {
+        min-height: 48px;
+        font-size: 1rem;
+    }
+
+    /* ── Profile header ── */
     .profile-header {
         flex-direction: column;
         text-align: center;
-        padding: 24px;
+        padding: 20px 16px;
+        gap: 14px;
     }
 
+    .profile-avatar {
+        margin: 0 auto;
+        width: 72px;
+        height: 72px;
+        font-size: 1.8rem;
+    }
+
+    .profile-name {
+        font-size: 1.15rem;
+    }
+
+    .profile-name-row,
+    .profile-bio-row {
+        justify-content: center;
+    }
+
+    /* ── Profile tabs ── */
     .profile-tabs {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        gap: 0;
+        margin-bottom: 20px;
     }
 
+    .profile-tab {
+        padding: 10px 14px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+
+    /* ── Profile panels ── */
+    .course-card {
+        padding: 18px 14px;
+    }
+
+    .settings-form {
+        max-width: 100%;
+    }
+
+    /* ── Achievements ── */
     .achievements-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .achievement-badge {
+        padding: 16px 12px;
     }
 
     .achievement-toast-stack {
@@ -6152,18 +6227,69 @@ body.search-open {
         top: 74px;
     }
 
+    /* ── My Listings ── */
+    .my-listing-row {
+        flex-wrap: wrap;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .my-listing-row__thumb {
+        width: 56px;
+        height: 42px;
+    }
+
+    .my-listing-row__title {
+        font-size: 0.85rem;
+    }
+
+    .my-listing-row__actions {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 4px;
+    }
+
+    .my-listing-action {
+        min-width: 36px;
+        min-height: 36px;
+    }
+
+    /* ── App modals ── */
+    .app-modal {
+        padding: 0;
+    }
+
+    .app-modal__dialog {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .app-modal__title {
+        font-size: 1rem;
+    }
+
     .app-modal__actions {
         flex-direction: column-reverse;
+        margin-top: auto;
+        padding-top: 16px;
     }
 
     .app-modal__btn {
         width: 100%;
+        min-height: 48px;
     }
 
+    /* ── Profile console lists ── */
     .profile-consoles-section {
         grid-template-columns: 1fr;
     }
 
+    /* ── Community page ── */
     .community-container {
         padding: 0 8px;
     }
@@ -6227,6 +6353,266 @@ body.search-open {
     font-size: 0.82rem;
     font-weight: 600;
     font-family: var(--font-sans);
+}
+
+/* ── My Listings (Profile Tab) ───────────────────────────── */
+
+.my-listings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.my-listings-header__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-light, #F5F0E8);
+    margin: 0;
+}
+
+.my-listings-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-gray, #A89F94);
+    font-size: 0.9rem;
+}
+
+.my-listings-empty__icon {
+    font-size: 2.4rem;
+    margin-bottom: 12px;
+}
+
+.my-listing-row {
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    background: var(--card-bg, #2A2320);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    align-items: center;
+    transition: border-color 0.2s ease;
+}
+
+.my-listing-row:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.my-listing-row__thumb {
+    width: 72px;
+    height: 54px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.my-listing-row__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.my-listing-row__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.my-listing-row__title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-light, #F5F0E8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.my-listing-row__meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.my-listing-row__price {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-color, #D4AF7A);
+}
+
+.my-listing-row__cat {
+    font-size: 0.76rem;
+    color: var(--text-gray, #A89F94);
+}
+
+.my-listing-row__stats {
+    display: flex;
+    gap: 12px;
+    font-size: 0.76rem;
+    color: var(--text-gray, #A89F94);
+}
+
+.my-listing-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.my-listing-status--active {
+    background: rgba(74, 222, 128, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+}
+
+.my-listing-status--inactive {
+    background: rgba(255, 191, 0, 0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(255, 191, 0, 0.2);
+}
+
+.my-listing-status--sold {
+    background: rgba(229, 115, 115, 0.1);
+    color: #e57373;
+    border: 1px solid rgba(229, 115, 115, 0.2);
+}
+
+.my-listing-row__actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.my-listing-action {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.my-listing-action:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.my-listing-action--delete:hover {
+    border-color: rgba(229, 115, 115, 0.4);
+    background: rgba(229, 115, 115, 0.08);
+}
+
+.my-listing-action--activate:hover {
+    border-color: rgba(74, 222, 128, 0.4);
+    background: rgba(74, 222, 128, 0.08);
+}
+
+/* ── Public Profile Listings ─────────────────────────────── */
+
+.user-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-light, #F5F0E8);
+    margin: 0 0 16px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-listings-section {
+    max-width: 800px;
+    margin: 30px auto 0;
+}
+
+.user-listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+}
+
+.user-listing-card {
+    background: var(--card-bg, #2A2320);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.user-listing-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+.user-listing-card__img {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    position: relative;
+}
+
+.user-listing-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-listing-card__info {
+    padding: 10px 12px 14px;
+}
+
+.user-listing-card__condition {
+    margin-bottom: 4px;
+}
+
+.user-listing-card__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-light, #F5F0E8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.user-listing-card__price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-color, #D4AF7A);
+}
+
+.user-listings-empty {
+    color: var(--text-gray, #A89F94);
+    font-size: 0.88rem;
+    font-style: italic;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+}
+
+.user-friends-section {
+    max-width: 800px;
+    margin: 30px auto 0;
+}
+
+.user-friends-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 /* === COMMUNITY CHAT PAGE === */
@@ -7199,6 +7585,43 @@ a.chat-message__username:hover {
     }
     .dash-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ── Extra Small Device Fixes (≤ 400px) ────────────────── */
+@media (max-width: 400px) {
+    /* Evolutie: console grid → single column on very narrow screens */
+    .console-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Comparatie: spec-row stack vertically */
+    .spec-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .spec-label {
+        text-align: left;
+    }
+
+    /* User listings: single column */
+    .user-listings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Global: prevent long text/URL overflow on mobile ──── */
+@media (max-width: 768px) {
+    .specs-list a,
+    .card a {
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .specs-list li {
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 }
 

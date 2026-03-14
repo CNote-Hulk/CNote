@@ -235,6 +235,9 @@ import { AuthModule } from '/js/modules/auth.js';
                 // Friends list
                 await loadFriendsList(profile.username);
 
+                // Active marketplace listings
+                await loadUserListings(profile.id);
+
             } catch (err) {
                 console.error('Profile load error:', err);
                 loadingEl.textContent = 'A apărut o eroare la încărcarea profilului.';
@@ -342,6 +345,45 @@ import { AuthModule } from '/js/modules/auth.js';
                 }).join('');
             } catch {
                 section.hidden = false;
+            }
+        }
+
+        /** Fetch and display user's active marketplace listings on public profile */
+        async function loadUserListings(userId) {
+            const section = document.getElementById('user-listings-section');
+            const grid = document.getElementById('user-listings-grid');
+            if (!section || !grid) return;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/marketplace/listings/user/${userId}`);
+                const data = await res.json();
+
+                if (!data.success || !data.listings || data.listings.length === 0) {
+                    section.hidden = false;
+                    grid.innerHTML = '<p class="user-listings-empty">Niciun anunț activ momentan.</p>';
+                    return;
+                }
+
+                const CONDITIONS = { new: 'Nou', like_new: 'Ca nou', good: 'Bun', fair: 'Acceptabil', parts: 'Piese' };
+
+                section.hidden = false;
+                grid.innerHTML = data.listings.map(l => {
+                    const imgs = Array.isArray(l.images) ? l.images : [];
+                    return `<a href="/html/pages/community.html" class="user-listing-card">
+                        <div class="user-listing-card__img">
+                            ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy">'}
+                            ${l.sold ? '<div class="hub-listing-sold-overlay"><span class="hub-listing-sold-badge">VÂNDUT</span></div>' : ''}
+                        </div>
+                        <div class="user-listing-card__info">
+                            <div class="user-listing-card__condition"><span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span></div>
+                            <div class="user-listing-card__title">${escapeHtml(l.title)}</div>
+                            <div class="user-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
+                        </div>
+                    </a>`;
+                }).join('');
+            } catch {
+                section.hidden = false;
+                grid.innerHTML = '<p class="user-listings-empty">Nu s-au putut încărca anunțurile.</p>';
             }
         }
 

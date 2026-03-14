@@ -401,6 +401,14 @@
     font-weight: 700;
     text-transform: uppercase;
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.hub-thread-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .hub-thread-body {
@@ -487,6 +495,14 @@
     font-size: 0.6rem;
     font-weight: 700;
     text-transform: uppercase;
+    overflow: hidden;
+}
+
+.hub-reply-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .hub-reply-user {
@@ -738,29 +754,101 @@
 .hub-detail-gallery {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
 }
 
 .hub-detail-main-img {
-    aspect-ratio: 16 / 10;
-    background: var(--dark-bg-2);
-    border-radius: var(--radius-lg, 12px);
+    height: 380px;
+    background: var(--dark-bg-2, #151210);
+    border-radius: 12px 12px 0 0;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .hub-detail-main-img img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
+/* Placeholder when no images */
+.hub-detail-main-img--placeholder {
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.hub-placeholder-icon {
+    font-size: 3rem;
+    opacity: 0.4;
+}
+
+.hub-placeholder-text {
+    font-size: 0.88rem;
+    color: var(--text-gray, #A89F94);
+    opacity: 0.6;
+}
+
+/* Gallery navigation arrows */
+.hub-gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    z-index: 2;
+}
+
+.hub-detail-main-img:hover .hub-gallery-arrow {
+    opacity: 1;
+}
+
+.hub-gallery-arrow:hover {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.hub-gallery-arrow--left { left: 10px; }
+.hub-gallery-arrow--right { right: 10px; }
+
+/* Image counter badge */
+.hub-gallery-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Thumbnails strip */
 .hub-detail-thumbs {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     overflow-x: auto;
+    padding: 8px 12px;
+    background: var(--card-bg, #2A2320);
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
 }
 
 .hub-detail-thumb {
@@ -792,6 +880,22 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* Main card — unified with gallery on top */
+.hub-detail-card--main {
+    background: var(--card-bg, #2A2320);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.hub-detail-card--main .hub-detail-gallery {
+    margin: -1px -1px 0;
+}
+
+.hub-detail-body {
+    padding: 20px;
 }
 
 .hub-detail-card {
@@ -1162,6 +1266,14 @@
     font-size: 0.82rem;
     text-transform: uppercase;
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.hub-dm-conv__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .hub-dm-conv__body {
@@ -1484,7 +1596,25 @@
     font-size: 0.82rem;
 }
 
-/* ── Mobile Responsive ──────────────────────────────────── */
+/* ── Marketplace FAB button (desktop: normal, mobile: FAB) ─ */
+
+.hub-market-add-btn__icon {
+    display: none;
+}
+
+/* ── Mobile Hamburger + Overlay (hidden on desktop) ─────── */
+
+.hub-mobile-hamburger {
+    display: none;
+}
+
+.hub-mobile-overlay {
+    display: none;
+}
+
+.hub-sidebar__mobile-header {
+    display: none;
+}
 
 .hub-sidebar-toggle {
     display: none;
@@ -1496,42 +1626,257 @@
     padding: 6px;
 }
 
+/* ── Mobile Responsive (768px) ──────────────────────────── */
+
 @media (max-width: 768px) {
+
+    /* --- Mobile hamburger button (fixed top-left) --- */
+    .hub-mobile-hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 1001;
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        background: rgba(42, 35, 32, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+    }
+
+    .hub-mobile-hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: var(--text-light, #F5F0E8);
+        border-radius: 2px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hub-mobile-hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .hub-mobile-hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .hub-mobile-hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* --- Dark overlay behind sidebar --- */
+    .hub-mobile-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .hub-mobile-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* --- Sidebar: slide-in from left (fixed, full-height) --- */
     .community-hub {
         flex-direction: column;
         height: auto;
-        min-height: calc(100vh - 64px);
+        min-height: calc(100vh - 56px);
     }
 
     .hub-sidebar {
-        width: 100%;
-        min-width: 0;
-        max-height: 0;
-        height: auto;
-        overflow: hidden;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        transition: max-height 0.3s ease;
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        min-width: 280px;
+        height: 100vh;
+        height: 100dvh;
+        max-height: none;
+        z-index: 1000;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: rgba(13, 14, 20, 0.97);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: none;
+        transition: left 0.3s ease;
+        padding-top: 0;
     }
 
+    .hub-sidebar--open {
+        left: 0;
+    }
+
+    /* Mobile header inside sidebar */
+    .hub-sidebar__mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 16px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hub-sidebar__mobile-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-light, #F5F0E8);
+        font-family: var(--font-sans);
+    }
+
+    .hub-sidebar__close {
+        background: none;
+        border: none;
+        color: var(--text-gray, #A89F94);
+        font-size: 1.2rem;
+        cursor: pointer;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: color 0.2s, background 0.2s;
+    }
+
+    .hub-sidebar__close:hover {
+        color: var(--text-light);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Hide the old inline toggle button */
+    .hub-sidebar-toggle {
+        display: none !important;
+    }
+
+    /* --- Hub content takes full width --- */
     .hub-content {
-        padding: 8px;
+        padding: 0;
+        width: 100%;
     }
 
     .hub-view,
     .hub-view--chat {
-        border-radius: 12px;
+        border-radius: 0;
     }
 
-    .hub-sidebar--open {
-        max-height: 60vh;
-        overflow-y: auto;
+    /* --- Chat view on mobile --- */
+    .hub-view--chat .community-container {
+        padding: 0;
     }
 
-    .hub-sidebar-toggle {
-        display: block;
+    .hub-view--chat .chat-box {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
     }
 
+    .chat-hdr {
+        padding: 12px 16px 12px 60px; /* room for hamburger btn */
+    }
+
+    .chat-messages {
+        padding: 10px 8px !important;
+    }
+
+    .chat-msg__avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.72rem;
+    }
+
+    .chat-msg__name {
+        font-size: 0.82rem;
+    }
+
+    .chat-msg__text {
+        font-size: 0.88rem;
+    }
+
+    .chat-msg__time {
+        font-size: 0.65rem;
+    }
+
+    /* Prevent iOS zoom on input focus */
+    .chat-input {
+        font-size: 16px !important;
+    }
+
+    .chat-input-pill {
+        border-radius: 20px;
+    }
+
+    /* --- Forum on mobile --- */
+    .hub-thread-item {
+        padding: 12px;
+    }
+
+    .hub-thread-meta {
+        flex-wrap: wrap;
+        gap: 4px 10px;
+    }
+
+    .hub-reply-card {
+        padding: 10px 12px;
+    }
+
+    .hub-thread-original {
+        padding: 12px;
+    }
+
+    /* Reduce nested reply indentation */
+    .hub-thread-detail {
+        padding: 8px;
+    }
+
+    .hub-thread-original,
+    .hub-reply-card {
+        margin-left: 0;
+    }
+
+    .hub-reply-form {
+        flex-direction: column;
+    }
+
+    .hub-reply-form input {
+        font-size: 16px;
+    }
+
+    .hub-reply-form .hub-btn {
+        width: 100%;
+    }
+
+    /* Thread create button full-width */
+    .hub-create-btn {
+        width: 100%;
+    }
+
+    /* --- Repair wizard on mobile --- */
+    .hub-symptom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hub-symptom-btn {
+        min-height: 44px;
+    }
+
+    .hub-repair-progress {
+        font-size: 0.78rem;
+    }
+
+    .hub-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* --- DM on mobile --- */
     .hub-dm-layout {
         flex-direction: column;
     }
@@ -1543,17 +1888,185 @@
         border-bottom: 1px solid var(--border-color);
     }
 
+    .hub-dm-form__input {
+        font-size: 16px;
+    }
+
+    /* --- Marketplace grid on mobile --- */
     .hub-market-grid {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         padding: 12px;
+        gap: 10px;
     }
 
-    .hub-symptom-grid {
+    .hub-market-filters {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .hub-market-filters input,
+    .hub-market-filters select {
+        width: 100%;
+        font-size: 16px;
+        min-height: 44px;
+    }
+
+    /* Marketplace FAB on mobile */
+    .hub-market-add-btn {
+        position: fixed !important;
+        bottom: 20px;
+        right: 20px;
+        z-index: 900;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .hub-market-add-btn__text {
+        display: none;
+    }
+
+    .hub-market-add-btn__icon {
+        display: block;
+        font-size: 1.6rem;
+        line-height: 1;
+    }
+
+    /* --- Listing detail on mobile --- */
+    .hub-detail-scroll {
+        padding: 12px;
+    }
+
+    .hub-detail-inner {
+        gap: 14px;
+    }
+
+    .hub-detail-main-img {
+        height: 260px;
+    }
+
+    .hub-detail-body {
+        padding: 14px;
+    }
+
+    .hub-detail-price {
+        font-size: 1.1rem;
+    }
+
+    .hub-detail-actions {
+        flex-direction: column;
+    }
+
+    .hub-detail-actions .hub-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* --- Modals full-screen on mobile --- */
+    .hub-modal-overlay {
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .hub-modal {
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .hub-modal__close {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hub-form-input,
+    .hub-form-select,
+    .hub-form-textarea {
+        font-size: 16px;
+        min-height: 48px;
+        padding: 12px 14px;
+    }
+
+    /* --- Similar listings on mobile --- */
+    .hub-similar-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* --- View headers on mobile --- */
+    .hub-view-header {
+        padding: 10px 12px;
+    }
+
+    .hub-view-header__title {
+        font-size: 0.9rem;
+    }
+
+    /* --- Buttons: min tap target --- */
+    .hub-btn {
+        min-height: 44px;
+        font-size: 0.84rem;
+    }
+
+    .hub-sidebar__item {
+        min-height: 44px;
+        padding: 10px 12px;
+    }
+}
+
+/* ── Small phones (480px) ───────────────────────────────── */
+
+@media (max-width: 480px) {
+    .hub-market-grid {
         grid-template-columns: 1fr;
     }
 
-    .hub-form-row {
+    .hub-similar-grid {
         grid-template-columns: 1fr;
+    }
+
+    .hub-detail-main-img {
+        height: 220px;
+    }
+
+    .chat-hdr__title {
+        font-size: 0.88rem;
+    }
+
+    .hub-listing-card .hub-listing-info {
+        padding: 10px;
+    }
+
+    .hub-detail-card--seller {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+/* ── Extra-small phones (360px) ─────────────────────────── */
+
+@media (max-width: 360px) {
+    .hub-sidebar {
+        width: 260px;
+        left: -260px;
+    }
+
+    .hub-detail-main-img {
+        height: 200px;
+    }
+
+    .hub-market-grid {
+        padding: 8px;
     }
 }
 
@@ -1804,6 +2317,38 @@
     letter-spacing: 0.04em;
 }
 
+/* ── Detail Page Favorite Button ─────────────────────────── */
+
+.hub-detail-fav-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.hub-detail-fav-btn:hover {
+    transform: scale(1.1);
+    border-color: rgba(229, 115, 115, 0.4);
+    background: rgba(229, 115, 115, 0.08);
+}
+
+.hub-detail-fav-btn--active {
+    border-color: rgba(229, 115, 115, 0.5);
+    background: rgba(229, 115, 115, 0.1);
+}
+
+.hub-detail-fav-btn--pop {
+    animation: favPop 0.3s ease;
+}
+
 .chat-date-divider::before,
 .chat-date-divider::after {
     content: '';
@@ -1841,6 +2386,7 @@
     color: #fff;
     letter-spacing: 0.02em;
     user-select: none;
+    overflow: hidden;
 }
 
 .chat-msg__body {

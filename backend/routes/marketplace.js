@@ -30,7 +30,7 @@ router.get('/listings', async (req, res) => {
         const condition = VALID_CONDITIONS.includes(req.query.condition) ? req.query.condition : null;
         const search = req.query.search ? String(req.query.search).trim().slice(0, 100) : null;
 
-        let where = ["l.status = 'active'"];
+        let where = ["COALESCE(l.status, 'active') = 'active'"];
         let params = [];
         let paramIdx = 1;
 
@@ -146,7 +146,7 @@ router.get('/listings/user/:userId', async (req, res) => {
                    u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar
             FROM listings l
             JOIN users u ON u.id = l.user_id
-            WHERE l.user_id = $1 AND l.status = 'active'
+            WHERE l.user_id = $1 AND COALESCE(l.status, 'active') = 'active'
             ORDER BY l.created_at DESC
         `, [userId]);
 
@@ -254,7 +254,7 @@ router.get('/listings/:id/similar', async (req, res) => {
                 FROM listings l
                 JOIN users u ON u.id = l.user_id
                 WHERE l.category = $1 AND l.id != $2 AND l.user_id != $3
-                  AND l.status = 'active'
+                  AND COALESCE(l.status, 'active') = 'active'
                   AND LOWER(l.title) LIKE $4
                 ORDER BY l.created_at DESC
                 LIMIT 4
@@ -274,7 +274,7 @@ router.get('/listings/:id/similar', async (req, res) => {
                 JOIN users u ON u.id = l.user_id
                 WHERE l.category = $1 AND l.user_id != $2
                   AND l.id NOT IN (${placeholders})
-                  AND l.status = 'active'
+                  AND COALESCE(l.status, 'active') = 'active'
                 ORDER BY l.created_at DESC
                 LIMIT $${excludeIds.length + 3}
             `, [category, user_id, ...excludeIds, 4 - listings.length]);
