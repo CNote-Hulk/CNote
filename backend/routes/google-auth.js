@@ -1,5 +1,10 @@
+/* ─────────────────────────────────────────
+   FILE: google-auth.js
+   DESCRIPTION: Google OAuth2 authentication via Passport.
+   Handles login, registration, account linking/unlinking.
+   Uses custom state store to work without express-session.
+   ───────────────────────────────────────── */
 const express = require('express');
-const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -11,10 +16,18 @@ const router = express.Router();
 
 const BASE_URL = () => (process.env.BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
+/**
+ * generateToken
+ * @description Creates a cryptographically random 64-char hex token.
+ */
 function generateToken() {
     return crypto.randomBytes(32).toString('hex');
 }
 
+/**
+ * setSessionCookie
+ * @description Sets the cn_session_token HTTP-only cookie.
+ */
 function setSessionCookie(res, token) {
     const isProd = process.env.NODE_ENV === 'production' || String(process.env.BASE_URL || '').startsWith('https://');
     res.cookie('cn_session_token', token, {
@@ -26,6 +39,10 @@ function setSessionCookie(res, token) {
     });
 }
 
+/**
+ * sanitizeUser
+ * @description Returns a safe user object (no password hash) for API responses.
+ */
 function sanitizeUser(user) {
     return {
         id: user.id,
@@ -47,13 +64,13 @@ function sanitizeUser(user) {
     };
 }
 
-// Configure Passport Google Strategy
+// Configure Passport Google Strategy (only if credentials are set)
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: BASE_URL() + '/api/auth/google/callback',
-        // Custom state store to work without express-session
+        // Custom state store: needed because we don’t use express-session
         store: {
             store: function(req, meta, cb) {
                 if (typeof meta === 'function') { cb = meta; }
@@ -132,7 +149,7 @@ router.get('/google/callback',
                     return res.redirect('/html/pages/profil.html?error=invalid_link#setari');
                 }
 
-                // Check if google_id already used by another account
+                // DB: check if this google_id is already linked to another account
                 const existingGoogle = await pool.query(
                     'SELECT id FROM users WHERE google_id = $1 AND id != $2',
                     [googleId, userId]
@@ -153,7 +170,7 @@ router.get('/google/callback',
             let user = userResult.rows[0];
 
             if (!user && email) {
-                // Check if email exists (link google to existing email account)
+                // DB: auto-link if email already exists (Google verifies email ownership)
                 userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
                 user = userResult.rows[0];
                 if (user) {
@@ -168,7 +185,7 @@ router.get('/google/callback',
             }
 
             if (!user) {
-                // Register new user (Google emails are pre-verified)
+                // DB: register new user (Google emails are pre-verified)
                 const insertResult = await pool.query(
                     `INSERT INTO users (username, email, password_hash, google_id, avatar_url, email_verified)
                      VALUES ($1, $2, NULL, $3, $4, TRUE) RETURNING *`,
@@ -193,7 +210,8 @@ router.get('/google/callback',
                 { expiresIn: '7d' }
             );
 
-            // Redirect with tokens in hash for frontend to capture
+            // Redirect with tokens encoded as base64 JSON in the URL hash
+            // The frontend captures this on page load to store auth tokens
             const tokenData = Buffer.from(JSON.stringify({
                 token: jwtToken,
                 session_token: sessionToken,
@@ -208,7 +226,7 @@ router.get('/google/callback',
     }
 );
 
-// DELETE /api/auth/google/unlink — Remove Google from account
+// DELETE /api/auth/google/unlink — Remove Google from account (password required first)
 router.delete('/google/unlink', authRequired, async (req, res) => {
     try {
         const userResult = await pool.query('SELECT id, password_hash, google_id FROM users WHERE id = $1', [req.user.id]);

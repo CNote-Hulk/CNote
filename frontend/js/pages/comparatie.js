@@ -16,6 +16,7 @@ let allConsoles = [];
 /**
  * Initialize comparison page
  */
+/** Load console JSON data and initialize comparison selects */
 async function init() {
     if (!selectA || !selectB || !comparisonContainer) {
         console.warn('Comparison elements not found');
@@ -58,6 +59,7 @@ const GEN_LABELS = {
 /**
  * Populate select dropdowns grouped by generation
  */
+/** Fill both <select> dropdowns with console options */
 function populateSelects() {
     const generations = {};
     allConsoles.forEach(c => {
@@ -159,6 +161,7 @@ const SPEC_SECTIONS = [
 /**
  * Format a spec value for display
  */
+/** Format a specification value for display (handle arrays, missing data) */
 function formatValue(val) {
     if (val === true) return '<span class="flag yes"></span>';
     if (val === false) return '<span class="flag no"></span>';
@@ -168,6 +171,7 @@ function formatValue(val) {
 /**
  * Get a nested spec value safely
  */
+/** Extract a nested spec value from console data by section + field keys */
 function getVal(consola, sectionKey, fieldKey) {
     return consola && consola[sectionKey] && consola[sectionKey][fieldKey] !== undefined
         ? consola[sectionKey][fieldKey]
@@ -177,6 +181,7 @@ function getVal(consola, sectionKey, fieldKey) {
 /**
  * Update the comparison display
  */
+/** Update the comparison table when console selections change */
 function updateComparison() {
     const a = allConsoles.find(c => c.id === selectA.value);
     const b = allConsoles.find(c => c.id === selectB.value);

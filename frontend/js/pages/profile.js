@@ -1,3 +1,8 @@
+/**
+ * Profile Page (profil.html)
+ * User dashboard: edit profile, change email/password, 2FA setup,
+ * course progress, achievements, favorites, and account deletion.
+ */
  import { AuthModule } from '../../js/modules/auth.js';
         import { ProgressModule } from '../../js/modules/progress.js';
         import { AchievementsModule } from '../../js/modules/achievements.js';
@@ -14,11 +19,13 @@
             window.location.href = 'login.html';
         }
 
+        /** Escape HTML special characters */
         function escapeHtml(s) {
             if (!s) return '';
             return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         }
 
+        /** Convert console ID slug to display name (e.g. "playstation-5" → "PlayStation 5") */
         function formatConsoleDisplayName(value) {
             if (!value) return '';
             const words = String(value)
@@ -38,6 +45,7 @@
             return words.join(' ');
         }
 
+        /** Main profile initializer — tabs, forms, settings panels */
         function initProfile() {
             if (!user) return;
 
@@ -765,6 +773,7 @@
             }
 
             // ─── Active Sessions ────────────────────────────
+            /** Fetch and render active login sessions table */
             async function loadSessions() {
                 const container = document.getElementById('sessions-container');
                 const logoutOthersBtn = document.getElementById('logout-others-btn');
@@ -855,6 +864,7 @@
 
         // ─── Friend Search ──────────────────────────────────
 
+        /** Initialize friend search with debounced user lookup */
         function initFriendSearch() {
             const input = document.getElementById('friend-search-input');
             const resultsContainer = document.getElementById('friend-search-results');
@@ -967,6 +977,7 @@
             }
         }
 
+        /** Fetch and display incoming/outgoing friend requests */
         async function loadFriendRequests() {
             const container = document.getElementById('friend-requests-container');
             try {
@@ -1033,6 +1044,7 @@
             }
         }
 
+        /** Fetch and display accepted friends list */
         async function loadMyFriends() {
             const container = document.getElementById('my-friends-list');
             try {
@@ -1067,6 +1079,7 @@
             }
         }
 
+        /** Render the overview dashboard: progress, favorites, ratings summary */
         async function renderDashboard() {
             // ── Stats: Course progress ──
             const courses = ProgressModule.COURSES;
@@ -1174,6 +1187,7 @@
             }
         }
 
+        /** Fetch and display user's console ratings as star cards */
         async function renderUserRatings() {
             const container = document.getElementById('ratings-container');
             container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Se încarcă evaluările...</p>';
@@ -1218,6 +1232,7 @@
             return html;
         }
 
+        /** Render course progress bars from localStorage data */
         function renderCourses() {
             const container = document.getElementById('courses-container');
             const courses = ProgressModule.COURSES;
@@ -1252,6 +1267,7 @@
             }, 100);
         }
 
+        /** Render earned achievement badges */
         function renderAchievements() {
             const container = document.getElementById('achievements-container');
             const badges = AchievementsModule.getAllBadges(user.id);
@@ -1268,6 +1284,7 @@
             }).join('');
         }
 
+        /** Initialize the owned-consoles multi-select dropdown */
         async function initOwnedConsolesSelect() {
             const listEl = document.getElementById('owned-consoles-list');
             const searchEl = document.getElementById('owned-consoles-search');

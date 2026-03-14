@@ -1,11 +1,16 @@
+/* ─────────────────────────────────────────
+   FILE: users.js
+   DESCRIPTION: Public user profiles, user search, console
+   list loading (with caching), and owned console management.
+   ───────────────────────────────────────── */
 const express = require('express');
-const path = require('path');
 const fs = require('fs');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
+// GET /api/users/search — Search users by partial username match
 router.get('/users/search', authRequired, async (req, res) => {
     try {
         const query = (req.query.q || '').trim();
@@ -13,6 +18,7 @@ router.get('/users/search', authRequired, async (req, res) => {
             return res.json({ success: true, users: [] });
         }
 
+        // Sanitize: keep only letters, numbers, underscores, dots, hyphens, spaces
         const safeQuery = query.replace(/[^\p{L}\p{N}_.\- ]/gu, '').trim();
         if (safeQuery.length < 2) {
             return res.json({ success: true, users: [] });
@@ -43,6 +49,7 @@ router.get('/users/search', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/users/:username — Public user profile with favorites, owned consoles, friend count
 router.get('/users/:username', async (req, res) => {
     try {
         const { username } = req.params;
@@ -86,6 +93,7 @@ router.get('/users/:username', async (req, res) => {
     }
 });
 
+// GET /api/users/id/:id — Minimal user profile by numeric ID
 router.get('/users/id/:id', async (req, res) => {
     try {
         const userId = parseInt(req.params.id, 10);
@@ -116,6 +124,7 @@ router.get('/users/id/:id', async (req, res) => {
     }
 });
 
+// GET /api/users/:username/friends — Public friends list for a user
 router.get('/users/:username/friends', async (req, res) => {
     try {
         const { username } = req.params;
@@ -144,8 +153,14 @@ router.get('/users/:username/friends', async (req, res) => {
     }
 });
 
-let _cachedConsoleList = null;
+let _cachedConsoleList = null; // In-memory cache for console list
 
+/**
+ * loadConsoleList
+ * @description Loads and parses consoles.json from the frontend data folder.
+ *              Tries multiple candidate paths and strips UTF-8 BOM if present.
+ * @returns {Array|null}
+ */
 function loadConsoleList() {
     const candidates = [
         path.join(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json'),
@@ -168,6 +183,7 @@ function loadConsoleList() {
     return null;
 }
 
+// GET /api/consoles/list — Return full console list (cached after first load)
 router.get('/consoles/list', async (req, res) => {
     try {
         if (!_cachedConsoleList) {
@@ -183,6 +199,7 @@ router.get('/consoles/list', async (req, res) => {
     }
 });
 
+// GET /api/owned-consoles — Get current user’s owned console IDs
 router.get('/owned-consoles', authRequired, async (req, res) => {
     try {
         const result = await pool.query('SELECT console_id FROM user_owned_consoles WHERE user_id = $1', [req.user.id]);
@@ -193,6 +210,7 @@ router.get('/owned-consoles', authRequired, async (req, res) => {
     }
 });
 
+// PUT /api/owned-consoles — Replace the user’s entire owned-consoles list
 router.put('/owned-consoles', authRequired, async (req, res) => {
     try {
         const { consoles } = req.body;

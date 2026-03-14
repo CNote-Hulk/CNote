@@ -1,9 +1,15 @@
+/* ─────────────────────────────────────────
+   FILE: ratings.js
+   DESCRIPTION: Console rating system. Users can rate consoles
+   1-5, view averages, and see their own ratings.
+   ───────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
+// GET /api/ratings/user/all — Get all ratings by current user
 router.get('/user/all', authRequired, async (req, res) => {
     try {
         const result = await pool.query(
@@ -17,8 +23,10 @@ router.get('/user/all', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/ratings/averages — Get average rating & count for all consoles
 router.get('/averages', async (req, res) => {
     try {
+        // DB: aggregate ratings per console — AVG rounded to 1 decimal
         const result = await pool.query(
             `SELECT console_id,
                     ROUND(AVG(rating)::numeric, 1) AS average,
@@ -37,6 +45,7 @@ router.get('/averages', async (req, res) => {
     }
 });
 
+// GET /api/ratings/:consoleId — Get average + user’s own rating for one console
 router.get('/:consoleId', async (req, res) => {
     try {
         const { consoleId } = req.params;
@@ -74,6 +83,7 @@ router.get('/:consoleId', async (req, res) => {
     }
 });
 
+// POST /api/ratings/:consoleId — Submit or update a console rating (1-5)
 router.post('/:consoleId', authRequired, async (req, res) => {
     try {
         const { consoleId } = req.params;
@@ -84,6 +94,7 @@ router.post('/:consoleId', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Rating-ul trebuie sa fie intre 1 si 5.' });
         }
 
+        // DB: upsert rating — ON CONFLICT updates existing rating
         await pool.query(
             `INSERT INTO console_ratings (user_id, console_id, rating)
              VALUES ($1, $2, $3)
@@ -110,6 +121,10 @@ router.post('/:consoleId', authRequired, async (req, res) => {
     }
 });
 
+/**
+ * extractToken
+ * @description Extracts auth token from Authorization header or cookies.
+ */
 function extractToken(req) {
     const auth = req.headers.authorization;
     if (auth && auth.startsWith('Bearer ')) return auth.slice(7);
@@ -127,6 +142,10 @@ function parseCookies(cookieStr) {
     return result;
 }
 
+/**
+ * resolveUserId
+ * @description Resolves user ID from JWT or falls back to session token lookup.
+ */
 async function resolveUserId(req, token) {
     const jwt = require('jsonwebtoken');
     const JWT_SECRET = req.app.get('JWT_SECRET');

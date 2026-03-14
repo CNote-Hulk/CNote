@@ -1,10 +1,20 @@
-/**
- * Auth middleware - validates JWT from Authorization header or session cookie.
- */
+/* ─────────────────────────────────────────
+   FILE: auth.js
+   DESCRIPTION: Authentication middleware. Validates JWT from
+   Authorization header, falls back to session cookie lookup.
+   Attaches user object and session info to req.
+   ───────────────────────────────────────── */
 
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
 
+/**
+ * authRequired
+ * @description Express middleware that authenticates requests.
+ *              Strategy: try JWT verification first; if that fails,
+ *              fall back to session_token lookup in user_sessions table.
+ *              On success, attaches req.user, req.sessionId, req.sessionToken.
+ */
 async function authRequired(req, res, next) {
     const token = extractToken(req);
     if (!token) {
@@ -14,6 +24,7 @@ async function authRequired(req, res, next) {
     const JWT_SECRET = req.app.get('JWT_SECRET');
 
     try {
+        // Strategy 1: verify JWT from Authorization header
         const decoded = jwt.verify(token, JWT_SECRET);
         const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
         const user = userResult.rows[0];
@@ -43,8 +54,10 @@ async function authRequired(req, res, next) {
     } catch (jwtErr) {
     }
 
+    // Strategy 2: fall back to session token lookup in DB
     let sessionResult;
     try {
+        // DB: join user_sessions with users where session is still active
         sessionResult = await pool.query(`
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.favorite_consoles, u.owned_consoles,
@@ -66,6 +79,7 @@ async function authRequired(req, res, next) {
         return res.status(401).json({ success: false, error: 'Sesiune invalida sau expirata.' });
     }
 
+    // DB: update last_activity timestamp for this session
     await pool.query('UPDATE user_sessions SET last_activity = NOW() WHERE id = $1', [session.session_id]);
 
     req.user = {
@@ -92,6 +106,11 @@ async function authRequired(req, res, next) {
     next();
 }
 
+/**
+ * extractToken
+ * @description Extracts auth token from: 1) Authorization: Bearer header,
+ *              2) cn_session_token cookie, 3) ?token= query param.
+ */
 function extractToken(req) {
     const auth = req.headers.authorization;
     if (auth && auth.startsWith('Bearer ')) return auth.slice(7);
@@ -107,6 +126,10 @@ function extractToken(req) {
     return null;
 }
 
+/**
+ * parseCookies
+ * @description Manual cookie string parser (avoids library dependency).
+ */
 function parseCookies(cookieStr) {
     const result = {};
     cookieStr.split(';').forEach(pair => {

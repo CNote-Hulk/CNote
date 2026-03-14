@@ -1,3 +1,8 @@
+/* ─────────────────────────────────────────
+   FILE: contact.js
+   DESCRIPTION: Contact form route. Validates input,
+   checks honeypot for bots, and sends email via Resend.
+   ───────────────────────────────────────── */
 const express = require('express');
 const emailService = require('../services/email');
 
@@ -5,11 +10,12 @@ const router = express.Router();
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// POST /api/contact — Submit contact form and send email to admin + confirmation to user
 router.post('/contact', async (req, res) => {
     try {
         const { name, email, subject, message, _honey } = req.body || {};
 
-        // Silent success for bots filling hidden fields.
+        // Honeypot field: if filled, it’s a bot — return silent success
         if (_honey && String(_honey).trim().length > 0) {
             return res.json({ success: true });
         }
@@ -35,6 +41,7 @@ router.post('/contact', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Mesajul este prea lung.' });
         }
 
+        // Email: sends contact message to admin + auto-confirmation to sender
         const contactResult = await emailService.sendContactEmail(cleanEmail, cleanName, cleanSubject, cleanMessage);
         if (!contactResult.success) {
             console.error('Contact email error:', contactResult.error);

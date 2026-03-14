@@ -125,6 +125,52 @@
     background: #9a3c3c;
 }
 
+/* ── Google auth button ── */
+
+.auth-btn--google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-light, #F5F0E8);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-weight: 600;
+}
+
+.auth-btn--google:hover {
+    background: rgba(255, 255, 255, 0.10);
+    transform: none;
+}
+
+.auth-btn--google-icon {
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1;
+    font-family: var(--font-sans);
+}
+
+/* ── Auth separator ("sau") ── */
+
+.auth-separator {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.25rem 0;
+}
+
+.auth-separator hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--color-border, #333);
+}
+
+.auth-separator span {
+    color: var(--color-text-muted, #888);
+    font-size: 0.85rem;
+}
+
 .auth-error {
     background: rgba(229, 115, 115, 0.12);
     border: 1px solid rgba(229, 115, 115, 0.25);

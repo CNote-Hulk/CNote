@@ -6,6 +6,7 @@
 (function () {
     'use strict';
 
+    /** Remove leftover Chrome UI elements from template */
     function cleanupConsolePageChrome() {
         var homeLink = document.querySelector('.nav-links a[href="../index.html"]');
         if (homeLink && homeLink.parentElement) {
@@ -24,6 +25,7 @@
     /**
      * Load image dimensions from JSON
      */
+    /** Load pre-computed image dimensions from JSON (for CLS prevention) */
     function loadImageDimensions() {
         if (window.IMAGE_DIMENSIONS_DATA) {
             IMAGE_DIMENSIONS = window.IMAGE_DIMENSIONS_DATA;
@@ -47,6 +49,7 @@
             });
     }
 
+    /** Load JSON via XHR (file:// protocol friendly, no fetch) */
     function loadJsonWithXhr(path) {
         return new Promise(function (resolve, reject) {
             try {
@@ -86,6 +89,7 @@
     }
 
     // Determine console ID from filename
+    /** Extract console ID from URL query param or filename */
     function getConsoleId() {
         var params = new URLSearchParams(window.location.search);
         var idParam = params.get('id');
@@ -100,6 +104,7 @@
         return null;
     }
 
+    /** Track console page visit for achievement system */
     function trackConsoleVisit(consoleId) {
         try {
             var visited = JSON.parse(localStorage.getItem('cn_visited_consoles')) || [];
@@ -217,6 +222,7 @@
         }
     ];
 
+    /** Render the console history timeline section */
     function renderHistory(consola) {
         var specsSection = document.querySelector('.specs-section');
         if (!specsSection) return;
@@ -317,6 +323,7 @@
         container.innerHTML = titleHtml + historyHtml;
     }
 
+    /** Render the hero section: image, title, tagline */
     function renderHero(consola) {
 
         var h1 = document.querySelector('.console-hero-text h1');
@@ -347,6 +354,7 @@
         document.title = consola.nume + ' \u2014 Console Notebook';
     }
 
+    /** Render the specs accordion from SPEC_SECTIONS config */
     function renderSpecs(consola) {
         var container = document.querySelector('.specs-section .container');
         if (!container) return;

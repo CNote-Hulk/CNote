@@ -1,3 +1,9 @@
+/* ─────────────────────────────────────────
+   FILE: auth.js
+   DESCRIPTION: Core authentication routes. Registration,
+   login (with 2FA support), email verification, password
+   reset, profile management, and two-factor setup.
+   ───────────────────────────────────────── */
 const express = require('express');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
@@ -12,16 +18,21 @@ const router = express.Router();
 const BCRYPT_ROUNDS = 12;
 const TOKEN_EXPIRY_HOURS = 24;
 
+/* ── Helper functions ── */
+
+/** Generate a random 64-char hex token */
 function generateToken() {
     return crypto.randomBytes(32).toString('hex');
 }
 
+/** Calculate expiry date N hours from now */
 function expiresAt(hours = TOKEN_EXPIRY_HOURS) {
     const d = new Date();
     d.setHours(d.getHours() + hours);
     return d.toISOString();
 }
 
+/** Set HttpOnly session cookie (secure in production) */
 function setSessionCookie(res, token) {
     const isProd = process.env.NODE_ENV === 'production' || String(process.env.BASE_URL || '').startsWith('https://');
     res.cookie('cn_session_token', token, {
@@ -33,6 +44,7 @@ function setSessionCookie(res, token) {
     });
 }
 
+/** Clear session cookie on logout */
 function clearSessionCookie(res) {
     const isProd = process.env.NODE_ENV === 'production' || String(process.env.BASE_URL || '').startsWith('https://');
     res.clearCookie('cn_session_token', {
@@ -42,6 +54,7 @@ function clearSessionCookie(res) {
     });
 }
 
+/** Return user object safe for API responses (no password hash) */
 function sanitizeUser(user) {
     return {
         id: user.id,
@@ -63,6 +76,9 @@ function sanitizeUser(user) {
     };
 }
 
+/* ── Routes ── */
+
+// GET /api/check-username — Check if a username is available
 router.get('/check-username', async (req, res) => {
     try {
         const username = String(req.query.username || '').trim();
@@ -77,6 +93,7 @@ router.get('/check-username', async (req, res) => {
     }
 });
 
+// POST /api/register — Create new account with email verification
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
@@ -94,7 +111,7 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Adresa de email nu este valida.' });
         }
 
-        // Password strength validation
+    // Password strength: min 8 chars, uppercase, lowercase, number, special char
         const pwd = String(password || '');
         if (pwd.length < 8 || !/[A-Z]/.test(pwd) || !/[a-z]/.test(pwd) || !/[0-9]/.test(pwd) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)) {
             return res.status(400).json({ success: false, error: 'Parola trebuie să conțină cel puțin 8 caractere, o literă mare, o literă mică, un număr și un caracter special.' });
@@ -142,6 +159,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// POST /api/login — Authenticate user (supports 2FA: TOTP and email methods)
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -240,10 +258,12 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// GET /api/profile — Get current user profile (from auth middleware)
 router.get('/profile', authRequired, (req, res) => {
     res.json({ success: true, message: 'User authenticated', user: sanitizeUser(req.user) });
 });
 
+// POST /api/logout — Deactivate current session and clear cookie
 router.post('/logout', authRequired, async (req, res) => {
     if (req.sessionId) {
         await pool.query('UPDATE user_sessions SET is_active = false WHERE id = $1', [req.sessionId]);
@@ -252,6 +272,7 @@ router.post('/logout', authRequired, async (req, res) => {
     res.json({ success: true });
 });
 
+// GET /api/verify-email — Verify email via token link (from email)
 router.get('/verify-email', async (req, res) => {
     try {
         const token = String(req.query.token || '').trim();
@@ -278,6 +299,7 @@ router.get('/verify-email', async (req, res) => {
     }
 });
 
+// POST /api/resend-verification — Resend verification email (authenticated)
 router.post('/resend-verification', authRequired, async (req, res) => {
     try {
         const userResult = await pool.query('SELECT id, email, email_verified FROM users WHERE id = $1', [req.user.id]);
@@ -308,6 +330,7 @@ router.post('/resend-verification', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/resend-verification-public — Resend verification email (unauthenticated, by email)
 router.post('/resend-verification-public', async (req, res) => {
     try {
         const email = String(req.body?.email || '').trim().toLowerCase();
@@ -341,10 +364,12 @@ router.post('/resend-verification-public', async (req, res) => {
     }
 });
 
+// GET /api/me — Get current user data (sanitized)
 router.get('/me', authRequired, (req, res) => {
     res.json({ success: true, user: sanitizeUser(req.user) });
 });
 
+// PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
     const { username, bio, avatar, favorite_consoles, owned_consoles } = req.body;
     const updates = [];
@@ -389,6 +414,7 @@ router.put('/me', authRequired, async (req, res) => {
     }
 });
 
+// PUT /api/me/email — Change email address (requires current password)
 router.put('/me/email', authRequired, async (req, res) => {
     try {
         const { newEmail, currentPassword } = req.body;
@@ -437,6 +463,7 @@ router.put('/me/email', authRequired, async (req, res) => {
     }
 });
 
+// PUT /api/me/password — Change password (requires current password)
 router.put('/me/password', authRequired, async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
@@ -474,6 +501,7 @@ router.put('/me/password', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/account/set-password — Set initial password (for Google-only accounts)
 router.post('/account/set-password', authRequired, async (req, res) => {
     try {
         const { password, confirmPassword } = req.body || {};
@@ -505,6 +533,7 @@ router.post('/account/set-password', authRequired, async (req, res) => {
     }
 });
 
+// DELETE /api/account — Permanently delete account and all related data
 router.delete('/account', authRequired, async (req, res) => {
     const client = await pool.connect();
     try {
@@ -557,6 +586,7 @@ router.delete('/account', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/request-reset — Request password reset (sends email with token)
 router.post('/request-reset', async (req, res) => {
     try {
         const { email } = req.body;
@@ -585,6 +615,7 @@ router.post('/request-reset', async (req, res) => {
     }
 });
 
+// POST /api/reset-password — Reset password using token from email
 router.post('/reset-password', async (req, res) => {
     try {
         const { token, newPassword } = req.body;
@@ -620,6 +651,9 @@ router.post('/reset-password', async (req, res) => {
 
 // ─── Two-Factor Authentication Routes ───────────────────
 
+/* ── Two-Factor Authentication (2FA) ── */
+
+// POST /api/2fa/verify — Verify 2FA code during login (TOTP or email)
 router.post('/2fa/verify', async (req, res) => {
     try {
         // Accept tempToken from Authorization header OR request body
@@ -723,6 +757,7 @@ router.post('/2fa/verify', async (req, res) => {
     }
 });
 
+// POST /api/2fa/fallback-email — Send 2FA code via email when TOTP unavailable
 router.post('/2fa/fallback-email', async (req, res) => {
     try {
         const authHeader = req.headers.authorization;
@@ -776,6 +811,7 @@ router.post('/2fa/fallback-email', async (req, res) => {
     }
 });
 
+// POST /api/2fa/setup/totp — Generate TOTP secret + QR code for setup
 router.post('/2fa/setup/totp', authRequired, async (req, res) => {
     try {
         const speakeasy = require('speakeasy');
@@ -799,6 +835,7 @@ router.post('/2fa/setup/totp', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/2fa/setup/totp/confirm — Confirm TOTP setup with verification code
 router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
     try {
         const { code, secret } = req.body || {};
@@ -831,6 +868,7 @@ router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/2fa/setup/email — Enable email-based 2FA
 router.post('/2fa/setup/email', authRequired, async (req, res) => {
     try {
         // Determine method: if totp is also enabled, keep method as totp (primary)
@@ -849,6 +887,7 @@ router.post('/2fa/setup/email', authRequired, async (req, res) => {
     }
 });
 
+// DELETE /api/2fa/disable — Disable all 2FA methods (requires password)
 router.delete('/2fa/disable', authRequired, async (req, res) => {
     try {
         const { password, method } = req.body || {};

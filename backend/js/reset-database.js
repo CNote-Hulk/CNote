@@ -13,6 +13,7 @@ const pool = new Pool({
 
 (async () => {
     try {
+// Deletion order respects FK constraints (child tables first)
         await pool.query('DELETE FROM user_sessions');
         await pool.query('DELETE FROM email_verification_tokens');
         await pool.query('DELETE FROM password_reset_tokens');

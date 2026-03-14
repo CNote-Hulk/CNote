@@ -25,6 +25,7 @@
     };
 
     // ---- Path helpers ----
+    /** Resolve relative image path based on current page depth */
     function resolveImagePath(imgRelativePath) {
         var p = window.location.pathname;
         if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return '../../' + imgRelativePath;
@@ -58,6 +59,7 @@
             .replace(/"/g, '&quot;');
     }
 
+    /** Normalize string: strip diacritics and lowercase for fuzzy matching */
     function normalize(str) {
         return str.toLowerCase()
             .replace(/[ăâ]/g, 'a').replace(/[îí]/g, 'i')
@@ -69,6 +71,7 @@
     var searchOverlay, searchInput, searchResults, selectedIndex = -1, searchVisible = false;
     var consoles = [];
 
+    /** Load console list from JSON for search index */
     function loadConsoles() {
         if (window.CONSOLES_DATA) { consoles = window.CONSOLES_DATA; return; }
         var tryLoad = function() {
@@ -78,6 +81,7 @@
         setTimeout(tryLoad, 300);
     }
 
+    /** Build search overlay DOM: input, results list, close button */
     function createSearchOverlay() {
         var ov = document.createElement('div');
         ov.className = 'search-overlay';
@@ -121,6 +125,7 @@
         document.body.classList.remove('search-open');
     }
 
+    /** Filter consoles by normalized query and render results */
     function doSearch(query) {
         var q = normalize(query.trim());
         if (!q) { searchResults.innerHTML = ''; return; }
@@ -176,6 +181,7 @@
     // ---- Profile Dropdown ----
     var profileDropdown, profileBtn, profileOpen = false;
 
+    /** Build profile dropdown DOM: avatar, links, logout button */
     function createProfileDropdown() {
         profileBtn = document.querySelector('.navbar-profile-btn');
         if (!profileBtn) return;
@@ -247,6 +253,7 @@
     }
 
     // ---- Init ----
+    /** Boot all components: search overlay, profile dropdown, event listeners */
     function initAll() {
         loadConsoles();
         createSearchOverlay();

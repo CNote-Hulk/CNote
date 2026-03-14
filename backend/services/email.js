@@ -1,3 +1,9 @@
+/* ─────────────────────────────────────────
+   FILE: email.js
+   DESCRIPTION: Email service using Resend API. Handles
+   verification, password reset, 2FA codes, and contact
+   form emails with branded HTML templates.
+   ───────────────────────────────────────── */
 const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -6,6 +12,10 @@ const FROM = 'Console Notebook <noreply@consolenotebook.com>';
 const BASE_URL = () => process.env.BASE_URL || 'http://localhost:3000';
 const CONTACT_TO = () => process.env.CONTACT_RECEIVER_EMAIL || 'console.notebook.app@gmail.com';
 
+/**
+ * escapeHtml
+ * @description Prevents XSS by escaping HTML special characters.
+ */
 function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -15,6 +25,10 @@ function escapeHtml(str) {
         .replace(/"/g, '&quot;');
 }
 
+/**
+ * wrapTemplate
+ * @description Wraps email content in the branded CNote HTML template.
+ */
 function wrapTemplate(title, content) {
     return `<!DOCTYPE html>
 <html>
@@ -52,6 +66,10 @@ function wrapTemplate(title, content) {
 </html>`;
 }
 
+/**
+ * sendVerificationEmail
+ * @description Email: sent to user after registration to verify their address.
+ */
 async function sendVerificationEmail(to, token, baseUrl) {
     const verifyLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/verify-success.html?token=' + encodeURIComponent(token);
     const html = wrapTemplate('Verifică Adresa de Email', `
@@ -85,6 +103,10 @@ async function sendVerificationEmail(to, token, baseUrl) {
     }
 }
 
+/**
+ * sendPasswordResetEmail
+ * @description Email: sent to user when they request a password reset.
+ */
 async function sendPasswordResetEmail(to, token, baseUrl) {
     const resetLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(token);
     const html = wrapTemplate('Resetare Parolă', `
@@ -118,6 +140,10 @@ async function sendPasswordResetEmail(to, token, baseUrl) {
     }
 }
 
+/**
+ * sendTwoFactorEmail
+ * @description Email: sent to user as 2FA verification code (10 min expiry).
+ */
 async function sendTwoFactorEmail(to, code) {
     const safeCode = escapeHtml(String(code));
     const html = wrapTemplate('Cod de Verificare', `
@@ -152,6 +178,11 @@ async function sendTwoFactorEmail(to, code) {
     }
 }
 
+/**
+ * sendContactEmail
+ * @description Email: sends contact form to admin + auto-confirmation to sender.
+ *              Two emails: 1) full message to admin, 2) thank-you to user.
+ */
 async function sendContactEmail(from, name, subject, message) {
     const safeName = escapeHtml(name);
     const safeFrom = escapeHtml(from);

@@ -12,6 +12,7 @@
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
     <title>Comunitate — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
+    <link rel="stylesheet" href="../../css/pages/community-hub.css">
 </head>
 <body>
     <!-- NAVIGATION BAR -->
@@ -42,203 +43,136 @@
         </div>
     </nav>
 
-    <div class="community-page community-page--fullwidth">
-        <div class="community-container community-container--wide">
-            <div class="community-header">
-                <h1 class="community-header__title">Community Chat</h1>
-                <p class="community-header__subtitle">Discută cu alți pasionați de console</p>
-            </div>
+    <div class="community-page community-page--fullwidth community-page--hub">
+        <div class="community-hub">
+            <!-- Sidebar -->
+            <aside class="hub-sidebar" id="hub-sidebar">
+                <button class="hub-sidebar-toggle" id="hub-sidebar-toggle">☰ Meniu</button>
 
-            <div class="chat-box chat-box--large" id="chat-box">
-                <div class="chat-messages" id="chat-messages">
-                    <div class="chat-loading" id="chat-loading">Se încarcă mesajele...</div>
+                <div class="hub-sidebar__section">
+                    <div class="hub-sidebar__heading">Chat general</div>
+                    <button class="hub-sidebar__item hub-sidebar__item--active" data-view="chat">💬 Chat comunitate</button>
                 </div>
 
-                <div class="chat-input-area" id="chat-input-area">
-                    <div class="chat-login-notice" id="chat-login-notice" hidden>
-                        <p>Trebuie să fii autentificat pentru a trimite mesaje. <a href="login.html">Conectare</a></p>
+                <div class="hub-sidebar__section">
+                    <div class="hub-sidebar__heading">Categorii console</div>
+                    <div class="hub-sidebar__console">
+                        <div class="hub-sidebar__console-name" style="--console-color:#0070D1">
+                            <span class="hub-sidebar__console-dot"></span> PlayStation
+                        </div>
+                        <button class="hub-sidebar__item" data-view="forum" data-console="ps">💬 Solicită comunitatea</button>
+                        <button class="hub-sidebar__item" data-view="repair" data-console="ps">🔧 Solicită o reparație</button>
                     </div>
-                    <form class="chat-form" id="chat-form" hidden>
-                        <input type="text" class="chat-input" id="chat-input" placeholder="Scrie un mesaj..." maxlength="500" autocomplete="off">
-                        <button type="submit" class="chat-send-btn" id="chat-send-btn" title="Trimite">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                        </button>
-                    </form>
-                    <div class="chat-char-count" id="chat-char-count" hidden>
-                        <span id="char-current">0</span> / 500
+                    <div class="hub-sidebar__console">
+                        <div class="hub-sidebar__console-name" style="--console-color:#107C10">
+                            <span class="hub-sidebar__console-dot"></span> Xbox
+                        </div>
+                        <button class="hub-sidebar__item" data-view="forum" data-console="xbox">💬 Solicită comunitatea</button>
+                        <button class="hub-sidebar__item" data-view="repair" data-console="xbox">🔧 Solicită o reparație</button>
+                    </div>
+                    <div class="hub-sidebar__console">
+                        <div class="hub-sidebar__console-name" style="--console-color:#E60012">
+                            <span class="hub-sidebar__console-dot"></span> Nintendo
+                        </div>
+                        <button class="hub-sidebar__item" data-view="forum" data-console="nintendo">💬 Solicită comunitatea</button>
+                        <button class="hub-sidebar__item" data-view="repair" data-console="nintendo">🔧 Solicită o reparație</button>
+                    </div>
+                    <div class="hub-sidebar__console">
+                        <div class="hub-sidebar__console-name" style="--console-color:#9B59B6">
+                            <span class="hub-sidebar__console-dot"></span> PC Gaming
+                        </div>
+                        <button class="hub-sidebar__item" data-view="forum" data-console="pc">💬 Solicită comunitatea</button>
+                        <button class="hub-sidebar__item" data-view="repair" data-console="pc">🔧 Solicită o reparație</button>
                     </div>
                 </div>
-            </div>
+
+                <div class="hub-sidebar__section">
+                    <div class="hub-sidebar__heading">Marketplace</div>
+                    <button class="hub-sidebar__item" data-view="marketplace" data-category="">🛒 Toate</button>
+                    <button class="hub-sidebar__item" data-view="marketplace" data-category="consoles">🕹️ Console</button>
+                    <button class="hub-sidebar__item" data-view="marketplace" data-category="games">🎮 Jocuri</button>
+                    <button class="hub-sidebar__item" data-view="marketplace" data-category="accessories">🎧 Accesorii</button>
+                    <button class="hub-sidebar__item" data-view="marketplace" data-category="parts">🔩 Piese / Reparații</button>
+                </div>
+
+                <div class="hub-sidebar__section">
+                    <div class="hub-sidebar__heading">Mesaje</div>
+                    <button class="hub-sidebar__item" data-view="dm">✉️ Mesaje directe <span class="hub-badge hub-badge--count" id="dm-unread-badge" hidden>0</span></button>
+                </div>
+
+                <div class="hub-sidebar__section">
+                    <div class="hub-sidebar__heading">Notificări</div>
+                    <button class="hub-sidebar__item hub-notif-toggle" id="hub-notif-toggle">🔔 Notificări <span class="hub-badge hub-badge--count" id="hub-notif-badge" hidden>0</span></button>
+                    <div class="hub-notif-dropdown" id="hub-notif-dropdown" hidden>
+                        <div class="hub-notif-dropdown__header">
+                            <span>Notificări</span>
+                            <button class="hub-notif-dropdown__read-all" id="notif-read-all">Marchează tot</button>
+                        </div>
+                        <div class="hub-notif-dropdown__list" id="hub-notif-list"></div>
+                    </div>
+                </div>
+
+                <div class="hub-sidebar__section">
+                    <div class="hub-sidebar__heading">În curând</div>
+                    <div class="hub-sidebar__item hub-sidebar__item--locked">
+                        🎮 Community Games Chat
+                        <span class="hub-badge hub-badge--soon">Coming Soon</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="hub-content" id="hub-content">
+                <!-- General Chat (existing, shown by default) -->
+                <div class="hub-view hub-view--active hub-view--chat" id="view-chat">
+                    <div class="community-container community-container--wide">
+                        <div class="community-header">
+                            <h1 class="community-header__title">Community Chat</h1>
+                            <p class="community-header__subtitle">Discută cu alți pasionați de console</p>
+                        </div>
+                        <div class="chat-box chat-box--large" id="chat-box">
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="chat-loading" id="chat-loading">Se încarcă mesajele...</div>
+                            </div>
+                            <div class="chat-input-area" id="chat-input-area">
+                                <div class="chat-login-notice" id="chat-login-notice" hidden>
+                                    <p>Trebuie să fii autentificat pentru a trimite mesaje. <a href="login.html">Conectare</a></p>
+                                </div>
+                                <form class="chat-form" id="chat-form" hidden>
+                                    <input type="text" class="chat-input" id="chat-input" placeholder="Scrie un mesaj..." maxlength="500" autocomplete="off">
+                                    <button type="submit" class="chat-send-btn" id="chat-send-btn" title="Trimite">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                    </button>
+                                </form>
+                                <div class="chat-char-count" id="chat-char-count" hidden>
+                                    <span id="char-current">0</span> / 500
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forum -->
+                <div class="hub-view" id="view-forum"></div>
+                <!-- Thread detail -->
+                <div class="hub-view" id="view-thread"></div>
+                <!-- Repair wizard -->
+                <div class="hub-view" id="view-repair"></div>
+                <!-- Marketplace -->
+                <div class="hub-view" id="view-marketplace"></div>
+                <!-- Listing detail -->
+                <div class="hub-view" id="view-listing"></div>
+                <!-- Direct Messages -->
+                <div class="hub-view" id="view-dm"></div>
+            </main>
         </div>
     </div>
 
     <!-- Scripts -->
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
-    <script type="module">
-        import { AuthModule } from '../../js/modules/auth.js';
-        import { API_BASE_URL } from '../../js/config.js';
-
-        const POLL_INTERVAL = 5000;
-        const COOLDOWN_MS = 3000;
-
-        const messagesEl = document.getElementById('chat-messages');
-        const loadingEl = document.getElementById('chat-loading');
-        const formEl = document.getElementById('chat-form');
-        const inputEl = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('chat-send-btn');
-        const loginNotice = document.getElementById('chat-login-notice');
-        const charCount = document.getElementById('chat-char-count');
-        const charCurrent = document.getElementById('char-current');
-
-        const user = AuthModule.getCurrentUser();
-        let lastMessageId = 0;
-        let cooldownActive = false;
-
-        // Show form or login notice
-        if (user) {
-            formEl.hidden = false;
-            charCount.hidden = false;
-        } else {
-            loginNotice.hidden = false;
-        }
-
-        // Character counter
-        inputEl.addEventListener('input', () => {
-            charCurrent.textContent = inputEl.value.length;
-        });
-
-        function escapeHtml(s) {
-            if (!s) return '';
-            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        function formatTime(dateStr) {
-            const d = new Date(dateStr);
-            const now = new Date();
-            const diff = now - d;
-
-            if (diff < 60000) return 'chiar acum';
-            if (diff < 3600000) return Math.floor(diff / 60000) + ' min în urmă';
-            if (diff < 86400000) return Math.floor(diff / 3600000) + ' ore în urmă';
-
-            return d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' }) +
-                   ' ' + d.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
-        }
-
-        function renderMessage(msg) {
-            const div = document.createElement('div');
-            div.className = 'chat-message';
-            div.dataset.id = msg.id;
-
-            const hasAvatar = msg.user.avatar && msg.user.avatar.length > 10;
-            const avatarHtml = hasAvatar
-                ? `<img src="${escapeHtml(msg.user.avatar)}" alt="" class="chat-message__avatar">`
-                : `<span class="chat-message__avatar chat-message__avatar--fallback">👤</span>`;
-
-            div.innerHTML = `
-                <div class="chat-message__avatar-wrap">${avatarHtml}</div>
-                <div class="chat-message__body">
-                    <div class="chat-message__header">
-                        <a href="/user/${encodeURIComponent(msg.user.username)}" class="chat-message__username">${escapeHtml(msg.user.username)}</a>
-                        <span class="chat-message__time">${formatTime(msg.created_at)}</span>
-                    </div>
-                    <div class="chat-message__text">${escapeHtml(msg.message)}</div>
-                </div>
-            `;
-            return div;
-        }
-
-        function scrollToBottom() {
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-        }
-
-        async function fetchMessages() {
-            try {
-                const token = localStorage.getItem('cn_token');
-                const headers = {};
-                if (token) headers['Authorization'] = 'Bearer ' + token;
-
-                const res = await fetch(API_BASE_URL + '/chat/messages', {
-                    headers,
-                    credentials: 'include'
-                });
-                const data = await res.json();
-
-                if (data.success && data.messages) {
-                    loadingEl.hidden = true;
-
-                    if (data.messages.length === 0 && messagesEl.children.length <= 1) {
-                        loadingEl.textContent = 'Niciun mesaj încă. Fii primul care scrie!';
-                        loadingEl.hidden = false;
-                        return;
-                    }
-
-                    // Only append new messages
-                    const newMessages = data.messages.filter(m => m.id > lastMessageId);
-                    if (newMessages.length > 0) {
-                        newMessages.forEach(msg => {
-                            messagesEl.appendChild(renderMessage(msg));
-                        });
-                        lastMessageId = newMessages[newMessages.length - 1].id;
-                        scrollToBottom();
-                    }
-                }
-            } catch {
-                loadingEl.textContent = 'Nu s-au putut încărca mesajele.';
-            }
-        }
-
-        // Send message
-        formEl.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const text = inputEl.value.trim();
-            if (!text || cooldownActive) return;
-
-            sendBtn.disabled = true;
-            cooldownActive = true;
-
-            try {
-                const token = localStorage.getItem('cn_token');
-                const headers = { 'Content-Type': 'application/json' };
-                if (token) headers['Authorization'] = 'Bearer ' + token;
-
-                const res = await fetch(API_BASE_URL + '/chat/messages', {
-                    method: 'POST',
-                    headers,
-                    credentials: 'include',
-                    body: JSON.stringify({ message: text })
-                });
-                const data = await res.json();
-
-                if (data.success && data.message) {
-                    // Hide the "no messages" text
-                    loadingEl.hidden = true;
-                    messagesEl.appendChild(renderMessage(data.message));
-                    lastMessageId = Math.max(lastMessageId, data.message.id);
-                    inputEl.value = '';
-                    charCurrent.textContent = '0';
-                    scrollToBottom();
-                } else {
-                    alert(data.error || 'Nu s-a putut trimite mesajul.');
-                }
-            } catch {
-                alert('Nu s-a putut contacta serverul.');
-            }
-
-            // Cooldown
-            setTimeout(() => {
-                cooldownActive = false;
-                sendBtn.disabled = false;
-            }, COOLDOWN_MS);
-        });
-
-        // Initial load
-        fetchMessages();
-
-        // Auto-refresh
-        setInterval(fetchMessages, POLL_INTERVAL);
-    </script>
+    <script type="module" src="../../js/pages/chat.js"></script>
+    <script type="module" src="../../js/pages/community.js"></script>
     <script src="../../js/fallback/hamburger.js" defer></script>
     <script src="../../js/fallback/search-profile.js"></script>
 </body>

@@ -1,5 +1,10 @@
+/* ─────────────────────────────────────────
+   FILE: server.js
+   DESCRIPTION: Express application entry point. Configures
+   middleware, CORS, mounts all API routes, and serves
+   static frontend files. Uses PostgreSQL via Supabase.
+   ───────────────────────────────────────── */
 const express = require('express');
-const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -7,6 +12,7 @@ const passport = require('passport');
 
 require('dotenv').config();
 
+/* ── Route imports ── */
 const authRoutes = require('./routes/auth');
 const sessionRoutes = require('./routes/sessions');
 const chatRoutes = require('./routes/chat');
@@ -16,6 +22,11 @@ const friendRoutes = require('./routes/friends');
 const userRoutes = require('./routes/users');
 const contactRoutes = require('./routes/contact');
 const googleAuthRoutes = require('./routes/google-auth');
+const forumRoutes = require('./routes/forum');
+const marketplaceRoutes = require('./routes/marketplace');
+const repairRoutes = require('./routes/repair');
+const dmRoutes = require('./routes/dm');
+const notificationRoutes = require('./routes/notifications');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +34,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key';
 
 app.set('JWT_SECRET', JWT_SECRET);
 
+/* ── Environment validation ── */
+
+/**
+ * getMissingEnvVars
+ * @description Returns names of required env vars that are empty or unset.
+ */
 function getMissingEnvVars(required) {
 	return required.filter((name) => {
 		const value = process.env[name];
@@ -30,10 +47,18 @@ function getMissingEnvVars(required) {
 	});
 }
 
+/**
+ * normalizeOrigin
+ * @description Trims and strips trailing slash from an origin URL.
+ */
 function normalizeOrigin(value) {
 	return String(value || '').trim().replace(/\/$/, '');
 }
 
+/**
+ * getOriginHost
+ * @description Extracts lowercase hostname from a URL string.
+ */
 function getOriginHost(value) {
 	try {
 		return new URL(normalizeOrigin(value)).host.toLowerCase();
@@ -65,6 +90,8 @@ app.use(helmet({
 	crossOriginEmbedderPolicy: false
 }));
 
+/* ── CORS configuration ── */
+
 const allowedOrigins = [
 	'http://localhost:3000',
 	'http://localhost:5173',
@@ -79,6 +106,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
+// CORS middleware: allow same-host, configured origins, and localhost dev
 app.use('/api', (req, res, next) => {
 	const requestHost = String(req.get('host') || '').toLowerCase();
 	return cors({
@@ -95,6 +123,7 @@ app.use('/api', (req, res, next) => {
 	})(req, res, next);
 });
 
+/* ── Route mounting ── */
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/chat', chatRoutes);
@@ -104,9 +133,17 @@ app.use('/api/friends', friendRoutes);
 app.use('/api', userRoutes);
 app.use('/api', contactRoutes);
 app.use('/api/auth', googleAuthRoutes);
+app.use('/api/forum', forumRoutes);
+app.use('/api/marketplace', marketplaceRoutes);
+app.use('/api/repair', repairRoutes);
+app.use('/api/dm', dmRoutes);
+app.use('/api/notifications', notificationRoutes);
+
+/* ── Static files & redirects ── */
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+// Legacy /src/* redirect for old bookmark support
 app.get('/src/*', (req, res) => {
 	const target = req.originalUrl.replace(/^\/src\//, '/');
 	res.redirect(301, target);
@@ -119,10 +156,12 @@ app.get('/', (req, res) => {
 	res.redirect(302, '/html/pages/');
 });
 
+// Catch-all for /user/:username → serve user-profile.html (SPA-style route)
 app.get('/user/:username', (req, res) => {
 	res.sendFile(path.join(FRONTEND_ROOT, 'html', 'pages', 'user-profile.html'));
 });
 
+// Global error handler
 app.use((err, req, res, next) => {
 	console.error('Unhandled server error:', err);
 	res.status(500).json({ error: 'Internal server error' });
