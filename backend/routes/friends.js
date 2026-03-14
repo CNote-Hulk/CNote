@@ -33,6 +33,7 @@ router.post('/request/:userId', authRequired, async (req, res) => {
 
         // DB: check for existing pending request in either direction
         const existingRequest = await pool.query(
+            `SELECT id, sender_id FROM friend_requests
              WHERE ((sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1))
              AND status = 'pending'`,
             [req.user.id, receiverId]
@@ -141,6 +142,7 @@ router.get('/', authRequired, async (req, res) => {
     try {
         // DB: join friends table with users, finding both directions
         const result = await pool.query(
+            `SELECT u.id, u.username, u.avatar
              FROM friends f
              JOIN users u ON (
                 (f.user1_id = $1 AND u.id = f.user2_id) OR
