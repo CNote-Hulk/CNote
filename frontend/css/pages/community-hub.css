@@ -1344,30 +1344,6 @@
     margin-bottom: 12px;
 }
 
-/* Apple system font (San Francisco) for all DM/messaging elements */
-.hub-dm-conv,
-.hub-dm-conv__name,
-.hub-dm-conv__preview,
-.hub-dm-thread__header,
-.hub-dm-messages,
-.hub-dm-msg,
-.hub-dm-msg--mine,
-.hub-dm-msg--theirs,
-.hub-dm-msg__time,
-.hub-dm-form__input,
-.hub-dm-list__empty,
-.hub-dm-empty,
-.chat-hdr,
-.chat-hdr__title,
-.chat-hdr__status,
-.chat-input-pill,
-.chat-input-pill__counter,
-.hub-view--chat .chat-input,
-.hub-view--chat .chat-send-btn {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
-    font-weight: 700;
-}
-
 /* ── Direct Messages ────────────────────────────────────── */
 
 .hub-dm-layout {
@@ -1802,7 +1778,7 @@
 
     body:has(.community-page--hub) .navbar {
         padding: 12px 0 0;
-        overflow: visible;
+        overflow: hidden;
     }
 
     body:has(.community-page--hub) .logo {
@@ -1925,7 +1901,7 @@
     /* Background image fixed is janky on mobile — use scroll */
     .community-page--hub {
         background-attachment: scroll;
-        padding-top: 110px;
+        padding-top: 120px;
         height: 100vh;
         height: 100dvh;
         display: flex;
@@ -2530,7 +2506,7 @@
     position: relative;
     background: url('../../assets/images/wallpapers/community.jpg') center/cover no-repeat fixed;
     background-color: #0d0e14;
-    padding: 64px;
+    padding: 64px 0 0 0;
     overflow: hidden;
     height: 100vh;
     height: 100dvh;
@@ -2572,6 +2548,9 @@
     }
     .community-page--hub .hub-sidebar {
         background: #0d0e14;
+    }
+    .community-page--hub {
+    padding-top: 60px; /* înălțimea navbar-ului pe mobile */
     }
 }
 
