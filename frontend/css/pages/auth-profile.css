@@ -845,6 +845,29 @@
 
 /* === COMMUNITY CHAT PAGE === */
 
+/* Apple system font (San Francisco) for all chat/messaging elements */
+.chat-box,
+.chat-messages,
+.chat-loading,
+.chat-message,
+.chat-message__username,
+.chat-message__time,
+.chat-message__text,
+.chat-message__body,
+.chat-input-area,
+.chat-input,
+.chat-form,
+.chat-send-btn,
+.chat-login-notice,
+.chat-login-notice p,
+.chat-login-notice a,
+.chat-char-count,
+.community-header__title,
+.community-header__subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+    font-weight: 700;
+}
+
 .community-page {
     min-height: 100vh;
     padding: 90px 20px 40px;

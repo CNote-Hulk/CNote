@@ -1344,6 +1344,30 @@
     margin-bottom: 12px;
 }
 
+/* Apple system font (San Francisco) for all DM/messaging elements */
+.hub-dm-conv,
+.hub-dm-conv__name,
+.hub-dm-conv__preview,
+.hub-dm-thread__header,
+.hub-dm-messages,
+.hub-dm-msg,
+.hub-dm-msg--mine,
+.hub-dm-msg--theirs,
+.hub-dm-msg__time,
+.hub-dm-form__input,
+.hub-dm-list__empty,
+.hub-dm-empty,
+.chat-hdr,
+.chat-hdr__title,
+.chat-hdr__status,
+.chat-input-pill,
+.chat-input-pill__counter,
+.hub-view--chat .chat-input,
+.hub-view--chat .chat-send-btn {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+    font-weight: 700;
+}
+
 /* ── Direct Messages ────────────────────────────────────── */
 
 .hub-dm-layout {
@@ -1778,7 +1802,7 @@
 
     body:has(.community-page--hub) .navbar {
         padding: 12px 0 0;
-        overflow: hidden;
+        overflow: visible;
     }
 
     body:has(.community-page--hub) .logo {
@@ -1901,7 +1925,7 @@
     /* Background image fixed is janky on mobile — use scroll */
     .community-page--hub {
         background-attachment: scroll;
-        padding-top: 120px;
+        padding-top: 110px;
         height: 100vh;
         height: 100dvh;
         display: flex;
