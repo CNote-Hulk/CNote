@@ -2530,7 +2530,7 @@
     position: relative;
     background: url('../../assets/images/wallpapers/community.jpg') center/cover no-repeat fixed;
     background-color: #0d0e14;
-    padding: 64px 0 0 0;
+    padding: 64px;
     overflow: hidden;
     height: 100vh;
     height: 100dvh;
