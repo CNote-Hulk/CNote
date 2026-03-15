@@ -7,54 +7,15 @@ window.CONSOLES_DATA = [
         "generatie":  1,
         "lansare":  1972,
         "imagine":  "assets/images/consoles/magnavox-odyssey.webp",
-        "cpu":  {
-                    "arhitectura":  "Diode-transistor logic",
-                    "proces_nm":  "N/A",
-                    "nuclee":  "N/A",
-                    "frecventa":  "N/A",
-                    "tdp":  "~5W"
-                },
-        "gpu":  {
-                    "arhitectura":  "Analog",
-                    "unitati":  "N/A",
-                    "frecventa":  "N/A",
-                    "tflops":  "N/A",
-                    "capabilitati":  "3 dots + 1 vertical line"
-                },
-        "memorie":  {
-                        "tip":  "N/A",
-                        "capacitate":  "N/A",
-                        "magistrala":  "N/A",
-                        "bandwidth":  "N/A"
-                    },
-        "stocare":  {
-                        "tip":  "Game cards (circuit boards with jumpers)",
-                        "interfata":  "Jumper",
-                        "viteza":  "N/A"
-                    },
-        "output_video":  {
-                             "rezolutie":  "RF output",
-                             "refresh":  "60 Hz",
-                             "hdr":  "N/A",
-                             "upscaling":  "N/A"
-                         },
-        "tehnologii":  {
-                           "ray_tracing":  false,
-                           "vrr":  false,
-                           "backwards_compatibility":  "N/A",
-                           "altele":  "Screen overlays, light gun, discrete components"
-                       },
-        "avantaje":  [
-                         "Prima consolă de jocuri de casă din lume",
-                         "Stabilit concepte fundamentale (jocuri interschimbabile)",
-                         "Brevetul de pionierat generat 100M+ USD"
-                     ],
-        "dezavantaje":  [
-                            "Fără sunet",
-                            "Fără culoare",
-                            "Necesită overlay-uri pentru grafică"
-                        ],
-        "istorie":  "Prima Consolă de Jocuri Video de Casă din Lume\n\nMagnavox Odyssey marcează începutul unui nou capitol în istoria divertismentului. Fiind prima consolă de jocuri video pentru casă lansată la nivel mondial, Odyssey a stabilit fundamentele unei industrii care și astazi continuă să se dezvolte. Concepută de Ralph H. Baer la Sanders Associates și fabricată de Magnavox, consola a fost lansată în septembrie 1972, transformând modul în care oamenii se distrau acasă.\n\nCu tehnologia ei simplă și componentele discrete, Odyssey nu competea pe baza performanței. În schimb, a introdus concepte care au definit viitorul industriei: jocuri interschimbabile, periferice modulare și posibilitatea de expanziune. Deși succesul inițial comercial a fost moderat—aproximativ 350.000 de unități vândute—impactul ei legal s-a dovedit transformator, generând peste 100 de milioane de dolari în daune și licențe pe parcursul a două decenii.\n\nOrigine și Dezvoltare\n\nConceptul unei console de jocuri s-a născut în august 1966, când Ralph H. Baer lucra la Sanders Associates, un contractant militar american. Dezvoltarea nu a fost lineară. Între 1966 și 1969, Baer și echipa sa—Bill Harrison și Bill Rusch—au construit șapte prototipuri succesive, fiecare mai apropiat de un concept viabil. Primul prototip, TV Game #1, era primitiv: putea afișa doar o linie verticală.\n\nCel de-al șaptelea prototip, finalizat în ianuarie 1969, a reprezentat punctul de cotitură. Denumit \"Brown Box\" din cauza autocolantelor cu aspect de lemn, acest prototip includea deja mecanici de joc Pong și un pistol optic—idei care vor deveni caracteristice Odyssey-ului.\n\nDupă refuzuri din partea RCA și altor producători, Magnavox a acceptat. În ianuarie 1971, acordul de producție a fost semnat. George Kent și echipa Magnavox au rafinat designul și au luat o decizie strategică importantă: eliminarea capacității de a afișa culori pentru a reduce costurile și a simplifica procedurile de aprobare FCC.\n\nTehnologie și Arhitectură\n\nOdyssey funcționa pe principii analogice, nu digitale. Arhitectura folosea logică diodă-tranzistor cu componente discrete—tranzistori și diode—în loc de microchipuri integrate. Sistemul era alimentat de șase baterii de tip C sau printr-un adaptor AC opțional.\n\nCapacitățile grafice erau minimaliste, dar deliberate. Consola putea afișa trei puncte pătrate și o linie verticală de înălțime variabilă pe un ecran negru. Două dintre puncte erau controlate de jucători; al treilea era controlat de sistem. Această simplitate extremă a forțat inovație în alte zone. Consola nu avea sunet și nici nu calculat scoruri automate—jucătorii notau manual.\n\nCardurile de joc nu erau cartușe ROM. Erau plăci de circuite care funcționau ca jumperi programabili, modificând comportamentul electronic al sistemului. Pentru a compensa limitarea grafică, Magnavox a inclus suprapuneri de plastic transparent cu imagini care se aplicau direct pe ecranul televizorului—terenuri de fotbal, case bântuite, table de joc. Consola venea și cu accesorii fizice: zaruri, bani de joc, jetoane de poker și foi de scor, transformând experiența într-un hibrid între joc de societate și joc video.\n\nLansare și Piață\n\nLansată la 99,95 USD—echivalentul a aproximativ 750 USD în valori actuale—Odyssey a avut o recepție mixtă. În primul an calendaristic, au fost vândute 69.000 de unități. Până la încetarea producției în 1975, totalul a atins între 350.000 și 367.000 de unități.\n\nStrategia de distribuție a creat confuzie. Consola era disponibilă exclusiv prin distribuitorii Magnavox, ceea ce a determinat mulți consumatori să creadă incorect că funcționează doar cu televizoare Magnavox, deși publicitatea menționa compatibilitatea universală.\n\nExpand internațional a fost semnificativ. În 1973, consola a fost lansată în Regatul Unit. În 1974, a ajuns în alte zece țări—inclusiv Uniunea Sovietică și Venezuela. În Mexic a fost vândută sub numele Magnavox Odisea.\n\nCatalogul de jocuri includea 28 de titluri distribuite pe 11 carduri diferite. Table Tennis era inclus odată cu consola. Shooting Gallery venea cu Electronic Rifle, produs de Nintendo, și patru jocuri asociate. Unele jocuri, cum ar fi Percepts, erau oferite gratuit jucătorilor care trimiteau un card de sondaj.\n\nMoștenire Juridică și Impactul Durat\n\nImportanța Odyssey depășește cifrele de vânzări. Brevetele sale au definit cadrul legal al întregii industrii.\n\nNolan Bushnell de la Atari a vizionat o demonstrație a Table Tennis pe Odyssey și s-a inspirat pentru Pong. Magnavox a dat în judecată Atari în 1974, obținând un acord de licențiere de 1,5 milioane de dolari. În 1977, judecătorul John Grady a declarat că brevetul lui Baer era \"brevetul de pionierat al artei jocurilor video\"—o recunoaștere legală semnificativă.\n\nSanders și Magnavox au câștigat peste 100 de milioane de dolari din procese și acorduri cu producători majori: Coleco, Mattel, Activision și chiar Nintendo, care a încercat fără succes să invalideze brevetele în 1985.\n\nProducția s-a încheiat în 1975 din cauza inflației și costurilor ridicate de fabricație. Magnavox a trecut la console dedicate cu circuite integrate Texas Instruments. În 1978 a venit succesorul propriu-zis, Magnavox Odyssey 2.\n\nRalph Baer, recunoscut ca \"Tatăl Jocurilor Video\", a primit Medalia Națională de Tehnologie în 2004. Prototipurile originale sunt conservate la Smithsonian Institution. Consola Odyssey face parte din colecția permanentă a Museum of Modern Art (MoMA) din New York."
+        "cpu":  {"arhitectura":"Diode-transistor logic","proces_nm":"N/A","nuclee":"N/A","frecventa":"N/A","tdp":"~5W"},
+        "gpu":  {"arhitectura":"Analog","unitati":"N/A","frecventa":"N/A","tflops":"N/A","capabilitati":"3 dots + 1 vertical line"},
+        "memorie":  {"tip":"N/A","capacitate":"N/A","magistrala":"N/A","bandwidth":"N/A"},
+        "stocare":  {"tip":"Game cards (circuit boards with jumpers)","interfata":"Jumper","viteza":"N/A"},
+        "output_video":  {"rezolutie":"RF output","refresh":"60 Hz","hdr":"N/A","upscaling":"N/A"},
+        "tehnologii":  {"ray_tracing":false,"vrr":false,"backwards_compatibility":"N/A","altele":"Screen overlays, light gun, discrete components"},
+        "avantaje":  ["Prima consolă de jocuri de casă din lume","Stabilit concepte fundamentale (jocuri interschimbabile)","Brevetul de pionierat generat 100M+ USD"],
+        "dezavantaje":  ["Fără sunet","Fără culoare","Necesită overlay-uri pentru grafică"],
+        "istorie":  "<strong>Contextul apariției</strong><br><br>La începutul anilor 1970, nu exista niciun joc video disponibil pentru uz casnic. Divertismentul electronic era limitat la sălile de arcade, iar televizorul era folosit exclusiv pentru programe TV. Piața nu oferea niciun produs care să transforme ecranul din sufragerie într-un mediu interactiv. Ralph H. Baer, inginer la contractantul militar Sanders Associates, visa la un dispozitiv care să schimbe această realitate.<br><br><strong>Dezvoltarea consolei</strong><br><br>Conceptul s-a născut în august 1966, când Baer a schițat ideea unui joc interactiv pe televizor. Între 1966 și 1969, Baer și echipa sa — Bill Harrison și Bill Rusch — au construit șapte prototipuri succesive. Primul, TV Game #1, putea afișa doar o linie verticală. Cel de-al șaptelea, finalizat în ianuarie 1969 și denumit „Brown Box” din cauza autocolantelor cu aspect de lemn, includea deja mecanici de joc Pong și un pistol optic. După refuzuri din partea RCA și altor producători, Magnavox a acceptat în 1971. George Kent și echipa Magnavox au rafinat designul și au eliminat afișajul color pentru a reduce costurile și a simplifica procedurile de aprobare FCC.<br><br><strong>Lansarea</strong><br><br>Magnavox Odyssey a fost lansată în septembrie 1972 la prețul de 99,95 USD — echivalentul a aproximativ 750 USD în valori actuale. Consola era vândută exclusiv prin distribuitorii Magnavox, ceea ce a creat confuzie: mulți consumatori credeau incorect că funcționează doar cu televizoare Magnavox. Catalogul de jocuri includea 28 de titluri distribuite pe 11 carduri diferite. Table Tennis era inclus odată cu consola, iar Shooting Gallery venea cu Electronic Rifle, produs de Nintendo. În primul an calendaristic, au fost vândute 69.000 de unități.<br><br><strong>Impactul pe piață</strong><br><br>Odyssey afișa trei puncte pătrate și o linie verticală pe un ecran negru — capacități grafice minimaliste, dar deliberate. Pentru a compensa această limitare, Magnavox a inclus suprapuneri de plastic transparent cu imagini aplicate direct pe ecranul televizorului și accesorii fizice: zaruri, bani de joc, jetoane de poker și foi de scor. Consola a transformat experiența într-un hibrid între jocul de societate și jocul video. Până la încetarea producției în 1975, totalul vânzărilor a atins între 350.000 și 367.000 de unități. Expansiunea internațională a fost semnificativă: în 1973 consola a ajuns în Regatul Unit, în 1974 în alte zece țări, inclusiv Venezuela și Uniunea Sovietică. Nolan Bushnell de la Atari a vizionat o demonstrație a Table Tennis pe Odyssey și s-a inspirat pentru Pong, ceea ce a dus la un litigiu câștigat de Magnavox în 1974.<br><br><strong>Moștenirea</strong><br><br>Sanders și Magnavox au câștigat peste 100 de milioane de dolari din procese și acorduri cu producători majori: Coleco, Mattel, Activision și chiar Nintendo, care a încercat fără succes să invalideze brevetele în 1985. În 1977, judecătorul John Grady a declarat că brevetul lui Baer era „brevetul de pionierat al artei jocurilor video”. Producția s-a încheiat în 1975, iar succesorul propriu-zis, Magnavox Odyssey 2, a apărut în 1978. Ralph Baer, recunoscut drept „Tatăl Jocurilor Video”, a primit Medalia Națională de Tehnologie în 2004. Prototipurile originale sunt conservate la Smithsonian Institution, iar consola face parte din colecția permanentă a Museum of Modern Art din New York."
     },
     {
         "id":  "atari-home-pong",
@@ -63,57 +24,15 @@ window.CONSOLES_DATA = [
         "generatie":  1,
         "lansare":  1975,
         "imagine":  "assets/images/consoles/atari-home-pong.webp",
-        "cpu":  {
-                    "arhitectura":  "LSI integrated circuits",
-                    "proces_nm":  "N/A",
-                    "nuclee":  "N/A",
-                    "frecventa":  "N/A",
-                    "tdp":  "~5W"
-                },
-        "gpu":  {
-                    "arhitectura":  "Analog",
-                    "unitati":  "N/A",
-                    "frecventa":  "N/A",
-                    "tflops":  "N/A",
-                    "capabilitati":  "Black-white display, digital score, audio synthesis"
-                },
-        "memorie":  {
-                        "tip":  "N/A",
-                        "capacitate":  "N/A",
-                        "magistrala":  "N/A",
-                        "bandwidth":  "N/A"
-                    },
-        "stocare":  {
-                        "tip":  "N/A",
-                        "interfata":  "N/A",
-                        "viteza":  "N/A"
-                    },
-        "output_video":  {
-                             "rezolutie":  "RF output",
-                             "refresh":  "60 Hz",
-                             "hdr":  "N/A",
-                             "upscaling":  "N/A"
-                         },
-        "tehnologii":  {
-                           "ray_tracing":  false,
-                           "vrr":  false,
-                           "backwards_compatibility":  "N/A",
-                           "altele":  "LSI chip, integrated circuits, RF output, digital score"
-                       },
-        "avantaje":  [
-                         "Primul joc video cu succes comercial din istorie",
-                         "Venituri de 4 ori mai mari decât arcade-urile standard",
-                         "Parteneriat Sears: 150.000 unități vândute în 1975",
-                         "Cip LSI cel mai performant din piață de consum",
-                         "Recunoscut permanent de Smithsonian și Hall of Fame"
-                     ],
-        "dezavantaje":  [
-                            "Rapid inundat de clonuri (Nintendo, Coleco, Taito)",
-                            "Litigiu Magnavox a costat 1,5 milioane dolari",
-                            "Limitat la tenis electronic ca principal gameplay",
-                            "Marje de profit erodată de competiție rapidă"
-                        ],
-        "istorie":  "Geneza unei Industrii: PONG și Revoluția Jocurilor Video\n\nPONG nu este doar un joc video istoric — este punctul de pornire al unei industrii de miliarde de dolari. Lansat în iunie 1972, acest joc aparent simplu de tenis pe ecran alb-negru a transformat o competență de inginerie în fenomen cultural și economic. Dezvoltat de Atari sub conducerea lui Nolan Bushnell și Ted Dabney, PONG a fost conceput inițial ca exercițiu de instruire pentru inginerul Allan Alcorn, devenind rapid catalizatorul pentru industria modernă a jocurilor video.\n\nOrigini și Inovație Tehnică\n\nInspirul direct al lui Bushnell provenea din demonstrația Magnavox Odyssey din mai 1972, unde a jucat versiunea digitală a tenisului electronic creată de Ralph Baer. Diferența decisivă a venit de la Allan Alcorn, care a adus trei inovații fundamentale. Prima a fost divizarea paletei în opt segmente cu comportament diferit — segmentele centrale returnau mingea la 90 de grade, iar capetele ofereau unghiuri mai ascuțite, adăugând strategie în gameplay. A doua inovație a fost accelerarea progresivă — mingea se mișca mai repede pe măsură ce jocul dura mai mult, creând tensiune crescândă. A treia a fost generarea sunetului direct din circuitul de sincronizare video, producând tonuri caracteristice în loc de circuite audio dedicate, o soluție elegantă de design constrangeri în limitări de spațiu.\n\nSucces Arcade Fără Precedent\n\nPrimul prototip a fost instalat în august 1972 la Andy Capp's Tavern. Răspunsul consumatorilor a fost instantaneu — mecanismul de acceptare a monedelor s-a blocat din cauza supraîncărcării cu sferturi de dolar. Fiecare consolă arcade PONG genera venituri zilnice de 35 la 40 de dolari, echivalent cu aproximativ 140 la 160 de jocuri zilnic. Prețul de vânzare era de trei ori mai mare decât costul de producție. Comanda din 1973 pentru 2.500 de unități a marcat doar începutul unei expansiuni masive — peste 35.000 de unități arcade PONG au fost eventual vândute și instalate.\n\nRevoluția Casnică: Home Pong\n\nÎn 1974, inginerul Harold Lee a propus un pas radical — o versiune PONG care se conecta direct la televizoarele casnice, codenumită Darlene. Inovația utilizat cip LSI (Large-Scale Integration), cel mai performant cip dintr-un produs de consum de larg răspândire la acea vreme. Acest design oferea scor digital pe ecran și sunet real, caracteristici anteriormente considerate inaccesibile pentru produse casnice.\n\nTehnologia LSI a oferit avantaje decisive. Producția în masă a devenit mai ieftină, permițând marje de profit substanțiale, iar designul cu cip era mult mai greu de copiat prin inginerie inversă decât versiunile arcade. După finalizare, Atari a descoperit că detailiștii tradiționale considerau prețul prohibitiv. Soluția a venit printr-un parteneriat strategic cu Sears, retailerul american lider. Sears a vândut Home Pong sub Brand propriu — Sears Tele-Games — și a plasat o comandă inițială de 150.000 de unități pentru sezonul Crăciunului 1975. Comanda a fost onorată integral, transformând Home Pong în cel mai vândut produs Sears din acel an.\n\nProvocări Legale și Competiție\n\nSuccesul PONG a atras și atenție juridică negativă. În aprilie 1974, Magnavox a dat în judecată Atari, susținând că jocul încalcă brevetele Sanders Associates referitoare la jocurile video pe televizor. Dovezile au inclus un detaliu devastator — jurnal de oaspeți semnat de Bushnell la demonstrația Magnavox Odyssey din mai 1972. Costurile legale estimate ar fi epuizat resursele unei companii în dezvoltare, dar Bushnell a ales pragmatismul. În iunie 1976, Atari a ajuns la o înțelegere care plătea 1,5 milioane de dolari în opt rate.\n\nSuccesul PONG a generat și o piață vastă de imitații — ceea ce Bushnell a numim „șacali”. Nintendo, Coleco și Taito au lansat propriile console dedicate de tenis electronic, inundând piața cu variante. Această explozie de produse concurente a eroza profitabilitatea pe termen mediu, dar a legitimat și categoria pe care Atari a creat-o.\n\nVariante și Moștenire\n\nAtari a continuat să lanseze sisteme dedicate PONG sub diferite marci și pachete — PONG Original (1976), PONG Doubles cu patru jucători, Super PONG cu patru variante, Super PONG Ten cu zece variante, Ultra PONG cu șaisprezece jocuri. Fiecare era produs dedicat cu hardware și ROM-uri proprii, demonstrând capacitatea Atari de a diferenția oferta în fața competiției crescânde. Notabil, varianta Sears Motocross a combinat Stunt Cycle cu 16 variante PONG, o caracteristică unică pe care versiunea Atari nu o deținea.\n\nImpact Cultural și Social\n\nCeea ce a făcut PONG special nu a fost doar tehnologia sau veniturile. Nolan Bushnell a subliniat un aspect psihosocial crucial — designul jocului necesita o singură mână și era exclusiv pentru doi jucători, transformând-o într-o activitate de interacțiune socială. În baruri și săli de jocuri, PONG a devenit catalizator pentru discuție și competiție amicală — ceea ce Bushnell numea „lubrifiant social”.\n\nAstazi, PONG ocupă un loc permanent în colecția Smithsonian Institution din Washington, D.C. În 2015, a fost inclus în World Video Game Hall of Fame. Jocul a apărut în producții culturale precum That '70s Show și Saturday Night Live. Relevanta continuă a été demonstrată prin lansări moderne — Pong World pe iOS în 2012 și Pong Quest în 2020 — dovadă că designul original rămâne fundamental în DNA al industriei."
+        "cpu":  {"arhitectura":"LSI integrated circuits","proces_nm":"N/A","nuclee":"N/A","frecventa":"N/A","tdp":"~5W"},
+        "gpu":  {"arhitectura":"Analog","unitati":"N/A","frecventa":"N/A","tflops":"N/A","capabilitati":"Black-white display, digital score, audio synthesis"},
+        "memorie":  {"tip":"N/A","capacitate":"N/A","magistrala":"N/A","bandwidth":"N/A"},
+        "stocare":  {"tip":"N/A","interfata":"N/A","viteza":"N/A"},
+        "output_video":  {"rezolutie":"RF output","refresh":"60 Hz","hdr":"N/A","upscaling":"N/A"},
+        "tehnologii":  {"ray_tracing":false,"vrr":false,"backwards_compatibility":"N/A","altele":"LSI chip, integrated circuits, RF output, digital score"},
+        "avantaje":  ["Primul joc video cu succes comercial din istorie","Venituri de 4 ori mai mari decât arcade-urile standard","Parteneriat Sears: 150.000 unități vândute în 1975","Cip LSI cel mai performant din piața de consum","Recunoscut permanent de Smithsonian și Hall of Fame"],
+        "dezavantaje":  ["Rapid inundat de clonuri (Nintendo, Coleco, Taito)","Litigiu Magnavox a costat 1,5 milioane dolari","Limitat la tenis electronic ca principal gameplay","Marje de profit erodate de competiția rapidă"],
+        "istorie":  "<strong>Contextul apariției</strong><br><br>La începutul anilor 1970, piața de divertisment electronic de acasă era practic inexistentă. Magnavox Odyssey demonstrase că un joc video pe televizor este posibil, dar nu reușise să cucerească publicul larg. Arcade-urile începeau să genereze venituri uriașe cu PONG, iar Atari, fondată în 1972 de Nolan Bushnell și Ted Dabney, vedea o oportunitate clară: să aducă experiența arcade direct în sufrageriile americanilor.<br><br><strong>Dezvoltarea consolei</strong><br><br>Inspirația directă a lui Bushnell provenea din demonstrația Magnavox Odyssey din mai 1972, unde jucase versiunea digitală a tenisului electronic creată de Ralph Baer. Inginerul Allan Alcorn a adus trei inovații fundamentale: divizarea paletei în opt segmente cu comportament diferit, accelerarea progresivă a mingii și generarea sunetului direct din circuitul de sincronizare video — o soluție elegantă, dictată de constrângerile de spațiu. În 1974, inginerul Harold Lee a propus o versiune PONG care se conecta direct la televizoarele casnice, codenumită Darlene. Inovația utiliza cipul LSI (Large-Scale Integration), cel mai performant cip dintr-un produs de consum de larg răspândire la acea vreme.<br><br><strong>Lansarea</strong><br><br>Home Pong a fost lansat pentru sezonul de Crăciun al anului 1975. Atari descoperise că detailiștii tradiționali considerau prețul prohibitiv, astfel că soluția a venit printr-un parteneriat strategic cu Sears, retailerul american lider. Sears a vândut Home Pong sub brandul propriu — Sears Tele-Games — și a plasat o comandă inițială de 150.000 de unități. Comanda a fost onorată integral, transformând Home Pong în cel mai vândut produs Sears din acel an.<br><br><strong>Impactul pe piață</strong><br><br>Succesul PONG a atras și atenție juridică. În aprilie 1974, Magnavox a dat în judecată Atari, susținând că jocul încalcă brevetele Sanders Associates. Dovezile au inclus jurnalul de oaspeți semnat de Bushnell la demonstrația Odyssey din mai 1972. În iunie 1976, Atari a achitat 1,5 milioane de dolari în opt rate. Succesul a generat și o piață vastă de imitații — ceea ce Bushnell numea „șacali”. Nintendo, Coleco și Taito au lansat propriile console dedicate de tenis electronic, inundând piața cu variante. Atari a continuat cu sisteme PONG sub diferite mărci: PONG Doubles, Super PONG, Ultra PONG cu șaisprezece jocuri.<br><br><strong>Moștenirea</strong><br><br>PONG ocupă un loc permanent în colecția Smithsonian Institution din Washington, D.C. În 2015, a fost inclus în World Video Game Hall of Fame. Nolan Bushnell a subliniat un aspect psihosocial crucial — PONG era exclusiv pentru doi jucători, transformând-o într-o activitate de interacțiune socială, ceea ce el numea „lubrifiant social”. Relevanța sa continuă a fost demonstrată prin lansări moderne — Pong Quest în 2020 — dovadă că designul original rămâne fundamental în ADN-ul industriei jocurilor video."
     },
     {
         "id":  "coleco-telstar",
@@ -122,60 +41,15 @@ window.CONSOLES_DATA = [
         "generatie":  1,
         "lansare":  1976,
         "imagine":  "assets/images/consoles/coleco-telstar.webp",
-        "cpu":  {
-                    "arhitectura":  "GI AY-3-8500 (Telstar), AY-3-8700 (Combat), MOS Technology MPS-7600 (Arcade)",
-                    "proces_nm":  "N/A",
-                    "nuclee":  "Single integrated chip",
-                    "frecventa":  "N/A",
-                    "tdp":  "~5W"
-                },
-        "gpu":  {
-                    "arhitectura":  "Integrated graphics",
-                    "unitati":  "N/A",
-                    "frecventa":  "N/A",
-                    "tflops":  "N/A",
-                    "capabilitati":  "Ball & paddle games, color variants (Colortron), cartridge-based (Arcade)"
-                },
-        "memorie":  {
-                        "tip":  "N/A",
-                        "capacitate":  "N/A",
-                        "magistrala":  "N/A",
-                        "bandwidth":  "N/A"
-                    },
-        "stocare":  {
-                        "tip":  "Cartridges (Arcade model only)",
-                        "interfata":  "Proprietary (Arcade)",
-                        "viteza":  "N/A"
-                    },
-        "output_video":  {
-                             "rezolutie":  "RF output",
-                             "refresh":  "60 Hz",
-                             "hdr":  "N/A",
-                             "upscaling":  "N/A"
-                         },
-        "tehnologii":  {
-                           "ray_tracing":  false,
-                           "vrr":  false,
-                           "backwards_compatibility":  "N/A",
-                           "altele":  "Detachable controllers, light gun (Nintendo Co Gen Sue), partial user assembly, cartridge support (Arcade)"
-                       },
-        "avantaje":  [
-                         "Peste un milion de unități vândute la preț de 50 dolari",
-                         "14+ variante unice adresând diverse segmente de piață",
-                         "Telstar Arcade cu inovație de cartușe interschimbabile",
-                         "Parteneriat cu Nintendo pentru componente optice",
-                         "Design geometric futurist apreciat de colecționari",
-                         "Asigurare constantă a cipurilor ca preferatul General Instrument"
-                     ],
-        "dezavantaje":  [
-                            "14-15 modele lansate în doi ani inundând piața",
-                            "Limitate la jocuri simple de tip Pong și derivate",
-                            "Erori de programare: punctaje infinite și bucle nesfârșite",
-                            "Criză de inventar masivă aducând compania la prag faliment",
-                            "Ruptura totală cu arhitectura ColecoVision succesor",
-                            "Dominanță de piață erodată rapid de saturație piață"
-                        ],
-        "istorie":  "Seria Coleco Telstar marcheaza un capitol semnificativ în istoria timpurie a jocurilor video de acasă. Lansată în 1976, această familie de console a demonstrat cum inovația tehnologică și o strategie comercială agresivă pot duce atât la succes spectaculos, cât și la o criză neașteptată. Parteneriatul dintre Coleco și General Instrument a permis companiei să devină primul beneficiar major al cipului revoluționar AY-3-8500, propulsând vânzările primului model Telstar la peste un milion de unități la un preț atractiv de 50 de dolari.\n\nGeneza parteneriatului strategic\n\nGeneza seriei este strâns legată de inovația componentelor din mijlocul anilor '70. În 1975, inginerii General Instrument din Scoția au dezvoltat cipul AY-3-8500, cunoscut și sub numele Ball & Paddle, care integra logica completă a jocurilor de tenis electronic într-o singură bucată de silicon. Ralph Baer, inventatorul celebrei Magnavox Odyssey, a facilitat o întâlnire crucială între președintele Coleco, Arnold Greenberg, și conducerea GI. Această conexiune s-a dovedit transformatoare pentru industrie.\n\nColeco a devenit rapid clientul preferat al General Instrument, asigurând-și aprovizionarea constantă cu cipuri în perioadele când deficiturile de componente paralizau alți producători. Acest avantaj logistic s-a tradus în capacitatea de a lansa modelul original Telstar cu o jumătate din costul unui sistem Atari Home Pong. O particularitate interesantă a strategiei de producție Coleco era asamblarea parțială de către utilizator—consolele veneau aproape finalizate din punct de vedere electronic, dar cumpărătorii trebuiau să monteze butoanele de control și să aplice abțibildurile decorative. Această abordare a redus semnificativ costurile de fabricație și a permis marje de profit substanțiale.\n\nDiversificarea și proliferarea modelelor\n\nÎntre 1976 și 1978, Coleco a lansat cel puțin 14 variante ale seriei Telstar, fiecare adresând un segment diferit de piață. Modelul Telstar Classic oferea o carcasă de lux din lemn pentru consumatorii mai sofisticați. Telstar Ranger era echipat cu un pistol optic și controlere detașabile pentru mai multă versatilitate. Telstar Alpha featured servire automată și trei niveluri de dificultate. Telstar Combat! utiliza un cip diferit (AY-3-8700) și oferea jocuri cu tancuri cu patru joystick-uri fixe. Telstar Colortron, lansat în 1978, a fost primul din serie cu grafică color și sunet integrat.\n\nInovația Telstar Arcade\n\nModelul Telstar Arcade, lansat în 1977, reprezintă cea mai ambiționată și neobișnuită consolă din întreaga familie. Consola prezintă o formă geometric unică—un triunghi cu trei laturi, fiecare dedicată unui stil de joc diferit. Prima latură include un volan detașabil și schimbător de viteze pentru jocuri de conducere. A doua este echipată cu un pistol optic pentru jocuri de tragere și țintă. A treia oferă două butoane rotative (paddles) clasice pentru jocuri cu minge.\n\nCe a făcut Telstar Arcade cu adevărat revoluționar era arhitectura sa de cartușe. Spre deosebire de generațiile ulterioare de console, fiecare cartuș conținea propriul cip MOS Technology MPS-7600. Consola în sine funcționa mai mult ca un set sofisticat de controlere—procesarea jocului avea loc direct pe cipul din interiorul cartușului. Doar patru cartușe oficiale au fost produse pentru acest sistem inovator.\n\nParteneriatul cu Nintendo\n\nUn detaliu remarcabil în istoria Telstar este implicarea Nintendo. Pistolul optic (light gun) utilizat pentru multiple modele Telstar, inclusiv Arcade, nu era o creație a General Instrument, ci de fapt o inovație Nintendo. Coleco a achiziționat aceste componente și le-a integrat în sistemele sale, evidențiind prezența timpurie a Nintendo în industria jocurilor video, cu mult înainte de lansarea Game Boy sau NES.\n\nLimitări tehnice și defecte de design\n\nÎn ciuda succesului comercial inițial, sursele documentează erori evidente în design și programare ale jocurilor Telstar Arcade. În Road Race, jucătorul putea parca mașina în partea de sus a ecranului pentru a evita orice coliziune, acumulând puncte la infinit fără niciun risc real. În Speedball, sistemul putea intra într-o buclă infinită în care mingea ricoșa constant între obstacole, forțând jucătorul să piardă intenționat puncte pentru a debloca situația.\n\nCăderea și succesiune\n\nDurabilitatea avantajului Coleco s-a dovedit efemeră. Strategia de a lansa 14-15 modele în doar doi ani a inundat piața cu prea multe variante, iar interesul publicului pentru jocurile de tip Pong a scăzut accelerat. Până în 1980, Coleco s-a confruntat cu o criză de inventar severă din cauza stocurilor masive de sisteme Telstar nevândute. Doar o reformulare radicală a companiei—lansarea ColecoVision în 1982, o consolă de generație nouă cu arhitectură complet diferită—a salvat-o de faliment.\n\nMoștenirea și aprecierea contemporană\n\nAstazi, seria Telstar este apreciată de colecționari pentru designul futurist și locul unic în evoluția tehnologiei jocurilor video. Modelul Arcade, cu forma sa distinctă și cartușele interschimbabile, este o piesă de colecție rară. Exemplarele în stare bună variază între 120 și peste 200 de dolari, fiind prețuite pentru inovația pe care o reprezentau și pentru rolul istoric în demonstrarea riscurilor unei piețe prea saturate."
+        "cpu":  {"arhitectura":"GI AY-3-8500 (Telstar), AY-3-8700 (Combat), MOS Technology MPS-7600 (Arcade)","proces_nm":"N/A","nuclee":"Single integrated chip","frecventa":"N/A","tdp":"~5W"},
+        "gpu":  {"arhitectura":"Integrated graphics","unitati":"N/A","frecventa":"N/A","tflops":"N/A","capabilitati":"Ball & paddle games, color variants (Colortron), cartridge-based (Arcade)"},
+        "memorie":  {"tip":"N/A","capacitate":"N/A","magistrala":"N/A","bandwidth":"N/A"},
+        "stocare":  {"tip":"Cartridges (Arcade model only)","interfata":"Proprietary (Arcade)","viteza":"N/A"},
+        "output_video":  {"rezolutie":"RF output","refresh":"60 Hz","hdr":"N/A","upscaling":"N/A"},
+        "tehnologii":  {"ray_tracing":false,"vrr":false,"backwards_compatibility":"N/A","altele":"Detachable controllers, light gun (Nintendo), partial user assembly, cartridge support (Arcade)"},
+        "avantaje":  ["Peste un milion de unități vândute la prețul de 50 de dolari","14+ variante unice adresând diverse segmente de piață","Telstar Arcade cu inovație de cartușe interschimbabile","Parteneriat cu Nintendo pentru componente optice","Design geometric futurist apreciat de colecționari","Aprovizionare constantă cu cipuri ca favorit al General Instrument"],
+        "dezavantaje":  ["14-15 modele lansate în doi ani, inundând piața","Limitate la jocuri simple de tip Pong și derivate","Erori de programare: punctaje infinite și bucle nesfârșite","Criză de inventar masivă, aducând compania la pragul falimentului","Ruptură totală cu arhitectura ColecoVision succesor","Dominanță de piață erodată rapid de saturarea pieței"],
+        "istorie":  "<strong>Contextul apariției</strong><br><br>La mijlocul anilor 1970, piața jocurilor video de acasă era dominată de console dedicate inspirate din succesul arcade PONG. Atari Home Pong demonstrase că există o cerere reală pentru aceste produse, dar prețul de 100 de dolari era inaccesibil pentru mulți consumatori. Coleco, o companie de jucării cu experiență în producție de masă, vedea o oportunitate de a intra pe această piață cu un produs mai accesibil.<br><br><strong>Dezvoltarea consolei</strong><br><br>Geneza seriei este legată de inovația componentelor din mijlocul anilor 1970. În 1975, inginerii General Instrument din Scoția au dezvoltat cipul AY-3-8500, care integra logica completă a jocurilor de tenis electronic într-o singură bucată de siliciu. Ralph Baer, inventatorul Magnavox Odyssey, a facilitat o întâlnire crucială între președintele Coleco, Arnold Greenberg, și conducerea General Instrument. Coleco a devenit rapid clientul preferat al General Instrument, asigurându-și aprovizionarea constantă. Strategia de producție includea o particularitate interesantă: asamblarea parțială de către utilizator — consolele veneau aproape finalizate, dar cumpărătorii trebuiau să monteze butoanele și să aplice abțibildurile decorative, reducând costurile de fabricație.<br><br><strong>Lansarea</strong><br><br>Telstar original a fost lansat în 1976 la prețul de 50 de dolari — jumătate față de sistemul Atari Home Pong. Succesul a fost imediat: peste un milion de unități vândute în primul an. Între 1976 și 1978, Coleco a lansat cel puțin 14 variante: Telstar Classic cu carcasă de lux din lemn, Telstar Ranger cu pistol optic și controlere detașabile, Telstar Alpha cu servire automată și trei niveluri de dificultate, Telstar Combat! cu jocuri de tancuri și Telstar Colortron, primul din serie cu grafică color. Modelul Arcade din 1977 era cel mai ambițios: o carcasă triunghiulară cu volan, pistol optic și paddles, fiecare față dedicată unui stil diferit de joc. Fiecare cartuș al modelului Arcade conținea propriul cip MOS Technology MPS-7600, consola funcționând ca un set sofisticat de controlere. Pistolul optic utilizat în mai multe modele Telstar era o inovație Nintendo, achizitionată de Coleco.<br><br><strong>Impactul pe piață</strong><br><br>Strategia de a lansa 14-15 modele în doar doi ani s-a dovedit fatală. Piața a fost inundată cu prea multe variante, iar interesul publicului pentru jocurile de tip Pong a scăzut accelerat. Sursele documentează și erori evidente de design: în Road Race, jucătorul putea parca mașina în susul ecranului și acumula puncte la infinit, iar în Speedball sistemul putea intra într-o buclă nesfârșită. Până în 1980, Coleco se confrunta cu o criză de inventar severă din cauza stocurilor masive nevândute.<br><br><strong>Moștenirea</strong><br><br>Seria Telstar marchează un studiu de caz despre riscurile suprasaturării pieței. Doar reformularea radicală a companiei — lansarea ColecoVision în 1982, cu arhitectură complet diferită — a salvat Coleco de la faliment. Astăzi, seria Telstar este apreciată de colecționari pentru designul futurist. Modelul Arcade, cu forma sa triunghiulară distinctă, este o piesă de colecție rară, exemplarele în stare bună variind între 120 și peste 200 de dolari."
     },
     {
         "id":  "atari-2600",
@@ -184,61 +58,15 @@ window.CONSOLES_DATA = [
         "generatie":  1,
         "lansare":  1977,
         "imagine":  "assets/images/consoles/atari-2600.webp",
-        "cpu":  {
-                    "arhitectura":  "MOS 6507",
-                    "proces_nm":  "N/A",
-                    "nuclee":  "1C",
-                    "frecventa":  "1.19 MHz",
-                    "tdp":  "~5W"
-                },
-        "gpu":  {
-                    "arhitectura":  "TIA",
-                    "unitati":  "Custom",
-                    "frecventa":  "1.19 MHz",
-                    "tflops":  "N/A",
-                    "capabilitati":  "Sprite/playfield"
-                },
-        "memorie":  {
-                        "tip":  "RAM",
-                        "capacitate":  "128 bytes",
-                        "magistrala":  "8-bit",
-                        "bandwidth":  "N/A"
-                    },
-        "stocare":  {
-                        "tip":  "Cartridge",
-                        "interfata":  "ROM",
-                        "viteza":  "N/A"
-                    },
-        "output_video":  {
-                             "rezolutie":  "160×192",
-                             "refresh":  "60 Hz",
-                             "hdr":  "N/A",
-                             "upscaling":  "N/A"
-                         },
-        "tehnologii":  {
-                           "ray_tracing":  false,
-                           "vrr":  false,
-                           "backwards_compatibility":  "N/A",
-                           "altele":  "Cartridge pioneer"
-                       },
-        "avantaje":  [
-                         "Prima care a popularizat cartușe interschimbabile la scară",
-                         "Peste 30 de milioane de unități vândute (1977-1992)",
-                         "Bibliotecă de 523 de jocuri oficiale",
-                         "Space Invaders ca aplicație decisivă pentru adopție",
-                         "Porturi de control compatibile cu MSX, Commodore 64, Amiga",
-                         "Pionere în dezvoltare third-party (Activision)",
-                         "Carol Shaw: prima femeie designer de jocuri video"
-                     ],
-        "dezavantaje":  [
-                            "128 bytes RAM extrem de limitant",
-                            "Criza jocurilor video 1983 din Pac-Man și E.T.",
-                            "Multe jocuri necesitau manuale pentru context",
-                            "Preț inițial ridicat $199.99 (echiv. $1.064 în 2025)",
-                            "Grafică primitivă comparativ cu arcade originals",
-                            "Paletă de culori și capacități sprite limitate"
-                        ],
-        "istorie":  "Atari 2600: Consola care a Definit o Generație\n\nLansată în octombrie 1977 ca Video Computer System (VCS), consola Atari 2600 nu a fost prima cu cartușe interschimbabile, dar a fost cea care a popularizat conceptul la scară masivă. Transformând jocurile video dintr-un sistem hardware dedicat într-o platformă software versatilă, Atari 2600 a consolidat o industrie care abia se dezvolta. Cu vânzări estimate la peste 30 de milioane de unități pe parcursul unui ciclu de viață extins de 15 ani (1977-1992), a devenit definiția generației a doua de console și sinonim cu jocurile video în anii '80.\n\nLansare și Piață de Consum\n\nPrețul inițial de 199,99 USD a fost considerabil pentru epoca — ajustat la valoarea din 2025, ar echivala cu aproximativ 1.064,50 USD. Pentru consola originală VCS, aceasta era poziționa ca produs premium. Adevăratul catalizator comercial a venit în 1980 cu portarea Space Invaders, prima «killer app» (aplicație decisivă) a sistemului. Succesul acestui joc a transformar percepția consumatorilor asupra potențialului software pentru platformă. În noiembrie 1982, consola a fost oficial redenumită Atari 2600, pentru a o diferenția de succesorul planificat Atari 5200.\n\nHardware și Limitări Tehnice\n\nProcesor MOS 6507 funcționând la 1,19 MHz și 128 bytes de RAM — cifre care par imposibile astăzi. Pentru context, aceasta este semnificativ mai mic decât memoria unui simplu text editor modern. Totuși, aceasta nu a fost o barieră insurmontabilă — programatorii au explorat fiecare bit cu inovație remarcabilă. Cartușele au crescut de la 2 KB inițiali la 32 KB la finalul ciclului de viață, iar River Raid a demonstrat cum formule matematice pentru generarea de nivele și distribuția inamicilor pot economisi spațiu radical. Titluri precum Enduro au introdus efecte meteo și cicluri zi-noapte care creeau imersivitate în ciuda limitărilor hardware.\n\nBiblioteca Jocurilor și Evoluția Calității\n\nCu 523 de titluri oficiale, Atari 2600 a oferit varietate remarcabilă. Pac-Man, cel mai bine vândut joc cu 7-8 milioane de unități, a fost criticat pentru calitatea inferioară versiunii arcade, însă acest lucru nu a diminuat atracția sa comercială. Jocuri precum Combat (inclus în pachetul consacru) și Space Invaders au demonstrat potențialul portărilor. Pitfall II: Lost Caverns a reprezentat un salt tehnic cu ROM de patru ori mai mare pentru a oferi aventuri complexe cu scrolling. Fatal Run, lansat în 1990, a fost cel mai mare joc creat pentru platformă cu 32 KB, evidențiind evoluția constant a capabilităților sistemului.\n\nCalitatea Percepută și Descoperire\n\nDeși mulți consideră jocurile Atari 2600 ca «primitive», analiza mai atentă relevă nuanțe importante. Manualele jocurilor nu erau simple instrucțiuni — erau cheia pentru a debloca experiența reală. River Raid de Carol Shaw este recunoscut ca precursor al jocurilor generate procedural. Frogs and Flies și alte titluri simple și-au păstrat atractivitatea prin dinamica multiplayer subtilă și schimbările ambianța care creeau progresie perceptibilă. Aceasta nu era doar «trecut primitiv» — era design deliberat și constrangat de limitări hardware care forța inovație.\n\nProvocări Comerciale și Criza 1983\n\nSuccesul inicial a atraga mii de dezvoltatori și editori, dar nu toți au înțeles necesitatea de calitate. Criza jocurilor video din 1983 a fost determinată parțial de eșecruri comerciale majore — adaptarea Pac-Man a lui Atari și E.T. The Extra-Terrestrial de Atari au fost dezamăgitoare din punct de vedere tehnic și design. Inventarelor nevândute și pierderii de încredere a consumatorilor au urmat. Suportul oficial pentru consolă a fost întrerupt în 1992, dar relevanța sa a persistat.\n\nMoștenire și Influență Tehnică\n\nÎn 1982, Activision a devenit primul dezvoltator third-party major, stabilind un precedent ce a transformat industria în ecosistem de distribuție. Carol Shaw, cu River Raid, a fost recunoscută ca prima femeie designer major de jocuri video. Atari 2600+ (2023), o replică modernă lansat de actuala companie Atari Inc., demonstrează relevanța continuă — capabilă să ruleze cartușe originale de 2600 și 7800, aceasta conectează trecutul la prezent.\n\nJoystick-urile standard Atari au fost compatibile chiar și cu computerele MSX, Commodore 64, Amiga, Atari ST și Sega Master System, o demonstrație surprinzătoare a standardizării timpurii. Acest lucru nu a fost accident — a fost design deliberat care a facilitat adopția. Atari 2600 a stabilit paradigme de consum și dezvoltare care sunt valabile și în prezent: platforme software, ecosisteme third-party, și cicluri de viață extinsă. Nu este doar o notă de curs despre trecut — este fundamentul pe care industria jocurilor video a fost construită."
+        "cpu":  {"arhitectura":"MOS 6507","proces_nm":"N/A","nuclee":"1C","frecventa":"1.19 MHz","tdp":"~5W"},
+        "gpu":  {"arhitectura":"TIA","unitati":"Custom","frecventa":"1.19 MHz","tflops":"N/A","capabilitati":"Sprite/playfield"},
+        "memorie":  {"tip":"RAM","capacitate":"128 bytes","magistrala":"8-bit","bandwidth":"N/A"},
+        "stocare":  {"tip":"Cartridge","interfata":"ROM","viteza":"N/A"},
+        "output_video":  {"rezolutie":"160×192","refresh":"60 Hz","hdr":"N/A","upscaling":"N/A"},
+        "tehnologii":  {"ray_tracing":false,"vrr":false,"backwards_compatibility":"N/A","altele":"Cartridge pioneer"},
+        "avantaje":  ["Prima care a popularizat cartușele interschimbabile la scară","Peste 30 de milioane de unități vândute (1977-1992)","Bibliotecă de 523 de jocuri oficiale","Space Invaders ca aplicație decisivă pentru adopție","Porturi de control compatibile cu MSX, Commodore 64, Amiga","Pionieră în dezvoltarea third-party (Activision)","Carol Shaw: prima femeie designer de jocuri video"],
+        "dezavantaje":  ["128 bytes RAM — extrem de limitant","Criza jocurilor video din 1983, cauzată de Pac-Man și E.T.","Multe jocuri necesitau manuale pentru context","Preț inițial ridicat — 199,99 USD (echiv. 1.064 USD în 2025)","Grafică primitivă față de originalele arcade","Paletă de culori și capacități sprite limitate"],
+        "istorie":  "<strong>Contextul apariției</strong><br><br>La mijlocul anilor 1970, consolele dedicate dominau piața jocurilor video de acasă, dar fiecare sistem putea rula un singur joc sau un număr fix de variante. Atari, Coleco și alții produceau hardware separat pentru fiecare titlu. Această abordare era costisitoare și limitată. Atari urmărea o soluție diferită: o consolă care să poată rula orice joc prin simpla schimbare a unui cartuș, transformând hardware-ul dintr-un produs static într-o platformă versatilă.<br><br><strong>Dezvoltarea consolei</strong><br><br>Proiectul, cunoscut intern ca „Stella”, a fost conceput în jurul procesorului MOS 6507 la 1,19 MHz și al cipului grafic personalizat TIA (Television Interface Adapter). Memoria era limitată la 128 bytes de RAM — o constrângere extremă care a forțat programatorii să inoveze radical. Cartușele au crescut de la 2 KB inițiali la 32 KB spre finalul ciclului de viață. River Raid de Carol Shaw a demonstrat cum formulele matematice pentru generarea nivelurilor pot economisi spațiu radical. Titluri precum Enduro au introdus efecte meteo și cicluri zi-noapte convingătoare în ciuda limitărilor hardware.<br><br><strong>Lansarea</strong><br><br>Lansată în octombrie 1977 sub denumirea Video Computer System (VCS), consola a avut un preț inițial de 199,99 USD — echivalentul a aproximativ 1.064 USD astăzi — și o poziționare ca produs premium. Jocul pachet, Combat, era bine ales pentru a demonstra capacitățile multiplayer, dar adevăratul catalizator comercial a venit în 1980 cu portarea Space Invaders, prima aplicație decisivă a sistemului. Aceasta a transformat percepția consumatorilor asupra potențialului software pentru platformă și a impulsionat masiv vânzările. În noiembrie 1982, consola a fost redenumită Atari 2600 pentru a o diferenția de succesorul planificat, Atari 5200.<br><br><strong>Impactul pe piață</strong><br><br>Cu 523 de titluri oficiale și vânzări estimate la peste 30 de milioane de unități în 15 ani, Atari 2600 a dominat piața consolelor în anii 1980. Succesul inițial a atras mii de dezvoltatori, dar nu toți au înțeles necesitatea calității. Criza jocurilor video din 1983 a fost determinată parțial de eșecuri majore — adaptarea Pac-Man a lui Atari și E.T. The Extra-Terrestrial au dezamăgit consumatorii tehnic și ca design. Au urmat inventare nevândute și pierderea încrederii publicului. În 1982, Activision devenise deja primul dezvoltator third-party major, stabilind un precedent care a transformat industria într-un ecosistem de distribuție.<br><br><strong>Moștenirea</strong><br><br>Carol Shaw, cu River Raid, a fost recunoscută drept prima femeie designer major de jocuri video. Joystick-urile standard Atari erau compatibile cu computerele MSX, Commodore 64, Amiga, Atari ST și Sega Master System — o standardizare timpurie remarcabilă. Suportul oficial a încetat în 1992, dar relevanța a persistat. Atari 2600+ (2023), o replică modernă lansată de actuala companie Atari Inc., este capabilă să ruleze cartușe originale de 2600 și 7800, conectând trecutul la prezent. Atari 2600 a stabilit paradigmele de consum și dezvoltare care rămân valabile și astăzi: platforme software, ecosisteme third-party și cicluri de viață extinse."
     },
     {
         "id":  "magnavox-odyssey-2",
@@ -247,60 +75,15 @@ window.CONSOLES_DATA = [
         "generatie":  1,
         "lansare":  1978,
         "imagine":  "assets/images/consoles/magnavox-odyssey-2.webp",
-        "cpu":  {
-                    "arhitectura":  "Intel 8048",
-                    "proces_nm":  "N/A",
-                    "nuclee":  "1C",
-                    "frecventa":  "5.37 MHz",
-                    "tdp":  "~5W"
-                },
-        "gpu":  {
-                    "arhitectura":  "Intel 8244/8245",
-                    "unitati":  "Custom",
-                    "frecventa":  "N/A",
-                    "tflops":  "N/A",
-                    "capabilitati":  "4 sprites 8x8, 16 culori, caractere bitmap"
-                },
-        "memorie":  {
-                        "tip":  "RAM",
-                        "capacitate":  "128 bytes",
-                        "magistrala":  "8-bit",
-                        "bandwidth":  "N/A"
-                    },
-        "stocare":  {
-                        "tip":  "Cartridge ROM",
-                        "interfata":  "Cartridge",
-                        "viteza":  "N/A"
-                    },
-        "output_video":  {
-                             "rezolutie":  "160×200",
-                             "refresh":  "60 Hz",
-                             "hdr":  "N/A",
-                             "upscaling":  "N/A"
-                         },
-        "tehnologii":  {
-                           "ray_tracing":  false,
-                           "vrr":  false,
-                           "backwards_compatibility":  "N/A",
-                           "altele":  "Tastatură membrană QWERTY, modul sinteză vocală, jocuri hibride board game"
-                       },
-        "avantaje":  [
-                         "Tastatură membrană QWERTY unică pe piață",
-                         "Modul sinteză vocală The Voice cu sunet îmbunătățit",
-                         "Jocuri educaționale și Master Strategy hibride",
-                         "Suport internațional (Videopac G7000 în Europa)",
-                         "Câmpionul în Brazilia și Europa",
-                         "50 titluri lansate cu identitate vizuală distinctivă"
-                     ],
-        "dezavantaje":  [
-                            "Doar 128 bytes RAM extern extrem de limitant",
-                            "Grafică folosind caractere BIOS predefinite",
-                            "Doar 4 sprite-uri monocolore 8x8",
-                            "Procesul K.C. Munchkin vs Atari (retras de pe piață)",
-                            "Sprijin limitat third-party în America de Nord",
-                            "Joystick-uri cu formă în stea limitând mișcarea fluidă"
-                        ],
-        "istorie":  "Magnavox Odyssey 2: Hibridul Visionar\n\nLansată în septembrie 1978, Magnavox Odyssey 2 a reprezentat succesorul primei console de jocuri video din istorie, dar cu o abordare radical diferită. Poziționată ca o fuziune între o consolă de jocuri și un computer personal, Odyssey 2 s-a distins prin includerea unei tastaturi alfanumerice cu membrană QWERTY — o caracteristică unică care a separat-o clar de competitorii direcți. Cu aproximativ 2 milioane de unități vândute și un plasman onorabil pe locul trei în topul vânzărilor pre-1983, consola a demonstrat o viziune alternativă asupra viitorului jocurilor video.\n\nLansare și Prezență Globală\n\nMagnavox, un pioneer care a pierdut teren în fața Atari în anii '70, a încercat să recupereze prin Odyssey 2. Consola a purtat denumiri diferite în funcție de piață, reflectând prezența globală a corporației Philips. În America de Nord, a fost Magnavox Odyssey 2. În Europa, a devenit Philips Videopac G7000, lansat în decembrie 1978. Japonia a primit consola în septembrie 1982 la un preț ridicat de 49.800 yeni, transformând-o într-o raritate pentru colecționari. Brazilia și Peru au primi versiones traduse, cu jocuri localizate în portugheză.\n\nArhitectură și Limitări Hardware\n\nProcesor Intel 8048 pe 8 biți rulând la 5.37 MHz (NTSC) cu 64 bytes RAM intern și 1024 bytes ROM pentru BIOS — cifre care evidențiază constrângerile severe ale erei. RAM extern era de 128 bytes, plus alți 128 bytes dedicați audio/video. Cip video Intel 8244 (NTSC) sau 8245 (PAL) oferea 160×200 pixeli, 16 culori fixe (8 culori de bază cu variații de luminozitate), și doar 4 sprite-uri monocolore de 8×8 pixeli. Pentru text, consola se baza pe 12 caractere predefinite în BIOS, cu un set de 64 forme total disponibile — litere, cifre, și obiecte simple precum copaci sau avioane.\n\nControlele consoanei au evoluat în timp. Primele modele aveau joystick-uri argintii detașabile cu conector DB9, iar modelele ulterioare aveau joystick-uri negre cablate direct. Caracteristic, manetele aveau o carcasă în formă de stea cu 8 puncte, care limita uneori fluiditatea mișcării. Tastaura membrană QWERTY era integrată direct în consolă, oferind posibilitatea introducerii numelor pentru scoruri mari și acces la programare simplă prin cartușul Computer Intro!.\n\nInovații și Diferențiation\n\nOdyssey 2 a încercat să transcende jocurile de arcade prin mai multe căi. Seria Master Strategy (Quest for the Rings! și altele) oferea o fuziune neobișnuită — plăci fizice, jetoane și piese de joc care completau experiența digitală, oferind o profunzime narativă rară pentru acea perioadă. Modulul sinteză vocală The Voice era un upgrade major, adăugând vorbire, muzică și efecte sonore îmbunătățite. Spre deosebire de alte sisteme, jocurile compatibile nu necesitau obligatoriu acest modul pentru a funcționa — acesta era o caracteristică opțională.\n\nEn Europa, consola a primit suport mai sofisticat. Moduleul de șah C7010 conținea propriul procesor secundar (NSC800) pentru a compensa memoria limitată. Această abordare de hardware personalizat pentru anumite jocuri a fost inovatoare, dar și costly.\n\nBiblioteca de Software și Recepții Miste\n\nApibrox. 50 de jocuri au fost lansate în America de Nord. Magnavox a fost celebră pentru adăugarea unui semn de exclamare la finalul aproape fiecărui titlu — K.C. Munchkin!, Killer Bees!, Pick-axe Pete! — o strategie de marketing distinctivă care a devenit iconică. Ed Averett, un programator prolific, a fost responsabil singur pentru 24 de titluri, aproape jumătate din biblioteca nord-americană.\n\nK.C. Munchkin! a fost pentru Odyssey 2 ceea ce Pac-Man a fost pentru arcade, dar cu un element dramatic — Atari a dat în judecată Magnavox, susținând că jocul era o copie. Inițial Magnavox a câștigat, dar Atari a învins în apel, iar jocul a fost retras de pe piață. Parker Brothers a oferit apoi suport prin portări de celebre titluri ca Popeye, Frogger și Qbert.\n\nRecepție Geografică\n\nSituația comercială a variat drastic după regiune. În Statele Unite, Odyssey 2 a dominat împreună cu Atari 2600 până în 1980, dar a căzut pe locul trei după lansarea Intellivision. Marketingul a pus accent pe sloganul «The Ultimate Computer Video Game System», o aluzie clara la componentele computerului. În Europa și Brazilia, consola a avut un succes mult mai mare. În Brazilia, jocurile au fost traduse în portugheză și turneele erau evenimente comune. Producția a încetat oficial pe 20 martie 1984.\n\nMoștenire și Impactul Designului\n\nMagnavox Odyssey 2 este amintită ca o consolă care a încercat să depășească barierele jocurilor de arcade simple. Limitările grafice (caracterele predefinite din BIOS care făceau ca multe jocuri să arate similar) au împiedicat-o să iasă în evidență în fața Atari. Totuși, inovațiile în sinteză vocală și fuziunea jocurilor de strategie hibridă rămân puncte de referință în evoluția hardware-ului video. Biblioteca sa emană o identitate vizuală distinctivă și inconfundabilă, cu box art care a devenit o marcă registrată a erei."
+        "cpu":  {"arhitectura":"Intel 8048","proces_nm":"N/A","nuclee":"1C","frecventa":"5.37 MHz","tdp":"~5W"},
+        "gpu":  {"arhitectura":"Intel 8244/8245","unitati":"Custom","frecventa":"N/A","tflops":"N/A","capabilitati":"4 sprites 8x8, 16 culori, caractere bitmap"},
+        "memorie":  {"tip":"RAM","capacitate":"128 bytes","magistrala":"8-bit","bandwidth":"N/A"},
+        "stocare":  {"tip":"Cartridge ROM","interfata":"Cartridge","viteza":"N/A"},
+        "output_video":  {"rezolutie":"160×200","refresh":"60 Hz","hdr":"N/A","upscaling":"N/A"},
+        "tehnologii":  {"ray_tracing":false,"vrr":false,"backwards_compatibility":"N/A","altele":"Tastatură membrană QWERTY, modul sinteză vocală, jocuri hibride board game"},
+        "avantaje":  ["Tastatură membrană QWERTY unică pe piață","Modul de sinteză vocală The Voice cu sunet îmbunătățit","Jocuri educaționale și Master Strategy hibride","Suport internațional (Videopac G7000 în Europa)","Succes comercial solid în Brazilia și Europa","50 de titluri lansate cu identitate vizuală distinctivă"],
+        "dezavantaje":  ["Doar 128 bytes RAM extern — extrem de limitant","Grafică bazată pe caractere BIOS predefinite","Doar 4 sprite-uri monocolore 8×8","Procesul K.C. Munchkin vs. Atari (jocul retras de pe piață)","Sprijin third-party limitat în America de Nord","Joystick-uri cu formă de stea, limitând mișcarea fluidă"],
+        "istorie":  "<strong>Contextul apariției</strong><br><br>La sfârșitul anilor 1970, Atari 2600 consolida rapid dominația pe piața consolelor de acasă prin sistemul de cartușe interschimbabile. Magnavox, pionierul care lansase prima consolă din lume, pierduse teren semnificativ. Compania, parte din grupul Philips, dorea un succesor care să depășească simpla ofertă arcade și să poziționeze consola ca un dispozitiv cu valoare educațională și de calcul — o viziune hibridă între joc și computer personal.<br><br><strong>Dezvoltarea consolei</strong><br><br>Odyssey 2 a fost construită în jurul procesorului Intel 8048 pe 8 biți la 5,37 MHz, cu 64 bytes RAM intern și 1.024 bytes ROM pentru BIOS. Cipul video Intel 8244 (NTSC) sau 8245 (PAL) oferea 160×200 pixeli, 16 culori fixe și doar 4 sprite-uri monocolore de 8×8 pixeli. Elementul distinctiv față de toți competitorii era tastatura cu membrană QWERTY integrată direct în consolă, care permitea introducerea numelor pentru scoruri mari și accesul la programare simplă prin cartușul Computer Intro!. Joystick-urile primelor modele aveau o carcasă în formă de stea cu 8 puncte, care limita uneori fluiditatea mișcării. Modulul de sinteză vocală The Voice era un accesoriu opțional major, adăugând vorbire, muzică și efecte sonore îmbunătățite. În Europa, modulul de șah C7010 conținea propriul procesor secundar (NSC800) — o abordare de hardware personalizat inovatoare, dar costisitoare.<br><br><strong>Lansarea</strong><br><br>Magnavox Odyssey 2 a fost lansată în septembrie 1978 în America de Nord la un preț competitiv față de Atari 2600. Consola a purtat denumiri diferite în funcție de piață: Philips Videopac G7000 în Europa (lansat în decembrie 1978), iar în Japonia a apărut în septembrie 1982 la prețul de 49.800 yeni — o raritate pentru colecționari. Brazilia și Peru au primit versiuni localizate în portugheză. Biblioteca includea aproximativ 50 de titluri în America de Nord, Magnavox fiind celebră pentru adăugarea semnului de exclamare la finalul fiecărui titlu: K.C. Munchkin!, Killer Bees!, Pick-axe Pete!. Ed Averett, un programator prolific, a creat singur 24 de titluri — aproape jumătate din biblioteca nord-americană.<br><br><strong>Impactul pe piață</strong><br><br>Odyssey 2 a ocupat locul al treilea în topul vânzărilor pre-1983, cu aproximativ 2 milioane de unități vândute la nivel global. În Statele Unite, a dominat alături de Atari 2600 până în 1980, dar a căzut pe locul trei după lansarea Intellivision. Marketingul punea accent pe sloganul „The Ultimate Computer Video Game System”, o aluzie clară la componenta tastaturii. K.C. Munchkin! a reprezentat cel mai popular titlu, până când Atari a dat în judecată Magnavox susținând că este o copie după Pac-Man. Inițial Magnavox a câștigat, dar Atari a obținut câștig de cauză în apel, iar jocul a fost retras de pe piață. Parker Brothers a oferit ulterior suport cu portări ale titlurilor Popeye, Frogger și Q*bert. În Europa și Brazilia, consola a avut un succes considerabil mai mare decât în America de Nord.<br><br><strong>Moștenirea</strong><br><br>Producția a încetat oficial pe 20 martie 1984. Magnavox Odyssey 2 este amintită ca o consolă care a încercat să depășească barierele jocurilor de arcade simple, anticipând conceptul de hibrid joc-computer. Limitările grafice — caracterele predefinite din BIOS care făceau multe jocuri să arate similar — au împiedicat-o să iasă în evidență față de Atari. Totuși, inovațiile în sinteză vocală și fuziunea jocurilor de strategie hibridă rămân puncte de referință în evoluția hardware-ului video. Biblioteca sa emană o identitate vizuală distinctivă, cu artă grafică pe cutii care a devenit o marcă a erei."
     },
     {
         "id":  "intellivision",
@@ -309,60 +92,15 @@ window.CONSOLES_DATA = [
         "generatie":  1,
         "lansare":  1979,
         "imagine":  "assets/images/consoles/intellivision.webp",
-        "cpu":  {
-                    "arhitectura":  "General Instrument CP1610",
-                    "proces_nm":  "N/A",
-                    "nuclee":  "1C",
-                    "frecventa":  "2 MHz",
-                    "tdp":  "~10W"
-                },
-        "gpu":  {
-                    "arhitectura":  "STIC (Standard Television Interface Chip)",
-                    "unitati":  "8 sprites hardware",
-                    "frecventa":  "N/A",
-                    "tflops":  "N/A",
-                    "capabilitati":  "Tile-based playfield, 16 culori"
-                },
-        "memorie":  {
-                        "tip":  "RAM",
-                        "capacitate":  "1456 bytes",
-                        "magistrala":  "16-bit",
-                        "bandwidth":  "N/A"
-                    },
-        "stocare":  {
-                        "tip":  "Cartridge ROM",
-                        "interfata":  "Cartridge",
-                        "viteza":  "N/A"
-                    },
-        "output_video":  {
-                             "rezolutie":  "159×96",
-                             "refresh":  "60 Hz",
-                             "hdr":  "N/A",
-                             "upscaling":  "N/A"
-                         },
-        "tehnologii":  {
-                           "ray_tracing":  false,
-                           "vrr":  false,
-                           "backwards_compatibility":  "N/A",
-                           "altele":  "Controller disc 16 direcții, tastatură numerică, Intellivoice, PlayCable"
-                       },
-        "avantaje":  [
-                         "Prima consolă 16-biți cu CP1610",
-                         "Grafică tile-based superioară altor platforme",
-                         "Controller disc capabil de 16 direcții",
-                         "Syntheza vocală integrată (Intellivoice)",
-                         "PlayCable: primul serviciu descărcare jocuri TV (1981)",
-                         "Las Vegas Poker & Blackjack: 1,939 milioane unități"
-                     ],
-        "dezavantaje":  [
-                            "Doar 1456 bytes RAM extrem de limitant",
-                            "Controller disc dificil de folosit pentru unii jucători",
-                            "Keyboard Component (Blue Whale) anulat, doar 4.000 unități",
-                            "Frecvența cadru limitată la 20 Hz prin Exec ROM",
-                            "Pierderi financiare masive ($280 milioane) în 1983",
-                            "Acorduri de licență au forțat întreruperea producției în 1990"
-                        ],
-        "istorie":  "Intellivision: Primul Crai al Consolelor\n\nLansat în 1979 de Mattel Electronics, Intellivision (o contracție a cuvintelor \"intelligent\" și \"television\") a reprezentat o provocare frontală Atari 2600 și a inițiat primul \"război al consolelor\" din istoria jocurilor video. Cu o arhitectură pe 16 biți și promisiuni de grafică și sunet superioare, consola a consolidat piața jocurilor de acasă și a redefinit standardele pentru generația care urmează.\n\nInovație Tehnologică și Arhitectură\n\nCeea ce a plasat Intellivision în poziția de pionier a fost deciza de a folosi microprocesor General Instrument CP1610 pe 16 biți la 2 MHz în locul alternativelor pe 8 biți. Deși frecvența pare mică în zilele noastre, aceasta era un salt semnificativ în 1979. Cip grafic STIC (Standard Television Interface Chip) utiliza o abordare inovatoare: tile-based playfield, unde peisajele erau construite din celule mici în loc să se stockeze fiecare pixel individual. Aceasta economia sever și din RAM-ul extrem de limitat (1456 bytes) și din puterea de procesare. Consola suporta 8 sprite-uri hardware și o paletă de 16 culori.\n\nControllerul Unic și Tastatură\n\nMattel a reinventat controlul prin introducerea unui disc direcțional (nu joystick-ul tradițional) care detecta 16 direcții, oferind precizie mult mai mare. Peste disc se montau suprapuneri din plastic unice pentru fiecare joc, transformând butoanele simple din plastic în interfețe contextuale. Acest design era inovator, dar controvers — unii utilizatori îl găseau neintuitiv. Tastaura numerică cu 12 butoane permitea input-uri complexe, necesare pentru jocurile de strategie și simulări.\n\nDominația Segmentului Sportiv\n\nIntellivision și-a făcut o reputație pe simulari sportive precise. Major League Baseball și World Series Major League Baseball au introdus perspecive multiple și statistici reale, revolucionând genul. Las Vegas Poker & Blackjack a devenit cel mai vândut joc al consoanei cu aproximativ 1,939 milioane de unități. Utopia (1982) este recunoscut de istoriografi ca precursor al genului de simulare a managementului și construcției. Aceste titluri nu depășeau doar în gameplay competitia — grafica Intellivision, deși raster-based, era vizibil superioară adaptărilor arcade pe platforma Atari.\n\nEcosistemul Software și Exec ROM\n\nDezvoltorii au beneficiat de \"Exec\", un cod ROM rezident de 4K care accelera crearea jocurilor. Cu toate acestea aceasta avea un cost — frecvența cadrelor era limitată la 20 Hz pentru jocurile care foloseau Exec, față de 60 Hz pentru jocurile care ocoleau acest sistem. Diferența era perceptibilă, dar trade-off-ul permitea dezvoltatorilor să creeze experiențe mai complexe cu puțini recursos.\n\nPerifericele Ambițioase și Controversele\n\nMattel a încercat să transforme consola într-o mașină de uz general prin numeroase extensii. Keyboard Component (supranumit \"Blue Whale\" din cauza volumului ridicol) a fost promis ca allowing acces la computer, dar a suferit întârzieri masive și a dus la investigație FTC pentru publicitate falsă. Doar aproximativ 4.000 de unități au fost produse înainte de anulare în 1982. Entertainment Computer System (ECS) a fost propus ca alternativă mai ieftină, oferind cip audio GI AY-3-8914 și suport BASIC. Intellivoice a adus sinteză vocală reală în jocuri. Cel mai inovator a fost PlayCable (1981), care permitea descărcarea jocurilor prin cablul TV — un concept revoluționar care a precedat cu decenii modelul de distribuție digital.\n\nPrăbușirea și Revitalizare Moderă\n\nPe vârful succesului comercial (peste 3,75 milioane de unități între 1980-1983), Intellivision a fost lovit de criza jocurilor video din 1983. Pierderi financiare masive depășind 280 milioane USD au forțat Mattel să vândă activele. INTV Corporation a preluat apoi consola, dar acorduri de licență cu Nintendo și Sega au forțat întreruperea producției în 1990. După decenii de conservare prin Intellivision Productions, brandul a fost achiziționat de Atari în mai 2024, marcând simbolic sfârșitul celui mai lung conflict comercial din istoria consolelor.\n\nIntellivision Sprint și Moștenire Contemporană\n\nSub conducerea Atari, brandul s-a revitalizat prin Intellivision Sprint, programat pentru lansare în decembrie 2025. Consola modernă păstrează esenția originalului — controller cu disc și tastatură — dar cu upgrades: 45 de jocuri preinstalate, wireless Bluetooth, ieșire HDMI și capacitatea de a rula ROM-uri proprii. Sistemul pe Rockchip și suportul mai de 90 de suprapuneri din plastic demonstrează aprecierea pentru istoria și designul original. Intellivision rămâne respectat în comunitatea retrogaming, fiind clasată de IGN pe locul 14 în topul absolut al tuturor consolelor. Moștenirea sa continuă prin standarde în jocurile sportive bazate pe date și prin comunitatea activate de \"homebrew\" development."
+        "cpu":  {"arhitectura":"General Instrument CP1610","proces_nm":"N/A","nuclee":"1C","frecventa":"2 MHz","tdp":"~10W"},
+        "gpu":  {"arhitectura":"STIC (Standard Television Interface Chip)","unitati":"8 sprites hardware","frecventa":"N/A","tflops":"N/A","capabilitati":"Tile-based playfield, 16 culori"},
+        "memorie":  {"tip":"RAM","capacitate":"1456 bytes","magistrala":"16-bit","bandwidth":"N/A"},
+        "stocare":  {"tip":"Cartridge ROM","interfata":"Cartridge","viteza":"N/A"},
+        "output_video":  {"rezolutie":"159×96","refresh":"60 Hz","hdr":"N/A","upscaling":"N/A"},
+        "tehnologii":  {"ray_tracing":false,"vrr":false,"backwards_compatibility":"N/A","altele":"Controller disc 16 direcții, tastatură numerică, Intellivoice, PlayCable"},
+        "avantaje":  ["Prima consolă cu procesor pe 16 biți (CP1610)","Grafică tile-based superioară altor platforme","Controller disc capabil de 16 direcții","Sinteză vocală integrată (Intellivoice)","PlayCable: primul serviciu de descărcare a jocurilor prin TV (1981)","Las Vegas Poker & Blackjack: 1,939 milioane de unități vândute"],
+        "dezavantaje":  ["Doar 1456 bytes RAM — extrem de limitant","Controllerul disc era dificil de folosit pentru unii jucători","Keyboard Component (Blue Whale) anulat, doar 4.000 de unități produse","Frecvența cadrelor limitată la 20 Hz prin Exec ROM","Pierderi financiare masive (280 milioane dolari) în 1983","Acorduri de licență au forțat întreruperea producției în 1990"],
+        "istorie":  "<strong>Contextul apariției</strong><br><br>La sfârșitul anilor 1970, Atari 2600 domina piața consolelor de acasă, dar lăsa loc pentru un competitor care să ofere grafică și audio superioare. Mattel Electronics, divizia de jocuri electronice a jucăriei Mattel, identifica această oportunitate. Compania dorea o consolă cu specificații tehnice net superioare față de Atari 2600, capabilă să ofere simulări sportive realiste și experiențe de joc mai complexe — ceea ce a dus la primul adevărat „război al consolelor” din istoria industriei.<br><br><strong>Dezvoltarea consolei</strong><br><br>Decizia centrală de design a fost utilizarea microprocesorului General Instrument CP1610 pe 16 biți la 2 MHz, în locul alternativelor pe 8 biți ale epocii. Cipul grafic STIC (Standard Television Interface Chip) utiliza o abordare inovatoare: un câmp de joc bazat pe dale (tiles), unde peisajele erau construite din celule mici, economisind atât din cei 1.456 bytes RAM, cât și din puterea de procesare. Consola suporta 8 sprite-uri hardware și o paletă de 16 culori. Controllerul a reinventat interacțiunea prin introducerea unui disc direcțional care detecta 16 direcții, mult mai precis decât joystick-urile tradiționale. Peste disc se montau suprapuneri din plastic unice pentru fiecare joc, transformând butoanele în interfețe contextuale.<br><br><strong>Lansarea</strong><br><br>Intellivision a fost lansat în 1979 la un preț mai ridicat decât Atari 2600, dar cu o promisiune clară de superioritate vizuală. Mattel a susținut lansarea cu o campanie de comparație directă cu Atari, demonstrând în special superioritatea simulărilor sportive. Major League Baseball și World Series Major League Baseball au introdus perspective multiple și statistici reale, revoluționând genul. Las Vegas Poker & Blackjack a devenit cel mai vândut joc al consolei cu aproximativ 1,939 milioane de unități. Utopia (1982) este recunoscut de istorici drept precursor al genului de simulare a managementului și construcției.<br><br><strong>Impactul pe piață</strong><br><br>Pe vârful succesului comercial, între 1980 și 1983, Intellivision a vândut peste 3,75 milioane de unități, plasându-se ferm pe locul al doilea în piață. Mattel a încercat să transforme consola într-o mașină de uz general prin extensii ambițioase. Keyboard Component — supranumit „Blue Whale” din cauza dimensiunilor — a promis acces la computer, dar a suferit întârzieri masive și a dus la o investigație FTC pentru publicitate falsă; doar aproximativ 4.000 de unități au fost produse înainte de anulare în 1982. PlayCable (1981), care permitea descărcarea jocurilor prin cablu TV, a precedat cu decenii modelul de distribuție digitală. Criza jocurilor video din 1983 a lovit dur: pierderi financiare depășind 280 de milioane de dolari au forțat Mattel să vândă activele.<br><br><strong>Moștenirea</strong><br><br>INTV Corporation a preluat consola, dar acordurile de licență cu Nintendo și Sega au forțat întreruperea producției în 1990. După decenii de conservare prin Intellivision Productions, brandul a fost achiziționat de Atari în mai 2024. Sub conducerea Atari, brandul s-a revitalizat prin Intellivision Sprint, planificat pentru lansare în decembrie 2025, cu 45 de jocuri preinstalate, conexiune Bluetooth și ieșire HDMI. Intellivision rămâne respectat în comunitatea retrogaming, clasată de IGN pe locul 14 în topul absolut al tuturor consolelor. Moștenirea sa continuă prin standardele introduse în jocurile sportive bazate pe date reale."
     },
     {
         "id":  "microvision",
