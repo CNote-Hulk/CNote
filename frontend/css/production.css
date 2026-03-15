@@ -5441,6 +5441,10 @@ body.search-open {
 
     .profile-dropdown {
         right: -10px;
+        top: calc(100% + 70px);
+        width: calc(100vw - 24px);
+        max-width: 280px;
+        min-width: unset;
     }
 }
 
