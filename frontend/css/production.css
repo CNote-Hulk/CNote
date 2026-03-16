@@ -145,13 +145,13 @@ body::before {
 
 /* Selection Color */
 ::selection {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
+    background: #d4c09a;   /* crem */
+    color: #1a1a1a;        /* text închis pentru contrast */
 }
 
 ::-moz-selection {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
+    background: #d4c09a;   /* crem */
+    color: #1a1a1a;        /* text închis pentru contrast */
 }
 
 
