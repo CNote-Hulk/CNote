@@ -1024,7 +1024,87 @@ function openAddListingModal() {
         uploadCounter.textContent = `${selectedFiles.length} / ${MAX_IMAGES} imagini selectate`;
     }
 
-    function openEditListingFromDetail(id, l) {
+    function addFiles(files) {
+        for (const file of files) {
+            if (selectedFiles.length >= MAX_IMAGES) break;
+            if (!file.type.match(/^image\/(jpeg|png|webp)$/)) continue;
+            if (file.size > 10 * 1024 * 1024) continue;
+            selectedFiles.push(file);
+        }
+        updatePreviews();
+    }
+
+    uploadZone.addEventListener('click', () => uploadInput.click());
+    uploadInput.addEventListener('change', () => { addFiles(uploadInput.files); uploadInput.value = ''; });
+
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('hub-upload-zone--drag'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('hub-upload-zone--drag'));
+    uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('hub-upload-zone--drag'); addFiles(e.dataTransfer.files); });
+
+    uploadGrid.addEventListener('click', e => {
+        const btn = e.target.closest('.hub-upload-thumb__remove');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.idx, 10);
+        selectedFiles.splice(idx, 1);
+        updatePreviews();
+    });
+
+    /** Resize an image file to max 800px and return a base64 data URL */
+    function resizeImage(file) {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => {
+                const MAX = 800;
+                let w = img.width, h = img.height;
+                if (w > MAX || h > MAX) {
+                    if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+                    else { w = Math.round(w * MAX / h); h = MAX; }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                resolve(canvas.toDataURL('image/jpeg', 0.75));
+                URL.revokeObjectURL(img.src);
+            };
+            img.src = URL.createObjectURL(file);
+        });
+    }
+
+    overlay.querySelector('#new-listing-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const f = e.target, btn = f.querySelector('[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Se publică…';
+
+        const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
+
+        // Default image: if no images uploaded but a console is selected, use console image
+        let finalImages = imageUrls;
+        if (finalImages.length === 0 && f.console_type.value) {
+            const consoleDef = (window.CONSOLES_DATA || []).find(c => c.id === f.console_type.value);
+            if (consoleDef && consoleDef.imagine) finalImages = [consoleDef.imagine];
+        }
+
+        const res = await api('POST', '/marketplace/listings', {
+            title: f.title.value.trim(),
+            description: f.description.value.trim(),
+            price: parseFloat(f.price.value),
+            condition: f.condition.value,
+            category: f.category.value,
+            console_type: f.console_type.value,
+            location: f.location.value.trim(),
+            phone: f.phone.value.trim(),
+            olx_url: f.olx_url.value.trim(),
+            images: finalImages,
+        });
+        if (res.success) { close(); loadListings(); }
+        else { btn.disabled = false; btn.textContent = 'Publică'; alert(res.error || 'Eroare.'); }
+    });
+}
+
+
+/** Open modal dialog to edit an existing listing (from detail view) */
+function openEditListingFromDetail(id, l) {
     document.querySelector('.hub-modal-overlay')?.remove();
 
     const overlay = document.createElement('div');
@@ -1136,84 +1216,6 @@ function openAddListingModal() {
         });
         if (res.success) { close(); openListingDetail(id); } // reîncarcă detaliul
         else { btn.disabled = false; btn.textContent = 'Salvează'; alert(res.error || 'Eroare.'); }
-    });
-    }
-
-    function addFiles(files) {
-        for (const file of files) {
-            if (selectedFiles.length >= MAX_IMAGES) break;
-            if (!file.type.match(/^image\/(jpeg|png|webp)$/)) continue;
-            if (file.size > 10 * 1024 * 1024) continue;
-            selectedFiles.push(file);
-        }
-        updatePreviews();
-    }
-
-    uploadZone.addEventListener('click', () => uploadInput.click());
-    uploadInput.addEventListener('change', () => { addFiles(uploadInput.files); uploadInput.value = ''; });
-
-    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('hub-upload-zone--drag'); });
-    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('hub-upload-zone--drag'));
-    uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('hub-upload-zone--drag'); addFiles(e.dataTransfer.files); });
-
-    uploadGrid.addEventListener('click', e => {
-        const btn = e.target.closest('.hub-upload-thumb__remove');
-        if (!btn) return;
-        const idx = parseInt(btn.dataset.idx, 10);
-        selectedFiles.splice(idx, 1);
-        updatePreviews();
-    });
-
-    /** Resize an image file to max 800px and return a base64 data URL */
-    function resizeImage(file) {
-        return new Promise(resolve => {
-            const img = new Image();
-            img.onload = () => {
-                const MAX = 800;
-                let w = img.width, h = img.height;
-                if (w > MAX || h > MAX) {
-                    if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
-                    else { w = Math.round(w * MAX / h); h = MAX; }
-                }
-                const canvas = document.createElement('canvas');
-                canvas.width = w; canvas.height = h;
-                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                resolve(canvas.toDataURL('image/jpeg', 0.75));
-                URL.revokeObjectURL(img.src);
-            };
-            img.src = URL.createObjectURL(file);
-        });
-    }
-
-    overlay.querySelector('#new-listing-form').addEventListener('submit', async e => {
-        e.preventDefault();
-        const f = e.target, btn = f.querySelector('[type="submit"]');
-        btn.disabled = true;
-        btn.textContent = 'Se publică…';
-
-        const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
-
-        // Default image: if no images uploaded but a console is selected, use console image
-        let finalImages = imageUrls;
-        if (finalImages.length === 0 && f.console_type.value) {
-            const consoleDef = (window.CONSOLES_DATA || []).find(c => c.id === f.console_type.value);
-            if (consoleDef && consoleDef.imagine) finalImages = [consoleDef.imagine];
-        }
-
-        const res = await api('POST', '/marketplace/listings', {
-            title: f.title.value.trim(),
-            description: f.description.value.trim(),
-            price: parseFloat(f.price.value),
-            condition: f.condition.value,
-            category: f.category.value,
-            console_type: f.console_type.value,
-            location: f.location.value.trim(),
-            phone: f.phone.value.trim(),
-            olx_url: f.olx_url.value.trim(),
-            images: finalImages,
-        });
-        if (res.success) { close(); loadListings(); }
-        else { btn.disabled = false; btn.textContent = 'Publică'; alert(res.error || 'Eroare.'); }
     });
 }
 
