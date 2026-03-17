@@ -22,12 +22,17 @@ export const AnimationsModule = {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                     entry.target.style.animation = 'fadeIn 0.8s ease-in';
+
+                    // Ensure hub cards animate in even though they use .is-visible (different naming)
+                    if (entry.target.classList.contains('hub-card')) {
+                        entry.target.classList.add('is-visible');
+                    }
                 }
             });
         }, { threshold: 0.1 });
 
-        // Observă cards și alte elemente
-        document.querySelectorAll('.card, .section-intro').forEach(el => {
+        // Observă cards, hub cards și alte elemente
+        document.querySelectorAll('.card, .hub-card, .section-intro').forEach(el => {
             this.observer.observe(el);
         });
     },
