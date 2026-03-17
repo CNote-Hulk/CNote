@@ -714,6 +714,7 @@ async function openListingDetail(id) {
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
                         ${l.olx_url ? `<a href="${esc(l.olx_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 OLX</a>` : ''}
                         ${own && !l.sold ? '<button class="hub-btn hub-btn--primary" id="listing-sold-btn">✓ Marchează vândut</button>' : ''}
+                        ${own ? '<button class="hub-btn hub-btn--secondary" id="listing-edit-btn">✏️ Editează</button>' : ''}
                         ${own ? '<button class="hub-btn hub-btn--danger" id="listing-del-btn">Șterge</button>' : ''}
                     </div>
                     <div class="hub-similar-section" id="similar-section">
@@ -1017,6 +1018,121 @@ function openAddListingModal() {
             uploadGrid.appendChild(thumb);
         });
         uploadCounter.textContent = `${selectedFiles.length} / ${MAX_IMAGES} imagini selectate`;
+    }
+
+    function openEditListingFromDetail(id, l) {
+    document.querySelector('.hub-modal-overlay')?.remove();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'hub-modal-overlay';
+    overlay.innerHTML = `
+        <div class="hub-modal">
+            <div class="hub-modal__header">
+                <span class="hub-modal__title">Editează anunțul</span>
+                <button class="hub-modal__close">&times;</button>
+            </div>
+            <form class="hub-modal__body" id="edit-listing-form">
+                <div class="hub-form-group">
+                    <label class="hub-form-label">Titlu</label>
+                    <input class="hub-form-input" name="title" maxlength="200" required value="${esc(l.title)}">
+                </div>
+                <div class="hub-form-row">
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">Preț (RON)</label>
+                        <input class="hub-form-input" name="price" type="number" min="0" step="1" required value="${l.price}">
+                    </div>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">Stare</label>
+                        <select class="hub-form-select" name="condition">
+                            ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">Categorie</label>
+                    <select class="hub-form-select" name="category">
+                        ${Object.entries(CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">Consolă</label>
+                    <select class="hub-form-select" name="console_type">
+                        <option value="">— Alege consola —</option>
+                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.nume}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">Descriere</label>
+                    <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${esc(l.description)}</textarea>
+                </div>
+                <div class="hub-form-row">
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">Țară</label>
+                        <select class="hub-form-select" name="country" required>
+                            <option value="">— Alege țara —</option>
+                            ${(window.LOCATION_DATA?.countries || []).map(c => `<option value="${c.code}"${c.code === (l.country || '') ? ' selected' : ''}>${c.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">Oraș</label>
+                        <select class="hub-form-select" name="location" required ${!l.country ? 'disabled' : ''}>
+                            <option value="">— Alege mai întâi țara —</option>
+                            ${l.country
+                                ? ((window.LOCATION_DATA?.countries || []).find(c => c.code === l.country)?.cities || [])
+                                    .map(city => `<option value="${city}"${city === l.location ? ' selected' : ''}>${city}</option>`).join('')
+                                : ''}
+                        </select>
+                    </div>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">Telefon</label>
+                    <input class="hub-form-input" name="phone" maxlength="20" required value="${esc(l.phone || '')}">
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">Link OLX (opțional)</label>
+                    <input class="hub-form-input" name="olx_url" type="url" value="${esc(l.olx_url || '')}">
+                </div>
+                <div class="hub-modal__footer" style="padding:0;border:none">
+                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Anulează</button>
+                    <button type="submit" class="hub-btn hub-btn--primary">Salvează</button>
+                </div>
+            </form>
+        </div>`;
+
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('.hub-modal__close').addEventListener('click', close);
+    overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    // Populate cities on country change
+    overlay.querySelector('[name="country"]').addEventListener('change', e => {
+        const citySelect = overlay.querySelector('[name="location"]');
+        const country = window.LOCATION_DATA?.countries.find(c => c.code === e.target.value);
+        citySelect.innerHTML = '<option value="">— Alege orașul —</option>' +
+            (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
+        citySelect.disabled = !e.target.value;
+    });
+
+    overlay.querySelector('#edit-listing-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const f = e.target, btn = f.querySelector('[type="submit"]');
+        btn.disabled = true; btn.textContent = 'Se salvează…';
+        const res = await api('PUT', `/marketplace/listings/${id}`, {
+            title: f.title.value.trim(),
+            description: f.description.value.trim(),
+            price: parseFloat(f.price.value),
+            condition: f.condition.value,
+            category: f.category.value,
+            console_type: f.console_type.value,
+            country: f.country.value,
+            location: f.location.value.trim(),
+            phone: f.phone.value.trim(),
+            olx_url: f.olx_url.value.trim(),
+        });
+        if (res.success) { close(); openListingDetail(id); } // reîncarcă detaliul
+        else { btn.disabled = false; btn.textContent = 'Salvează'; alert(res.error || 'Eroare.'); }
+    });
     }
 
     function addFiles(files) {
