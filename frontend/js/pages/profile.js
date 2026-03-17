@@ -1573,7 +1573,21 @@
                             <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
                             <div class="hub-form-group"><label class="hub-form-label">Consolă</label><select class="hub-form-select" name="console_type"><option value="">— Alege consola —</option>${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.nume}</option>`).join('')}</select></div>
                             <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${escapeHtml(l.description)}</textarea></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Locație</label><input class="hub-form-input" name="location" maxlength="100" required value="${escapeHtml(l.location || '')}"></div>
+                            <div class="hub-form-row">
+                            <div class="hub-form-group">
+                                <label class="hub-form-label">Țară</label>
+                                <select class="hub-form-select" name="country" required>
+                                    <option value="">— Alege țara —</option>
+                                    ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${c.name}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="hub-form-group">
+                                <label class="hub-form-label">Oraș</label>
+                                <select class="hub-form-select" name="location" required disabled>
+                                    <option value="">— Alege mai întâi țara —</option>
+                                </select>
+                            </div>
+                            </div>
                             <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" required value="${escapeHtml(l.phone || '')}"></div>
                             <div class="hub-form-group"><label class="hub-form-label">Link OLX (opțional)</label><input class="hub-form-input" name="olx_url" type="url" value="${escapeHtml(l.olx_url || '')}"></div>
                             <div class="hub-modal__footer" style="padding:0;border:none">
@@ -1588,6 +1602,13 @@
                 overlay.querySelector('.hub-modal__close').addEventListener('click', close);
                 overlay.querySelector('.edit-listing-cancel').addEventListener('click', close);
                 overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+                overlay.querySelector('[name="country"]').addEventListener('change', e => {
+                const citySelect = overlay.querySelector('[name="location"]');
+                const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
+                citySelect.innerHTML = '<option value="">— Alege orașul —</option>' +
+                    (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
+                citySelect.disabled = !e.target.value;
+                });
 
                 overlay.querySelector('#edit-listing-form').addEventListener('submit', async e => {
                     e.preventDefault();
@@ -1600,6 +1621,7 @@
                         condition: f.condition.value,
                         category: f.category.value,
                         location: f.location.value.trim(),
+                        country: f.country.value.trim(),
                         phone: f.phone.value.trim(),
                         olx_url: f.olx_url.value.trim(),
                     });
