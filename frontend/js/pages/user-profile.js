@@ -4,9 +4,10 @@
  * favorites, owned consoles, and friend request controls.
  */
 import { AuthModule } from '/js/modules/auth.js';
-        import { API_BASE_URL } from '/js/config.js';
-        import { ProgressModule } from '/js/modules/progress.js';
-        import { AchievementsModule } from '/js/modules/achievements.js';
+import { API_BASE_URL } from '/js/config.js';
+import { ProgressModule } from '/js/modules/progress.js';
+import { AchievementsModule } from '/js/modules/achievements.js';
+
 
         /** Escape HTML special characters */
         function escapeHtml(s) {
@@ -59,7 +60,7 @@ import { AuthModule } from '/js/modules/auth.js';
                     </div>`;
                 }).join('');
             } else {
-                coursePreview.innerHTML = '<p class="dash-empty">Niciun curs.</p>';
+                coursePreview.innerHTML = '<p class="dash-empty">No courses.</p>';
             }
 
             // Achievements
@@ -74,7 +75,7 @@ import { AuthModule } from '/js/modules/auth.js';
                     `<span class="dash-badge" title="${escapeHtml(b.name)}">${b.icon}</span>`
                 ).join('') + '</div>';
             } else {
-                achPreview.innerHTML = '<p class="dash-empty">Nicio realizare încă.</p>';
+                achPreview.innerHTML = '<p class="dash-empty">No achievements yet.</p>';
             }
 
             // Ratings
@@ -93,7 +94,7 @@ import { AuthModule } from '/js/modules/auth.js';
                         </a>`;
                     }).join('');
                 } else {
-                    ratingsPreview.innerHTML = '<p class="dash-empty">Nicio evaluare încă.</p>';
+                    ratingsPreview.innerHTML = '<p class="dash-empty">No ratings yet.</p>';
                 }
             } catch {
                 document.getElementById('user-dash-ratings-preview').innerHTML = '<p class="dash-empty">—</p>';
@@ -119,7 +120,7 @@ import { AuthModule } from '/js/modules/auth.js';
                         return `<a href="/user/${encodeURIComponent(f.username)}" class="dash-friend" title="${escapeHtml(f.username)}">${av}</a>`;
                     }).join('') + '</div>';
                 } else {
-                    friendsPreview.innerHTML = '<p class="dash-empty">Niciun prieten încă.</p>';
+                    friendsPreview.innerHTML = '<p class="dash-empty">No friends yet.</p>';
                 }
             } catch {
                 document.getElementById('user-dash-friends-preview').innerHTML = '<p class="dash-empty">—</p>';
@@ -132,7 +133,7 @@ import { AuthModule } from '/js/modules/auth.js';
             const loadingEl = document.getElementById('user-profile-loading');
 
             if (!username) {
-                loadingEl.textContent = 'URL invalid.';
+                loadingEl.textContent = 'Invalid URL.';
                 return;
             }
 
@@ -141,7 +142,7 @@ import { AuthModule } from '/js/modules/auth.js';
                 const data = await res.json();
 
                 if (!data.success || !data.user) {
-                    loadingEl.textContent = 'Utilizatorul nu a fost găsit.';
+                    loadingEl.textContent = 'User not found.';
                     return;
                 }
 
@@ -168,8 +169,8 @@ import { AuthModule } from '/js/modules/auth.js';
 
                 // Info
                 document.getElementById('user-name').textContent = profile.username;
-                document.getElementById('user-bio').textContent = profile.bio || 'Nicio descriere.';
-                document.getElementById('user-date').textContent = 'Membru din ' + new Date(profile.created_at).toLocaleDateString('ro-RO', { year: 'numeric', month: 'long' });
+                document.getElementById('user-bio').textContent = profile.bio || 'No description.';
+                document.getElementById('user-date').textContent = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 
                 // Console lists
                 const consolesSection = document.getElementById('user-profile-consoles');
@@ -229,7 +230,7 @@ import { AuthModule } from '/js/modules/auth.js';
                 if (currentUser && currentUser.id !== profile.id) {
                     await renderFriendButton(actionsEl, profile.id);
                 } else if (currentUser && currentUser.id === profile.id) {
-                    actionsEl.innerHTML = '<a href="/html/pages/profil.html#setari" class="user-action-btn user-action-btn--edit">Editează Profilul</a>';
+                    actionsEl.innerHTML = '<a href="/html/pages/profil.html#setari" class="user-action-btn user-action-btn--edit">Edit Profile</a>';
                 }
 
                 // Friends list
@@ -240,7 +241,7 @@ import { AuthModule } from '/js/modules/auth.js';
 
             } catch (err) {
                 console.error('Profile load error:', err);
-                loadingEl.textContent = 'A apărut o eroare la încărcarea profilului.';
+                loadingEl.textContent = 'An error occurred while loading the profile.';
             }
         }
 
@@ -262,8 +263,8 @@ import { AuthModule } from '/js/modules/auth.js';
                 switch (data.status) {
                     case 'friends':
                         container.innerHTML = `
-                            <span class="user-action-btn user-action-btn--friends">✓ Prieteni</span>
-                            <button class="user-action-btn user-action-btn--remove" id="remove-friend-btn">Elimină Prieten</button>
+                            <span class="user-action-btn user-action-btn--friends">✓ Friends</span>
+                            <button class="user-action-btn user-action-btn--remove" id="remove-friend-btn">Remove friend</button>
                         `;
                         document.getElementById('remove-friend-btn').addEventListener('click', async () => {
                             await fetch(`${API_BASE_URL}/friends/${targetUserId}`, {
@@ -276,13 +277,13 @@ import { AuthModule } from '/js/modules/auth.js';
                         break;
 
                     case 'request_sent':
-                        container.innerHTML = '<span class="user-action-btn user-action-btn--pending">⏳ Cerere Trimisă</span>';
+                        container.innerHTML = '<span class="user-action-btn user-action-btn--pending">⏳ Request sent</span>';
                         break;
 
                     case 'request_received':
                         container.innerHTML = `
-                            <button class="user-action-btn user-action-btn--accept" id="accept-friend-btn">Acceptă Cererea</button>
-                            <button class="user-action-btn user-action-btn--reject" id="reject-friend-btn">Refuză</button>
+                            <button class="user-action-btn user-action-btn--accept" id="accept-friend-btn">Accept request</button>
+                            <button class="user-action-btn user-action-btn--reject" id="reject-friend-btn">Reject</button>
                         `;
                         document.getElementById('accept-friend-btn').addEventListener('click', async () => {
                             await fetch(`${API_BASE_URL}/friends/accept/${data.requestId}`, {
@@ -303,7 +304,7 @@ import { AuthModule } from '/js/modules/auth.js';
                         break;
 
                     default: // 'none'
-                        container.innerHTML = '<button class="user-action-btn user-action-btn--add" id="add-friend-btn">+ Adaugă Prieten</button>';
+                        container.innerHTML = '<button class="user-action-btn user-action-btn--add" id="add-friend-btn">+ Add friend</button>';
                         document.getElementById('add-friend-btn').addEventListener('click', async () => {
                             await fetch(`${API_BASE_URL}/friends/request/${targetUserId}`, {
                                 method: 'POST',
@@ -360,7 +361,7 @@ import { AuthModule } from '/js/modules/auth.js';
 
                 if (!data.success || !data.listings || data.listings.length === 0) {
                     section.hidden = false;
-                    grid.innerHTML = '<p class="user-listings-empty">Niciun anunț activ momentan.</p>';
+                    grid.innerHTML = '<p class="user-listings-empty">No active listings at the moment.</p>';
                     return;
                 }
 
@@ -383,7 +384,7 @@ import { AuthModule } from '/js/modules/auth.js';
                 }).join('');
             } catch {
                 section.hidden = false;
-                grid.innerHTML = '<p class="user-listings-empty">Nu s-au putut încărca anunțurile.</p>';
+                grid.innerHTML = '<p class="user-listings-empty">Unable to load listings.</p>';
             }
         }
 

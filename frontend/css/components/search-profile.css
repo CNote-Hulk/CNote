@@ -317,6 +317,22 @@ body.search-open {
     color: var(--text-gray);
 }
 
+.profile-dropdown__lang-select {
+    flex: 1;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    outline: none;
+}
+
+.profile-dropdown__lang-select:focus {
+    border-color: rgba(212, 175, 122, 0.7);
+}
+
 .profile-dropdown__divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.06);

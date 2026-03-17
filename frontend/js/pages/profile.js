@@ -78,7 +78,7 @@
 
             // Header
             document.getElementById('profile-name').textContent = user.username;
-            document.getElementById('profile-bio').textContent = user.bio || 'Nicio descriere încă.';
+            document.getElementById('profile-bio').textContent = user.bio || 'No description yet.';
             document.getElementById('profile-date').textContent = 'Membru din ' + new Date(user.created_at).toLocaleDateString('ro-RO', { year: 'numeric', month: 'long' });
 
             // Render console lists
@@ -86,7 +86,7 @@
                 const el = document.getElementById(containerId);
                 const items = (csv || '').split(',').map(s => s.trim()).filter(Boolean);
                 if (items.length === 0) {
-                    el.innerHTML = '<span class="profile-console-list__empty">Nicio consolă adăugată.</span>';
+                    el.innerHTML = '<span class="profile-console-list__empty">No consoles added.</span>';
                 } else {
                     el.innerHTML = items
                         .map(c => `<span class="profile-console-tag">${escapeHtml(formatConsoleDisplayName(c))}</span>`)
@@ -128,10 +128,10 @@
                         ctx.drawImage(img, 0, 0, w, h);
                         resolve(canvas.toDataURL('image/jpeg', 0.85));
                     };
-                    img.onerror = () => reject(new Error('Fișierul selectat nu este o imagine validă.'));
+                    img.onerror = () => reject(new Error('Selected file is not a valid image.'));
                     img.src = reader.result;
                 };
-                reader.onerror = () => reject(new Error('Nu s-a putut citi fișierul.'));
+                reader.onerror = () => reject(new Error('Could not read file.'));
                 reader.readAsDataURL(file);
             });
 
@@ -146,7 +146,7 @@
                 if (!file) return;
 
                 if (!file.type.startsWith('image/')) {
-                    showSettingsMessage('Poți încărca doar imagini.', false);
+                    showSettingsMessage('You can only upload images.', false);
                     avatarInput.value = '';
                     return;
                 }
@@ -162,9 +162,9 @@
                     await AuthModule.updateProfile({ avatar: avatarDataUrl });
                     user.avatar = avatarDataUrl;
                     renderAvatar(avatarDataUrl);
-                    showSettingsMessage('Poza de profil a fost actualizată.', true);
+                    showSettingsMessage('Profile picture has been updated.', true);
                 } catch (error) {
-                    showSettingsMessage(error.message || 'Nu s-a putut actualiza poza de profil.', false);
+                    showSettingsMessage(error.message || 'Could not update profile picture.', false);
                 } finally {
                     avatarInput.value = '';
                 }
@@ -220,10 +220,10 @@
                 verifyBanner.innerHTML = `
                     <div style="display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;">
                         <div>
-                            <div style="color:#f1d7a1;font-weight:700;margin-bottom:6px;">Email neverificat</div>
-                            <div style="color:var(--text-light);font-size:0.9rem;">Emailul tau nu este verificat. Verifica casuta de email.</div>
+                            <div style="color:#f1d7a1;font-weight:700;margin-bottom:6px;">Email not verified</div>
+                            <div style="color:var(--text-light);font-size:0.9rem;">Your email is not verified. Check your inbox.</div>
                         </div>
-                        <button type="button" class="auth-btn" id="resend-verification-btn" style="white-space:nowrap;">Retrimite emailul de verificare</button>
+                        <button type="button" class="auth-btn" id="resend-verification-btn" style="white-space:nowrap;">Resend verification email</button>
                     </div>
                 `;
                 settingsPanel.insertBefore(verifyBanner, settingsPanel.firstChild);
@@ -236,13 +236,13 @@
                 googleCard.id = 'google-account-card';
                 googleCard.style.marginTop = '24px';
                 googleCard.innerHTML = `
-                    <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">CONT GOOGLE</h3>
+                    <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">GOOGLE ACCOUNT</h3>
                     <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:14px;">${user.google_linked 
-                        ? 'Contul tau este conectat cu Google.' 
-                        : 'Conecteaza contul cu Google pentru autentificare rapida.'}</p>
+                        ? 'Your account is connected with Google.' 
+                        : 'Connect your account with Google for quick login.'}</p>
                     ${user.google_linked 
-                        ? '<button type="button" class="auth-btn" id="google-unlink-btn" style="background:transparent;border:1px solid var(--color-border, #444);color:var(--text-light);">Deconecteaza Google</button>'
-                        : '<button type="button" class="auth-btn" id="google-link-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,0.05);color:var(--text-light,#F5F0E8);border:1px solid rgba(255,255,255,0.12);font-weight:600;" onmouseover="this.style.background=\'rgba(255,255,255,0.10)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.05)\'"><span style="font-weight:700;font-size:1.1rem;line-height:1;">G</span> Conecteaza cu Google</button>'
+                        ? '<button type="button" class="auth-btn" id="google-unlink-btn" style="background:transparent;border:1px solid var(--color-border, #444);color:var(--text-light);">Disconnect Google</button>'
+                        : '<button type="button" class="auth-btn" id="google-link-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,0.05);color:var(--text-light,#F5F0E8);border:1px solid rgba(255,255,255,0.12);font-weight:600;" onmouseover="this.style.background=\'rgba(255,255,255,0.10)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.05)\'"><span style="font-weight:700;font-size:1.1rem;line-height:1;">G</span> Connect with Google</button>'
                     }
                 `;
                 settingsPanel.appendChild(googleCard);
@@ -262,17 +262,17 @@
                 if (totpEnabled) {
                     totpSection = `
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-                            <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Aplicatie de autentificare — activ${emailEnabled ? ' (primar)' : ''}</span>
-                            <button type="button" class="auth-btn auth-btn--danger" id="disable-totp-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Dezactiveaza</button>
+                            <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Authenticator app — active${emailEnabled ? ' (primary)' : ''}</span>
+                            <button type="button" class="auth-btn auth-btn--danger" id="disable-totp-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Disable</button>
                         </div>`;
                 } else {
                     totpSection = `
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-                            <span style="color:var(--text-light);font-size:0.88rem;">Aplicatie de autentificare — inactiv</span>
-                            <button type="button" class="auth-btn" id="setup-totp-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Activeaza</button>
+                            <span style="color:var(--text-light);font-size:0.88rem;">Authenticator app — inactive</span>
+                            <button type="button" class="auth-btn" id="setup-totp-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Enable</button>
                         </div>
                         <div id="totp-setup-area" style="display:none;margin-top:16px;">
-                            <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:10px;">Scaneaza codul QR cu aplicatia de autentificare (Google Authenticator, Authy, etc.):</p>
+                            <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:10px;">Scan the QR code with your authenticator app (Google Authenticator, Authy, etc.):</p>
                             <div id="totp-qr-container" style="text-align:center;margin-bottom:12px;"></div>
                             <p id="totp-secret-display" style="font-family:monospace;font-size:0.85rem;color:var(--text-light);word-break:break-all;margin-bottom:12px;text-align:center;"></p>
                             <div style="display:flex;gap:8px;align-items:center;">
@@ -287,19 +287,19 @@
                     emailSection = `
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
                             <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Email — activ${totpEnabled ? ' (rezerva)' : ''}</span>
-                            <button type="button" class="auth-btn auth-btn--danger" id="disable-email-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Dezactiveaza</button>
+                            <button type="button" class="auth-btn auth-btn--danger" id="disable-email-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Disable</button>
                         </div>`;
                 } else {
                     emailSection = `
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
                             <span style="color:var(--text-light);font-size:0.88rem;">Email — inactiv</span>
-                            <button type="button" class="auth-btn" id="setup-email-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Activeaza</button>
+                            <button type="button" class="auth-btn" id="setup-email-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Enable</button>
                         </div>`;
                 }
 
                 tfCard.innerHTML = `
-                    <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">AUTENTIFICARE IN DOI PASI (2FA)</h3>
-                    <p style="color:var(--text-light);font-size:0.85rem;margin-bottom:14px;">Adauga un nivel suplimentar de securitate contului tau. Poti activa ambele metode — aplicatia este primara, emailul de rezerva.</p>
+                    <h3 style="margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">TWO-FACTOR AUTHENTICATION (2FA)</h3>
+                    <p style="color:var(--text-light);font-size:0.85rem;margin-bottom:14px;">Add an extra layer of security to your account. You can enable both methods — the app is primary, email is fallback.</p>
                     <div style="display:flex;flex-direction:column;gap:12px;">
                         ${totpSection}
                         <hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:2px 0;">
@@ -317,9 +317,9 @@
                 dangerCard.style.border = '1px solid rgba(229, 115, 115, 0.35)';
                 dangerCard.style.background = 'rgba(58, 23, 23, 0.35)';
                 dangerCard.innerHTML = `
-                    <h3 style="color:#f0b3b3;margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">ZONA PERICULOASA</h3>
-                    <p style="color:#c8a3a3;font-size:0.88rem;margin-bottom:14px;">Stergerea contului este permanenta si nu poate fi anulata.</p>
-                    <button type="button" class="auth-btn auth-btn--danger" id="delete-account-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Sterge contul</button>
+                    <h3 style="color:#f0b3b3;margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">DANGER ZONE</h3>
+                    <p style="color:#c8a3a3;font-size:0.88rem;margin-bottom:14px;">Deleting your account is permanent and cannot be undone.</p>
+                    <button type="button" class="auth-btn auth-btn--danger" id="delete-account-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Delete account</button>
                 `;
                 settingsPanel.appendChild(dangerCard);
             }
@@ -342,7 +342,7 @@
             });
 
             if (settingsTabButton) {
-                settingsTabButton.setAttribute('title', 'Poți modifica aici numele, bio, email și parola');
+                settingsTabButton.setAttribute('title', 'You can change your username, bio, email, and password here');
             }
 
             const showSettingsMessage = (message, isSuccess) => {
@@ -376,12 +376,12 @@
                 const isSetPasswordMode = !user.has_password;
 
                 if (!isSetPasswordMode && (emailChanged || wantsPasswordChange) && !currentPassword) {
-                    showSettingsMessage('Introdu parola curentă pentru schimbarea emailului/parolei.', false);
+                    showSettingsMessage('Enter your current password to change email/password.', false);
                     return;
                 }
 
                 if (wantsPasswordChange && newPassword !== confirmPassword) {
-                    showSettingsMessage('Parola nouă și confirmarea nu coincid.', false);
+                    showSettingsMessage('New password and confirmation do not match.', false);
                     return;
                 }
 
@@ -402,14 +402,14 @@
                 } catch { /* ignore */ }
 
                 document.getElementById('profile-name').textContent = username;
-                document.getElementById('profile-bio').textContent = bio || 'Nicio descriere încă.';
+                document.getElementById('profile-bio').textContent = bio || 'No description yet.';
                 renderConsoleList('profile-favorite-consoles', user.favorite_consoles || '');
                 renderConsoleList('profile-owned-consoles', owned_consoles);
 
                 if (emailChanged) {
                     const emailResult = await AuthModule.updateEmail(email, currentPassword);
                     if (!emailResult.success) {
-                        showSettingsMessage(emailResult.error || 'Nu s-a putut schimba emailul.', false);
+                        showSettingsMessage(emailResult.error || 'Could not change email.', false);
                         return;
                     }
                 }
@@ -422,7 +422,7 @@
                         passwordResult = await AuthModule.updatePassword(currentPassword, newPassword);
                     }
                     if (!passwordResult.success) {
-                        showSettingsMessage(passwordResult.error || 'Nu s-a putut schimba parola.', false);
+                        showSettingsMessage(passwordResult.error || 'Could not change password.', false);
                         return;
                     }
                     if (isSetPasswordMode) {
@@ -439,14 +439,14 @@
                 user.owned_consoles = owned_consoles;
                 user.email = email.trim().toLowerCase();
                 document.getElementById('set-current-password').value = '';
-                showSettingsMessage('Setările au fost actualizate cu succes.', true);
+                showSettingsMessage('Settings updated successfully.', true);
             });
 
             const showConfirmDialog = ({
                 title,
                 message,
                 confirmLabel = 'Confirma',
-                cancelLabel = 'Anuleaza',
+                cancelLabel = 'Cancel',
                 withPassword = false,
                 withTextInput = false
             }) => {
@@ -468,13 +468,13 @@
                     wrap.style.margin = '12px 0 2px';
                     if (withPassword) {
                         wrap.innerHTML = `
-                            <label for="confirm-modal-input" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Parola</label>
+                            <label for="confirm-modal-input" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Password</label>
                             <input id="confirm-modal-input" type="password" autocomplete="current-password" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.2);color:var(--text-light,#f5eee6);outline:none;" />
                         `;
                     } else {
                         wrap.innerHTML = `
-                            <label for="confirm-modal-input" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Scrie STERGE pentru a confirma</label>
-                            <input id="confirm-modal-input" type="text" autocomplete="off" placeholder="STERGE" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.2);color:var(--text-light,#f5eee6);outline:none;text-transform:uppercase;letter-spacing:0.1em;" />
+                            <label for="confirm-modal-input" style="display:block;font-size:0.82rem;color:var(--text-muted,#a89880);margin-bottom:6px;">Type DELETE to confirm</label>
+                            <input id="confirm-modal-input" type="text" autocomplete="off" placeholder="DELETE" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.2);color:var(--text-light,#f5eee6);outline:none;text-transform:uppercase;letter-spacing:0.1em;" />
                         `;
                     }
                     modal.querySelector('.app-modal__dialog').insertBefore(wrap, actionsEl);
@@ -542,9 +542,9 @@
             document.getElementById('reset-all-btn').addEventListener('click', async () => {
                 const confirmed = await showConfirmDialog({
                     title: 'Reset Total Date',
-                    message: 'Se vor șterge progresul cursului, realizările și istoricul quiz-urilor. Vrei să continui?',
-                    confirmLabel: 'Da, resetează',
-                    cancelLabel: 'Renunță'
+                    message: 'Course progress, achievements, and quiz history will be deleted. Do you want to continue?',
+                    confirmLabel: 'Yes, reset',
+                    cancelLabel: 'Cancel'
                 });
                 if (!confirmed) return;
 
@@ -557,7 +557,7 @@
                 renderCourses();
                 renderAchievements();
 
-                showSettingsMessage('Reset complet realizat.', true);
+                showSettingsMessage('Reset complete.', true);
             });
 
             const resendVerificationBtn = document.getElementById('resend-verification-btn');
@@ -577,7 +577,7 @@
                         const data = await result.json();
                         showSettingsMessage(data.message || 'Emailul de verificare a fost retrimis.', !!data.success);
                     } catch {
-                        showSettingsMessage('Nu s-a putut retrimite emailul de verificare.', false);
+                        showSettingsMessage('Could not resend verification email.', false);
                     } finally {
                         resendVerificationBtn.disabled = false;
                         resendVerificationBtn.textContent = 'Retrimite emailul de verificare';
@@ -597,16 +597,16 @@
             if (googleUnlinkBtn) {
                 googleUnlinkBtn.addEventListener('click', async () => {
                     const confirmed = await showConfirmDialog({
-                        title: 'Deconecteaza Google',
-                        message: 'Sigur vrei sa deconectezi contul Google?',
-                        confirmLabel: 'Deconecteaza',
-                        cancelLabel: 'Anuleaza'
+                        title: 'Disconnect Google',
+                        message: 'Are you sure you want to disconnect your Google account?',
+                        confirmLabel: 'Disconnect',
+                        cancelLabel: 'Cancel'
                     });
                     if (!confirmed) return;
 
                     const result = await AuthModule.unlinkGoogle();
                     if (result.success) {
-                        showSettingsMessage('Google a fost deconectat.', true);
+                        showSettingsMessage('Google has been disconnected.', true);
                         const card = document.getElementById('google-account-card');
                         if (card) card.remove();
                     } else {
@@ -628,10 +628,10 @@
             if (setupEmail2faBtn) {
                 setupEmail2faBtn.addEventListener('click', async () => {
                     const confirmed = await showConfirmDialog({
-                        title: 'Activeaza 2FA prin Email',
-                        message: 'La fiecare autentificare vei primi un cod pe email. Continui?',
-                        confirmLabel: 'Activeaza',
-                        cancelLabel: 'Anuleaza'
+                        title: 'Enable Email 2FA',
+                        message: 'You will receive a code by email on each login. Continue?',
+                        confirmLabel: 'Enable',
+                        cancelLabel: 'Cancel'
                     });
                     if (!confirmed) return;
 
@@ -684,15 +684,15 @@
 
             const disable2faHandler = async (method, label) => {
                 const dialogResult = await showConfirmDialog({
-                    title: 'Dezactiveaza 2FA prin ' + label,
-                    message: 'Introdu parola pentru a dezactiva autentificarea prin ' + label + '.',
-                    confirmLabel: 'Dezactiveaza',
-                    cancelLabel: 'Anuleaza',
+                    title: 'Disable 2FA via ' + label,
+                    message: 'Enter your password to disable 2FA via ' + label + '.',
+                    confirmLabel: 'Disable',
+                    cancelLabel: 'Cancel',
                     withPassword: true
                 });
                 if (!dialogResult || !dialogResult.confirmed) return;
                 if (!dialogResult.password) {
-                    showSettingsMessage('Introdu parola pentru confirmare.', false);
+                    showSettingsMessage('Enter your password to confirm.', false);
                     return;
                 }
 
@@ -733,24 +733,24 @@
 
                     if (user.has_password) {
                         const dialogResult = await showConfirmDialog({
-                            title: 'Sterge contul',
-                            message: 'Aceasta actiune este permanenta. Introdu parola pentru a confirma.',
-                            confirmLabel: 'Sterge contul',
-                            cancelLabel: 'Anuleaza',
+                            title: 'Delete account',
+                            message: 'This action is permanent. Enter your password to confirm.',
+                            confirmLabel: 'Delete account',
+                            cancelLabel: 'Cancel',
                             withPassword: true
                         });
                         if (!dialogResult || !dialogResult.confirmed) return;
                         if (!dialogResult.password) {
-                            showSettingsMessage('Introdu parola pentru confirmare.', false);
+                            showSettingsMessage('Enter your password to confirm.', false);
                             return;
                         }
                         result = await AuthModule.deleteAccount({ password: dialogResult.password });
                     } else {
                         const dialogResult = await showConfirmDialog({
                             title: 'Sterge contul',
-                            message: 'Contul tău este conectat doar prin Google și nu are o parolă. Scrie STERGE pentru a confirma ștergerea permanentă a contului.',
-                            confirmLabel: 'Sterge contul',
-                            cancelLabel: 'Anuleaza',
+                            message: 'Your account is connected only via Google and has no password. Type DELETE to confirm permanent account deletion.',
+                            confirmLabel: 'Delete account',
+                            cancelLabel: 'Cancel',
                             withTextInput: true
                         });
                         if (!dialogResult || !dialogResult.confirmed) return;
@@ -762,7 +762,7 @@
                     }
 
                     if (!result.success) {
-                        showSettingsMessage(result.error || 'Nu s-a putut sterge contul.', false);
+                        showSettingsMessage(result.error || 'Could not delete the account.', false);
                         return;
                     }
 
@@ -1552,7 +1552,7 @@
         async function openEditListingModal(id) {
             try {
                 const data = await mpApi('GET', `/marketplace/listings/${id}`);
-                if (!data.success) { alert('Nu s-a putut încărca anunțul.'); return; }
+                if (!data.success) { alert('Could not load the listing.'); return; }
                 const l = data.listing;
 
                 document.querySelector('.edit-listing-overlay')?.remove();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <!-- ===========================
          PROFILE PAGE
@@ -7,17 +7,17 @@
          =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Profil — Console Notebook">
+    <meta name="description" content="Profile — Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
-    <title>Profil — Console Notebook</title>
+    <title>Profile — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
 </head>
 <body>
     <!-- NAVIGATION BAR -->
     <nav class="navbar">
         <div class="container">
-            <button class="navbar-search-btn" aria-label="Caută" type="button">
+            <button class="navbar-search-btn" aria-label="Search" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <a href="index.html" class="logo">Console Notebook</a>
@@ -27,14 +27,14 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="community.html">Comunitate</a></li>
-                <li><a href="invata.html">Învață</a></li>
-                <li><a href="evolutie.html">Evoluție</a></li>
-                <li><a href="comparatie.html">Comparație</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="invata.html">Learn</a></li>
+                <li><a href="evolutie.html">Evolution</a></li>
+                <li><a href="comparatie.html">Compare</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -44,19 +44,19 @@
     <div class="profile-page" id="profile-page">
         <!-- Header -->
         <div class="profile-header" id="profile-header">
-            <button type="button" class="profile-avatar" id="profile-avatar" title="Schimbă poza de profil">
-                <img id="profile-avatar-img" alt="Poza de profil" hidden>
+            <button type="button" class="profile-avatar" id="profile-avatar" title="Change profile picture">
+                <img id="profile-avatar-img" alt="Profile picture" hidden>
                 <span id="profile-avatar-fallback">👤</span>
             </button>
             <input type="file" id="avatar-upload" accept="image/*" hidden>
             <div class="profile-info">
                 <div class="profile-name-row">
                     <div class="profile-name" id="profile-name">—</div>
-                    <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Editează numele în Setări">✏️</button>
+                    <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Edit name in Settings">✏️</button>
                 </div>
                 <div class="profile-bio-row">
                     <div class="profile-bio" id="profile-bio"></div>
-                    <button type="button" class="profile-edit-shortcut" id="edit-bio-shortcut" title="Editează bio în Setări">✏️</button>
+                    <button type="button" class="profile-edit-shortcut" id="edit-bio-shortcut" title="Edit bio in Settings">✏️</button>
                 </div>
                 <div class="profile-date" id="profile-date"></div>
             </div>
@@ -65,29 +65,29 @@
         <!-- Console Lists -->
         <div class="profile-consoles-section" id="profile-consoles-section">
             <div class="profile-console-list">
-                <h3 class="profile-console-list__title">🎮 Console Preferate</h3>
+                <h3 class="profile-console-list__title">🎮 Favorite consoles</h3>
                 <div class="profile-console-list__items" id="profile-favorite-consoles">
-                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
+                    <span class="profile-console-list__empty">No consoles added.</span>
                 </div>
             </div>
             <div class="profile-console-list">
-                <h3 class="profile-console-list__title">🕹️ Console Deținute</h3>
+                <h3 class="profile-console-list__title">🕹️ Owned consoles</h3>
                 <div class="profile-console-list__items" id="profile-owned-consoles">
-                    <span class="profile-console-list__empty">Nicio consolă adăugată.</span>
+                    <span class="profile-console-list__empty">No consoles added.</span>
                 </div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="profile-tabs">
-            <button class="profile-tab active" data-tab="acasa">Acasă</button>
-            <button class="profile-tab" data-tab="cursuri">Cursuri</button>
-            <button class="profile-tab" data-tab="realizari">Realizări</button>
-            <button class="profile-tab" data-tab="evaluari">Evaluări</button>
-            <button class="profile-tab" data-tab="anunturi">Anunțuri</button>
-            <button class="profile-tab" data-tab="favorite">Apreciate</button>
-            <button class="profile-tab" data-tab="prieteni">Prieteni</button>
-            <button class="profile-tab" data-tab="setari">Setări</button>
+            <button class="profile-tab active" data-tab="acasa">Home</button>
+            <button class="profile-tab" data-tab="cursuri">Courses</button>
+            <button class="profile-tab" data-tab="realizari">Achievements</button>
+            <button class="profile-tab" data-tab="evaluari">Ratings</button>
+            <button class="profile-tab" data-tab="anunturi">Listings</button>
+            <button class="profile-tab" data-tab="favorite">Favorites</button>
+            <button class="profile-tab" data-tab="prieteni">Friends</button>
+            <button class="profile-tab" data-tab="setari">Settings</button>
         </div>
 
         <!-- Dashboard Panel -->
@@ -97,22 +97,22 @@
                 <div class="dash-stat">
                     <span class="dash-stat__icon">📚</span>
                     <span class="dash-stat__value" id="dash-courses-pct">0%</span>
-                    <span class="dash-stat__label">Progres Curs</span>
+                    <span class="dash-stat__label">Course progress</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">🏆</span>
                     <span class="dash-stat__value" id="dash-achievements">0 / 0</span>
-                    <span class="dash-stat__label">Realizări</span>
+                    <span class="dash-stat__label">Achievements</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">⭐</span>
                     <span class="dash-stat__value" id="dash-ratings">0</span>
-                    <span class="dash-stat__label">Evaluări</span>
+                    <span class="dash-stat__label">Ratings</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">👥</span>
                     <span class="dash-stat__value" id="dash-friends">0</span>
-                    <span class="dash-stat__label">Prieteni</span>
+                    <span class="dash-stat__label">Friends</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">❤️</span>
@@ -126,8 +126,8 @@
                 <!-- Course Progress -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>📚 Progres Curs</h3>
-                        <a href="#cursuri" class="dash-card__link">Vezi tot →</a>
+                        <h3>📚 Course progress</h3>
+                        <a href="#cursuri" class="dash-card__link">See all →</a>
                     </div>
                     <div id="dash-course-preview"></div>
                 </div>
@@ -135,8 +135,8 @@
                 <!-- Recent Ratings -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>⭐ Evaluări Recente</h3>
-                        <a href="#evaluari" class="dash-card__link">Vezi tot →</a>
+                        <h3>⭐ Recent ratings</h3>
+                        <a href="#evaluari" class="dash-card__link">See all →</a>
                     </div>
                     <div id="dash-ratings-preview"></div>
                 </div>
@@ -144,8 +144,8 @@
                 <!-- Achievements -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>🏆 Realizări</h3>
-                        <a href="#realizari" class="dash-card__link">Vezi tot →</a>
+                        <h3>🏆 Achievements</h3>
+                        <a href="#realizari" class="dash-card__link">See all →</a>
                     </div>
                     <div id="dash-achievements-preview"></div>
                 </div>
@@ -153,8 +153,8 @@
                 <!-- Friends -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>👥 Prieteni</h3>
-                        <a href="#prieteni" class="dash-card__link">Vezi tot →</a>
+                        <h3>👥 Friends</h3>
+                        <a href="#prieteni" class="dash-card__link">See all →</a>
                     </div>
                     <div id="dash-friends-preview"></div>
                 </div>
@@ -179,21 +179,21 @@
         <!-- Listings Panel -->
         <div class="profile-panel" id="panel-anunturi" data-panel="anunturi">
             <div class="my-listings-header">
-                <h3 class="my-listings-header__title">📋 Anunțurile mele</h3>
-                <button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing">+ Anunț nou</button>
+                <h3 class="my-listings-header__title">📋 My listings</h3>
+                <button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing">+ New listing</button>
             </div>
             <div id="my-listings-container">
-                <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>>
             </div>
         </div>
 
         <!-- Favorites Panel -->
         <div class="profile-panel" id="panel-favorite" data-panel="favorite">
             <div class="my-listings-header">
-                <h3 class="my-listings-header__title">❤️ Anunțuri apreciate</h3>
+                <h3 class="my-listings-header__title">❤️ Favorite listings</h3>
             </div>
             <div id="favorites-container">
-                <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+                <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
             </div>
         </div>
 
@@ -201,24 +201,24 @@
         <div class="profile-panel" id="panel-prieteni" data-panel="prieteni">
             <!-- Search Users -->
             <div class="course-card" id="friend-search-card">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Caută Utilizatori</h3>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Search users</h3>
                 <div class="friend-search-box">
-                    <input type="text" id="friend-search-input" class="profile-input" placeholder="Caută după nume de utilizator..." autocomplete="off" />
+                    <input type="text" id="friend-search-input" class="profile-input" placeholder="Search by username..." autocomplete="off" />
                 </div>
                 <div id="friend-search-results" class="friend-search-results"></div>
             </div>
             <!-- Friend Requests -->
             <div class="course-card" id="friend-requests-card" style="margin-top: 16px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Cereri de Prietenie</h3>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Friend requests</h3>
                 <div id="friend-requests-container">
-                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
                 </div>
             </div>
             <!-- Friend List -->
             <div class="course-card" style="margin-top: 16px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Prietenii Tăi</h3>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Your friends</h3>
                 <div class="friends-list" id="my-friends-list">
-                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Se încarcă...</p>
+                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
                 </div>
             </div>
         </div>
@@ -228,57 +228,57 @@
             <div class="course-card">
                 <form class="settings-form" id="settings-form">
                     <div class="auth-field">
-                        <label for="set-username">Nume utilizator</label>
-                        <input type="text" id="set-username" placeholder="Numele tău">
+                        <label for="set-username">Username</label>
+                        <input type="text" id="set-username" placeholder="Your name">
                     </div>
                     <div class="auth-field">
                         <label for="set-bio">Bio</label>
-                        <input type="text" id="set-bio" placeholder="Scrie ceva despre tine..." maxlength="200">
+                        <input type="text" id="set-bio" placeholder="Write something about yourself..." maxlength="200">
                     </div>
                     <div class="auth-field">
-                        <label>Console Deținute</label>
+                        <label>Owned consoles</label>
                         <div class="owned-consoles-select" id="owned-consoles-select">
                             <div class="owned-consoles-search-wrap">
-                                <input type="text" class="owned-consoles-search" id="owned-consoles-search" placeholder="Caută console..." autocomplete="off">
+                                <input type="text" class="owned-consoles-search" id="owned-consoles-search" placeholder="Search consoles..." autocomplete="off">
                             </div>
                             <div class="owned-consoles-list" id="owned-consoles-list">
-                                <p class="owned-consoles-loading">Se încarcă consolele...</p>
+                                <p class="owned-consoles-loading">Loading consoles...</p>
                             </div>
                         </div>
                         <input type="hidden" id="set-owned-consoles" value="">
                     </div>
                     <div class="auth-field">
                         <label for="set-email">Email</label>
-                        <input type="email" id="set-email" placeholder="email@exemplu.com" autocomplete="email">
+                        <input type="email" id="set-email" placeholder="email@example.com" autocomplete="email">
                     </div>
                     <div class="auth-field" id="password-section-info" style="display:none;">
-                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:4px;font-weight:600;">Setează o Parolă</p>
-                        <p style="color:var(--text-muted,#a89880);font-size:0.82rem;">Contul tău folosește Google pentru autentificare. Poți seta o parolă pentru a te putea conecta și fără Google.</p>
+                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:4px;font-weight:600;">Set a password</p>
+                        <p style="color:var(--text-muted,#a89880);font-size:0.82rem;">Your account uses Google for authentication. You can set a password to log in without Google.</p>
                     </div>
                     <div class="auth-field" id="current-password-field">
-                        <label for="set-current-password">Parola curentă (obligatorie pentru email/parolă)</label>
-                        <input type="password" id="set-current-password" placeholder="Parola curentă" autocomplete="current-password">
+                        <label for="set-current-password">Current password (required for email/password login)</label>
+                        <input type="password" id="set-current-password" placeholder="Current password" autocomplete="current-password">
                     </div>
                     <div class="auth-field">
-                        <label for="set-new-password">Parolă nouă (opțional)</label>
-                        <input type="password" id="set-new-password" placeholder="Minim 6 caractere" autocomplete="new-password">
+                        <label for="set-new-password">New password (optional)</label>
+                        <input type="password" id="set-new-password" placeholder="Minimum 6 characters" autocomplete="new-password">
                     </div>
                     <div class="auth-field">
-                        <label for="set-new-password-confirm">Confirmă parola nouă</label>
-                        <input type="password" id="set-new-password-confirm" placeholder="Repetă parola nouă" autocomplete="new-password">
+                        <label for="set-new-password-confirm">Confirm new password</label>
+                        <input type="password" id="set-new-password-confirm" placeholder="Repeat new password" autocomplete="new-password">
                     </div>
-                    <button type="submit" class="auth-btn">Salvează</button>
-                    <button type="button" class="auth-btn auth-btn--danger" id="reset-all-btn">Reset total progres și realizări</button>
+                    <button type="submit" class="auth-btn">Save</button>
+                    <button type="button" class="auth-btn auth-btn--danger" id="reset-all-btn">Reset all progress and achievements</button>
                     <div class="auth-error" id="settings-msg" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
                 </form>
             </div>
 
             <!-- Active Sessions -->
             <div class="course-card" style="margin-top: 24px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Sesiuni Active</h3>
-                <p style="color: var(--text-muted, #a89880); font-size: 0.85rem; margin-bottom: 16px;">Dispozitivele conectate la contul tău.</p>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Active Sessions</h3>
+                <p style="color: var(--text-muted, #a89880); font-size: 0.85rem; margin-bottom: 16px;">Devices currently connected to your account.</p>
                 <div id="sessions-container" style="display:flex;flex-direction:column;gap:12px;"></div>
-                <button type="button" class="auth-btn auth-btn--danger" id="logout-others-btn" style="margin-top:16px;" hidden>Deconectare de pe toate celelalte dispozitive</button>
+                <button type="button" class="auth-btn auth-btn--danger" id="logout-others-btn" style="margin-top:16px;" hidden>Log out from all other devices</button>
             </div>
         </div>
     </div>
@@ -286,11 +286,11 @@
     <div class="app-modal" id="confirm-modal" hidden>
         <div class="app-modal__backdrop" data-modal-cancel></div>
         <div class="app-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
-            <h3 class="app-modal__title" id="confirm-modal-title">Confirmare</h3>
-            <p class="app-modal__text" id="confirm-modal-text">Sigur vrei să continui?</p>
+            <h3 class="app-modal__title" id="confirm-modal-title">Confirmation</h3>
+            <p class="app-modal__text" id="confirm-modal-text">Are you sure you want to continue?</p>
             <div class="app-modal__actions">
-                <button type="button" class="app-modal__btn app-modal__btn--ghost" id="confirm-modal-cancel">Anulează</button>
-                <button type="button" class="app-modal__btn app-modal__btn--danger" id="confirm-modal-ok">Confirmă</button>
+                <button type="button" class="app-modal__btn app-modal__btn--ghost" id="confirm-modal-cancel">Cancel</button>
+                <button type="button" class="app-modal__btn app-modal__btn--danger" id="confirm-modal-ok">Confirm</button>
             </div>
         </div>
     </div>

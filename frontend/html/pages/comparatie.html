@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <!-- ===========================
          COMPARISON PAGE
@@ -7,7 +7,7 @@
          =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Compară orice două console de gaming - specificații, performanță și verdict">
+    <meta name="description" content="Compare any two gaming consoles - specs, performance and verdict">
     <meta name="theme-color" content="#1B1714">
     
     <!-- Favicon -->
@@ -23,10 +23,10 @@
          =========================== -->
     <nav class="navbar">
         <div class="container">
-                        <button class="navbar-search-btn" aria-label="Caută" type="button">
+                        <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
-            <a href="index.html" class="logo">Console Notebook</a>
+            <a href="index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
             
             <!-- Hamburger Button - Mobile Only -->
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
@@ -36,11 +36,11 @@
             </button>
             
             <ul class="nav-links">
-                <li><a href="community.html">Comunitate</a></li>
-                <li><a href="invata.html">Învață</a></li>
-                <li><a href="evolutie.html">Evoluție</a></li>
-                <li><a href="comparatie.html" class="active">Comparație</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="community.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" class="active" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
 
             
@@ -57,9 +57,9 @@
          =========================== -->
     <section class="hero hero-cinematic hero-comparatie">
         <div class="hero-content">
-            <h1>Compară Console</h1>
-            <p>Selectează două modele și vezi diferențele hardware care contează</p>
-            <a href="#content" class="hero-button">Explorează Hardware</a>
+            <h1 data-i18n="compare_hero_title">Compare Consoles</h1>
+            <p data-i18n="compare_hero_subtitle">Select two models and see the hardware differences that matter</p>
+            <a href="#content" class="hero-button" data-i18n="compare_hero_cta">Explore hardware</a>
         </div>
     </section>
 
@@ -74,21 +74,25 @@
                 <div class="selector-box">
                     <label for="console-a-select" class="selector-label">
                         <span class="selector-badge">A</span>
-                        Consola A
+                        <span data-i18n="selector_label_a">Console A</span>
                     </label>
-                    <select id="console-a-select" class="console-select"></select>
+                    <select id="console-a-select" class="console-select">
+                        <option value="" selected data-i18n="selector_default_a">Choose console A</option>
+                    </select>
                 </div>
 
                 <div class="selector-vs">
-                    <span>VS</span>
+                    <span data-i18n="selector_vs">VS</span>
                 </div>
 
                 <div class="selector-box">
                     <label for="console-b-select" class="selector-label">
                         <span class="selector-badge">B</span>
-                        Consola B
+                        <span data-i18n="selector_label_b">Console B</span>
                     </label>
-                    <select id="console-b-select" class="console-select"></select>
+                    <select id="console-b-select" class="console-select">
+                        <option value="" selected data-i18n="selector_default_b">Choose console B</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -111,7 +115,6 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main"> 2026 Console Notebook</p>
-                <a class="footer-sub" href="index.html#despre">Proiect Atestat Informatică</a>
             </div>
             <div class="footer-right">
                 <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <!-- ===========================
          CONSOLE DETAIL PAGE TEMPLATE
@@ -24,7 +24,7 @@
          =========================== -->
     <nav class="navbar">
         <div class="container">
-                        <button class="navbar-search-btn" aria-label="Caută" type="button">
+                        <button class="navbar-search-btn" data-i18n="nav_search" data-i18n-attr="aria-label" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <a href="../index.html" class="logo">Console Notebook</a>
@@ -34,15 +34,15 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="../community.html">Comunitate</a></li>
-                <li><a href="../index.html">Acasă</a></li>
-                <li><a href="../invata.html">Învață</a></li>
-                <li><a href="../evolutie.html" class="active">Evoluție</a></li>
-                <li><a href="../comparatie.html">Comparație</a></li>
-                <li><a href="../index.html#contact">Contact</a></li> 
+                <li><a href="../community.html" data-i18n="nav_community">Comunitate</a></li>
+                <li><a href="../index.html" data-i18n="nav_home">Acasă</a></li>
+                <li><a href="../invata.html" data-i18n="nav_learn">Învață</a></li>
+                <li><a href="../evolutie.html" class="active" data-i18n="nav_evolution">Evoluție</a></li>
+                <li><a href="../comparatie.html" data-i18n="nav_compare">Comparație</a></li>
+                <li><a href="../index.html#contact" data-i18n="nav_contact">Contact</a></li> 
             </ul>
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                <button class="navbar-profile-btn" data-i18n="navbar_profile" data-i18n-attr="aria-label" type="button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -57,7 +57,7 @@
     <section class="console-hero">
         <div class="container">
             <div class="console-hero-text">
-                <a href="../evolutie.html" class="back-link">Înapoi la Index</a>
+                <a href="../evolutie.html" class="back-link" data-i18n="console_back_to_index">Înapoi la Index</a>
                 <h1>Se încarcă...</h1>
                 <div class="console-meta">
                     <span></span>
@@ -80,8 +80,8 @@
          =========================== -->
     <section class="section specs-section">
         <div class="container">
-            <h2 class="section-title">Specificații Cheie</h2>
-            <p class="console-loading">Se încarcă datele...</p>
+            <h2 class="section-title" data-i18n="console_specs_title">Specificații Cheie</h2>
+            <p class="console-loading" data-i18n="console_loading">Se încarcă datele...</p>
         </div>
         </section>
 
@@ -92,7 +92,6 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main"> 2026 Console Notebook</p>
-                <a class="footer-sub" href="../index.html#despre">Proiect Atestat Informatică</a>
             </div>
             <div class="footer-right">
                 <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
@@ -120,6 +119,8 @@
     <script src="../../../js/fallback/search-profile.js"></script>
 </body>
 </html>
+
+
 
 
 

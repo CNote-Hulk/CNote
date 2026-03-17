@@ -11,6 +11,7 @@ import { DiacriticsModule } from './modules/diacritics.js';
 import { SearchModule } from './modules/search.js';
 import { ProfileDropdownModule } from './modules/profile-dropdown.js';
 import { AuthModule } from './modules/auth.js';
+import { I18nModule } from './modules/i18n.js';
 import { AchievementsModule } from './modules/achievements.js';
 
 /**
@@ -39,6 +40,9 @@ class App {
             NavigationModule.init();
             console.log('✓ Navigation module initialized');
             
+            I18nModule.init();
+            console.log('✓ i18n module initialized');
+
             AnimationsModule.init();
             console.log('✓ Animations module initialized');
 

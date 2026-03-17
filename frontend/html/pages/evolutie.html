@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <!-- ===========================
          EVOLUTION PAGE
@@ -8,13 +8,13 @@
          =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Index complet al tuturor consolelor de jocuri video din istorie, organizate cronologic pe generații">
+    <meta name="description" content="Complete index of all video game consoles in history, organized chronologically by generation">
     <meta name="theme-color" content="#1B1714">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
     
-    <title>Evoluție — Console Notebook</title>
+    <title>Evolution — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
 </head>
 <body>
@@ -23,7 +23,7 @@
          =========================== -->
     <nav class="navbar">
         <div class="container">
-                        <button class="navbar-search-btn" aria-label="Caută" type="button">
+                        <button class="navbar-search-btn" data-i18n="nav_search" data-i18n-attr="aria-label" aria-label="Search" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <a href="index.html" class="logo">Console Notebook</a>
@@ -36,16 +36,16 @@
             </button>
             
             <ul class="nav-links">
-                <li><a href="community.html">Comunitate</a></li>
-                <li><a href="invata.html">Învață</a></li>
-                <li><a href="evolutie.html" class="active">Evoluție</a></li>
-                <li><a href="comparatie.html">Comparație</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" class="active" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
 
             
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                <button class="navbar-profile-btn" data-i18n="navbar_profile" data-i18n-attr="aria-label" aria-label="Profil" type="button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -57,11 +57,11 @@
          =========================== -->
     <section class="hero hero-cinematic hero-evolutie">
             <div class="hero-content">
-            <h1>Enciclopedia consolelor</h1>
-            <p>Toate consolele de jocuri video din istorie: de la Magnavox Odyssey la PlayStation 5</p>
+            <h1 data-i18n="evolution_hero_title">Console encyclopedia</h1>
+            <p data-i18n="evolution_hero_subtitle">Every video game console in history: from Magnavox Odyssey to PlayStation 5</p>
             <div class="hero-buttons">
-                <a href="#timeline" class="hero-button">Explorează timeline</a>
-                <a href="#index" class="hero-button">Enciclopedia</a>
+                <a href="#timeline" class="hero-button" data-i18n="evolution_hero_cta_timeline">Explore timeline</a>
+                <a href="#index" class="hero-button" data-i18n="evolution_hero_cta_index">Encyclopedia</a>
             </div>
         </div>
     </section>
@@ -73,23 +73,23 @@
          =========================== -->
     <section class="section" id="timeline">
         <div class="container">
-            <h2 class="section-title">Timeline Consolelor</h2>
+            <h2 class="section-title" data-i18n="evolution_timeline_title">Console timeline</h2>
             
             <div class="timeline">
                 <div class="timeline-item" data-year="1977">
                     <div class="timeline-content">
                         <h3>Atari 2600 (1977)</h3>
-                        <p>Era home-console — primele experiențe</p>
+                        <p>Home-console era — first experiences</p>
                         <ul class="specs-list">
                             <li>CPU: MOS 6507 @ 1.19 MHz</li>
                             <li>RAM: 128 bytes (!)</li>
-                            <li>ROM Cartușe: 4 KB</li>
-                            <li>Rezoluție: 160×192 pixeli</li>
-                            <li>Culori: 128 (4 per scanline)</li>
-                            <li>Preț la lansare: $199</li>
+                            <li>ROM cartridges: 4 KB</li>
+                            <li>Resolution: 160×192 pixels</li>
+                            <li>Colors: 128 (4 per scanline)</li>
+                            <li>Launch price: $199</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Prima consolă cu procesor programabil și cartușe interschimbabile. De aici a început totul pentru gaming acasă.
+                            The first console with a programmable CPU and interchangeable cartridges. This is where home gaming began.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -100,17 +100,17 @@
                 <div class="timeline-item" data-year="1983">
                     <div class="timeline-content">
                         <h3>Nintendo Entertainment System (1983)</h3>
-                        <p>Salvarea industriei după crash-ul din '83</p>
+                        <p>Industry saved after the 1983 crash</p>
                         <ul class="specs-list">
                             <li>CPU: Ricoh 2A03 @ 1.79 MHz</li>
                             <li>RAM: 2 KB</li>
                             <li>VRAM: 2 KB</li>
-                            <li>Rezoluție: 256×240 pixeli</li>
-                            <li>Culori: 52 din 64</li>
-                            <li>Vânzări: 61+ milioane unități</li>
+                            <li>Resolution: 256×240 pixels</li>
+                            <li>Colors: 52 of 64</li>
+                            <li>Sales: 61+ million units</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            NES a reconstruit încrederea în console. GamePak și controlul strict al calității jocurilor au fost cheia.
+                            The NES restored trust in consoles. GamePak and strict quality control over games were key.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -121,17 +121,17 @@
                 <div class="timeline-item" data-year="1990">
                     <div class="timeline-content">
                         <h3>Super Nintendo Entertainment System (1990)</h3>
-                        <p>Era 16-bit — culoare și soundtrack-uri memorabile</p>
+                        <p>16-bit era — memorable color and soundtracks</p>
                         <ul class="specs-list">
                             <li>CPU: Ricoh 5A22 @ 3.58 MHz (16-bit)</li>
                             <li>RAM: 128 KB</li>
                             <li>VRAM: 64 KB</li>
-                            <li>Rezoluție: 256×224 pixeli</li>
-                            <li>Culori: 32,768 (256 pe ecran)</li>
-                            <li>Vânzări: 49.1 milioane unități</li>
+                            <li>Resolution: 256×224 pixels</li>
+                            <li>Colors: 32,768 (256 on screen)</li>
+                            <li>Sales: 49.1 million units</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Mode 7 pentru rotație și scaling. Audio superior cu chip Sony SPC700. Epoca Super Mario World și Chrono Trigger.
+                            Mode 7 for rotation and scaling. Superior audio with the Sony SPC700 chip. The era of Super Mario World and Chrono Trigger.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -142,17 +142,17 @@
                 <div class="timeline-item" data-year="1994">
                     <div class="timeline-content">
                         <h3>PlayStation 1 (1994)</h3>
-                        <p>Tranziția la 3D real-time — schimbarea regulilor</p>
+                        <p>Transition to real-time 3D — changing the rules</p>
                         <ul class="specs-list">
                             <li>CPU: MIPS R3000 @ 33.87 MHz</li>
                             <li>GPU: 1 MB VRAM</li>
                             <li>RAM: 2 MB SDRAM</li>
-                            <li>Rezoluție: 320×240 - 640×480 pixeli</li>
-                            <li>Poligoane: 360,000/s</li>
-                            <li>Vânzări: 102.4 milioane unități</li>
+                            <li>Resolution: 320×240 - 640×480 pixels</li>
+                            <li>Polygons: 360,000/s</li>
+                            <li>Sales: 102.4 million units</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Prima consolă majoră full-3D. CD-ROM-ul a permis jocuri mai mari și FMV. Final Fantasy VII, Metal Gear Solid.
+                            The first major full-3D console. CD-ROM enabled larger games and FMV. Final Fantasy VII, Metal Gear Solid.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -163,17 +163,17 @@
                 <div class="timeline-item" data-year="2000">
                     <div class="timeline-content">
                         <h3>PlayStation 2 (2000)</h3>
-                        <p>Dominația absolută — cea mai vândută consolă din istorie</p>
+                        <p>Absolute dominance — the best-selling console in history</p>
                         <ul class="specs-list">
                             <li>CPU: Emotion Engine @ 294 MHz</li>
                             <li>GPU: Graphics Synthesizer @ 150 MHz</li>
                             <li>RAM: 32 MB RDRAM</li>
                             <li>VRAM: 4 MB eDRAM</li>
-                            <li>Poligoane: 75 milioane/s</li>
-                            <li>Vânzări: 155 milioane unități</li>
+                            <li>Polygons: 75 million/s</li>
+                            <li>Sales: 155 million units</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Cel mai de succes sistem de gaming. DVD player încorporat. GTA, God of War, Shadow of the Colossus.
+                            The most successful gaming system. Built-in DVD player. GTA, God of War, Shadow of the Colossus.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -184,17 +184,17 @@
                 <div class="timeline-item" data-year="2005">
                     <div class="timeline-content">
                         <h3>Xbox 360 (2005)</h3>
-                        <p>Începutul erei HD și online gaming mainstream</p>
+                        <p>The start of HD era and mainstream online gaming</p>
                         <ul class="specs-list">
                             <li>CPU: Xenon 3-core @ 3.2 GHz</li>
                             <li>GPU: ATI Xenos @ 500 MHz</li>
                             <li>RAM: 512 MB GDDR3</li>
-                            <li>Rezoluție: 720p / 1080p</li>
+                            <li>Resolution: 720p / 1080p</li>
                             <li>Xbox Live: Online multiplayer</li>
-                            <li>Vânzări: 84 milioane unități</li>
+                            <li>Sales: 84 million units</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Prima consolă HD de succes. Xbox Live a revoluționat online gaming-ul. Halo 3, Gears of War, Mass Effect.
+                            The first successful HD console. Xbox Live revolutionized online gaming. Halo 3, Gears of War, Mass Effect.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -205,17 +205,17 @@
                 <div class="timeline-item" data-year="2006">
                     <div class="timeline-content">
                         <h3>PlayStation 3 (2006)</h3>
-                        <p>Blu-ray, HDD și HD gaming — powerhouse multimedia</p>
+                        <p>Blu-ray, HDD and HD gaming — multimedia powerhouse</p>
                         <ul class="specs-list">
                             <li>CPU: Cell BE 8-core @ 3.2 GHz</li>
                             <li>GPU: RSX @ 550 MHz</li>
                             <li>RAM: 256 MB XDR + 256 MB GDDR3</li>
-                            <li>Blu-ray: 50 GB pe disc</li>
-                            <li>HDD: 20-500 GB încorporat</li>
-                            <li>Vânzări: 87 milioane unități</li>
+                            <li>Blu-ray: 50 GB per disc</li>
+                            <li>HDD: 20-500 GB built-in</li>
+                            <li>Sales: 87 million units</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Arhitectură Cell ambițioasă. Primul Blu-ray player accesibil. The Last of Us, Uncharted, Metal Gear Solid 4.
+                            Ambitious Cell architecture. The first affordable Blu-ray player. The Last of Us, Uncharted, Metal Gear Solid 4.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -226,17 +226,17 @@
                 <div class="timeline-item" data-year="2013">
                     <div class="timeline-content">
                         <h3>PlayStation 4 / Xbox One (2013)</h3>
-                        <p>Era modernă — digital, streaming și social gaming</p>
+                        <p>Modern era — digital, streaming, and social gaming</p>
                         <ul class="specs-list">
                             <li>CPU: AMD Jaguar 8-core @ 1.6-1.75 GHz</li>
                             <li>GPU: AMD GCN @ 1.84 TFLOPS (PS4)</li>
                             <li>RAM: 8 GB GDDR5 (PS4)</li>
                             <li>HDD: 500 GB - 1 TB</li>
-                            <li>Share Button: Streaming integrat</li>
-                            <li>Vânzări: 117M (PS4) / 51M (XB1)</li>
+                            <li>Share Button: Integrated streaming</li>
+                            <li>Sales: 117M (PS4) / 51M (XB1)</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Arhitectură x86 pentru dezvoltare ușoară. PS4 Pro/Xbox One X au adus 4K gaming. God of War, Spider-Man, Horizon.
+                            x86 architecture for easier development. PS4 Pro / Xbox One X brought 4K gaming. God of War, Spider-Man, Horizon.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -247,17 +247,17 @@
                 <div class="timeline-item" data-year="2020">
                     <div class="timeline-content">
                         <h3>PlayStation 5 / Xbox Series X (2020)</h3>
-                        <p>Ray tracing hardware și SSD-uri rapide</p>
+                        <p>Ray tracing hardware and fast SSDs</p>
                         <ul class="specs-list">
                             <li>CPU: AMD Zen 2 8-core @ 3.5 GHz</li>
                             <li>GPU: RDNA 2 @ 10.3 TFLOPS (PS5)</li>
                             <li>RAM: 16 GB GDDR6</li>
                             <li>SSD: 5.5 GB/s (PS5)</li>
                             <li>Ray Tracing: Hardware-accelerated</li>
-                            <li>Rezoluție: 4K nativă, 8K suport</li>
+                            <li>Resolution: native 4K, 8K support</li>
                         </ul>
                         <blockquote class="timeline-note">
-                            Generația ray tracing și loading times aproape zero. 120 FPS, 3D audio, haptic feedback.
+                            The ray tracing generation and near-zero loading times. 120 FPS, 3D audio, haptic feedback.
                         </blockquote>
                     </div>
                     <div class="timeline-image">
@@ -276,21 +276,21 @@
          =========================== -->
     <section class="section" id="index">
         <div class="container">
-            <h2 class="section-title">Enciclopedia Consolelor</h2>
+            <h2 class="section-title" data-i18n="evolution_index_title">Console encyclopedia</h2>
             
                 <p class="section-intro">
-                Index complet al tuturor consolelor de jocuri video, organizate cronologic pe generații.
-                Clic pe orice consolă pentru a vedea pagina dedicată cu specificații complete, istorii și imagini.
+                A complete index of all video game consoles, organized chronologically by generation.
+                Click any console to view its dedicated page with full specs, history, and images.
             </p>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 1 -->
+            <!-- GENERATION 1 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>Prima Generație</h2>
+                        <h2>Generation One</h2>
                         <span class="generation-years">1972 – 1980</span>
                     </div>
                 </div>
@@ -341,13 +341,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 2 -->
+            <!-- GENERATION 2 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Doua Generație</h2>
+                        <h2>Second Generation</h2>
                         <span class="generation-years">1980 – 1984</span>
                     </div>
                 </div>
@@ -391,13 +391,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 3 -->
+            <!-- GENERATION 3 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Treia Generație</h2>
+                        <h2>Third Generation</h2>
                         <span class="generation-years">1985 – 1990</span>
                     </div>
                 </div>
@@ -427,13 +427,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 4 -->
+            <!-- GENERATION 4 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Patra Generație</h2>
+                        <h2>Fourth Generation</h2>
                         <span class="generation-years">1987 – 1996</span>
                     </div>
                 </div>
@@ -491,13 +491,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 5 -->
+            <!-- GENERATION 5 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Cincea Generație</h2>
+                        <h2>Fifth Generation</h2>
                         <span class="generation-years">1994 – 2001</span>
                     </div>
                 </div>
@@ -527,13 +527,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 6 -->
+            <!-- GENERATION 6 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Șasea Generație</h2>
+                        <h2>Sixth Generation</h2>
                         <span class="generation-years">1998 – 2006</span>
                     </div>
                 </div>
@@ -570,13 +570,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 7 -->
+            <!-- GENERATION 7 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Șaptea Generație</h2>
+                        <h2>Seventh Generation</h2>
                         <span class="generation-years">2005 – 2013</span>
                     </div>
                 </div>
@@ -606,13 +606,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 8 -->
+            <!-- GENERATION 8 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Opta Generație</h2>
+                        <h2>Eighth Generation</h2>
                         <span class="generation-years">2012 – 2020</span>
                     </div>
                 </div>
@@ -649,13 +649,13 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <!-- GENERAȚIA 9 -->
+            <!-- GENERATION 9 -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <div class="generation-block">
                 <div class="generation-header">
                     <span class="generation-icon">🕹️</span>
                     <div class="generation-info">
-                        <h2>A Noua Generație</h2>
+                        <h2>Ninth Generation</h2>
                         <span class="generation-years">2020 – Prezent</span>
                     </div>
                 </div>
@@ -694,7 +694,7 @@
             <!-- ═══════════════════════════════════════════════════════════════ -->
             <!-- HANDHELD CONSOLES -->
             <!-- ═══════════════════════════════════════════════════════════════ -->
-            <h2 class="section-title section-title--handheld">Console Portabile (Handheld)</h2>
+            <h2 class="section-title section-title--handheld">Handheld consoles</h2>
 
             <!-- Nintendo Handhelds -->
             <div class="generation-block">
@@ -834,7 +834,6 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main"> 2026 Console Notebook</p>
-                <a class="footer-sub" href="index.html#despre">Proiect Atestat Informatică</a>
             </div>
             <div class="footer-right">
                 <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>

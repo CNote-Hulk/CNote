@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <!-- ===========================
          META INFORMATION
          =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CNote (Console Notebook) este o platformă dedicată consolelor de jocuri: istorie, specificații hardware, ghiduri de reparații și o comunitate pentru pasionații de gaming.">
+    <meta name="description" content="CNote (Console Notebook) is a platform dedicated to gaming consoles: history, hardware specs, repair guides and a community for enthusiasts.">
     <meta name="theme-color" content="#1B1714">
     <meta property="og:title" content="Console Notebook (CNote)">
     <meta property="og:description" content="Platformă dedicată consolelor de jocuri: istorie, hardware și reparații.">
@@ -39,29 +39,28 @@
          =========================== -->
     <nav class="navbar">
         <div class="container">
-                        <button class="navbar-search-btn" aria-label="Caută" type="button">
+            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
-            <a href="index.html" class="logo">Console Notebook</a>
-            
+            <a href="index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+
             <!-- Hamburger Button - Mobile Only -->
             <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <ul class="nav-links">
-                <li><a href="community.html">Comunitate</a></li>
-                <li><a href="invata.html">Învață</a></li>
-                <li><a href="evolutie.html">Evoluție</a></li>
-                <li><a href="comparatie.html">Comparație</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="community.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
 
-            
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -74,9 +73,9 @@
          =========================== -->
     <section class="hero hero-cinematic hero-home">
         <div class="hero-content">
-            <h1>Console Notebook</h1>
-            <p>Bine ai venit în era de aur — sau poate era de bronz — a gaming-ului unde CNote prezintă lumea consolelor</p>
-            <a href="#content" class="hero-button">Descoperă</a>
+            <h1 data-i18n="hero_title">Console Notebook</h1>
+            <p data-i18n="hero_subtitle">Welcome to the golden — or maybe bronze — age of gaming.</p>
+            <a href="#content" class="hero-button" data-i18n="hero_cta">Discover</a>
         </div>
     </section>
 
@@ -86,11 +85,9 @@
          =========================== -->
     <section class="section" id="content">
         <div class="container">
-            <h2 class="section-title">Ce este CNote? Cine suntem noi?</h2>
-            <p class="section-intro">
-                CNote (Console Notebook) este o platformă dedicată ecosistemului consolelor de jocuri. Proiectul adună istoria, tehnologia și comunitatea din spatele acestor sisteme într-un singur loc.
-                Dar scopul său merge dincolo de documentare. CNote încearcă să readucă la viață o parte din noi – spiritul gaming-ului autentic, care pentru mulți s-a pierdut odată cu trecerea timpului și cu transformarea industriei moderne.
-                Aici poți descoperi console, învăța cum funcționează și contribui la păstrarea unei bucăți importante din cultura gaming-ului.
+            <h2 class="section-title" data-i18n="section_about_title">What is CNote? Who are we?</h2>
+            <p class="section-intro" data-i18n="section_about_text">
+                CNote (Console Notebook) is a platform dedicated to the world of gaming consoles. It brings together history, technology, and community in one place. But it aims to go beyond documentation. CNote seeks to revive a part of us — the authentic gaming spirit that many lost as the industry changed. Here you can discover consoles, learn how they work, and help preserve an important piece of gaming culture.
             </p>
 
             <div class="cards-grid">
@@ -101,29 +98,29 @@
                         <div class="hub-card__header-left">
                             <div class="hub-card__icon">📚</div>
                             <div>
-                                <div class="hub-card__title">Învață</div>
-                                <div class="hub-card__subtitle">Cursuri și ghiduri</div>
+                                <div class="hub-card__title" data-i18n="learn_title">Learn</div>
+                                <div class="hub-card__subtitle" data-i18n="learn_subtitle">Courses and guides</div>
                             </div>
                         </div>
-                        <div class="hub-card__badge">În curand!</div>
+                        <div class="hub-card__badge" data-i18n="coming_soon">Coming soon</div>
                     </div>
                     <div class="hub-card__preview">
                         <div class="lesson-featured">
                             <div class="lesson-featured__icon">🔧</div>
                             <div>
-                                <div class="lesson-featured__label">Curs Reparații Console</div>
-                                <div class="lesson-featured__title">Identificarea defecțiunilor și depanare practică</div>
+                                <div class="lesson-featured__label" data-i18n="course_repair">Console Repair Course</div>
+                                <div class="lesson-featured__title" data-i18n="course_repair_desc">Identify faults, swap parts, and troubleshoot hands-on.</div>
                             </div>
                         </div>
                         <div class="lesson-featured">
                             <div class="lesson-featured__icon">⚙️</div>
                             <div>
-                                <div class="lesson-featured__label">Curs Modare Console</div>
-                                <div class="lesson-featured__title">Custom firmware, homebrew și modchip-uri</div>
+                                <div class="lesson-featured__label" data-i18n="course_modding">Console Modding Course</div>
+                                <div class="lesson-featured__title" data-i18n="course_modding_desc">Custom firmware, homebrew, modchips and hardware tweaks.</div>
                             </div>
                         </div>
                     </div>
-                    <a href="invata.html" class="demo-button">Începe cursul</a>
+                    <a href="invata.html" class="demo-button" data-i18n="learn_cta">Start learning</a>
                 </div>
 
                 <div class="card hub-card">
@@ -132,8 +129,8 @@
                         <div class="hub-card__header-left">
                             <div class="hub-card__icon">⏳</div>
                             <div>
-                                <div class="hub-card__title">Evoluția Consolelor</div>
-                                <div class="hub-card__subtitle">50 de ani de gaming</div>
+                                <div class="hub-card__title" data-i18n="evolution_title">Console Evolution</div>
+                                <div class="hub-card__subtitle" data-i18n="evolution_subtitle">50 years of gaming</div>
                             </div>
                         </div>
                         <div class="hub-card__badge">1972 → 2024</div>
@@ -141,15 +138,15 @@
                     <div class="hub-card__preview">
                         <div class="hub-card__preview">
                             <div class="idx-timeline">
-                                <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">1977</div><div class="idx-timeline-name">Atari 2600</div><div class="idx-timeline-desc">Pionierul</div></div>
-                                <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">1994</div><div class="idx-timeline-name">PlayStation</div><div class="idx-timeline-desc">Revoluția 3D</div></div>
+                                <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">1977</div><div class="idx-timeline-name">Atari 2600</div><div class="idx-timeline-desc">Pioneer</div></div>
+                                <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">1994</div><div class="idx-timeline-name">PlayStation</div><div class="idx-timeline-desc">3D revolution</div></div>
                                 <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">2001</div><div class="idx-timeline-name">Xbox</div><div class="idx-timeline-desc">Online gaming</div></div>
-                                <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">2020</div><div class="idx-timeline-name">PS5 / Series X</div><div class="idx-timeline-desc">Generația SSD</div></div>
+                                <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">2020</div><div class="idx-timeline-name">PS5 / Series X</div><div class="idx-timeline-desc">SSD generation</div></div>
                             </div>
                         </div>
                     </div>
                     <div class="hub-divider"></div>
-                    <a href="evolutie.html" class="demo-button">Vezi evoluția</a>
+                    <a href="evolutie.html" class="demo-button" data-i18n="evolution_cta">See evolution</a>
                 </div>
 
                 <div class="card hub-card">
@@ -158,11 +155,11 @@
                         <div class="hub-card__header-left">
                             <div class="hub-card__icon">⚖️</div>
                             <div>
-                                <div class="hub-card__title">Comparație</div>
-                                <div class="hub-card__subtitle">Pune consolele față în față</div>
+                                <div class="hub-card__title" data-i18n="compare_title">Comparison</div>
+                                <div class="hub-card__subtitle" data-i18n="compare_subtitle">Put consoles side by side</div>
                             </div>
                         </div>
-                        <div class="hub-card__badge">Score global</div>
+                        <div class="hub-card__badge" data-i18n="compare_best">Most compared:</div>
                     </div>
                     <div class="hub-card__preview">
                         <div class="compare-list">
@@ -179,10 +176,10 @@
                                 <div class="compare-bar"><div class="compare-bar__fill compare-bar__fill--sw"></div></div>
                             </div>
                         </div>
-                        <div class="compare-highlight">🔥 Cel mai comparat: <span>PS5 vs Xbox Series X</span></div>
+                        <div class="compare-highlight">🔥 <span data-i18n="compare_best">Most compared:</span> <span>PS5 vs Xbox Series X</span></div>
                     </div>
                     <div class="hub-divider"></div>
-                    <a href="comparatie.html" class="demo-button">Compară console</a>
+                    <a href="comparatie.html" class="demo-button" data-i18n="compare_cta">Compare consoles</a>
                 </div>
 
                 <div class="card hub-card">
@@ -191,8 +188,8 @@
                         <div class="hub-card__header-left">
                             <div class="hub-card__icon">💬</div>
                             <div>
-                                <div class="hub-card__title">Comunitate</div>
-                                <div class="hub-card__subtitle">Forum, marketplace și mai mult</div>
+                                <div class="hub-card__title" data-i18n="community_title">Community</div>
+                                <div class="hub-card__subtitle" data-i18n="community_subtitle">Forum, marketplace & more</div>
                             </div>
                         </div>
                         <div class="hub-card__badge hub-card__badge--live">● Live</div>
@@ -201,12 +198,12 @@
                         <div class="thread-item">
                             <div class="thread-avatar">…</div>
                             <div class="thread-body">
-                                <div class="thread-title" style="color:var(--text-muted,#7a7672)">Se încarcă…</div>
+                                <div class="thread-title" style="color:var(--text-muted,#7a7672)" data-i18n="community_loading">Loading…</div>
                             </div>
                         </div>
                     </div>
                     <div class="hub-divider"></div>
-                    <a href="community.html" class="demo-button">Intră în comunitate</a>
+                    <a href="community.html" class="demo-button" data-i18n="community_enter">Enter community</a>
                 </div>
 
             </div>
@@ -219,19 +216,19 @@
          =========================== -->
     <section class="section bg-alt">
         <div class="container">
-            <h2 class="section-title">Știința din Spatele Consolelor</h2>
+            <h2 class="section-title" data-i18n="features_title">Science behind gaming consoles</h2>
             <div class="cards-grid">
                 <div class="card">
-                    <h3>Arhitectura Internă</h3>
-                    <p>De la procesoare custom și arhitecturi optimizate, la paralelizare și unități grafice dedicate – analizăm structura internă care face posibil gaming-ul modern.</p>
+                    <h3 data-i18n="feature_cpu_title">Internal Architecture</h3>
+                    <p data-i18n="feature_cpu_desc">From custom processors and optimized architectures to parallelism and dedicated GPUs — we examine the internal structure that makes modern gaming possible.</p>
                 </div>
                 <div class="card">
-                    <h3>Energie și Transfer Termic</h3>
-                    <p>Orice performanță generează căldură. Explorăm principiile fizicii aplicate în console: conducție, convecție, eficiență energetică și limitele hardware-ului.</p>
+                    <h3 data-i18n="feature_thermal_title">Power & Thermal Transfer</h3>
+                    <p data-i18n="feature_thermal_desc">Every bit of performance generates heat. We explore the physics in consoles: conduction, convection, energy efficiency, and hardware limits.</p>
                 </div>
                 <div class="card">
-                    <h3>Randare și Algoritmi Grafici</h3>
-                    <p>Cum sunt transformate calculele matematice în lumi 3D interactive? De la ray tracing la optimizări software, descoperim tehnologia din spatele imaginilor realiste.</p>
+                    <h3 data-i18n="feature_render_title">Rendering & Graphics Algorithms</h3>
+                    <p data-i18n="feature_render_desc">How do math calculations become 3D worlds? From ray tracing to software optimizations, we uncover the tech behind realistic visuals.</p>
                 </div>
             </div>
         </div>
@@ -244,46 +241,46 @@
          =========================== -->
     <section id="contact" class="section">
         <div class="container">
-            <h2 class="section-title">Contact</h2>
-            <p class="section-intro">Ai întrebări sau sugestii despre proiect?</p>
+            <h2 class="section-title" data-i18n="contact_title">Contact</h2>
+            <p class="section-intro" data-i18n="contact_intro">Have questions or feedback about the project?</p>
 
             <div class="contact-card">
                 <!-- Mesaj de succes -->
-                <div id="success-message" class="success-message">
-                    ✓ Mesaj trimis cu succes! Voi răspunde în curând.
+                <div id="success-message" class="success-message" data-i18n="contact_success">
+                    ✓ Message sent successfully! I will reply soon.
                 </div>
 
                 <!-- Mesaj de eroare -->
-                <div id="error-message" class="error-message">
-                    ✕ Eroare la trimiterea mesajului. Te rog încearcă din nou.
+                <div id="error-message" class="error-message" data-i18n="contact_error">
+                    ✕ Error sending message. Please try again.
                 </div>
 
                 <form class="contact-form" id="contact-form" novalidate>
                     <div class="input-group">
-                        <label for="contact-name">Nume</label>
-                        <input id="contact-name" name="name" type="text" placeholder="Numele tău" required>
+                        <label for="contact-name" data-i18n="contact_label_name">Name</label>
+                        <input id="contact-name" name="name" type="text" placeholder="Your name" data-i18n="contact_placeholder_name" data-i18n-attr="placeholder" required>
                     </div>
 
                     <div class="input-group">
-                        <label for="contact-email">Email</label>
-                        <input id="contact-email" name="email" type="email" placeholder="adresa@exemplu.com" required>
+                        <label for="contact-email" data-i18n="contact_label_email">Email</label>
+                        <input id="contact-email" name="email" type="email" placeholder="you@example.com" data-i18n="contact_placeholder_email" data-i18n-attr="placeholder" required>
                     </div>
 
                     <div class="input-group">
-                        <label for="contact-subject">Subiect</label>
-                        <input id="contact-subject" name="subject" type="text" placeholder="Subiectul mesajului" required>
+                        <label for="contact-subject" data-i18n="contact_label_subject">Subject</label>
+                        <input id="contact-subject" name="subject" type="text" placeholder="Message subject" data-i18n="contact_placeholder_subject" data-i18n-attr="placeholder" required>
                     </div>
 
                     <div class="input-group">
-                        <label for="contact-message">Mesaj</label>
-                        <textarea id="contact-message" name="message" placeholder="Scrie mesajul tău aici" required></textarea>
+                        <label for="contact-message" data-i18n="contact_label_message">Message</label>
+                        <textarea id="contact-message" name="message" placeholder="Write your message here" data-i18n="contact_placeholder_message" data-i18n-attr="placeholder" required></textarea>
                     </div>
                     
                     <!-- Honeypot anti-spam -->
                     <input type="text" name="_honey" class="honeypot-input" tabindex="-1" autocomplete="off">
 
                     <div class="input-group">
-                        <button type="submit" class="demo-button" id="submit-btn">Trimite mesajul</button>
+                        <button type="submit" class="demo-button" id="submit-btn" data-i18n="contact_send">Send message</button>
                     </div>
                 </form>
             </div>
@@ -298,7 +295,6 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main"> 2026 Console Notebook</p>
-                <a class="footer-sub" href="#despre">Proiect Atestat Informatică</a>
             </div>
             <div class="footer-right">
                 <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>

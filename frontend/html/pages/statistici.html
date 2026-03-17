@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <!-- ===========================
          STATISTICS PAGE
@@ -7,16 +7,16 @@
          =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Statistici personale de progres - Console Notebook">
+    <meta name="description" content="Personal progress statistics - Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
-    <title>Statistici — Console Notebook</title>
+    <title>Statistics — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
-            <button class="navbar-search-btn" aria-label="Caută" type="button">
+            <button class="navbar-search-btn" aria-label="Search" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <a href="index.html" class="logo">Console Notebook</a>
@@ -26,14 +26,14 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="community.html">Comunitate</a></li>
-                <li><a href="invata.html">Învață</a></li>
-                <li><a href="evolutie.html">Evoluție</a></li>
-                <li><a href="comparatie.html">Comparație</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="invata.html">Learn</a></li>
+                <li><a href="evolutie.html">Evolution</a></li>
+                <li><a href="comparatie.html">Compare</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -43,8 +43,8 @@
     <main class="stats-page">
         <section class="section stats-hero">
             <div class="container">
-                <h1 class="section-title">Statistici Personale</h1>
-                <p class="section-intro">Panoul tău de progres: lecții, quiz-uri, realizări și explorarea consolelor.</p>
+                <h1 class="section-title">Personal Statistics</h1>
+                <p class="section-intro">Your progress dashboard: lessons, quizzes, achievements and console exploration.</p>
             </div>
         </section>
 
@@ -52,60 +52,60 @@
             <div class="container">
                 <div class="stats-grid">
                     <article class="stats-card">
-                        <div class="stats-label">Lecții Completate</div>
+                        <div class="stats-label">Lessons Completed</div>
                         <div class="stats-value" id="stat-lessons-completed">0</div>
-                        <div class="stats-sub" id="stat-lessons-sub">din 0 lecții</div>
+                        <div class="stats-sub" id="stat-lessons-sub">of 0 lessons</div>
                         <div class="progress-bar">
                             <div class="progress-bar__fill" id="stat-lessons-fill" style="width: 0%;"></div>
                         </div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Lecții Vizitate</div>
+                        <div class="stats-label">Lessons Visited</div>
                         <div class="stats-value" id="stat-lessons-visited">0</div>
-                        <div class="stats-sub" id="stat-lessons-visited-sub">din 0 lecții</div>
+                        <div class="stats-sub" id="stat-lessons-visited-sub">of 0 lessons</div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Curs Finalizat</div>
+                        <div class="stats-label">Courses Completed</div>
                         <div class="stats-value" id="stat-courses-completed">0</div>
-                        <div class="stats-sub" id="stat-courses-sub">din 0 cursuri</div>
+                        <div class="stats-sub" id="stat-courses-sub">of 0 courses</div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Realizări Deblocate</div>
+                        <div class="stats-label">Achievements Unlocked</div>
                         <div class="stats-value" id="stat-achievements-earned">0</div>
-                        <div class="stats-sub" id="stat-achievements-sub">din 0 badge-uri</div>
+                        <div class="stats-sub" id="stat-achievements-sub">of 0 badges</div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Quiz-uri Finalizate</div>
+                        <div class="stats-label">Quizzes Completed</div>
                         <div class="stats-value" id="stat-quiz-attempts">0</div>
-                        <div class="stats-sub" id="stat-quiz-sub">best score mediu: 0%</div>
+                        <div class="stats-sub" id="stat-quiz-sub">avg best score: 0%</div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Quiz-uri Perfecte</div>
+                        <div class="stats-label">Perfect Quizzes</div>
                         <div class="stats-value" id="stat-perfect-lessons">0</div>
-                        <div class="stats-sub">lecții cu scor maxim 100%</div>
+                        <div class="stats-sub">lessons with 100% score</div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Console Vizitate</div>
+                        <div class="stats-label">Consoles Visited</div>
                         <div class="stats-value" id="stat-consoles-visited">0</div>
-                        <div class="stats-sub">pagini unice explorate</div>
+                        <div class="stats-sub">unique pages explored</div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Zile în Platformă</div>
+                        <div class="stats-label">Days on Platform</div>
                         <div class="stats-value" id="stat-days-member">0</div>
-                        <div class="stats-sub">de la crearea contului</div>
+                        <div class="stats-sub">since account creation</div>
                     </article>
 
                     <article class="stats-card">
-                        <div class="stats-label">Nivel General</div>
+                        <div class="stats-label">Overall Level</div>
                         <div class="stats-value" id="stat-level">Novice</div>
-                        <div class="stats-sub" id="stat-level-sub">Continua pentru rank mai mare</div>
+                        <div class="stats-sub" id="stat-level-sub">Keep going for higher rank</div>
                     </article>
                 </div>
             </div>
@@ -114,7 +114,7 @@
         <section class="section">
             <div class="container">
                 <div class="course-card">
-                    <h2 class="stats-section-title">Obiective Următoare</h2>
+                    <h2 class="stats-section-title">Next Goals</h2>
                     <div id="next-goals" class="next-goals"></div>
                 </div>
             </div>
@@ -125,7 +125,6 @@
         <div class="footer-inner container">
             <div class="footer-left">
                 <p class="footer-main"> 2026 Console Notebook</p>
-                <a class="footer-sub" href="index.html#despre">Proiect Atestat Informatică</a>
             </div>
             <div class="footer-right">
                 <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
