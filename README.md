@@ -142,11 +142,11 @@ v0.1.0 (Beta)
 
 Planned improvements include:
 
-* improved search and filtering
-* deeper hardware comparison tools
-* more advanced repair tutorials
-* expanded community features
-* console marketplace
+* improved search
+* advanced repair lessons
+* modding tutorials
+* gaming server
+* gaming chat
 * help section
 
 ---
