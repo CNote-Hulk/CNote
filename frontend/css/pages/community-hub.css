@@ -336,7 +336,7 @@
 .hub-filter-badge {
     position: absolute;
     top: -6px;
-    right: -10px;
+    right: 2px;
     background: var(--accent-color, #E60012);
     color: #fff;
     font-size: .65rem;
