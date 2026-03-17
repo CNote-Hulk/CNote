@@ -16,10 +16,15 @@ const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
-// GET /api/users/count — Return total user count (for stats)
-router.get('/count', async (req, res) => {
+// GET /api/users/count — Return total active user count (for community card)
+router.get('/active-count', async (req, res) => {
     try {
-        const result = await pool.query('SELECT COUNT(*) FROM users');
+        const result = await pool.query(`
+            SELECT COUNT(DISTINCT user_id) 
+            FROM user_sessions 
+            WHERE is_active = true 
+            AND last_activity > NOW() - INTERVAL '5 minutes'
+        `);
         res.json({ success: true, count: parseInt(result.rows[0].count) });
     } catch (err) {
         res.status(500).json({ success: false, error: 'Eroare internă.' });
