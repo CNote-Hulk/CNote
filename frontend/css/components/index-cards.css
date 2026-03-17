@@ -7,18 +7,8 @@
 @media (max-width: 700px) { .hub-grid { grid-template-columns: 1fr; } }
 
 .hub-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px;
-    padding: 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .5s ease, transform .5s ease, box-shadow .3s ease, border-color .3s ease;
+    height: 330px;
+    width: 556px;
 }
 .hub-card.is-visible { opacity: 1; transform: translateY(0); }
 .hub-card:hover {
