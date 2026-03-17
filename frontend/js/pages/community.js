@@ -385,7 +385,7 @@ function openNewThreadModal() {
     overlay.querySelector('.hub-modal__close').addEventListener('click', close);
     overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
-
+    
     overlay.querySelector('#new-thread-form').addEventListener('submit', async e => {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
@@ -995,6 +995,13 @@ function openAddListingModal() {
     overlay.querySelector('.hub-modal__close').addEventListener('click', close);
     overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    overlay.querySelector('[name="country"]').addEventListener('change', e => {
+    const citySelect = overlay.querySelector('[name="location"]');
+    const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
+    citySelect.innerHTML = '<option value="">— Alege orașul —</option>' +
+        (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
+    citySelect.disabled = !e.target.value;
+    });
 
     const uploadZone = overlay.querySelector('#upload-zone');
     const uploadInput = overlay.querySelector('#upload-input');
