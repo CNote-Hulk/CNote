@@ -415,6 +415,7 @@
 }
 
 /* Secțiune filtru */
+
 .hub-filter-section__label {
     font-size: .78rem;
     font-weight: 600;
@@ -698,15 +699,6 @@
 }
 
 /* ── Marketplace Grid ───────────────────────────────────── */
-
-.hub-market-filters {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding: 12px 24px;
-    border-bottom: 1px solid var(--border-color);
-    align-items: center;
-}
 
 .hub-market-search {
     flex: 1;
