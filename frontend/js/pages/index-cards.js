@@ -74,7 +74,7 @@ cards.forEach(c => observer.observe(c));
             <div class="online-indicator">
                 <div class="online-dot"></div>
                 <span><strong style="color:var(--text-primary,#F0EBE3)">${activeCount}</strong> membri activi acum</span>
-            </div>
+            </div>`;
     } catch {
         preview.innerHTML = '<div style="color:var(--text-muted,#7a7672);font-size:.8rem;padding:8px 0">Nu s-au putut încărca datele.</div>';
     }
