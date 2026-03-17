@@ -18,30 +18,6 @@ function cleanupConsolePageChrome() {
 }
 
 /**
- * Image dimensions mapping - prevents layout shift during load
- * Loaded from image-dimensions.json
- */
-let IMAGE_DIMENSIONS = {};
-
-/**
- * Load image dimensions from JSON file
- */
-/** Load pre-computed image dimensions from JSON (prevents CLS) */
-async function loadImageDimensions() {
-    if (Object.keys(IMAGE_DIMENSIONS).length > 0) return;
-    
-    try {
-        const path = window.location.pathname.includes('/pages/consoles/') ? '../../../js/data/image-dimensions.json' : '../../js/data/image-dimensions.json';
-        const response = await fetch(path);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        IMAGE_DIMENSIONS = await response.json();
-    } catch (err) {
-        console.warn('Failed to load image-dimensions.json:', err.message);
-        IMAGE_DIMENSIONS = {};
-    }
-}
-
-/**
  * Spec section definitions - maps JSON keys to display labels
  */
 const SPEC_SECTIONS = [
