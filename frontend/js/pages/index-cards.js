@@ -27,10 +27,13 @@ cards.forEach(c => observer.observe(c));
     const consoleLabel = { ps: 'PlayStation', xbox: 'Xbox', nintendo: 'Nintendo', pc: 'PC Gaming', general: 'General' };
 
     try {
-        const [threadsRes, listingsRes] = await Promise.all([
+        const [threadsRes, listingsRes, usersRes] = await Promise.all([
             fetch('/api/forum/recent'),
-            fetch('/api/marketplace/listings?sort=newest&limit=2')
+            fetch('/api/marketplace/listings?sort=newest&limit=2'),
+            fetch('/api/users/count')
         ]);
+        const usersData = await usersRes.json();
+        const userCount = usersData.count || 0;
         const threadsData  = await threadsRes.json();
         const listingsData = await listingsRes.json();
 
@@ -70,7 +73,7 @@ cards.forEach(c => observer.observe(c));
             </div>
             <div class="online-indicator">
                 <div class="online-dot"></div>
-                <span>Comunitate activă</span>
+                <span><strong style="color:var(--text-primary,#F0EBE3)">${userCount}</strong> membri înregistrați</span>
             </div>`;
     } catch {
         preview.innerHTML = '<div style="color:var(--text-muted,#7a7672);font-size:.8rem;padding:8px 0">Nu s-au putut încărca datele.</div>';
