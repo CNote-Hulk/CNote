@@ -10,10 +10,11 @@ import { confirmModal } from '../utils/confirm-modal.js';
 // ── Constants ──────────────────────────────────────────────
 
 const CONSOLES = [
+    { id: 'general',  name: 'General',     color: '#D4A24E' },
     { id: 'ps',       name: 'PlayStation', color: '#0070D1' },
     { id: 'xbox',     name: 'Xbox',        color: '#107C10' },
-    { id: 'nintendo', name: 'Nintendo',     color: '#E60012' },
-    { id: 'pc',       name: 'PC Gaming',    color: '#9B59B6' },
+    { id: 'nintendo', name: 'Nintendo',    color: '#E60012' },
+    { id: 'pc',       name: 'PC Gaming',   color: '#9B59B6' },
 ];
 
 const TAGS = ['All', 'General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];

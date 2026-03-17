@@ -15,7 +15,7 @@ const { authRequired } = require('../middleware/auth');
 const router = express.Router();
 
 // ── Console whitelist ──
-const VALID_CONSOLES = ['ps', 'xbox', 'nintendo', 'pc'];
+const VALID_CONSOLES = ['ps', 'xbox', 'nintendo', 'pc', 'general'];
 const VALID_TAGS = ['General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];
 
 // ── GET /api/forum/:console/threads ─────────────────────
