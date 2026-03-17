@@ -950,9 +950,20 @@ function openAddListingModal() {
                     <label class="hub-form-label">Descriere</label>
                     <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Descrie produsul…"></textarea>
                 </div>
-                <div class="hub-form-group">
-                    <label class="hub-form-label">Locație</label>
-                    <input class="hub-form-input" name="location" maxlength="100" required placeholder="București">
+                <div class="hub-form-row">
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">Țară</label>
+                        <select class="hub-form-select" name="country" required>
+                            <option value="">— Alege țara —</option>
+                            ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${c.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">Oraș</label>
+                        <select class="hub-form-select" name="location" required disabled>
+                            <option value="">— Alege mai întâi țara —</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="hub-form-group">
                     <label class="hub-form-label">Telefon</label>
