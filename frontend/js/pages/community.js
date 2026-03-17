@@ -826,6 +826,10 @@ async function openListingDetail(id) {
             if ((await api('DELETE', `/marketplace/listings/${id}`)).success) { showView('marketplace'); renderMarketplace(); loadListings(); }
         });
 
+        v.querySelector('#listing-edit-btn')?.addEventListener('click', () => {
+            openEditListingFromDetail(id, l);
+        });
+
         // Favorite toggle on detail page
         v.querySelector('#detail-fav-btn')?.addEventListener('click', async () => {
             if (!u) { alert('Autentifică-te pentru favorite'); return; }
