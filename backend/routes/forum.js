@@ -18,6 +18,22 @@ const router = express.Router();
 const VALID_CONSOLES = ['ps', 'xbox', 'nintendo', 'pc', 'general'];
 const VALID_TAGS = ['General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];
 
+// ── GET /api/forum/recent ────────────────────────────────
+router.get('/recent', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT t.id, t.title, t.console, t.created_at, u.username
+            FROM forum_threads t
+            JOIN users u ON u.id = t.user_id
+            ORDER BY t.created_at DESC
+            LIMIT 3
+        `);
+        res.json({ success: true, threads: result.rows });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Eroare internă.' });
+    }
+});
+
 // ── GET /api/forum/:console/threads ─────────────────────
 router.get('/:console/threads', async (req, res) => {
     const consoleKey = req.params.console;
@@ -256,6 +272,24 @@ router.post('/:console/threads/:id/replies/:replyId/upvote', authRequired, async
         res.json({ success: true, upvotes: result.rows[0]?.upvotes || 0 });
     } catch (err) {
         console.error('Forum reply upvote error:', err);
+        res.status(500).json({ success: false, error: 'Eroare internă.' });
+    }
+});
+
+// ── GET /api/forum/recent ────────────────────────────────
+router.get('/recent', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT t.id, t.title, t.console, t.tag, t.created_at,
+                   u.username, u.avatar
+            FROM forum_threads t
+            JOIN users u ON u.id = t.user_id
+            ORDER BY t.created_at DESC
+            LIMIT 3
+        `);
+        res.json({ success: true, threads: result.rows });
+    } catch (err) {
+        console.error('Forum recent GET error:', err);
         res.status(500).json({ success: false, error: 'Eroare internă.' });
     }
 });
