@@ -41,6 +41,8 @@ const S = {
     marketSort: 'newest',
     marketCondition: '',
     marketConsole: '',
+    marketCountry: '',
+    marketCity: '',
     marketPage: 1,
     repairStep: 0,
     repairSymptoms: [],
@@ -405,6 +407,9 @@ function renderMarketplace() {
     const v = document.getElementById('view-marketplace');
     const u = user();
 
+    // Numără filtrele active (excluzând sort și search)
+    const activeFilters = [S.marketCondition, S.marketConsole, S.marketCountry, S.marketCity].filter(Boolean).length;
+
     v.innerHTML = `
         <div class="hub-view-header">
             <div class="hub-view-header__title">🛒 Marketplace</div>
@@ -413,34 +418,133 @@ function renderMarketplace() {
                 ${u ? '<button class="hub-btn hub-btn--secondary" id="market-dm-btn">💬 Mesaje</button>' : ''}
             </div>
         </div>
-        <div class="hub-market-filters">
-            <input class="hub-market-search" id="market-search" placeholder="Caută anunțuri…">
-            <select class="hub-market-select" id="market-condition">
-                <option value="">Stare: Toate</option>
-                ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}
-            </select>
-            <select class="hub-market-select" id="market-console">
-                <option value="">Consolă: Toate</option>
-                ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}">${c.nume}</option>`).join('')}
-            </select>
-            <select class="hub-market-select" id="market-sort">
-                <option value="newest">Cele mai noi</option>
-                <option value="oldest">Cele mai vechi</option>
-                <option value="price_asc">Preț ↑</option>
-                <option value="price_desc">Preț ↓</option>
+
+        <div class="hub-market-topbar">
+            <input class="hub-market-search" id="market-search" placeholder="Caută anunțuri…" value="${esc(S.marketSearch)}">
+            <button class="hub-btn hub-btn--secondary hub-filter-toggle-btn" id="market-filter-btn">
+                ⚙️ Filtre
+                ${activeFilters > 0 ? `<span class="hub-filter-badge">${activeFilters}</span>` : ''}
+            </button>
+            <select class="hub-market-select" id="market-sort" style="min-width:130px">
+                <option value="newest" ${S.marketSort==='newest'?'selected':''}>Cele mai noi</option>
+                <option value="oldest" ${S.marketSort==='oldest'?'selected':''}>Cele mai vechi</option>
+                <option value="price_asc" ${S.marketSort==='price_asc'?'selected':''}>Preț ↑</option>
+                <option value="price_desc" ${S.marketSort==='price_desc'?'selected':''}>Preț ↓</option>
             </select>
         </div>
-        <div class="hub-market-grid" id="market-grid"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div></div>
+
+        <!-- Filter Drawer Overlay -->
+        <div class="hub-filter-overlay" id="filter-overlay" hidden></div>
+
+        <!-- Filter Drawer -->
+        <div class="hub-filter-drawer" id="filter-drawer">
+            <div class="hub-filter-drawer__header">
+                <span class="hub-filter-drawer__title">⚙️ Filtre</span>
+                <button class="hub-filter-drawer__close" id="filter-close">&times;</button>
+            </div>
+            <div class="hub-filter-drawer__body">
+
+                <div class="hub-filter-section">
+                    <div class="hub-filter-section__label">Stare produs</div>
+                    <select class="hub-form-select" id="market-condition">
+                        <option value="">Toate</option>
+                        ${Object.entries(CONDITIONS).map(([k, val]) => `<option value="${k}" ${S.marketCondition===k?'selected':''}>${val}</option>`).join('')}
+                    </select>
+                </div>
+
+                <div class="hub-filter-section">
+                    <div class="hub-filter-section__label">Consolă</div>
+                    <select class="hub-form-select" id="market-console">
+                        <option value="">Toate</option>
+                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}" ${S.marketConsole===c.id?'selected':''}>${c.nume}</option>`).join('')}
+                    </select>
+                </div>
+
+                <div class="hub-filter-section">
+                    <div class="hub-filter-section__label">Țară</div>
+                    <select class="hub-form-select" id="market-country">
+                        <option value="">Toate țările</option>
+                        ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}" ${S.marketCountry===c.code?'selected':''}>${c.name}</option>`).join('')}
+                    </select>
+                </div>
+
+                <div class="hub-filter-section">
+                    <div class="hub-filter-section__label">Oraș</div>
+                    <select class="hub-form-select" id="market-city" ${!S.marketCountry ? 'disabled' : ''}>
+                        <option value="">Toate orașele</option>
+                        ${S.marketCountry
+                            ? (window.LOCATION_DATA.countries.find(c => c.code === S.marketCountry)?.cities || [])
+                            .map(city => `<option value="${city}" ${S.marketCity===city?'selected':''}>${city}</option>`).join('')
+                            : ''}
+                    </select>
+                    ${!S.marketCountry ? '<div class="hub-filter-hint">Selectează mai întâi o țară</div>' : ''}
+                </div>
+
+            </div>
+            <div class="hub-filter-drawer__footer">
+                <button class="hub-btn hub-btn--secondary" id="filter-reset">Resetează</button>
+                <button class="hub-btn hub-btn--primary" id="filter-apply">Aplică filtrele</button>
+            </div>
+        </div>
+
+        <div class="hub-market-grid" id="market-grid">
+            <div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div>
+        </div>
         <div class="hub-market-pagination" id="market-pagination"></div>`;
 
+    // ── Search ──
     let timer;
     v.querySelector('#market-search').addEventListener('input', e => {
         clearTimeout(timer);
         timer = setTimeout(() => { S.marketSearch = e.target.value.trim(); S.marketPage = 1; loadListings(); }, 300);
     });
-    v.querySelector('#market-condition').addEventListener('change', e => { S.marketCondition = e.target.value; S.marketPage = 1; loadListings(); });
-    v.querySelector('#market-console').addEventListener('change', e => { S.marketConsole = e.target.value; S.marketPage = 1; loadListings(); });
+
+    // ── Sort ──
     v.querySelector('#market-sort').addEventListener('change', e => { S.marketSort = e.target.value; S.marketPage = 1; loadListings(); });
+
+    // ── Filter drawer open/close ──
+    const drawer = v.querySelector('#filter-drawer');
+    const overlay = v.querySelector('#filter-overlay');
+
+    const openDrawer = () => { drawer.classList.add('hub-filter-drawer--open'); overlay.hidden = false; };
+    const closeDrawer = () => { drawer.classList.remove('hub-filter-drawer--open'); overlay.hidden = true; };
+
+    v.querySelector('#market-filter-btn').addEventListener('click', openDrawer);
+    v.querySelector('#filter-close').addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+
+    // ── Country → populate cities ──
+    v.querySelector('#market-country').addEventListener('change', e => {
+    const code = e.target.value;
+    const citySelect = v.querySelector('#market-city');
+    const country = window.LOCATION_DATA.countries.find(c => c.code === code);
+    citySelect.innerHTML = '<option value="">Toate orașele</option>' +
+        (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
+    citySelect.disabled = !code;
+        if (hint) hint.style.display = code ? 'none' : 'block';
+    });
+
+    // ── Apply filters ──
+    v.querySelector('#filter-apply').addEventListener('click', () => {
+        S.marketCondition = v.querySelector('#market-condition').value;
+        S.marketConsole   = v.querySelector('#market-console').value;
+        S.marketCountry   = v.querySelector('#market-country').value;
+        S.marketCity      = v.querySelector('#market-city').value;
+        S.marketPage = 1;
+        closeDrawer();
+        renderMarketplace(); // re-render to update badge count
+        loadListings();
+    });
+
+    // ── Reset filters ──
+    v.querySelector('#filter-reset').addEventListener('click', () => {
+        S.marketCondition = ''; S.marketConsole = ''; S.marketCountry = ''; S.marketCity = '';
+        S.marketPage = 1;
+        closeDrawer();
+        renderMarketplace();
+        loadListings();
+    });
+
     v.querySelector('#market-add-btn')?.addEventListener('click', openAddListingModal);
     v.querySelector('#market-dm-btn')?.addEventListener('click', () => navigate('dm'));
 }

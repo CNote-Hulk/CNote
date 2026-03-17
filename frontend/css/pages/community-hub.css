@@ -313,6 +313,123 @@
     font-size: 0.78rem;
 }
 
+/* ── Favorites ──────────────────────────────────────────── */
+
+/* Topbar search + filtre + sort */
+.hub-market-topbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.hub-market-topbar .hub-market-search {
+    flex: 1;
+    min-width: 160px;
+}
+
+/* Buton filtre cu badge */
+.hub-filter-toggle-btn {
+    position: relative;
+    white-space: nowrap;
+}
+.hub-filter-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--accent-color, #E60012);
+    color: #fff;
+    font-size: .65rem;
+    font-weight: 700;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Overlay */
+.hub-filter-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 200;
+}
+
+/* Drawer */
+.hub-filter-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 320px;
+    max-width: 90vw;
+    background: var(--bg-card, #1a1a2e);
+    border-left: 1px solid var(--border-color, #333);
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform .28s ease;
+}
+.hub-filter-drawer--open {
+    transform: translateX(0);
+}
+.hub-filter-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color, #333);
+}
+.hub-filter-drawer__title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-light);
+}
+.hub-filter-drawer__close {
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+}
+.hub-filter-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.hub-filter-drawer__footer {
+    display: flex;
+    gap: 8px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color, #333);
+}
+.hub-filter-drawer__footer .hub-btn {
+    flex: 1;
+}
+
+/* Secțiune filtru */
+.hub-filter-section__label {
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+}
+.hub-filter-hint {
+    font-size: .75rem;
+    color: var(--text-gray);
+    margin-top: 4px;
+    opacity: .7;
+}
+
 /* ── Tags / Badges ──────────────────────────────────────── */
 
 .hub-tag {
