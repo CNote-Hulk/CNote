@@ -79,11 +79,11 @@ function getVisitedLessonsCount(userId) {
 /** Compute user level from weighted lesson/achievement/quiz scores */
 function computeLevel(lessonsPct, achievementsPct, quizAverage) {
     const score = Math.round((lessonsPct * 0.45) + (achievementsPct * 0.35) + (quizAverage * 0.20));
-    if (score >= 90) return { name: 'Legend', sub: 'Ai stăpânit complet platforma.' };
-    if (score >= 75) return { name: 'Expert', sub: 'Performanță foarte bună pe toate zonele.' };
-    if (score >= 55) return { name: 'Avansat', sub: 'Progres solid, ritm excelent.' };
-    if (score >= 35) return { name: 'Intermediar', sub: 'Bază bună, continuă să consolidezi.' };
-    return { name: 'Novice', sub: 'Ești la început. Continuă lecțiile și quiz-urile.' };
+    if (score >= 90) return { name: 'Legend', sub: 'You have fully mastered the platform.' };
+    if (score >= 75) return { name: 'Expert', sub: 'Excellent performance across all areas.' };
+    if (score >= 55) return { name: 'Advanced', sub: 'Solid progress, keep the momentum.' };
+    if (score >= 35) return { name: 'Intermediate', sub: 'Good foundation, keep building.' };
+    return { name: 'Novice', sub: 'You are just getting started. Keep going through lessons and quizzes.' };
 }
 
 /** Render next achievement goals (up to 6 locked badges) */
@@ -91,7 +91,7 @@ function renderGoals(badges) {
     const container = document.getElementById('next-goals');
     const locked = badges.filter((b) => !b.earned).slice(0, 6);
     if (!locked.length) {
-        container.innerHTML = '<div class="next-goal-item">✅ Ai deblocat toate realizările disponibile.</div>';
+        container.innerHTML = '<div class="next-goal-item">✅ You have unlocked all available achievements.</div>';
         return;
     }
 
@@ -139,19 +139,19 @@ function renderStats() {
     const level = computeLevel(lessonsPct, achievementsPct, quiz.bestAverage);
 
     document.getElementById('stat-lessons-completed').textContent = String(completedLessons);
-    document.getElementById('stat-lessons-sub').textContent = `din ${totalLessons} lecții (${lessonsPct}%)`;
+    document.getElementById('stat-lessons-sub').textContent = `of ${totalLessons} lessons (${lessonsPct}%)`;
     document.getElementById('stat-lessons-fill').style.width = `${lessonsPct}%`;
     document.getElementById('stat-lessons-visited').textContent = String(visitedLessons);
-    document.getElementById('stat-lessons-visited-sub').textContent = `din ${totalLessons} lecții`;
+    document.getElementById('stat-lessons-visited-sub').textContent = `of ${totalLessons} lessons`;
 
     document.getElementById('stat-courses-completed').textContent = String(completedCourses);
-    document.getElementById('stat-courses-sub').textContent = `din ${courses.length} cursuri`;
+    document.getElementById('stat-courses-sub').textContent = `of ${courses.length} courses`;
 
     document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
-    document.getElementById('stat-achievements-sub').textContent = `din ${allBadges.length} badge-uri (${achievementsPct}%)`;
+    document.getElementById('stat-achievements-sub').textContent = `of ${allBadges.length} badges (${achievementsPct}%)`;
 
     document.getElementById('stat-quiz-attempts').textContent = String(quiz.attempts);
-    document.getElementById('stat-quiz-sub').textContent = `best score mediu: ${quiz.bestAverage}%`;
+    document.getElementById('stat-quiz-sub').textContent = `avg best score: ${quiz.bestAverage}%`;
 
     document.getElementById('stat-perfect-lessons').textContent = String(quiz.perfectLessons);
     document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);

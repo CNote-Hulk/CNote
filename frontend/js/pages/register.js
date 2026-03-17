@@ -15,7 +15,7 @@ if (AuthModule.isLoggedIn()) {
 const pwdInput = document.getElementById('reg-password');
 const strengthWrap = document.getElementById('password-strength');
 const rules = [
-    { label: '8+ caractere', test: v => v.length >= 8 },
+    { label: '8+ characters', test: v => v.length >= 8 },
     { label: 'A-Z', test: v => /[A-Z]/.test(v) },
     { label: '0-9', test: v => /[0-9]/.test(v) },
     { label: '!@#$…', test: v => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v) }
@@ -53,10 +53,10 @@ usernameInput.addEventListener('input', () => {
             const d = await r.json();
             if (usernameInput.value.trim() !== val) return;
             if (d.available) {
-                usernameStatus.textContent = '✓ Disponibil';
+                usernameStatus.textContent = '✓ Available';
                 usernameStatus.style.color = '#4ade80';
             } else {
-                usernameStatus.textContent = '✗ Username-ul este deja folosit';
+                usernameStatus.textContent = '✗ Username is already taken';
                 usernameStatus.style.color = '#f87171';
             }
         } catch {
@@ -78,7 +78,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     errorEl.classList.remove('visible');
     if (successEl) successEl.classList.remove('visible');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Se creează contul...';
+    submitBtn.textContent = 'Creating account...';
 
     try {
         const result = await AuthModule.register(username, email, password);
@@ -93,11 +93,11 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
             errorEl.classList.add('visible');
         }
     } catch {
-        errorEl.textContent = 'Nu s-a putut contacta serverul.';
+        errorEl.textContent = 'Unable to contact the server.';
         errorEl.classList.add('visible');
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Creează Cont';
+        submitBtn.textContent = 'Create account';
     }
 });
 

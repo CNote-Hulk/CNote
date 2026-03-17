@@ -14,7 +14,7 @@ document.getElementById('request-reset-form').addEventListener('submit', async f
     errorEl.classList.remove('visible');
     successEl.classList.remove('visible');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Se trimite...';
+    submitBtn.textContent = 'Sending...';
 
     try {
         const res = await fetch(API_BASE_URL + '/request-reset', {
@@ -25,17 +25,17 @@ document.getElementById('request-reset-form').addEventListener('submit', async f
         const data = await res.json();
 
         if (data.success) {
-            successEl.textContent = data.message || 'Verifică inbox-ul pentru linkul de resetare.';
+            successEl.textContent = data.message || 'Check your inbox for the reset link.';
             successEl.classList.add('visible');
         } else {
-            errorEl.textContent = data.error || 'A apărut o eroare.';
+            errorEl.textContent = data.error || 'An error occurred.';
             errorEl.classList.add('visible');
         }
     } catch {
-        errorEl.textContent = 'Nu s-a putut contacta serverul. Încearcă din nou.';
+        errorEl.textContent = 'Unable to contact the server. Please try again.';
         errorEl.classList.add('visible');
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Trimite Link de Resetare';
+        submitBtn.textContent = 'Send reset link';
     }
 });

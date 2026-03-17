@@ -6,6 +6,7 @@
 import { getConsoleById, getConsoleIdFromUrl, resolveImagePath } from '../data/data-loader.js';
 import { AchievementsModule } from '../modules/achievements.js';
 import { AuthModule } from '../modules/auth.js';
+import { I18nModule } from '../modules/i18n.js';
 import { API_BASE_URL } from '../config.js';
 
 /** Remove leftover Chrome UI elements from page template */
@@ -22,6 +23,7 @@ function cleanupConsolePageChrome() {
  * Loaded from image-dimensions.json
  */
 let IMAGE_DIMENSIONS = {};
+let currentConsole = null;
 
 /**
  * Load image dimensions from JSON file
@@ -42,79 +44,81 @@ async function loadImageDimensions() {
 }
 
 /**
- * Spec section definitions - maps JSON keys to display labels
+ * Build spec section definitions based on current language.
  */
-const SPEC_SECTIONS = [
-    {
-        group: 'Principale',
-        cards: [
-            {
-                title: 'Procesare (CPU)',
-                render: (c) => formatList([
-                    ['Arhitectură', c.cpu.arhitectura],
-                    ['Proces', c.cpu.proces_nm],
-                    ['Nuclee', c.cpu.nuclee],
-                    ['Frecvență', c.cpu.frecventa],
-                    ['TDP', c.cpu.tdp]
-                ])
-            },
-            {
-                title: 'Grafică (GPU)',
-                render: (c) => formatList([
-                    ['Arhitectură', c.gpu.arhitectura],
-                    ['Unități', c.gpu.unitati],
-                    ['Frecvență', c.gpu.frecventa],
-                    ['TFLOPS', c.gpu.tflops],
-                    ['Capabilități', c.gpu.capabilitati]
-                ])
-            },
-            {
-                title: 'Memorie',
-                render: (c) => formatList([
-                    ['Tip', c.memorie.tip],
-                    ['Capacitate', c.memorie.capacitate],
-                    ['Magistrală', c.memorie.magistrala],
-                    ['Bandwidth', c.memorie.bandwidth]
-                ])
-            },
-            {
-                title: 'Stocare',
-                render: (c) => formatList([
-                    ['Tip', c.stocare.tip],
-                    ['Interfață', c.stocare.interfata],
-                    ['Viteză', c.stocare.viteza]
-                ])
-            }
-        ]
-    },
-    {
-        group: 'Secundare',
-        cards: [
-            {
-                title: 'Output Video',
-                render: (c) => formatList([
-                    ['Rezoluție', c.output_video.rezolutie],
-                    ['Refresh', c.output_video.refresh],
-                    ['HDR', c.output_video.hdr],
-                    ['Upscaling', c.output_video.upscaling]
-                ])
-            },
-            {
-                title: 'Tehnologii',
-                render: (c) => formatList([
-                    ['Ray Tracing', formatBool(c.tehnologii.ray_tracing)],
-                    ['VRR', formatBool(c.tehnologii.vrr)],
-                    ['Backwards Compat', c.tehnologii.backwards_compatibility],
-                    ['Altele', c.tehnologii.altele]
-                ])
-            }
-        ]
-    }
-];
+function getSpecSections(consola) {
+    return [
+        {
+            group: I18nModule.t('spec_group_primary'),
+            cards: [
+                {
+                    title: I18nModule.t('spec_cpu_title'),
+                    render: (c) => formatList([
+                        [I18nModule.t('spec_label_architecture'), c.cpu.arhitectura],
+                        [I18nModule.t('spec_label_process'), c.cpu.proces_nm],
+                        [I18nModule.t('spec_label_cores'), c.cpu.nuclee],
+                        [I18nModule.t('spec_label_clock'), c.cpu.frecventa],
+                        [I18nModule.t('spec_label_tdp'), c.cpu.tdp]
+                    ])
+                },
+                {
+                    title: I18nModule.t('spec_gpu_title'),
+                    render: (c) => formatList([
+                        [I18nModule.t('spec_label_architecture'), c.gpu.arhitectura],
+                        [I18nModule.t('spec_label_units'), c.gpu.unitati],
+                        [I18nModule.t('spec_label_clock'), c.gpu.frecventa],
+                        [I18nModule.t('spec_label_tflops'), c.gpu.tflops],
+                        [I18nModule.t('spec_label_capabilities'), c.gpu.capabilitati]
+                    ])
+                },
+                {
+                    title: I18nModule.t('spec_memory_title'),
+                    render: (c) => formatList([
+                        [I18nModule.t('spec_label_type'), c.memorie.tip],
+                        [I18nModule.t('spec_label_capacity'), c.memorie.capacitate],
+                        [I18nModule.t('spec_label_bus'), c.memorie.magistrala],
+                        [I18nModule.t('spec_label_bandwidth'), c.memorie.bandwidth]
+                    ])
+                },
+                {
+                    title: I18nModule.t('spec_storage_title'),
+                    render: (c) => formatList([
+                        [I18nModule.t('spec_label_type'), c.stocare.tip],
+                        [I18nModule.t('spec_label_interface'), c.stocare.interfata],
+                        [I18nModule.t('spec_label_speed'), c.stocare.viteza]
+                    ])
+                }
+            ]
+        },
+        {
+            group: I18nModule.t('spec_group_secondary'),
+            cards: [
+                {
+                    title: I18nModule.t('spec_output_title'),
+                    render: (c) => formatList([
+                        [I18nModule.t('spec_label_resolution'), c.output_video.rezolutie],
+                        [I18nModule.t('spec_label_refresh'), c.output_video.refresh],
+                        [I18nModule.t('spec_label_hdr'), c.output_video.hdr],
+                        [I18nModule.t('spec_label_upscaling'), c.output_video.upscaling]
+                    ])
+                },
+                {
+                    title: I18nModule.t('spec_tech_title'),
+                    render: (c) => formatList([
+                        ['Ray Tracing', formatBool(c.tehnologii.ray_tracing)],
+                        ['VRR', formatBool(c.tehnologii.vrr)],
+                        [I18nModule.t('spec_label_backwards_compat') || 'Backwards Compat', c.tehnologii.backwards_compatibility],
+                        [I18nModule.t('spec_label_capabilities'), c.tehnologii.altele]
+                    ])
+                }
+            ]
+        }
+    ];
+}
 
 function formatBool(val) {
-    if (val === true) return 'Da';
-    if (val === false) return 'Nu';
+    if (val === true) return I18nModule.t('spec_yes');
+    if (val === false) return I18nModule.t('spec_no');
     return val || 'N/A';
 }
 
@@ -128,6 +132,20 @@ function formatList(pairs) {
     return filtered.map(([label, val]) => `<strong>${label}:</strong> ${val}`).join('<br>');
 }
 
+function getLocalizedField(obj, key) {
+    if (!obj) return undefined;
+    const langKey = `${key}_${I18nModule.lang}`;
+    return obj[langKey] ?? obj[key];
+}
+
+function getLocalizedArray(obj, key) {
+    if (!obj) return [];
+    const langKey = `${key}_${I18nModule.lang}`;
+    if (Array.isArray(obj[langKey])) return obj[langKey];
+    if (Array.isArray(obj[key])) return obj[key];
+    return [];
+}
+
 /**
  * Render specs sections into the page
  */
@@ -136,9 +154,9 @@ function renderSpecs(consola) {
     const specsContainer = document.querySelector('.specs-section .container');
     if (!specsContainer) return;
 
-    let html = '<h2 class="section-title">Specificații Cheie</h2>';
+    let html = `<h2 class="section-title">${I18nModule.t('console_specs_title')}</h2>`;
 
-    SPEC_SECTIONS.forEach(section => {
+    getSpecSections(consola).forEach(section => {
         html += `
             <div class="specs-group">
                 <h3 class="specs-group-title">${section.group}</h3>
@@ -155,23 +173,25 @@ function renderSpecs(consola) {
     });
 
     // Verdict section (avantaje / dezavantaje)
-    if (consola.avantaje?.length || consola.dezavantaje?.length) {
+    const pros = getLocalizedArray(consola, 'avantaje');
+    const cons = getLocalizedArray(consola, 'dezavantaje');
+    if (pros.length || cons.length) {
         html += `
             <div class="specs-group">
-                <h3 class="specs-group-title">Verdict</h3>
+                <h3 class="specs-group-title">${I18nModule.t('console_verdict_title')}</h3>
                 <div class="specs-grid">
-                    ${consola.avantaje?.length ? `
+                    ${pros.length ? `
                     <div class="spec-card">
-                        <h4>Avantaje</h4>
+                        <h4>${I18nModule.t('console_pros_title')}</h4>
                         <ul class="verdict-list pros-list">
-                            ${consola.avantaje.map(p => `<li class="pro-item">✓ ${p}</li>`).join('')}
+                            ${pros.map(p => `<li class="pro-item">✓ ${p}</li>`).join('')}
                         </ul>
                     </div>` : ''}
-                    ${consola.dezavantaje?.length ? `
+                    ${cons.length ? `
                     <div class="spec-card">
-                        <h4>Dezavantaje</h4>
+                        <h4>${I18nModule.t('console_cons_title')}</h4>
                         <ul class="verdict-list cons-list">
-                            ${consola.dezavantaje.map(c => `<li class="con-item">✗ ${c}</li>`).join('')}
+                            ${cons.map(c => `<li class="con-item">✗ ${c}</li>`).join('')}
                         </ul>
                     </div>` : ''}
                 </div>
@@ -205,11 +225,12 @@ function renderHistory(consola) {
     }
 
     const container = historySection.querySelector('.container');
-    const titleHtml = '<h2 class="section-title">Istorie</h2>';
+    const titleHtml = `<h2 class="section-title">${I18nModule.t('console_history_title')}</h2>`;
 
     let historyHtml = '';
-    if (consola.istorie && String(consola.istorie).trim()) {
-        let text = String(consola.istorie);
+    const historyText = getLocalizedField(consola, 'istorie') || '';
+    if (historyText && String(historyText).trim()) {
+        let text = String(historyText);
 
         // Normalize: convert <br><br> to \n\n so both patterns split the same way
         text = text.replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n\n');
@@ -269,7 +290,13 @@ function renderHistory(consola) {
 
         pushCurrent();
 
-        const autoTitles = ['Context', 'Detalii', 'Evoluție', 'Impact', 'Moștenire'];
+        const autoTitles = [
+            I18nModule.t('history_auto_title_1'),
+            I18nModule.t('history_auto_title_2'),
+            I18nModule.t('history_auto_title_3'),
+            I18nModule.t('history_auto_title_4'),
+            I18nModule.t('history_auto_title_5')
+        ];
         let autoIndex = 0;
 
         const rendered = sections.map(section => {
@@ -296,28 +323,37 @@ function renderHistory(consola) {
  */
 /** Render the hero section: image, title, tagline, action buttons */
 function renderHero(consola) {
+    const titleText = getLocalizedField(consola, 'nume') || I18nModule.t('hero_title');
+
     // Update title
     const h1 = document.querySelector('.console-hero-text h1');
     if (h1) {
-        h1.textContent = consola.nume;
+        h1.textContent = titleText;
+
         // Add favorite heart button next to title
         const heartBtn = document.createElement('button');
         heartBtn.className = 'favorite-heart-btn';
         heartBtn.id = 'favorite-heart-btn';
         heartBtn.type = 'button';
-        heartBtn.title = 'Adaugă la favorite';
+        const favLabel = I18nModule.t('console_favorite_add');
+        heartBtn.title = favLabel;
         heartBtn.innerHTML = '♡';
-        heartBtn.setAttribute('aria-label', 'Adaugă la favorite');
+        heartBtn.setAttribute('aria-label', favLabel);
         h1.appendChild(heartBtn);
     }
 
     // Update meta info
     const metaContainer = document.querySelector('.console-hero-text .console-meta');
     if (metaContainer) {
+        const manufacturer = getLocalizedField(consola, 'producator') || '';
+        const year = consola.lansare || '';
+        const genLabel = I18nModule.t('console_generation_prefix');
+        const generation = getLocalizedField(consola, 'generatie') || '';
+
         metaContainer.innerHTML = `
-            <span>${consola.producator}</span>
-            <span>${consola.lansare}</span>
-            <span>Generația ${consola.generatie}</span>
+            <span>${manufacturer}</span>
+            <span>${year}</span>
+            <span>${genLabel} ${generation}</span>
         `;
     }
 
@@ -353,12 +389,12 @@ function renderRatingWidget(consoleId) {
     section.className = 'section rating-section';
     section.innerHTML = `
         <div class="container">
-            <h2 class="section-title">Rating Comunitate</h2>
+            <h2 class="section-title">${I18nModule.t('console_rating_title')}</h2>
             <div class="rating-widget" id="rating-widget">
                 <div class="rating-summary" id="rating-summary">
                     <div class="rating-stars-display" id="rating-stars-display"></div>
                     <div class="rating-avg" id="rating-avg">— / 5</div>
-                    <div class="rating-count" id="rating-count">Se încarcă...</div>
+                    <div class="rating-count" id="rating-count">${I18nModule.t('console_rating_loading')}</div>
                 </div>
                 <div class="rating-user" id="rating-user"></div>
             </div>
@@ -391,15 +427,17 @@ function renderInteractiveStars(currentRating, consoleId) {
     if (!container) return;
 
     if (!user) {
-        container.innerHTML = '<p class="rating-login-msg">Conectează-te pentru a evalua această consolă. <a href="../login.html">Conectare</a></p>';
+        const loginText = I18nModule.t('console_rating_login');
+        const loginLink = I18nModule.t('console_rating_login_link');
+        container.innerHTML = `<p class="rating-login-msg">${loginText} <a href="../login.html">${loginLink}</a></p>`;
         return;
     }
 
     const selected = currentRating || 0;
     container.innerHTML = `
-        <p class="rating-your-label">${selected ? 'Rating-ul tău:' : 'Evaluează această consolă:'}</p>
+        <p class="rating-your-label">${selected ? I18nModule.t('console_rating_your_label') : I18nModule.t('console_rating_rate_label')}</p>
         <div class="rating-interactive" id="rating-interactive">
-            ${[1,2,3,4,5].map(i => `<button class="star-btn${i <= selected ? ' active' : ''}" data-value="${i}" title="${i} stea${i > 1 ? 'le' : ''}">★</button>`).join('')}
+            ${[1,2,3,4,5].map(i => `<button class="star-btn${i <= selected ? ' active' : ''}" data-value="${i}" title="${i} ${I18nModule.t('console_rating_star_label')}">★</button>`).join('')}
         </div>
     `;
 
@@ -483,7 +521,7 @@ async function initFavoriteButton(consoleId) {
 
     const user = AuthModule.getCurrentUser();
     if (!user) {
-        btn.title = 'Conectează-te pentru a adăuga la favorite';
+        btn.title = I18nModule.t('console_favorite_login');
         btn.addEventListener('click', () => {
             window.location.href = '../login.html';
         });
@@ -504,7 +542,7 @@ async function initFavoriteButton(consoleId) {
         if (data.success && data.isFavorite) {
             btn.classList.add('active');
             btn.innerHTML = '♥';
-            btn.title = 'Elimină de la favorite';
+            btn.title = I18nModule.t('console_favorite_remove');
         }
     } catch { /* ignore */ }
 
@@ -523,7 +561,7 @@ async function initFavoriteButton(consoleId) {
             if (data.success) {
                 btn.classList.toggle('active', data.isFavorite);
                 btn.innerHTML = data.isFavorite ? '♥' : '♡';
-                btn.title = data.isFavorite ? 'Elimină de la favorite' : 'Adaugă la favorite';
+                btn.title = data.isFavorite ? I18nModule.t('console_favorite_remove') : I18nModule.t('console_favorite_add');
             }
         } catch { /* ignore */ }
     });
@@ -550,11 +588,20 @@ async function init() {
         return;
     }
 
-    renderHero(consola);
-    renderHistory(consola);
-    renderSpecs(consola);
+    currentConsole = consola;
+
+    renderHero(currentConsole);
+    renderHistory(currentConsole);
+    renderSpecs(currentConsole);
     renderRatingWidget(consoleId);
     initFavoriteButton(consoleId);
+
+    window.addEventListener('cn:language-changed', () => {
+        if (!currentConsole) return;
+        renderHero(currentConsole);
+        renderHistory(currentConsole);
+        renderSpecs(currentConsole);
+    });
 
     AchievementsModule.trackConsoleVisit(consoleId);
     window.dispatchEvent(new CustomEvent('cn:console-visited', {

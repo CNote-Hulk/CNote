@@ -250,8 +250,8 @@
 
 .idx-timeline-dot {
     position: absolute;
-    left: 14px;
-    top: 50%;
+    left: -20px;
+    top: 30%;
     transform: translateY(-50%);
     width: 10px;
     height: 10px;

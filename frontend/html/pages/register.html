@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <!-- ===========================
          REGISTER PAGE
@@ -7,17 +7,17 @@
          =========================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Creează cont — Console Notebook">
+    <meta name="description" content="Create account — Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
-    <title>Creează Cont — Console Notebook</title>
+    <title>Create Account — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css">
 </head>
 <body>
     <!-- NAVIGATION BAR -->
     <nav class="navbar">
         <div class="container">
-                        <button class="navbar-search-btn" aria-label="Caută" type="button">
+                        <button class="navbar-search-btn" aria-label="Search" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <a href="index.html" class="logo">Console Notebook</a>
@@ -27,16 +27,16 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="community.html">Comunitate</a></li>
-                <li><a href="invata.html">Învață</a></li>
-                <li><a href="evolutie.html">Evoluție</a></li>
-                <li><a href="comparatie.html">Comparație</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="invata.html">Learn</a></li>
+                <li><a href="evolutie.html">Evolution</a></li>
+                <li><a href="comparatie.html">Compare</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
 
             
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profil" type="button">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -45,8 +45,8 @@
 
     <div class="auth-page">
         <div class="auth-card">
-            <h1 class="auth-card__title">Creează Cont</h1>
-            <p class="auth-card__subtitle">Înregistrează-te pentru a-ți urmări progresul</p>
+            <h1 class="auth-card__title">Create Account</h1>
+            <p class="auth-card__subtitle">Sign up to track your progress</p>
             
             <div class="auth-error" id="register-error"></div>
             <div class="auth-error" id="register-success" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
@@ -55,46 +55,46 @@
             <div id="register-form-wrap">
             <form class="auth-form" id="register-form" autocomplete="on">
                 <div class="auth-field">
-                    <label for="reg-username">Nume utilizator</label>
-                    <input type="text" id="reg-username" name="username" required autocomplete="username" placeholder="3-20 caractere (litere, cifre, _)" minlength="3" maxlength="20">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" name="username" required autocomplete="username" placeholder="3-20 characters (letters, numbers, _)" minlength="3" maxlength="20">
                     <div id="username-status" style="font-size:0.8rem;margin-top:6px;min-height:1.2em;"></div>
                 </div>
                 <div class="auth-field">
                     <label for="reg-email">Email</label>
-                    <input type="email" id="reg-email" name="email" required autocomplete="email" placeholder="exemplu@email.com">
+                    <input type="email" id="reg-email" name="email" required autocomplete="email" placeholder="example@email.com">
                 </div>
                 <div class="auth-field">
-                    <label for="reg-password">Parolă</label>
-                    <input type="password" id="reg-password" name="new-password" required autocomplete="new-password" placeholder="Minim 8 caractere" minlength="8">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" name="new-password" required autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8">
                     <div id="password-strength" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
                 </div>
-                <button type="submit" class="auth-btn">Creează Cont</button>
+                <button type="submit" class="auth-btn">Create account</button>
             </form>
 
             <div class="auth-separator">
                 <hr>
-                <span>sau</span>
+                <span>or</span>
                 <hr>
             </div>
 
             <button type="button" id="google-register-btn" class="auth-btn auth-btn--google">
                 <span class="auth-btn--google-icon">G</span>
-                Înregistrează-te cu Google
+                Sign up with Google
             </button>
             
-            <p class="auth-link">Ai deja cont? <a href="login.html">Conectare</a></p>
+            <p class="auth-link">Already have an account? <a href="login.html">Log in</a></p>
             </div>
 
             <!-- Success screen (hidden until registration succeeds) -->
             <div id="register-success-screen" style="display: none; text-align: center; padding: 1.5rem 0;">
                 <div style="font-size: 3rem; margin-bottom: 0.75rem;">✉️</div>
-                <h2 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Cont creat cu succes!</h2>
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Account created successfully!</h2>
                 <p style="color: var(--text-light, #ccc); font-size: 0.95rem; margin-bottom: 0.75rem; line-height: 1.5;">
-                    Am trimis un email de verificare la <strong id="register-sent-email"></strong>.<br>
-                    Verifică căsuța de email și dă click pe link pentru a-ți activa contul.
+                    We sent a verification email to <strong id="register-sent-email"></strong>.<br>
+                    Check your inbox and click the link to activate your account.
                 </p>
-                <p style="color: var(--text-muted, #888); font-size: 0.82rem; margin-bottom: 1.25rem;">Nu ai primit emailul? Verifică și folderul Spam.</p>
-                <a href="login.html" class="auth-btn" style="display: inline-block; text-decoration: none; text-align: center;">Mergi la Autentificare</a>
+                <p style="color: var(--text-muted, #888); font-size: 0.82rem; margin-bottom: 1.25rem;">Didn’t receive the email? Check your Spam folder.</p>
+                <a href="login.html" class="auth-btn" style="display: inline-block; text-decoration: none; text-align: center;">Go to login</a>
             </div>
         </div>
     </div>
