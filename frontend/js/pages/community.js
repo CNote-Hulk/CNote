@@ -169,6 +169,14 @@ function closeMobileSidebar() {
 
 /** Navigate to a view, optionally filtering by console and category */
 function navigate(view, con, cat) {
+    const hashParts = [view];
+    if (con) hashParts.push(con);
+    if (cat) hashParts.push(cat);
+    const newHash = '#' + hashParts.join('/');
+    if (window.location.hash !== newHash) {
+        history.replaceState(null, '', newHash);
+    }
+    
     switch (view) {
         case 'chat':
             showView('chat');
@@ -517,11 +525,12 @@ function renderMarketplace() {
     v.querySelector('#market-country').addEventListener('change', e => {
     const code = e.target.value;
     const citySelect = v.querySelector('#market-city');
+    const hint = v.querySelector('.hub-filter-hint');
     const country = window.LOCATION_DATA.countries.find(c => c.code === code);
     citySelect.innerHTML = '<option value="">Toate orașele</option>' +
         (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
     citySelect.disabled = !code;
-        if (hint) hint.style.display = code ? 'none' : 'block';
+    if (hint) hint.style.display = code ? 'none' : 'block';
     });
 
     // ── Apply filters ──
@@ -569,6 +578,8 @@ async function loadListings() {
         if (S.marketCondition) p.set('condition',  S.marketCondition);
         if (S.marketConsole)   p.set('console_type', S.marketConsole);
         if (S.marketSearch)    p.set('search',     S.marketSearch);
+        if (S.marketCountry) p.set('country', S.marketCountry);
+        if (S.marketCity)    p.set('city',    S.marketCity);
         p.set('sort', S.marketSort);
         p.set('page', S.marketPage);
 
@@ -1584,9 +1595,36 @@ initNotifications();
 // Deep link: #listing-{id} opens listing detail directly
 (function checkDeepLink() {
     const hash = window.location.hash;
-    const m = hash.match(/^#listing-(\d+)$/);
-    if (m) {
+
+    // Deep link listing: #listing-123
+    const listingMatch = hash.match(/^#listing-(\d+)$/);
+    if (listingMatch) {
         showView('marketplace');
-        openListingDetail(+m[1]);
+        openListingDetail(+listingMatch[1]);
+        return;
     }
+
+    // Secțiune: #marketplace, #marketplace/consoles, #forum/ps, etc.
+    if (hash && hash.length > 1) {
+        const parts = hash.slice(1).split('/');
+        const view = parts[0];
+        const con  = parts[1] || null;
+        const cat  = parts[2] || '';
+
+        const validViews = ['chat', 'forum', 'marketplace', 'repair', 'dm'];
+        if (validViews.includes(view)) {
+            // Marchează sidebar-ul activ
+            sidebar?.querySelectorAll('.hub-sidebar__item').forEach(item => {
+                const match = item.dataset.view === view &&
+                    (item.dataset.console || null) === con &&
+                    (item.dataset.category ?? '') === cat;
+                item.classList.toggle('hub-sidebar__item--active', match);
+            });
+            navigate(view, con, cat);
+            return;
+        }
+    }
+
+    // Default: chat
+    navigate('chat', null, '');
 })();
