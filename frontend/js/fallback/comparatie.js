@@ -68,21 +68,6 @@
         });
     }
 
-    /** Try loading console data via fetch first, fall back to XHR */
-    function tryFetchJson() {
-        // Use pre-loaded global data first (works on file://)
-        if (window.CONSOLES_DATA) {
-            return Promise.resolve(window.CONSOLES_DATA);
-        }
-        const path = '../../js/data/consoles.json';
-        if (window.location.protocol === 'file:') {
-            return loadJsonWithXhr(path).catch(() => null);
-        }
-        return fetch(path)
-            .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-            .catch(() => null);
-    }
-
     /** Initialize comparison app with loaded console data */
     function startApp(data) {
         consolesData = data;
