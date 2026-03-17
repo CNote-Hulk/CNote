@@ -27,15 +27,15 @@ cards.forEach(c => observer.observe(c));
     const consoleLabel = { ps: 'PlayStation', xbox: 'Xbox', nintendo: 'Nintendo', pc: 'PC Gaming', general: 'General' };
 
     try {
-        const [threadsRes, listingsRes, usersRes] = await Promise.all([
+        const [threadsRes, listingsRes, activeRes] = await Promise.all([
             fetch('/api/forum/recent'),
             fetch('/api/marketplace/listings?sort=newest&limit=2'),
-            fetch('/api/users/count')
+            fetch('/api/users/active-count')
         ]);
-        const usersData = await usersRes.json();
-        const userCount = usersData.count || 0;
         const threadsData  = await threadsRes.json();
         const listingsData = await listingsRes.json();
+        const activeData   = await activeRes.json();
+        const activeCount  = activeData.count || 0;
 
         const threads  = (threadsData.threads  || []).slice(0, 2);
         const listings = (listingsData.listings || []).slice(0, 1);
@@ -73,8 +73,8 @@ cards.forEach(c => observer.observe(c));
             </div>
             <div class="online-indicator">
                 <div class="online-dot"></div>
-                <span><strong style="color:var(--text-primary,#F0EBE3)">${userCount}</strong> membri înregistrați</span>
-            </div>`;
+                <span><strong style="color:var(--text-primary,#F0EBE3)">${activeCount}</strong> membri activi acum</span>
+            </div>
     } catch {
         preview.innerHTML = '<div style="color:var(--text-muted,#7a7672);font-size:.8rem;padding:8px 0">Nu s-au putut încărca datele.</div>';
     }
