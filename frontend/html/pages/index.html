@@ -15,6 +15,8 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     
     <title>CNote (Console Notebook)</title>
     
@@ -23,7 +25,7 @@
          =========================== -->
     <!-- Main CSS - imports all modules -->
     <link rel="stylesheet" href="../../css/production.css">
-    
+    <link rel="stylesheet" href="../../css/pages/index-cards.css">
     
     <!-- KaTeX CDN - for math equation rendering -->
     <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
@@ -91,30 +93,127 @@
                 Aici poți descoperi console, învăța cum funcționează și contribui la păstrarea unei bucăți importante din cultura gaming-ului.
             </p>
 
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>📚 Învață</h3>
-                    <p>Curs complet de inginerie în console — electricitate, electronică, logică digitală, arhitectură hardware și diagnostic.</p>
-                    <a href="invata.html" class="demo-button">Începe Cursul</a>
-                </div>
-                
-                <div class="card">
-                    <h3>📈 Evoluția Consolelor</h3>
-                    <p>De la Atari 2600 la PlayStation 5 - o călătorie prin istoria și evoluția tehnologică a consolelor.</p>
-                    <a href="evolutie.html" class="demo-button">Vezi Evoluția</a>
-                </div>
-                
-                <div class="card">
-                    <h3>⚖️ Comparație</h3>
-                    <p>PS5 vs Xbox Series X vs Nintendo Switch - analiză detaliată a specificațiilor și performanțelor.</p>
-                    <a href="comparatie.html" class="demo-button">Compară Console</a>
+            <div class="hub-grid">
+
+                <div class="hub-card__preview">
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                        <div style="display:flex;align-items:center;gap:10px;background:rgba(212,162,78,0.06);border:1px solid rgba(212,162,78,0.12);border-radius:12px;padding:12px 14px">
+                            <span style="font-size:1.2rem">📖</span>
+                            <div>
+                                <div style="font-size:.78rem;color:var(--text-primary,#F0EBE3);font-weight:500">Curs Hardware & Arhitectură</div>
+                                <div style="font-size:.7rem;color:var(--text-muted,#7a7672);margin-top:2px">Electricitate, electronică, CPU, GPU și diagnostic hardware.</div>
+                            </div>
+                            <span style="margin-left:auto;font-size:.65rem;background:rgba(74,222,128,.08);color:#4ade80;border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:2px 8px;white-space:nowrap;align-self:flex-start">Activ</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 14px">
+                            <span style="font-size:1.2rem">🔧</span>
+                            <div>
+                                <div style="font-size:.78rem;color:var(--text-muted,#7a7672);font-weight:500">Curs Reparații Console</div>
+                                <div style="font-size:.7rem;color:var(--text-muted,#7a7672);margin-top:2px">Identificarea defecțiunilor, înlocuirea componentelor și depanare practică.</div>
+                            </div>
+                            <span style="margin-left:auto;font-size:.65rem;background:rgba(212,162,78,0.1);color:#D4A24E;border:1px solid rgba(212,162,78,0.2);border-radius:10px;padding:2px 8px;white-space:nowrap;align-self:flex-start">În curând</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:12px 14px">
+                            <span style="font-size:1.2rem">⚙️</span>
+                            <div>
+                                <div style="font-size:.78rem;color:var(--text-muted,#7a7672);font-weight:500">Curs Modare Console</div>
+                                <div style="font-size:.7rem;color:var(--text-muted,#7a7672);margin-top:2px">Custom firmware, homebrew, modchip-uri și personalizare hardware.</div>
+                            </div>
+                            <span style="margin-left:auto;font-size:.65rem;background:rgba(212,162,78,0.1);color:#D4A24E;border:1px solid rgba(212,162,78,0.2);border-radius:10px;padding:2px 8px;white-space:nowrap;align-self:flex-start">În curând</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h3>💬 Comunitate</h3>
-                    <p>Discuții, chat și marketplace dedicate consolelor — totul într-un singur loc. În curând.</p>
-                    <a href="community.html" class="demo-button">Vezi Comunitatea</a>
+                <div class="hub-card">
+                    <div class="hub-card__accent" style="background:#9B59B6"></div>
+                    <div class="hub-card__header">
+                        <div class="hub-card__header-left">
+                            <div class="hub-card__icon">⏳</div>
+                            <div>
+                                <div class="hub-card__title">Evoluția Consolelor</div>
+                                <div class="hub-card__subtitle">50 de ani de gaming</div>
+                            </div>
+                        </div>
+                        <div class="hub-card__badge">1972 → 2024</div>
+                    </div>
+                    <div class="hub-card__preview">
+                        <div class="timeline">
+                            <div class="timeline-item"><div class="timeline-year">1977</div><div class="timeline-name">Atari 2600</div><div class="timeline-desc">Pionierul</div></div>
+                            <div class="timeline-item"><div class="timeline-year">1994</div><div class="timeline-name">PlayStation</div><div class="timeline-desc">Revoluția 3D</div></div>
+                            <div class="timeline-item"><div class="timeline-year">2001</div><div class="timeline-name">Xbox</div><div class="timeline-desc">Online gaming</div></div>
+                            <div class="timeline-item"><div class="timeline-year">2020</div><div class="timeline-name">PS5 / Series X</div><div class="timeline-desc">Generația SSD</div></div>
+                        </div>
+                    </div>
+                    <div class="hub-divider"></div>
+                    <a href="evolutie.html" class="hub-card__cta">
+                        Vezi evoluția
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
                 </div>
+
+                <div class="hub-card">
+                    <div class="hub-card__accent" style="background:#0070D1"></div>
+                    <div class="hub-card__header">
+                        <div class="hub-card__header-left">
+                            <div class="hub-card__icon">⚖️</div>
+                            <div>
+                                <div class="hub-card__title">Comparație</div>
+                                <div class="hub-card__subtitle">Pune consolele față în față</div>
+                            </div>
+                        </div>
+                        <div class="hub-card__badge">Score global</div>
+                    </div>
+                    <div class="hub-card__preview">
+                        <div class="compare-list">
+                            <div class="compare-row">
+                                <div class="compare-row__header"><span class="compare-row__name">PlayStation 5</span><span class="compare-row__score">91 / 100</span></div>
+                                <div class="compare-bar"><div class="compare-bar__fill compare-bar__fill--ps"></div></div>
+                            </div>
+                            <div class="compare-row">
+                                <div class="compare-row__header"><span class="compare-row__name">Xbox Series X</span><span class="compare-row__score">88 / 100</span></div>
+                                <div class="compare-bar"><div class="compare-bar__fill compare-bar__fill--xb"></div></div>
+                            </div>
+                            <div class="compare-row">
+                                <div class="compare-row__header"><span class="compare-row__name">Nintendo Switch</span><span class="compare-row__score">82 / 100</span></div>
+                                <div class="compare-bar"><div class="compare-bar__fill compare-bar__fill--sw"></div></div>
+                            </div>
+                        </div>
+                        <div class="compare-highlight">🔥 Cel mai comparat: <span>PS5 vs Xbox Series X</span></div>
+                    </div>
+                    <div class="hub-divider"></div>
+                    <a href="comparatie.html" class="hub-card__cta">
+                        Compară console
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+
+                <div class="hub-card">
+                    <div class="hub-card__accent" style="background:#E60012"></div>
+                    <div class="hub-card__header">
+                        <div class="hub-card__header-left">
+                            <div class="hub-card__icon">💬</div>
+                            <div>
+                                <div class="hub-card__title">Comunitate</div>
+                                <div class="hub-card__subtitle">Forum, marketplace și mai mult</div>
+                            </div>
+                        </div>
+                        <div class="hub-card__badge hub-card__badge--live">● Live</div>
+                    </div>
+                    <div class="hub-card__preview" id="community-card-preview">
+                        <div class="thread-item">
+                            <div class="thread-avatar">…</div>
+                            <div class="thread-body">
+                                <div class="thread-title" style="color:var(--text-muted,#7a7672)">Se încarcă…</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hub-divider"></div>
+                    <a href="community.html" class="hub-card__cta">
+                        Intră în comunitate
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+
             </div>
         </div>
     </section>
@@ -218,7 +317,7 @@
          =========================== -->
     
     <!-- Main App - ES6 modules (requires HTTP server) -->
-        <script src="../../js/data/consoles-data.js"></script>
+    <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
     
     <!-- Fallback Scripts - work without server (file:// protocol) -->
