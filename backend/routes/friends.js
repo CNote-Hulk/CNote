@@ -19,12 +19,12 @@ router.post('/request/:userId', authRequired, async (req, res) => {
     try {
         const receiverId = parseInt(req.params.userId, 10);
         if (!receiverId || receiverId === req.user.id) {
-            return res.status(400).json({ success: false, error: 'ID utilizator invalid.' });
+            return res.status(400).json({ success: false, error: 'Invalid user ID.' });
         }
 
         const userResult = await pool.query('SELECT id FROM users WHERE id = $1', [receiverId]);
         if (userResult.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Utilizatorul nu a fost gasit.' });
+            return res.status(404).json({ success: false, error: 'User not found.' });
         }
 
         const friendCheck = await pool.query(
@@ -33,7 +33,7 @@ router.post('/request/:userId', authRequired, async (req, res) => {
             [req.user.id, receiverId]
         );
         if (friendCheck.rows.length > 0) {
-            return res.status(400).json({ success: false, error: 'Sunteti deja prieteni.' });
+            return res.status(400).json({ success: false, error: 'You are already friends.' });
         }
 
         // DB: check for existing pending request in either direction
@@ -57,14 +57,14 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                 );
                 return res.json({ success: true, status: 'friends' });
             }
-            return res.status(400).json({ success: false, error: 'Cererea de prietenie a fost deja trimisa.' });
+            return res.status(400).json({ success: false, error: 'Friend request has already been sent.' });
         }
 
         await pool.query('INSERT INTO friend_requests (sender_id, receiver_id) VALUES ($1, $2)', [req.user.id, receiverId]);
         res.json({ success: true, status: 'pending' });
     } catch (err) {
         console.error('Friend request error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -78,7 +78,7 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
         );
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Cererea nu a fost gasita.' });
+            return res.status(404).json({ success: false, error: 'Request not found.' });
         }
 
         const request = result.rows[0];
@@ -96,7 +96,7 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Accept friend error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -110,14 +110,14 @@ router.post('/reject/:requestId', authRequired, async (req, res) => {
         );
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Cererea nu a fost gasita.' });
+            return res.status(404).json({ success: false, error: 'Request not found.' });
         }
 
         await pool.query('UPDATE friend_requests SET status = \'rejected\' WHERE id = $1', [requestId]);
         res.json({ success: true });
     } catch (err) {
         console.error('Reject friend error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -138,7 +138,7 @@ router.delete('/:userId', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Remove friend error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -160,7 +160,7 @@ router.get('/', authRequired, async (req, res) => {
         res.json({ success: true, friends: result.rows });
     } catch (err) {
         console.error('Friends list error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -180,7 +180,7 @@ router.get('/requests', authRequired, async (req, res) => {
         res.json({ success: true, requests: result.rows });
     } catch (err) {
         console.error('Friend requests error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -218,7 +218,7 @@ router.get('/status/:userId', authRequired, async (req, res) => {
         res.json({ success: true, status: 'none' });
     } catch (err) {
         console.error('Friend status error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

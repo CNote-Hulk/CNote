@@ -27,7 +27,7 @@ router.get('/active-count', async (req, res) => {
         `);
         res.json({ success: true, count: parseInt(result.rows[0].count) });
     } catch (err) {
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -66,7 +66,7 @@ router.get('/users/search', authRequired, async (req, res) => {
         });
     } catch (err) {
         console.error('User search error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -110,7 +110,7 @@ router.get('/users/:username', async (req, res) => {
         });
     } catch (err) {
         console.error('User profile error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -141,7 +141,7 @@ router.get('/users/id/:id', async (req, res) => {
         });
     } catch (err) {
         console.error('User profile by ID error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -170,7 +170,7 @@ router.get('/users/:username/friends', async (req, res) => {
         res.json({ success: true, friends: result.rows });
     } catch (err) {
         console.error('User friends error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -216,7 +216,7 @@ router.get('/consoles/list', async (req, res) => {
         res.json({ success: true, consoles: _cachedConsoleList });
     } catch (err) {
         console.error('Console list error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -227,7 +227,7 @@ router.get('/owned-consoles', authRequired, async (req, res) => {
         res.json({ success: true, consoles: result.rows.map(r => r.console_id) });
     } catch (err) {
         console.error('Owned consoles GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -253,7 +253,7 @@ router.put('/owned-consoles', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Owned consoles PUT error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

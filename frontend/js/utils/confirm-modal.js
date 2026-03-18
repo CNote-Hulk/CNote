@@ -18,8 +18,8 @@ function _getOrCreate() {
             </div>
             <p class="confirm-msg"></p>
             <div class="confirm-actions">
-                <button class="confirm-btn confirm-btn--cancel">Anulează</button>
-                <button class="confirm-btn confirm-btn--ok">Șterge</button>
+                <button class="confirm-btn confirm-btn--cancel">Cancel</button>
+                <button class="confirm-btn confirm-btn--ok">Delete</button>
             </div>
         </div>`;
     document.body.appendChild(_overlay);
@@ -35,8 +35,8 @@ export function confirmModal(message, opts = {}) {
     return new Promise(resolve => {
         const el = _getOrCreate();
         el.querySelector('.confirm-msg').textContent = message;
-        el.querySelector('.confirm-btn--ok').textContent = opts.ok || 'Șterge';
-        el.querySelector('.confirm-btn--cancel').textContent = opts.cancel || 'Anulează';
+        el.querySelector('.confirm-btn--ok').textContent = opts.ok || 'Delete';
+        el.querySelector('.confirm-btn--cancel').textContent = opts.cancel || 'Cancel';
 
         el.classList.add('confirm-overlay--active');
 

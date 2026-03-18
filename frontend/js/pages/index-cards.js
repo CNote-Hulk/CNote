@@ -21,7 +21,7 @@ cards.forEach(c => observer.observe(c));
         if (diff < 60000)    return 'acum';
         if (diff < 3600000)  return Math.floor(diff / 60000) + ' min';
         if (diff < 86400000) return Math.floor(diff / 3600000) + 'h';
-        return new Date(d).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short' });
+        return new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     }
 
     const consoleLabel = { ps: 'PlayStation', xbox: 'Xbox', nintendo: 'Nintendo', pc: 'PC Gaming', general: 'General' };
@@ -56,7 +56,7 @@ cards.forEach(c => observer.observe(c));
         ];
 
         if (!items.length) {
-            preview.innerHTML = '<div style="color:var(--text-muted,#7a7672);font-size:.8rem;padding:8px 0">Nicio activitate recentă.</div>';
+            preview.innerHTML = '<div style="color:var(--text-muted,#7a7672);font-size:.8rem;padding:8px 0">No recent activity.</div>';
             return;
         }
 
@@ -76,6 +76,6 @@ cards.forEach(c => observer.observe(c));
                 <span><strong style="color:var(--text-primary,#F0EBE3)">${activeCount}</strong> membri activi acum</span>
             </div>`;
     } catch {
-        preview.innerHTML = '<div style="color:var(--text-muted,#7a7672);font-size:.8rem;padding:8px 0">Nu s-au putut încărca datele.</div>';
+        preview.innerHTML = '<div style="color:var(--text-muted,#7a7672);font-size:.8rem;padding:8px 0">Could not load data.</div>';
     }
 })();

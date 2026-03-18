@@ -79,7 +79,7 @@
             // Header
             document.getElementById('profile-name').textContent = user.username;
             document.getElementById('profile-bio').textContent = user.bio || 'No description yet.';
-            document.getElementById('profile-date').textContent = 'Membru din ' + new Date(user.created_at).toLocaleDateString('ro-RO', { year: 'numeric', month: 'long' });
+            document.getElementById('profile-date').textContent = 'Member since ' + new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 
             // Render console lists
             const renderConsoleList = (containerId, csv) => {
@@ -564,7 +564,7 @@
             if (resendVerificationBtn) {
                 resendVerificationBtn.addEventListener('click', async () => {
                     resendVerificationBtn.disabled = true;
-                    resendVerificationBtn.textContent = 'Se trimite...';
+                    resendVerificationBtn.textContent = 'Sending...';
                     try {
                         const result = await fetch(API_BASE_URL + '/resend-verification', {
                             method: 'POST',
@@ -580,7 +580,7 @@
                         showSettingsMessage('Could not resend verification email.', false);
                     } finally {
                         resendVerificationBtn.disabled = false;
-                        resendVerificationBtn.textContent = 'Retrimite emailul de verificare';
+                        resendVerificationBtn.textContent = 'Resend verification email';
                     }
                 });
             }
@@ -780,7 +780,7 @@
                 try {
                     const sessions = await AuthModule.getSessions();
                     if (!sessions || sessions.length === 0) {
-                        container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Nicio sesiune activă.</p>';
+                        container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">No active sessions.</p>';
                         logoutOthersBtn.hidden = true;
                         return;
                     }
@@ -788,12 +788,12 @@
                     container.innerHTML = sessions.map(s => {
                         const ago = timeAgo(s.last_activity);
                         const icon = s.device_type === 'mobile' ? '📱' : s.device_type === 'tablet' ? '📱' : '💻';
-                        const current = s.is_current ? ' <span style="color:var(--success);font-size:0.75rem;font-weight:600;">(sesiunea curentă)</span>' : '';
-                        const logoutBtn = `<button class="session-logout-btn" data-session-id="${s.id}" data-is-current="${s.is_current ? '1' : '0'}" style="background:none;border:1px solid rgba(229,115,115,0.4);color:#e57373;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;margin-top:6px;">Deconectare</button>`;
+                        const current = s.is_current ? ' <span style="color:var(--success);font-size:0.75rem;font-weight:600;">(current session)</span>' : '';
+                        const logoutBtn = `<button class="session-logout-btn" data-session-id="${s.id}" data-is-current="${s.is_current ? '1' : '0'}" style="background:none;border:1px solid rgba(229,115,115,0.4);color:#e57373;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;margin-top:6px;">Log out</button>`;
 
                         return `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px;">
                             <div style="font-size:0.9rem;color:var(--text-light);">${icon} ${escapeHtml(s.browser)} pe ${escapeHtml(s.operating_system)}${current}</div>
-                            <div style="font-size:0.78rem;color:var(--text-muted,#a89880);margin-top:4px;">IP: ${escapeHtml(s.ip_address)} · Ultima activitate: ${ago}</div>
+                            <div style="font-size:0.78rem;color:var(--text-muted,#a89880);margin-top:4px;">IP: ${escapeHtml(s.ip_address)} · Last activity: ${ago}</div>
                             ${logoutBtn}
                         </div>`;
                     }).join('');
@@ -819,28 +819,28 @@
                         });
                     });
                 } catch {
-                    container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca sesiunile.</p>';
+                    container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Failed to load sessions.</p>';
                 }
             }
 
             function timeAgo(dateStr) {
-                if (!dateStr) return 'necunoscut';
+                if (!dateStr) return 'unknown';
                 const diff = Date.now() - new Date(dateStr).getTime();
                 const mins = Math.floor(diff / 60000);
-                if (mins < 1) return 'chiar acum';
-                if (mins < 60) return mins + ' min în urmă';
+                if (mins < 1) return 'just now';
+                if (mins < 60) return mins + ' min ago';
                 const hours = Math.floor(mins / 60);
-                if (hours < 24) return hours + ' ore în urmă';
+                if (hours < 24) return hours + ' hours ago';
                 const days = Math.floor(hours / 24);
-                return days + ' zile în urmă';
+                return days + ' days ago';
             }
 
             document.getElementById('logout-others-btn').addEventListener('click', async () => {
                 const confirmed = await showConfirmDialog({
-                    title: 'Deconectare alte dispozitive',
-                    message: 'Vrei să te deconectezi de pe toate celelalte dispozitive?',
-                    confirmLabel: 'Da, deconectează',
-                    cancelLabel: 'Anulează'
+                    title: 'Log out other devices',
+                    message: 'Do you want to log out from all other devices?',
+                    confirmLabel: 'Yes, log out',
+                    cancelLabel: 'Cancel'
                 });
                 if (!confirmed) return;
                 const result = await AuthModule.terminateAllSessions();
@@ -900,7 +900,7 @@
                     const data = await res.json();
 
                     if (!data.success || !data.users || data.users.length === 0) {
-                        resultsContainer.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;padding:8px 0;">Niciun utilizator găsit.</p>';
+                        resultsContainer.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;padding:8px 0;">No users found.</p>';
                         return;
                     }
 
@@ -923,13 +923,13 @@
 
                         let actionBtn = '';
                         if (status === 'friends') {
-                            actionBtn = `<span class="user-action-btn user-action-btn--friends" disabled>✓ Prieteni</span>`;
+                            actionBtn = `<span class="user-action-btn user-action-btn--friends" disabled>✓ Friends</span>`;
                         } else if (status === 'request_sent') {
-                            actionBtn = `<span class="user-action-btn user-action-btn--pending" disabled>Cerere trimisă</span>`;
+                            actionBtn = `<span class="user-action-btn user-action-btn--pending" disabled>Request sent</span>`;
                         } else if (status === 'request_received') {
-                            actionBtn = `<span class="user-action-btn user-action-btn--pending" disabled>Cerere primită</span>`;
+                            actionBtn = `<span class="user-action-btn user-action-btn--pending" disabled>Request received</span>`;
                         } else {
-                            actionBtn = `<button class="user-action-btn user-action-btn--add" data-user-id="${u.id}">Adaugă Prieten</button>`;
+                            actionBtn = `<button class="user-action-btn user-action-btn--add" data-user-id="${u.id}">Add Friend</button>`;
                         }
 
                         return `<div class="friend-search-result">
@@ -961,18 +961,18 @@
                                 const data = await res.json();
                                 if (data.success) {
                                     if (data.status === 'friends') {
-                                        btn.outerHTML = `<span class="user-action-btn user-action-btn--friends" disabled>✓ Prieteni</span>`;
+                                        btn.outerHTML = `<span class="user-action-btn user-action-btn--friends" disabled>✓ Friends</span>`;
                                         loadMyFriends();
                                     } else {
                                         btn.outerHTML = `<span class="user-action-btn user-action-btn--pending" disabled>Cerere trimisă</span>`;
                                     }
                                 } else {
                                     btn.textContent = data.error || 'Eroare';
-                                    setTimeout(() => { btn.textContent = 'Adaugă Prieten'; btn.disabled = false; }, 2000);
+                                    setTimeout(() => { btn.textContent = 'Add Friend'; btn.disabled = false; }, 2000);
                                 }
                             } catch {
                                 btn.textContent = 'Eroare';
-                                setTimeout(() => { btn.textContent = 'Adaugă Prieten'; btn.disabled = false; }, 2000);
+                                setTimeout(() => { btn.textContent = 'Add Friend'; btn.disabled = false; }, 2000);
                             }
                         });
                     });
@@ -997,7 +997,7 @@
                 const data = await res.json();
 
                 if (!data.success || !data.requests || data.requests.length === 0) {
-                    container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Nicio cerere de prietenie.</p>';
+                    container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">No friend requests.</p>';
                     return;
                 }
 
@@ -1013,8 +1013,8 @@
                             <span class="friend-card__name">${escapeHtml(r.username)}</span>
                         </a>
                         <div class="friend-request-actions">
-                            <button class="user-action-btn user-action-btn--accept" data-request-id="${r.request_id}">Acceptă</button>
-                            <button class="user-action-btn user-action-btn--reject" data-request-id="${r.request_id}">Refuză</button>
+                            <button class="user-action-btn user-action-btn--accept" data-request-id="${r.request_id}">Accept</button>
+                            <button class="user-action-btn user-action-btn--reject" data-request-id="${r.request_id}">Decline</button>
                         </div>
                     </div>`;
                 }).join('');
@@ -1045,7 +1045,7 @@
                     });
                 });
             } catch {
-                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca cererile.</p>';
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Could not load requests.</p>';
             }
         }
 
@@ -1064,7 +1064,7 @@
                 const data = await res.json();
 
                 if (!data.success || !data.friends || data.friends.length === 0) {
-                    container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Niciun prieten încă.</p>';
+                    container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">No friends yet.</p>';
                     return;
                 }
 
@@ -1080,7 +1080,7 @@
                     </a>`;
                 }).join('');
             } catch {
-                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca prietenii.</p>';
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Could not load friends.</p>';
             }
         }
 
@@ -1127,10 +1127,10 @@
                     `<span class="dash-badge" title="${escapeHtml(b.name)}">${b.icon}</span>`
                 ).join('') + '</div>';
                 if (earnedCount === 0) {
-                    achPreview.innerHTML += '<p class="dash-empty">Explorează pentru a debloca realizări!</p>';
+                    achPreview.innerHTML += '<p class="dash-empty">Explore to unlock achievements!</p>';
                 }
             } else {
-                achPreview.innerHTML = '<p class="dash-empty">Nicio realizare încă.</p>';
+                achPreview.innerHTML = '<p class="dash-empty">No achievements yet.</p>';
             }
 
             // ── Stats: Ratings + Favorites + Friends (async) ──
@@ -1155,7 +1155,7 @@
                         </a>`;
                     }).join('');
                 } else {
-                    ratingsPreview.innerHTML = '<p class="dash-empty">Nicio evaluare încă.</p>';
+                    ratingsPreview.innerHTML = '<p class="dash-empty">No ratings yet.</p>';
                 }
             } catch {
                 document.getElementById('dash-ratings-preview').innerHTML = '<p class="dash-empty">—</p>';
@@ -1185,7 +1185,7 @@
                         return `<a href="/user/${encodeURIComponent(f.username)}" class="dash-friend" title="${escapeHtml(f.username)}">${av}</a>`;
                     }).join('') + '</div>';
                 } else {
-                    friendsPreview.innerHTML = '<p class="dash-empty">Niciun prieten încă.</p>';
+                    friendsPreview.innerHTML = '<p class="dash-empty">No friends yet.</p>';
                 }
             } catch {
                 document.getElementById('dash-friends-preview').innerHTML = '<p class="dash-empty">—</p>';
@@ -1195,7 +1195,7 @@
         /** Fetch and display user's console ratings as star cards */
         async function renderUserRatings() {
             const container = document.getElementById('ratings-container');
-            container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Se încarcă evaluările...</p>';
+            container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Loading ratings...</p>';
 
             try {
                 const token = localStorage.getItem('cn_token');
@@ -1207,14 +1207,14 @@
                 const { ratings } = await res.json();
 
                 if (!ratings || ratings.length === 0) {
-                    container.innerHTML = '<div class="profile-empty"><span class="profile-empty__icon">⭐</span>Nu ai evaluat nicio consolă încă.</div>';
+                    container.innerHTML = '<div class="profile-empty"><span class="profile-empty__icon">⭐</span>You haven\'t rated any console yet.</div>';
                     return;
                 }
 
                 container.innerHTML = ratings.map(r => {
                     const name = r.console_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
                     const stars = renderRatingStars(r.rating);
-                    const date = new Date(r.created_at).toLocaleDateString('ro-RO');
+                    const date = new Date(r.created_at).toLocaleDateString('en-US');
                     const href = `consoles/${encodeURIComponent(r.console_id)}.html`;
                     return `<a href="${href}" class="user-rating-card">
                         <div class="user-rating-card__name">${escapeHtml(name)}</div>
@@ -1223,7 +1223,7 @@
                     </a>`;
                 }).join('');
             } catch {
-                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca evaluările.</p>';
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Could not load ratings.</p>';
             }
         }
 
@@ -1254,7 +1254,7 @@
                         <div class="course-card__icon">${course.icon}</div>
                         <div>
                             <div class="course-card__name">${course.name}</div>
-                            <div class="course-card__counter">${progress.completed_lessons.length} / ${progress.total_lessons} lecții completate</div>
+                            <div class="course-card__counter">${progress.completed_lessons.length} / ${progress.total_lessons} lessons completed</div>
                         </div>
                     </div>
                     <div class="progress-bar">
@@ -1279,12 +1279,12 @@
 
             container.innerHTML = badges.map(b => {
                 const cls = b.earned ? 'earned' : 'locked';
-                const date = b.earned_at ? new Date(b.earned_at).toLocaleDateString('ro-RO') : '';
+                const date = b.earned_at ? new Date(b.earned_at).toLocaleDateString('en-US') : '';
                 return `<div class="achievement-badge ${cls}">
                     <span class="achievement-badge__icon">${b.icon}</span>
                     <div class="achievement-badge__name">${b.name}</div>
                     <div class="achievement-badge__desc">${b.description}</div>
-                    ${b.earned ? `<div class="achievement-badge__date">Obținut pe ${date}</div>` : ''}
+                    ${b.earned ? `<div class="achievement-badge__date">Earned on ${date}</div>` : ''}
                 </div>`;
             }).join('');
         }
@@ -1319,11 +1319,11 @@
 
             // Fallback: use locally loaded CONSOLES_DATA if API returned nothing
             if (allConsoles.length === 0 && window.CONSOLES_DATA && window.CONSOLES_DATA.length > 0) {
-                allConsoles = window.CONSOLES_DATA.map(c => ({ id: c.id, name: c.nume })).sort((a, b) => a.name.localeCompare(b.name));
+                allConsoles = window.CONSOLES_DATA.map(c => ({ id: c.id, name: c.name })).sort((a, b) => a.name.localeCompare(b.name));
             }
 
             if (allConsoles.length === 0) {
-                listEl.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca consolele.</p>';
+                listEl.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Could not load consoles.</p>';
                 return;
             }
 
@@ -1347,7 +1347,7 @@
                     : allConsoles;
 
                 if (filtered.length === 0) {
-                    listEl.innerHTML = '<p style="color:var(--text-gray);font-size:0.85rem;padding:8px;">Nicio consolă găsită.</p>';
+                    listEl.innerHTML = '<p style="color:var(--text-gray);font-size:0.85rem;padding:8px;">No consoles found.</p>';
                     return;
                 }
 
@@ -1379,10 +1379,10 @@
             updateHidden();
         }
 
-        // ─── My Listings ("Anunțurile mele") ─────────────────
+        // ─── My Listings ─────────────────
 
         const LISTING_CONDITIONS = { new: 'Nou', like_new: 'Ca nou', good: 'Bun', fair: 'Acceptabil', parts: 'Piese' };
-        const LISTING_CATEGORIES = { consoles: 'Console', games: 'Jocuri', accessories: 'Accesorii', parts: 'Piese / Reparații' };
+        const LISTING_CATEGORIES = { consoles: 'Console', games: 'Games', accessories: 'Accessories', parts: 'Parts / Repairs' };
 
         /** Authenticated API helper for marketplace calls */
         async function mpApi(method, path, body) {
@@ -1414,7 +1414,7 @@
                         await mpApi('PATCH', `/marketplace/listings/${id}/sold`);
                         loadMyListings();
                     } else if (action === 'delete') {
-                        if (!(await confirmModal('Sigur vrei să ștergi acest anunț? Acțiunea este permanentă.'))) return;
+                        if (!(await confirmModal('Are you sure you want to delete this listing? This action is permanent.'))) return;
                         await mpApi('DELETE', `/marketplace/listings/${id}`);
                         loadMyListings();
                     } else if (action === 'edit') {
@@ -1452,7 +1452,7 @@
                     const imgs = Array.isArray(l.images) ? l.images : [];
                     const statusMap = { active: { label: 'Activ', cls: 'active' }, inactive: { label: 'Dezactivat', cls: 'inactive' }, sold: { label: 'Vândut', cls: 'sold' } };
                     const st = statusMap[l.status] || statusMap.active;
-                    const date = new Date(l.created_at).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
+                    const date = new Date(l.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 
                     return `<div class="my-listing-row" data-listing-id="${l.id}">
                         <div class="my-listing-row__thumb">
@@ -1481,11 +1481,11 @@
                     </div>`;
                 }).join('');
             } catch {
-                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca anunțurile.</p>';
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Could not load listings.</p>';
             }
         }
 
-        // ─── Favorite Listings ("Anunțuri apreciate") ────────
+        // ─── Favorite Listings ────────
 
         async function loadFavorites() {
             const container = document.getElementById('favorites-container');
@@ -1508,7 +1508,7 @@
 
                 container.innerHTML = listings.map(l => {
                     const imgs = Array.isArray(l.images) ? l.images : [];
-                    const date = new Date(l.created_at).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short', year: 'numeric' });
+                    const date = new Date(l.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
                     return `<div class="my-listing-row" data-listing-id="${l.id}">
                         <div class="my-listing-row__thumb">
                             ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="">'}
@@ -1544,7 +1544,7 @@
                     }
                 });
             } catch {
-                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Nu s-au putut încărca favoritele.</p>';
+                container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Could not load favorites.</p>';
             }
         }
 
@@ -1571,7 +1571,7 @@
                                 <div class="hub-form-group"><label class="hub-form-label">Stare</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
                             </div>
                             <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Consolă</label><select class="hub-form-select" name="console_type"><option value="">— Alege consola —</option>${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.nume}</option>`).join('')}</select></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Consolă</label><select class="hub-form-select" name="console_type"><option value="">— Alege consola —</option>${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.name}</option>`).join('')}</select></div>
                             <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${escapeHtml(l.description)}</textarea></div>
                             <div class="hub-form-row">
                             <div class="hub-form-group">
@@ -1628,7 +1628,7 @@
                     if (res.success) { close(); loadMyListings(); }
                     else { btn.disabled = false; btn.textContent = 'Salvează'; alert(res.error || 'Eroare.'); }
                 });
-            } catch { alert('Eroare la încărcarea anunțului.'); }
+            } catch { alert('Could not load listing.'); }
         }
 
         /** Open a modal to create a brand-new listing from the profile page */

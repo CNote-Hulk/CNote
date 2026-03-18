@@ -109,7 +109,7 @@ router.get('/listings', async (req, res) => {
         res.json({ success: true, listings, total, page, totalPages: Math.ceil(total / limit) });
     } catch (err) {
         console.error('Marketplace GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -146,7 +146,7 @@ router.get('/listings/mine', authRequired, async (req, res) => {
         res.json({ success: true, listings });
     } catch (err) {
         console.error('Marketplace mine GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -187,7 +187,7 @@ router.get('/listings/user/:userId', async (req, res) => {
         res.json({ success: true, listings });
     } catch (err) {
         console.error('Marketplace user listings GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -206,7 +206,7 @@ router.get('/listings/:id', async (req, res) => {
         `, [id]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
+            return res.status(404).json({ success: false, error: 'Listing not found.' });
         }
 
         const row = result.rows[0];
@@ -237,7 +237,7 @@ router.get('/listings/:id', async (req, res) => {
         });
     } catch (err) {
         console.error('Marketplace listing GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -251,7 +251,7 @@ router.get('/listings/:id/similar', async (req, res) => {
             'SELECT category, user_id, title FROM listings WHERE id = $1', [id]
         );
         if (current.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
+            return res.status(404).json({ success: false, error: 'Listing not found.' });
         }
         const { category, user_id, title } = current.rows[0];
 
@@ -317,7 +317,7 @@ router.get('/listings/:id/similar', async (req, res) => {
         res.json({ success: true, listings: mapped });
     } catch (err) {
         console.error('Marketplace similar GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -326,7 +326,7 @@ router.post('/listings', authRequired, async (req, res) => {
     const { title, description, price, condition, category, location, country, phone, olx_url, images, console_type } = req.body;
 
     if (!title || !description || price == null) {
-        return res.status(400).json({ success: false, error: 'Titlu, descriere și preț obligatorii.' });
+        return res.status(400).json({ success: false, error: 'Title, description, and price are required.' });
     }
 
     const safeTitle       = String(title).trim().slice(0, 100);
@@ -354,7 +354,7 @@ router.post('/listings', authRequired, async (req, res) => {
         res.status(201).json({ success: true, listing });
     } catch (err) {
         console.error('Marketplace POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -365,8 +365,8 @@ router.put('/listings/:id', authRequired, async (req, res) => {
 
     try {
         const check = await pool.query('SELECT user_id FROM listings WHERE id = $1', [id]);
-        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
-        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'Nu ai permisiunea.' });
+        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
+        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'You do not have permission.' });
 
         const { title, description, price, condition, category, location, country, phone, olx_url, images, console_type } = req.body;
 
@@ -389,7 +389,7 @@ router.put('/listings/:id', authRequired, async (req, res) => {
             params.push(JSON.stringify(images.slice(0, 8).map(u => String(u).slice(0, 200000))));
         }
 
-        if (sets.length === 0) return res.status(400).json({ success: false, error: 'Nimic de actualizat.' });
+        if (sets.length === 0) return res.status(400).json({ success: false, error: 'Nothing to update.' });
 
         params.push(id);
         const result = await pool.query(
@@ -400,7 +400,7 @@ router.put('/listings/:id', authRequired, async (req, res) => {
         res.json({ success: true, listing: result.rows[0] });
     } catch (err) {
         console.error('Marketplace PUT error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -411,14 +411,14 @@ router.patch('/listings/:id/sold', authRequired, async (req, res) => {
 
     try {
         const check = await pool.query('SELECT user_id FROM listings WHERE id = $1', [id]);
-        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
-        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'Nu ai permisiunea.' });
+        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
+        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'You do not have permission.' });
 
         await pool.query("UPDATE listings SET sold = TRUE, status = 'sold' WHERE id = $1", [id]);
         res.json({ success: true });
     } catch (err) {
         console.error('Marketplace sold PATCH error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -432,15 +432,15 @@ router.patch('/listings/:id/status', authRequired, async (req, res) => {
 
     try {
         const check = await pool.query('SELECT user_id FROM listings WHERE id = $1', [id]);
-        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
-        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'Nu ai permisiunea.' });
+        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
+        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'You do not have permission.' });
 
         const sold = status === 'sold';
         await pool.query('UPDATE listings SET status = $1, sold = $2 WHERE id = $3', [status, sold, id]);
         res.json({ success: true });
     } catch (err) {
         console.error('Marketplace status PATCH error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -451,7 +451,7 @@ router.patch('/listings/:id/view', authOptional, async (req, res) => {
 
     try {
         const check = await pool.query('SELECT user_id FROM listings WHERE id = $1', [id]);
-        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
+        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
 
         if (req.user && check.rows[0].user_id === req.user.id) {
             return res.json({ success: true, counted: false });
@@ -461,7 +461,7 @@ router.patch('/listings/:id/view', authOptional, async (req, res) => {
         res.json({ success: true, counted: true });
     } catch (err) {
         console.error('Marketplace view PATCH error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -472,7 +472,7 @@ router.post('/listings/:id/favorite', authRequired, async (req, res) => {
 
     try {
         const check = await pool.query('SELECT id FROM listings WHERE id = $1', [id]);
-        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
+        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
 
         const existing = await pool.query(
             'SELECT id FROM listing_favorites WHERE user_id = $1 AND listing_id = $2',
@@ -490,7 +490,7 @@ router.post('/listings/:id/favorite', authRequired, async (req, res) => {
         }
     } catch (err) {
         console.error('Marketplace favorite POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -528,7 +528,7 @@ router.get('/favorites', authRequired, async (req, res) => {
         res.json({ success: true, listings });
     } catch (err) {
         console.error('Marketplace favorites GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -542,7 +542,7 @@ router.get('/favorites/ids', authRequired, async (req, res) => {
         res.json({ success: true, ids: result.rows.map(r => r.listing_id) });
     } catch (err) {
         console.error('Marketplace favorite IDs GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -553,14 +553,14 @@ router.delete('/listings/:id', authRequired, async (req, res) => {
 
     try {
         const check = await pool.query('SELECT user_id FROM listings WHERE id = $1', [id]);
-        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Anunț negăsit.' });
-        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'Nu ai permisiunea.' });
+        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
+        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'You do not have permission.' });
 
         await pool.query('DELETE FROM listings WHERE id = $1', [id]);
         res.json({ success: true });
     } catch (err) {
         console.error('Marketplace DELETE error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

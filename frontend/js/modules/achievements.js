@@ -11,22 +11,22 @@ export const AchievementsModule = {
     QUIZ_STATS_KEY: 'cn_quiz_stats',
 
     BADGES: [
-        { id: 'first_steps', name: 'Primii Pași', description: 'Completează 1 lecție (termină quiz-ul unei lecții).', icon: '🎯' },
-        { id: 'starter_pack', name: 'Starter Pack', description: 'Completează 3 lecții.', icon: '🧩' },
-        { id: 'tech_explorer', name: 'Explorator Tech', description: 'Completează 5 lecții.', icon: '🔬' },
-        { id: 'bookworm', name: 'Cititor Pasionat', description: 'Completează 15 lecții.', icon: '📚' },
-        { id: 'grinder_25', name: 'Grinder', description: 'Completează 25 lecții.', icon: '⚙️' },
-        { id: 'halfway', name: 'La Jumătate', description: 'Atinge 50% progres într-un curs.', icon: '⭐' },
-        { id: 'almost_there', name: 'Aproape Gata', description: 'Atinge 80% progres într-un curs.', icon: '🚀' },
-        { id: 'console_doctor', name: 'Doctor de Console', description: 'Termină complet cursul (100%).', icon: '🔧' },
-        { id: 'quiz_rookie', name: 'Quiz Rookie', description: 'Finalizează primul quiz.', icon: '❓' },
-        { id: 'quiz_veteran', name: 'Quiz Veteran', description: 'Finalizează 20 de quiz-uri în total.', icon: '🧠' },
-        { id: 'perfect_hit', name: 'Lovitură Perfectă', description: 'Ia 100% la un quiz.', icon: '💯' },
-        { id: 'perfect_streak', name: 'Serie Perfectă', description: 'Ia 100% la 5 quiz-uri diferite.', icon: '🏅' },
-        { id: 'console_scout', name: 'Console Scout', description: 'Vizitează 3 pagini de console.', icon: '🧭' },
-        { id: 'retro_master', name: 'Maestru Retro', description: 'Vizitează 10 pagini de console.', icon: '🕹️' },
-        { id: 'archive_hunter', name: 'Archive Hunter', description: 'Vizitează 25 pagini de console.', icon: '🗂️' },
-        { id: 'all_rounder', name: 'All-Rounder', description: 'Completează 15 lecții și vizitează 10 console.', icon: '👑' }
+        { id: 'first_steps', name: 'First Steps', description: 'Complete 1 lesson (finish a lesson quiz).', icon: '🎯' },
+        { id: 'starter_pack', name: 'Starter Pack', description: 'Complete 3 lessons.', icon: '🧩' },
+        { id: 'tech_explorer', name: 'Tech Explorer', description: 'Complete 5 lessons.', icon: '🔬' },
+        { id: 'bookworm', name: 'Bookworm', description: 'Complete 15 lessons.', icon: '📚' },
+        { id: 'grinder_25', name: 'Grinder', description: 'Complete 25 lessons.', icon: '⚙️' },
+        { id: 'halfway', name: 'Halfway There', description: 'Reach 50% progress in a course.', icon: '⭐' },
+        { id: 'almost_there', name: 'Almost There', description: 'Reach 80% progress in a course.', icon: '🚀' },
+        { id: 'console_doctor', name: 'Console Doctor', description: 'Complete the entire course (100%).', icon: '🔧' },
+        { id: 'quiz_rookie', name: 'Quiz Rookie', description: 'Complete your first quiz.', icon: '❓' },
+        { id: 'quiz_veteran', name: 'Quiz Veteran', description: 'Complete 20 quizzes in total.', icon: '🧠' },
+        { id: 'perfect_hit', name: 'Perfect Hit', description: 'Score 100% on a quiz.', icon: '💯' },
+        { id: 'perfect_streak', name: 'Perfect Streak', description: 'Score 100% on 5 different quizzes.', icon: '🏅' },
+        { id: 'console_scout', name: 'Console Scout', description: 'Visit 3 console pages.', icon: '🧭' },
+        { id: 'retro_master', name: 'Retro Master', description: 'Visit 10 console pages.', icon: '🕹️' },
+        { id: 'archive_hunter', name: 'Archive Hunter', description: 'Visit 25 console pages.', icon: '🗂️' },
+        { id: 'all_rounder', name: 'All-Rounder', description: 'Complete 15 lessons and visit 10 consoles.', icon: '👑' }
     ],
 
     /** Get quiz stats object from localStorage for a user */

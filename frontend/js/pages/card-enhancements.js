@@ -68,7 +68,7 @@ async function init() {
         heart.type = 'button';
         heart.className = 'card-heart' + (favSet.has(consoleId) ? ' active' : '');
         heart.innerHTML = favSet.has(consoleId) ? '♥' : '♡';
-        heart.title = user ? (favSet.has(consoleId) ? 'Elimină de la favorite' : 'Adaugă la favorite') : 'Conectează-te pentru favorite';
+        heart.title = user ? (favSet.has(consoleId) ? 'Remove from favorites' : 'Add to favorites') : 'Log in for favorites';
 
         heart.addEventListener('click', async (e) => {
             e.preventDefault();
@@ -87,7 +87,7 @@ async function init() {
                 if (data.success) {
                     heart.classList.toggle('active', data.isFavorite);
                     heart.innerHTML = data.isFavorite ? '♥' : '♡';
-                    heart.title = data.isFavorite ? 'Elimină de la favorite' : 'Adaugă la favorite';
+                    heart.title = data.isFavorite ? 'Remove from favorites' : 'Add to favorites';
                 }
             } catch { /* silent */ }
         });
@@ -103,7 +103,7 @@ async function init() {
             badge.title = `${ratingData.average}/5 (${ratingData.count} ${ratingData.count === 1 ? 'vot' : 'voturi'})`;
         } else {
             badge.innerHTML = `<span class="card-rating__stars">☆</span> —`;
-            badge.title = 'Nicio evaluare încă';
+            badge.title = 'No ratings yet';
         }
         overlay.appendChild(badge);
 

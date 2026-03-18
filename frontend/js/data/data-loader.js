@@ -108,7 +108,7 @@ export async function getConsoleById(id) {
 export async function getConsolesSorted() {
     const consoles = await loadConsoles();
     if (!consoles) return [];
-    return [...consoles].sort((a, b) => b.lansare - a.lansare);
+    return [...consoles].sort((a, b) => b.release - a.release);
 }
 
 /**
@@ -120,12 +120,12 @@ export async function getConsolesByGeneration() {
     if (!consoles) return {};
     const groups = {};
     consoles.forEach(c => {
-        const gen = c.generatie;
+        const gen = c.generation;
         if (!groups[gen]) groups[gen] = [];
         groups[gen].push(c);
     });
     // Sort each group by year descending
-    Object.values(groups).forEach(arr => arr.sort((a, b) => b.lansare - a.lansare));
+    Object.values(groups).forEach(arr => arr.sort((a, b) => b.release - a.release));
     return groups;
 }
 

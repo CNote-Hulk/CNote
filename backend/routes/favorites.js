@@ -25,7 +25,7 @@ router.get('/', authRequired, async (req, res) => {
         res.json({ success: true, favorites: result.rows.map(r => r.console_id) });
     } catch (err) {
         console.error('Favorites GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -41,7 +41,7 @@ router.get('/:consoleId', authRequired, async (req, res) => {
         res.json({ success: true, isFavorite: result.rows.length > 0 });
     } catch (err) {
         console.error('Favorites check error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -50,7 +50,7 @@ router.post('/:consoleId', authRequired, async (req, res) => {
     try {
         const { consoleId } = req.params;
         if (!consoleId || String(consoleId).trim().length === 0) {
-            return res.status(400).json({ success: false, error: 'Console ID invalid.' });
+            return res.status(400).json({ success: false, error: 'Invalid console ID.' });
         }
 
         // DB: check if already favorited
@@ -74,7 +74,7 @@ router.post('/:consoleId', authRequired, async (req, res) => {
         }
     } catch (err) {
         console.error('Favorites toggle error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

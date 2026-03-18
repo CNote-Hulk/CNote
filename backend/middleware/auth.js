@@ -71,7 +71,7 @@ async function authRequired(req, res, next) {
         `, [token]);
     } catch (dbErr) {
         console.error('Auth session DB error:', dbErr);
-        return res.status(500).json({ success: false, error: 'Eroare interna.' });
+        return res.status(500).json({ success: false, error: 'Internal error.' });
     }
 
     const session = sessionResult.rows[0];

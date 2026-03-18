@@ -73,14 +73,14 @@ router.get('/conversations', authRequired, async (req, res) => {
         res.json({ success: true, conversations });
     } catch (err) {
         console.error('DM conversations GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
 // ── GET /api/dm/messages/:partnerId ──────────────────────
 router.get('/messages/:partnerId', authRequired, async (req, res) => {
     const partnerId = parseInt(req.params.partnerId);
-    if (isNaN(partnerId)) return res.status(400).json({ success: false, error: 'ID invalid.' });
+    if (isNaN(partnerId)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
 
     try {
         // Mark messages as read
@@ -103,7 +103,7 @@ router.get('/messages/:partnerId', authRequired, async (req, res) => {
         res.json({ success: true, messages: result.rows });
     } catch (err) {
         console.error('DM messages GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -114,12 +114,12 @@ router.post('/send', authRequired, async (req, res) => {
     const { message, listingId } = req.body;
 
     if (!rawId || !message || String(message).trim().length === 0) {
-        return res.status(400).json({ success: false, error: 'Destinatar și mesaj obligatorii.' });
+        return res.status(400).json({ success: false, error: 'Recipient and message are required.' });
     }
 
     const receiverId = parseInt(rawId);
     if (isNaN(receiverId) || receiverId === req.user.id) {
-        return res.status(400).json({ success: false, error: 'Destinatar invalid.' });
+        return res.status(400).json({ success: false, error: 'Invalid recipient.' });
     }
 
     const safeMessage = String(message).trim().slice(0, 2000);
@@ -129,7 +129,7 @@ router.post('/send', authRequired, async (req, res) => {
         // Verify receiver exists
         const userCheck = await pool.query('SELECT id FROM users WHERE id = $1', [receiverId]);
         if (userCheck.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Utilizator negăsit.' });
+            return res.status(404).json({ success: false, error: 'User not found.' });
         }
 
         const result = await pool.query(`
@@ -147,7 +147,7 @@ router.post('/send', authRequired, async (req, res) => {
             await createNotification(
                 receiverId,
                 'new_dm',
-                `${req.user.username} ți-a trimis un mesaj`,
+                `${req.user.username} sent you a message`,
                 ''
             );
         } catch { /* notification is non-critical */ }
@@ -155,7 +155,7 @@ router.post('/send', authRequired, async (req, res) => {
         res.status(201).json({ success: true, message: dm });
     } catch (err) {
         console.error('DM send POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -169,7 +169,7 @@ router.get('/unread-count', authRequired, async (req, res) => {
         res.json({ success: true, count: parseInt(result.rows[0].count) });
     } catch (err) {
         console.error('DM unread count error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
