@@ -86,22 +86,22 @@ export const AuthModule = {
      */
     async register(username, email, password) {
         if (!username || String(username).trim().length < 1)
-            return { success: false, error: 'Numele de utilizator este obligatoriu.' };
+            return { success: false, error: 'Username is required.' };
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-            return { success: false, error: 'Adresa de email nu este validă.' };
+            return { success: false, error: 'Email address is not valid.' };
         if (!password || password.length < 6)
-            return { success: false, error: 'Parola trebuie să aibă minim 6 caractere.' };
+            return { success: false, error: 'Password must be at least 6 characters.' };
 
         try {
             const data = await this._api('POST', '/register', { username, email, password });
             // Do NOT set session — the user must verify email first
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+return { success: false, error: 'Could not contact the server.' };
         }
     },
 
-    // ─── Login ──────────────────────────────────────────
+    // ─── Login ──────────────────────────────────────────────────
 
     /**
      * Login — creates server session + caches user locally + stores JWT.
@@ -109,7 +109,7 @@ export const AuthModule = {
      */
     async login(email, password) {
         if (!email || !password)
-            return { success: false, error: 'Completează toate câmpurile.' };
+            return { success: false, error: 'Please fill in all fields.' };
 
         try {
             const data = await this._api('POST', '/login', { email, password });
@@ -129,7 +129,7 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -205,9 +205,9 @@ export const AuthModule = {
 
     async updateEmail(newEmail, currentPassword) {
         if (!newEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail))
-            return { success: false, error: 'Adresa de email nu este validă.' };
+            return { success: false, error: 'Email address is not valid.' };
         if (!currentPassword)
-            return { success: false, error: 'Introdu parola curentă pentru schimbarea emailului.' };
+            return { success: false, error: 'Enter your current password to change your email.' };
 
         try {
             const data = await this._api('PUT', '/me/email', { newEmail, currentPassword });
@@ -216,23 +216,23 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+return { success: false, error: 'Could not contact the server.' };
         }
     },
 
-    // ─── Update password ────────────────────────────────
+    // ─── Update password ────────────────────────────────────────
 
     async updatePassword(currentPassword, newPassword) {
         if (!currentPassword)
-            return { success: false, error: 'Introdu parola curentă.' };
+            return { success: false, error: 'Enter your current password.' };
         if (!newPassword || newPassword.length < 6)
-            return { success: false, error: 'Parola nouă trebuie să aibă minim 6 caractere.' };
+            return { success: false, error: 'New password must be at least 6 characters.' };
 
         try {
             const data = await this._api('PUT', '/me/password', { currentPassword, newPassword });
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -253,7 +253,7 @@ export const AuthModule = {
         try {
             return await this._api('DELETE', '/sessions/' + sessionId);
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -262,7 +262,7 @@ export const AuthModule = {
         try {
             return await this._api('DELETE', '/sessions');
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -279,12 +279,12 @@ export const AuthModule = {
 
     async deleteAccount(body) {
         if (!body || (!body.password && !body.confirmText)) {
-            return { success: false, error: 'Confirmarea este obligatorie.' };
+            return { success: false, error: 'Confirmation is required.' };
         }
         try {
             return await this._api('DELETE', '/account', body);
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -293,7 +293,7 @@ export const AuthModule = {
         if (!password || password.length < 8)
             return { success: false, error: 'Parola trebuie s\u0103 aib\u0103 minim 8 caractere.' };
         if (password !== confirmPassword)
-            return { success: false, error: 'Parolele nu coincid.' };
+            return { success: false, error: 'Passwords do not match.' };
         try {
             const data = await this._api('POST', '/account/set-password', { password, confirmPassword });
             if (data.success) {
@@ -305,7 +305,7 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -379,7 +379,7 @@ export const AuthModule = {
     /** Verify 2FA code during login (uses temp token) */
     async verifyTwoFactor(code, method) {
         const tempToken = localStorage.getItem('cnote_temp_token');
-        if (!tempToken) return { success: false, error: 'Sesiunea temporară a expirat.' };
+        if (!tempToken) return { success: false, error: 'Temporary session has expired.' };
 
         try {
             const body = { tempToken, code };
@@ -393,7 +393,7 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -402,7 +402,7 @@ export const AuthModule = {
         try {
             return await this._api('POST', '/2fa/setup/totp');
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -421,7 +421,7 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -440,7 +440,7 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -472,7 +472,7 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -481,11 +481,11 @@ export const AuthModule = {
     /** Request email fallback code during 2FA login (switch from TOTP to email) */
     async requestEmailFallback() {
         const tempToken = localStorage.getItem('cnote_temp_token');
-        if (!tempToken) return { success: false, error: 'Sesiunea temporară a expirat.' };
+        if (!tempToken) return { success: false, error: 'Temporary session has expired.' };
         try {
             return await this._api('POST', '/2fa/fallback-email', { tempToken });
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 
@@ -514,7 +514,7 @@ export const AuthModule = {
             }
             return data;
         } catch {
-            return { success: false, error: 'Nu s-a putut contacta serverul.' };
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 

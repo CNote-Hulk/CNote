@@ -122,8 +122,8 @@
 
     // Format a boolean value
     function formatBool(val) {
-        if (val === true) return 'Da';
-        if (val === false) return 'Nu';
+        if (val === true) return 'Yes';
+        if (val === false) return 'No';
         return val || 'N/A';
     }
 
@@ -144,63 +144,63 @@
     // Spec sections definition
     var SPEC_SECTIONS = [
         {
-            group: 'Principale',
+            group: 'Primary',
             cards: [
                 {
-                    title: 'Procesare (CPU)',
+                    title: 'Processing (CPU)',
                     keys: function (c) {
                         return [
-                            ['Arhitectur\u0103', c.cpu.arhitectura],
-                            ['Proces', c.cpu.proces_nm],
-                            ['Nuclee', c.cpu.nuclee],
-                            ['Frecven\u021B\u0103', c.cpu.frecventa],
+                            ['Architecture', c.cpu.architecture],
+                            ['Process', c.cpu.proces_nm],
+                            ['Cores', c.cpu.cores],
+                            ['Clock Speed', c.cpu.frequency],
                             ['TDP', c.cpu.tdp]
                         ];
                     }
                 },
                 {
-                    title: 'Grafic\u0103 (GPU)',
+                    title: 'Graphics (GPU)',
                     keys: function (c) {
                         return [
-                            ['Arhitectur\u0103', c.gpu.arhitectura],
-                            ['Unit\u0103\u021Bi', c.gpu.unitati],
-                            ['Frecven\u021B\u0103', c.gpu.frecventa],
+                            ['Architecture', c.gpu.architecture],
+                            ['Units', c.gpu.units],
+                            ['Clock Speed', c.gpu.frequency],
                             ['TFLOPS', c.gpu.tflops],
-                            ['Capabilit\u0103\u021Bi', c.gpu.capabilitati]
+                            ['Capabilities', c.gpu.capabilities]
                         ];
                     }
                 },
                 {
-                    title: 'Memorie',
+                    title: 'Memory',
                     keys: function (c) {
                         return [
-                            ['Tip', c.memorie.tip],
-                            ['Capacitate', c.memorie.capacitate],
-                            ['Magistral\u0103', c.memorie.magistrala],
-                            ['Bandwidth', c.memorie.bandwidth]
+                            ['Type', c.memory.type],
+                            ['Capacity', c.memory.capacity],
+                            ['Bus', c.memory.bus],
+                            ['Bandwidth', c.memory.bandwidth]
                         ];
                     }
                 },
                 {
-                    title: 'Stocare',
+                    title: 'Storage',
                     keys: function (c) {
                         return [
-                            ['Tip', c.stocare.tip],
-                            ['Interfa\u021B\u0103', c.stocare.interfata],
-                            ['Vitez\u0103', c.stocare.viteza]
+                            ['Type', c.storage.type],
+                            ['Interface', c.storage.interface],
+                            ['Speed', c.storage.speed]
                         ];
                     }
                 }
             ]
         },
         {
-            group: 'Secundare',
+            group: 'Secondary',
             cards: [
                 {
-                    title: 'Output Video',
+                    title: 'Video Output',
                     keys: function (c) {
                         return [
-                            ['Rezolu\u021Bie', c.output_video.rezolutie],
+                            ['Resolution', c.output_video.resolution],
                             ['Refresh', c.output_video.refresh],
                             ['HDR', c.output_video.hdr],
                             ['Upscaling', c.output_video.upscaling]
@@ -208,13 +208,13 @@
                     }
                 },
                 {
-                    title: 'Tehnologii',
+                    title: 'Technologies',
                     keys: function (c) {
                         return [
-                            ['Ray Tracing', formatBool(c.tehnologii.ray_tracing)],
-                            ['VRR', formatBool(c.tehnologii.vrr)],
-                            ['Backwards Compat', c.tehnologii.backwards_compatibility],
-                            ['Altele', c.tehnologii.altele]
+                            ['Ray Tracing', formatBool(c.technologies.ray_tracing)],
+                            ['VRR', formatBool(c.technologies.vrr)],
+                            ['Backwards Compat', c.technologies.backwards_compatibility],
+                            ['Other', c.technologies.other]
                         ];
                     }
                 }
@@ -238,11 +238,11 @@
         }
 
         var container = historySection.querySelector('.container');
-        var titleHtml = '<h2 class="section-title">Istorie</h2>';
+        var titleHtml = '<h2 class="section-title">History</h2>';
         var historyHtml = '';
 
-        if (consola.istorie && String(consola.istorie).trim()) {
-            var text = String(consola.istorie);
+        if (consola.history && String(consola.history).trim()) {
+            var text = String(consola.history);
             text = text.replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n\n');
             text = text.replace(/<br\s*\/?>/gi, '\n');
 
@@ -298,7 +298,7 @@
 
             pushCurrent();
 
-            var autoTitles = ['Context', 'Detalii', 'Evoluție', 'Impact', 'Moștenire'];
+            var autoTitles = ['Context', 'Details', 'Evolution', 'Impact', 'Legacy'];
             var autoIndex = 0;
 
             var rendered = sections.map(function (section) {
@@ -327,23 +327,23 @@
     function renderHero(consola) {
 
         var h1 = document.querySelector('.console-hero-text h1');
-        if (h1) h1.textContent = consola.nume;
+        if (h1) h1.textContent = consola.name;
 
         var meta = document.querySelector('.console-hero-text .console-meta');
         if (meta) {
             meta.innerHTML =
-                '<span>' + consola.producator + '</span>' +
-                '<span>' + consola.lansare + '</span>' +
-                '<span>Genera\u021Bia ' + consola.generatie + '</span>';
+                '<span>' + consola.manufacturer + '</span>' +
+                '<span>' + consola.release + '</span>' +
+                '<span>Generation ' + consola.generation + '</span>';
         }
 
         var img = document.querySelector('.console-hero-image img');
         if (img) {
-            img.src = '../../../' + consola.imagine;
-            img.alt = consola.nume;
+            img.src = '../../../' + consola.image;
+            img.alt = consola.name;
             
             // Set width and height to prevent layout shift
-            var imageName = consola.imagine.split('/').pop();
+            var imageName = consola.image.split('/').pop();
             var dimensions = IMAGE_DIMENSIONS[imageName];
             if (dimensions) {
                 img.width = dimensions.width;
@@ -351,7 +351,7 @@
             }
         }
 
-        document.title = consola.nume + ' \u2014 Console Notebook';
+        document.title = consola.name + ' \u2014 Console Notebook';
     }
 
     /** Render the specs accordion from SPEC_SECTIONS config */
@@ -359,7 +359,7 @@
         var container = document.querySelector('.specs-section .container');
         if (!container) return;
 
-        var html = '<h2 class="section-title">Specifica\u021Bii Cheie</h2>';
+        var html = '<h2 class="section-title">Key Specifications</h2>';
 
         SPEC_SECTIONS.forEach(function (section) {
             html += '<div class="specs-group">';
@@ -377,8 +377,8 @@
         });
 
         // Verdict
-        var hasAvantaje = consola.avantaje && consola.avantaje.length > 0;
-        var hasDezavantaje = consola.dezavantaje && consola.dezavantaje.length > 0;
+        var hasAvantaje = consola.advantages && consola.advantages.length > 0;
+        var hasDezavantaje = consola.disadvantages && consola.disadvantages.length > 0;
 
         if (hasAvantaje || hasDezavantaje) {
             html += '<div class="specs-group">';
@@ -386,18 +386,18 @@
             html += '<div class="specs-grid">';
 
             if (hasAvantaje) {
-                html += '<div class="spec-card"><h4>Avantaje</h4>';
+                html += '<div class="spec-card"><h4>Advantages</h4>';
                 html += '<ul class="verdict-list pros-list">';
-                consola.avantaje.forEach(function (p) {
+                consola.advantages.forEach(function (p) {
                     html += '<li class="pro-item">\u2713 ' + p + '</li>';
                 });
                 html += '</ul></div>';
             }
 
             if (hasDezavantaje) {
-                html += '<div class="spec-card"><h4>Dezavantaje</h4>';
+                html += '<div class="spec-card"><h4>Disadvantages</h4>';
                 html += '<ul class="verdict-list cons-list">';
-                consola.dezavantaje.forEach(function (c) {
+                consola.disadvantages.forEach(function (c) {
                     html += '<li class="con-item">\u2717 ' + c + '</li>';
                 });
                 html += '</ul></div>';

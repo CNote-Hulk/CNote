@@ -30,7 +30,7 @@ router.get('/recent', async (req, res) => {
         `);
         res.json({ success: true, threads: result.rows });
     } catch (err) {
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -38,7 +38,7 @@ router.get('/recent', async (req, res) => {
 router.get('/:console/threads', async (req, res) => {
     const consoleKey = req.params.console;
     if (!VALID_CONSOLES.includes(consoleKey)) {
-        return res.status(400).json({ success: false, error: 'Consolă invalidă.' });
+        return res.status(400).json({ success: false, error: 'Invalid console.' });
     }
     try {
         const result = await pool.query(`
@@ -55,7 +55,7 @@ router.get('/:console/threads', async (req, res) => {
         res.json({ success: true, threads: result.rows });
     } catch (err) {
         console.error('Forum threads GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -64,7 +64,7 @@ router.get('/:console/threads/:id', async (req, res) => {
     const { console: consoleKey, id } = req.params;
     const threadId = parseInt(id);
     if (!VALID_CONSOLES.includes(consoleKey) || isNaN(threadId)) {
-        return res.status(400).json({ success: false, error: 'Parametri invalizi.' });
+        return res.status(400).json({ success: false, error: 'Invalid parameters.' });
     }
     try {
         // Increment views
@@ -79,7 +79,7 @@ router.get('/:console/threads/:id', async (req, res) => {
         `, [threadId, consoleKey]);
 
         if (threadResult.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Thread negăsit.' });
+            return res.status(404).json({ success: false, error: 'Thread not found.' });
         }
 
         const repliesResult = await pool.query(`
@@ -97,7 +97,7 @@ router.get('/:console/threads/:id', async (req, res) => {
         res.json({ success: true, thread });
     } catch (err) {
         console.error('Forum thread GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -105,12 +105,12 @@ router.get('/:console/threads/:id', async (req, res) => {
 router.post('/:console/threads', authRequired, async (req, res) => {
     const consoleKey = req.params.console;
     if (!VALID_CONSOLES.includes(consoleKey)) {
-        return res.status(400).json({ success: false, error: 'Consolă invalidă.' });
+        return res.status(400).json({ success: false, error: 'Invalid console.' });
     }
 
     const { title, body, tag } = req.body;
     if (!title || !body || String(title).trim().length === 0 || String(body).trim().length === 0) {
-        return res.status(400).json({ success: false, error: 'Titlu și descriere obligatorii.' });
+        return res.status(400).json({ success: false, error: 'Title and description are required.' });
     }
 
     const safeTag = VALID_TAGS.includes(tag) ? tag : 'General';
@@ -131,7 +131,7 @@ router.post('/:console/threads', authRequired, async (req, res) => {
         res.status(201).json({ success: true, thread });
     } catch (err) {
         console.error('Forum thread POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -139,12 +139,12 @@ router.post('/:console/threads', authRequired, async (req, res) => {
 router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
     const threadId = parseInt(req.params.id);
     if (isNaN(threadId)) {
-        return res.status(400).json({ success: false, error: 'ID invalid.' });
+        return res.status(400).json({ success: false, error: 'Invalid ID.' });
     }
 
     const { body } = req.body;
     if (!body || String(body).trim().length === 0) {
-        return res.status(400).json({ success: false, error: 'Răspunsul nu poate fi gol.' });
+        return res.status(400).json({ success: false, error: 'Reply cannot be empty.' });
     }
 
     const safeBody = String(body).trim().slice(0, 3000);
@@ -153,7 +153,7 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
         // Verify thread exists
         const thread = await pool.query('SELECT id FROM forum_threads WHERE id = $1', [threadId]);
         if (thread.rows.length === 0) {
-            return res.status(404).json({ success: false, error: 'Thread negăsit.' });
+            return res.status(404).json({ success: false, error: 'Thread not found.' });
         }
 
         const result = await pool.query(`
@@ -175,7 +175,7 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
                 await createNotification(
                     ownerId,
                     'forum_reply',
-                    `${req.user.username} a răspuns la "${threadTitle}"`,
+                    `${req.user.username} replied to "${threadTitle}"`,
                     ''
                 );
             }
@@ -184,7 +184,7 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
         res.status(201).json({ success: true, reply });
     } catch (err) {
         console.error('Forum reply POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -192,7 +192,7 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
 router.post('/:console/threads/:id/upvote', authRequired, async (req, res) => {
     const threadId = parseInt(req.params.id);
     if (isNaN(threadId)) {
-        return res.status(400).json({ success: false, error: 'ID invalid.' });
+        return res.status(400).json({ success: false, error: 'Invalid ID.' });
     }
 
     try {
@@ -216,14 +216,14 @@ router.post('/:console/threads/:id/upvote', authRequired, async (req, res) => {
         res.json({ success: true, upvotes: result.rows[0]?.upvotes || 0 });
     } catch (err) {
         console.error('Forum upvote error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
 // ── POST /api/forum/:console/replies/:replyId/upvote (shorthand)
 router.post('/:console/replies/:replyId/upvote', authRequired, async (req, res) => {
     const replyId = parseInt(req.params.replyId);
-    if (isNaN(replyId)) return res.status(400).json({ success: false, error: 'ID invalid.' });
+    if (isNaN(replyId)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
 
     try {
         const existing = await pool.query(
@@ -243,7 +243,7 @@ router.post('/:console/replies/:replyId/upvote', authRequired, async (req, res) 
         res.json({ success: true, upvotes: result.rows[0]?.upvotes || 0 });
     } catch (err) {
         console.error('Forum reply upvote error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -251,7 +251,7 @@ router.post('/:console/replies/:replyId/upvote', authRequired, async (req, res) 
 router.post('/:console/threads/:id/replies/:replyId/upvote', authRequired, async (req, res) => {
     const replyId = parseInt(req.params.replyId);
     if (isNaN(replyId)) {
-        return res.status(400).json({ success: false, error: 'ID invalid.' });
+        return res.status(400).json({ success: false, error: 'Invalid ID.' });
     }
 
     try {
@@ -272,7 +272,7 @@ router.post('/:console/threads/:id/replies/:replyId/upvote', authRequired, async
         res.json({ success: true, upvotes: result.rows[0]?.upvotes || 0 });
     } catch (err) {
         console.error('Forum reply upvote error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

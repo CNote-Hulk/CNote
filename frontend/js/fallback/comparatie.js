@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Comparatie Fallback (non-module)
  * Includes hamburger menu + comparison logic for file:// usage
  * Reads data from embedded copy of consoles.json structure
@@ -72,7 +72,7 @@
     function startApp(data) {
         consolesData = data;
         if (!consolesData || consolesData.length === 0) {
-            display.innerHTML = '<p class="comparison-error">Nu s-au putut încarcă datele consolelor. Folosiți un server HTTP local.</p>';
+            display.innerHTML = '<p class="comparison-error">Could not load console data. Use a local HTTP server.</p>';
             return;
         }
         populateSelects();
@@ -84,22 +84,22 @@
     }
 
     const GEN_LABELS = {
-        9: 'Generatia 9 (2020 – Prezent)',
-        8: 'Generatia 8 (2012 – 2020)',
-        7: 'Generatia 7 (2005 – 2013)',
-        6: 'Generatia 6 (1998 – 2006)',
-        5: 'Generatia 5 (1994 – 2001)',
-        4: 'Generatia 4 (1987 – 1996)',
-        3: 'Generatia 3 (1985 – 1990)',
-        2: 'Generatia 2 (1980 – 1984)',
-        1: 'Generatia 1 (1972 – 1980)'
+        9: 'Generation 9 (2020 – Present)',
+        8: 'Generation 8 (2012 – 2020)',
+        7: 'Generation 7 (2005 – 2013)',
+        6: 'Generation 6 (1998 – 2006)',
+        5: 'Generation 5 (1994 – 2001)',
+        4: 'Generation 4 (1987 – 1996)',
+        3: 'Generation 3 (1985 – 1990)',
+        2: 'Generation 2 (1980 – 1984)',
+        1: 'Generation 1 (1972 – 1980)'
     };
 
     /** Fill both <select> dropdowns with console options */
     function populateSelects() {
         const gens = {};
         consolesData.forEach(c => {
-            const g = c.generatie;
+            const g = c.generation;
             if (!gens[g]) gens[g] = [];
             gens[g].push(c);
         });
@@ -108,11 +108,11 @@
             sel.innerHTML = '';
             Object.keys(gens).sort((a, b) => b - a).forEach(gen => {
                 const og = document.createElement('optgroup');
-                og.label = GEN_LABELS[gen] || ('Generatia ' + gen);
-                gens[gen].sort((a, b) => b.lansare - a.lansare).forEach(c => {
+                og.label = GEN_LABELS[gen] || ('Generation ' + gen);
+                gens[gen].sort((a, b) => b.release - a.release).forEach(c => {
                     const opt = document.createElement('option');
                     opt.value = c.id;
-                    opt.textContent = c.nume + ' (' + c.lansare + ')';
+                    opt.textContent = c.name + ' (' + c.release + ')';
                     og.appendChild(opt);
                 });
                 sel.appendChild(og);
@@ -122,41 +122,41 @@
 
     const SPEC_SECTIONS = [
         { key: 'cpu', label: 'CPU', fields: [
-            { key: 'arhitectura', label: 'Arhitectura' },
-            { key: 'proces_nm', label: 'Proces (nm)' },
-            { key: 'nuclee', label: 'Nuclee/Fire' },
-            { key: 'frecventa', label: 'Frecventa' },
+            { key: 'architecture', label: 'Architecture' },
+            { key: 'proces_nm', label: 'Process (nm)' },
+            { key: 'cores', label: 'Cores/Threads' },
+            { key: 'frequency', label: 'Clock Speed' },
             { key: 'tdp', label: 'TDP' }
         ]},
         { key: 'gpu', label: 'GPU', fields: [
-            { key: 'arhitectura', label: 'Arhitectura' },
-            { key: 'unitati', label: 'Unitati/CUs' },
-            { key: 'frecventa', label: 'Frecventa' },
+            { key: 'architecture', label: 'Architecture' },
+            { key: 'units', label: 'Units/CUs' },
+            { key: 'frequency', label: 'Clock Speed' },
             { key: 'tflops', label: 'TFLOPS' },
-            { key: 'capabilitati', label: 'Capabilitati' }
+            { key: 'capabilities', label: 'Capabilities' }
         ]},
-        { key: 'memorie', label: 'Memorie', fields: [
-            { key: 'tip', label: 'Tip' },
-            { key: 'capacitate', label: 'Capacitate' },
-            { key: 'magistrala', label: 'Magistrala' },
+        { key: 'memory', label: 'Memory', fields: [
+            { key: 'type', label: 'Type' },
+            { key: 'capacity', label: 'Capacity' },
+            { key: 'bus', label: 'Bus' },
             { key: 'bandwidth', label: 'Bandwidth' }
         ]},
-        { key: 'stocare', label: 'Stocare', fields: [
-            { key: 'tip', label: 'Tip' },
-            { key: 'interfata', label: 'Interfata' },
-            { key: 'viteza', label: 'Viteza' }
+        { key: 'storage', label: 'Storage', fields: [
+            { key: 'type', label: 'Type' },
+            { key: 'interface', label: 'Interface' },
+            { key: 'speed', label: 'Speed' }
         ]},
         { key: 'output_video', label: 'Output Video', fields: [
-            { key: 'rezolutie', label: 'Rezolutie' },
+            { key: 'resolution', label: 'Resolution' },
             { key: 'refresh', label: 'Refresh' },
             { key: 'hdr', label: 'HDR' },
             { key: 'upscaling', label: 'Upscaling' }
         ]},
-        { key: 'tehnologii', label: 'Tehnologii', fields: [
+        { key: 'technologies', label: 'Technologies', fields: [
             { key: 'ray_tracing', label: 'Ray Tracing' },
             { key: 'vrr', label: 'VRR' },
             { key: 'backwards_compatibility', label: 'Backwards Compat' },
-            { key: 'altele', label: 'Altele' }
+            { key: 'other', label: 'Other' }
         ]}
     ];
 
@@ -195,31 +195,31 @@
             return rows ? '<div class="spec-section"><div class="spec-section-header">' + section.label + '</div>' + rows + '</div>' : '';
         }).filter(s => s.length > 0).join('');
 
-        const prosA = (a.avantaje || []).map(p => '<li class="pro-item"> ' + p + '</li>').join('');
-        const consA = (a.dezavantaje || []).map(c => '<li class="con-item"> ' + c + '</li>').join('');
-        const prosB = (b.avantaje || []).map(p => '<li class="pro-item"> ' + p + '</li>').join('');
-        const consB = (b.dezavantaje || []).map(c => '<li class="con-item"> ' + c + '</li>').join('');
+        const prosA = (a.advantages || []).map(p => '<li class="pro-item"> ' + p + '</li>').join('');
+        const consA = (a.disadvantages || []).map(c => '<li class="con-item"> ' + c + '</li>').join('');
+        const prosB = (b.advantages || []).map(p => '<li class="pro-item"> ' + p + '</li>').join('');
+        const consB = (b.disadvantages || []).map(c => '<li class="con-item"> ' + c + '</li>').join('');
 
-        const specsSection = specsHtml ? '<div class="specs-comparison"><h3 class="specs-title">Fișa Tehnică</h3><div class="spec-sheet">' + specsHtml + '</div></div>' : '';
+        const specsSection = specsHtml ? '<div class="specs-comparison"><h3 class="specs-title">Technical Specs</h3><div class="spec-sheet">' + specsHtml + '</div></div>' : '';
 
         const verdictSection = (prosA || consA || prosB || consB) ?
-            '<div class="verdict-section"><h3 class="verdict-title">Overview Rapid</h3><div class="verdict-grid">' +
-            '<div class="verdict-card"><h4 class="verdict-console-name">' + a.nume + '</h4><div class="verdict-lists">' +
-            (prosA ? '<div class="pros-list"><h5 class="list-title pros-title">Avantaje</h5><ul>' + prosA + '</ul></div>' : '') +
-            (consA ? '<div class="cons-list"><h5 class="list-title cons-title">Dezavantaje</h5><ul>' + consA + '</ul></div>' : '') +
+            '<div class="verdict-section"><h3 class="verdict-title">Quick Overview</h3><div class="verdict-grid">' +
+            '<div class="verdict-card"><h4 class="verdict-console-name">' + a.name + '</h4><div class="verdict-lists">' +
+            (prosA ? '<div class="pros-list"><h5 class="list-title pros-title">Advantages</h5><ul>' + prosA + '</ul></div>' : '') +
+            (consA ? '<div class="cons-list"><h5 class="list-title cons-title">Disadvantages</h5><ul>' + consA + '</ul></div>' : '') +
             '</div></div>' +
-            '<div class="verdict-card"><h4 class="verdict-console-name">' + b.nume + '</h4><div class="verdict-lists">' +
-            (prosB ? '<div class="pros-list"><h5 class="list-title pros-title">Avantaje</h5><ul>' + prosB + '</ul></div>' : '') +
-            (consB ? '<div class="cons-list"><h5 class="list-title cons-title">Dezavantaje</h5><ul>' + consB + '</ul></div>' : '') +
+            '<div class="verdict-card"><h4 class="verdict-console-name">' + b.name + '</h4><div class="verdict-lists">' +
+            (prosB ? '<div class="pros-list"><h5 class="list-title pros-title">Advantages</h5><ul>' + prosB + '</ul></div>' : '') +
+            (consB ? '<div class="cons-list"><h5 class="list-title cons-title">Disadvantages</h5><ul>' + consB + '</ul></div>' : '') +
             '</div></div></div></div>' : '';
 
         display.innerHTML =
             '<div class="comparison-grid">' +
-            '<div class="console-card" data-console-id="' + a.id + '"><div class="console-card-image"><img src="' + resolveImg(a.imagine) + '" alt="' + a.nume + '"></div>' +
-            '<div class="console-card-info"><h3>' + a.nume + '</h3><div class="console-meta-tags"><span class="meta-tag">' + a.producator + '</span><span class="meta-tag">' + a.lansare + '</span><span class="meta-tag">Gen ' + a.generatie + '</span></div></div></div>' +
+            '<div class="console-card" data-console-id="' + a.id + '"><div class="console-card-image"><img src="' + resolveImg(a.image) + '" alt="' + a.name + '"></div>' +
+            '<div class="console-card-info"><h3>' + a.name + '</h3><div class="console-meta-tags"><span class="meta-tag">' + a.manufacturer + '</span><span class="meta-tag">' + a.release + '</span><span class="meta-tag">Gen ' + a.generation + '</span></div></div></div>' +
             '<div class="comparison-vs"><span class="vs-badge">VS</span></div>' +
-            '<div class="console-card" data-console-id="' + b.id + '"><div class="console-card-image"><img src="' + resolveImg(b.imagine) + '" alt="' + b.nume + '"></div>' +
-            '<div class="console-card-info"><h3>' + b.nume + '</h3><div class="console-meta-tags"><span class="meta-tag">' + b.producator + '</span><span class="meta-tag">' + b.lansare + '</span><span class="meta-tag">Gen ' + b.generatie + '</span></div></div></div>' +
+            '<div class="console-card" data-console-id="' + b.id + '"><div class="console-card-image"><img src="' + resolveImg(b.image) + '" alt="' + b.name + '"></div>' +
+            '<div class="console-card-info"><h3>' + b.name + '</h3><div class="console-meta-tags"><span class="meta-tag">' + b.manufacturer + '</span><span class="meta-tag">' + b.release + '</span><span class="meta-tag">Gen ' + b.generation + '</span></div></div></div>' +
             '</div>' + specsSection + verdictSection;
 
         display.querySelectorAll('img').forEach(function (img) {

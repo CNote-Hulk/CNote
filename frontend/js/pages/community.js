@@ -19,8 +19,8 @@ const CONSOLES = [
 
 const TAGS = ['All', 'General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];
 
-const CONDITIONS = { new: 'Nou', like_new: 'Ca nou', good: 'Bun', fair: 'Acceptabil', parts: 'Piese' };
-const CATEGORIES  = { consoles: 'Console', games: 'Jocuri', accessories: 'Accesorii', parts: 'Piese / Reparații' };
+const CONDITIONS = { new: 'New', like_new: 'Like new', good: 'Good', fair: 'Fair', parts: 'Parts' };
+const CATEGORIES  = { consoles: 'Consoles', games: 'Games', accessories: 'Accessories', parts: 'Parts / Repairs' };
 
 const SYMPTOMS = [
     'No power', 'Overheating', 'Disc read error', 'No video output',
@@ -69,10 +69,10 @@ function esc(s) {
 /** Format a date as a relative time string (Romanian locale) */
 function timeAgo(d) {
     const diff = Date.now() - new Date(d).getTime();
-    if (diff < 60000)    return 'acum';
+    if (diff < 60000)    return 'now';
     if (diff < 3600000)  return Math.floor(diff / 60000) + ' min';
     if (diff < 86400000) return Math.floor(diff / 3600000) + 'h';
-    return new Date(d).toLocaleDateString('ro-RO', { day: 'numeric', month: 'short' });
+    return new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
 }
 
 /** Get 2-letter initials from a username */
@@ -223,12 +223,12 @@ function renderForum() {
     v.innerHTML = `
         <div class="hub-view-header">
             <div class="hub-view-header__title">💬 ${esc(cName)} — Comunitate</div>
-            ${u ? '<button class="hub-btn hub-btn--primary" id="forum-new-btn">+ Subiect nou</button>' : ''}
+            ${u ? '<button class="hub-btn hub-btn--primary" id="forum-new-btn">+ New topic</button>' : ''}
         </div>
         <div class="hub-forum-filters" id="forum-filters">
             ${TAGS.map(t => `<button class="hub-filter-btn${S.forumTag === t ? ' hub-filter-btn--active' : ''}" data-tag="${t}">${t}</button>`).join('')}
         </div>
-        <div class="hub-thread-list" id="forum-threads"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div></div>`;
+        <div class="hub-thread-list" id="forum-threads"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>`;
 
     v.querySelector('#forum-filters').addEventListener('click', e => {
         const b = e.target.closest('.hub-filter-btn');
@@ -276,7 +276,7 @@ async function loadThreads() {
             const item = e.target.closest('.hub-thread-item');
             if (item) openThread(+item.dataset.id);
         });
-    } catch { list.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Eroare la încărcare.</div>'; }
+    } catch { list.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load.</div>'; }
 }
 
 /** Open a single thread with its replies and reply form */
@@ -284,7 +284,7 @@ async function openThread(id) {
     S.threadId = id;
     showView('thread');
     const v = document.getElementById('view-thread');
-    v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div>';
+    v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div>';
 
     try {
         const data = await api('GET', `/forum/${S.console}/threads/${id}`);
@@ -293,7 +293,7 @@ async function openThread(id) {
 
         v.innerHTML = `
             <div class="hub-view-header">
-                <button class="hub-view-header__back" id="thread-back">← Înapoi</button>
+                <button class="hub-view-header__back" id="thread-back">← Back</button>
                 <div class="hub-view-header__title">${esc(t.title)}</div>
             </div>
             <div class="hub-thread-detail" id="thread-detail">
@@ -309,7 +309,7 @@ async function openThread(id) {
                         <button class="hub-btn hub-btn--secondary hub-btn--sm" data-upvote="thread" data-id="${t.id}">↑ ${t.upvotes || 0}</button>
                     </div>
                 </div>
-                <div class="hub-replies-heading">Răspunsuri (${replies.length})</div>
+                <div class="hub-replies-heading">Replies (${replies.length})</div>
                 ${replies.map(r => `
                     <div class="hub-reply-card">
                         <div class="hub-reply-header">
@@ -324,8 +324,8 @@ async function openThread(id) {
                     </div>`).join('')}
             </div>
             ${u ? `<form class="hub-reply-form" id="thread-reply-form">
-                <input type="text" placeholder="Scrie un răspuns…" maxlength="2000" required>
-                <button class="hub-btn hub-btn--primary" type="submit">Trimite</button>
+                <input type="text" placeholder="Write a reply…" maxlength="2000" required>
+                <button class="hub-btn hub-btn--primary" type="submit">Send</button>
             </form>` : ''}`;
 
         v.querySelector('#thread-back').addEventListener('click', () => {
@@ -352,7 +352,7 @@ async function openThread(id) {
             const res = await api('POST', `/forum/${S.console}/threads/${id}/reply`, { body });
             if (res.success) openThread(id);
         });
-    } catch { v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Eroare la încărcare.</div>'; }
+    } catch { v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load.</div>'; }
 }
 
 /** Open modal dialog to create a new forum thread */
@@ -369,8 +369,8 @@ function openNewThreadModal() {
             </div>
             <form class="hub-modal__body" id="new-thread-form">
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Titlu</label>
-                    <input class="hub-form-input" name="title" maxlength="200" required placeholder="Titlul subiectului…">
+                    <label class="hub-form-label">Title</label>
+                    <input class="hub-form-input" name="title" maxlength="200" required placeholder="Topic title…">
                 </div>
                 <div class="hub-form-group">
                     <label class="hub-form-label">Tag</label>
@@ -379,12 +379,12 @@ function openNewThreadModal() {
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Mesaj</label>
-                    <textarea class="hub-form-textarea" name="body" maxlength="5000" required rows="5" placeholder="Scrie aici…"></textarea>
+                    <label class="hub-form-label">Message</label>
+                    <textarea class="hub-form-textarea" name="body" maxlength="5000" required rows="5" placeholder="Write here…"></textarea>
                 </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
-                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Anulează</button>
-                    <button type="submit" class="hub-btn hub-btn--primary">Publică</button>
+                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
+                    <button type="submit" class="hub-btn hub-btn--primary">Publish</button>
                 </div>
             </form>
         </div>`;
@@ -403,7 +403,7 @@ function openNewThreadModal() {
             title: f.title.value.trim(), body: f.body.value.trim(), tag: f.tag.value,
         });
         if (res.success) { close(); loadThreads(); }
-        else { btn.disabled = false; alert(res.error || 'Eroare.'); }
+        else { btn.disabled = false; alert(res.error || 'Error.'); }
     });
 }
 
@@ -416,29 +416,29 @@ function renderMarketplace() {
     const v = document.getElementById('view-marketplace');
     const u = user();
 
-    // Numără filtrele active (excluzând sort și search)
+    // Count active filters (excluding sort and search)
     const activeFilters = [S.marketCondition, S.marketConsole, S.marketCountry, S.marketCity].filter(Boolean).length;
 
     v.innerHTML = `
         <div class="hub-view-header">
             <div class="hub-view-header__title">🛒 Marketplace</div>
             <div style="display:flex;gap:8px">
-                ${u ? '<button class="hub-btn hub-btn--primary hub-market-add-btn" id="market-add-btn"><span class="hub-market-add-btn__text">+ Anunț nou</span><span class="hub-market-add-btn__icon">+</span></button>' : ''}
-                ${u ? '<button class="hub-btn hub-btn--secondary" id="market-dm-btn">💬 Mesaje</button>' : ''}
+                ${u ? '<button class="hub-btn hub-btn--primary hub-market-add-btn" id="market-add-btn"><span class="hub-market-add-btn__text">+ New listing</span><span class="hub-market-add-btn__icon">+</span></button>' : ''}
+                ${u ? '<button class="hub-btn hub-btn--secondary" id="market-dm-btn">💬 Messages</button>' : ''}
             </div>
         </div>
 
         <div class="hub-market-topbar">
-            <input class="hub-market-search" id="market-search" placeholder="Caută anunțuri…" value="${esc(S.marketSearch)}">
+            <input class="hub-market-search" id="market-search" placeholder="Search listings…" value="${esc(S.marketSearch)}">
             <button class="hub-btn hub-btn--secondary hub-filter-toggle-btn" id="market-filter-btn">
-                ⚙️ Filtre
+                ⚙️ Filters
                 ${activeFilters > 0 ? `<span class="hub-filter-badge">${activeFilters}</span>` : ''}
             </button>
             <select class="hub-market-select" id="market-sort" style="min-width:130px">
-                <option value="newest" ${S.marketSort==='newest'?'selected':''}>Cele mai noi</option>
-                <option value="oldest" ${S.marketSort==='oldest'?'selected':''}>Cele mai vechi</option>
-                <option value="price_asc" ${S.marketSort==='price_asc'?'selected':''}>Preț ↑</option>
-                <option value="price_desc" ${S.marketSort==='price_desc'?'selected':''}>Preț ↓</option>
+                <option value="newest" ${S.marketSort==='newest'?'selected':''}>Newest</option>
+                <option value="oldest" ${S.marketSort==='oldest'?'selected':''}>Oldest</option>
+                <option value="price_asc" ${S.marketSort==='price_asc'?'selected':''}>Price ↑</option>
+                <option value="price_desc" ${S.marketSort==='price_desc'?'selected':''}>Price ↓</option>
             </select>
         </div>
 
@@ -448,13 +448,13 @@ function renderMarketplace() {
         <!-- Filter Drawer -->
         <div class="hub-filter-drawer" id="filter-drawer">
             <div class="hub-filter-drawer__header">
-                <span class="hub-filter-drawer__title">⚙️ Filtre</span>
+                <span class="hub-filter-drawer__title">⚙️ Filters</span>
                 <button class="hub-filter-drawer__close" id="filter-close">&times;</button>
             </div>
             <div class="hub-filter-drawer__body">
 
                 <div class="hub-filter-section">
-                    <div class="hub-filter-section__label">Stare produs</div>
+                    <div class="hub-filter-section__label">Condition</div>
                     <select class="hub-form-select" id="market-condition">
                         <option value="">Toate</option>
                         ${Object.entries(CONDITIONS).map(([k, val]) => `<option value="${k}" ${S.marketCondition===k?'selected':''}>${val}</option>`).join('')}
@@ -465,39 +465,39 @@ function renderMarketplace() {
                     <div class="hub-filter-section__label">Consolă</div>
                     <select class="hub-form-select" id="market-console">
                         <option value="">Toate</option>
-                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}" ${S.marketConsole===c.id?'selected':''}>${c.nume}</option>`).join('')}
+                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}" ${S.marketConsole===c.id?'selected':''}>${c.name}</option>`).join('')}
                     </select>
                 </div>
 
                 <div class="hub-filter-section">
-                    <div class="hub-filter-section__label">Țară</div>
+                    <div class="hub-filter-section__label">Country</div>
                     <select class="hub-form-select" id="market-country">
-                        <option value="">Toate țările</option>
+                        <option value="">All countries</option>
                         ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}" ${S.marketCountry===c.code?'selected':''}>${c.name}</option>`).join('')}
                     </select>
                 </div>
 
                 <div class="hub-filter-section">
-                    <div class="hub-filter-section__label">Oraș</div>
+                    <div class="hub-filter-section__label">City</div>
                     <select class="hub-form-select" id="market-city" ${!S.marketCountry ? 'disabled' : ''}>
-                        <option value="">Toate orașele</option>
+                        <option value="">All cities</option>
                         ${S.marketCountry
                             ? (window.LOCATION_DATA.countries.find(c => c.code === S.marketCountry)?.cities || [])
                             .map(city => `<option value="${city}" ${S.marketCity===city?'selected':''}>${city}</option>`).join('')
                             : ''}
                     </select>
-                    ${!S.marketCountry ? '<div class="hub-filter-hint">Selectează mai întâi o țară</div>' : ''}
+                    ${!S.marketCountry ? '<div class="hub-filter-hint">Select a country first</div>' : ''}
                 </div>
 
             </div>
             <div class="hub-filter-drawer__footer">
-                <button class="hub-btn hub-btn--secondary" id="filter-reset">Resetează</button>
-                <button class="hub-btn hub-btn--primary" id="filter-apply">Aplică filtrele</button>
+                <button class="hub-btn hub-btn--secondary" id="filter-reset">Reset</button>
+                <button class="hub-btn hub-btn--primary" id="filter-apply">Apply filters</button>
             </div>
         </div>
 
         <div class="hub-market-grid" id="market-grid">
-            <div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div>
+            <div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div>
         </div>
         <div class="hub-market-pagination" id="market-pagination"></div>`;
 
@@ -528,7 +528,7 @@ function renderMarketplace() {
     const citySelect = v.querySelector('#market-city');
     const hint = v.querySelector('.hub-filter-hint');
     const country = window.LOCATION_DATA.countries.find(c => c.code === code);
-    citySelect.innerHTML = '<option value="">Toate orașele</option>' +
+    citySelect.innerHTML = '<option value="">All cities</option>' +
         (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
     citySelect.disabled = !code;
     if (hint) hint.style.display = code ? 'none' : 'block';
@@ -589,7 +589,7 @@ async function loadListings() {
         const listings = data.listings || [];
 
         if (!listings.length) {
-            grid.innerHTML = `<div class="hub-empty" style="grid-column:1/-1"><div class="hub-empty__icon">🛒</div>Niciun anunț${S.marketSearch ? ' pentru „' + esc(S.marketSearch) + '"' : ''}.</div>`;
+            grid.innerHTML = `<div class="hub-empty" style="grid-column:1/-1"><div class="hub-empty__icon">🛒</div>No listings${S.marketSearch ? ' pentru „' + esc(S.marketSearch) + '"' : ''}.</div>`;
             pag.innerHTML = '';
             return;
         }
@@ -601,8 +601,8 @@ async function loadListings() {
                 <button class="hub-listing-card" data-id="${l.id}">
                     <div class="hub-listing-img">
                         ${imgs[0] ? `<img src="${esc(imgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy" class="hub-listing-img__placeholder-img">'}
-                        ${l.sold ? '<div class="hub-listing-sold-overlay"><span class="hub-listing-sold-badge">VÂNDUT</span></div>' : ''}
-                        <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
+                        ${l.sold ? '<div class="hub-listing-sold-overlay"><span class="hub-listing-sold-badge">SOLD</span></div>' : ''}
+                        <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Remove from favorites' : 'Add to favorites') : 'Log in for favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </span>
                     </div>
@@ -623,7 +623,7 @@ async function loadListings() {
             const favBtn = e.target.closest('.hub-listing-fav-btn');
             if (favBtn) {
                 e.stopPropagation();
-                if (!u) { alert('Autentifică-te pentru favorite'); return; }
+                if (!u) { alert('Log in for favorites'); return; }
                 const lid = +favBtn.dataset.favId;
                 favBtn.classList.add('hub-listing-fav-btn--pop');
                 const res = await api('POST', `/marketplace/listings/${lid}/favorite`);
@@ -647,7 +647,7 @@ async function loadListings() {
             const b = e.target.closest('.hub-page-btn');
             if (b) { S.marketPage = +b.dataset.page; loadListings(); }
         });
-    } catch { grid.innerHTML = '<div class="hub-empty" style="grid-column:1/-1"><div class="hub-empty__icon">❌</div>Eroare la încărcare.</div>'; }
+    } catch { grid.innerHTML = '<div class="hub-empty" style="grid-column:1/-1"><div class="hub-empty__icon">❌</div>Failed to load.</div>'; }
 }
 
 /** Open listing detail view with contact/DM options */
@@ -655,7 +655,7 @@ async function openListingDetail(id) {
     S.listingId = id;
     showView('listing');
     const v = document.getElementById('view-listing');
-    v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div>';
+    v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div>';
 
     try {
         const data = await api('GET', `/marketplace/listings/${id}`);
@@ -679,8 +679,8 @@ async function openListingDetail(id) {
                             <div class="hub-detail-main-img" id="listing-main-img">
                                 <img src="${esc(imgs[0])}" alt="">
                                 ${imgs.length > 1 ? `
-                                    <button class="hub-gallery-arrow hub-gallery-arrow--left" id="gallery-prev" aria-label="Imaginea anterioară">‹</button>
-                                    <button class="hub-gallery-arrow hub-gallery-arrow--right" id="gallery-next" aria-label="Imaginea următoare">›</button>
+                                    <button class="hub-gallery-arrow hub-gallery-arrow--left" id="gallery-prev" aria-label="Previous image">‹</button>
+                                    <button class="hub-gallery-arrow hub-gallery-arrow--right" id="gallery-next" aria-label="Next image">›</button>
                                     <span class="hub-gallery-counter" id="gallery-counter">1 / ${imgs.length}</span>` : ''}
                             </div>
                             ${imgs.length > 1 ? `<div class="hub-detail-thumbs">${imgs.map((im, i) =>
@@ -689,7 +689,7 @@ async function openListingDetail(id) {
                         <div class="hub-detail-gallery">
                             <div class="hub-detail-main-img hub-detail-main-img--placeholder">
                                 <span class="hub-placeholder-icon">🖼️</span>
-                                <span class="hub-placeholder-text">Fără fotografii</span>
+                                <span class="hub-placeholder-text">No photos</span>
                             </div>
                         </div>`}
                     <div class="hub-detail-card hub-detail-card--main">
@@ -705,7 +705,7 @@ async function openListingDetail(id) {
                                 <div class="hub-detail-price">${Number(l.price).toFixed(0)} RON</div>
                             </div>
                             <div style="display:flex;justify-content:flex-end;margin-top:8px">
-                                <button class="hub-detail-fav-btn${isFavDetail ? ' hub-detail-fav-btn--active' : ''}" id="detail-fav-btn" title="${u ? (isFavDetail ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
+                                <button class="hub-detail-fav-btn${isFavDetail ? ' hub-detail-fav-btn--active' : ''}" id="detail-fav-btn" title="${u ? (isFavDetail ? 'Remove from favorites' : 'Add to favorites') : 'Log in for favorites'}">
                                     ${isFavDetail ? '❤️' : '🤍'}
                                 </button>
                             </div>
@@ -718,19 +718,19 @@ async function openListingDetail(id) {
                         <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
                         <div style="flex:1">
                             <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}</div>
-                            <div style="color:var(--text-gray);font-size:.78rem">Vânzător</div>
+                            <div style="color:var(--text-gray);font-size:.78rem">Seller</div>
                         </div>
-                        ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contactează</button>' : ''}
+                        ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
                     </div>
                     <div class="hub-detail-actions">
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
                         ${l.olx_url ? `<a href="${esc(l.olx_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 OLX</a>` : ''}
-                        ${own && !l.sold ? '<button class="hub-btn hub-btn--primary" id="listing-sold-btn">✓ Marchează vândut</button>' : ''}
-                        ${own ? '<button class="hub-btn hub-btn--secondary" id="listing-edit-btn">✏️ Editează</button>' : ''}
-                        ${own ? '<button class="hub-btn hub-btn--danger" id="listing-del-btn">Șterge</button>' : ''}
+                        ${own && !l.sold ? '<button class="hub-btn hub-btn--primary" id="listing-sold-btn">✓ Mark as sold</button>' : ''}
+                        ${own ? '<button class="hub-btn hub-btn--secondary" id="listing-edit-btn">✏️ Edit</button>' : ''}
+                        ${own ? '<button class="hub-btn hub-btn--danger" id="listing-del-btn">Delete</button>' : ''}
                     </div>
                     <div class="hub-similar-section" id="similar-section">
-                        <h3 class="hub-similar-section__title">📋 Anunțuri similare</h3>
+                        <h3 class="hub-similar-section__title">📋 Similar listings</h3>
                         <div class="hub-similar-grid" id="similar-grid">
                             ${Array.from({length:4}, () => '<div class="hub-listing-card hub-listing-card--skeleton"><div class="hub-listing-img"></div><div class="hub-listing-info"><div class="hub-skeleton-line" style="width:60%"></div><div class="hub-skeleton-line" style="width:80%"></div><div class="hub-skeleton-line" style="width:40%"></div></div></div>').join('')}
                         </div>
@@ -776,12 +776,12 @@ async function openListingDetail(id) {
             lb.className = 'hub-lightbox';
             lb.innerHTML = `
                 <div class="hub-lightbox__backdrop"></div>
-                <button class="hub-lightbox__close" aria-label="Închide">✕</button>
+                <button class="hub-lightbox__close" aria-label="Close">✕</button>
                 <span class="hub-lightbox__counter">${lbIdx + 1} / ${images.length}</span>
                 <img class="hub-lightbox__img" src="${images[lbIdx]}" alt="">
                 ${images.length > 1 ? `
-                    <button class="hub-lightbox__arrow hub-lightbox__arrow--left" aria-label="Anterior">‹</button>
-                    <button class="hub-lightbox__arrow hub-lightbox__arrow--right" aria-label="Următorul">›</button>` : ''}`;
+                    <button class="hub-lightbox__arrow hub-lightbox__arrow--left" aria-label="Previous">‹</button>
+                    <button class="hub-lightbox__arrow hub-lightbox__arrow--right" aria-label="Next">›</button>` : ''}`;
             document.body.appendChild(lb);
             document.body.classList.add('modal-open');
             requestAnimationFrame(() => lb.classList.add('hub-lightbox--visible'));
@@ -834,7 +834,7 @@ async function openListingDetail(id) {
         });
 
         v.querySelector('#listing-del-btn')?.addEventListener('click', async () => {
-            if (!(await confirmModal('Sigur vrei să ștergi acest anunț?'))) return;
+            if (!(await confirmModal('Are you sure you want to delete this listing?'))) return;
             if ((await api('DELETE', `/marketplace/listings/${id}`)).success) { showView('marketplace'); renderMarketplace(); loadListings(); }
         });
 
@@ -844,7 +844,7 @@ async function openListingDetail(id) {
 
         // Favorite toggle on detail page
         v.querySelector('#detail-fav-btn')?.addEventListener('click', async () => {
-            if (!u) { alert('Autentifică-te pentru favorite'); return; }
+            if (!u) { alert('Log in for favorites'); return; }
             const btn = v.querySelector('#detail-fav-btn');
             btn.classList.add('hub-detail-fav-btn--pop');
             const res = await api('POST', `/marketplace/listings/${id}/favorite`);
@@ -858,7 +858,7 @@ async function openListingDetail(id) {
         // Load similar listings
         loadSimilarListings(id, v);
 
-    } catch { v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Eroare la încărcare.</div>'; }
+    } catch { v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load.</div>'; }
 }
 
 /** Fetch and render similar listings below the detail view */
@@ -879,7 +879,7 @@ async function loadSimilarListings(listingId, container) {
                 <button class="hub-listing-card" data-id="${l.id}">
                     <div class="hub-listing-img">
                         ${simImgs[0] ? `<img src="${esc(simImgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy" class="hub-listing-img__placeholder-img">'}
-                        <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Elimină din favorite' : 'Adaugă la favorite') : 'Autentifică-te pentru favorite'}">
+                        <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Remove from favorites' : 'Add to favorites') : 'Log in for favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </span>
                     </div>
@@ -899,7 +899,7 @@ async function loadSimilarListings(listingId, container) {
             const favBtn = e.target.closest('.hub-listing-fav-btn');
             if (favBtn) {
                 e.stopPropagation();
-                if (!u) { alert('Autentifică-te pentru favorite'); return; }
+                if (!u) { alert('Log in for favorites'); return; }
                 const lid = +favBtn.dataset.favId;
                 favBtn.classList.add('hub-listing-fav-btn--pop');
                 const res = await api('POST', `/marketplace/listings/${lid}/favorite`);
@@ -930,55 +930,55 @@ function openAddListingModal() {
     overlay.innerHTML = `
         <div class="hub-modal">
             <div class="hub-modal__header">
-                <span class="hub-modal__title">Anunț nou</span>
+                <span class="hub-modal__title">New listing</span>
                 <button class="hub-modal__close">&times;</button>
             </div>
             <form class="hub-modal__body" id="new-listing-form">
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Titlu</label>
+                    <label class="hub-form-label">Title</label>
                     <input class="hub-form-input" name="title" maxlength="200" required placeholder="Ce vinzi?">
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Preț (RON)</label>
+                        <label class="hub-form-label">Price (RON)</label>
                         <input class="hub-form-input" name="price" type="number" min="0" step="1" required placeholder="0">
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Stare</label>
+                        <label class="hub-form-label">Condition</label>
                         <select class="hub-form-select" name="condition">
                             ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}"${k === 'good' ? ' selected' : ''}>${v}</option>`).join('')}
                         </select>
                     </div>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Categorie</label>
+                    <label class="hub-form-label">Category</label>
                     <select class="hub-form-select" name="category">
                         ${Object.entries(CATEGORIES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Consolă</label>
+                    <label class="hub-form-label">Console</label>
                     <select class="hub-form-select" name="console_type">
                         <option value="">— Alege consola —</option>
-                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}">${c.nume}</option>`).join('')}
+                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Descriere</label>
-                    <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Descrie produsul…"></textarea>
+                    <label class="hub-form-label">Description</label>
+                    <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Describe the product…"></textarea>
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Țară</label>
+                        <label class="hub-form-label">Country</label>
                         <select class="hub-form-select" name="country" required>
-                            <option value="">— Alege țara —</option>
+                            <option value="">— Select a country —</option>
                             ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${c.name}</option>`).join('')}
                         </select>
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Oraș</label>
+                        <label class="hub-form-label">City</label>
                         <select class="hub-form-select" name="location" required disabled>
-                            <option value="">— Alege mai întâi țara —</option>
+                            <option value="">— Select a country first —</option>
                         </select>
                     </div>
                 </div>
@@ -987,22 +987,22 @@ function openAddListingModal() {
                     <input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Link OLX (opțional)</label>
+                    <label class="hub-form-label">OLX Link (optional)</label>
                     <input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Imagini (max ${MAX_IMAGES} fotografii)</label>
+                    <label class="hub-form-label">Images (max ${MAX_IMAGES} photos)</label>
                     <div class="hub-upload-zone" id="upload-zone">
                         <input type="file" id="upload-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
                         <span class="hub-upload-zone__icon">📁</span>
-                        <span class="hub-upload-zone__text">Trage fotografiile aici sau click pentru a alege</span>
+                        <span class="hub-upload-zone__text">Drag photos here or click to choose</span>
                     </div>
                     <div class="hub-upload-counter" id="upload-counter">0 / ${MAX_IMAGES} imagini selectate</div>
                     <div class="hub-upload-grid" id="upload-grid"></div>
                 </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
-                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Anulează</button>
-                    <button type="submit" class="hub-btn hub-btn--primary">Publică</button>
+                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
+                    <button type="submit" class="hub-btn hub-btn--primary">Publish</button>
                 </div>
             </form>
         </div>`;
@@ -1015,7 +1015,7 @@ function openAddListingModal() {
     overlay.querySelector('[name="country"]').addEventListener('change', e => {
     const citySelect = overlay.querySelector('[name="location"]');
     const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
-    citySelect.innerHTML = '<option value="">— Alege orașul —</option>' +
+    citySelect.innerHTML = '<option value="">— Select a city —</option>' +
         (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
     citySelect.disabled = !e.target.value;
     });
@@ -1086,7 +1086,7 @@ function openAddListingModal() {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
         btn.disabled = true;
-        btn.textContent = 'Se publică…';
+        btn.textContent = 'Publishing…';
 
         const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
 
@@ -1094,7 +1094,7 @@ function openAddListingModal() {
         let finalImages = imageUrls;
         if (finalImages.length === 0 && f.console_type.value) {
             const consoleDef = (window.CONSOLES_DATA || []).find(c => c.id === f.console_type.value);
-            if (consoleDef && consoleDef.imagine) finalImages = [consoleDef.imagine];
+            if (consoleDef && consoleDef.image) finalImages = [consoleDef.image];
         }
 
         const res = await api('POST', '/marketplace/listings', {
@@ -1110,7 +1110,7 @@ function openAddListingModal() {
             images: finalImages,
         });
         if (res.success) { close(); loadListings(); }
-        else { btn.disabled = false; btn.textContent = 'Publică'; alert(res.error || 'Eroare.'); }
+        else { btn.disabled = false; btn.textContent = 'Publish'; alert(res.error || 'Error.'); }
     });
 }
 
@@ -1124,55 +1124,55 @@ function openEditListingFromDetail(id, l) {
     overlay.innerHTML = `
         <div class="hub-modal">
             <div class="hub-modal__header">
-                <span class="hub-modal__title">Editează anunțul</span>
+                <span class="hub-modal__title">Edit listing</span>
                 <button class="hub-modal__close">&times;</button>
             </div>
             <form class="hub-modal__body" id="edit-listing-form">
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Titlu</label>
+                    <label class="hub-form-label">Title</label>
                     <input class="hub-form-input" name="title" maxlength="200" required value="${esc(l.title)}">
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Preț (RON)</label>
+                        <label class="hub-form-label">Price (RON)</label>
                         <input class="hub-form-input" name="price" type="number" min="0" step="1" required value="${l.price}">
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Stare</label>
+                        <label class="hub-form-label">Condition</label>
                         <select class="hub-form-select" name="condition">
                             ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}
                         </select>
                     </div>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Categorie</label>
+                    <label class="hub-form-label">Category</label>
                     <select class="hub-form-select" name="category">
                         ${Object.entries(CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Consolă</label>
+                    <label class="hub-form-label">Console</label>
                     <select class="hub-form-select" name="console_type">
                         <option value="">— Alege consola —</option>
-                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.nume.localeCompare(b.nume)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.nume}</option>`).join('')}
+                        ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.name}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Descriere</label>
+                    <label class="hub-form-label">Description</label>
                     <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${esc(l.description)}</textarea>
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Țară</label>
+                        <label class="hub-form-label">Country</label>
                         <select class="hub-form-select" name="country" required>
-                            <option value="">— Alege țara —</option>
+                            <option value="">— Select a country —</option>
                             ${(window.LOCATION_DATA?.countries || []).map(c => `<option value="${c.code}"${c.code === (l.country || '') ? ' selected' : ''}>${c.name}</option>`).join('')}
                         </select>
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Oraș</label>
+                        <label class="hub-form-label">City</label>
                         <select class="hub-form-select" name="location" required ${!l.country ? 'disabled' : ''}>
-                            <option value="">— Alege mai întâi țara —</option>
+                            <option value="">— Select a country first —</option>
                             ${l.country
                                 ? ((window.LOCATION_DATA?.countries || []).find(c => c.code === l.country)?.cities || [])
                                     .map(city => `<option value="${city}"${city === l.location ? ' selected' : ''}>${city}</option>`).join('')
@@ -1185,12 +1185,12 @@ function openEditListingFromDetail(id, l) {
                     <input class="hub-form-input" name="phone" maxlength="20" required value="${esc(l.phone || '')}">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Link OLX (opțional)</label>
+                    <label class="hub-form-label">OLX Link (optional)</label>
                     <input class="hub-form-input" name="olx_url" type="url" value="${esc(l.olx_url || '')}">
                 </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
-                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Anulează</button>
-                    <button type="submit" class="hub-btn hub-btn--primary">Salvează</button>
+                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
+                    <button type="submit" class="hub-btn hub-btn--primary">Save</button>
                 </div>
             </form>
         </div>`;
@@ -1205,7 +1205,7 @@ function openEditListingFromDetail(id, l) {
     overlay.querySelector('[name="country"]').addEventListener('change', e => {
         const citySelect = overlay.querySelector('[name="location"]');
         const country = window.LOCATION_DATA?.countries.find(c => c.code === e.target.value);
-        citySelect.innerHTML = '<option value="">— Alege orașul —</option>' +
+        citySelect.innerHTML = '<option value="">— Select a city —</option>' +
             (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
         citySelect.disabled = !e.target.value;
     });
@@ -1213,7 +1213,7 @@ function openEditListingFromDetail(id, l) {
     overlay.querySelector('#edit-listing-form').addEventListener('submit', async e => {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
-        btn.disabled = true; btn.textContent = 'Se salvează…';
+        btn.disabled = true; btn.textContent = 'Saving…';
         const res = await api('PUT', `/marketplace/listings/${id}`, {
             title: f.title.value.trim(),
             description: f.description.value.trim(),
@@ -1226,8 +1226,8 @@ function openEditListingFromDetail(id, l) {
             phone: f.phone.value.trim(),
             olx_url: f.olx_url.value.trim(),
         });
-        if (res.success) { close(); openListingDetail(id); } // reîncarcă detaliul
-        else { btn.disabled = false; btn.textContent = 'Salvează'; alert(res.error || 'Eroare.'); }
+        if (res.success) { close(); openListingDetail(id); } // reload detail
+        else { btn.disabled = false; btn.textContent = 'Save'; alert(res.error || 'Error.'); }
     });
 }
 
@@ -1251,24 +1251,24 @@ function renderRepair() {
         const canProceed = S.repairSymptoms.length > 0 && (!hasCustom || S.repairCustomProblem.trim());
         body = `
             <div class="hub-repair-question">Ce simptome are consola ta ${esc(cName)}?</div>
-            <div class="hub-repair-hint">Selectează unul sau mai multe simptome:</div>
+            <div class="hub-repair-hint">Select one or more symptoms:</div>
             <div class="hub-symptom-grid">
                 ${SYMPTOMS.map(s => `<button class="hub-symptom-btn${S.repairSymptoms.includes(s) ? ' hub-symptom-btn--selected' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('')}
-                <button class="hub-symptom-btn hub-symptom-btn--custom${hasCustom ? ' hub-symptom-btn--selected' : ''}" id="repair-custom-btn">✏️ Altă problemă</button>
+                <button class="hub-symptom-btn hub-symptom-btn--custom${hasCustom ? ' hub-symptom-btn--selected' : ''}" id="repair-custom-btn">✏️ Other issue</button>
             </div>
             ${hasCustom ? `<div class="hub-repair-custom-wrap">
-                <textarea class="hub-repair-textarea" id="repair-custom-text" rows="4" maxlength="500" placeholder="Descrie problema ta…">${esc(S.repairCustomProblem)}</textarea>
+                <textarea class="hub-repair-textarea" id="repair-custom-text" rows="4" maxlength="500" placeholder="Describe your issue…">${esc(S.repairCustomProblem)}</textarea>
                 <div class="hub-repair-char-count"><span id="repair-custom-count">${S.repairCustomProblem.length}</span> / 500</div>
             </div>` : ''}
-            <button class="hub-btn hub-btn--primary" id="repair-next"${canProceed ? '' : ' disabled'}>Continuă →</button>`;
+            <button class="hub-btn hub-btn--primary" id="repair-next"${canProceed ? '' : ' disabled'}>Continue →</button>`;
     } else if (step === 1) {
         body = `
-            <div class="hub-repair-question">Descrie problema mai detaliat</div>
-            <div class="hub-repair-hint">Include: când a apărut, ce ai încercat, modelul consolei</div>
-            <textarea class="hub-repair-textarea" id="repair-desc" rows="6" maxlength="2000" placeholder="Descrie aici…">${esc(S.repairDesc)}</textarea>
+            <div class="hub-repair-question">Describe the issue in more detail</div>
+            <div class="hub-repair-hint">Include: when it started, what you tried, the console model</div>
+            <textarea class="hub-repair-textarea" id="repair-desc" rows="6" maxlength="2000" placeholder="Describe here…">${esc(S.repairDesc)}</textarea>
             <div style="display:flex;gap:8px">
-                <button class="hub-btn hub-btn--secondary" id="repair-prev">← Înapoi</button>
-                <button class="hub-btn hub-btn--primary" id="repair-next">Analizează →</button>
+                <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
+                <button class="hub-btn hub-btn--primary" id="repair-next">Analyze →</button>
             </div>`;
     } else if (step === 2) {
         if (!S.repairResult) {
@@ -1294,22 +1294,22 @@ function renderRepair() {
                     </div>
                 </div>
                 <div style="display:flex;gap:8px">
-                    <button class="hub-btn hub-btn--secondary" id="repair-prev">← Înapoi</button>
-                    <button class="hub-btn hub-btn--primary" id="repair-submit">Trimite cererea</button>
+                    <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
+                    <button class="hub-btn hub-btn--primary" id="repair-submit">Submit request</button>
                 </div>`;
         }
     } else {
         body = `
             <div class="hub-repair-success">
                 <div class="hub-repair-success__icon">✅</div>
-                <div style="color:var(--text-light);font-size:1.1rem;font-weight:600">Cererea a fost trimisă!</div>
-                <div style="color:var(--text-gray);font-size:.88rem">Vei fi contactat de un specialist.</div>
-                <button class="hub-btn hub-btn--secondary" id="repair-new" style="margin-top:16px">Cerere nouă</button>
+                <div style="color:var(--text-light);font-size:1.1rem;font-weight:600">Request submitted!</div>
+                <div style="color:var(--text-gray);font-size:.88rem">A specialist will contact you.</div>
+                <button class="hub-btn hub-btn--secondary" id="repair-new" style="margin-top:16px">New request</button>
             </div>`;
     }
 
     v.innerHTML = `
-        <div class="hub-view-header"><div class="hub-view-header__title">🔧 ${esc(cName)} — Reparație</div></div>
+        <div class="hub-view-header"><div class="hub-view-header__title">🔧 ${esc(cName)} — Repair</div></div>
         <div class="hub-repair-progress">${bars}</div>
         <div class="hub-repair-body"><div class="hub-repair-inner">${body}</div></div>`;
 
@@ -1368,7 +1368,7 @@ async function analyzeRepair() {
         });
         if (data.success) { S.repairResult = data.analysis; renderRepair(); }
         else throw 0;
-    } catch { S.repairStep = 1; renderRepair(); alert('Eroare la analiză.'); }
+    } catch { S.repairStep = 1; renderRepair(); alert('Analysis failed.'); }
 }
 
 /** Submit the analyzed repair request for storage */
@@ -1377,7 +1377,7 @@ async function submitRepair() {
     try {
         const data = await api('POST', `/repair/${S.repairResult.id}/submit`);
         if (data.success) { S.repairStep = 3; renderRepair(); }
-    } catch { alert('Eroare la trimitere.'); }
+    } catch { alert('Submission failed.'); }
 }
 
 /* ================================================================
@@ -1393,8 +1393,8 @@ function renderDM() {
     }
     v.innerHTML = `
         <div class="hub-dm-layout">
-            <div class="hub-dm-list" id="dm-list"><div class="hub-dm-list__empty">Se încarcă…</div></div>
-            <div class="hub-dm-thread" id="dm-thread"><div class="hub-dm-empty">Selectează o conversație</div></div>
+            <div class="hub-dm-list" id="dm-list"><div class="hub-dm-list__empty">Loading…</div></div>
+            <div class="hub-dm-thread" id="dm-thread"><div class="hub-dm-empty">Select a conversation</div></div>
         </div>`;
 }
 
@@ -1407,7 +1407,7 @@ async function loadConversations() {
         if (!data.success) throw 0;
         const convs = data.conversations || [];
 
-        if (!convs.length) { list.innerHTML = '<div class="hub-dm-list__empty">Nicio conversație</div>'; return; }
+        if (!convs.length) { list.innerHTML = '<div class="hub-dm-list__empty">No conversations</div>'; return; }
 
         list.innerHTML = convs.map(c => `
             <button class="hub-dm-conv${S.dmPartner === c.partner_id ? ' hub-dm-conv--active' : ''}" data-id="${c.partner_id}" data-name="${esc(c.partner_name)}" data-avatar="${esc(c.partner_avatar || '')}">
@@ -1428,7 +1428,7 @@ async function loadConversations() {
             const found = convs.find(c => c.partner_id === S.dmPartner);
             if (found) openConversation(S.dmPartner, found.partner_name, found.partner_avatar);
         }
-    } catch { list.innerHTML = '<div class="hub-dm-list__empty">Eroare la încărcare</div>'; }
+    } catch { list.innerHTML = '<div class="hub-dm-list__empty">Failed to load</div>'; }
 }
 
 /** Open a DM conversation thread with a specific user */
@@ -1451,10 +1451,10 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             <div class="hub-dm-conv__avatar" style="width:30px;height:30px;font-size:.7rem">${avatarHtml(partnerName, partnerAvatar, 30)}</div>
             <span style="color:var(--text-light);font-weight:600;font-size:.9rem">${esc(partnerName || 'Utilizator')}</span>
         </div>
-        <div class="hub-dm-messages" id="dm-messages"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Se încarcă…</div></div>
+        <div class="hub-dm-messages" id="dm-messages"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>
         <form class="hub-dm-form" id="dm-form">
-            <input class="hub-dm-form__input" type="text" placeholder="Scrie un mesaj…" maxlength="2000" required>
-            <button class="hub-btn hub-btn--primary" type="submit">Trimite</button>
+            <input class="hub-dm-form__input" type="text" placeholder="Write a message…" maxlength="2000" required>
+            <button class="hub-btn hub-btn--primary" type="submit">Send</button>
         </form>`;
 
     try {
@@ -1462,7 +1462,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         const msgs = data.messages || [];
         const el = document.getElementById('dm-messages');
         if (!msgs.length) {
-            el.innerHTML = '<div class="hub-dm-empty" style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-gray)">Trimite primul mesaj</div>';
+            el.innerHTML = '<div class="hub-dm-empty" style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-gray)">Send the first message</div>';
         } else {
             el.innerHTML = msgs.map(m => `
                 <div class="hub-dm-msg ${m.sender_id === u.id ? 'hub-dm-msg--mine' : 'hub-dm-msg--theirs'}">
@@ -1472,7 +1472,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             el.scrollTop = el.scrollHeight;
         }
     } catch {
-        document.getElementById('dm-messages').innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Eroare.</div>';
+        document.getElementById('dm-messages').innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Error.</div>';
     }
 
     document.getElementById('dm-form').addEventListener('submit', async e => {
@@ -1487,7 +1487,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             el.querySelector('.hub-dm-empty')?.remove();
             const div = document.createElement('div');
             div.className = 'hub-dm-msg hub-dm-msg--mine';
-            div.innerHTML = `${esc(msg)}<div class="hub-dm-msg__time">acum</div>`;
+            div.innerHTML = `${esc(msg)}<div class="hub-dm-msg__time">now</div>`;
             el.appendChild(div);
             el.scrollTop = el.scrollHeight;
         }
@@ -1554,7 +1554,7 @@ function initNotifications() {
             if (!data.success) return;
             const items = data.notifications || [];
             if (!items.length) {
-                list.innerHTML = '<div class="hub-notif-empty">Nicio notificare</div>';
+                list.innerHTML = '<div class="hub-notif-empty">No notifications</div>';
                 return;
             }
             list.innerHTML = items.map(n => `

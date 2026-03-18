@@ -54,38 +54,38 @@ function getSpecSections(consola) {
                 {
                     title: I18nModule.t('spec_cpu_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_architecture'), c.cpu.arhitectura],
+                        [I18nModule.t('spec_label_architecture'), c.cpu.architecture],
                         [I18nModule.t('spec_label_process'), c.cpu.proces_nm],
-                        [I18nModule.t('spec_label_cores'), c.cpu.nuclee],
-                        [I18nModule.t('spec_label_clock'), c.cpu.frecventa],
+                        [I18nModule.t('spec_label_cores'), c.cpu.cores],
+                        [I18nModule.t('spec_label_clock'), c.cpu.frequency],
                         [I18nModule.t('spec_label_tdp'), c.cpu.tdp]
                     ])
                 },
                 {
                     title: I18nModule.t('spec_gpu_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_architecture'), c.gpu.arhitectura],
-                        [I18nModule.t('spec_label_units'), c.gpu.unitati],
-                        [I18nModule.t('spec_label_clock'), c.gpu.frecventa],
+                        [I18nModule.t('spec_label_architecture'), c.gpu.architecture],
+                        [I18nModule.t('spec_label_units'), c.gpu.units],
+                        [I18nModule.t('spec_label_clock'), c.gpu.frequency],
                         [I18nModule.t('spec_label_tflops'), c.gpu.tflops],
-                        [I18nModule.t('spec_label_capabilities'), c.gpu.capabilitati]
+                        [I18nModule.t('spec_label_capabilities'), c.gpu.capabilities]
                     ])
                 },
                 {
                     title: I18nModule.t('spec_memory_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_type'), c.memorie.tip],
-                        [I18nModule.t('spec_label_capacity'), c.memorie.capacitate],
-                        [I18nModule.t('spec_label_bus'), c.memorie.magistrala],
-                        [I18nModule.t('spec_label_bandwidth'), c.memorie.bandwidth]
+                        [I18nModule.t('spec_label_type'), c.memory.type],
+                        [I18nModule.t('spec_label_capacity'), c.memory.capacity],
+                        [I18nModule.t('spec_label_bus'), c.memory.bus],
+                        [I18nModule.t('spec_label_bandwidth'), c.memory.bandwidth]
                     ])
                 },
                 {
                     title: I18nModule.t('spec_storage_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_type'), c.stocare.tip],
-                        [I18nModule.t('spec_label_interface'), c.stocare.interfata],
-                        [I18nModule.t('spec_label_speed'), c.stocare.viteza]
+                        [I18nModule.t('spec_label_type'), c.storage.type],
+                        [I18nModule.t('spec_label_interface'), c.storage.interface],
+                        [I18nModule.t('spec_label_speed'), c.storage.speed]
                     ])
                 }
             ]
@@ -96,7 +96,7 @@ function getSpecSections(consola) {
                 {
                     title: I18nModule.t('spec_output_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_resolution'), c.output_video.rezolutie],
+                        [I18nModule.t('spec_label_resolution'), c.output_video.resolution],
                         [I18nModule.t('spec_label_refresh'), c.output_video.refresh],
                         [I18nModule.t('spec_label_hdr'), c.output_video.hdr],
                         [I18nModule.t('spec_label_upscaling'), c.output_video.upscaling]
@@ -105,10 +105,10 @@ function getSpecSections(consola) {
                 {
                     title: I18nModule.t('spec_tech_title'),
                     render: (c) => formatList([
-                        ['Ray Tracing', formatBool(c.tehnologii.ray_tracing)],
-                        ['VRR', formatBool(c.tehnologii.vrr)],
-                        [I18nModule.t('spec_label_backwards_compat') || 'Backwards Compat', c.tehnologii.backwards_compatibility],
-                        [I18nModule.t('spec_label_capabilities'), c.tehnologii.altele]
+                        ['Ray Tracing', formatBool(c.technologies.ray_tracing)],
+                        ['VRR', formatBool(c.technologies.vrr)],
+                        [I18nModule.t('spec_label_backwards_compat') || 'Backwards Compat', c.technologies.backwards_compatibility],
+                        [I18nModule.t('spec_label_capabilities'), c.technologies.other]
                     ])
                 }
             ]
@@ -173,8 +173,8 @@ function renderSpecs(consola) {
     });
 
     // Verdict section (avantaje / dezavantaje)
-    const pros = getLocalizedArray(consola, 'avantaje');
-    const cons = getLocalizedArray(consola, 'dezavantaje');
+    const pros = getLocalizedArray(consola, 'advantages');
+    const cons = getLocalizedArray(consola, 'disadvantages');
     if (pros.length || cons.length) {
         html += `
             <div class="specs-group">
@@ -228,7 +228,7 @@ function renderHistory(consola) {
     const titleHtml = `<h2 class="section-title">${I18nModule.t('console_history_title')}</h2>`;
 
     let historyHtml = '';
-    const historyText = getLocalizedField(consola, 'istorie') || '';
+    const historyText = getLocalizedField(consola, 'history') || '';
     if (historyText && String(historyText).trim()) {
         let text = String(historyText);
 
@@ -323,7 +323,7 @@ function renderHistory(consola) {
  */
 /** Render the hero section: image, title, tagline, action buttons */
 function renderHero(consola) {
-    const titleText = getLocalizedField(consola, 'nume') || I18nModule.t('hero_title');
+    const titleText = getLocalizedField(consola, 'name') || I18nModule.t('hero_title');
 
     // Update title
     const h1 = document.querySelector('.console-hero-text h1');
@@ -345,10 +345,10 @@ function renderHero(consola) {
     // Update meta info
     const metaContainer = document.querySelector('.console-hero-text .console-meta');
     if (metaContainer) {
-        const manufacturer = getLocalizedField(consola, 'producator') || '';
-        const year = consola.lansare || '';
+        const manufacturer = getLocalizedField(consola, 'manufacturer') || '';
+        const year = consola.release || '';
         const genLabel = I18nModule.t('console_generation_prefix');
-        const generation = getLocalizedField(consola, 'generatie') || '';
+        const generation = getLocalizedField(consola, 'generation') || '';
 
         metaContainer.innerHTML = `
             <span>${manufacturer}</span>
@@ -360,11 +360,11 @@ function renderHero(consola) {
     // Update image
     const img = document.querySelector('.console-hero-image img');
     if (img) {
-        img.src = resolveImagePath(consola.imagine);
-        img.alt = consola.nume;
+        img.src = resolveImagePath(consola.image);
+        img.alt = consola.name;
         
         // Set width and height to prevent layout shift
-        const imageName = consola.imagine.split('/').pop();
+        const imageName = consola.image.split('/').pop();
         const dimensions = IMAGE_DIMENSIONS[imageName];
         if (dimensions) {
             img.width = dimensions.width;
@@ -373,7 +373,7 @@ function renderHero(consola) {
     }
 
     // Update page title
-    document.title = `${consola.nume} — Console Notebook`;
+    document.title = `${consola.name} — Console Notebook`;
 }
 
 /**
@@ -508,7 +508,7 @@ function updateRatingDisplay(average, count) {
 
     if (starsEl) starsEl.innerHTML = renderStars(average);
     if (avgEl) avgEl.textContent = `${average} / 5`;
-    if (countEl) countEl.textContent = count === 1 ? '1 evaluare' : `${count} evaluări`;
+    if (countEl) countEl.textContent = count === 1 ? '1 rating' : `${count} ratings`;
 }
 
 /**

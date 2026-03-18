@@ -131,9 +131,9 @@
         if (!q) { searchResults.innerHTML = ''; return; }
 
         var matches = consoles.filter(function(c) {
-            return normalize(c.nume || '').indexOf(q) !== -1 ||
-                   normalize(c.producator || '').indexOf(q) !== -1 ||
-                   String(c.lansare || '').indexOf(q) !== -1 ||
+            return normalize(c.name || '').indexOf(q) !== -1 ||
+                   normalize(c.manufacturer || '').indexOf(q) !== -1 ||
+                   String(c.release || '').indexOf(q) !== -1 ||
                    normalize(c.id || '').indexOf(q) !== -1;
         }).slice(0, 8);
 
@@ -143,13 +143,13 @@
         }
 
         searchResults.innerHTML = matches.map(function(c, i) {
-            var imgSrc = resolveImagePath(c.imagine || '');
+            var imgSrc = resolveImagePath(c.image || '');
             var href = resolveConsolePath(c.id);
             return '<a href="' + href + '" class="search-result" data-index="' + i + '">' +
-                '<img class="search-result__img" src="' + imgSrc + '" alt="' + c.nume + '" loading="lazy" onerror="this.style.display=\'none\'">' +
+                '<img class="search-result__img" src="' + imgSrc + '" alt="' + c.name + '" loading="lazy" onerror="this.style.display=\'none\'">' +
                 '<div class="search-result__info">' +
-                    '<span class="search-result__name">' + c.nume + '</span>' +
-                    '<span class="search-result__meta">' + c.producator + ' · ' + c.lansare + '</span>' +
+                    '<span class="search-result__name">' + c.name + '</span>' +
+                    '<span class="search-result__meta">' + c.manufacturer + ' · ' + c.release + '</span>' +
                 '</div></a>';
         }).join('');
     }

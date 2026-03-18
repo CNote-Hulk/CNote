@@ -68,7 +68,7 @@ function getInitials(username) {
 
 /** Format timestamp as HH:MM */
 function formatTimeShort(dateStr) {
-    return new Date(dateStr).toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' });
+    return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 }
 
 /** Get date label for dividers */
@@ -78,9 +78,9 @@ function getDateLabel(dateStr) {
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
     const msgDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    if (msgDate.getTime() === today.getTime()) return 'Astăzi';
-    if (msgDate.getTime() === yesterday.getTime()) return 'Ieri';
-    return d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (msgDate.getTime() === today.getTime()) return 'Today';
+    if (msgDate.getTime() === yesterday.getTime()) return 'Yesterday';
+    return d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 /** Render a single chat message DOM element */

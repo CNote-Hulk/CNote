@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ===========================
  * CONTACT FORM HANDLER (Fallback Script)
  * ===========================
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submit-btn');
     const successMessage = document.getElementById('success-message');
     const errorMessage = document.getElementById('error-message');
-    const originalBtnText = submitBtn?.textContent || 'Trimite mesajul';
+    const originalBtnText = submitBtn?.textContent || 'Send message';
     let isSubmitting = false;
     const isLocalFile = window.location.protocol === 'file:';
     const API_BASE_URL = (window.CN_API_BASE_URL || '/api').replace(/\/$/, '');
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!submitBtn) return;
         isSubmitting = isLoading;
         submitBtn.disabled = isLoading;
-        submitBtn.textContent = isLoading ? 'Se trimite...' : originalBtnText;
+        submitBtn.textContent = isLoading ? 'Sending...' : originalBtnText;
         submitBtn.classList.toggle('button-loading', isLoading);
     }
 
@@ -120,12 +120,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /** Fallback: open mailto: link when API is unavailable (file:// mode) */
     function sendLocalMailto(name, email, subject, message) {
-        const encodedSubject = encodeURIComponent(subject || 'Mesaj nou de pe website');
+        const encodedSubject = encodeURIComponent(subject || 'New message from website');
         const body = encodeURIComponent(
             'Nume: ' + name + '\n' +
             'Email: ' + email + '\n\n' +
             'Subiect: ' + subject + '\n\n' +
-            'Mesaj:\n' + message
+            'Message:\n' + message
         );
 
         window.location.href = 'mailto:console.notebook.app@gmail.com?subject=' + encodedSubject + '&body=' + body;

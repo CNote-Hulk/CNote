@@ -151,9 +151,9 @@ export const SearchModule = {
         if (!q) { this._results.innerHTML = ''; return; }
 
         const matches = this._consoles.filter(c => {
-            const name = this._normalize(c.nume || '');
-            const mfr = this._normalize(c.producator || '');
-            const year = String(c.lansare || '');
+            const name = this._normalize(c.name || '');
+            const mfr = this._normalize(c.manufacturer || '');
+            const year = String(c.release || '');
             const id = this._normalize(c.id || '');
             return name.includes(q) || mfr.includes(q) || year.includes(q) || id.includes(q);
         }).slice(0, 8);
@@ -164,13 +164,13 @@ export const SearchModule = {
         }
 
         this._results.innerHTML = matches.map((c, i) => {
-            const imgSrc = this._resolveImagePath(c.imagine || '');
+            const imgSrc = this._resolveImagePath(c.image || '');
             const href = this._resolveConsolePath(c.id);
             return `<a href="${href}" class="search-result" data-index="${i}">
-                <img class="search-result__img" src="${imgSrc}" alt="${c.nume}" loading="lazy" onerror="this.style.display='none'">
+                <img class="search-result__img" src="${imgSrc}" alt="${c.name}" loading="lazy" onerror="this.style.display='none'">
                 <div class="search-result__info">
-                    <span class="search-result__name">${c.nume}</span>
-                    <span class="search-result__meta">${c.producator} · ${c.lansare}</span>
+                    <span class="search-result__name">${c.name}</span>
+                    <span class="search-result__meta">${c.manufacturer} · ${c.release}</span>
                 </div>
             </a>`;
         }).join('');

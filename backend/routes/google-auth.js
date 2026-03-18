@@ -239,14 +239,14 @@ router.delete('/google/unlink', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Contul nu este conectat cu Google.' });
         }
         if (!user.password_hash) {
-            return res.status(400).json({ success: false, error: 'Seteaza o parola inainte de a deconecta Google.' });
+            return res.status(400).json({ success: false, error: 'Set a password before disconnecting Google.' });
         }
 
         await pool.query('UPDATE users SET google_id = NULL, updated_at = NOW() WHERE id = $1', [req.user.id]);
-        res.json({ success: true, message: 'Google a fost deconectat.' });
+        res.json({ success: true, message: 'Google has been disconnected.' });
     } catch (err) {
         console.error('Google unlink error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

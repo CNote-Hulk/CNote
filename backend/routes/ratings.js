@@ -24,7 +24,7 @@ router.get('/user/all', authRequired, async (req, res) => {
         res.json({ success: true, ratings: result.rows });
     } catch (err) {
         console.error('Get user ratings error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -46,7 +46,7 @@ router.get('/averages', async (req, res) => {
         res.json({ success: true, ratings: map });
     } catch (err) {
         console.error('Get all averages error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -84,7 +84,7 @@ router.get('/:consoleId', async (req, res) => {
         });
     } catch (err) {
         console.error('Get rating error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -96,7 +96,7 @@ router.post('/:consoleId', authRequired, async (req, res) => {
 
         const ratingNum = parseInt(rating, 10);
         if (!ratingNum || ratingNum < 1 || ratingNum > 5) {
-            return res.status(400).json({ success: false, error: 'Rating-ul trebuie sa fie intre 1 si 5.' });
+            return res.status(400).json({ success: false, error: 'Rating must be between 1 and 5.' });
         }
 
         // DB: upsert rating — ON CONFLICT updates existing rating
@@ -122,7 +122,7 @@ router.post('/:consoleId', authRequired, async (req, res) => {
         });
     } catch (err) {
         console.error('Post rating error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

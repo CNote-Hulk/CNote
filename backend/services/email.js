@@ -56,7 +56,7 @@ function wrapTemplate(title, content) {
     <tr>
       <td style="padding:24px 48px;">
         <p style="margin:0;font-size:12px;color:#4a4060;line-height:1.6;">
-          Dacă nu ai solicitat acest email, îl poți ignora în siguranță.<br>
+          If you did not request this email, you can safely ignore it.<br>
           &copy; 2026 Console Notebook &middot; <a href="https://consolenotebook.com" style="color:#6a5a7a;text-decoration:none;">consolenotebook.com</a>
         </p>
       </td>
@@ -74,8 +74,8 @@ async function sendVerificationEmail(to, token, baseUrl) {
     const verifyLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/verify-success.html?token=' + encodeURIComponent(token);
     const html = wrapTemplate('Verifică Adresa de Email', `
               <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
-                Bine ai venit pe Console Notebook! Pentru a-ți activa contul,
-                verifică adresa de email apăsând butonul de mai jos.
+                Welcome to Console Notebook! To activate your account,
+                verify your email address by clicking the button below.
               </p>
               <a href="${verifyLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
                 Verifică Emailul
@@ -111,8 +111,8 @@ async function sendPasswordResetEmail(to, token, baseUrl) {
     const resetLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(token);
     const html = wrapTemplate('Resetare Parolă', `
               <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
-                Am primit o cerere de resetare a parolei pentru contul tău CNote.
-                Dacă tu ai făcut această cerere, apasă butonul de mai jos.
+                We received a password reset request for your CNote account.
+                If you made this request, click the button below.
               </p>
               <a href="${resetLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
                 Resetează Parola
@@ -148,7 +148,7 @@ async function sendTwoFactorEmail(to, code) {
     const safeCode = escapeHtml(String(code));
     const html = wrapTemplate('Cod de Verificare', `
               <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
-                Codul tău de verificare în doi pași este:
+                Your two-step verification code is:
               </p>
               <div style="background:#0a0a14;border:1px solid rgba(232,213,183,0.15);border-radius:12px;padding:24px;text-align:center;margin:0 0 24px;">
                 <span style="font-size:36px;font-weight:700;letter-spacing:10px;color:#e8d5b7;font-family:monospace;">
@@ -156,7 +156,7 @@ async function sendTwoFactorEmail(to, code) {
                 </span>
               </div>
               <p style="color:#5a5070;font-size:12px;margin:0;">
-                Codul este valabil 10 minute. Nu îl împărtăși nimănui.
+                The code is valid for 10 minutes. Do not share it with anyone.
               </p>`);
 
     try {
@@ -191,7 +191,7 @@ async function sendContactEmail(from, name, subject, message) {
 
     const adminHtml = wrapTemplate('Mesaj Nou — Contact', `
               <p style="color:#c8b99a;font-size:14px;margin:0 0 20px;">
-                Ai primit un mesaj nou prin formularul de contact.
+                You received a new message through the contact form.
               </p>
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
@@ -209,9 +209,9 @@ async function sendContactEmail(from, name, subject, message) {
               </table>`);
 
     const siteLink = String(BASE_URL()).replace(/\/$/, '') + '/html/pages/index.html#contact';
-    const confirmationHtml = wrapTemplate('Mulțumim pentru mesaj', `
+    const confirmationHtml = wrapTemplate('Thank you for your message', `
               <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
-                Îți mulțumim că ne-ai contactat. Îți vom răspunde în cel mai scurt timp.
+                Thank you for contacting us. We will reply as soon as possible.
               </p>
               <a href="${siteLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
                 Înapoi la site
@@ -232,7 +232,7 @@ async function sendContactEmail(from, name, subject, message) {
         const { error: confirmErr } = await resend.emails.send({
             from: FROM,
             to: from,
-            subject: 'Am primit mesajul tău — CNote',
+            subject: 'We received your message — CNote',
             html: confirmationHtml
         });
         if (confirmErr) {

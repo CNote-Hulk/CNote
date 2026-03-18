@@ -18,7 +18,7 @@ export const ContactFormModule = {
 
         window.__CONTACT_FORM_INITIALIZED__ = true;
 
-        const originalBtnText = submitBtn.textContent || 'Trimite mesajul';
+        const originalBtnText = submitBtn.textContent || 'Send message';
         const isLocalFile = window.location.protocol === 'file:';
         let isSubmitting = false;
 
@@ -83,7 +83,7 @@ export const ContactFormModule = {
         const setLoading = (isLoading) => {
             isSubmitting = isLoading;
             submitBtn.disabled = isLoading;
-            submitBtn.textContent = isLoading ? 'Se trimite...' : originalBtnText;
+            submitBtn.textContent = isLoading ? 'Sending...' : originalBtnText;
             submitBtn.classList.toggle('button-loading', isLoading);
         };
 
@@ -104,12 +104,12 @@ export const ContactFormModule = {
         };
 
         const sendLocalMailto = (name, email, subject, message) => {
-            const encodedSubject = encodeURIComponent(subject || 'Mesaj nou de pe website');
+            const encodedSubject = encodeURIComponent(subject || 'New message from website');
             const body = encodeURIComponent(
-                'Nume: ' + name + '\n' +
+                'Name: ' + name + '\n' +
                 'Email: ' + email + '\n\n' +
-                'Subiect: ' + subject + '\n\n' +
-                'Mesaj:\n' + message
+                'Subject: ' + subject + '\n\n' +
+                'Message:\n' + message
             );
 
             window.location.href = 'mailto:console.notebook.app@gmail.com?subject=' + encodedSubject + '&body=' + body;
@@ -132,7 +132,7 @@ export const ContactFormModule = {
             const message = messageEl ? messageEl.value.trim() : '';
 
             if (!name || !email || !subject || !message) {
-                setMessageText(errorMessage, 'Completeaza toate campurile formularului.', 'Eroare la trimiterea mesajului.');
+                setMessageText(errorMessage, 'Please fill in all form fields.', 'Error sending message.');
                 showMessage(errorMessage, 5000);
                 smoothScrollToMessage(errorMessage || contactForm);
                 return;
@@ -147,7 +147,7 @@ export const ContactFormModule = {
                 const isMessageValid = validateField(messageEl);
 
                 if (!isNameValid || !isEmailValid || !isSubjectValid || !isMessageValid) {
-                    setMessageText(errorMessage, 'Verifica datele introduse si incearca din nou.', 'Eroare la trimiterea mesajului.');
+                    setMessageText(errorMessage, 'Check the entered data and try again.', 'Error sending message.');
                     showMessage(errorMessage, 5000);
                     smoothScrollToMessage(errorMessage || contactForm);
                     return;
@@ -155,7 +155,7 @@ export const ContactFormModule = {
 
                 if (isLocalFile) {
                     sendLocalMailto(name, email, subject, message);
-                    setMessageText(successMessage, 'Mesaj pregatit. Verifica aplicatia ta de email pentru a-l trimite.', 'Mesaj trimis cu succes!');
+                    setMessageText(successMessage, 'Message prepared. Check your email app to send it.', 'Message sent successfully!');
                     showMessage(successMessage, 5000);
                     smoothScrollToMessage(successMessage || contactForm);
                     contactForm.reset();
@@ -180,7 +180,7 @@ export const ContactFormModule = {
                 const data = await response.json().catch(() => ({}));
 
                 if (response.ok && data.success) {
-                    setMessageText(successMessage, data.message || 'Mesajul a fost trimis.', 'Mesajul a fost trimis.');
+                    setMessageText(successMessage, data.message || 'Message sent.', 'Message sent.');
                     showMessage(successMessage, 5000);
                     smoothScrollToMessage(successMessage || contactForm);
                     contactForm.reset();
@@ -189,7 +189,7 @@ export const ContactFormModule = {
                 }
             } catch (error) {
                 console.error('Contact form error:', error);
-                setMessageText(errorMessage, error.message || 'Nu am putut trimite mesajul. Incearca din nou.', 'Eroare la trimiterea mesajului.');
+                setMessageText(errorMessage, error.message || 'Could not send message. Try again.', 'Error sending message.');
                 showMessage(errorMessage, 5000);
                 smoothScrollToMessage(errorMessage || contactForm);
             } finally {

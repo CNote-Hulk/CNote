@@ -31,31 +31,31 @@ router.post('/contact', async (req, res) => {
         const cleanMessage = String(message || '').trim();
 
         if (!cleanName || cleanName.length < 2) {
-            return res.status(400).json({ success: false, error: 'Numele este obligatoriu.' });
+            return res.status(400).json({ success: false, error: 'Name is required.' });
         }
         if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
-            return res.status(400).json({ success: false, error: 'Email invalid.' });
+            return res.status(400).json({ success: false, error: 'Invalid email.' });
         }
         if (!cleanSubject) {
-            return res.status(400).json({ success: false, error: 'Subiectul este obligatoriu.' });
+            return res.status(400).json({ success: false, error: 'Subject is required.' });
         }
         if (!cleanMessage || cleanMessage.length < 5) {
-            return res.status(400).json({ success: false, error: 'Mesajul este prea scurt.' });
+            return res.status(400).json({ success: false, error: 'Message is too short.' });
         }
         if (cleanMessage.length > 5000) {
-            return res.status(400).json({ success: false, error: 'Mesajul este prea lung.' });
+            return res.status(400).json({ success: false, error: 'Message is too long.' });
         }
 
         // Email: sends contact message to admin + auto-confirmation to sender
         const contactResult = await emailService.sendContactEmail(cleanEmail, cleanName, cleanSubject, cleanMessage);
         if (!contactResult.success) {
             console.error('Contact email error:', contactResult.error);
-            return res.status(500).json({ success: false, error: 'Nu am putut trimite mesajul. Incearca din nou.' });
+            return res.status(500).json({ success: false, error: 'Could not send the message. Please try again.' });
         }
-        return res.json({ success: true, message: 'Mesajul a fost trimis.' });
+        return res.json({ success: true, message: 'Message has been sent.' });
     } catch (err) {
         console.error('Contact form error:', err.message || err);
-        return res.status(500).json({ success: false, error: 'Nu am putut trimite mesajul. Incearca din nou.' });
+        return res.status(500).json({ success: false, error: 'Could not send the message. Please try again.' });
     }
 });
 

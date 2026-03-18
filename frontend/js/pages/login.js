@@ -153,7 +153,7 @@ document.getElementById('two-factor-fallback-link').addEventListener('click', as
     const tfInfo = document.getElementById('two-factor-info');
 
     link.style.pointerEvents = 'none';
-    link.textContent = 'Se trimite codul...';
+    link.textContent = 'Sending code...';
     errorEl.classList.remove('visible');
 
     try {
@@ -191,7 +191,7 @@ document.getElementById('resend-verify-btn').addEventListener('click', async (e)
     if (!email) return;
 
     btn.disabled = true;
-    btn.textContent = 'Se trimite...';
+    btn.textContent = 'Sending...';
     msgEl.style.display = 'none';
 
     try {
@@ -205,7 +205,7 @@ document.getElementById('resend-verify-btn').addEventListener('click', async (e)
         msgEl.style.display = 'block';
     } finally {
         btn.disabled = false;
-        btn.textContent = 'Retrimite emailul de verificare';
+        btn.textContent = 'Resend verification email';
     }
 });
 

@@ -30,7 +30,7 @@ router.get('/', authRequired, async (req, res) => {
         res.json({ success: true, notifications: result.rows });
     } catch (err) {
         console.error('Notifications GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -44,14 +44,14 @@ router.get('/unread-count', authRequired, async (req, res) => {
         res.json({ success: true, count: parseInt(result.rows[0].count) });
     } catch (err) {
         console.error('Notifications unread GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
 // ── POST /api/notifications/:id/read ─────────────────────
 router.post('/:id/read', authRequired, async (req, res) => {
     const id = parseInt(req.params.id);
-    if (isNaN(id)) return res.status(400).json({ success: false, error: 'ID invalid.' });
+    if (isNaN(id)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
 
     try {
         await pool.query(
@@ -61,7 +61,7 @@ router.post('/:id/read', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Notification read POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -75,7 +75,7 @@ router.post('/read-all', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Notifications read-all POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare internă.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

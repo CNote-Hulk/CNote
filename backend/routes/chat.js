@@ -68,7 +68,7 @@ router.get('/messages', async (req, res) => {
         res.json({ success: true, messages });
     } catch (err) {
         console.error('Chat GET error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
@@ -78,12 +78,12 @@ router.post('/messages', authRequired, async (req, res) => {
         const { message } = req.body;
 
         if (!message || String(message).trim().length === 0) {
-            return res.status(400).json({ success: false, error: 'Mesajul nu poate fi gol.' });
+            return res.status(400).json({ success: false, error: 'Message cannot be empty.' });
         }
 
         const text = String(message).trim();
         if (text.length > MAX_MESSAGE_LENGTH) {
-            return res.status(400).json({ success: false, error: `Mesajul nu poate depasi ${MAX_MESSAGE_LENGTH} caractere.` });
+            return res.status(400).json({ success: false, error: `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters.` });
         }
 
         // Cooldown check: prevent spam by enforcing minimum interval
@@ -91,7 +91,7 @@ router.post('/messages', authRequired, async (req, res) => {
         const lastTime = lastMessageTime.get(req.user.id) || 0;
         if (now - lastTime < COOLDOWN_MS) {
             const wait = Math.ceil((COOLDOWN_MS - (now - lastTime)) / 1000);
-            return res.status(429).json({ success: false, error: `Asteapta ${wait} secunde inainte de a trimite alt mesaj.` });
+            return res.status(429).json({ success: false, error: `Wait ${wait} seconds before sending another message.` });
         }
 
         // DB: insert message and return generated ID + timestamp
@@ -117,7 +117,7 @@ router.post('/messages', authRequired, async (req, res) => {
         });
     } catch (err) {
         console.error('Chat POST error:', err);
-        res.status(500).json({ success: false, error: 'Eroare interna.' });
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 
