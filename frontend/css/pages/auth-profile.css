@@ -310,7 +310,7 @@
     background: var(--p-bg);
     font-family: var(--p-font-body);
     color: var(--p-text);
-    padding: 0;
+    padding: 64px 0 0;
     isolation: isolate;
     overflow: hidden;
     position: relative;
