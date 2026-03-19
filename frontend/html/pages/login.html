@@ -79,6 +79,10 @@
                             <label for="two-factor-code" data-i18n="login_2fa_label">Verification code</label>
                             <input type="text" id="two-factor-code" name="code" required autocomplete="one-time-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem;" data-i18n="login_2fa_placeholder" data-i18n-attr="placeholder">
                         </div>
+                        <div class="auth-field" style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                            <input type="checkbox" id="trust-device-checkbox" name="trustDevice" style="width:16px;height:16px;accent-color:var(--success, #4ade80);cursor:pointer;">
+                            <label for="trust-device-checkbox" style="font-size:0.88rem;color:var(--text-light, #ccc);cursor:pointer;" data-i18n="login_2fa_trust_device">Remember this device for 30 days</label>
+                        </div>
                         <button type="submit" class="auth-btn" data-i18n="login_2fa_btn">Verify</button>
                     </form>
                     <p id="two-factor-fallback" style="display: none; text-align: center; margin-top: 10px; font-size: 0.88rem;">

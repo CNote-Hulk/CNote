@@ -101,7 +101,8 @@ document.getElementById('two-factor-form').addEventListener('submit', async (e) 
     submitBtn.textContent = 'Verifying...';
 
     try {
-        const result = await AuthModule.verifyTwoFactor(code, currentMethod);
+        const trustDevice = document.getElementById('trust-device-checkbox')?.checked || false;
+        const result = await AuthModule.verifyTwoFactor(code, currentMethod, trustDevice);
         if (result.success) {
             const cur = AuthModule.getCurrentUser();
             if (cur && !cur.username_chosen) {

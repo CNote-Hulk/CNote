@@ -933,8 +933,65 @@
                 }
             });
 
+            // ─── Trusted Devices ─────────────────────────────
+
+            /** Fetch and render trusted devices list */
+            async function loadTrustedDevices() {
+                const container = document.getElementById('trusted-devices-container');
+                const revokeAllBtn = document.getElementById('revoke-all-trusted-btn');
+                if (!container) return;
+
+                try {
+                    const devices = await AuthModule.getTrustedDevices();
+                    if (!devices || devices.length === 0) {
+                        container.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.85rem;">No trusted devices.</p>';
+                        revokeAllBtn.hidden = true;
+                        return;
+                    }
+
+                    container.innerHTML = devices.map(d => {
+                        const ago = timeAgo(d.last_used);
+                        const expiresDate = new Date(d.expires_at).toLocaleDateString();
+                        return `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px;">
+                            <div style="font-size:0.9rem;color:var(--text-light);">🔒 ${escapeHtml(d.browser || 'Unknown')} on ${escapeHtml(d.operating_system || 'Unknown')}</div>
+                            <div style="font-size:0.78rem;color:var(--text-muted,#a89880);margin-top:4px;">IP: ${escapeHtml(d.ip_address || '?')} · Last used: ${ago} · Expires: ${expiresDate}</div>
+                            <button class="trusted-device-revoke-btn" data-device-id="${d.id}" style="background:none;border:1px solid rgba(229,115,115,0.4);color:#e57373;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;margin-top:6px;">Revoke</button>
+                        </div>`;
+                    }).join('');
+
+                    revokeAllBtn.hidden = devices.length === 0;
+
+                    container.querySelectorAll('.trusted-device-revoke-btn').forEach(btn => {
+                        btn.addEventListener('click', async () => {
+                            const deviceId = parseInt(btn.dataset.deviceId, 10);
+                            const result = await AuthModule.revokeTrustedDevice(deviceId);
+                            if (result.success) {
+                                loadTrustedDevices();
+                            }
+                        });
+                    });
+                } catch {
+                    container.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Failed to load trusted devices.</p>';
+                }
+            }
+
+            document.getElementById('revoke-all-trusted-btn').addEventListener('click', async () => {
+                const confirmed = await showConfirmDialog({
+                    title: 'Revoke all trusted devices',
+                    message: 'All devices will need to complete 2FA again on next login. Continue?',
+                    confirmLabel: 'Revoke all',
+                    cancelLabel: 'Cancel'
+                });
+                if (!confirmed) return;
+                const result = await AuthModule.revokeAllTrustedDevices();
+                if (result.success) {
+                    loadTrustedDevices();
+                }
+            });
+
             // Load sessions when settings tab is first activated
             loadSessions();
+            loadTrustedDevices();
 
             // Load user ratings
             renderUserRatings();

@@ -382,13 +382,14 @@ return { success: false, error: 'Could not contact the server.' };
     // ─── Two-Factor Authentication ──────────────────────
 
     /** Verify 2FA code during login (uses temp token) */
-    async verifyTwoFactor(code, method) {
+    async verifyTwoFactor(code, method, trustDevice) {
         const tempToken = localStorage.getItem('cnote_temp_token');
         if (!tempToken) return { success: false, error: 'Temporary session has expired.' };
 
         try {
             const body = { tempToken, code };
             if (method) body.method = method;
+            if (trustDevice) body.trustDevice = true;
             const data = await this._api('POST', '/2fa/verify', body);
             if (data.success && data.user) {
                 localStorage.removeItem('cnote_temp_token');
@@ -482,6 +483,34 @@ return { success: false, error: 'Could not contact the server.' };
     },
 
     // ─── Google OAuth ───────────────────────────────────
+
+    /** Get all trusted devices for the current user */
+    async getTrustedDevices() {
+        try {
+            const data = await this._api('GET', '/trusted-devices');
+            return data.success ? data.devices : [];
+        } catch {
+            return [];
+        }
+    },
+
+    /** Revoke a specific trusted device by id */
+    async revokeTrustedDevice(deviceId) {
+        try {
+            return await this._api('DELETE', '/trusted-devices/' + deviceId);
+        } catch {
+            return { success: false, error: 'Could not contact the server.' };
+        }
+    },
+
+    /** Revoke all trusted devices */
+    async revokeAllTrustedDevices() {
+        try {
+            return await this._api('DELETE', '/trusted-devices');
+        } catch {
+            return { success: false, error: 'Could not contact the server.' };
+        }
+    },
 
     /** Request email fallback code during 2FA login (switch from TOTP to email) */
     async requestEmailFallback() {

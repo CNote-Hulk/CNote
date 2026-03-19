@@ -310,6 +310,27 @@ router.post('/login', async (req, res) => {
 
         // Check 2FA
         if (user.two_factor_enabled) {
+            // Skip 2FA if this device is already trusted
+            const deviceInfo = parseDevice(req);
+            const trusted = await isDeviceTrusted(user.id, deviceInfo);
+            if (trusted) {
+                // Device is trusted — skip 2FA, create session directly
+                const sessionToken = await findOrCreateSession(user.id, deviceInfo);
+                setSessionCookie(res, sessionToken);
+                const JWT_SECRET = req.app.get('JWT_SECRET');
+                const jwtToken = jwt.sign(
+                    { userId: user.id, email: user.email },
+                    JWT_SECRET,
+                    { expiresIn: '7d' }
+                );
+                return res.json({
+                    success: true,
+                    user: sanitizeUser(user),
+                    token: jwtToken,
+                    session_token: sessionToken
+                });
+            }
+
             const JWT_SECRET = req.app.get('JWT_SECRET');
             const tempToken = jwt.sign(
                 { userId: user.id, twoFactorPending: true },
@@ -873,6 +894,11 @@ router.post('/2fa/verify', async (req, res) => {
         const deviceInfo = parseDevice(req);
         const sessionToken = await findOrCreateSession(user.id, deviceInfo);
 
+        // If user asked to trust this device, save it
+        if (req.body.trustDevice) {
+            await trustDevice(user.id, deviceInfo);
+        }
+
         setSessionCookie(res, sessionToken);
 
         const jwtToken = jwt.sign(
@@ -1065,10 +1091,60 @@ router.delete('/2fa/disable', authRequired, async (req, res) => {
                 [req.user.id]
             );
             await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [req.user.id]);
+            await pool.query('DELETE FROM trusted_devices WHERE user_id = $1', [req.user.id]);
             res.json({ success: true, message: '2FA has been completely disabled.' });
         }
     } catch (err) {
         console.error('2FA disable error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// GET /api/trusted-devices — List all trusted devices for the current user
+router.get('/trusted-devices', authRequired, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, browser, operating_system, ip_address, created_at, last_used, expires_at
+             FROM trusted_devices
+             WHERE user_id = $1 AND expires_at > NOW()
+             ORDER BY last_used DESC`,
+            [req.user.id]
+        );
+        res.json({ success: true, devices: result.rows });
+    } catch (err) {
+        console.error('List trusted devices error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// DELETE /api/trusted-devices/:id — Revoke a specific trusted device
+router.delete('/trusted-devices/:id', authRequired, async (req, res) => {
+    try {
+        const deviceId = parseInt(req.params.id, 10);
+        if (isNaN(deviceId)) {
+            return res.status(400).json({ success: false, error: 'Invalid device ID.' });
+        }
+        await pool.query(
+            'DELETE FROM trusted_devices WHERE id = $1 AND user_id = $2',
+            [deviceId, req.user.id]
+        );
+        res.json({ success: true, message: 'Device has been revoked.' });
+    } catch (err) {
+        console.error('Revoke trusted device error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// DELETE /api/trusted-devices — Revoke all trusted devices for the current user
+router.delete('/trusted-devices', authRequired, async (req, res) => {
+    try {
+        await pool.query(
+            'DELETE FROM trusted_devices WHERE user_id = $1',
+            [req.user.id]
+        );
+        res.json({ success: true, message: 'All trusted devices have been revoked.' });
+    } catch (err) {
+        console.error('Revoke all trusted devices error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
