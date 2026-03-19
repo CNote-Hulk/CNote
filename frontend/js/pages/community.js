@@ -15,6 +15,7 @@ const CONSOLES = [
     { id: 'xbox',     name: 'Xbox',        color: '#107C10' },
     { id: 'nintendo', name: 'Nintendo',    color: '#E60012' },
     { id: 'pc',       name: 'PC Gaming',   color: '#9B59B6' },
+    { id: 'other',    name: 'Other Consoles', color: '#E67E22' },
 ];
 
 const TAGS = ['All', 'General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];
@@ -46,7 +47,44 @@ const SYMPTOMS_BY_CONSOLE = {
         'Slow performance', 'Network issues', 'Strange noises',
         'Boot loop', 'GPU artifacts', 'RAM errors',
         'Driver issues', 'Storage failure'
+    ],
+    other: [
+        'No power', 'Overheating', 'No video output', 'Strange noises',
+        "Won't turn on", 'Disc read error', 'Controller issues',
+        'Slow performance', 'Network issues'
     ]
+};
+
+const MODELS_BY_CONSOLE = {
+    ps: [
+        'PlayStation 1 (PS1)', 'PS One (Slim)',
+        'PlayStation 2 (PS2)', 'PS2 Slim',
+        'PlayStation 3 (PS3)', 'PS3 Slim', 'PS3 Super Slim',
+        'PlayStation 4 (PS4)', 'PS4 Slim', 'PS4 Pro',
+        'PlayStation 5 (PS5)', 'PS5 Digital Edition', 'PS5 Slim', 'PS5 Slim Digital',
+        'PSP (1000/2000/3000)', 'PSP Go', 'PSP Street (E1000)',
+        'PS Vita (OLED)', 'PS Vita Slim (LCD)', 'PS Vita TV'
+    ],
+    xbox: [
+        'Xbox (Original)',
+        'Xbox 360', 'Xbox 360 S (Slim)', 'Xbox 360 E',
+        'Xbox One', 'Xbox One S', 'Xbox One S All-Digital', 'Xbox One X',
+        'Xbox Series S', 'Xbox Series X'
+    ],
+    nintendo: [
+        'NES (Nintendo Entertainment System)', 'SNES (Super Nintendo)',
+        'Nintendo 64 (N64)', 'GameCube',
+        'Wii', 'Wii Mini', 'Wii U',
+        'Nintendo Switch', 'Nintendo Switch Lite', 'Nintendo Switch OLED', 'Nintendo Switch 2',
+        'Game Boy', 'Game Boy Color', 'Game Boy Advance', 'Game Boy Advance SP',
+        'Nintendo DS', 'Nintendo DS Lite', 'Nintendo DSi',
+        'Nintendo 3DS', 'Nintendo 3DS XL', 'Nintendo 2DS', 'New Nintendo 3DS', 'New Nintendo 3DS XL', 'New Nintendo 2DS XL'
+    ],
+    pc: [
+        'Custom Build (Desktop)', 'Pre-built Desktop', 'Gaming Laptop',
+        'Mini PC / SFF', 'Steam Deck', 'ROG Ally', 'Legion Go'
+    ],
+    other: []
 };
 
 // ── State ──────────────────────────────────────────────────
@@ -67,6 +105,7 @@ const S = {
     marketCity: '',
     marketPage: 1,
     repairStep: 0,
+    repairModel: '',
     repairSymptoms: [],
     repairDesc: '',
     repairResult: null,
@@ -212,7 +251,7 @@ function navigate(view, con, cat) {
             break;
         case 'repair':
             S.console = con;
-            Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
+            Object.assign(S, { repairStep: 0, repairModel: '', repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
             showView('repair');
             renderRepair();
             break;
@@ -1275,7 +1314,7 @@ function repairStatusBadge(status) {
     return `<span class="hub-status-badge ${s.cls}">${esc(s.label)}</span>`;
 }
 
-/** Render the repair wizard: symptom checkboxes → description → submit */
+/** Render the repair wizard: model → symptoms → description → submit */
 function renderRepair() {
     const v = document.getElementById('view-repair');
     if (!user()) {
@@ -1283,15 +1322,34 @@ function renderRepair() {
         return;
     }
     const cName = CONSOLES.find(c => c.id === S.console)?.name || S.console;
+    const models = MODELS_BY_CONSOLE[S.console] || [];
     const symptoms = SYMPTOMS_BY_CONSOLE[S.console] || [];
     const step = S.repairStep;
 
-    const bars = [0, 1, 2].map(i =>
+    const bars = [0, 1, 2, 3].map(i =>
         `<div class="hub-repair-progress__bar${i <= step ? ' hub-repair-progress__bar--done' : ''}"></div>`).join('');
 
     let body = '';
 
     if (step === 0) {
+        /* ── Step 0: Model selection (or text input for "other") ── */
+        if (S.console === 'other') {
+            body = `
+                <div class="hub-repair-question">Which console do you have?</div>
+                <div class="hub-repair-hint">Write the name of your console:</div>
+                <input type="text" class="hub-repair-textarea" id="repair-other-model" maxlength="200" placeholder="Scrie numele consolei tale" value="${esc(S.repairModel)}" style="padding:10px;font-size:.92rem">
+                <button class="hub-btn hub-btn--primary" id="repair-next"${S.repairModel.trim() ? '' : ' disabled'}>Continue →</button>`;
+        } else {
+            body = `
+                <div class="hub-repair-question">Which ${esc(cName)} model do you have?</div>
+                <div class="hub-repair-hint">Select your exact model:</div>
+                <div class="hub-symptom-grid">
+                    ${models.map(m => `<button class="hub-symptom-btn${S.repairModel === m ? ' hub-symptom-btn--selected' : ''}" data-model="${esc(m)}">${esc(m)}</button>`).join('')}
+                </div>
+                <button class="hub-btn hub-btn--primary" id="repair-next"${S.repairModel ? '' : ' disabled'}>Continue →</button>`;
+        }
+    } else if (step === 1) {
+        /* ── Step 1: Symptom selection ── */
         const hasCustom = S.repairSymptoms.includes('__custom__');
         const canProceed = S.repairSymptoms.length > 0 && (!hasCustom || S.repairCustomProblem.trim());
         body = `
@@ -1305,17 +1363,22 @@ function renderRepair() {
                 <textarea class="hub-repair-textarea" id="repair-custom-text" rows="4" maxlength="500" placeholder="Describe your issue…">${esc(S.repairCustomProblem)}</textarea>
                 <div class="hub-repair-char-count"><span id="repair-custom-count">${S.repairCustomProblem.length}</span> / 500</div>
             </div>` : ''}
-            <button class="hub-btn hub-btn--primary" id="repair-next"${canProceed ? '' : ' disabled'}>Continue →</button>`;
-    } else if (step === 1) {
+            <div style="display:flex;gap:8px">
+                <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
+                <button class="hub-btn hub-btn--primary" id="repair-next"${canProceed ? '' : ' disabled'}>Continue →</button>
+            </div>`;
+    } else if (step === 2) {
+        /* ── Step 2: Description ── */
         body = `
             <div class="hub-repair-question">Describe the issue in more detail</div>
-            <div class="hub-repair-hint">Include: when it started, what you tried, the console model</div>
+            <div class="hub-repair-hint">Include: when it started, what you tried so far</div>
             <textarea class="hub-repair-textarea" id="repair-desc" rows="6" maxlength="2000" placeholder="Describe here…">${esc(S.repairDesc)}</textarea>
             <div style="display:flex;gap:8px">
                 <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
                 <button class="hub-btn hub-btn--primary" id="repair-submit">Submit request</button>
             </div>`;
     } else {
+        /* ── Step 3: Success ── */
         body = `
             <div class="hub-repair-success">
                 <div class="hub-repair-success__icon">✅</div>
@@ -1335,6 +1398,24 @@ function renderRepair() {
 
     // Events per step
     if (step === 0) {
+        if (S.console === 'other') {
+            const inp = v.querySelector('#repair-other-model');
+            if (inp) {
+                inp.addEventListener('input', e => {
+                    S.repairModel = e.target.value;
+                    v.querySelector('#repair-next').disabled = !e.target.value.trim();
+                });
+                inp.focus();
+            }
+        } else {
+            v.querySelectorAll('.hub-symptom-btn[data-model]').forEach(b => b.addEventListener('click', () => {
+                S.repairModel = b.dataset.model;
+                renderRepair();
+            }));
+        }
+        v.querySelector('#repair-next')?.addEventListener('click', () => { S.repairStep = 1; renderRepair(); });
+    }
+    if (step === 1) {
         v.querySelectorAll('.hub-symptom-btn[data-s]').forEach(b => b.addEventListener('click', () => {
             const s = b.dataset.s;
             const i = S.repairSymptoms.indexOf(s);
@@ -1357,16 +1438,17 @@ function renderRepair() {
             });
             cta.focus();
         }
-        v.querySelector('#repair-next')?.addEventListener('click', () => { S.repairStep = 1; renderRepair(); });
-    }
-    if (step === 1) {
-        v.querySelector('#repair-desc')?.addEventListener('input', e => { S.repairDesc = e.target.value; });
         v.querySelector('#repair-prev')?.addEventListener('click', () => { S.repairStep = 0; renderRepair(); });
-        v.querySelector('#repair-submit')?.addEventListener('click', submitRepair);
+        v.querySelector('#repair-next')?.addEventListener('click', () => { S.repairStep = 2; renderRepair(); });
     }
     if (step === 2) {
+        v.querySelector('#repair-desc')?.addEventListener('input', e => { S.repairDesc = e.target.value; });
+        v.querySelector('#repair-prev')?.addEventListener('click', () => { S.repairStep = 1; renderRepair(); });
+        v.querySelector('#repair-submit')?.addEventListener('click', submitRepair);
+    }
+    if (step === 3) {
         v.querySelector('#repair-new')?.addEventListener('click', () => {
-            Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
+            Object.assign(S, { repairStep: 0, repairModel: '', repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
             renderRepair();
         });
         v.querySelector('#repair-view-requests')?.addEventListener('click', () => {
@@ -1384,12 +1466,13 @@ async function submitRepair() {
     try {
         const data = await api('POST', '/repair', {
             consoleType: S.console,
+            consoleModel: S.repairModel,
             symptoms: actualSymptoms,
             customSymptom: S.repairCustomProblem || '',
             description: S.repairDesc
         });
         if (data.success) {
-            S.repairStep = 2;
+            S.repairStep = 3;
             renderRepair();
         } else {
             if (btn) { btn.disabled = false; btn.textContent = 'Submit request'; }
@@ -1436,6 +1519,7 @@ async function renderRepairRequests() {
                     <div class="hub-repair-card__header">
                         <div>
                             <strong style="color:var(--text-light)">${esc(consoleName)}</strong>
+                            ${r.console_model ? `<span style="color:var(--text-gray);font-size:.82rem;margin-left:6px">${esc(r.console_model)}</span>` : ''}
                             <span style="color:var(--text-gray);font-size:.8rem;margin-left:8px">#${r.id}</span>
                         </div>
                         ${repairStatusBadge(r.status)}
@@ -1498,7 +1582,7 @@ async function renderRepairAdmin() {
                     <div class="hub-repair-card__header">
                         <div>
                             <strong style="color:var(--text-light)">${esc(r.username || 'User #' + r.user_id)}</strong>
-                            <span style="color:var(--text-gray);font-size:.8rem;margin-left:8px">${esc(consoleName)} · #${r.id}</span>
+                            <span style="color:var(--text-gray);font-size:.8rem;margin-left:8px">${esc(consoleName)}${r.console_model ? ' · ' + esc(r.console_model) : ''} · #${r.id}</span>
                         </div>
                         ${repairStatusBadge(r.status)}
                     </div>
