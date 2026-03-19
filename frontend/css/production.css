@@ -5832,16 +5832,55 @@ body.search-open {
     opacity: 0.7;
 }
 
+/* Profile Tabs Wrapper + Arrows */
+.profile-tabs-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    gap: 4px;
+}
+
+.profile-tabs-arrow {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-gray);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.profile-tabs-arrow.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.profile-tabs-arrow:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-light);
+}
+
 .profile-tabs {
     display: flex;
     gap: 0;
-    max-width: 800px;
-    margin: 0 auto;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 30px;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
     scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex: 1;
+    min-width: 0;
 }
 
 .profile-tabs::-webkit-scrollbar {
@@ -6237,11 +6276,15 @@ body.search-open {
     }
 
     /* ── Profile tabs ── */
+    .profile-tabs-wrapper {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
     .profile-tabs {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         gap: 0;
-        margin-bottom: 20px;
     }
 
     .profile-tab {
