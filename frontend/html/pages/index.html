@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- ===========================
@@ -25,6 +25,7 @@
          =========================== -->
     <!-- Main CSS - imports all modules -->
     <link rel="stylesheet" href="../../css/production.css">
+    <link rel="stylesheet" href="../../css/pages/home.css">
     <link rel="stylesheet" href="../../css/components/index-cards.css">
     
     <!-- KaTeX CDN - for math equation rendering -->
@@ -56,6 +57,7 @@
                 <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
                 <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
                 <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="help.html" data-i18n="nav_help">Help</a></li>
                 <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
 
@@ -69,13 +71,57 @@
 
     <!-- ===========================
          HERO SECTION
-         Full-screen cinematic intro
+         Full-screen cinematic intro with quick guide
          =========================== -->
-    <section class="hero hero-cinematic hero-home">
+    <section class="hero hero-cinematic hero-home" id="hero">
+        <!-- Left: vertical timeline quick guide -->
+        <div class="hero-timeline">
+            <div class="hero-timeline__step" data-step="0">
+                <div class="hero-timeline__dot"></div>
+                <div class="hero-timeline__text">
+                    <span class="hero-timeline__number">01</span>
+                    <span class="hero-timeline__label">Create account</span>
+                </div>
+            </div>
+            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
+            <div class="hero-timeline__step" data-step="1">
+                <div class="hero-timeline__dot"></div>
+                <div class="hero-timeline__text">
+                    <span class="hero-timeline__number">02</span>
+                    <span class="hero-timeline__label">Explore consoles</span>
+                </div>
+            </div>
+            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
+            <div class="hero-timeline__step" data-step="2">
+                <div class="hero-timeline__dot"></div>
+                <div class="hero-timeline__text">
+                    <span class="hero-timeline__number">03</span>
+                    <span class="hero-timeline__label">Join community</span>
+                </div>
+            </div>
+            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
+            <div class="hero-timeline__step" data-step="3">
+                <div class="hero-timeline__dot"></div>
+                <div class="hero-timeline__text">
+                    <span class="hero-timeline__number">04</span>
+                    <span class="hero-timeline__label">Trade & repair</span>
+                </div>
+            </div>
+            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
+            <div class="hero-timeline__step" data-step="4">
+                <div class="hero-timeline__dot"></div>
+                <div class="hero-timeline__text">
+                    <span class="hero-timeline__number">05</span>
+                    <span class="hero-timeline__label">Master the craft</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: title + CTA -->
         <div class="hero-content">
             <h1 data-i18n="hero_title">Console Notebook</h1>
             <p data-i18n="hero_subtitle">Welcome to the golden — or maybe bronze — age of gaming.</p>
-            <a href="#content" class="hero-button" data-i18n="hero_cta">Discover</a>
+            <a href="#content" class="hero-button" id="hero-explore-btn" data-i18n="hero_cta">Explore CNote</a>
         </div>
     </section>
 
@@ -311,6 +357,7 @@
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
     <script type="module" src="../../js/pages/index-cards.js"></script>
+    <script src="../../js/pages/home.js"></script>
     
     <!-- Fallback Scripts - work without server (file:// protocol) -->
     <script src="../../js/fallback/hamburger.js"></script>

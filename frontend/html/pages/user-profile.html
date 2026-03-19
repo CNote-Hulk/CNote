@@ -9,6 +9,7 @@
 		<link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico">
 		<title>User Profile — Console Notebook</title>
 		<link rel="stylesheet" href="/css/production.css">
+		<link rel="stylesheet" href="/css/pages/user-profile.css">
 	</head>
 	<body>
 		<!-- NAVBAR -->
@@ -31,6 +32,7 @@
                 	<li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
                 	<li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
                 	<li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="help.html" data-i18n="nav_help">Help</a></li>
                 	<li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
 				</ul>
 				<div class="navbar-profile-wrap">
@@ -48,43 +50,49 @@
 			<div class="user-profile-loading" id="user-profile-loading">
 					Loading profile...
 			</div>
-			<!-- PROFILE HEADER -->
-			<div class="profile-header" id="user-profile-header" hidden>
-				<div class="profile-avatar user-profile-avatar" id="user-avatar">
-					<img id="user-avatar-img" alt="Profile picture" hidden>
-					<span id="user-avatar-fallback">👤</span>
-				</div>
-				<div class="profile-info">
-					<div class="profile-name-row">
-						<div class="profile-name" id="user-name">—</div>
-						<span class="admin-badge" id="user-admin-badge" hidden title="Administrator">🛡️ Admin</span>
+
+			<!-- PROFILE CARD (hero-like header) -->
+			<div class="up-hero" id="user-profile-header" hidden>
+				<div class="up-hero__glow"></div>
+				<div class="up-hero__inner">
+					<div class="profile-avatar user-profile-avatar" id="user-avatar">
+						<img id="user-avatar-img" alt="Profile picture" hidden>
+						<span id="user-avatar-fallback">👤</span>
 					</div>
-					<div class="profile-bio-row">
-						<div class="profile-bio" id="user-bio"></div>
+					<div class="up-hero__info">
+						<div class="profile-name-row">
+							<div class="profile-name" id="user-name">—</div>
+							<span class="admin-badge" id="user-admin-badge" hidden title="Administrator">🛡️ Admin</span>
+						</div>
+						<div class="profile-bio-row">
+							<div class="profile-bio" id="user-bio"></div>
+						</div>
+						<div class="profile-date" id="user-date"></div>
+						<div class="user-profile-actions" id="user-profile-actions"></div>
 					</div>
-					<div class="profile-date" id="user-date"></div>
-					<div class="user-profile-actions" id="user-profile-actions"></div>
 				</div>
 			</div>
 
 			<!-- CONSOLE LISTS -->
-			<div class="profile-consoles-section" id="user-profile-consoles">
-				<div class="profile-console-list">
+			<div class="up-section" id="user-profile-consoles">
+				<div class="up-consoles">
+					<div class="profile-console-list">
 						<h3 class="profile-console-list__title" data-i18n="profile_favorite_consoles">🎮 Favorite consoles</h3>
 						<div class="profile-console-list__items" id="user-favorite-consoles">
 							<span class="profile-console-list__empty" data-i18n="profile_no_consoles">No consoles.</span>
+						</div>
 					</div>
-				</div>
-				<div class="profile-console-list">
+					<div class="profile-console-list">
 						<h3 class="profile-console-list__title" data-i18n="profile_owned_consoles">🕹️ Owned consoles</h3>
 						<div class="profile-console-list__items" id="user-owned-consoles">
 							<span class="profile-console-list__empty" data-i18n="profile_no_consoles">No consoles.</span>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- DASHBOARD -->
-			<div class="profile-panel active user-dashboard-panel" id="user-dashboard-panel">
+			<div class="up-section profile-panel active user-dashboard-panel" id="user-dashboard-panel">
 				<div class="dash-stats">
 					<div class="dash-stat">
 						<span class="dash-stat__icon">📚</span>
@@ -141,13 +149,13 @@
 			</div>
 
 			<!-- ACTIVE LISTINGS -->
-			<div class="user-listings-section" id="user-listings-section" hidden>
+			<div class="up-section user-listings-section" id="user-listings-section" hidden>
 				<h3 class="user-section-title">📋 Active listings</h3>
 				<div class="user-listings-grid" id="user-listings-grid"></div>
 			</div>
 
 			<!-- FRIENDS -->
-			<div class="user-friends-section" id="user-friends-section" hidden>
+			<div class="up-section user-friends-section" id="user-friends-section" hidden>
 				<h3 class="user-section-title">👥 Friends</h3>
 				<div class="user-friends-list" id="user-friends-list"></div>
 			</div>

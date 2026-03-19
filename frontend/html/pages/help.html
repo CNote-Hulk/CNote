@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ===========================
+         HELP & SUPPORT PAGE
+         =========================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Help & Support — Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Help &amp; Support — Console Notebook</title>
+    <link rel="stylesheet" href="../../css/production.css">
+    <link rel="stylesheet" href="../../css/pages/help.css">
+</head>
+<body>
+    <!-- ===========================
+         NAVIGATION BAR
+         =========================== -->
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="community.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="help.html" class="active" data-i18n="nav_help">Help</a></li>
+                <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===========================
+         HERO SECTION
+         =========================== -->
+    <section class="help-hero">
+        <div class="help-hero__content">
+            <h1 class="help-hero__title">Help &amp; Support</h1>
+            <p class="help-hero__subtitle">Find answers quickly or learn how to use the platform.</p>
+            <button class="help-hero__btn" id="help-discover-btn" type="button">Discover</button>
+        </div>
+    </section>
+
+    <!-- ===========================
+         INTERACTIVE TIMELINE
+         =========================== -->
+    <section class="help-timeline" id="timeline">
+        <div class="help-timeline__track">
+            <div class="help-timeline__step" data-step="0">
+                <div class="help-timeline__dot"></div>
+                <div class="help-timeline__text">
+                    <span class="help-timeline__number">01</span>
+                    <h3 class="help-timeline__title">Discover</h3>
+                    <p class="help-timeline__desc">Explore the platform and its features</p>
+                </div>
+            </div>
+            <div class="help-timeline__connector"><div class="help-timeline__connector-fill"></div></div>
+            <div class="help-timeline__step" data-step="1">
+                <div class="help-timeline__dot"></div>
+                <div class="help-timeline__text">
+                    <span class="help-timeline__number">02</span>
+                    <h3 class="help-timeline__title">Learn</h3>
+                    <p class="help-timeline__desc">Browse console history and technical information</p>
+                </div>
+            </div>
+            <div class="help-timeline__connector"><div class="help-timeline__connector-fill"></div></div>
+            <div class="help-timeline__step" data-step="2">
+                <div class="help-timeline__dot"></div>
+                <div class="help-timeline__text">
+                    <span class="help-timeline__number">03</span>
+                    <h3 class="help-timeline__title">Community</h3>
+                    <p class="help-timeline__desc">Join discussions and interact with other users</p>
+                </div>
+            </div>
+            <div class="help-timeline__connector"><div class="help-timeline__connector-fill"></div></div>
+            <div class="help-timeline__step" data-step="3">
+                <div class="help-timeline__dot"></div>
+                <div class="help-timeline__text">
+                    <span class="help-timeline__number">04</span>
+                    <h3 class="help-timeline__title">Marketplace</h3>
+                    <p class="help-timeline__desc">Buy, sell or trade gaming consoles</p>
+                </div>
+            </div>
+            <div class="help-timeline__connector"><div class="help-timeline__connector-fill"></div></div>
+            <div class="help-timeline__step" data-step="4">
+                <div class="help-timeline__dot"></div>
+                <div class="help-timeline__text">
+                    <span class="help-timeline__number">05</span>
+                    <h3 class="help-timeline__title">Repair</h3>
+                    <p class="help-timeline__desc">Request or offer console repair services</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================
+         FAQ SECTION
+         =========================== -->
+    <section class="help-faq">
+        <div class="help-faq__inner">
+            <h2 class="help-faq__heading">Frequently Asked Questions</h2>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    What is Console Notebook?
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">A platform dedicated to gaming console culture. Explore history, join the community, and buy or sell consoles.</div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    How do I use the Community Chat?
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">Go to the Community page. You need an account to post. Join topic channels or start discussions in the forum.</div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    How do I post in the marketplace?
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">Navigate to Marketplace, click "New Listing", fill in the details and upload photos. You must be logged in.</div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    Do I need an account?
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">Browsing is free. An account is required for chat, marketplace listings, repair requests, and ratings.</div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    Can I request console repairs?
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">Yes. Go to your profile, open the Requests tab, and submit a repair request with your console and symptoms.</div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    What categories are available?
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">The platform covers consoles from Atari to modern systems, including handhelds and obscure hardware.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================
+         COMMUNITY HELP
+         =========================== -->
+    <section class="help-community">
+        <h2 class="help-community__title">Ask the Community</h2>
+        <p class="help-community__subtitle">Get real-time help from other users in the community chat.</p>
+        <a href="community.html" class="help-community__btn">Go to Community</a>
+    </section>
+
+    <!-- ===========================
+         CONTACT SECTION
+         =========================== -->
+    <section class="help-contact">
+        <div class="help-contact__inner">
+            <h2 class="help-contact__title">Still need help?</h2>
+            <div class="help-contact__card">
+                <div id="help-success-msg" class="help-contact__msg help-contact__msg--success"></div>
+                <div id="help-error-msg" class="help-contact__msg help-contact__msg--error"></div>
+                <form class="help-contact__form" id="help-contact-form" novalidate>
+                    <div class="help-contact__group">
+                        <label for="help-name">Name</label>
+                        <input id="help-name" name="name" type="text" placeholder="Your name" required>
+                    </div>
+                    <div class="help-contact__group">
+                        <label for="help-email">Email</label>
+                        <input id="help-email" name="email" type="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="help-contact__group">
+                        <label for="help-message">Message</label>
+                        <textarea id="help-message" name="message" placeholder="Write your message here" required></textarea>
+                    </div>
+                    <input type="text" name="_honey" class="help-contact__honey" tabindex="-1" autocomplete="off">
+                    <button type="submit" class="help-contact__submit" id="help-submit-btn">Send message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================
+         FOOTER
+         =========================== -->
+    <footer class="footer">
+        <div class="footer-inner container">
+            <div class="footer-left">
+                <p class="footer-main">&copy; 2026 Console Notebook</p>
+            </div>
+            <div class="footer-right">
+                <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
+                <a href="tel:+40758464907">+40 758 464 907</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="../../js/main.js"></script>
+    <script src="../../js/pages/help.js"></script>
+    <script src="../../js/fallback/hamburger.js" defer></script>
+    <script src="../../js/fallback/search-profile.js"></script>
+</body>
+</html>
