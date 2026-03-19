@@ -311,23 +311,31 @@
     font-family: var(--p-font-body);
     color: var(--p-text);
     padding: 0;
-    isolation: auto;
-    overflow: visible;
+    isolation: isolate;
+    overflow: hidden;
+    position: relative;
 }
 
 .profile-page::after {
-    display: none;
+    content: '';
+    position: fixed;
+    inset: -4px;
+    background: url('../../assets/images/wallpapers/index.jpg') center/cover no-repeat;
+    filter: blur(4px) brightness(0.45);
+    transform: scale(1.02);
+    z-index: 0;
+    pointer-events: none;
 }
 
 .profile-page > * {
-    position: static;
-    z-index: auto;
+    position: relative;
+    z-index: 1;
 }
 
 /* ── Banner ── */
 .profile-banner {
     height: 140px;
-    background: linear-gradient(180deg, #1e1a14 0%, var(--p-bg) 100%);
+    background: transparent;
     position: relative;
 }
 
@@ -360,7 +368,9 @@
 
 /* ── Sidebar ── */
 .profile-sidebar {
-    background: var(--p-sidebar);
+    background: rgba(17, 16, 9, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-right: 1px solid rgba(180,140,80,0.12);
     padding: 0 24px 40px;
     display: flex;
@@ -627,6 +637,9 @@
 .profile-main {
     padding: 32px 40px 60px;
     min-width: 0;
+    background: rgba(20, 18, 16, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 /* Panel visibility */
