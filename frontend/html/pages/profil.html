@@ -8,9 +8,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Profile — Console Notebook">
-    <meta name="theme-color" content="#1B1714">
+    <meta name="theme-color" content="#141210">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
     <title>Profile — Console Notebook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/production.css">
 </head>
 <body>
@@ -31,6 +34,7 @@
                 <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
                 <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
                 <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="help.html" data-i18n="nav_help">Help</a></li>
                 <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
             <div class="navbar-profile-wrap">
@@ -42,285 +46,342 @@
     </nav>
 
     <div class="profile-page" id="profile-page">
-        <!-- Header -->
-        <div class="profile-header" id="profile-header">
-            <button type="button" class="profile-avatar" id="profile-avatar" title="Change profile picture">
-                <img id="profile-avatar-img" alt="Profile picture" hidden>
-                <span id="profile-avatar-fallback">👤</span>
-            </button>
-            <input type="file" id="avatar-upload" accept="image/*" hidden>
-            <div class="profile-info">
+
+        <!-- Banner -->
+        <div class="profile-banner"></div>
+
+        <!-- Two-column grid -->
+        <div class="profile-layout">
+
+            <!-- ═══ SIDEBAR ═══ -->
+            <aside class="profile-sidebar" id="profile-header">
+
+                <!-- Avatar -->
+                <button type="button" class="profile-avatar" id="profile-avatar" title="Change profile picture">
+                    <img id="profile-avatar-img" alt="Profile picture" hidden>
+                    <span id="profile-avatar-fallback">👤</span>
+                </button>
+                <input type="file" id="avatar-upload" accept="image/*" hidden>
+
+                <!-- Name + Admin badge -->
                 <div class="profile-name-row">
                     <div class="profile-name" id="profile-name">—</div>
-                    <span class="admin-badge" id="profile-admin-badge" hidden title="Administrator">🛡️ Admin</span>
-                    <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Edit name in Settings" data-i18n="profile_edit_name_title" data-i18n-attr="title">✏️</button>
+                    <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Edit name in Settings" data-i18n="profile_edit_name_title" data-i18n-attr="title">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                    </button>
                 </div>
+                <span class="admin-badge" id="profile-admin-badge" hidden title="Administrator">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+                    Admin
+                </span>
+
+                <!-- Online indicator -->
+                <div class="profile-online-dot"></div>
+
+                <!-- Bio -->
                 <div class="profile-bio-row">
                     <div class="profile-bio" id="profile-bio"></div>
-                    <button type="button" class="profile-edit-shortcut" id="edit-bio-shortcut" title="Edit bio in Settings" data-i18n="profile_edit_bio_title" data-i18n-attr="title">✏️</button>
+                    <button type="button" class="profile-edit-shortcut" id="edit-bio-shortcut" title="Edit bio in Settings" data-i18n="profile_edit_bio_title" data-i18n-attr="title">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                    </button>
                 </div>
+
+                <!-- Member since -->
                 <div class="profile-date" id="profile-date"></div>
-            </div>
-        </div>
 
-        <!-- Console Lists -->
-        <div class="profile-consoles-section" id="profile-consoles-section">
-            <div class="profile-console-list">
-                <h3 class="profile-console-list__title" data-i18n="profile_fav_consoles_title">🎮 Favorite consoles</h3>
-                <div class="profile-console-list__items" id="profile-favorite-consoles">
-                    <span class="profile-console-list__empty" data-i18n="profile_no_consoles_added">No consoles added.</span>
-                </div>
-            </div>
-            <div class="profile-console-list">
-                <h3 class="profile-console-list__title" data-i18n="profile_owned_consoles_title">🕹️ Owned consoles</h3>
-                <div class="profile-console-list__items" id="profile-owned-consoles">
-                    <span class="profile-console-list__empty" data-i18n="profile_no_consoles_added">No consoles added.</span>
-                </div>
-            </div>
-        </div>
+                <div class="profile-sidebar-divider"></div>
 
-        <!-- Tabs -->
-        <div class="profile-tabs-wrapper">
-            <button class="profile-tabs-arrow profile-tabs-arrow--left" aria-label="Scroll left">‹</button>
-            <div class="profile-tabs">
-                <button class="profile-tab active" data-tab="acasa" data-i18n="profile_tab_home">Home</button>
-                <button class="profile-tab" data-tab="cursuri" data-i18n="profile_tab_courses">Courses</button>
-                <button class="profile-tab" data-tab="realizari" data-i18n="profile_tab_achievements">Achievements</button>
-                <button class="profile-tab" data-tab="evaluari" data-i18n="profile_tab_ratings">Ratings</button>
-                <button class="profile-tab" data-tab="anunturi" data-i18n="profile_tab_listings">Listings</button>
-                <button class="profile-tab" data-tab="favorite" data-i18n="profile_tab_favorites">Favorites</button>
-                <button class="profile-tab" data-tab="prieteni" data-i18n="profile_tab_friends">Friends</button>
-                <button class="profile-tab" data-tab="cereri" data-i18n="profile_tab_requests">🔧 Requests</button>
-                <button class="profile-tab" data-tab="setari" data-i18n="profile_tab_settings">Settings</button>
-            </div>
-            <button class="profile-tabs-arrow profile-tabs-arrow--right" aria-label="Scroll right">›</button>
-        </div>
-
-        <!-- Dashboard Panel -->
-        <div class="profile-panel active" id="panel-acasa" data-panel="acasa">
-            <!-- Stats Row -->
-            <div class="dash-stats">
-                <div class="dash-stat">
-                    <span class="dash-stat__icon">📚</span>
-                    <span class="dash-stat__value" id="dash-courses-pct">0%</span>
-                    <span class="dash-stat__label" data-i18n="profile_dash_course_progress">Course progress</span>
-                </div>
-                <div class="dash-stat">
-                    <span class="dash-stat__icon">🏆</span>
-                    <span class="dash-stat__value" id="dash-achievements">0 / 0</span>
-                    <span class="dash-stat__label" data-i18n="profile_dash_achievements_label">Achievements</span>
-                </div>
-                <div class="dash-stat">
-                    <span class="dash-stat__icon">⭐</span>
-                    <span class="dash-stat__value" id="dash-ratings">0</span>
-                    <span class="dash-stat__label" data-i18n="profile_dash_ratings_label">Ratings</span>
-                </div>
-                <div class="dash-stat">
-                    <span class="dash-stat__icon">👥</span>
-                    <span class="dash-stat__value" id="dash-friends">0</span>
-                    <span class="dash-stat__label" data-i18n="profile_dash_friends_label">Friends</span>
-                </div>
-                <div class="dash-stat">
-                    <span class="dash-stat__icon">❤️</span>
-                    <span class="dash-stat__value" id="dash-favorites">0</span>
-                    <span class="dash-stat__label" data-i18n="profile_dash_favorites_label">Favorite</span>
-                </div>
-            </div>
-
-            <!-- Quick Sections -->
-            <div class="dash-grid">
-                <!-- Course Progress -->
-                <div class="dash-card">
-                    <div class="dash-card__head">
-                        <h3 data-i18n="profile_dash_course_card">📚 Course progress</h3>
-                        <a href="#cursuri" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
-                    </div>
-                    <div id="dash-course-preview"></div>
-                </div>
-
-                <!-- Recent Ratings -->
-                <div class="dash-card">
-                    <div class="dash-card__head">
-                        <h3 data-i18n="profile_dash_ratings_card">⭐ Recent ratings</h3>
-                        <a href="#evaluari" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
-                    </div>
-                    <div id="dash-ratings-preview"></div>
-                </div>
-
-                <!-- Achievements -->
-                <div class="dash-card">
-                    <div class="dash-card__head">
-                        <h3 data-i18n="profile_dash_achievements_card">🏆 Achievements</h3>
-                        <a href="#realizari" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
-                    </div>
-                    <div id="dash-achievements-preview"></div>
-                </div>
-
-                <!-- Friends -->
-                <div class="dash-card">
-                    <div class="dash-card__head">
-                        <h3 data-i18n="profile_dash_friends_card">👥 Friends</h3>
-                        <a href="#prieteni" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
-                    </div>
-                    <div id="dash-friends-preview"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Courses Panel -->
-        <div class="profile-panel" id="panel-cursuri" data-panel="cursuri">
-            <div id="courses-container"></div>
-        </div>
-
-        <!-- Achievements Panel -->
-        <div class="profile-panel" id="panel-realizari" data-panel="realizari">
-            <div class="achievements-grid" id="achievements-container"></div>
-        </div>
-
-        <!-- Ratings Panel -->
-        <div class="profile-panel" id="panel-evaluari" data-panel="evaluari">
-            <div id="ratings-container"></div>
-        </div>
-
-        <!-- Listings Panel -->
-        <div class="profile-panel" id="panel-anunturi" data-panel="anunturi">
-            <div class="my-listings-header">
-                <h3 class="my-listings-header__title" data-i18n="profile_listings_title">📋 My listings</h3>
-                <button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing" data-i18n="profile_listings_new">+ New listing</button>
-            </div>
-            <div id="my-listings-container">
-                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>>
-            </div>
-        </div>
-
-        <!-- Favorites Panel -->
-        <div class="profile-panel" id="panel-favorite" data-panel="favorite">
-            <div class="my-listings-header">
-                <h3 class="my-listings-header__title" data-i18n="profile_favorites_title">❤️ Favorite listings</h3>
-            </div>
-            <div id="favorites-container">
-                <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
-            </div>
-        </div>
-
-        <!-- Friends Panel -->
-        <div class="profile-panel" id="panel-prieteni" data-panel="prieteni">
-            <!-- Search Users -->
-            <div class="course-card" id="friend-search-card">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_friends_search">Search users</h3>
-                <div class="friend-search-box">
-                    <input type="text" id="friend-search-input" class="profile-input" placeholder="Search by username..." autocomplete="off" data-i18n="profile_friends_search_placeholder" data-i18n-attr="placeholder" />
-                </div>
-                <div id="friend-search-results" class="friend-search-results"></div>
-            </div>
-            <!-- Friend Requests -->
-            <div class="course-card" id="friend-requests-card" style="margin-top: 16px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_friends_requests">Friend requests</h3>
-                <div id="friend-requests-container">
-                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
-                </div>
-            </div>
-            <!-- Friend List -->
-            <div class="course-card" style="margin-top: 16px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_friends_list">Your friends</h3>
-                <div class="friends-list" id="my-friends-list">
-                    <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Requests Panel -->
-        <div class="profile-panel" id="panel-cereri" data-panel="cereri">
-            <div class="my-listings-header">
-                <h3 class="my-listings-header__title" data-i18n="profile_requests_title">🔧 Repair Requests</h3>
-            </div>
-            <div id="requests-container">
-                <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
-            </div>
-        </div>
-
-        <!-- Settings Panel -->
-        <div class="profile-panel" id="panel-setari" data-panel="setari">
-            <div class="course-card">
-                <form class="settings-form" id="settings-form">
-                    <div class="auth-field">
-                        <label for="set-username" data-i18n="profile_settings_label_username">Username</label>
-                        <input type="text" id="set-username" placeholder="Your name" data-i18n="profile_settings_placeholder_username" data-i18n-attr="placeholder">
-                    </div>
-                    <div class="auth-field">
-                        <label for="set-bio" data-i18n="profile_settings_label_bio">Bio</label>
-                        <input type="text" id="set-bio" placeholder="Write something about yourself..." maxlength="200" data-i18n="profile_settings_placeholder_bio" data-i18n-attr="placeholder">
-                    </div>
-                    <div class="auth-field">
-                        <label data-i18n="profile_settings_label_consoles">Owned consoles</label>
-                        <div class="owned-consoles-select" id="owned-consoles-select">
-                            <div class="owned-consoles-search-wrap">
-                                <input type="text" class="owned-consoles-search" id="owned-consoles-search" placeholder="Search consoles..." autocomplete="off" data-i18n="profile_settings_search_consoles" data-i18n-attr="placeholder">
-                            </div>
-                            <div class="owned-consoles-list" id="owned-consoles-list">
-                                <p class="owned-consoles-loading" data-i18n="profile_settings_loading_consoles">Loading consoles...</p>
-                            </div>
+                <!-- Console Lists -->
+                <div class="profile-consoles-section" id="profile-consoles-section">
+                    <div class="profile-console-list">
+                        <h3 class="profile-console-list__title" data-i18n="profile_owned_consoles_title">Owned Consoles</h3>
+                        <div class="profile-console-list__items" id="profile-owned-consoles">
+                            <span class="profile-console-list__empty" data-i18n="profile_no_consoles_added">No consoles added.</span>
                         </div>
-                        <input type="hidden" id="set-owned-consoles" value="">
                     </div>
-                    <div class="auth-field">
-                        <label for="set-email" data-i18n="profile_settings_label_email">Email</label>
-                        <input type="email" id="set-email" placeholder="email@example.com" autocomplete="email" data-i18n="profile_settings_placeholder_email" data-i18n-attr="placeholder">
+                    <div class="profile-console-list">
+                        <h3 class="profile-console-list__title" data-i18n="profile_fav_consoles_title">Favorite Consoles</h3>
+                        <div class="profile-console-list__items" id="profile-favorite-consoles">
+                            <span class="profile-console-list__empty" data-i18n="profile_no_consoles_added">No consoles added.</span>
+                        </div>
                     </div>
-                    <div class="auth-field" id="password-section-info" style="display:none;">
-                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:4px;font-weight:600;" data-i18n="profile_settings_password_title">Set a password</p>
-                        <p style="color:var(--text-muted,#a89880);font-size:0.82rem;" data-i18n="profile_settings_password_desc">Your account uses Google for authentication. You can set a password to log in without Google.</p>
-                    </div>
-                    <div class="auth-field" id="current-password-field">
-                        <label for="set-current-password" data-i18n="profile_settings_label_current_pw">Current password (required for email/password login)</label>
-                        <input type="password" id="set-current-password" placeholder="Current password" autocomplete="current-password" data-i18n="profile_settings_placeholder_current_pw" data-i18n-attr="placeholder">
-                    </div>
-                    <div class="auth-field">
-                        <label for="set-new-password" data-i18n="profile_settings_label_new_pw">New password (optional)</label>
-                        <input type="password" id="set-new-password" placeholder="Minimum 6 characters" autocomplete="new-password" data-i18n="profile_settings_placeholder_new_pw" data-i18n-attr="placeholder">
-                    </div>
-                    <div class="auth-field">
-                        <label for="set-new-password-confirm" data-i18n="profile_settings_label_confirm_pw">Confirm new password</label>
-                        <input type="password" id="set-new-password-confirm" placeholder="Repeat new password" autocomplete="new-password" data-i18n="profile_settings_placeholder_confirm_pw" data-i18n-attr="placeholder">
-                    </div>
-                    <button type="submit" class="auth-btn" data-i18n="profile_settings_btn_save">Save</button>
-                    <button type="button" class="auth-btn auth-btn--danger" id="reset-all-btn" data-i18n="profile_settings_btn_reset">Reset all progress and achievements</button>
-                    <div class="auth-error" id="settings-msg" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
-                </form>
-            </div>
-
-            <!-- Email Notification Preferences -->
-            <div class="course-card" style="margin-top: 24px;">
-                <h3 style="color: var(--text-light); margin-bottom: 8px; font-size: 1.05rem; letter-spacing: 0.04em;">EMAIL NOTIFICATIONS</h3>
-                <p style="color: var(--text-muted, #a89880); font-size: 0.85rem; margin-bottom: 14px;">Choose which email notifications you want to receive.</p>
-                <div style="display:flex;flex-direction:column;gap:12px;">
-                    <label class="notif-toggle" for="notif-new-friend">
-                        <span class="notif-toggle__label">New friend added</span>
-                        <input type="checkbox" id="notif-new-friend" class="notif-toggle__input" checked>
-                        <span class="notif-toggle__switch"></span>
-                    </label>
-                    <label class="notif-toggle" for="notif-new-message">
-                        <span class="notif-toggle__label">New message received</span>
-                        <input type="checkbox" id="notif-new-message" class="notif-toggle__input" checked>
-                        <span class="notif-toggle__switch"></span>
-                    </label>
-                    <label class="notif-toggle" for="notif-repair-reply">
-                        <span class="notif-toggle__label">Repair request reply</span>
-                        <input type="checkbox" id="notif-repair-reply" class="notif-toggle__input">
-                        <span class="notif-toggle__switch"></span>
-                    </label>
                 </div>
-                <button type="button" class="auth-btn" id="save-notif-prefs-btn" style="margin-top: 16px;">Save notification preferences</button>
-                <div class="auth-error" id="notif-prefs-msg" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
-            </div>
 
-            <!-- Active Sessions -->
-            <div class="course-card" style="margin-top: 24px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_sessions_title">Active Sessions</h3>
-                <p style="color: var(--text-muted, #a89880); font-size: 0.85rem; margin-bottom: 16px;" data-i18n="profile_sessions_desc">Devices currently connected to your account.</p>
-                <div id="sessions-container" style="display:flex;flex-direction:column;gap:12px;"></div>
-                <button type="button" class="auth-btn auth-btn--danger" id="logout-others-btn" style="margin-top:16px;" hidden data-i18n="profile_sessions_logout_others">Log out from all other devices</button>
-            </div>
+                <div class="profile-sidebar-divider"></div>
+
+                <!-- Sidebar Navigation (replaces horizontal tabs) -->
+                <nav class="profile-sidebar-nav">
+                    <!-- Hidden wrappers and arrows kept for JS compatibility -->
+                    <div class="profile-tabs-wrapper" hidden>
+                        <button class="profile-tabs-arrow profile-tabs-arrow--left" aria-label="Scroll left">‹</button>
+                        <div class="profile-tabs"></div>
+                        <button class="profile-tabs-arrow profile-tabs-arrow--right" aria-label="Scroll right">›</button>
+                    </div>
+                    <button class="profile-tab active" data-tab="acasa" data-i18n="profile_tab_home">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span data-i18n="profile_tab_home">Home</span>
+                    </button>
+                    <button class="profile-tab" data-tab="cursuri" data-i18n="profile_tab_courses">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        <span data-i18n="profile_tab_courses">Courses</span>
+                    </button>
+                    <button class="profile-tab" data-tab="realizari" data-i18n="profile_tab_achievements">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                        <span data-i18n="profile_tab_achievements">Achievements</span>
+                    </button>
+                    <button class="profile-tab" data-tab="evaluari" data-i18n="profile_tab_ratings">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <span data-i18n="profile_tab_ratings">Ratings</span>
+                    </button>
+                    <button class="profile-tab" data-tab="anunturi" data-i18n="profile_tab_listings">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <span data-i18n="profile_tab_listings">Listings</span>
+                    </button>
+                    <button class="profile-tab" data-tab="prieteni" data-i18n="profile_tab_friends">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span data-i18n="profile_tab_friends">Friends</span>
+                    </button>
+                    <button class="profile-tab" data-tab="favorite" data-i18n="profile_tab_favorites">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        <span data-i18n="profile_tab_favorites">Favorites</span>
+                    </button>
+                    <button class="profile-tab" data-tab="cereri" data-i18n="profile_tab_requests">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        <span data-i18n="profile_tab_requests">Requests</span>
+                    </button>
+                    <button class="profile-tab" data-tab="setari" data-i18n="profile_tab_settings">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <span data-i18n="profile_tab_settings">Settings</span>
+                    </button>
+                </nav>
+
+            </aside>
+
+            <!-- ═══ MAIN CONTENT ═══ -->
+            <main class="profile-main">
+
+                <!-- Dashboard Panel -->
+                <div class="profile-panel active" id="panel-acasa" data-panel="acasa">
+                    <!-- Stats Row -->
+                    <div class="dash-stats">
+                        <div class="dash-stat">
+                            <span class="dash-stat__value" id="dash-courses-pct">0%</span>
+                            <span class="dash-stat__label" data-i18n="profile_dash_course_progress">Course progress</span>
+                        </div>
+                        <div class="dash-stat">
+                            <span class="dash-stat__value" id="dash-achievements">0 / 0</span>
+                            <span class="dash-stat__label" data-i18n="profile_dash_achievements_label">Achievements</span>
+                        </div>
+                        <div class="dash-stat">
+                            <span class="dash-stat__value" id="dash-ratings">0</span>
+                            <span class="dash-stat__label" data-i18n="profile_dash_ratings_label">Ratings</span>
+                        </div>
+                        <div class="dash-stat">
+                            <span class="dash-stat__value" id="dash-friends">0</span>
+                            <span class="dash-stat__label" data-i18n="profile_dash_friends_label">Friends</span>
+                        </div>
+                        <div class="dash-stat">
+                            <span class="dash-stat__value" id="dash-favorites">0</span>
+                            <span class="dash-stat__label" data-i18n="profile_dash_favorites_label">Favorites</span>
+                        </div>
+                    </div>
+
+                    <!-- Course Progress Section -->
+                    <div class="dash-section">
+                        <div class="dash-section__head">
+                            <h3 data-i18n="profile_dash_course_card">Course progress</h3>
+                            <a href="#cursuri" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
+                        </div>
+                        <div class="dash-card">
+                            <div id="dash-course-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- Two-column subsection -->
+                    <div class="dash-grid">
+                        <!-- Recent Ratings -->
+                        <div class="dash-card">
+                            <div class="dash-card__head">
+                                <h3 data-i18n="profile_dash_ratings_card">Recent ratings</h3>
+                                <a href="#evaluari" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
+                            </div>
+                            <div id="dash-ratings-preview"></div>
+                        </div>
+
+                        <!-- Achievements -->
+                        <div class="dash-card">
+                            <div class="dash-card__head">
+                                <h3 data-i18n="profile_dash_achievements_card">Achievements</h3>
+                                <a href="#realizari" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
+                            </div>
+                            <div id="dash-achievements-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- Friends section -->
+                    <div class="dash-card" style="margin-top:12px;">
+                        <div class="dash-card__head">
+                            <h3 data-i18n="profile_dash_friends_card">Friends</h3>
+                            <a href="#prieteni" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
+                        </div>
+                        <div id="dash-friends-preview"></div>
+                    </div>
+                </div>
+
+                <!-- Courses Panel -->
+                <div class="profile-panel" id="panel-cursuri" data-panel="cursuri">
+                    <div id="courses-container"></div>
+                </div>
+
+                <!-- Achievements Panel -->
+                <div class="profile-panel" id="panel-realizari" data-panel="realizari">
+                    <div class="achievements-grid" id="achievements-container"></div>
+                </div>
+
+                <!-- Ratings Panel -->
+                <div class="profile-panel" id="panel-evaluari" data-panel="evaluari">
+                    <div id="ratings-container"></div>
+                </div>
+
+                <!-- Listings Panel -->
+                <div class="profile-panel" id="panel-anunturi" data-panel="anunturi">
+                    <div class="my-listings-header">
+                        <h3 class="my-listings-header__title" data-i18n="profile_listings_title">My listings</h3>
+                        <button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing" data-i18n="profile_listings_new">+ New listing</button>
+                    </div>
+                    <div id="my-listings-container">
+                        <p class="profile-panel-loading">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Favorites Panel -->
+                <div class="profile-panel" id="panel-favorite" data-panel="favorite">
+                    <div class="my-listings-header">
+                        <h3 class="my-listings-header__title" data-i18n="profile_favorites_title">Favorite listings</h3>
+                    </div>
+                    <div id="favorites-container">
+                        <p class="profile-panel-loading">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Friends Panel -->
+                <div class="profile-panel" id="panel-prieteni" data-panel="prieteni">
+                    <div class="course-card" id="friend-search-card">
+                        <h3 class="course-card__section-title" data-i18n="profile_friends_search">Search users</h3>
+                        <div class="friend-search-box">
+                            <input type="text" id="friend-search-input" class="profile-input" placeholder="Search by username..." autocomplete="off" data-i18n="profile_friends_search_placeholder" data-i18n-attr="placeholder" />
+                        </div>
+                        <div id="friend-search-results" class="friend-search-results"></div>
+                    </div>
+                    <div class="course-card" id="friend-requests-card">
+                        <h3 class="course-card__section-title" data-i18n="profile_friends_requests">Friend requests</h3>
+                        <div id="friend-requests-container">
+                            <p class="profile-panel-loading">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="course-card">
+                        <h3 class="course-card__section-title" data-i18n="profile_friends_list">Your friends</h3>
+                        <div class="friends-list" id="my-friends-list">
+                            <p class="profile-panel-loading">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requests Panel -->
+                <div class="profile-panel" id="panel-cereri" data-panel="cereri">
+                    <div class="my-listings-header">
+                        <h3 class="my-listings-header__title" data-i18n="profile_requests_title">Repair Requests</h3>
+                    </div>
+                    <div id="requests-container">
+                        <p class="profile-panel-loading">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Settings Panel -->
+                <div class="profile-panel" id="panel-setari" data-panel="setari">
+                    <div class="course-card">
+                        <form class="settings-form" id="settings-form">
+                            <div class="auth-field">
+                                <label for="set-username" data-i18n="profile_settings_label_username">Username</label>
+                                <input type="text" id="set-username" placeholder="Your name" data-i18n="profile_settings_placeholder_username" data-i18n-attr="placeholder">
+                            </div>
+                            <div class="auth-field">
+                                <label for="set-bio" data-i18n="profile_settings_label_bio">Bio</label>
+                                <input type="text" id="set-bio" placeholder="Write something about yourself..." maxlength="200" data-i18n="profile_settings_placeholder_bio" data-i18n-attr="placeholder">
+                            </div>
+                            <div class="auth-field">
+                                <label data-i18n="profile_settings_label_consoles">Owned consoles</label>
+                                <div class="owned-consoles-select" id="owned-consoles-select">
+                                    <div class="owned-consoles-search-wrap">
+                                        <input type="text" class="owned-consoles-search" id="owned-consoles-search" placeholder="Search consoles..." autocomplete="off" data-i18n="profile_settings_search_consoles" data-i18n-attr="placeholder">
+                                    </div>
+                                    <div class="owned-consoles-list" id="owned-consoles-list">
+                                        <p class="owned-consoles-loading" data-i18n="profile_settings_loading_consoles">Loading consoles...</p>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="set-owned-consoles" value="">
+                            </div>
+                            <div class="auth-field">
+                                <label for="set-email" data-i18n="profile_settings_label_email">Email</label>
+                                <input type="email" id="set-email" placeholder="email@example.com" autocomplete="email" data-i18n="profile_settings_placeholder_email" data-i18n-attr="placeholder">
+                            </div>
+                            <div class="auth-field" id="password-section-info" style="display:none;">
+                                <p class="settings-info-title" data-i18n="profile_settings_password_title">Set a password</p>
+                                <p class="settings-info-desc" data-i18n="profile_settings_password_desc">Your account uses Google for authentication. You can set a password to log in without Google.</p>
+                            </div>
+                            <div class="auth-field" id="current-password-field">
+                                <label for="set-current-password" data-i18n="profile_settings_label_current_pw">Current password</label>
+                                <input type="password" id="set-current-password" placeholder="Current password" autocomplete="current-password" data-i18n="profile_settings_placeholder_current_pw" data-i18n-attr="placeholder">
+                            </div>
+                            <div class="auth-field">
+                                <label for="set-new-password" data-i18n="profile_settings_label_new_pw">New password (optional)</label>
+                                <input type="password" id="set-new-password" placeholder="Minimum 6 characters" autocomplete="new-password" data-i18n="profile_settings_placeholder_new_pw" data-i18n-attr="placeholder">
+                            </div>
+                            <div class="auth-field">
+                                <label for="set-new-password-confirm" data-i18n="profile_settings_label_confirm_pw">Confirm new password</label>
+                                <input type="password" id="set-new-password-confirm" placeholder="Repeat new password" autocomplete="new-password" data-i18n="profile_settings_placeholder_confirm_pw" data-i18n-attr="placeholder">
+                            </div>
+                            <button type="submit" class="auth-btn" data-i18n="profile_settings_btn_save">Save</button>
+                            <button type="button" class="auth-btn auth-btn--danger" id="reset-all-btn" data-i18n="profile_settings_btn_reset">Reset all progress and achievements</button>
+                            <div class="auth-error" id="settings-msg"></div>
+                        </form>
+                    </div>
+
+                    <!-- Email Notification Preferences -->
+                    <div class="course-card">
+                        <h3 class="course-card__section-title">EMAIL NOTIFICATIONS</h3>
+                        <p class="course-card__section-desc">Choose which email notifications you want to receive.</p>
+                        <div class="notif-toggles">
+                            <label class="notif-toggle" for="notif-new-friend">
+                                <span class="notif-toggle__label">New friend added</span>
+                                <input type="checkbox" id="notif-new-friend" class="notif-toggle__input" checked>
+                                <span class="notif-toggle__switch"></span>
+                            </label>
+                            <label class="notif-toggle" for="notif-new-message">
+                                <span class="notif-toggle__label">New message received</span>
+                                <input type="checkbox" id="notif-new-message" class="notif-toggle__input" checked>
+                                <span class="notif-toggle__switch"></span>
+                            </label>
+                            <label class="notif-toggle" for="notif-repair-reply">
+                                <span class="notif-toggle__label">Repair request reply</span>
+                                <input type="checkbox" id="notif-repair-reply" class="notif-toggle__input">
+                                <span class="notif-toggle__switch"></span>
+                            </label>
+                        </div>
+                        <button type="button" class="auth-btn" id="save-notif-prefs-btn">Save notification preferences</button>
+                        <div class="auth-error" id="notif-prefs-msg"></div>
+                    </div>
+
+                    <!-- Active Sessions -->
+                    <div class="course-card">
+                        <h3 class="course-card__section-title" data-i18n="profile_sessions_title">Active Sessions</h3>
+                        <p class="course-card__section-desc" data-i18n="profile_sessions_desc">Devices currently connected to your account.</p>
+                        <div id="sessions-container" class="sessions-list"></div>
+                        <button type="button" class="auth-btn auth-btn--danger" id="logout-others-btn" hidden data-i18n="profile_sessions_logout_others">Log out from all other devices</button>
+                    </div>
+                </div>
+
+            </main>
         </div>
     </div>
 

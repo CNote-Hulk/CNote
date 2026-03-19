@@ -4,8 +4,12 @@
  * Vanilla ES module — no frameworks.
  */
 import { AuthModule } from '../modules/auth.js';
+import { I18nModule } from '../modules/i18n.js';
 import { API_BASE_URL } from '../config.js';
 import { confirmModal } from '../utils/confirm-modal.js';
+
+/** Shorthand for I18nModule.t() */
+const t = (key) => I18nModule.t(key);
 
 // ── Constants ──────────────────────────────────────────────
 
@@ -1318,7 +1322,7 @@ function repairStatusBadge(status) {
 function renderRepair() {
     const v = document.getElementById('view-repair');
     if (!user()) {
-        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>You must be logged in.<br><a href="login.html" style="color:var(--accent-color)">Log in</a></div>';
+        v.innerHTML = `<div class="hub-empty"><div class="hub-empty__icon">🔒</div>${esc(t('repair_login_text'))}<br><a href="login.html" style="color:var(--accent-color)">${esc(t('repair_login_link'))}</a></div>`;
         return;
     }
     const cName = CONSOLES.find(c => c.id === S.console)?.name || S.console;
@@ -1335,64 +1339,64 @@ function renderRepair() {
         /* ── Step 0: Model selection (or text input for "other") ── */
         if (S.console === 'other') {
             body = `
-                <div class="hub-repair-question">Which console do you have?</div>
-                <div class="hub-repair-hint">Write the name of your console:</div>
-                <input type="text" class="hub-repair-textarea" id="repair-other-model" maxlength="200" placeholder="Scrie numele consolei tale" value="${esc(S.repairModel)}" style="padding:10px;font-size:.92rem">
-                <button class="hub-btn hub-btn--primary" id="repair-next"${S.repairModel.trim() ? '' : ' disabled'}>Continue →</button>`;
+                <div class="hub-repair-question">${esc(t('repair_other_model_question'))}</div>
+                <div class="hub-repair-hint">${esc(t('repair_other_model_hint'))}</div>
+                <input type="text" class="hub-repair-textarea" id="repair-other-model" maxlength="200" placeholder="${esc(t('repair_other_model_placeholder'))}" value="${esc(S.repairModel)}" style="padding:10px;font-size:.92rem">
+                <button class="hub-btn hub-btn--primary" id="repair-next"${S.repairModel.trim() ? '' : ' disabled'}>${esc(t('repair_continue'))}</button>`;
         } else {
             body = `
-                <div class="hub-repair-question">Which ${esc(cName)} model do you have?</div>
-                <div class="hub-repair-hint">Select your exact model:</div>
+                <div class="hub-repair-question">${esc(t('repair_model_question').replace('{console}', cName))}</div>
+                <div class="hub-repair-hint">${esc(t('repair_model_hint'))}</div>
                 <div class="hub-symptom-grid">
                     ${models.map(m => `<button class="hub-symptom-btn${S.repairModel === m ? ' hub-symptom-btn--selected' : ''}" data-model="${esc(m)}">${esc(m)}</button>`).join('')}
                 </div>
-                <button class="hub-btn hub-btn--primary" id="repair-next"${S.repairModel ? '' : ' disabled'}>Continue →</button>`;
+                <button class="hub-btn hub-btn--primary" id="repair-next"${S.repairModel ? '' : ' disabled'}>${esc(t('repair_continue'))}</button>`;
         }
     } else if (step === 1) {
         /* ── Step 1: Symptom selection ── */
         const hasCustom = S.repairSymptoms.includes('__custom__');
         const canProceed = S.repairSymptoms.length > 0 && (!hasCustom || S.repairCustomProblem.trim());
         body = `
-            <div class="hub-repair-question">What symptoms does your ${esc(cName)} have?</div>
-            <div class="hub-repair-hint">Select one or more symptoms:</div>
+            <div class="hub-repair-question">${esc(t('repair_symptom_question').replace('{console}', cName))}</div>
+            <div class="hub-repair-hint">${esc(t('repair_symptom_hint'))}</div>
             <div class="hub-symptom-grid">
                 ${symptoms.map(s => `<button class="hub-symptom-btn${S.repairSymptoms.includes(s) ? ' hub-symptom-btn--selected' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('')}
-                <button class="hub-symptom-btn hub-symptom-btn--custom${hasCustom ? ' hub-symptom-btn--selected' : ''}" id="repair-custom-btn">✏️ Other issue</button>
+                <button class="hub-symptom-btn hub-symptom-btn--custom${hasCustom ? ' hub-symptom-btn--selected' : ''}" id="repair-custom-btn">${esc(t('repair_other_issue'))}</button>
             </div>
             ${hasCustom ? `<div class="hub-repair-custom-wrap">
-                <textarea class="hub-repair-textarea" id="repair-custom-text" rows="4" maxlength="500" placeholder="Describe your issue…">${esc(S.repairCustomProblem)}</textarea>
+                <textarea class="hub-repair-textarea" id="repair-custom-text" rows="4" maxlength="500" placeholder="${esc(t('repair_custom_placeholder'))}">${esc(S.repairCustomProblem)}</textarea>
                 <div class="hub-repair-char-count"><span id="repair-custom-count">${S.repairCustomProblem.length}</span> / 500</div>
             </div>` : ''}
             <div style="display:flex;gap:8px">
-                <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
-                <button class="hub-btn hub-btn--primary" id="repair-next"${canProceed ? '' : ' disabled'}>Continue →</button>
+                <button class="hub-btn hub-btn--secondary" id="repair-prev">${esc(t('repair_back'))}</button>
+                <button class="hub-btn hub-btn--primary" id="repair-next"${canProceed ? '' : ' disabled'}>${esc(t('repair_continue'))}</button>
             </div>`;
     } else if (step === 2) {
         /* ── Step 2: Description ── */
         body = `
-            <div class="hub-repair-question">Describe the issue in more detail</div>
-            <div class="hub-repair-hint">Include: when it started, what you tried so far</div>
-            <textarea class="hub-repair-textarea" id="repair-desc" rows="6" maxlength="2000" placeholder="Describe here…">${esc(S.repairDesc)}</textarea>
+            <div class="hub-repair-question">${esc(t('repair_desc_question'))}</div>
+            <div class="hub-repair-hint">${esc(t('repair_desc_hint'))}</div>
+            <textarea class="hub-repair-textarea" id="repair-desc" rows="6" maxlength="2000" placeholder="${esc(t('repair_desc_placeholder'))}">${esc(S.repairDesc)}</textarea>
             <div style="display:flex;gap:8px">
-                <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
-                <button class="hub-btn hub-btn--primary" id="repair-submit">Submit request</button>
+                <button class="hub-btn hub-btn--secondary" id="repair-prev">${esc(t('repair_back'))}</button>
+                <button class="hub-btn hub-btn--primary" id="repair-submit">${esc(t('repair_submit_btn'))}</button>
             </div>`;
     } else {
         /* ── Step 3: Success ── */
         body = `
             <div class="hub-repair-success">
                 <div class="hub-repair-success__icon">✅</div>
-                <div style="color:var(--text-light);font-size:1.1rem;font-weight:600">Request submitted!</div>
-                <div style="color:var(--text-gray);font-size:.88rem">A specialist will review your request and contact you.</div>
+                <div style="color:var(--text-light);font-size:1.1rem;font-weight:600">${esc(t('repair_submitted_title'))}</div>
+                <div style="color:var(--text-gray);font-size:.88rem">${esc(t('repair_submitted_desc'))}</div>
                 <div style="display:flex;gap:8px;justify-content:center;margin-top:16px">
-                    <button class="hub-btn hub-btn--secondary" id="repair-new">New request</button>
-                    <button class="hub-btn hub-btn--primary" id="repair-view-requests">View my requests</button>
+                    <button class="hub-btn hub-btn--secondary" id="repair-new">${esc(t('repair_new_request'))}</button>
+                    <button class="hub-btn hub-btn--primary" id="repair-view-requests">${esc(t('repair_view_requests'))}</button>
                 </div>
             </div>`;
     }
 
     v.innerHTML = `
-        <div class="hub-view-header"><div class="hub-view-header__title">🔧 ${esc(cName)} — Repair</div></div>
+        <div class="hub-view-header"><div class="hub-view-header__title">${t('repair_header').replace('{console}', esc(cName))}</div></div>
         <div class="hub-repair-progress">${bars}</div>
         <div class="hub-repair-body"><div class="hub-repair-inner">${body}</div></div>`;
 
@@ -1460,7 +1464,7 @@ function renderRepair() {
 /** Submit the repair request directly */
 async function submitRepair() {
     const btn = document.querySelector('#repair-submit');
-    if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+    if (btn) { btn.disabled = true; btn.textContent = t('repair_submitting'); }
 
     const actualSymptoms = S.repairSymptoms.filter(s => s !== '__custom__');
     try {
@@ -1475,12 +1479,12 @@ async function submitRepair() {
             S.repairStep = 3;
             renderRepair();
         } else {
-            if (btn) { btn.disabled = false; btn.textContent = 'Submit request'; }
-            alert(data.error || 'Submission failed.');
+            if (btn) { btn.disabled = false; btn.textContent = t('repair_submit_btn'); }
+            alert(data.error || t('repair_submit_error'));
         }
     } catch {
-        if (btn) { btn.disabled = false; btn.textContent = 'Submit request'; }
-        alert('Submission failed.');
+        if (btn) { btn.disabled = false; btn.textContent = t('repair_submit_btn'); }
+        alert(t('repair_submit_error'));
     }
 }
 
