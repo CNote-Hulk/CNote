@@ -22,11 +22,32 @@ const TAGS = ['All', 'General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'M
 const CONDITIONS = { new: 'New', like_new: 'Like new', good: 'Good', fair: 'Fair', parts: 'Parts' };
 const CATEGORIES  = { consoles: 'Consoles', games: 'Games', accessories: 'Accessories', parts: 'Parts / Repairs' };
 
-const SYMPTOMS = [
-    'No power', 'Overheating', 'Disc read error', 'No video output',
-    'Controller drift', 'Blue screen / crash', 'Slow performance', 'Network issues',
-    'Strange noises', 'Eject problems', "Won't update", 'Battery drain',
-];
+const SYMPTOMS_BY_CONSOLE = {
+    xbox: [
+        'No power', 'Overheating', 'Disc read error', 'No video output',
+        'Controller drift', 'Blue screen / crash', 'Slow performance',
+        'Network issues', 'Strange noises', 'Eject problems', "Won't update",
+        'HDMI port damaged', 'Power supply failure'
+    ],
+    ps: [
+        'No power', 'Overheating', 'Disc read error', 'No video output',
+        'Controller drift', 'Blue screen / crash', 'Slow performance',
+        'Network issues', 'Strange noises', 'Eject problems', "Won't update",
+        'HDMI port damaged', 'Rest mode freeze'
+    ],
+    nintendo: [
+        'No power', 'Overheating', 'Joy-Con drift', 'No video output',
+        'Screen issues', 'Blue screen / crash', 'Slow performance',
+        'Network issues', 'Strange noises', 'Charging problems',
+        "Won't update", 'Battery drain'
+    ],
+    pc: [
+        'No power', 'Overheating', 'Blue screen / crash', 'No video output',
+        'Slow performance', 'Network issues', 'Strange noises',
+        'Boot loop', 'GPU artifacts', 'RAM errors',
+        'Driver issues', 'Storage failure'
+    ]
+};
 
 // ── State ──────────────────────────────────────────────────
 
@@ -194,6 +215,14 @@ function navigate(view, con, cat) {
             Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
             showView('repair');
             renderRepair();
+            break;
+        case 'repair-requests':
+            showView('repair-requests');
+            renderRepairRequests();
+            break;
+        case 'repair-admin':
+            showView('repair-admin');
+            renderRepairAdmin();
             break;
         case 'marketplace':
             S.category = cat || '';
@@ -1235,13 +1264,29 @@ function openEditListingFromDetail(id, l) {
    REPAIR WIZARD
    ================================================================ */
 
-/** Render the repair wizard: symptom checkboxes, console selector */
+/** Status badge HTML */
+function repairStatusBadge(status) {
+    const map = {
+        pending:     { label: '🟡 Pending',     cls: 'hub-status--pending' },
+        in_progress: { label: '🔵 In Progress', cls: 'hub-status--in-progress' },
+        resolved:    { label: '🟢 Resolved',    cls: 'hub-status--resolved' }
+    };
+    const s = map[status] || { label: status, cls: '' };
+    return `<span class="hub-status-badge ${s.cls}">${esc(s.label)}</span>`;
+}
+
+/** Render the repair wizard: symptom checkboxes → description → submit */
 function renderRepair() {
     const v = document.getElementById('view-repair');
+    if (!user()) {
+        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>You must be logged in.<br><a href="login.html" style="color:var(--accent-color)">Log in</a></div>';
+        return;
+    }
     const cName = CONSOLES.find(c => c.id === S.console)?.name || S.console;
+    const symptoms = SYMPTOMS_BY_CONSOLE[S.console] || [];
     const step = S.repairStep;
 
-    const bars = [0, 1, 2, 3].map(i =>
+    const bars = [0, 1, 2].map(i =>
         `<div class="hub-repair-progress__bar${i <= step ? ' hub-repair-progress__bar--done' : ''}"></div>`).join('');
 
     let body = '';
@@ -1250,10 +1295,10 @@ function renderRepair() {
         const hasCustom = S.repairSymptoms.includes('__custom__');
         const canProceed = S.repairSymptoms.length > 0 && (!hasCustom || S.repairCustomProblem.trim());
         body = `
-            <div class="hub-repair-question">Ce simptome are consola ta ${esc(cName)}?</div>
+            <div class="hub-repair-question">What symptoms does your ${esc(cName)} have?</div>
             <div class="hub-repair-hint">Select one or more symptoms:</div>
             <div class="hub-symptom-grid">
-                ${SYMPTOMS.map(s => `<button class="hub-symptom-btn${S.repairSymptoms.includes(s) ? ' hub-symptom-btn--selected' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('')}
+                ${symptoms.map(s => `<button class="hub-symptom-btn${S.repairSymptoms.includes(s) ? ' hub-symptom-btn--selected' : ''}" data-s="${esc(s)}">${esc(s)}</button>`).join('')}
                 <button class="hub-symptom-btn hub-symptom-btn--custom${hasCustom ? ' hub-symptom-btn--selected' : ''}" id="repair-custom-btn">✏️ Other issue</button>
             </div>
             ${hasCustom ? `<div class="hub-repair-custom-wrap">
@@ -1268,43 +1313,18 @@ function renderRepair() {
             <textarea class="hub-repair-textarea" id="repair-desc" rows="6" maxlength="2000" placeholder="Describe here…">${esc(S.repairDesc)}</textarea>
             <div style="display:flex;gap:8px">
                 <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
-                <button class="hub-btn hub-btn--primary" id="repair-next">Analyze →</button>
+                <button class="hub-btn hub-btn--primary" id="repair-submit">Submit request</button>
             </div>`;
-    } else if (step === 2) {
-        if (!S.repairResult) {
-            body = '<div class="hub-empty"><div class="hub-empty__icon">🔍</div>Analyzing…</div>';
-        } else {
-            const r = S.repairResult;
-            const sevLabel = r.severity === 'high' ? '🔴 Severe' : r.severity === 'medium' ? '🟡 Moderate' : '🟢 Minor';
-            body = `
-                <div class="hub-repair-question">Diagnostic</div>
-                <div class="hub-repair-result">
-                    <span class="hub-tag hub-severity--${r.severity}">${sevLabel}</span>
-                    <div style="color:var(--text-light);font-size:.9rem;line-height:1.5">${esc(r.diagnosis)}</div>
-                    ${r.recommendation ? `<div style="color:var(--text-gray);font-size:.84rem">${esc(r.recommendation)}</div>` : ''}
-                    <div class="hub-repair-cost-grid">
-                        <div class="hub-repair-cost-box">
-                            <div class="hub-repair-cost-label">Estimated cost</div>
-                            <div class="hub-repair-cost-value">${r.estimated_cost_min} – ${r.estimated_cost_max} RON</div>
-                        </div>
-                        <div class="hub-repair-cost-box">
-                            <div class="hub-repair-cost-label">Estimated time</div>
-                            <div class="hub-repair-cost-value">${esc(r.estimated_time)}</div>
-                        </div>
-                    </div>
-                </div>
-                <div style="display:flex;gap:8px">
-                    <button class="hub-btn hub-btn--secondary" id="repair-prev">← Back</button>
-                    <button class="hub-btn hub-btn--primary" id="repair-submit">Submit request</button>
-                </div>`;
-        }
     } else {
         body = `
             <div class="hub-repair-success">
                 <div class="hub-repair-success__icon">✅</div>
                 <div style="color:var(--text-light);font-size:1.1rem;font-weight:600">Request submitted!</div>
-                <div style="color:var(--text-gray);font-size:.88rem">A specialist will contact you.</div>
-                <button class="hub-btn hub-btn--secondary" id="repair-new" style="margin-top:16px">New request</button>
+                <div style="color:var(--text-gray);font-size:.88rem">A specialist will review your request and contact you.</div>
+                <div style="display:flex;gap:8px;justify-content:center;margin-top:16px">
+                    <button class="hub-btn hub-btn--secondary" id="repair-new">New request</button>
+                    <button class="hub-btn hub-btn--primary" id="repair-view-requests">View my requests</button>
+                </div>
             </div>`;
     }
 
@@ -1340,44 +1360,207 @@ function renderRepair() {
         v.querySelector('#repair-next')?.addEventListener('click', () => { S.repairStep = 1; renderRepair(); });
     }
     if (step === 1) {
-        v.querySelector('#repair-desc').addEventListener('input', e => { S.repairDesc = e.target.value; });
-        v.querySelector('#repair-prev').addEventListener('click', () => { S.repairStep = 0; renderRepair(); });
-        v.querySelector('#repair-next').addEventListener('click', analyzeRepair);
-    }
-    if (step === 2 && S.repairResult) {
-        v.querySelector('#repair-prev')?.addEventListener('click', () => { S.repairStep = 1; renderRepair(); });
+        v.querySelector('#repair-desc')?.addEventListener('input', e => { S.repairDesc = e.target.value; });
+        v.querySelector('#repair-prev')?.addEventListener('click', () => { S.repairStep = 0; renderRepair(); });
         v.querySelector('#repair-submit')?.addEventListener('click', submitRepair);
     }
-    if (step === 3) {
+    if (step === 2) {
         v.querySelector('#repair-new')?.addEventListener('click', () => {
             Object.assign(S, { repairStep: 0, repairSymptoms: [], repairDesc: '', repairResult: null, repairCustomProblem: '' });
             renderRepair();
         });
+        v.querySelector('#repair-view-requests')?.addEventListener('click', () => {
+            navigate('repair-requests', null, '');
+        });
     }
 }
 
-/** Send selected symptoms to repair diagnosis API */
-async function analyzeRepair() {
-    S.repairStep = 2; S.repairResult = null; renderRepair();
+/** Submit the repair request directly */
+async function submitRepair() {
+    const btn = document.querySelector('#repair-submit');
+    if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+
+    const actualSymptoms = S.repairSymptoms.filter(s => s !== '__custom__');
     try {
-        const data = await api('POST', '/repair/analyze', {
-            console: S.console,
-            symptoms: S.repairSymptoms.filter(s => s !== '__custom__'),
-            description: S.repairDesc,
-            customProblem: S.repairCustomProblem || undefined,
+        const data = await api('POST', '/repair', {
+            consoleType: S.console,
+            symptoms: actualSymptoms,
+            customSymptom: S.repairCustomProblem || '',
+            description: S.repairDesc
         });
-        if (data.success) { S.repairResult = data.analysis; renderRepair(); }
-        else throw 0;
-    } catch { S.repairStep = 1; renderRepair(); alert('Analysis failed.'); }
+        if (data.success) {
+            S.repairStep = 2;
+            renderRepair();
+        } else {
+            if (btn) { btn.disabled = false; btn.textContent = 'Submit request'; }
+            alert(data.error || 'Submission failed.');
+        }
+    } catch {
+        if (btn) { btn.disabled = false; btn.textContent = 'Submit request'; }
+        alert('Submission failed.');
+    }
 }
 
-/** Submit the analyzed repair request for storage */
-async function submitRepair() {
-    if (!S.repairResult?.id) return;
+/* ================================================================
+   REPAIR — MY REQUESTS
+   ================================================================ */
+
+/** Render the user's own repair requests */
+async function renderRepairRequests() {
+    const v = document.getElementById('view-repair-requests');
+    if (!user()) {
+        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>You must be logged in.<br><a href="login.html" style="color:var(--accent-color)">Log in</a></div>';
+        return;
+    }
+    v.innerHTML = `
+        <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
+        <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>`;
+
     try {
-        const data = await api('POST', `/repair/${S.repairResult.id}/submit`);
-        if (data.success) { S.repairStep = 3; renderRepair(); }
-    } catch { alert('Submission failed.'); }
+        const data = await api('GET', '/repair');
+        if (!data.success) throw 0;
+        const requests = data.requests || [];
+
+        if (!requests.length) {
+            v.innerHTML = `
+                <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
+                <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">📭</div>No repair requests yet.</div></div>`;
+            return;
+        }
+
+        const cards = requests.map(r => {
+            const consoleName = CONSOLES.find(c => c.id === r.console)?.name || r.console;
+            const symptomList = r.symptoms ? r.symptoms.split(', ').map(s => `<span class="hub-repair-tag">${esc(s)}</span>`).join('') : '';
+            return `
+                <div class="hub-repair-card">
+                    <div class="hub-repair-card__header">
+                        <div>
+                            <strong style="color:var(--text-light)">${esc(consoleName)}</strong>
+                            <span style="color:var(--text-gray);font-size:.8rem;margin-left:8px">#${r.id}</span>
+                        </div>
+                        ${repairStatusBadge(r.status)}
+                    </div>
+                    <div class="hub-repair-card__symptoms">${symptomList}</div>
+                    ${r.custom_symptom ? `<div style="color:var(--text-gray);font-size:.84rem;font-style:italic">Custom: ${esc(r.custom_symptom)}</div>` : ''}
+                    ${r.description ? `<div style="color:var(--text-gray);font-size:.84rem;margin-top:4px">${esc(r.description)}</div>` : ''}
+                    ${r.admin_reply ? `
+                        <div class="hub-repair-card__reply">
+                            <div style="font-size:.76rem;color:var(--accent-color);font-weight:600;margin-bottom:4px">Admin Reply</div>
+                            <div style="color:var(--text-light);font-size:.88rem;line-height:1.5">${esc(r.admin_reply)}</div>
+                        </div>` : ''}
+                    <div style="color:var(--text-gray);font-size:.76rem;margin-top:8px">${new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                </div>`;
+        }).join('');
+
+        v.innerHTML = `
+            <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
+            <div class="hub-repair-body"><div class="hub-repair-list">${cards}</div></div>`;
+    } catch {
+        v.innerHTML = `
+            <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
+            <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load requests.</div></div>`;
+    }
+}
+
+/* ================================================================
+   REPAIR — ADMIN VIEW
+   ================================================================ */
+
+/** Render admin view of all repair requests with inline editing */
+async function renderRepairAdmin() {
+    const v = document.getElementById('view-repair-admin');
+    const u = user();
+    if (!u || u.role !== 'admin') {
+        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>Admin access required.</div>';
+        return;
+    }
+    v.innerHTML = `
+        <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests</div></div>
+        <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>`;
+
+    try {
+        const data = await api('GET', '/repair/all');
+        if (!data.success) throw 0;
+        const requests = data.requests || [];
+
+        if (!requests.length) {
+            v.innerHTML = `
+                <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests</div></div>
+                <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">📭</div>No repair requests.</div></div>`;
+            return;
+        }
+
+        const cards = requests.map(r => {
+            const consoleName = CONSOLES.find(c => c.id === r.console)?.name || r.console;
+            const symptomList = r.symptoms ? r.symptoms.split(', ').map(s => `<span class="hub-repair-tag">${esc(s)}</span>`).join('') : '';
+            return `
+                <div class="hub-repair-card hub-repair-card--admin" data-rid="${r.id}">
+                    <div class="hub-repair-card__header">
+                        <div>
+                            <strong style="color:var(--text-light)">${esc(r.username || 'User #' + r.user_id)}</strong>
+                            <span style="color:var(--text-gray);font-size:.8rem;margin-left:8px">${esc(consoleName)} · #${r.id}</span>
+                        </div>
+                        ${repairStatusBadge(r.status)}
+                    </div>
+                    <div class="hub-repair-card__symptoms">${symptomList}</div>
+                    ${r.custom_symptom ? `<div style="color:var(--text-gray);font-size:.84rem;font-style:italic">Custom: ${esc(r.custom_symptom)}</div>` : ''}
+                    ${r.description ? `<div style="color:var(--text-gray);font-size:.84rem;margin-top:4px">${esc(r.description)}</div>` : ''}
+                    <div class="hub-repair-admin-controls">
+                        <div class="hub-repair-admin-row">
+                            <label style="color:var(--text-gray);font-size:.8rem">Status</label>
+                            <select class="hub-repair-select" data-field="status">
+                                <option value="pending"${r.status === 'pending' ? ' selected' : ''}>Pending</option>
+                                <option value="in_progress"${r.status === 'in_progress' ? ' selected' : ''}>In Progress</option>
+                                <option value="resolved"${r.status === 'resolved' ? ' selected' : ''}>Resolved</option>
+                            </select>
+                        </div>
+                        <div class="hub-repair-admin-row">
+                            <label style="color:var(--text-gray);font-size:.8rem">Reply to user</label>
+                            <textarea class="hub-repair-textarea" data-field="reply" rows="3" maxlength="2000" placeholder="Write a reply…">${esc(r.admin_reply || '')}</textarea>
+                        </div>
+                        <button class="hub-btn hub-btn--primary hub-btn--sm" data-action="save-repair">Save</button>
+                    </div>
+                    <div style="color:var(--text-gray);font-size:.76rem;margin-top:8px">${new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                </div>`;
+        }).join('');
+
+        v.innerHTML = `
+            <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests (${requests.length})</div></div>
+            <div class="hub-repair-body"><div class="hub-repair-list">${cards}</div></div>`;
+
+        // Admin save event delegation
+        v.addEventListener('click', async e => {
+            const btn = e.target.closest('[data-action="save-repair"]');
+            if (!btn) return;
+            const card = btn.closest('.hub-repair-card');
+            const rid = card.dataset.rid;
+            const status = card.querySelector('[data-field="status"]').value;
+            const adminReply = card.querySelector('[data-field="reply"]').value.trim();
+
+            btn.disabled = true; btn.textContent = 'Saving…';
+            try {
+                const res = await api('PATCH', `/repair/${rid}`, { status, adminReply });
+                if (res.success) {
+                    btn.textContent = '✓ Saved';
+                    // Update the badge inline
+                    const header = card.querySelector('.hub-repair-card__header');
+                    const oldBadge = header.querySelector('.hub-status-badge');
+                    if (oldBadge) oldBadge.outerHTML = repairStatusBadge(status);
+                    setTimeout(() => { btn.disabled = false; btn.textContent = 'Save'; }, 1500);
+                } else {
+                    btn.disabled = false; btn.textContent = 'Save';
+                    alert(res.error || 'Failed to save.');
+                }
+            } catch {
+                btn.disabled = false; btn.textContent = 'Save';
+                alert('Failed to save.');
+            }
+        });
+    } catch {
+        v.innerHTML = `
+            <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests</div></div>
+            <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load requests.</div></div>`;
+    }
 }
 
 /* ================================================================
@@ -1593,6 +1776,15 @@ initSidebar();
 startUnreadPolling();
 initNotifications();
 
+// Hide admin-only sidebar items for non-admin users
+(function initAdminVisibility() {
+    const u = user();
+    const isAdminUser = u && u.role === 'admin';
+    document.querySelectorAll('.hub-sidebar__admin-only').forEach(el => {
+        el.style.display = isAdminUser ? '' : 'none';
+    });
+})();
+
 // Deep link: #listing-{id} opens listing detail directly
 (function checkDeepLink() {
     const hash = window.location.hash;
@@ -1612,7 +1804,7 @@ initNotifications();
         const con  = parts[1] || null;
         const cat  = parts[2] || '';
 
-        const validViews = ['chat', 'forum', 'marketplace', 'repair', 'dm'];
+        const validViews = ['chat', 'forum', 'marketplace', 'repair', 'repair-requests', 'repair-admin', 'dm'];
         if (validViews.includes(view)) {
             // Mark the active sidebar item
             sidebar?.querySelectorAll('.hub-sidebar__item').forEach(item => {

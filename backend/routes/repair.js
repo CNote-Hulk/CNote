@@ -1,110 +1,199 @@
 /**
  * Repair Routes — /api/repair
- * AI-free symptom-based diagnosis + submit for technician review.
+ * Submit repair requests, view own/all requests, admin reply/status.
  * Uses PostgreSQL pool from db.js.
  */
-/* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
-   If you add a new package:
-     1. require() it here
-     2. Add it to package.json dependencies
-   ────────────────────────────────────────── */
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const { sendRepairRequestNotification, sendRepairReplyNotification } = require('../services/email');
 
 const router = express.Router();
 
-/* ── Diagnosis knowledge base ──
-   Maps symptom keywords to diagnosis templates.
-   No external AI needed — rule-based analysis. */
-const DIAGNOSIS_MAP = {
-    'No power':          { severity: 'high', diag: 'Possible power supply or motherboard issue.', cost: [30, 120], time: '2-5 days' },
-    'Overheating':       { severity: 'medium', diag: 'Deteriorated thermal paste or blocked fan. Internal cleaning required.', cost: [20, 60], time: '1-2 days' },
-    'Disc read error':   { severity: 'medium', diag: 'Worn laser lens or defective disc motor.', cost: [25, 80], time: '2-4 days' },
-    'No video output':   { severity: 'high', diag: 'Damaged HDMI port or defective GPU (reballing may be needed).', cost: [40, 150], time: '3-7 days' },
-    'Controller drift':  { severity: 'low', diag: 'Worn analog joystick. Analog module replacement needed.', cost: [10, 35], time: '1 day' },
-    'Blue screen / crash': { severity: 'high', diag: 'Possible software corruption or HDD/SSD defect.', cost: [20, 100], time: '2-5 days' },
-    'Slow performance':  { severity: 'low', diag: 'Full storage or cache cleanup/system reinstall needed.', cost: [0, 30], time: '1-2 days' },
-    'Network issues':    { severity: 'medium', diag: 'Defective Wi-Fi/Bluetooth module or firmware issues.', cost: [25, 90], time: '2-4 days' },
-    'Strange noises':    { severity: 'medium', diag: 'Deteriorated fan or disc drive with mechanical issues.', cost: [15, 60], time: '1-3 days' },
-    'Eject problems':    { severity: 'low', diag: 'Defective eject button or worn rubber roller.', cost: [10, 40], time: '1-2 days' },
-    'Won\'t update':     { severity: 'low', diag: 'Software issue — firmware reinstall or safe mode boot required.', cost: [0, 25], time: '1 day' },
-    'Battery drain':     { severity: 'medium', diag: 'Degraded battery, replacement needed.', cost: [15, 50], time: '1-2 days' }
+/* ── Per-console symptom lists ── */
+const CONSOLE_SYMPTOMS = {
+    xbox: [
+        'No power', 'Overheating', 'Disc read error', 'No video output',
+        'Controller drift', 'Blue screen / crash', 'Slow performance',
+        'Network issues', 'Strange noises', 'Eject problems', "Won't update",
+        'HDMI port damaged', 'Power supply failure'
+    ],
+    ps: [
+        'No power', 'Overheating', 'Disc read error', 'No video output',
+        'Controller drift', 'Blue screen / crash', 'Slow performance',
+        'Network issues', 'Strange noises', 'Eject problems', "Won't update",
+        'HDMI port damaged', 'Rest mode freeze'
+    ],
+    nintendo: [
+        'No power', 'Overheating', 'Joy-Con drift', 'No video output',
+        'Screen issues', 'Blue screen / crash', 'Slow performance',
+        'Network issues', 'Strange noises', 'Charging problems',
+        "Won't update", 'Battery drain'
+    ],
+    pc: [
+        'No power', 'Overheating', 'Blue screen / crash', 'No video output',
+        'Slow performance', 'Network issues', 'Strange noises',
+        'Boot loop', 'GPU artifacts', 'RAM errors',
+        'Driver issues', 'Storage failure'
+    ]
 };
 
-// ── POST /api/repair/analyze ─────────────────────────────
-router.post('/analyze', authRequired, async (req, res) => {
-    const { consoleCategory, symptoms, description } = req.body;
+/** Admin role check */
+function isAdmin(req) {
+    return req.user && req.user.role === 'admin';
+}
 
+// ── GET /api/repair/symptoms/:console ────────────────────
+router.get('/symptoms/:console', (req, res) => {
+    const con = req.params.console;
+    const list = CONSOLE_SYMPTOMS[con];
+    if (!list) return res.status(400).json({ success: false, error: 'Unknown console type.' });
+    res.json({ success: true, symptoms: list });
+});
+
+// ── POST /api/repair — Submit a new repair request ───────
+router.post('/', authRequired, async (req, res) => {
+    const { consoleType, symptoms, customSymptom, description } = req.body;
+
+    if (!consoleType || !CONSOLE_SYMPTOMS[consoleType]) {
+        return res.status(400).json({ success: false, error: 'Invalid console type.' });
+    }
     if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
         return res.status(400).json({ success: false, error: 'Select at least one symptom.' });
     }
 
-    const safeSymptoms = symptoms.map(s => String(s).slice(0, 100)).slice(0, 12);
-    const safeDesc = String(description || '').trim().slice(0, 2000);
-    const safeConsole = String(consoleCategory || '').trim().slice(0, 20);
+    const validSymptoms = CONSOLE_SYMPTOMS[consoleType];
+    const safeSymptoms = symptoms
+        .map(s => String(s).trim())
+        .filter(s => validSymptoms.includes(s))
+        .slice(0, 15);
 
-    // Build diagnosis from matched symptoms
-    let totalCostMin = 0, totalCostMax = 0;
-    let maxSeverity = 'low';
-    const diagParts = [];
-    const sevOrder = { low: 1, medium: 2, high: 3 };
-
-    for (const symptom of safeSymptoms) {
-        const match = DIAGNOSIS_MAP[symptom];
-        if (match) {
-            diagParts.push(`• ${symptom}: ${match.diag}`);
-            totalCostMin += match.cost[0];
-            totalCostMax += match.cost[1];
-            if (sevOrder[match.severity] > sevOrder[maxSeverity]) {
-                maxSeverity = match.severity;
-            }
-        } else {
-            diagParts.push(`• ${symptom}: Physical inspection required for accurate diagnosis.`);
-            totalCostMin += 20;
-            totalCostMax += 80;
-        }
+    if (safeSymptoms.length === 0) {
+        return res.status(400).json({ success: false, error: 'No valid symptoms selected.' });
     }
 
-    const diagnosis = diagParts.join('\n');
-    const estimatedTime = safeSymptoms.length > 3 ? '5-10 days' : safeSymptoms.length > 1 ? '3-5 days' : '1-3 days';
-    const recommendation = maxSeverity === 'high'
-        ? 'We recommend sending to a certified technician as soon as possible.'
-        : maxSeverity === 'medium'
-        ? 'The issue can be fixed by a technician. Not urgent, but do not delay too long.'
-        : 'Minor issue. Can be easily fixed, possibly at home with instructions.';
+    const safeCustom = String(customSymptom || '').trim().slice(0, 500);
+    const safeDesc = String(description || '').trim().slice(0, 2000);
 
     try {
         const result = await pool.query(`
-            INSERT INTO repair_requests (user_id, console, symptoms, description, severity, ai_diagnosis, estimated_cost_min, estimated_cost_max, estimated_time, recommendation)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-            RETURNING id, severity, ai_diagnosis, estimated_cost_min, estimated_cost_max, estimated_time, recommendation, status, created_at
-        `, [req.user.id, safeConsole, safeSymptoms.join(', '), safeDesc, maxSeverity, diagnosis, totalCostMin, totalCostMax, estimatedTime, recommendation]);
+            INSERT INTO repair_requests (user_id, username, console, symptoms, custom_symptom, description, status)
+            VALUES ($1, $2, $3, $4, $5, $6, 'pending')
+            RETURNING id, console, symptoms, custom_symptom, description, status, created_at
+        `, [req.user.id, req.user.username, consoleType, safeSymptoms.join(', '), safeCustom, safeDesc]);
 
         const repair = result.rows[0];
+
+        // Notify admin by email (fire-and-forget)
+        sendRepairRequestNotification({
+            username: req.user.username,
+            console: consoleType,
+            symptoms: safeSymptoms,
+            customSymptom: safeCustom,
+            description: safeDesc,
+            requestId: repair.id
+        }).catch(err => console.error('Repair admin email error:', err));
+
         res.json({ success: true, repair });
-    } catch (err) {
-        console.error('Repair analyze error:', err);
-        res.status(500).json({ success: false, error: 'Internal error.' });
-    }
-});
-
-// ── POST /api/repair/:id/submit ──────────────────────────
-router.post('/:id/submit', authRequired, async (req, res) => {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
-
-    try {
-        const check = await pool.query('SELECT user_id, status FROM repair_requests WHERE id = $1', [id]);
-        if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Request not found.' });
-        if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'You do not have permission.' });
-
-        await pool.query("UPDATE repair_requests SET status = 'submitted' WHERE id = $1", [id]);
-        res.json({ success: true });
     } catch (err) {
         console.error('Repair submit error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
+});
+
+// ── GET /api/repair — Get current user's repair requests ─
+router.get('/', authRequired, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, console, symptoms, custom_symptom, description, status, admin_reply, created_at
+             FROM repair_requests WHERE user_id = $1 ORDER BY created_at DESC`,
+            [req.user.id]
+        );
+        res.json({ success: true, requests: result.rows });
+    } catch (err) {
+        console.error('Repair list error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── GET /api/repair/all — Admin: get all repair requests ─
+router.get('/all', authRequired, async (req, res) => {
+    if (!isAdmin(req)) {
+        return res.status(403).json({ success: false, error: 'Admin access required.' });
+    }
+    try {
+        const result = await pool.query(
+            `SELECT r.id, r.user_id, r.username, r.console, r.symptoms, r.custom_symptom,
+                    r.description, r.status, r.admin_reply, r.created_at,
+                    u.email AS user_email
+             FROM repair_requests r
+             LEFT JOIN users u ON u.id = r.user_id
+             ORDER BY r.created_at DESC`
+        );
+        res.json({ success: true, requests: result.rows });
+    } catch (err) {
+        console.error('Repair admin list error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── PATCH /api/repair/:id — Admin: update status / reply ─
+router.patch('/:id', authRequired, async (req, res) => {
+    if (!isAdmin(req)) {
+        return res.status(403).json({ success: false, error: 'Admin access required.' });
+    }
+
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
+
+    const { status, adminReply } = req.body;
+    const validStatuses = ['pending', 'in_progress', 'resolved'];
+
+    if (status && !validStatuses.includes(status)) {
+        return res.status(400).json({ success: false, error: 'Invalid status.' });
+    }
+
+    try {
+        const check = await pool.query(
+            `SELECT r.id, r.user_id, r.status, r.console, r.symptoms, u.email AS user_email, r.username
+             FROM repair_requests r LEFT JOIN users u ON u.id = r.user_id WHERE r.id = $1`,
+            [id]
+        );
+        if (check.rows.length === 0) {
+            return res.status(404).json({ success: false, error: 'Request not found.' });
+        }
+
+        const existing = check.rows[0];
+        const newStatus = status || existing.status;
+        const newReply = adminReply !== undefined ? String(adminReply).trim().slice(0, 2000) : (existing.admin_reply || '');
+
+        await pool.query(
+            `UPDATE repair_requests SET status = $1, admin_reply = $2 WHERE id = $3`,
+            [newStatus, newReply, id]
+        );
+
+        // Notify user by email if status changed or reply added
+        if (existing.user_email && (status !== existing.status || adminReply)) {
+            sendRepairReplyNotification({
+                to: existing.user_email,
+                username: existing.username,
+                console: existing.console,
+                status: newStatus,
+                adminReply: newReply,
+                requestId: id
+            }).catch(err => console.error('Repair user email error:', err));
+        }
+
+        res.json({ success: true, status: newStatus, admin_reply: newReply });
+    } catch (err) {
+        console.error('Repair admin update error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── Legacy: POST /api/repair/analyze (kept for backwards compat) ──
+router.post('/analyze', authRequired, async (req, res) => {
+    res.status(410).json({ success: false, error: 'This endpoint has been replaced. Please use POST /api/repair.' });
 });
 
 module.exports = router;

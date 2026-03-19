@@ -27,11 +27,11 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="community.html">Community</a></li>
-                <li><a href="invata.html">Learn</a></li>
-                <li><a href="evolutie.html">Evolution</a></li>
-                <li><a href="comparatie.html">Compare</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="community.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
             <div class="navbar-profile-wrap">
                 <button class="navbar-profile-btn" aria-label="Profile" type="button">
@@ -52,11 +52,11 @@
             <div class="profile-info">
                 <div class="profile-name-row">
                     <div class="profile-name" id="profile-name">—</div>
-                    <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Edit name in Settings">✏️</button>
+                    <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Edit name in Settings" data-i18n="profile_edit_name_title" data-i18n-attr="title">✏️</button>
                 </div>
                 <div class="profile-bio-row">
                     <div class="profile-bio" id="profile-bio"></div>
-                    <button type="button" class="profile-edit-shortcut" id="edit-bio-shortcut" title="Edit bio in Settings">✏️</button>
+                    <button type="button" class="profile-edit-shortcut" id="edit-bio-shortcut" title="Edit bio in Settings" data-i18n="profile_edit_bio_title" data-i18n-attr="title">✏️</button>
                 </div>
                 <div class="profile-date" id="profile-date"></div>
             </div>
@@ -65,29 +65,29 @@
         <!-- Console Lists -->
         <div class="profile-consoles-section" id="profile-consoles-section">
             <div class="profile-console-list">
-                <h3 class="profile-console-list__title">🎮 Favorite consoles</h3>
+                <h3 class="profile-console-list__title" data-i18n="profile_fav_consoles_title">🎮 Favorite consoles</h3>
                 <div class="profile-console-list__items" id="profile-favorite-consoles">
-                    <span class="profile-console-list__empty">No consoles added.</span>
+                    <span class="profile-console-list__empty" data-i18n="profile_no_consoles_added">No consoles added.</span>
                 </div>
             </div>
             <div class="profile-console-list">
-                <h3 class="profile-console-list__title">🕹️ Owned consoles</h3>
+                <h3 class="profile-console-list__title" data-i18n="profile_owned_consoles_title">🕹️ Owned consoles</h3>
                 <div class="profile-console-list__items" id="profile-owned-consoles">
-                    <span class="profile-console-list__empty">No consoles added.</span>
+                    <span class="profile-console-list__empty" data-i18n="profile_no_consoles_added">No consoles added.</span>
                 </div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="profile-tabs">
-            <button class="profile-tab active" data-tab="acasa">Home</button>
-            <button class="profile-tab" data-tab="cursuri">Courses</button>
-            <button class="profile-tab" data-tab="realizari">Achievements</button>
-            <button class="profile-tab" data-tab="evaluari">Ratings</button>
-            <button class="profile-tab" data-tab="anunturi">Listings</button>
-            <button class="profile-tab" data-tab="favorite">Favorites</button>
-            <button class="profile-tab" data-tab="prieteni">Friends</button>
-            <button class="profile-tab" data-tab="setari">Settings</button>
+            <button class="profile-tab active" data-tab="acasa" data-i18n="profile_tab_home">Home</button>
+            <button class="profile-tab" data-tab="cursuri" data-i18n="profile_tab_courses">Courses</button>
+            <button class="profile-tab" data-tab="realizari" data-i18n="profile_tab_achievements">Achievements</button>
+            <button class="profile-tab" data-tab="evaluari" data-i18n="profile_tab_ratings">Ratings</button>
+            <button class="profile-tab" data-tab="anunturi" data-i18n="profile_tab_listings">Listings</button>
+            <button class="profile-tab" data-tab="favorite" data-i18n="profile_tab_favorites">Favorites</button>
+            <button class="profile-tab" data-tab="prieteni" data-i18n="profile_tab_friends">Friends</button>
+            <button class="profile-tab" data-tab="setari" data-i18n="profile_tab_settings">Settings</button>
         </div>
 
         <!-- Dashboard Panel -->
@@ -97,27 +97,27 @@
                 <div class="dash-stat">
                     <span class="dash-stat__icon">📚</span>
                     <span class="dash-stat__value" id="dash-courses-pct">0%</span>
-                    <span class="dash-stat__label">Course progress</span>
+                    <span class="dash-stat__label" data-i18n="profile_dash_course_progress">Course progress</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">🏆</span>
                     <span class="dash-stat__value" id="dash-achievements">0 / 0</span>
-                    <span class="dash-stat__label">Achievements</span>
+                    <span class="dash-stat__label" data-i18n="profile_dash_achievements_label">Achievements</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">⭐</span>
                     <span class="dash-stat__value" id="dash-ratings">0</span>
-                    <span class="dash-stat__label">Ratings</span>
+                    <span class="dash-stat__label" data-i18n="profile_dash_ratings_label">Ratings</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">👥</span>
                     <span class="dash-stat__value" id="dash-friends">0</span>
-                    <span class="dash-stat__label">Friends</span>
+                    <span class="dash-stat__label" data-i18n="profile_dash_friends_label">Friends</span>
                 </div>
                 <div class="dash-stat">
                     <span class="dash-stat__icon">❤️</span>
                     <span class="dash-stat__value" id="dash-favorites">0</span>
-                    <span class="dash-stat__label">Favorite</span>
+                    <span class="dash-stat__label" data-i18n="profile_dash_favorites_label">Favorite</span>
                 </div>
             </div>
 
@@ -126,8 +126,8 @@
                 <!-- Course Progress -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>📚 Course progress</h3>
-                        <a href="#cursuri" class="dash-card__link">See all →</a>
+                        <h3 data-i18n="profile_dash_course_card">📚 Course progress</h3>
+                        <a href="#cursuri" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
                     </div>
                     <div id="dash-course-preview"></div>
                 </div>
@@ -135,8 +135,8 @@
                 <!-- Recent Ratings -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>⭐ Recent ratings</h3>
-                        <a href="#evaluari" class="dash-card__link">See all →</a>
+                        <h3 data-i18n="profile_dash_ratings_card">⭐ Recent ratings</h3>
+                        <a href="#evaluari" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
                     </div>
                     <div id="dash-ratings-preview"></div>
                 </div>
@@ -144,8 +144,8 @@
                 <!-- Achievements -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>🏆 Achievements</h3>
-                        <a href="#realizari" class="dash-card__link">See all →</a>
+                        <h3 data-i18n="profile_dash_achievements_card">🏆 Achievements</h3>
+                        <a href="#realizari" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
                     </div>
                     <div id="dash-achievements-preview"></div>
                 </div>
@@ -153,8 +153,8 @@
                 <!-- Friends -->
                 <div class="dash-card">
                     <div class="dash-card__head">
-                        <h3>👥 Friends</h3>
-                        <a href="#prieteni" class="dash-card__link">See all →</a>
+                        <h3 data-i18n="profile_dash_friends_card">👥 Friends</h3>
+                        <a href="#prieteni" class="dash-card__link" data-i18n="profile_dash_see_all">See all →</a>
                     </div>
                     <div id="dash-friends-preview"></div>
                 </div>
@@ -179,8 +179,8 @@
         <!-- Listings Panel -->
         <div class="profile-panel" id="panel-anunturi" data-panel="anunturi">
             <div class="my-listings-header">
-                <h3 class="my-listings-header__title">📋 My listings</h3>
-                <button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing">+ New listing</button>
+                <h3 class="my-listings-header__title" data-i18n="profile_listings_title">📋 My listings</h3>
+                <button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing" data-i18n="profile_listings_new">+ New listing</button>
             </div>
             <div id="my-listings-container">
                     <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>>
@@ -190,7 +190,7 @@
         <!-- Favorites Panel -->
         <div class="profile-panel" id="panel-favorite" data-panel="favorite">
             <div class="my-listings-header">
-                <h3 class="my-listings-header__title">❤️ Favorite listings</h3>
+                <h3 class="my-listings-header__title" data-i18n="profile_favorites_title">❤️ Favorite listings</h3>
             </div>
             <div id="favorites-container">
                 <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
@@ -201,22 +201,22 @@
         <div class="profile-panel" id="panel-prieteni" data-panel="prieteni">
             <!-- Search Users -->
             <div class="course-card" id="friend-search-card">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Search users</h3>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_friends_search">Search users</h3>
                 <div class="friend-search-box">
-                    <input type="text" id="friend-search-input" class="profile-input" placeholder="Search by username..." autocomplete="off" />
+                    <input type="text" id="friend-search-input" class="profile-input" placeholder="Search by username..." autocomplete="off" data-i18n="profile_friends_search_placeholder" data-i18n-attr="placeholder" />
                 </div>
                 <div id="friend-search-results" class="friend-search-results"></div>
             </div>
             <!-- Friend Requests -->
             <div class="course-card" id="friend-requests-card" style="margin-top: 16px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Friend requests</h3>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_friends_requests">Friend requests</h3>
                 <div id="friend-requests-container">
                     <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
                 </div>
             </div>
             <!-- Friend List -->
             <div class="course-card" style="margin-top: 16px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Your friends</h3>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_friends_list">Your friends</h3>
                 <div class="friends-list" id="my-friends-list">
                     <p style="color:var(--text-muted,#a89880);font-size:0.85rem;">Loading...</p>
                 </div>
@@ -228,57 +228,57 @@
             <div class="course-card">
                 <form class="settings-form" id="settings-form">
                     <div class="auth-field">
-                        <label for="set-username">Username</label>
-                        <input type="text" id="set-username" placeholder="Your name">
+                        <label for="set-username" data-i18n="profile_settings_label_username">Username</label>
+                        <input type="text" id="set-username" placeholder="Your name" data-i18n="profile_settings_placeholder_username" data-i18n-attr="placeholder">
                     </div>
                     <div class="auth-field">
-                        <label for="set-bio">Bio</label>
-                        <input type="text" id="set-bio" placeholder="Write something about yourself..." maxlength="200">
+                        <label for="set-bio" data-i18n="profile_settings_label_bio">Bio</label>
+                        <input type="text" id="set-bio" placeholder="Write something about yourself..." maxlength="200" data-i18n="profile_settings_placeholder_bio" data-i18n-attr="placeholder">
                     </div>
                     <div class="auth-field">
-                        <label>Owned consoles</label>
+                        <label data-i18n="profile_settings_label_consoles">Owned consoles</label>
                         <div class="owned-consoles-select" id="owned-consoles-select">
                             <div class="owned-consoles-search-wrap">
-                                <input type="text" class="owned-consoles-search" id="owned-consoles-search" placeholder="Search consoles..." autocomplete="off">
+                                <input type="text" class="owned-consoles-search" id="owned-consoles-search" placeholder="Search consoles..." autocomplete="off" data-i18n="profile_settings_search_consoles" data-i18n-attr="placeholder">
                             </div>
                             <div class="owned-consoles-list" id="owned-consoles-list">
-                                <p class="owned-consoles-loading">Loading consoles...</p>
+                                <p class="owned-consoles-loading" data-i18n="profile_settings_loading_consoles">Loading consoles...</p>
                             </div>
                         </div>
                         <input type="hidden" id="set-owned-consoles" value="">
                     </div>
                     <div class="auth-field">
-                        <label for="set-email">Email</label>
-                        <input type="email" id="set-email" placeholder="email@example.com" autocomplete="email">
+                        <label for="set-email" data-i18n="profile_settings_label_email">Email</label>
+                        <input type="email" id="set-email" placeholder="email@example.com" autocomplete="email" data-i18n="profile_settings_placeholder_email" data-i18n-attr="placeholder">
                     </div>
                     <div class="auth-field" id="password-section-info" style="display:none;">
-                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:4px;font-weight:600;">Set a password</p>
-                        <p style="color:var(--text-muted,#a89880);font-size:0.82rem;">Your account uses Google for authentication. You can set a password to log in without Google.</p>
+                        <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:4px;font-weight:600;" data-i18n="profile_settings_password_title">Set a password</p>
+                        <p style="color:var(--text-muted,#a89880);font-size:0.82rem;" data-i18n="profile_settings_password_desc">Your account uses Google for authentication. You can set a password to log in without Google.</p>
                     </div>
                     <div class="auth-field" id="current-password-field">
-                        <label for="set-current-password">Current password (required for email/password login)</label>
-                        <input type="password" id="set-current-password" placeholder="Current password" autocomplete="current-password">
+                        <label for="set-current-password" data-i18n="profile_settings_label_current_pw">Current password (required for email/password login)</label>
+                        <input type="password" id="set-current-password" placeholder="Current password" autocomplete="current-password" data-i18n="profile_settings_placeholder_current_pw" data-i18n-attr="placeholder">
                     </div>
                     <div class="auth-field">
-                        <label for="set-new-password">New password (optional)</label>
-                        <input type="password" id="set-new-password" placeholder="Minimum 6 characters" autocomplete="new-password">
+                        <label for="set-new-password" data-i18n="profile_settings_label_new_pw">New password (optional)</label>
+                        <input type="password" id="set-new-password" placeholder="Minimum 6 characters" autocomplete="new-password" data-i18n="profile_settings_placeholder_new_pw" data-i18n-attr="placeholder">
                     </div>
                     <div class="auth-field">
-                        <label for="set-new-password-confirm">Confirm new password</label>
-                        <input type="password" id="set-new-password-confirm" placeholder="Repeat new password" autocomplete="new-password">
+                        <label for="set-new-password-confirm" data-i18n="profile_settings_label_confirm_pw">Confirm new password</label>
+                        <input type="password" id="set-new-password-confirm" placeholder="Repeat new password" autocomplete="new-password" data-i18n="profile_settings_placeholder_confirm_pw" data-i18n-attr="placeholder">
                     </div>
-                    <button type="submit" class="auth-btn">Save</button>
-                    <button type="button" class="auth-btn auth-btn--danger" id="reset-all-btn">Reset all progress and achievements</button>
+                    <button type="submit" class="auth-btn" data-i18n="profile_settings_btn_save">Save</button>
+                    <button type="button" class="auth-btn auth-btn--danger" id="reset-all-btn" data-i18n="profile_settings_btn_reset">Reset all progress and achievements</button>
                     <div class="auth-error" id="settings-msg" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
                 </form>
             </div>
 
             <!-- Active Sessions -->
             <div class="course-card" style="margin-top: 24px;">
-                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;">Active Sessions</h3>
-                <p style="color: var(--text-muted, #a89880); font-size: 0.85rem; margin-bottom: 16px;">Devices currently connected to your account.</p>
+                <h3 style="color: var(--text-light); margin-bottom: 12px; font-size: 1.1rem;" data-i18n="profile_sessions_title">Active Sessions</h3>
+                <p style="color: var(--text-muted, #a89880); font-size: 0.85rem; margin-bottom: 16px;" data-i18n="profile_sessions_desc">Devices currently connected to your account.</p>
                 <div id="sessions-container" style="display:flex;flex-direction:column;gap:12px;"></div>
-                <button type="button" class="auth-btn auth-btn--danger" id="logout-others-btn" style="margin-top:16px;" hidden>Log out from all other devices</button>
+                <button type="button" class="auth-btn auth-btn--danger" id="logout-others-btn" style="margin-top:16px;" hidden data-i18n="profile_sessions_logout_others">Log out from all other devices</button>
             </div>
         </div>
     </div>
@@ -286,11 +286,11 @@
     <div class="app-modal" id="confirm-modal" hidden>
         <div class="app-modal__backdrop" data-modal-cancel></div>
         <div class="app-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
-            <h3 class="app-modal__title" id="confirm-modal-title">Confirmation</h3>
-            <p class="app-modal__text" id="confirm-modal-text">Are you sure you want to continue?</p>
+            <h3 class="app-modal__title" id="confirm-modal-title" data-i18n="profile_modal_title">Confirmation</h3>
+            <p class="app-modal__text" id="confirm-modal-text" data-i18n="profile_modal_text">Are you sure you want to continue?</p>
             <div class="app-modal__actions">
-                <button type="button" class="app-modal__btn app-modal__btn--ghost" id="confirm-modal-cancel">Cancel</button>
-                <button type="button" class="app-modal__btn app-modal__btn--danger" id="confirm-modal-ok">Confirm</button>
+                <button type="button" class="app-modal__btn app-modal__btn--ghost" id="confirm-modal-cancel" data-i18n="profile_modal_cancel">Cancel</button>
+                <button type="button" class="app-modal__btn app-modal__btn--danger" id="confirm-modal-ok" data-i18n="profile_modal_confirm">Confirm</button>
             </div>
         </div>
     </div>

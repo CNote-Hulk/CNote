@@ -27,11 +27,11 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="community.html">Community</a></li>
-                <li><a href="invata.html">Learn</a></li>
-                <li><a href="evolutie.html">Progress</a></li>
-                <li><a href="comparatie.html">Compare</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="community.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Progress</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
 
             
@@ -45,79 +45,79 @@
 
     <div class="auth-page">
         <div class="auth-card">
-            <h1 class="auth-card__title">Login</h1>
-            <p class="auth-card__subtitle">Sign in to your Console Notebook account</p>
+            <h1 class="auth-card__title" data-i18n="login_title">Login</h1>
+            <p class="auth-card__subtitle" data-i18n="login_subtitle">Sign in to your Console Notebook account</p>
 
             <!-- Tab switcher -->
             <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="server">Online</button>
-                <button class="auth-tab" data-tab="local">Local</button>
+                <button class="auth-tab active" data-tab="server" data-i18n="login_tab_online">Online</button>
+                <button class="auth-tab" data-tab="local" data-i18n="login_tab_local">Local</button>
             </div>
             
             <!-- SERVER LOGIN -->
             <div class="auth-tab-panel active" id="tab-server">
                 <div class="auth-error" id="login-error"></div>
                 <div id="login-verify-warning" style="display: none; background: rgba(212, 162, 78, 0.1); border: 1px solid rgba(212, 162, 78, 0.25); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px;">
-                    <p style="color: #f1d7a1; font-size: 0.9rem; margin-bottom: 8px;">Your account is not verified. Check your email.</p>
-                    <button type="button" id="resend-verify-btn" class="auth-btn" style="font-size: 0.85rem; padding: 6px 14px;">Resend verification email</button>
+                    <p style="color: #f1d7a1; font-size: 0.9rem; margin-bottom: 8px;" data-i18n="login_verify_warning">Your account is not verified. Check your email.</p>
+                    <button type="button" id="resend-verify-btn" class="auth-btn" style="font-size: 0.85rem; padding: 6px 14px;" data-i18n="login_resend_verify">Resend verification email</button>
                     <p id="resend-verify-msg" style="display: none; color: var(--success, #4ade80); font-size: 0.82rem; margin-top: 8px;"></p>
                 </div>
                 
                 <form class="auth-form" id="login-form" autocomplete="on">
                     <div class="auth-field">
-                        <label for="login-email">Email</label>
-                        <input type="email" id="login-email" name="email" required autocomplete="email" placeholder="exemplu@email.com">
+                        <label for="login-email" data-i18n="login_label_email">Email</label>
+                        <input type="email" id="login-email" name="email" required autocomplete="email" placeholder="exemplu@email.com" data-i18n="login_placeholder_email" data-i18n-attr="placeholder">
                     </div>
                     <div class="auth-field">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" name="password" required autocomplete="current-password" placeholder="Minimum 6 characters">
+                        <label for="login-password" data-i18n="login_label_password">Password</label>
+                        <input type="password" id="login-password" name="password" required autocomplete="current-password" placeholder="Minimum 6 characters" data-i18n="login_placeholder_password" data-i18n-attr="placeholder">
                     </div>
-                    <button type="submit" class="auth-btn">Sign in</button>
+                    <button type="submit" class="auth-btn" data-i18n="login_btn">Sign in</button>
                 </form>
 
                 <!-- 2FA Verification (hidden until needed) -->
                 <div id="two-factor-section" style="display: none;">
-                    <p class="auth-tab-info" id="two-factor-info">Enter the verification code.</p>
+                    <p class="auth-tab-info" id="two-factor-info" data-i18n="login_2fa_info">Enter the verification code.</p>
                     <div class="auth-error" id="two-factor-error"></div>
                     <form class="auth-form" id="two-factor-form" autocomplete="off">
                         <div class="auth-field">
-                            <label for="two-factor-code">Verification code</label>
-                            <input type="text" id="two-factor-code" name="code" required autocomplete="one-time-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem;">
+                            <label for="two-factor-code" data-i18n="login_2fa_label">Verification code</label>
+                            <input type="text" id="two-factor-code" name="code" required autocomplete="one-time-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem;" data-i18n="login_2fa_placeholder" data-i18n-attr="placeholder">
                         </div>
-                        <button type="submit" class="auth-btn">Verify</button>
+                        <button type="submit" class="auth-btn" data-i18n="login_2fa_btn">Verify</button>
                     </form>
                     <p id="two-factor-fallback" style="display: none; text-align: center; margin-top: 10px; font-size: 0.88rem;">
-                        <a href="#" id="two-factor-fallback-link" style="color: var(--color-text-muted, #aaa);">Don’t have access to the app? Get a code via email</a>
+                        <a href="#" id="two-factor-fallback-link" style="color: var(--color-text-muted, #aaa);" data-i18n="login_2fa_fallback">Don't have access to the app? Get a code via email</a>
                     </p>
-                    <p class="auth-link"><a href="#" id="two-factor-back">Back to login</a></p>
+                    <p class="auth-link"><a href="#" id="two-factor-back" data-i18n="login_2fa_back">Back to login</a></p>
                 </div>
 
                 <div class="auth-separator">
                     <hr>
-                    <span>or</span>
+                    <span data-i18n="login_separator">or</span>
                     <hr>
                 </div>
 
                 <button type="button" id="google-login-btn" class="auth-btn auth-btn--google">
                     <span class="auth-btn--google-icon">G</span>
-                    Sign in with Google
+                    <span data-i18n="login_google">Sign in with Google</span>
                 </button>
 
-                <p class="auth-link"><a href="request-password-reset.html">Forgot your password?</a></p>
-                <p class="auth-link">Don't have an account? <a href="register.html">Create one</a></p>
+                <p class="auth-link"><a href="request-password-reset.html" data-i18n="login_forgot">Forgot your password?</a></p>
+                <p class="auth-link" data-i18n="login_no_account">Don't have an account? <a href="register.html" data-i18n="login_create">Create one</a></p>
             </div>
 
             <!-- LOCAL LOGIN -->
             <div class="auth-tab-panel" id="tab-local">
-                <p class="auth-tab-info">Offline mode — data is stored only on this device.</p>
+                <p class="auth-tab-info" data-i18n="login_local_info">Offline mode — data is stored only on this device.</p>
                 <div class="auth-error" id="local-login-error"></div>
                 
                 <form class="auth-form" id="local-login-form" autocomplete="off">
                     <div class="auth-field">
-                        <label for="local-username">Username</label>
-                        <input type="text" id="local-username" name="username" required placeholder="Your name">
+                        <label for="local-username" data-i18n="login_local_label">Username</label>
+                        <input type="text" id="local-username" name="username" required placeholder="Your name" data-i18n="login_local_placeholder" data-i18n-attr="placeholder">
                     </div>
-                    <button type="submit" class="auth-btn">Log in locally</button>
+                    <button type="submit" class="auth-btn" data-i18n="login_local_btn">Log in locally</button>
                 </form>
             </div>
         </div>
