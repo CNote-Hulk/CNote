@@ -422,7 +422,10 @@ async function openThread(id) {
             const body = input.value.trim();
             if (!body) return;
             const res = await api('POST', `/forum/${S.console}/threads/${id}/reply`, { body });
-            if (res.success) openThread(id);
+            if (res.success) {
+                window.dispatchEvent(new CustomEvent('cn:message-sent'));
+                openThread(id);
+            }
         });
     } catch { v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load.</div>'; }
 }
@@ -474,7 +477,11 @@ function openNewThreadModal() {
         const res = await api('POST', `/forum/${S.console}/threads`, {
             title: f.title.value.trim(), body: f.body.value.trim(), tag: f.tag.value,
         });
-        if (res.success) { close(); loadThreads(); }
+        if (res.success) {
+            close();
+            window.dispatchEvent(new CustomEvent('cn:message-sent'));
+            loadThreads();
+        }
         else { btn.disabled = false; alert(res.error || 'Error.'); }
     });
 }
@@ -1761,6 +1768,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             div.innerHTML = `${esc(msg)}<div class="hub-dm-msg__time">now</div>`;
             el.appendChild(div);
             el.scrollTop = el.scrollHeight;
+            window.dispatchEvent(new CustomEvent('cn:message-sent'));
         }
     });
 }

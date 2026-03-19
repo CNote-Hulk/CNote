@@ -65,6 +65,9 @@ class App {
 
             this.initAchievements();
             console.log('✓ Achievements module initialized');
+
+            this.initQuickGuide();
+            console.log('✓ Quick guide tracking initialized');
             
             console.log('✅ All modules initialized successfully');
             this.initMathRendering();
@@ -87,6 +90,41 @@ class App {
         window.addEventListener('cn:lesson-completed', checkAndNotify);
         window.addEventListener('cn:console-visited', checkAndNotify);
         window.addEventListener('cn:quiz-finished', checkAndNotify);
+    }
+
+    /**
+     * Track quick guide step completion across all pages.
+     * Steps: 0=encyclopedia, 1=compare, 2=community, 3=send message, 4=rate console
+     */
+    initQuickGuide() {
+        if (!AuthModule.getCurrentUser()) return;
+
+        const page = window.location.pathname.split('/').pop() || '';
+
+        // Auto-complete steps based on page visit
+        const pageStepMap = {
+            'invata.html': 0,
+            'comparatie.html': 1,
+            'community.html': 2
+        };
+        if (page in pageStepMap) {
+            this.markQuickGuideStep(pageStepMap[page]);
+        }
+
+        // Listen for activity-based step completion
+        window.addEventListener('cn:message-sent', () => this.markQuickGuideStep(3));
+        window.addEventListener('cn:rating-submitted', () => this.markQuickGuideStep(4));
+    }
+
+    markQuickGuideStep(stepIndex) {
+        try {
+            var data = JSON.parse(localStorage.getItem('cn_quickguide')) || { completed: [] };
+            if (!Array.isArray(data.completed)) data.completed = [];
+            if (data.completed.indexOf(stepIndex) === -1) {
+                data.completed.push(stepIndex);
+                localStorage.setItem('cn_quickguide', JSON.stringify(data));
+            }
+        } catch (e) { /* ignore */ }
     }
 
     initMathRendering() {

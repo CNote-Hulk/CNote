@@ -217,6 +217,7 @@ formEl.addEventListener('submit', async (e) => {
             inputEl.style.height = 'auto';
             charCurrent.textContent = '0';
             scrollToBottom();
+            window.dispatchEvent(new CustomEvent('cn:message-sent'));
         } else {
             alert(data.error || 'Nu s-a putut trimite mesajul.');
         }

@@ -107,6 +107,11 @@ body.home-locked {
 .hero-timeline__step.completed .hero-timeline__label {
     text-decoration: line-through;
     text-decoration-color: rgba(212, 175, 122, 0.4);
+    color: var(--text-light);
+}
+
+.hero-timeline__step.completed .hero-timeline__number {
+    color: var(--accent-color);
 }
 
 .hero-timeline__text {
