@@ -498,6 +498,7 @@ async function submitRating(consoleId, rating) {
         if (data.success) {
             updateRatingDisplay(data.average, data.count);
             renderInteractiveStars(data.userRating, consoleId);
+            window.dispatchEvent(new CustomEvent('cn:rating-submitted'));
         }
     } catch { /* silent */ }
 }

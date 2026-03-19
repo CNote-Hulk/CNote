@@ -62,18 +62,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var done = progress.completed.indexOf(i) !== -1;
             step.classList.toggle('completed', done);
             step.classList.toggle('active', done);
-            // Fill connector if both adjacent steps are done
-            if (i > 0 && connectors[i - 1]) {
-                var prevDone = progress.completed.indexOf(i - 1) !== -1;
-                connectors[i - 1].classList.toggle('filled', prevDone && done);
-            }
         });
-        // Fill first connector if step 0 is done
-        if (connectors[0]) {
-            var step0Done = progress.completed.indexOf(0) !== -1;
-            var step1Done = progress.completed.indexOf(1) !== -1;
-            connectors[0].classList.toggle('filled', step0Done && step1Done);
-        }
+        // Fill connector between step i and step i+1 when step i (above) is done
+        connectors.forEach(function (conn, i) {
+            var stepAboveDone = progress.completed.indexOf(i) !== -1;
+            conn.classList.toggle('filled', stepAboveDone);
+        });
     }
 
     // Make steps clickable — navigate to the page and mark as done
