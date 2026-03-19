@@ -48,6 +48,8 @@ async function authRequired(req, res, next) {
             google_id: user.google_id,
             avatar_url: user.avatar_url,
             password_hash: user.password_hash,
+            role: user.role || 'user',
+            username_chosen: user.username_chosen !== false,
             created_at: user.created_at
         };
         return next();
@@ -64,6 +66,7 @@ async function authRequired(req, res, next) {
                u.email_verified, u.two_factor_enabled, u.two_factor_method,
                u.two_factor_secret, u.two_factor_totp_enabled, u.two_factor_email_enabled,
                u.google_id, u.avatar_url, u.password_hash,
+               u.role, u.username_chosen,
                u.created_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
@@ -99,6 +102,8 @@ async function authRequired(req, res, next) {
         google_id: session.google_id,
         avatar_url: session.avatar_url,
         password_hash: session.password_hash,
+        role: session.role || 'user',
+        username_chosen: session.username_chosen !== false,
         created_at: session.created_at
     };
     req.sessionId = session.session_id;

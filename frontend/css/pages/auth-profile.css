@@ -185,6 +185,40 @@
     display: block;
 }
 
+.auth-success {
+    background: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    color: #4ade80;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    display: none;
+}
+
+.auth-success.visible {
+    display: block;
+}
+
+/* Username availability indicator */
+.username-status {
+    font-size: 0.8rem;
+    min-height: 1.2em;
+    margin-top: 4px;
+    transition: color 0.2s;
+}
+
+.username-status--available {
+    color: #4ade80;
+}
+
+.username-status--error {
+    color: #e57373;
+}
+
+.username-status--checking {
+    color: var(--text-gray, #A89F94);
+}
+
 .auth-link {
     text-align: center;
     margin-top: 1.5rem;

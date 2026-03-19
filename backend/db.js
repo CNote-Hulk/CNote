@@ -238,11 +238,18 @@ async function initializeSchema() {
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active'`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS views INTEGER DEFAULT 0`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS favorites_count INTEGER DEFAULT 0`,
-		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS console_type TEXT DEFAULT ''`
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS console_type TEXT DEFAULT ''`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'user'`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS username_chosen BOOLEAN DEFAULT TRUE`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }
 	}
+
+	// Backfill admin role for known admin accounts
+	try {
+		await pool.query(`UPDATE users SET role = 'admin' WHERE LOWER(username) = LOWER('AndreiHulk07') OR LOWER(email) = LOWER('console.notebook.app@gmail.com')`);
+	} catch { }
 
 	// Backfill listing status for pre-existing rows
 	try { await pool.query(`UPDATE listings SET status = 'active' WHERE status IS NULL`); } catch { }

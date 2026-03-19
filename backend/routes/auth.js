@@ -108,6 +108,8 @@ function sanitizeUser(user) {
         two_factor_email_enabled: !!user.two_factor_email_enabled,
         google_linked: !!user.google_id,
         has_password: !!user.password_hash,
+        role: user.role || 'user',
+        username_chosen: user.username_chosen !== false,
         created_at: user.created_at
     };
 }
@@ -126,6 +128,46 @@ router.get('/check-username', async (req, res) => {
     } catch (err) {
         console.error('Check username error:', err);
         res.status(500).json({ available: false });
+    }
+});
+
+// POST /api/setup-username — First-time username selection (e.g. after Google OAuth)
+router.post('/setup-username', authRequired, async (req, res) => {
+    try {
+        const username = String(req.body.username || '').trim();
+
+        if (username.length < 3 || username.length > 20) {
+            return res.status(400).json({ success: false, error: 'Username must be between 3 and 20 characters.' });
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            return res.status(400).json({ success: false, error: 'Username can only contain letters, numbers, and underscores.' });
+        }
+
+        // Check current user hasn't already chosen a username
+        const current = await pool.query('SELECT username_chosen FROM users WHERE id = $1', [req.user.id]);
+        if (current.rows[0]?.username_chosen) {
+            return res.status(400).json({ success: false, error: 'Username already set.' });
+        }
+
+        // Check uniqueness
+        const existing = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1) AND id != $2', [username, req.user.id]);
+        if (existing.rows[0]) {
+            return res.status(409).json({ success: false, error: 'Username is already taken. Choose another one.' });
+        }
+
+        // Determine role: admin if username or email matches
+        const isAdmin = username === 'AndreiHulk07' || (req.user.email && req.user.email.toLowerCase() === 'console.notebook.app@gmail.com');
+        const role = isAdmin ? 'admin' : 'user';
+
+        const result = await pool.query(
+            'UPDATE users SET username = $1, username_chosen = TRUE, role = $2, updated_at = NOW() WHERE id = $3 RETURNING *',
+            [username, role, req.user.id]
+        );
+
+        res.json({ success: true, user: sanitizeUser(result.rows[0]) });
+    } catch (err) {
+        console.error('Setup username error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

@@ -67,6 +67,8 @@ function sanitizeUser(user) {
         two_factor_email_enabled: !!user.two_factor_email_enabled,
         google_linked: !!user.google_id,
         has_password: !!user.password_hash,
+        role: user.role || 'user',
+        username_chosen: user.username_chosen !== false,
         created_at: user.created_at
     };
 }
@@ -193,10 +195,12 @@ router.get('/google/callback',
 
             if (!user) {
                 // DB: register new user (Google emails are pre-verified)
+                // username_chosen = FALSE so user is redirected to pick a unique username
+                const isAdmin = displayName === 'AndreiHulk07' || email.toLowerCase() === 'console.notebook.app@gmail.com';
                 const insertResult = await pool.query(
-                    `INSERT INTO users (username, email, password_hash, google_id, avatar_url, email_verified)
-                     VALUES ($1, $2, NULL, $3, $4, TRUE) RETURNING *`,
-                    [displayName, email, googleId, avatarUrl]
+                    `INSERT INTO users (username, email, password_hash, google_id, avatar_url, email_verified, username_chosen, role)
+                     VALUES ($1, $2, NULL, $3, $4, TRUE, FALSE, $5) RETURNING *`,
+                    [displayName, email, googleId, avatarUrl, isAdmin ? 'admin' : 'user']
                 );
                 user = insertResult.rows[0];
             }
