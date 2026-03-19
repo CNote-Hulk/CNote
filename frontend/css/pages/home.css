@@ -12,9 +12,9 @@ body.home-locked {
 .hero-home {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: clamp(40px, 6vw, 100px);
-    padding-left: clamp(24px, 5vw, 80px);
+    justify-content: flex-start;
+    gap: clamp(40px, 8vw, 140px);
+    padding-left: clamp(40px, 8vw, 120px);
     padding-right: clamp(24px, 5vw, 80px);
 }
 
@@ -82,7 +82,7 @@ body.home-locked {
 
 .hero-timeline__number {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: rgba(212, 175, 122, 0.4);
     transition: color 0.5s ease;
@@ -94,7 +94,7 @@ body.home-locked {
 
 .hero-timeline__label {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     font-weight: 500;
     color: var(--text-gray);
     transition: color 0.5s ease;
