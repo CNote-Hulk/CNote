@@ -240,7 +240,10 @@ async function initializeSchema() {
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS favorites_count INTEGER DEFAULT 0`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS console_type TEXT DEFAULT ''`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'user'`,
-		`ALTER TABLE users ADD COLUMN IF NOT EXISTS username_chosen BOOLEAN DEFAULT TRUE`
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS username_chosen BOOLEAN DEFAULT TRUE`,
+		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS username TEXT DEFAULT ''`,
+		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS custom_symptom TEXT DEFAULT ''`,
+		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS admin_reply TEXT DEFAULT ''`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }
@@ -253,6 +256,9 @@ async function initializeSchema() {
 
 	// Backfill listing status for pre-existing rows
 	try { await pool.query(`UPDATE listings SET status = 'active' WHERE status IS NULL`); } catch { }
+
+	// Migrate repair_requests status from 'draft'/'submitted' to 'pending'
+	try { await pool.query(`UPDATE repair_requests SET status = 'pending' WHERE status IN ('draft', 'submitted')`); } catch { }
 
 	// Migrate is_active from INTEGER to BOOLEAN if needed
 	try { await pool.query(`ALTER TABLE user_sessions ALTER COLUMN is_active TYPE BOOLEAN USING is_active::int::boolean`); } catch { }

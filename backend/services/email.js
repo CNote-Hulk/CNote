@@ -247,9 +247,121 @@ async function sendContactEmail(from, name, subject, message) {
     }
 }
 
+/**
+ * sendRepairRequestNotification
+ * @description Email: notifies admin when a user submits a new repair request.
+ */
+async function sendRepairRequestNotification({ username, console: consoleName, symptoms, customSymptom, description, requestId }) {
+    const safeUser = escapeHtml(username);
+    const safeConsole = escapeHtml(consoleName);
+    const safeSymptoms = symptoms.map(s => escapeHtml(s)).join(', ');
+    const safeCustom = escapeHtml(customSymptom);
+    const safeDesc = escapeHtml(description);
+
+    const html = wrapTemplate('New Repair Request', `
+              <p style="color:#c8b99a;font-size:14px;margin:0 0 20px;">
+                A new repair request has been submitted.
+              </p>
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">User</span><br>
+                  <span style="color:#e8d5b7;font-size:14px;">${safeUser}</span>
+                </td></tr>
+                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Console</span><br>
+                  <span style="color:#e8d5b7;font-size:14px;">${safeConsole}</span>
+                </td></tr>
+                <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Symptoms</span><br>
+                  <span style="color:#e8d5b7;font-size:14px;">${safeSymptoms}</span>
+                  ${safeCustom ? `<br><span style="color:#c8b99a;font-size:13px;font-style:italic;">Custom: ${safeCustom}</span>` : ''}
+                </td></tr>
+                ${safeDesc ? `<tr><td style="padding:16px 0 0;">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Description</span><br>
+                  <p style="color:#c8b99a;font-size:14px;line-height:1.7;margin:8px 0 0;">${safeDesc}</p>
+                </td></tr>` : ''}
+              </table>
+              <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+                Request #${Number(requestId)} &middot; Review in the admin panel.
+              </p>`);
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM,
+            to: CONTACT_TO(),
+            subject: `New Repair Request #${Number(requestId)} — ${safeUser} — CNote`,
+            html
+        });
+        if (error) {
+            console.error('Resend error (repair admin):', error);
+            return { success: false, error: error.message };
+        }
+        console.log('Repair admin email sent | Id:', data?.id);
+        return { success: true };
+    } catch (err) {
+        console.error('Resend exception (repair admin):', err);
+        return { success: false, error: err.message };
+    }
+}
+
+/**
+ * sendRepairReplyNotification
+ * @description Email: notifies user when admin updates their repair request status or adds a reply.
+ */
+async function sendRepairReplyNotification({ to, username, console: consoleName, status, adminReply, requestId }) {
+    const safeUser = escapeHtml(username);
+    const safeConsole = escapeHtml(consoleName);
+    const safeReply = escapeHtml(adminReply);
+
+    const statusLabels = {
+        pending: '🟡 Pending',
+        in_progress: '🔵 In Progress',
+        resolved: '🟢 Resolved'
+    };
+    const statusLabel = statusLabels[status] || escapeHtml(status);
+
+    const html = wrapTemplate('Repair Request Update', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                Hi ${safeUser}, your repair request for <strong style="color:#e8d5b7;">${safeConsole}</strong> has been updated.
+              </p>
+              <div style="background:#0a0a14;border:1px solid rgba(232,213,183,0.15);border-radius:12px;padding:20px;margin:0 0 24px;">
+                <div style="margin-bottom:12px;">
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Status</span><br>
+                  <span style="color:#e8d5b7;font-size:16px;font-weight:600;">${statusLabel}</span>
+                </div>
+                ${safeReply ? `<div>
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Admin Reply</span><br>
+                  <p style="color:#c8b99a;font-size:14px;line-height:1.7;margin:8px 0 0;">${safeReply}</p>
+                </div>` : ''}
+              </div>
+              <p style="color:#5a5070;font-size:12px;margin:0;">
+                Request #${Number(requestId)}
+              </p>`);
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM,
+            to,
+            subject: `Repair Request #${Number(requestId)} Updated — CNote`,
+            html
+        });
+        if (error) {
+            console.error('Resend error (repair user):', error);
+            return { success: false, error: error.message };
+        }
+        console.log('Repair user email sent to:', to, '| Id:', data?.id);
+        return { success: true };
+    } catch (err) {
+        console.error('Resend exception (repair user):', err);
+        return { success: false, error: err.message };
+    }
+}
+
 module.exports = {
     sendVerificationEmail,
     sendPasswordResetEmail,
     sendTwoFactorEmail,
-    sendContactEmail
+    sendContactEmail,
+    sendRepairRequestNotification,
+    sendRepairReplyNotification
 };

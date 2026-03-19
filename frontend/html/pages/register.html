@@ -27,11 +27,11 @@
                 <span></span>
             </button>
             <ul class="nav-links">
-                <li><a href="community.html">Community</a></li>
-                <li><a href="invata.html">Learn</a></li>
-                <li><a href="evolutie.html">Evolution</a></li>
-                <li><a href="comparatie.html">Compare</a></li>
-                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="community.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
 
             
@@ -45,8 +45,8 @@
 
     <div class="auth-page">
         <div class="auth-card">
-            <h1 class="auth-card__title">Create Account</h1>
-            <p class="auth-card__subtitle">Sign up to track your progress</p>
+            <h1 class="auth-card__title" data-i18n="register_title">Create Account</h1>
+            <p class="auth-card__subtitle" data-i18n="register_subtitle">Sign up to track your progress</p>
             
             <div class="auth-error" id="register-error"></div>
             <div class="auth-error" id="register-success" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
@@ -55,46 +55,46 @@
             <div id="register-form-wrap">
             <form class="auth-form" id="register-form" autocomplete="on">
                 <div class="auth-field">
-                    <label for="reg-username">Username</label>
-                    <input type="text" id="reg-username" name="username" required autocomplete="username" placeholder="3-20 characters (letters, numbers, _)" minlength="3" maxlength="20">
+                    <label for="reg-username" data-i18n="register_label_username">Username</label>
+                    <input type="text" id="reg-username" name="username" required autocomplete="username" placeholder="3-20 characters (letters, numbers, _)" minlength="3" maxlength="20" data-i18n="register_placeholder_username" data-i18n-attr="placeholder">
                     <div id="username-status" style="font-size:0.8rem;margin-top:6px;min-height:1.2em;"></div>
                 </div>
                 <div class="auth-field">
-                    <label for="reg-email">Email</label>
-                    <input type="email" id="reg-email" name="email" required autocomplete="email" placeholder="example@email.com">
+                    <label for="reg-email" data-i18n="register_label_email">Email</label>
+                    <input type="email" id="reg-email" name="email" required autocomplete="email" placeholder="example@email.com" data-i18n="register_placeholder_email" data-i18n-attr="placeholder">
                 </div>
                 <div class="auth-field">
-                    <label for="reg-password">Password</label>
-                    <input type="password" id="reg-password" name="new-password" required autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8">
+                    <label for="reg-password" data-i18n="register_label_password">Password</label>
+                    <input type="password" id="reg-password" name="new-password" required autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8" data-i18n="register_placeholder_password" data-i18n-attr="placeholder">
                     <div id="password-strength" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
                 </div>
-                <button type="submit" class="auth-btn">Create account</button>
+                <button type="submit" class="auth-btn" data-i18n="register_btn">Create account</button>
             </form>
 
             <div class="auth-separator">
                 <hr>
-                <span>or</span>
+                <span data-i18n="register_separator">or</span>
                 <hr>
             </div>
 
             <button type="button" id="google-register-btn" class="auth-btn auth-btn--google">
                 <span class="auth-btn--google-icon">G</span>
-                Sign up with Google
+                <span data-i18n="register_google">Sign up with Google</span>
             </button>
             
-            <p class="auth-link">Already have an account? <a href="login.html">Log in</a></p>
+            <p class="auth-link" data-i18n="register_has_account">Already have an account? <a href="login.html" data-i18n="register_login">Log in</a></p>
             </div>
 
             <!-- Success screen (hidden until registration succeeds) -->
             <div id="register-success-screen" style="display: none; text-align: center; padding: 1.5rem 0;">
                 <div style="font-size: 3rem; margin-bottom: 0.75rem;">✉️</div>
-                <h2 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Account created successfully!</h2>
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.3rem;" data-i18n="register_success_title">Account created successfully!</h2>
                 <p style="color: var(--text-light, #ccc); font-size: 0.95rem; margin-bottom: 0.75rem; line-height: 1.5;">
-                    We sent a verification email to <strong id="register-sent-email"></strong>.<br>
-                    Check your inbox and click the link to activate your account.
+                    <span data-i18n="register_success_text_prefix">We sent a verification email to</span> <strong id="register-sent-email"></strong>.<br>
+                    <span data-i18n="register_success_text_suffix">Check your inbox and click the link to activate your account.</span>
                 </p>
-                <p style="color: var(--text-muted, #888); font-size: 0.82rem; margin-bottom: 1.25rem;">Didn’t receive the email? Check your Spam folder.</p>
-                <a href="login.html" class="auth-btn" style="display: inline-block; text-decoration: none; text-align: center;">Go to login</a>
+                <p style="color: var(--text-muted, #888); font-size: 0.82rem; margin-bottom: 1.25rem;" data-i18n="register_success_spam">Didn't receive the email? Check your Spam folder.</p>
+                <a href="login.html" class="auth-btn" style="display: inline-block; text-decoration: none; text-align: center;" data-i18n="register_success_login_btn">Go to login</a>
             </div>
         </div>
     </div>
