@@ -455,7 +455,7 @@
                     }
                 }
                 if (!consola) {
-                    showError('Consola "' + consoleId + '" nu a fost găsită în baza de date.');
+                    showError('Console "' + consoleId + '" was not found in the database.');
                     return;
                 }
                 renderHero(consola);
@@ -465,7 +465,7 @@
             })
             .catch(function (err) {
                 console.warn('Fallback: fetch failed', err);
-                showError('Nu s-au putut încărca datele. Deschideți pagina printr-un server HTTP.');
+                showError('Could not load data. Please open the page through an HTTP server.');
             });
     }
 

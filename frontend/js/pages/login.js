@@ -40,7 +40,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     errorEl.classList.remove('visible');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Se conectează...';
+    submitBtn.textContent = 'Connecting...';
 
     try {
         const result = await AuthModule.login(email, password);
@@ -56,10 +56,10 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             const tfInfo = document.getElementById('two-factor-info');
             const fallbackEl = document.getElementById('two-factor-fallback');
             if (result.method === 'email') {
-                tfInfo.textContent = 'Am trimis un cod de verificare pe email.';
+                tfInfo.textContent = 'We sent a verification code to your email.';
                 fallbackEl.style.display = 'none';
             } else {
-                tfInfo.textContent = 'Introdu codul din aplicația de autentificare.';
+                tfInfo.textContent = 'Enter the code from your authenticator app.';
                 fallbackEl.style.display = result.canFallbackToEmail ? 'block' : 'none';
             }
             document.getElementById('two-factor-code').focus();
@@ -76,11 +76,11 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             errorEl.classList.add('visible');
         }
     } catch {
-        errorEl.textContent = 'Nu s-a putut contacta serverul.';
+        errorEl.textContent = 'Could not reach the server.';
         errorEl.classList.add('visible');
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Conectare';
+        submitBtn.textContent = 'Log in';
     }
 });
 
@@ -93,7 +93,7 @@ document.getElementById('local-login-form').addEventListener('submit', (e) => {
     errorEl.classList.remove('visible');
 
     if (!username) {
-        errorEl.textContent = 'Introdu un nume de utilizator.';
+        errorEl.textContent = 'Enter a username.';
         errorEl.classList.add('visible');
         return;
     }
@@ -112,22 +112,22 @@ document.getElementById('two-factor-form').addEventListener('submit', async (e) 
 
     errorEl.classList.remove('visible');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Se verifică...';
+    submitBtn.textContent = 'Verifying...';
 
     try {
         const result = await AuthModule.verifyTwoFactor(code, currentMethod);
         if (result.success) {
             window.location.href = 'profil.html';
         } else {
-            errorEl.textContent = result.error || 'Cod invalid.';
+            errorEl.textContent = result.error || 'Invalid code.';
             errorEl.classList.add('visible');
         }
     } catch {
-        errorEl.textContent = 'Nu s-a putut contacta serverul.';
+        errorEl.textContent = 'Could not reach the server.';
         errorEl.classList.add('visible');
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Verifică';
+        submitBtn.textContent = 'Verify';
     }
 });
 
@@ -159,21 +159,21 @@ document.getElementById('two-factor-fallback-link').addEventListener('click', as
     try {
         const result = await AuthModule.requestEmailFallback();
         if (result.success) {
-            tfInfo.textContent = 'Am trimis un cod de verificare pe email.';
+            tfInfo.textContent = 'We sent a verification code to your email.';
             document.getElementById('two-factor-section').dataset.method = 'email';
             document.getElementById('two-factor-fallback').style.display = 'none';
             document.getElementById('two-factor-code').value = '';
             document.getElementById('two-factor-code').focus();
         } else {
-            errorEl.textContent = result.error || 'Nu s-a putut trimite codul.';
+            errorEl.textContent = result.error || 'Could not send the code.';
             errorEl.classList.add('visible');
         }
     } catch {
-        errorEl.textContent = 'Nu s-a putut contacta serverul.';
+        errorEl.textContent = 'Could not reach the server.';
         errorEl.classList.add('visible');
     } finally {
         link.style.pointerEvents = '';
-        link.textContent = 'Nu ai acces la aplicație? Primește cod pe email';
+        link.textContent = 'Can\'t access the app? Get code via email';
     }
 });
 
@@ -196,11 +196,11 @@ document.getElementById('resend-verify-btn').addEventListener('click', async (e)
 
     try {
         const data = await AuthModule._api('POST', '/resend-verification-public', { email });
-        msgEl.textContent = 'Email retrimis! Verifică căsuța de email.';
+        msgEl.textContent = 'Email resent! Check your inbox.';
         msgEl.style.color = 'var(--success, #4ade80)';
         msgEl.style.display = 'block';
     } catch {
-        msgEl.textContent = 'Nu s-a putut retrimite emailul.';
+        msgEl.textContent = 'Could not resend the email.';
         msgEl.style.color = '#e57373';
         msgEl.style.display = 'block';
     } finally {
@@ -215,11 +215,11 @@ const googleError = urlParams.get('error');
 if (googleError) {
     const errorEl = document.getElementById('login-error');
     const errorMessages = {
-        'google_failed': 'Autentificarea Google a eșuat.',
-        'google_auth_failed': 'Eroare la autentificarea cu Google.',
-        'google_not_configured': 'Google OAuth nu este configurat.'
+        'google_failed': 'Google authentication failed.',
+        'google_auth_failed': 'Error authenticating with Google.',
+        'google_not_configured': 'Google OAuth is not configured.'
     };
-    errorEl.textContent = errorMessages[googleError] || 'Eroare la autentificare.';
+    errorEl.textContent = errorMessages[googleError] || 'Authentication error.';
     errorEl.classList.add('visible');
     history.replaceState(null, '', window.location.pathname);
 }

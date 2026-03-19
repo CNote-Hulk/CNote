@@ -36,8 +36,8 @@ function initCourseCardsProgress() {
 
         if (hintEl) {
             hintEl.textContent = user
-                ? 'Continuă cursul pentru a crește progresul.'
-                : 'Conectează-te ca să îți vezi progresul.';
+                ? 'Continue the course to increase your progress.'
+                : 'Log in to see your progress.';
         }
     });
 }

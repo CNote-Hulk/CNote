@@ -76,7 +76,7 @@ export const SearchModule = {
             <div class="search-overlay__container">
                 <div class="search-overlay__input-wrap">
                     <svg class="search-overlay__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" class="search-overlay__input" placeholder="Caută o consolă..." autocomplete="off" spellcheck="false">
+                    <input type="text" class="search-overlay__input" placeholder="Search for a console..." autocomplete="off" spellcheck="false">
                     <kbd class="search-overlay__kbd">ESC</kbd>
                 </div>
                 <div class="search-overlay__results"></div>
@@ -159,7 +159,7 @@ export const SearchModule = {
         }).slice(0, 8);
 
         if (matches.length === 0) {
-            this._results.innerHTML = '<div class="search-overlay__empty">Niciun rezultat găsit</div>';
+            this._results.innerHTML = '<div class="search-overlay__empty">No results found</div>';
             return;
         }
 

@@ -476,7 +476,7 @@ async function loadRating(consoleId) {
         }
     } catch {
         const countEl = document.getElementById('rating-count');
-        if (countEl) countEl.textContent = 'Nu s-a putut încărca rating-ul.';
+        if (countEl) countEl.textContent = 'Could not load rating.';
     }
 }
 

@@ -328,7 +328,7 @@
     min-width: 160px;
 }
 
-/* Buton filtre cu badge */
+/* Filter button with badge */
 .hub-filter-toggle-btn {
     position: relative;
     white-space: nowrap;
@@ -414,7 +414,7 @@
     flex: 1;
 }
 
-/* Secțiune filtru */
+/* Filter section */
 
 .hub-filter-section__label {
     font-size: .78rem;

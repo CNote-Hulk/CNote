@@ -95,7 +95,7 @@ const initHamburgerFallback = () => {
         }
     });
 
-    /* Auto-hide navbar on scroll (fallback, fără module) */
+    /* Auto-hide navbar on scroll (fallback, without modules) */
     const navbar = document.querySelector('.navbar');
     if (navbar) {
         let lastScrollY = window.scrollY;

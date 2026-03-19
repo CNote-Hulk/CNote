@@ -1,6 +1,6 @@
 /**
  * Main JavaScript Entry Point
- * Inițializează toate modulele
+ * Initializes all modules
  */
 
 // Import modules
@@ -101,5 +101,5 @@ class App {
     }
 }
 
-// Inițializează app
+// Initialize app
 new App();

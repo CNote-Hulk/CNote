@@ -291,7 +291,7 @@
         // ── Create Retry Button ──
         var retryBtn = document.createElement('button');
         retryBtn.className = 'quiz-retry-btn';
-        retryBtn.textContent = '↻ Încearcă din nou';
+        retryBtn.textContent = '↻ Try again';
         retryBtn.addEventListener('click', resetQuiz);
         container.appendChild(retryBtn);
 
@@ -364,15 +364,15 @@
             if (percent === 100) {
                 resultClass = 'quiz-result-great';
                 emoji = '🏆';
-                message = 'Excelent! Toate răspunsurile corecte!';
+                message = 'Excellent! All answers correct!';
             } else if (percent >= 60) {
                 resultClass = 'quiz-result-good';
                 emoji = '👍';
-                message = 'Bine! Revizuiește conceptele la care ai greșit.';
+                message = 'Good job! Review the concepts you got wrong.';
             } else {
                 resultClass = 'quiz-result-retry';
                 emoji = '📖';
-                message = 'Recitește secțiunea de teorie și încearcă din nou.';
+                message = 'Re-read the theory section and try again.';
             }
 
             var resultDiv = document.createElement('div');

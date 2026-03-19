@@ -31,7 +31,7 @@ export const AnimationsModule = {
             });
         }, { threshold: 0.1 });
 
-        // Observă cards, hub cards și alte elemente
+        // Observe cards, hub cards and other elements
         document.querySelectorAll('.card, .hub-card, .section-intro').forEach(el => {
             this.observer.observe(el);
         });
@@ -43,12 +43,12 @@ export const AnimationsModule = {
     setupScrollAnimations() {
         window.addEventListener('scroll', () => {
             const scrollPos = window.scrollY;
-            // Poți adăuga logică suplimentară de animații pe scroll
+            // Additional scroll animation logic can be added here
         });
     },
 
     /**
-     * Adaugă fade animation
+     * Add fade animation
      */
     addFadeInAnimation(selector) {
         const els = document.querySelectorAll(selector);
