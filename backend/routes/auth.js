@@ -63,6 +63,46 @@ async function findOrCreateSession(userId, deviceInfo) {
 
 /** Calculate expiry date N hours from now */
 function expiresAt(hours = TOKEN_EXPIRY_HOURS) {
+
+}
+
+/* ── Trusted Device helpers ── */
+const TRUSTED_DEVICE_DAYS = 30;
+
+/** Build a SHA-256 hash from browser + OS + IP to identify a device */
+function buildDeviceHash(deviceInfo) {
+    const raw = [deviceInfo.browser, deviceInfo.os, deviceInfo.ip].join('|');
+    return crypto.createHash('sha256').update(raw).digest('hex');
+}
+
+/** Check if a device is trusted for a given user (not expired) */
+async function isDeviceTrusted(userId, deviceInfo) {
+    const hash = buildDeviceHash(deviceInfo);
+    const result = await pool.query(
+        `SELECT id FROM trusted_devices
+         WHERE user_id = $1 AND device_hash = $2 AND expires_at > NOW()
+         LIMIT 1`,
+        [userId, hash]
+    );
+    if (result.rows.length > 0) {
+        // Update last_used
+        await pool.query('UPDATE trusted_devices SET last_used = NOW() WHERE id = $1', [result.rows[0].id]);
+        return true;
+    }
+    return false;
+}
+
+/** Save a device as trusted for a user */
+async function trustDevice(userId, deviceInfo) {
+    const hash = buildDeviceHash(deviceInfo);
+    const expiresAt = new Date(Date.now() + TRUSTED_DEVICE_DAYS * 24 * 60 * 60 * 1000).toISOString();
+    await pool.query(
+        `INSERT INTO trusted_devices (user_id, device_hash, browser, operating_system, ip_address, expires_at)
+         VALUES ($1, $2, $3, $4, $5, $6)
+         ON CONFLICT (user_id, device_hash) DO UPDATE SET last_used = NOW(), expires_at = $6`,
+        [userId, hash, deviceInfo.browser, deviceInfo.os, deviceInfo.ip, expiresAt]
+    );
+}
     const d = new Date();
     d.setHours(d.getHours() + hours);
     return d.toISOString();

@@ -219,6 +219,20 @@ async function initializeSchema() {
 			created_at  TIMESTAMP DEFAULT NOW(),
 			UNIQUE(user_id, listing_id)
 		);
+
+		/* ── Trusted devices (skip 2FA) ── */
+		CREATE TABLE IF NOT EXISTS trusted_devices (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			device_hash VARCHAR(128) NOT NULL,
+			browser     TEXT,
+			operating_system TEXT,
+			ip_address  TEXT,
+			created_at  TIMESTAMP DEFAULT NOW(),
+			last_used   TIMESTAMP DEFAULT NOW(),
+			expires_at  TIMESTAMP NOT NULL,
+			UNIQUE(user_id, device_hash)
+		);
 	`);
 
 	// Column migrations — idempotent ALTER statements to evolve schema
