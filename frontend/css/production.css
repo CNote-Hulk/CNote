@@ -872,7 +872,7 @@ mark {
 @media (max-width: 768px) {
     .hero-cinematic {
         min-height: 100svh; /* Support for mobile browsers */
-        padding-top: 60px;
+        padding-top: 120px;
     }
     
     .hero-content {
