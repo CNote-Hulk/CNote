@@ -156,7 +156,7 @@ router.post('/setup-username', authRequired, async (req, res) => {
         }
 
         // Determine role: admin if username or email matches
-        const isAdmin = username === 'AndreiHulk07' || (req.user.email && req.user.email.toLowerCase() === 'console.notebook.app@gmail.com');
+        const isAdmin = username === 'AndreiHulk07' || (req.user.email && ['console.notebook.app@gmail.com', 'andreihlc2007@gmail.com'].includes(req.user.email.toLowerCase()));
         const role = isAdmin ? 'admin' : 'user';
 
         const result = await pool.query(

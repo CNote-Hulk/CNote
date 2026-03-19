@@ -179,6 +179,32 @@
                 });
             });
 
+            // Tab scroll arrows
+            const tabsContainer = document.querySelector('.profile-tabs');
+            const arrowLeft = document.querySelector('.profile-tabs-arrow--left');
+            const arrowRight = document.querySelector('.profile-tabs-arrow--right');
+            if (tabsContainer && arrowLeft && arrowRight) {
+                const SCROLL_AMOUNT = 150;
+
+                const updateArrows = () => {
+                    const { scrollLeft, scrollWidth, clientWidth } = tabsContainer;
+                    arrowLeft.classList.toggle('visible', scrollLeft > 2);
+                    arrowRight.classList.toggle('visible', scrollLeft + clientWidth < scrollWidth - 2);
+                };
+
+                arrowLeft.addEventListener('click', () => {
+                    tabsContainer.scrollBy({ left: -SCROLL_AMOUNT, behavior: 'smooth' });
+                });
+                arrowRight.addEventListener('click', () => {
+                    tabsContainer.scrollBy({ left: SCROLL_AMOUNT, behavior: 'smooth' });
+                });
+
+                tabsContainer.addEventListener('scroll', updateArrows);
+                window.addEventListener('resize', updateArrows);
+                // Initial check after a small delay so layout is ready
+                requestAnimationFrame(updateArrows);
+            }
+
             // Handle hash navigation
             applyHashTab();
             window.addEventListener('hashchange', applyHashTab);
