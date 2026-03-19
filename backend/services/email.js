@@ -72,23 +72,23 @@ function wrapTemplate(title, content) {
  */
 async function sendVerificationEmail(to, token, baseUrl) {
     const verifyLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/verify-success.html?token=' + encodeURIComponent(token);
-    const html = wrapTemplate('Verifică Adresa de Email', `
+    const html = wrapTemplate('Verify Email Address', `
               <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
                 Welcome to Console Notebook! To activate your account,
                 verify your email address by clicking the button below.
               </p>
               <a href="${verifyLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
-                Verifică Emailul
+                Verify Email
               </a>
               <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
-                Linkul expiră în 24 de ore.
+                This link expires in 24 hours.
               </p>`);
 
     try {
         const { data, error } = await resend.emails.send({
             from: FROM,
             to,
-            subject: 'Verifică adresa de email — CNote',
+            subject: 'Verify your email address — CNote',
             html
         });
         if (error) {
@@ -109,23 +109,23 @@ async function sendVerificationEmail(to, token, baseUrl) {
  */
 async function sendPasswordResetEmail(to, token, baseUrl) {
     const resetLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(token);
-    const html = wrapTemplate('Resetare Parolă', `
+    const html = wrapTemplate('Password Reset', `
               <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
                 We received a password reset request for your CNote account.
                 If you made this request, click the button below.
               </p>
               <a href="${resetLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
-                Resetează Parola
+                Reset Password
               </a>
               <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
-                Linkul expiră în 24 de ore.
+                This link expires in 24 hours.
               </p>`);
 
     try {
         const { data, error } = await resend.emails.send({
             from: FROM,
             to,
-            subject: 'Resetare parolă — CNote',
+            subject: 'Password reset — CNote',
             html
         });
         if (error) {
@@ -146,7 +146,7 @@ async function sendPasswordResetEmail(to, token, baseUrl) {
  */
 async function sendTwoFactorEmail(to, code) {
     const safeCode = escapeHtml(String(code));
-    const html = wrapTemplate('Cod de Verificare', `
+    const html = wrapTemplate('Verification Code', `
               <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
                 Your two-step verification code is:
               </p>
@@ -163,7 +163,7 @@ async function sendTwoFactorEmail(to, code) {
         const { data, error } = await resend.emails.send({
             from: FROM,
             to,
-            subject: 'Codul tău de verificare — CNote',
+            subject: 'Your verification code — CNote',
             html
         });
         if (error) {
@@ -189,21 +189,21 @@ async function sendContactEmail(from, name, subject, message) {
     const safeSubject = escapeHtml(subject);
     const safeMessage = escapeHtml(message);
 
-    const adminHtml = wrapTemplate('Mesaj Nou — Contact', `
+    const adminHtml = wrapTemplate('New Message — Contact', `
               <p style="color:#c8b99a;font-size:14px;margin:0 0 20px;">
                 You received a new message through the contact form.
               </p>
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
-                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">De la</span><br>
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">From</span><br>
                   <span style="color:#e8d5b7;font-size:14px;">${safeName} &middot; ${safeFrom}</span>
                 </td></tr>
                 <tr><td style="padding:8px 0;border-bottom:1px solid rgba(232,213,183,0.07);">
-                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Subiect</span><br>
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Subject</span><br>
                   <span style="color:#e8d5b7;font-size:14px;">${safeSubject}</span>
                 </td></tr>
                 <tr><td style="padding:16px 0 0;">
-                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Mesaj</span><br>
+                  <span style="color:#5a5070;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Message</span><br>
                   <p style="color:#c8b99a;font-size:14px;line-height:1.7;margin:8px 0 0;">${safeMessage}</p>
                 </td></tr>
               </table>`);
@@ -214,7 +214,7 @@ async function sendContactEmail(from, name, subject, message) {
                 Thank you for contacting us. We will reply as soon as possible.
               </p>
               <a href="${siteLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
-                Înapoi la site
+                Back to site
               </a>`);
 
     try {

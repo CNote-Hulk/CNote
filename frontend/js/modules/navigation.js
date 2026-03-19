@@ -14,7 +14,7 @@ export const NavigationModule = {
     },
 
     /**
-     * Smooth scroll pentru anchor links
+     * Smooth scroll for anchor links
      */
     setupSmoothScroll() {
         DOMUtils.onAll('a[href^="#"]', 'click', (e) => {
@@ -25,7 +25,7 @@ export const NavigationModule = {
                     e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     
-                    // Închide meniul mobile după navigare
+                    // Close mobile menu after navigation
                     this.closeMobileMenu();
                 }
             }
@@ -33,20 +33,20 @@ export const NavigationModule = {
     },
 
     /**
-     * Marchează link activ în navbar
+     * Mark active link in navbar
      */
     setupActiveLinks() {
         const navLinks = document.querySelectorAll('.nav-links a');
         const logo = document.querySelector('.logo');
         
-        // Adaugă active pe logo dacă suntem pe pagina de acasă
+        // Add active class to logo if on the home page
         if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/pages/') || window.location.pathname.endsWith('/pages')) {
             if (logo) {
                 logo.classList.add('active');
             }
         }
         
-        // Adaugă active pe linkurile din navbar
+        // Add active class to navbar links
         navLinks.forEach(link => {
             if (link.href === window.location.href) {
                 link.classList.add('active');
@@ -72,7 +72,7 @@ export const NavigationModule = {
             hamburger.setAttribute('type', 'button');
         }
 
-        // Toggle menu când se apasă hamburger (suport click + touchstart pentru mobile)
+        // Toggle menu when hamburger is pressed (click + touchstart support for mobile)
         const toggleHandler = (e) => {
             if (e.type === 'touchstart') e.preventDefault();
             this.toggleMobileMenu();
@@ -81,21 +81,21 @@ export const NavigationModule = {
         hamburger.addEventListener('click', toggleHandler);
         hamburger.addEventListener('touchstart', toggleHandler, { passive: false });
         
-        // Închide meniul când se apasă un link
+        // Close menu when a link is pressed
         navLinksItems.forEach(link => {
             link.addEventListener('click', () => {
                 this.closeMobileMenu();
             });
         });
         
-        // Închide meniul când se apasă ESC
+        // Close menu when ESC is pressed
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && navLinks.classList.contains('active')) {
                 this.closeMobileMenu();
             }
         });
         
-        // Închide meniul când se face click în afara lui
+        // Close menu when clicking outside it
         document.addEventListener('click', (e) => {
             if (navLinks.classList.contains('active') && 
                 !navLinks.contains(e.target) && 
@@ -124,7 +124,7 @@ export const NavigationModule = {
     },
 
     /**
-     * Deschide mobile menu
+     * Open mobile menu
      */
     openMobileMenu() {
         const hamburger = document.querySelector('.hamburger');
@@ -141,7 +141,7 @@ export const NavigationModule = {
     },
 
     /**
-     * Închide mobile menu
+     * Close mobile menu
      */
     closeMobileMenu() {
         const hamburger = document.querySelector('.hamburger');
@@ -159,7 +159,7 @@ export const NavigationModule = {
 
     /**
      * Auto-hide navbar on scroll down, show on scroll up
-     * Anti-jitter: ignoră mișcări < 15px, rămâne vizibil aproape de top (< 80px)
+     * Anti-jitter: ignore moves < 15px, stays visible near top (< 80px)
      */
     setupAutoHideNavbar() {
         const navbar = document.querySelector('.navbar');
@@ -172,14 +172,14 @@ export const NavigationModule = {
             const currentY = window.scrollY;
             const delta = currentY - lastScrollY;
 
-            // Nu ascunde dacă meniul mobil e deschis
+            // Don't hide if mobile menu is open
             if (document.body.classList.contains('menu-open')) {
                 lastScrollY = currentY;
                 ticking = false;
                 return;
             }
 
-            // Rămâne vizibil aproape de top
+            // Stay visible near top
             if (currentY < 80) {
                 navbar.classList.remove('navbar--hidden');
                 lastScrollY = currentY;
@@ -187,21 +187,21 @@ export const NavigationModule = {
                 return;
             }
 
-            // Anti-jitter: ignoră mișcări mici
+            // Anti-jitter: ignore small movements
             if (Math.abs(delta) < 15) {
                 ticking = false;
                 return;
             }
 
             if (delta > 0) {
-                // Scroll în jos → ascunde
+                // Scroll down → hide
                 navbar.classList.add('navbar--hidden');
             } else {
-                // Scroll în sus → arată
+                // Scroll up → show
                 navbar.classList.remove('navbar--hidden');
             }
 
-            lastScrollY = currentY < 0 ? 0 : currentY; // Protecție iOS elastic scroll
+            lastScrollY = currentY < 0 ? 0 : currentY; // iOS elastic scroll protection
             ticking = false;
         };
 

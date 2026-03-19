@@ -39,31 +39,31 @@
 
     var orientationHint = document.createElement('div');
     orientationHint.className = 'fs-orientation-hint';
-    orientationHint.innerHTML = '<span class="fs-orientation-icon">↻</span><span>Rotește telefonul pentru landscape</span>';
+    orientationHint.innerHTML = '<span class="fs-orientation-icon">↻</span><span>Rotate your phone for landscape</span>';
     container.appendChild(orientationHint);
 
-    /** Detectează dispozitiv touch (mobil/tabletă) */
+    /** Detect touch device (mobile/tablet) */
     function isMobileLike() {
         return window.matchMedia('(pointer: coarse)').matches;
     }
 
-    /** Verifică dacă ecranul este în orientare portrait */
+    /** Check if the screen is in portrait orientation */
     function isPortrait() {
         return window.matchMedia('(orientation: portrait)').matches || window.innerHeight > window.innerWidth;
     }
 
-    /** Actualizează hint-ul de rotire pe mobil în fullscreen */
+    /** Update the rotation hint on mobile in fullscreen */
     function syncOrientationHint() {
         var show = isFs() && isMobileLike() && isPortrait();
         container.classList.toggle('show-orientation-hint', show);
     }
 
-    /** Verifică dacă playerul este în fullscreen */
+    /** Check if the player is in fullscreen */
     function isFs() {
         return document.fullscreenElement === container || document.webkitFullscreenElement === container;
     }
 
-    /** Sincronizează clasa CSS pentru starea fullscreen */
+    /** Sync CSS class for fullscreen state */
     function syncFsUI() {
         container.classList.toggle('is-fullscreen', isFs());
         syncOrientationHint();
@@ -90,7 +90,7 @@
     /* ══════════════════════════════════════
        YouTube IFrame API
        ══════════════════════════════════════ */
-    /** Inițializează YouTube IFrame Player cu configurarea dorită */
+    /** Initialize YouTube IFrame Player with the desired configuration */
     function boot() {
         player = new YT.Player(container.querySelector('.yt-placeholder'), {
             videoId: videoId,
@@ -110,7 +110,7 @@
         });
     }
 
-    /** Callback — playerul YouTube este gata de utilizare */
+    /** Callback — YouTube player is ready */
     function onReady() {
         isReady = true;
         container.classList.add('ready');
@@ -137,7 +137,7 @@
     /* ══════════════════════════════════════
        State machine
        ══════════════════════════════════════ */
-    /** Gestionează tranzițiile de stare ale playerului (play, pause, ended, buffering) */
+    /** Handle player state transitions (play, pause, ended, buffering) */
     function onState(e) {
         var s = e.data;
         if (s === YT.PlayerState.PLAYING)  { setPlaying(true);  startTick(); }
@@ -147,14 +147,14 @@
         if (s !== YT.PlayerState.BUFFERING){ container.classList.remove('buffering'); }
     }
 
-    /** Comută între play și pause */
+    /** Toggle between play and pause */
     function togglePlay() {
         if (!player || !isReady) return;
         var s = player.getPlayerState();
         s === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
     }
 
-    /** Actualizează UI-ul (overlay, controls) la schimbarea stării de redare */
+    /** Update UI (overlay, controls) on playback state change */
     function setPlaying(on) {
         container.classList.toggle('playing', on);
         container.classList.toggle('paused', !on);
@@ -170,7 +170,7 @@
     /* ══════════════════════════════════════
        Skip ±10 s
        ══════════════════════════════════════ */
-    /** Sare delta secunde înainte sau înapoi în video */
+    /** Skip delta seconds forward or backward in the video */
     function skip(delta) {
         if (!player || !isReady) return;
         var t = player.getCurrentTime();
@@ -181,7 +181,7 @@
     /* ══════════════════════════════════════
        Progress tick (requestAnimationFrame)
        ══════════════════════════════════════ */
-    /** Pornește loop-ul de actualizare a progress bar-ului via requestAnimationFrame */
+    /** Start the progress bar update loop via requestAnimationFrame */
     function startTick() {
         (function tick() {
             if (!player) return;
@@ -201,7 +201,7 @@
     }
     function stopTick() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
 
-    /** Formatează secundele în mm:ss sau h:mm:ss */
+    /** Format seconds as mm:ss or h:mm:ss */
     function fmt(s) {
         var h = Math.floor(s / 3600);
         var m = Math.floor((s % 3600) / 60);
@@ -214,7 +214,7 @@
     /* ══════════════════════════════════════
        Progress seek (click + drag)
        ══════════════════════════════════════ */
-    /** Calculează poziția seek din coordonata X a mouse-ului/touch-ului */
+    /** Calculate seek position from mouse/touch X coordinate */
     function seekFromX(clientX) {
         if (!player || !isReady) return;
         var r   = progressWrap.getBoundingClientRect();
@@ -235,13 +235,13 @@
     /* ══════════════════════════════════════
        Volume (iPhone-style slider)
        ══════════════════════════════════════ */
-    /** Actualizează UI-ul slider-ului de volum */
+    /** Update the volume slider UI */
     function updateVolUI(v) {
         volFill.style.width = v + '%';
         volBtn.classList.toggle('muted', v === 0);
     }
 
-    /** Setează volumul din coordonata X pe slider */
+    /** Set volume from X coordinate on the slider */
     function volFromX(clientX) {
         if (!player || !isReady) return;
         var r   = volSlider.getBoundingClientRect();
@@ -299,14 +299,14 @@
     /* ══════════════════════════════════════
        Auto-hide controls
        ══════════════════════════════════════ */
-    /** Ascunde controalele după 3s de inactivitate în timpul redării */
+    /** Hide controls after 3s of inactivity during playback */
     function scheduleHide() {
         clearTimeout(hideTimer);
         hideTimer = setTimeout(function () {
             if (container.classList.contains('playing')) ctrlBar.classList.remove('visible');
         }, 3000);
     }
-    /** Afișează controalele și reprogramează ascunderea automată */
+    /** Show controls and reschedule auto-hide */
     function showControls() {
         ctrlBar.classList.add('visible');
         scheduleHide();

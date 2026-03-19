@@ -137,9 +137,9 @@ function showEmptyState() {
     loadingEl.innerHTML = `
         <div class="chat-empty-state">
             <div class="chat-empty-state__circle"><span>💬</span></div>
-            <div class="chat-empty-state__title">Niciun mesaj încă</div>
-            <div class="chat-empty-state__subtitle">Fii primul care pornește conversația!</div>
-            <button class="chat-empty-state__btn" type="button">Scrie primul mesaj →</button>
+            <div class="chat-empty-state__title">No messages yet</div>
+            <div class="chat-empty-state__subtitle">Be the first to start the conversation!</div>
+            <button class="chat-empty-state__btn" type="button">Write the first message →</button>
         </div>`;
     loadingEl.hidden = false;
     loadingEl.querySelector('.chat-empty-state__btn')?.addEventListener('click', () => inputEl.focus());

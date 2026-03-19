@@ -70,6 +70,6 @@ export const ProgressModule = {
 
     /** Course definitions */
     COURSES: [
-        { id: 'inginerie', name: 'Inginerie în Console', icon: '⚡', totalLessons: 42, prefix: 'lectia-' }
+        { id: 'inginerie', name: 'Console Engineering', icon: '⚡', totalLessons: 42, prefix: 'lectia-' }
     ]
 };

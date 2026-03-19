@@ -152,7 +152,7 @@
                 }
 
                 if (file.size > 5 * 1024 * 1024) {
-                    showSettingsMessage('Imaginea este prea mare. Maxim 5MB.', false);
+                    showSettingsMessage('Image is too large. Maximum 5MB.', false);
                     avatarInput.value = '';
                     return;
                 }
@@ -277,7 +277,7 @@
                             <p id="totp-secret-display" style="font-family:monospace;font-size:0.85rem;color:var(--text-light);word-break:break-all;margin-bottom:12px;text-align:center;"></p>
                             <div style="display:flex;gap:8px;align-items:center;">
                                 <input type="text" id="totp-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align:center;font-size:1.2rem;letter-spacing:0.3rem;padding:8px 12px;border:1px solid var(--color-border, #444);border-radius:6px;background:var(--bg-card, #1a1a1a);color:var(--text-primary, #fff);width:140px;">
-                                <button type="button" class="auth-btn" id="totp-confirm-btn">Confirma</button>
+                                <button type="button" class="auth-btn" id="totp-confirm-btn">Confirm</button>
                             </div>
                         </div>`;
                 }
@@ -286,13 +286,13 @@
                 if (emailEnabled) {
                     emailSection = `
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-                            <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Email — activ${totpEnabled ? ' (rezerva)' : ''}</span>
+                            <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Email — active${totpEnabled ? ' (fallback)' : ''}</span>
                             <button type="button" class="auth-btn auth-btn--danger" id="disable-email-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Disable</button>
                         </div>`;
                 } else {
                     emailSection = `
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-                            <span style="color:var(--text-light);font-size:0.88rem;">Email — inactiv</span>
+                            <span style="color:var(--text-light);font-size:0.88rem;">Email — inactive</span>
                             <button type="button" class="auth-btn" id="setup-email-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Enable</button>
                         </div>`;
                 }
@@ -445,7 +445,7 @@
             const showConfirmDialog = ({
                 title,
                 message,
-                confirmLabel = 'Confirma',
+                confirmLabel = 'Confirm',
                 cancelLabel = 'Cancel',
                 withPassword = false,
                 withTextInput = false
@@ -541,7 +541,7 @@
 
             document.getElementById('reset-all-btn').addEventListener('click', async () => {
                 const confirmed = await showConfirmDialog({
-                    title: 'Reset Total Date',
+                    title: 'Full Data Reset',
                     message: 'Course progress, achievements, and quiz history will be deleted. Do you want to continue?',
                     confirmLabel: 'Yes, reset',
                     cancelLabel: 'Cancel'
@@ -575,7 +575,7 @@
                             credentials: 'include'
                         });
                         const data = await result.json();
-                        showSettingsMessage(data.message || 'Emailul de verificare a fost retrimis.', !!data.success);
+                        showSettingsMessage(data.message || 'Verification email has been resent.', !!data.success);
                     } catch {
                         showSettingsMessage('Could not resend verification email.', false);
                     } finally {
@@ -637,10 +637,10 @@
 
                     const result = await AuthModule.enableEmailTwoFactor();
                     if (result.success) {
-                        showSettingsMessage('2FA prin email a fost activat!', true);
+                        showSettingsMessage('Email 2FA has been enabled!', true);
                         refreshTwoFactorCard();
                     } else {
-                        showSettingsMessage(result.error || 'Eroare.', false);
+                        showSettingsMessage(result.error || 'Error.', false);
                     }
                 });
             }
@@ -650,14 +650,14 @@
                 setupTotp2faBtn.addEventListener('click', async () => {
                     const result = await AuthModule.setupTOTP();
                     if (!result.success) {
-                        showSettingsMessage(result.error || 'Eroare la generarea codului QR.', false);
+                        showSettingsMessage(result.error || 'Error generating QR code.', false);
                         return;
                     }
                     const area = document.getElementById('totp-setup-area');
                     const qrContainer = document.getElementById('totp-qr-container');
                     const secretDisplay = document.getElementById('totp-secret-display');
                     qrContainer.innerHTML = '<img src="' + result.qrCode + '" alt="QR Code" style="max-width:200px;border-radius:8px;">';
-                    secretDisplay.textContent = 'Cheie manuala: ' + result.secret;
+                    secretDisplay.textContent = 'Manual key: ' + result.secret;
                     area.style.display = 'block';
                     area.dataset.secret = result.secret;
                 });
@@ -669,15 +669,15 @@
                     const code = document.getElementById('totp-confirm-code').value.trim();
                     const secret = document.getElementById('totp-setup-area').dataset.secret;
                     if (!code || code.length !== 6) {
-                        showSettingsMessage('Introdu codul de 6 cifre.', false);
+                        showSettingsMessage('Enter the 6-digit code.', false);
                         return;
                     }
                     const result = await AuthModule.confirmTOTP(code, secret);
                     if (result.success) {
-                        showSettingsMessage('2FA prin aplicatie a fost activat!', true);
+                        showSettingsMessage('Authenticator app 2FA has been enabled!', true);
                         refreshTwoFactorCard();
                     } else {
-                        showSettingsMessage(result.error || 'Cod invalid.', false);
+                        showSettingsMessage(result.error || 'Invalid code.', false);
                     }
                 });
             }
@@ -698,16 +698,16 @@
 
                 const result = await AuthModule.disableTwoFactor(dialogResult.password, method);
                 if (result.success) {
-                    showSettingsMessage(result.message || '2FA a fost dezactivat.', true);
+                    showSettingsMessage(result.message || '2FA has been disabled.', true);
                     refreshTwoFactorCard();
                 } else {
-                    showSettingsMessage(result.error || 'Eroare.', false);
+                    showSettingsMessage(result.error || 'Error.', false);
                 }
             };
 
             const disableTotpBtn = document.getElementById('disable-totp-btn');
             if (disableTotpBtn) {
-                disableTotpBtn.addEventListener('click', () => disable2faHandler('totp', 'aplicatie'));
+                disableTotpBtn.addEventListener('click', () => disable2faHandler('totp', 'authenticator app'));
             }
 
             const disableEmailBtn = document.getElementById('disable-email-btn');
@@ -718,11 +718,11 @@
             // ─── Google link success from URL params ────────
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('google_linked') === '1') {
-                showSettingsMessage('Contul Google a fost conectat cu succes!', true);
+                showSettingsMessage('Google account has been connected successfully!', true);
                 history.replaceState(null, '', window.location.pathname + window.location.hash);
             }
             if (urlParams.get('error') === 'google_already_linked') {
-                showSettingsMessage('Acest cont Google este deja folosit de alt utilizator.', false);
+                showSettingsMessage('This Google account is already used by another user.', false);
                 history.replaceState(null, '', window.location.pathname + window.location.hash);
             }
 
@@ -747,7 +747,7 @@
                         result = await AuthModule.deleteAccount({ password: dialogResult.password });
                     } else {
                         const dialogResult = await showConfirmDialog({
-                            title: 'Sterge contul',
+                            title: 'Delete Account',
                             message: 'Your account is connected only via Google and has no password. Type DELETE to confirm permanent account deletion.',
                             confirmLabel: 'Delete account',
                             cancelLabel: 'Cancel',
@@ -755,7 +755,7 @@
                         });
                         if (!dialogResult || !dialogResult.confirmed) return;
                         if (!dialogResult.textValue) {
-                            showSettingsMessage('Scrie STERGE pentru a confirma.', false);
+                            showSettingsMessage('Type DELETE to confirm.', false);
                             return;
                         }
                         result = await AuthModule.deleteAccount({ confirmText: dialogResult.textValue });
@@ -792,7 +792,7 @@
                         const logoutBtn = `<button class="session-logout-btn" data-session-id="${s.id}" data-is-current="${s.is_current ? '1' : '0'}" style="background:none;border:1px solid rgba(229,115,115,0.4);color:#e57373;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;margin-top:6px;">Log out</button>`;
 
                         return `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 14px;">
-                            <div style="font-size:0.9rem;color:var(--text-light);">${icon} ${escapeHtml(s.browser)} pe ${escapeHtml(s.operating_system)}${current}</div>
+                            <div style="font-size:0.9rem;color:var(--text-light);">${icon} ${escapeHtml(s.browser)} on ${escapeHtml(s.operating_system)}${current}</div>
                             <div style="font-size:0.78rem;color:var(--text-muted,#a89880);margin-top:4px;">IP: ${escapeHtml(s.ip_address)} · Last activity: ${ago}</div>
                             ${logoutBtn}
                         </div>`;
@@ -946,7 +946,7 @@
 
                     resultsContainer.innerHTML = userCards.join('');
 
-                    // Bind "Adaugă Prieten" buttons
+                    // Bind "Add Friend" buttons
                     resultsContainer.querySelectorAll('.user-action-btn--add').forEach(btn => {
                         btn.addEventListener('click', async () => {
                             btn.disabled = true;
@@ -964,20 +964,20 @@
                                         btn.outerHTML = `<span class="user-action-btn user-action-btn--friends" disabled>✓ Friends</span>`;
                                         loadMyFriends();
                                     } else {
-                                        btn.outerHTML = `<span class="user-action-btn user-action-btn--pending" disabled>Cerere trimisă</span>`;
+                                        btn.outerHTML = `<span class="user-action-btn user-action-btn--pending" disabled>Request sent</span>`;
                                     }
                                 } else {
-                                    btn.textContent = data.error || 'Eroare';
+                                    btn.textContent = data.error || 'Error';
                                     setTimeout(() => { btn.textContent = 'Add Friend'; btn.disabled = false; }, 2000);
                                 }
                             } catch {
-                                btn.textContent = 'Eroare';
+                                btn.textContent = 'Error';
                                 setTimeout(() => { btn.textContent = 'Add Friend'; btn.disabled = false; }, 2000);
                             }
                         });
                     });
                 } catch {
-                    resultsContainer.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Eroare la căutare.</p>';
+                    resultsContainer.innerHTML = '<p style="color:#e57373;font-size:0.85rem;">Search error.</p>';
                 }
             }
         }
@@ -1443,14 +1443,14 @@
                 const listings = data.listings || [];
 
                 if (!listings.length) {
-                    container.innerHTML = '<div class="my-listings-empty"><div class="my-listings-empty__icon">📦</div><p>Nu ai niciun anunț postat.</p><button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing-empty" style="margin-top:12px">Publică primul anunț</button></div>';
+                    container.innerHTML = '<div class="my-listings-empty"><div class="my-listings-empty__icon">📦</div><p>You have no listings posted.</p><button class="hub-btn hub-btn--primary hub-btn--sm" id="btn-create-listing-empty" style="margin-top:12px">Post your first listing</button></div>';
                     document.getElementById('btn-create-listing-empty')?.addEventListener('click', openCreateListingModal);
                     return;
                 }
 
                 container.innerHTML = listings.map(l => {
                     const imgs = Array.isArray(l.images) ? l.images : [];
-                    const statusMap = { active: { label: 'Activ', cls: 'active' }, inactive: { label: 'Dezactivat', cls: 'inactive' }, sold: { label: 'Vândut', cls: 'sold' } };
+                    const statusMap = { active: { label: 'Active', cls: 'active' }, inactive: { label: 'Inactive', cls: 'inactive' }, sold: { label: 'Sold', cls: 'sold' } };
                     const st = statusMap[l.status] || statusMap.active;
                     const date = new Date(l.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -1472,11 +1472,11 @@
                             </div>
                         </div>
                         <div class="my-listing-row__actions">
-                            ${l.status === 'active' ? `<button class="my-listing-action my-listing-action--deactivate" data-action="deactivate" data-id="${l.id}" title="Dezactivează">⏸️</button>` : ''}
-                            ${l.status === 'inactive' ? `<button class="my-listing-action my-listing-action--activate" data-action="activate" data-id="${l.id}" title="Activează">▶️</button>` : ''}
-                            ${l.status === 'active' ? `<button class="my-listing-action my-listing-action--sold" data-action="sold" data-id="${l.id}" title="Marchează vândut">✓</button>` : ''}
-                            <button class="my-listing-action my-listing-action--edit" data-action="edit" data-id="${l.id}" title="Editează">✏️</button>
-                            <button class="my-listing-action my-listing-action--delete" data-action="delete" data-id="${l.id}" title="Șterge">🗑️</button>
+                            ${l.status === 'active' ? `<button class="my-listing-action my-listing-action--deactivate" data-action="deactivate" data-id="${l.id}" title="Deactivate">⏸️</button>` : ''}
+                            ${l.status === 'inactive' ? `<button class="my-listing-action my-listing-action--activate" data-action="activate" data-id="${l.id}" title="Activate">▶️</button>` : ''}
+                            ${l.status === 'active' ? `<button class="my-listing-action my-listing-action--sold" data-action="sold" data-id="${l.id}" title="Mark as sold">✓</button>` : ''}
+                            <button class="my-listing-action my-listing-action--edit" data-action="edit" data-id="${l.id}" title="Edit">✏️</button>
+                            <button class="my-listing-action my-listing-action--delete" data-action="delete" data-id="${l.id}" title="Delete">🗑️</button>
                         </div>
                     </div>`;
                 }).join('');
@@ -1499,9 +1499,9 @@
                 if (!listings.length) {
                     container.innerHTML = `<div class="my-listings-empty">
                         <div class="my-listings-empty__icon">❤️</div>
-                        <p>Nu ai niciun anunț apreciat încă.</p>
-                        <p style="color:var(--text-gray);font-size:0.82rem;margin-top:4px">Explorează Marketplace-ul și salvează ce îți place.</p>
-                        <a href="community.html" class="hub-btn hub-btn--primary hub-btn--sm" style="margin-top:12px">→ Mergi la Marketplace</a>
+                        <p>You have no liked listings yet.</p>
+                        <p style="color:var(--text-gray);font-size:0.82rem;margin-top:4px">Explore the Marketplace and save what you like.</p>
+                        <a href="community.html" class="hub-btn hub-btn--primary hub-btn--sm" style="margin-top:12px">→ Go to Marketplace</a>
                     </div>`;
                     return;
                 }
@@ -1525,7 +1525,7 @@
                             </div>
                         </div>
                         <div class="my-listing-row__actions">
-                            <button class="my-listing-action" data-action="unfav" data-id="${l.id}" title="Elimină din favorite">❤️</button>
+                            <button class="my-listing-action" data-action="unfav" data-id="${l.id}" title="Remove from favorites">❤️</button>
                         </div>
                     </div>`;
                 }).join('');
@@ -1561,38 +1561,38 @@
                 overlay.innerHTML = `
                     <div class="hub-modal">
                         <div class="hub-modal__header">
-                            <span class="hub-modal__title">Editează anunțul</span>
+                            <span class="hub-modal__title">Edit Listing</span>
                             <button class="hub-modal__close">&times;</button>
                         </div>
                         <form class="hub-modal__body" id="edit-listing-form">
-                            <div class="hub-form-group"><label class="hub-form-label">Titlu</label><input class="hub-form-input" name="title" maxlength="100" required value="${escapeHtml(l.title)}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Title</label><input class="hub-form-input" name="title" maxlength="100" required value="${escapeHtml(l.title)}"></div>
                             <div class="hub-form-row">
-                                <div class="hub-form-group"><label class="hub-form-label">Preț (RON)</label><input class="hub-form-input" name="price" type="number" min="0" step="1" required value="${l.price}"></div>
-                                <div class="hub-form-group"><label class="hub-form-label">Stare</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+                                <div class="hub-form-group"><label class="hub-form-label">Price (RON)</label><input class="hub-form-input" name="price" type="number" min="0" step="1" required value="${l.price}"></div>
+                                <div class="hub-form-group"><label class="hub-form-label">Condition</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
                             </div>
-                            <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Consolă</label><select class="hub-form-select" name="console_type"><option value="">— Alege consola —</option>${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.name}</option>`).join('')}</select></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${escapeHtml(l.description)}</textarea></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Category</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Console</label><select class="hub-form-select" name="console_type"><option value="">— Select console —</option>${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.name}</option>`).join('')}</select></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Description</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${escapeHtml(l.description)}</textarea></div>
                             <div class="hub-form-row">
                             <div class="hub-form-group">
-                                <label class="hub-form-label">Țară</label>
+                                <label class="hub-form-label">Country</label>
                                 <select class="hub-form-select" name="country" required>
-                                    <option value="">— Alege țara —</option>
+                                    <option value="">— Select country —</option>
                                     ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${c.name}</option>`).join('')}
                                 </select>
                             </div>
                             <div class="hub-form-group">
-                                <label class="hub-form-label">Oraș</label>
+                                <label class="hub-form-label">City</label>
                                 <select class="hub-form-select" name="location" required disabled>
-                                    <option value="">— Alege mai întâi țara —</option>
+                                    <option value="">— Select a country first —</option>
                                 </select>
                             </div>
                             </div>
-                            <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" required value="${escapeHtml(l.phone || '')}"></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Link OLX (opțional)</label><input class="hub-form-input" name="olx_url" type="url" value="${escapeHtml(l.olx_url || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Phone</label><input class="hub-form-input" name="phone" maxlength="20" required value="${escapeHtml(l.phone || '')}"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">OLX Link (optional)</label><input class="hub-form-input" name="olx_url" type="url" value="${escapeHtml(l.olx_url || '')}"></div>
                             <div class="hub-modal__footer" style="padding:0;border:none">
-                                <button type="button" class="hub-btn hub-btn--secondary edit-listing-cancel">Anulează</button>
-                                <button type="submit" class="hub-btn hub-btn--primary">Salvează</button>
+                                <button type="button" class="hub-btn hub-btn--secondary edit-listing-cancel">Cancel</button>
+                                <button type="submit" class="hub-btn hub-btn--primary">Save</button>
                             </div>
                         </form>
                     </div>`;
@@ -1605,7 +1605,7 @@
                 overlay.querySelector('[name="country"]').addEventListener('change', e => {
                 const citySelect = overlay.querySelector('[name="location"]');
                 const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
-                citySelect.innerHTML = '<option value="">— Alege orașul —</option>' +
+                citySelect.innerHTML = '<option value="">— Select city —</option>' +
                     (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
                 citySelect.disabled = !e.target.value;
                 });
@@ -1613,7 +1613,7 @@
                 overlay.querySelector('#edit-listing-form').addEventListener('submit', async e => {
                     e.preventDefault();
                     const f = e.target, btn = f.querySelector('[type="submit"]');
-                    btn.disabled = true; btn.textContent = 'Se salvează…';
+                    btn.disabled = true; btn.textContent = 'Saving…';
                     const res = await mpApi('PUT', `/marketplace/listings/${id}`, {
                         title: f.title.value.trim(),
                         description: f.description.value.trim(),
@@ -1626,7 +1626,7 @@
                         olx_url: f.olx_url.value.trim(),
                     });
                     if (res.success) { close(); loadMyListings(); }
-                    else { btn.disabled = false; btn.textContent = 'Salvează'; alert(res.error || 'Eroare.'); }
+                    else { btn.disabled = false; btn.textContent = 'Save'; alert(res.error || 'Error.'); }
                 });
             } catch { alert('Could not load listing.'); }
         }
@@ -1642,47 +1642,47 @@
             overlay.innerHTML = `
                 <div class="hub-modal">
                     <div class="hub-modal__header">
-                        <span class="hub-modal__title">Publică un anunț</span>
+                        <span class="hub-modal__title">Post a Listing</span>
                         <button class="hub-modal__close">&times;</button>
                     </div>
                     <form class="hub-modal__body" id="create-listing-form">
-                        <div class="hub-form-group"><label class="hub-form-label">Titlu</label><input class="hub-form-input" name="title" maxlength="100" required placeholder="ex: PlayStation 4 Slim 500GB"></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Title</label><input class="hub-form-input" name="title" maxlength="100" required placeholder="ex: PlayStation 4 Slim 500GB"></div>
                         <div class="hub-form-row">
-                            <div class="hub-form-group"><label class="hub-form-label">Preț (RON)</label><input class="hub-form-input" name="price" type="number" min="0" step="1" required placeholder="0"></div>
-                            <div class="hub-form-group"><label class="hub-form-label">Stare</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Price (RON)</label><input class="hub-form-input" name="price" type="number" min="0" step="1" required placeholder="0"></div>
+                            <div class="hub-form-group"><label class="hub-form-label">Condition</label><select class="hub-form-select" name="condition">${Object.entries(LISTING_CONDITIONS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
                         </div>
-                        <div class="hub-form-group"><label class="hub-form-label">Categorie</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
-                        <div class="hub-form-group"><label class="hub-form-label">Descriere</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Descrie produsul…"></textarea></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Category</label><select class="hub-form-select" name="category">${Object.entries(LISTING_CATEGORIES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Description</label><textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Describe the product…"></textarea></div>
                         <div class="hub-form-row">
                             <div class="hub-form-group">
-                                <label class="hub-form-label">Țară</label>
+                                <label class="hub-form-label">Country</label>
                                 <select class="hub-form-select" name="country" required>
-                                    <option value="">— Alege țara —</option>
+                                    <option value="">— Select country —</option>
                                     ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${c.name}</option>`).join('')}
                                 </select>
                             </div>
                             <div class="hub-form-group">
-                                <label class="hub-form-label">Oraș</label>
+                                <label class="hub-form-label">City</label>
                                 <select class="hub-form-select" name="location" required disabled>
-                                    <option value="">— Alege mai întâi țara —</option>
+                                    <option value="">— Select a country first —</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="hub-form-group"><label class="hub-form-label">Telefon</label><input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…"></div>
-                        <div class="hub-form-group"><label class="hub-form-label">Link OLX (opțional)</label><input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…"></div>
+                        <div class="hub-form-group"><label class="hub-form-label">Phone</label><input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…"></div>
+                        <div class="hub-form-group"><label class="hub-form-label">OLX Link (optional)</label><input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…"></div>
                         <div class="hub-form-group">
                             <label class="hub-form-label">Imagini (max ${MAX_IMAGES} fotografii)</label>
                             <div class="hub-upload-zone" id="create-upload-zone">
                                 <input type="file" id="create-upload-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
                                 <span class="hub-upload-zone__icon">📁</span>
-                                <span class="hub-upload-zone__text">Trage fotografiile aici sau click pentru a alege</span>
+                                <span class="hub-upload-zone__text">Drag photos here or click to choose</span>
                             </div>
-                            <div class="hub-upload-counter" id="create-upload-counter">0 / ${MAX_IMAGES} imagini selectate</div>
+                            <div class="hub-upload-counter" id="create-upload-counter">0 / ${MAX_IMAGES} images selected</div>
                             <div class="hub-upload-grid" id="create-upload-grid"></div>
                         </div>
                         <div class="hub-modal__footer" style="padding:0;border:none">
-                            <button type="button" class="hub-btn hub-btn--secondary create-listing-cancel">Anulează</button>
-                            <button type="submit" class="hub-btn hub-btn--primary">Publică</button>
+                            <button type="button" class="hub-btn hub-btn--secondary create-listing-cancel">Cancel</button>
+                            <button type="submit" class="hub-btn hub-btn--primary">Publish</button>
                         </div>
                     </form>
                 </div>`;
@@ -1695,7 +1695,7 @@
             overlay.querySelector('[name="country"]').addEventListener('change', e => {
                 const citySelect = overlay.querySelector('[name="location"]');
                 const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
-                citySelect.innerHTML = '<option value="">— Alege orașul —</option>' +
+                citySelect.innerHTML = '<option value="">— Select city —</option>' +
                     (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
                 citySelect.disabled = !e.target.value;
             });
@@ -1713,7 +1713,7 @@
                     thumb.innerHTML = `<img src="${URL.createObjectURL(file)}" alt=""><button type="button" class="hub-upload-thumb__remove" data-idx="${i}">&times;</button>`;
                     uploadGrid.appendChild(thumb);
                 });
-                uploadCounter.textContent = `${selectedFiles.length} / ${MAX_IMAGES} imagini selectate`;
+                uploadCounter.textContent = `${selectedFiles.length} / ${MAX_IMAGES} images selected`;
             }
 
             function addFiles(files) {
@@ -1761,7 +1761,7 @@
             overlay.querySelector('#create-listing-form').addEventListener('submit', async e => {
                 e.preventDefault();
                 const f = e.target, btn = f.querySelector('[type="submit"]');
-                btn.disabled = true; btn.textContent = 'Se publică…';
+                btn.disabled = true; btn.textContent = 'Publishing…';
                 const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
                 const res = await mpApi('POST', '/marketplace/listings', {
                     title: f.title.value.trim(),
@@ -1775,11 +1775,11 @@
                     images: imageUrls,
                 });
                 if (res.success) { close(); loadMyListings(); }
-                else { btn.disabled = false; btn.textContent = 'Publică'; alert(res.error || 'Eroare.'); }
+                else { btn.disabled = false; btn.textContent = 'Publish'; alert(res.error || 'Error.'); }
             });
         }
 
-        // Bind header "+ Anunț nou" button
+        // Bind header "+ New Listing" button
         document.getElementById('btn-create-listing')?.addEventListener('click', openCreateListingModal);
 
         initProfile();

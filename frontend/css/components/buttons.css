@@ -87,7 +87,7 @@
 
 /* === MOBILE RESPONSIVE === */
 @media (max-width: 768px) {
-    /* Butoane full-width și touch-friendly pe mobile */
+    /* Full-width and touch-friendly buttons on mobile */
     .btn {
         display: block;
         width: 100%;

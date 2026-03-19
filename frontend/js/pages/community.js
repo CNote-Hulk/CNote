@@ -222,7 +222,7 @@ function renderForum() {
 
     v.innerHTML = `
         <div class="hub-view-header">
-            <div class="hub-view-header__title">💬 ${esc(cName)} — Comunitate</div>
+            <div class="hub-view-header__title">💬 ${esc(cName)} — Community</div>
             ${u ? '<button class="hub-btn hub-btn--primary" id="forum-new-btn">+ New topic</button>' : ''}
         </div>
         <div class="hub-forum-filters" id="forum-filters">
@@ -252,7 +252,7 @@ async function loadThreads() {
         if (S.forumTag !== 'All') threads = threads.filter(t => t.tag === S.forumTag);
 
         if (!threads.length) {
-            list.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">💬</div>Niciun subiect. Fii primul!</div>';
+            list.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">💬</div>No topics yet. Be the first!</div>';
             return;
         }
         list.innerHTML = threads.map(t => `
@@ -364,7 +364,7 @@ function openNewThreadModal() {
     overlay.innerHTML = `
         <div class="hub-modal">
             <div class="hub-modal__header">
-                <span class="hub-modal__title">Subiect nou</span>
+                <span class="hub-modal__title">New Topic</span>
                 <button class="hub-modal__close">&times;</button>
             </div>
             <form class="hub-modal__body" id="new-thread-form">
@@ -456,15 +456,15 @@ function renderMarketplace() {
                 <div class="hub-filter-section">
                     <div class="hub-filter-section__label">Condition</div>
                     <select class="hub-form-select" id="market-condition">
-                        <option value="">Toate</option>
+                        <option value="">All</option>
                         ${Object.entries(CONDITIONS).map(([k, val]) => `<option value="${k}" ${S.marketCondition===k?'selected':''}>${val}</option>`).join('')}
                     </select>
                 </div>
 
                 <div class="hub-filter-section">
-                    <div class="hub-filter-section__label">Consolă</div>
+                    <div class="hub-filter-section__label">Console</div>
                     <select class="hub-form-select" id="market-console">
-                        <option value="">Toate</option>
+                        <option value="">All</option>
                         ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}" ${S.marketConsole===c.id?'selected':''}>${c.name}</option>`).join('')}
                     </select>
                 </div>
@@ -589,7 +589,7 @@ async function loadListings() {
         const listings = data.listings || [];
 
         if (!listings.length) {
-            grid.innerHTML = `<div class="hub-empty" style="grid-column:1/-1"><div class="hub-empty__icon">🛒</div>No listings${S.marketSearch ? ' pentru „' + esc(S.marketSearch) + '"' : ''}.</div>`;
+            grid.innerHTML = `<div class="hub-empty" style="grid-column:1/-1"><div class="hub-empty__icon">🛒</div>No listings${S.marketSearch ? ' for “' + esc(S.marketSearch) + '"' : ''}.</div>`;
             pag.innerHTML = '';
             return;
         }
@@ -1272,10 +1272,10 @@ function renderRepair() {
             </div>`;
     } else if (step === 2) {
         if (!S.repairResult) {
-            body = '<div class="hub-empty"><div class="hub-empty__icon">🔍</div>Se analizează…</div>';
+            body = '<div class="hub-empty"><div class="hub-empty__icon">🔍</div>Analyzing…</div>';
         } else {
             const r = S.repairResult;
-            const sevLabel = r.severity === 'high' ? '🔴 Sever' : r.severity === 'medium' ? '🟡 Moderat' : '🟢 Minor';
+            const sevLabel = r.severity === 'high' ? '🔴 Severe' : r.severity === 'medium' ? '🟡 Moderate' : '🟢 Minor';
             body = `
                 <div class="hub-repair-question">Diagnostic</div>
                 <div class="hub-repair-result">
@@ -1284,11 +1284,11 @@ function renderRepair() {
                     ${r.recommendation ? `<div style="color:var(--text-gray);font-size:.84rem">${esc(r.recommendation)}</div>` : ''}
                     <div class="hub-repair-cost-grid">
                         <div class="hub-repair-cost-box">
-                            <div class="hub-repair-cost-label">Cost estimat</div>
+                            <div class="hub-repair-cost-label">Estimated cost</div>
                             <div class="hub-repair-cost-value">${r.estimated_cost_min} – ${r.estimated_cost_max} RON</div>
                         </div>
                         <div class="hub-repair-cost-box">
-                            <div class="hub-repair-cost-label">Timp estimat</div>
+                            <div class="hub-repair-cost-label">Estimated time</div>
                             <div class="hub-repair-cost-value">${esc(r.estimated_time)}</div>
                         </div>
                     </div>
@@ -1388,7 +1388,7 @@ async function submitRepair() {
 function renderDM() {
     const v = document.getElementById('view-dm');
     if (!user()) {
-        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>Trebuie să fii autentificat.<br><a href="login.html" style="color:var(--accent-color)">Conectare</a></div>';
+        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>You must be logged in.<br><a href="login.html" style="color:var(--accent-color)">Log in</a></div>';
         return;
     }
     v.innerHTML = `
@@ -1605,7 +1605,7 @@ initNotifications();
         return;
     }
 
-    // Secțiune: #marketplace, #marketplace/consoles, #forum/ps, etc.
+    // Section: #marketplace, #marketplace/consoles, #forum/ps, etc.
     if (hash && hash.length > 1) {
         const parts = hash.slice(1).split('/');
         const view = parts[0];
@@ -1614,7 +1614,7 @@ initNotifications();
 
         const validViews = ['chat', 'forum', 'marketplace', 'repair', 'dm'];
         if (validViews.includes(view)) {
-            // Marchează sidebar-ul activ
+            // Mark the active sidebar item
             sidebar?.querySelectorAll('.hub-sidebar__item').forEach(item => {
                 const match = item.dataset.view === view &&
                     (item.dataset.console || null) === con &&

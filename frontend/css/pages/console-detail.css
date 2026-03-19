@@ -56,7 +56,7 @@
     justify-content: center;
 }
 
-/* Placeholder pentru imagini lipsă */
+/* Placeholder for missing images */
 .console-hero-image::before {
     content: '🎮';
     position: absolute;
@@ -285,7 +285,7 @@
     .console-hero .container {
         grid-template-columns: 1fr;
         gap: 2rem;
-        /* Imaginea sus, apoi textul */
+        /* Image on top, then text */
         grid-template-areas:
             "image"
             "text";
@@ -301,7 +301,7 @@
         text-align: center;
     }
     
-    /* Imagine - centrată și optimizată */
+    /* Image - centered and optimized */
     .console-hero-image img {
         max-width: 90%;
         max-height: 250px;
@@ -309,7 +309,7 @@
         display: block;
     }
     
-    /* Titlu mai compact */
+    /* More compact title */
     .console-hero-text h1 {
         font-size: clamp(1.75rem, 7vw, 2.25rem);
         line-height: 1.2;
@@ -317,7 +317,7 @@
         letter-spacing: -0.5px;
     }
     
-    /* Meta info - stack frumos */
+    /* Meta info - clean stack */
     .console-hero-text .console-meta {
         justify-content: center;
         gap: 1rem;
@@ -333,7 +333,7 @@
         border: 1px solid rgba(212, 175, 122, 0.2);
     }
     
-    /* Tagline mai compact */
+    /* More compact tagline */
     .console-hero-text .console-tagline {
         font-size: clamp(1rem, 3vw, 1.15rem);
         line-height: 1.6;
@@ -351,9 +351,9 @@
         border-width: 1.5px;
         border-radius: 14px;
         box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-        /* Touch target minim 44px (Apple HIG) */
+        /* Minimum touch target 44px (Apple HIG) */
         min-height: 44px;
-        /* Previne accidental zoom-in pe iOS */
+        /* Prevent accidental zoom-in on iOS */
         touch-action: manipulation;
     }
 
@@ -361,7 +361,7 @@
         font-size: 1.3em;
     }
 
-    /* Tap feedback mai puternic pe mobile */
+    /* Stronger tap feedback on mobile */
     .back-link:active {
         transform: scale(0.95);
         background: rgba(212, 175, 122, 0.25);
@@ -369,7 +369,7 @@
     }
     
     /* === SPECS SECTION === */
-    /* Single column pentru lizibilitate maximă */
+    /* Single column for maximum readability */
     .specs-group {
         margin-bottom: 1.5rem;
     }

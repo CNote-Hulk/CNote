@@ -1,6 +1,6 @@
 /**
  * Responsive Design & Media Queries
- * Mobile-First optimizat pentru Console Notebook
+ * Mobile-First optimized for Console Notebook
  */
 
 /* Desktop First Approach */
@@ -23,14 +23,14 @@
 
 /* === TABLETS & MOBILE (max-width: 768px) === */
 @media (max-width: 768px) {
-    /* Container cu padding optim */
+    /* Container with optimal padding */
     .container {
         max-width: 100%;
         padding: 0 24px;
     }
 
     /* === TYPOGRAPHY RESPONSIVE === */
-    /* Folosim clamp pentru scaling fluid */
+    /* Using clamp for fluid scaling */
     h1 { 
         font-size: clamp(1.75rem, 5vw, 2.25rem);
         line-height: 1.2;
@@ -67,7 +67,7 @@
     }
 
     /* === LAYOUT & SPACING === */
-    /* Reduce spacing pe mobile */
+    /* Reduce spacing on mobile */
     .section {
         padding: 2.5rem 0;
     }
@@ -76,7 +76,7 @@
         padding: 2.5rem 0;
     }
 
-    /* Grids - single column pe mobile */
+    /* Grids - single column on mobile */
     .cards-grid {
         grid-template-columns: 1fr;
         gap: 1.25rem;
@@ -92,7 +92,7 @@
 
 /* === MOBILE PHONES (max-width: 480px) === */
 @media (max-width: 480px) {
-    /* Container mai strâns pe telefoane mici */
+    /* Tighter container on small phones */
     .container {
         padding: 0 20px;
     }
@@ -172,7 +172,7 @@
 
 /* === PERFORMANCE & UX OPTIMIZATIONS === */
 
-/* Prevent horizontal scroll pe toate device-urile mobile */
+/* Prevent horizontal scroll on all mobile devices */
 @media (max-width: 768px) {
     * {
         max-width: 100%;
@@ -182,12 +182,12 @@
         overflow-x: hidden !important;
     }
     
-    /* Optimizare pentru touch */
+    /* Touch optimization */
     a, button, .btn, .card {
         -webkit-tap-highlight-color: rgba(212, 175, 122, 0.2);
     }
     
-    /* Hardware acceleration pentru animații smooth */
+    /* Hardware acceleration for smooth animations */
     .nav-links,
     .hamburger,
     .card,

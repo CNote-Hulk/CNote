@@ -5,21 +5,21 @@
 
 export const DOMUtils = {
     /**
-     * Selectează element
+     * Select element
      */
     select(selector) {
         return document.querySelector(selector);
     },
 
     /**
-     * Selectează toate elementele
+     * Select all elements
      */
     selectAll(selector) {
         return document.querySelectorAll(selector);
     },
 
     /**
-     * Creadă element
+     * Create element
      */
     createElement(tag, classes = '', attrs = {}) {
         const el = document.createElement(tag);
@@ -29,42 +29,42 @@ export const DOMUtils = {
     },
 
     /**
-     * Adaugă clase
+     * Add class
      */
     addClass(el, className) {
         if (el) el.classList.add(className);
     },
 
     /**
-     * Elimină clase
+     * Remove class
      */
     removeClass(el, className) {
         if (el) el.classList.remove(className);
     },
 
     /**
-     * Toggle clasă
+     * Toggle class
      */
     toggleClass(el, className) {
         if (el) el.classList.toggle(className);
     },
 
     /**
-     * Schimbă text
+     * Set text
      */
     setText(el, text) {
         if (el) el.textContent = text;
     },
 
     /**
-     * Schimbă HTML
+     * Set HTML
      */
     setHTML(el, html) {
         if (el) el.innerHTML = html;
     },
 
     /**
-     * Obține valoare input
+     * Get input value
      */
     getValue(selector) {
         const el = document.querySelector(selector);
@@ -72,7 +72,7 @@ export const DOMUtils = {
     },
 
     /**
-     * Setează valoare input
+     * Set input value
      */
     setValue(selector, value) {
         const el = document.querySelector(selector);
@@ -80,7 +80,7 @@ export const DOMUtils = {
     },
 
     /**
-     * Adaugă event listener
+     * Add event listener
      */
     on(selector, event, callback) {
         const el = document.querySelector(selector);
@@ -88,7 +88,7 @@ export const DOMUtils = {
     },
 
     /**
-     * Adaugă event listener pe multiple elemente
+     * Add event listener on multiple elements
      */
     onAll(selector, event, callback) {
         document.querySelectorAll(selector).forEach(el => {

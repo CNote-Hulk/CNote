@@ -228,7 +228,7 @@
     position: relative;
 }
 
-/* Placeholder pentru imagini lipsă */
+/* Placeholder for missing images */
 .console-card-image::before {
     content: '🎮';
     position: absolute;
