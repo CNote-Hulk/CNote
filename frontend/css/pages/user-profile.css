@@ -3,6 +3,33 @@
  * Prettier, card-based layout with cinematic feel
  */
 
+/* === PAGE BASE — match own profile page === */
+.user-profile-page {
+    padding: 64px 0 0;
+    background: #141210;
+    color: #e8d8b8;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    isolation: isolate;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.user-profile-page::after {
+    content: '';
+    position: fixed;
+    inset: -4px;
+    background: url('../../assets/images/wallpapers/index.jpg') center/cover no-repeat;
+    filter: blur(4px) brightness(0.6);
+    transform: scale(1.02);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.user-profile-page > * {
+    position: relative;
+    z-index: 1;
+}
+
 /* === PROFILE HERO HEADER === */
 .up-hero {
     position: relative;
@@ -85,9 +112,11 @@
     justify-content: center;
     flex-wrap: wrap;
     padding: 24px 32px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+    background: rgba(20, 18, 16, 0.6);
+    border: 1px solid rgba(180, 140, 80, 0.1);
     border-radius: 14px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .up-consoles .profile-console-list {
@@ -141,19 +170,21 @@
 }
 
 .user-dashboard-panel .dash-stat {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+    background: rgba(20, 18, 16, 0.6);
+    border: 1px solid rgba(180, 140, 80, 0.1);
     border-radius: 12px;
     padding: 20px 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .user-dashboard-panel .dash-stat:hover {
-    border-color: rgba(212, 175, 122, 0.2);
+    border-color: rgba(200, 168, 80, 0.25);
     transform: translateY(-2px);
 }
 
@@ -183,15 +214,17 @@
 }
 
 .user-dashboard-panel .dash-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+    background: rgba(20, 18, 16, 0.6);
+    border: 1px solid rgba(180, 140, 80, 0.1);
     border-radius: 12px;
     padding: 22px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     transition: border-color 0.2s ease;
 }
 
 .user-dashboard-panel .dash-card:hover {
-    border-color: rgba(212, 175, 122, 0.15);
+    border-color: rgba(200, 168, 80, 0.2);
 }
 
 .user-dashboard-panel .dash-card__head h3 {
