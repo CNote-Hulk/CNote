@@ -382,6 +382,7 @@
 
 .profile-avatar:hover {
     border-color: var(--p-accent);
+    transform: none;
 }
 
 .profile-avatar::after {
@@ -503,10 +504,16 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+    max-width: none;
+    margin: 0;
 }
 
 .profile-console-list {
     text-align: left;
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
 }
 
 .profile-console-list__title {
@@ -630,6 +637,8 @@
 /* Panel visibility */
 .profile-panel {
     display: none;
+    max-width: none;
+    margin: 0;
 }
 
 .profile-panel.active {
@@ -1071,6 +1080,10 @@
 
 /* ── Responsive: collapse sidebar on small screens ── */
 @media (max-width: 860px) {
+    .profile-page {
+        padding-top: 130px;
+    }
+
     .profile-layout {
         grid-template-columns: 1fr;
     }
@@ -1085,29 +1098,29 @@
 
     .profile-sidebar-nav {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 6px;
     }
 
     .profile-tab {
         width: auto;
-        padding: 8px 10px;
-        font-size: 0.72rem;
+        padding: 10px 0;
+        font-size: 0;
         border-radius: 8px;
         justify-content: center;
         text-align: center;
         border-left: none;
-        gap: 6px;
+        gap: 0;
     }
 
     .profile-tab.active {
         border-left: none;
-        padding-left: 10px;
+        padding-left: 0;
         background: rgba(200,168,80,0.14);
     }
 
     .profile-tab span {
-        display: none;
+        display: none !important;
     }
 
     .profile-tab svg {
@@ -1117,6 +1130,18 @@
 
     .profile-main {
         padding: 24px 16px 60px;
+    }
+
+    .dash-stats {
+        grid-template-columns: repeat(3, 1fr);
+        margin-left: -16px;
+        margin-right: -16px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .dash-grid {
+        grid-template-columns: 1fr;
     }
 }
 
