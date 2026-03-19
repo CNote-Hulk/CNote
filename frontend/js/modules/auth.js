@@ -39,6 +39,8 @@ export const AuthModule = {
             two_factor_email_enabled: !!user.two_factor_email_enabled,
             google_linked: !!user.google_linked,
             has_password: user.has_password !== false,
+            role: user.role || 'user',
+            username_chosen: user.username_chosen !== false,
             created_at: user.created_at
         };
         localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));

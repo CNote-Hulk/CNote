@@ -8,14 +8,22 @@ import { AuthModule } from '../modules/auth.js';
 // ─── Handle Google OAuth redirect ────────────────
 const googleData = AuthModule.handleGoogleRedirect();
 if (googleData && googleData.user) {
-    window.location.href = 'profil.html';
+    if (!googleData.user.username_chosen) {
+        window.location.href = 'setup-username.html';
+    } else {
+        window.location.href = 'profil.html';
+    }
 }
 
 // Auto-login: check if token is still valid
 (async () => {
     const user = await AuthModule.autoLogin();
     if (user) {
-        window.location.href = 'profil.html';
+        if (!user.username_chosen) {
+            window.location.href = 'setup-username.html';
+        } else {
+            window.location.href = 'profil.html';
+        }
         return;
     }
 })();
@@ -64,7 +72,12 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             }
             document.getElementById('two-factor-code').focus();
         } else if (result.success) {
-            window.location.href = 'profil.html';
+            const cur = AuthModule.getCurrentUser();
+            if (cur && !cur.username_chosen) {
+                window.location.href = 'setup-username.html';
+            } else {
+                window.location.href = 'profil.html';
+            }
         } else if (result.error === 'email_not_verified') {
             errorEl.classList.remove('visible');
             const verifyWarn = document.getElementById('login-verify-warning');
@@ -117,7 +130,12 @@ document.getElementById('two-factor-form').addEventListener('submit', async (e) 
     try {
         const result = await AuthModule.verifyTwoFactor(code, currentMethod);
         if (result.success) {
-            window.location.href = 'profil.html';
+            const cur = AuthModule.getCurrentUser();
+            if (cur && !cur.username_chosen) {
+                window.location.href = 'setup-username.html';
+            } else {
+                window.location.href = 'profil.html';
+            }
         } else {
             errorEl.textContent = result.error || 'Invalid code.';
             errorEl.classList.add('visible');

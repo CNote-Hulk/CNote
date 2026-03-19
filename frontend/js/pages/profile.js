@@ -16,6 +16,8 @@
         const user = AuthModule.getCurrentUser();
         if (!user) {
             window.location.href = 'login.html';
+        } else if (!user.username_chosen) {
+            window.location.href = 'setup-username.html';
         }
 
         /** Escape HTML special characters */
