@@ -387,6 +387,7 @@ function renderRatingWidget(consoleId) {
     // Create rating section
     const section = document.createElement('section');
     section.className = 'section rating-section';
+    section.id = 'rating';
     section.innerHTML = `
         <div class="container">
             <h2 class="section-title">${I18nModule.t('console_rating_title')}</h2>
@@ -595,6 +596,14 @@ async function init() {
     renderSpecs(currentConsole);
     renderRatingWidget(consoleId);
     initFavoriteButton(consoleId);
+
+    // Scroll to hash target if present (e.g. #rating)
+    if (window.location.hash) {
+        setTimeout(function () {
+            var target = document.querySelector(window.location.hash);
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+    }
 
     window.addEventListener('cn:language-changed', () => {
         if (!currentConsole) return;

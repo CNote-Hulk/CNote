@@ -312,7 +312,7 @@
     color: var(--p-text);
     padding: 64px 0 0;
     isolation: isolate;
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
 }
 
@@ -378,8 +378,8 @@
     align-items: center;
     text-align: center;
     position: sticky;
-    top: 0;
-    height: 100vh;
+    top: 64px;
+    height: calc(100vh - 64px);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(200,168,80,0.15) transparent;

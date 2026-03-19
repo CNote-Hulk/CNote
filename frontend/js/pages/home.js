@@ -1,7 +1,7 @@
 /**
  * Homepage Quick Guide
  * Locked scroll until user clicks "Explore CNote"
- * Vertical timeline auto-completes on discover
+ * Steps are clickable links — each tracks completion via localStorage
  * Timeline only shown when logged in; button redirects to login otherwise
  */
 document.addEventListener('DOMContentLoaded', function () {
@@ -24,18 +24,86 @@ document.addEventListener('DOMContentLoaded', function () {
         if (hero) hero.classList.add('hero-home--centered');
         if (exploreBtn) {
             exploreBtn.href = 'login.html';
-            exploreBtn.removeAttribute('id'); // prevent discover logic
+            exploreBtn.removeAttribute('id');
         }
         return;
     }
 
-    // Logged in: normal discover flow
+    // === Quick Guide Completion System ===
+    var STORAGE_KEY = 'cn_quickguide';
+
+    function getProgress() {
+        try {
+            var data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            if (data && Array.isArray(data.completed)) return data;
+        } catch (e) { /* ignore */ }
+        return { completed: [] };
+    }
+
+    function saveProgress(progress) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    }
+
+    function markStepComplete(stepIndex) {
+        var progress = getProgress();
+        if (progress.completed.indexOf(stepIndex) === -1) {
+            progress.completed.push(stepIndex);
+            saveProgress(progress);
+        }
+    }
+
+    function isStepComplete(stepIndex) {
+        return getProgress().completed.indexOf(stepIndex) !== -1;
+    }
+
+    function renderProgress() {
+        var progress = getProgress();
+        steps.forEach(function (step, i) {
+            var done = progress.completed.indexOf(i) !== -1;
+            step.classList.toggle('completed', done);
+            step.classList.toggle('active', done);
+            // Fill connector if both adjacent steps are done
+            if (i > 0 && connectors[i - 1]) {
+                var prevDone = progress.completed.indexOf(i - 1) !== -1;
+                connectors[i - 1].classList.toggle('filled', prevDone && done);
+            }
+        });
+        // Fill first connector if step 0 is done
+        if (connectors[0]) {
+            var step0Done = progress.completed.indexOf(0) !== -1;
+            var step1Done = progress.completed.indexOf(1) !== -1;
+            connectors[0].classList.toggle('filled', step0Done && step1Done);
+        }
+    }
+
+    // Make steps clickable — navigate to the page and mark as done
+    steps.forEach(function (step, i) {
+        var href = step.getAttribute('data-href');
+        if (!href) return;
+
+        step.style.cursor = 'pointer';
+        step.addEventListener('click', function () {
+            markStepComplete(i);
+
+            // Step 4 (index 4): pick a random console and go to its rating
+            if (i === 4 && window.CONSOLES_DATA && window.CONSOLES_DATA.length) {
+                var consoles = window.CONSOLES_DATA;
+                var random = consoles[Math.floor(Math.random() * consoles.length)];
+                window.location.href = 'consoles/' + random.id + '.html#rating';
+                return;
+            }
+
+            window.location.href = href;
+        });
+    });
+
+    // Render saved progress on load
+    renderProgress();
+
+    // === Discover (locked scroll) flow ===
     var discovered = localStorage.getItem('homeDiscovered') === 'true';
 
-    if (discovered) {
-        steps.forEach(function (s) { s.classList.add('active'); });
-        connectors.forEach(function (c) { c.classList.add('filled'); });
-    } else {
+    if (!discovered) {
         document.body.classList.add('home-locked');
     }
 
@@ -45,23 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 e.preventDefault();
                 document.body.classList.remove('home-locked');
                 localStorage.setItem('homeDiscovered', 'true');
-                animateTimeline();
                 setTimeout(function () {
                     var target = document.getElementById('content');
                     if (target) target.scrollIntoView({ behavior: 'smooth' });
                 }, 400);
             }
-        });
-    }
-
-    function animateTimeline() {
-        steps.forEach(function (step, i) {
-            setTimeout(function () {
-                step.classList.add('active');
-                if (i > 0 && connectors[i - 1]) {
-                    connectors[i - 1].classList.add('filled');
-                }
-            }, i * 600);
         });
     }
 });

@@ -12,10 +12,13 @@ body.home-locked {
 .hero-home {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: clamp(40px, 8vw, 140px);
-    padding-left: clamp(40px, 8vw, 120px);
-    padding-right: clamp(24px, 5vw, 80px);
+    justify-content: space-between;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 40px;
+    padding-right: 40px;
+    box-sizing: border-box;
 }
 
 .hero-home .hero-content {
@@ -72,6 +75,41 @@ body.home-locked {
     background: var(--accent-color);
     border-color: var(--accent-color);
     box-shadow: 0 0 10px rgba(212, 175, 122, 0.3);
+}
+
+/* Completed step — checkmark inside dot */
+.hero-timeline__step.completed .hero-timeline__dot {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(212, 175, 122, 0.3);
+    position: relative;
+}
+
+.hero-timeline__step.completed .hero-timeline__dot::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--dark-bg, #1B1714);
+    line-height: 1;
+}
+
+/* Clickable step hover */
+.hero-timeline__step[data-href] {
+    cursor: pointer;
+}
+
+.hero-timeline__step[data-href]:not(.completed):hover {
+    opacity: 0.7;
+    transform: translateX(4px);
+}
+
+.hero-timeline__step.completed .hero-timeline__label {
+    text-decoration: line-through;
+    text-decoration-color: rgba(212, 175, 122, 0.4);
 }
 
 .hero-timeline__text {
@@ -160,14 +198,18 @@ body.home-locked {
 @media (max-width: 768px) {
     .hero-home {
         flex-direction: column;
-        gap: 32px;
-        padding-left: 24px;
-        padding-right: 24px;
+        justify-content: flex-start;
+        gap: 24px;
+        padding: 120px 24px 32px;
+        max-width: 100%;
     }
 
     .hero-home .hero-content {
         text-align: center;
         order: -1;
+        max-width: 100%;
+        position: relative;
+        z-index: 3;
     }
 
     .hero-home .hero-content p {
@@ -176,7 +218,8 @@ body.home-locked {
     }
 
     .hero-timeline {
-        align-items: center;
+        align-items: flex-start;
+        padding-left: 20px;
     }
 
     .hero-timeline__step {
@@ -185,6 +228,19 @@ body.home-locked {
 
     .hero-timeline__connector {
         margin-left: 6.5px;
-        height: 30px;
+        height: 24px;
+    }
+
+    .hero-timeline__label {
+        font-size: 0.95rem;
+    }
+
+    .hero-timeline__number {
+        font-size: 0.75rem;
+    }
+
+    /* Logged-out centered */
+    .hero-home--centered {
+        justify-content: center;
     }
 }
