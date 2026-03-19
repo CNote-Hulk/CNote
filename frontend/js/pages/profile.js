@@ -83,6 +83,12 @@
             document.getElementById('profile-bio').textContent = user.bio || 'No description yet.';
             document.getElementById('profile-date').textContent = 'Member since ' + new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 
+            // Show admin badge if user is admin
+            const adminBadge = document.getElementById('profile-admin-badge');
+            if (adminBadge && user.role === 'admin') {
+                adminBadge.hidden = false;
+            }
+
             // Render console lists
             const renderConsoleList = (containerId, csv) => {
                 const el = document.getElementById(containerId);
@@ -225,6 +231,14 @@
             document.getElementById('set-username').value = user.username;
             document.getElementById('set-bio').value = user.bio || '';
             document.getElementById('set-email').value = user.email || '';
+
+            // Initialize notification preference toggles
+            const notifFriend = document.getElementById('notif-new-friend');
+            const notifMessage = document.getElementById('notif-new-message');
+            const notifRepair = document.getElementById('notif-repair-reply');
+            if (notifFriend) notifFriend.checked = user.notify_new_friend !== false;
+            if (notifMessage) notifMessage.checked = user.notify_new_message !== false;
+            if (notifRepair) notifRepair.checked = user.notify_repair_reply !== false;
 
             // Initialize owned consoles multi-select
             initOwnedConsolesSelect();
@@ -416,7 +430,11 @@
                     return;
                 }
 
-                await AuthModule.updateProfile({ username, bio, owned_consoles });
+                const profileResult = await AuthModule.updateProfile({ username, bio, owned_consoles });
+                if (profileResult === false || (profileResult && !profileResult.success && profileResult.error)) {
+                    showSettingsMessage(profileResult?.error || 'Username is already taken.', false);
+                    return;
+                }
 
                 // Also save owned consoles to the new table
                 try {
@@ -612,6 +630,41 @@
                     } finally {
                         resendVerificationBtn.disabled = false;
                         resendVerificationBtn.textContent = 'Resend verification email';
+                    }
+                });
+            }
+
+            // ─── Notification Preferences save handler ──────
+            const saveNotifBtn = document.getElementById('save-notif-prefs-btn');
+            if (saveNotifBtn) {
+                saveNotifBtn.addEventListener('click', async () => {
+                    const notify_new_friend = document.getElementById('notif-new-friend')?.checked ?? true;
+                    const notify_new_message = document.getElementById('notif-new-message')?.checked ?? true;
+                    const notify_repair_reply = document.getElementById('notif-repair-reply')?.checked ?? false;
+
+                    const result = await AuthModule.updateProfile({ notify_new_friend, notify_new_message, notify_repair_reply });
+                    const notifMsg = document.getElementById('notif-prefs-msg');
+                    if (result && result.success) {
+                        user.notify_new_friend = notify_new_friend;
+                        user.notify_new_message = notify_new_message;
+                        user.notify_repair_reply = notify_repair_reply;
+                        if (notifMsg) {
+                            notifMsg.style.color = 'var(--success)';
+                            notifMsg.style.background = 'rgba(74, 222, 128, 0.1)';
+                            notifMsg.style.borderColor = 'rgba(74, 222, 128, 0.2)';
+                            notifMsg.textContent = 'Notification preferences saved.';
+                            notifMsg.classList.add('visible');
+                            setTimeout(() => notifMsg.classList.remove('visible'), 3200);
+                        }
+                    } else {
+                        if (notifMsg) {
+                            notifMsg.style.color = '#e57373';
+                            notifMsg.style.background = 'rgba(229, 115, 115, 0.12)';
+                            notifMsg.style.borderColor = 'rgba(229, 115, 115, 0.25)';
+                            notifMsg.textContent = result?.error || 'Could not save preferences.';
+                            notifMsg.classList.add('visible');
+                            setTimeout(() => notifMsg.classList.remove('visible'), 3200);
+                        }
                     }
                 });
             }

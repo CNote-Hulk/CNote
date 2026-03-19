@@ -172,6 +172,12 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 document.getElementById('user-bio').textContent = profile.bio || 'No description.';
                 document.getElementById('user-date').textContent = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 
+                // Show admin badge if user is admin
+                const adminBadge = document.getElementById('user-admin-badge');
+                if (adminBadge && profile.role === 'admin') {
+                    adminBadge.hidden = false;
+                }
+
                 // Console lists
                 const consolesSection = document.getElementById('user-profile-consoles');
                 if (consolesSection) {

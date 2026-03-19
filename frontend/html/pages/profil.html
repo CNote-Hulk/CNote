@@ -52,6 +52,7 @@
             <div class="profile-info">
                 <div class="profile-name-row">
                     <div class="profile-name" id="profile-name">—</div>
+                    <span class="admin-badge" id="profile-admin-badge" hidden title="Administrator">🛡️ Admin</span>
                     <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Edit name in Settings" data-i18n="profile_edit_name_title" data-i18n-attr="title">✏️</button>
                 </div>
                 <div class="profile-bio-row">
@@ -286,6 +287,31 @@
                     <button type="button" class="auth-btn auth-btn--danger" id="reset-all-btn" data-i18n="profile_settings_btn_reset">Reset all progress and achievements</button>
                     <div class="auth-error" id="settings-msg" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
                 </form>
+            </div>
+
+            <!-- Email Notification Preferences -->
+            <div class="course-card" style="margin-top: 24px;">
+                <h3 style="color: var(--text-light); margin-bottom: 8px; font-size: 1.05rem; letter-spacing: 0.04em;">EMAIL NOTIFICATIONS</h3>
+                <p style="color: var(--text-muted, #a89880); font-size: 0.85rem; margin-bottom: 14px;">Choose which email notifications you want to receive.</p>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <label class="notif-toggle" for="notif-new-friend">
+                        <span class="notif-toggle__label">New friend added</span>
+                        <input type="checkbox" id="notif-new-friend" class="notif-toggle__input" checked>
+                        <span class="notif-toggle__switch"></span>
+                    </label>
+                    <label class="notif-toggle" for="notif-new-message">
+                        <span class="notif-toggle__label">New message received</span>
+                        <input type="checkbox" id="notif-new-message" class="notif-toggle__input" checked>
+                        <span class="notif-toggle__switch"></span>
+                    </label>
+                    <label class="notif-toggle" for="notif-repair-reply">
+                        <span class="notif-toggle__label">Repair request reply</span>
+                        <input type="checkbox" id="notif-repair-reply" class="notif-toggle__input">
+                        <span class="notif-toggle__switch"></span>
+                    </label>
+                </div>
+                <button type="button" class="auth-btn" id="save-notif-prefs-btn" style="margin-top: 16px;">Save notification preferences</button>
+                <div class="auth-error" id="notif-prefs-msg" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
             </div>
 
             <!-- Active Sessions -->

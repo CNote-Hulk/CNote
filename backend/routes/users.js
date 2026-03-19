@@ -75,7 +75,7 @@ router.get('/users/:username', async (req, res) => {
     try {
         const { username } = req.params;
         const result = await pool.query(
-            `SELECT id, username, bio, avatar, favorite_consoles, owned_consoles, created_at
+            `SELECT id, username, bio, avatar, favorite_consoles, owned_consoles, role, created_at
              FROM users WHERE LOWER(username) = LOWER($1)`,
             [username]
         );
@@ -105,6 +105,7 @@ router.get('/users/:username', async (req, res) => {
                 favorite_console_ids: favResult.rows.map(r => r.console_id),
                 owned_console_ids: ownedResult.rows.map(r => r.console_id),
                 friend_count: parseInt(friendCount.rows[0].count),
+                role: user.role || 'user',
                 created_at: user.created_at
             }
         });

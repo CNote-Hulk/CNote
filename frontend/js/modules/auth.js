@@ -41,7 +41,10 @@ export const AuthModule = {
             has_password: user.has_password !== false,
             role: user.role || 'user',
             username_chosen: user.username_chosen !== false,
-            created_at: user.created_at
+            created_at: user.created_at,
+            notify_new_friend: user.notify_new_friend !== false,
+            notify_new_message: user.notify_new_message !== false,
+            notify_repair_reply: user.notify_repair_reply !== false
         };
         localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
     },
@@ -190,16 +193,16 @@ return { success: false, error: 'Could not contact the server.' };
 
     async updateProfile(fields) {
         const cur = this.getCurrentUser();
-        if (!cur) return false;
+        if (!cur) return { success: false, error: 'Not logged in.' };
 
         try {
             const data = await this._api('PUT', '/me', fields);
             if (data.success && data.user) {
                 this._setSession(data.user);
             }
-            return data.success;
+            return data;
         } catch {
-            return false;
+            return { success: false, error: 'Could not contact the server.' };
         }
     },
 

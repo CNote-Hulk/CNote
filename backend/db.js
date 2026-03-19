@@ -244,7 +244,10 @@ async function initializeSchema() {
 		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS username TEXT DEFAULT ''`,
 		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS custom_symptom TEXT DEFAULT ''`,
 		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS admin_reply TEXT DEFAULT ''`,
-		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS console_model TEXT DEFAULT ''`
+		`ALTER TABLE repair_requests ADD COLUMN IF NOT EXISTS console_model TEXT DEFAULT ''`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS notify_new_friend BOOLEAN DEFAULT TRUE`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS notify_new_message BOOLEAN DEFAULT TRUE`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS notify_repair_reply BOOLEAN DEFAULT TRUE`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

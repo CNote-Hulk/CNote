@@ -28,15 +28,6 @@ if (googleData && googleData.user) {
     }
 })();
 
-// ─── Tab switching ──────────────────────────────
-document.querySelectorAll('.auth-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.auth-tab-panel').forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-    });
-});
 
 // ─── Server login ───────────────────────────────
 document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -95,24 +86,6 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Log in';
     }
-});
-
-// ─── Local login ────────────────────────────────
-document.getElementById('local-login-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('local-username').value.trim();
-    const errorEl = document.getElementById('local-login-error');
-
-    errorEl.classList.remove('visible');
-
-    if (!username) {
-        errorEl.textContent = 'Enter a username.';
-        errorEl.classList.add('visible');
-        return;
-    }
-
-    AuthModule.localLogin(username);
-    window.location.href = 'profil.html';
 });
 
 // ─── 2FA verification ───────────────────────────

@@ -110,7 +110,10 @@ function sanitizeUser(user) {
         has_password: !!user.password_hash,
         role: user.role || 'user',
         username_chosen: user.username_chosen !== false,
-        created_at: user.created_at
+        created_at: user.created_at,
+        notify_new_friend: user.notify_new_friend !== false,
+        notify_new_message: user.notify_new_message !== false,
+        notify_repair_reply: user.notify_repair_reply !== false
     };
 }
 
@@ -445,14 +448,25 @@ router.get('/me', authRequired, (req, res) => {
 
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
-    const { username, bio, avatar, favorite_consoles, owned_consoles } = req.body;
+    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply } = req.body;
     const updates = [];
     const params = [];
     let paramIndex = 1;
 
     if (username !== undefined) {
+        const trimmed = String(username).trim();
+        if (trimmed.length < 3 || trimmed.length > 20) {
+            return res.status(400).json({ success: false, error: 'Username must be 3–20 characters.' });
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(trimmed)) {
+            return res.status(400).json({ success: false, error: 'Username may only contain letters, numbers and underscores.' });
+        }
+        const dup = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1) AND id != $2', [trimmed, req.user.id]);
+        if (dup.rows.length > 0) {
+            return res.status(400).json({ success: false, error: 'Username is already taken.' });
+        }
         updates.push(`username = $${paramIndex++}`);
-        params.push(String(username).trim());
+        params.push(trimmed);
     }
     if (bio !== undefined) {
         updates.push(`bio = $${paramIndex++}`);
@@ -469,6 +483,18 @@ router.put('/me', authRequired, async (req, res) => {
     if (owned_consoles !== undefined) {
         updates.push(`owned_consoles = $${paramIndex++}`);
         params.push(String(owned_consoles));
+    }
+    if (notify_new_friend !== undefined) {
+        updates.push(`notify_new_friend = $${paramIndex++}`);
+        params.push(!!notify_new_friend);
+    }
+    if (notify_new_message !== undefined) {
+        updates.push(`notify_new_message = $${paramIndex++}`);
+        params.push(!!notify_new_message);
+    }
+    if (notify_repair_reply !== undefined) {
+        updates.push(`notify_repair_reply = $${paramIndex++}`);
+        params.push(!!notify_repair_reply);
     }
 
     if (updates.length === 0) {
