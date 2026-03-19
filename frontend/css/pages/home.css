@@ -14,7 +14,7 @@ body.home-locked {
     align-items: center;
     justify-content: flex-start;
     gap: clamp(40px, 8vw, 140px);
-    padding-left: clamp(60px, 12vw, 200px);
+    padding-left: 40px;
     padding-right: clamp(24px, 5vw, 80px);
 }
 
