@@ -432,13 +432,68 @@
 }
 
 /* Profile Tabs */
+.profile-tabs-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto 30px;
+}
+
+.profile-tabs-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-gray);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.profile-tabs-arrow.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.profile-tabs-arrow:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-light);
+}
+
+.profile-tabs-arrow--left {
+    left: -36px;
+}
+
+.profile-tabs-arrow--right {
+    right: -36px;
+}
+
 .profile-tabs {
     display: flex;
     gap: 0;
-    max-width: 800px;
-    margin: 0 auto;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 30px;
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .profile-tab {
@@ -784,6 +839,19 @@
         flex-direction: column;
         text-align: center;
         padding: 24px;
+    }
+
+    .profile-tabs-wrapper {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .profile-tabs-arrow--left {
+        left: -4px;
+    }
+
+    .profile-tabs-arrow--right {
+        right: -4px;
     }
 
     .profile-tabs {

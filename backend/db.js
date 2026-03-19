@@ -251,7 +251,7 @@ async function initializeSchema() {
 
 	// Backfill admin role for known admin accounts
 	try {
-		await pool.query(`UPDATE users SET role = 'admin' WHERE LOWER(username) = LOWER('AndreiHulk07') OR LOWER(email) = LOWER('console.notebook.app@gmail.com')`);
+		await pool.query(`UPDATE users SET role = 'admin' WHERE LOWER(username) = LOWER('AndreiHulk07') OR LOWER(email) IN (LOWER('console.notebook.app@gmail.com'), LOWER('andreihlc2007@gmail.com'))`);
 	} catch { }
 
 	// Backfill listing status for pre-existing rows
