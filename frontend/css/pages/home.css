@@ -43,11 +43,11 @@ body.home-locked {
 .hero-timeline__step {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
     opacity: 0.35;
     transition: opacity 0.5s ease, transform 0.3s ease;
     cursor: default;
-    padding: 4px 0;
+    padding: 8px 0;
 }
 
 .hero-timeline__step:hover {
@@ -59,8 +59,8 @@ body.home-locked {
 }
 
 .hero-timeline__dot {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     background: rgba(212, 175, 122, 0.15);
     border: 1.5px solid rgba(212, 175, 122, 0.25);
@@ -94,7 +94,7 @@ body.home-locked {
 
 .hero-timeline__label {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     font-weight: 500;
     color: var(--text-gray);
     transition: color 0.5s ease;
@@ -107,8 +107,8 @@ body.home-locked {
 /* Vertical connector */
 .hero-timeline__connector {
     width: 1.5px;
-    height: 20px;
-    margin-left: 5.5px;
+    height: clamp(50px, 10vh, 90px);
+    margin-left: 6.5px;
     background: rgba(212, 175, 122, 0.1);
     position: relative;
     overflow: hidden;
@@ -141,6 +141,21 @@ body.home-locked {
     font-weight: 700;
 }
 
+/* === LOGGED-OUT: centered hero, no timeline === */
+.hero-home--centered {
+    justify-content: center;
+}
+
+.hero-home--centered .hero-content {
+    text-align: center;
+    max-width: 600px;
+}
+
+.hero-home--centered .hero-content p {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
     .hero-home {
@@ -169,7 +184,7 @@ body.home-locked {
     }
 
     .hero-timeline__connector {
-        margin-left: 5.5px;
-        height: 14px;
+        margin-left: 6.5px;
+        height: 30px;
     }
 }

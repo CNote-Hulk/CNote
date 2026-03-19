@@ -310,6 +310,18 @@
     background: var(--p-bg);
     font-family: var(--p-font-body);
     color: var(--p-text);
+    padding: 0;
+    isolation: auto;
+    overflow: visible;
+}
+
+.profile-page::after {
+    display: none;
+}
+
+.profile-page > * {
+    position: static;
+    z-index: auto;
 }
 
 /* ── Banner ── */
@@ -600,6 +612,10 @@
 .profile-tab.active {
     background: rgba(200,168,80,0.1);
     color: var(--p-accent);
+}
+
+.profile-tab.active::after {
+    display: none;
 }
 
 .profile-tab.active svg {

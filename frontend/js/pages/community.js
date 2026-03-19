@@ -1500,8 +1500,8 @@ async function renderRepairRequests() {
         return;
     }
     v.innerHTML = `
-        <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
-        <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>`;
+        <div class="hub-view-header"><div class="hub-view-header__title">📋 ${t('repair_my_title')}</div></div>
+        <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>${t('repair_loading')}</div></div>`;
 
     try {
         const data = await api('GET', '/repair');
@@ -1510,8 +1510,8 @@ async function renderRepairRequests() {
 
         if (!requests.length) {
             v.innerHTML = `
-                <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
-                <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">📭</div>No repair requests yet.</div></div>`;
+                <div class="hub-view-header"><div class="hub-view-header__title">📋 ${t('repair_my_title')}</div></div>
+                <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">📭</div>${t('repair_no_requests')}</div></div>`;
             return;
         }
 
@@ -1529,11 +1529,11 @@ async function renderRepairRequests() {
                         ${repairStatusBadge(r.status)}
                     </div>
                     <div class="hub-repair-card__symptoms">${symptomList}</div>
-                    ${r.custom_symptom ? `<div style="color:var(--text-gray);font-size:.84rem;font-style:italic">Custom: ${esc(r.custom_symptom)}</div>` : ''}
+                    ${r.custom_symptom ? `<div style="color:var(--text-gray);font-size:.84rem;font-style:italic">${t('repair_custom_label')}: ${esc(r.custom_symptom)}</div>` : ''}
                     ${r.description ? `<div style="color:var(--text-gray);font-size:.84rem;margin-top:4px">${esc(r.description)}</div>` : ''}
                     ${r.admin_reply ? `
                         <div class="hub-repair-card__reply">
-                            <div style="font-size:.76rem;color:var(--accent-color);font-weight:600;margin-bottom:4px">Admin Reply</div>
+                            <div style="font-size:.76rem;color:var(--accent-color);font-weight:600;margin-bottom:4px">${t('repair_admin_reply_title')}</div>
                             <div style="color:var(--text-light);font-size:.88rem;line-height:1.5">${esc(r.admin_reply)}</div>
                         </div>` : ''}
                     <div style="color:var(--text-gray);font-size:.76rem;margin-top:8px">${new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
@@ -1541,12 +1541,12 @@ async function renderRepairRequests() {
         }).join('');
 
         v.innerHTML = `
-            <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
+            <div class="hub-view-header"><div class="hub-view-header__title">📋 ${t('repair_my_title')}</div></div>
             <div class="hub-repair-body"><div class="hub-repair-list">${cards}</div></div>`;
     } catch {
         v.innerHTML = `
-            <div class="hub-view-header"><div class="hub-view-header__title">📋 My Repair Requests</div></div>
-            <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load requests.</div></div>`;
+            <div class="hub-view-header"><div class="hub-view-header__title">📋 ${t('repair_my_title')}</div></div>
+            <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">❌</div>${t('repair_load_error')}</div></div>`;
     }
 }
 
@@ -1559,12 +1559,12 @@ async function renderRepairAdmin() {
     const v = document.getElementById('view-repair-admin');
     const u = user();
     if (!u || u.role !== 'admin') {
-        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>Admin access required.</div>';
+        v.innerHTML = `<div class="hub-empty"><div class="hub-empty__icon">🔒</div>${t('repair_admin_access')}</div>`;
         return;
     }
     v.innerHTML = `
-        <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests</div></div>
-        <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>`;
+        <div class="hub-view-header"><div class="hub-view-header__title">🛠️ ${t('repair_admin_title')}</div></div>
+        <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>${t('repair_loading')}</div></div>`;
 
     try {
         const data = await api('GET', '/repair/all');
@@ -1573,8 +1573,8 @@ async function renderRepairAdmin() {
 
         if (!requests.length) {
             v.innerHTML = `
-                <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests</div></div>
-                <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">📭</div>No repair requests.</div></div>`;
+                <div class="hub-view-header"><div class="hub-view-header__title">🛠️ ${t('repair_admin_title')}</div></div>
+                <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">📭</div>${t('repair_admin_no_requests')}</div></div>`;
             return;
         }
 
@@ -1591,29 +1591,29 @@ async function renderRepairAdmin() {
                         ${repairStatusBadge(r.status)}
                     </div>
                     <div class="hub-repair-card__symptoms">${symptomList}</div>
-                    ${r.custom_symptom ? `<div style="color:var(--text-gray);font-size:.84rem;font-style:italic">Custom: ${esc(r.custom_symptom)}</div>` : ''}
+                    ${r.custom_symptom ? `<div style="color:var(--text-gray);font-size:.84rem;font-style:italic">${t('repair_custom_label')}: ${esc(r.custom_symptom)}</div>` : ''}
                     ${r.description ? `<div style="color:var(--text-gray);font-size:.84rem;margin-top:4px">${esc(r.description)}</div>` : ''}
                     <div class="hub-repair-admin-controls">
                         <div class="hub-repair-admin-row">
-                            <label style="color:var(--text-gray);font-size:.8rem">Status</label>
+                            <label style="color:var(--text-gray);font-size:.8rem">${t('repair_admin_status_label')}</label>
                             <select class="hub-repair-select" data-field="status">
-                                <option value="pending"${r.status === 'pending' ? ' selected' : ''}>Pending</option>
-                                <option value="in_progress"${r.status === 'in_progress' ? ' selected' : ''}>In Progress</option>
-                                <option value="resolved"${r.status === 'resolved' ? ' selected' : ''}>Resolved</option>
+                                <option value="pending"${r.status === 'pending' ? ' selected' : ''}>${t('repair_admin_status_pending')}</option>
+                                <option value="in_progress"${r.status === 'in_progress' ? ' selected' : ''}>${t('repair_admin_status_in_progress')}</option>
+                                <option value="resolved"${r.status === 'resolved' ? ' selected' : ''}>${t('repair_admin_status_resolved')}</option>
                             </select>
                         </div>
                         <div class="hub-repair-admin-row">
-                            <label style="color:var(--text-gray);font-size:.8rem">Reply to user</label>
-                            <textarea class="hub-repair-textarea" data-field="reply" rows="3" maxlength="2000" placeholder="Write a reply…">${esc(r.admin_reply || '')}</textarea>
+                            <label style="color:var(--text-gray);font-size:.8rem">${t('repair_admin_reply_label')}</label>
+                            <textarea class="hub-repair-textarea" data-field="reply" rows="3" maxlength="2000" placeholder="${t('repair_admin_reply_placeholder')}">${esc(r.admin_reply || '')}</textarea>
                         </div>
-                        <button class="hub-btn hub-btn--primary hub-btn--sm" data-action="save-repair">Save</button>
+                        <button class="hub-btn hub-btn--primary hub-btn--sm" data-action="save-repair">${t('repair_admin_save')}</button>
                     </div>
                     <div style="color:var(--text-gray);font-size:.76rem;margin-top:8px">${new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                 </div>`;
         }).join('');
 
         v.innerHTML = `
-            <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests (${requests.length})</div></div>
+            <div class="hub-view-header"><div class="hub-view-header__title">🛠️ ${t('repair_admin_title')} (${requests.length})</div></div>
             <div class="hub-repair-body"><div class="hub-repair-list">${cards}</div></div>`;
 
         // Admin save event delegation
@@ -1625,29 +1625,29 @@ async function renderRepairAdmin() {
             const status = card.querySelector('[data-field="status"]').value;
             const adminReply = card.querySelector('[data-field="reply"]').value.trim();
 
-            btn.disabled = true; btn.textContent = 'Saving…';
+            btn.disabled = true; btn.textContent = t('repair_admin_saving');
             try {
                 const res = await api('PATCH', `/repair/${rid}`, { status, adminReply });
                 if (res.success) {
-                    btn.textContent = '✓ Saved';
+                    btn.textContent = t('repair_admin_saved');
                     // Update the badge inline
                     const header = card.querySelector('.hub-repair-card__header');
                     const oldBadge = header.querySelector('.hub-status-badge');
                     if (oldBadge) oldBadge.outerHTML = repairStatusBadge(status);
-                    setTimeout(() => { btn.disabled = false; btn.textContent = 'Save'; }, 1500);
+                    setTimeout(() => { btn.disabled = false; btn.textContent = t('repair_admin_save'); }, 1500);
                 } else {
-                    btn.disabled = false; btn.textContent = 'Save';
+                    btn.disabled = false; btn.textContent = t('repair_admin_save');
                     alert(res.error || 'Failed to save.');
                 }
             } catch {
-                btn.disabled = false; btn.textContent = 'Save';
+                btn.disabled = false; btn.textContent = t('repair_admin_save');
                 alert('Failed to save.');
             }
         });
     } catch {
         v.innerHTML = `
-            <div class="hub-view-header"><div class="hub-view-header__title">🛠️ All Repair Requests</div></div>
-            <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">❌</div>Failed to load requests.</div></div>`;
+            <div class="hub-view-header"><div class="hub-view-header__title">🛠️ ${t('repair_admin_title')}</div></div>
+            <div class="hub-repair-body"><div class="hub-empty"><div class="hub-empty__icon">❌</div>${t('repair_load_error')}</div></div>`;
     }
 }
 
@@ -1860,6 +1860,20 @@ function initNotifications() {
    BOOT
    ================================================================ */
 
+// Login gate: block community if not logged in
+if (!user()) {
+    const page = document.querySelector('.community-page');
+    if (page) {
+        page.innerHTML = `
+            <div class="hub-login-gate">
+                <div class="hub-login-gate__icon">🔒</div>
+                <h2 class="hub-login-gate__title">${t('community_login_required_title')}</h2>
+                <p class="hub-login-gate__text">${t('community_login_required_text')}</p>
+                <a href="login.html" class="hub-login-gate__btn">${t('community_login_required_btn')}</a>
+            </div>`;
+    }
+} else {
+
 initSidebar();
 startUnreadPolling();
 initNotifications();
@@ -1909,3 +1923,5 @@ initNotifications();
     // Default: chat
     navigate('chat', null, '');
 })();
+
+} // end login gate else
