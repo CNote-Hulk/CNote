@@ -48,12 +48,6 @@
             <h1 class="auth-card__title" data-i18n="login_title">Login</h1>
             <p class="auth-card__subtitle" data-i18n="login_subtitle">Sign in to your Console Notebook account</p>
 
-            <!-- Tab switcher -->
-            <div class="auth-tabs">
-                <button class="auth-tab active" data-tab="server" data-i18n="login_tab_online">Online</button>
-                <button class="auth-tab" data-tab="local" data-i18n="login_tab_local">Local</button>
-            </div>
-            
             <!-- SERVER LOGIN -->
             <div class="auth-tab-panel active" id="tab-server">
                 <div class="auth-error" id="login-error"></div>
@@ -105,20 +99,6 @@
 
                 <p class="auth-link"><a href="request-password-reset.html" data-i18n="login_forgot">Forgot your password?</a></p>
                 <p class="auth-link" data-i18n="login_no_account">Don't have an account? <a href="register.html" data-i18n="login_create">Create one</a></p>
-            </div>
-
-            <!-- LOCAL LOGIN -->
-            <div class="auth-tab-panel" id="tab-local">
-                <p class="auth-tab-info" data-i18n="login_local_info">Offline mode — data is stored only on this device.</p>
-                <div class="auth-error" id="local-login-error"></div>
-                
-                <form class="auth-form" id="local-login-form" autocomplete="off">
-                    <div class="auth-field">
-                        <label for="local-username" data-i18n="login_local_label">Username</label>
-                        <input type="text" id="local-username" name="username" required placeholder="Your name" data-i18n="login_local_placeholder" data-i18n-attr="placeholder">
-                    </div>
-                    <button type="submit" class="auth-btn" data-i18n="login_local_btn">Log in locally</button>
-                </form>
             </div>
         </div>
     </div>
