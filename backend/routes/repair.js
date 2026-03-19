@@ -35,6 +35,11 @@ const CONSOLE_SYMPTOMS = {
         'Slow performance', 'Network issues', 'Strange noises',
         'Boot loop', 'GPU artifacts', 'RAM errors',
         'Driver issues', 'Storage failure'
+    ],
+    other: [
+        'No power', 'Overheating', 'No video output', 'Strange noises',
+        "Won't turn on", 'Disc read error', 'Controller issues',
+        'Slow performance', 'Network issues'
     ]
 };
 
@@ -53,11 +58,12 @@ router.get('/symptoms/:console', (req, res) => {
 
 // ── POST /api/repair — Submit a new repair request ───────
 router.post('/', authRequired, async (req, res) => {
-    const { consoleType, symptoms, customSymptom, description } = req.body;
+    const { consoleType, consoleModel, symptoms, customSymptom, description } = req.body;
 
     if (!consoleType || !CONSOLE_SYMPTOMS[consoleType]) {
         return res.status(400).json({ success: false, error: 'Invalid console type.' });
     }
+    const safeModel = String(consoleModel || '').trim().slice(0, 200);
     if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
         return res.status(400).json({ success: false, error: 'Select at least one symptom.' });
     }
@@ -77,10 +83,10 @@ router.post('/', authRequired, async (req, res) => {
 
     try {
         const result = await pool.query(`
-            INSERT INTO repair_requests (user_id, username, console, symptoms, custom_symptom, description, status)
-            VALUES ($1, $2, $3, $4, $5, $6, 'pending')
-            RETURNING id, console, symptoms, custom_symptom, description, status, created_at
-        `, [req.user.id, req.user.username, consoleType, safeSymptoms.join(', '), safeCustom, safeDesc]);
+            INSERT INTO repair_requests (user_id, username, console, console_model, symptoms, custom_symptom, description, status)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending')
+            RETURNING id, console, console_model, symptoms, custom_symptom, description, status, created_at
+        `, [req.user.id, req.user.username, consoleType, safeModel, safeSymptoms.join(', '), safeCustom, safeDesc]);
 
         const repair = result.rows[0];
 
@@ -88,6 +94,7 @@ router.post('/', authRequired, async (req, res) => {
         sendRepairRequestNotification({
             username: req.user.username,
             console: consoleType,
+            consoleModel: safeModel,
             symptoms: safeSymptoms,
             customSymptom: safeCustom,
             description: safeDesc,
@@ -105,7 +112,7 @@ router.post('/', authRequired, async (req, res) => {
 router.get('/', authRequired, async (req, res) => {
     try {
         const result = await pool.query(
-            `SELECT id, console, symptoms, custom_symptom, description, status, admin_reply, created_at
+            `SELECT id, console, console_model, symptoms, custom_symptom, description, status, admin_reply, created_at
              FROM repair_requests WHERE user_id = $1 ORDER BY created_at DESC`,
             [req.user.id]
         );
@@ -123,7 +130,7 @@ router.get('/all', authRequired, async (req, res) => {
     }
     try {
         const result = await pool.query(
-            `SELECT r.id, r.user_id, r.username, r.console, r.symptoms, r.custom_symptom,
+            `SELECT r.id, r.user_id, r.username, r.console, r.console_model, r.symptoms, r.custom_symptom,
                     r.description, r.status, r.admin_reply, r.created_at,
                     u.email AS user_email
              FROM repair_requests r

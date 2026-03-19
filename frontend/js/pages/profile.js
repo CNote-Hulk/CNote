@@ -218,6 +218,9 @@
             // Dashboard
             renderDashboard();
 
+            // Repair Requests
+            renderRequests();
+
             // Settings
             document.getElementById('set-username').value = user.username;
             document.getElementById('set-bio').value = user.bio || '';
@@ -1405,6 +1408,106 @@
             searchEl.addEventListener('input', () => renderList(searchEl.value));
             renderList();
             updateHidden();
+        }
+
+        // ─── Repair Requests ─────────────────
+
+        const CONSOLE_NAMES = {
+            ps: 'PlayStation', xbox: 'Xbox', nintendo: 'Nintendo', pc: 'PC Gaming', other: 'Other Consoles'
+        };
+
+        function repairStatusBadge(status) {
+            const map = {
+                pending:     { label: '🟡 Pending',     color: '#eab308' },
+                in_progress: { label: '🔵 In Progress', color: '#3b82f6' },
+                resolved:    { label: '🟢 Resolved',    color: '#22c55e' }
+            };
+            const s = map[status] || { label: status, color: '#888' };
+            return `<span style="font-size:.78rem;font-weight:600;color:${s.color}">${escapeHtml(s.label)}</span>`;
+        }
+
+        async function renderRequests() {
+            const container = document.getElementById('requests-container');
+            if (!container) return;
+
+            const isUserAdmin = user && user.role === 'admin';
+            const endpoint = isUserAdmin ? '/repair/all' : '/repair';
+
+            try {
+                const data = await mpApi('GET', endpoint);
+                if (!data.success) throw 0;
+                const requests = data.requests || [];
+
+                if (!requests.length) {
+                    container.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted,#a89880)"><div style="font-size:2rem;margin-bottom:8px">📭</div>No repair requests yet.</div>';
+                    return;
+                }
+
+                container.innerHTML = requests.map(r => {
+                    const consoleName = CONSOLE_NAMES[r.console] || r.console;
+                    const symptoms = r.symptoms ? r.symptoms.split(', ').map(s => `<span style="display:inline-block;background:rgba(212,162,78,.12);color:var(--accent-color,#D4A24E);border-radius:6px;padding:2px 8px;font-size:.78rem;margin:2px 4px 2px 0">${escapeHtml(s)}</span>`).join('') : '';
+                    const adminInfo = isUserAdmin && r.username ? `<span style="color:var(--text-muted,#a89880);font-size:.8rem;margin-left:8px">${escapeHtml(r.username)}</span>` : '';
+                    return `
+                        <div class="course-card" style="margin-bottom:12px;padding:16px">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                                <div>
+                                    <strong style="color:var(--text-light)">${escapeHtml(consoleName)}</strong>
+                                    ${r.console_model ? `<span style="color:var(--text-muted,#a89880);font-size:.82rem;margin-left:6px">${escapeHtml(r.console_model)}</span>` : ''}
+                                    <span style="color:var(--text-muted,#a89880);font-size:.8rem;margin-left:8px">#${r.id}</span>
+                                    ${adminInfo}
+                                </div>
+                                ${repairStatusBadge(r.status)}
+                            </div>
+                            <div style="margin-bottom:6px">${symptoms}</div>
+                            ${r.custom_symptom ? `<div style="color:var(--text-muted,#a89880);font-size:.84rem;font-style:italic">Custom: ${escapeHtml(r.custom_symptom)}</div>` : ''}
+                            ${r.description ? `<div style="color:var(--text-muted,#a89880);font-size:.84rem;margin-top:4px">${escapeHtml(r.description)}</div>` : ''}
+                            ${r.admin_reply ? `<div style="margin-top:8px;padding:8px 12px;background:rgba(212,162,78,.08);border-radius:8px;border:1px solid rgba(212,162,78,.15)"><div style="font-size:.76rem;color:var(--accent-color,#D4A24E);font-weight:600;margin-bottom:4px">Admin Reply</div><div style="color:var(--text-light);font-size:.88rem;line-height:1.5">${escapeHtml(r.admin_reply)}</div></div>` : ''}
+                            <div style="color:var(--text-muted,#a89880);font-size:.76rem;margin-top:8px">${new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                            ${isUserAdmin ? `
+                            <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)">
+                                <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+                                    <label style="color:var(--text-muted,#a89880);font-size:.8rem">Status</label>
+                                    <select class="profile-input" data-rid="${r.id}" data-field="status" style="padding:4px 8px;font-size:.82rem;max-width:160px">
+                                        <option value="pending"${r.status === 'pending' ? ' selected' : ''}>Pending</option>
+                                        <option value="in_progress"${r.status === 'in_progress' ? ' selected' : ''}>In Progress</option>
+                                        <option value="resolved"${r.status === 'resolved' ? ' selected' : ''}>Resolved</option>
+                                    </select>
+                                </div>
+                                <textarea class="profile-input" data-rid="${r.id}" data-field="reply" rows="2" maxlength="2000" placeholder="Reply to user…" style="width:100%;font-size:.84rem;margin-bottom:8px">${escapeHtml(r.admin_reply || '')}</textarea>
+                                <button class="auth-btn" data-action="save-request" data-rid="${r.id}" style="padding:6px 16px;font-size:.82rem">Save</button>
+                            </div>` : ''}
+                        </div>`;
+                }).join('');
+
+                // Admin save handlers
+                if (isUserAdmin) {
+                    container.addEventListener('click', async e => {
+                        const btn = e.target.closest('[data-action="save-request"]');
+                        if (!btn) return;
+                        const rid = btn.dataset.rid;
+                        const card = btn.closest('.course-card');
+                        const status = card.querySelector(`[data-rid="${rid}"][data-field="status"]`).value;
+                        const adminReply = card.querySelector(`[data-rid="${rid}"][data-field="reply"]`).value.trim();
+
+                        btn.disabled = true; btn.textContent = 'Saving…';
+                        try {
+                            const res = await mpApi('PATCH', `/repair/${rid}`, { status, adminReply });
+                            if (res.success) {
+                                btn.textContent = '✓ Saved';
+                                setTimeout(() => { btn.disabled = false; btn.textContent = 'Save'; }, 1500);
+                            } else {
+                                btn.disabled = false; btn.textContent = 'Save';
+                                alert(res.error || 'Failed to save.');
+                            }
+                        } catch {
+                            btn.disabled = false; btn.textContent = 'Save';
+                            alert('Failed to save.');
+                        }
+                    });
+                }
+            } catch {
+                container.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--text-muted,#a89880)"><div style="font-size:2rem;margin-bottom:8px">❌</div>Failed to load requests.</div>';
+            }
         }
 
         // ─── My Listings ─────────────────
