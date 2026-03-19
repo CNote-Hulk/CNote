@@ -3225,3 +3225,54 @@
 
 .chat-typing__dots span:nth-child(2) { animation-delay: 0.15s; }
 .chat-typing__dots span:nth-child(3) { animation-delay: 0.3s; }
+
+/* === LOGIN GATE (not logged in) === */
+.hub-login-gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    text-align: center;
+    padding: 48px 24px;
+}
+
+.hub-login-gate__icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.hub-login-gate__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-light, #F5F0E8);
+    margin-bottom: 12px;
+}
+
+.hub-login-gate__text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-gray, #A89F94);
+    max-width: 420px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+.hub-login-gate__btn {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--primary-color, #1B1714);
+    background: var(--accent-color, #D4AF7A);
+    padding: 12px 36px;
+    border-radius: var(--radius-md, 8px);
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.hub-login-gate__btn:hover {
+    background: var(--accent-light, #E6C48A);
+    transform: translateY(-1px);
+}
