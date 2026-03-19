@@ -3232,10 +3232,14 @@ input:focus-visible {
  */
 
 /* Timeline Container */
+#timeline .container {
+    padding-left: 0;
+}
+
 .timeline {
     position: relative;
-    max-width: 1000px;
-    margin: 3rem auto;
+    max-width: 1200px;
+    margin: 3rem 0;
     padding: 2rem 0;
 }
 
