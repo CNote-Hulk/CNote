@@ -102,7 +102,7 @@ async function trustDevice(userId, deviceInfo) {
          ON CONFLICT (user_id, device_hash) DO UPDATE SET last_used = NOW(), expires_at = $6`,
         [userId, hash, deviceInfo.browser, deviceInfo.os, deviceInfo.ip, expiresAt]
     );
-}
+
     const d = new Date();
     d.setHours(d.getHours() + hours);
     return d.toISOString();
