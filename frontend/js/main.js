@@ -103,7 +103,7 @@ class App {
 
         // Auto-complete steps based on page visit
         const pageStepMap = {
-            'invata.html': 0,
+            'evolutie.html': 0,
             'comparatie.html': 1,
             'community.html': 2
         };
