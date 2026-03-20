@@ -38,8 +38,29 @@
             var overlay   = document.getElementById('hub-mobile-overlay');
             var closeBtn  = document.getElementById('hub-sidebar-close');
 
+            function applyMobileMenuLayering() {
+                if (!sidebar) return;
+                sidebar.style.zIndex = '5001';
+                sidebar.style.background = '#0d0e14';
+                sidebar.style.opacity = '1';
+                sidebar.style.backdropFilter = 'none';
+                sidebar.style.webkitBackdropFilter = 'none';
+
+                if (overlay) {
+                    overlay.style.zIndex = '5000';
+                    overlay.style.background = 'rgba(0, 0, 0, 0.78)';
+                }
+
+                if (hamburger) {
+                    hamburger.style.zIndex = '5002';
+                }
+            }
+
+            applyMobileMenuLayering();
+
             function openSidebar() {
                 if (!sidebar) return;
+                applyMobileMenuLayering();
                 sidebar.classList.add('hub-sidebar--open');
                 if (hamburger) hamburger.classList.add('active');
                 if (overlay) overlay.classList.add('active');

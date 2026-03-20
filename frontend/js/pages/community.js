@@ -208,6 +208,8 @@ function initMobileSidebarControls() {
     const overlay = document.getElementById('hub-mobile-overlay');
     const closeBtn = document.getElementById('hub-sidebar-close');
 
+    applyMobileMenuLayering();
+
     if (hamburger && !hamburger.dataset.hubMenuBound) {
         hamburger.addEventListener('click', toggleMobileSidebar);
         hamburger.addEventListener('touchstart', (e) => {
@@ -228,6 +230,27 @@ function initMobileSidebarControls() {
     }
 }
 
+function applyMobileMenuLayering() {
+    if (!sidebar) return;
+    const hamburger = document.getElementById('hub-mobile-hamburger');
+    const overlay = document.getElementById('hub-mobile-overlay');
+
+    sidebar.style.zIndex = '5001';
+    sidebar.style.background = '#0d0e14';
+    sidebar.style.opacity = '1';
+    sidebar.style.backdropFilter = 'none';
+    sidebar.style.webkitBackdropFilter = 'none';
+
+    if (overlay) {
+        overlay.style.zIndex = '5000';
+        overlay.style.background = 'rgba(0, 0, 0, 0.78)';
+    }
+
+    if (hamburger) {
+        hamburger.style.zIndex = '5002';
+    }
+}
+
 function toggleMobileSidebar() {
     if (!sidebar) return;
     const hamburger = document.getElementById('hub-mobile-hamburger');
@@ -235,6 +258,7 @@ function toggleMobileSidebar() {
     const isOpen = sidebar.classList.contains('hub-sidebar--open');
     if (isOpen) closeMobileSidebar();
     else {
+        applyMobileMenuLayering();
         sidebar.classList.add('hub-sidebar--open');
         if (hamburger) hamburger.classList.add('active');
         if (overlay) overlay.classList.add('active');
