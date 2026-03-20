@@ -206,11 +206,6 @@ body.home-locked {
         padding-right: 24px;
     }
 
-    /* Hide duplicated title — logo already shows "Console Notebook" */
-    .hero-home .hero-content h1 {
-        display: none;
-    }
-
     .hero-home .hero-content {
         text-align: center;
         order: -1;

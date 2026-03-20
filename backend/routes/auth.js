@@ -71,9 +71,15 @@ function expiresAt(hours = TOKEN_EXPIRY_HOURS) {
 /* ── Trusted Device helpers ── */
 const TRUSTED_DEVICE_DAYS = 30;
 
-/** Build a SHA-256 hash from browser + OS + IP to identify a device */
+/** Build a SHA-256 hash from browser name + OS name + device type to identify a device.
+ *  Excludes browser version (changes on auto-update) and IP (changes on network switch)
+ *  so the trusted device survives normal usage patterns. */
 function buildDeviceHash(deviceInfo) {
-    const raw = [deviceInfo.browser, deviceInfo.os, deviceInfo.ip].join('|');
+    const raw = [
+        deviceInfo.browserStable || deviceInfo.browser,
+        deviceInfo.osStable || deviceInfo.os,
+        deviceInfo.deviceType || 'desktop'
+    ].join('|');
     return crypto.createHash('sha256').update(raw).digest('hex');
 }
 
