@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!loggedIn) {
         // Not logged in: hide timeline, center hero, button goes to login
         if (timeline) timeline.style.display = 'none';
-        if (hero) hero.classList.add('hero-home--centered');
+        
         if (exploreBtn) {
             exploreBtn.href = 'login.html';
             exploreBtn.removeAttribute('id');
