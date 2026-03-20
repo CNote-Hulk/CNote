@@ -2841,6 +2841,28 @@
     }
 }
 
+@media (max-width: 420px) {
+    .hub-sidebar {
+        width: 86vw;
+        min-width: 0;
+        left: -86vw;
+    }
+
+    .hub-listing-img {
+        width: 108px;
+        min-width: 108px;
+        min-height: 108px;
+    }
+
+    .hub-listing-info {
+        padding: 10px 10px;
+    }
+
+    .hub-listing-info__price {
+        font-size: 0.95rem;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    CHAT REDESIGN — Header, Messages, Input, Animations
    ═══════════════════════════════════════════════════════════ */

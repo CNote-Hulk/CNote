@@ -1243,17 +1243,6 @@
         padding: 24px 16px 60px;
     }
 
-    .dash-stats {
-        grid-template-columns: repeat(3, 1fr);
-        margin-left: -16px;
-        margin-right: -16px;
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-
-    .dash-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 @media (max-width: 600px) {
@@ -2221,5 +2210,22 @@ a.chat-message__username:hover {
     }
     .dash-stat__value {
         font-size: 1.1rem;
+    }
+}
+
+/* Profile mobile stability: keep stats readable and avoid sticky overlap */
+@media (max-width: 600px) {
+    .dash-stats {
+        position: static;
+        top: auto;
+        grid-template-columns: 1fr;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .dash-stat {
+        min-height: 90px;
     }
 }

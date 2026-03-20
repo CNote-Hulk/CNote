@@ -197,7 +197,7 @@
     max-width: 1000px;
 }
 
-.console-card {
+.comparison-section .console-card {
     background: rgba(255, 255, 255, 0.03);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
@@ -211,13 +211,13 @@
     width: 100%;
 }
 
-.console-card:hover {
+.comparison-section .console-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
     border-color: rgba(212, 175, 122, 0.3);
 }
 
-.console-card-image {
+.comparison-section .console-card-image {
     padding: 1.75rem 1.25rem 1.25rem;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent);
     text-align: center;
@@ -229,7 +229,7 @@
 }
 
 /* Placeholder for missing images */
-.console-card-image::before {
+.comparison-section .console-card-image::before {
     content: '🎮';
     position: absolute;
     font-size: 4rem;
@@ -237,7 +237,7 @@
     z-index: 0;
 }
 
-.console-card-image img {
+.comparison-section .console-card-image img {
     max-width: 100%;
     max-height: 170px;
     object-fit: contain;
@@ -246,26 +246,26 @@
     z-index: 1;
 }
 
-.console-card-info {
+.comparison-section .console-card-info {
     padding: 1rem 1.5rem 1.5rem;
     text-align: center;
 }
 
-.console-card-info h3 {
+.comparison-section .console-card-info h3 {
     font-size: 1.35rem;
     font-weight: 700;
     color: var(--text-light);
     margin-bottom: 1rem;
 }
 
-.console-meta-tags {
+.comparison-section .console-meta-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     justify-content: center;
 }
 
-.meta-tag {
+.comparison-section .meta-tag {
     padding: 0.35rem 0.75rem;
     background: rgba(212, 175, 122, 0.1);
     border: 1px solid rgba(212, 175, 122, 0.2);
@@ -345,7 +345,7 @@
     margin: 0 0 0.5rem 0.25rem;
 }
 
-.spec-row {
+.comparison-section .spec-row {
     display: grid;
     grid-template-columns: 1fr minmax(140px, 200px) 1fr;
     grid-template-areas: "left label right";
@@ -356,11 +356,11 @@
     align-items: center;
 }
 
-.spec-row + .spec-row {
+.comparison-section .spec-row + .spec-row {
     margin-top: 0.35rem;
 }
 
-.spec-label {
+.comparison-section .spec-label {
     grid-area: label;
     text-align: center;
     font-size: 0.75rem;
@@ -370,48 +370,48 @@
     letter-spacing: 0.6px;
 }
 
-.spec-value {
+.comparison-section .spec-value {
     font-size: 0.95rem;
     color: var(--text-light);
     word-break: break-word;
 }
 
-.spec-value.spec-left {
+.comparison-section .spec-value.spec-left {
     grid-area: left;
     text-align: right;
 }
 
-.spec-value.spec-right {
+.comparison-section .spec-value.spec-right {
     grid-area: right;
     text-align: left;
 }
 
-.flag {
+.comparison-section .flag {
     font-weight: 700;
 }
 
-.flag.yes {
+.comparison-section .flag.yes {
     color: #4ade80;
 }
 
-.flag.no {
+.comparison-section .flag.no {
     color: #f87171;
 }
 
 /* === VERDICT SECTION === */
-.verdict-section {
+.comparison-section .verdict-section {
     margin: 1.5rem auto 0;
     max-width: 1000px;
     width: 100%;
 }
 
-.verdict-grid {
+.comparison-section .verdict-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
 }
 
-.verdict-card {
+.comparison-section .verdict-card {
     background: rgba(255, 255, 255, 0.03);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
@@ -420,7 +420,7 @@
     padding: 1.5rem;
 }
 
-.verdict-console-name {
+.comparison-section .verdict-console-name {
     text-align: center;
     font-size: 1.35rem;
     font-weight: 700;
@@ -430,13 +430,13 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.verdict-lists {
+.comparison-section .verdict-lists {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.list-title {
+.comparison-section .list-title {
     font-size: 0.9rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -444,35 +444,35 @@
     margin-bottom: 0.75rem;
 }
 
-.pros-title {
+.comparison-section .pros-title {
     color: #4ade80;
 }
 
-.cons-title {
+.comparison-section .cons-title {
     color: #f87171;
 }
 
-.pros-list ul,
-.cons-list ul {
+.comparison-section .pros-list ul,
+.comparison-section .cons-list ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.pro-item,
-.con-item {
+.comparison-section .pro-item,
+.comparison-section .con-item {
     padding: 0.5rem 0;
     font-size: 0.95rem;
     color: var(--text-gray);
     line-height: 1.5;
 }
 
-.pro-item {
+.comparison-section .pro-item {
     border-left: 3px solid rgba(74, 222, 128, 0.3);
     padding-left: 1rem;
 }
 
-.con-item {
+.comparison-section .con-item {
     border-left: 3px solid rgba(248, 113, 113, 0.3);
     padding-left: 1rem;
 }
@@ -588,24 +588,24 @@
         order: 2;
     }
 
-    .console-card-image {
+    .comparison-section .console-card-image {
         padding: 1.5rem;
     }
 
-    .console-card-image img {
+    .comparison-section .console-card-image img {
         max-height: 140px;
     }
 
-    .console-card-info {
+    .comparison-section .console-card-info {
         padding: 1.25rem;
     }
 
-    .console-card-info h3 {
+    .comparison-section .console-card-info h3 {
         font-size: 1.25rem;
     }
 
     /* Specs - Mobile: keep label centered, values left/right if space allows */
-    .spec-row {
+    .comparison-section .spec-row {
         grid-template-columns: 1fr minmax(120px, 160px) 1fr;
         grid-template-areas: "left label right";
         gap: 0.35rem;
@@ -613,31 +613,31 @@
         padding: 0.75rem;
     }
 
-    .spec-label {
+    .comparison-section .spec-label {
         text-align: center;
         padding: 0 0.5rem;
     }
 
     /* Ensure left/right values align to edges on mobile */
-    .spec-value.spec-left {
+    .comparison-section .spec-value.spec-left {
         text-align: left;
     }
 
-    .spec-value.spec-right {
+    .comparison-section .spec-value.spec-right {
         text-align: right;
     }
 
     /* Verdict - Stack on mobile */
-    .verdict-grid {
+    .comparison-section .verdict-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
 
-    .verdict-card {
+    .comparison-section .verdict-card {
         padding: 1.5rem;
     }
 
-    .verdict-console-name {
+    .comparison-section .verdict-console-name {
         font-size: 1.2rem;
     }
 }
@@ -665,5 +665,21 @@
 
     .spec-value {
         font-size: 0.85rem;
+    }
+
+    /* On very small phones, stack spec values for readability */
+    .comparison-section .spec-row {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "label"
+            "left"
+            "right";
+        gap: 6px;
+    }
+
+    .comparison-section .spec-label,
+    .comparison-section .spec-value.spec-left,
+    .comparison-section .spec-value.spec-right {
+        text-align: left;
     }
 }
