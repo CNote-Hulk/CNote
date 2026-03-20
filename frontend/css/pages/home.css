@@ -19,7 +19,6 @@ body.home-locked {
 }
 
 .hero-home .hero-content {
-    text-align: left;
     flex: 0 1 auto;
     max-width: 540px;
 }
