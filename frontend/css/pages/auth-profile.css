@@ -884,7 +884,14 @@
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    max-width: 500px;
+    width: 100%;
+    max-width: 640px;
+}
+
+.settings-form .auth-btn {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
 }
 
 .settings-info-title {
