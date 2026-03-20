@@ -2,12 +2,7 @@
         var landing = document.getElementById('community-landing');
         if (!landing) return;
 
-        /* Skip landing only for true deep-links (hash-based views) */
-        var hash = window.location.hash;
-        if (hash && hash.length > 1) {
-            landing.remove();
-            return;
-        }
+        /* Keep landing as a normal standalone page. */
 
         var API = (window.CN_API_BASE_URL || '/api').replace(/\/$/, '');
         var CONSOLE_META = {
@@ -433,29 +428,24 @@
            ENTER HUB
            ═══════════════════════════════════════════════════ */
 
-        function enterHub(view, con) {
-            sessionStorage.setItem('cl-seen', '1');
-            landing.classList.add('cl-exit');
-
-            setTimeout(function() {
-                landing.remove();
-
-                var sidebar = document.getElementById('hub-sidebar');
-                if (!sidebar) return;
-                var items = sidebar.querySelectorAll('.hub-sidebar__item');
-                var matched = null;
-                items.forEach(function(item) {
-                    if (item.dataset.view !== view) return;
-                    if (con && (item.dataset.console || '') !== con) return;
-                    if (!matched) matched = item;
-                });
-                if (matched) matched.click();
-            }, 460);
+        function enterHub(view, con, cat) {
+            var hash = '#' + view + (con ? '/' + con : '') + (cat ? '/' + cat : '');
+            window.location.href = 'community.html' + hash;
         }
 
         landing.addEventListener('click', function(e) {
             var btn = e.target.closest('[data-hub-navigate]');
             if (!btn) return;
-            enterHub(btn.dataset.hubNavigate, btn.dataset.hubConsole || '');
+            enterHub(btn.dataset.hubNavigate, btn.dataset.hubConsole || '', btn.dataset.category || '');
+        });
+
+        // Sidebar menu from welcome page should open the same sections in community page.
+        document.addEventListener('click', function(e) {
+            var item = e.target.closest('.hub-sidebar__item');
+            if (!item || item.classList.contains('hub-sidebar__item--locked')) return;
+            if (!item.dataset.view) return;
+            e.preventDefault();
+            e.stopPropagation();
+            enterHub(item.dataset.view, item.dataset.console || '', item.dataset.category || '');
         });
     })();

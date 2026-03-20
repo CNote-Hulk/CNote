@@ -32,23 +32,40 @@ function generateToken() {
 
 /**
  * findOrCreateSession
- * @description Finds an existing active session for the same user + browser + OS + IP.
- *              If found, reuses it (updates last_activity). Otherwise creates a new one.
+ * @description Finds an existing active session for the same user + stable browser + stable OS + device type.
+ *              If found, reuses it (updates last_activity + metadata). Otherwise creates a new one.
  * @returns {string} session_token
  */
 async function findOrCreateSession(userId, deviceInfo) {
-    // Look for an existing active session from the same device fingerprint
+    // Reuse the same session for the same device family, even if IP or app version changed.
     const existing = await pool.query(
         `SELECT id, session_token FROM user_sessions
-         WHERE user_id = $1 AND browser = $2 AND operating_system = $3 AND ip_address = $4 AND is_active = true
+         WHERE user_id = $1
+           AND device_type = $2
+           AND browser ILIKE ($3 || '%')
+           AND operating_system ILIKE ($4 || '%')
+           AND is_active = true
          ORDER BY last_activity DESC NULLS LAST
          LIMIT 1`,
-        [userId, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
+        [
+            userId,
+            deviceInfo.deviceType,
+            deviceInfo.browserStable || deviceInfo.browser || 'Unknown',
+            deviceInfo.osStable || deviceInfo.os || 'Unknown'
+        ]
     );
 
     if (existing.rows.length > 0) {
-        // Reuse existing session — update last_activity
-        await pool.query('UPDATE user_sessions SET last_activity = NOW() WHERE id = $1', [existing.rows[0].id]);
+        // Refresh metadata so the UI keeps latest browser version/IP while preserving the same session.
+        await pool.query(
+            `UPDATE user_sessions
+             SET last_activity = NOW(),
+                 browser = $2,
+                 operating_system = $3,
+                 ip_address = $4
+             WHERE id = $1`,
+            [existing.rows[0].id, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
+        );
         return existing.rows[0].session_token;
     }
 
