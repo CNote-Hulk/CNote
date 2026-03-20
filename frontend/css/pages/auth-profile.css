@@ -510,6 +510,10 @@
     gap: 6px;
 }
 
+.admin-badge[hidden] {
+    display: none;
+}
+
 .admin-badge {
     display: inline-flex;
     align-items: center;
