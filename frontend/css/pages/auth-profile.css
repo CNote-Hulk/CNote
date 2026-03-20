@@ -383,6 +383,8 @@
     isolation: isolate;
     overflow-x: hidden;
     position: fixed;
+    inset: 0;
+    width: 100%;
 }
 
 .profile-page::after {
@@ -406,6 +408,7 @@
     display: grid;
     grid-template-columns: 260px 1fr;
     min-height: calc(100vh - 64px);
+    width: 100%;
 }
 
 /* ── Sidebar ── */
@@ -886,6 +889,11 @@
     gap: 1.2rem;
     width: 100%;
     max-width: 640px;
+}
+
+#panel-setari .course-card {
+    width: 100%;
+    max-width: 760px;
 }
 
 .settings-form .auth-btn {
