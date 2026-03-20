@@ -323,6 +323,19 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(var(--accent-rgb), 0.15);
 }
 
+/* Contact section migrated from Home: enforce visual centering on Help */
+#contact > .container {
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#contact .contact-card {
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* === CONTACT === */
 .help-contact {
     padding: 80px 20px;
