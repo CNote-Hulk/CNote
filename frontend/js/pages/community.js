@@ -196,21 +196,40 @@ function initSidebar() {
         navigate(item.dataset.view, item.dataset.console || null, item.dataset.category ?? '');
     });
 
-    // Mobile sidebar: hamburger, overlay, close button
-    const hamburger = document.getElementById('hub-mobile-hamburger');
-    const overlay = document.getElementById('hub-mobile-overlay');
-    const closeBtn = document.getElementById('hub-sidebar-close');
-
-    if (hamburger) hamburger.addEventListener('click', toggleMobileSidebar);
-    if (overlay) overlay.addEventListener('click', closeMobileSidebar);
-    if (closeBtn) closeBtn.addEventListener('click', closeMobileSidebar);
+    // Mobile sidebar controls are initialized globally at boot.
 
     // Legacy toggle (for non-mobile fallback)
     const toggle = document.getElementById('hub-sidebar-toggle');
     if (toggle) toggle.addEventListener('click', () => sidebar.classList.toggle('hub-sidebar--open'));
 }
 
+function initMobileSidebarControls() {
+    const hamburger = document.getElementById('hub-mobile-hamburger');
+    const overlay = document.getElementById('hub-mobile-overlay');
+    const closeBtn = document.getElementById('hub-sidebar-close');
+
+    if (hamburger && !hamburger.dataset.hubMenuBound) {
+        hamburger.addEventListener('click', toggleMobileSidebar);
+        hamburger.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            toggleMobileSidebar();
+        }, { passive: false });
+        hamburger.dataset.hubMenuBound = '1';
+    }
+
+    if (overlay && !overlay.dataset.hubMenuBound) {
+        overlay.addEventListener('click', closeMobileSidebar);
+        overlay.dataset.hubMenuBound = '1';
+    }
+
+    if (closeBtn && !closeBtn.dataset.hubMenuBound) {
+        closeBtn.addEventListener('click', closeMobileSidebar);
+        closeBtn.dataset.hubMenuBound = '1';
+    }
+}
+
 function toggleMobileSidebar() {
+    if (!sidebar) return;
     const hamburger = document.getElementById('hub-mobile-hamburger');
     const overlay = document.getElementById('hub-mobile-overlay');
     const isOpen = sidebar.classList.contains('hub-sidebar--open');
@@ -224,6 +243,7 @@ function toggleMobileSidebar() {
 }
 
 function closeMobileSidebar() {
+    if (!sidebar) return;
     const hamburger = document.getElementById('hub-mobile-hamburger');
     const overlay = document.getElementById('hub-mobile-overlay');
     sidebar.classList.remove('hub-sidebar--open');
@@ -1867,6 +1887,9 @@ function initNotifications() {
 /* ================================================================
    BOOT
    ================================================================ */
+
+// Always initialize mobile controls, even if later logic exits early.
+initMobileSidebarControls();
 
 // Login gate: block community if not logged in
 if (!user()) {
