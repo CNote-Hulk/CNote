@@ -5523,6 +5523,9 @@ body.search-open {
 }
 
 .auth-field input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-md, 8px);
@@ -5539,6 +5542,9 @@ body.search-open {
 }
 
 .auth-btn {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     margin-top: 0.5rem;
     padding: 14px 24px;
     background: var(--accent-color, #D4AF7A);
