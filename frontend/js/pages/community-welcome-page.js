@@ -37,6 +37,23 @@
             var hamburger = document.getElementById('hub-mobile-hamburger');
             var overlay   = document.getElementById('hub-mobile-overlay');
             var closeBtn  = document.getElementById('hub-sidebar-close');
+            var lastTouchAt = 0;
+
+            function bindTap(el, handler) {
+                if (!el) return;
+                el.addEventListener('touchstart', function(e) {
+                    lastTouchAt = Date.now();
+                    e.preventDefault();
+                    handler();
+                }, { passive: false });
+                el.addEventListener('click', function(e) {
+                    if (Date.now() - lastTouchAt < 700) {
+                        e.preventDefault();
+                        return;
+                    }
+                    handler();
+                });
+            }
 
             function applyMobileMenuLayering() {
                 if (!sidebar) return;
@@ -79,6 +96,7 @@
                 if (hamburger) hamburger.classList.add('active');
                 if (overlay) overlay.classList.add('active');
                 syncOverlayOutsideSidebar();
+                document.body.style.overflow = 'hidden';
             }
 
             function closeSidebar() {
@@ -87,24 +105,27 @@
                 if (hamburger) hamburger.classList.remove('active');
                 if (overlay) overlay.classList.remove('active');
                 syncOverlayOutsideSidebar();
+                document.body.style.overflow = '';
+            }
+
+            function toggleSidebar() {
+                if (!sidebar) return;
+                if (sidebar.classList.contains('hub-sidebar--open')) closeSidebar();
+                else openSidebar();
             }
 
             if (hamburger && !hamburger.dataset.hubMenuBound) {
-                hamburger.addEventListener('click', openSidebar);
-                hamburger.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    openSidebar();
-                }, { passive: false });
+                bindTap(hamburger, toggleSidebar);
                 hamburger.dataset.hubMenuBound = '1';
             }
 
             if (overlay && !overlay.dataset.hubMenuBound) {
-                overlay.addEventListener('click', closeSidebar);
+                bindTap(overlay, closeSidebar);
                 overlay.dataset.hubMenuBound = '1';
             }
 
             if (closeBtn && !closeBtn.dataset.hubMenuBound) {
-                closeBtn.addEventListener('click', closeSidebar);
+                bindTap(closeBtn, closeSidebar);
                 closeBtn.dataset.hubMenuBound = '1';
             }
         }
