@@ -1928,12 +1928,8 @@ initNotifications();
         }
     }
 
-    // Default: show chat but keep clean URL if landing is visible
-    if (!sessionStorage.getItem('cl-seen')) {
-        showView('chat');
-    } else {
-        navigate('chat', null, '');
-    }
+    // Default route
+    navigate('chat', null, '');
 })();
 
 } // end login gate else
