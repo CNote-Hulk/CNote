@@ -109,12 +109,10 @@ body.home-locked {
 
 .hero-timeline__text {
     display: flex;
-    align-items: baseline;
     gap: 8px;
 }
 
 .hero-timeline__number {
-    font-family: 'DM Sans', sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
     color: rgba(212, 175, 122, 0.4);
@@ -126,7 +124,6 @@ body.home-locked {
 }
 
 .hero-timeline__label {
-    font-family: 'DM Sans', sans-serif;
     font-size: 1.28rem;
     font-weight: 600;
     color: var(--text-gray);
