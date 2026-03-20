@@ -427,7 +427,6 @@
     text-align: center;
     position: relative;
     padding-top: 64px;
-    height: calc(100vh - 64px);
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
@@ -719,7 +718,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 64px);
 }
 
 /* Panel visibility */
