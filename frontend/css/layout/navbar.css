@@ -222,7 +222,7 @@
     }
 
     body.community-navbar-page .hamburger {
-        display: flex;
+        display: none;
     }
 
     /* Nav-links: always visible, horizontal scrollable row */
