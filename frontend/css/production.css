@@ -64,11 +64,6 @@
     --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Smooth scroll for same-page anchors */
-html {
-    scroll-behavior: smooth;
-}
-
 /* Dark mode only for this project */
 @media (prefers-color-scheme: dark) {
     :root {
@@ -82,6 +77,12 @@ html {
  * CSS Reset & Normalization
  * Remove browser defaults, set consistent baseline
  */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 html {
     scroll-behavior: smooth;
@@ -341,11 +342,6 @@ mark {
 .mt-sm { margin-top: var(--spacing-sm); }
 .mt-md { margin-top: var(--spacing-md); }
 .mt-lg { margin-top: var(--spacing-lg); }
-
-/* Text Alignment */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
 
 /* Responsive Grid */
 @media (max-width: 768px) {
@@ -1261,20 +1257,14 @@ mark {
 }
 
 /* Card Variants - Gold accent */
-.card.physics-card {
-    border-left: 3px solid rgba(212, 175, 122, 0.5);
-}
-
-.card.physics-card:hover {
-    border-left-color: var(--accent-color);
-}
-
+.card.physics-card,
 .card.cs-card {
     border-left: 3px solid rgba(212, 175, 122, 0.5);
 }
 
+.card.physics-card:hover,
 .card.cs-card:hover {
-    border-left-color: rgba(212, 175, 122, 0.8);
+    border-left-color: var(--accent-color);
 }
 
 /* Course progress block (used in Invata page cards) */
@@ -2411,7 +2401,6 @@ textarea {
     }
 
     /* === TYPOGRAPHY RESPONSIVE === */
-    /* Using clamp for fluid scaling */
     h1 { 
         font-size: clamp(1.75rem, 5vw, 2.25rem);
         line-height: 1.2;
@@ -2448,7 +2437,6 @@ textarea {
     }
 
     /* === LAYOUT & SPACING === */
-    /* Reduce spacing on mobile */
     .section {
         padding: 2.5rem 0;
     }
@@ -2456,29 +2444,14 @@ textarea {
     .section.bg-alt {
         padding: 2.5rem 0;
     }
-
-    /* Grids - single column on mobile */
-    .cards-grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-    }
-
-    .grid-2, 
-    .grid-3 {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-    }
-
 }
 
 /* === MOBILE PHONES (max-width: 480px) === */
 @media (max-width: 480px) {
-    /* Tighter container on small phones */
     .container {
         padding: 0 20px;
     }
 
-    /* Typography extra compact */
     h1 { 
         font-size: 1.5rem;
         letter-spacing: -0.5px;
@@ -2502,33 +2475,8 @@ textarea {
         margin-bottom: 1rem;
     }
 
-    /* Spacing redus */
     .section {
         padding: 2rem 0;
-    }
-
-    /* Cards compacte */
-    .card {
-        padding: 1.25rem;
-        border-radius: 14px;
-    }
-
-    .cards-grid {
-        gap: 1rem;
-    }
-
-    /* Footer compact */
-    .footer {
-        padding: 1.5rem 0;
-    }
-
-    .footer p {
-        font-size: 0.85rem;
-        line-height: 1.5;
-    }
-    
-    .footer-note {
-        font-size: 0.8rem;
     }
 }
 
@@ -2559,19 +2507,8 @@ textarea {
         overflow-x: hidden !important;
     }
     
-    /* Touch optimization */
     a, button, .btn, .card {
         -webkit-tap-highlight-color: rgba(212, 175, 122, 0.2);
-    }
-    
-    /* Hardware acceleration for smooth animations */
-    .nav-links,
-    .hamburger,
-    .card,
-    .btn {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        will-change: transform;
     }
 }
 
@@ -3106,12 +3043,6 @@ input:focus-visible {
 
 /* ===== MOBILE ≤ 680px: Premium Image Cards ===== */
 @media (max-width: 680px) {
-
-    /* --- Grid: 2 columns --- */
-    .console-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
 
     /* --- Cards with images --- */
     .section#index .console-card {
@@ -4263,6 +4194,11 @@ input:focus-visible {
 }
 
 @media (max-width: 480px) {
+    .hero-compact {
+        min-height: 22vh;
+        padding: 80px 0 20px;
+    }
+
     .selector-label {
         font-size: 1rem;
     }
@@ -5139,13 +5075,7 @@ input:focus-visible {
     cursor: not-allowed;
 }
 
-/* Success/Error Message Animations */
-.contact-card .success-message,
-.contact-card .error-message {
-    animation: scaleInGrow 0.3s ease forwards;
-    backface-visibility: hidden;
-    will-change: opacity, transform;
-}
+/* Note: success/error message animations handled via .message-visible class above */
 
 .contact-form .button-loading {
     position: relative;

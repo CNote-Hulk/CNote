@@ -318,7 +318,7 @@
     }
 }
 
-/* 600px-768px: 2 columns */
+/* 600px-900px: 2 columns */
 @media (max-width: 900px) {
     .console-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -335,17 +335,8 @@
     }
 }
 
-/* Small tablet/large phone: keep 2 columns */
+/* Small tablet/large phone: tighter spacing */
 @media (max-width: 680px) {
-    .console-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.65rem;
-    }
-    .section#index .console-card {
-        width: 100%;
-        height: auto;
-        min-height: 90px;
-    }
     .section#index .container {
         padding-left: 1rem;
         padding-right: 1rem;

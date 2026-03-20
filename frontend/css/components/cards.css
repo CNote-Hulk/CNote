@@ -80,20 +80,14 @@
 }
 
 /* Card Variants - Gold accent */
-.card.physics-card {
-    border-left: 3px solid rgba(212, 175, 122, 0.5);
-}
-
-.card.physics-card:hover {
-    border-left-color: var(--accent-color);
-}
-
+.card.physics-card,
 .card.cs-card {
     border-left: 3px solid rgba(212, 175, 122, 0.5);
 }
 
+.card.physics-card:hover,
 .card.cs-card:hover {
-    border-left-color: rgba(212, 175, 122, 0.8);
+    border-left-color: var(--accent-color);
 }
 
 /* Course progress block (used in Invata page cards) */

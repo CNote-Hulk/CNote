@@ -264,13 +264,7 @@
     cursor: not-allowed;
 }
 
-/* Success/Error Message Animations */
-.contact-card .success-message,
-.contact-card .error-message {
-    animation: scaleInGrow 0.3s ease forwards;
-    backface-visibility: hidden;
-    will-change: opacity, transform;
-}
+/* Note: success/error message animations handled via .message-visible class above */
 
 .contact-form .button-loading {
     position: relative;
