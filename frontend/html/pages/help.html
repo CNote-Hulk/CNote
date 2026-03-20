@@ -36,7 +36,7 @@
                 <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
                 <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
                 <li><a href="help.html" class="active" data-i18n="nav_help">Help</a></li>
-                <li><a href="index.html#contact" data-i18n="nav_contact">Contact</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
             <div class="navbar-profile-wrap">
                 <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
@@ -188,29 +188,48 @@
     </section>
 
     <!-- ===========================
-         CONTACT SECTION
+         CONTACT SECTION (moved from Home)
          =========================== -->
-    <section class="help-contact">
-        <div class="help-contact__inner">
-            <h2 class="help-contact__title" data-i18n="help_contact_title">Still need help?</h2>
-            <div class="help-contact__card">
-                <div id="help-success-msg" class="help-contact__msg help-contact__msg--success"></div>
-                <div id="help-error-msg" class="help-contact__msg help-contact__msg--error"></div>
-                <form class="help-contact__form" id="help-contact-form" novalidate>
-                    <div class="help-contact__group">
-                        <label for="help-name" data-i18n="help_contact_name">Name</label>
-                        <input id="help-name" name="name" type="text" placeholder="Your name" data-i18n="help_contact_name_placeholder" data-i18n-attr="placeholder" required>
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="contact_title">Contact</h2>
+            <p class="section-intro" data-i18n="contact_intro">Have questions or feedback about the project?</p>
+
+            <div class="contact-card">
+                <div id="success-message" class="success-message" data-i18n="contact_success">
+                    ✓ Message sent successfully! I will reply soon.
+                </div>
+
+                <div id="error-message" class="error-message" data-i18n="contact_error">
+                    ✕ Error sending message. Please try again.
+                </div>
+
+                <form class="contact-form" id="contact-form" novalidate>
+                    <div class="input-group">
+                        <label for="contact-name" data-i18n="contact_label_name">Name</label>
+                        <input id="contact-name" name="name" type="text" placeholder="Your name" data-i18n="contact_placeholder_name" data-i18n-attr="placeholder" required>
                     </div>
-                    <div class="help-contact__group">
-                        <label for="help-email" data-i18n="help_contact_email">Email</label>
-                        <input id="help-email" name="email" type="email" placeholder="you@example.com" data-i18n="help_contact_email_placeholder" data-i18n-attr="placeholder" required>
+
+                    <div class="input-group">
+                        <label for="contact-email" data-i18n="contact_label_email">Email</label>
+                        <input id="contact-email" name="email" type="email" placeholder="you@example.com" data-i18n="contact_placeholder_email" data-i18n-attr="placeholder" required>
                     </div>
-                    <div class="help-contact__group">
-                        <label for="help-message" data-i18n="help_contact_message">Message</label>
-                        <textarea id="help-message" name="message" placeholder="Write your message here" data-i18n="help_contact_message_placeholder" data-i18n-attr="placeholder" required></textarea>
+
+                    <div class="input-group">
+                        <label for="contact-subject" data-i18n="contact_label_subject">Subject</label>
+                        <input id="contact-subject" name="subject" type="text" placeholder="Message subject" data-i18n="contact_placeholder_subject" data-i18n-attr="placeholder" required>
                     </div>
-                    <input type="text" name="_honey" class="help-contact__honey" tabindex="-1" autocomplete="off">
-                    <button type="submit" class="help-contact__submit" id="help-submit-btn" data-i18n="help_contact_submit">Send message</button>
+
+                    <div class="input-group">
+                        <label for="contact-message" data-i18n="contact_label_message">Message</label>
+                        <textarea id="contact-message" name="message" placeholder="Write your message here" data-i18n="contact_placeholder_message" data-i18n-attr="placeholder" required></textarea>
+                    </div>
+
+                    <input type="text" name="_honey" class="honeypot-input" tabindex="-1" autocomplete="off">
+
+                    <div class="input-group">
+                        <button type="submit" class="demo-button" id="submit-btn" data-i18n="contact_send">Send message</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -235,6 +254,7 @@
     <script type="module" src="../../js/main.js"></script>
     <script src="../../js/pages/help.js"></script>
     <script src="../../js/fallback/hamburger.js" defer></script>
+    <script src="../../js/fallback/contact-form.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
 </body>
 </html>
