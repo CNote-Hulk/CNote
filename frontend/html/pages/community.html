@@ -62,6 +62,10 @@
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                             Join Chat
                         </button>
+                        <button class="cl-btn cl-btn--secondary" data-hub-navigate="marketplace" type="button">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            Marketplace
+                        </button>
                         <button class="cl-btn cl-btn--secondary" data-hub-navigate="forum" data-hub-console="general" type="button">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                             Ask Question
@@ -76,6 +80,13 @@
                 <!-- 2 ── QUICK ACTIONS ─────────────────────── -->
                 <section class="cl-section cl-reveal">
                     <div class="cl-quick__grid">
+                        <button class="cl-quick__item" data-hub-navigate="marketplace" type="button">
+                            <span class="cl-quick__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </span>
+                            <span class="cl-quick__label">Marketplace</span>
+                            <span class="cl-quick__desc">Buy, sell, or trade consoles</span>
+                        </button>
                         <button class="cl-quick__item" data-hub-navigate="forum" data-hub-console="general" type="button">
                             <span class="cl-quick__icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -176,30 +187,9 @@
                             </div>
                             <span class="cl-chat-preview__online">3 online</span>
                         </div>
-                        <div class="cl-chat-preview__messages">
-                            <div class="cl-chat-msg">
-                                <div class="cl-chat-msg__avatar">AM</div>
-                                <div class="cl-chat-msg__body">
-                                    <div class="cl-chat-msg__user">Alex M.</div>
-                                    <div class="cl-chat-msg__text">Has anyone tried the new PS5 system update? My console feels faster now.</div>
-                                    <div class="cl-chat-msg__time">2 min ago</div>
-                                </div>
-                            </div>
-                            <div class="cl-chat-msg">
-                                <div class="cl-chat-msg__avatar">SK</div>
-                                <div class="cl-chat-msg__body">
-                                    <div class="cl-chat-msg__user">Sarah K.</div>
-                                    <div class="cl-chat-msg__text">Just fixed my Xbox Series X HDMI port! Tutorial coming soon.</div>
-                                    <div class="cl-chat-msg__time">5 min ago</div>
-                                </div>
-                            </div>
-                            <div class="cl-chat-msg">
-                                <div class="cl-chat-msg__avatar">MT</div>
-                                <div class="cl-chat-msg__body">
-                                    <div class="cl-chat-msg__user">Mike T.</div>
-                                    <div class="cl-chat-msg__text">Looking for a Nintendo Switch repair guide — drift issue on the left Joy-Con.</div>
-                                    <div class="cl-chat-msg__time">8 min ago</div>
-                                </div>
+                        <div class="cl-chat-preview__messages" id="cl-chat-messages">
+                            <div class="cl-chat-msg cl-chat-msg--placeholder">
+                                <div class="cl-chat-msg__text" style="opacity:0.4">Loading messages&hellip;</div>
                             </div>
                         </div>
                         <div class="cl-chat-preview__footer">
@@ -217,62 +207,10 @@
                         <h2 class="cl-section__title">Trending Discussions</h2>
                         <p class="cl-section__subtitle">Popular topics in the community</p>
                     </div>
-                    <div class="cl-trending__list">
-                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="ps" type="button">
-                            <div class="cl-trending__rank">1</div>
-                            <div class="cl-trending__info">
-                                <div class="cl-trending__title">PS5 overheating after 2 hours of gaming</div>
-                                <div class="cl-trending__meta">
-                                    <span class="cl-trending__category" style="color:#0070D1">PlayStation</span>
-                                    <span class="cl-trending__activity"></span>
-                                </div>
-                            </div>
-                            <span class="cl-trending__replies">23 replies</span>
-                        </button>
-                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="xbox" type="button">
-                            <div class="cl-trending__rank">2</div>
-                            <div class="cl-trending__info">
-                                <div class="cl-trending__title">Best Xbox controller alternatives in 2026?</div>
-                                <div class="cl-trending__meta">
-                                    <span class="cl-trending__category" style="color:#107C10">Xbox</span>
-                                    <span class="cl-trending__activity"></span>
-                                </div>
-                            </div>
-                            <span class="cl-trending__replies">18 replies</span>
-                        </button>
-                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="nintendo" type="button">
-                            <div class="cl-trending__rank">3</div>
-                            <div class="cl-trending__info">
-                                <div class="cl-trending__title">Nintendo Switch 2 — first impressions thread</div>
-                                <div class="cl-trending__meta">
-                                    <span class="cl-trending__category" style="color:#E60012">Nintendo</span>
-                                    <span class="cl-trending__activity"></span>
-                                </div>
-                            </div>
-                            <span class="cl-trending__replies">45 replies</span>
-                        </button>
-                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="pc" type="button">
-                            <div class="cl-trending__rank">4</div>
-                            <div class="cl-trending__info">
-                                <div class="cl-trending__title">GPU temps hitting 95°C on my RTX 5080</div>
-                                <div class="cl-trending__meta">
-                                    <span class="cl-trending__category" style="color:#9B59B6">PC Gaming</span>
-                                    <span class="cl-trending__activity"></span>
-                                </div>
-                            </div>
-                            <span class="cl-trending__replies">31 replies</span>
-                        </button>
-                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="other" type="button">
-                            <div class="cl-trending__rank">5</div>
-                            <div class="cl-trending__info">
-                                <div class="cl-trending__title">Retro console modding guide (NES / SNES)</div>
-                                <div class="cl-trending__meta">
-                                    <span class="cl-trending__category" style="color:#E67E22">Other</span>
-                                    <span class="cl-trending__activity"></span>
-                                </div>
-                            </div>
-                            <span class="cl-trending__replies">12 replies</span>
-                        </button>
+                    <div class="cl-trending__list" id="cl-trending-list">
+                        <div class="cl-trending__item cl-trending__item--placeholder" style="opacity:0.4;pointer-events:none">
+                            <div class="cl-trending__info"><div class="cl-trending__title">Loading discussions&hellip;</div></div>
+                        </div>
                     </div>
                 </section>
 
@@ -286,98 +224,91 @@
                         <button class="cl-category-card" style="--cat-color:#0070D1" data-hub-navigate="forum" data-hub-console="ps" type="button">
                             <span class="cl-category-card__dot"></span>
                             <span class="cl-category-card__name">PlayStation</span>
-                            <span class="cl-category-card__count">342 posts</span>
+                            <span class="cl-category-card__count" id="cl-cat-ps">&ndash;</span>
                         </button>
                         <button class="cl-category-card" style="--cat-color:#107C10" data-hub-navigate="forum" data-hub-console="xbox" type="button">
                             <span class="cl-category-card__dot"></span>
                             <span class="cl-category-card__name">Xbox</span>
-                            <span class="cl-category-card__count">287 posts</span>
+                            <span class="cl-category-card__count" id="cl-cat-xbox">&ndash;</span>
                         </button>
                         <button class="cl-category-card" style="--cat-color:#E60012" data-hub-navigate="forum" data-hub-console="nintendo" type="button">
                             <span class="cl-category-card__dot"></span>
                             <span class="cl-category-card__name">Nintendo</span>
-                            <span class="cl-category-card__count">198 posts</span>
+                            <span class="cl-category-card__count" id="cl-cat-nintendo">&ndash;</span>
                         </button>
                         <button class="cl-category-card" style="--cat-color:#9B59B6" data-hub-navigate="forum" data-hub-console="pc" type="button">
                             <span class="cl-category-card__dot"></span>
                             <span class="cl-category-card__name">PC Gaming</span>
-                            <span class="cl-category-card__count">256 posts</span>
+                            <span class="cl-category-card__count" id="cl-cat-pc">&ndash;</span>
                         </button>
                         <button class="cl-category-card" style="--cat-color:#E67E22" data-hub-navigate="forum" data-hub-console="other" type="button">
                             <span class="cl-category-card__dot"></span>
                             <span class="cl-category-card__name">Other</span>
-                            <span class="cl-category-card__count">89 posts</span>
+                            <span class="cl-category-card__count" id="cl-cat-other">&ndash;</span>
                         </button>
                     </div>
                 </section>
 
-                <!-- 7 ── REPAIR HIGHLIGHT ──────────────────── -->
+                <!-- 7 ── MARKETPLACE PREVIEW ────────────── -->
+                <section class="cl-section cl-reveal">
+                    <div class="cl-section__header">
+                        <h2 class="cl-section__title">Marketplace</h2>
+                        <p class="cl-section__subtitle">Latest listings from the community</p>
+                    </div>
+                    <div class="cl-marketplace__grid" id="cl-marketplace-grid">
+                        <div class="cl-marketplace__loading">Loading listings&hellip;</div>
+                    </div>
+                    <div style="text-align:center;margin-top:20px">
+                        <button class="cl-btn cl-btn--secondary cl-btn--sm" data-hub-navigate="marketplace" type="button">
+                            Browse All Listings
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 8 ── REPAIR HIGHLIGHT ──────────────────── -->
                 <section class="cl-section cl-reveal">
                     <div class="cl-section__header">
                         <h2 class="cl-section__title">Repair Center</h2>
                         <p class="cl-section__subtitle">Latest repair activity from the community</p>
                     </div>
-                    <div class="cl-repair__grid">
+                    <div class="cl-repair__grid" id="cl-repair-grid">
                         <div class="cl-repair__column">
                             <h3><span style="color:#fb923c">&#9679;</span> Latest Requests</h3>
-                            <ul class="cl-repair-list">
-                                <li class="cl-repair-list__item">
-                                    <span class="cl-repair-list__icon cl-repair-list__icon--pending"></span>
-                                    <span class="cl-repair-list__text">Xbox Series X — No power after surge</span>
-                                    <span class="cl-repair-list__console" style="color:#107C10">Xbox</span>
-                                </li>
-                                <li class="cl-repair-list__item">
-                                    <span class="cl-repair-list__icon cl-repair-list__icon--pending"></span>
-                                    <span class="cl-repair-list__text">PS5 Slim disc reader stuck</span>
-                                    <span class="cl-repair-list__console" style="color:#0070D1">PlayStation</span>
-                                </li>
-                                <li class="cl-repair-list__item">
-                                    <span class="cl-repair-list__icon cl-repair-list__icon--pending"></span>
-                                    <span class="cl-repair-list__text">Switch OLED screen flickering</span>
-                                    <span class="cl-repair-list__console" style="color:#E60012">Nintendo</span>
+                            <ul class="cl-repair-list" id="cl-repair-pending">
+                                <li class="cl-repair-list__item" style="opacity:0.4">
+                                    <span class="cl-repair-list__text">Loading&hellip;</span>
                                 </li>
                             </ul>
                         </div>
                         <div class="cl-repair__column">
                             <h3><span style="color:#4ade80">&#9679;</span> Recently Solved</h3>
-                            <ul class="cl-repair-list">
-                                <li class="cl-repair-list__item">
-                                    <span class="cl-repair-list__icon cl-repair-list__icon--solved"></span>
-                                    <span class="cl-repair-list__text">PS4 Pro overheating — cleaned &amp; repasted</span>
-                                    <span class="cl-repair-list__console" style="color:#0070D1">PlayStation</span>
-                                </li>
-                                <li class="cl-repair-list__item">
-                                    <span class="cl-repair-list__icon cl-repair-list__icon--solved"></span>
-                                    <span class="cl-repair-list__text">Xbox One S HDMI port replaced</span>
-                                    <span class="cl-repair-list__console" style="color:#107C10">Xbox</span>
-                                </li>
-                                <li class="cl-repair-list__item">
-                                    <span class="cl-repair-list__icon cl-repair-list__icon--solved"></span>
-                                    <span class="cl-repair-list__text">PC build — RAM compatibility fixed</span>
-                                    <span class="cl-repair-list__console" style="color:#9B59B6">PC</span>
+                            <ul class="cl-repair-list" id="cl-repair-solved">
+                                <li class="cl-repair-list__item" style="opacity:0.4">
+                                    <span class="cl-repair-list__text">Loading&hellip;</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
-                <!-- 8 ── COMMUNITY STATS ───────────────────── -->
+                <!-- 9 ── COMMUNITY STATS ───────────────────── -->
                 <section class="cl-section cl-reveal" style="margin-bottom:0">
                     <div class="cl-section__header">
                         <h2 class="cl-section__title">Community in Numbers</h2>
                     </div>
                     <div class="cl-stats__grid">
                         <div class="cl-stat-card">
-                            <div class="cl-stat-card__number" data-count="2847">0</div>
-                            <div class="cl-stat-card__label">Members</div>
+                            <div class="cl-stat-card__number" id="cl-stat-members" data-count="0">0</div>
+                            <div class="cl-stat-card__label">Active Now</div>
                         </div>
                         <div class="cl-stat-card">
-                            <div class="cl-stat-card__number" data-count="1203">0</div>
-                            <div class="cl-stat-card__label">Repairs Solved</div>
+                            <div class="cl-stat-card__number" id="cl-stat-threads" data-count="0">0</div>
+                            <div class="cl-stat-card__label">Forum Threads</div>
                         </div>
                         <div class="cl-stat-card">
-                            <div class="cl-stat-card__number" data-count="5621">0</div>
-                            <div class="cl-stat-card__label">Questions Answered</div>
+                            <div class="cl-stat-card__number" id="cl-stat-listings" data-count="0">0</div>
+                            <div class="cl-stat-card__label">Marketplace Listings</div>
                         </div>
                     </div>
                 </section>
@@ -553,7 +484,7 @@
     <script src="../../js/fallback/hamburger.js" defer></script>
     <script src="../../js/fallback/search-profile.js"></script>
 
-    <!-- Community Landing — scroll animations, timeline, & hub transition -->
+    <!-- Community Landing — scroll animations, timeline, data loading & hub transition -->
     <script>
     (function() {
         var landing = document.getElementById('community-landing');
@@ -565,6 +496,227 @@
             landing.remove();
             return;
         }
+
+        var API = (window.CN_API_BASE_URL || '/api').replace(/\/$/, '');
+        var CONSOLE_META = {
+            ps:       { label: 'PlayStation', color: '#0070D1' },
+            xbox:     { label: 'Xbox',        color: '#107C10' },
+            nintendo: { label: 'Nintendo',    color: '#E60012' },
+            pc:       { label: 'PC Gaming',   color: '#9B59B6' },
+            general:  { label: 'General',     color: '#A89F94' },
+            other:    { label: 'Other',       color: '#E67E22' }
+        };
+
+        /* ── Utility ────────────────────────────────────── */
+        function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        function initials(name) {
+            if (!name) return '??';
+            var parts = name.trim().split(/\s+/);
+            return (parts[0][0] + (parts[1] ? parts[1][0] : parts[0][1] || '')).toUpperCase();
+        }
+        function timeAgo(dateStr) {
+            var diff = Math.max(0, Date.now() - new Date(dateStr).getTime());
+            var mins = Math.floor(diff / 60000);
+            if (mins < 1) return 'just now';
+            if (mins < 60) return mins + ' min ago';
+            var hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + 'h ago';
+            var days = Math.floor(hrs / 24);
+            return days + 'd ago';
+        }
+
+        /* ═══════════════════════════════════════════════════
+           DATA FETCHING & RENDERING
+           ═══════════════════════════════════════════════════ */
+
+        function fetchJSON(path) {
+            return fetch(API + path, { credentials: 'include' })
+                .then(function(r) { return r.json(); })
+                .catch(function() { return { success: false }; });
+        }
+
+        /* ── Chat Messages ───────────────────────────── */
+        function loadChat() {
+            fetchJSON('/chat/messages?limit=3').then(function(data) {
+                var container = document.getElementById('cl-chat-messages');
+                if (!container || !data.success || !data.messages || !data.messages.length) {
+                    if (container) container.innerHTML = '<div class="cl-chat-msg"><div class="cl-chat-msg__text" style="opacity:0.4">No messages yet — be the first to say hi!</div></div>';
+                    return;
+                }
+                var msgs = data.messages.reverse();
+                var html = '';
+                msgs.forEach(function(m) {
+                    var user = m.user || m;
+                    var name = esc(user.username || 'User');
+                    html += '<div class="cl-chat-msg">'
+                        + '<div class="cl-chat-msg__avatar">' + initials(name) + '</div>'
+                        + '<div class="cl-chat-msg__body">'
+                        + '<div class="cl-chat-msg__user">' + name + '</div>'
+                        + '<div class="cl-chat-msg__text">' + esc(m.message) + '</div>'
+                        + '<div class="cl-chat-msg__time">' + timeAgo(m.created_at) + '</div>'
+                        + '</div></div>';
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        /* ── Trending Discussions ────────────────────── */
+        function loadTrending() {
+            fetchJSON('/forum/recent').then(function(data) {
+                var container = document.getElementById('cl-trending-list');
+                if (!container || !data.success || !data.threads || !data.threads.length) {
+                    if (container) container.innerHTML = '<div class="cl-trending__item" style="opacity:0.4;pointer-events:none"><div class="cl-trending__info"><div class="cl-trending__title">No discussions yet</div></div></div>';
+                    return;
+                }
+                var html = '';
+                data.threads.forEach(function(t, i) {
+                    var meta = CONSOLE_META[t.console] || CONSOLE_META.other;
+                    html += '<button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="' + esc(t.console) + '" type="button">'
+                        + '<div class="cl-trending__rank">' + (i + 1) + '</div>'
+                        + '<div class="cl-trending__info">'
+                        + '<div class="cl-trending__title">' + esc(t.title) + '</div>'
+                        + '<div class="cl-trending__meta">'
+                        + '<span class="cl-trending__category" style="color:' + meta.color + '">' + meta.label + '</span>'
+                        + '<span class="cl-trending__activity">' + timeAgo(t.created_at) + '</span>'
+                        + '</div></div></button>';
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        /* ── Category Counts ─────────────────────────── */
+        var totalThreads = 0;
+        function loadCategoryCounts() {
+            var consoles = ['ps', 'xbox', 'nintendo', 'pc', 'other'];
+            consoles.forEach(function(con) {
+                fetchJSON('/forum/' + con + '/threads').then(function(data) {
+                    var el = document.getElementById('cl-cat-' + con);
+                    if (!el) return;
+                    var count = (data.success && data.threads) ? data.threads.length : 0;
+                    totalThreads += count;
+                    el.textContent = count + ' posts';
+                    /* Update stats card */
+                    var statEl = document.getElementById('cl-stat-threads');
+                    if (statEl) {
+                        statEl.setAttribute('data-count', totalThreads);
+                        statEl.textContent = totalThreads.toLocaleString();
+                    }
+                });
+            });
+        }
+
+        /* ── Marketplace Listings ────────────────────── */
+        function loadMarketplace() {
+            fetchJSON('/marketplace/listings?limit=4&sort=newest').then(function(data) {
+                var container = document.getElementById('cl-marketplace-grid');
+                if (!container) return;
+                if (!data.success || !data.listings || !data.listings.length) {
+                    container.innerHTML = '<div style="opacity:0.4;text-align:center;padding:24px 0">No listings yet — be the first to sell something!</div>';
+                    return;
+                }
+                /* Update stats */
+                if (data.total) {
+                    var statEl = document.getElementById('cl-stat-listings');
+                    if (statEl) {
+                        statEl.setAttribute('data-count', data.total);
+                        statEl.textContent = Number(data.total).toLocaleString();
+                    }
+                }
+                var html = '';
+                data.listings.forEach(function(l) {
+                    var price = l.price != null ? (Number(l.price).toLocaleString() + (l.currency ? ' ' + esc(l.currency) : ' RON')) : 'N/A';
+                    var condition = l.condition ? l.condition.replace(/_/g, ' ') : '';
+                    var title = esc(l.title || 'Untitled');
+                    var img = l.images && l.images.length ? l.images[0] : '';
+                    html += '<button class="cl-marketplace__card" data-hub-navigate="marketplace" type="button">'
+                        + (img ? '<div class="cl-marketplace__img" style="background-image:url(\'' + esc(img) + '\')"></div>' : '<div class="cl-marketplace__img cl-marketplace__img--empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>')
+                        + '<div class="cl-marketplace__body">'
+                        + '<div class="cl-marketplace__title">' + title + '</div>'
+                        + '<div class="cl-marketplace__meta">'
+                        + '<span class="cl-marketplace__price">' + price + '</span>'
+                        + (condition ? '<span class="cl-marketplace__condition">' + esc(condition) + '</span>' : '')
+                        + '</div></div></button>';
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        /* ── Active Users Count ──────────────────────── */
+        function loadActiveCount() {
+            fetchJSON('/users/active-count').then(function(data) {
+                var statEl = document.getElementById('cl-stat-members');
+                if (!statEl || !data.success) return;
+                var count = data.count || 0;
+                statEl.setAttribute('data-count', count);
+                statEl.textContent = count.toLocaleString();
+            });
+        }
+
+        /* ── Repair Data (requires auth) ─────────────── */
+        function loadRepair() {
+            var token = localStorage.getItem('cn_token');
+            if (!token) {
+                showRepairFallback();
+                return;
+            }
+            fetch(API + '/repair', { credentials: 'include', headers: { 'Authorization': 'Bearer ' + token } })
+                .then(function(r) { return r.json(); })
+                .catch(function() { return { success: false }; })
+                .then(function(data) {
+                    if (!data.success || !data.requests || !data.requests.length) {
+                        showRepairFallback();
+                        return;
+                    }
+                    var pending = data.requests.filter(function(r) { return r.status === 'pending' || r.status === 'in_progress'; }).slice(0, 3);
+                    var solved  = data.requests.filter(function(r) { return r.status === 'solved' || r.status === 'completed' || r.status === 'closed'; }).slice(0, 3);
+                    renderRepairList('cl-repair-pending', pending, 'pending');
+                    renderRepairList('cl-repair-solved', solved, 'solved');
+                });
+        }
+
+        function renderRepairList(containerId, items, type) {
+            var ul = document.getElementById(containerId);
+            if (!ul) return;
+            if (!items.length) {
+                ul.innerHTML = '<li class="cl-repair-list__item" style="opacity:0.4"><span class="cl-repair-list__text">No ' + type + ' requests</span></li>';
+                return;
+            }
+            var html = '';
+            items.forEach(function(r) {
+                var meta = CONSOLE_META[r.console] || CONSOLE_META.other;
+                var desc = esc(r.console_model || meta.label) + ' — ' + esc((r.symptoms || []).slice(0, 2).join(', ') || 'Repair request');
+                html += '<li class="cl-repair-list__item">'
+                    + '<span class="cl-repair-list__icon cl-repair-list__icon--' + type + '"></span>'
+                    + '<span class="cl-repair-list__text">' + desc + '</span>'
+                    + '<span class="cl-repair-list__console" style="color:' + meta.color + '">' + meta.label + '</span>'
+                    + '</li>';
+            });
+            ul.innerHTML = html;
+        }
+
+        function showRepairFallback() {
+            var pending = document.getElementById('cl-repair-pending');
+            var solved  = document.getElementById('cl-repair-solved');
+            if (pending) pending.innerHTML = '<li class="cl-repair-list__item" style="opacity:0.5"><span class="cl-repair-list__text">Sign in to see repair activity</span></li>';
+            if (solved)  solved.innerHTML  = '<li class="cl-repair-list__item" style="opacity:0.5"><span class="cl-repair-list__text">Sign in to see solved repairs</span></li>';
+        }
+
+        /* ── Online count in chat header ─────────────── */
+        function updateOnlineCount() {
+            fetchJSON('/users/active-count').then(function(data) {
+                var el = landing.querySelector('.cl-chat-preview__online');
+                if (el && data.success) el.textContent = (data.count || 0) + ' online';
+            });
+        }
+
+        /* ── Fire All Fetches ────────────────────────── */
+        loadChat();
+        loadTrending();
+        loadCategoryCounts();
+        loadMarketplace();
+        loadActiveCount();
+        loadRepair();
+        updateOnlineCount();
 
         /* ── Scroll Reveal (IntersectionObserver) ────────── */
         var revealObs = new IntersectionObserver(function(entries) {
@@ -595,7 +747,6 @@
             entries.forEach(function(e) {
                 if (e.isIntersecting) {
                     e.target.classList.add('cl-visible');
-                    /* Don't unobserve — we need to track active state */
                 }
             });
         }, { threshold: 0.15 });
@@ -622,12 +773,10 @@
             var text  = step.getAttribute('data-ctx-text') || '';
             var hint  = step.getAttribute('data-ctx-hint') || '';
 
-            /* Quick exit animation */
             ctxInner.classList.remove('cl-ctx-visible');
             ctxInner.classList.add('cl-ctx-exit');
 
             setTimeout(function() {
-                /* Update content */
                 var elLabel = ctxInner.querySelector('.cl-timeline__context-label');
                 var elText  = ctxInner.querySelector('.cl-timeline__context-text');
                 var elHint  = ctxInner.querySelector('.cl-timeline__context-hint');
@@ -635,9 +784,7 @@
                 if (elText)  elText.textContent  = text;
                 if (elHint)  elHint.textContent  = hint;
 
-                /* Swap classes: exit → visible */
                 ctxInner.classList.remove('cl-ctx-exit');
-                /* Force reflow for animation restart */
                 void ctxInner.offsetWidth;
                 ctxInner.classList.add('cl-ctx-visible');
             }, 200);
@@ -661,7 +808,6 @@
             var pct = Math.max(0, Math.min(100, (scrolled / tRect.height) * 100));
             progress.style.height = pct + '%';
 
-            /* Toggle glow dot */
             if (pct > 2) {
                 timeline.classList.add('cl-tl-started');
             } else {
@@ -700,7 +846,6 @@
 
         /* ── Initial State ───────────────────────────────── */
         updateProgress();
-        /* Show context for first step after entry animation */
         setTimeout(function() {
             if (activeIdx < 0) {
                 activeIdx = 0;
@@ -746,7 +891,6 @@
             setTimeout(function() {
                 landing.remove();
 
-                /* Click matching sidebar item to trigger community.js navigate() */
                 var sidebar = document.getElementById('hub-sidebar');
                 if (!sidebar) return;
                 var items = sidebar.querySelectorAll('.hub-sidebar__item');
