@@ -60,6 +60,9 @@
                 sidebar.style.zIndex = '5001';
                 sidebar.style.background = '#0d0e14';
                 sidebar.style.opacity = '1';
+                sidebar.style.visibility = 'visible';
+                sidebar.style.display = 'flex';
+                sidebar.style.flexDirection = 'column';
                 sidebar.style.backdropFilter = 'none';
                 sidebar.style.webkitBackdropFilter = 'none';
 
@@ -92,6 +95,9 @@
             function openSidebar() {
                 if (!sidebar) return;
                 applyMobileMenuLayering();
+                if (window.innerWidth <= 768) {
+                    sidebar.style.left = '0';
+                }
                 sidebar.classList.add('hub-sidebar--open');
                 if (hamburger) hamburger.classList.add('active');
                 if (overlay) overlay.classList.add('active');
@@ -102,6 +108,9 @@
             function closeSidebar() {
                 if (!sidebar) return;
                 sidebar.classList.remove('hub-sidebar--open');
+                if (window.innerWidth <= 768) {
+                    sidebar.style.left = '-100vw';
+                }
                 if (hamburger) hamburger.classList.remove('active');
                 if (overlay) overlay.classList.remove('active');
                 syncOverlayOutsideSidebar();
