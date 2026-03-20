@@ -243,12 +243,29 @@ function applyMobileMenuLayering() {
 
     if (overlay) {
         overlay.style.zIndex = '5000';
-        overlay.style.background = 'rgba(0, 0, 0, 0.78)';
+        overlay.style.background = 'rgba(0, 0, 0, 0.65)';
     }
 
     if (hamburger) {
         hamburger.style.zIndex = '5002';
     }
+}
+
+function syncOverlayOutsideSidebar() {
+    if (!sidebar) return;
+    const overlay = document.getElementById('hub-mobile-overlay');
+    if (!overlay) return;
+
+    const isOpen = sidebar.classList.contains('hub-sidebar--open');
+    if (!isOpen) {
+        overlay.style.left = '0';
+        overlay.style.right = '0';
+        return;
+    }
+
+    const sidebarWidth = Math.ceil(sidebar.getBoundingClientRect().width || 0);
+    overlay.style.left = sidebarWidth + 'px';
+    overlay.style.right = '0';
 }
 
 function toggleMobileSidebar() {
@@ -262,6 +279,7 @@ function toggleMobileSidebar() {
         sidebar.classList.add('hub-sidebar--open');
         if (hamburger) hamburger.classList.add('active');
         if (overlay) overlay.classList.add('active');
+        syncOverlayOutsideSidebar();
         document.body.style.overflow = 'hidden';
     }
 }
@@ -273,6 +291,7 @@ function closeMobileSidebar() {
     sidebar.classList.remove('hub-sidebar--open');
     if (hamburger) hamburger.classList.remove('active');
     if (overlay) overlay.classList.remove('active');
+    syncOverlayOutsideSidebar();
     document.body.style.overflow = '';
 }
 
