@@ -380,10 +380,9 @@
     background: transparent;
     font-family: var(--p-font-body);
     color: var(--p-text);
-    padding: 64px 0 0;
     isolation: isolate;
     overflow-x: hidden;
-    position: relative;
+    position: fixed;
 }
 
 .profile-page::after {
@@ -418,7 +417,7 @@
     align-items: center;
     text-align: center;
     position: sticky;
-    top: 64px;
+    padding-top: 64px;
     height: calc(100vh - 64px);
     overflow-y: auto;
     scrollbar-width: thin;
@@ -701,7 +700,13 @@
 /* ── Main Content ── */
 .profile-main {
     padding: 32px 40px 60px;
+    padding-top: 64px;
     min-width: 0;
+    overflow-y: auto;
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px);
 }
 
 /* Panel visibility */
@@ -1168,14 +1173,14 @@
 
     .profile-sidebar-nav {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 6px;
     }
 
     .profile-tab {
         width: auto;
         padding: 10px 0;
-        font-size: 0;
+        font-size: 12px;
         border-radius: 8px;
         justify-content: center;
         text-align: center;
