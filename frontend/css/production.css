@@ -828,7 +828,7 @@ mark {
     border-radius: 999px;
     cursor: pointer;
     font-size: var(--font-size-base);
-    margin-top: var(--spacing-sm);
+    margin-top: auto;
     font-weight: 600;
     text-decoration: none;
     text-align: center;
@@ -887,6 +887,7 @@ mark {
     
     transition: all 0.3s ease;
     position: relative;
+    height: 100%;
 }
 
 .card:hover {
@@ -2084,9 +2085,13 @@ textarea {
         margin-left: 0;
     }
 
-    /* Hamburger: hidden — nav is always visible inline */
+    /* Hamburger: hidden globally, except on community page */
     .hamburger {
         display: none;
+    }
+
+    body.community-navbar-page .hamburger {
+        display: flex;
     }
 
     /* Nav-links: always visible, horizontal scrollable row */

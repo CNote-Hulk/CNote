@@ -17,6 +17,14 @@ const initHamburgerFallback = () => {
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
     const body = document.body;
+    const isCommunityPage = body.classList.contains('community-navbar-page');
+
+    // Keep hamburger only on community page.
+    if (!isCommunityPage && hamburger) {
+        hamburger.remove();
+        body.classList.remove('menu-open');
+        return;
+    }
 
     if (!hamburger || !navLinks) {
         console.warn('⚠️ Hamburger or nav-links element not found');

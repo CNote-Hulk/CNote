@@ -61,8 +61,15 @@ export const NavigationModule = {
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
         const navLinksItems = document.querySelectorAll('.nav-links a');
+        const isCommunityPage = document.body.classList.contains('community-navbar-page');
+
+        // Keep hamburger only on community page.
+        if (!isCommunityPage && hamburger) {
+            hamburger.remove();
+            document.body.classList.remove('menu-open');
+        }
         
-        if (!hamburger || !navLinks) return;
+        if (!isCommunityPage || !hamburger || !navLinks) return;
         
         // Mark that hamburger menu is initialized (to prevent fallback script from re-initializing)
         window.__HAMBURGER_INITIALIZED__ = true;
