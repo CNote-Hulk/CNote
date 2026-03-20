@@ -38,8 +38,7 @@ body.home-locked {
     align-items: flex-start;
     gap: 0;
     flex-shrink: 0;
-    align-self: flex-start;
-    margin-top: 20px;
+    align-self: center;
 }
 
 .hero-timeline__step {

@@ -94,6 +94,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Render saved progress on load
     renderProgress();
 
+    // Re-render when localStorage changes from another tab/page
+    window.addEventListener('storage', function (e) {
+        if (e.key === STORAGE_KEY) renderProgress();
+    });
+
+    // Re-render when user returns to this tab (e.g. back button)
+    document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) renderProgress();
+    });
+
     // === Discover (locked scroll) flow ===
     var discovered = localStorage.getItem('homeDiscovered') === 'true';
 
