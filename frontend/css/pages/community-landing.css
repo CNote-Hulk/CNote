@@ -12,8 +12,8 @@
     position: fixed;
     inset: 0;
     z-index: 50;
-    background:
-        linear-gradient(180deg, rgba(21, 18, 16, 0.97) 0%, rgba(15, 12, 10, 1) 100%);
+    background: url('../../assets/images/wallpapers/community.jpg') center/cover no-repeat fixed;
+    background-color: #0d0e14;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 80px 0 100px;
@@ -25,26 +25,15 @@
 .community-landing::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.07); border-radius: 3px; }
 .community-landing::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.14); }
 
-/* ── Animated Grid Background ──────────────────────────── */
+/* ── Dark Overlay (matches community-page--hub) ────────── */
 
 .community-landing::before {
     content: '';
     position: fixed;
     inset: 0;
     z-index: 0;
-    background-image:
-        linear-gradient(rgba(212, 175, 122, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212, 175, 122, 0.025) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 70% 50% at 50% 18%, rgba(0,0,0,0.7) 0%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 18%, rgba(0,0,0,0.7) 0%, transparent 70%);
-    animation: cl-grid-breathe 10s ease-in-out infinite;
+    background: rgba(0, 0, 0, 0.55);
     pointer-events: none;
-}
-
-@keyframes cl-grid-breathe {
-    0%, 100% { opacity: 0.35; }
-    50% { opacity: 0.75; }
 }
 
 /* ── Exit Transition ───────────────────────────────────── */
@@ -225,7 +214,7 @@
 
 .cl-quick__grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 14px;
 }
 
@@ -915,7 +904,91 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   7. REPAIR HIGHLIGHT
+   7. MARKETPLACE PREVIEW
+   ═══════════════════════════════════════════════════════════ */
+
+.cl-marketplace__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.cl-marketplace__loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 24px 0;
+    opacity: 0.4;
+    font-size: 0.85rem;
+    color: var(--text-gray, #A89F94);
+}
+
+.cl-marketplace__card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+}
+
+.cl-marketplace__card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(212, 175, 122, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.cl-marketplace__img {
+    width: 100%;
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.cl-marketplace__img--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.12);
+}
+
+.cl-marketplace__body {
+    padding: 12px 14px 14px;
+}
+
+.cl-marketplace__title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-light, #F5F0E8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 6px;
+}
+
+.cl-marketplace__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+}
+
+.cl-marketplace__price {
+    color: var(--accent-color, #D4AF7A);
+    font-weight: 700;
+}
+
+.cl-marketplace__condition {
+    color: var(--text-gray, #A89F94);
+    text-transform: capitalize;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   8. REPAIR HIGHLIGHT
    ═══════════════════════════════════════════════════════════ */
 
 .cl-repair__grid {
@@ -1062,6 +1135,14 @@
     .cl-categories__grid {
         grid-template-columns: repeat(3, 1fr);
     }
+
+    .cl-marketplace__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .cl-quick__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -1105,6 +1186,10 @@
     }
 
     .cl-categories__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cl-marketplace__grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -1152,6 +1237,14 @@
 
     .cl-categories__grid {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .cl-marketplace__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cl-marketplace__img {
+        height: 100px;
     }
 
     .cl-stats__grid {
