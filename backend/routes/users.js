@@ -186,7 +186,8 @@ let _cachedConsoleList = null; // In-memory cache for console list
 function loadConsoleList() {
     const candidates = [
         path.join(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json'),
-        path.resolve(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json')
+        path.resolve(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json'),
+        path.resolve(process.cwd(), 'frontend', 'js', 'data', 'consoles.json')
     ];
     for (const p of candidates) {
         try {
@@ -194,15 +195,25 @@ function loadConsoleList() {
                 let raw = fs.readFileSync(p, 'utf8');
                 // Strip UTF-8 BOM if present
                 if (raw.charCodeAt(0) === 0xFEFF) raw = raw.slice(1);
-                const data = JSON.parse(raw);
-                return data.map(c => ({ id: c.id, name: c.nume })).sort((a, b) => a.name.localeCompare(b.name));
+                const parsed = JSON.parse(raw);
+                const data = Array.isArray(parsed)
+                    ? parsed
+                    : (Array.isArray(parsed?.consoles) ? parsed.consoles : []);
+
+                return data
+                    .map(c => ({
+                        id: String(c?.id || '').trim(),
+                        name: String(c?.name || c?.nume || '').trim()
+                    }))
+                    .filter(c => c.id && c.name)
+                    .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
             }
         } catch (err) {
             console.error('Console list parse error at', p, err.message);
         }
     }
-    console.error('consoles.json not found. Tried:', candidates.join(', '));
-    return null;
+    console.warn('consoles.json not found. Tried:', candidates.join(', '));
+    return [];
 }
 
 // GET /api/consoles/list — Return full console list (cached after first load)
@@ -210,9 +221,6 @@ router.get('/consoles/list', async (req, res) => {
     try {
         if (!_cachedConsoleList) {
             _cachedConsoleList = loadConsoleList();
-        }
-        if (!_cachedConsoleList) {
-            return res.status(500).json({ success: false, error: 'Lista de console nu a fost gasita.' });
         }
         res.json({ success: true, consoles: _cachedConsoleList });
     } catch (err) {
