@@ -1188,11 +1188,15 @@
 /* ── Responsive: collapse sidebar on small screens ── */
 @media (max-width: 860px) {
     .profile-page {
+        position: static;
+        height: auto;
+        overflow: auto;
         padding-top: 130px;
     }
 
     .profile-layout {
         grid-template-columns: 1fr;
+        height: auto;
     }
 
     .profile-sidebar {
@@ -1238,6 +1242,7 @@
 
     .profile-main {
         padding: 24px 16px 60px;
+        height: auto;
     }
 
 }
@@ -2190,7 +2195,14 @@ a.chat-message__username:hover {
 
 @media (max-width: 860px) {
     .dash-stats {
+        position: static;
+        top: auto;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
         grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
     .dash-grid {
         grid-template-columns: 1fr;
@@ -2199,30 +2211,21 @@ a.chat-message__username:hover {
 
 @media (max-width: 480px) {
     .dash-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, 1fr);
         gap: 8px;
     }
     .dash-stat {
-        padding: 14px 8px;
+        padding: 12px 6px;
+        gap: 4px;
+    }
+    .dash-stat__icon svg {
+        width: 12px;
+        height: 12px;
     }
     .dash-stat__value {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
     }
-}
-
-/* Profile mobile stability: keep stats readable and avoid sticky overlap */
-@media (max-width: 600px) {
-    .dash-stats {
-        position: static;
-        top: auto;
-        grid-template-columns: 1fr;
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .dash-stat {
-        min-height: 90px;
+    .dash-stat__label {
+        font-size: 0.55rem;
     }
 }
