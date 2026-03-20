@@ -32,6 +32,49 @@
             return days + 'd ago';
         }
 
+        function initMobileSidebarControls() {
+            var sidebar   = document.getElementById('hub-sidebar');
+            var hamburger = document.getElementById('hub-mobile-hamburger');
+            var overlay   = document.getElementById('hub-mobile-overlay');
+            var closeBtn  = document.getElementById('hub-sidebar-close');
+
+            function openSidebar() {
+                if (!sidebar) return;
+                sidebar.classList.add('hub-sidebar--open');
+                if (hamburger) hamburger.classList.add('active');
+                if (overlay) overlay.classList.add('active');
+            }
+
+            function closeSidebar() {
+                if (!sidebar) return;
+                sidebar.classList.remove('hub-sidebar--open');
+                if (hamburger) hamburger.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+            }
+
+            if (hamburger && !hamburger.dataset.hubMenuBound) {
+                hamburger.addEventListener('click', openSidebar);
+                hamburger.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    openSidebar();
+                }, { passive: false });
+                hamburger.dataset.hubMenuBound = '1';
+            }
+
+            if (overlay && !overlay.dataset.hubMenuBound) {
+                overlay.addEventListener('click', closeSidebar);
+                overlay.dataset.hubMenuBound = '1';
+            }
+
+            if (closeBtn && !closeBtn.dataset.hubMenuBound) {
+                closeBtn.addEventListener('click', closeSidebar);
+                closeBtn.dataset.hubMenuBound = '1';
+            }
+        }
+
+        // Bind menu controls early so they survive later runtime failures.
+        initMobileSidebarControls();
+
         /* ═══════════════════════════════════════════════════
            DATA FETCHING & RENDERING
            ═══════════════════════════════════════════════════ */
@@ -225,19 +268,27 @@
         loadRepair();
         updateOnlineCount();
 
-        /* ── Scroll Reveal (IntersectionObserver) ────────── */
-        var revealObs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add('cl-visible');
-                    revealObs.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.12 });
+        var hasIO = 'IntersectionObserver' in window;
 
-        landing.querySelectorAll('.cl-reveal').forEach(function(el) {
-            revealObs.observe(el);
-        });
+        /* ── Scroll Reveal (IntersectionObserver) ────────── */
+        if (hasIO) {
+            var revealObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('cl-visible');
+                        revealObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            landing.querySelectorAll('.cl-reveal').forEach(function(el) {
+                revealObs.observe(el);
+            });
+        } else {
+            landing.querySelectorAll('.cl-reveal').forEach(function(el) {
+                el.classList.add('cl-visible');
+            });
+        }
 
         /* ═══════════════════════════════════════════════════
            PREMIUM TIMELINE ENGINE — Scroll-Driven Sticky
@@ -357,7 +408,7 @@
         landing.addEventListener('scroll', onScroll, { passive: true });
 
         /* ── Mobile Fallback: IntersectionObserver-based ─── */
-        if (isMobile) {
+        if (isMobile && hasIO) {
             var stepObs = new IntersectionObserver(function(entries) {
                 entries.forEach(function(e) {
                     if (!e.isIntersecting) return;
@@ -402,27 +453,29 @@
            COUNTER ANIMATION
            ═══════════════════════════════════════════════════ */
 
-        var counterObs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (!e.isIntersecting) return;
-                var el = e.target;
-                var target = parseInt(el.getAttribute('data-count'), 10);
-                if (!target) return;
-                counterObs.unobserve(el);
-                var dur = 1400, start = performance.now();
-                function tick(now) {
-                    var p = Math.min((now - start) / dur, 1);
-                    var eased = 1 - Math.pow(1 - p, 3);
-                    el.textContent = Math.round(target * eased).toLocaleString();
-                    if (p < 1) requestAnimationFrame(tick);
-                }
-                requestAnimationFrame(tick);
-            });
-        }, { threshold: 0.45 });
+        if (hasIO) {
+            var counterObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (!e.isIntersecting) return;
+                    var el = e.target;
+                    var target = parseInt(el.getAttribute('data-count'), 10);
+                    if (!target) return;
+                    counterObs.unobserve(el);
+                    var dur = 1400, start = performance.now();
+                    function tick(now) {
+                        var p = Math.min((now - start) / dur, 1);
+                        var eased = 1 - Math.pow(1 - p, 3);
+                        el.textContent = Math.round(target * eased).toLocaleString();
+                        if (p < 1) requestAnimationFrame(tick);
+                    }
+                    requestAnimationFrame(tick);
+                });
+            }, { threshold: 0.45 });
 
-        landing.querySelectorAll('[data-count]').forEach(function(el) {
-            counterObs.observe(el);
-        });
+            landing.querySelectorAll('[data-count]').forEach(function(el) {
+                counterObs.observe(el);
+            });
+        }
 
         /* ═══════════════════════════════════════════════════
            ENTER HUB
@@ -438,30 +491,6 @@
             if (!btn) return;
             enterHub(btn.dataset.hubNavigate, btn.dataset.hubConsole || '', btn.dataset.category || '');
         });
-
-        // ── Mobile sidebar open/close logic ──────────────────
-        var sidebar     = document.getElementById('hub-sidebar');
-        var hamburger   = document.getElementById('hub-mobile-hamburger');
-        var overlay     = document.getElementById('hub-mobile-overlay');
-        var closeBtn    = document.getElementById('hub-sidebar-close');
-
-        function openSidebar() {
-            if (!sidebar) return;
-            sidebar.classList.add('hub-sidebar--open');
-            if (hamburger)  hamburger.classList.add('active');
-            if (overlay)  { overlay.classList.add('active'); overlay.style.display = 'block'; }
-        }
-
-        function closeSidebar() {
-            if (!sidebar) return;
-            sidebar.classList.remove('hub-sidebar--open');
-            if (hamburger) hamburger.classList.remove('active');
-            if (overlay)   overlay.classList.remove('active');
-        }
-
-        if (hamburger)  hamburger.addEventListener('click', openSidebar);
-        if (overlay)    overlay.addEventListener('click', closeSidebar);
-        if (closeBtn)   closeBtn.addEventListener('click', closeSidebar);
 
         // Sidebar menu from welcome page should open the same sections in community page.
         document.addEventListener('click', function(e) {
