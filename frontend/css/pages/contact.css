@@ -112,6 +112,19 @@
     .contact-card .contact-form .demo-button { min-width: 160px; }
 }
 
+/* Phone layout: prevent fixed button/card widths from crowding */
+@media (max-width: 480px) {
+    .contact-card {
+        width: 100%;
+        padding: 16px;
+    }
+
+    .contact-card .contact-form .demo-button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
 .contact-form {
     display: flex;
     flex-direction: column;
@@ -137,8 +150,8 @@
 }
 
 /* === MESSAGES & HONEYPOT === */
-.success-message,
-.error-message {
+.contact-card .success-message,
+.contact-card .error-message {
     display: none;
     margin-bottom: 2rem;
     padding: 1rem;
@@ -148,11 +161,11 @@
     font-weight: 500;
 }
 
-.success-message {
+.contact-card .success-message {
     background: #10b981;
 }
 
-.error-message {
+.contact-card .error-message {
     background: #ef4444;
 }
 
@@ -160,11 +173,11 @@
     display: none;
 }
 
-.message-visible {
+.contact-card .message-visible {
     animation: fadeInSlideUp 0.3s ease forwards;
 }
 
-.message-hidden {
+.contact-card .message-hidden {
     animation: fadeOutSlideDown 0.3s ease forwards;
 }
 
@@ -252,19 +265,19 @@
 }
 
 /* Success/Error Message Animations */
-.success-message,
-.error-message {
+.contact-card .success-message,
+.contact-card .error-message {
     animation: scaleInGrow 0.3s ease forwards;
     backface-visibility: hidden;
     will-change: opacity, transform;
 }
 
-.button-loading {
+.contact-form .button-loading {
     position: relative;
     color: transparent;
 }
 
-.button-loading::after {
+.contact-form .button-loading::after {
     content: '';
     position: absolute;
     width: 14px;

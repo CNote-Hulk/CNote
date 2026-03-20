@@ -289,3 +289,46 @@
         overflow: auto;
     }
 }
+
+/* Extra small phones: keep inline nav but avoid cramped tiny links */
+@media (max-width: 480px) {
+    .navbar .container {
+        padding: 0 10px;
+    }
+
+    .logo {
+        font-size: 0.78rem;
+        letter-spacing: 0.7px;
+        padding: 12px 0 8px;
+    }
+
+    .navbar-search-btn,
+    .navbar-profile-wrap {
+        top: 10px;
+    }
+
+    .navbar-search-btn {
+        left: 10px;
+    }
+
+    .navbar-profile-wrap {
+        right: 10px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow-x: visible;
+        row-gap: 2px;
+        padding: 0 4px 10px;
+    }
+
+    .nav-links li {
+        flex-shrink: 1;
+    }
+
+    .nav-links a {
+        font-size: 0.74rem;
+        padding: 3px 6px;
+    }
+}

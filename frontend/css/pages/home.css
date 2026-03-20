@@ -172,7 +172,7 @@ body.home-locked {
     margin: 0 auto var(--spacing-xl);
 }
 
-.section-intro .first-sentence {
+#content .section-intro .first-sentence {
     font-weight: 700;
 }
 

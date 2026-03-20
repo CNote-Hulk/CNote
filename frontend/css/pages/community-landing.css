@@ -1329,3 +1329,18 @@
         white-space: normal;
     }
 }
+
+@media (max-width: 420px) {
+    .cl-quick__grid,
+    .cl-categories__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cl-hero {
+        padding: 44px 0 48px;
+    }
+
+    .cl-btn {
+        max-width: 100%;
+    }
+}

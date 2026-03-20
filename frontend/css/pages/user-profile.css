@@ -290,7 +290,7 @@
     }
 
     .user-dashboard-panel .dash-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
         gap: 8px;
     }
 
@@ -300,5 +300,18 @@
 
     .user-dashboard-panel .dash-stat__value {
         font-size: 1.1rem;
+    }
+}
+
+/* Extra-small devices: tighten spacing to avoid content collisions */
+@media (max-width: 420px) {
+    .up-section,
+    .user-dashboard-panel {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .up-consoles {
+        padding: 16px;
     }
 }

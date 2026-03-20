@@ -359,6 +359,27 @@
     }
 }
 
+@media (max-width: 480px) {
+    .help-hero__title {
+        font-size: 30px;
+    }
+
+    .help-faq__heading,
+    .help-community__title,
+    .help-contact__title {
+        font-size: 24px;
+    }
+
+    .help-contact__card {
+        padding: 18px 14px;
+        border-radius: 12px;
+    }
+
+    .help-contact__submit {
+        width: 100%;
+    }
+}
+
 @media (min-width: 769px) {
     .help-timeline__connector-fill {
         height: 100% !important;
