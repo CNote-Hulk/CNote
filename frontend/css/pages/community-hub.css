@@ -2009,11 +2009,16 @@
 
     body:has(.community-page--hub) .navbar {
         padding: 12px 0 0;
-        overflow: hidden;
+        overflow: visible;
     }
 
     body:has(.community-page--hub) .logo {
         padding-bottom: 10px;
+    }
+
+    /* Hide the standard hamburger on community page */
+    body:has(.community-page--hub) .hamburger {
+        display: none;
     }
 
     body:has(.community-page--hub) .navbar-search-btn {
@@ -2029,17 +2034,42 @@
         position: absolute;
         right: 16px;
         top: 10px;
+        z-index: 10;
     }
 
+    /* Reset nav-links from fixed overlay back to inline flow */
     body:has(.community-page--hub) .nav-links {
+        position: static;
         width: 100%;
+        height: auto;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
         padding: 0 10px 12px;
         gap: 2px 0;
         font-size: 0.82rem;
+        z-index: auto;
     }
 
     body:has(.community-page--hub) .nav-links a {
         font-size: 0.82rem;
+        pointer-events: auto;
+        display: inline;
+        padding: 4px 6px;
+    }
+
+    body:has(.community-page--hub) .nav-links li {
+        width: auto;
+        transform: none;
+        opacity: 1;
     }
 
     /* Extra-narrow screens: shrink nav text more */
