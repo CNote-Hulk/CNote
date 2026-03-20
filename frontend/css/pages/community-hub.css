@@ -2224,12 +2224,21 @@
         transition: left 0.3s ease;
         padding-top: 0;
         border-radius: 0 16px 16px 0;
+        background-color: #0d0e14 !important;
+        background-image: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
 
     .hub-sidebar--open {
         left: 0;
         visibility: visible;
         opacity: 1;
+        background-color: #0d0e14 !important;
+        background-image: none !important;
+        box-shadow: 16px 0 32px rgba(0, 0, 0, 0.65) !important;
     }
 
     /* Mobile header inside sidebar */
@@ -2307,7 +2316,12 @@
 
     /* Override community-page--hub semi-transparent sidebar on mobile */
     .community-page--hub .hub-sidebar {
-        background: #0d0e14;
+        background: #0d0e14 !important;
+        background-image: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
 
     /* Don't create stacking context — sidebar must be above overlay */
@@ -2820,8 +2834,12 @@
 }
 
 .community-page--hub .hub-sidebar {
-    background: rgba(13, 14, 20, 0.92);
+    background: #0d0e14;
     border-right: 1px solid rgba(255, 255, 255, 0.04);
+    opacity: 1;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 16px 0 32px rgba(0, 0, 0, 0.55);
 }
 
 .community-page--hub .hub-sidebar::before {
