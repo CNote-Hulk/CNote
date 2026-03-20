@@ -606,7 +606,6 @@ mark {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
     color: var(--text-light);
     
     /* Fundal cinematic - warm documentary overlay */
