@@ -2023,9 +2023,9 @@
         padding: 0;
     }
 
-    /* Keep standard hamburger visible on community page */
+    /* Hide standard navbar hamburger on community pages */
     body.community-navbar-page .hamburger {
-        display: flex;
+        display: none;
     }
 
     /* Restore row layout for community navbar */
