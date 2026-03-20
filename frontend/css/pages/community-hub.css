@@ -2139,7 +2139,7 @@
         position: fixed;
         top: 12px;
         left: 12px;
-        z-index: 1102;
+        z-index: 3002;
         width: 44px;
         height: 44px;
         padding: 10px;
@@ -2174,15 +2174,17 @@
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.6);
-        z-index: 1100;
+        z-index: 3000;
         opacity: 0;
         visibility: hidden;
+        pointer-events: none;
         transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
     .hub-mobile-overlay.active {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
     }
 
     /* Background image fixed is janky on mobile — use scroll */
@@ -2213,7 +2215,7 @@
         height: 100vh;
         height: 100dvh;
         max-height: none;
-        z-index: 1101;
+        z-index: 3001;
         overflow-y: auto;
         overflow-x: hidden;
         background: #0d0e14;
@@ -2226,6 +2228,8 @@
 
     .hub-sidebar--open {
         left: 0;
+        visibility: visible;
+        opacity: 1;
     }
 
     /* Mobile header inside sidebar */
