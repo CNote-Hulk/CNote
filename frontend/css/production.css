@@ -83,12 +83,6 @@ html {
  * Remove browser defaults, set consistent baseline
  */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -2509,10 +2503,6 @@ textarea {
 
 /* Prevent horizontal scroll on all mobile devices */
 @media (max-width: 768px) {
-    * {
-        max-width: 100%;
-    }
-    
     body {
         overflow-x: hidden !important;
     }
