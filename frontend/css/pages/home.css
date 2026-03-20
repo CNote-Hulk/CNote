@@ -198,6 +198,7 @@ body.home-locked {
         gap: 16px;
         padding-left: 24px;
         padding-right: 24px;
+        overflow: hidden;
     }
 
     .hero-home .hero-content {
@@ -217,12 +218,23 @@ body.home-locked {
     .hero-timeline {
         align-items: flex-start;
         padding-left: 20px;
-        align-self: flex-start;
+        align-self: stretch;
         margin-top: 0;
+        flex-shrink: 1;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .hero-timeline__step {
         gap: 10px;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .hero-timeline__text {
+        min-width: 0;
+        flex: 1;
     }
 
     .hero-timeline__emoji {
@@ -237,11 +249,15 @@ body.home-locked {
     }
 
     .hero-timeline__label {
-        font-size: 1.02rem;
+        font-size: 0.95rem;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .hero-timeline__number {
         font-size: 0.75rem;
+        flex-shrink: 0;
     }
 
     /* Logged-out centered */
