@@ -118,8 +118,9 @@
                     </div>
                 </section>
 
-                <!-- 3 ── DISCOVER / TIMELINE ───────────────── -->
-                <section class="cl-section cl-reveal">
+                <!-- 3 ── DISCOVER / TIMELINE — Scroll-Driven Sticky ── -->
+                <div class="cl-timeline-scroll" id="cl-timeline-scroll">
+                <section class="cl-section cl-timeline-sticky" id="cl-timeline-section">
                     <div class="cl-section__header">
                         <h2 class="cl-section__title">How it works</h2>
                         <p class="cl-section__subtitle">Get started in just a few steps</p>
@@ -171,7 +172,13 @@
                             </div>
                         </aside>
                     </div>
+                    <!-- Scroll hint indicator -->
+                    <div class="cl-timeline__scroll-hint" id="cl-timeline-hint">
+                        <span class="cl-timeline__scroll-hint-text">Scroll to explore</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
                 </section>
+                </div>
 
                 <!-- 4 ── LIVE CHAT PREVIEW ─────────────────── -->
                 <section class="cl-section cl-reveal">
@@ -733,36 +740,41 @@
         });
 
         /* ═══════════════════════════════════════════════════
-           PREMIUM TIMELINE ENGINE
+           PREMIUM TIMELINE ENGINE — Scroll-Driven Sticky
            ═══════════════════════════════════════════════════ */
 
-        var timeline   = document.getElementById('cl-timeline');
-        var progress   = document.getElementById('cl-timeline-progress');
-        var ctxInner   = document.getElementById('cl-timeline-ctx-inner');
-        var steps      = timeline ? Array.prototype.slice.call(timeline.querySelectorAll('.cl-timeline__step')) : [];
-        var activeIdx  = -1;
+        var scrollRegion = document.getElementById('cl-timeline-scroll');
+        var timeline     = document.getElementById('cl-timeline');
+        var progress     = document.getElementById('cl-timeline-progress');
+        var ctxInner     = document.getElementById('cl-timeline-ctx-inner');
+        var scrollHint   = document.getElementById('cl-timeline-hint');
+        var steps        = timeline ? Array.prototype.slice.call(timeline.querySelectorAll('.cl-timeline__step')) : [];
+        var activeIdx    = -1;
+        var isMobile     = window.innerWidth <= 768;
 
-        /* ── Step Entry Observer ─────────────────────────── */
-        var stepObs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add('cl-visible');
-                }
-            });
-        }, { threshold: 0.15 });
+        /* ── Make steps visible immediately (sticky = always in view) ── */
+        steps.forEach(function(s) { s.classList.add('cl-visible'); });
 
-        steps.forEach(function(s) { stepObs.observe(s); });
+        /* ── Scroll Progress (0 → 1) from the scroll region ── */
+        function getScrollProgress() {
+            if (!scrollRegion || isMobile) return 0;
+            var rect = scrollRegion.getBoundingClientRect();
+            var landingRect = landing.getBoundingClientRect();
+            /* Region top relative to the landing overlay viewport */
+            var regionTop = rect.top - landingRect.top;
+            var travel = rect.height - landing.clientHeight;
+            if (travel <= 0) return 0;
+            var scrolled = -regionTop;
+            return Math.max(0, Math.min(1, scrolled / travel));
+        }
 
-        /* ── Determine Active Step from Scroll Position ─── */
-        function getActiveStepIndex() {
-            var viewH = landing.clientHeight || window.innerHeight;
-            var trigger = viewH * 0.48;
-            var best = -1;
-            for (var i = 0; i < steps.length; i++) {
-                var rect = steps[i].getBoundingClientRect();
-                if (rect.top <= trigger) best = i;
-            }
-            return best;
+        /* ── Map progress → active step index ──────────────── */
+        function getActiveFromProgress(p) {
+            if (p <= 0) return 0;
+            if (p >= 1) return steps.length - 1;
+            /* Divide into N equal bands */
+            var band = 1 / steps.length;
+            return Math.min(steps.length - 1, Math.floor(p / band));
         }
 
         /* ── Context Panel Update ────────────────────────── */
@@ -799,13 +811,10 @@
             });
         }
 
-        /* ── Progress Line ───────────────────────────────── */
-        function updateProgress() {
+        /* ── Progress Line — driven by scroll progress ───── */
+        function updateProgress(p) {
             if (!timeline || !progress) return;
-            var tRect = timeline.getBoundingClientRect();
-            var viewH = landing.clientHeight || window.innerHeight;
-            var scrolled = viewH * 0.48 - tRect.top;
-            var pct = Math.max(0, Math.min(100, (scrolled / tRect.height) * 100));
+            var pct = Math.max(0, Math.min(100, p * 100));
             progress.style.height = pct + '%';
 
             if (pct > 2) {
@@ -815,16 +824,28 @@
             }
         }
 
-        /* ── Main Scroll Handler (debounced via rAF) ─────── */
+        /* ── Scroll Hint ─────────────────────────────────── */
+        function updateHint(p) {
+            if (!scrollHint) return;
+            if (p > 0.08) {
+                scrollHint.classList.add('cl-hint-hidden');
+            } else {
+                scrollHint.classList.remove('cl-hint-hidden');
+            }
+        }
+
+        /* ── Main Scroll Handler (rAF debounced) ─────────── */
         var rafPending = false;
         function onScroll() {
             if (rafPending) return;
             rafPending = true;
             requestAnimationFrame(function() {
                 rafPending = false;
-                updateProgress();
+                var p = getScrollProgress();
+                updateProgress(p);
+                updateHint(p);
 
-                var newIdx = getActiveStepIndex();
+                var newIdx = getActiveFromProgress(p);
                 if (newIdx !== activeIdx) {
                     activeIdx = newIdx;
                     applyStepStates(activeIdx);
@@ -835,6 +856,25 @@
 
         landing.addEventListener('scroll', onScroll, { passive: true });
 
+        /* ── Mobile Fallback: IntersectionObserver-based ─── */
+        if (isMobile) {
+            var stepObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (!e.isIntersecting) return;
+                    var idx = steps.indexOf(e.target);
+                    if (idx !== -1 && idx !== activeIdx) {
+                        activeIdx = idx;
+                        applyStepStates(idx);
+                        updateContext(idx);
+                        /* Approximate progress for mobile */
+                        var pct = steps.length > 1 ? idx / (steps.length - 1) : 1;
+                        updateProgress(pct);
+                    }
+                });
+            }, { threshold: 0.4 });
+            steps.forEach(function(s) { stepObs.observe(s); });
+        }
+
         /* ── Clickable Steps ─────────────────────────────── */
         steps.forEach(function(step, i) {
             step.addEventListener('click', function() {
@@ -844,13 +884,17 @@
             });
         });
 
+        /* ── Resize handler — recalculate mobile flag ─────── */
+        window.addEventListener('resize', function() {
+            isMobile = window.innerWidth <= 768;
+        });
+
         /* ── Initial State ───────────────────────────────── */
-        updateProgress();
         setTimeout(function() {
-            if (activeIdx < 0) {
-                activeIdx = 0;
-                applyStepStates(0);
-            }
+            var p = getScrollProgress();
+            updateProgress(p);
+            activeIdx = 0;
+            applyStepStates(0);
             ctxInner.classList.add('cl-ctx-visible');
         }, 700);
 

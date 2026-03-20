@@ -27,9 +27,15 @@ function parseDevice(req) {
         ? `${browser.name}${browser.version ? ' ' + browser.version : ''}`
         : 'Unknown';
 
+    // Stable identifier: browser name only (no version) — survives auto-updates
+    const browserStable = browser.name || 'Unknown';
+
     const osStr = os.name
         ? `${os.name}${os.version ? ' ' + os.version : ''}`
         : 'Unknown';
+
+    // Stable identifier: OS name only (no version)
+    const osStable = os.name || 'Unknown';
 
     // Extract client IP: prefer X-Forwarded-For (first entry) behind proxies
     const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim()
@@ -37,7 +43,7 @@ function parseDevice(req) {
         || req.socket?.remoteAddress
         || '';
 
-    return { deviceType, browser: browserStr, os: osStr, ip };
+    return { deviceType, browser: browserStr, os: osStr, ip, browserStable, osStable };
 }
 
 module.exports = { parseDevice };

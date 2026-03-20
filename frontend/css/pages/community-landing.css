@@ -278,8 +278,62 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   3. TIMELINE / DISCOVER — Premium Interactive
+   3. TIMELINE / DISCOVER — Scroll-Driven Sticky Cinematic
    ═══════════════════════════════════════════════════════════ */
+
+/* ── Scroll Region: tall wrapper the user scrolls through ── */
+
+.cl-timeline-scroll {
+    position: relative;
+    height: 160vh;
+    margin-bottom: 80px;
+}
+
+/* ── Sticky Section: locks in place while scrolling ──────── */
+
+.cl-timeline-sticky {
+    position: sticky;
+    top: 80px;
+    margin-bottom: 0 !important;
+    will-change: transform;
+}
+
+/* ── Scroll Hint ─────────────────────────────────────────── */
+
+.cl-timeline__scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+    opacity: 0.5;
+    transition: opacity 0.6s ease;
+    animation: cl-scroll-hint-bounce 2.5s ease-in-out infinite;
+}
+
+.cl-timeline__scroll-hint.cl-hint-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cl-timeline__scroll-hint-text {
+    font-size: 0.72rem;
+    color: var(--text-gray, #A89F94);
+    font-family: var(--font-sans);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.cl-timeline__scroll-hint svg {
+    color: var(--accent-color, #D4AF7A);
+    opacity: 0.7;
+}
+
+@keyframes cl-scroll-hint-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+}
 
 /* ── Outer Container: glass card ───────────────────────── */
 
@@ -373,9 +427,11 @@
     /* Entry animation (overridden on active) */
     opacity: 0;
     transform: translateX(-14px) translateY(6px);
+    filter: brightness(0.7);
     transition:
-        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        filter 0.45s ease;
 }
 
 .cl-timeline__step:last-child {
@@ -384,23 +440,26 @@
 
 /* ── Step States ───────────────────────────────────────── */
 
-/* Visible (entered viewport) */
+/* Visible (entered but not yet active) */
 .cl-timeline__step.cl-visible {
-    opacity: 0.55;
+    opacity: 0.45;
     transform: translateX(0) translateY(0);
+    filter: brightness(0.75);
 }
 
-/* Active (current step) */
+/* Active (current step) — cinematic pop */
 .cl-timeline__step.cl-step-active {
     opacity: 1;
-    transform: translateX(0) translateY(0) scale(1.03);
+    transform: translateX(0) translateY(0) scale(1.04);
     transform-origin: left center;
+    filter: brightness(1.12);
 }
 
-/* Completed (passed step) */
+/* Completed (passed step) — dimmed */
 .cl-timeline__step.cl-step-done {
-    opacity: 0.72;
+    opacity: 0.38;
     transform: translateX(0) translateY(0) scale(1);
+    filter: brightness(0.65);
 }
 
 /* Hover lift */
@@ -574,8 +633,8 @@
     line-height: 1.6;
     margin: 0 0 18px;
     opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.4s ease 0.06s, transform 0.4s ease 0.06s;
+    transform: translateY(12px);
+    transition: opacity 0.45s ease 0.08s, transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.08s;
 }
 
 .cl-timeline__context-hint {
@@ -584,8 +643,8 @@
     line-height: 1.5;
     margin: 0;
     opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.4s ease 0.12s, transform 0.4s ease 0.12s;
+    transform: translateY(12px);
+    transition: opacity 0.45s ease 0.15s, transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s;
 }
 
 /* Context visible state */
@@ -1173,7 +1232,21 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Timeline: stack to single column, context panel below */
+    /* Timeline: disable sticky, stack to single column */
+    .cl-timeline-scroll {
+        height: auto;
+        margin-bottom: 0;
+    }
+
+    .cl-timeline-sticky {
+        position: relative;
+        top: auto;
+    }
+
+    .cl-timeline__scroll-hint {
+        display: none;
+    }
+
     .cl-timeline__container {
         grid-template-columns: 1fr;
     }
