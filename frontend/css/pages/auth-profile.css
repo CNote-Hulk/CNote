@@ -381,9 +381,6 @@
     --p-sidebar: #111009;
     --p-font-display: 'Playfair Display', Georgia, serif;
     --p-font-body:    'DM Sans', system-ui, sans-serif;
-}
-
-.profile-page {
     min-height: 100vh;
     height: 100vh;
     background: transparent;

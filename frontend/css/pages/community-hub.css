@@ -1569,7 +1569,7 @@
     border-color: var(--accent-color);
 }
 
-.hub-btn--sm {
+.hub-repair-body .hub-btn--sm {
     padding: 8px 20px;
     font-size: 0.82rem;
     align-self: flex-start;
@@ -2828,18 +2828,6 @@
     background: transparent;
 }
 
-/* ── Mobile overrides (must come AFTER desktop .community-page--hub rules) ── */
-@media (max-width: 768px) {
-    .community-page--hub .community-hub {
-        z-index: auto;
-    }
-    .community-page--hub .hub-sidebar {
-        background: #0d0e14;
-    }
-    .community-page--hub {
-    padding-top: 120px;
-    }
-}
 
 @media (max-width: 420px) {
     .hub-sidebar {
