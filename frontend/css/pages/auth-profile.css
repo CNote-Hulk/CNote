@@ -2213,7 +2213,7 @@ a.chat-message__username:hover {
 
 @media (max-width: 480px) {
     .dash-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
         gap: 8px;
     }
     .dash-stat {

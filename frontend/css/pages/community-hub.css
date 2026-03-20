@@ -2012,13 +2012,30 @@
         overflow: visible;
     }
 
+    /* Logo: restore absolute centered for community (overrides inline-nav default) */
     body:has(.community-page--hub) .logo {
-        padding-bottom: 10px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 8px;
+        width: auto;
+        text-align: left;
+        padding: 0;
     }
 
     /* Hide the standard hamburger on community page */
     body:has(.community-page--hub) .hamburger {
         display: none;
+    }
+
+    /* Restore row layout for community navbar */
+    body:has(.community-page--hub) .navbar .container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        position: relative;
+        padding: 0 16px;
     }
 
     body:has(.community-page--hub) .navbar-search-btn {
@@ -2037,7 +2054,7 @@
         z-index: 10;
     }
 
-    /* Reset nav-links from fixed overlay back to inline flow */
+    /* Nav-links: inline row, pushed below logo/buttons row */
     body:has(.community-page--hub) .nav-links {
         position: static;
         width: 100%;
@@ -2053,10 +2070,17 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
+        margin-top: 44px;
         padding: 0 10px 12px;
         gap: 2px 0;
         font-size: 0.82rem;
         z-index: auto;
+        overflow-x: visible;
+        scrollbar-width: auto;
+    }
+
+    body:has(.community-page--hub) .nav-links::-webkit-scrollbar {
+        display: revert;
     }
 
     body:has(.community-page--hub) .nav-links a {
@@ -2064,12 +2088,14 @@
         pointer-events: auto;
         display: inline;
         padding: 4px 6px;
+        white-space: normal;
     }
 
     body:has(.community-page--hub) .nav-links li {
         width: auto;
         transform: none;
         opacity: 1;
+        flex-shrink: revert;
     }
 
     /* Extra-narrow screens: shrink nav text more */
