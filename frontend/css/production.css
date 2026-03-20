@@ -658,7 +658,6 @@ mark {
     background: radial-gradient(ellipse, rgba(212, 175, 122, 0.04) 0%, transparent 70%);
     z-index: 1;
     pointer-events: none;
-    text-align: center;
 }
 
 /* Content container */
@@ -667,6 +666,10 @@ mark {
     z-index: 2;
     max-width: 900px;
     padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 /* Titlu principal - mare, bold, impactant */
