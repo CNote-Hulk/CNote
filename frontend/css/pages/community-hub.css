@@ -2836,6 +2836,10 @@
         left: -86vw;
     }
 
+    .hub-sidebar.hub-sidebar--open {
+        left: 0;
+    }
+
     .hub-listing-img {
         width: 108px;
         min-width: 108px;
