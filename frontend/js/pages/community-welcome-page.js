@@ -1,0 +1,461 @@
+(function() {
+        var landing = document.getElementById('community-landing');
+        if (!landing) return;
+
+        /* Skip landing only for true deep-links (hash-based views) */
+        var hash = window.location.hash;
+        if (hash && hash.length > 1) {
+            landing.remove();
+            return;
+        }
+
+        var API = (window.CN_API_BASE_URL || '/api').replace(/\/$/, '');
+        var CONSOLE_META = {
+            ps:       { label: 'PlayStation', color: '#0070D1' },
+            xbox:     { label: 'Xbox',        color: '#107C10' },
+            nintendo: { label: 'Nintendo',    color: '#E60012' },
+            pc:       { label: 'PC Gaming',   color: '#9B59B6' },
+            general:  { label: 'General',     color: '#A89F94' },
+            other:    { label: 'Other',       color: '#E67E22' }
+        };
+
+        /* ── Utility ────────────────────────────────────── */
+        function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+        function initials(name) {
+            if (!name) return '??';
+            var parts = name.trim().split(/\s+/);
+            return (parts[0][0] + (parts[1] ? parts[1][0] : parts[0][1] || '')).toUpperCase();
+        }
+        function timeAgo(dateStr) {
+            var diff = Math.max(0, Date.now() - new Date(dateStr).getTime());
+            var mins = Math.floor(diff / 60000);
+            if (mins < 1) return 'just now';
+            if (mins < 60) return mins + ' min ago';
+            var hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + 'h ago';
+            var days = Math.floor(hrs / 24);
+            return days + 'd ago';
+        }
+
+        /* ═══════════════════════════════════════════════════
+           DATA FETCHING & RENDERING
+           ═══════════════════════════════════════════════════ */
+
+        function fetchJSON(path) {
+            return fetch(API + path, { credentials: 'include' })
+                .then(function(r) { return r.json(); })
+                .catch(function() { return { success: false }; });
+        }
+
+        /* ── Chat Messages ───────────────────────────── */
+        function loadChat() {
+            fetchJSON('/chat/messages?limit=3').then(function(data) {
+                var container = document.getElementById('cl-chat-messages');
+                if (!container || !data.success || !data.messages || !data.messages.length) {
+                    if (container) container.innerHTML = '<div class="cl-chat-msg"><div class="cl-chat-msg__text" style="opacity:0.4">No messages yet — be the first to say hi!</div></div>';
+                    return;
+                }
+                var msgs = data.messages.reverse();
+                var html = '';
+                msgs.forEach(function(m) {
+                    var user = m.user || m;
+                    var name = esc(user.username || 'User');
+                    html += '<div class="cl-chat-msg">'
+                        + '<div class="cl-chat-msg__avatar">' + initials(name) + '</div>'
+                        + '<div class="cl-chat-msg__body">'
+                        + '<div class="cl-chat-msg__user">' + name + '</div>'
+                        + '<div class="cl-chat-msg__text">' + esc(m.message) + '</div>'
+                        + '<div class="cl-chat-msg__time">' + timeAgo(m.created_at) + '</div>'
+                        + '</div></div>';
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        /* ── Trending Discussions ────────────────────── */
+        function loadTrending() {
+            fetchJSON('/forum/recent').then(function(data) {
+                var container = document.getElementById('cl-trending-list');
+                if (!container || !data.success || !data.threads || !data.threads.length) {
+                    if (container) container.innerHTML = '<div class="cl-trending__item" style="opacity:0.4;pointer-events:none"><div class="cl-trending__info"><div class="cl-trending__title">No discussions yet</div></div></div>';
+                    return;
+                }
+                var html = '';
+                data.threads.forEach(function(t, i) {
+                    var meta = CONSOLE_META[t.console] || CONSOLE_META.other;
+                    html += '<button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="' + esc(t.console) + '" type="button">'
+                        + '<div class="cl-trending__rank">' + (i + 1) + '</div>'
+                        + '<div class="cl-trending__info">'
+                        + '<div class="cl-trending__title">' + esc(t.title) + '</div>'
+                        + '<div class="cl-trending__meta">'
+                        + '<span class="cl-trending__category" style="color:' + meta.color + '">' + meta.label + '</span>'
+                        + '<span class="cl-trending__activity">' + timeAgo(t.created_at) + '</span>'
+                        + '</div></div></button>';
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        /* ── Category Counts ─────────────────────────── */
+        var totalThreads = 0;
+        function loadCategoryCounts() {
+            var consoles = ['ps', 'xbox', 'nintendo', 'pc', 'other'];
+            consoles.forEach(function(con) {
+                fetchJSON('/forum/' + con + '/threads').then(function(data) {
+                    var el = document.getElementById('cl-cat-' + con);
+                    if (!el) return;
+                    var count = (data.success && data.threads) ? data.threads.length : 0;
+                    totalThreads += count;
+                    el.textContent = count + ' posts';
+                    /* Update stats card */
+                    var statEl = document.getElementById('cl-stat-threads');
+                    if (statEl) {
+                        statEl.setAttribute('data-count', totalThreads);
+                        statEl.textContent = totalThreads.toLocaleString();
+                    }
+                });
+            });
+        }
+
+        /* ── Marketplace Listings ────────────────────── */
+        function loadMarketplace() {
+            fetchJSON('/marketplace/listings?limit=4&sort=newest').then(function(data) {
+                var container = document.getElementById('cl-marketplace-grid');
+                if (!container) return;
+                if (!data.success || !data.listings || !data.listings.length) {
+                    container.innerHTML = '<div style="opacity:0.4;text-align:center;padding:24px 0">No listings yet — be the first to sell something!</div>';
+                    return;
+                }
+                /* Update stats */
+                if (data.total) {
+                    var statEl = document.getElementById('cl-stat-listings');
+                    if (statEl) {
+                        statEl.setAttribute('data-count', data.total);
+                        statEl.textContent = Number(data.total).toLocaleString();
+                    }
+                }
+                var html = '';
+                data.listings.forEach(function(l) {
+                    var price = l.price != null ? (Number(l.price).toLocaleString() + (l.currency ? ' ' + esc(l.currency) : ' RON')) : 'N/A';
+                    var condition = l.condition ? l.condition.replace(/_/g, ' ') : '';
+                    var title = esc(l.title || 'Untitled');
+                    var img = l.images && l.images.length ? l.images[0] : '';
+                    html += '<button class="cl-marketplace__card" data-hub-navigate="marketplace" type="button">'
+                        + (img ? '<div class="cl-marketplace__img" style="background-image:url(\'' + esc(img) + '\')"></div>' : '<div class="cl-marketplace__img cl-marketplace__img--empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>')
+                        + '<div class="cl-marketplace__body">'
+                        + '<div class="cl-marketplace__title">' + title + '</div>'
+                        + '<div class="cl-marketplace__meta">'
+                        + '<span class="cl-marketplace__price">' + price + '</span>'
+                        + (condition ? '<span class="cl-marketplace__condition">' + esc(condition) + '</span>' : '')
+                        + '</div></div></button>';
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        /* ── Active Users Count ──────────────────────── */
+        function loadActiveCount() {
+            fetchJSON('/users/active-count').then(function(data) {
+                var statEl = document.getElementById('cl-stat-members');
+                if (!statEl || !data.success) return;
+                var count = data.count || 0;
+                statEl.setAttribute('data-count', count);
+                statEl.textContent = count.toLocaleString();
+            });
+        }
+
+        /* ── Repair Data (requires auth) ─────────────── */
+        function loadRepair() {
+            var token = localStorage.getItem('cn_token');
+            if (!token) {
+                showRepairFallback();
+                return;
+            }
+            fetch(API + '/repair', { credentials: 'include', headers: { 'Authorization': 'Bearer ' + token } })
+                .then(function(r) { return r.json(); })
+                .catch(function() { return { success: false }; })
+                .then(function(data) {
+                    if (!data.success || !data.requests || !data.requests.length) {
+                        showRepairFallback();
+                        return;
+                    }
+                    var pending = data.requests.filter(function(r) { return r.status === 'pending' || r.status === 'in_progress'; }).slice(0, 3);
+                    var solved  = data.requests.filter(function(r) { return r.status === 'solved' || r.status === 'completed' || r.status === 'closed'; }).slice(0, 3);
+                    renderRepairList('cl-repair-pending', pending, 'pending');
+                    renderRepairList('cl-repair-solved', solved, 'solved');
+                });
+        }
+
+        function renderRepairList(containerId, items, type) {
+            var ul = document.getElementById(containerId);
+            if (!ul) return;
+            if (!items.length) {
+                ul.innerHTML = '<li class="cl-repair-list__item" style="opacity:0.4"><span class="cl-repair-list__text">No ' + type + ' requests</span></li>';
+                return;
+            }
+            var html = '';
+            items.forEach(function(r) {
+                var meta = CONSOLE_META[r.console] || CONSOLE_META.other;
+                var desc = esc(r.console_model || meta.label) + ' — ' + esc((r.symptoms || []).slice(0, 2).join(', ') || 'Repair request');
+                html += '<li class="cl-repair-list__item">'
+                    + '<span class="cl-repair-list__icon cl-repair-list__icon--' + type + '"></span>'
+                    + '<span class="cl-repair-list__text">' + desc + '</span>'
+                    + '<span class="cl-repair-list__console" style="color:' + meta.color + '">' + meta.label + '</span>'
+                    + '</li>';
+            });
+            ul.innerHTML = html;
+        }
+
+        function showRepairFallback() {
+            var pending = document.getElementById('cl-repair-pending');
+            var solved  = document.getElementById('cl-repair-solved');
+            if (pending) pending.innerHTML = '<li class="cl-repair-list__item" style="opacity:0.5"><span class="cl-repair-list__text">Sign in to see repair activity</span></li>';
+            if (solved)  solved.innerHTML  = '<li class="cl-repair-list__item" style="opacity:0.5"><span class="cl-repair-list__text">Sign in to see solved repairs</span></li>';
+        }
+
+        /* ── Online count in chat header ─────────────── */
+        function updateOnlineCount() {
+            fetchJSON('/users/active-count').then(function(data) {
+                var el = landing.querySelector('.cl-chat-preview__online');
+                if (el && data.success) el.textContent = (data.count || 0) + ' online';
+            });
+        }
+
+        /* ── Fire All Fetches ────────────────────────── */
+        loadChat();
+        loadTrending();
+        loadCategoryCounts();
+        loadMarketplace();
+        loadActiveCount();
+        loadRepair();
+        updateOnlineCount();
+
+        /* ── Scroll Reveal (IntersectionObserver) ────────── */
+        var revealObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('cl-visible');
+                    revealObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        landing.querySelectorAll('.cl-reveal').forEach(function(el) {
+            revealObs.observe(el);
+        });
+
+        /* ═══════════════════════════════════════════════════
+           PREMIUM TIMELINE ENGINE — Scroll-Driven Sticky
+           ═══════════════════════════════════════════════════ */
+
+        var scrollRegion = document.getElementById('cl-timeline-scroll');
+        var timeline     = document.getElementById('cl-timeline');
+        var progress     = document.getElementById('cl-timeline-progress');
+        var ctxInner     = document.getElementById('cl-timeline-ctx-inner');
+        var scrollHint   = document.getElementById('cl-timeline-hint');
+        var steps        = timeline ? Array.prototype.slice.call(timeline.querySelectorAll('.cl-timeline__step')) : [];
+        var activeIdx    = -1;
+        var isMobile     = window.innerWidth <= 768;
+
+        /* ── Make steps visible immediately (sticky = always in view) ── */
+        steps.forEach(function(s) { s.classList.add('cl-visible'); });
+
+        /* ── Scroll Progress (0 → 1) from the scroll region ── */
+        function getScrollProgress() {
+            if (!scrollRegion || isMobile) return 0;
+            var rect = scrollRegion.getBoundingClientRect();
+            var landingRect = landing.getBoundingClientRect();
+            /* Region top relative to the landing overlay viewport */
+            var regionTop = rect.top - landingRect.top;
+            var travel = rect.height - landing.clientHeight;
+            if (travel <= 0) return 0;
+            var scrolled = -regionTop;
+            return Math.max(0, Math.min(1, scrolled / travel));
+        }
+
+        /* ── Map progress → active step index ──────────────── */
+        function getActiveFromProgress(p) {
+            if (p <= 0) return 0;
+            if (p >= 1) return steps.length - 1;
+            /* Divide into N equal bands */
+            var band = 1 / steps.length;
+            return Math.min(steps.length - 1, Math.floor(p / band));
+        }
+
+        /* ── Context Panel Update ────────────────────────── */
+        function updateContext(idx) {
+            if (!ctxInner || idx < 0 || idx >= steps.length) return;
+            var step = steps[idx];
+            var label = step.getAttribute('data-ctx-label') || '';
+            var text  = step.getAttribute('data-ctx-text') || '';
+            var hint  = step.getAttribute('data-ctx-hint') || '';
+
+            ctxInner.classList.remove('cl-ctx-visible');
+            ctxInner.classList.add('cl-ctx-exit');
+
+            setTimeout(function() {
+                var elLabel = ctxInner.querySelector('.cl-timeline__context-label');
+                var elText  = ctxInner.querySelector('.cl-timeline__context-text');
+                var elHint  = ctxInner.querySelector('.cl-timeline__context-hint');
+                if (elLabel) elLabel.textContent = label;
+                if (elText)  elText.textContent  = text;
+                if (elHint)  elHint.textContent  = hint;
+
+                ctxInner.classList.remove('cl-ctx-exit');
+                void ctxInner.offsetWidth;
+                ctxInner.classList.add('cl-ctx-visible');
+            }, 200);
+        }
+
+        /* ── Apply Active / Done States ──────────────────── */
+        function applyStepStates(idx) {
+            steps.forEach(function(s, i) {
+                s.classList.remove('cl-step-active', 'cl-step-done');
+                if (i < idx)  s.classList.add('cl-step-done');
+                if (i === idx) s.classList.add('cl-step-active');
+            });
+        }
+
+        /* ── Progress Line — driven by scroll progress ───── */
+        function updateProgress(p) {
+            if (!timeline || !progress) return;
+            var pct = Math.max(0, Math.min(100, p * 100));
+            progress.style.height = pct + '%';
+
+            if (pct > 2) {
+                timeline.classList.add('cl-tl-started');
+            } else {
+                timeline.classList.remove('cl-tl-started');
+            }
+        }
+
+        /* ── Scroll Hint ─────────────────────────────────── */
+        function updateHint(p) {
+            if (!scrollHint) return;
+            if (p > 0.08) {
+                scrollHint.classList.add('cl-hint-hidden');
+            } else {
+                scrollHint.classList.remove('cl-hint-hidden');
+            }
+        }
+
+        /* ── Main Scroll Handler (rAF debounced) ─────────── */
+        var rafPending = false;
+        function onScroll() {
+            if (rafPending) return;
+            rafPending = true;
+            requestAnimationFrame(function() {
+                rafPending = false;
+                var p = getScrollProgress();
+                updateProgress(p);
+                updateHint(p);
+
+                var newIdx = getActiveFromProgress(p);
+                if (newIdx !== activeIdx) {
+                    activeIdx = newIdx;
+                    applyStepStates(activeIdx);
+                    updateContext(activeIdx);
+                }
+            });
+        }
+
+        landing.addEventListener('scroll', onScroll, { passive: true });
+
+        /* ── Mobile Fallback: IntersectionObserver-based ─── */
+        if (isMobile) {
+            var stepObs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (!e.isIntersecting) return;
+                    var idx = steps.indexOf(e.target);
+                    if (idx !== -1 && idx !== activeIdx) {
+                        activeIdx = idx;
+                        applyStepStates(idx);
+                        updateContext(idx);
+                        /* Approximate progress for mobile */
+                        var pct = steps.length > 1 ? idx / (steps.length - 1) : 1;
+                        updateProgress(pct);
+                    }
+                });
+            }, { threshold: 0.4 });
+            steps.forEach(function(s) { stepObs.observe(s); });
+        }
+
+        /* ── Clickable Steps ─────────────────────────────── */
+        steps.forEach(function(step, i) {
+            step.addEventListener('click', function() {
+                activeIdx = i;
+                applyStepStates(i);
+                updateContext(i);
+            });
+        });
+
+        /* ── Resize handler — recalculate mobile flag ─────── */
+        window.addEventListener('resize', function() {
+            isMobile = window.innerWidth <= 768;
+        });
+
+        /* ── Initial State ───────────────────────────────── */
+        setTimeout(function() {
+            var p = getScrollProgress();
+            updateProgress(p);
+            activeIdx = 0;
+            applyStepStates(0);
+            ctxInner.classList.add('cl-ctx-visible');
+        }, 700);
+
+        /* ═══════════════════════════════════════════════════
+           COUNTER ANIMATION
+           ═══════════════════════════════════════════════════ */
+
+        var counterObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (!e.isIntersecting) return;
+                var el = e.target;
+                var target = parseInt(el.getAttribute('data-count'), 10);
+                if (!target) return;
+                counterObs.unobserve(el);
+                var dur = 1400, start = performance.now();
+                function tick(now) {
+                    var p = Math.min((now - start) / dur, 1);
+                    var eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = Math.round(target * eased).toLocaleString();
+                    if (p < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            });
+        }, { threshold: 0.45 });
+
+        landing.querySelectorAll('[data-count]').forEach(function(el) {
+            counterObs.observe(el);
+        });
+
+        /* ═══════════════════════════════════════════════════
+           ENTER HUB
+           ═══════════════════════════════════════════════════ */
+
+        function enterHub(view, con) {
+            sessionStorage.setItem('cl-seen', '1');
+            landing.classList.add('cl-exit');
+
+            setTimeout(function() {
+                landing.remove();
+
+                var sidebar = document.getElementById('hub-sidebar');
+                if (!sidebar) return;
+                var items = sidebar.querySelectorAll('.hub-sidebar__item');
+                var matched = null;
+                items.forEach(function(item) {
+                    if (item.dataset.view !== view) return;
+                    if (con && (item.dataset.console || '') !== con) return;
+                    if (!matched) matched = item;
+                });
+                if (matched) matched.click();
+            }, 460);
+        }
+
+        landing.addEventListener('click', function(e) {
+            var btn = e.target.closest('[data-hub-navigate]');
+            if (!btn) return;
+            enterHub(btn.dataset.hubNavigate, btn.dataset.hubConsole || '');
+        });
+    })();
