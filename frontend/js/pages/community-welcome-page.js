@@ -439,6 +439,30 @@
             enterHub(btn.dataset.hubNavigate, btn.dataset.hubConsole || '', btn.dataset.category || '');
         });
 
+        // ── Mobile sidebar open/close logic ──────────────────
+        var sidebar     = document.getElementById('hub-sidebar');
+        var hamburger   = document.getElementById('hub-mobile-hamburger');
+        var overlay     = document.getElementById('hub-mobile-overlay');
+        var closeBtn    = document.getElementById('hub-sidebar-close');
+
+        function openSidebar() {
+            if (!sidebar) return;
+            sidebar.classList.add('hub-sidebar--open');
+            if (hamburger)  hamburger.classList.add('active');
+            if (overlay)  { overlay.classList.add('active'); overlay.style.display = 'block'; }
+        }
+
+        function closeSidebar() {
+            if (!sidebar) return;
+            sidebar.classList.remove('hub-sidebar--open');
+            if (hamburger) hamburger.classList.remove('active');
+            if (overlay)   overlay.classList.remove('active');
+        }
+
+        if (hamburger)  hamburger.addEventListener('click', openSidebar);
+        if (overlay)    overlay.addEventListener('click', closeSidebar);
+        if (closeBtn)   closeBtn.addEventListener('click', closeSidebar);
+
         // Sidebar menu from welcome page should open the same sections in community page.
         document.addEventListener('click', function(e) {
             var item = e.target.closest('.hub-sidebar__item');
