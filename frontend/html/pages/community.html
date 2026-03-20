@@ -13,6 +13,7 @@
     <title>Community — Console Notebook</title>
     <link rel="stylesheet" href="../../css/production.css?v=20260314q">
     <link rel="stylesheet" href="../../css/pages/community-hub.css?v=20260314q">
+    <link rel="stylesheet" href="../../css/pages/community-landing.css?v=20260320">
 </head>
 <body>
     <!-- NAVIGATION BAR -->
@@ -44,6 +45,347 @@
     </nav>
 
     <div class="community-page community-page--fullwidth community-page--hub">
+
+        <!-- ═════════════════════════════════════════════════════
+             COMMUNITY LANDING — Hub / Start Page
+             Shown before entering chat or forums.
+             ═════════════════════════════════════════════════════ -->
+        <div class="community-landing" id="community-landing">
+            <div class="cl-wrapper">
+
+                <!-- 1 ── HERO ──────────────────────────────── -->
+                <section class="cl-hero">
+                    <h1 class="cl-hero__title">Welcome to the<br><span>Console Community</span></h1>
+                    <p class="cl-hero__subtitle">Ask, repair, share, or explore consoles with others.</p>
+                    <div class="cl-hero__actions">
+                        <button class="cl-btn cl-btn--primary" data-hub-navigate="chat" type="button">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            Join Chat
+                        </button>
+                        <button class="cl-btn cl-btn--secondary" data-hub-navigate="forum" data-hub-console="general" type="button">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            Ask Question
+                        </button>
+                        <button class="cl-btn cl-btn--outline" data-hub-navigate="repair" data-hub-console="ps" type="button">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            Request Repair
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 2 ── QUICK ACTIONS ─────────────────────── -->
+                <section class="cl-section cl-reveal">
+                    <div class="cl-quick__grid">
+                        <button class="cl-quick__item" data-hub-navigate="forum" data-hub-console="general" type="button">
+                            <span class="cl-quick__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            </span>
+                            <span class="cl-quick__label">Ask Community</span>
+                            <span class="cl-quick__desc">Post a question or discussion</span>
+                        </button>
+                        <button class="cl-quick__item" data-hub-navigate="repair" data-hub-console="ps" type="button">
+                            <span class="cl-quick__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            </span>
+                            <span class="cl-quick__label">Request Repair</span>
+                            <span class="cl-quick__desc">Get help fixing your console</span>
+                        </button>
+                        <button class="cl-quick__item" data-hub-navigate="forum" data-hub-console="general" type="button">
+                            <span class="cl-quick__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                            </span>
+                            <span class="cl-quick__label">Browse Forums</span>
+                            <span class="cl-quick__desc">Explore topics and threads</span>
+                        </button>
+                        <button class="cl-quick__item" data-hub-navigate="repair-requests" type="button">
+                            <span class="cl-quick__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </span>
+                            <span class="cl-quick__label">My Activity</span>
+                            <span class="cl-quick__desc">View your requests and posts</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 3 ── DISCOVER / TIMELINE ───────────────── -->
+                <section class="cl-section cl-reveal">
+                    <div class="cl-section__header">
+                        <h2 class="cl-section__title">How it works</h2>
+                        <p class="cl-section__subtitle">Get started in just a few steps</p>
+                    </div>
+                    <div class="cl-timeline__container">
+                        <div class="cl-timeline__track" id="cl-timeline">
+                            <div class="cl-timeline__line">
+                                <div class="cl-timeline__progress" id="cl-timeline-progress"></div>
+                            </div>
+                            <div class="cl-timeline__step" data-step data-ctx-label="Platform Selection" data-ctx-text="Browse PlayStation, Xbox, Nintendo, PC Gaming, or other classic consoles." data-ctx-hint="Each platform has its own community, repair guides, and marketplace.">
+                                <div class="cl-timeline__dot">
+                                    <span class="cl-timeline__dot-num">1</span>
+                                    <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <h3 class="cl-timeline__step-title">Choose a category</h3>
+                                <p class="cl-timeline__step-desc">Select your console or platform — PlayStation, Xbox, Nintendo, PC, or more.</p>
+                            </div>
+                            <div class="cl-timeline__step" data-step data-ctx-label="Start a Discussion" data-ctx-text="Create your first post in seconds, or search thousands of existing threads." data-ctx-hint="Use tags like Help, Guide, or Bug to find exactly what you need.">
+                                <div class="cl-timeline__dot">
+                                    <span class="cl-timeline__dot-num">2</span>
+                                    <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <h3 class="cl-timeline__step-title">Ask or explore topics</h3>
+                                <p class="cl-timeline__step-desc">Browse existing discussions or create a new thread with your question.</p>
+                            </div>
+                            <div class="cl-timeline__step" data-step data-ctx-label="Community Support" data-ctx-text="Experienced members and verified repair technicians respond within hours." data-ctx-hint="Solved threads get marked so future visitors find answers faster.">
+                                <div class="cl-timeline__dot">
+                                    <span class="cl-timeline__dot-num">3</span>
+                                    <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <h3 class="cl-timeline__step-title">Get answers or solutions</h3>
+                                <p class="cl-timeline__step-desc">Community members and repair experts will help you find the best solution.</p>
+                            </div>
+                            <div class="cl-timeline__step" data-step data-ctx-label="Give Back" data-ctx-text="Share your knowledge, write repair guides, and earn community reputation." data-ctx-hint="Top contributors get highlighted in the community leaderboard.">
+                                <div class="cl-timeline__dot">
+                                    <span class="cl-timeline__dot-num">4</span>
+                                    <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                                <h3 class="cl-timeline__step-title">Help others</h3>
+                                <p class="cl-timeline__step-desc">Share your knowledge, answer questions, and grow the community together.</p>
+                            </div>
+                        </div>
+                        <!-- Dynamic Context Panel -->
+                        <aside class="cl-timeline__context" id="cl-timeline-context">
+                            <div class="cl-timeline__context-inner" id="cl-timeline-ctx-inner">
+                                <p class="cl-timeline__context-label">Platform Selection</p>
+                                <p class="cl-timeline__context-text">Browse PlayStation, Xbox, Nintendo, PC Gaming, or other classic consoles.</p>
+                                <p class="cl-timeline__context-hint">Each platform has its own community, repair guides, and marketplace.</p>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+
+                <!-- 4 ── LIVE CHAT PREVIEW ─────────────────── -->
+                <section class="cl-section cl-reveal">
+                    <div class="cl-section__header">
+                        <h2 class="cl-section__title">Live Community Chat</h2>
+                        <p class="cl-section__subtitle">See what's happening right now</p>
+                    </div>
+                    <div class="cl-chat-preview__panel">
+                        <div class="cl-chat-preview__header">
+                            <div class="cl-chat-preview__title">
+                                <span class="cl-chat-preview__live"></span>
+                                Community Chat
+                            </div>
+                            <span class="cl-chat-preview__online">3 online</span>
+                        </div>
+                        <div class="cl-chat-preview__messages">
+                            <div class="cl-chat-msg">
+                                <div class="cl-chat-msg__avatar">AM</div>
+                                <div class="cl-chat-msg__body">
+                                    <div class="cl-chat-msg__user">Alex M.</div>
+                                    <div class="cl-chat-msg__text">Has anyone tried the new PS5 system update? My console feels faster now.</div>
+                                    <div class="cl-chat-msg__time">2 min ago</div>
+                                </div>
+                            </div>
+                            <div class="cl-chat-msg">
+                                <div class="cl-chat-msg__avatar">SK</div>
+                                <div class="cl-chat-msg__body">
+                                    <div class="cl-chat-msg__user">Sarah K.</div>
+                                    <div class="cl-chat-msg__text">Just fixed my Xbox Series X HDMI port! Tutorial coming soon.</div>
+                                    <div class="cl-chat-msg__time">5 min ago</div>
+                                </div>
+                            </div>
+                            <div class="cl-chat-msg">
+                                <div class="cl-chat-msg__avatar">MT</div>
+                                <div class="cl-chat-msg__body">
+                                    <div class="cl-chat-msg__user">Mike T.</div>
+                                    <div class="cl-chat-msg__text">Looking for a Nintendo Switch repair guide — drift issue on the left Joy-Con.</div>
+                                    <div class="cl-chat-msg__time">8 min ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cl-chat-preview__footer">
+                            <button class="cl-btn cl-btn--secondary cl-btn--sm" data-hub-navigate="chat" type="button">
+                                Open Full Chat
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5 ── TRENDING / ACTIVE THREADS ─────────── -->
+                <section class="cl-section cl-reveal">
+                    <div class="cl-section__header">
+                        <h2 class="cl-section__title">Trending Discussions</h2>
+                        <p class="cl-section__subtitle">Popular topics in the community</p>
+                    </div>
+                    <div class="cl-trending__list">
+                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="ps" type="button">
+                            <div class="cl-trending__rank">1</div>
+                            <div class="cl-trending__info">
+                                <div class="cl-trending__title">PS5 overheating after 2 hours of gaming</div>
+                                <div class="cl-trending__meta">
+                                    <span class="cl-trending__category" style="color:#0070D1">PlayStation</span>
+                                    <span class="cl-trending__activity"></span>
+                                </div>
+                            </div>
+                            <span class="cl-trending__replies">23 replies</span>
+                        </button>
+                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="xbox" type="button">
+                            <div class="cl-trending__rank">2</div>
+                            <div class="cl-trending__info">
+                                <div class="cl-trending__title">Best Xbox controller alternatives in 2026?</div>
+                                <div class="cl-trending__meta">
+                                    <span class="cl-trending__category" style="color:#107C10">Xbox</span>
+                                    <span class="cl-trending__activity"></span>
+                                </div>
+                            </div>
+                            <span class="cl-trending__replies">18 replies</span>
+                        </button>
+                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="nintendo" type="button">
+                            <div class="cl-trending__rank">3</div>
+                            <div class="cl-trending__info">
+                                <div class="cl-trending__title">Nintendo Switch 2 — first impressions thread</div>
+                                <div class="cl-trending__meta">
+                                    <span class="cl-trending__category" style="color:#E60012">Nintendo</span>
+                                    <span class="cl-trending__activity"></span>
+                                </div>
+                            </div>
+                            <span class="cl-trending__replies">45 replies</span>
+                        </button>
+                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="pc" type="button">
+                            <div class="cl-trending__rank">4</div>
+                            <div class="cl-trending__info">
+                                <div class="cl-trending__title">GPU temps hitting 95°C on my RTX 5080</div>
+                                <div class="cl-trending__meta">
+                                    <span class="cl-trending__category" style="color:#9B59B6">PC Gaming</span>
+                                    <span class="cl-trending__activity"></span>
+                                </div>
+                            </div>
+                            <span class="cl-trending__replies">31 replies</span>
+                        </button>
+                        <button class="cl-trending__item" data-hub-navigate="forum" data-hub-console="other" type="button">
+                            <div class="cl-trending__rank">5</div>
+                            <div class="cl-trending__info">
+                                <div class="cl-trending__title">Retro console modding guide (NES / SNES)</div>
+                                <div class="cl-trending__meta">
+                                    <span class="cl-trending__category" style="color:#E67E22">Other</span>
+                                    <span class="cl-trending__activity"></span>
+                                </div>
+                            </div>
+                            <span class="cl-trending__replies">12 replies</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 6 ── CATEGORIES ────────────────────────── -->
+                <section class="cl-section cl-reveal">
+                    <div class="cl-section__header">
+                        <h2 class="cl-section__title">Browse by Platform</h2>
+                        <p class="cl-section__subtitle">Find discussions for your console</p>
+                    </div>
+                    <div class="cl-categories__grid">
+                        <button class="cl-category-card" style="--cat-color:#0070D1" data-hub-navigate="forum" data-hub-console="ps" type="button">
+                            <span class="cl-category-card__dot"></span>
+                            <span class="cl-category-card__name">PlayStation</span>
+                            <span class="cl-category-card__count">342 posts</span>
+                        </button>
+                        <button class="cl-category-card" style="--cat-color:#107C10" data-hub-navigate="forum" data-hub-console="xbox" type="button">
+                            <span class="cl-category-card__dot"></span>
+                            <span class="cl-category-card__name">Xbox</span>
+                            <span class="cl-category-card__count">287 posts</span>
+                        </button>
+                        <button class="cl-category-card" style="--cat-color:#E60012" data-hub-navigate="forum" data-hub-console="nintendo" type="button">
+                            <span class="cl-category-card__dot"></span>
+                            <span class="cl-category-card__name">Nintendo</span>
+                            <span class="cl-category-card__count">198 posts</span>
+                        </button>
+                        <button class="cl-category-card" style="--cat-color:#9B59B6" data-hub-navigate="forum" data-hub-console="pc" type="button">
+                            <span class="cl-category-card__dot"></span>
+                            <span class="cl-category-card__name">PC Gaming</span>
+                            <span class="cl-category-card__count">256 posts</span>
+                        </button>
+                        <button class="cl-category-card" style="--cat-color:#E67E22" data-hub-navigate="forum" data-hub-console="other" type="button">
+                            <span class="cl-category-card__dot"></span>
+                            <span class="cl-category-card__name">Other</span>
+                            <span class="cl-category-card__count">89 posts</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 7 ── REPAIR HIGHLIGHT ──────────────────── -->
+                <section class="cl-section cl-reveal">
+                    <div class="cl-section__header">
+                        <h2 class="cl-section__title">Repair Center</h2>
+                        <p class="cl-section__subtitle">Latest repair activity from the community</p>
+                    </div>
+                    <div class="cl-repair__grid">
+                        <div class="cl-repair__column">
+                            <h3><span style="color:#fb923c">&#9679;</span> Latest Requests</h3>
+                            <ul class="cl-repair-list">
+                                <li class="cl-repair-list__item">
+                                    <span class="cl-repair-list__icon cl-repair-list__icon--pending"></span>
+                                    <span class="cl-repair-list__text">Xbox Series X — No power after surge</span>
+                                    <span class="cl-repair-list__console" style="color:#107C10">Xbox</span>
+                                </li>
+                                <li class="cl-repair-list__item">
+                                    <span class="cl-repair-list__icon cl-repair-list__icon--pending"></span>
+                                    <span class="cl-repair-list__text">PS5 Slim disc reader stuck</span>
+                                    <span class="cl-repair-list__console" style="color:#0070D1">PlayStation</span>
+                                </li>
+                                <li class="cl-repair-list__item">
+                                    <span class="cl-repair-list__icon cl-repair-list__icon--pending"></span>
+                                    <span class="cl-repair-list__text">Switch OLED screen flickering</span>
+                                    <span class="cl-repair-list__console" style="color:#E60012">Nintendo</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="cl-repair__column">
+                            <h3><span style="color:#4ade80">&#9679;</span> Recently Solved</h3>
+                            <ul class="cl-repair-list">
+                                <li class="cl-repair-list__item">
+                                    <span class="cl-repair-list__icon cl-repair-list__icon--solved"></span>
+                                    <span class="cl-repair-list__text">PS4 Pro overheating — cleaned &amp; repasted</span>
+                                    <span class="cl-repair-list__console" style="color:#0070D1">PlayStation</span>
+                                </li>
+                                <li class="cl-repair-list__item">
+                                    <span class="cl-repair-list__icon cl-repair-list__icon--solved"></span>
+                                    <span class="cl-repair-list__text">Xbox One S HDMI port replaced</span>
+                                    <span class="cl-repair-list__console" style="color:#107C10">Xbox</span>
+                                </li>
+                                <li class="cl-repair-list__item">
+                                    <span class="cl-repair-list__icon cl-repair-list__icon--solved"></span>
+                                    <span class="cl-repair-list__text">PC build — RAM compatibility fixed</span>
+                                    <span class="cl-repair-list__console" style="color:#9B59B6">PC</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8 ── COMMUNITY STATS ───────────────────── -->
+                <section class="cl-section cl-reveal" style="margin-bottom:0">
+                    <div class="cl-section__header">
+                        <h2 class="cl-section__title">Community in Numbers</h2>
+                    </div>
+                    <div class="cl-stats__grid">
+                        <div class="cl-stat-card">
+                            <div class="cl-stat-card__number" data-count="2847">0</div>
+                            <div class="cl-stat-card__label">Members</div>
+                        </div>
+                        <div class="cl-stat-card">
+                            <div class="cl-stat-card__number" data-count="1203">0</div>
+                            <div class="cl-stat-card__label">Repairs Solved</div>
+                        </div>
+                        <div class="cl-stat-card">
+                            <div class="cl-stat-card__number" data-count="5621">0</div>
+                            <div class="cl-stat-card__label">Questions Answered</div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+        <!-- END COMMUNITY LANDING -->
+
         <!-- Mobile hamburger + overlay -->
         <button class="hub-mobile-hamburger" id="hub-mobile-hamburger" data-i18n="community_open_menu" data-i18n-attr="aria-label" aria-label="Open menu">
             <span></span><span></span><span></span>
@@ -210,5 +552,220 @@
     <script type="module" src="../../js/pages/community.js?v=20260314q"></script>
     <script src="../../js/fallback/hamburger.js" defer></script>
     <script src="../../js/fallback/search-profile.js"></script>
+
+    <!-- Community Landing — scroll animations, timeline, & hub transition -->
+    <script>
+    (function() {
+        var landing = document.getElementById('community-landing');
+        if (!landing) return;
+
+        /* Skip landing if deep-link hash present or already seen this session */
+        var hash = window.location.hash;
+        if ((hash && hash.length > 1) || sessionStorage.getItem('cl-seen')) {
+            landing.remove();
+            return;
+        }
+
+        /* ── Scroll Reveal (IntersectionObserver) ────────── */
+        var revealObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('cl-visible');
+                    revealObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        landing.querySelectorAll('.cl-reveal').forEach(function(el) {
+            revealObs.observe(el);
+        });
+
+        /* ═══════════════════════════════════════════════════
+           PREMIUM TIMELINE ENGINE
+           ═══════════════════════════════════════════════════ */
+
+        var timeline   = document.getElementById('cl-timeline');
+        var progress   = document.getElementById('cl-timeline-progress');
+        var ctxInner   = document.getElementById('cl-timeline-ctx-inner');
+        var steps      = timeline ? Array.prototype.slice.call(timeline.querySelectorAll('.cl-timeline__step')) : [];
+        var activeIdx  = -1;
+
+        /* ── Step Entry Observer ─────────────────────────── */
+        var stepObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('cl-visible');
+                    /* Don't unobserve — we need to track active state */
+                }
+            });
+        }, { threshold: 0.15 });
+
+        steps.forEach(function(s) { stepObs.observe(s); });
+
+        /* ── Determine Active Step from Scroll Position ─── */
+        function getActiveStepIndex() {
+            var viewH = landing.clientHeight || window.innerHeight;
+            var trigger = viewH * 0.48;
+            var best = -1;
+            for (var i = 0; i < steps.length; i++) {
+                var rect = steps[i].getBoundingClientRect();
+                if (rect.top <= trigger) best = i;
+            }
+            return best;
+        }
+
+        /* ── Context Panel Update ────────────────────────── */
+        function updateContext(idx) {
+            if (!ctxInner || idx < 0 || idx >= steps.length) return;
+            var step = steps[idx];
+            var label = step.getAttribute('data-ctx-label') || '';
+            var text  = step.getAttribute('data-ctx-text') || '';
+            var hint  = step.getAttribute('data-ctx-hint') || '';
+
+            /* Quick exit animation */
+            ctxInner.classList.remove('cl-ctx-visible');
+            ctxInner.classList.add('cl-ctx-exit');
+
+            setTimeout(function() {
+                /* Update content */
+                var elLabel = ctxInner.querySelector('.cl-timeline__context-label');
+                var elText  = ctxInner.querySelector('.cl-timeline__context-text');
+                var elHint  = ctxInner.querySelector('.cl-timeline__context-hint');
+                if (elLabel) elLabel.textContent = label;
+                if (elText)  elText.textContent  = text;
+                if (elHint)  elHint.textContent  = hint;
+
+                /* Swap classes: exit → visible */
+                ctxInner.classList.remove('cl-ctx-exit');
+                /* Force reflow for animation restart */
+                void ctxInner.offsetWidth;
+                ctxInner.classList.add('cl-ctx-visible');
+            }, 200);
+        }
+
+        /* ── Apply Active / Done States ──────────────────── */
+        function applyStepStates(idx) {
+            steps.forEach(function(s, i) {
+                s.classList.remove('cl-step-active', 'cl-step-done');
+                if (i < idx)  s.classList.add('cl-step-done');
+                if (i === idx) s.classList.add('cl-step-active');
+            });
+        }
+
+        /* ── Progress Line ───────────────────────────────── */
+        function updateProgress() {
+            if (!timeline || !progress) return;
+            var tRect = timeline.getBoundingClientRect();
+            var viewH = landing.clientHeight || window.innerHeight;
+            var scrolled = viewH * 0.48 - tRect.top;
+            var pct = Math.max(0, Math.min(100, (scrolled / tRect.height) * 100));
+            progress.style.height = pct + '%';
+
+            /* Toggle glow dot */
+            if (pct > 2) {
+                timeline.classList.add('cl-tl-started');
+            } else {
+                timeline.classList.remove('cl-tl-started');
+            }
+        }
+
+        /* ── Main Scroll Handler (debounced via rAF) ─────── */
+        var rafPending = false;
+        function onScroll() {
+            if (rafPending) return;
+            rafPending = true;
+            requestAnimationFrame(function() {
+                rafPending = false;
+                updateProgress();
+
+                var newIdx = getActiveStepIndex();
+                if (newIdx !== activeIdx) {
+                    activeIdx = newIdx;
+                    applyStepStates(activeIdx);
+                    updateContext(activeIdx);
+                }
+            });
+        }
+
+        landing.addEventListener('scroll', onScroll, { passive: true });
+
+        /* ── Clickable Steps ─────────────────────────────── */
+        steps.forEach(function(step, i) {
+            step.addEventListener('click', function() {
+                activeIdx = i;
+                applyStepStates(i);
+                updateContext(i);
+            });
+        });
+
+        /* ── Initial State ───────────────────────────────── */
+        updateProgress();
+        /* Show context for first step after entry animation */
+        setTimeout(function() {
+            if (activeIdx < 0) {
+                activeIdx = 0;
+                applyStepStates(0);
+            }
+            ctxInner.classList.add('cl-ctx-visible');
+        }, 700);
+
+        /* ═══════════════════════════════════════════════════
+           COUNTER ANIMATION
+           ═══════════════════════════════════════════════════ */
+
+        var counterObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (!e.isIntersecting) return;
+                var el = e.target;
+                var target = parseInt(el.getAttribute('data-count'), 10);
+                if (!target) return;
+                counterObs.unobserve(el);
+                var dur = 1400, start = performance.now();
+                function tick(now) {
+                    var p = Math.min((now - start) / dur, 1);
+                    var eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = Math.round(target * eased).toLocaleString();
+                    if (p < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            });
+        }, { threshold: 0.45 });
+
+        landing.querySelectorAll('[data-count]').forEach(function(el) {
+            counterObs.observe(el);
+        });
+
+        /* ═══════════════════════════════════════════════════
+           ENTER HUB
+           ═══════════════════════════════════════════════════ */
+
+        function enterHub(view, con) {
+            sessionStorage.setItem('cl-seen', '1');
+            landing.classList.add('cl-exit');
+
+            setTimeout(function() {
+                landing.remove();
+
+                /* Click matching sidebar item to trigger community.js navigate() */
+                var sidebar = document.getElementById('hub-sidebar');
+                if (!sidebar) return;
+                var items = sidebar.querySelectorAll('.hub-sidebar__item');
+                var matched = null;
+                items.forEach(function(item) {
+                    if (item.dataset.view !== view) return;
+                    if (con && (item.dataset.console || '') !== con) return;
+                    if (!matched) matched = item;
+                });
+                if (matched) matched.click();
+            }, 460);
+        }
+
+        landing.addEventListener('click', function(e) {
+            var btn = e.target.closest('[data-hub-navigate]');
+            if (!btn) return;
+            enterHub(btn.dataset.hubNavigate, btn.dataset.hubConsole || '');
+        });
+    })();
+    </script>
 </body>
 </html>
