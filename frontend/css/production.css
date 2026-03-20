@@ -2055,13 +2055,13 @@ textarea {
 
     /* Logo: full-width centered row */
     .logo {
-        font-size: 0.9rem;
+        font-size: 1.2rem;
         letter-spacing: 1px;
         position: static;
         transform: none;
         text-align: center;
         width: 100%;
-        padding: 14px 0 8px;
+        padding: 22px 0 8px;
     }
 
     .logo.active::after {
@@ -2127,7 +2127,7 @@ textarea {
 
     .nav-links a {
         display: inline-block;
-        font-size: 0.82rem;
+        font-size: 0.9rem;
         font-weight: 500;
         padding: 4px 10px;
         color: var(--text-gray);
@@ -2375,9 +2375,9 @@ textarea {
     }
 
     .logo {
-        font-size: 0.78rem;
+        font-size: 1.2rem;
         letter-spacing: 0.7px;
-        padding: 12px 0 8px;
+        padding: 22px 0 8px;
     }
 
     .navbar-search-btn,
@@ -2406,7 +2406,7 @@ textarea {
     }
 
     .nav-links a {
-        font-size: 0.74rem;
+        font-size: 0.9rem;
         padding: 3px 6px;
     }
 
