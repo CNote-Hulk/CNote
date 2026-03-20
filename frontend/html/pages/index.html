@@ -59,7 +59,7 @@
                 <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
                 <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
                 <li><a href="help.html" data-i18n="nav_help">Help</a></li>
-                <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+                <li><a href="help.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
 
             <div class="navbar-profile-wrap">
@@ -282,59 +282,6 @@
     </section>
     
     <!-- ===========================
-         CONTACT SECTION
-         Contact form handled by backend API + Nodemailer
-         Success/error messages handled by contact-form.js
-         =========================== -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="contact_title">Contact</h2>
-            <p class="section-intro" data-i18n="contact_intro">Have questions or feedback about the project?</p>
-
-            <div class="contact-card">
-                <!-- Mesaj de succes -->
-                <div id="success-message" class="success-message" data-i18n="contact_success">
-                    ✓ Message sent successfully! I will reply soon.
-                </div>
-
-                <!-- Mesaj de eroare -->
-                <div id="error-message" class="error-message" data-i18n="contact_error">
-                    ✕ Error sending message. Please try again.
-                </div>
-
-                <form class="contact-form" id="contact-form" novalidate>
-                    <div class="input-group">
-                        <label for="contact-name" data-i18n="contact_label_name">Name</label>
-                        <input id="contact-name" name="name" type="text" placeholder="Your name" data-i18n="contact_placeholder_name" data-i18n-attr="placeholder" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="contact-email" data-i18n="contact_label_email">Email</label>
-                        <input id="contact-email" name="email" type="email" placeholder="you@example.com" data-i18n="contact_placeholder_email" data-i18n-attr="placeholder" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="contact-subject" data-i18n="contact_label_subject">Subject</label>
-                        <input id="contact-subject" name="subject" type="text" placeholder="Message subject" data-i18n="contact_placeholder_subject" data-i18n-attr="placeholder" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="contact-message" data-i18n="contact_label_message">Message</label>
-                        <textarea id="contact-message" name="message" placeholder="Write your message here" data-i18n="contact_placeholder_message" data-i18n-attr="placeholder" required></textarea>
-                    </div>
-                    
-                    <!-- Honeypot anti-spam -->
-                    <input type="text" name="_honey" class="honeypot-input" tabindex="-1" autocomplete="off">
-
-                    <div class="input-group">
-                        <button type="submit" class="demo-button" id="submit-btn" data-i18n="contact_send">Send message</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===========================
          FOOTER
          Site footer with copyright and contact info
          =========================== -->
@@ -362,7 +309,6 @@
     
     <!-- Fallback Scripts - work without server (file:// protocol) -->
     <script src="../../js/fallback/hamburger.js"></script>
-    <script src="../../js/fallback/contact-form.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
 </body>
 </html>

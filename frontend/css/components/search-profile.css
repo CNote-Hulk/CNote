@@ -212,6 +212,7 @@ body.search-open {
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
     z-index: 1100;
     padding: 6px;
+    overflow: hidden;
 }
 
 .profile-dropdown--active {
@@ -224,6 +225,9 @@ body.search-open {
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 8px 10px;
     border-radius: 6px;
     text-decoration: none;
@@ -304,8 +308,14 @@ body.search-open {
     border: none;
     background: none;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     cursor: pointer;
     text-align: left;
+}
+
+.profile-dropdown__item span {
+    min-width: 0;
 }
 
 .profile-dropdown__item:hover {
@@ -319,6 +329,8 @@ body.search-open {
 
 .profile-dropdown__lang-select {
     flex: 1;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 6px 8px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.16);
