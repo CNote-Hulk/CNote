@@ -102,7 +102,18 @@
                         .join('');
                 }
             };
-            renderConsoleList('profile-favorite-consoles', user.favorite_consoles);
+            (async () => {
+                try {
+                    const token = localStorage.getItem('cn_token');
+                    const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+                    const res = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(user.username)}`, { headers, credentials: 'include' });
+                    const data = await res.json();
+                    const ids = data.user?.favorite_console_ids || [];
+                    renderConsoleList('profile-favorite-consoles', ids.join(','));
+                } catch {
+                    renderConsoleList('profile-favorite-consoles', user.favorite_consoles || '');
+                }
+            })();
             renderConsoleList('profile-owned-consoles', user.owned_consoles);
 
             const avatarBtn = document.getElementById('profile-avatar');
