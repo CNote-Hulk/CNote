@@ -263,8 +263,9 @@ function syncOverlayOutsideSidebar() {
         return;
     }
 
-    // Fixed left value as requested for overlay when sidebar is open
-    overlay.style.left = '354px';
+    // Restore calculated value minus 1px (clickas request)
+    const sidebarWidth = Math.max(0, Math.ceil(sidebar.getBoundingClientRect().width || 0) - 1);
+    overlay.style.left = sidebarWidth + 'px';
     overlay.style.right = '0';
 }
 
@@ -272,6 +273,7 @@ function toggleMobileSidebar() {
     if (!sidebar) return;
     const hamburger = document.getElementById('hub-mobile-hamburger');
     const overlay = document.getElementById('hub-mobile-overlay');
+    const landing = document.getElementById('community-landing');
     const isOpen = sidebar.classList.contains('hub-sidebar--open');
     if (isOpen) closeMobileSidebar();
     else {
@@ -279,6 +281,10 @@ function toggleMobileSidebar() {
         sidebar.classList.add('hub-sidebar--open');
         if (hamburger) hamburger.classList.add('active');
         if (overlay) overlay.classList.add('active');
+        if (landing) {
+            landing.style.pointerEvents = 'none';
+            landing.style.zIndex = '1';
+        }
         syncOverlayOutsideSidebar();
         document.body.style.overflow = 'hidden';
     }
@@ -288,9 +294,14 @@ function closeMobileSidebar() {
     if (!sidebar) return;
     const hamburger = document.getElementById('hub-mobile-hamburger');
     const overlay = document.getElementById('hub-mobile-overlay');
+    const landing = document.getElementById('community-landing');
     sidebar.classList.remove('hub-sidebar--open');
     if (hamburger) hamburger.classList.remove('active');
     if (overlay) overlay.classList.remove('active');
+    if (landing) {
+        landing.style.pointerEvents = '';
+        landing.style.zIndex = '50';
+    }
     syncOverlayOutsideSidebar();
     document.body.style.overflow = '';
 }
