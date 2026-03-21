@@ -17,15 +17,15 @@ const MESSAGES = {
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Welcome to the golden — or maybe bronze — age of gaming.',
-        hero_cta: 'Explore CNote',
+        hero_cta: 'Explore Cnote Bakery',
         home_step1: 'Discover stories in the encyclopedia',
         home_step2: 'Feel the difference between consoles',
         home_step3: 'Join the vibe in the community',
         home_step4: 'Start a real conversation',
         home_step5: 'Share your voice with a rating',
 
-        section_about_title: 'What is CNote? Who are we?',
-        section_about_text: 'CNote (Console Notebook) is a platform dedicated to the world of gaming consoles. It brings together history, technology, and community in one place. But it aims to go beyond documentation. CNote seeks to revive a part of us — the authentic gaming spirit that many lost as the industry changed. Here you can discover consoles, learn how they work, and help preserve an important piece of gaming culture.',
+        section_about_title: 'What is Cnote Bakery? Who are we?',
+        section_about_text: 'Cnote Bakery (Console Notebook) is a platform dedicated to the world of gaming consoles. It brings together history, technology, and community in one place. But it aims to go beyond documentation. Cnote Bakery seeks to revive a part of us — the authentic gaming spirit that many lost as the industry changed. Here you can discover consoles, learn how they work, and help preserve an important piece of gaming culture.',
 
         learn_title: 'Learn',
         learn_subtitle: 'Courses and guides',        learn_page_hero_title: 'Learn how consoles work',
@@ -665,15 +665,15 @@ const MESSAGES = {
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Bine ai venit în era de aur — sau poate era de bronz — a gaming-ului.',
-        hero_cta: 'Explorează CNote',
+        hero_cta: 'Explorează Cnote Bakery',
         home_step1: 'Descoperă povești din enciclopedie',
         home_step2: 'Simte diferența dintre console',
         home_step3: 'Intră în vibe-ul comunității',
         home_step4: 'Pornește o conversație reală',
         home_step5: 'Lasă-ți vocea printr-un rating',
 
-        section_about_title: 'Ce este CNote? Cine suntem noi?',
-        section_about_text: 'CNote (Console Notebook) este o platformă dedicată ecosistemului consolelor de jocuri. Proiectul adună istoria, tehnologia și comunitatea din spatele acestor sisteme într-un singur loc. Dar scopul său merge dincolo de documentare. CNote încearcă să readucă la viață o parte din noi – spiritul gaming-ului autentic, care pentru mulți s-a pierdut odată cu trecerea timpului și cu transformarea industriei moderne. Aici poți descoperi console, învăța cum funcționează și contribui la păstrarea unei bucăți importante din cultura gaming-ului.',
+        section_about_title: 'Ce este Cnote Bakery? Cine suntem noi?',
+        section_about_text: 'Cnote Bakery (Console Notebook) este o platformă dedicată ecosistemului consolelor de jocuri. Proiectul adună istoria, tehnologia și comunitatea din spatele acestor sisteme într-un singur loc. Dar scopul său merge dincolo de documentare. Cnote Bakery încearcă să readucă la viață o parte din noi – spiritul gaming-ului autentic, care pentru mulți s-a pierdut odată cu trecerea timpului și cu transformarea industriei moderne. Aici poți descoperi console, învăța cum funcționează și contribui la păstrarea unei bucăți importante din cultura gaming-ului.',
 
         learn_title: 'Învață',
         learn_subtitle: 'Cursuri și ghiduri',
@@ -1309,15 +1309,15 @@ const MESSAGES = {
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Bienvenido a la era dorada — o quizá bronce — del gaming.',
-        hero_cta: 'Explorar CNote',
+        hero_cta: 'Explorar Cnote Bakery',
         home_step1: 'Descubre historias en la enciclopedia',
         home_step2: 'Siente la diferencia entre consolas',
         home_step3: 'Únete al ambiente de la comunidad',
         home_step4: 'Inicia una conversación real',
         home_step5: 'Comparte tu voz con una valoración',
 
-        section_about_title: '¿Qué es CNote? ¿Quiénes somos?',
-        section_about_text: 'CNote (Console Notebook) es una plataforma dedicada al ecosistema de las consolas de juegos. El proyecto reúne historia, tecnología y comunidad en un solo lugar. Pero su propósito va más allá de la documentación. CNote busca revivir una parte de nosotros: el espíritu auténtico del gaming que muchos perdieron con el tiempo y la transformación de la industria moderna. Aquí puedes descubrir consolas, aprender cómo funcionan y contribuir a preservar una parte importante de la cultura gamer.',
+        section_about_title: '¿Qué es Cnote Bakery? ¿Quiénes somos?',
+        section_about_text: 'Cnote Bakery (Console Notebook) es una plataforma dedicada al ecosistema de las consolas de juegos. El proyecto reúne historia, tecnología y comunidad en un solo lugar. Pero su propósito va más allá de la documentación. Cnote Bakery busca revivir una parte de nosotros: el espíritu auténtico del gaming que muchos perdieron con el tiempo y la transformación de la industria moderna. Aquí puedes descubrir consolas, aprender cómo funcionan y contribuir a preservar una parte importante de la cultura gamer.',
 
         learn_title: 'Aprender',
         learn_subtitle: 'Cursos y guías',
@@ -1936,15 +1936,15 @@ const MESSAGES = {
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Bienvenue à l’âge d’or — ou peut-être de bronze — du gaming.',
-        hero_cta: 'Explorer CNote',
+        hero_cta: 'Explorer Cnote Bakery',
         home_step1: 'Découvre des histoires dans l’encyclopédie',
         home_step2: 'Ressens la différence entre consoles',
         home_step3: 'Entre dans le vibe de la communauté',
         home_step4: 'Lance une vraie conversation',
         home_step5: 'Fais entendre ta voix avec une note',
 
-        section_about_title: 'Qu’est-ce que CNote ? Qui sommes-nous ?',
-        section_about_text: 'CNote (Console Notebook) est une plateforme dédiée à l’écosystème des consoles de jeux. Le projet rassemble l’histoire, la technologie et la communauté en un seul endroit. Mais son objectif va au-delà de la documentation. CNote cherche à raviver une partie de nous : l’esprit authentique du gaming que beaucoup ont perdu avec le temps et la transformation de l’industrie moderne. Ici, vous pouvez découvrir les consoles, apprendre comment elles fonctionnent et contribuer à préserver une partie importante de la culture du jeu.',
+        section_about_title: 'Qu’est-ce que Cnote Bakery ? Qui sommes-nous ?',
+        section_about_text: 'Cnote Bakery (Console Notebook) est une plateforme dédiée à l’écosystème des consoles de jeux. Le projet rassemble l’histoire, la technologie et la communauté en un seul endroit. Mais son objectif va au-delà de la documentation. Cnote Bakery cherche à raviver une partie de nous : l’esprit authentique du gaming que beaucoup ont perdu avec le temps et la transformation de l’industrie moderne. Ici, vous pouvez découvrir les consoles, apprendre comment elles fonctionnent et contribuer à préserver une partie importante de la culture du jeu.',
 
         learn_title: 'Apprendre',
         learn_subtitle: 'Cours et guides',
@@ -2563,15 +2563,15 @@ const MESSAGES = {
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Benvenuto nell’era d’oro — o forse di bronzo — del gaming.',
-        hero_cta: 'Esplora CNote',
+        hero_cta: 'Esplora Cnote Bakery',
         home_step1: 'Scopri storie nell’enciclopedia',
         home_step2: 'Senti la differenza tra le console',
         home_step3: 'Entra nel vibe della community',
         home_step4: 'Avvia una conversazione vera',
         home_step5: 'Fai sentire la tua voce con una valutazione',
 
-        section_about_title: 'Cos’è CNote? Chi siamo?',
-        section_about_text: 'CNote (Console Notebook) è una piattaforma dedicata all’ecosistema delle console di gioco. Il progetto raccoglie storia, tecnologia e comunità in un unico posto. Ma l’obiettivo va oltre la documentazione. CNote cerca di riportare in vita una parte di noi: lo spirito autentico del gaming che molti hanno perso con il passare del tempo e la trasformazione dell’industria moderna. Qui puoi scoprire le console, imparare come funzionano e contribuire a preservare una parte importante della cultura del gaming.',
+        section_about_title: 'Cos’è Cnote Bakery? Chi siamo?',
+        section_about_text: 'Cnote Bakery (Console Notebook) è una piattaforma dedicata all’ecosistema delle console di gioco. Il progetto raccoglie storia, tecnologia e comunità in un unico posto. Ma l’obiettivo va oltre la documentazione. Cnote Bakery cerca di riportare in vita una parte di noi: lo spirito autentico del gaming che molti hanno perso con il passare del tempo e la trasformazione dell’industria moderna. Qui puoi scoprire le console, imparare come funzionano e contribuire a preservare una parte importante della cultura del gaming.',
 
         learn_title: 'Impara',
         learn_subtitle: 'Corsi e guide',
@@ -3195,15 +3195,15 @@ const MESSAGES = {
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Willkommen im goldenen — oder vielleicht bronzenen — Zeitalter des Gaming.',
-        hero_cta: 'CNote entdecken',
+        hero_cta: 'Cnote Bakery entdecken',
         home_step1: 'Entdecke Geschichten in der Enzyklopädie',
         home_step2: 'Spüre den Unterschied zwischen Konsolen',
         home_step3: 'Tauche in den Vibe der Community ein',
         home_step4: 'Starte ein echtes Gespräch',
         home_step5: 'Lass deine Stimme mit einer Bewertung wirken',
 
-        section_about_title: 'Was ist CNote? Wer sind wir?',
-        section_about_text: 'CNote (Console Notebook) ist eine Plattform, die dem Ökosystem der Spielkonsolen gewidmet ist. Das Projekt vereint Geschichte, Technologie und Community an einem Ort. Aber das Ziel geht über Dokumentation hinaus. CNote möchte einen Teil von uns wiederbeleben: den authentischen Gaming-Geist, den viele mit der Zeit und der Transformation der modernen Industrie verloren haben. Hier kannst du Konsolen entdecken, lernen wie sie funktionieren und dazu beitragen, ein wichtiges Stück Gaming-Kultur zu bewahren.',
+        section_about_title: 'Was ist Cnote Bakery? Wer sind wir?',
+        section_about_text: 'Cnote Bakery (Console Notebook) ist eine Plattform, die dem Ökosystem der Spielkonsolen gewidmet ist. Das Projekt vereint Geschichte, Technologie und Community an einem Ort. Aber das Ziel geht über Dokumentation hinaus. Cnote Bakery möchte einen Teil von uns wiederbeleben: den authentischen Gaming-Geist, den viele mit der Zeit und der Transformation der modernen Industrie verloren haben. Hier kannst du Konsolen entdecken, lernen wie sie funktionieren und dazu beitragen, ein wichtiges Stück Gaming-Kultur zu bewahren.',
 
         learn_title: 'Lernen',
         learn_subtitle: 'Kurse und Guides',

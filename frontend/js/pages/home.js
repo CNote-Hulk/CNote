@@ -1,6 +1,6 @@
 /**
  * Homepage Quick Guide
- * Locked scroll until user clicks "Explore CNote"
+ * Locked scroll until user clicks "Explore Cnote Bakery"
  * Steps are clickable links — each tracks completion via localStorage
  * Timeline only shown when logged in; button redirects to login otherwise
  */

@@ -371,13 +371,14 @@
 /* Design tokens (scoped) */
 .profile-page {
     --p-bg: #141210;
-    --p-accent: #c8a850;
+    --p-accent: var(--accent-color, #D4AF7A);
+    --p-accent-rgb: var(--accent-color-rgb, 212, 175, 122);
     --p-text:  #e8d8b8;
     --p-text2: #c8b89a;
     --p-muted: #7a6e5e;
     --p-faint: #4a4234;
     --p-card:  #181410;
-    --p-border: rgba(180,140,80,0.1);
+    --p-border: rgba(var(--p-accent-rgb), 0.1);
     --p-sidebar: #111009;
     --p-font-display: 'Playfair Display', Georgia, serif;
     --p-font-body:    'DM Sans', system-ui, sans-serif;
@@ -443,7 +444,7 @@
     width: 88px;
     height: 88px;
     border-radius: 50%;
-    background: rgba(200,168,80,0.12);
+    background: rgba(var(--p-accent-rgb), 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -815,7 +816,12 @@
 
 .progress-bar__fill {
     height: 100%;
-    background: linear-gradient(90deg, #c8a850, #e8c860, #c8a850);
+    background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--p-accent) 84%, #000 16%),
+        color-mix(in srgb, var(--p-accent) 78%, #fff 22%),
+        color-mix(in srgb, var(--p-accent) 84%, #000 16%)
+    );
     background-size: 200% 100%;
     border-radius: 6px;
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1642,7 +1648,7 @@
 }
 
 .owned-console-item.checked {
-    background: rgba(212, 175, 122, 0.08);
+    background: rgba(var(--p-accent-rgb), 0.08);
 }
 
 .owned-console-item input[type="checkbox"] {
@@ -1818,7 +1824,7 @@ a.chat-message__username:hover {
 }
 
 .friend-card:hover {
-    border-color: rgba(212, 175, 122, 0.3);
+    border-color: rgba(var(--p-accent-rgb), 0.3);
     transform: translateY(-1px);
 }
 
