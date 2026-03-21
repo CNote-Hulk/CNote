@@ -11,7 +11,7 @@
 .community-landing {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: 1;
     background: url('../../assets/images/wallpapers/community.jpg') center/cover no-repeat fixed;
     background-color: #0d0e14;
     overflow-y: auto;
