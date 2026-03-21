@@ -1001,8 +1001,8 @@ router.post('/2fa/setup/totp', authRequired, async (req, res) => {
         const QRCode = require('qrcode');
 
         const secret = speakeasy.generateSecret({
-            name: 'CNote (' + req.user.email + ')',
-            issuer: 'CNote'
+            name: 'Cnote Bakery (' + req.user.email + ')',
+            issuer: 'Cnote Bakery'
         });
 
         const qrCode = await QRCode.toDataURL(secret.otpauth_url);
