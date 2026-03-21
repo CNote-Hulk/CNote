@@ -205,19 +205,30 @@
         var totalThreads = 0;
         function loadCategoryCounts() {
             var consoles = ['ps', 'xbox', 'nintendo', 'pc', 'other'];
+            totalThreads = 0;
+
             consoles.forEach(function(con) {
                 fetchJSON('/forum/' + con + '/threads').then(function(data) {
                     var el = document.getElementById('cl-cat-' + con);
-                    if (!el) return;
-                    var count = (data.success && data.threads) ? data.threads.length : 0;
-                    totalThreads += count;
-                    el.textContent = count + ' posts';
-                    /* Update stats card */
+                    if (el) {
+                        var count = (data.success && Array.isArray(data.threads)) ? data.threads.length : 0;
+                        el.textContent = count + ' posts';
+                    }
+
+                    if (data.success && Array.isArray(data.threads)) {
+                        totalThreads += data.threads.length;
+                    }
+
+                    /* Update stats card each time keep in sync */
                     var statEl = document.getElementById('cl-stat-threads');
                     if (statEl) {
                         statEl.setAttribute('data-count', totalThreads);
                         statEl.textContent = totalThreads.toLocaleString();
                     }
+                }).catch(function(err) {
+                    console.warn('loadCategoryCounts failed:', err);
+                    var el = document.getElementById('cl-cat-' + con);
+                    if (el) el.textContent = '0 posts';
                 });
             });
         }
@@ -262,10 +273,22 @@
         function loadActiveCount() {
             fetchJSON('/users/active-count').then(function(data) {
                 var statEl = document.getElementById('cl-stat-members');
-                if (!statEl || !data.success) return;
-                var count = data.count || 0;
+                if (!statEl) return;
+                if (!data.success) {
+                    statEl.textContent = '0';
+                    statEl.setAttribute('data-count', '0');
+                    return;
+                }
+                var count = Number(data.count || 0);
                 statEl.setAttribute('data-count', count);
                 statEl.textContent = count.toLocaleString();
+            }).catch(function(err) {
+                console.warn('loadActiveCount failed:', err);
+                var statEl = document.getElementById('cl-stat-members');
+                if (statEl) {
+                    statEl.textContent = '0';
+                    statEl.setAttribute('data-count', '0');
+                }
             });
         }
 
