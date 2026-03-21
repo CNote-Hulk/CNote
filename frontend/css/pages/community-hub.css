@@ -2352,7 +2352,7 @@
     }
 
     .community-page--hub .hub-mobile-overlay {
-        z-index: 4000 !important;
+        z-index: 500 !important;
         background: rgba(0, 0, 0, 0.78) !important;
     }
 
