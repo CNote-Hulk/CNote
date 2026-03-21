@@ -326,6 +326,55 @@
             });
         }
 
+        /* ── Community page navbar autohide (Landing scroll) ── */
+        function setupCommunityNavbarAutoHide() {
+            var navbar = document.querySelector('.navbar');
+            var container = document.getElementById('community-landing');
+            if (!navbar || !container) return;
+
+            var lastScrollY = container.scrollTop;
+            var ticking = false;
+
+            function onScroll() {
+                var currentY = container.scrollTop;
+                var delta = currentY - lastScrollY;
+
+                if (document.body.classList.contains('menu-open')) {
+                    lastScrollY = currentY;
+                    ticking = false;
+                    return;
+                }
+
+                if (currentY < 80) {
+                    navbar.classList.remove('navbar--hidden');
+                    lastScrollY = currentY;
+                    ticking = false;
+                    return;
+                }
+
+                if (Math.abs(delta) < 15) {
+                    ticking = false;
+                    return;
+                }
+
+                if (delta > 0) {
+                    navbar.classList.add('navbar--hidden');
+                } else {
+                    navbar.classList.remove('navbar--hidden');
+                }
+
+                lastScrollY = currentY < 0 ? 0 : currentY;
+                ticking = false;
+            }
+
+            container.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(onScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+        }
+
         /* ── Fire All Fetches ────────────────────────── */
         loadChat();
         loadTrending();
@@ -334,6 +383,7 @@
         loadActiveCount();
         loadRepair();
         updateOnlineCount();
+        setupCommunityNavbarAutoHide();
 
         var hasIO = 'IntersectionObserver' in window;
 
@@ -369,6 +419,7 @@
         var steps        = timeline ? Array.prototype.slice.call(timeline.querySelectorAll('.cl-timeline__step')) : [];
         var activeIdx    = -1;
         var isMobile     = window.innerWidth <= 768;
+        var ctxSwapTimer = null;
 
         /* ── Make steps visible immediately (sticky = always in view) ── */
         steps.forEach(function(s) { s.classList.add('cl-visible'); });
@@ -403,10 +454,15 @@
             var text  = step.getAttribute('data-ctx-text') || '';
             var hint  = step.getAttribute('data-ctx-hint') || '';
 
+            if (ctxSwapTimer) {
+                clearTimeout(ctxSwapTimer);
+                ctxSwapTimer = null;
+            }
+
             ctxInner.classList.remove('cl-ctx-visible');
             ctxInner.classList.add('cl-ctx-exit');
 
-            setTimeout(function() {
+            ctxSwapTimer = setTimeout(function() {
                 var elLabel = ctxInner.querySelector('.cl-timeline__context-label');
                 var elText  = ctxInner.querySelector('.cl-timeline__context-text');
                 var elHint  = ctxInner.querySelector('.cl-timeline__context-hint');
@@ -415,9 +471,11 @@
                 if (elHint)  elHint.textContent  = hint;
 
                 ctxInner.classList.remove('cl-ctx-exit');
-                void ctxInner.offsetWidth;
-                ctxInner.classList.add('cl-ctx-visible');
-            }, 200);
+                requestAnimationFrame(function() {
+                    ctxInner.classList.add('cl-ctx-visible');
+                });
+                ctxSwapTimer = null;
+            }, 120);
         }
 
         /* ── Apply Active / Done States ──────────────────── */
@@ -433,7 +491,7 @@
         function updateProgress(p) {
             if (!timeline || !progress) return;
             var pct = Math.max(0, Math.min(100, p * 100));
-            progress.style.height = pct + '%';
+            progress.style.transform = 'scaleY(' + (pct / 100) + ')';
 
             if (pct > 2) {
                 timeline.classList.add('cl-tl-started');
