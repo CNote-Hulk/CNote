@@ -28,6 +28,36 @@ router.get('/user/all', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/ratings/user/public/:username — Get all ratings by public username
+router.get('/user/public/:username', async (req, res) => {
+    try {
+        const username = String(req.params.username || '').trim();
+        if (!username) {
+            return res.status(400).json({ success: false, error: 'Username is required.' });
+        }
+
+        const userResult = await pool.query(
+            'SELECT id FROM users WHERE LOWER(username) = LOWER($1) LIMIT 1',
+            [username]
+        );
+
+        const userId = userResult.rows[0]?.id;
+        if (!userId) {
+            return res.json({ success: true, ratings: [] });
+        }
+
+        const result = await pool.query(
+            'SELECT console_id, rating, created_at FROM console_ratings WHERE user_id = $1 ORDER BY created_at DESC',
+            [userId]
+        );
+
+        return res.json({ success: true, ratings: result.rows });
+    } catch (err) {
+        console.error('Get public user ratings error:', err);
+        return res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
 // GET /api/ratings/averages — Get average rating & count for all consoles
 router.get('/averages', async (req, res) => {
     try {
