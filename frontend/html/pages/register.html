@@ -64,6 +64,10 @@
                     <input type="password" id="reg-password" name="new-password" required autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8" data-i18n="register_placeholder_password" data-i18n-attr="placeholder">
                     <div id="password-strength" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
                 </div>
+                <div class="auth-field">
+                    <label for="reg-password-confirm" data-i18n="register_label_password_confirm">Confirm Password</label>
+                    <input type="password" id="reg-password-confirm" name="confirm-password" required autocomplete="new-password" placeholder="Repeat your password" minlength="8" data-i18n="register_placeholder_password_confirm" data-i18n-attr="placeholder">
+                </div>
                 <button type="submit" class="auth-btn" data-i18n="register_btn">Create account</button>
             </form>
 

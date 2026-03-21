@@ -364,7 +364,7 @@ async function sendRepairReplyNotification({ to, username, console: consoleName,
 async function sendFriendRequestNotification({ to, receiverUsername, senderUsername, baseUrl }) {
   const safeReceiver = escapeHtml(receiverUsername || 'there');
   const safeSender = escapeHtml(senderUsername || 'A Console Notebook user');
-  const friendsLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/auth-profile.html?view=friends';
+  const friendsLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/profil.html?view=friends';
 
   const html = wrapTemplate('New Friend Request', `
         <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
@@ -403,7 +403,7 @@ async function sendFriendRequestNotification({ to, receiverUsername, senderUsern
 async function sendFriendAcceptedNotification({ to, username, accepterUsername, baseUrl }) {
   const safeUser = escapeHtml(username || 'there');
   const safeAccepter = escapeHtml(accepterUsername || 'A Console Notebook user');
-  const friendsLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/auth-profile.html?view=friends';
+  const friendsLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/profil.html?view=friends';
 
   const html = wrapTemplate('Friend Request Accepted', `
         <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
