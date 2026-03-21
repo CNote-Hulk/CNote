@@ -80,7 +80,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
             // Ratings
             try {
-                const res = await fetch(`${API_BASE_URL}/ratings/user/all?user_id=${encodeURIComponent(profile.id)}`);
+                const res = await fetch(`${API_BASE_URL}/ratings/user/public/${encodeURIComponent(profile.username)}`);
                 const data = await res.json();
                 const ratings = (data.ratings || []);
                 document.getElementById('user-dash-ratings').textContent = ratings.length;
