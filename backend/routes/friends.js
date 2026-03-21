@@ -11,6 +11,8 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const emailService = require('../services/email');
+const { createNotification } = require('./notifications');
 
 const router = express.Router();
 
@@ -22,10 +24,11 @@ router.post('/request/:userId', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Invalid user ID.' });
         }
 
-        const userResult = await pool.query('SELECT id FROM users WHERE id = $1', [receiverId]);
+        const userResult = await pool.query('SELECT id, username, email, notify_new_friend FROM users WHERE id = $1', [receiverId]);
         if (userResult.rows.length === 0) {
             return res.status(404).json({ success: false, error: 'User not found.' });
         }
+        const receiver = userResult.rows[0];
 
         const friendCheck = await pool.query(
             `SELECT id FROM friends
@@ -55,12 +58,54 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                     'INSERT INTO friends (user1_id, user2_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
                     [u1, u2]
                 );
+
+                if (receiver.notify_new_friend !== false) {
+                    await createNotification(
+                        receiverId,
+                        'friend_accepted',
+                        `${req.user.username} accepted your friend request.`,
+                        '/html/pages/auth-profile.html?view=friends'
+                    );
+                }
+
+                if (receiver.email && receiver.notify_new_friend !== false) {
+                    emailService.sendFriendAcceptedNotification({
+                        to: receiver.email,
+                        username: receiver.username,
+                        accepterUsername: req.user.username,
+                        baseUrl: process.env.BASE_URL
+                    }).catch((emailErr) => {
+                        console.error('Friend accepted notification email error:', emailErr);
+                    });
+                }
+
                 return res.json({ success: true, status: 'friends' });
             }
             return res.status(400).json({ success: false, error: 'Friend request has already been sent.' });
         }
 
         await pool.query('INSERT INTO friend_requests (sender_id, receiver_id) VALUES ($1, $2)', [req.user.id, receiverId]);
+
+        if (receiver.notify_new_friend !== false) {
+            await createNotification(
+                receiverId,
+                'friend_request',
+                `${req.user.username} sent you a friend request.`,
+                '/html/pages/auth-profile.html?view=friends'
+            );
+        }
+
+        if (receiver.email && receiver.notify_new_friend !== false) {
+            emailService.sendFriendRequestNotification({
+                to: receiver.email,
+                receiverUsername: receiver.username,
+                senderUsername: req.user.username,
+                baseUrl: process.env.BASE_URL
+            }).catch((emailErr) => {
+                console.error('Friend request notification email error:', emailErr);
+            });
+        }
+
         res.json({ success: true, status: 'pending' });
     } catch (err) {
         console.error('Friend request error:', err);
@@ -73,7 +118,10 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
     try {
         const requestId = parseInt(req.params.requestId, 10);
         const result = await pool.query(
-            'SELECT * FROM friend_requests WHERE id = $1 AND receiver_id = $2 AND status = \'pending\'',
+            `SELECT fr.*, u.username AS sender_username, u.email AS sender_email, u.notify_new_friend AS sender_notify_new_friend
+             FROM friend_requests fr
+             JOIN users u ON u.id = fr.sender_id
+             WHERE fr.id = $1 AND fr.receiver_id = $2 AND fr.status = 'pending'`,
             [requestId, req.user.id]
         );
 
@@ -92,6 +140,26 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
             'INSERT INTO friends (user1_id, user2_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
             [u1, u2]
         );
+
+        if (request.sender_notify_new_friend !== false) {
+            await createNotification(
+                request.sender_id,
+                'friend_accepted',
+                `${req.user.username} accepted your friend request.`,
+                '/html/pages/auth-profile.html?view=friends'
+            );
+        }
+
+        if (request.sender_email && request.sender_notify_new_friend !== false) {
+            emailService.sendFriendAcceptedNotification({
+                to: request.sender_email,
+                username: request.sender_username,
+                accepterUsername: req.user.username,
+                baseUrl: process.env.BASE_URL
+            }).catch((emailErr) => {
+                console.error('Friend accepted notification email error:', emailErr);
+            });
+        }
 
         res.json({ success: true });
     } catch (err) {
