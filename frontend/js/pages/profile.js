@@ -14,6 +14,7 @@
         SearchModule.init();
 
         const user = AuthModule.getCurrentUser();
+        console.log('favorite_consoles:', user.favorite_consoles);
         if (!user) {
             window.location.href = 'login.html';
         } else if (!user.username_chosen) {

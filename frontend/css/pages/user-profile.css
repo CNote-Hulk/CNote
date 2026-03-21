@@ -235,6 +235,25 @@
     margin: 0;
 }
 
+#user-dash-courses-section > #user-dash-course-preview,
+#user-dash-ratings-section > #user-dash-ratings-preview,
+#user-dash-achievements-section > #user-dash-achievements-preview,
+.user-listings-section > .user-listings-grid,
+.user-friends-section > .user-friends-list {
+    background: rgba(20, 18, 16, 0.6);
+    border: 1px solid rgba(180, 140, 80, 0.1);
+    border-radius: 12px;
+    padding: 22px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+#user-dash-courses-section > #user-dash-course-preview,
+#user-dash-ratings-section > #user-dash-ratings-preview,
+#user-dash-achievements-section > #user-dash-achievements-preview {
+    min-height: 88px;
+}
+
 /* === SECTION TITLES === */
 .user-section-title {
     font-family: 'Playfair Display', Georgia, serif;
@@ -262,10 +281,6 @@
 @media (max-width: 860px) {
     .user-dashboard-panel .dash-stats {
         grid-template-columns: repeat(3, 1fr);
-    }
-
-    .user-dashboard-panel .dash-grid {
-        grid-template-columns: 1fr;
     }
 }
 
