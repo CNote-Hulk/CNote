@@ -357,11 +357,91 @@ async function sendRepairReplyNotification({ to, username, console: consoleName,
     }
 }
 
+/**
+ * sendFriendRequestNotification
+ * @description Email: notifies a user that they received a friend request.
+ */
+async function sendFriendRequestNotification({ to, receiverUsername, senderUsername, baseUrl }) {
+  const safeReceiver = escapeHtml(receiverUsername || 'there');
+  const safeSender = escapeHtml(senderUsername || 'A Console Notebook user');
+  const friendsLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/auth-profile.html?view=friends';
+
+  const html = wrapTemplate('New Friend Request', `
+        <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+        Hi ${safeReceiver}, <strong style="color:#e8d5b7;">${safeSender}</strong> sent you a friend request on Console Notebook.
+        </p>
+        <a href="${friendsLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+        View Friend Requests
+        </a>
+        <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+        Open your profile to accept or reject the request.
+        </p>`);
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM,
+      to,
+      subject: `${senderUsername || 'Someone'} sent you a friend request — CNote`,
+      html
+    });
+    if (error) {
+      console.error('Resend error (friend request):', error);
+      return { success: false, error: error.message };
+    }
+    console.log('Friend request email sent to:', to, '| Id:', data?.id);
+    return { success: true };
+  } catch (err) {
+    console.error('Resend exception (friend request):', err);
+    return { success: false, error: err.message };
+  }
+}
+
+/**
+ * sendFriendAcceptedNotification
+ * @description Email: notifies the original sender when their friend request was accepted.
+ */
+async function sendFriendAcceptedNotification({ to, username, accepterUsername, baseUrl }) {
+  const safeUser = escapeHtml(username || 'there');
+  const safeAccepter = escapeHtml(accepterUsername || 'A Console Notebook user');
+  const friendsLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/auth-profile.html?view=friends';
+
+  const html = wrapTemplate('Friend Request Accepted', `
+        <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+        Hi ${safeUser}, <strong style="color:#e8d5b7;">${safeAccepter}</strong> accepted your friend request on Console Notebook.
+        </p>
+        <a href="${friendsLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+        Open Friends
+        </a>
+        <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+        You can now chat and connect in the community.
+        </p>`);
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM,
+      to,
+      subject: `${accepterUsername || 'Someone'} accepted your friend request — CNote`,
+      html
+    });
+    if (error) {
+      console.error('Resend error (friend accepted):', error);
+      return { success: false, error: error.message };
+    }
+    console.log('Friend accepted email sent to:', to, '| Id:', data?.id);
+    return { success: true };
+  } catch (err) {
+    console.error('Resend exception (friend accepted):', err);
+    return { success: false, error: err.message };
+  }
+}
+
 module.exports = {
     sendVerificationEmail,
     sendPasswordResetEmail,
     sendTwoFactorEmail,
     sendContactEmail,
     sendRepairRequestNotification,
-    sendRepairReplyNotification
+  sendRepairReplyNotification,
+    sendFriendRequestNotification,
+    sendFriendAcceptedNotification
 };
