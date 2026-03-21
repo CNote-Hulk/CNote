@@ -2327,6 +2327,7 @@
     /* Don't create stacking context — sidebar must be above overlay */
     .community-page--hub .community-hub {
         z-index: auto;
+        padding: 60px 0 0 0;
     }
 
     /* Final mobile layering override (shared by community + welcome pages) */
@@ -2347,6 +2348,7 @@
     .community-page--hub .hub-sidebar.hub-sidebar--open {
         left: 0 !important;
         box-shadow: 18px 0 36px rgba(0, 0, 0, 0.72) !important;
+        padding: 20px 0 0 0 ;
     }
 
     .community-page--hub .hub-mobile-overlay {
