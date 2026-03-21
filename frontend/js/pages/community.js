@@ -263,8 +263,8 @@ function syncOverlayOutsideSidebar() {
         return;
     }
 
-    const sidebarWidth = Math.ceil(sidebar.getBoundingClientRect().width || 0);
-    overlay.style.left = sidebarWidth + 'px';
+    // Fixed left value as requested for overlay when sidebar is open
+    overlay.style.left = '354px';
     overlay.style.right = '0';
 }
 
