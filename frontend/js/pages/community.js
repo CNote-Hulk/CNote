@@ -264,7 +264,7 @@ function syncOverlayOutsideSidebar() {
     }
 
     // Restore calculated value minus 1px (clickas request)
-    const sidebarWidth = Math.max(0, Math.ceil(sidebar.getBoundingClientRect().width || 0) - 1);
+    const sidebarWidth = Math.max(0, Math.ceil(sidebar.getBoundingClientRect().width || 0) - 2);
     overlay.style.left = sidebarWidth + 'px';
     overlay.style.right = '0';
 }
