@@ -46,45 +46,6 @@
     pointer-events: none;
 }
 
-.help-hero__title {
-    font-family: 'Playfair Display', serif;
-    font-size: 52px;
-    font-weight: 700;
-    color: var(--text-light);
-    margin: 0 0 16px;
-}
-
-.help-hero__subtitle {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 18px;
-    color: var(--text-gray);
-    margin: 0 0 40px;
-    line-height: 1.6;
-}
-
-.help-hero__btn {
-    display: inline-block;
-    padding: 14px 36px;
-    background: transparent;
-    color: var(--accent-color);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: 2px solid var(--accent-color);
-    border-radius: 999px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    pointer-events: auto;
-}
-
-.help-hero__btn:hover {
-    background: var(--accent-color);
-    color: var(--dark-bg);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(var(--accent-rgb), 0.15);
-}
-
 /* === FAQ === */
 .help-faq {
     padding: 80px 20px;
