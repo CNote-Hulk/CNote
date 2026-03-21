@@ -103,28 +103,6 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             // Favorites
             const favCount = (profile.favorite_console_ids || []).length || (profile.favorite_consoles || '').split(',').filter(Boolean).length;
             document.getElementById('user-dash-favorites').textContent = favCount;
-
-            // Friends
-            try {
-                const res = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(profile.username)}/friends`);
-                const data = await res.json();
-                const friends = data.friends || [];
-                document.getElementById('user-dash-friends').textContent = friends.length;
-                const friendsPreview = document.getElementById('user-dash-friends-preview');
-                if (friends.length > 0) {
-                    friendsPreview.innerHTML = '<div class="dash-friends-row">' + friends.slice(0, 8).map(f => {
-                        const hasAvatar = f.avatar && f.avatar.length > 10;
-                        const av = hasAvatar
-                            ? `<img src="${escapeHtml(f.avatar)}" alt="" class="dash-friend-av">`
-                            : `<span class="dash-friend-av dash-friend-av--fallback">👤</span>`;
-                        return `<a href="/user/${encodeURIComponent(f.username)}" class="dash-friend" title="${escapeHtml(f.username)}">${av}</a>`;
-                    }).join('') + '</div>';
-                } else {
-                    friendsPreview.innerHTML = '<p class="dash-empty">No friends yet.</p>';
-                }
-            } catch {
-                document.getElementById('user-dash-friends-preview').innerHTML = '<p class="dash-empty">—</p>';
-            }
         }
 
         /** Fetch public profile data by username and render the page */
@@ -328,6 +306,8 @@ import { AchievementsModule } from '/js/modules/achievements.js';
         async function loadFriendsList(username) {
             const section = document.getElementById('user-friends-section');
             const list = document.getElementById('user-friends-list');
+            const friendCount = document.getElementById('user-dash-friends');
+            if (friendCount) friendCount.textContent = '0';
 
             try {
                 const res = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(username)}/friends`);
@@ -335,10 +315,10 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
                 if (!data.success || !data.friends || data.friends.length === 0) {
                     section.hidden = false;
+                    if (list) list.innerHTML = '<p class="user-listings-empty">No friends yet.</p>';
                     return;
                 }
 
-                const friendCount = document.getElementById('user-dash-friends');
                 if (friendCount) friendCount.textContent = data.friends.length;
 
                 section.hidden = false;
@@ -355,6 +335,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 }).join('');
             } catch {
                 section.hidden = false;
+                if (list) list.innerHTML = '<p class="user-listings-empty">Unable to load friends.</p>';
             }
         }
 
