@@ -71,6 +71,16 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const username = document.getElementById('reg-username').value;
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
+    const confirm = document.getElementById('reg-password-confirm').value;
+        if (password !== confirm) {
+            const errorEl = document.getElementById('register-error');
+            const submitBtn = e.target.querySelector('button[type="submit"]');  
+            errorEl.textContent = 'Passwords do not match.';
+            errorEl.classList.add('visible');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create account';
+            return;
+        }
     const errorEl = document.getElementById('register-error');
     const successEl = document.getElementById('register-success');
     const submitBtn = e.target.querySelector('button[type="submit"]');

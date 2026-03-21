@@ -88,7 +88,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 if (ratings.length > 0) {
                     ratingsPreview.innerHTML = ratings.slice(0, 5).map(r => {
                         const name = r.console_id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                        return `<a href="/consoles/${encodeURIComponent(r.console_id)}.html" class="dash-rating-row">
+                        return `<a href="/html/pages/consoles/${encodeURIComponent(r.console_id)}.html" class="dash-rating-row">
                             <span class="dash-rating-row__name">${escapeHtml(name)}</span>
                             <span class="dash-rating-row__stars">${renderRatingStars(r.rating)}</span>
                         </a>`;
@@ -337,6 +337,9 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                     section.hidden = false;
                     return;
                 }
+
+                const friendCount = document.getElementById('user-dash-friends');
+                if (friendCount) friendCount.textContent = data.friends.length;
 
                 section.hidden = false;
                 list.innerHTML = data.friends.map(f => {
