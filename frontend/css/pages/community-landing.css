@@ -1207,7 +1207,6 @@
 @media (max-width: 768px) {
     .community-landing {
         padding: 72px 0 72px;
-        z-index: 1;
     }
 
     .cl-wrapper {
