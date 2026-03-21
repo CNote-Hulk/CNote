@@ -419,7 +419,7 @@
 
 /* ── Sidebar ── */
 .profile-sidebar {
-    border-right: 1px solid rgba(180,140,80,0.12);
+    border-right: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
     padding: 0 24px 40px;
     display: flex;
     flex-direction: column;
@@ -431,12 +431,12 @@
     overflow-x: hidden;
     overscroll-behavior: contain;
     scrollbar-width: thin;
-    scrollbar-color: rgba(200,168,80,0.15) transparent;
+    scrollbar-color: var(--accent-color, #D4AF7A) transparent;
 }
 
 .profile-sidebar::-webkit-scrollbar { width: 4px; }
 .profile-sidebar::-webkit-scrollbar-track { background: transparent; }
-.profile-sidebar::-webkit-scrollbar-thumb { background: rgba(200,168,80,0.15); border-radius: 2px; }
+.profile-sidebar::-webkit-scrollbar-thumb { background: var(--accent-color, #D4AF7A); border-radius: 2px; }
 
 /* Avatar */
 .profile-avatar {
@@ -448,9 +448,9 @@
     align-items: center;
     justify-content: center;
     font-size: 2rem;
-    color: var(--p-accent);
+    color: var(--accent-color, #D4AF7A);
     flex-shrink: 0;
-    border: 3px solid rgba(200,168,80,0.25);
+    border: 1px solid var(--accent-color, #D4AF7A);
     cursor: pointer;
     padding: 0;
     overflow: hidden;
@@ -460,7 +460,7 @@
 }
 
 .profile-avatar:hover {
-    border-color: var(--p-accent);
+    border-color: var(--accent-color, #D4AF7A);
     transform: none;
 }
 
@@ -522,19 +522,19 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #ffd700;
-    background: linear-gradient(135deg, rgba(200,168,80,0.18), rgba(255,215,0,0.1));
-    border: 1px solid rgba(255,215,0,0.3);
+    color: var(--accent-color, #D4AF7A);
+    background: linear-gradient(135deg, rgba(var(--accent-color-rgb, 212, 175, 122), 0.18), rgba(var(--accent-color-rgb, 212, 175, 122), 0.1));
+    border: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.25);
     border-radius: 5px;
     padding: 3px 10px;
     line-height: 1.4;
     white-space: nowrap;
     margin-top: 6px;
-    box-shadow: 0 0 12px rgba(200,168,80,0.15);
+    box-shadow: 0 0 12px rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
 }
 
 .profile-edit-shortcut {
-    border: 1px solid rgba(200,168,80,0.15);
+    border: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
     background: transparent;
     color: var(--p-muted);
     border-radius: 4px;
@@ -545,8 +545,8 @@
 }
 
 .profile-edit-shortcut:hover {
-    color: var(--p-accent);
-    border-color: rgba(200,168,80,0.35);
+    color: var(--accent-color, #D4AF7A);
+    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.35);
 }
 
 /* Online dot */
@@ -620,8 +620,8 @@
     color: var(--p-faint);
     font-style: italic;
     padding: 8px 12px;
-    background: rgba(200,168,80,0.03);
-    border: 1px dashed rgba(180,140,80,0.1);
+    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.03);
+    border: 1px dashed rgba(var(--accent-color-rgb, 212, 175, 122), 0.1);
     border-radius: 6px;
     width: 100%;
     text-align: center;
@@ -629,9 +629,9 @@
 
 .profile-console-tag {
     display: inline-block;
-    background: rgba(200,168,80,0.08);
-    border: 1px solid rgba(200,168,80,0.15);
-    color: var(--p-accent);
+    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.08);
+    border: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
+    color: var(--accent-color, #D4AF7A);
     padding: 4px 11px;
     border-radius: 12px;
     font-size: 0.72rem;
@@ -641,8 +641,8 @@
 }
 
 .profile-console-tag:hover {
-    background: rgba(200,168,80,0.14);
-    border-color: rgba(200,168,80,0.3);
+    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.14);
+    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.3);
 }
 
 /* ── Sidebar Navigation ── */
@@ -685,7 +685,7 @@
 }
 
 .profile-tab:hover {
-    background: rgba(200,168,80,0.08);
+    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.08);
     color: var(--p-text);
     transform: translateX(2px);
 }
@@ -695,11 +695,11 @@
 }
 
 .profile-tab.active {
-    background: rgba(200,168,80,0.14);
-    color: var(--p-accent);
-    border-left: 2px solid var(--p-accent);
+    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.14);
+    color: var(--accent-color, #D4AF7A);
+    border-left: 2px solid var(--accent-color, #D4AF7A);
     padding-left: 10px;
-    box-shadow: inset 0 0 12px rgba(200,168,80,0.05);
+    box-shadow: inset 0 0 12px rgba(var(--accent-color-rgb, 212, 175, 122), 0.05);
 }
 
 .profile-tab.active::after {
@@ -708,7 +708,7 @@
 
 .profile-tab.active svg {
     opacity: 1;
-    color: var(--p-accent);
+    color: var(--accent-color, #D4AF7A);
 }
 
 /* ── Main Content ── */
@@ -753,7 +753,7 @@
 }
 
 .course-card:hover {
-    border-color: rgba(200,168,80,0.15);
+    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
 }
 
 .course-card__section-title {
@@ -786,7 +786,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(200,168,80,0.08);
+    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.08);
     border-radius: 10px;
     flex-shrink: 0;
 }
@@ -807,7 +807,7 @@
 /* Progress Bar */
 .progress-bar {
     height: 8px;
-    background: rgba(200,168,80,0.06);
+    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.06);
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -820,7 +820,7 @@
     border-radius: 6px;
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     width: 0;
-    box-shadow: 0 0 8px rgba(200,168,80,0.25);
+    box-shadow: 0 0 8px rgba(var(--accent-color-rgb, 212, 175, 122), 0.25);
 }
 
 .progress-bar__text {
@@ -851,12 +851,12 @@
 }
 
 .achievement-badge.earned {
-    border-color: rgba(200,168,80,0.25);
+    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.25);
 }
 
 .achievement-badge.earned:hover {
-    border-color: rgba(200,168,80,0.4);
-    box-shadow: 0 8px 24px rgba(200,168,80,0.1);
+    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.4);
+    box-shadow: 0 8px 24px rgba(var(--accent-color-rgb, 212, 175, 122), 0.1);
 }
 
 .achievement-badge.locked {
@@ -1205,7 +1205,7 @@
         position: static;
         height: auto;
         border-right: none;
-        border-bottom: 1px solid rgba(180,140,80,0.12);
+        border-bottom: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
         padding: 0 20px 20px;
     }
 
@@ -1230,7 +1230,7 @@
     .profile-tab.active {
         border-left: none;
         padding-left: 0;
-        background: rgba(200,168,80,0.14);
+        background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.1);
     }
 
     .profile-tab span {
