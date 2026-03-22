@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     var exploreBtn = document.getElementById('hero-explore-btn');
+    var heroSection = document.querySelector('.hero-home');
     var quickguide = document.querySelector('.hero-quickguide');
     var steps = document.querySelectorAll('.qg-step');
     var fill = document.getElementById('qg-fill');
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (e) { loggedIn = false; }
 
     if (!loggedIn) {
+        if (heroSection) heroSection.classList.add('hero-home--centered');
         if (quickguide) quickguide.style.display = 'none';
         if (exploreBtn) {
             exploreBtn.href = 'login.html';
