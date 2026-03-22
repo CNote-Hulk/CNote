@@ -2393,10 +2393,6 @@ textarea {
         padding-top: 120px;
     }
     
-    .hero-content {
-        padding: 0 24px;
-    }
-    
     /* Optimized title - compact but readable */
     .hero-cinematic h1 {
         font-size: clamp(2rem, 10vw, 3rem);
