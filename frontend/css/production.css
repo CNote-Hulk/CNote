@@ -597,6 +597,166 @@ mark {
  */
 
 /* === HERO CINEMATIC === */
+.hero-home {
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.hero-home .hero-content {
+    flex: 1;
+    max-width: none;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 48px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-home .hero-content p {
+    text-align: left;
+    margin: 0 0 2.5rem;
+    max-width: 320px;
+}
+
+.hero-home .hero-button {
+    box-shadow: 0 4px 20px rgba(212, 175, 122, 0.45), 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.hero-home .hero-button:hover {
+    box-shadow: 0 6px 28px rgba(212, 175, 122, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hero-quickguide {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 36px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-quickguide__label {
+    font-size: 10px;
+    color: rgba(201, 169, 110, 0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: var(--font-sans);
+    margin-bottom: 24px;
+}
+
+.hero-quickguide__steps {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-quickguide__track {
+    position: absolute;
+    left: 19px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.hero-quickguide__fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0%;
+    background: var(--accent-color);
+    border-radius: 1px;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.qg-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 10px 0;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.qg-step__dot {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: var(--dark-bg);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.qg-step--done .qg-step__dot {
+    border-color: var(--accent-color);
+    background: rgba(212, 175, 122, 0.12);
+}
+
+.qg-step--active .qg-step__dot {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(212, 175, 122, 0.15);
+}
+
+.qg-step__num {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.25);
+    font-family: var(--font-sans);
+    transition: color 0.3s;
+}
+
+.qg-step--done .qg-step__num { display: none; }
+.qg-step--active .qg-step__num { color: var(--dark-bg); }
+
+.qg-step__check {
+    display: none;
+    color: var(--accent-color);
+}
+
+.qg-step--done .qg-step__check { display: block; }
+
+.qg-step__text {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.qg-step__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: var(--font-sans);
+    transition: color 0.3s;
+}
+
+.qg-step--active .qg-step__title { color: var(--text-light); }
+.qg-step--done .qg-step__title { color: rgba(212, 175, 122, 0.7); }
+
+.qg-step__desc {
+    font-size: 11px;
+    color: transparent;
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.qg-step--active .qg-step__desc {
+    color: rgba(255, 255, 255, 0.45);
+    max-height: 40px;
+}
+
 .hero-cinematic {
     position: relative;
     isolation: isolate;
@@ -2186,6 +2346,29 @@ textarea {
     .hero-cinematic {
         min-height: 100svh; /* Support for mobile browsers */
         padding-top: 120px;
+    }
+
+    .hero-home {
+        flex-direction: column;
+        padding-top: 120px;
+    }
+
+    .hero-home .hero-content {
+        padding: 0 24px 32px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        text-align: center;
+        align-items: center;
+    }
+
+    .hero-home .hero-content p {
+        text-align: center;
+        max-width: 100%;
+        margin: 0 auto 2rem;
+    }
+
+    .hero-quickguide {
+        padding: 32px 24px;
     }
     
     .hero-content {

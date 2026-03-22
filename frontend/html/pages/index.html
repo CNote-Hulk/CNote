@@ -68,55 +68,65 @@
          Full-screen cinematic intro with quick guide
          =========================== -->
     <section class="hero hero-cinematic hero-home" id="hero">
-        <!-- Left: vertical timeline quick guide -->
-        <div class="hero-timeline">
-            <div class="hero-timeline__step" data-step="0" data-href="evolutie.html">
-                <span class="hero-timeline__emoji" aria-hidden="true">🌍</span>
-                <div class="hero-timeline__text">
-                    <span class="hero-timeline__number">01</span>
-                    <span class="hero-timeline__label" data-i18n="home_step1">Discover stories in the encyclopedia</span>
-                </div>
-            </div>
-            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
-            <div class="hero-timeline__step" data-step="1" data-href="comparatie.html">
-                <span class="hero-timeline__emoji" aria-hidden="true">⚔️</span>
-                <div class="hero-timeline__text">
-                    <span class="hero-timeline__number">02</span>
-                    <span class="hero-timeline__label" data-i18n="home_step2">Feel the difference between consoles</span>
-                </div>
-            </div>
-            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
-            <div class="hero-timeline__step" data-step="2" data-href="community.html">
-                <span class="hero-timeline__emoji" aria-hidden="true">🤝</span>
-                <div class="hero-timeline__text">
-                    <span class="hero-timeline__number">03</span>
-                    <span class="hero-timeline__label" data-i18n="home_step3">Join the vibe in the community</span>
-                </div>
-            </div>
-            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
-            <div class="hero-timeline__step" data-step="3" data-href="community.html?tab=chat">
-                <span class="hero-timeline__emoji" aria-hidden="true">💬</span>
-                <div class="hero-timeline__text">
-                    <span class="hero-timeline__number">04</span>
-                    <span class="hero-timeline__label" data-i18n="home_step4">Start a real conversation</span>
-                </div>
-            </div>
-            <div class="hero-timeline__connector"><div class="hero-timeline__connector-fill"></div></div>
-            <div class="hero-timeline__step" data-step="4" data-href="invata.html">
-                <span class="hero-timeline__emoji" aria-hidden="true">⭐</span>
-                <div class="hero-timeline__text">
-                    <span class="hero-timeline__number">05</span>
-                    <span class="hero-timeline__label" data-i18n="home_step5">Share your voice with a rating</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Right: title + CTA -->
-        <div class="hero-content">
+          <div class="hero-content">
             <h1 data-i18n="hero_title">Console Notebook</h1>
             <p data-i18n="hero_subtitle">Welcome to the golden — or maybe bronze — age of gaming.</p>
-            <a href="#content" class="hero-button" id="hero-explore-btn" data-i18n="hero_cta">Explore Cnote Bakery</a>
-        </div>
+            <a href="#content" class="hero-button" id="hero-explore-btn">Explore the retro era</a>
+          </div>
+
+          <div class="hero-quickguide">
+            <p class="hero-quickguide__label">Quick guide</p>
+            <div class="hero-quickguide__steps" id="qg-steps">
+              <div class="hero-quickguide__track">
+                <div class="hero-quickguide__fill" id="qg-fill"></div>
+              </div>
+
+              <div class="qg-step qg-step--done" data-href="#">
+                <div class="qg-step__dot">
+                  <span class="qg-step__num">1</span>
+                  <svg class="qg-step__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="qg-step__text">
+                  <span class="qg-step__title">Creează-ți contul</span>
+                  <span class="qg-step__desc">Două minute și ești înăuntru.</span>
+                </div>
+              </div>
+
+              <div class="qg-step qg-step--active" data-href="evolutie.html">
+                <div class="qg-step__dot"><span class="qg-step__num">2</span></div>
+                <div class="qg-step__text">
+                  <span class="qg-step__title">Alege-ți prima consolă preferată</span>
+                  <span class="qg-step__desc">Marchează-o cu ❤️ în enciclopedie.</span>
+                </div>
+              </div>
+
+              <div class="qg-step" data-href="comparatie.html">
+                <div class="qg-step__dot"><span class="qg-step__num">3</span></div>
+                <div class="qg-step__text">
+                  <span class="qg-step__title">Pune-o față în față cu un rival</span>
+                  <span class="qg-step__desc">Comparatorul te ajută să vezi clar.</span>
+                </div>
+              </div>
+
+              <div class="qg-step" data-href="community.html">
+                <div class="qg-step__dot"><span class="qg-step__num">4</span></div>
+                <div class="qg-step__text">
+                  <span class="qg-step__title">Spune salut în comunitate</span>
+                  <span class="qg-step__desc">Forumul și chat-ul live te așteaptă.</span>
+                </div>
+              </div>
+
+              <div class="qg-step" data-href="evolutie.html">
+                <div class="qg-step__dot"><span class="qg-step__num">5</span></div>
+                <div class="qg-step__text">
+                  <span class="qg-step__title">Lasă primul tău rating</span>
+                  <span class="qg-step__desc">Vocea ta contează pe platformă.</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
     </section>
 
     <!-- ===========================
