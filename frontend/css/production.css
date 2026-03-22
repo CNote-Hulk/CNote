@@ -646,6 +646,7 @@ mark {
     position: relative;
     z-index: 2;
     max-width: 760px;
+    padding-left: 200px;
 }
 
 .hero-quickguide__label {
