@@ -13,9 +13,6 @@ body.home-locked {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(80px, 12vw, 200px);
-    padding-left: 40px;
-    padding-right: clamp(24px, 5vw, 80px);
 }
 
 .hero-home .hero-content {
