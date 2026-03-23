@@ -188,9 +188,19 @@ body.home-locked {
     padding-right: clamp(24px, 4vw, 48px);
 }
 
+.hero-home--centered .hero-content h1 {
+    text-align: center;
+    width: 100%;
+}
+
 .hero-home--centered .hero-content p {
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+}
+
+.hero-home--centered .hero-button {
+    align-self: center;
 }
 
 /* === RESPONSIVE === */
