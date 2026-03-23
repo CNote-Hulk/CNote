@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (quickguide) quickguide.style.display = 'none';
         if (exploreBtn) {
             exploreBtn.href = 'login.html';
+            exploreBtn.textContent = 'Login to explore the site';
+            exploreBtn.removeAttribute('data-i18n');
             exploreBtn.removeAttribute('id');
         }
         return;
