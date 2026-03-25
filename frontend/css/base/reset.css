@@ -65,11 +65,11 @@ body::before {
 
 /* Selection Color */
 ::selection {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
+    background: #d4c09a;   /* cream */
+    color: #1a1a1a;        /* dark text for contrast */
 }
 
 ::-moz-selection {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
+    background: #d4c09a;   /* cream */
+    color: #1a1a1a;        /* dark text for contrast */
 }

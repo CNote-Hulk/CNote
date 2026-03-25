@@ -74,6 +74,114 @@
     z-index: 1;
 }
 
+
+@media (max-width: 900px) {
+    .console-hero .container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .console-hero-text {
+        text-align: center;
+    }
+
+    .console-hero-text h1 {
+        font-size: 2.25rem;
+    }
+
+    .console-hero-text .console-meta {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .console-hero {
+        min-height: auto;
+        padding: 80px 0 40px;
+    }
+
+    .console-hero .container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        grid-template-areas:
+            "image"
+            "text";
+    }
+
+    .console-hero-image {
+        grid-area: image;
+        padding: 0 20px;
+    }
+
+    .console-hero-text {
+        grid-area: text;
+        text-align: center;
+    }
+
+    .console-hero-image img {
+        max-width: 90%;
+        max-height: 250px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .console-hero-text h1 {
+        font-size: clamp(1.75rem, 7vw, 2.25rem);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        letter-spacing: -0.5px;
+    }
+
+    .console-hero-text .console-meta {
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+    }
+
+    .console-hero-text .console-meta span {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+        background: rgba(212, 175, 122, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(212, 175, 122, 0.2);
+    }
+
+    .console-hero-text .console-tagline {
+        font-size: clamp(1rem, 3vw, 1.15rem);
+        line-height: 1.6;
+        max-width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .console-hero {
+        padding: 70px 0 30px;
+    }
+
+    .console-hero .container {
+        gap: 1.5rem;
+    }
+
+    .console-hero-image img {
+        max-height: 200px;
+    }
+
+    .console-hero-text h1 {
+        font-size: 1.65rem;
+    }
+
+    .console-hero-text .console-meta span {
+        font-size: 0.85rem;
+        padding: 0.35rem 0.7rem;
+    }
+
+    .console-hero-text .console-tagline {
+        font-size: 0.95rem;
+    }
+}
+
 /* === LOADING STATE ===
    Placeholder text while specs are fetched from JSON */
 .console-loading {
@@ -145,6 +253,71 @@
     color: var(--text-gray);
     font-size: 1.05rem;
     font-weight: 500;
+}
+
+
+@media (max-width: 900px) {
+    .specs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .specs-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .specs-group-title {
+        font-size: 0.7rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .spec-card {
+        padding: 1.25rem;
+        border-radius: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .spec-card h3,
+    .spec-card h4 {
+        font-size: 0.8rem;
+        margin-bottom: 0;
+        flex: 1;
+    }
+
+    .spec-card p {
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: right;
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .spec-card {
+        padding: 1rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .spec-card h3,
+    .spec-card h4,
+    .spec-card p {
+        text-align: center;
+        flex: none;
+    }
+
+    .spec-card p {
+        font-size: 1.1rem;
+    }
 }
 
 /* === HISTORY SECTION ===
@@ -248,100 +421,13 @@
     transform: translateX(-3px);
 }
 
-/* === MOBILE RESPONSIVE === */
-
-/* Tablets & Small Desktops */
-@media (max-width: 900px) {
-    .console-hero .container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .console-hero-text {
-        text-align: center;
-    }
-
-    .console-hero-text h1 {
-        font-size: 2.25rem;
-    }
-
-    .console-hero-text .console-meta {
-        justify-content: center;
-    }
-    
-    .specs-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* === MOBILE PHONES (max-width: 768px) === */
 @media (max-width: 768px) {
-    /* Hero Section - Mobile Optimized */
-    .console-hero {
-        min-height: auto;
-        padding: 80px 0 40px;
-    }
-    
-    .console-hero .container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        /* Image on top, then text */
-        grid-template-areas:
-            "image"
-            "text";
-    }
-    
-    .console-hero-image {
-        grid-area: image;
-        padding: 0 20px;
-    }
-    
-    .console-hero-text {
-        grid-area: text;
-        text-align: center;
-    }
-    
-    /* Image - centered and optimized */
-    .console-hero-image img {
-        max-width: 90%;
-        max-height: 250px;
-        margin: 0 auto;
-        display: block;
-    }
-    
-    /* More compact title */
-    .console-hero-text h1 {
-        font-size: clamp(1.75rem, 7vw, 2.25rem);
-        line-height: 1.2;
-        margin-bottom: 1rem;
-        letter-spacing: -0.5px;
-    }
-    
-    /* Meta info - clean stack */
-    .console-hero-text .console-meta {
-        justify-content: center;
-        gap: 1rem;
+    .history-section p {
+        font-size: 0.95rem;
+        line-height: 1.7;
         margin-bottom: 1.25rem;
-        flex-wrap: wrap;
     }
-    
-    .console-hero-text .console-meta span {
-        font-size: 0.9rem;
-        padding: 0.4rem 0.8rem;
-        background: rgba(212, 175, 122, 0.1);
-        border-radius: 8px;
-        border: 1px solid rgba(212, 175, 122, 0.2);
-    }
-    
-    /* More compact tagline */
-    .console-hero-text .console-tagline {
-        font-size: clamp(1rem, 3vw, 1.15rem);
-        line-height: 1.6;
-        max-width: 90%;
-        margin: 0 auto;
-    }
-    
-    /* Back Button - Touch-Friendly Mobile */
+
     .back-link {
         padding: 0.95rem 1.5rem;
         font-size: 1rem;
@@ -351,9 +437,7 @@
         border-width: 1.5px;
         border-radius: 14px;
         box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-        /* Minimum touch target 44px (Apple HIG) */
         min-height: 44px;
-        /* Prevent accidental zoom-in on iOS */
         touch-action: manipulation;
     }
 
@@ -361,102 +445,10 @@
         font-size: 1.3em;
     }
 
-    /* Stronger tap feedback on mobile */
     .back-link:active {
         transform: scale(0.95);
         background: rgba(212, 175, 122, 0.25);
         box-shadow: 0 2px 8px rgba(212, 175, 122, 0.3);
-    }
-    
-    /* === SPECS SECTION === */
-    /* Single column for maximum readability */
-    .specs-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .specs-group-title {
-        font-size: 0.7rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .specs-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .spec-card {
-        padding: 1.25rem;
-        border-radius: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .spec-card h3,
-    .spec-card h4 {
-        font-size: 0.8rem;
-        margin-bottom: 0;
-        flex: 1;
-    }
-    
-    .spec-card p {
-        font-size: 1rem;
-        font-weight: 600;
-        text-align: right;
-        flex: 1;
-    }
-    
-    /* === HISTORY SECTION === */
-    .history-section p {
-        font-size: 0.95rem;
-        line-height: 1.7;
-        margin-bottom: 1.25rem;
-    }
-}
-
-/* === SMALL MOBILE (max-width: 480px) === */
-@media (max-width: 480px) {
-    .console-hero {
-        padding: 70px 0 30px;
-    }
-    
-    .console-hero .container {
-        gap: 1.5rem;
-    }
-    
-    .console-hero-image img {
-        max-height: 200px;
-    }
-    
-    .console-hero-text h1 {
-        font-size: 1.65rem;
-    }
-    
-    .console-hero-text .console-meta span {
-        font-size: 0.85rem;
-        padding: 0.35rem 0.7rem;
-    }
-    
-    .console-hero-text .console-tagline {
-        font-size: 0.95rem;
-    }
-    
-    .spec-card {
-        padding: 1rem;
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
-    }
-    
-    .spec-card h3,
-    .spec-card h4,
-    .spec-card p {
-        text-align: center;
-        flex: none;
-    }
-    
-    .spec-card p {
-        font-size: 1.1rem;
     }
 }
 

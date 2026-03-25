@@ -16,12 +16,12 @@
     padding: 0 40px;
     
     /* Premium glass effect with subtle blur */
-    background: rgba(21, 18, 16, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     
     /* Border subtle */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none;
     
     /* Flex layout - perfect vertical centering */
     display: flex;
@@ -37,6 +37,19 @@
 /* Navbar hidden on scroll down */
 .navbar.navbar--hidden {
     transform: translateY(-100%);
+}
+
+/* Fade gradient at navbar base */
+.navbar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -30px;
+    background: linear-gradient(to bottom, rgba(21, 18, 16, 0.85) 0%, rgba(21, 18, 16, 0.5) 60%, transparent 100%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* Container interior */
@@ -172,7 +185,11 @@
     transform: translateY(-10px) rotate(-45deg);
 }
 
-/* === MOBILE RESPONSIVE (max-width: 768px) === */
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
 @media (max-width: 768px) {
     /* ── Inline nav — no hamburger ── */
     .navbar {
@@ -191,13 +208,17 @@
 
     /* Logo: full-width centered row */
     .logo {
-        font-size: 0.9rem;
+        font-size: 1.2rem;
         letter-spacing: 1px;
         position: static;
         transform: none;
         text-align: center;
         width: 100%;
-        padding: 14px 0 8px;
+        padding: 22px 0 8px;
+    }
+
+    .logo.active::after {
+        display: none;
     }
 
     /* Search button: absolute top-left of container */
@@ -216,7 +237,7 @@
         margin-left: 0;
     }
 
-    /* Hamburger: hidden globally, except on community page */
+    /* Hamburger: hidden globally */
     .hamburger {
         display: none;
     }
@@ -263,7 +284,7 @@
 
     .nav-links a {
         display: inline-block;
-        font-size: 0.82rem;
+        font-size: 0.9rem;
         font-weight: 500;
         padding: 4px 10px;
         color: var(--text-gray);
@@ -294,16 +315,15 @@
     }
 }
 
-/* Extra small phones: keep inline nav but avoid cramped tiny links */
 @media (max-width: 480px) {
     .navbar .container {
         padding: 0 10px;
     }
 
     .logo {
-        font-size: 0.78rem;
+        font-size: 1.2rem;
         letter-spacing: 0.7px;
-        padding: 12px 0 8px;
+        padding: 22px 0 8px;
     }
 
     .navbar-search-btn,
@@ -332,7 +352,7 @@
     }
 
     .nav-links a {
-        font-size: 0.74rem;
+        font-size: 0.9rem;
         padding: 3px 6px;
     }
 }

@@ -71,7 +71,7 @@
     border-radius: 999px;
     cursor: pointer;
     font-size: var(--font-size-base);
-    margin-top: var(--spacing-sm);
+    margin-top: auto;
     font-weight: 600;
     text-decoration: none;
     text-align: center;
@@ -85,9 +85,12 @@
     transform: translateY(-2px);
 }
 
-/* === MOBILE RESPONSIVE === */
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
 @media (max-width: 768px) {
-    /* Full-width and touch-friendly buttons on mobile */
     .btn {
         display: block;
         width: 100%;
@@ -104,7 +107,6 @@
         text-align: center;
         margin-top: 1rem;
     }
-    
 }
 
 @media (max-width: 480px) {
@@ -113,5 +115,4 @@
         padding: 0.85rem 1.25rem;
         font-size: 0.95rem;
     }
-    
 }

@@ -62,8 +62,6 @@
 
 /* Contact card */
 .contact-card {
-    width: 400px;
-    max-width: 100%;
     margin: 0 auto;
     background: linear-gradient(135deg, rgba(42, 35, 32, 0.85) 0%, rgba(27, 23, 20, 0.9) 100%);
     border: 1px solid rgba(212, 175, 122, 0.15);

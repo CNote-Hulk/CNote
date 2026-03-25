@@ -25,9 +25,7 @@
          STYLESHEETS
          =========================== -->
     <!-- Main CSS - imports all modules -->
-    <link rel="stylesheet" href="../../css/production.css?v=20260322-heroquickguide2">
-    <link rel="stylesheet" href="../../css/pages/home.css?v=20260323-guesthero2">
-    <link rel="stylesheet" href="../../css/components/index-cards.css?v=20260320-cardstack1">
+    <link rel="stylesheet" href="../../css/main.css">
     
     <!-- KaTeX CDN - for math equation rendering -->
     <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
@@ -72,11 +70,12 @@
           <div class="hero-content">
             <h1 data-i18n="hero_title">Console Notebook</h1>
             <p data-i18n="hero_subtitle">Welcome to the golden — or maybe bronze — age of gaming.</p>
-            <a href="#content" class="hero-button" id="hero-explore-btn">Explore CNote Bakery</a>
+            <p data-i18n="hero_subtitle_2">Build your console collection, discover what makes each system unique, and connect with real enthusiasts.</p>
+            <a href="#content" class="hero-button" id="hero-explore-btn" data-i18n="hero_cta">Start your journey</a>
           </div>
 
           <div class="hero-quickguide">
-            <p class="hero-quickguide__label">Quick guide</p>
+            <p class="hero-quickguide__label" data-i18n="hero_quickguide_label">Quick guide</p>
             <div class="hero-quickguide__steps" id="qg-steps">
               <div class="hero-quickguide__track">
                 <div class="hero-quickguide__fill" id="qg-fill"></div>
@@ -88,40 +87,40 @@
                   <svg class="qg-step__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="qg-step__text">
-                  <span class="qg-step__title">Creează-ți contul</span>
-                  <span class="qg-step__desc">Două minute și ești înăuntru.</span>
+                  <span class="qg-step__title" data-i18n="hero_quickguide_step1">Create your profile</span>
+                  <span class="qg-step__desc" data-i18n="hero_quickguide_step1_desc">Two minutes and you're in.</span>
                 </div>
               </div>
 
               <div class="qg-step qg-step--active" data-href="evolutie.html">
                 <div class="qg-step__dot"><span class="qg-step__num">2</span></div>
                 <div class="qg-step__text">
-                  <span class="qg-step__title">Alege-ți prima consolă preferată</span>
-                  <span class="qg-step__desc">Marchează-o cu ❤️ în enciclopedie.</span>
+                  <span class="qg-step__title" data-i18n="hero_quickguide_step2">Pick your first favorite console</span>
+                  <span class="qg-step__desc" data-i18n="hero_quickguide_step2_desc">Mark it with ❤️ in the encyclopedia.</span>
                 </div>
               </div>
 
               <div class="qg-step" data-href="comparatie.html">
                 <div class="qg-step__dot"><span class="qg-step__num">3</span></div>
                 <div class="qg-step__text">
-                  <span class="qg-step__title">Pune-o față în față cu un rival</span>
-                  <span class="qg-step__desc">Comparatorul te ajută să vezi clar.</span>
+                  <span class="qg-step__title" data-i18n="hero_quickguide_step3">Face it off with a rival</span>
+                  <span class="qg-step__desc" data-i18n="hero_quickguide_step3_desc">The comparator helps you see clearly.</span>
                 </div>
               </div>
 
               <div class="qg-step" data-href="community.html">
                 <div class="qg-step__dot"><span class="qg-step__num">4</span></div>
                 <div class="qg-step__text">
-                  <span class="qg-step__title">Spune salut în comunitate</span>
-                  <span class="qg-step__desc">Forumul și chat-ul live te așteaptă.</span>
+                  <span class="qg-step__title" data-i18n="hero_quickguide_step4">Say hello in the community</span>
+                  <span class="qg-step__desc" data-i18n="hero_quickguide_step4_desc">The forum and live chat are waiting for you.</span>
                 </div>
               </div>
 
               <div class="qg-step" data-href="evolutie.html">
                 <div class="qg-step__dot"><span class="qg-step__num">5</span></div>
                 <div class="qg-step__text">
-                  <span class="qg-step__title">Lasă primul tău rating</span>
-                  <span class="qg-step__desc">Vocea ta contează pe platformă.</span>
+                  <span class="qg-step__title" data-i18n="hero_quickguide_step5">Leave your first rating</span>
+                  <span class="qg-step__desc" data-i18n="hero_quickguide_step5_desc">Your voice matters on the platform.</span>
                 </div>
               </div>
 
@@ -306,7 +305,7 @@
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
     <script type="module" src="../../js/pages/index-cards.js"></script>
-    <script src="../../js/pages/home.js?v=20260323-guestcta1"></script>
+    <script type="module" src="../../js/modules/home-timeline.js"></script>
     
     <!-- Fallback Scripts - work without server (file:// protocol) -->
     <script src="../../js/fallback/hamburger.js"></script>

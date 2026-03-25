@@ -19,6 +19,141 @@
     display: none;
 }
 
+@media (max-width: 768px) {
+    body:has(.community-page--hub) .navbar .container {
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 16px;
+    }
+
+    body:has(.community-page--hub) .navbar {
+        padding: 12px 0 0;
+        overflow: visible;
+    }
+
+    /* Logo: restore absolute centered for community (overrides inline-nav default) */
+    body:has(.community-page--hub) .logo {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 8px;
+        width: auto;
+        text-align: left;
+        padding: 0;
+    }
+
+    /* Hide standard navbar hamburger on community pages */
+    body.community-navbar-page .hamburger {
+        display: none;
+    }
+
+    /* Restore row layout for community navbar */
+    body:has(.community-page--hub) .navbar .container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        position: relative;
+        padding: 0 16px;
+    }
+
+    body:has(.community-page--hub) .navbar-search-btn {
+        position: absolute;
+        left: auto;
+        right: 50px;
+        top: 10px;
+        z-index: 10;
+        margin-right: 0;
+    }
+
+    body:has(.community-page--hub) .navbar-profile-wrap {
+        position: absolute;
+        right: 16px;
+        top: 10px;
+        z-index: 10;
+    }
+
+    /* Nav-links: inline row, pushed below logo/buttons row */
+    body:has(.community-page--hub) .nav-links {
+        position: static;
+        width: 100%;
+        height: auto;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 44px;
+        padding: 0 10px 12px;
+        gap: 2px 0;
+        font-size: 0.82rem;
+        z-index: auto;
+        overflow-x: visible;
+        scrollbar-width: auto;
+    }
+
+    body:has(.community-page--hub) .nav-links::-webkit-scrollbar {
+        display: revert;
+    }
+
+    body:has(.community-page--hub) .nav-links a {
+        font-size: 0.82rem;
+        pointer-events: auto;
+        display: inline;
+        padding: 4px 6px;
+        white-space: normal;
+    }
+
+    body:has(.community-page--hub) .nav-links li {
+        width: auto;
+        transform: none;
+        opacity: 1;
+        flex-shrink: revert;
+    }
+
+    /* Extra-narrow screens: shrink nav text more */
+    @media (max-width: 360px) {
+        body:has(.community-page--hub) .logo {
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+        }
+
+        body:has(.community-page--hub) .nav-links {
+            padding: 0 6px 10px;
+            gap: 2px 0;
+        }
+
+        body:has(.community-page--hub) .nav-links a {
+            font-size: 0.72rem;
+        }
+
+        body:has(.community-page--hub) .nav-links li + li::before {
+            margin: 0 5px;
+            font-size: 0.72rem;
+        }
+
+        body:has(.community-page--hub) .navbar-search-btn {
+            right: 42px;
+            top: 8px;
+        }
+
+        body:has(.community-page--hub) .navbar-profile-wrap {
+            right: 10px;
+            top: 8px;
+        }
+    }
+
+}
+
+
 /* ── Sidebar ────────────────────────────────────────────── */
 
 .hub-sidebar {
@@ -160,6 +295,173 @@
     text-align: center;
 }
 
+@media (max-width: 768px) {
+    .community-hub {
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        height: auto;
+        overflow: hidden;
+    }
+    .hub-sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        min-width: 280px;
+        height: 100vh;
+        height: 100dvh;
+        max-height: none;
+        z-index: 3001;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #0d0e14;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: none;
+        transition: left 0.3s ease;
+        padding-top: 0;
+        border-radius: 0 16px 16px 0;
+        background-color: #0d0e14 !important;
+        background-image: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    .hub-sidebar--open {
+        left: 0;
+        visibility: visible;
+        opacity: 1;
+        background-color: #0d0e14 !important;
+        background-image: none !important;
+        box-shadow: 16px 0 32px rgba(0, 0, 0, 0.65) !important;
+    }
+    /* Mobile header inside sidebar */
+    .hub-sidebar__mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 12px 12px 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .hub-sidebar__mobile-title {
+        display: none;
+    }
+    .hub-sidebar__close {
+        background: none;
+        border: none;
+        color: var(--accent-color, #D4AF7A);
+        font-size: 0.82rem;
+        font-weight: 600;
+        font-family: var(--font-sans);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: color 0.2s, background 0.2s;
+    }
+    .hub-sidebar__close:hover {
+        color: var(--text-light);
+        background: rgba(255, 255, 255, 0.06);
+    }
+    /* Hide the old inline toggle button */
+    .hub-sidebar-toggle {
+        display: none !important;
+    }
+    .hub-content {
+        padding: 0;
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+    .hub-view {
+        border-radius: 0;
+        overflow: hidden;
+        position: absolute;
+    }
+    .hub-view--active {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .hub-view--chat {
+        border-radius: 0;
+    }
+    /* Hide sidebar fade on mobile — interferes with touch */
+    .hub-sidebar::before {
+        display: none;
+    }
+    /* Override community-page--hub semi-transparent sidebar on mobile */
+    .community-page--hub .hub-sidebar {
+        background: #0d0e14 !important;
+        background-image: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    /* Don't create stacking context — sidebar must be above overlay */
+    .community-page--hub .community-hub {
+        z-index: auto;
+        padding: 60px 0 0 0;
+    }
+    /* Final mobile layering override (shared by community + welcome pages) */
+    .community-page--hub .hub-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -86vw !important;
+        z-index: 4001 !important;
+        background: #0d0e14 !important;
+        background-image: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none;
+    }
+    .community-page--hub .hub-sidebar.hub-sidebar--open {
+        left: 0 !important;
+        box-shadow: 18px 0 36px rgba(0, 0, 0, 0.72) !important;
+        padding: 20px 0 0 0 ;
+    }
+    .community-page--hub .hub-mobile-overlay {
+        z-index: 500 !important;
+        background: rgba(0, 0, 0, 0.78) !important;
+    }
+    .community-page--hub .hub-mobile-hamburger {
+        z-index: 4002 !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .hub-sidebar {
+        width: 86vw;
+        min-width: 0;
+        left: -86vw;
+    }
+
+    .hub-sidebar.hub-sidebar--open {
+        left: 0;
+    }
+
+}
+
+@media (max-width: 360px) {
+    .hub-sidebar {
+        width: 260px;
+        left: -260px;
+    }
+
+}
+
+
 /* ── Content Area ───────────────────────────────────────── */
 
 .hub-content {
@@ -214,6 +516,7 @@
     flex: 1;
 }
 
+
 /* ── View Header ────────────────────────────────────────── */
 
 .hub-view-header {
@@ -253,6 +556,18 @@
     opacity: 0.8;
     text-decoration: underline;
 }
+
+@media (max-width: 768px) {
+    .hub-view-header {
+        padding: 10px 12px;
+    }
+
+    .hub-view-header__title {
+        font-size: 0.9rem;
+    }
+
+}
+
 
 /* ── Buttons ────────────────────────────────────────────── */
 
@@ -312,6 +627,19 @@
     padding: 5px 10px;
     font-size: 0.78rem;
 }
+
+@media (max-width: 768px) {
+    .hub-btn {
+        min-height: 44px;
+        font-size: 0.84rem;
+    }
+
+    .hub-sidebar__item {
+        min-height: 44px;
+        padding: 10px 12px;
+    }
+}
+
 
 /* ── Favorites ──────────────────────────────────────────── */
 
@@ -698,6 +1026,54 @@
     border-color: var(--accent-color);
 }
 
+@media (max-width: 768px) {
+    .hub-thread-item {
+        padding: 12px;
+    }
+
+    .hub-thread-meta {
+        flex-wrap: wrap;
+        gap: 4px 10px;
+    }
+
+    .hub-reply-card {
+        padding: 10px 12px;
+    }
+
+    .hub-thread-original {
+        padding: 12px;
+    }
+
+    /* Reduce nested reply indentation */
+    .hub-thread-detail {
+        padding: 8px;
+    }
+
+    .hub-thread-original,
+    .hub-reply-card {
+        margin-left: 0;
+    }
+
+    .hub-reply-form {
+        flex-direction: column;
+    }
+
+    .hub-reply-form input {
+        font-size: 16px;
+    }
+
+    .hub-reply-form .hub-btn {
+        width: 100%;
+    }
+
+    /* Thread create button full-width */
+    .hub-create-btn {
+        width: 100%;
+    }
+
+}
+
+
 /* ── Marketplace Grid ───────────────────────────────────── */
 
 .hub-market-search {
@@ -888,6 +1264,147 @@
     background: var(--accent-color, #D4AF7A);
     color: var(--primary-color, #1B1714);
 }
+
+@media (max-width: 768px) {
+    .hub-market-grid {
+        grid-template-columns: 1fr;
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .hub-market-filters {
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 16px;
+        background: rgba(13, 14, 20, 0.6);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(6px);
+    }
+
+    .hub-market-filters input,
+    .hub-market-filters select {
+        width: 100%;
+        font-size: 16px;
+        min-height: 48px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 14px;
+    }
+
+    /* OLX-style horizontal card */
+    .hub-listing-card {
+        display: flex;
+        flex-direction: row;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        background: rgba(30, 26, 23, 0.95);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .hub-listing-img {
+        width: 130px;
+        min-width: 130px;
+        aspect-ratio: auto;
+        height: auto;
+        min-height: 130px;
+    }
+
+    .hub-listing-info {
+        flex: 1;
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .hub-listing-info__title {
+        font-size: 0.92rem;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .hub-listing-info__price {
+        font-size: 1.05rem;
+        margin-top: 2px;
+    }
+
+    .hub-listing-info__desc {
+        font-size: 0.76rem;
+        -webkit-line-clamp: 2;
+        margin-top: 2px;
+    }
+
+    .hub-listing-info__meta {
+        margin-top: 4px;
+    }
+
+    .hub-listing-info__seller {
+        font-size: 0.75rem;
+    }
+
+    .hub-listing-fav-btn {
+        top: 6px;
+        right: 6px;
+        font-size: 1.1rem;
+    }
+
+    /* Marketplace FAB on mobile */
+    .hub-market-add-btn {
+        position: fixed !important;
+        bottom: 20px;
+        right: 20px;
+        z-index: 900;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .hub-market-add-btn__text {
+        display: none;
+    }
+
+    .hub-market-add-btn__icon {
+        display: block;
+        font-size: 1.6rem;
+        line-height: 1;
+    }
+
+}
+
+@media (max-width: 420px) {
+    .hub-listing-img {
+        width: 108px;
+        min-width: 108px;
+        min-height: 108px;
+    }
+
+    .hub-listing-info {
+        padding: 10px 10px;
+    }
+
+    .hub-listing-info__price {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .hub-market-grid {
+        padding: 8px;
+    }
+}
+
 
 /* ── Listing Detail ─────────────────────────────────────── */
 
@@ -1109,6 +1626,46 @@
     text-decoration: none;
 }
 
+@media (max-width: 768px) {
+    .hub-detail-scroll {
+        padding: 12px;
+    }
+
+    .hub-detail-inner {
+        gap: 14px;
+    }
+
+    .hub-detail-main-img {
+        height: 260px;
+    }
+
+    .hub-detail-body {
+        padding: 14px;
+    }
+
+    .hub-detail-price {
+        font-size: 1.1rem;
+    }
+
+    .hub-detail-actions {
+        flex-direction: column;
+    }
+
+    .hub-detail-actions .hub-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+}
+
+@media (max-width: 360px) {
+    .hub-detail-main-img {
+        height: 200px;
+    }
+
+}
+
+
 /* ── Fullscreen Lightbox (OLX-style) ────────────────────── */
 
 .hub-lightbox {
@@ -1271,6 +1828,15 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 768px) {
+    .hub-similar-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+}
+
 
 /* Skeleton loading cards */
 .hub-listing-card--skeleton {
@@ -1452,6 +2018,26 @@
     font-size: 3rem;
     margin-bottom: 12px;
 }
+
+@media (max-width: 768px) {
+    .hub-symptom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hub-symptom-btn {
+        min-height: 44px;
+    }
+
+    .hub-repair-progress {
+        font-size: 0.78rem;
+    }
+
+    .hub-form-row {
+        grid-template-columns: 1fr;
+    }
+
+}
+
 
 /* ── Repair Status Badges ─────────────────────────────────── */
 
@@ -1758,6 +2344,25 @@
     font-size: 0.88rem;
 }
 
+@media (max-width: 768px) {
+    .hub-dm-layout {
+        flex-direction: column;
+    }
+
+    .hub-dm-list {
+        width: 100%;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .hub-dm-form__input {
+        font-size: 16px;
+    }
+
+}
+
+
 /* ── Modal Overlay ──────────────────────────────────────── */
 
 .hub-modal-overlay {
@@ -1877,6 +2482,38 @@
     border-top: 1px solid var(--border-color);
 }
 
+@media (max-width: 768px) {
+    .hub-modal-overlay {
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .hub-modal {
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .hub-modal__close {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hub-form-input,
+    .hub-form-select,
+    .hub-form-textarea {
+        font-size: 16px;
+        min-height: 48px;
+        padding: 12px 14px;
+    }
+
+}
+
+
 /* ── Empty State ────────────────────────────────────────── */
 
 .hub-empty {
@@ -1993,721 +2630,6 @@
     cursor: pointer;
     padding: 6px;
 }
-
-/* ── Mobile Responsive (768px) ──────────────────────────── */
-
-@media (max-width: 768px) {
-
-    /* --- Navbar adjustments for community page --- */
-    body:has(.community-page--hub) .navbar .container {
-        position: relative;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 0 16px;
-    }
-
-    body:has(.community-page--hub) .navbar {
-        padding: 12px 0 0;
-        overflow: visible;
-    }
-
-    /* Logo: restore absolute centered for community (overrides inline-nav default) */
-    body:has(.community-page--hub) .logo {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 8px;
-        width: auto;
-        text-align: left;
-        padding: 0;
-    }
-
-    /* Hide standard navbar hamburger on community pages */
-    body.community-navbar-page .hamburger {
-        display: none;
-    }
-
-    /* Restore row layout for community navbar */
-    body:has(.community-page--hub) .navbar .container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        justify-content: center;
-        position: relative;
-        padding: 0 16px;
-    }
-
-    body:has(.community-page--hub) .navbar-search-btn {
-        position: absolute;
-        left: auto;
-        right: 50px;
-        top: 10px;
-        z-index: 10;
-        margin-right: 0;
-    }
-
-    body:has(.community-page--hub) .navbar-profile-wrap {
-        position: absolute;
-        right: 16px;
-        top: 10px;
-        z-index: 10;
-    }
-
-    /* Nav-links: inline row, pushed below logo/buttons row */
-    body:has(.community-page--hub) .nav-links {
-        position: static;
-        width: 100%;
-        height: auto;
-        transform: none;
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        background: none;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 44px;
-        padding: 0 10px 12px;
-        gap: 2px 0;
-        font-size: 0.82rem;
-        z-index: auto;
-        overflow-x: visible;
-        scrollbar-width: auto;
-    }
-
-    body:has(.community-page--hub) .nav-links::-webkit-scrollbar {
-        display: revert;
-    }
-
-    body:has(.community-page--hub) .nav-links a {
-        font-size: 0.82rem;
-        pointer-events: auto;
-        display: inline;
-        padding: 4px 6px;
-        white-space: normal;
-    }
-
-    body:has(.community-page--hub) .nav-links li {
-        width: auto;
-        transform: none;
-        opacity: 1;
-        flex-shrink: revert;
-    }
-
-    /* Extra-narrow screens: shrink nav text more */
-    @media (max-width: 360px) {
-        body:has(.community-page--hub) .logo {
-            font-size: 0.85rem;
-            letter-spacing: 1.5px;
-        }
-
-        body:has(.community-page--hub) .nav-links {
-            padding: 0 6px 10px;
-            gap: 2px 0;
-        }
-
-        body:has(.community-page--hub) .nav-links a {
-            font-size: 0.72rem;
-        }
-
-        body:has(.community-page--hub) .nav-links li + li::before {
-            margin: 0 5px;
-            font-size: 0.72rem;
-        }
-
-        body:has(.community-page--hub) .navbar-search-btn {
-            right: 42px;
-            top: 8px;
-        }
-
-        body:has(.community-page--hub) .navbar-profile-wrap {
-            right: 10px;
-            top: 8px;
-        }
-    }
-
-    /* --- Mobile hamburger button (fixed top-left) --- */
-    .hub-mobile-hamburger {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 5px;
-        position: fixed;
-        top: 12px;
-        left: 12px;
-        z-index: 3002;
-        width: 44px;
-        height: 44px;
-        padding: 10px;
-        background: transparent;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-
-    .hub-mobile-hamburger span {
-        display: block;
-        width: 100%;
-        height: 2px;
-        background: var(--text-light, #F5F0E8);
-        border-radius: 2px;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .hub-mobile-hamburger.active span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-    }
-    .hub-mobile-hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    .hub-mobile-hamburger.active span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-    }
-
-    /* --- Dark overlay behind sidebar --- */
-    .hub-mobile-overlay {
-        display: block;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 3000;
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .hub-mobile-overlay.active {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    /* Background image fixed is janky on mobile — use scroll */
-    .community-page--hub {
-        background-attachment: scroll;
-        padding-top: 120px;
-        height: 100vh;
-        height: 100dvh;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* --- Sidebar: slide-in from left (fixed, full-height) --- */
-    .community-hub {
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
-        height: auto;
-        overflow: hidden;
-    }
-
-    .hub-sidebar {
-        position: fixed;
-        top: 0;
-        left: -280px;
-        width: 280px;
-        min-width: 280px;
-        height: 100vh;
-        height: 100dvh;
-        max-height: none;
-        z-index: 3001;
-        overflow-y: auto;
-        overflow-x: hidden;
-        background: #0d0e14;
-        border-right: 1px solid rgba(255, 255, 255, 0.06);
-        border-bottom: none;
-        transition: left 0.3s ease;
-        padding-top: 0;
-        border-radius: 0 16px 16px 0;
-        background-color: #0d0e14 !important;
-        background-image: none !important;
-        opacity: 1 !important;
-        filter: none !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-
-    .hub-sidebar--open {
-        left: 0;
-        visibility: visible;
-        opacity: 1;
-        background-color: #0d0e14 !important;
-        background-image: none !important;
-        box-shadow: 16px 0 32px rgba(0, 0, 0, 0.65) !important;
-    }
-
-    /* Mobile header inside sidebar */
-    .hub-sidebar__mobile-header {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 12px 12px 8px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .hub-sidebar__mobile-title {
-        display: none;
-    }
-
-    .hub-sidebar__close {
-        background: none;
-        border: none;
-        color: var(--accent-color, #D4AF7A);
-        font-size: 0.82rem;
-        font-weight: 600;
-        font-family: var(--font-sans);
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        cursor: pointer;
-        padding: 8px 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        transition: color 0.2s, background 0.2s;
-    }
-
-    .hub-sidebar__close:hover {
-        color: var(--text-light);
-        background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* Hide the old inline toggle button */
-    .hub-sidebar-toggle {
-        display: none !important;
-    }
-
-    /* --- Hub content takes full width --- */
-    .hub-content {
-        padding: 0;
-        width: 100%;
-        flex: 1;
-        min-height: 0;
-        overflow: hidden;
-    }
-
-    .hub-view {
-        border-radius: 0;
-        overflow: hidden;
-        position: absolute;
-    }
-
-    .hub-view--active {
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .hub-view--chat {
-        border-radius: 0;
-    }
-
-    /* Hide sidebar fade on mobile — interferes with touch */
-    .hub-sidebar::before {
-        display: none;
-    }
-
-    /* Override community-page--hub semi-transparent sidebar on mobile */
-    .community-page--hub .hub-sidebar {
-        background: #0d0e14 !important;
-        background-image: none !important;
-        opacity: 1 !important;
-        filter: none !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-
-    /* Don't create stacking context — sidebar must be above overlay */
-    .community-page--hub .community-hub {
-        z-index: auto;
-        padding: 60px 0 0 0;
-    }
-
-    /* Final mobile layering override (shared by community + welcome pages) */
-    .community-page--hub .hub-sidebar {
-        position: fixed !important;
-        top: 0 !important;
-        left: -86vw !important;
-        z-index: 4001 !important;
-        background: #0d0e14 !important;
-        background-image: none !important;
-        opacity: 1 !important;
-        filter: none !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        box-shadow: none;
-    }
-
-    .community-page--hub .hub-sidebar.hub-sidebar--open {
-        left: 0 !important;
-        box-shadow: 18px 0 36px rgba(0, 0, 0, 0.72) !important;
-        padding: 20px 0 0 0 ;
-    }
-
-    .community-page--hub .hub-mobile-overlay {
-        z-index: 500 !important;
-        background: rgba(0, 0, 0, 0.78) !important;
-    }
-
-    .community-page--hub .hub-mobile-hamburger {
-        z-index: 4002 !important;
-    }
-
-    /* --- Chat view on mobile --- */
-    .hub-view--chat .community-container {
-        padding: 0;
-    }
-
-    .hub-view--chat .chat-box {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-        flex: 1;
-        min-height: 0;
-    }
-
-    .chat-hdr {
-        padding: 12px 16px 12px 60px; /* room for hamburger btn */
-        border-radius: 0;
-    }
-
-    .chat-messages {
-        padding: 10px 8px !important;
-        flex: 1;
-        min-height: 0;
-    }
-
-    .chat-msg__avatar {
-        width: 32px;
-        height: 32px;
-        font-size: 0.72rem;
-    }
-
-    .chat-msg__name {
-        font-size: 0.82rem;
-    }
-
-    .chat-msg__text {
-        font-size: 0.88rem;
-    }
-
-    .chat-msg__time {
-        font-size: 0.65rem;
-    }
-
-    /* Prevent iOS zoom on input focus */
-    .chat-input {
-        font-size: 16px !important;
-    }
-
-    .chat-input-pill {
-        border-radius: 20px;
-    }
-
-    /* --- Forum on mobile --- */
-    .hub-thread-item {
-        padding: 12px;
-    }
-
-    .hub-thread-meta {
-        flex-wrap: wrap;
-        gap: 4px 10px;
-    }
-
-    .hub-reply-card {
-        padding: 10px 12px;
-    }
-
-    .hub-thread-original {
-        padding: 12px;
-    }
-
-    /* Reduce nested reply indentation */
-    .hub-thread-detail {
-        padding: 8px;
-    }
-
-    .hub-thread-original,
-    .hub-reply-card {
-        margin-left: 0;
-    }
-
-    .hub-reply-form {
-        flex-direction: column;
-    }
-
-    .hub-reply-form input {
-        font-size: 16px;
-    }
-
-    .hub-reply-form .hub-btn {
-        width: 100%;
-    }
-
-    /* Thread create button full-width */
-    .hub-create-btn {
-        width: 100%;
-    }
-
-    /* --- Repair wizard on mobile --- */
-    .hub-symptom-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hub-symptom-btn {
-        min-height: 44px;
-    }
-
-    .hub-repair-progress {
-        font-size: 0.78rem;
-    }
-
-    .hub-form-row {
-        grid-template-columns: 1fr;
-    }
-
-    /* --- DM on mobile --- */
-    .hub-dm-layout {
-        flex-direction: column;
-    }
-
-    .hub-dm-list {
-        width: 100%;
-        max-height: 200px;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .hub-dm-form__input {
-        font-size: 16px;
-    }
-
-    /* --- Marketplace grid on mobile --- */
-    .hub-market-grid {
-        grid-template-columns: 1fr;
-        padding: 10px 12px;
-        gap: 10px;
-    }
-
-    .hub-market-filters {
-        flex-direction: column;
-        gap: 10px;
-        padding: 14px 16px;
-        background: rgba(13, 14, 20, 0.6);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        backdrop-filter: blur(6px);
-    }
-
-    .hub-market-filters input,
-    .hub-market-filters select {
-        width: 100%;
-        font-size: 16px;
-        min-height: 48px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 14px;
-    }
-
-    /* OLX-style horizontal card */
-    .hub-listing-card {
-        display: flex;
-        flex-direction: row;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        overflow: hidden;
-        background: rgba(30, 26, 23, 0.95);
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-    }
-
-    .hub-listing-img {
-        width: 130px;
-        min-width: 130px;
-        aspect-ratio: auto;
-        height: auto;
-        min-height: 130px;
-    }
-
-    .hub-listing-info {
-        flex: 1;
-        padding: 12px 14px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2px;
-        min-width: 0;
-    }
-
-    .hub-listing-info__title {
-        font-size: 0.92rem;
-        white-space: normal;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .hub-listing-info__price {
-        font-size: 1.05rem;
-        margin-top: 2px;
-    }
-
-    .hub-listing-info__desc {
-        font-size: 0.76rem;
-        -webkit-line-clamp: 2;
-        margin-top: 2px;
-    }
-
-    .hub-listing-info__meta {
-        margin-top: 4px;
-    }
-
-    .hub-listing-info__seller {
-        font-size: 0.75rem;
-    }
-
-    .hub-listing-fav-btn {
-        top: 6px;
-        right: 6px;
-        font-size: 1.1rem;
-    }
-
-    /* Marketplace FAB on mobile */
-    .hub-market-add-btn {
-        position: fixed !important;
-        bottom: 20px;
-        right: 20px;
-        z-index: 900;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-    }
-
-    .hub-market-add-btn__text {
-        display: none;
-    }
-
-    .hub-market-add-btn__icon {
-        display: block;
-        font-size: 1.6rem;
-        line-height: 1;
-    }
-
-    /* --- Listing detail on mobile --- */
-    .hub-detail-scroll {
-        padding: 12px;
-    }
-
-    .hub-detail-inner {
-        gap: 14px;
-    }
-
-    .hub-detail-main-img {
-        height: 260px;
-    }
-
-    .hub-detail-body {
-        padding: 14px;
-    }
-
-    .hub-detail-price {
-        font-size: 1.1rem;
-    }
-
-    .hub-detail-actions {
-        flex-direction: column;
-    }
-
-    .hub-detail-actions .hub-btn {
-        width: 100%;
-        text-align: center;
-    }
-
-    /* --- Modals full-screen on mobile --- */
-    .hub-modal-overlay {
-        padding: 0;
-        align-items: stretch;
-    }
-
-    .hub-modal {
-        max-width: 100%;
-        max-height: 100%;
-        height: 100%;
-        border-radius: 0;
-    }
-
-    .hub-modal__close {
-        width: 44px;
-        height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .hub-form-input,
-    .hub-form-select,
-    .hub-form-textarea {
-        font-size: 16px;
-        min-height: 48px;
-        padding: 12px 14px;
-    }
-
-    /* --- Similar listings on mobile --- */
-    .hub-similar-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    /* --- View headers on mobile --- */
-    .hub-view-header {
-        padding: 10px 12px;
-    }
-
-    .hub-view-header__title {
-        font-size: 0.9rem;
-    }
-
-    /* --- Buttons: min tap target --- */
-    .hub-btn {
-        min-height: 44px;
-        font-size: 0.84rem;
-    }
-
-    .hub-sidebar__item {
-        min-height: 44px;
-        padding: 10px 12px;
-    }
-}
-
-/* ── Extra-small phones (360px) ─────────────────────────── */
-
-@media (max-width: 360px) {
-    .hub-sidebar {
-        width: 260px;
-        left: -260px;
-    }
-
-    .hub-detail-main-img {
-        height: 200px;
-    }
-
-    .hub-market-grid {
-        padding: 8px;
-    }
-}
-
 /* ── Image Upload Zone ──────────────────────────────────── */
 
 .hub-upload-zone {
@@ -2881,30 +2803,15 @@
     background: transparent;
 }
 
-
-@media (max-width: 420px) {
-    .hub-sidebar {
-        width: 86vw;
-        min-width: 0;
-        left: -86vw;
-    }
-
-    .hub-sidebar.hub-sidebar--open {
-        left: 0;
-    }
-
-    .hub-listing-img {
-        width: 108px;
-        min-width: 108px;
-        min-height: 108px;
-    }
-
-    .hub-listing-info {
-        padding: 10px 10px;
-    }
-
-    .hub-listing-info__price {
-        font-size: 0.95rem;
+@media (max-width: 768px) {
+    /* Background image fixed is janky on mobile — use scroll */
+    .community-page--hub {
+        background-attachment: scroll;
+        padding-top: 120px;
+        height: 100vh;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -3348,6 +3255,60 @@
 
 .chat-typing__dots span:nth-child(2) { animation-delay: 0.15s; }
 .chat-typing__dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@media (max-width: 768px) {
+    .hub-view--chat .community-container {
+        padding: 0;
+    }
+
+    .hub-view--chat .chat-box {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .chat-hdr {
+        padding: 12px 16px 12px 60px; /* room for hamburger btn */
+        border-radius: 0;
+    }
+
+    .chat-messages {
+        padding: 10px 8px !important;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .chat-msg__avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.72rem;
+    }
+
+    .chat-msg__name {
+        font-size: 0.82rem;
+    }
+
+    .chat-msg__text {
+        font-size: 0.88rem;
+    }
+
+    .chat-msg__time {
+        font-size: 0.65rem;
+    }
+
+    /* Prevent iOS zoom on input focus */
+    .chat-input {
+        font-size: 16px !important;
+    }
+
+    .chat-input-pill {
+        border-radius: 20px;
+    }
+
+}
+
 
 /* === LOGIN GATE (not logged in) === */
 .hub-login-gate {

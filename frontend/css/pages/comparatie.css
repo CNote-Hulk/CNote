@@ -29,6 +29,28 @@
     margin-top: 1.25rem;
 }
 
+
+@media (max-width: 768px) {
+    .hero-compact {
+        min-height: 30vh;
+        padding: 90px 0 30px;
+    }
+
+    .hero-compact .hero-content h1 {
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+    }
+
+    .hero-compact .hero-content p {
+        font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-compact {
+        min-height: 22vh;
+        padding: 80px 0 20px;
+    }
+}
 /* === SELECTOR SECTION === */
 .selector-section {
     padding: 2rem 0 1.25rem;
@@ -147,6 +169,97 @@
     color: var(--accent-color);
 }
 
+
+@media (max-width: 1024px) {
+    .selector-grid {
+        gap: 1rem;
+    }
+
+    .selector-label {
+        font-size: 1rem;
+    }
+
+    .console-select {
+        padding: 0.95rem 1.1rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .selector-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .selector-vs {
+        order: 1;
+    }
+
+    .selector-box:first-child {
+        order: 0;
+    }
+
+    .selector-box:last-child {
+        order: 2;
+    }
+
+    .selector-vs span {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    .selector-label {
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .selector-box {
+        padding: 1rem;
+    }
+
+    .console-select {
+        padding: 0.85rem 1rem;
+        font-size: 0.93rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .selector-section {
+        padding: 1.75rem 0;
+    }
+
+    .selector-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.65rem;
+    }
+
+    .selector-box {
+        padding: 1rem;
+    }
+
+    .selector-badge {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+    }
+
+    .console-select {
+        padding: 0.85rem 1rem;
+        font-size: 0.93rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .selector-label {
+        font-size: 1rem;
+    }
+
+    .console-select {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+}
 /* === COMPARISON DISPLAY === */
 .comparison-section {
     padding: 0.75rem 0 3rem;
@@ -295,6 +408,41 @@
     box-shadow: 0 4px 20px rgba(212, 175, 122, 0.4);
 }
 
+
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .comparison-vs {
+        order: 1;
+    }
+
+    .comparison-grid > .console-card:first-child {
+        order: 0;
+    }
+
+    .comparison-grid > .console-card:last-child {
+        order: 2;
+    }
+
+    .comparison-section .console-card-image {
+        padding: 1.5rem;
+    }
+
+    .comparison-section .console-card-image img {
+        max-height: 140px;
+    }
+
+    .comparison-section .console-card-info {
+        padding: 1.25rem;
+    }
+
+    .comparison-section .console-card-info h3 {
+        font-size: 1.25rem;
+    }
+}
 /* === SPECS COMPARISON === */
 .specs-comparison {
     margin: 0 auto 2.5rem;
@@ -398,6 +546,60 @@
     color: #f87171;
 }
 
+
+@media (max-width: 768px) {
+    .comparison-section .spec-row {
+        grid-template-columns: 1fr minmax(120px, 160px) 1fr;
+        grid-template-areas: "left label right";
+        gap: 0.35rem;
+        align-items: center;
+        padding: 0.75rem;
+    }
+
+    .comparison-section .spec-label {
+        text-align: center;
+        padding: 0 0.5rem;
+    }
+
+    .comparison-section .spec-value.spec-left {
+        text-align: left;
+    }
+
+    .comparison-section .spec-value.spec-right {
+        text-align: right;
+    }
+}
+
+@media (max-width: 480px) {
+    .specs-title {
+        font-size: 1.25rem;
+    }
+
+    .spec-label {
+        font-size: 0.75rem;
+        min-width: auto;
+        padding: 0.4rem 0.75rem;
+    }
+
+    .spec-value {
+        font-size: 0.85rem;
+    }
+
+    .comparison-section .spec-row {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "label"
+            "left"
+            "right";
+        gap: 6px;
+    }
+
+    .comparison-section .spec-label,
+    .comparison-section .spec-value.spec-left,
+    .comparison-section .spec-value.spec-right {
+        text-align: left;
+    }
+}
 /* === VERDICT SECTION === */
 .comparison-section .verdict-section {
     margin: 1.5rem auto 0;
@@ -477,157 +679,7 @@
     padding-left: 1rem;
 }
 
-/* === MOBILE RESPONSIVE === */
-@media (max-width: 1024px) {
-    .selector-grid {
-        gap: 1rem;
-    }
-
-    .selector-label {
-        font-size: 1rem;
-    }
-
-    .console-select {
-        padding: 0.95rem 1.1rem;
-        font-size: 0.95rem;
-    }
-}
-
-@media (max-width: 900px) {
-    .selector-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .selector-vs {
-        order: 1;
-    }
-
-    .selector-box:first-child {
-        order: 0;
-    }
-
-    .selector-box:last-child {
-        order: 2;
-    }
-
-    .selector-vs span {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
-    }
-
-    .selector-label {
-        font-size: 0.95rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .selector-box {
-        padding: 1rem;
-    }
-
-    .console-select {
-        padding: 0.85rem 1rem;
-        font-size: 0.93rem;
-    }
-}
-
 @media (max-width: 768px) {
-    .hero-compact {
-        min-height: 30vh;
-        padding: 90px 0 30px;
-    }
-
-    .hero-compact .hero-content h1 {
-        font-size: clamp(1.75rem, 5vw, 2.5rem);
-    }
-
-    .hero-compact .hero-content p {
-        font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-    }
-
-    .selector-section {
-        padding: 1.75rem 0;
-    }
-
-    .selector-label {
-        font-size: 0.9rem;
-        margin-bottom: 0.65rem;
-    }
-
-    .selector-box {
-        padding: 1rem;
-    }
-
-    .selector-badge {
-        width: 26px;
-        height: 26px;
-        font-size: 0.8rem;
-    }
-
-    .console-select {
-        padding: 0.85rem 1rem;
-        font-size: 0.93rem;
-    }
-
-    /* Comparison Grid - Stack on mobile */
-    .comparison-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .comparison-vs {
-        order: 1;
-    }
-
-    .comparison-grid > .console-card:first-child {
-        order: 0;
-    }
-
-    .comparison-grid > .console-card:last-child {
-        order: 2;
-    }
-
-    .comparison-section .console-card-image {
-        padding: 1.5rem;
-    }
-
-    .comparison-section .console-card-image img {
-        max-height: 140px;
-    }
-
-    .comparison-section .console-card-info {
-        padding: 1.25rem;
-    }
-
-    .comparison-section .console-card-info h3 {
-        font-size: 1.25rem;
-    }
-
-    /* Specs - Mobile: keep label centered, values left/right if space allows */
-    .comparison-section .spec-row {
-        grid-template-columns: 1fr minmax(120px, 160px) 1fr;
-        grid-template-areas: "left label right";
-        gap: 0.35rem;
-        align-items: center;
-        padding: 0.75rem;
-    }
-
-    .comparison-section .spec-label {
-        text-align: center;
-        padding: 0 0.5rem;
-    }
-
-    /* Ensure left/right values align to edges on mobile */
-    .comparison-section .spec-value.spec-left {
-        text-align: left;
-    }
-
-    .comparison-section .spec-value.spec-right {
-        text-align: right;
-    }
-
-    /* Verdict - Stack on mobile */
     .comparison-section .verdict-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -643,47 +695,18 @@
 }
 
 @media (max-width: 480px) {
-    .hero-compact {
-        min-height: 22vh;
-        padding: 80px 0 20px;
-    }
-    .selector-label {
-        font-size: 1rem;
-    }
-
-    .console-select {
-        padding: 0.8rem;
-        font-size: 0.9rem;
-    }
-
-    .specs-title,
     .verdict-title {
         font-size: 1.25rem;
     }
+}
 
-    .spec-label {
-        font-size: 0.75rem;
-        min-width: auto;
-        padding: 0.4rem 0.75rem;
-    }
-
-    .spec-value {
-        font-size: 0.85rem;
-    }
-
-    /* On very small phones, stack spec values for readability */
+@media (max-width: 400px) {
     .comparison-section .spec-row {
         grid-template-columns: 1fr;
-        grid-template-areas:
-            "label"
-            "left"
-            "right";
         gap: 6px;
     }
 
-    .comparison-section .spec-label,
-    .comparison-section .spec-value.spec-left,
-    .comparison-section .spec-value.spec-right {
+    .comparison-section .spec-label {
         text-align: left;
     }
 }

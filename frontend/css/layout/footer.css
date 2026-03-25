@@ -54,6 +54,11 @@
     text-decoration: underline;
 }
 
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
 @media (max-width: 768px) {
     .footer {
         padding: 32px 0;

@@ -488,7 +488,11 @@
     margin: 0.6rem auto 0;
 }
 
-/* ── Responsive ── */
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
 @media (max-width: 768px) {
     .video-section {
         border-radius: 14px;
@@ -538,4 +542,3 @@
         font-size: 0.62rem;
     }
 }
-

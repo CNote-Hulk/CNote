@@ -3,41 +3,6 @@
    Uses site design tokens from production.css
    ============================ */
 
-/* === HERO === */
-.help-hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    background:
-        linear-gradient(rgba(21, 18, 16, 0.72), rgba(21, 18, 16, 0.84)),
-        linear-gradient(180deg, var(--dark-bg, #1B1714) 0%, var(--dark-bg-2, #151210) 100%);
-}
-
-.help-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url('../../assets/images/wallpapers/help.jpg') center/cover no-repeat;
-    filter: blur(4px) brightness(0.58);
-    transform: scale(1.02);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.help-hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse at 50% 24%, rgba(212, 175, 122, 0.1) 0%, rgba(212, 175, 122, 0.02) 34%, transparent 68%),
-        linear-gradient(to bottom, rgba(21, 18, 16, 0.08), rgba(21, 18, 16, 0.6));
-    pointer-events: none;
-    z-index: 1;
-}
-
 .help-hero__content {
     position: relative;
     z-index: 2;
@@ -45,6 +10,23 @@
     padding: 0 20px;
     pointer-events: none;
 }
+
+@media (max-width: 768px) {
+    .help-hero__title {
+        font-size: 36px;
+    }
+
+    .help-hero__subtitle {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .help-hero__title {
+        font-size: 30px;
+    }
+}
+
 
 /* === FAQ === */
 .help-faq {
@@ -121,6 +103,19 @@
     line-height: 1.7;
 }
 
+@media (max-width: 768px) {
+    .help-faq__heading {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .help-faq__heading {
+        font-size: 24px;
+    }
+}
+
+
 /* === COMMUNITY HELP === */
 .help-community {
     padding: 80px 20px;
@@ -144,26 +139,18 @@
     line-height: 1.6;
 }
 
-.help-community__btn {
-    display: inline-block;
-    padding: 14px 36px;
-    background: transparent;
-    color: var(--accent-color);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: 2px solid var(--accent-color);
-    border-radius: 999px;
-    transition: all 0.3s ease;
+@media (max-width: 768px) {
+    .help-community__title {
+        font-size: 28px;
+    }
 }
 
-.help-community__btn:hover {
-    background: var(--accent-color);
-    color: var(--dark-bg);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(var(--accent-rgb), 0.15);
+@media (max-width: 480px) {
+    .help-community__title {
+        font-size: 24px;
+    }
 }
+
 
 /* Contact section migrated from Home: enforce visual centering on Help */
 #contact > .container {
@@ -299,18 +286,7 @@
     display: none;
 }
 
-/* === RESPONSIVE === */
 @media (max-width: 768px) {
-    .help-hero__title {
-        font-size: 36px;
-    }
-
-    .help-hero__subtitle {
-        font-size: 16px;
-    }
-
-    .help-faq__heading,
-    .help-community__title,
     .help-contact__title {
         font-size: 28px;
     }
@@ -321,12 +297,6 @@
 }
 
 @media (max-width: 480px) {
-    .help-hero__title {
-        font-size: 30px;
-    }
-
-    .help-faq__heading,
-    .help-community__title,
     .help-contact__title {
         font-size: 24px;
     }

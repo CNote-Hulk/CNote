@@ -77,9 +77,61 @@
 .mt-md { margin-top: var(--spacing-md); }
 .mt-lg { margin-top: var(--spacing-lg); }
 
-/* Responsive Grid */
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    .container {
+        max-width: 900px;
+        padding: 0 30px;
+    }
+}
+
 @media (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding: 0 24px;
+    }
+
+    .section {
+        padding: 2.5rem 0;
+    }
+    
+    .section.bg-alt {
+        padding: 2.5rem 0;
+    }
+
+    body {
+        overflow-x: hidden !important;
+    }
+    
+    a, button, .btn, .card {
+        -webkit-tap-highlight-color: rgba(212, 175, 122, 0.2);
+    }
+
     .grid-2, .grid-3, .grid-auto {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .section {
+        padding: 2rem 0;
+    }
+}
+
+@media (max-width: 374px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    .section {
+        padding: 1.75rem 0;
     }
 }

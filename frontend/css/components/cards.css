@@ -2,6 +2,25 @@
  * Card Component - Refined Documentary Style
  */
 
+/* KaTeX Math Formula - Responsive overflow */
+.katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0;
+}
+
+.katex-display > .katex {
+    white-space: nowrap;
+}
+
+/* Paragraphs containing formulas (inline style wrappers) */
+.card p:has(.katex-display),
+.card p:has(.katex) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .card {
     /* Warm background */
     background: var(--card-bg);
@@ -13,6 +32,9 @@
     /* Generous spacing */
     padding: 2.5rem;
     
+    /* Prevent content overflow */
+    overflow: hidden;
+    
     /* Documentary shadow */
     box-shadow: 
         0 4px 24px rgba(0, 0, 0, 0.3),
@@ -20,6 +42,7 @@
     
     transition: all 0.3s ease;
     position: relative;
+    height: 100%;
 }
 
 .card:hover {
@@ -143,8 +166,27 @@
     }
 }
 
-/* === MOBILE RESPONSIVE === */
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
 @media (max-width: 768px) {
+    .katex-display > .katex {
+        font-size: 1.1em;
+    }
+    
+    .card p[style*="font-size"] .katex-display .katex {
+        font-size: 1em;
+    }
+
     .cards-grid {
         grid-template-columns: 1fr;
         gap: 1.25rem;
@@ -168,6 +210,10 @@
 }
 
 @media (max-width: 480px) {
+    .katex-display > .katex {
+        font-size: 0.95em;
+    }
+
     .card {
         padding: 1.25rem;
     }
@@ -180,4 +226,3 @@
         font-size: 0.9rem;
     }
 }
-

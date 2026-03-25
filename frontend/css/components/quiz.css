@@ -239,7 +239,11 @@
     }
 }
 
-/* ── Responsive ── */
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
 @media (max-width: 768px) {
     .quiz-score-bar {
         flex-direction: column;

@@ -13,16 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var steps = document.querySelectorAll('.help-timeline__step');
     var connectors = document.querySelectorAll('.help-timeline__connector');
     var faqQuestions = document.querySelectorAll('.help-faq__question');
-    var discovered = localStorage.getItem('helpDiscovered') === 'true';
 
-    if (discovered) {
-        // Already discovered — show timeline fully active, scroll enabled
-        steps.forEach(function (s) { s.classList.add('active'); });
-        connectors.forEach(function (c) { c.classList.add('filled'); });
-    } else {
-        // Lock page scroll until Discover is clicked
-        document.body.style.overflow = 'hidden';
-    }
+    animateTimeline();
 
     // --- Discover button ---
     if (discoverBtn) {

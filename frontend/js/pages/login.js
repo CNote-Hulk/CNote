@@ -11,7 +11,7 @@ if (googleData && googleData.user) {
     if (!googleData.user.username_chosen) {
         window.location.href = 'setup-username.html';
     } else {
-        window.location.href = 'profil.html';
+        window.location.href = 'index.html';
     }
 }
 
@@ -22,7 +22,7 @@ if (googleData && googleData.user) {
         if (!user.username_chosen) {
             window.location.href = 'setup-username.html';
         } else {
-            window.location.href = 'profil.html';
+            window.location.href = 'index.html';
         }
         return;
     }
@@ -67,7 +67,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             if (cur && !cur.username_chosen) {
                 window.location.href = 'setup-username.html';
             } else {
-                window.location.href = 'profil.html';
+                window.location.href = 'index.html';
             }
         } else if (result.error === 'email_not_verified') {
             errorEl.classList.remove('visible');
@@ -108,7 +108,7 @@ document.getElementById('two-factor-form').addEventListener('submit', async (e) 
             if (cur && !cur.username_chosen) {
                 window.location.href = 'setup-username.html';
             } else {
-                window.location.href = 'profil.html';
+                window.location.href = 'index.html';
             }
         } else {
             errorEl.textContent = result.error || 'Invalid code.';

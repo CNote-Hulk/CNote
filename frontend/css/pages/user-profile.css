@@ -383,3 +383,9 @@
         padding: 16px;
     }
 }
+
+@media (max-width: 400px) {
+    .user-profile-page .user-listings-grid {
+        grid-template-columns: 1fr;
+    }
+}

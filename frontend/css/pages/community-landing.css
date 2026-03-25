@@ -56,6 +56,23 @@
     padding: 0 36px;
 }
 
+
+@media (max-width: 768px) {
+    .community-landing {
+        padding: 72px 0 72px;
+    }
+
+    .cl-wrapper {
+        padding: 0 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cl-wrapper {
+        padding: 0 16px;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    1. HERO SECTION
    ═══════════════════════════════════════════════════════════ */
@@ -111,6 +128,34 @@
     gap: 14px;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+
+@media (max-width: 768px) {
+    .cl-hero {
+        padding: 52px 0 56px;
+    }
+
+    .cl-hero__actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cl-hero__title {
+        font-size: 1.7rem;
+    }
+
+    .cl-hero__subtitle {
+        font-size: 0.96rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .cl-hero {
+        padding: 44px 0 48px;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -180,6 +225,21 @@
     font-size: 0.82rem;
 }
 
+
+@media (max-width: 768px) {
+    .cl-btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 420px) {
+    .cl-btn {
+        max-width: 100%;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    SECTION SCAFFOLDING
    ═══════════════════════════════════════════════════════════ */
@@ -206,6 +266,13 @@
     font-size: 0.9rem;
     color: var(--text-gray, #A89F94);
     margin: 0;
+}
+
+
+@media (max-width: 768px) {
+    .cl-section {
+        margin-bottom: 60px;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -275,6 +342,36 @@
     color: var(--text-gray, #A89F94);
     text-align: center;
     line-height: 1.4;
+}
+
+
+@media (max-width: 1024px) {
+    .cl-quick__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .cl-quick__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .cl-quick__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .cl-quick__item {
+        padding: 20px 10px 18px;
+    }
+}
+
+@media (max-width: 420px) {
+    .cl-quick__grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -692,6 +789,34 @@
     }
 }
 
+
+@media (max-width: 768px) {
+    .cl-timeline-scroll {
+        height: auto;
+        margin-bottom: 0;
+    }
+
+    .cl-timeline-sticky {
+        position: relative;
+        top: auto;
+    }
+
+    .cl-timeline__scroll-hint {
+        display: none;
+    }
+
+    .cl-timeline__container {
+        grid-template-columns: 1fr;
+    }
+
+    .cl-timeline__context {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        padding: 24px 28px;
+        min-height: 100px;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    4. LIVE CHAT PREVIEW
    ═══════════════════════════════════════════════════════════ */
@@ -901,6 +1026,25 @@
     flex-shrink: 0;
 }
 
+
+@media (max-width: 768px) {
+    .cl-trending__item {
+        flex-wrap: wrap;
+    }
+
+    .cl-trending__replies {
+        width: 100%;
+        text-align: right;
+        margin-top: -4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cl-trending__title {
+        white-space: normal;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    6. CATEGORIES
    ═══════════════════════════════════════════════════════════ */
@@ -960,6 +1104,31 @@
     font-size: 0.72rem;
     color: var(--text-gray, #A89F94);
     font-family: var(--font-sans);
+}
+
+
+@media (max-width: 1024px) {
+    .cl-categories__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .cl-categories__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .cl-categories__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 420px) {
+    .cl-categories__grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1046,6 +1215,29 @@
     text-transform: capitalize;
 }
 
+
+@media (max-width: 1024px) {
+    .cl-marketplace__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .cl-marketplace__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .cl-marketplace__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cl-marketplace__img {
+        height: 100px;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    8. REPAIR HIGHLIGHT
    ═══════════════════════════════════════════════════════════ */
@@ -1124,6 +1316,14 @@
     flex-shrink: 0;
 }
 
+
+@media (max-width: 768px) {
+    .cl-repair__grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    8. COMMUNITY STATS
    ═══════════════════════════════════════════════════════════ */
@@ -1166,6 +1366,14 @@
     font-weight: 500;
 }
 
+
+@media (max-width: 480px) {
+    .cl-stats__grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════
    SCROLL REVEAL
    ═══════════════════════════════════════════════════════════ */
@@ -1185,162 +1393,3 @@
 /* Stagger children slightly */
 .cl-reveal:nth-child(2) { transition-delay: 0.04s; }
 .cl-reveal:nth-child(3) { transition-delay: 0.08s; }
-
-/* ═══════════════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════════════ */
-
-@media (max-width: 1024px) {
-    .cl-categories__grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .cl-marketplace__grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .cl-quick__grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .community-landing {
-        padding: 72px 0 72px;
-    }
-
-    .cl-wrapper {
-        padding: 0 22px;
-    }
-
-    .cl-hero {
-        padding: 52px 0 56px;
-    }
-
-    .cl-hero__actions {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .cl-btn {
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
-    }
-
-    .cl-quick__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* Timeline: disable sticky, stack to single column */
-    .cl-timeline-scroll {
-        height: auto;
-        margin-bottom: 0;
-    }
-
-    .cl-timeline-sticky {
-        position: relative;
-        top: auto;
-    }
-
-    .cl-timeline__scroll-hint {
-        display: none;
-    }
-
-    .cl-timeline__container {
-        grid-template-columns: 1fr;
-    }
-
-    .cl-timeline__context {
-        border-left: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.04);
-        padding: 24px 28px;
-        min-height: 100px;
-    }
-
-    .cl-categories__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .cl-marketplace__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .cl-repair__grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-    }
-
-    .cl-section {
-        margin-bottom: 60px;
-    }
-
-    .cl-trending__item {
-        flex-wrap: wrap;
-    }
-
-    .cl-trending__replies {
-        width: 100%;
-        text-align: right;
-        margin-top: -4px;
-    }
-}
-
-@media (max-width: 480px) {
-    .cl-wrapper {
-        padding: 0 16px;
-    }
-
-    .cl-hero__title {
-        font-size: 1.7rem;
-    }
-
-    .cl-hero__subtitle {
-        font-size: 0.96rem;
-    }
-
-    .cl-quick__grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .cl-quick__item {
-        padding: 20px 10px 18px;
-    }
-
-    .cl-categories__grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .cl-marketplace__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .cl-marketplace__img {
-        height: 100px;
-    }
-
-    .cl-stats__grid {
-        grid-template-columns: 1fr;
-        max-width: 100%;
-    }
-
-    .cl-trending__title {
-        white-space: normal;
-    }
-}
-
-@media (max-width: 420px) {
-    .cl-quick__grid,
-    .cl-categories__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .cl-hero {
-        padding: 44px 0 48px;
-    }
-
-    .cl-btn {
-        max-width: 100%;
-    }
-}
