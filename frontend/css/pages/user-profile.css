@@ -173,6 +173,22 @@
     padding: 0 20px 40px;
 }
 
+/* Tabs inside dashboard: align SVG icons with text */
+.user-dashboard-panel .profile-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-dashboard-panel .profile-tab svg {
+    flex-shrink: 0;
+}
+
+/* Panels inside dashboard: remove duplicate max-width */
+.user-dashboard-panel .profile-panel {
+    max-width: none;
+}
+
 .user-dashboard-panel .dash-stats {
     display: grid;
     grid-template-columns: repeat(5, 1fr);

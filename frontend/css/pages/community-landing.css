@@ -16,7 +16,7 @@
     background-color: #0d0e14;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 80px 0 100px;
+    padding: 80px 0 0;
 }
 
 /* Scrollbar */
@@ -1393,3 +1393,11 @@
 /* Stagger children slightly */
 .cl-reveal:nth-child(2) { transition-delay: 0.04s; }
 .cl-reveal:nth-child(3) { transition-delay: 0.08s; }
+
+/* ── Footer inside landing ─────────────────────────────── */
+.community-landing .footer {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}

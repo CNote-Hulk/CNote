@@ -22,7 +22,7 @@
     content: '';
     position: fixed;
     inset: -4px;
-    background: url('../../assets/images/wallpapers/login.png') center/cover no-repeat;
+    background: url('../../assets/images/wallpapers/login.jpg') center/cover no-repeat;
     filter: blur(4px) brightness(0.58);
     transform: scale(1.02);
     z-index: 0;
@@ -36,12 +36,15 @@
 
 .auth-card {
     width: 100%;
-    max-width: 420px;
+    max-width: 900px;
     background: var(--card-bg, #2A2320);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-lg, 12px);
     padding: 40px 32px;
     box-shadow: var(--shadow-lg);
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 2fr 2fr;
 }
 
 .auth-card__title {
@@ -58,6 +61,11 @@
     text-align: center;
     font-size: 0.88rem;
     margin-bottom: 2rem;
+}
+
+.auth-card__form-col{
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding-right: 32px;
 }
 
 .auth-form {

@@ -41,63 +41,53 @@
 
     <div class="auth-page">
         <div class="auth-card">
-            <h1 class="auth-card__title" data-i18n="register_title">Create Account</h1>
+            <div class="auth-card__form-col">
+                <h1 class="auth-card__title" data-i18n="register_title">Create Account</h1>       
+                <div class="auth-error" id="register-error"></div>
+                <div class="auth-error" id="register-success" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
             
-            <div class="auth-error" id="register-error"></div>
-            <div class="auth-error" id="register-success" style="color: var(--success); background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.2);"></div>
-            
-            <!-- Registration form -->
-            <div id="register-form-wrap">
-            <form class="auth-form" id="register-form" autocomplete="on">
-                <div class="auth-field">
-                    <label for="reg-username" data-i18n="register_label_username">Username</label>
-                    <input type="text" id="reg-username" name="username" required autocomplete="username" placeholder="3-20 characters (letters, numbers, _)" minlength="3" maxlength="20" data-i18n="register_placeholder_username" data-i18n-attr="placeholder">
-                    <div id="username-status" style="font-size:0.8rem;margin-top:6px;min-height:1.2em;"></div>
-                </div>
-                <div class="auth-field">
-                    <label for="reg-email" data-i18n="register_label_email">Email</label>
-                    <input type="email" id="reg-email" name="email" required autocomplete="email" placeholder="example@email.com" data-i18n="register_placeholder_email" data-i18n-attr="placeholder">
-                </div>
-                <div class="auth-field">
-                    <label for="reg-password" data-i18n="register_label_password">Password</label>
-                    <input type="password" id="reg-password" name="new-password" required autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8" data-i18n="register_placeholder_password" data-i18n-attr="placeholder">
-                    <div id="password-strength" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
-                </div>
-                <div class="auth-field">
-                    <label for="reg-password-confirm" data-i18n="register_label_password_confirm">Confirm Password</label>
-                    <input type="password" id="reg-password-confirm" name="confirm-password" required autocomplete="new-password" placeholder="Repeat your password" minlength="8" data-i18n="register_placeholder_password_confirm" data-i18n-attr="placeholder">
-                </div>
-                <button type="submit" class="auth-btn" data-i18n="register_btn">Create account</button>
-            </form>
+                <!-- Registration form -->
+                <div id="register-form-wrap">
+                <form class="auth-form" id="register-form" autocomplete="on">
+                    <div class="auth-field">
+                        <label for="reg-username" data-i18n="register_label_username">Username</label>
+                        <input type="text" id="reg-username" name="username" required autocomplete="username" placeholder="3-20 characters (letters, numbers, _)" minlength="3" maxlength="20" data-i18n="register_placeholder_username" data-i18n-attr="placeholder">
+                        <div id="username-status" style="font-size:0.8rem;margin-top:6px;min-height:1.2em;"></div>
+                    </div>
+                    <div class="auth-field">
+                        <label for="reg-email" data-i18n="register_label_email">Email</label>
+                        <input type="email" id="reg-email" name="email" required autocomplete="email" placeholder="example@email.com" data-i18n="register_placeholder_email" data-i18n-attr="placeholder">
+                    </div>
+                    <div class="auth-field">
+                        <label for="reg-password" data-i18n="register_label_password">Password</label>
+                        <input type="password" id="reg-password" name="new-password" required autocomplete="new-password" placeholder="Minimum 8 characters" minlength="8" data-i18n="register_placeholder_password" data-i18n-attr="placeholder">
+                        <div id="password-strength" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
+                    </div>
+                    <div class="auth-field">
+                        <label for="reg-password-confirm" data-i18n="register_label_password_confirm">Confirm Password</label>
+                        <input type="password" id="reg-password-confirm" name="confirm-password" required autocomplete="new-password" placeholder="Repeat your password" minlength="8" data-i18n="register_placeholder_password_confirm" data-i18n-attr="placeholder">
+                    </div>
+                    <button type="submit" class="auth-btn" data-i18n="register_btn">Create account</button>
+                </form>
 
-            <div class="auth-separator">
-                <span data-i18n="register_separator">or continue with:</span>
+                <div class="auth-separator">
+                    <span data-i18n="register_separator">or continue with:</span>
+                </div>
+
+                <button type="button" id="google-register-btn" class="auth-btn auth-btn--google">
+                    <svg width="18" height="18" viewBox="0 0 48 48" class="google-btn__icon">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.04 1.53 7.43 2.81l5.49-5.49C33.64 3.54 29.32 2 24 2 14.82 2 6.99 7.98 3.68 16.09l6.84 5.32C12.22 14.13 17.62 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.5 24.5c0-1.54-.14-3.02-.39-4.45H24v8.41h12.69c-.55 2.96-2.21 5.47-4.71 7.15l7.28 5.66C43.89 36.68 46.5 31.06 46.5 24.5z"/>
+                        <path fill="#FBBC05" d="M10.52 28.41c-.48-1.43-.75-2.95-.75-4.41s.27-2.98.75-4.41l-6.84-5.32C2.6 17.14 2 20.46 2 24s.6 6.86 1.68 9.73l6.84-5.32z"/>
+                        <path fill="#34A853" d="M24 46c6.48 0 11.92-2.14 15.89-5.82l-7.28-5.66c-2.02 1.36-4.6 2.16-8.61 2.16-6.38 0-11.78-4.63-13.48-10.91l-6.84 5.32C6.99 40.02 14.82 46 24 46z"/>
+                    </svg>
+                    <span data-i18n="register_google">Sign up with Google</span>
+                </button>
+            
+                <p class="auth-link"><span data-i18n="register_has_account">Already have an account?</span> <a href="login.html" data-i18n="register_login">Log in</a></p>
+                </div>
             </div>
 
-            <button type="button" id="google-register-btn" class="auth-btn auth-btn--google">
-                <svg width="18" height="18" viewBox="0 0 48 48" class="google-btn__icon">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.04 1.53 7.43 2.81l5.49-5.49C33.64 3.54 29.32 2 24 2 14.82 2 6.99 7.98 3.68 16.09l6.84 5.32C12.22 14.13 17.62 9.5 24 9.5z"/>
-                    <path fill="#4285F4" d="M46.5 24.5c0-1.54-.14-3.02-.39-4.45H24v8.41h12.69c-.55 2.96-2.21 5.47-4.71 7.15l7.28 5.66C43.89 36.68 46.5 31.06 46.5 24.5z"/>
-                    <path fill="#FBBC05" d="M10.52 28.41c-.48-1.43-.75-2.95-.75-4.41s.27-2.98.75-4.41l-6.84-5.32C2.6 17.14 2 20.46 2 24s.6 6.86 1.68 9.73l6.84-5.32z"/>
-                    <path fill="#34A853" d="M24 46c6.48 0 11.92-2.14 15.89-5.82l-7.28-5.66c-2.02 1.36-4.6 2.16-8.61 2.16-6.38 0-11.78-4.63-13.48-10.91l-6.84 5.32C6.99 40.02 14.82 46 24 46z"/>
-                </svg>
-                <span data-i18n="register_google">Sign up with Google</span>
-            </button>
-            
-            <p class="auth-link"><span data-i18n="register_has_account">Already have an account?</span> <a href="login.html" data-i18n="register_login">Log in</a></p>
-            </div>
-
-            <!-- Success screen (hidden until registration succeeds) -->
-            <div id="register-success-screen" style="display: none; text-align: center; padding: 1.5rem 0;">
-                <div style="font-size: 3rem; margin-bottom: 0.75rem;">✉️</div>
-                <h2 style="margin-bottom: 0.5rem; font-size: 1.3rem;" data-i18n="register_success_title">Account created successfully!</h2>
-                <p style="color: var(--text-light, #ccc); font-size: 0.95rem; margin-bottom: 0.75rem; line-height: 1.5;">
-                    <span data-i18n="register_success_text_prefix">We sent a verification email to</span> <strong id="register-sent-email"></strong>.<br>
-                    <span data-i18n="register_success_text_suffix">Check your inbox and click the link to activate your account.</span>
-                </p>
-                <p style="color: var(--text-muted, #888); font-size: 0.82rem; margin-bottom: 1.25rem;" data-i18n="register_success_spam">Didn't receive the email? Check your Spam folder.</p>
-                <a href="login.html" class="auth-btn" style="display: inline-block; text-decoration: none; text-align: center;" data-i18n="register_success_login_btn">Go to login</a>
-            </div>
             <div class="auth-card__desc-col">
                 <!-- Description and features -->
                 <h2 data-i18n="register_desc_title">Start Your Console Journey</h2>
@@ -117,6 +107,19 @@
                     It only takes a few seconds to get started.
                 </p>
             </div>
+
+            <!-- Success screen (hidden until registration succeeds) -->
+            <div id="register-success-screen" style="display: none; text-align: center; padding: 1.5rem 0;">
+                <div style="font-size: 3rem; margin-bottom: 0.75rem;">✉️</div>
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.3rem;" data-i18n="register_success_title">Account created successfully!</h2>
+                <p style="color: var(--text-light, #ccc); font-size: 0.95rem; margin-bottom: 0.75rem; line-height: 1.5;">
+                    <span data-i18n="register_success_text_prefix">We sent a verification email to</span> <strong id="register-sent-email"></strong>.<br>
+                    <span data-i18n="register_success_text_suffix">Check your inbox and click the link to activate your account.</span>
+                </p>
+                <p style="color: var(--text-muted, #888); font-size: 0.82rem; margin-bottom: 1.25rem;" data-i18n="register_success_spam">Didn't receive the email? Check your Spam folder.</p>
+                <a href="login.html" class="auth-btn" style="display: inline-block; text-decoration: none; text-align: center;" data-i18n="register_success_login_btn">Go to login</a>
+            </div>
+            
         </div>
     </div>
 

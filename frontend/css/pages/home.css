@@ -1,104 +1,732 @@
 /**
- * Home Page Styles
- * Community-landing-inspired full-page wallpaper design
+ * Homepage — Premium Landing
+ * Self-contained: all hp-* classes live here.
+ *
+ * STRUCTURE:
+ *   0. Wallpaper + overlay
+ *   1. Hero (centered, single-column, clean)
+ *   2. Section scaffolding + How-it-works timeline
+ *   3. Feature cards
+ *   4. Final CTA
+ *   5. Footer override
+ *   6. Scroll-reveal animation
+ *
+ * LAYERING (simple, no z-index wars):
+ *   z-index 0  — background wallpaper
+ *   z-index 1  — page content (all sections)
+ *   z-index 10+— dropdowns, modals (handled elsewhere)
+ *
+ * All decorative pseudo-elements use pointer-events: none.
  */
 
+
 /* ═══════════════════════════════════════════════════════════
-   FULL-PAGE WALLPAPER
+   0. WALLPAPER + DARK OVERLAY
+   Identical technique to .community-landing:
+   — .hp-landing = wrapper with wallpaper background
+   — .hp-landing::before = dark veil (rgba 0,0,0,0.55)
+   — .hp-wrapper = content layer at z-index: 1
+   No body hacks. No pseudo-element conflicts with reset.css.
    ═══════════════════════════════════════════════════════════ */
 
-.home-page {
+.hp-landing {
+    position: relative;
+    min-height: 100vh;
     background: url('../../assets/images/wallpapers/index.jpg') center/cover no-repeat fixed;
     background-color: #0d0e14;
+    overflow-x: hidden;
 }
 
-/* Dark overlay — matches community landing rgba(0,0,0,0.55) */
-.home-page::after {
+/* Dark overlay — identical to community-landing::before */
+.hp-landing::before {
     content: '';
     position: fixed;
     inset: 0;
     z-index: 0;
-    background: url('../../assets/images/wallpapers/index.jpg') center/cover no-repeat fixed;
+    background: rgba(0, 0, 0, 0.55);
     pointer-events: none;
 }
 
-/* Ensure all content sits above the overlay */
-.home-page > * {
+/* Content wrapper — sits above the overlay */
+.hp-wrapper {
     position: relative;
     z-index: 1;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   HERO — Remove its own wallpaper (body has it now)
-   ═══════════════════════════════════════════════════════════ */
-
-.home-page .hero-cinematic {
-    background: none !important;
-}
-
-.home-page .hero-cinematic::after {
-    display: none;
-}
-
-/* Keep the gold glow */
-.home-page .hero-cinematic::before {
-    z-index: 1;
-}
 
 /* ═══════════════════════════════════════════════════════════
-   SECTIONS — Transparent so wallpaper shows through
+   SHARED CONTAINER
    ═══════════════════════════════════════════════════════════ */
 
-.home-page .section {
+.hp-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 36px;
+}
+
+@media (max-width: 768px) {
+    .hp-container { padding: 0 22px; }
+}
+@media (max-width: 480px) {
+    .hp-container { padding: 0 18px; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   1. HERO — Clean, centered, single-column
+   No sidebar, no timeline, no clutter.
+   Title → subtitle → description → 2 buttons. That's it.
+   ═══════════════════════════════════════════════════════════ */
+
+.hp-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0 60px;                  /* navbar clearance top, breathing room bottom */
+    position: relative;
+    overflow: hidden;                       /* clip 800px radial glow on mobile */
+}
+
+/* Soft radial glow — purely decorative */
+.hp-hero::before {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(212, 175, 122, 0.06) 0%, transparent 70%);
+    pointer-events: none;                   /* never block clicks */
+}
+
+.hp-hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.hp-hero__title {
+    font-size: clamp(2.6rem, 5vw, 3.8rem);
+    font-weight: 800;
+    color: var(--text-light, #F5F0E8);
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin: 0 0 20px;
+    font-family: var(--font-sans);
+}
+
+.hp-hero__subtitle {
+    font-size: clamp(1.08rem, 1.8vw, 1.3rem);
+    color: var(--text-light, #F5F0E8);
+    margin: 0 0 14px;
+    line-height: 1.55;
+    font-family: var(--font-serif);
+    opacity: 0.92;
+}
+
+.hp-hero__desc {
+    font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+    color: var(--text-gray, #A89F94);
+    margin: 0 0 40px;
+    line-height: 1.65;
+    max-width: 540px;
+}
+
+/* ── Buttons ───────────────────────────────────────────── */
+
+.hp-hero__actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.hp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background 0.28s ease, border-color 0.28s ease,
+                box-shadow 0.28s ease, transform 0.18s ease;
+    line-height: 1.3;
+}
+
+.hp-btn--primary {
+    background: var(--accent-color, #D4AF7A);
+    color: var(--primary-color, #1B1714);
+    border-color: var(--accent-color, #D4AF7A);
+}
+
+.hp-btn--primary:hover {
+    background: var(--accent-light, #E6C48A);
+    border-color: var(--accent-light, #E6C48A);
+    box-shadow: 0 0 28px rgba(212, 175, 122, 0.25), 0 4px 16px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
+}
+
+.hp-btn--primary:active {
+    transform: translateY(0);
+    box-shadow: 0 0 12px rgba(212, 175, 122, 0.15);
+}
+
+.hp-btn--ghost {
     background: transparent;
+    color: var(--text-light, #F5F0E8);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
-.home-page .section.bg-alt {
+.hp-btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.hp-btn--lg {
+    padding: 16px 40px;
+    font-size: 1rem;
+}
+
+/* ── Hero responsive ───────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .hp-hero {
+        padding: 80px 0 48px;
+    }
+
+    .hp-hero__inner {
+        padding: 0 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hp-hero {
+        min-height: 90vh;
+        padding: 72px 0 36px;
+    }
+
+    .hp-hero__inner {
+        padding: 0 20px;
+    }
+
+    .hp-hero__title {
+        font-size: 2.2rem;
+        margin-bottom: 14px;
+    }
+
+    .hp-hero__subtitle {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .hp-hero__desc {
+        font-size: 0.88rem;
+        margin-bottom: 32px;
+    }
+
+    .hp-hero__actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 300px;
+        gap: 12px;
+    }
+
+    .hp-btn--lg {
+        padding: 14px 32px;
+        font-size: 0.92rem;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   2. SECTION SCAFFOLDING
+   Reusable for timeline + features + CTA.
+   ═══════════════════════════════════════════════════════════ */
+
+.hp-section {
+    padding: 100px 0;
+    overflow: hidden;                       /* prevent decorative bleed */
+}
+
+.hp-section--alt {
     background: rgba(0, 0, 0, 0.18);
-    border-bottom-color: rgba(255, 255, 255, 0.04);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CONTENT SECTION — Heading refinements
-   ═══════════════════════════════════════════════════════════ */
-
-#content .section-title {
-    margin-bottom: var(--spacing-xl);
+.hp-section__header {
+    text-align: center;
+    margin-bottom: 56px;
 }
 
-#content .section-intro {
-    margin: 0 auto var(--spacing-xl);
-}
-
-#content .section-intro .first-sentence {
+.hp-section__title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 700;
+    color: var(--text-light, #F5F0E8);
+    margin: 0 0 10px;
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
 }
+
+.hp-section__subtitle {
+    font-size: 1rem;
+    color: var(--text-gray, #A89F94);
+    margin: 0;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* Clamp long paragraphs on mobile — keeps it clean */
+@media (max-width: 480px) {
+    .hp-section__subtitle {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 0.92rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hp-section {
+        padding: 60px 0;
+    }
+
+    .hp-section__header {
+        margin-bottom: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hp-section {
+        padding: 52px 0;
+    }
+}
+
 
 /* ═══════════════════════════════════════════════════════════
-   GLASS CARDS — Hub cards + feature cards
+   2a. HOW-IT-WORKS TIMELINE
+   Horizontal on desktop, vertical stack on mobile.
+   Clean and scannable.
    ═══════════════════════════════════════════════════════════ */
 
-.home-page .card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+.hp-timeline {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    position: relative;
 }
 
-.home-page .card:hover {
-    background: rgba(212, 175, 122, 0.04);
+/* Connecting line behind the items */
+.hp-timeline::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    pointer-events: none;
+}
+
+.hp-timeline__item {
+    flex: 1;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    position: relative;
+}
+
+.hp-timeline__num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    color: var(--accent-color, #D4AF7A);
+    background: rgba(212, 175, 122, 0.06);
+    border: 2px solid rgba(212, 175, 122, 0.2);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.hp-timeline__item:hover .hp-timeline__num {
+    background: rgba(212, 175, 122, 0.12);
+    border-color: rgba(212, 175, 122, 0.35);
+    box-shadow: 0 0 20px rgba(212, 175, 122, 0.1);
+    transform: translateY(-2px);
+}
+
+.hp-timeline__content h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-light, #F5F0E8);
+    margin: 0 0 6px;
+    font-family: var(--font-sans);
+    line-height: 1.35;
+}
+
+.hp-timeline__content p {
+    font-size: 0.78rem;
+    color: var(--text-gray, #A89F94);
+    margin: 0;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .hp-timeline {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding-left: 48px;
+    }
+
+    .hp-timeline::before {
+        top: 22px;
+        bottom: 22px;
+        left: 19px;
+        right: auto;
+        width: 2px;
+        height: auto;
+    }
+
+    .hp-timeline__item {
+        flex-direction: row;
+        text-align: left;
+        max-width: 100%;
+        gap: 16px;
+        padding: 14px 0;
+    }
+
+    .hp-timeline__num {
+        width: 40px;
+        height: 40px;
+        font-size: 0.88rem;
+        flex-shrink: 0;
+        position: absolute;
+        left: -48px;
+    }
+
+    .hp-timeline__content {
+        padding-left: 0;
+    }
+
+    .hp-timeline__content h3 {
+        font-size: 0.86rem;
+        margin-bottom: 3px;
+    }
+
+    .hp-timeline__content p {
+        font-size: 0.76rem;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   3. FEATURE CARDS
+   Adapted from community-landing .cl-quick__item glass style.
+   5-col → 3-col → 2-col → 1-col responsive cascade.
+   ═══════════════════════════════════════════════════════════ */
+
+.hp-features {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+}
+
+.hp-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 32px 20px 28px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+
+    /* Glass */
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition: background 0.3s ease, border-color 0.3s ease,
+                box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+.hp-card:hover {
+    background: rgba(212, 175, 122, 0.045);
     border-color: rgba(212, 175, 122, 0.16);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 24px rgba(212, 175, 122, 0.06);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25), 0 0 18px rgba(212, 175, 122, 0.06);
 }
 
+.hp-card__icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(212, 175, 122, 0.07);
+    color: var(--accent-color, #D4AF7A);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hp-card__icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.hp-card:hover .hp-card__icon {
+    background: rgba(212, 175, 122, 0.14);
+    box-shadow: 0 0 16px rgba(212, 175, 122, 0.08);
+}
+
+.hp-card__title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-light, #F5F0E8);
+    font-family: var(--font-sans);
+    margin: 0;
+}
+
+.hp-card__desc {
+    font-size: 0.78rem;
+    color: var(--text-gray, #A89F94);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.hp-card__cta {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--accent-color, #D4AF7A);
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.hp-card:hover .hp-card__cta {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1100px) {
+    .hp-features {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hp-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Show CTA text on mobile — no hover on touch */
+    .hp-card__cta {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .hp-features {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Horizontal compact card layout on phone */
+    .hp-card {
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        gap: 16px;
+        padding: 18px 20px;
+        border-radius: 14px;
+    }
+
+    .hp-card__icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
+
+    .hp-card__icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Body wraps title + desc + cta next to icon */
+    .hp-card__body {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .hp-card__title {
+        font-size: 0.88rem;
+    }
+
+    .hp-card__desc {
+        font-size: 0.76rem;
+    }
+
+    .hp-card__cta {
+        font-size: 0.74rem;
+        margin-top: 2px;
+    }
+}
+
+
+/* ── Section footer (CTA below cards) ─────────────────── */
+
+.hp-section__footer {
+    text-align: center;
+    margin-top: 48px;
+}
+
+.hp-section__footnote {
+    font-size: 0.82rem;
+    color: var(--text-gray, #A89F94);
+    margin: 12px 0 0;
+    opacity: 0.8;
+}
+
+@media (max-width: 480px) {
+    .hp-section__footer {
+        margin-top: 36px;
+    }
+}
+
+
 /* ═══════════════════════════════════════════════════════════
-   FOOTER — Glass treatment
+   4. FINAL CTA
+   Emotional closing — centered, spacious.
    ═══════════════════════════════════════════════════════════ */
 
-.home-page .footer {
+.hp-cta {
+    padding: 120px 0;
+    text-align: center;
+    position: relative;
+}
+
+/* Subtle radial glow behind the CTA */
+.hp-cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(212, 175, 122, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.hp-cta__title {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: var(--text-light, #F5F0E8);
+    margin: 0 0 16px;
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
+}
+
+.hp-cta__desc {
+    font-size: 1.05rem;
+    color: var(--text-gray, #A89F94);
+    margin: 0 auto 40px;
+    max-width: 460px;
+    line-height: 1.65;
+    font-family: var(--font-serif);
+}
+
+@media (max-width: 768px) {
+    .hp-cta {
+        padding: 72px 0;
+    }
+
+    .hp-cta__title {
+        font-size: clamp(1.4rem, 5vw, 1.8rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .hp-cta {
+        padding: 52px 0;
+    }
+
+    .hp-cta__title {
+        font-size: 1.4rem;
+    }
+
+    .hp-cta__desc {
+        font-size: 0.92rem;
+        margin-bottom: 32px;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   5. FOOTER
+   Inside .hp-wrapper, transparent glass to show wallpaper through.
+   ═══════════════════════════════════════════════════════════ */
+
+.hp-landing .footer {
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-top-color: rgba(255, 255, 255, 0.04);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   6. REVEAL ANIMATION
+   Cards + timeline items fade in on scroll.
+   ═══════════════════════════════════════════════════════════ */
+
+.hp-card,
+.hp-timeline__item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.hp-card.is-visible,
+.hp-timeline__item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }

@@ -24,10 +24,8 @@
     <!-- ===========================
          STYLESHEETS
          =========================== -->
-    <!-- Main CSS - imports all modules -->
     <link rel="stylesheet" href="../../css/main.css">
     
-    <!-- KaTeX CDN - for math equation rendering -->
     <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
     <script defer src="../../assets/vendor/katex/katex.min.js"></script>
     <script defer src="../../assets/vendor/katex/contrib/auto-render.min.js"></script>
@@ -35,7 +33,6 @@
 <body class="home-page">
     <!-- ===========================
          NAVIGATION BAR
-         Fixed top navigation with mobile hamburger menu
          =========================== -->
     <nav class="navbar">
         <div class="container">
@@ -62,233 +59,160 @@
     </nav>
 
     <!-- ===========================
-         HERO SECTION
-         Full-screen cinematic intro with quick guide
+         HOMEPAGE LANDING — wallpaper wrapper
+         Same technique as .community-landing:
+         div has bg image, ::before = dark overlay, content inside .hp-wrapper
          =========================== -->
-    <section class="hero hero-cinematic hero-home" id="hero">
-
-          <div class="hero-content">
-            <h1 data-i18n="hero_title">Console Notebook</h1>
-            <p data-i18n="hero_subtitle">Welcome to the golden — or maybe bronze — age of gaming.</p>
-            <p data-i18n="hero_subtitle_2">Build your console collection, discover what makes each system unique, and connect with real enthusiasts.</p>
-            <a href="#content" class="hero-button" id="hero-explore-btn" data-i18n="hero_cta">Start your journey</a>
-          </div>
-
-          <div class="hero-quickguide">
-            <p class="hero-quickguide__label" data-i18n="hero_quickguide_label">Quick guide</p>
-            <div class="hero-quickguide__steps" id="qg-steps">
-              <div class="hero-quickguide__track">
-                <div class="hero-quickguide__fill" id="qg-fill"></div>
-              </div>
-
-              <div class="qg-step qg-step--done" data-href="#">
-                <div class="qg-step__dot">
-                  <span class="qg-step__num">1</span>
-                  <svg class="qg-step__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <div class="qg-step__text">
-                  <span class="qg-step__title" data-i18n="hero_quickguide_step1">Create your profile</span>
-                  <span class="qg-step__desc" data-i18n="hero_quickguide_step1_desc">Two minutes and you're in.</span>
-                </div>
-              </div>
-
-              <div class="qg-step qg-step--active" data-href="evolutie.html">
-                <div class="qg-step__dot"><span class="qg-step__num">2</span></div>
-                <div class="qg-step__text">
-                  <span class="qg-step__title" data-i18n="hero_quickguide_step2">Pick your first favorite console</span>
-                  <span class="qg-step__desc" data-i18n="hero_quickguide_step2_desc">Mark it with ❤️ in the encyclopedia.</span>
-                </div>
-              </div>
-
-              <div class="qg-step" data-href="comparatie.html">
-                <div class="qg-step__dot"><span class="qg-step__num">3</span></div>
-                <div class="qg-step__text">
-                  <span class="qg-step__title" data-i18n="hero_quickguide_step3">Face it off with a rival</span>
-                  <span class="qg-step__desc" data-i18n="hero_quickguide_step3_desc">The comparator helps you see clearly.</span>
-                </div>
-              </div>
-
-              <div class="qg-step" data-href="community-welcome-page.html">
-                <div class="qg-step__dot"><span class="qg-step__num">4</span></div>
-                <div class="qg-step__text">
-                  <span class="qg-step__title" data-i18n="hero_quickguide_step4">Say hello in the community</span>
-                  <span class="qg-step__desc" data-i18n="hero_quickguide_step4_desc">The forum and live chat are waiting for you.</span>
-                </div>
-              </div>
-
-              <div class="qg-step" data-href="evolutie.html">
-                <div class="qg-step__dot"><span class="qg-step__num">5</span></div>
-                <div class="qg-step__text">
-                  <span class="qg-step__title" data-i18n="hero_quickguide_step5">Leave your first rating</span>
-                  <span class="qg-step__desc" data-i18n="hero_quickguide_step5_desc">Your voice matters on the platform.</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-    </section>
+    <div class="hp-landing">
+        <div class="hp-wrapper">
 
     <!-- ===========================
-         WELCOME SECTION
-         Main content introduction with feature cards
+         1. HERO SECTION
+         Clean, focused — single column, no clutter
          =========================== -->
-    <section class="section" id="content">
-        <div class="container">
-            <h2 class="section-title" data-i18n="section_about_title">What is Cnote Bakery? Who are we?</h2>
-            <p class="section-intro" data-i18n="section_about_text">
-                Cnote Bakery (Console Notebook) is a platform dedicated to the world of gaming consoles. It brings together history, technology, and community in one place. But it aims to go beyond documentation. Cnote Bakery seeks to revive a part of us — the authentic gaming spirit that many lost as the industry changed. Here you can discover consoles, learn how they work, and help preserve an important piece of gaming culture.
-            </p>
-
-            <div class="cards-grid">
-
-                <div class="card hub-card">
-                    <div class="hub-card__accent" style="background:#D4A24E"></div>
-                    <div class="hub-card__header">
-                        <div class="hub-card__header-left">
-                            <div class="hub-card__icon">📚</div>
-                            <div>
-                                <div class="hub-card__title" data-i18n="learn_title">Learn</div>
-                                <div class="hub-card__subtitle" data-i18n="learn_subtitle">Courses and guides</div>
-                            </div>
-                        </div>
-                        <div class="hub-card__badge" data-i18n="coming_soon">Coming soon</div>
-                    </div>
-                    <div class="hub-card__preview">
-                        <div class="lesson-featured">
-                            <div class="lesson-featured__icon">🔧</div>
-                            <div>
-                                <div class="lesson-featured__label" data-i18n="course_repair">Console Repair Course</div>
-                                <div class="lesson-featured__title" data-i18n="course_repair_desc">Identify faults, swap parts, and troubleshoot hands-on.</div>
-                            </div>
-                        </div>
-                        <div class="lesson-featured">
-                            <div class="lesson-featured__icon">⚙️</div>
-                            <div>
-                                <div class="lesson-featured__label" data-i18n="course_modding">Console Modding Course</div>
-                                <div class="lesson-featured__title" data-i18n="course_modding_desc">Custom firmware, homebrew, modchips and hardware tweaks.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="invata.html" class="demo-button" data-i18n="learn_cta">Start learning</a>
-                </div>
-
-                <div class="card hub-card">
-                    <div class="hub-card__accent" style="background:#9B59B6"></div>
-                    <div class="hub-card__header">
-                        <div class="hub-card__header-left">
-                            <div class="hub-card__icon">⏳</div>
-                            <div>
-                                <div class="hub-card__title" data-i18n="evolution_title">Console Evolution</div>
-                                <div class="hub-card__subtitle" data-i18n="evolution_subtitle">50 years of gaming</div>
-                            </div>
-                        </div>
-                        <div class="hub-card__badge">1972 → 2024</div>
-                    </div>
-                    <div class="hub-card__preview">
-                        <div class="idx-timeline">
-                            <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">1977</div><div class="idx-timeline-name">Atari 2600</div><div class="idx-timeline-desc">Pioneer</div></div>
-                            <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">1994</div><div class="idx-timeline-name">PlayStation</div><div class="idx-timeline-desc">3D revolution</div></div>
-                            <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">2001</div><div class="idx-timeline-name">Xbox</div><div class="idx-timeline-desc">Online gaming</div></div>
-                            <div class="idx-timeline-item"><div class="idx-timeline-dot"></div><div class="idx-timeline-year">2020</div><div class="idx-timeline-name">PS5 / Series X</div><div class="idx-timeline-desc">SSD generation</div></div>
-                        </div>
-                    </div>
-                    <div class="hub-divider"></div>
-                    <a href="evolutie.html" class="demo-button" data-i18n="evolution_cta">See evolution</a>
-                </div>
-
-                <div class="card hub-card">
-                    <div class="hub-card__accent" style="background:#0070D1"></div>
-                    <div class="hub-card__header">
-                        <div class="hub-card__header-left">
-                            <div class="hub-card__icon">⚖️</div>
-                            <div>
-                                <div class="hub-card__title" data-i18n="compare_title">Comparison</div>
-                                <div class="hub-card__subtitle" data-i18n="compare_subtitle">Put consoles side by side</div>
-                            </div>
-                        </div>
-                        <div class="hub-card__badge" data-i18n="compare_best">Most compared:</div>
-                    </div>
-                    <div class="hub-card__preview">
-                        <div class="compare-list">
-                            <div class="compare-row">
-                                <div class="compare-row__header"><span class="compare-row__name">PlayStation 5</span><span class="compare-row__score">91 / 100</span></div>
-                                <div class="compare-bar"><div class="compare-bar__fill compare-bar__fill--ps"></div></div>
-                            </div>
-                            <div class="compare-row">
-                                <div class="compare-row__header"><span class="compare-row__name">Xbox Series X</span><span class="compare-row__score">88 / 100</span></div>
-                                <div class="compare-bar"><div class="compare-bar__fill compare-bar__fill--xb"></div></div>
-                            </div>
-                            <div class="compare-row">
-                                <div class="compare-row__header"><span class="compare-row__name">Nintendo Switch</span><span class="compare-row__score">82 / 100</span></div>
-                                <div class="compare-bar"><div class="compare-bar__fill compare-bar__fill--sw"></div></div>
-                            </div>
-                        </div>
-                        <div class="compare-highlight">🔥 <span data-i18n="compare_best">Most compared:</span> <span>PS5 vs Xbox Series X</span></div>
-                    </div>
-                    <div class="hub-divider"></div>
-                    <a href="comparatie.html" class="demo-button" data-i18n="compare_cta">Compare consoles</a>
-                </div>
-
-                <div class="card hub-card">
-                    <div class="hub-card__accent" style="background:#E60012"></div>
-                    <div class="hub-card__header">
-                        <div class="hub-card__header-left">
-                            <div class="hub-card__icon">💬</div>
-                            <div>
-                                <div class="hub-card__title" data-i18n="community_title">Community</div>
-                                <div class="hub-card__subtitle" data-i18n="community_subtitle">Forum, marketplace & more</div>
-                            </div>
-                        </div>
-                        <div class="hub-card__badge hub-card__badge--live">● Live</div>
-                    </div>
-                    <div class="hub-card__preview" id="community-card-preview">
-                        <div class="thread-item">
-                            <div class="thread-avatar">…</div>
-                            <div class="thread-body">
-                                <div class="thread-title" style="color:var(--text-muted,#7a7672)" data-i18n="community_loading">Loading…</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hub-divider"></div>
-                    <a href="community.html" class="demo-button" data-i18n="community_enter">Enter community</a>
-                </div>
-
+    <section class="hp-hero" id="hero">
+        <div class="hp-hero__inner">
+            <h1 class="hp-hero__title" data-i18n="hero_title">Console Notebook</h1>
+            <p class="hp-hero__subtitle" data-i18n="hero_subtitle">Welcome to the golden — or maybe bronze — age of gaming.</p>
+            <p class="hp-hero__desc" data-i18n="hero_subtitle_2">Build your console collection, discover what makes each system unique, and connect with real enthusiasts.</p>
+            <div class="hp-hero__actions">
+                <a href="register.html" class="hero-button" data-i18n="hero_cta">Start your journey</a>
+                <a href="#how-it-works" class="hero-button" data-i18n="home_how_cta">See how it works</a>
             </div>
         </div>
     </section>
 
     <!-- ===========================
-         FEATURES SECTION
-         Science behind gaming consoles
+         2. HOW IT WORKS
+         Full visible timeline — spaced, clear, separated from hero
          =========================== -->
-    <section class="section bg-alt">
-        <div class="container">
-            <h2 class="section-title" data-i18n="features_title">Science behind gaming consoles</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <h3 data-i18n="feature_cpu_title">Internal Architecture</h3>
-                    <p data-i18n="feature_cpu_desc">From custom processors and optimized architectures to parallelism and dedicated GPUs — we examine the internal structure that makes modern gaming possible.</p>
+    <section class="hp-section" id="how-it-works">
+        <div class="hp-container">
+            <div class="hp-section__header">
+                <h2 class="hp-section__title" data-i18n="home_how_title">How it works</h2>
+                <p class="hp-section__subtitle" data-i18n="home_how_subtitle">Get started in just a few steps</p>
+            </div>
+
+            <div class="hp-timeline">
+                <div class="hp-timeline__item">
+                    <div class="hp-timeline__num">1</div>
+                    <div class="hp-timeline__content">
+                        <h3 data-i18n="hero_quickguide_step1">Create your profile</h3>
+                        <p data-i18n="hero_quickguide_step1_desc">Two minutes and you're in.</p>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3 data-i18n="feature_thermal_title">Power & Thermal Transfer</h3>
-                    <p data-i18n="feature_thermal_desc">Every bit of performance generates heat. We explore the physics in consoles: conduction, convection, energy efficiency, and hardware limits.</p>
+                <div class="hp-timeline__item">
+                    <div class="hp-timeline__num">2</div>
+                    <div class="hp-timeline__content">
+                        <h3 data-i18n="hero_quickguide_step2">Pick your first console</h3>
+                        <p data-i18n="hero_quickguide_step2_desc">Mark it with ❤️ in the encyclopedia.</p>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3 data-i18n="feature_render_title">Rendering & Graphics Algorithms</h3>
-                    <p data-i18n="feature_render_desc">How do math calculations become 3D worlds? From ray tracing to software optimizations, we uncover the tech behind realistic visuals.</p>
+                <div class="hp-timeline__item">
+                    <div class="hp-timeline__num">3</div>
+                    <div class="hp-timeline__content">
+                        <h3 data-i18n="home_step3_title">Build your collection</h3>
+                        <p data-i18n="home_step3_desc">Track owned and wanted consoles in your profile.</p>
+                    </div>
+                </div>
+                <div class="hp-timeline__item">
+                    <div class="hp-timeline__num">4</div>
+                    <div class="hp-timeline__content">
+                        <h3 data-i18n="hero_quickguide_step3">Compare systems</h3>
+                        <p data-i18n="hero_quickguide_step3_desc">The comparator helps you see clearly.</p>
+                    </div>
+                </div>
+                <div class="hp-timeline__item">
+                    <div class="hp-timeline__num">5</div>
+                    <div class="hp-timeline__content">
+                        <h3 data-i18n="hero_quickguide_step4">Join the community</h3>
+                        <p data-i18n="hero_quickguide_step4_desc">The forum and live chat are waiting for you.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    
+
+    <!-- ===========================
+         3. WHY CREATE AN ACCOUNT
+         Benefit-focused conversion section — same card layout
+         =========================== -->
+    <section class="hp-section hp-section--alt" id="content">
+        <div class="hp-container">
+            <div class="hp-section__header">
+                <h2 class="hp-section__title" data-i18n="section_why_title">Make it yours</h2>
+                <p class="hp-section__subtitle" data-i18n="section_why_text">Your consoles, your collection, your community — all in one place.</p>
+            </div>
+
+            <div class="hp-features">
+
+                <a href="evolutie.html" class="hp-card">
+                    <span class="hp-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </span>
+                    <div class="hp-card__body">
+                        <h3 class="hp-card__title" data-i18n="why_evolution_title">Explore every era</h3>
+                        <p class="hp-card__desc" data-i18n="why_evolution_desc">Browse 50 years of consoles and find the ones that matter to you.</p>
+                        <span class="hp-card__cta" data-i18n="evolution_cta">Explore timeline →</span>
+                    </div>
+                </a>
+
+                <a href="comparatie.html" class="hp-card">
+                    <span class="hp-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </span>
+                    <div class="hp-card__body">
+                        <h3 class="hp-card__title" data-i18n="why_compare_title">Compare before you choose</h3>
+                        <p class="hp-card__desc" data-i18n="why_compare_desc">See real specs side by side and make confident decisions.</p>
+                        <span class="hp-card__cta" data-i18n="compare_cta">Compare consoles →</span>
+                    </div>
+                </a>
+
+                <a href="invata.html" class="hp-card">
+                    <span class="hp-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </span>
+                    <div class="hp-card__body">
+                        <h3 class="hp-card__title" data-i18n="why_learn_title">Learn how they work</h3>
+                        <p class="hp-card__desc" data-i18n="why_learn_desc">Go deeper with courses on hardware, repair, and engineering.</p>
+                        <span class="hp-card__cta" data-i18n="learn_cta">Start learning →</span>
+                    </div>
+                </a>
+
+                <a href="community-welcome-page.html" class="hp-card">
+                    <span class="hp-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </span>
+                    <div class="hp-card__body">
+                        <h3 class="hp-card__title" data-i18n="why_community_title">Join the conversation</h3>
+                        <p class="hp-card__desc" data-i18n="why_community_desc">Talk with collectors, get repair help, and trade on the marketplace.</p>
+                        <span class="hp-card__cta" data-i18n="community_enter">Enter community →</span>
+                    </div>
+                </a>
+
+                <a href="profil.html" class="hp-card">
+                    <span class="hp-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </span>
+                    <div class="hp-card__body">
+                        <h3 class="hp-card__title" data-i18n="why_activity_title">Track your progress</h3>
+                        <p class="hp-card__desc" data-i18n="why_activity_desc">Ratings, favorites, and collection — all saved to your profile.</p>
+                        <span class="hp-card__cta" data-i18n="home_activity_cta">View profile →</span>
+                    </div>
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+
     <!-- ===========================
          FOOTER
-         Site footer with copyright and contact info
          =========================== -->
     <footer class="footer">
         <div class="footer-inner container">
             <div class="footer-left">
-                <p class="footer-main"> 2026 Console Notebook</p>
+                <p class="footer-main">© 2026 Console Notebook</p>
             </div>
             <div class="footer-right">
                 <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
@@ -297,17 +221,18 @@
         </div>
     </footer>
 
+        </div><!-- /.hp-wrapper -->
+    </div><!-- /.hp-landing -->
+
     <!-- ===========================
          JAVASCRIPT
          =========================== -->
-    
-    <!-- Main App - ES6 modules (requires HTTP server) -->
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
     <script type="module" src="../../js/pages/index-cards.js"></script>
     <script type="module" src="../../js/modules/home-timeline.js"></script>
     
-    <!-- Fallback Scripts - work without server (file:// protocol) -->
+    <!-- Fallback Scripts -->
     <script src="../../js/fallback/hamburger.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
 </body>
