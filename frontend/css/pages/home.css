@@ -1,9 +1,67 @@
 /**
  * Home Page Styles
- * Page-specific spacing for the landing content
+ * Community-landing-inspired full-page wallpaper design
  */
 
-/* === HOME CONTENT === */
+/* ═══════════════════════════════════════════════════════════
+   FULL-PAGE WALLPAPER
+   ═══════════════════════════════════════════════════════════ */
+
+.home-page {
+    background: url('../../assets/images/wallpapers/index.jpg') center/cover no-repeat fixed;
+    background-color: #0d0e14;
+}
+
+/* Dark overlay — matches community landing rgba(0,0,0,0.55) */
+.home-page::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: url('../../assets/images/wallpapers/index.jpg') center/cover no-repeat fixed;
+    pointer-events: none;
+}
+
+/* Ensure all content sits above the overlay */
+.home-page > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — Remove its own wallpaper (body has it now)
+   ═══════════════════════════════════════════════════════════ */
+
+.home-page .hero-cinematic {
+    background: none !important;
+}
+
+.home-page .hero-cinematic::after {
+    display: none;
+}
+
+/* Keep the gold glow */
+.home-page .hero-cinematic::before {
+    z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTIONS — Transparent so wallpaper shows through
+   ═══════════════════════════════════════════════════════════ */
+
+.home-page .section {
+    background: transparent;
+}
+
+.home-page .section.bg-alt {
+    background: rgba(0, 0, 0, 0.18);
+    border-bottom-color: rgba(255, 255, 255, 0.04);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTENT SECTION — Heading refinements
+   ═══════════════════════════════════════════════════════════ */
+
 #content .section-title {
     margin-bottom: var(--spacing-xl);
 }
@@ -14,4 +72,33 @@
 
 #content .section-intro .first-sentence {
     font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLASS CARDS — Hub cards + feature cards
+   ═══════════════════════════════════════════════════════════ */
+
+.home-page .card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.home-page .card:hover {
+    background: rgba(212, 175, 122, 0.04);
+    border-color: rgba(212, 175, 122, 0.16);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 24px rgba(212, 175, 122, 0.06);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER — Glass treatment
+   ═══════════════════════════════════════════════════════════ */
+
+.home-page .footer {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top-color: rgba(255, 255, 255, 0.04);
 }
