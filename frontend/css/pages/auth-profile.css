@@ -139,6 +139,48 @@
     background: #9a3c3c;
 }
 
+.auth-card__title-mobile {
+    display: none;
+}
+
+.login-desc_mobile{
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .login-desc_mobile {
+        display: block;
+        padding: 20px 20px;
+    }
+
+    .auth-card__desc-col {
+        display: none;
+    }
+
+    .auth-card {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-card__subtitle {
+        display: none;
+    }
+
+    .auth-card__form-col {
+        border-right: none;
+        padding-right: 0;
+    }
+
+    .auth-card__title {
+        display: none;
+    }
+
+    .auth-card__title-mobile {
+        display: block;
+        font-size: 1.25rem;
+        text-align: center;
+    }
+}
+
 /* ── Trust device toggle ── */
 
 .auth-trust-device {
