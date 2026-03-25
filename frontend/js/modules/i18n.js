@@ -306,6 +306,13 @@ const MESSAGES = {
         register_success_text_suffix: '. Check your inbox and click the link to activate your account.',
         register_success_spam: '📂 Didn\'t receive the email? Check your Spam folder.',
         register_success_login_btn: '🔐 Go to login',
+        register_desc_title: 'Start Your Console Journey',
+        register_desc_subtitle: 'Create your profile and start building your own console collection from day one.',
+        register_desc_feature_1: '🎮 Build your personal console collection',
+        register_desc_feature_2: '⭐ Save your favorite consoles',
+        register_desc_feature_3: '⚔️ Compare consoles side by side',
+        register_desc_feature_4: '💬 Join the community and discussions',
+        register_desc_closing: 'It only takes a few seconds to get started.',
 
         // Password Reset Request
         reset_req_title: '🔑 Reset Password',
@@ -960,6 +967,13 @@ const MESSAGES = {
         register_success_text_suffix: '. Verifică inbox-ul și dă click pe link pentru a-ți activa contul.',
         register_success_spam: '📂 Nu ai primit emailul? Verifică folderul Spam.',
         register_success_login_btn: '🔐 Mergi la autentificare',
+        register_desc_title: 'Începe-ți călătoria prin consolă',
+        register_desc_subtitle: 'Creează-ți profilul și începe să-ți construiești propria colecție de console încă din prima zi.',
+        register_desc_feature_1: '🎮 Creează-ți propria colecție de console',
+        register_desc_feature_2: '⭐ Salvează-ți consolele preferate',
+        register_desc_feature_3: '⚔️ Compară consolele una lângă alta',
+        register_desc_feature_4: '💬 Alătură-te comunității și discuțiilor',
+        register_desc_closing: 'Începe în doar câteva secunde.',
 
         // Password Reset Request
         reset_req_title: '🔑 Resetează Parola',
@@ -1601,6 +1615,13 @@ const MESSAGES = {
         register_success_text_suffix: '. Revisa tu bandeja de entrada y haz clic en el enlace para activar tu cuenta.',
         register_success_spam: '📂 ¿No recibiste el email? Revisa la carpeta de Spam.',
         register_success_login_btn: '🔐 Ir al inicio de sesión',
+        register_desc_title: 'Comienza tu aventura con las consolas',
+        register_desc_subtitle: 'Crea tu perfil y empieza a construir tu propia colección de consolas desde el primer día.',
+        register_desc_feature_1: '🎮 Crea tu colección personal de consolas',
+        register_desc_feature_2: '⭐ Guarda tus consolas favoritas',
+        register_desc_feature_3: '⚔️ Compara consolas una al lado de la otra',
+        register_desc_feature_4: '💬 Únete a la comunidad y a los debates',
+        register_desc_closing: 'Solo te llevará unos segundos empezar.',
 
         // Password Reset Request
         reset_req_title: '🔑 Restablecer Contraseña',
@@ -2239,6 +2260,13 @@ const MESSAGES = {
         register_success_text_suffix: '. Vérifiez votre boîte de réception et cliquez sur le lien pour activer votre compte.',
         register_success_spam: '📂 Email non reçu ? Vérifiez le dossier Spam.',
         register_success_login_btn: '🔐 Aller à la connexion',
+        register_desc_title: 'Commencez votre aventure sur console',
+        register_desc_subtitle: 'Créez votre profil et commencez à constituer votre collection de consoles dès le premier jour.',
+        register_desc_feature_1: '🎮 Constituez votre collection de consoles personnelle',
+        register_desc_feature_2: '⭐ Enregistrez vos consoles préférées',
+        register_desc_feature_3: '⚔️ Comparez les consoles côte à côte',
+        register_desc_feature_4: '💬 Rejoignez la communauté et les discussions',
+        register_desc_closing: 'Il suffit de quelques secondes pour commencer.',
 
         // Password Reset Request
         reset_req_title: '🔑 Réinitialiser le Mot de Passe',
@@ -2882,6 +2910,13 @@ const MESSAGES = {
         register_success_text_suffix: '. Controlla la tua posta e clicca sul link per attivare il tuo account.',
         register_success_spam: '📂 Non hai ricevuto l\'email? Controlla la cartella Spam.',
         register_success_login_btn: '🔐 Vai al login',
+        register_desc_title: 'Inizia il tuo viaggio nel mondo delle console',
+        register_desc_subtitle: 'Crea il tuo profilo e inizia a costruire la tua collezione di console fin dal primo giorno',
+        register_desc_feature_1: '🎮 Crea la tua collezione personale di console',
+        register_desc_feature_2: '⭐ Salva le tue console preferite',
+        register_desc_feature_3: '⚔️ Confronta le console fianco a fianco',
+        register_desc_feature_4: '💬 Unisciti alla community e alle discussioni',
+        register_desc_closing: 'Bastano pochi secondi per iniziare',
 
         // Password Reset Request
         reset_req_title: '🔑 Reimposta Password',
@@ -3521,6 +3556,13 @@ const MESSAGES = {
         register_success_text_suffix: ' gesendet. Überprüfe deinen Posteingang und klicke auf den Link, um dein Konto zu aktivieren.',
         register_success_spam: '📂 E-Mail nicht erhalten? Überprüfe den Spam-Ordner.',
         register_success_login_btn: '🔐 Zur Anmeldung',
+        register_desc_title: 'Starte deine Konsolenreise',
+        register_desc_subtitle: 'Erstelle dein Profil und beginne vom ersten Tag an mit dem Aufbau deiner eigenen Konsolensammlung.',
+        register_desc_feature_1: '🎮 Stelle deine persönliche Konsolensammlung zusammen',
+        register_desc_feature_2: '⭐ Speichere deine Lieblingskonsolen',
+        register_desc_feature_3: '⚔️ Vergleiche Konsolen direkt miteinander',
+        register_desc_feature_4: '💬 Tritt der Community bei und diskutiere mit uns',
+        register_desc_closing: 'Der Einstieg dauert nur wenige Sekunden.',
 
         // Password Reset Request
         reset_req_title: '🔑 Passwort Zurücksetzen',
