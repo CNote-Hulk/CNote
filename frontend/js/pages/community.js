@@ -1946,7 +1946,9 @@ function initNotifications() {
 initMobileSidebarControls();
 
 // Login gate: block community if not logged in
-if (!user()) {
+// Gate only the actual hub page (community.html); the welcome/landing page (#community-landing) is public.
+const _isWelcomePage = !!document.getElementById('community-landing');
+if (!user() && !_isWelcomePage) {
     const page = document.querySelector('.community-page');
     if (page) {
         page.innerHTML = `

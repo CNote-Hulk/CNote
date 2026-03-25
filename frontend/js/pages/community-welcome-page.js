@@ -630,6 +630,10 @@
            ═══════════════════════════════════════════════════ */
 
         function enterHub(view, con, cat) {
+            if (!localStorage.getItem('cn_token')) {
+                window.location.href = 'login.html';
+                return;
+            }
             var hash = '#' + view + (con ? '/' + con : '') + (cat ? '/' + cat : '');
             window.location.href = 'community.html' + hash;
         }
