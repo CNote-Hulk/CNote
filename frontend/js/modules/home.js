@@ -1,128 +1,194 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Helper pentru fetch cu token
-    function apiFetch(url, options = {}) {
-        const token = localStorage.getItem('token');
-        return fetch(url, {
-            ...options,
-            headers: {
-                ...(options.headers || {}),
-                'Content-Type': 'application/json',
-                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-            },
-        }).then(r => r.json());
+
+    // =========================
+    // API HELPER (SAFE)
+    // =========================
+    async function apiFetch(url, options = {}) {
+        try {
+            const token = localStorage.getItem('token');
+
+            const res = await fetch(url, {
+                ...options,
+                headers: {
+                    ...(options.headers || {}),
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {})
+                }
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            return await res.json();
+        } catch (err) {
+            console.error('API error:', err);
+            return { success: false };
+        }
     }
 
-    // Username-ul userului autentificat (presupunem că e salvat în localStorage)
-    const username = localStorage.getItem('username') || 'user';
+    // =========================
+    // USER
+    // =========================
+    const username = localStorage.getItem('username');
+
+    if (!username) {
+        console.warn('No user found');
+        return;
+    }
+
     const welcomeTitle = document.getElementById('welcome-title');
     if (welcomeTitle) {
-        welcomeTitle.textContent = `Welcome back, ${username}`;
+        welcomeTitle.textContent = `Welcome back, ${username} 👋`;
     }
 
-    // Populează datele principale din dashboard
+    // =========================
+    // DASHBOARD DATA
+    // =========================
     async function populateDashboard() {
         try {
-            // 1. Profil user (progres, favorite, colecție, prieteni)
             const userRes = await apiFetch(`/api/users/${encodeURIComponent(username)}`);
-            if (!userRes.success) throw new Error('User profile error');
+            if (!userRes.success) throw new Error('User fetch failed');
+
             const user = userRes.user;
 
-            // 2. Progres (ex: progres = owned_consoles.length, total = 42)
-            const progress = Array.isArray(user.owned_console_ids) ? user.owned_console_ids.length : 0;
+            // ⚡ parallel fetch
+            const [ratingsRes, favoritesRes, friendsRes, forumRes] = await Promise.all([
+                apiFetch('/api/ratings/user/all'),
+                apiFetch('/api/favorites'),
+                apiFetch('/api/friends'),
+                apiFetch('/api/forum/recent')
+            ]);
+
+            // =========================
+            // PROGRESS
+            // =========================
+            const progress = Array.isArray(user.owned_console_ids)
+                ? user.owned_console_ids.length
+                : 0;
+
             const total = 42;
             const percent = Math.round((progress / total) * 100);
+
             const continueProgress = document.getElementById('continue-progress');
             const activeProgress = document.getElementById('active-progress');
-            if (continueProgress && activeProgress) {
-                continueProgress.textContent = `${progress}/${total}`;
+            const statProgress = document.getElementById('stat-progress');
+
+            if (continueProgress) {
+                continueProgress.innerHTML = `${progress}/${total}`;
+            }
+
+            if (activeProgress) {
                 activeProgress.style.width = `${Math.max(2, percent)}%`;
             }
 
-            // 3. Achievements (mock: 3/16, poți adapta dacă ai endpoint)
-            const statAchievements = document.getElementById('stat-achievements');
-            if (statAchievements) {
-                statAchievements.textContent = '3/16';
+            if (statProgress) {
+                statProgress.innerHTML = `📈 <strong>${percent}%</strong>`;
             }
 
-            // 4. Ratings (număr ratinguri date de user)
-            const ratingsRes = await apiFetch('/api/ratings/user/all');
-            const statRatings = document.getElementById('stat-ratings');
-            if (statRatings && ratingsRes.success) {
-                statRatings.textContent = ratingsRes.ratings.length;
+            // =========================
+            // STATS
+            // =========================
+            setStat('stat-achievements', '🏅 <strong>3</strong> / <strong>16</strong>');
+
+            if (ratingsRes.success) {
+                setStat('stat-ratings', `⭐ <strong>${ratingsRes.ratings.length}</strong>`);
             }
 
-            // 5. Favorites (număr favorite)
-            const favoritesRes = await apiFetch('/api/favorites');
-            const statFavorites = document.getElementById('stat-favorites');
-            if (statFavorites && favoritesRes.success) {
-                statFavorites.textContent = favoritesRes.favorites.length;
+            if (favoritesRes.success) {
+                setStat('stat-favorites', `💖 <strong>${favoritesRes.favorites.length}</strong>`);
             }
 
-            // 6. Friends (număr prieteni)
-            const friendsRes = await apiFetch('/api/friends');
-            const statFriends = document.getElementById('stat-friends');
-            if (statFriends && friendsRes.success) {
-                statFriends.textContent = friendsRes.friends.length;
+            if (friendsRes.success) {
+                setStat('stat-friends', `🤝 <strong>${friendsRes.friends.length}</strong>`);
             }
 
-            // 7. Colecție (populatează grid-ul cu console deținute)
+            function setStat(id, value) {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = value;
+            }
+
+            // =========================
+            // COLLECTION
+            // =========================
             const collectionGrid = document.getElementById('collection-grid');
+
             if (collectionGrid && Array.isArray(user.owned_console_ids)) {
-                // Folosește window.CONSOLES_DATA pentru lookup
                 const allConsoles = window.CONSOLES_DATA || [];
+
                 collectionGrid.innerHTML = '';
-                user.owned_console_ids.forEach(cid => {
+
+                const emojis = ['🎮','🕹️','🔥','⚡','🌟','🎯'];
+
+                user.owned_console_ids.forEach((cid, idx) => {
                     const c = allConsoles.find(x => x.id === cid);
-                    if (c) {
-                        const btn = document.createElement('button');
-                        btn.className = 'console-card';
-                        btn.setAttribute('data-console', c.name);
-                        btn.innerHTML = `🎮 <span>${c.name}</span>`;
-                        btn.addEventListener('click', () => {
-                            window.location.href = `console.html?name=${encodeURIComponent(c.name)}`;
-                        });
-                        collectionGrid.appendChild(btn);
-                    }
+                    if (!c) return;
+
+                    const btn = document.createElement('button');
+                    btn.className = 'console-card';
+                    btn.dataset.console = c.name;
+
+                    const emoji = emojis[idx % emojis.length];
+
+                    btn.innerHTML = `${emoji} <span>${c.name}</span>`;
+
+                    btn.addEventListener('click', () => {
+                        window.location.href = `console.html?name=${encodeURIComponent(c.name)}`;
+                    });
+
+                    collectionGrid.appendChild(btn);
                 });
             }
 
-            // 8. Activitate recentă (mock, poți adapta dacă ai endpoint)
+            // =========================
+            // ACTIVITY
+            // =========================
             const activityList = document.querySelector('.activity-list');
+
             if (activityList) {
                 activityList.innerHTML = '';
-                if (ratingsRes.success && ratingsRes.ratings.length > 0) {
+
+                if (ratingsRes.success && ratingsRes.ratings.length) {
                     const last = ratingsRes.ratings[0];
                     const c = (window.CONSOLES_DATA || []).find(x => x.id === last.console_id);
+
                     if (c) {
-                        const li = document.createElement('li');
-                        li.textContent = `Rated ${c.name} ★★★★★`;
-                        activityList.appendChild(li);
+                        addActivity(`⭐ Rated <strong>${c.name}</strong> ★★★★★`);
                     }
                 }
-                if (favoritesRes.success && favoritesRes.favorites.length > 0) {
+
+                if (favoritesRes.success && favoritesRes.favorites.length) {
                     const c = (window.CONSOLES_DATA || []).find(x => x.id === favoritesRes.favorites[0]);
+
                     if (c) {
-                        const li = document.createElement('li');
-                        li.textContent = `Added ${c.name} to favorites`;
-                        activityList.appendChild(li);
+                        addActivity(`💖 Added <strong>${c.name}</strong> to favorites`);
                     }
                 }
-                if (friendsRes.success && friendsRes.friends.length > 0) {
+
+                if (friendsRes.success && friendsRes.friends.length) {
+                    addActivity(`🤝 Became friends with <strong>${friendsRes.friends[0].username}</strong>`);
+                }
+
+                function addActivity(html) {
                     const li = document.createElement('li');
-                    li.textContent = `Became friends with ${friendsRes.friends[0].username}`;
+                    li.innerHTML = html;
                     activityList.appendChild(li);
                 }
             }
 
-            // 9. Achievements grid (mock, poți adapta dacă ai endpoint)
+            // =========================
+            // ACHIEVEMENTS
+            // =========================
             const achievementsGrid = document.querySelector('.achievements-grid');
+
             if (achievementsGrid) {
                 achievementsGrid.innerHTML = '';
-                [
+
+                const achievements = [
                     { icon: '🏆', label: 'First Rating' },
                     { icon: '🔧', label: 'Repair Apprentice' },
                     { icon: '🌍', label: 'Community Member' }
-                ].forEach(a => {
+                ];
+
+                achievements.forEach(a => {
                     const div = document.createElement('div');
                     div.className = 'achievement-card';
                     div.innerHTML = `${a.icon} <strong>${a.label}</strong>`;
@@ -130,46 +196,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            // 10. Trending/Comunitate (forum recent)
+            // =========================
+            // COMMUNITY / TRENDING
+            // =========================
             const communityGrid = document.querySelector('.community-grid');
-            const forumRes = await apiFetch('/api/forum/recent');
+
             if (communityGrid && forumRes.success) {
                 communityGrid.innerHTML = '';
-                forumRes.threads.forEach(t => {
-                    const art = document.createElement('article');
-                    art.className = 'community-card';
-                    art.innerHTML = `<h3>${t.title}</h3><p>By ${t.username}</p>`;
-                    communityGrid.appendChild(art);
+
+                forumRes.threads.forEach((t, idx) => {
+                    const card = document.createElement('article');
+                    card.className = 'community-card';
+
+                    card.innerHTML = `
+                        <h3>🔥 ${t.title}</h3>
+                        <p>By ${t.username}</p>
+                    `;
+
+                    communityGrid.appendChild(card);
                 });
             }
 
-            // 11. Course Progress % (stat-progress)
-            const statProgress = document.getElementById('stat-progress');
-            if (statProgress) {
-                statProgress.textContent = percent + '%';
-            }
         } catch (err) {
-            // Poți adăuga fallback sau mesaj de eroare
             console.error('Dashboard error:', err);
         }
     }
 
+    // RUN
     populateDashboard();
 
-    // Butoane console (pentru fallback dacă nu e colecție)
-    const consoleButtons = document.querySelectorAll('.console-card');
-    consoleButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const consoleName = btn.getAttribute('data-console') || '';
-            window.location.href = `console.html?name=${encodeURIComponent(consoleName)}`;
-        });
-    });
-
-    // Buton continue
+    // =========================
+    // CONTINUE BUTTON
+    // =========================
     const continueButton = document.getElementById('continue-btn');
+
     if (continueButton) {
         continueButton.addEventListener('click', () => {
             window.location.href = 'invata.html';
         });
     }
+
 });
