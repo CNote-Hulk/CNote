@@ -22,16 +22,16 @@ body.home-dashboard {
     min-height: 100vh;
     display: grid;
     grid-template-columns: 240px 1fr;
-    padding-top: 64px;
 }
 
 .dashboard-sidebar {
     background: linear-gradient(180deg, #2d251f 0%, #231d17 100%);
     border-right: 1px solid rgba(255,255,255,.08);
     padding: 24px 16px;
-    display: flex;
+    display: fixed;
     flex-direction: column;
     gap: 20px;
+    padding-top: 60px;
 }
 
 .sidebar-section h3 {
@@ -67,6 +67,7 @@ body.home-dashboard {
     gap: 22px;
     display: flex;
     flex-direction: column;
+    padding-top: 60px;
 }
 
 .dashboard-header h1 {
