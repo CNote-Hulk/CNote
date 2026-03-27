@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ===========================
+         META INFORMATION
+         =========================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cnote Bakery (Console Notebook) is a platform dedicated to gaming consoles: history, hardware specs, repair guides and a community for enthusiasts.">
+    <meta name="theme-color" content="#1B1714">
+    <meta property="og:title" content="Console Notebook (Cnote Bakery)">
+    <meta property="og:description" content="A platform dedicated to gaming consoles: history, hardware and repairs.">
+    <meta property="og:url" content="https://consolenotebook.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://consolenotebook.com/" />
+
+    <title>Cnote Bakery (Console Notebook)</title>
+    
+    <!-- ===========================
+         STYLESHEETS
+         =========================== -->
+    <link rel="stylesheet" href="../../css/main.css">
+    
+    <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
+    <script defer src="../../assets/vendor/katex/katex.min.js"></script>
+    <script defer src="../../assets/vendor/katex/contrib/auto-render.min.js"></script>
+</head>
+<body class="home-page">
+    <!-- ===========================
+         NAVIGATION BAR
+         =========================== -->
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+
+            <ul class="nav-links">
+                <li><a href="community-welcome-page.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="help.html" data-i18n="nav_help">Help</a></li>
+                <li><a href="help.html#contact" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-shell">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-section">
+                <h3>MAIN</h3>
+                <a href="home.html" class="sidebar-link active">Home</a>
+                <a href="evolutie.html" class="sidebar-link">Consoles</a>
+                <a href="comparatie.html" class="sidebar-link">Compare</a>
+                <a href="invata.html" class="sidebar-link">Learn</a>
+            </div>
+            <div class="sidebar-section">
+                <h3>YOUR SPACE</h3>
+                <a href="collection.html" class="sidebar-link">Collection</a>
+                <a href="favorites.html" class="sidebar-link">Favorites</a>
+                <a href="progress.html" class="sidebar-link">Progress</a>
+                <a href="achievements.html" class="sidebar-link">Achievements</a>
+            </div>
+            <div class="sidebar-section">
+                <h3>EXPLORE</h3>
+                <a href="community.html" class="sidebar-link">Community</a>
+                <a href="marketplace.html" class="sidebar-link">Marketplace</a>
+                <a href="repair.html" class="sidebar-link">Repair</a>
+            </div>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <h1 id="welcome-title">Welcome back, user</h1>
+                <p>Pick up where you left off</p>
+            </header>
+
+            <section class="dashboard-section continue-section">
+                <div class="card continue-card">
+                    <div class="continue-content">
+                        <h2>Console Engineering</h2>
+                        <p>Progress: <strong id="continue-progress">1/42</strong></p>
+                        <div class="progress-bar"><div id="active-progress" style="width: 2.5%;"></div></div>
+                    </div>
+                    <button id="continue-btn" class="primary-btn">Continue</button>
+                </div>
+            </section>
+
+            <section class="dashboard-section stats-section">
+                <div class="stats-grid">
+                    <article class="stats-card"><h3>Course Progress</h3><p><strong id="stat-progress">6%</strong></p></article>
+                    <article class="stats-card"><h3>Achievements</h3><p><strong id="stat-achievements">5/16</strong></p></article>
+                    <article class="stats-card"><h3>Ratings</h3><p><strong id="stat-ratings">47</strong></p></article>
+                    <article class="stats-card"><h3>Favorites</h3><p><strong id="stat-favorites">13</strong></p></article>
+                    <article class="stats-card"><h3>Friends</h3><p><strong id="stat-friends">12</strong></p></article>
+                </div>
+            </section>
+
+            <section class="dashboard-section collection-section">
+                <h2>Your Collection</h2>
+                <div class="collection-grid" id="collection-grid">
+                    <button class="console-card" data-console="PlayStation 2">🎮 <span>PlayStation 2</span></button>
+                    <button class="console-card" data-console="Xbox 360">🕹️ <span>Xbox 360</span></button>
+                    <button class="console-card" data-console="Nintendo Wii">🎯 <span>Nintendo Wii</span></button>
+                    <button class="console-card" data-console="GameCube">🔥 <span>GameCube</span></button>
+                    <button class="console-card" data-console="PSP">⚡ <span>PSP</span></button>
+                    <button class="console-card" data-console="Dreamcast">🌟 <span>Dreamcast</span></button>
+                </div>
+            </section>
+
+            <section class="dashboard-section activity-section">
+                <h2>Recent Activity</h2>
+                <ul class="activity-list">
+                    <li>Rated PlayStation 2 ★★★★★</li>
+                    <li>Viewed Xbox 360</li>
+                    <li>Added Nintendo Wii to favorites</li>
+                </ul>
+            </section>
+
+            <section class="dashboard-section achievements-section">
+                <h2>Achievements</h2>
+                <div class="achievements-grid">
+                    <div class="achievement-card">🏆 <strong>First Rating</strong></div>
+                    <div class="achievement-card">🔧 <strong>Repair Apprentice</strong></div>
+                    <div class="achievement-card">🌍 <strong>Community Member</strong></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section community-section">
+                <h2>Trending</h2>
+                <div class="community-grid">
+                    <article class="community-card">
+                        <h3>Top mods for PS2 in 2026</h3>
+                        <p>Discuss the best hardware upgrades with fellow enthusiasts.</p>
+                    </article>
+                    <article class="community-card">
+                        <h3>Xbox 360 reliability guide</h3>
+                        <p>Share and discover repair workflows.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===========================
+         FOOTER
+         =========================== -->
+    <footer class="footer">
+        <div class="footer-inner container">
+            <div class="footer-left">
+                <p class="footer-main">© 2026 Console Notebook</p>
+            </div>
+            <div class="footer-right">
+                <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
+                <a href="tel:+40758464907">+40 758 464 907</a>
+            </div>
+        </div>
+    </footer>
+
+        </div><!-- /.hp-wrapper -->
+    </div><!-- /.hp-landing -->
+
+    <!-- ===========================
+         JAVASCRIPT
+         =========================== -->
+    <script src="../../js/data/consoles-data.js"></script>
+    <script type="module" src="../../js/main.js"></script>
+    <script type="module" src="../../js/modules/home.js"></script>
+    <script type="module" src="../../js/pages/index-cards.js"></script>
+    <script type="module" src="../../js/modules/home-timeline.js"></script>
+    
+    <!-- Fallback Scripts -->
+    <script src="../../js/fallback/search-profile.js"></script>
+</body>
+</html>
+
+
+
+
