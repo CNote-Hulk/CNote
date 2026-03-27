@@ -1,11 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const isLoggedIn = localStorage.getItem('loggedIn');
-
-    if (!isLoggedIn || isLoggedIn === 'false') {
-        window.location.replace('index.html');
-        return;
-    }
-
     const username = localStorage.getItem('username') || 'console fan';
     const welcomeTitle = document.getElementById('welcome-title');
     if (welcomeTitle) {

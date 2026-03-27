@@ -58,7 +58,12 @@ class App {
             ProfileDropdownModule.init();
             console.log('✓ Profile dropdown module initialized');
 
-            if (AuthModule.getCurrentUser()) {
+            const user = AuthModule.getCurrentUser();
+
+            const privatePages = ['home.html', 'profile.html'];
+            const currentPage = window.location.pathname.split('/').pop();
+
+            if (user && privatePages.includes(currentPage)) {
                 AuthModule.startSessionWatch();
                 console.log('✓ Session watch initialized');
             }
