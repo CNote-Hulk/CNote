@@ -61,57 +61,57 @@
     <div class="dashboard-shell">
         <aside class="dashboard-sidebar">
             <div class="sidebar-section">
-                <h3>MAIN</h3>
-                <a href="home.html" class="sidebar-link active">Home</a>
-                <a href="evolutie.html" class="sidebar-link">Consoles</a>
-                <a href="comparatie.html" class="sidebar-link">Compare</a>
-                <a href="invata.html" class="sidebar-link">Learn</a>
+                <h3 data-i18n="sidebar_main">🎮 MAIN</h3>
+                <a href="home.html" class="sidebar-link active" data-i18n="sidebar_home">🏠 Home</a>
+                <a href="evolutie.html" class="sidebar-link" data-i18n="sidebar_consoles">🕹️ Consoles</a>
+                <a href="comparatie.html" class="sidebar-link" data-i18n="sidebar_compare">⚔️ Compare</a>
+                <a href="invata.html" class="sidebar-link" data-i18n="sidebar_learn">📚 Learn</a>
             </div>
             <div class="sidebar-section">
-                <h3>YOUR SPACE</h3>
-                <a href="collection.html" class="sidebar-link">Collection</a>
-                <a href="favorites.html" class="sidebar-link">Favorites</a>
-                <a href="progress.html" class="sidebar-link">Progress</a>
-                <a href="achievements.html" class="sidebar-link">Achievements</a>
+                <h3 data-i18n="sidebar_space">⭐ YOUR SPACE</h3>
+                <a href="collection.html" class="sidebar-link" data-i18n="sidebar_collection">🎒 Collection</a>
+                <a href="favorites.html" class="sidebar-link" data-i18n="sidebar_favorites">❤️ Favorites</a>
+                <a href="progress.html" class="sidebar-link" data-i18n="sidebar_progress">📈 Progress</a>
+                <a href="achievements.html" class="sidebar-link" data-i18n="sidebar_achievements">🏆 Achievements</a>
             </div>
             <div class="sidebar-section">
-                <h3>EXPLORE</h3>
-                <a href="community.html" class="sidebar-link">Community</a>
-                <a href="marketplace.html" class="sidebar-link">Marketplace</a>
-                <a href="repair.html" class="sidebar-link">Repair</a>
+                <h3 data-i18n="sidebar_explore">🌍 EXPLORE</h3>
+                <a href="community.html" class="sidebar-link" data-i18n="sidebar_community">💬 Community</a>
+                <a href="marketplace.html" class="sidebar-link" data-i18n="sidebar_marketplace">🛒 Marketplace</a>
+                <a href="repair.html" class="sidebar-link" data-i18n="sidebar_repair">🔧 Repair</a>
             </div>
         </aside>
 
         <main class="dashboard-main">
             <div class="dashboard-content">
                 <header class="dashboard-header">
-                    <h1 id="welcome-title">Welcome back, user</h1>
-                    <p>Pick up where you left off</p>
+                    <h1 id="welcome-title" data-i18n="home_welcome">Welcome back, user</h1>
+                    <p data-i18n="home_pickup">Pick up where you left off</p>
                 </header>
 
                 <section class="dashboard-section continue-section">
                     <div class="card continue-card">
                         <div class="continue-content">
-                            <h2>Console Engineering</h2>
-                            <p>Progress: <strong id="continue-progress">1/42</strong></p>
+                            <h2 data-i18n="home_continue_title">Console Engineering</h2>
+                            <p data-i18n="home_continue_progress">Progress: <strong id="continue-progress">1/42</strong></p>
                             <div class="progress-bar"><div id="active-progress" style="width: 2.5%;"></div></div>
                         </div>
-                        <button id="continue-btn" class="primary-btn">Continue</button>
+                        <button id="continue-btn" class="primary-btn" data-i18n="home_continue_btn">Continue</button>
                     </div>
                 </section>
 
                 <section class="dashboard-section stats-section">
                     <div class="stats-grid">
-                        <article class="stats-card"><h3>Course Progress</h3><p><strong id="stat-progress">6%</strong></p></article>
-                        <article class="stats-card"><h3>Achievements</h3><p><strong id="stat-achievements">5/16</strong></p></article>
-                        <article class="stats-card"><h3>Ratings</h3><p><strong id="stat-ratings">47</strong></p></article>
-                        <article class="stats-card"><h3>Favorites</h3><p><strong id="stat-favorites">13</strong></p></article>
-                        <article class="stats-card"><h3>Friends</h3><p><strong id="stat-friends">12</strong></p></article>
+                        <article class="stats-card"><h3 data-i18n="home_stats_course">Course Progress</h3><p><strong id="stat-progress">6%</strong></p></article>
+                        <article class="stats-card"><h3 data-i18n="home_stats_achievements">Achievements</h3><p><strong id="stat-achievements">5/16</strong></p></article>
+                        <article class="stats-card"><h3 data-i18n="home_stats_ratings">Ratings</h3><p><strong id="stat-ratings">47</strong></p></article>
+                        <article class="stats-card"><h3 data-i18n="home_stats_favorites">Favorites</h3><p><strong id="stat-favorites">13</strong></p></article>
+                        <article class="stats-card"><h3 data-i18n="home_stats_friends">Friends</h3><p><strong id="stat-friends">12</strong></p></article>
                     </div>
                 </section>
 
                 <section class="dashboard-section collection-section">
-                    <h2>Your Collection</h2>
+                    <h2 data-i18n="home_collection_title">Your Collection</h2>
                     <div class="collection-grid" id="collection-grid">
                         <button class="console-card" data-console="PlayStation 2">🎮 <span>PlayStation 2</span></button>
                         <button class="console-card" data-console="Xbox 360">🕹️ <span>Xbox 360</span></button>
@@ -123,7 +123,7 @@
                 </section>
 
                 <section class="dashboard-section activity-section">
-                    <h2>Recent Activity</h2>
+                    <h2 data-i18n="home_activity_title">Recent Activity</h2>
                     <ul class="activity-list">
                         <li>Rated PlayStation 2 ★★★★★</li>
                         <li>Viewed Xbox 360</li>
@@ -132,7 +132,7 @@
                 </section>
 
                 <section class="dashboard-section achievements-section">
-                    <h2>Achievements</h2>
+                    <h2 data-i18n="home_achievements_title">Achievements</h2>
                     <div class="achievements-grid">
                         <div class="achievement-card">🏆 <strong>First Rating</strong></div>
                         <div class="achievement-card">🔧 <strong>Repair Apprentice</strong></div>
@@ -141,7 +141,7 @@
                 </section>
 
                 <section class="dashboard-section community-section">
-                    <h2>Trending</h2>
+                    <h2 data-i18n="home_trending_title">Trending</h2>
                     <div class="community-grid">
                         <article class="community-card">
                             <h3>Top mods for PS2 in 2026</h3>
