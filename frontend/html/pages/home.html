@@ -83,79 +83,80 @@
         </aside>
 
         <main class="dashboard-main">
-            <header class="dashboard-header">
-                <h1 id="welcome-title">Welcome back, user</h1>
-                <p>Pick up where you left off</p>
-            </header>
+            <div class="dashboard-content">
+                <header class="dashboard-header">
+                    <h1 id="welcome-title">Welcome back, user</h1>
+                    <p>Pick up where you left off</p>
+                </header>
 
-            <section class="dashboard-section continue-section">
-                <div class="card continue-card">
-                    <div class="continue-content">
-                        <h2>Console Engineering</h2>
-                        <p>Progress: <strong id="continue-progress">1/42</strong></p>
-                        <div class="progress-bar"><div id="active-progress" style="width: 2.5%;"></div></div>
+                <section class="dashboard-section continue-section">
+                    <div class="card continue-card">
+                        <div class="continue-content">
+                            <h2>Console Engineering</h2>
+                            <p>Progress: <strong id="continue-progress">1/42</strong></p>
+                            <div class="progress-bar"><div id="active-progress" style="width: 2.5%;"></div></div>
+                        </div>
+                        <button id="continue-btn" class="primary-btn">Continue</button>
                     </div>
-                    <button id="continue-btn" class="primary-btn">Continue</button>
-                </div>
-            </section>
+                </section>
 
-            <section class="dashboard-section stats-section">
-                <div class="stats-grid">
-                    <article class="stats-card"><h3>Course Progress</h3><p><strong id="stat-progress">6%</strong></p></article>
-                    <article class="stats-card"><h3>Achievements</h3><p><strong id="stat-achievements">5/16</strong></p></article>
-                    <article class="stats-card"><h3>Ratings</h3><p><strong id="stat-ratings">47</strong></p></article>
-                    <article class="stats-card"><h3>Favorites</h3><p><strong id="stat-favorites">13</strong></p></article>
-                    <article class="stats-card"><h3>Friends</h3><p><strong id="stat-friends">12</strong></p></article>
-                </div>
-            </section>
+                <section class="dashboard-section stats-section">
+                    <div class="stats-grid">
+                        <article class="stats-card"><h3>Course Progress</h3><p><strong id="stat-progress">6%</strong></p></article>
+                        <article class="stats-card"><h3>Achievements</h3><p><strong id="stat-achievements">5/16</strong></p></article>
+                        <article class="stats-card"><h3>Ratings</h3><p><strong id="stat-ratings">47</strong></p></article>
+                        <article class="stats-card"><h3>Favorites</h3><p><strong id="stat-favorites">13</strong></p></article>
+                        <article class="stats-card"><h3>Friends</h3><p><strong id="stat-friends">12</strong></p></article>
+                    </div>
+                </section>
 
-            <section class="dashboard-section collection-section">
-                <h2>Your Collection</h2>
-                <div class="collection-grid" id="collection-grid">
-                    <button class="console-card" data-console="PlayStation 2">🎮 <span>PlayStation 2</span></button>
-                    <button class="console-card" data-console="Xbox 360">🕹️ <span>Xbox 360</span></button>
-                    <button class="console-card" data-console="Nintendo Wii">🎯 <span>Nintendo Wii</span></button>
-                    <button class="console-card" data-console="GameCube">🔥 <span>GameCube</span></button>
-                    <button class="console-card" data-console="PSP">⚡ <span>PSP</span></button>
-                    <button class="console-card" data-console="Dreamcast">🌟 <span>Dreamcast</span></button>
-                </div>
-            </section>
+                <section class="dashboard-section collection-section">
+                    <h2>Your Collection</h2>
+                    <div class="collection-grid" id="collection-grid">
+                        <button class="console-card" data-console="PlayStation 2">🎮 <span>PlayStation 2</span></button>
+                        <button class="console-card" data-console="Xbox 360">🕹️ <span>Xbox 360</span></button>
+                        <button class="console-card" data-console="Nintendo Wii">🎯 <span>Nintendo Wii</span></button>
+                        <button class="console-card" data-console="GameCube">🔥 <span>GameCube</span></button>
+                        <button class="console-card" data-console="PSP">⚡ <span>PSP</span></button>
+                        <button class="console-card" data-console="Dreamcast">🌟 <span>Dreamcast</span></button>
+                    </div>
+                </section>
 
-            <section class="dashboard-section activity-section">
-                <h2>Recent Activity</h2>
-                <ul class="activity-list">
-                    <li>Rated PlayStation 2 ★★★★★</li>
-                    <li>Viewed Xbox 360</li>
-                    <li>Added Nintendo Wii to favorites</li>
-                </ul>
-            </section>
+                <section class="dashboard-section activity-section">
+                    <h2>Recent Activity</h2>
+                    <ul class="activity-list">
+                        <li>Rated PlayStation 2 ★★★★★</li>
+                        <li>Viewed Xbox 360</li>
+                        <li>Added Nintendo Wii to favorites</li>
+                    </ul>
+                </section>
 
-            <section class="dashboard-section achievements-section">
-                <h2>Achievements</h2>
-                <div class="achievements-grid">
-                    <div class="achievement-card">🏆 <strong>First Rating</strong></div>
-                    <div class="achievement-card">🔧 <strong>Repair Apprentice</strong></div>
-                    <div class="achievement-card">🌍 <strong>Community Member</strong></div>
-                </div>
-            </section>
+                <section class="dashboard-section achievements-section">
+                    <h2>Achievements</h2>
+                    <div class="achievements-grid">
+                        <div class="achievement-card">🏆 <strong>First Rating</strong></div>
+                        <div class="achievement-card">🔧 <strong>Repair Apprentice</strong></div>
+                        <div class="achievement-card">🌍 <strong>Community Member</strong></div>
+                    </div>
+                </section>
 
-            <section class="dashboard-section community-section">
-                <h2>Trending</h2>
-                <div class="community-grid">
-                    <article class="community-card">
-                        <h3>Top mods for PS2 in 2026</h3>
-                        <p>Discuss the best hardware upgrades with fellow enthusiasts.</p>
-                    </article>
-                    <article class="community-card">
-                        <h3>Xbox 360 reliability guide</h3>
-                        <p>Share and discover repair workflows.</p>
-                    </article>
-                </div>
-            </section>
-
+                <section class="dashboard-section community-section">
+                    <h2>Trending</h2>
+                    <div class="community-grid">
+                        <article class="community-card">
+                            <h3>Top mods for PS2 in 2026</h3>
+                            <p>Discuss the best hardware upgrades with fellow enthusiasts.</p>
+                        </article>
+                        <article class="community-card">
+                            <h3>Xbox 360 reliability guide</h3>
+                            <p>Share and discover repair workflows.</p>
+                        </article>
+                    </div>
+                </section>
+            </div>
             <!-- ===========================
-                 FOOTER
-                 =========================== -->
+             FOOTER
+             =========================== -->
             <footer class="footer">
                 <div class="footer-inner container">
                     <div class="footer-left">

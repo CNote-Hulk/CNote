@@ -11,6 +11,15 @@
 
 * { box-sizing: border-box; }
 
+.footer {    
+    width: 100%;
+    padding: 25px 40px;
+    margin-top: 20px;
+    background: rgba(20, 15, 10, 0.6);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(255,255,255,0.05)
+}
+
 body.home-dashboard {
     margin: 0;
     color: var(--text);
@@ -20,18 +29,23 @@ body.home-dashboard {
 
 .dashboard-shell {
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 240px 1fr;
+    display: flex;
+    overflow: hidden;
 }
 
 .dashboard-sidebar {
     background: linear-gradient(180deg, #2d251f 0%, #231d17 100%);
     border-right: 1px solid rgba(255,255,255,.08);
     padding: 24px 16px;
-    display: fixed;
+    display: flex;
+    position: fixed;
     flex-direction: column;
     gap: 20px;
     padding-top: 60px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color, #D4AF7A) transparent;
+    overflow-y: auto;
+    width: 250px;
 }
 
 .sidebar-section h3 {
@@ -61,13 +75,21 @@ body.home-dashboard {
 }
 
 .dashboard-main {
-    padding: 24px 28px;
+    margin-left: 250px;
     overflow-y: auto;
     min-height: 100vh;
     gap: 22px;
-    display: flex;
-    flex-direction: column;
+    display: relative;
+    scroll-behavior: smooth;
     padding-top: 60px;
+    background: url('../../assets/images/wallpapers/home.jpg') center/cover no-repeat fixed;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color, #D4AF7A) transparent;
+}
+
+.dashboard-content {
+    flex: 1;
+    padding: 24px 28px;
 }
 
 .dashboard-header h1 {
