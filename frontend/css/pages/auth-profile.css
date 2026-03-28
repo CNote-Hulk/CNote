@@ -471,6 +471,7 @@
 /* ── Sidebar ── */
 .profile-sidebar {
     border-right: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
+    background: linear-gradient(180deg, #2d251f 0%, #231d17 100%);
     padding: 0 24px 40px;
     display: flex;
     flex-direction: column;
