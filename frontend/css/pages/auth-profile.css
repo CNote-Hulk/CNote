@@ -549,16 +549,12 @@
 
 .profile-name-row {
     display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 6px;
     margin-top: 14px;
 }
 
 .profile-bio-row {
     display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 6px;
 }
 
