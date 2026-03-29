@@ -1,23 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================
-    // API HELPER (SAFE)
+    // SESSION
+    // =========================
+    let currentUser = null;
+    try {
+        const raw = localStorage.getItem('cn_session');
+        if (raw) currentUser = JSON.parse(raw);
+    } catch {}
+
+    if (!currentUser || !currentUser.id) {
+        window.location.replace('index.html');
+        return;
+    }
+
+    const username = currentUser.username;
+
+    // =========================
+    // API HELPER
     // =========================
     async function apiFetch(url, options = {}) {
         try {
-            const token = localStorage.getItem('token');
-
+            const token = localStorage.getItem('cn_token');
             const res = await fetch(url, {
                 ...options,
                 headers: {
                     ...(options.headers || {}),
                     'Content-Type': 'application/json',
                     ...(token ? { Authorization: `Bearer ${token}` } : {})
-                }
+                },
+                credentials: 'include'
             });
-
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
             return await res.json();
         } catch (err) {
             console.error('API error:', err);
@@ -26,15 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================
-    // USER
+    // WELCOME
     // =========================
-    const username = localStorage.getItem('username');
-
-    if (!username) {
-        console.warn('No user found');
-        return;
-    }
-
     const welcomeTitle = document.getElementById('welcome-title');
     if (welcomeTitle) {
         welcomeTitle.textContent = `Welcome back, ${username} 👋`;
