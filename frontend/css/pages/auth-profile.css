@@ -2013,7 +2013,6 @@ a.chat-message__username:hover {
     grid-template-columns: repeat(5, 1fr);
     gap: 14px;
     margin-bottom: 32px;
-    position: sticky;
     top: 64px;
     z-index: 10;
     padding: 16px 0;

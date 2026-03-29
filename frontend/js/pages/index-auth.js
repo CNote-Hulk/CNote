@@ -1,7 +1,11 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    if (isLoggedIn) {
-        window.location.replace('home.html');
-    }
-});
+const supabase = createClient(
+  window.SUPABASE_URL,
+  window.SUPABASE_ANON_KEY
+);
+
+const { data: { session } } = await supabase.auth.getSession();
+if (session) {
+  window.location.replace('/home.html');
+}

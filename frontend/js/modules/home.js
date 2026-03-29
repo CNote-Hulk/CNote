@@ -51,11 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const user = userRes.user;
 
             // ⚡ parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, forumRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, forumRes, achievementsRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
-                apiFetch('/api/forum/recent')
+                apiFetch('/api/forum/recent'),
+                apiFetch('/api/achievements')
             ]);
 
             // =========================
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? user.owned_console_ids.length
                 : 0;
 
-            const total = 42;
+            const total = (window.CONSOLES_DATA || []).length || 52;
             const percent = Math.round((progress / total) * 100);
 
             const continueProgress = document.getElementById('continue-progress');
@@ -87,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // =========================
             // STATS
             // =========================
-            setStat('stat-achievements', '🏅 <strong>3</strong> / <strong>16</strong>');
-
             if (ratingsRes.success) {
                 setStat('stat-ratings', `⭐ <strong>${ratingsRes.ratings.length}</strong>`);
             }
@@ -177,23 +176,23 @@ document.addEventListener('DOMContentLoaded', () => {
             // =========================
             // ACHIEVEMENTS
             // =========================
-            const achievementsGrid = document.querySelector('.achievements-grid');
+            if (achievementsRes.success) {
+                const earned = achievementsRes.achievements.filter(a => a.unlocked).length;
+                const total_ach = achievementsRes.achievements.length;
+                setStat('stat-achievements', `🏅 <strong>${earned}</strong> / <strong>${total_ach}</strong>`);
 
-            if (achievementsGrid) {
-                achievementsGrid.innerHTML = '';
-
-                const achievements = [
-                    { icon: '🏆', label: 'First Rating' },
-                    { icon: '🔧', label: 'Repair Apprentice' },
-                    { icon: '🌍', label: 'Community Member' }
-                ];
-
-                achievements.forEach(a => {
-                    const div = document.createElement('div');
-                    div.className = 'achievement-card';
-                    div.innerHTML = `${a.icon} <strong>${a.label}</strong>`;
-                    achievementsGrid.appendChild(div);
-                });
+                const achievementsGrid = document.querySelector('.achievements-grid');
+                if (achievementsGrid) {
+                    achievementsGrid.innerHTML = '';
+                    achievementsRes.achievements
+                        .filter(a => a.unlocked)
+                        .forEach(a => {
+                            const div = document.createElement('div');
+                            div.className = 'achievement-card';
+                            div.innerHTML = `${a.icon || '🏅'} <strong>${a.label || a.name}</strong>`;
+                            achievementsGrid.appendChild(div);
+                        });
+                }
             }
 
             // =========================
