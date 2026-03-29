@@ -31,20 +31,26 @@ body.home-dashboard {
     min-height: 100vh;
     display: flex;
     overflow: hidden;
+    background: url('../../assets/images/wallpapers/home.jpg') center/cover no-repeat fixed;
 }
 
 .dashboard-sidebar {
     background: linear-gradient(180deg, #2d251f 0%, #231d17 100%);
     border-right: 1px solid rgba(255,255,255,.08);
-    padding: 24px 16px;
+    padding: 26px 16px;
     display: flex;
     position: fixed;
     flex-direction: column;
-    padding-top: 80px;
+    padding-top: 40px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #D4AF7A) transparent;
     overflow-y: auto;
-    width: 250px;
+    width: 230px;
+    margin-top: 10px;
+    margin-left: 10px;
+    box-shadow: #231d17 10px 10px 10px;
+    height: calc(100% - 30px);
+    border-radius: 25px;
 }
 
 .sidebar-section h3 {
@@ -82,7 +88,6 @@ body.home-dashboard {
     display: relative;
     scroll-behavior: smooth;
     padding-top: 40px;
-    background: url('../../assets/images/wallpapers/home.jpg') center/cover no-repeat fixed;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #D4AF7A) transparent;
 }

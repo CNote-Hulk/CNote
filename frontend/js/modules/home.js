@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (raw) currentUser = JSON.parse(raw);
     } catch {}
 
-    if (!currentUser || !currentUser.id) {
+    /*if (!currentUser || !currentUser.id) {
         window.location.replace('index.html');
         return;
-    }
+    }*/
 
     const username = currentUser.username;
 

@@ -60,6 +60,38 @@
 
     <div class="dashboard-shell">
         <aside class="dashboard-sidebar">
+            <!-- Avatar -->
+            <button type="button" class="profile-avatar" id="profile-avatar" title="Change profile picture">
+                <img id="profile-avatar-img" alt="Profile picture" hidden>
+                <span id="profile-avatar-fallback">👤</span>
+            </button>
+            <input type="file" id="avatar-upload" accept="image/*" hidden>
+
+            <!-- Name + Admin badge -->
+            <div class="profile-name-row">
+                <div class="profile-name" id="profile-name">—</div>
+                <button type="button" class="profile-edit-shortcut" id="edit-username-shortcut" title="Edit name in Settings" data-i18n="profile_edit_name_title" data-i18n-attr="title">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                </button>
+            </div>
+            <span class="admin-badge" id="profile-admin-badge" hidden title="Administrator">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+                Admin
+            </span>
+
+            <!-- Online indicator -->
+            <div class="profile-online-dot"></div>
+
+            <!-- Bio -->
+            <div class="profile-bio-row">
+                <div class="profile-bio" id="profile-bio"></div>
+                <button type="button" class="profile-edit-shortcut" id="edit-bio-shortcut" title="Edit bio in Settings" data-i18n="profile_edit_bio_title" data-i18n-attr="title">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                </button>
+            </div>
+
+            <div style="height: 20px;"></div>
+            
             <div class="sidebar-section">
                 <h3 data-i18n="sidebar_main">🎮 MAIN</h3>
                 <a href="home.html" class="sidebar-link active" data-i18n="sidebar_home">🏠 Home</a>
