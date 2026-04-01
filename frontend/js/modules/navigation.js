@@ -169,15 +169,15 @@ export const NavigationModule = {
      * Anti-jitter: ignore moves < 15px, stays visible near top (< 80px)
      */
     setupAutoHideNavbar() {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+
         const isStaticPage = document.body.classList.contains('home-page');
 
         if (isStaticPage) {
             navbar.classList.remove('navbar--hidden');
             return;
         }
-
-        const navbar = document.querySelector('.navbar');
-        if (!navbar) return;
 
         let lastScrollY = window.scrollY;
         let ticking = false;

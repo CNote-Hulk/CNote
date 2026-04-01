@@ -345,6 +345,8 @@ const MESSAGES = {
         profile_notifications: 'Notifications',
         profile_stats: 'Stats',
         profile_logout: 'Log out',
+        profile_login: 'Log in',
+        profile_theme: 'Theme',
         profile_language: 'Language:',
 
         lang_en: 'English',
@@ -1074,6 +1076,8 @@ const MESSAGES = {
         profile_notifications: 'Notificări',
         profile_stats: 'Statistici',
         profile_logout: 'Deconectare',
+        profile_login: 'Autentificare',
+        profile_theme: 'Temă',
         profile_language: 'Limbă:',
 
         lang_en: 'Engleză',
@@ -1759,6 +1763,8 @@ const MESSAGES = {
         profile_notifications: 'Notificaciones',
         profile_stats: 'Estadísticas',
         profile_logout: 'Cerrar sesión',
+        profile_login: 'Iniciar sesión',
+        profile_theme: 'Tema',
         profile_language: 'Idioma:',
 
         lang_en: 'Inglés',
@@ -2440,6 +2446,8 @@ const MESSAGES = {
         profile_notifications: 'Notifications',
         profile_stats: 'Statistiques',
         profile_logout: 'Déconnexion',
+        profile_login: 'Se connecter',
+        profile_theme: 'Thème',
         profile_language: 'Langue:',
 
         lang_en: 'Anglais',
@@ -3121,6 +3129,8 @@ const MESSAGES = {
         profile_notifications: 'Notifiche',
         profile_stats: 'Statistiche',
         profile_logout: 'Esci',
+        profile_login: 'Accedi',
+        profile_theme: 'Tema',
         profile_language: 'Lingua:',
 
         lang_en: 'Inglese',
@@ -3808,6 +3818,8 @@ const MESSAGES = {
         profile_notifications: 'Benachrichtigungen',
         profile_stats: 'Statistiken',
         profile_logout: 'Abmelden',
+        profile_login: 'Anmelden',
+        profile_theme: 'Design',
         profile_language: 'Sprache:',
 
         lang_en: 'Englisch',

@@ -1,17 +1,25 @@
 /**
  * Profile Dropdown Module
- * Shows profile dropdown or redirects to login
+ * Shows profile dropdown for both logged-in and logged-out states,
+ * with language selector and theme switcher in both.
  */
 
 import { AuthModule } from './auth.js';
 import { I18nModule } from './i18n.js';
+
+const THEME_KEY = 'cnote-theme';
+
+// Apply saved theme immediately on module load (prevents flash)
+(function () {
+    const t = localStorage.getItem(THEME_KEY) || '';
+    document.documentElement.dataset.theme = t;
+})();
 
 export const ProfileDropdownModule = {
     _dropdown: null,
     _btn: null,
     _open: false,
 
-    /** Escape HTML special characters */
     _escapeHtml(value) {
         if (value === null || value === undefined) return '';
         return String(value)
@@ -21,20 +29,17 @@ export const ProfileDropdownModule = {
             .replace(/"/g, '&quot;');
     },
 
-    /** Initialize the dropdown: find button, build DOM, bind events */
     init() {
         if (this._dropdown) return;
         this._btn = document.querySelector('.navbar-profile-btn');
         if (!this._btn) return;
 
-        // Remove any pre-existing fallback dropdown
         this._btn.parentElement.querySelectorAll('.profile-dropdown').forEach(d => d.remove());
 
         this._createDropdown();
         this._bind();
     },
 
-    /** Resolve relative page path based on current location depth */
     _resolvePagePath(page) {
         const path = window.location.pathname;
         if (path.includes('/pages/consoles/') || path.includes('\\pages\\consoles\\')) return '../' + page;
@@ -43,8 +48,61 @@ export const ProfileDropdownModule = {
         return '/html/pages/' + page;
     },
 
-    /** Build the dropdown HTML: avatar, name, email, links, logout */
+    _langSelectorHTML() {
+        return `
+            <div class="profile-dropdown__divider"></div>
+            <div class="profile-dropdown__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span data-i18n="profile_language"></span>
+                <select class="profile-dropdown__lang-select" aria-label="Language selector">
+                    <option value="en" data-i18n="lang_en">English</option>
+                    <option value="ro" data-i18n="lang_ro">Română</option>
+                    <option value="es" data-i18n="lang_es">Español</option>
+                    <option value="fr" data-i18n="lang_fr">Français</option>
+                    <option value="it" data-i18n="lang_it">Italiano</option>
+                    <option value="de" data-i18n="lang_de">Deutsch</option>
+                </select>
+            </div>`;
+    },
+
+    _themePickerHTML() {
+        const current = localStorage.getItem(THEME_KEY) || '';
+        const active = (t) => current === t ? ' active' : '';
+        return `
+            <div class="profile-dropdown__divider"></div>
+            <div class="profile-dropdown__item profile-dropdown__theme-row">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                <span data-i18n="profile_theme">Theme</span>
+                <div class="profile-dropdown__theme-btns">
+                    <button class="profile-dropdown__theme-btn${active('')}" data-theme="" title="Default">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    </button>
+                    <button class="profile-dropdown__theme-btn${active('dark')}" data-theme="dark" title="Dark">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </button>
+                    <button class="profile-dropdown__theme-btn${active('light')}" data-theme="light" title="Light">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                    </button>
+                </div>
+            </div>`;
+    },
+
     _createDropdown() {
+        const dd = document.createElement('div');
+        dd.className = 'profile-dropdown';
+        this._btn.parentElement.appendChild(dd);
+        this._dropdown = dd;
+
+        if (AuthModule.isLoggedIn()) {
+            this._buildLoggedIn(dd);
+        } else {
+            this._buildLoggedOut(dd);
+        }
+
+        I18nModule.apply();
+    },
+
+    _buildLoggedIn(dd) {
         const user = AuthModule.getCurrentUser() || {};
         const name = this._escapeHtml(user.username || 'User');
         const email = this._escapeHtml(user.email || 'No email');
@@ -59,8 +117,6 @@ export const ProfileDropdownModule = {
                     </svg>
                </span>`;
 
-        const dd = document.createElement('div');
-        dd.className = 'profile-dropdown';
         dd.innerHTML = `
             <a href="${profilePath}" class="profile-dropdown__profile">
                 <span class="profile-dropdown__avatar">${avatarMarkup}</span>
@@ -111,51 +167,57 @@ export const ProfileDropdownModule = {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                 <span data-i18n="profile_stats">Statistics</span>
             </a>
-            <div class="profile-dropdown__divider"></div>
-            <div class="profile-dropdown__item">
-                <span data-i18n="profile_language"></span>
-                <select class="profile-dropdown__lang-select" aria-label="Language selector">
-                    <option value="en" data-i18n="lang_en">English</option>
-                    <option value="ro" data-i18n="lang_ro">Română</option>
-                    <option value="es" data-i18n="lang_es">Español</option>
-                    <option value="fr" data-i18n="lang_fr">Français</option>
-                    <option value="it" data-i18n="lang_it">Italiano</option>
-                    <option value="de" data-i18n="lang_de">Deutsch</option>
-                </select>
-            </div>
+            ${this._langSelectorHTML()}
+            ${this._themePickerHTML()}
             <div class="profile-dropdown__divider"></div>
             <button class="profile-dropdown__item profile-dropdown__logout">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                 <span data-i18n="profile_logout">Log out</span>
             </button>
         `;
-        this._btn.parentElement.appendChild(dd);
-        this._dropdown = dd;
-
-        // Translate the newly created dropdown content
-        I18nModule.apply();
     },
 
-    /** Bind click/keyboard events for open, close, outside-click */
+    _buildLoggedOut(dd) {
+        dd.innerHTML = `
+            <a href="${this._resolvePagePath('login.html')}" class="profile-dropdown__item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                <span data-i18n="profile_login">Log in</span>
+            </a>
+            ${this._langSelectorHTML()}
+            ${this._themePickerHTML()}
+        `;
+    },
+
+    _setTheme(theme) {
+        document.documentElement.dataset.theme = theme;
+        if (theme) {
+            localStorage.setItem(THEME_KEY, theme);
+        } else {
+            localStorage.removeItem(THEME_KEY);
+        }
+        this._dropdown.querySelectorAll('.profile-dropdown__theme-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === theme);
+        });
+    },
+
     _bind() {
+        // Strip any event listeners added by the fallback script
+        // (fallback runs before ES modules and may attach a redirect-to-login handler)
+        const cleanBtn = this._btn.cloneNode(true);
+        this._btn.parentElement.replaceChild(cleanBtn, this._btn);
+        this._btn = cleanBtn;
+
         this._btn.addEventListener('click', (e) => {
-            e.preventDefault();
             e.stopPropagation();
-            if (!AuthModule.isLoggedIn()) {
-                window.location.href = this._resolvePagePath('login.html');
-                return;
-            }
             this.toggle();
         });
 
-        // Close on outside click
         document.addEventListener('click', (e) => {
             if (this._open && !this._dropdown.contains(e.target) && !this._btn.contains(e.target)) {
                 this.hide();
             }
         });
 
-        // Logout
         const logoutBtn = this._dropdown.querySelector('.profile-dropdown__logout');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async () => {
@@ -164,15 +226,20 @@ export const ProfileDropdownModule = {
             });
         }
 
-        // Language switcher
         const langSelect = this._dropdown.querySelector('.profile-dropdown__lang-select');
         if (langSelect) {
-            langSelect.addEventListener('change', (event) => {
-                I18nModule.setLang(event.target.value);
+            langSelect.addEventListener('change', (e) => {
+                I18nModule.setLang(e.target.value);
             });
         }
 
-        // Close on ESC
+        this._dropdown.querySelectorAll('.profile-dropdown__theme-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this._setTheme(btn.dataset.theme);
+            });
+        });
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this._open) this.hide();
         });

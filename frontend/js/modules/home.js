@@ -50,6 +50,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // DASHBOARD DATA
     // =========================
+    function getLocalAchievements(userId) {
+        const BADGES = [
+            { id: 'first_steps',    name: 'First Steps',     icon: '🎯' },
+            { id: 'starter_pack',   name: 'Starter Pack',    icon: '🧩' },
+            { id: 'tech_explorer',  name: 'Tech Explorer',   icon: '🔬' },
+            { id: 'bookworm',       name: 'Bookworm',        icon: '📚' },
+            { id: 'grinder_25',     name: 'Grinder',         icon: '⚙️' },
+            { id: 'halfway',        name: 'Halfway There',   icon: '⭐' },
+            { id: 'almost_there',   name: 'Almost There',    icon: '🚀' },
+            { id: 'console_doctor', name: 'Console Doctor',  icon: '🔧' },
+            { id: 'quiz_rookie',    name: 'Quiz Rookie',     icon: '❓' },
+            { id: 'quiz_veteran',   name: 'Quiz Veteran',    icon: '🧠' },
+            { id: 'perfect_hit',    name: 'Perfect Hit',     icon: '💯' },
+            { id: 'perfect_streak', name: 'Perfect Streak',  icon: '🏅' },
+            { id: 'console_scout',  name: 'Console Scout',   icon: '🧭' },
+            { id: 'retro_master',   name: 'Retro Master',    icon: '🕹️' },
+            { id: 'archive_hunter', name: 'Archive Hunter',  icon: '🗂️' },
+            { id: 'all_rounder',    name: 'All-Rounder',     icon: '👑' }
+        ];
+        try {
+            const data = JSON.parse(localStorage.getItem('cn_achievements')) || {};
+            const earned = data[userId] || {};
+            return { success: true, achievements: BADGES.map(b => ({ ...b, unlocked: !!earned[b.id] })) };
+        } catch { return { success: false }; }
+    }
+
     async function populateDashboard() {
         try {
             const userRes = await apiFetch(`/api/users/${encodeURIComponent(username)}`);
@@ -63,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
                 apiFetch('/api/forum/recent'),
-                apiFetch('/api/achievements')
+                Promise.resolve(getLocalAchievements(currentUser?.id))
             ]);
 
             // =========================

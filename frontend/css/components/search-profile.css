@@ -337,6 +337,61 @@ body.search-open {
     background: rgba(229, 115, 115, 0.1);
 }
 
+.profile-dropdown__theme-row {
+    justify-content: flex-start;
+    gap: 8px;
+    cursor: default;
+}
+
+.profile-dropdown__theme-row:hover {
+    background: none;
+}
+
+.profile-dropdown__theme-btns {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.profile-dropdown__theme-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-gray, #A89F94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.profile-dropdown__theme-btn:hover {
+    background: rgba(212, 175, 122, 0.15);
+    border-color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color, #D4AF7A);
+}
+
+.profile-dropdown__theme-btn.active {
+    background: rgba(212, 175, 122, 0.18);
+    border-color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color, #D4AF7A);
+}
+
+[data-theme="light"] .profile-dropdown__theme-btn {
+    border-color: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .profile-dropdown__theme-btn:hover,
+[data-theme="light"] .profile-dropdown__theme-btn.active {
+    background: rgba(184, 135, 46, 0.12);
+    border-color: var(--accent-color, #b8872e);
+    color: var(--accent-color, #b8872e);
+}
+
 @media (max-width: 768px) {
     .navbar-search-btn {
         position: absolute;

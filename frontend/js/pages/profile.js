@@ -82,7 +82,8 @@
             // Header
             document.getElementById('profile-name').textContent = user.username;
             document.getElementById('profile-bio').textContent = user.bio || 'No description yet.';
-            document.getElementById('profile-date').textContent = 'Member since ' + new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+            const profileDateEl = document.getElementById('profile-date');
+            if (profileDateEl) profileDateEl.textContent = 'Member since ' + new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
 
             // Show admin badge if user is admin
             const adminBadge = document.getElementById('profile-admin-badge');
