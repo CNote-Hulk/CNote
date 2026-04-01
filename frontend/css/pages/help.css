@@ -316,3 +316,21 @@
         height: 100% !important;
     }
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Help Page
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .help-contact__card {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .help-contact__group input,
+[data-theme="light"] .help-contact__group textarea {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] .help-contact__group input:focus,
+[data-theme="light"] .help-contact__group textarea:focus {
+    background: rgba(255, 255, 255, 0.8);
+}

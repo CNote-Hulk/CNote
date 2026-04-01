@@ -782,3 +782,48 @@
     opacity: 1;
     transform: translateY(0);
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Homepage Landing
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .hp-landing {
+    background-color: #f5f0e8;
+}
+
+[data-theme="light"] .hp-landing::before {
+    background: rgba(245, 240, 232, 0.82);
+}
+
+[data-theme="light"] .hp-section--alt {
+    background: rgba(0, 0, 0, 0.03);
+    border-top-color: rgba(0, 0, 0, 0.04);
+    border-bottom-color: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .hp-card {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .hp-card:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(184, 135, 46, 0.2);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), 0 0 18px rgba(184, 135, 46, 0.06);
+}
+
+[data-theme="light"] .hp-btn--ghost {
+    border-color: rgba(0, 0, 0, 0.15);
+    color: var(--text-light);
+}
+
+[data-theme="light"] .hp-btn--ghost:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] .hp-landing .footer {
+    background: rgba(245, 240, 232, 0.6);
+    border-top-color: rgba(0, 0, 0, 0.06);
+}

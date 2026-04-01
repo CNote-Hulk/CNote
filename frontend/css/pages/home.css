@@ -290,19 +290,212 @@ body.home-dashboard {
 [data-theme="light"] .achievement-card,
 [data-theme="light"] .community-card {
     background: linear-gradient(145deg, var(--panel), var(--panel-soft));
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="light"] .console-card {
     background: linear-gradient(135deg, var(--panel-soft), var(--panel));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="light"] .activity-list li {
-    background: rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.85);
     border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="light"] .footer {
     background: rgba(var(--dark-rgb), 0.4);
     backdrop-filter: blur(8px);
+}
+
+/* ── Dashboard Preview Cards ──────────────────────────────── */
+
+.dash-card {
+    padding: 18px 20px;
+}
+
+.dash-empty {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin: 0;
+}
+
+.dash-see-all {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--accent-color, var(--accent));
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.dash-see-all:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Friends preview */
+.dash-friends-list {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.dash-friend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.15s;
+}
+
+.dash-friend-item:hover {
+    transform: translateY(-2px);
+}
+
+.dash-friend-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dash-friend-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dash-friend-fallback {
+    font-size: 1.2rem;
+}
+
+.dash-friend-name {
+    font-size: 0.78rem;
+    color: var(--muted);
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Courses preview */
+.dash-courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.dash-course-item .progress-bar {
+    width: 100%;
+    height: 7px;
+    margin-top: 6px;
+}
+
+.dash-course-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.dash-course-name {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.dash-course-pct {
+    font-size: 0.82rem;
+    color: var(--accent-color, var(--accent));
+    font-weight: 600;
+}
+
+/* Ratings preview */
+.dash-ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dash-rating-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+}
+
+.dash-rating-name {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.dash-rating-stars {
+    font-size: 0.9rem;
+    color: var(--accent-color, var(--accent));
+    letter-spacing: 1px;
+}
+
+/* Light theme overrides for previews */
+[data-theme="light"] .dash-friend-avatar {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .dash-rating-item {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .collection-grid,
+    .achievements-grid,
+    .community-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 680px) {
+    .dashboard-sidebar {
+        display: none;
+    }
+    .dashboard-main {
+        margin-left: 0;
+    }
+    .dashboard-content {
+        padding: 16px;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .collection-grid,
+    .achievements-grid,
+    .community-grid {
+        grid-template-columns: 1fr;
+    }
+    .continue-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .progress-bar {
+        width: 100%;
+    }
 }

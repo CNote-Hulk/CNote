@@ -356,3 +356,15 @@
         padding: 3px 6px;
     }
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Navbar
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .navbar::after {
+    background: linear-gradient(to bottom, rgba(var(--dark-rgb), 0.92) 0%, rgba(var(--dark-rgb), 0.55) 60%, transparent 100%);
+}
+
+[data-theme="light"] .hamburger span {
+    background: var(--text-light);
+}

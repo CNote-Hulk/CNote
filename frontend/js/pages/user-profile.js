@@ -105,6 +105,38 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             document.getElementById('user-dash-favorites').textContent = favCount;
         }
 
+        /** Render social links if user has them and privacy allows */
+        function renderSocialLinks(profile) {
+            const section = document.getElementById('user-social-section');
+            const container = document.getElementById('user-social-links');
+            if (!section || !container) return;
+
+            // Server already filters based on show_social_links, but double-check
+            const links = [];
+            if (profile.social_discord) links.push({ platform: 'Discord', value: profile.social_discord, icon: '💬' });
+            if (profile.social_twitter) links.push({ platform: 'Twitter', value: profile.social_twitter, icon: '🐦' });
+            if (profile.social_youtube) links.push({ platform: 'YouTube', value: profile.social_youtube, icon: '📺' });
+            if (profile.social_instagram) links.push({ platform: 'Instagram', value: profile.social_instagram, icon: '📷' });
+
+            if (links.length === 0) return;
+
+            section.hidden = false;
+            container.innerHTML = links.map(l => {
+                const isUrl = l.value.startsWith('http://') || l.value.startsWith('https://');
+                if (isUrl) {
+                    return `<a href="${escapeHtml(l.value)}" target="_blank" rel="noopener noreferrer" class="user-social-link">
+                        <span class="user-social-link__icon">${l.icon}</span>
+                        <span class="user-social-link__platform">${escapeHtml(l.platform)}</span>
+                    </a>`;
+                }
+                return `<span class="user-social-link">
+                    <span class="user-social-link__icon">${l.icon}</span>
+                    <span class="user-social-link__platform">${escapeHtml(l.platform)}</span>
+                    <span class="user-social-link__value">${escapeHtml(l.value)}</span>
+                </span>`;
+            }).join('');
+        }
+
         /** Fetch public profile data by username and render the page */
         async function loadUserProfile() {
             const username = getUsernameFromUrl();
@@ -162,6 +194,21 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                     consolesSection.hidden = false;
                 }
 
+                // Social links
+                renderSocialLinks(profile);
+
+                // Privacy: hide stats if user disabled them
+                if (profile.show_stats === false) {
+                    const dashPanel = document.getElementById('user-dashboard-panel');
+                    const coursesSection = document.getElementById('user-dash-courses-section');
+                    const ratingsSection = document.getElementById('user-dash-ratings-section');
+                    const achievementsSection = document.getElementById('user-dash-achievements-section');
+                    if (dashPanel) dashPanel.hidden = true;
+                    if (coursesSection) coursesSection.hidden = true;
+                    if (ratingsSection) ratingsSection.hidden = true;
+                    if (achievementsSection) achievementsSection.hidden = true;
+                }
+
                 // Favorite consoles - use favorite_console_ids from new table, fallback to CSV
                 const favContainer = document.getElementById('user-favorite-consoles');
                 const favIds = profile.favorite_console_ids || [];
@@ -214,11 +261,16 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 if (currentUser && currentUser.id !== profile.id) {
                     await renderFriendButton(actionsEl, profile.id);
                 } else if (currentUser && currentUser.id === profile.id) {
-                    actionsEl.innerHTML = '<a href="/html/pages/profil.html#setari" class="user-action-btn user-action-btn--edit">Edit Profile</a>';
+                    actionsEl.innerHTML = '<a href="/html/pages/profil.html#account" class="user-action-btn user-action-btn--edit">Edit Profile</a>';
                 }
 
                 // Friends list
-                await loadFriendsList(profile.username);
+                if (profile.show_friends !== false) {
+                    await loadFriendsList(profile.username);
+                } else {
+                    const friendsSection = document.getElementById('user-friends-section');
+                    if (friendsSection) friendsSection.hidden = true;
+                }
 
                 // Active marketplace listings
                 await loadUserListings(profile.id);

@@ -1401,3 +1401,139 @@
     -webkit-backdrop-filter: blur(12px);
     border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME — Community Landing
+   ═══════════════════════════════════════════════════════════ */
+
+[data-theme="light"] .community-landing {
+    background-color: #f5f0e8;
+}
+
+[data-theme="light"] .community-landing::before {
+    background: rgba(245, 240, 232, 0.82);
+}
+
+[data-theme="light"] .cl-btn--outline {
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .cl-btn--outline:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .cl-quick__item {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-quick__item:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(184, 135, 46, 0.18);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .cl-timeline__container {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-timeline__line {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .cl-timeline__dot {
+    background: #f5f0e8;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .cl-timeline__context {
+    border-left-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .cl-chat-preview__panel {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-chat-preview__header {
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .cl-chat-preview__footer {
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .cl-trending__item {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-trending__item:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .cl-category-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-category-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .cl-marketplace__card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-marketplace__card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(184, 135, 46, 0.2);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .cl-marketplace__img {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-marketplace__img--empty {
+    color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .cl-repair-list__item {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .cl-repair-list__item:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .cl-stat-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .community-landing .footer {
+    background: rgba(245, 240, 232, 0.6);
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 768px) {
+    [data-theme="light"] .cl-timeline__context {
+        border-top-color: rgba(0, 0, 0, 0.06);
+    }
+}

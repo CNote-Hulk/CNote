@@ -260,3 +260,19 @@
         font-size: 0.9rem;
     }
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Quiz
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .quiz-option.quiz-correct {
+    color: #16a34a !important;
+}
+
+[data-theme="light"] .quiz-option.quiz-wrong {
+    color: #dc2626 !important;
+}
+
+[data-theme="light"] .quiz-score-bar.quiz-complete .quiz-score-count {
+    color: #16a34a;
+}

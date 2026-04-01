@@ -175,7 +175,15 @@ function sanitizeUser(user) {
         created_at: user.created_at,
         notify_new_friend: user.notify_new_friend !== false,
         notify_new_message: user.notify_new_message !== false,
-        notify_repair_reply: user.notify_repair_reply !== false
+        notify_repair_reply: user.notify_repair_reply !== false,
+        social_discord: user.social_discord || '',
+        social_twitter: user.social_twitter || '',
+        social_youtube: user.social_youtube || '',
+        social_instagram: user.social_instagram || '',
+        show_email: !!user.show_email,
+        show_stats: user.show_stats !== false,
+        show_friends: user.show_friends !== false,
+        show_social_links: user.show_social_links !== false
     };
 }
 
@@ -531,7 +539,7 @@ router.get('/me', authRequired, (req, res) => {
 
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
-    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply } = req.body;
+    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links } = req.body;
     const updates = [];
     const params = [];
     let paramIndex = 1;
@@ -578,6 +586,38 @@ router.put('/me', authRequired, async (req, res) => {
     if (notify_repair_reply !== undefined) {
         updates.push(`notify_repair_reply = $${paramIndex++}`);
         params.push(!!notify_repair_reply);
+    }
+    if (social_discord !== undefined) {
+        updates.push(`social_discord = $${paramIndex++}`);
+        params.push(String(social_discord));
+    }
+    if (social_twitter !== undefined) {
+        updates.push(`social_twitter = $${paramIndex++}`);
+        params.push(String(social_twitter));
+    }
+    if (social_youtube !== undefined) {
+        updates.push(`social_youtube = $${paramIndex++}`);
+        params.push(String(social_youtube));
+    }
+    if (social_instagram !== undefined) {
+        updates.push(`social_instagram = $${paramIndex++}`);
+        params.push(String(social_instagram));
+    }
+    if (show_email !== undefined) {
+        updates.push(`show_email = $${paramIndex++}`);
+        params.push(!!show_email);
+    }
+    if (show_stats !== undefined) {
+        updates.push(`show_stats = $${paramIndex++}`);
+        params.push(!!show_stats);
+    }
+    if (show_friends !== undefined) {
+        updates.push(`show_friends = $${paramIndex++}`);
+        params.push(!!show_friends);
+    }
+    if (show_social_links !== undefined) {
+        updates.push(`show_social_links = $${paramIndex++}`);
+        params.push(!!show_social_links);
     }
 
     if (updates.length === 0) {

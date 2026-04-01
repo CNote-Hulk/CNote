@@ -163,12 +163,42 @@
                     </ul>
                 </section>
 
-                <section class="dashboard-section achievements-section">
+                <section class="dashboard-section achievements-section" id="achievements">
                     <h2 data-i18n="home_achievements_title">Achievements</h2>
                     <div class="achievements-grid">
                         <div class="achievement-card">🏆 <strong>First Rating</strong></div>
                         <div class="achievement-card">🔧 <strong>Repair Apprentice</strong></div>
                         <div class="achievement-card">🌍 <strong>Community Member</strong></div>
+                    </div>
+                </section>
+
+                <!-- Friends Preview -->
+                <section class="dashboard-section friends-preview-section" id="friends">
+                    <h2 data-i18n="home_friends_title">Friends</h2>
+                    <div class="card dash-card">
+                        <div id="home-friends-preview">
+                            <p class="dash-empty">Loading...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Course Progress Preview -->
+                <section class="dashboard-section courses-preview-section" id="progress">
+                    <h2 data-i18n="home_courses_title">Course Progress</h2>
+                    <div class="card dash-card">
+                        <div id="home-courses-preview">
+                            <p class="dash-empty">Loading...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Ratings Preview -->
+                <section class="dashboard-section ratings-preview-section">
+                    <h2 data-i18n="home_ratings_title">Recent Ratings</h2>
+                    <div class="card dash-card">
+                        <div id="home-ratings-preview">
+                            <p class="dash-empty">Loading...</p>
+                        </div>
                     </div>
                 </section>
 
@@ -208,7 +238,6 @@
          =========================== -->
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
-    <script type="module" src="../../js/pages/profile.js"></script>
     <script type="module" src="../../js/modules/home.js"></script>
     <script type="module" src="../../js/pages/index-cards.js"></script>
     

@@ -710,3 +710,74 @@
         text-align: left;
     }
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Comparison Page
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .selector-section {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] .selector-box {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .selector-box:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .console-select {
+    background-color: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .console-select option {
+    background: #ffffff;
+    color: var(--text-light);
+}
+
+[data-theme="light"] .console-select optgroup {
+    color: var(--accent-color);
+    background: #f5f0e8;
+}
+
+[data-theme="light"] .comparison-display {
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .comparison-section .console-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .comparison-section .console-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .comparison-section .console-card-image {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04), transparent);
+}
+
+[data-theme="light"] .spec-section {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .comparison-section .spec-row {
+    background: rgba(0, 0, 0, 0.015);
+}
+
+[data-theme="light"] .comparison-section .verdict-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .comparison-section .verdict-console-name {
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+}

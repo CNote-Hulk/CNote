@@ -469,8 +469,8 @@
 }
 
 [data-theme="light"] .hero-cinematic::after {
-    filter: blur(3px) brightness(1.1) saturate(0.75);
-    opacity: 0.4;
+    filter: blur(6px) brightness(1.4) saturate(0.5);
+    opacity: 0.18;
 }
 
 [data-theme="light"] .hero-cinematic::before {

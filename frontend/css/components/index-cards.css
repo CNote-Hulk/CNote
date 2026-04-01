@@ -450,3 +450,24 @@
         box-shadow: 0 0 0 5px rgba(74, 222, 128, 0);
     }
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Index Cards (Hub Grid)
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .hub-divider {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .thread-item {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .compare-bar {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .idx-timeline-dot {
+    background: rgba(245, 240, 232, 0.9);
+}

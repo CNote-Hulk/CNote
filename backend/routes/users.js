@@ -75,7 +75,9 @@ router.get('/users/:username', async (req, res) => {
     try {
         const { username } = req.params;
         const result = await pool.query(
-            `SELECT id, username, bio, avatar, favorite_consoles, owned_consoles, role, created_at
+            `SELECT id, username, bio, avatar, favorite_consoles, owned_consoles, role, created_at,
+                    social_discord, social_twitter, social_youtube, social_instagram,
+                    show_email, show_stats, show_friends, show_social_links
              FROM users WHERE LOWER(username) = LOWER($1)`,
             [username]
         );
@@ -104,9 +106,16 @@ router.get('/users/:username', async (req, res) => {
                 owned_consoles: user.owned_consoles || '',
                 favorite_console_ids: favResult.rows.map(r => r.console_id),
                 owned_console_ids: ownedResult.rows.map(r => r.console_id),
-                friend_count: parseInt(friendCount.rows[0].count),
+                friend_count: user.show_friends !== false ? parseInt(friendCount.rows[0].count) : null,
                 role: user.role || 'user',
-                created_at: user.created_at
+                created_at: user.created_at,
+                social_discord: user.show_social_links !== false ? (user.social_discord || '') : '',
+                social_twitter: user.show_social_links !== false ? (user.social_twitter || '') : '',
+                social_youtube: user.show_social_links !== false ? (user.social_youtube || '') : '',
+                social_instagram: user.show_social_links !== false ? (user.social_instagram || '') : '',
+                show_stats: user.show_stats !== false,
+                show_friends: user.show_friends !== false,
+                show_social_links: user.show_social_links !== false
             }
         });
     } catch (err) {

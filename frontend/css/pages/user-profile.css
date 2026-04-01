@@ -411,8 +411,8 @@
    ══════════════════════════════════════════ */
 
 [data-theme="light"] .user-profile-page::after {
-    filter: blur(3px) brightness(1.1) saturate(0.75);
-    opacity: 0.35;
+    filter: blur(6px) brightness(1.4) saturate(0.5);
+    opacity: 0.15;
 }
 
 [data-theme="light"] .up-consoles {
@@ -440,4 +440,55 @@
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+}
+
+/* === SOCIAL LINKS === */
+.user-social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.user-social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(20, 18, 16, 0.6);
+    border: 1px solid var(--up-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--text-light, #F5F0E8);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: border-color 0.2s ease, transform 0.15s ease, background 0.2s ease;
+}
+
+a.user-social-link:hover {
+    border-color: rgba(var(--up-accent-rgb), 0.35);
+    transform: translateY(-1px);
+    background: rgba(var(--up-accent-rgb), 0.08);
+}
+
+.user-social-link__icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.user-social-link__platform {
+    color: var(--up-accent);
+    font-weight: 600;
+}
+
+.user-social-link__value {
+    color: var(--text-gray, #A89F94);
+    font-size: 0.78rem;
+}
+
+[data-theme="light"] .user-social-link {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.06);
 }

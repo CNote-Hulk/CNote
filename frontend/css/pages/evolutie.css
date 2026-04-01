@@ -847,3 +847,81 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Evolution Page
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .section#index .section-intro {
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .generation-header {
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .section#index .console-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .section#index .console-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(184, 135, 46, 0.25);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .section#index .console-card.featured {
+    background: rgba(184, 135, 46, 0.04);
+    border-color: rgba(184, 135, 46, 0.12);
+}
+
+[data-theme="light"] .section#index .console-card.featured:hover {
+    background: rgba(184, 135, 46, 0.08);
+    border-color: rgba(184, 135, 46, 0.25);
+}
+
+[data-theme="light"] .section#index .card-heart {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .section#index .card-heart:hover {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="light"] .section#index .card-rating {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .timeline-content,
+[data-theme="light"] .timeline-image {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .timeline-content:hover,
+[data-theme="light"] .timeline-image:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .timeline-note {
+    background: linear-gradient(135deg, rgba(184, 135, 46, 0.08) 0%, rgba(184, 135, 46, 0.03) 100%);
+}
+
+/* Mobile glassmorphism overrides for light theme */
+@media (max-width: 680px) {
+    [data-theme="light"] .section#index .console-card {
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.8) 0%, rgba(245, 240, 232, 0.6) 100%);
+        border-color: rgba(0, 0, 0, 0.06);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    [data-theme="light"] .section#index .console-card:hover,
+    [data-theme="light"] .section#index .console-card:active {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 12px rgba(184, 135, 46, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+}

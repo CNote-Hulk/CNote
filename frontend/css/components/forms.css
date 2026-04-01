@@ -141,3 +141,31 @@ textarea {
 .confirm-btn--ok:hover {
     background: rgba(239, 68, 68, 0.35);
 }
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Forms & Confirm Modal
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .confirm-overlay {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] .confirm-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .confirm-btn--cancel {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .confirm-btn--cancel:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] input:focus,
+[data-theme="light"] textarea:focus,
+[data-theme="light"] select:focus {
+    box-shadow: 0 0 0 3px rgba(184, 135, 46, 0.1);
+}
