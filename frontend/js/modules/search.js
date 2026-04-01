@@ -18,6 +18,14 @@ export const SearchModule = {
         this._createOverlay();
         this._bindNavButton();
         this._bindKeys();
+
+        // Refresh console data when language changes
+        window.addEventListener('cn:language-changed', () => {
+            // data-loader updates window.CONSOLES_DATA; re-read after a tick
+            setTimeout(() => {
+                if (window.CONSOLES_DATA) this._consoles = window.CONSOLES_DATA;
+            }, 100);
+        });
     },
 
     /** Load console data from the global or JSON */

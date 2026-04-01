@@ -68,6 +68,28 @@
         });
     }
 
+    /** Try loading console data for current language */
+    function tryFetchJson() {
+        const lang = localStorage.getItem('cnote_lang') || 'en';
+        const path = '../../js/data/consoles-' + lang + '.json';
+        if (window.location.protocol === 'file:') {
+            return loadJsonWithXhr(path).catch(() => {
+                if (lang !== 'en') return loadJsonWithXhr('../../js/data/consoles-en.json').catch(() => window.CONSOLES_DATA || null);
+                return window.CONSOLES_DATA || null;
+            });
+        }
+        return fetch(path)
+            .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .catch(() => {
+                if (lang !== 'en') {
+                    return fetch('../../js/data/consoles-en.json')
+                        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+                        .catch(() => window.CONSOLES_DATA || null);
+                }
+                return window.CONSOLES_DATA || null;
+            });
+    }
+
     /** Initialize comparison app with loaded console data */
     function startApp(data) {
         consolesData = data;

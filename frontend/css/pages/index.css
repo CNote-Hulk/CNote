@@ -792,7 +792,7 @@
 }
 
 [data-theme="light"] .hp-landing::before {
-    background: rgba(245, 240, 232, 0.82);
+    background: rgba(245, 240, 232, 0.93);
 }
 
 [data-theme="light"] .hp-section--alt {

@@ -70,17 +70,26 @@
 
     /** Try loading console data via fetch first, fall back to XHR */
     function tryFetchJson() {
-        // Use pre-loaded global data first (works on file://)
-        if (window.CONSOLES_DATA) {
-            return Promise.resolve(window.CONSOLES_DATA);
-        }
-        const path = '../../js/data/consoles.json';
+        const lang = localStorage.getItem('cnote_lang') || 'en';
+        const filename = 'consoles-' + lang + '.json';
+        const path = '../../js/data/' + filename;
+
         if (window.location.protocol === 'file:') {
-            return loadJsonWithXhr(path).catch(() => null);
+            return loadJsonWithXhr(path).catch(() => {
+                if (lang !== 'en') return loadJsonWithXhr('../../js/data/consoles-en.json').catch(() => window.CONSOLES_DATA || null);
+                return window.CONSOLES_DATA || null;
+            });
         }
         return fetch(path)
             .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-            .catch(() => null);
+            .catch(() => {
+                if (lang !== 'en') {
+                    return fetch('../../js/data/consoles-en.json')
+                        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+                        .catch(() => window.CONSOLES_DATA || null);
+                }
+                return window.CONSOLES_DATA || null;
+            });
     }
 
     /** Initialize comparison app with loaded console data */
@@ -255,4 +264,19 @@
 
     // Try fetch first, otherwise show error
     tryFetchJson().then(data => startApp(data));
+
+    // Reload console data when language changes
+    window.addEventListener('cn:language-changed', () => {
+        const prevA = selectA.value;
+        const prevB = selectB.value;
+        tryFetchJson().then(data => {
+            if (!data || data.length === 0) return;
+            consolesData = data;
+            window.CONSOLES_DATA = data;
+            populateSelects();
+            selectA.value = prevA;
+            selectB.value = prevB;
+            update();
+        });
+    });
 })();

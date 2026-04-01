@@ -606,8 +606,10 @@ async function init() {
         }, 300);
     }
 
-    window.addEventListener('cn:language-changed', () => {
-        if (!currentConsole) return;
+    window.addEventListener('cn:language-changed', async () => {
+        if (!consoleId) return;
+        const refreshed = await getConsoleById(consoleId);
+        if (refreshed) currentConsole = refreshed;
         renderHero(currentConsole);
         renderHistory(currentConsole);
         renderSpecs(currentConsole);
