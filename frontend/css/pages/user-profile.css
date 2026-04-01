@@ -22,7 +22,7 @@
     position: fixed;
     inset: -4px;
     background: url('../../assets/images/wallpapers/index.jpg') center/cover no-repeat;
-    filter: blur(4px) brightness(0.6);
+    filter: blur(3px) brightness(0.65);
     transform: scale(1.02);
     z-index: 0;
     pointer-events: none;
@@ -404,4 +404,40 @@
     .user-profile-page .user-listings-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — User Profile
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .user-profile-page::after {
+    filter: blur(3px) brightness(1.1) saturate(0.75);
+    opacity: 0.35;
+}
+
+[data-theme="light"] .up-consoles {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .user-dashboard-panel .dash-stat {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .user-dashboard-panel .dash-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] #user-dash-courses-section > #user-dash-course-preview,
+[data-theme="light"] #user-dash-ratings-section > #user-dash-ratings-preview,
+[data-theme="light"] #user-dash-achievements-section > #user-dash-achievements-preview,
+[data-theme="light"] .user-listings-section > .user-listings-grid,
+[data-theme="light"] .user-friends-section > .user-friends-list {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
