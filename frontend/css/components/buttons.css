@@ -47,7 +47,7 @@
 }
 
 .btn.secondary:hover {
-    background: rgba(212, 175, 122, 0.1);
+    background: rgba(var(--accent-rgb), 0.1);
 }
 
 /* Button Sizes */
@@ -81,7 +81,7 @@
 
 .demo-button:hover {
     background: var(--accent-light);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(212, 175, 122, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(var(--accent-rgb), 0.15);
     transform: translateY(-2px);
 }
 

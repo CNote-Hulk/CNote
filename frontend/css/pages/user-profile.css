@@ -9,8 +9,8 @@
     --up-accent-rgb: var(--accent-color-rgb, 212, 175, 122);
     --up-border: rgba(var(--up-accent-rgb), 0.1);
     padding: 64px 0 0;
-    background: #141210;
-    color: #e8d8b8;
+    background: var(--dark-bg-2);
+    color: var(--text-light);
     font-family: 'DM Sans', system-ui, sans-serif;
     isolation: isolate;
     overflow-x: hidden;

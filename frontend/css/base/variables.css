@@ -15,6 +15,7 @@
     --text-light: #F5F0E8;
     --text-gray: #A89F94;
     --success: #4ADE80;
+    --error: #e57373;
     --warning: #D4AF7A;
     --border-color: rgba(255, 255, 255, 0.05);
     --grid-line: rgba(255, 255, 255, 0.03);
@@ -23,6 +24,7 @@
     --primary-rgb: 27, 23, 20;
     --secondary-rgb: 42, 35, 32;
     --accent-rgb: 212, 175, 122;
+    --accent-color-rgb: 212, 175, 122;
     --dark-rgb: 21, 18, 16;
     --gray-rgb: 168, 159, 148;
     --cream-rgb: 245, 240, 232;
@@ -86,6 +88,8 @@
     --primary-rgb: 10, 9, 7;
     --secondary-rgb: 17, 16, 9;
     --dark-rgb: 5, 4, 3;
+    --accent-color-rgb: 212, 175, 122;
+    --error: #ef9a9a;
     color-scheme: dark;
 }
 
@@ -111,5 +115,7 @@
     --dark-rgb: 237, 232, 223;
     --gray-rgb: 107, 95, 87;
     --cream-rgb: 27, 23, 20;
+    --accent-color-rgb: 184, 135, 46;
+    --error: #c62828;
     color-scheme: light;
 }

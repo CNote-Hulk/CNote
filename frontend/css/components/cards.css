@@ -47,11 +47,11 @@
 
 .card:hover {
     background: var(--card-bg);
-    border-color: rgba(212, 175, 122, 0.2);
+    border-color: rgba(var(--accent-rgb), 0.2);
     transform: translateY(-6px);
-    box-shadow: 
+    box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(212, 175, 122, 0.08),
+        0 0 30px rgba(var(--accent-rgb), 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
@@ -105,7 +105,7 @@
 /* Card Variants - Gold accent */
 .card.physics-card,
 .card.cs-card {
-    border-left: 3px solid rgba(212, 175, 122, 0.5);
+    border-left: 3px solid rgba(var(--accent-rgb), 0.5);
 }
 
 .card.physics-card:hover,

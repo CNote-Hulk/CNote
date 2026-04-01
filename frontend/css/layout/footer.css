@@ -3,8 +3,8 @@
  */
 
 .footer {
-    background: rgba(27, 23, 20, 0.98);
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    background: var(--primary-color);
+    border-top: 1px solid var(--border-color);
     color: var(--text-gray);
     padding: 40px 0;
 }
@@ -31,7 +31,7 @@
 
 .footer-left .footer-sub {
     margin: 4px 0 0 0;
-    color: rgba(237,233,227,0.55);
+    color: rgba(var(--cream-rgb), 0.55);
     font-size: 0.9rem;
 }
 

@@ -2283,3 +2283,28 @@ a.chat-message__username:hover {
         font-size: 0.55rem;
     }
 }
+
+/* ── Theme Overrides — Profile Page ───────────────────────── */
+
+[data-theme="dark"] .profile-page {
+    --p-bg: #050403;
+    --p-text: #ffffff;
+    --p-text2: #e0d0b0;
+    --p-muted: #b0a79e;
+    --p-faint: #1c1814;
+    --p-card: #0a0907;
+    --p-sidebar: #060504;
+}
+
+[data-theme="light"] .profile-page {
+    --p-accent: var(--accent-color, #b8872e);
+    --p-accent-rgb: var(--accent-color-rgb, 184, 135, 46);
+    --p-text: #1B1714;
+    --p-text2: #3a2f22;
+    --p-muted: #6b5f57;
+    --p-faint: rgba(0, 0, 0, 0.06);
+    --p-card: rgba(255, 255, 255, 0.82);
+    --p-border: rgba(var(--p-accent-rgb), 0.18);
+    --p-sidebar: rgba(245, 240, 232, 0.88);
+}
+}
