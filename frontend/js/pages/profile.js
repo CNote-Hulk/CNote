@@ -60,12 +60,11 @@ function initSettings() {
 
     // ═══ TAB SYSTEM ═══
     const activateTab = (tabKey, syncHash = false) => {
-        // Try settings-tab first, then fallback to profile-tab for compat
-        let tabBtn = document.querySelector(`.settings-tab[data-tab="${tabKey}"]`);
+        let tabBtn = document.querySelector(`.profile-tab[data-tab="${tabKey}"]`);
         let panel = document.querySelector(`.profile-panel[data-panel="${tabKey}"]`);
         if (!tabBtn || !panel) return;
 
-        document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
 
         tabBtn.classList.add('active');
@@ -169,7 +168,7 @@ function initSettings() {
     });
 
     // ═══ TAB CLICK BINDING ═══
-    document.querySelectorAll('.settings-tab').forEach(tab => {
+    document.querySelectorAll('.profile-tab').forEach(tab => {
         tab.addEventListener('click', () => activateTab(tab.dataset.tab, true));
     });
 

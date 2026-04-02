@@ -1,0 +1,42 @@
+
+=== ro (52 consoles) ===
+  advantages:   52 translated
+  history:      51 translated, 1 English, 0 missing
+  gpu.cap:      49 translated, 3 English, 0 missing
+
+=== de (52 consoles) ===
+  advantages:   52 translated
+  history:      52 translated, 0 English, 0 missing
+  gpu.cap:      38 translated, 14 English, 0 missing
+
+=== es (52 consoles) ===
+  advantages:   52 translated
+  history:      52 translated, 0 English, 0 missing
+  gpu.cap:      27 translated, 25 English, 0 missing
+
+=== fr (52 consoles) ===
+  advantages:   52 translated
+  history:      46 translated, 6 English, 0 missing
+  gpu.cap:      35 translated, 17 English, 0 missing
+
+=== it (52 consoles) ===
+  advantages:   52 translated
+  history:      52 translated, 0 English, 0 missing
+  gpu.cap:      42 translated, 10 English, 0 missing
+
+=== Spot checks ===
+  [de/microvision/gpu.cap]: ENGLISH
+  Value: LCD 16×16 pixeli
+  [de/game-boy/history]: TRANSLATED
+  Value: <strong>Historischer Kontext</strong><br><br>Ende der 1980er...
+  [es/microvision/gpu.cap]: ENGLISH
+  Value: LCD 16×16 pixeli
+  [es/nintendo-switch/history]: TRANSLATED
+  Value: <strong>Contexto histórico</strong><br><br>A mediados de la ...
+  [es/nintendo-switch-2/advantages]: TRANSLATED
+  Value: Integración social avanzada a través de GameChat; Pantalla LCD de 7,9 pulgadas c
+  [ro/magnavox-odyssey/history]: TRANSLATED
+  Value: <strong>Context istoric</strong><br><br>La începutul anilor ...
+
+Validation done.
+EXIT:0

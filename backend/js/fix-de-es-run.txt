@@ -1,0 +1,17 @@
+English: 52 consoles
+
+=== de ===
+  Blocks: 52
+  Positional: microvision <- Mikrovision
+  Matched: 52 (exact/norm=51 positional=1 warnings=0)
+  Written: /c/Users/andre/OneDrive/Documentos/CNote/frontend/js/data/consoles-de.json
+
+=== es ===
+  Blocks: 52
+  Positional: nintendo-switch <- nintendo-witch
+  Positional: nintendo-switch-2 <- nintendo-witch-2
+  Matched: 52 (exact/norm=50 positional=2 warnings=0)
+  Written: /c/Users/andre/OneDrive/Documentos/CNote/frontend/js/data/consoles-es.json
+
+Done.
+EXIT:0

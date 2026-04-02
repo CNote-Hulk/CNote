@@ -76,6 +76,32 @@
 
                 <div class="profile-sidebar-divider"></div>
 
+                <!-- Sidebar Navigation -->
+                <nav class="profile-sidebar-nav" id="profile-sidebar-nav">
+                    <button class="profile-tab active" data-tab="account" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span data-i18n="settings_tab_account">Account</span>
+                    </button>
+                    <button class="profile-tab" data-tab="profil" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <span data-i18n="settings_tab_profile">Profile</span>
+                    </button>
+                    <button class="profile-tab" data-tab="security" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span data-i18n="settings_tab_security">Security</span>
+                    </button>
+                    <button class="profile-tab" data-tab="notifications" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        <span data-i18n="settings_tab_notifications">Notifications</span>
+                    </button>
+                    <button class="profile-tab" data-tab="appearance" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17.5 10.5A2.5 2.5 0 0 1 20 13"/><circle cx="6.5" cy="11.5" r="2.5"/><path d="M3 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+                        <span data-i18n="settings_tab_appearance">Appearance</span>
+                    </button>
+                </nav>
+
+                <div class="profile-sidebar-divider"></div>
+
                 <!-- Back to Home link -->
                 <a href="home.html" class="settings-back-link">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -89,30 +115,6 @@
 
                 <!-- Page Title -->
                 <h1 class="settings-page-title" data-i18n="settings_title">Settings</h1>
-
-                <!-- Horizontal Tab Bar -->
-                <div class="settings-tabs">
-                    <button class="settings-tab active" data-tab="account">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <span data-i18n="settings_tab_account">Account</span>
-                    </button>
-                    <button class="settings-tab" data-tab="profil">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                        <span data-i18n="settings_tab_profile">Profile</span>
-                    </button>
-                    <button class="settings-tab" data-tab="security">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        <span data-i18n="settings_tab_security">Security</span>
-                    </button>
-                    <button class="settings-tab" data-tab="notifications">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                        <span data-i18n="settings_tab_notifications">Notifications</span>
-                    </button>
-                    <button class="settings-tab" data-tab="appearance">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17.5 10.5A2.5 2.5 0 0 1 20 13"/><circle cx="6.5" cy="11.5" r="2.5"/><path d="M3 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
-                        <span data-i18n="settings_tab_appearance">Appearance</span>
-                    </button>
-                </div>
 
                 <!-- ═══ ACCOUNT PANEL ═══ -->
                 <div class="profile-panel active" id="panel-account" data-panel="account">
