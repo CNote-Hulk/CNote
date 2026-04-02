@@ -1,41 +1,13 @@
 /**
  * Data Loader - Centralized module for loading console data
- * Loads language-specific JSON files (consoles-{lang}.json)
- * and falls back to window.CONSOLES_DATA (English).
+ * Fetches language-specific data from /api/consoles?lang={lang}
+ * and falls back to English or window.CONSOLES_DATA (embedded English).
  */
 
 const LANG_KEY = 'cnote_lang';
 let _cache = null;
 let _cacheLang = null;
 let _loading = null;
-
-/**
- * Load JSON via XHR (works on file:// with status 0).
- */
-function loadJsonWithXhr(path) {
-    return new Promise((resolve, reject) => {
-        try {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', path, true);
-            xhr.overrideMimeType('application/json');
-            xhr.onload = () => {
-                if (xhr.status === 200 || xhr.status === 0) {
-                    try {
-                        resolve(JSON.parse(xhr.responseText));
-                    } catch (e) {
-                        reject(e);
-                    }
-                } else {
-                    reject(new Error(`HTTP ${xhr.status}`));
-                }
-            };
-            xhr.onerror = () => reject(new Error('XHR error'));
-            xhr.send();
-        } catch (err) {
-            reject(err);
-        }
-    });
-}
 
 /**
  * Get current language from localStorage.
@@ -45,38 +17,8 @@ function getCurrentLang() {
 }
 
 /**
- * Resolve the path to the language-specific console JSON.
- */
-function resolveJsonPath(lang) {
-    const filename = `consoles-${lang}.json`;
-    const path = window.location.pathname;
-    if (path.includes('/pages/consoles/') || path.includes('\\pages\\consoles\\')) {
-        return `../../../js/data/${filename}`;
-    }
-    if (path.includes('/pages/curs/') || path.includes('\\pages\\curs\\')) {
-        return `../../../js/data/${filename}`;
-    }
-    if (path.includes('/pages/') || path.includes('\\pages\\')) {
-        return `../../js/data/${filename}`;
-    }
-    return `/js/data/${filename}`;
-}
-
-/**
- * Fetch a JSON file, trying fetch() first then XHR for file:// protocol.
- */
-async function fetchJson(path) {
-    if (window.location.protocol === 'file:') {
-        return await loadJsonWithXhr(path);
-    }
-    const response = await fetch(path);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return await response.json();
-}
-
-/**
- * Load all consoles for the current language.
- * Priority: cached data for current lang → fetch consoles-{lang}.json → window.CONSOLES_DATA
+ * Load all consoles for the current language from the API.
+ * Priority: cache → /api/consoles?lang={lang} → English fallback → window.CONSOLES_DATA
  */
 export async function loadConsoles() {
     const lang = getCurrentLang();
@@ -91,27 +33,30 @@ export async function loadConsoles() {
 
     _loading = (async () => {
         try {
-            // Try to fetch the language-specific JSON
-            const jsonPath = resolveJsonPath(lang);
-            const data = await fetchJson(jsonPath);
-            if (Array.isArray(data) && data.length > 0) {
-                _cache = data;
-                window.CONSOLES_DATA = data;
-                return _cache;
+            const response = await fetch(`/api/consoles?lang=${lang}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    _cache = data;
+                    window.CONSOLES_DATA = data;
+                    return _cache;
+                }
             }
-        } catch {
-            // Language file not found — try English as fallback
-            if (lang !== 'en') {
-                try {
-                    const enPath = resolveJsonPath('en');
-                    const enData = await fetchJson(enPath);
-                    if (Array.isArray(enData) && enData.length > 0) {
-                        _cache = enData;
-                        window.CONSOLES_DATA = enData;
+        } catch { /* fall through */ }
+
+        // Fallback to English if requested language failed
+        if (lang !== 'en') {
+            try {
+                const response = await fetch('/api/consoles?lang=en');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        _cache = data;
+                        window.CONSOLES_DATA = data;
                         return _cache;
                     }
-                } catch { /* fall through */ }
-            }
+                }
+            } catch { /* fall through */ }
         }
 
         // Final fallback: use the embedded CONSOLES_DATA (from consoles-data.js script tag)

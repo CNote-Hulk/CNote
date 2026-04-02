@@ -220,6 +220,14 @@ async function initializeSchema() {
 			UNIQUE(user_id, listing_id)
 		);
 
+		/* ── Console translations (all 6 languages) ── */
+		CREATE TABLE IF NOT EXISTS consoles_translations (
+			id      TEXT    NOT NULL,
+			lang    TEXT    NOT NULL,
+			data    JSONB   NOT NULL,
+			PRIMARY KEY (id, lang)
+		);
+
 		/* ── Trusted devices (skip 2FA) ── */
 		CREATE TABLE IF NOT EXISTS trusted_devices (
 			id          SERIAL PRIMARY KEY,
