@@ -2,6 +2,6 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "node backend/js/import-consoles.js && npm start"
 healthcheckPath = "/api/health"
 restartPolicyType = "on_failure"
