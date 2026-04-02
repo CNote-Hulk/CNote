@@ -1,3 +1,5 @@
+import { I18nModule } from './i18n.js';
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================
@@ -82,9 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // WELCOME
     // =========================
     const welcomeTitle = document.getElementById('welcome-title');
-    if (welcomeTitle) {
-        welcomeTitle.textContent = `Welcome back, ${username}`;
+    function renderWelcome() {
+        if (welcomeTitle) {
+            welcomeTitle.textContent = I18nModule.t('home_welcome').replace(/,\s*\S+$/, ', ' + username);
+        }
     }
+    renderWelcome();
+    window.addEventListener('cn:language-changed', renderWelcome);
 
     // =========================
     // DASHBOARD DATA

@@ -477,7 +477,7 @@ async function loadRating(consoleId) {
         }
     } catch {
         const countEl = document.getElementById('rating-count');
-        if (countEl) countEl.textContent = 'Could not load rating.';
+        if (countEl) countEl.textContent = I18nModule.t('console_rating_error');
     }
 }
 
