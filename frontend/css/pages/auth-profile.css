@@ -2826,3 +2826,203 @@ a.chat-message__username:hover {
         padding: 16px 12px 90px;
     }
 }
+
+/* ═══════════════════════════════════════════════════
+   SETTINGS ROW LAYOUT — new horizontal label+control
+   ═══════════════════════════════════════════════════ */
+
+/* Remove padding-top since no app navbar */
+.profile-page {
+    padding-top: 0 !important;
+}
+
+.profile-main {
+    padding-top: 36px !important;
+}
+
+/* Compact user header in sidebar */
+.settings-user-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0 8px;
+}
+
+.settings-user-header .profile-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+    margin-top: 0;
+    flex-shrink: 0;
+    border-width: 1px;
+}
+
+.settings-user-meta {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.settings-user-meta .profile-name {
+    font-size: 0.88rem;
+    margin-top: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.settings-user-meta .admin-badge {
+    margin-top: 0;
+    font-size: 0.6rem;
+    padding: 2px 7px;
+    align-self: flex-start;
+}
+
+/* "Settings" category label above nav */
+.settings-sidebar-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--p-muted);
+    padding: 0 12px;
+    margin-bottom: 4px;
+}
+
+/* ── Settings Row ── */
+.settings-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    padding: 22px 0;
+    align-items: start;
+}
+
+.profile-panel > .settings-row:first-child,
+.profile-panel > form > .settings-row:first-child {
+    padding-top: 4px;
+}
+
+.settings-row + .settings-row {
+    border-top: 1px solid var(--p-border);
+}
+
+.settings-row__meta {
+    padding-top: 2px;
+}
+
+.settings-row__title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--p-text);
+    margin-bottom: 5px;
+    line-height: 1.3;
+}
+
+.settings-row__desc {
+    font-size: 0.78rem;
+    color: var(--p-text2);
+    line-height: 1.55;
+}
+
+.settings-row__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.settings-row__note {
+    font-size: 0.8rem;
+    color: var(--p-muted);
+    font-style: italic;
+    background: rgba(var(--p-accent-rgb), 0.04);
+    border: 1px dashed var(--p-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+}
+
+.settings-row__btn {
+    width: auto !important;
+    max-width: 280px;
+    margin-top: 4px !important;
+    padding: 10px 22px;
+}
+
+/* Override .settings-form flex to block for row layout */
+.settings-form {
+    width: 100%;
+    max-width: none !important;
+    display: block !important;
+    gap: 0 !important;
+}
+
+/* Injected security rows */
+.settings-injected-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    padding: 22px 0;
+    align-items: start;
+    border-top: 1px solid var(--p-border);
+}
+
+.settings-injected-row--danger {
+    border-top: 1px solid rgba(229, 115, 115, 0.2);
+    background: rgba(58, 23, 23, 0.18);
+    border-radius: 10px;
+    padding: 22px 18px;
+    margin-top: 8px;
+    border: 1px solid rgba(229, 115, 115, 0.2);
+}
+
+.settings-injected-row__title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--p-text);
+    margin-bottom: 5px;
+}
+
+.settings-injected-row--danger .settings-injected-row__title {
+    color: #f0b3b3;
+}
+
+.settings-injected-row__desc {
+    font-size: 0.78rem;
+    color: var(--p-text2);
+    line-height: 1.55;
+}
+
+.settings-injected-row--danger .settings-injected-row__desc {
+    color: #c8a3a3;
+}
+
+.settings-injected-row__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ── Responsive: stack rows on small screens ── */
+@media (max-width: 900px) {
+    .settings-row,
+    .settings-injected-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .settings-row__btn {
+        max-width: 100%;
+    }
+    .settings-injected-row--danger {
+        padding: 18px 14px;
+    }
+}
+
+@media (max-width: 680px) {
+    .settings-user-header {
+        display: none;
+    }
+}

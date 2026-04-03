@@ -66,7 +66,6 @@ function initSettings() {
 
         document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.settings-top-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabKey));
 
         tabBtn.classList.add('active');
         panel.classList.add('active');
@@ -78,11 +77,6 @@ function initSettings() {
             }
         }
     };
-
-    // ═══ TOP TAB BAR ═══
-    document.querySelectorAll('.settings-top-tab').forEach(btn => {
-        btn.addEventListener('click', () => activateTab(btn.dataset.tab, true));
-    });
 
     const applyHashTab = () => {
         const hash = window.location.hash.replace('#', '');
@@ -568,17 +562,21 @@ function initSettings() {
     // Google Account Card
     if (securityPanel && !document.getElementById('google-account-card')) {
         const googleCard = document.createElement('div');
-        googleCard.className = 'course-card';
+        googleCard.className = 'settings-injected-row';
         googleCard.id = 'google-account-card';
         googleCard.innerHTML = `
-            <h3 class="course-card__section-title">GOOGLE ACCOUNT</h3>
-            <p class="course-card__section-desc">${user.google_linked
-                ? 'Your account is connected with Google.'
-                : 'Connect your account with Google for quick login.'}</p>
-            ${user.google_linked
-                ? '<button type="button" class="auth-btn" id="google-unlink-btn" style="background:transparent;border:1px solid var(--color-border, #444);color:var(--text-light);">Disconnect Google</button>'
-                : '<button type="button" class="auth-btn" id="google-link-btn" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,0.05);color:var(--text-light,#F5F0E8);border:1px solid rgba(255,255,255,0.12);font-weight:600;"><span style="font-weight:700;font-size:1.1rem;line-height:1;">G</span> Connect with Google</button>'
-            }
+            <div class="settings-injected-row__meta">
+                <div class="settings-injected-row__title">Google account</div>
+                <div class="settings-injected-row__desc">${user.google_linked
+                    ? 'Your account is connected with Google.'
+                    : 'Connect your account with Google for quick login.'}</div>
+            </div>
+            <div class="settings-injected-row__body">
+                ${user.google_linked
+                    ? '<button type="button" class="auth-btn settings-row__btn" id="google-unlink-btn" style="background:transparent;border:1px solid var(--color-border, #444);color:var(--text-light);">Disconnect Google</button>'
+                    : '<button type="button" class="auth-btn settings-row__btn" id="google-link-btn" style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);color:var(--text-light,#F5F0E8);border:1px solid rgba(255,255,255,0.12);font-weight:600;"><span style="font-weight:700;font-size:1.1rem;line-height:1;">G</span> Connect with Google</button>'
+                }
+            </div>
         `;
         securityPanel.appendChild(googleCard);
     }
@@ -586,7 +584,7 @@ function initSettings() {
     // Two-Factor Authentication Card
     if (securityPanel && !document.getElementById('two-factor-card')) {
         const tfCard = document.createElement('div');
-        tfCard.className = 'course-card';
+        tfCard.className = 'settings-injected-row';
         tfCard.id = 'two-factor-card';
         const totpEnabled = !!user.two_factor_totp_enabled;
         const emailEnabled = !!user.two_factor_email_enabled;
@@ -595,12 +593,12 @@ function initSettings() {
         if (totpEnabled) {
             totpSection = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
                 <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Authenticator app — active${emailEnabled ? ' (primary)' : ''}</span>
-                <button type="button" class="auth-btn auth-btn--danger" id="disable-totp-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Disable</button>
+                <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="disable-totp-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Disable</button>
             </div>`;
         } else {
             totpSection = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
                 <span style="color:var(--text-light);font-size:0.88rem;">Authenticator app — inactive</span>
-                <button type="button" class="auth-btn" id="setup-totp-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Enable</button>
+                <button type="button" class="auth-btn settings-row__btn" id="setup-totp-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Enable</button>
             </div>
             <div id="totp-setup-area" style="display:none;margin-top:16px;">
                 <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:10px;">Scan the QR code with your authenticator app:</p>
@@ -608,7 +606,7 @@ function initSettings() {
                 <p id="totp-secret-display" style="font-family:monospace;font-size:0.85rem;color:var(--text-light);word-break:break-all;margin-bottom:12px;text-align:center;"></p>
                 <div style="display:flex;gap:8px;align-items:center;">
                     <input type="text" id="totp-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align:center;font-size:1.2rem;letter-spacing:0.3rem;padding:8px 12px;border:1px solid var(--color-border, #444);border-radius:6px;background:var(--bg-card, #1a1a1a);color:var(--text-primary, #fff);width:140px;">
-                    <button type="button" class="auth-btn" id="totp-confirm-btn">Confirm</button>
+                    <button type="button" class="auth-btn settings-row__btn" id="totp-confirm-btn">Confirm</button>
                 </div>
             </div>`;
         }
@@ -617,22 +615,26 @@ function initSettings() {
         if (emailEnabled) {
             emailSection = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
                 <span style="color:var(--success, #4ade80);font-size:0.88rem;">&#10003; Email — active${totpEnabled ? ' (fallback)' : ''}</span>
-                <button type="button" class="auth-btn auth-btn--danger" id="disable-email-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Disable</button>
+                <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="disable-email-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;font-size:0.82rem;padding:5px 12px;">Disable</button>
             </div>`;
         } else {
             emailSection = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
                 <span style="color:var(--text-light);font-size:0.88rem;">Email — inactive</span>
-                <button type="button" class="auth-btn" id="setup-email-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Enable</button>
+                <button type="button" class="auth-btn settings-row__btn" id="setup-email-2fa-btn" style="font-size:0.82rem;padding:5px 12px;">Enable</button>
             </div>`;
         }
 
         tfCard.innerHTML = `
-            <h3 class="course-card__section-title">TWO-FACTOR AUTHENTICATION (2FA)</h3>
-            <p class="course-card__section-desc">Add an extra layer of security. The authenticator app is primary, email is fallback.</p>
-            <div style="display:flex;flex-direction:column;gap:12px;">
-                ${totpSection}
-                <hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:2px 0;">
-                ${emailSection}
+            <div class="settings-injected-row__meta">
+                <div class="settings-injected-row__title">Two-factor auth (2FA)</div>
+                <div class="settings-injected-row__desc">Add an extra layer of security. The authenticator app is primary, email is fallback.</div>
+            </div>
+            <div class="settings-injected-row__body">
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    ${totpSection}
+                    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:2px 0;">
+                    ${emailSection}
+                </div>
             </div>
         `;
         securityPanel.appendChild(tfCard);
@@ -641,14 +643,16 @@ function initSettings() {
     // Danger Zone Card
     if (securityPanel && !document.getElementById('danger-zone-card')) {
         const dangerCard = document.createElement('div');
-        dangerCard.className = 'course-card';
+        dangerCard.className = 'settings-injected-row settings-injected-row--danger';
         dangerCard.id = 'danger-zone-card';
-        dangerCard.style.border = '1px solid rgba(229, 115, 115, 0.35)';
-        dangerCard.style.background = 'rgba(58, 23, 23, 0.35)';
         dangerCard.innerHTML = `
-            <h3 style="color:#f0b3b3;margin-bottom:8px;font-size:1.05rem;letter-spacing:0.04em;">DANGER ZONE</h3>
-            <p style="color:#c8a3a3;font-size:0.88rem;margin-bottom:14px;">Deleting your account is permanent and cannot be undone.</p>
-            <button type="button" class="auth-btn auth-btn--danger" id="delete-account-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Delete account</button>
+            <div class="settings-injected-row__meta">
+                <div class="settings-injected-row__title">Danger zone</div>
+                <div class="settings-injected-row__desc">Deleting your account is permanent and cannot be undone.</div>
+            </div>
+            <div class="settings-injected-row__body">
+                <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="delete-account-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Delete account</button>
+            </div>
         `;
         securityPanel.appendChild(dangerCard);
     }
