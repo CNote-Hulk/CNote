@@ -2734,6 +2734,15 @@ a.chat-message__username:hover {
 /* ── Mobile bottom nav clearance (profil.html) ── */
 @media (max-width: 680px) {
     .profile-page {
+        padding-top: 70px;
         padding-bottom: 90px;
+    }
+
+    .profile-sidebar {
+        display: none;
+    }
+
+    .profile-main {
+        padding: 16px 12px 90px;
     }
 }

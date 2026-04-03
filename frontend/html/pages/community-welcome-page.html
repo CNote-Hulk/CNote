@@ -12,6 +12,14 @@
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
     <title>Community — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
+
+    <!-- Redirect logged-in users to the community hub -->
+    <script>
+        try {
+            var s = JSON.parse(localStorage.getItem('cn_session'));
+            if (s && s.id) window.location.replace('community.html');
+        } catch (e) {}
+    </script>
 </head>
 <body class="community-navbar-page has-mbn">
     <!-- NAVIGATION BAR -->

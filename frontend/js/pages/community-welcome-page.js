@@ -355,6 +355,7 @@
             var container = document.getElementById('community-landing');
             if (!navbar || !container) return;
 
+            var mbn = document.getElementById('mobile-bottom-nav');
             var lastScrollY = container.scrollTop;
             var ticking = false;
 
@@ -370,6 +371,7 @@
 
                 if (currentY < 80) {
                     navbar.classList.remove('navbar--hidden');
+                    if (mbn) mbn.classList.remove('mbn--hidden');
                     lastScrollY = currentY;
                     ticking = false;
                     return;
@@ -382,8 +384,10 @@
 
                 if (delta > 0) {
                     navbar.classList.add('navbar--hidden');
+                    if (mbn) mbn.classList.add('mbn--hidden');
                 } else {
                     navbar.classList.remove('navbar--hidden');
+                    if (mbn) mbn.classList.remove('mbn--hidden');
                 }
 
                 lastScrollY = currentY < 0 ? 0 : currentY;

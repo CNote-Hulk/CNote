@@ -44,7 +44,15 @@ export const AuthModule = {
             created_at: user.created_at,
             notify_new_friend: user.notify_new_friend !== false,
             notify_new_message: user.notify_new_message !== false,
-            notify_repair_reply: user.notify_repair_reply !== false
+            notify_repair_reply: user.notify_repair_reply !== false,
+            social_discord: user.social_discord || '',
+            social_twitter: user.social_twitter || '',
+            social_youtube: user.social_youtube || '',
+            social_instagram: user.social_instagram || '',
+            show_email: !!user.show_email,
+            show_stats: user.show_stats !== false,
+            show_friends: user.show_friends !== false,
+            show_social_links: user.show_social_links !== false
         };
         localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
     },

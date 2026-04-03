@@ -777,7 +777,7 @@ router.delete('/account', authRequired, async (req, res) => {
                 return res.status(401).json({ success: false, error: 'Incorrect password.' });
             }
         } else {
-            if (confirmText !== 'STERGE') {
+            if (confirmText !== 'DELETE' && confirmText !== 'STERGE') {
                 return res.status(400).json({ success: false, error: 'Type DELETE to confirm.' });
             }
         }

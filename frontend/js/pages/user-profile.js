@@ -223,6 +223,16 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                     if (achievementsSection) achievementsSection.hidden = true;
                 }
 
+                // Fetch console names once for both favorite and owned
+                let consoleNames = {};
+                try {
+                    const cRes = await fetch(`${API_BASE_URL}/consoles/list`);
+                    const cData = await cRes.json();
+                    if (cData.success) {
+                        cData.consoles.forEach(c => { consoleNames[c.id] = c.name; });
+                    }
+                } catch { /* ignore */ }
+
                 // Favorite consoles - use favorite_console_ids from new table, fallback to CSV
                 const favContainer = document.getElementById('user-favorite-consoles');
                 const favIds = profile.favorite_console_ids || [];
@@ -230,16 +240,6 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 const allFavs = [...new Set([...favIds, ...favCsv])];
 
                 if (allFavs.length > 0) {
-                    // Try to resolve IDs to names
-                    let consoleNames = {};
-                    try {
-                        const cRes = await fetch(`${API_BASE_URL}/consoles/list`);
-                        const cData = await cRes.json();
-                        if (cData.success) {
-                            cData.consoles.forEach(c => { consoleNames[c.id] = c.name; });
-                        }
-                    } catch { /* ignore */ }
-
                     favContainer.innerHTML = allFavs.map(id => {
                         const name = consoleNames[id] || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
                         return `<span class="profile-console-tag">${escapeHtml(name)}</span>`;
@@ -253,15 +253,6 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 const allOwned = [...new Set([...ownedIds, ...ownedCsv])];
 
                 if (allOwned.length > 0) {
-                    let consoleNames = {};
-                    try {
-                        const cRes = await fetch(`${API_BASE_URL}/consoles/list`);
-                        const cData = await cRes.json();
-                        if (cData.success) {
-                            cData.consoles.forEach(c => { consoleNames[c.id] = c.name; });
-                        }
-                    } catch { /* ignore */ }
-
                     ownedContainer.innerHTML = allOwned.map(id => {
                         const name = consoleNames[id] || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
                         return `<span class="profile-console-tag">${escapeHtml(name)}</span>`;
@@ -475,7 +466,6 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 document.getElementById('avatar-remove-btn').addEventListener('click', async () => {
                     try {
                         await AuthModule.updateProfile({ avatar: '' });
-                        profile.avatar = '';
                         document.getElementById('user-avatar-img').hidden = true;
                         document.getElementById('user-avatar-fallback').hidden = false;
                         closeAvatarLightbox();
