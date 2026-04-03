@@ -1,5 +1,21 @@
 import { I18nModule } from './i18n.js';
 
+function normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
+    const raw = typeof avatarUrl === 'string' ? avatarUrl.trim() : '';
+    if (!raw || raw.startsWith('data:')) return raw;
+    if (!/googleusercontent\.com|ggpht\.com/i.test(raw)) return raw;
+
+    let upgraded = raw
+        .replace(/[?&]sz=\d+/i, (m) => m.charAt(0) + 'sz=' + preferredSize)
+        .replace(/=s\d{2,4}(-c)?(?=&|$)/i, '=s' + preferredSize + '-c')
+        .replace(/\/s\d{2,4}(-c)?(?=\/)/i, '/s' + preferredSize + '-c');
+
+    if (upgraded === raw && !/[?&]sz=\d+/i.test(raw)) {
+        upgraded += (raw.includes('?') ? '&' : '?') + 'sz=' + preferredSize;
+    }
+    return upgraded;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================
@@ -57,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (bioEl) bioEl.textContent = user.bio || currentUser.bio || '';
 
         if (avatarImg && avatarFallback) {
-            const avatar = user.avatar || currentUser.avatar;
+            const avatar = normalizeAvatarUrl(user.avatar || user.avatar_url || currentUser.avatar || currentUser.avatar_url || '');
             if (avatar) {
                 avatarImg.src = avatar;
                 avatarImg.hidden = false;

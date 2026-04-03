@@ -107,7 +107,7 @@ function initSettings() {
     const avatarInput = document.getElementById('avatar-upload');
     const avatarImg = document.getElementById('profile-avatar-img');
     const avatarFallback = document.getElementById('profile-avatar-fallback');
-    const getPreferredAvatar = () => (user.avatar || '').trim() || (user.avatar_url || '').trim();
+    const getPreferredAvatar = () => AuthModule.normalizeAvatarUrl((user.avatar || '').trim() || (user.avatar_url || '').trim());
 
     const renderAvatar = (avatar) => {
         const hasAvatar = !!avatar;
@@ -122,14 +122,14 @@ function initSettings() {
         reader.onload = () => {
             const img = new Image();
             img.onload = () => {
-                const max = 320;
+                const max = 1024;
                 const scale = Math.min(max / img.width, max / img.height, 1);
                 const w = Math.round(img.width * scale);
                 const h = Math.round(img.height * scale);
                 const canvas = document.createElement('canvas');
                 canvas.width = w; canvas.height = h;
                 canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                resolve(canvas.toDataURL('image/jpeg', 0.85));
+                resolve(canvas.toDataURL('image/jpeg', 0.9));
             };
             img.onerror = () => reject(new Error('Selected file is not a valid image.'));
             img.src = reader.result;

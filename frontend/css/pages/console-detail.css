@@ -47,6 +47,32 @@
     line-height: 1.7;
 }
 
+/* === CONSOLE MODELS LIST ===
+   Hardware revisions displayed as pills below the meta row */
+.console-models {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1.5rem;
+}
+
+.console-model-item {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    background: rgba(212, 175, 122, 0.07);
+    border: 1px solid rgba(212, 175, 122, 0.18);
+    border-radius: 20px;
+    padding: 0.28rem 0.7rem;
+    white-space: nowrap;
+}
+
+.console-model-item em {
+    color: var(--accent-color);
+    font-style: normal;
+    font-weight: 600;
+    margin-left: 0.3rem;
+}
+
 .console-hero-image {
     text-align: center;
     position: relative;
@@ -216,6 +242,14 @@
     font-weight: 600;
 }
 
+.specs-hint {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    text-align: center;
+    margin: -0.5rem 0 1.75rem;
+    opacity: 0.75;
+}
+
 .specs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -240,9 +274,11 @@
 }
 
 .spec-card h3,
-.spec-card h4 {
-    color: var(--text-light);
-    font-size: 0.86rem;
+.spec-card h4,
+.specs-section .spec-card h3,
+.specs-section .spec-card h4 {
+    color: var(--accent-color);
+    font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 0.6rem;
@@ -253,6 +289,14 @@
     color: var(--text-gray);
     font-size: 1.05rem;
     font-weight: 500;
+}
+
+.pros-title {
+    color: #4cbe7a !important;
+}
+
+.cons-title {
+    color: #e05555 !important;
 }
 
 
@@ -287,7 +331,7 @@
 
     .spec-card h3,
     .spec-card h4 {
-        font-size: 0.8rem;
+        font-size: 0.88rem;
         margin-bottom: 0;
         flex: 1;
     }

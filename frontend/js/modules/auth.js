@@ -23,16 +23,18 @@ export const AuthModule = {
 
     /** Cache user data locally so synchronous reads still work */
     _setSession(user) {
+        const normalizedAvatar = this.normalizeAvatarUrl(user.avatar || user.avatar_url || '');
+        const normalizedAvatarUrl = this.normalizeAvatarUrl(user.avatar_url || user.avatar || '');
         const session = {
             id: user.id,
             username: user.username,
             email: user.email,
-            avatar: user.avatar || '',
+            avatar: normalizedAvatar,
             bio: user.bio || '',
             favorite_consoles: user.favorite_consoles || '',
             owned_consoles: user.owned_consoles || '',
             email_verified: user.email_verified,
-            avatar_url: user.avatar_url || '',
+            avatar_url: normalizedAvatarUrl,
             two_factor_enabled: !!user.two_factor_enabled,
             two_factor_method: user.two_factor_method || null,
             two_factor_totp_enabled: !!user.two_factor_totp_enabled,
@@ -55,6 +57,24 @@ export const AuthModule = {
             show_social_links: user.show_social_links !== false
         };
         localStorage.setItem(this.SESSION_KEY, JSON.stringify(session));
+    },
+
+    normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
+        const raw = typeof avatarUrl === 'string' ? avatarUrl.trim() : '';
+        if (!raw || raw.startsWith('data:')) return raw;
+
+        const isGoogleAvatar = /googleusercontent\.com|ggpht\.com/i.test(raw);
+        if (!isGoogleAvatar) return raw;
+
+        let upgraded = raw
+            .replace(/[?&]sz=\d+/i, (m) => m.charAt(0) + 'sz=' + preferredSize)
+            .replace(/=s\d{2,4}(-c)?(?=&|$)/i, '=s' + preferredSize + '-c')
+            .replace(/\/s\d{2,4}(-c)?(?=\/)/i, '/s' + preferredSize + '-c');
+
+        if (upgraded === raw && !/[?&]sz=\d+/i.test(raw)) {
+            upgraded += (raw.includes('?') ? '&' : '?') + 'sz=' + preferredSize;
+        }
+        return upgraded;
     },
 
     /** Get current user from local cache */

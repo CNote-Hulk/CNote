@@ -178,6 +178,23 @@
         }
     }
 
+    function normalizeAvatarUrl(avatarUrl, preferredSize) {
+        var raw = typeof avatarUrl === 'string' ? avatarUrl.trim() : '';
+        if (!raw || raw.indexOf('data:') === 0) return raw;
+        if (!/googleusercontent\.com|ggpht\.com/i.test(raw)) return raw;
+
+        var size = preferredSize || 1024;
+        var upgraded = raw
+            .replace(/[?&]sz=\d+/i, function (m) { return m.charAt(0) + 'sz=' + size; })
+            .replace(/=s\d{2,4}(-c)?(?=&|$)/i, '=s' + size + '-c')
+            .replace(/\/s\d{2,4}(-c)?(?=\/)/i, '/s' + size + '-c');
+
+        if (upgraded === raw && !/[?&]sz=\d+/i.test(raw)) {
+            upgraded += (raw.indexOf('?') !== -1 ? '&' : '?') + 'sz=' + size;
+        }
+        return upgraded;
+    }
+
     // ---- Profile Dropdown ----
     var profileDropdown, profileBtn, profileOpen = false;
 
@@ -192,7 +209,8 @@
         var user = AuthHelper.getCurrentUser() || {};
         var name = escapeHtml(user.username || 'User');
         var email = escapeHtml(user.email || 'No email');
-        var avatar = user.avatar ? escapeHtml(user.avatar) : '';
+        var avatarRaw = normalizeAvatarUrl((user.avatar || user.avatar_url || ''));
+        var avatar = avatarRaw ? escapeHtml(avatarRaw) : '';
         var profilePath = resolvePagePath('profil.html');
         var avatarMarkup = avatar
             ? '<img src="' + avatar + '" alt="User avatar" class="profile-dropdown__avatar-img">'

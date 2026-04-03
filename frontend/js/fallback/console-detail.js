@@ -387,6 +387,24 @@
                 '<span>Generation ' + consola.generation + '</span>';
         }
 
+        // Models / hardware revisions
+        var modelsEl = document.querySelector('.console-hero-text .console-models');
+        if (!modelsEl && meta) {
+            modelsEl = document.createElement('div');
+            modelsEl.className = 'console-models';
+            meta.parentNode.insertBefore(modelsEl, meta.nextSibling);
+        }
+        if (modelsEl) {
+            if (consola.models && consola.models.length > 0) {
+                modelsEl.innerHTML = consola.models.map(function (m) {
+                    return '<span class="console-model-item">' + m.name + '<em> ' + m.year + '</em></span>';
+                }).join('');
+                modelsEl.style.display = '';
+            } else {
+                modelsEl.style.display = 'none';
+            }
+        }
+
         var img = document.querySelector('.console-hero-image img');
         if (img) {
             img.src = '../../../' + consola.image;
@@ -409,7 +427,8 @@
         var container = document.querySelector('.specs-section .container');
         if (!container) return;
 
-        var html = '<h2 class="section-title">Key Specifications</h2>';
+        var html = '<h2 class="section-title">Key Specifications</h2>' +
+            '<p class="specs-hint">Tap or hover the <strong>\u24d8</strong> icons next to any label for a plain-language explanation of that term.</p>';
 
         SPEC_SECTIONS.forEach(function (section) {
             html += '<div class="specs-group">';
@@ -436,7 +455,7 @@
             html += '<div class="specs-grid">';
 
             if (hasAvantaje) {
-                html += '<div class="spec-card"><h4>Advantages</h4>';
+                html += '<div class="spec-card"><h4 class="pros-title">Advantages</h4>';
                 html += '<ul class="verdict-list pros-list">';
                 consola.advantages.forEach(function (p) {
                     html += '<li class="pro-item">\u2713 ' + p + '</li>';
@@ -445,7 +464,7 @@
             }
 
             if (hasDezavantaje) {
-                html += '<div class="spec-card"><h4>Disadvantages</h4>';
+                html += '<div class="spec-card"><h4 class="cons-title">Disadvantages</h4>';
                 html += '<ul class="verdict-list cons-list">';
                 consola.disadvantages.forEach(function (c) {
                     html += '<li class="con-item">\u2717 ' + c + '</li>';

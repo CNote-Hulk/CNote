@@ -124,7 +124,8 @@ export const ProfileDropdownModule = {
         const user = AuthModule.getCurrentUser() || {};
         const name = this._escapeHtml(user.username || 'User');
         const email = this._escapeHtml(user.email || 'No email');
-        const avatar = user.avatar ? this._escapeHtml(user.avatar) : '';
+        const avatarRaw = AuthModule.normalizeAvatarUrl(user.avatar || user.avatar_url || '');
+        const avatar = avatarRaw ? this._escapeHtml(avatarRaw) : '';
         const profilePath = this._resolvePagePath('profil.html');
         const avatarMarkup = avatar
             ? `<img src="${avatar}" alt="User avatar" class="profile-dropdown__avatar-img">`

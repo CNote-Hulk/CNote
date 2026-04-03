@@ -215,7 +215,8 @@ function renderSpecs(consola) {
     const specsContainer = document.querySelector('.specs-section .container');
     if (!specsContainer) return;
 
-    let html = `<h2 class="section-title">${I18nModule.t('console_specs_title')}</h2>`;
+    let html = `<h2 class="section-title">${I18nModule.t('console_specs_title')}</h2>
+    <p class="specs-hint">Tap or hover the <strong>ⓘ</strong> icons next to any label for a plain-language explanation of that term.</p>`;
 
     getSpecSections(consola).forEach(section => {
         html += `
@@ -243,14 +244,14 @@ function renderSpecs(consola) {
                 <div class="specs-grid">
                     ${pros.length ? `
                     <div class="spec-card">
-                        <h4>${I18nModule.t('console_pros_title')}</h4>
+                        <h4 class="pros-title">${I18nModule.t('console_pros_title')}</h4>
                         <ul class="verdict-list pros-list">
                             ${pros.map(p => `<li class="pro-item">✓ ${p}</li>`).join('')}
                         </ul>
                     </div>` : ''}
                     ${cons.length ? `
                     <div class="spec-card">
-                        <h4>${I18nModule.t('console_cons_title')}</h4>
+                        <h4 class="cons-title">${I18nModule.t('console_cons_title')}</h4>
                         <ul class="verdict-list cons-list">
                             ${cons.map(c => `<li class="con-item">✗ ${c}</li>`).join('')}
                         </ul>
@@ -415,6 +416,24 @@ function renderHero(consola) {
             <span>${year}</span>
             <span>${genLabel} ${generation}</span>
         `;
+    }
+
+    // Models / hardware revisions
+    let modelsEl = document.querySelector('.console-hero-text .console-models');
+    if (!modelsEl && metaContainer) {
+        modelsEl = document.createElement('div');
+        modelsEl.className = 'console-models';
+        metaContainer.after(modelsEl);
+    }
+    if (modelsEl) {
+        if (consola.models && consola.models.length > 0) {
+            modelsEl.innerHTML = consola.models
+                .map(m => `<span class="console-model-item">${m.name}<em> ${m.year}</em></span>`)
+                .join('');
+            modelsEl.style.display = '';
+        } else {
+            modelsEl.style.display = 'none';
+        }
     }
 
     // Update image
