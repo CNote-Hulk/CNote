@@ -34,6 +34,11 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             return '★'.repeat(full + fullExtra) + (half ? '½' : '') + '☆'.repeat(empty);
         }
 
+        function resolveAvatar(profile) {
+            if (!profile) return '';
+            return (profile.avatar || '').trim() || (profile.avatar_url || '').trim();
+        }
+
         /** Render the user's dashboard: progress, achievements, ratings, favorites */
         async function renderUserDashboard(profile) {
             // Show dashboard
@@ -174,8 +179,9 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 // Avatar
                 const avatarImg = document.getElementById('user-avatar-img');
                 const avatarFallback = document.getElementById('user-avatar-fallback');
-                if (profile.avatar && profile.avatar.length > 10) {
-                    avatarImg.src = profile.avatar;
+                const resolvedAvatar = resolveAvatar(profile);
+                if (resolvedAvatar && resolvedAvatar.length > 10) {
+                    avatarImg.src = resolvedAvatar;
                     avatarImg.hidden = false;
                     avatarFallback.hidden = true;
                 }
@@ -186,7 +192,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 const isOwnProfile = !!(currentUser && currentUser.id === profile.id);
                 if (avatarBtn) {
                     avatarBtn.addEventListener('click', () => {
-                        const src = (profile.avatar && profile.avatar.length > 10) ? profile.avatar : null;
+                        const src = resolveAvatar(profile) || null;
                         openAvatarLightbox(src, isOwnProfile);
                     });
                 }
@@ -440,7 +446,17 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             const img = document.getElementById('avatar-lightbox-img');
             const fallback = document.getElementById('avatar-lightbox-fallback');
             const actions = document.getElementById('avatar-lightbox-actions');
+            const imgWrap = lightbox?.querySelector('.avatar-lightbox__img-wrap');
             if (!lightbox) return;
+
+            if (imgWrap && !imgWrap.dataset.zoomBound) {
+                imgWrap.dataset.zoomBound = '1';
+                imgWrap.addEventListener('click', (e) => {
+                    if (e.target.closest('.avatar-lightbox__close') || e.target.closest('.avatar-lightbox__actions')) return;
+                    imgWrap.classList.toggle('is-zoomed');
+                });
+            }
+            if (imgWrap) imgWrap.classList.remove('is-zoomed');
 
             if (avatarSrc) {
                 img.src = avatarSrc;
@@ -474,12 +490,17 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             }
 
             lightbox.hidden = false;
+            lightbox.classList.add('is-open');
             document.body.style.overflow = 'hidden';
         }
 
         function closeAvatarLightbox() {
             const lightbox = document.getElementById('avatar-lightbox');
-            if (lightbox) lightbox.hidden = true;
+            if (lightbox) {
+                lightbox.classList.remove('is-open');
+                lightbox.querySelector('.avatar-lightbox__img-wrap')?.classList.remove('is-zoomed');
+                lightbox.hidden = true;
+            }
             document.body.style.overflow = '';
         }
 

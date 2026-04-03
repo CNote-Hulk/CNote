@@ -25,6 +25,67 @@ function cleanupConsolePageChrome() {
 let IMAGE_DIMENSIONS = {};
 let currentConsole = null;
 
+/* ── Spec help-icon tooltip definitions ── */
+const SPEC_TIPS = {
+    spec_label_architecture:    'The processor design family — defines supported instructions, efficiency, and performance generation (e.g. Zen 2, RDNA 2).',
+    spec_label_process:         'Manufacturing node in nanometres (nm). Smaller = more transistors in less space = faster and more power-efficient chip.',
+    spec_label_cores:           'Number of independent processing threads. More cores allow the system to run more tasks simultaneously.',
+    spec_label_clock:           'Operating frequency in GHz (billions of cycles per second). Higher frequency means instructions are processed faster.',
+    spec_label_tdp:             'Thermal Design Power in Watts — how much heat the chip produces at maximum load. Also reflects total power draw.',
+    spec_label_units:           'Compute Units or Shader Processors inside the GPU. More units = more parallel graphics calculations = better visual performance.',
+    spec_label_tflops:          'Trillion Floating-Point Operations Per Second — a measure of raw GPU compute power. Higher = faster 3D rendering.',
+    spec_label_capabilities:    'Extra hardware features and technologies supported by this chip.',
+    spec_label_type:            'Memory or storage technology standard. e.g. GDDR6 = fast video RAM; NVMe SSD = solid-state drive with fast PCIe interface.',
+    spec_label_capacity:        'Total amount in Gigabytes (GB). More memory allows the system to hold larger game worlds and assets without slowdowns.',
+    spec_label_bus:             'Width of the memory data channel in bits. A wider bus transfers more data per clock cycle.',
+    spec_label_bandwidth:       'Speed at which data moves between the CPU/GPU and memory, in GB/s. Higher bandwidth reduces bottlenecks.',
+    spec_label_interface:       'How the storage device connects to the system. PCIe 4.0/5.0 is significantly faster than SATA III.',
+    spec_label_speed:           'Sequential read/write throughput in GB/s. Directly affects load times and asset streaming speed.',
+    spec_label_resolution:      'Number of pixels displayed (e.g. 4K = 3840×2160). More pixels = sharper, more detailed image.',
+    spec_label_refresh:         'How many times per second the screen redraws the image (Hz). 60 Hz is smooth; 120 Hz is very smooth motion.',
+    spec_label_hdr:             'High Dynamic Range — a wider range of brightness and colour for more realistic, vivid visuals.',
+    spec_label_upscaling:       'Technology that renders at a lower resolution and intelligently scales up to the target resolution, saving GPU power.',
+    spec_label_backwards_compat:'Ability to run games designed for older, previous-generation consoles.',
+};
+
+const FIXED_TIPS = {
+    'Ray Tracing': 'Simulates how light physically bounces off surfaces in real time — produces realistic reflections, shadows, and global illumination.',
+    'VRR':         'Variable Refresh Rate — the display dynamically syncs its refresh rate to the GPU\'s output, eliminating screen tearing and stutter.',
+};
+
+const HELP_SVG = `<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="5.5" r="1"/><rect x="7.25" y="7.5" width="1.5" height="4" rx="0.75"/></svg>`;
+
+function tipLabel(i18nKey) {
+    const label = I18nModule.t(i18nKey);
+    const tip = SPEC_TIPS[i18nKey];
+    if (!tip) return label;
+    return `${label}<button class="spec-help" type="button" aria-label="${tip}">${HELP_SVG}<span class="spec-tooltip">${tip}</span></button>`;
+}
+
+function fixedTip(label) {
+    const tip = FIXED_TIPS[label];
+    if (!tip) return label;
+    return `${label}<button class="spec-help" type="button" aria-label="${tip}">${HELP_SVG}<span class="spec-tooltip">${tip}</span></button>`;
+}
+
+let _specTooltipsListenerAdded = false;
+function initSpecTooltips() {
+    document.querySelectorAll('.spec-help').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const wasOpen = btn.classList.contains('is-open');
+            document.querySelectorAll('.spec-help.is-open').forEach(b => b.classList.remove('is-open'));
+            if (!wasOpen) btn.classList.add('is-open');
+        });
+    });
+    if (!_specTooltipsListenerAdded) {
+        _specTooltipsListenerAdded = true;
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.spec-help.is-open').forEach(b => b.classList.remove('is-open'));
+        });
+    }
+}
+
 /**
  * Load image dimensions from JSON file
  */
@@ -54,38 +115,38 @@ function getSpecSections(consola) {
                 {
                     title: I18nModule.t('spec_cpu_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_architecture'), c.cpu.architecture],
-                        [I18nModule.t('spec_label_process'), c.cpu.proces_nm],
-                        [I18nModule.t('spec_label_cores'), c.cpu.cores],
-                        [I18nModule.t('spec_label_clock'), c.cpu.frequency],
-                        [I18nModule.t('spec_label_tdp'), c.cpu.tdp]
+                        [tipLabel('spec_label_architecture'), c.cpu.architecture],
+                        [tipLabel('spec_label_process'), c.cpu.proces_nm],
+                        [tipLabel('spec_label_cores'), c.cpu.cores],
+                        [tipLabel('spec_label_clock'), c.cpu.frequency],
+                        [tipLabel('spec_label_tdp'), c.cpu.tdp]
                     ])
                 },
                 {
                     title: I18nModule.t('spec_gpu_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_architecture'), c.gpu.architecture],
-                        [I18nModule.t('spec_label_units'), c.gpu.units],
-                        [I18nModule.t('spec_label_clock'), c.gpu.frequency],
-                        [I18nModule.t('spec_label_tflops'), c.gpu.tflops],
-                        [I18nModule.t('spec_label_capabilities'), c.gpu.capabilities]
+                        [tipLabel('spec_label_architecture'), c.gpu.architecture],
+                        [tipLabel('spec_label_units'), c.gpu.units],
+                        [tipLabel('spec_label_clock'), c.gpu.frequency],
+                        [tipLabel('spec_label_tflops'), c.gpu.tflops],
+                        [tipLabel('spec_label_capabilities'), c.gpu.capabilities]
                     ])
                 },
                 {
                     title: I18nModule.t('spec_memory_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_type'), c.memory.type],
-                        [I18nModule.t('spec_label_capacity'), c.memory.capacity],
-                        [I18nModule.t('spec_label_bus'), c.memory.bus],
-                        [I18nModule.t('spec_label_bandwidth'), c.memory.bandwidth]
+                        [tipLabel('spec_label_type'), c.memory.type],
+                        [tipLabel('spec_label_capacity'), c.memory.capacity],
+                        [tipLabel('spec_label_bus'), c.memory.bus],
+                        [tipLabel('spec_label_bandwidth'), c.memory.bandwidth]
                     ])
                 },
                 {
                     title: I18nModule.t('spec_storage_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_type'), c.storage.type],
-                        [I18nModule.t('spec_label_interface'), c.storage.interface],
-                        [I18nModule.t('spec_label_speed'), c.storage.speed]
+                        [tipLabel('spec_label_type'), c.storage.type],
+                        [tipLabel('spec_label_interface'), c.storage.interface],
+                        [tipLabel('spec_label_speed'), c.storage.speed]
                     ])
                 }
             ]
@@ -96,18 +157,18 @@ function getSpecSections(consola) {
                 {
                     title: I18nModule.t('spec_output_title'),
                     render: (c) => formatList([
-                        [I18nModule.t('spec_label_resolution'), c.output_video.resolution],
-                        [I18nModule.t('spec_label_refresh'), c.output_video.refresh],
-                        [I18nModule.t('spec_label_hdr'), c.output_video.hdr],
-                        [I18nModule.t('spec_label_upscaling'), c.output_video.upscaling]
+                        [tipLabel('spec_label_resolution'), c.output_video.resolution],
+                        [tipLabel('spec_label_refresh'), c.output_video.refresh],
+                        [tipLabel('spec_label_hdr'), c.output_video.hdr],
+                        [tipLabel('spec_label_upscaling'), c.output_video.upscaling]
                     ])
                 },
                 {
                     title: I18nModule.t('spec_tech_title'),
                     render: (c) => formatList([
-                        ['Ray Tracing', formatBool(c.technologies.ray_tracing)],
-                        ['VRR', formatBool(c.technologies.vrr)],
-                        [I18nModule.t('spec_label_backwards_compat') || 'Backwards Compat', c.technologies.backwards_compatibility],
+                        [fixedTip('Ray Tracing'), formatBool(c.technologies.ray_tracing)],
+                        [fixedTip('VRR'), formatBool(c.technologies.vrr)],
+                        [tipLabel('spec_label_backwards_compat') || 'Backwards Compat', c.technologies.backwards_compatibility],
                         [I18nModule.t('spec_label_capabilities'), c.technologies.other]
                     ])
                 }
@@ -200,10 +261,9 @@ function renderSpecs(consola) {
     }
 
     specsContainer.innerHTML = html;
+    initSpecTooltips();
 }
-
-/**
- * Render the Istorie section dynamically from JSON
+/** Render the console history section
  * Inserted between hero and specs sections
  * Normalizes both Pattern A (\n\n) and Pattern B (<br><br>) formats
  */

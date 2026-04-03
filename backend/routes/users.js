@@ -75,7 +75,7 @@ router.get('/users/:username', async (req, res) => {
     try {
         const { username } = req.params;
         const result = await pool.query(
-            `SELECT id, username, bio, avatar, favorite_consoles, owned_consoles, role, created_at,
+            `SELECT id, username, bio, avatar, avatar_url, favorite_consoles, owned_consoles, role, created_at,
                     social_discord, social_twitter, social_youtube, social_instagram,
                     show_email, show_stats, show_friends, show_social_links
              FROM users WHERE LOWER(username) = LOWER($1)`,
@@ -102,6 +102,7 @@ router.get('/users/:username', async (req, res) => {
                 username: user.username,
                 bio: user.bio || '',
                 avatar: user.avatar || '',
+                avatar_url: user.avatar_url || '',
                 favorite_consoles: user.favorite_consoles || '',
                 owned_consoles: user.owned_consoles || '',
                 favorite_console_ids: favResult.rows.map(r => r.console_id),

@@ -141,6 +141,56 @@
         }).join('<br>');
     }
 
+    /* ── Spec tooltips ── */
+    var SPEC_TIPS = {
+        'Architecture':     'The processor design family — defines supported instructions, efficiency, and performance generation (e.g. Zen 2, RDNA 2).',
+        'Process':          'Manufacturing node in nanometres (nm). Smaller = more transistors in less space = faster and more power-efficient chip.',
+        'Cores':            'Number of independent processing threads. More cores allow the system to run more tasks simultaneously.',
+        'Clock Speed':      'Operating frequency in GHz (billions of cycles per second). Higher frequency means instructions are processed faster.',
+        'TDP':              'Thermal Design Power in Watts — how much heat the chip produces at maximum load. Also reflects total power draw.',
+        'Units':            'Compute Units or Shader Processors inside the GPU. More units = more parallel graphics calculations = better visual performance.',
+        'TFLOPS':           'Trillion Floating-Point Operations Per Second — a measure of raw GPU compute power. Higher = faster 3D rendering.',
+        'Type':             'Memory or storage technology standard. e.g. GDDR6 = fast video RAM; NVMe SSD = solid-state drive with fast PCIe interface.',
+        'Capacity':         'Total amount in Gigabytes (GB). More memory allows the system to hold larger game worlds and assets without slowdowns.',
+        'Bus':              'Width of the memory data channel in bits. A wider bus transfers more data per clock cycle.',
+        'Bandwidth':        'Speed at which data moves between the CPU/GPU and memory, in GB/s. Higher bandwidth reduces bottlenecks.',
+        'Interface':        'How the storage device connects to the system. PCIe 4.0/5.0 is significantly faster than SATA III.',
+        'Speed':            'Sequential read/write throughput in GB/s. Directly affects load times and asset streaming speed.',
+        'Resolution':       'Number of pixels displayed (e.g. 4K = 3840\u00d72160). More pixels = sharper, more detailed image.',
+        'Refresh':          'How many times per second the screen redraws the image (Hz). 60\u00a0Hz is smooth; 120\u00a0Hz is very smooth motion.',
+        'HDR':              'High Dynamic Range \u2014 a wider range of brightness and colour for more realistic, vivid visuals.',
+        'Upscaling':        'Technology that renders at a lower resolution and intelligently scales up to the target resolution, saving GPU power.',
+        'Backwards Compat': 'Ability to run games designed for older, previous-generation consoles.',
+        'Ray Tracing':      'Simulates how light physically bounces off surfaces in real time \u2014 produces realistic reflections, shadows, and global illumination.',
+        'VRR':              "Variable Refresh Rate \u2014 the display dynamically syncs its refresh rate to the GPU's output, eliminating screen tearing and stutter.",
+    };
+
+    var HELP_SVG = '<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="5.5" r="1"/><rect x="7.25" y="7.5" width="1.5" height="4" rx="0.75"/></svg>';
+
+    function tip(label) {
+        var text = SPEC_TIPS[label];
+        if (!text) return label;
+        return label + '<button class="spec-help" type="button" aria-label="' + text + '">' + HELP_SVG + '<span class="spec-tooltip">' + text + '</span></button>';
+    }
+
+    var _specTooltipsListenerAdded = false;
+    function initSpecTooltips() {
+        document.querySelectorAll('.spec-help').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var wasOpen = btn.classList.contains('is-open');
+                document.querySelectorAll('.spec-help.is-open').forEach(function (b) { b.classList.remove('is-open'); });
+                if (!wasOpen) btn.classList.add('is-open');
+            });
+        });
+        if (!_specTooltipsListenerAdded) {
+            _specTooltipsListenerAdded = true;
+            document.addEventListener('click', function () {
+                document.querySelectorAll('.spec-help.is-open').forEach(function (b) { b.classList.remove('is-open'); });
+            });
+        }
+    }
+
     // Spec sections definition
     var SPEC_SECTIONS = [
         {
@@ -150,11 +200,11 @@
                     title: 'Processing (CPU)',
                     keys: function (c) {
                         return [
-                            ['Architecture', c.cpu.architecture],
-                            ['Process', c.cpu.proces_nm],
-                            ['Cores', c.cpu.cores],
-                            ['Clock Speed', c.cpu.frequency],
-                            ['TDP', c.cpu.tdp]
+                            [tip('Architecture'), c.cpu.architecture],
+                            [tip('Process'), c.cpu.proces_nm],
+                            [tip('Cores'), c.cpu.cores],
+                            [tip('Clock Speed'), c.cpu.frequency],
+                            [tip('TDP'), c.cpu.tdp]
                         ];
                     }
                 },
@@ -162,10 +212,10 @@
                     title: 'Graphics (GPU)',
                     keys: function (c) {
                         return [
-                            ['Architecture', c.gpu.architecture],
-                            ['Units', c.gpu.units],
-                            ['Clock Speed', c.gpu.frequency],
-                            ['TFLOPS', c.gpu.tflops],
+                            [tip('Architecture'), c.gpu.architecture],
+                            [tip('Units'), c.gpu.units],
+                            [tip('Clock Speed'), c.gpu.frequency],
+                            [tip('TFLOPS'), c.gpu.tflops],
                             ['Capabilities', c.gpu.capabilities]
                         ];
                     }
@@ -174,10 +224,10 @@
                     title: 'Memory',
                     keys: function (c) {
                         return [
-                            ['Type', c.memory.type],
-                            ['Capacity', c.memory.capacity],
-                            ['Bus', c.memory.bus],
-                            ['Bandwidth', c.memory.bandwidth]
+                            [tip('Type'), c.memory.type],
+                            [tip('Capacity'), c.memory.capacity],
+                            [tip('Bus'), c.memory.bus],
+                            [tip('Bandwidth'), c.memory.bandwidth]
                         ];
                     }
                 },
@@ -185,9 +235,9 @@
                     title: 'Storage',
                     keys: function (c) {
                         return [
-                            ['Type', c.storage.type],
-                            ['Interface', c.storage.interface],
-                            ['Speed', c.storage.speed]
+                            [tip('Type'), c.storage.type],
+                            [tip('Interface'), c.storage.interface],
+                            [tip('Speed'), c.storage.speed]
                         ];
                     }
                 }
@@ -200,9 +250,9 @@
                     title: 'Video Output',
                     keys: function (c) {
                         return [
-                            ['Resolution', c.output_video.resolution],
-                            ['Refresh', c.output_video.refresh],
-                            ['HDR', c.output_video.hdr],
+                            [tip('Resolution'), c.output_video.resolution],
+                            [tip('Refresh'), c.output_video.refresh],
+                            [tip('HDR'), c.output_video.hdr],
                             ['Upscaling', c.output_video.upscaling]
                         ];
                     }
@@ -211,9 +261,9 @@
                     title: 'Technologies',
                     keys: function (c) {
                         return [
-                            ['Ray Tracing', formatBool(c.technologies.ray_tracing)],
-                            ['VRR', formatBool(c.technologies.vrr)],
-                            ['Backwards Compat', c.technologies.backwards_compatibility],
+                            [tip('Ray Tracing'), formatBool(c.technologies.ray_tracing)],
+                            [tip('VRR'), formatBool(c.technologies.vrr)],
+                            [tip('Backwards Compat'), c.technologies.backwards_compatibility],
                             ['Other', c.technologies.other]
                         ];
                     }
@@ -407,6 +457,7 @@
         }
 
         container.innerHTML = html;
+        initSpecTooltips();
     }
 
     function showError(msg) {

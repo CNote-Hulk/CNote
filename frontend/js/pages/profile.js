@@ -107,6 +107,7 @@ function initSettings() {
     const avatarInput = document.getElementById('avatar-upload');
     const avatarImg = document.getElementById('profile-avatar-img');
     const avatarFallback = document.getElementById('profile-avatar-fallback');
+    const getPreferredAvatar = () => (user.avatar || '').trim() || (user.avatar_url || '').trim();
 
     const renderAvatar = (avatar) => {
         const hasAvatar = !!avatar;
@@ -137,7 +138,7 @@ function initSettings() {
         reader.readAsDataURL(file);
     });
 
-    renderAvatar(user.avatar || '');
+    renderAvatar(getPreferredAvatar());
 
     // ── Lightbox open/close ──
     const lightbox = document.getElementById('avatar-lightbox');
@@ -148,7 +149,7 @@ function initSettings() {
 
     function openProfileLightbox() {
         if (!lightbox) return;
-        const avatarSrc = user.avatar_url || user.avatar;
+        const avatarSrc = getPreferredAvatar();
         if (avatarSrc) {
             lbImg.src = avatarSrc;
             lbImg.hidden = false;
@@ -204,7 +205,7 @@ function initSettings() {
             const avatarDataUrl = await toCompressedDataUrl(file);
             await AuthModule.updateProfile({ avatar: avatarDataUrl });
             user.avatar = avatarDataUrl;
-            renderAvatar(avatarDataUrl);
+            renderAvatar(getPreferredAvatar());
             showSettingsMessage('Profile picture has been updated.', true);
         } catch (error) {
             showSettingsMessage(error.message || 'Could not update profile picture.', false);

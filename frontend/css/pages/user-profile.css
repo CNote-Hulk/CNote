@@ -13,8 +13,13 @@
     color: var(--text-light);
     font-family: 'DM Sans', system-ui, sans-serif;
     isolation: isolate;
-    overflow-x: hidden;
+    min-height: 100vh;
+    height: auto;
+    width: 100%;
     position: relative;
+    inset: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .user-profile-page::after {
@@ -552,8 +557,8 @@ a.user-social-link:hover {
 }
 
 .avatar-lightbox__img-wrap {
-    width: 290px;
-    height: 290px;
+    width: clamp(320px, 62vmin, 680px);
+    height: clamp(320px, 62vmin, 680px);
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid var(--accent-color, #D4AF7A);
@@ -562,12 +567,25 @@ a.user-social-link:hover {
     align-items: center;
     justify-content: center;
     box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    cursor: zoom-in;
+    transition: transform 0.2s ease, border-radius 0.2s ease;
 }
 
 .avatar-lightbox__img-wrap img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.avatar-lightbox__img-wrap.is-zoomed {
+    transform: scale(1.12);
+    border-radius: 26px;
+    cursor: zoom-out;
+}
+
+.avatar-lightbox__img-wrap.is-zoomed img {
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.25);
 }
 
 .avatar-lightbox__fallback {
@@ -624,4 +642,11 @@ a.user-social-link:hover {
 
 .user-profile-avatar:hover {
     opacity: 0.85;
+}
+
+@media (max-width: 640px) {
+    .avatar-lightbox__img-wrap {
+        width: min(90vw, 500px);
+        height: min(90vw, 500px);
+    }
 }
