@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const achievementsProgressFill = document.getElementById('achievements-progress-fill');
                 if (achievementsProgressFill) achievementsProgressFill.style.width = `${total_ach > 0 ? Math.round((earned / total_ach) * 100) : 0}%`;
 
-                const achievementsGrid = document.querySelector('.achievements-grid');
+                const achievementsGrid = document.getElementById('achievements-grid');
                 if (achievementsGrid) {
                     achievementsGrid.innerHTML = '';
                     // Show unlocked first, then locked
