@@ -62,6 +62,11 @@ function buildSpecSections() {
             { key: 'vrr',                   label: 'VRR' },
             { key: 'backwards_compatibility', label: 'Backwards Compat' },
             { key: 'other',                 label: 'Other' }
+        ]},
+        { key: 'dimensions', labelKey: 'spec_dimensions_title', fields: [
+            { key: 'width_mm',  label: 'Width (mm)' },
+            { key: 'height_mm', label: 'Height (mm)' },
+            { key: 'depth_mm',  label: 'Depth (mm)' }
         ]}
     ];
 }
@@ -74,7 +79,13 @@ function formatValue(val) {
 }
 
 function getVal(obj, sectionKey, fieldKey) {
-    return obj && obj[sectionKey] && obj[sectionKey][fieldKey] !== undefined
+    if (!obj || !obj[sectionKey]) return null;
+    // For multi-model dimensions, show the first model's value
+    if (sectionKey === 'dimensions' && obj[sectionKey].models) {
+        const first = obj[sectionKey].models[0];
+        return first && first[fieldKey] !== undefined ? first[fieldKey] : null;
+    }
+    return obj[sectionKey][fieldKey] !== undefined
         ? obj[sectionKey][fieldKey] : null;
 }
 

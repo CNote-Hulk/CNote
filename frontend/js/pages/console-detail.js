@@ -46,6 +46,9 @@ const SPEC_TIPS = {
     spec_label_hdr:             'High Dynamic Range — a wider range of brightness and colour for more realistic, vivid visuals.',
     spec_label_upscaling:       'Technology that renders at a lower resolution and intelligently scales up to the target resolution, saving GPU power.',
     spec_label_backwards_compat:'Ability to run games designed for older, previous-generation consoles.',
+    spec_label_width:           'The left-to-right measurement of the console (in millimetres).',
+    spec_label_height:          'The top-to-bottom measurement of the console (in millimetres).',
+    spec_label_depth:           'The front-to-back measurement of the console (in millimetres).',
 };
 
 const FIXED_TIPS = {
@@ -171,7 +174,11 @@ function getSpecSections(consola) {
                         [tipLabel('spec_label_backwards_compat') || 'Backwards Compat', c.technologies.backwards_compatibility],
                         [I18nModule.t('spec_label_capabilities'), c.technologies.other]
                     ])
-                }
+                },
+                ...(consola.dimensions ? [{
+                    title: I18nModule.t('spec_dimensions_title'),
+                    render: (c) => formatDimensions(c.dimensions)
+                }] : [])
             ]
         }
     ];
@@ -191,6 +198,24 @@ function formatList(pairs) {
     const filtered = pairs.filter(([_, val]) => !isNA(val));
     if (filtered.length === 0) return '<p>—</p>';
     return filtered.map(([label, val]) => `<strong>${label}:</strong> ${val}`).join('<br>');
+}
+
+function formatDimSingle(d) {
+    const w = I18nModule.t('spec_label_width');
+    const h = I18nModule.t('spec_label_height');
+    const dp = I18nModule.t('spec_label_depth');
+    return `<strong>${w}:</strong> ${d.width_mm} mm<br><strong>${h}:</strong> ${d.height_mm} mm<br><strong>${dp}:</strong> ${d.depth_mm} mm`;
+}
+
+function formatDimensions(dim) {
+    if (!dim) return '<p>—</p>';
+    if (dim.models && Array.isArray(dim.models)) {
+        return dim.models.map(m => {
+            const label = m.label ? `<em class="dim-model-label">${m.label}</em><br>` : '';
+            return label + formatDimSingle(m);
+        }).join('<hr class="dim-separator">');
+    }
+    return formatDimSingle(dim);
 }
 
 function getLocalizedField(obj, key) {

@@ -63,7 +63,7 @@ body.home-page::before {
     display: flex;
     position: fixed;
     flex-direction: column;
-    padding-top: 40px;
+    padding-top: 24px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
     overflow-y: auto;
@@ -74,6 +74,126 @@ body.home-page::before {
     height: calc(100% - 30px);
     border-radius: 25px;
     z-index: 100;
+}
+
+/* ── Sidebar Profile Section ── */
+
+.sidebar-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 4px;
+}
+
+.sidebar-profile .profile-avatar {
+    width: 72px;
+    height: 72px;
+    margin-top: 0;
+    border: 2px solid rgba(var(--accent-rgb), 0.35);
+    background: rgba(var(--accent-rgb), 0.08);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(var(--accent-rgb), 0.06);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.sidebar-profile .profile-avatar:hover {
+    border-color: rgba(var(--accent-rgb), 0.55);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(var(--accent-rgb), 0.1);
+}
+
+.sidebar-profile__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.sidebar-profile .profile-name-row {
+    margin-top: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-profile .profile-name {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 0;
+    color: var(--text);
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidebar-profile .admin-badge {
+    margin-top: 5px;
+    font-size: 0.6rem;
+    padding: 2px 8px;
+}
+
+.sidebar-profile .profile-online-dot {
+    margin: 6px auto 0;
+}
+
+.sidebar-profile .profile-bio-row {
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 6px;
+}
+
+.sidebar-profile .profile-bio {
+    font-size: 0.78rem;
+    margin-top: 0;
+    color: var(--muted);
+    max-width: 170px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.sidebar-profile .profile-edit-shortcut {
+    border-color: rgba(255, 255, 255, 0.08);
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebar-profile:hover .profile-edit-shortcut {
+    opacity: 1;
+}
+
+.sidebar-profile .profile-edit-shortcut:hover {
+    color: var(--accent);
+    border-color: rgba(var(--accent-rgb), 0.3);
+}
+
+/* ── Sidebar Profile Divider ── */
+
+.sidebar-profile-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 14px 8px;
+}
+
+/* ── Light theme sidebar profile ── */
+
+[data-theme="light"] .sidebar-profile .profile-avatar {
+    border-color: rgba(var(--accent-rgb), 0.25);
+    background: rgba(var(--accent-rgb), 0.06);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), 0 0 0 3px rgba(var(--accent-rgb), 0.04);
+}
+
+[data-theme="light"] .sidebar-profile .profile-avatar:hover {
+    border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+[data-theme="light"] .sidebar-profile-divider {
+    background: rgba(0, 0, 0, 0.06);
 }
 
 .sidebar-section {
@@ -176,7 +296,7 @@ body.home-page::before {
     min-height: 100vh;
     width: 100%;
     gap: 22px;
-    padding-top: 20px;
+    padding-top: 40px;
     display: flex;
     flex-direction: column;
 }
@@ -1078,5 +1198,500 @@ body.home-page::before {
 
     .mbn-item {
         padding: 8px 4px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ENHANCED PANEL STYLES — visual refinements for dashboard panels
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Dashboard Header Row (title + badge / link) ── */
+
+.dashboard-header__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.dashboard-header__row p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+/* ── Panel Badge ── */
+
+.panel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.panel-badge--heart {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.panel-badge--gold {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* ── Panel Header Link ── */
+
+.panel-header-link {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.panel-header-link:hover {
+    background: rgba(var(--accent-rgb), 0.1);
+}
+
+/* ── Panel Section Title (with icon) ── */
+
+.panel-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 12px;
+}
+
+.panel-section-title svg {
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+/* ── Stats Card Icon ── */
+
+.stats-card__icon {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.stats-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.stats-card:hover::before {
+    opacity: 1;
+}
+
+/* ── Continue Card Icon ── */
+
+.continue-card__icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--accent-rgb), 0.12);
+    border-radius: 14px;
+}
+
+/* ── Empty State ── */
+
+.dash-empty-state {
+    text-align: center;
+    padding: 28px 16px;
+}
+
+.dash-empty-state__icon {
+    display: block;
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+    opacity: 0.7;
+}
+
+.dash-empty-state__text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 6px;
+}
+
+.dash-empty-state__hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0 0 14px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+.dash-empty-state__link {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    transition: background 0.2s, transform 0.15s;
+}
+
+.dash-empty-state__link:hover {
+    background: rgba(var(--accent-rgb), 0.18);
+    transform: translateY(-1px);
+}
+
+/* ── Progress Panel Ring ── */
+
+.progress-overview-card {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 24px;
+}
+
+.progress-ring-wrap {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+}
+
+.progress-ring {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.progress-ring__bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 6;
+}
+
+.progress-ring__fill {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 263.9;
+    stroke-dashoffset: 263.9;
+    transition: stroke-dashoffset 1s ease;
+}
+
+.progress-ring__center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring__pct {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.progress-overview-info {
+    flex: 1;
+}
+
+.progress-overview-info h2 {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+.progress-overview-info .progress-bar {
+    width: 100%;
+}
+
+/* ── Milestones ── */
+
+.milestones-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.milestone-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(var(--panel-rgb), 0.7);
+    border: 1px solid var(--border);
+    font-size: 0.88rem;
+    color: var(--muted);
+    transition: border-color 0.2s;
+}
+
+.milestone-item--done {
+    color: var(--text);
+    border-color: rgba(var(--accent-rgb), 0.2);
+}
+
+.milestone-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--muted);
+}
+
+.milestone-item--done .milestone-icon {
+    background: rgba(var(--accent-rgb), 0.15);
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* ── Achievements Progress Bar ── */
+
+.achievements-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.achievements-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b 0%, #eab308 100%);
+    border-radius: 99px;
+    transition: width 1s ease;
+}
+
+/* ── Achievement Cards enhanced ── */
+
+.achievement-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    padding: 16px 12px;
+    transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.achievement-card__icon {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.achievement-card__name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.achievement-card__status {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+.achievement-card--unlocked {
+    border-color: rgba(245, 158, 11, 0.25);
+}
+
+.achievement-card--unlocked .achievement-card__status {
+    color: #f59e0b;
+}
+
+.achievement-card--unlocked:hover {
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
+    transform: translateY(-2px);
+}
+
+.achievement-card--locked {
+    opacity: 0.45;
+}
+
+.achievement-card--locked .achievement-card__icon {
+    filter: grayscale(1);
+}
+
+.achievement-card--locked .achievement-card__status {
+    color: var(--muted);
+}
+
+/* ── Activity List enhanced ── */
+
+.activity-list li {
+    position: relative;
+    padding-left: 24px;
+}
+
+.activity-list li::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+/* ── Console Card enhanced ── */
+
+.console-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.console-card::after {
+    content: '→';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) translateX(4px);
+    opacity: 0;
+    font-size: 0.9rem;
+    color: var(--accent);
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.console-card:hover::after {
+    opacity: 0.7;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* ── Light theme: new elements ── */
+
+[data-theme="light"] .panel-badge {
+    background: rgba(214, 77, 60, 0.08);
+    border-color: rgba(214, 77, 60, 0.15);
+}
+
+[data-theme="light"] .panel-badge--heart {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.15);
+}
+
+[data-theme="light"] .panel-badge--gold {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.15);
+}
+
+[data-theme="light"] .panel-header-link {
+    border-color: rgba(214, 77, 60, 0.15);
+}
+
+[data-theme="light"] .dash-empty-state__link {
+    background: rgba(214, 77, 60, 0.06);
+    border-color: rgba(214, 77, 60, 0.15);
+}
+
+[data-theme="light"] .progress-ring__bg {
+    stroke: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .milestone-item {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .milestone-icon {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .achievements-progress-bar {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .achievement-card--unlocked {
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* ── Mobile overrides for new elements ── */
+
+@media (max-width: 680px) {
+    .dashboard-header__row {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .progress-overview-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 16px;
+    }
+
+    .progress-ring-wrap {
+        width: 90px;
+        height: 90px;
+    }
+
+    .progress-overview-info {
+        width: 100%;
+    }
+
+    .progress-overview-info .progress-bar {
+        width: 100%;
+    }
+
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dash-empty-state {
+        padding: 20px 12px;
+    }
+
+    .dash-empty-state__icon {
+        font-size: 2rem;
     }
 }

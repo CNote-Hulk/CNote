@@ -620,6 +620,21 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
 }
 
+/* Dimensions card – multi-model separator & label */
+.dim-separator {
+    border: none;
+    border-top: 1px solid rgba(212, 175, 122, 0.15);
+    margin: 0.6rem 0;
+}
+
+.dim-model-label {
+    display: inline-block;
+    font-size: 0.82rem;
+    color: var(--accent-color);
+    opacity: 0.85;
+    margin-bottom: 0.15rem;
+}
+
 [data-theme="light"] .spec-card:hover {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
