@@ -2471,7 +2471,7 @@ a.chat-message__username:hover {
 
 [data-theme="light"] .settings-user-header .profile-avatar {
     border-color: rgba(var(--p-accent-rgb), 0.2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 2px rgba(var(--p-accent-rgb), 0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 3px rgba(var(--p-accent-rgb), 0.04);
 }
 
 [data-theme="light"] .community-page {
@@ -2847,13 +2847,15 @@ a.chat-message__username:hover {
    SETTINGS ROW LAYOUT — new horizontal label+control
    ═══════════════════════════════════════════════════ */
 
-/* Compact user header in sidebar */
+/* Compact user header in sidebar — centered layout matching home sidebar */
 .settings-user-header {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
-    padding: 8px 8px 10px;
-    border-radius: 14px;
+    text-align: center;
+    gap: 0;
+    padding: 12px 8px 14px;
+    border-radius: 16px;
     background: rgba(var(--p-accent-rgb), 0.04);
     border: 1px solid rgba(var(--p-accent-rgb), 0.06);
     transition: background 0.2s ease;
@@ -2864,35 +2866,39 @@ a.chat-message__username:hover {
 }
 
 .settings-user-header .profile-avatar {
-    width: 48px;
-    height: 48px;
-    font-size: 1.1rem;
+    width: 64px;
+    height: 64px;
+    font-size: 1.3rem;
     margin-top: 0;
     flex-shrink: 0;
     border: 2px solid rgba(var(--p-accent-rgb), 0.3);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25), 0 0 0 2px rgba(var(--p-accent-rgb), 0.05);
-    transition: border-color 0.25s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 3px rgba(var(--p-accent-rgb), 0.06);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .settings-user-header .profile-avatar:hover {
     border-color: rgba(var(--p-accent-rgb), 0.5);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(var(--p-accent-rgb), 0.1);
 }
 
 .settings-user-meta {
     min-width: 0;
-    flex: 1;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    align-items: center;
+    gap: 4px;
+    margin-top: 10px;
 }
 
 .settings-user-meta .profile-name {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 700;
     margin-top: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 160px;
     color: var(--p-text);
 }
 
@@ -2900,7 +2906,10 @@ a.chat-message__username:hover {
     margin-top: 0;
     font-size: 0.58rem;
     padding: 2px 7px;
-    align-self: flex-start;
+}
+
+.settings-user-meta .profile-online-dot {
+    margin: 2px auto 0;
 }
 
 /* "Settings" category label above nav */

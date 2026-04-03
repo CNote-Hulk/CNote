@@ -369,8 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="dash-request-item">
                                 <span class="dash-request-name">${escapeHtml(r.username)}</span>
                                 <div class="dash-request-actions">
-                                    <button class="dash-request-btn dash-request-btn--accept" data-user="${escapeHtml(r.username)}">Accept</button>
-                                    <button class="dash-request-btn dash-request-btn--decline" data-user="${escapeHtml(r.username)}">Decline</button>
+                                    <button class="dash-request-btn dash-request-btn--accept" data-request-id="${r.request_id}">Accept</button>
+                                    <button class="dash-request-btn dash-request-btn--decline" data-request-id="${r.request_id}">Decline</button>
                                 </div>
                             </div>
                         `).join('')}
@@ -378,13 +378,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 friendsRequests.querySelectorAll('.dash-request-btn--accept').forEach(btn => {
                     btn.addEventListener('click', async () => {
-                        await apiFetch(`/api/friends/accept/${encodeURIComponent(btn.dataset.user)}`, { method: 'POST' });
+                        await apiFetch(`/api/friends/accept/${encodeURIComponent(btn.dataset.requestId)}`, { method: 'POST' });
                         btn.closest('.dash-request-item').remove();
                     });
                 });
                 friendsRequests.querySelectorAll('.dash-request-btn--decline').forEach(btn => {
                     btn.addEventListener('click', async () => {
-                        await apiFetch(`/api/friends/decline/${encodeURIComponent(btn.dataset.user)}`, { method: 'POST' });
+                        await apiFetch(`/api/friends/reject/${encodeURIComponent(btn.dataset.requestId)}`, { method: 'POST' });
                         btn.closest('.dash-request-item').remove();
                     });
                 });

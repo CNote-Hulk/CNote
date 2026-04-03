@@ -5,9 +5,9 @@
     --panel-rgb: 42, 35, 31;
     --text: #e7d4c4;
     --muted: #b1a294;
-    --accent: #E06B58;
-    --accent-soft: #C85A48;
-    --accent-rgb: 224, 107, 88;
+    --accent: var(--accent-color, #E06B58);
+    --accent-soft: var(--accent-light, #C85A48);
+    --accent-rgb: var(--accent-color-rgb, 224, 107, 88);
     --border: rgba(255, 255, 255, 0.08);
 }
 
@@ -74,6 +74,7 @@ body.home-page::before {
     height: calc(100% - 30px);
     border-radius: 25px;
     z-index: 100;
+    padding-top: 70px;
 }
 
 /* ── Sidebar Profile Section ── */
@@ -505,9 +506,9 @@ body.home-page::before {
     --panel-rgb: 17, 16, 9;
     --text: #ffffff;
     --muted: #b0a79e;
-    --accent: #E06B58;
-    --accent-soft: #C85A48;
-    --accent-rgb: 224, 107, 88;
+    --accent: var(--accent-color, #E06B58);
+    --accent-soft: var(--accent-light, #C85A48);
+    --accent-rgb: var(--accent-color-rgb, 224, 107, 88);
     --border: rgba(255, 255, 255, 0.1);
 }
 
@@ -518,9 +519,9 @@ body.home-page::before {
     --panel-rgb: 255, 255, 255;
     --text: #111317;
     --muted: #6B7280;
-    --accent: #D64D3C;
-    --accent-soft: #B8372C;
-    --accent-rgb: 214, 77, 60;
+    --accent: var(--accent-color, #D64D3C);
+    --accent-soft: var(--accent-light, #B8372C);
+    --accent-rgb: var(--accent-color-rgb, 214, 77, 60);
     --border: rgba(0, 0, 0, 0.06);
 }
 

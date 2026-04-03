@@ -57,15 +57,16 @@
                         <img id="profile-avatar-img" alt="Profile picture" hidden>
                         <span id="profile-avatar-fallback">👤</span>
                     </button>
+                    <input type="file" id="avatar-upload" accept="image/*" hidden>
                     <div class="settings-user-meta">
                         <div class="profile-name" id="profile-name">—</div>
                         <span class="admin-badge" id="profile-admin-badge" hidden title="Administrator">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
                             Admin
                         </span>
+                        <div class="profile-online-dot"></div>
                     </div>
                 </div>
-                <input type="file" id="avatar-upload" accept="image/*" hidden>
 
                 <!-- Hidden elements needed by JS -->
                 <span id="profile-bio" hidden></span>
