@@ -5,7 +5,15 @@
 .stats-page {
     min-height: 100vh;
     padding-top: 80px;
-    background: var(--dark-bg, #F7F7F8);
+    background: transparent;
+}
+
+body.stats-bg::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: url('../../assets/images/wallpapers/home.jpg') center/cover no-repeat;
 }
 
 /* ── Main container ── */
@@ -341,22 +349,69 @@
     stroke: rgba(255, 255, 255, 0.08);
 }
 
+[data-theme="dark"] body.stats-bg::before {
+    display: none;
+}
+
+[data-theme="dark"] .stats-page {
+    background: #0f0d0b;
+}
+
+[data-theme="dark"] .statsd-card {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.35);
+}
+
+[data-theme="dark"] .statsd-card:hover {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4);
+}
+
 [data-theme="dark"] .statsd-card--level {
-    background: linear-gradient(135deg, var(--card-bg, #111009) 0%, #1a1712 100%);
+    background: linear-gradient(135deg, #1a1714 0%, #111009 100%);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.35);
+}
+
+[data-theme="dark"] .statsd-topbar {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.35);
+}
+
+[data-theme="dark"] .statsd-goals {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.35);
 }
 
 /* ══ LIGHT MODE OVERRIDES ════════════════════════════= */
 
+[data-theme="light"] body.stats-bg::before {
+    display: none;
+}
+
 [data-theme="light"] .stats-page {
-    background: var(--dark-bg, #F7F7F8);
+    background: #F2F1EF;
+}
+
+[data-theme="light"] .statsd-card {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] .statsd-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.07);
 }
 
 [data-theme="light"] .statsd-card--level {
     background: linear-gradient(135deg, #fff 0%, #F7F6F4 100%);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] .statsd-topbar {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] .statsd-goals {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
 }
 
 [data-theme="light"] .next-goal-item {
     background: rgba(0, 0, 0, 0.02);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 /* ══ RESPONSIVE ═══════════════════════════════════════ */

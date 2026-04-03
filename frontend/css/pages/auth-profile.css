@@ -776,23 +776,25 @@
     flex-direction: column;
 }
 
-/* ── Settings page title + top tab bar ── */
+/* ── Settings page title wrapper ── */
+.settings-page-header {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto 4px;
+}
+
 .settings-page-title {
     font-family: var(--p-font-display, 'Playfair Display', Georgia, serif);
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--p-text);
-    margin: 0 auto 6px;
-    max-width: 920px;
-    width: 100%;
+    margin: 0 0 6px;
 }
 
 .settings-page-subtitle {
     font-size: 0.85rem;
     color: var(--p-text2);
-    margin: 0 auto 20px;
-    max-width: 920px;
-    width: 100%;
+    margin: 0 0 20px;
 }
 
 .settings-top-tabs {
@@ -2833,9 +2835,12 @@ a.chat-message__username:hover {
 
 /* Settings layout overrides */
 
-/* Push layout below the restored navbar */
-.profile-layout {
-    padding-top: 64px;
+.profile-page {
+    padding-top: 0 !important;
+}
+
+.profile-main {
+    padding-top: 36px !important;
 }
 
 /* Compact user header in sidebar */

@@ -678,6 +678,8 @@ const MESSAGES = {
         stats_level: '🏅 Overall Level',
         stats_level_sub: 'Keep going for higher rank',
         stats_next_goals: '🎯 Next Goals',
+        stats_greeting_sub: 'Your learning stats at a glance.',
+        stats_continue_btn: 'Continue Learning →',
 
         // JS dynamic — Login
         login_connecting: '⏳ Connecting...',
@@ -1464,6 +1466,8 @@ const MESSAGES = {
         stats_level: '🏅 Nivel General',
         stats_level_sub: 'Continuă pentru un rang mai mare',
         stats_next_goals: '🎯 Următoarele Obiective',
+        stats_greeting_sub: 'Statisticile tale de învățare dintr-o privire.',
+        stats_continue_btn: 'Continuă Învățarea →',
 
         // JS dynamic — Login
         login_connecting: '⏳ Se conectează...',
@@ -2233,6 +2237,8 @@ const MESSAGES = {
         stats_level: '🏅 Nivel General',
         stats_level_sub: 'Sigue adelante para un rango más alto',
         stats_next_goals: '🎯 Próximos Objetivos',
+        stats_greeting_sub: 'Tus estadísticas de aprendizaje de un vistazo.',
+        stats_continue_btn: 'Continuar Aprendiendo →',
 
         // JS dynamic — Login
         login_connecting: '⏳ Conectando...',
@@ -2998,6 +3004,8 @@ const MESSAGES = {
         stats_level: '🏅 Niveau Général',
         stats_level_sub: 'Continuez pour un rang plus élevé',
         stats_next_goals: '🎯 Prochains Objectifs',
+        stats_greeting_sub: 'Vos statistiques d\'apprentissage en un coup d\'œil.',
+        stats_continue_btn: 'Continuer l\'apprentissage →',
 
         // JS dynamic — Login
         login_connecting: '⏳ Connexion...',
@@ -3769,6 +3777,8 @@ const MESSAGES = {
         stats_level: '🏅 Livello Generale',
         stats_level_sub: 'Continua per un rango più alto',
         stats_next_goals: '🎯 Prossimi Obiettivi',
+        stats_greeting_sub: 'Le tue statistiche di apprendimento a colpo d\'occhio.',
+        stats_continue_btn: 'Continua ad imparare →',
 
         // JS dynamic — Login
         login_connecting: '⏳ Connessione...',
@@ -4535,6 +4545,8 @@ const MESSAGES = {
         stats_level: '🏅 Gesamtlevel',
         stats_level_sub: 'Mach weiter für einen höheren Rang',
         stats_next_goals: '🎯 Nächste Ziele',
+        stats_greeting_sub: 'Deine Lernstatistiken auf einen Blick.',
+        stats_continue_btn: 'Weiter lernen →',
 
         // JS dynamic — Login
         login_connecting: '⏳ Verbindung...',

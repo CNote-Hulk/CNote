@@ -148,11 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
             renderSidebar(user);
 
             // parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, forumRes, achievementsRes, coursesRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, coursesRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
+                apiFetch('/api/friends/requests'),
                 apiFetch('/api/forum/recent'),
+                apiFetch('/api/forum/my-posts'),
+                apiFetch('/api/forum/liked'),
                 Promise.resolve(getLocalAchievements(currentUser?.id)),
                 apiFetch('/api/progress')
             ]);
@@ -294,6 +297,62 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // =========================
+            // FAVORITES SECTION
+            // =========================
+            const favoritesGrid = document.getElementById('favorites-grid');
+            if (favoritesGrid) {
+                const allConsoles = window.CONSOLES_DATA || [];
+                if (favoritesRes.success && Array.isArray(favoritesRes.favorites) && favoritesRes.favorites.length > 0) {
+                    favoritesGrid.innerHTML = '';
+                    const emojis = ['❤️','🌟','⚡','🔥','🎯','🎮'];
+                    favoritesRes.favorites.forEach((cid, idx) => {
+                        const c = allConsoles.find(x => x.id === cid);
+                        if (!c) return;
+                        const btn = document.createElement('button');
+                        btn.className = 'console-card';
+                        btn.innerHTML = `${emojis[idx % emojis.length]} <span>${escapeHtml(c.name)}</span>`;
+                        btn.addEventListener('click', () => { window.location.href = `console.html?name=${encodeURIComponent(c.name)}`; });
+                        favoritesGrid.appendChild(btn);
+                    });
+                } else {
+                    favoritesGrid.innerHTML = `<p class="dash-empty">No favorites yet.</p>`;
+                }
+            }
+
+            // =========================
+            // FRIENDS — pending requests
+            // =========================
+            const friendsRequests = document.getElementById('home-friends-requests');
+            if (friendsRequests && friendRequestsRes.success && Array.isArray(friendRequestsRes.requests) && friendRequestsRes.requests.length > 0) {
+                friendsRequests.innerHTML = `
+                    <div class="dash-requests">
+                        <p class="dash-requests__label">Friend Requests (${friendRequestsRes.requests.length})</p>
+                        ${friendRequestsRes.requests.map(r => `
+                            <div class="dash-request-item">
+                                <span class="dash-request-name">${escapeHtml(r.username)}</span>
+                                <div class="dash-request-actions">
+                                    <button class="dash-request-btn dash-request-btn--accept" data-user="${escapeHtml(r.username)}">Accept</button>
+                                    <button class="dash-request-btn dash-request-btn--decline" data-user="${escapeHtml(r.username)}">Decline</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                friendsRequests.querySelectorAll('.dash-request-btn--accept').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        await apiFetch(`/api/friends/accept/${encodeURIComponent(btn.dataset.user)}`, { method: 'POST' });
+                        btn.closest('.dash-request-item').remove();
+                    });
+                });
+                friendsRequests.querySelectorAll('.dash-request-btn--decline').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        await apiFetch(`/api/friends/decline/${encodeURIComponent(btn.dataset.user)}`, { method: 'POST' });
+                        btn.closest('.dash-request-item').remove();
+                    });
+                });
+            }
+
+            // =========================
             // FRIENDS PREVIEW
             // =========================
             const friendsPreview = document.getElementById('home-friends-preview');
@@ -317,19 +376,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // =========================
-            // COURSE PROGRESS PREVIEW
+            // MY COURSES (all + progress + button)
             // =========================
             const coursesPreview = document.getElementById('home-courses-preview');
             if (coursesPreview) {
-                // Use local progress data
-                const progressData = JSON.parse(localStorage.getItem('cn_lesson_visits') || '{}');
-                const userId = currentUser?.id;
-                const userProgress = userId && progressData[userId] ? progressData[userId] : progressData;
-
-                // Try API data first, fallback to local
                 let courses = [];
                 if (coursesRes.success && Array.isArray(coursesRes.courses)) {
-                    courses = coursesRes.courses.slice(0, 3);
+                    courses = coursesRes.courses;
                 }
 
                 if (courses.length > 0) {
@@ -343,13 +396,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <span class="dash-course-pct">${pct}%</span>
                                     </div>
                                     <div class="progress-bar"><div style="width: ${Math.max(2, pct)}%;"></div></div>
+                                    <div class="dash-course-lessons">${c.completed || 0} / ${c.total || 0} lessons</div>
                                 </div>`;
                             }).join('')}
                         </div>
-                        <a href="invata.html" class="dash-see-all">${I18nModule.t('home_courses_see_all')}</a>
+                        <a href="invata.html" class="primary-btn" style="display:inline-block;margin-top:14px;text-decoration:none;text-align:center;">View all courses</a>
                     `;
                 } else {
-                    // Fallback: show general progress
                     coursesPreview.innerHTML = `
                         <div class="dash-courses-list">
                             <div class="dash-course-item">
@@ -360,8 +413,52 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="progress-bar"><div style="width: ${Math.max(2, percent)}%;"></div></div>
                             </div>
                         </div>
-                        <a href="invata.html" class="dash-see-all">${I18nModule.t('home_courses_see_all')}</a>
+                        <a href="invata.html" class="primary-btn" style="display:inline-block;margin-top:14px;text-decoration:none;text-align:center;">View all courses</a>
                     `;
+                }
+            }
+
+            // =========================
+            // MY POSTS
+            // =========================
+            const postsPreview = document.getElementById('home-posts-preview');
+            if (postsPreview) {
+                if (myPostsRes.success && Array.isArray(myPostsRes.posts) && myPostsRes.posts.length > 0) {
+                    postsPreview.innerHTML = `
+                        <div class="dash-posts-list">
+                            ${myPostsRes.posts.slice(0, 5).map(p => `
+                                <a href="community.html?post=${p.id}" class="dash-post-item">
+                                    <span class="dash-post-title">${escapeHtml(p.title || p.content || 'Post')}</span>
+                                    <span class="dash-post-meta">${p.replies || 0} replies</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                        <a href="community.html" class="dash-see-all">See all posts</a>
+                    `;
+                } else {
+                    postsPreview.innerHTML = `<p class="dash-empty">No posts yet. <a href="community.html" class="dash-see-all">Go to community</a></p>`;
+                }
+            }
+
+            // =========================
+            // LIKED POSTS
+            // =========================
+            const likedPreview = document.getElementById('home-liked-preview');
+            if (likedPreview) {
+                if (likedPostsRes.success && Array.isArray(likedPostsRes.posts) && likedPostsRes.posts.length > 0) {
+                    likedPreview.innerHTML = `
+                        <div class="dash-posts-list">
+                            ${likedPostsRes.posts.slice(0, 5).map(p => `
+                                <a href="community.html?post=${p.id}" class="dash-post-item">
+                                    <span class="dash-post-title">${escapeHtml(p.title || p.content || 'Post')}</span>
+                                    <span class="dash-post-meta">by ${escapeHtml(p.username || '')}</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                        <a href="community.html" class="dash-see-all">See all liked posts</a>
+                    `;
+                } else {
+                    likedPreview.innerHTML = `<p class="dash-empty">No liked posts yet. <a href="community.html" class="dash-see-all">Explore community</a></p>`;
                 }
             }
 
