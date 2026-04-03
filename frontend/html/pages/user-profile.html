@@ -9,6 +9,7 @@
 		<link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico">
 		<title>User Profile — Console Notebook</title>
 		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="/css/pages/user-profile.css">
 	</head>
 	<body>
 		<!-- NAVBAR -->
@@ -67,24 +68,29 @@
 				</div>
 			</div>
 
-			<!-- SOCIAL LINKS -->
-			<div class="up-section" id="user-social-section" hidden>
-				<div class="user-social-links" id="user-social-links"></div>
-			</div>
-
-			<!-- CONSOLE LISTS -->
-			<div class="up-section" id="user-profile-consoles">
-				<div class="up-consoles">
-					<div class="profile-console-list">
-						<h3 class="profile-console-list__title" data-i18n="profile_favorite_consoles">🎮 Favorite consoles</h3>
-						<div class="profile-console-list__items" id="user-favorite-consoles">
-							<span class="profile-console-list__empty" data-i18n="profile_no_consoles">No consoles.</span>
-						</div>
+			<!-- ABOUT CARD -->
+			<div class="up-section" id="user-about-section">
+				<div class="up-card">
+					<div class="up-card__header">
+						<h3 class="up-card__title">About</h3>
 					</div>
-					<div class="profile-console-list">
-						<h3 class="profile-console-list__title" data-i18n="profile_owned_consoles">🕹️ Owned consoles</h3>
-						<div class="profile-console-list__items" id="user-owned-consoles">
-							<span class="profile-console-list__empty" data-i18n="profile_no_consoles">No consoles.</span>
+
+					<!-- Social links row -->
+					<div class="user-social-links" id="user-social-links" hidden></div>
+
+					<!-- Console lists -->
+					<div class="up-consoles-inline" id="user-profile-consoles">
+						<div class="profile-console-list">
+							<h4 class="profile-console-list__title" data-i18n="profile_favorite_consoles">🎮 Favorite consoles</h4>
+							<div class="profile-console-list__items" id="user-favorite-consoles">
+								<span class="profile-console-list__empty" data-i18n="profile_no_consoles">No consoles.</span>
+							</div>
+						</div>
+						<div class="profile-console-list">
+							<h4 class="profile-console-list__title" data-i18n="profile_owned_consoles">🕹️ Owned consoles</h4>
+							<div class="profile-console-list__items" id="user-owned-consoles">
+								<span class="profile-console-list__empty" data-i18n="profile_no_consoles">No consoles.</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -92,6 +98,7 @@
 
 			<!-- DASHBOARD -->
 			<div class="up-section profile-panel active user-dashboard-panel" id="user-dashboard-panel">
+				<h3 class="user-section-title">📊 Stats</h3>
 				<div class="dash-stats">
 					<div class="dash-stat">
 						<span class="dash-stat__icon">📚</span>
@@ -139,9 +146,15 @@
 				<div id="user-dash-achievements-preview"></div>
 			</div>
 
+			<!-- FORUM ACTIVITY -->
+			<div class="up-section" id="user-forum-section" hidden>
+				<h3 class="user-section-title">💬 Forum Activity</h3>
+				<div class="up-card" id="user-forum-activity"></div>
+			</div>
+
 			<!-- ACTIVE LISTINGS -->
 			<div class="up-section user-listings-section" id="user-listings-section" hidden>
-				<h3 class="user-section-title">📋 Active listings</h3>
+				<h3 class="user-section-title">📋 Active Marketplace Listings</h3>
 				<div class="user-listings-grid" id="user-listings-grid"></div>
 			</div>
 

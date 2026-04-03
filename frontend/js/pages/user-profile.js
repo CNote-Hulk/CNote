@@ -115,11 +115,9 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
         /** Render social links if user has them and privacy allows */
         function renderSocialLinks(profile) {
-            const section = document.getElementById('user-social-section');
             const container = document.getElementById('user-social-links');
-            if (!section || !container) return;
+            if (!container) return;
 
-            // Server already filters based on show_social_links, but double-check
             const links = [];
             if (profile.social_discord) links.push({ platform: 'Discord', value: profile.social_discord, icon: '💬' });
             if (profile.social_twitter) links.push({ platform: 'Twitter', value: profile.social_twitter, icon: '🐦' });
@@ -128,7 +126,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
             if (links.length === 0) return;
 
-            section.hidden = false;
+            container.hidden = false;
             container.innerHTML = links.map(l => {
                 const isUrl = l.value.startsWith('http://') || l.value.startsWith('https://');
                 if (isUrl) {
@@ -285,6 +283,9 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 // Active marketplace listings
                 await loadUserListings(profile.id);
 
+                // Forum activity
+                await loadForumActivity(profile.username);
+
             } catch (err) {
                 console.error('Profile load error:', err);
                 loadingEl.textContent = 'An error occurred while loading the profile.';
@@ -439,6 +440,35 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 section.hidden = false;
                 grid.innerHTML = '<p class="user-listings-empty">Unable to load listings.</p>';
             }
+        }
+
+        /** Fetch and display user's recent forum threads */
+        async function loadForumActivity(username) {
+            const section = document.getElementById('user-forum-section');
+            const container = document.getElementById('user-forum-activity');
+            if (!section || !container) return;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/forum/recent`);
+                const data = await res.json();
+                if (!data.success || !data.threads) return;
+
+                const userThreads = data.threads.filter(t => t.author === username).slice(0, 5);
+                if (userThreads.length === 0) return;
+
+                section.hidden = false;
+                container.innerHTML = userThreads.map(t => {
+                    const date = new Date(t.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const consoleName = (t.console || 'general').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    return `<a href="/html/pages/community.html" class="up-forum-row">
+                        <div class="up-forum-row__info">
+                            <span class="up-forum-row__title">${escapeHtml(t.title)}</span>
+                            <span class="up-forum-row__meta">${escapeHtml(consoleName)} · ${date}</span>
+                        </div>
+                        <span class="up-forum-row__replies">${t.reply_count || 0} 💬</span>
+                    </a>`;
+                }).join('');
+            } catch { /* ignore */ }
         }
 
         /** Open the avatar lightbox */

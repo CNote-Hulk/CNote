@@ -776,6 +776,59 @@
     flex-direction: column;
 }
 
+/* ── Settings page title + top tab bar ── */
+.settings-page-title {
+    font-family: var(--p-font-display, 'Playfair Display', Georgia, serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--p-text);
+    margin: 0 auto 6px;
+    max-width: 920px;
+    width: 100%;
+}
+
+.settings-page-subtitle {
+    font-size: 0.85rem;
+    color: var(--p-text2);
+    margin: 0 auto 20px;
+    max-width: 920px;
+    width: 100%;
+}
+
+.settings-top-tabs {
+    display: flex;
+    gap: 0;
+    max-width: 920px;
+    width: 100%;
+    margin: 0 auto 28px;
+    border-bottom: 1px solid var(--p-border);
+}
+
+.settings-top-tab {
+    padding: 10px 18px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--p-muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-family: var(--p-font-body);
+    transition: color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    margin-bottom: -1px;
+}
+
+.settings-top-tab:hover {
+    color: var(--p-text);
+}
+
+.settings-top-tab.active {
+    color: var(--p-text);
+    border-bottom-color: var(--accent-color, #D4AF7A);
+    font-weight: 600;
+}
+
 /* Panel visibility */
 .profile-panel {
     display: none;
@@ -794,34 +847,35 @@
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Cards ── */
+/* ── Cards (Settings sections) ── */
 .course-card {
     background: var(--p-card);
     border: 1px solid var(--p-border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 16px;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
     transition: border-color 0.25s ease;
 }
 
 .course-card:hover {
-    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
+    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.18);
 }
 
 .course-card__section-title {
     font-family: var(--p-font-body);
-    font-size: 0.72rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--p-muted);
-    margin-bottom: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--p-text);
+    margin-bottom: 4px;
 }
 
 .course-card__section-desc {
     color: var(--p-text2);
     font-size: 0.82rem;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
+    line-height: 1.5;
 }
 
 .course-card__header {
@@ -988,6 +1042,33 @@
 .settings-info-desc {
     color: var(--p-text2);
     font-size: 0.82rem;
+}
+
+/* Settings section separator */
+.settings-section-sep {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    height: 1px;
+    background: var(--p-border);
+    margin-bottom: 20px;
+}
+
+/* Settings back link */
+.settings-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--p-muted);
+    text-decoration: none;
+    margin-top: auto;
+    padding: 8px 0;
+    transition: color 0.2s ease;
+}
+
+.settings-back-link:hover {
+    color: var(--accent-color, #D4AF7A);
 }
 
 /* Notification Toggles */
@@ -1268,36 +1349,17 @@
     }
 
     .profile-sidebar-nav {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
+        display: none;
     }
 
-    .profile-tab {
-        width: auto;
-        min-width: 0;
-        padding: 10px 0;
-        font-size: 12px;
-        border-radius: 8px;
-        justify-content: center;
-        text-align: center;
-        border-left: none;
-        gap: 0;
+    .settings-top-tabs {
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
-    .profile-tab.active {
-        border-left: none;
-        padding-left: 0;
-        background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.1);
-    }
-
-    .profile-tab span {
-        display: none !important;
-    }
-
-    .profile-tab svg {
-        width: 18px;
-        height: 18px;
+    .settings-top-tabs::-webkit-scrollbar {
+        display: none;
     }
 
     .profile-main {
@@ -2548,6 +2610,7 @@ a.chat-message__username:hover {
     text-align: center;
     background: var(--p-card, rgba(255, 255, 255, 0.04));
     transition: border-color 0.25s, transform 0.15s, box-shadow 0.25s;
+    position: relative;
 }
 .theme-card:hover {
     transform: translateY(-2px);
@@ -2556,6 +2619,23 @@ a.chat-message__username:hover {
 .theme-card.active {
     border-color: var(--accent-color, #D4AF7A);
     box-shadow: 0 0 16px rgba(var(--accent-rgb, 212, 175, 122), 0.12);
+}
+.theme-card.active::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    background: var(--accent-color, #D4AF7A);
+    color: var(--p-card, #181410);
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 .theme-card__preview {
     height: 64px;

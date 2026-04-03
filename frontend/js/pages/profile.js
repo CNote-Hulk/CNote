@@ -66,6 +66,7 @@ function initSettings() {
 
         document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.settings-top-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabKey));
 
         tabBtn.classList.add('active');
         panel.classList.add('active');
@@ -77,6 +78,11 @@ function initSettings() {
             }
         }
     };
+
+    // ═══ TOP TAB BAR ═══
+    document.querySelectorAll('.settings-top-tab').forEach(btn => {
+        btn.addEventListener('click', () => activateTab(btn.dataset.tab, true));
+    });
 
     const applyHashTab = () => {
         const hash = window.location.hash.replace('#', '');
