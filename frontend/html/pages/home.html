@@ -324,5 +324,29 @@
         }
     }());
     </script>
+    <script>
+    /* Navbar hide on scroll — mobile only */
+    (function () {
+        if (window.innerWidth > 768) return;
+        var navbar = document.querySelector('.navbar');
+        var lastY = 0;
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                requestAnimationFrame(function () {
+                    var y = window.scrollY;
+                    if (y > lastY && y > 80) {
+                        navbar.classList.add('navbar--hidden');
+                    } else {
+                        navbar.classList.remove('navbar--hidden');
+                    }
+                    lastY = y;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }());
+    </script>
 </body>
 </html>

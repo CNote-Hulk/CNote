@@ -19,192 +19,12 @@
     display: none;
 }
 
-@media (max-width: 768px) {
-    body:has(.community-page--hub) .navbar .container {
-        position: relative;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 0 16px;
-    }
-
-    body:has(.community-page--hub) .navbar {
-        padding: 12px 0 0;
-        overflow: visible;
-    }
-
-    /* Logo: restore absolute centered for community (overrides inline-nav default) */
-    body:has(.community-page--hub) .logo {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 8px;
-        width: auto;
-        text-align: left;
-        padding: 0;
-    }
-
-    /* Hide standard navbar hamburger on community pages */
-    body.community-navbar-page .hamburger {
-        display: none;
-    }
-
-    /* Restore row layout for community navbar */
-    body:has(.community-page--hub) .navbar .container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        justify-content: center;
-        position: relative;
-        padding: 0 16px;
-    }
-
-    body:has(.community-page--hub) .navbar-search-btn {
-        position: absolute;
-        left: auto;
-        right: 50px;
-        top: 10px;
-        z-index: 10;
-        margin-right: 0;
-    }
-
-    body:has(.community-page--hub) .navbar-profile-wrap {
-        position: absolute;
-        right: 16px;
-        top: 10px;
-        z-index: 10;
-    }
-
-    /* Nav-links: inline row, pushed below logo/buttons row */
-    body:has(.community-page--hub) .nav-links {
-        position: static;
-        width: 100%;
-        height: auto;
-        transform: none;
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-        background: none;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 44px;
-        padding: 0 10px 12px;
-        gap: 2px 0;
-        font-size: 0.82rem;
-        z-index: auto;
-        overflow-x: visible;
-        scrollbar-width: auto;
-    }
-
-    body:has(.community-page--hub) .nav-links::-webkit-scrollbar {
-        display: revert;
-    }
-
-    body:has(.community-page--hub) .nav-links a {
-        font-size: 0.82rem;
-        pointer-events: auto;
-        display: inline;
-        padding: 4px 6px;
-        white-space: normal;
-    }
-
-    body:has(.community-page--hub) .nav-links li {
-        width: auto;
-        transform: none;
-        opacity: 1;
-        flex-shrink: revert;
-    }
-
-    /* Extra-narrow screens: shrink nav text more */
-    @media (max-width: 360px) {
-        body:has(.community-page--hub) .logo {
-            font-size: 0.85rem;
-            letter-spacing: 1.5px;
-        }
-
-        body:has(.community-page--hub) .nav-links {
-            padding: 0 6px 10px;
-            gap: 2px 0;
-        }
-
-        body:has(.community-page--hub) .nav-links a {
-            font-size: 0.72rem;
-        }
-
-        body:has(.community-page--hub) .nav-links li + li::before {
-            margin: 0 5px;
-            font-size: 0.72rem;
-        }
-
-        body:has(.community-page--hub) .navbar-search-btn {
-            right: 42px;
-            top: 8px;
-        }
-
-        body:has(.community-page--hub) .navbar-profile-wrap {
-            right: 10px;
-            top: 8px;
-        }
-    }
-
-}
-
-/* ── Community page + mobile bottom nav: compact navbar ─── */
-@media (max-width: 768px) {
-    body.has-mbn:has(.community-page--hub) .navbar {
-        height: 56px;
-        padding: 0;
-        overflow: hidden;
-    }
-
-    body.has-mbn:has(.community-page--hub) .navbar .container {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        padding: 0 14px;
-        gap: 0;
-        position: relative;
-    }
-
-    body.has-mbn:has(.community-page--hub) .logo {
-        position: static;
-        transform: none;
-        flex: 1;
-        text-align: center;
-        top: auto;
-        left: auto;
-    }
-
-    body.has-mbn:has(.community-page--hub) .navbar-search-btn {
-        position: static;
-        left: auto;
-        right: auto;
-        top: auto;
-        flex-shrink: 0;
-    }
-
-    body.has-mbn:has(.community-page--hub) .navbar-profile-wrap {
-        position: static;
-        right: auto;
-        top: auto;
-        flex-shrink: 0;
-    }
-
-    body.has-mbn:has(.community-page--hub) .community-hub {
-        padding: 0;
-    }
-}
-
-
 /* ── Sidebar ────────────────────────────────────────────── */
 
 .hub-sidebar {
     width: 260px;
     min-width: 260px;
+    margin-left: 10px;
     background: var(--dark-bg-2, #151210);
     border-right: 1px solid var(--border-color);
     overflow-y: auto;
@@ -213,7 +33,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    height: 100%;
+    height: 99%;
     border-radius: 0 16px 16px 0;
     position: relative;
 }
@@ -2853,7 +2673,8 @@
     /* Background image fixed is janky on mobile — use scroll */
     .community-page--hub {
         background-attachment: scroll;
-        padding-top: 120px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         height: 100vh;
         height: 100dvh;
         display: flex;

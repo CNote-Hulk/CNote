@@ -174,10 +174,13 @@ export const NavigationModule = {
 
         const mbn = document.getElementById('mobile-bottom-nav');
 
-        const isStaticPage = document.body.classList.contains('home-page');
+        const isHomePage = document.body.classList.contains('home-page');
+        const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
 
-        if (isStaticPage) {
+        // Home desktop keeps navbar fixed; Home mobile uses auto-hide.
+        if (isHomePage && !isMobileViewport) {
             navbar.classList.remove('navbar--hidden');
+            if (mbn) mbn.classList.remove('mbn--hidden');
             return;
         }
 
@@ -198,7 +201,7 @@ export const NavigationModule = {
             // Stay visible near top
             if (currentY < 80) {
                 navbar.classList.remove('navbar--hidden');
-                if (mbn) mbn.classList.remove('mbn--hidden');
+                if (mbn && !isHomePage) mbn.classList.remove('mbn--hidden');
                 lastScrollY = currentY;
                 ticking = false;
                 return;
@@ -213,11 +216,11 @@ export const NavigationModule = {
             if (delta > 0) {
                 // Scroll down → hide
                 navbar.classList.add('navbar--hidden');
-                if (mbn) mbn.classList.add('mbn--hidden');
+                if (mbn && !isHomePage) mbn.classList.add('mbn--hidden');
             } else {
                 // Scroll up → show
                 navbar.classList.remove('navbar--hidden');
-                if (mbn) mbn.classList.remove('mbn--hidden');
+                if (mbn && !isHomePage) mbn.classList.remove('mbn--hidden');
             }
 
             lastScrollY = currentY < 0 ? 0 : currentY; // iOS elastic scroll protection
