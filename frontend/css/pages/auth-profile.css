@@ -2831,13 +2831,11 @@ a.chat-message__username:hover {
    SETTINGS ROW LAYOUT — new horizontal label+control
    ═══════════════════════════════════════════════════ */
 
-/* Remove padding-top since no app navbar */
-.profile-page {
-    padding-top: 0 !important;
-}
+/* Settings layout overrides */
 
-.profile-main {
-    padding-top: 36px !important;
+/* Push layout below the restored navbar */
+.profile-layout {
+    padding-top: 64px;
 }
 
 /* Compact user header in sidebar */

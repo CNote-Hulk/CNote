@@ -13,129 +13,304 @@
     <title>Statistics — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
 </head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <button class="navbar-search-btn" aria-label="Search" type="button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </button>
-            <a href="index.html" class="logo">Console Notebook</a>
-<ul class="nav-links">
-                <li><a href="community-welcome-page.html" data-i18n="nav_community">Community</a></li>
-                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
-                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
-                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
-                <li><a href="help.html" data-i18n="nav_help">Help</a></li>
-                <li><a href="help.html#contact" data-i18n="nav_contact">Contact</a></li>
-            </ul>
-            <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profile" type="button">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </button>
-            </div>
-        </div>
-    </nav>
+<body class="has-mbn">
 
     <main class="stats-page">
-        <section class="section stats-hero">
-            <div class="container">
-                <h1 class="section-title" data-i18n="stats_title">Personal Statistics</h1>
-                <p class="section-intro" data-i18n="stats_intro">Your progress dashboard: lessons, quizzes, achievements and console exploration.</p>
-            </div>
-        </section>
+        <div class="statsd">
 
-        <section class="section">
-            <div class="container">
-                <div class="stats-grid">
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_lessons_completed">Lessons Completed</div>
-                        <div class="stats-value" id="stat-lessons-completed">0</div>
-                        <div class="stats-sub" id="stat-lessons-sub">of 0 lessons</div>
-                        <div class="progress-bar">
-                            <div class="progress-bar__fill" id="stat-lessons-fill" style="width: 0%;"></div>
+            <!-- ═══ TOP BAR ═══ -->
+            <header class="statsd-topbar">
+                <div class="statsd-topbar__left">
+                    <div class="statsd-date">
+                        <span class="statsd-date__day" id="statsd-day">—</span>
+                        <div class="statsd-date__info">
+                            <span id="statsd-weekday">—</span>
+                            <span id="statsd-month">—</span>
                         </div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_lessons_visited">Lessons Visited</div>
-                        <div class="stats-value" id="stat-lessons-visited">0</div>
-                        <div class="stats-sub" id="stat-lessons-visited-sub">of 0 lessons</div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_courses_completed">Courses Completed</div>
-                        <div class="stats-value" id="stat-courses-completed">0</div>
-                        <div class="stats-sub" id="stat-courses-sub">of 0 courses</div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_achievements_unlocked">Achievements Unlocked</div>
-                        <div class="stats-value" id="stat-achievements-earned">0</div>
-                        <div class="stats-sub" id="stat-achievements-sub">of 0 badges</div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_quizzes">Quizzes Completed</div>
-                        <div class="stats-value" id="stat-quiz-attempts">0</div>
-                        <div class="stats-sub" id="stat-quiz-sub">avg best score: 0%</div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_perfect">Perfect Quizzes</div>
-                        <div class="stats-value" id="stat-perfect-lessons">0</div>
-                        <div class="stats-sub" data-i18n="stats_perfect_sub">lessons with 100% score</div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_consoles_visited">Consoles Visited</div>
-                        <div class="stats-value" id="stat-consoles-visited">0</div>
-                        <div class="stats-sub" data-i18n="stats_consoles_sub">unique pages explored</div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_days">Days on Platform</div>
-                        <div class="stats-value" id="stat-days-member">0</div>
-                        <div class="stats-sub" data-i18n="stats_days_sub">since account creation</div>
-                    </article>
-
-                    <article class="stats-card">
-                        <div class="stats-label" data-i18n="stats_level">Overall Level</div>
-                        <div class="stats-value" id="stat-level">Novice</div>
-                        <div class="stats-sub" id="stat-level-sub" data-i18n="stats_level_sub">Keep going for higher rank</div>
-                    </article>
+                    </div>
+                    <a href="invata.html" class="statsd-cta" data-i18n="stats_continue_btn">Continue Learning →</a>
                 </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <div class="course-card">
-                    <h2 class="stats-section-title" data-i18n="stats_next_goals">Next Goals</h2>
-                    <div id="next-goals" class="next-goals"></div>
+                <div class="statsd-topbar__right">
+                    <h1 class="statsd-greeting">Hey, <span id="statsd-username">User</span>! 👋</h1>
+                    <p class="statsd-greeting__sub" data-i18n="stats_greeting_sub">Your learning stats at a glance.</p>
                 </div>
-            </div>
-        </section>
-    </main>
+            </header>
 
-    <footer class="footer">
-        <div class="footer-inner container">
-            <div class="footer-left">
-                <p class="footer-main"> 2026 Console Notebook</p>
+            <!-- ═══ STATS GRID ═══ -->
+            <div class="statsd-grid">
+
+                <!-- 1 — Lessons progress (wide, with ring) -->
+                <article class="statsd-card statsd-card--ring statsd-card--wide">
+                    <span class="statsd-card__label" data-i18n="stats_lessons_completed">Lessons Completed</span>
+                    <div class="statsd-ring-layout">
+                        <div class="statsd-ring">
+                            <svg class="statsd-ring__svg" viewBox="0 0 100 100">
+                                <circle class="statsd-ring__bg" cx="50" cy="50" r="42"/>
+                                <circle class="statsd-ring__fill" cx="50" cy="50" r="42" id="stats-ring-arc"/>
+                            </svg>
+                            <div class="statsd-ring__center">
+                                <span class="statsd-ring__pct" id="stat-lessons-pct">0%</span>
+                            </div>
+                        </div>
+                        <div class="statsd-ring__info">
+                            <div class="statsd-card__num" id="stat-lessons-completed">0</div>
+                            <div class="statsd-card__sub" id="stat-lessons-sub">of 0 lessons</div>
+                            <!-- Hidden progress bar kept for JS compatibility -->
+                            <div class="progress-bar" style="display:none">
+                                <div class="progress-bar__fill" id="stat-lessons-fill" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 2 — Quizzes -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">📝</span>
+                    <span class="statsd-card__label" data-i18n="stats_quizzes">Quizzes Done</span>
+                    <div class="statsd-card__num" id="stat-quiz-attempts">0</div>
+                    <div class="statsd-card__sub" id="stat-quiz-sub">avg best score: 0%</div>
+                </article>
+
+                <!-- 3 — Achievements (accent card) -->
+                <article class="statsd-card statsd-card--accent">
+                    <span class="statsd-card__icon" aria-hidden="true">🏆</span>
+                    <span class="statsd-card__label" data-i18n="stats_achievements_unlocked">Achievements</span>
+                    <div class="statsd-card__num" id="stat-achievements-earned">0</div>
+                    <div class="statsd-card__sub" id="stat-achievements-sub">of 0 badges</div>
+                </article>
+
+                <!-- 4 — Courses -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">📚</span>
+                    <span class="statsd-card__label" data-i18n="stats_courses_completed">Courses Completed</span>
+                    <div class="statsd-card__num" id="stat-courses-completed">0</div>
+                    <div class="statsd-card__sub" id="stat-courses-sub">of 0 courses</div>
+                </article>
+
+                <!-- 5 — Perfect quizzes -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">⭐</span>
+                    <span class="statsd-card__label" data-i18n="stats_perfect">Perfect Quizzes</span>
+                    <div class="statsd-card__num" id="stat-perfect-lessons">0</div>
+                    <div class="statsd-card__sub" data-i18n="stats_perfect_sub">100% score</div>
+                </article>
+
+                <!-- 6 — Lessons visited -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">👁️</span>
+                    <span class="statsd-card__label" data-i18n="stats_lessons_visited">Lessons Visited</span>
+                    <div class="statsd-card__num" id="stat-lessons-visited">0</div>
+                    <div class="statsd-card__sub" id="stat-lessons-visited-sub">of 0 lessons</div>
+                </article>
+
+                <!-- 7 — Consoles visited -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">🕹️</span>
+                    <span class="statsd-card__label" data-i18n="stats_consoles_visited">Consoles Visited</span>
+                    <div class="statsd-card__num" id="stat-consoles-visited">0</div>
+                    <div class="statsd-card__sub" data-i18n="stats_consoles_sub">unique pages explored</div>
+                </article>
+
+                <!-- 8 — Days on platform -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">📅</span>
+                    <span class="statsd-card__label" data-i18n="stats_days">Days on Platform</span>
+                    <div class="statsd-card__num" id="stat-days-member">0</div>
+                    <div class="statsd-card__sub" data-i18n="stats_days_sub">since account creation</div>
+                </article>
+
+                <!-- 9 — Level (wide accent card) -->
+                <article class="statsd-card statsd-card--level statsd-card--wide">
+                    <div class="statsd-level">
+                        <div class="statsd-level__body">
+                            <span class="statsd-card__label" data-i18n="stats_level">Overall Level</span>
+                            <div class="statsd-card__num statsd-card__num--level" id="stat-level">Novice</div>
+                            <div class="statsd-card__sub" id="stat-level-sub" data-i18n="stats_level_sub">Keep going for higher rank</div>
+                        </div>
+                        <span class="statsd-level__emoji" id="stats-level-emoji" aria-hidden="true">🌱</span>
+                    </div>
+                </article>
+
             </div>
-            <div class="footer-right">
-                <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
-                <a href="tel:+40758464907">+40 758 464 907</a>
-            </div>
+
+            <!-- ═══ NEXT GOALS ═══ -->
+            <section class="statsd-goals">
+                <h2 class="statsd-goals__title" data-i18n="stats_next_goals">Next Goals</h2>
+                <div id="next-goals" class="next-goals"></div>
+            </section>
+
         </div>
-    </footer>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-inner container">
+                <div class="footer-left">
+                    <p class="footer-main">© 2026 Console Notebook</p>
+                </div>
+                <div class="footer-right">
+                    <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
+                    <a href="tel:+40758464907">+40 758 464 907</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Navbar at bottom — appears after scrolling -->
+        <nav class="navbar">
+            <div class="container">
+                <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </button>
+                <a href="index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+                <ul class="nav-links">
+                    <li><a href="community.html" data-i18n="nav_community">Community</a></li>
+                    <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                    <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                    <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                    <li><a href="help.html" data-i18n="nav_help">Help</a></li>
+                    <li><a href="help.html#contact" data-i18n="nav_contact">Contact</a></li>
+                </ul>
+                <div class="navbar-profile-wrap">
+                    <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </main>
 
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
     <script type="module" src="../../js/pages/statistici.js"></script>
-    <script src="../../js/fallback/hamburger.js" defer></script>
     <script src="../../js/fallback/search-profile.js"></script>
+
+    <!-- Mobile bottom navigation (hidden on desktop via CSS) -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <!-- More dropdown -->
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="statistici.html" class="mbn-dd-item mbn-item--active" data-mbn-page="statistici">
+                <span class="mbn-dd-icon">📊</span>
+                <span data-i18n="sidebar_stats">Statistics</span>
+            </a>
+            <div class="mbn-dd-sep"></div>
+            <a href="invata.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">📚</span>
+                <span data-i18n="sidebar_learn">Learn</span>
+            </a>
+            <a href="comparatie.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">⚔️</span>
+                <span data-i18n="sidebar_compare">Compare</span>
+            </a>
+            <a href="repair.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🔧</span>
+                <span data-i18n="sidebar_repair">Repair</span>
+            </a>
+            <a href="marketplace.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🛒</span>
+                <span data-i18n="sidebar_marketplace">Marketplace</span>
+            </a>
+            <a href="help.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">❓</span>
+                <span data-i18n="nav_help">Help</span>
+            </a>
+        </div>
+
+        <a href="home.html" class="mbn-item" data-mbn-page="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-i18n="sidebar_home">Home</span>
+        </a>
+        <a href="evolutie.html" class="mbn-item" data-mbn-page="evolutie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+            <span data-i18n="sidebar_consoles">Consoles</span>
+        </a>
+        <a href="community.html" class="mbn-item" data-mbn-page="community">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-i18n="sidebar_community">Community</span>
+        </a>
+        <a href="profil.html" class="mbn-item" data-mbn-page="profil">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-i18n="navbar_profile">Profile</span>
+        </a>
+        <button type="button" class="mbn-item mbn-more-btn mbn-item--active" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+            <span>More</span>
+        </button>
+    </nav>
+    <script>
+    (function () {
+        var btn = document.getElementById('mbn-more-btn');
+        var dd  = document.getElementById('mbn-dropdown');
+        if (btn && dd) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var open = dd.classList.toggle('is-open');
+                btn.setAttribute('aria-expanded', String(open));
+            });
+            document.addEventListener('click', function () {
+                dd.classList.remove('is-open');
+                btn.setAttribute('aria-expanded', 'false');
+            });
+            dd.addEventListener('click', function (e) { e.stopPropagation(); });
+        }
+    }());
+    </script>
+
+    <script>
+    /* ── Populate header date ── */
+    (function () {
+        var d = new Date();
+        var dayEl = document.getElementById('statsd-day');
+        var wdEl  = document.getElementById('statsd-weekday');
+        var moEl  = document.getElementById('statsd-month');
+        if (dayEl) dayEl.textContent = d.getDate();
+        if (wdEl)  wdEl.textContent  = d.toLocaleDateString('en', { weekday: 'long' });
+        if (moEl)  moEl.textContent  = d.toLocaleDateString('en', { month: 'long' });
+    }());
+
+    /* ── Best-effort username from localStorage ── */
+    (function () {
+        try {
+            var keys = ['cn_user', 'cnote_user', 'user'];
+            for (var i = 0; i < keys.length; i++) {
+                var raw = localStorage.getItem(keys[i]);
+                if (!raw) continue;
+                var u = JSON.parse(raw);
+                var name = u.username || u.displayName || u.name || '';
+                if (name) {
+                    var el = document.getElementById('statsd-username');
+                    if (el) el.textContent = name;
+                    break;
+                }
+            }
+        } catch(e) {}
+    }());
+
+    /* ── Progress ring: observe stat-lessons-fill and update SVG arc ── */
+    (function () {
+        var fill = document.getElementById('stat-lessons-fill');
+        var arc  = document.getElementById('stats-ring-arc');
+        var pct  = document.getElementById('stat-lessons-pct');
+        if (!fill || !arc) return;
+        var CIRC = 263.9; /* 2π × 42 */
+        function update() {
+            var w = parseFloat(fill.style.width) || 0;
+            arc.style.strokeDashoffset = CIRC * (1 - w / 100);
+            if (pct) pct.textContent = Math.round(w) + '%';
+        }
+        new MutationObserver(update).observe(fill, { attributes: true, attributeFilter: ['style'] });
+        update();
+    }());
+
+    /* ── Level emoji based on level text ── */
+    (function () {
+        var levelEl = document.getElementById('stat-level');
+        var emojiEl = document.getElementById('stats-level-emoji');
+        if (!levelEl || !emojiEl) return;
+        var map = { novice: '🌱', intermediate: '📖', advanced: '🎯', expert: '🔥', legend: '👑' };
+        new MutationObserver(function () {
+            var key = (levelEl.textContent || '').toLowerCase();
+            emojiEl.textContent = map[key] || '🌱';
+        }).observe(levelEl, { childList: true, characterData: true, subtree: true });
+    }());
+    </script>
 </body>
 </html>
-
-
-
