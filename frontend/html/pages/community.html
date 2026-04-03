@@ -208,82 +208,79 @@
     <script src="../../js/fallback/search-profile.js"></script>
 
     <!-- Mobile bottom navigation (hidden on desktop via CSS) -->
-    <nav class=mobile-bottom-nav id=mobile-bottom-nav aria-label=Mobile navigation>
-        <div class=mbn-dropdown id=mbn-dropdown>
-            <a href=comparatie.html class=mbn-dd-item data-mbn-page=comparatie>
-                <span class=mbn-dd-icon>&#x2694;&#xFE0F;</span>
-                <span data-i18n=sidebar_compare>Compare</span>
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <button type="button" class="mbn-dd-item" data-mbn-view="repair-requests">
+                <span class="mbn-dd-icon">&#x1F4CB;</span>
+                <span data-i18n="repair_my_requests">My Requests</span>
+            </button>
+            <button type="button" class="mbn-dd-item" data-mbn-view="dm">
+                <span class="mbn-dd-icon">&#x2709;&#xFE0F;</span>
+                <span data-i18n="community_messages_direct">Direct messages</span>
+            </button>
+            <div class="mbn-dd-sep"></div>
+            <a href="profil.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">&#x1F464;</span>
+                <span data-i18n="navbar_profile">Profile</span>
             </a>
-            <div class=mbn-dd-sep></div>
-            <a href=home.html#collection class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x1F392;</span>
-                <span data-i18n=sidebar_collection>Collection</span>
-            </a>
-            <a href=home.html#favorites class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x2764;&#xFE0F;</span>
-                <span data-i18n=sidebar_favorites>Favorites</span>
-            </a>
-            <a href=home.html#progress class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x1F4C8;</span>
-                <span data-i18n=sidebar_progress>Progress</span>
-            </a>
-            <a href=home.html#achievements class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x1F3C6;</span>
-                <span data-i18n=sidebar_achievements>Achievements</span>
-            </a>
-            <div class=mbn-dd-sep></div>
-            <a href=marketplace.html class=mbn-dd-item data-mbn-page=marketplace>
-                <span class=mbn-dd-icon>&#x1F6D2;</span>
-                <span data-i18n=sidebar_marketplace>Marketplace</span>
-            </a>
-            <a href=repair.html class=mbn-dd-item data-mbn-page=repair>
-                <span class=mbn-dd-icon>&#x1F527;</span>
-                <span data-i18n=sidebar_repair>Repair</span>
-            </a>
-            <div class=mbn-dd-sep></div>
-            <a href=profil.html class=mbn-dd-item data-mbn-page=profil>
-                <span class=mbn-dd-icon>&#x1F464;</span>
-                <span data-i18n=navbar_profile>Profile</span>
+            <a href="evolutie.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">&#x1F579;&#xFE0F;</span>
+                <span data-i18n="sidebar_consoles">Consoles</span>
             </a>
         </div>
 
-        <a href=home.html class=mbn-item data-mbn-page=home>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><path d=M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z/><polyline points=9 22 9 12 15 12 15 22/></svg>
-            <span data-i18n=sidebar_home>Home</span>
+        <a href="home.html" class="mbn-item" data-mbn-page="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-i18n="sidebar_home">Home</span>
         </a>
-        <a href=evolutie.html class=mbn-item data-mbn-page=evolutie>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><rect x=2 y=3 width=20 height=18 rx=2/><path d=M8 10h8M8 14h6/></svg>
-            <span data-i18n=sidebar_consoles>Consoles</span>
-        </a>
-        <a href=invata.html class=mbn-item data-mbn-page=invata>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><path d=M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z/><path d=M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z/></svg>
-            <span data-i18n=sidebar_learn>Learn</span>
-        </a>
-        <a href=community.html class=mbn-item data-mbn-page=community>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><path d=M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z/></svg>
-            <span data-i18n=sidebar_community>Community</span>
-        </a>
-        <button type=button class=mbn-item mbn-more-btn id=mbn-more-btn aria-expanded=false>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=currentColor><circle cx=5 cy=12 r=2/><circle cx=12 cy=12 r=2/><circle cx=19 cy=12 r=2/></svg>
+        <button type="button" class="mbn-item" data-mbn-view="chat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-i18n="community_chat_tab">Chat</span>
+        </button>
+        <button type="button" class="mbn-item" data-mbn-view="forum">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span data-i18n="community_forum_general">Forum</span>
+        </button>
+        <button type="button" class="mbn-item" data-mbn-view="marketplace">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span data-i18n="community_marketplace_all">Marketplace</span>
+        </button>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
             <span>More</span>
         </button>
     </nav>
     <script>
     (function () {
-        var raw = location.pathname.split('/').pop().replace('.html', '') || 'home';
-        // Normalize both community pages to the same key
-        var page = (raw === 'community-welcome-page') ? 'community' : raw;
         var btn = document.getElementById('mbn-more-btn');
         var dd  = document.getElementById('mbn-dropdown');
-        document.querySelectorAll('.mbn-item[data-mbn-page]').forEach(function (el) {
-            if (el.dataset.mbnPage === page) el.classList.add('mbn-item--active');
+
+        function switchView(view) {
+            var target = document.querySelector('.hub-sidebar__item[data-view="' + view + '"]:not([data-console])') ||
+                         document.querySelector('.hub-sidebar__item[data-view="' + view + '"]');
+            if (target) target.click();
+            document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(function (el) {
+                el.classList.toggle('mbn-item--active', el.dataset.mbnView === view);
+            });
+            document.querySelectorAll('.mbn-dd-item[data-mbn-view]').forEach(function (el) {
+                el.classList.toggle('mbn-item--active', el.dataset.mbnView === view);
+            });
+        }
+
+        document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(function (el) {
+            el.addEventListener('click', function () { switchView(el.dataset.mbnView); });
         });
-        document.querySelectorAll('.mbn-dd-item[data-mbn-page]').forEach(function (el) {
-            if (el.dataset.mbnPage === page) {
-                el.classList.add('mbn-item--active');
-                if (btn) btn.classList.add('mbn-item--active');
-            }
+        document.querySelectorAll('.mbn-dd-item[data-mbn-view]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                switchView(el.dataset.mbnView);
+                dd.classList.remove('is-open');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            });
         });
+
+        // Set initial active view (chat is default)
+        switchView('chat');
+
         if (btn && dd) {
             btn.addEventListener('click', function (e) {
                 e.stopPropagation();

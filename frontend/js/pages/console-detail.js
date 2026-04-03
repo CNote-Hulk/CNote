@@ -216,7 +216,7 @@ function renderSpecs(consola) {
     if (!specsContainer) return;
 
     let html = `<h2 class="section-title">${I18nModule.t('console_specs_title')}</h2>
-    <p class="specs-hint">Tap or hover the <strong>ⓘ</strong> icons next to any label for a plain-language explanation of that term.</p>`;
+    <p class="specs-hint">${I18nModule.t('specs_hint')}</p>`;
 
     getSpecSections(consola).forEach(section => {
         html += `
@@ -589,7 +589,9 @@ function updateRatingDisplay(average, count) {
 
     if (starsEl) starsEl.innerHTML = renderStars(average);
     if (avgEl) avgEl.textContent = `${average} / 5`;
-    if (countEl) countEl.textContent = count === 1 ? '1 rating' : `${count} ratings`;
+    if (countEl) countEl.textContent = count === 1
+        ? I18nModule.t('console_rating_count_one')
+        : I18nModule.t('console_rating_count_many').replace('{count}', count);
 }
 
 /**

@@ -404,37 +404,37 @@
     <script src="../../js/fallback/search-profile.js"></script>
 
     <!-- Mobile bottom navigation (hidden on desktop via CSS) -->
-    <nav class=mobile-bottom-nav id=mobile-bottom-nav aria-label=Mobile navigation>
-        <div class=mbn-dropdown id=mbn-dropdown>
-            <button type=button class=mbn-dd-item data-mbn-tab=notifications>
-                <span class=mbn-dd-icon>&#x1F514;</span>
-                <span data-i18n=settings_notifications>Notifications</span>
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <button type="button" class="mbn-dd-item" data-mbn-tab="appearance">
+                <span class="mbn-dd-icon">🎨</span>
+                <span data-i18n="settings_tab_appearance">Appearance</span>
             </button>
-            <button type=button class=mbn-dd-item data-mbn-tab=appearance>
-                <span class=mbn-dd-icon>&#x1F3A8;</span>
-                <span data-i18n=settings_appearance>Appearance</span>
-            </button>
-            <div class=mbn-dd-sep></div>
-            <a href=home.html class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x1F3E0;</span>
-                <span data-i18n=sidebar_home>Back to Dashboard</span>
+            <div class="mbn-dd-sep"></div>
+            <a href="home.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🏠</span>
+                <span data-i18n="sidebar_home">Dashboard</span>
             </a>
         </div>
 
-        <button type=button class=mbn-item data-mbn-tab=account>
-            <svg width=22 height=22 viewBox='0 0 24 24' fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><circle cx=12 cy=8 r=4/><path d='M4 20c0-4 3.6-7 8-7s8 3 8 7'/></svg>
-            <span data-i18n=settings_account>Account</span>
+        <button type="button" class="mbn-item" data-mbn-tab="account">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            <span data-i18n="settings_tab_account">Account</span>
         </button>
-        <button type=button class=mbn-item data-mbn-tab=profil>
-            <svg width=22 height=22 viewBox='0 0 24 24' fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx=12 cy=7 r=4/></svg>
-            <span data-i18n=settings_profile>Profile</span>
+        <button type="button" class="mbn-item" data-mbn-tab="profil">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-i18n="settings_tab_profile">Profile</span>
         </button>
-        <button type=button class=mbn-item data-mbn-tab=security>
-            <svg width=22 height=22 viewBox='0 0 24 24' fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><rect x=3 y=11 width=18 height=11 rx=2/><path d='M7 11V7a5 5 0 0 1 10 0v4'/></svg>
-            <span data-i18n=settings_security>Security</span>
+        <button type="button" class="mbn-item" data-mbn-tab="security">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span data-i18n="settings_tab_security">Security</span>
         </button>
-        <button type=button class=mbn-item mbn-more-btn id=mbn-more-btn aria-expanded=false>
-            <svg width=22 height=22 viewBox='0 0 24 24' fill=currentColor><circle cx=5 cy=12 r=2/><circle cx=12 cy=12 r=2/><circle cx=19 cy=12 r=2/></svg>
+        <button type="button" class="mbn-item" data-mbn-tab="notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span data-i18n="settings_tab_notifications">Notifications</span>
+        </button>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
             <span>More</span>
         </button>
     </nav>

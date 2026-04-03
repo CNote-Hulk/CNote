@@ -5,6 +5,7 @@
         "manufacturer":  "Magnavox",
         "generation":  1,
         "release":  1972,
+        "models":  [],
         "image":  "assets/images/consoles/magnavox-odyssey.webp",
         "cpu":  {
                     "architecture":  "Diode-transistor logic",
@@ -61,6 +62,7 @@
         "manufacturer":  "Atari",
         "generation":  1,
         "release":  1975,
+        "models":  [],
         "image":  "assets/images/consoles/atari-home-pong.webp",
         "cpu":  {
                     "architecture":  "LSI integrated circuits",
@@ -120,6 +122,7 @@
         "manufacturer":  "Coleco",
         "generation":  1,
         "release":  1976,
+        "models":  [{"name":"Telstar","year":1976},{"name":"Telstar Regent","year":1977},{"name":"Telstar Alpha","year":1977},{"name":"Telstar Ranger","year":1977},{"name":"Telstar Colormatic","year":1978},{"name":"Telstar Arcade","year":1977}],
         "image":  "assets/images/consoles/coleco-telstar.webp",
         "cpu":  {
                     "architecture":  "GI AY-3-8500 (Telstar), AY-3-8700 (Combat), MOS Technology MPS-7600 (Arcade)",
@@ -182,6 +185,7 @@
         "manufacturer":  "Atari",
         "generation":  1,
         "release":  1977,
+        "models":  [{"name":"Heavy Sixer","year":1977},{"name":"Light Sixer","year":1978},{"name":"4-Switch","year":1980},{"name":"2-Switch","year":1982},{"name":"2600 Jr.","year":1986}],
         "image":  "assets/images/consoles/atari-2600.webp",
         "cpu":  {
                     "architecture":  "MOS 6507",
@@ -245,6 +249,7 @@
         "manufacturer":  "Magnavox",
         "generation":  1,
         "release":  1978,
+        "models":  [{"name":"Odyssey²","year":1978},{"name":"Videopac G7000","year":1978},{"name":"Videopac G7400","year":1983}],
         "image":  "assets/images/consoles/magnavox-odyssey-2.webp",
         "cpu":  {
                     "architecture":  "Intel 8048",
@@ -307,6 +312,7 @@
         "manufacturer":  "Mattel",
         "generation":  1,
         "release":  1979,
+        "models":  [{"name":"Intellivision","year":1979},{"name":"Intellivision II","year":1982},{"name":"INTV System III","year":1985}],
         "image":  "assets/images/consoles/intellivision.webp",
         "cpu":  {
                     "architecture":  "General Instrument CP1610",
@@ -369,6 +375,7 @@
         "manufacturer":  "Milton Bradley",
         "generation":  2,
         "release":  1979,
+        "models":  [],
         "image":  "assets/images/consoles/microvision.webp",
         "cpu":  {
                     "architecture":  "Intel 8021 / TI TMS1100 (on cartridge)",
@@ -428,6 +435,7 @@
         "manufacturer":  "Atari",
         "generation":  2,
         "release":  1982,
+        "models":  [{"name":"4-Port","year":1982},{"name":"2-Port","year":1983}],
         "image":  "assets/images/consoles/atari-5200.webp",
         "cpu":  {
                     "architecture":  "MOS 6502C",
@@ -484,6 +492,7 @@
         "manufacturer":  "Coleco",
         "generation":  2,
         "release":  1982,
+        "models":  [],
         "image":  "assets/images/consoles/colecovision.webp",
         "cpu":  {
                     "architecture":  "Zilog Z80",
@@ -541,6 +550,7 @@
         "manufacturer":  "GCE",
         "generation":  2,
         "release":  1982,
+        "models":  [],
         "image":  "assets/images/consoles/vectrex.webp",
         "cpu":  {
                     "architecture":  "Motorola 68A09",
@@ -599,6 +609,7 @@
         "manufacturer":  "Nintendo",
         "generation":  2,
         "release":  1983,
+        "models":  [{"name":"HVC-001","year":1983},{"name":"AV Famicom","year":1993}],
         "image":  "assets/images/consoles/famicom.webp",
         "cpu":  {
                     "architecture":  "Ricoh 2A03",
@@ -658,6 +669,7 @@
         "manufacturer":  "Sega",
         "generation":  2,
         "release":  1983,
+        "models":  [{"name":"SG-1000","year":1983},{"name":"SG-1000 II","year":1984},{"name":"Mark III","year":1985}],
         "image":  "assets/images/consoles/sega-sg-1000.webp",
         "cpu":  {
                     "architecture":  "Zilog Z80A",
@@ -716,6 +728,7 @@
         "manufacturer":  "Nintendo",
         "generation":  3,
         "release":  1985,
+        "models":  [{"name":"NES (Front Loader)","year":1985},{"name":"NES-101 (Top Loader)","year":1993}],
         "image":  "assets/images/consoles/nes.webp",
         "cpu":  {
                     "architecture":  "Ricoh 2A03 / 2A07 (bazat pe MOS 6502)",
@@ -774,6 +787,7 @@
         "manufacturer":  "Sega",
         "generation":  3,
         "release":  1985,
+        "models":  [{"name":"Master System","year":1986},{"name":"Master System II","year":1990}],
         "image":  "assets/images/consoles/sega-master-system.webp",
         "cpu":  {
                     "architecture":  "Zilog Z80A",
@@ -832,6 +846,7 @@
         "manufacturer":  "Atari",
         "generation":  3,
         "release":  1986,
+        "models":  [{"name":"7800","year":1986}],
         "image":  "assets/images/consoles/atari-7800.webp",
         "cpu":  {
                     "architecture":  "Atari SALLY (6502 personalizat)",
@@ -890,6 +905,7 @@
         "manufacturer":  "NEC/Hudson",
         "generation":  4,
         "release":  1987,
+        "models":  [{"name":"PC Engine","year":1987},{"name":"PC Engine Duo","year":1991},{"name":"PC Engine LT","year":1991},{"name":"PC Engine Duo-R","year":1994}],
         "image":  "assets/images/consoles/pc-engine.webp",
         "cpu":  {
                     "architecture":  "HuC6280 (derivat MOS 6502/WDC 65C02)",
@@ -948,6 +964,7 @@
         "manufacturer":  "Sega",
         "generation":  4,
         "release":  1988,
+        "models":  [{"name":"Genesis / Mega Drive","year":1989},{"name":"Genesis 2 / Mega Drive 2","year":1993},{"name":"Genesis 3","year":1998}],
         "image":  "assets/images/consoles/sega-genesis.webp",
         "cpu":  {
                     "architecture":  "Motorola 68000 (16/32-bit) + Zilog Z80",
@@ -1006,6 +1023,7 @@
         "manufacturer":  "Nintendo",
         "generation":  4,
         "release":  1989,
+        "models":  [{"name":"Game Boy","year":1989},{"name":"Game Boy Pocket","year":1996},{"name":"Game Boy Light","year":1998}],
         "image":  "assets/images/consoles/game-boy.webp",
         "cpu":  {
                     "architecture":  "Sharp LR35902",
@@ -1063,6 +1081,7 @@
         "manufacturer":  "Atari",
         "generation":  4,
         "release":  1989,
+        "models":  [{"name":"Lynx I","year":1989},{"name":"Lynx II","year":1991}],
         "image":  "assets/images/consoles/atari-lynx.webp",
         "cpu":  {
                     "architecture":  "VL65NC02 (Mikey)",
@@ -1122,6 +1141,7 @@
         "manufacturer":  "Sega",
         "generation":  4,
         "release":  1990,
+        "models":  [],
         "image":  "assets/images/consoles/sega-game-gear.webp",
         "cpu":  {
                     "architecture":  "Zilog Z80",
@@ -1178,6 +1198,7 @@
         "manufacturer":  "SNK",
         "generation":  4,
         "release":  1990,
+        "models":  [{"name":"NEO·GEO AES","year":1990},{"name":"NEO·GEO Gold","year":1994}],
         "image":  "assets/images/consoles/neo-geo-aes.webp",
         "cpu":  {
                     "architecture":  "Motorola 68000 (16/32-bit) + Zilog Z80",
@@ -1236,6 +1257,7 @@
         "manufacturer":  "Nintendo",
         "generation":  4,
         "release":  1990,
+        "models":  [{"name":"SNES","year":1990},{"name":"Super Famicom Jr.","year":1996},{"name":"SNES Jr.","year":1997}],
         "image":  "assets/images/consoles/snes.webp",
         "cpu":  {
                     "architecture":  "Ricoh 5A22 (derivat WDC 65C816)",
@@ -1294,6 +1316,7 @@
         "manufacturer":  "Philips",
         "generation":  4,
         "release":  1991,
+        "models":  [{"name":"CDi 210","year":1991},{"name":"CDi 450","year":1994},{"name":"CDi 550","year":1991},{"name":"CDi 605","year":1991}],
         "image":  "assets/images/consoles/philips-cd-i.webp",
         "cpu":  {
                     "architecture":  "Philips SCC68070 (16/32-bit)",
@@ -1352,6 +1375,7 @@
         "manufacturer":  "Panasonic",
         "generation":  4,
         "release":  1993,
+        "models":  [{"name":"Panasonic FZ-1","year":1993},{"name":"Panasonic FZ-10","year":1994},{"name":"GoldStar 3DO","year":1994},{"name":"Sanyo TRY 3DO","year":1993}],
         "image":  "assets/images/consoles/3do.webp",
         "cpu":  {
                     "architecture":  "ARM60 (32-bit RISC)",
@@ -1410,6 +1434,7 @@
         "manufacturer":  "Atari",
         "generation":  4,
         "release":  1993,
+        "models":  [{"name":"Jaguar","year":1993},{"name":"Jaguar CD","year":1995}],
         "image":  "assets/images/consoles/atari-jaguar.webp",
         "cpu":  {
                     "architecture":  "Motorola 68000 (16-bit) + Tom (32-bit GPU) + Jerry (32-bit DSP)",
@@ -1468,6 +1493,7 @@
         "manufacturer":  "Sony",
         "generation":  5,
         "release":  1994,
+        "models":  [{"name":"PS1 (SCPH-1000)","year":1994},{"name":"PSone","year":2000}],
         "image":  "assets/images/consoles/ps1.webp",
         "cpu":  {
                     "architecture":  "R3000A 32-bit RISC",
@@ -1526,6 +1552,7 @@
         "manufacturer":  "Sega",
         "generation":  5,
         "release":  1994,
+        "models":  [{"name":"Saturn (oval)","year":1994},{"name":"Saturn 2 (round)","year":1995}],
         "image":  "assets/images/consoles/sega-saturn.webp",
         "cpu":  {
                     "architecture":  "2 × Hitachi SH-2 RISC (32-bit)",
@@ -1584,6 +1611,7 @@
         "manufacturer":  "Nintendo",
         "generation":  5,
         "release":  1996,
+        "models":  [{"name":"Nintendo 64","year":1996},{"name":"N64 (smoke grey)","year":1998}],
         "image":  "assets/images/consoles/nintendo-64.webp",
         "cpu":  {
                     "architecture":  "NEC VR4300 (bazat pe MIPS R4300i)",
@@ -1644,6 +1672,7 @@
         "manufacturer":  "Nintendo",
         "generation":  5,
         "release":  1998,
+        "models":  [],
         "image":  "assets/images/consoles/game-boy-color.webp",
         "cpu":  {
                     "architecture":  "Sharp LR35902",
@@ -1701,6 +1730,7 @@
         "manufacturer":  "SNK",
         "generation":  5,
         "release":  1998,
+        "models":  [],
         "image":  "assets/images/consoles/neo-geo-pocket.webp",
         "cpu":  {
                     "architecture":  "Toshiba TLCS-900H",
@@ -1757,6 +1787,7 @@
         "manufacturer":  "Sega",
         "generation":  6,
         "release":  1998,
+        "models":  [{"name":"Dreamcast","year":1998},{"name":"Dreamcast Divers 2000","year":2000}],
         "image":  "assets/images/consoles/sega-dreamcast.webp",
         "cpu":  {
                     "architecture":  "Hitachi SH-4",
@@ -1817,6 +1848,7 @@
         "manufacturer":  "SNK",
         "generation":  5,
         "release":  1999,
+        "models":  [],
         "image":  "assets/images/consoles/neo-geo-pocket-color.webp",
         "cpu":  {
                     "architecture":  "Toshiba TLCS-900H",
@@ -1874,6 +1906,7 @@
         "manufacturer":  "Bandai",
         "generation":  5,
         "release":  1999,
+        "models":  [{"name":"WonderSwan","year":1999},{"name":"WonderSwan Color","year":2000},{"name":"SwanCrystal","year":2002}],
         "image":  "assets/images/consoles/wonderswan.webp",
         "cpu":  {
                     "architecture":  "NEC V30MZ",
@@ -1930,6 +1963,7 @@
         "manufacturer":  "Sony",
         "generation":  6,
         "release":  2000,
+        "models":  [{"name":"PS2 Fat","year":2000},{"name":"PS2 Slim","year":2004}],
         "image":  "assets/images/consoles/ps2.webp",
         "cpu":  {
                     "architecture":  "Emotion Engine",
@@ -1988,6 +2022,7 @@
         "manufacturer":  "Nintendo",
         "generation":  6,
         "release":  2001,
+        "models":  [{"name":"GBA","year":2001},{"name":"GBA SP","year":2003},{"name":"GBA Micro","year":2005}],
         "image":  "assets/images/consoles/game-boy-advance.webp",
         "cpu":  {
                     "architecture":  "ARM7TDMI",
@@ -2045,6 +2080,7 @@
         "manufacturer":  "Nintendo",
         "generation":  6,
         "release":  2001,
+        "models":  [{"name":"GameCube","year":2001},{"name":"Panasonic Q","year":2001}],
         "image":  "assets/images/consoles/nintendo-gamecube.webp",
         "cpu":  {
                     "architecture":  "IBM Gekko",
@@ -2105,6 +2141,7 @@
         "manufacturer":  "Microsoft",
         "generation":  6,
         "release":  2001,
+        "models":  [{"name":"Xbox","year":2001},{"name":"Xbox Crystal","year":2002}],
         "image":  "assets/images/consoles/xbox.webp",
         "cpu":  {
                     "architecture":  "Intel Pentium III",
@@ -2165,6 +2202,7 @@
         "manufacturer":  "Nintendo",
         "generation":  7,
         "release":  2004,
+        "models":  [{"name":"DS","year":2004},{"name":"DS Lite","year":2006},{"name":"DSi","year":2008},{"name":"DSi XL","year":2009}],
         "image":  "assets/images/consoles/nintendo-ds.webp",
         "cpu":  {
                     "architecture":  "ARM9 + ARM7",
@@ -2222,6 +2260,7 @@
         "manufacturer":  "Sony",
         "generation":  7,
         "release":  2004,
+        "models":  [{"name":"PSP-1000","year":2005},{"name":"PSP-2000 Slim","year":2007},{"name":"PSP-3000","year":2008},{"name":"PSP Go","year":2009},{"name":"PSP Street","year":2011}],
         "image":  "assets/images/consoles/psp.webp",
         "cpu":  {
                     "architecture":  "MIPS R4000",
@@ -2281,6 +2320,7 @@
         "manufacturer":  "Microsoft",
         "generation":  7,
         "release":  2005,
+        "models":  [{"name":"Xbox 360","year":2005},{"name":"Xbox 360 S","year":2010},{"name":"Xbox 360 E","year":2013}],
         "image":  "assets/images/consoles/xbox360.webp",
         "cpu":  {
                     "architecture":  "PowerPC Xenon",
@@ -2341,6 +2381,7 @@
         "manufacturer":  "Nintendo",
         "generation":  7,
         "release":  2006,
+        "models":  [{"name":"Wii","year":2006},{"name":"Wii Family Edition","year":2011},{"name":"Wii Mini","year":2012}],
         "image":  "assets/images/consoles/nintendo-wii.webp",
         "cpu":  {
                     "architecture":  "IBM Broadway",
@@ -2399,6 +2440,7 @@
         "manufacturer":  "Sony",
         "generation":  7,
         "release":  2006,
+        "models":  [{"name":"PS3 Fat","year":2006},{"name":"PS3 Slim","year":2009},{"name":"PS3 Super Slim","year":2012}],
         "image":  "assets/images/consoles/ps3.webp",
         "cpu":  {
                     "architecture":  "Cell BE",
@@ -2459,6 +2501,7 @@
         "manufacturer":  "Nintendo",
         "generation":  8,
         "release":  2011,
+        "models":  [{"name":"3DS","year":2011},{"name":"3DS XL","year":2012},{"name":"2DS","year":2013},{"name":"New 3DS","year":2014},{"name":"New 3DS XL","year":2014},{"name":"New 2DS XL","year":2017}],
         "image":  "assets/images/consoles/nintendo-3ds.webp",
         "cpu":  {
                     "architecture":  "ARM11 MPCore",
@@ -2516,6 +2559,7 @@
         "manufacturer":  "Sony",
         "generation":  8,
         "release":  2011,
+        "models":  [{"name":"PS Vita (PCH-1000)","year":2011},{"name":"PS Vita Slim (PCH-2000)","year":2013}],
         "image":  "assets/images/consoles/ps-vita.webp",
         "cpu":  {
                     "architecture":  "ARM Cortex-A9",
@@ -2575,6 +2619,7 @@
         "manufacturer":  "Nintendo",
         "generation":  8,
         "release":  2012,
+        "models":  [{"name":"Wii U Basic","year":2012},{"name":"Wii U Deluxe","year":2012}],
         "image":  "assets/images/consoles/nintendo-wii-u.webp",
         "cpu":  {
                     "architecture":  "IBM Espresso",
@@ -2632,6 +2677,7 @@
         "manufacturer":  "Sony",
         "generation":  8,
         "release":  2013,
+        "models":  [{"name":"PS4","year":2013},{"name":"PS4 Slim","year":2016},{"name":"PS4 Pro","year":2016}],
         "image":  "assets/images/consoles/ps4.webp",
         "cpu":  {
                     "architecture":  "Semi-custom AMD Jaguar (APU)",
@@ -2690,6 +2736,7 @@
         "manufacturer":  "Microsoft",
         "generation":  8,
         "release":  2013,
+        "models":  [{"name":"Xbox One","year":2013},{"name":"Xbox One S","year":2016},{"name":"Xbox One X","year":2017},{"name":"Xbox One S All-Digital","year":2019}],
         "image":  "assets/images/consoles/xbox-one.webp",
         "cpu":  {
                     "architecture":  "AMD Jaguar",
@@ -2748,6 +2795,7 @@
         "manufacturer":  "Nintendo",
         "generation":  8,
         "release":  2017,
+        "models":  [{"name":"Switch","year":2017},{"name":"Switch Lite","year":2019},{"name":"Switch OLED","year":2021}],
         "image":  "assets/images/consoles/nintendo-switch.webp",
         "cpu":  {
                     "architecture":  "NVIDIA Tegra X1 / X1+",
@@ -2806,6 +2854,7 @@
         "manufacturer":  "Sony",
         "generation":  9,
         "release":  2020,
+        "models":  [{"name":"PS5","year":2020},{"name":"PS5 Digital Edition","year":2020},{"name":"PS5 Slim","year":2023},{"name":"PS5 Pro","year":2024}],
         "image":  "assets/images/consoles/ps5.webp",
         "cpu":  {
                     "architecture":  "AMD Zen 2",
@@ -2864,6 +2913,7 @@
         "manufacturer":  "Microsoft",
         "generation":  9,
         "release":  2020,
+        "models":  [{"name":"Xbox Series X","year":2020}],
         "image":  "assets/images/consoles/xbox-series-x.webp",
         "cpu":  {
                     "architecture":  "AMD Zen 2",
@@ -2921,6 +2971,7 @@
         "manufacturer":  "Microsoft",
         "generation":  9,
         "release":  2020,
+        "models":  [{"name":"Xbox Series S","year":2020},{"name":"Xbox Series S 1TB","year":2023}],
         "image":  "assets/images/consoles/xbox-series-s.webp",
         "cpu":  {
                     "architecture":  "AMD Zen 2",
@@ -2978,6 +3029,7 @@
         "manufacturer":  "Nintendo",
         "generation":  9,
         "release":  2025,
+        "models":  [{"name":"Nintendo Switch 2","year":2025}],
         "image":  "assets/images/consoles/nintendo-switch-2.webp",
         "cpu":  {
                     "architecture":  "NVIDIA Tegra T239 (Ampere)",

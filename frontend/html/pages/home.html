@@ -237,50 +237,54 @@
     <script src="../../js/fallback/search-profile.js"></script>
 
     <!-- Mobile bottom navigation (hidden on desktop via CSS) -->
-    <nav class=mobile-bottom-nav id=mobile-bottom-nav aria-label=Mobile navigation>
-        <!-- More dropdown - floats above the nav pill -->
-        <div class=mbn-dropdown id=mbn-dropdown>
-            <a href=#collection class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x1F392;</span>
-                <span data-i18n=sidebar_collection>Collection</span>
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <!-- More dropdown -->
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="#collection" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🎒</span>
+                <span data-i18n="sidebar_collection">Collection</span>
             </a>
-            <a href=#favorites class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x2764;&#xFE0F;</span>
-                <span data-i18n=sidebar_favorites>Favorites</span>
+            <a href="#favorites" class="mbn-dd-item">
+                <span class="mbn-dd-icon">❤️</span>
+                <span data-i18n="sidebar_favorites">Favorites</span>
             </a>
-            <a href=#progress class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x1F4C8;</span>
-                <span data-i18n=sidebar_progress>Progress</span>
+            <a href="#progress" class="mbn-dd-item">
+                <span class="mbn-dd-icon">📈</span>
+                <span data-i18n="sidebar_progress">Progress</span>
             </a>
-            <a href=#achievements class=mbn-dd-item>
-                <span class=mbn-dd-icon>&#x1F3C6;</span>
-                <span data-i18n=sidebar_achievements>Achievements</span>
+            <a href="#achievements" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🏆</span>
+                <span data-i18n="sidebar_achievements">Achievements</span>
             </a>
-            <div class=mbn-dd-sep></div>
-            <a href=marketplace.html class=mbn-dd-item data-mbn-page=marketplace>
-                <span class=mbn-dd-icon>&#x1F6D2;</span>
-                <span data-i18n=sidebar_marketplace>Marketplace</span>
+            <div class="mbn-dd-sep"></div>
+            <a href="marketplace.html" class="mbn-dd-item" data-mbn-page="marketplace">
+                <span class="mbn-dd-icon">🛒</span>
+                <span data-i18n="sidebar_marketplace">Marketplace</span>
             </a>
-            <a href=repair.html class=mbn-dd-item data-mbn-page=repair>
-                <span class=mbn-dd-icon>&#x1F527;</span>
-                <span data-i18n=sidebar_repair>Repair</span>
+            <a href="repair.html" class="mbn-dd-item" data-mbn-page="repair">
+                <span class="mbn-dd-icon">🔧</span>
+                <span data-i18n="sidebar_repair">Repair</span>
             </a>
         </div>
 
-        <a href=home.html class=mbn-item data-mbn-page=home>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><path d=M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z/><polyline points=9 22 9 12 15 12 15 22/></svg>
-            <span data-i18n=sidebar_home>Home</span>
+        <a href="home.html" class="mbn-item" data-mbn-page="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-i18n="sidebar_home">Home</span>
         </a>
-        <a href=community.html class=mbn-item data-mbn-page=community>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><path d=M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z/></svg>
-            <span data-i18n=sidebar_community>Community</span>
+        <a href="evolutie.html" class="mbn-item" data-mbn-page="evolutie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+            <span data-i18n="sidebar_consoles">Consoles</span>
         </a>
-        <a href=profil.html class=mbn-item data-mbn-page=profil>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=none stroke=currentColor stroke-width=2 stroke-linecap=round stroke-linejoin=round><path d=M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2/><circle cx=12 cy=7 r=4/></svg>
-            <span data-i18n=navbar_profile>Profile</span>
+        <a href="community.html" class="mbn-item" data-mbn-page="community">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-i18n="sidebar_community">Community</span>
         </a>
-        <button type=button class=mbn-item mbn-more-btn id=mbn-more-btn aria-expanded=false>
-            <svg width=22 height=22 viewBox=0 0 24 24 fill=currentColor><circle cx=5 cy=12 r=2/><circle cx=12 cy=12 r=2/><circle cx=19 cy=12 r=2/></svg>
+        <a href="profil.html" class="mbn-item" data-mbn-page="profil">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-i18n="navbar_profile">Profile</span>
+        </a>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
             <span>More</span>
         </button>
     </nav>
