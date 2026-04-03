@@ -139,7 +139,52 @@ function initSettings() {
 
     renderAvatar(user.avatar || '');
 
-    avatarBtn.addEventListener('click', () => avatarInput.click());
+    // ── Lightbox open/close ──
+    const lightbox = document.getElementById('avatar-lightbox');
+    const lbImg = document.getElementById('avatar-lightbox-img');
+    const lbFallback = document.getElementById('avatar-lightbox-fallback');
+    const lbChangeBtn = document.getElementById('avatar-lb-change');
+    const lbRemoveBtn = document.getElementById('avatar-lb-remove');
+
+    function openProfileLightbox() {
+        if (!lightbox) return;
+        if (user.avatar) {
+            lbImg.src = user.avatar;
+            lbImg.hidden = false;
+            lbFallback.hidden = true;
+        } else {
+            lbImg.hidden = true;
+            lbFallback.hidden = false;
+        }
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfileLightbox() {
+        if (lightbox) lightbox.hidden = true;
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('avatar-lightbox-close')?.addEventListener('click', closeProfileLightbox);
+    document.getElementById('avatar-lightbox-backdrop')?.addEventListener('click', closeProfileLightbox);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfileLightbox(); });
+
+    lbChangeBtn?.addEventListener('click', () => { closeProfileLightbox(); avatarInput.click(); });
+
+    lbRemoveBtn?.addEventListener('click', async () => {
+        try {
+            await AuthModule.updateProfile({ avatar: '' });
+            user.avatar = '';
+            renderAvatar('');
+            if (lbImg) { lbImg.hidden = true; lbFallback.hidden = false; }
+            showSettingsMessage('Profile picture removed.', true);
+            closeProfileLightbox();
+        } catch {
+            showSettingsMessage('Could not remove profile picture.', false);
+        }
+    });
+
+    avatarBtn.addEventListener('click', openProfileLightbox);
 
     avatarInput.addEventListener('change', async (event) => {
         const file = event.target.files && event.target.files[0];

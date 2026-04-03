@@ -361,6 +361,28 @@
         </div>
     </div>
 
+    <!-- AVATAR LIGHTBOX -->
+    <div id="avatar-lightbox" class="avatar-lightbox" hidden aria-modal="true" role="dialog">
+        <div class="avatar-lightbox__backdrop" id="avatar-lightbox-backdrop"></div>
+        <div class="avatar-lightbox__content">
+            <button class="avatar-lightbox__close" id="avatar-lightbox-close" aria-label="Close">✕</button>
+            <div class="avatar-lightbox__img-wrap">
+                <img id="avatar-lightbox-img" src="" alt="Profile picture" hidden>
+                <span id="avatar-lightbox-fallback" class="avatar-lightbox__fallback">👤</span>
+            </div>
+            <div class="avatar-lightbox__actions">
+                <button type="button" class="avatar-lb-btn avatar-lb-btn--change" id="avatar-lb-change">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                    Change
+                </button>
+                <button type="button" class="avatar-lb-btn avatar-lb-btn--remove" id="avatar-lb-remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    Remove
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="app-modal" id="confirm-modal" hidden>
         <div class="app-modal__backdrop" data-modal-cancel></div>
         <div class="app-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">

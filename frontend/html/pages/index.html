@@ -20,7 +20,15 @@
     <link rel="canonical" href="https://consolenotebook.com/" />
 
     <title>Cnote Bakery (Console Notebook)</title>
-    
+
+    <!-- Redirect logged-in users to the dashboard -->
+    <script>
+        try {
+            var s = JSON.parse(localStorage.getItem('cn_session'));
+            if (s && s.id) window.location.replace('home.html');
+        } catch (e) {}
+    </script>
+
     <!-- ===========================
          STYLESHEETS
          =========================== -->

@@ -180,6 +180,17 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                     avatarFallback.hidden = true;
                 }
 
+                // Avatar lightbox on click
+                const avatarBtn = document.getElementById('user-avatar');
+                const currentUser = AuthModule.getCurrentUser();
+                const isOwnProfile = !!(currentUser && currentUser.id === profile.id);
+                if (avatarBtn) {
+                    avatarBtn.addEventListener('click', () => {
+                        const src = (profile.avatar && profile.avatar.length > 10) ? profile.avatar : null;
+                        openAvatarLightbox(src, isOwnProfile);
+                    });
+                }
+
                 // Info
                 document.getElementById('user-name').textContent = profile.username;
                 document.getElementById('user-bio').textContent = profile.bio || 'No description.';
@@ -259,7 +270,6 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
                 // Friend button
                 const actionsEl = document.getElementById('user-profile-actions');
-                const currentUser = AuthModule.getCurrentUser();
 
                 if (currentUser && currentUser.id !== profile.id) {
                     await renderFriendButton(actionsEl, profile.id);
@@ -432,5 +442,60 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 grid.innerHTML = '<p class="user-listings-empty">Unable to load listings.</p>';
             }
         }
+
+        /** Open the avatar lightbox */
+        function openAvatarLightbox(avatarSrc, isOwn) {
+            const lightbox = document.getElementById('avatar-lightbox');
+            const img = document.getElementById('avatar-lightbox-img');
+            const fallback = document.getElementById('avatar-lightbox-fallback');
+            const actions = document.getElementById('avatar-lightbox-actions');
+            if (!lightbox) return;
+
+            if (avatarSrc) {
+                img.src = avatarSrc;
+                img.hidden = false;
+                fallback.hidden = true;
+            } else {
+                img.hidden = true;
+                fallback.hidden = false;
+            }
+
+            actions.innerHTML = '';
+            if (isOwn) {
+                actions.innerHTML = `
+                    <a href="/html/pages/profil.html#profil" class="avatar-lb-btn avatar-lb-btn--change">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                        Change
+                    </a>
+                    <button type="button" class="avatar-lb-btn avatar-lb-btn--remove" id="avatar-remove-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                        Remove
+                    </button>
+                `;
+                document.getElementById('avatar-remove-btn').addEventListener('click', async () => {
+                    try {
+                        await AuthModule.updateProfile({ avatar: '' });
+                        profile.avatar = '';
+                        document.getElementById('user-avatar-img').hidden = true;
+                        document.getElementById('user-avatar-fallback').hidden = false;
+                        closeAvatarLightbox();
+                    } catch { /* ignore */ }
+                });
+            }
+
+            lightbox.hidden = false;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAvatarLightbox() {
+            const lightbox = document.getElementById('avatar-lightbox');
+            if (lightbox) lightbox.hidden = true;
+            document.body.style.overflow = '';
+        }
+
+        // Lightbox close handlers
+        document.getElementById('avatar-lightbox-close')?.addEventListener('click', closeAvatarLightbox);
+        document.getElementById('avatar-lightbox-backdrop')?.addEventListener('click', closeAvatarLightbox);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAvatarLightbox(); });
 
         loadUserProfile();
