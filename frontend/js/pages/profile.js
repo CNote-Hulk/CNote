@@ -12,7 +12,7 @@ import { confirmModal } from '../../js/utils/confirm-modal.js';
 // Init search + profile dropdown
 SearchModule.init();
 
-//const user = AuthModule.getCurrentUser();
+const user = AuthModule.getCurrentUser();
 if (!user) {
     window.location.href = 'login.html';
 } else if (!user.username_chosen) {
