@@ -2833,16 +2833,6 @@ a.chat-message__username:hover {
    SETTINGS ROW LAYOUT — new horizontal label+control
    ═══════════════════════════════════════════════════ */
 
-/* Settings layout overrides */
-
-.profile-page {
-    padding-top: 0 !important;
-}
-
-.profile-main {
-    padding-top: 36px !important;
-}
-
 /* Compact user header in sidebar */
 .settings-user-header {
     display: flex;

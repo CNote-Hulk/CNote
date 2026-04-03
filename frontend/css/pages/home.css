@@ -7,6 +7,7 @@
     --muted: #b1a294;
     --accent: #E06B58;
     --accent-soft: #C85A48;
+    --accent-rgb: 224, 107, 88;
     --border: rgba(255, 255, 255, 0.08);
 }
 
@@ -93,11 +94,13 @@ body.home-page::before {
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
     color: var(--muted);
     text-decoration: none;
     padding: 9px 12px;
     border-radius: 6px;
     border: none;
+    background: none;
     border-left: 2px solid transparent;
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     font-size: 0.82rem;
@@ -174,6 +177,8 @@ body.home-page::before {
     width: 100%;
     gap: 22px;
     padding-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Navbar at the bottom of the scroll — override global fixed positioning */
@@ -201,6 +206,13 @@ body.home-page::before {
 .dashboard-content {
     flex: 1;
     padding: 24px 28px;
+}
+
+.home-panel {
+    display: none;
+}
+.home-panel.active {
+    display: block;
 }
 
 .dashboard-header h1 {
@@ -240,10 +252,19 @@ body.home-page::before {
     padding: 20px;
 }
 
-.continue-content h2, .stats-card h3 {
+.continue-content h2 {
     margin: 0 0 8px;
     color: var(--accent);
     font-size: 1.3rem;
+}
+
+.stats-card h3 {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .progress-bar {
@@ -366,6 +387,7 @@ body.home-page::before {
     --muted: #b0a79e;
     --accent: #E06B58;
     --accent-soft: #C85A48;
+    --accent-rgb: 224, 107, 88;
     --border: rgba(255, 255, 255, 0.1);
 }
 
@@ -378,6 +400,7 @@ body.home-page::before {
     --muted: #6B7280;
     --accent: #D64D3C;
     --accent-soft: #B8372C;
+    --accent-rgb: 214, 77, 60;
     --border: rgba(0, 0, 0, 0.06);
 }
 

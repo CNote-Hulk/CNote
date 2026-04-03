@@ -186,6 +186,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 statProgress.innerHTML = `<strong>${percent}%</strong>`;
             }
 
+            // Progress panel ring + percentage
+            const progressRingArc = document.getElementById('progress-ring-arc');
+            const progressRingPct = document.getElementById('progress-ring-pct');
+            if (progressRingArc) {
+                const circumference = 2 * Math.PI * 42;
+                progressRingArc.style.strokeDasharray = circumference;
+                progressRingArc.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+            }
+            if (progressRingPct) {
+                progressRingPct.textContent = percent + '%';
+            }
+
             // =========================
             // STATS
             // =========================
@@ -236,6 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     collectionGrid.appendChild(btn);
                 });
+
+                // Update collection count badge
+                const collectionCount = document.getElementById('collection-count');
+                if (collectionCount) {
+                    const n = user.owned_console_ids.length;
+                    collectionCount.textContent = n + (n === 1 ? ' console' : ' consoles');
+                }
             }
 
             // =========================
@@ -282,15 +301,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 const total_ach = achievementsRes.achievements.length;
                 setStat('stat-achievements', `<strong>${earned}</strong> / <strong>${total_ach}</strong>`);
 
+                // Update achievements count badge and progress bar
+                const achievementsCount = document.getElementById('achievements-count');
+                if (achievementsCount) achievementsCount.textContent = `${earned} / ${total_ach}`;
+                const achievementsProgressFill = document.getElementById('achievements-progress-fill');
+                if (achievementsProgressFill) achievementsProgressFill.style.width = `${total_ach > 0 ? Math.round((earned / total_ach) * 100) : 0}%`;
+
                 const achievementsGrid = document.querySelector('.achievements-grid');
                 if (achievementsGrid) {
                     achievementsGrid.innerHTML = '';
-                    achievementsRes.achievements
-                        .filter(a => a.unlocked)
-                        .forEach(a => {
+                    // Show unlocked first, then locked
+                    const sorted = [...achievementsRes.achievements].sort((a, b) => (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0));
+                    sorted.forEach(a => {
                             const div = document.createElement('div');
-                            div.className = 'achievement-card';
-                            div.innerHTML = `${a.icon || '🏅'} <strong>${a.label || a.name}</strong>`;
+                            div.className = 'achievement-card' + (a.unlocked ? ' achievement-card--unlocked' : ' achievement-card--locked');
+                            div.innerHTML = `
+                                <span class="achievement-card__icon">${a.icon || '🏅'}</span>
+                                <strong class="achievement-card__name">${escapeHtml(a.label || a.name)}</strong>
+                                <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
+                            `;
                             achievementsGrid.appendChild(div);
                         });
                 }
@@ -314,8 +343,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         btn.addEventListener('click', () => { window.location.href = `console.html?name=${encodeURIComponent(c.name)}`; });
                         favoritesGrid.appendChild(btn);
                     });
+                    // Update favorites count badge
+                    const favCount = document.getElementById('favorites-count');
+                    if (favCount) favCount.textContent = favoritesRes.favorites.length;
                 } else {
-                    favoritesGrid.innerHTML = `<p class="dash-empty">No favorites yet.</p>`;
+                    favoritesGrid.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">❤️</span>
+                            <p class="dash-empty-state__text">No favorites yet</p>
+                            <p class="dash-empty-state__hint">Visit any console page and click the heart icon to add it here.</p>
+                            <a href="evolutie.html" class="dash-empty-state__link">Browse consoles →</a>
+                        </div>`;
                 }
             }
 
@@ -358,7 +396,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const friendsPreview = document.getElementById('home-friends-preview');
             if (friendsPreview) {
                 if (friendsRes.success && friendsRes.friends.length > 0) {
-                    const preview = friendsRes.friends.slice(0, 5);
+                    // Update friends count badge
+                    const friendsCount = document.getElementById('friends-count');
+                    if (friendsCount) friendsCount.textContent = friendsRes.friends.length;
+
+                    const preview = friendsRes.friends.slice(0, 8);
                     friendsPreview.innerHTML = `
                         <div class="dash-friends-list">
                             ${preview.map(f => `
@@ -368,10 +410,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </a>
                             `).join('')}
                         </div>
-                        ${friendsRes.friends.length > 5 ? `<a href="profil.html#profil" class="dash-see-all">${I18nModule.t('home_friends_see_all').replace('{count}', friendsRes.friends.length)}</a>` : ''}
+                        ${friendsRes.friends.length > 8 ? `<a href="profil.html#profil" class="dash-see-all">${I18nModule.t('home_friends_see_all').replace('{count}', friendsRes.friends.length)}</a>` : ''}
                     `;
                 } else {
-                    friendsPreview.innerHTML = `<p class="dash-empty">${I18nModule.t('home_friends_empty')}</p>`;
+                    friendsPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">👥</span>
+                            <p class="dash-empty-state__text">No friends yet</p>
+                            <p class="dash-empty-state__hint">Join the community and connect with other console enthusiasts!</p>
+                            <a href="community.html" class="dash-empty-state__link">Join community →</a>
+                        </div>`;
                 }
             }
 
@@ -436,7 +484,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         <a href="community.html" class="dash-see-all">See all posts</a>
                     `;
                 } else {
-                    postsPreview.innerHTML = `<p class="dash-empty">No posts yet. <a href="community.html" class="dash-see-all">Go to community</a></p>`;
+                    postsPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">📝</span>
+                            <p class="dash-empty-state__text">No posts yet</p>
+                            <p class="dash-empty-state__hint">Start a discussion or ask a question in the community forum.</p>
+                            <a href="community.html" class="dash-empty-state__link">Create your first post →</a>
+                        </div>`;
                 }
             }
 
@@ -458,7 +512,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         <a href="community.html" class="dash-see-all">See all liked posts</a>
                     `;
                 } else {
-                    likedPreview.innerHTML = `<p class="dash-empty">No liked posts yet. <a href="community.html" class="dash-see-all">Explore community</a></p>`;
+                    likedPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">👍</span>
+                            <p class="dash-empty-state__text">No liked posts yet</p>
+                            <p class="dash-empty-state__hint">Explore the community forum and upvote posts you find helpful.</p>
+                            <a href="community.html" class="dash-empty-state__link">Explore community →</a>
+                        </div>`;
                 }
             }
 
@@ -484,7 +544,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 } else {
-                    ratingsPreview.innerHTML = `<p class="dash-empty">${I18nModule.t('home_ratings_empty')}</p>`;
+                    ratingsPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">⭐</span>
+                            <p class="dash-empty-state__text">${I18nModule.t('home_ratings_empty')}</p>
+                            <p class="dash-empty-state__hint">Rate your favorite consoles to keep track here.</p>
+                            <a href="evolutie.html" class="dash-empty-state__link">Browse consoles →</a>
+                        </div>`;
                 }
             }
 
