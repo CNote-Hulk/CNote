@@ -475,7 +475,12 @@ body.home-dashboard {
 
 @media (max-width: 680px) {
     .dashboard-sidebar {
-        display: none;
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
+        padding: 0 20px 20px;
+        width: calc(100% - 20px);
     }
     .dashboard-main {
         margin-left: 0;

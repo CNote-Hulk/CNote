@@ -15,11 +15,14 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
-        /** Extract username from URL path: /user/:username */
+        /** Extract username from URL path (/user/:username) or query string (?username=) */
         function getUsernameFromUrl() {
             const path = window.location.pathname;
             const match = path.match(/\/user\/([^/]+)/);
-            return match ? decodeURIComponent(match[1]) : null;
+            if (match) return decodeURIComponent(match[1]);
+            const params = new URLSearchParams(window.location.search);
+            const q = params.get('username');
+            return q ? q : null;
         }
 
         /** Convert numeric rating to star characters (★☆) */

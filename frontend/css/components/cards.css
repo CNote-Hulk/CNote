@@ -46,7 +46,6 @@
 }
 
 .card:hover {
-    background: var(--card-bg);
     border-color: rgba(var(--accent-rgb), 0.2);
     transform: translateY(-6px);
     box-shadow:

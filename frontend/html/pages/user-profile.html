@@ -49,10 +49,10 @@
 			<div class="up-hero" id="user-profile-header" hidden>
 				<div class="up-hero__glow"></div>
 				<div class="up-hero__inner">
-					<div class="profile-avatar user-profile-avatar" id="user-avatar">
+					<button class="profile-avatar user-profile-avatar" id="user-avatar" type="button" aria-label="View profile picture">
 						<img id="user-avatar-img" alt="Profile picture" hidden>
 						<span id="user-avatar-fallback">👤</span>
-					</div>
+					</button>
 					<div class="up-hero__info">
 						<div class="profile-name-row">
 							<div class="profile-name" id="user-name">—</div>
@@ -152,7 +152,20 @@
 			</div>
 		</div>
 
-		<!-- SCRIPTS -->
+		<!-- AVATAR LIGHTBOX -->
+	<div id="avatar-lightbox" class="avatar-lightbox" hidden aria-modal="true" role="dialog">
+		<div class="avatar-lightbox__backdrop" id="avatar-lightbox-backdrop"></div>
+		<div class="avatar-lightbox__content">
+			<button class="avatar-lightbox__close" id="avatar-lightbox-close" aria-label="Close">✕</button>
+			<div class="avatar-lightbox__img-wrap">
+				<img id="avatar-lightbox-img" src="" alt="Profile picture" hidden>
+				<span id="avatar-lightbox-fallback" class="avatar-lightbox__fallback">👤</span>
+			</div>
+			<div class="avatar-lightbox__actions" id="avatar-lightbox-actions"></div>
+		</div>
+	</div>
+
+	<!-- SCRIPTS -->
 		<script src="/js/data/consoles-data.js"></script>
 		<script type="module" src="/js/main.js"></script>
 		<script type="module" src="/js/pages/user-profile.js"></script>
