@@ -12,7 +12,7 @@ import { confirmModal } from '../../js/utils/confirm-modal.js';
 // Init search + profile dropdown
 SearchModule.init();
 
-const user = AuthModule.getCurrentUser();
+//const user = AuthModule.getCurrentUser();
 if (!user) {
     window.location.href = 'login.html';
 } else if (!user.username_chosen) {
@@ -148,20 +148,21 @@ function initSettings() {
 
     function openProfileLightbox() {
         if (!lightbox) return;
-        if (user.avatar) {
-            lbImg.src = user.avatar;
+        const avatarSrc = user.avatar_url || user.avatar;
+        if (avatarSrc) {
+            lbImg.src = avatarSrc;
             lbImg.hidden = false;
             lbFallback.hidden = true;
         } else {
             lbImg.hidden = true;
             lbFallback.hidden = false;
         }
-        lightbox.hidden = false;
+        lightbox.classList.add('is-open');
         document.body.style.overflow = 'hidden';
     }
 
     function closeProfileLightbox() {
-        if (lightbox) lightbox.hidden = true;
+        if (lightbox) lightbox.classList.remove('is-open');
         document.body.style.overflow = '';
     }
 

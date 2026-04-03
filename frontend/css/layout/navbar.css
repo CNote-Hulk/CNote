@@ -358,6 +358,57 @@
 }
 
 /* ══════════════════════════════════════════
+   PAGES WITH MOBILE BOTTOM NAV — compact top bar
+   ══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    body.has-mbn .navbar {
+        height: 56px;
+        padding: 0;
+    }
+
+    body.has-mbn .navbar .container {
+        flex-direction: row;
+        align-items: center;
+        padding: 0 14px;
+        gap: 0;
+    }
+
+    /* Logo: flex-centered between the two icon buttons */
+    body.has-mbn .logo {
+        position: static;
+        transform: none;
+        width: auto;
+        flex: 1;
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 0;
+    }
+
+    body.has-mbn .logo.active::after {
+        display: none;
+    }
+
+    /* Nav-links: hidden — bottom nav handles navigation */
+    body.has-mbn .nav-links {
+        display: none;
+    }
+
+    /* Icon buttons: back to static inline */
+    body.has-mbn .navbar-search-btn {
+        position: static;
+        flex-shrink: 0;
+        margin-right: 0;
+    }
+
+    body.has-mbn .navbar-profile-wrap {
+        position: static;
+        flex-shrink: 0;
+        margin-left: 0;
+    }
+}
+
+/* ══════════════════════════════════════════
    LIGHT THEME — Navbar
    ══════════════════════════════════════════ */
 

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Community Landing Page — Premium Hub / Start Page
  * Fixed overlay shown before entering the chat/forum hub.
  * Uses project CSS variables from variables.css.
@@ -1535,5 +1535,12 @@
 @media (max-width: 768px) {
     [data-theme="light"] .cl-timeline__context {
         border-top-color: rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* ── Mobile bottom nav clearance ── */
+@media (max-width: 680px) {
+    .community-welcome-page, .community-page {
+        padding-bottom: 90px;
     }
 }

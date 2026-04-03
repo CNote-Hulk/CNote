@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ConsoleHub Community Styles
  * Sidebar + content views for forum, marketplace, repair, DM.
  * Uses existing CSS variables from variables.css
@@ -3519,4 +3519,11 @@
 
 [data-theme="light"] .chat-input-pill {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Mobile bottom nav clearance ── */
+@media (max-width: 680px) {
+    .community-page {
+        padding-bottom: 90px;
+    }
 }

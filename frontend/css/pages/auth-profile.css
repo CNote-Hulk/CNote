@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Auth Pages CSS (login, register, profile)
  * Matches existing dark cinematic theme
  */
@@ -2729,4 +2729,11 @@ a.chat-message__username:hover {
 }
 [data-theme="light"] .accent-swatch.active {
     border-color: #3d3530;
+}
+
+/* ── Mobile bottom nav clearance (profil.html) ── */
+@media (max-width: 680px) {
+    .profile-page {
+        padding-bottom: 90px;
+    }
 }
