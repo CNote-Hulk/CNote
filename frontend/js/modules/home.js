@@ -293,10 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </a>
                             `).join('')}
                         </div>
-                        ${friendsRes.friends.length > 5 ? `<a href="profil.html#profil" class="dash-see-all">See all ${friendsRes.friends.length} friends</a>` : ''}
+                        ${friendsRes.friends.length > 5 ? `<a href="profil.html#profil" class="dash-see-all">${I18nModule.t('home_friends_see_all').replace('{count}', friendsRes.friends.length)}</a>` : ''}
                     `;
                 } else {
-                    friendsPreview.innerHTML = '<p class="dash-empty">No friends yet. Visit the community to connect!</p>';
+                    friendsPreview.innerHTML = `<p class="dash-empty">${I18nModule.t('home_friends_empty')}</p>`;
                 }
             }
 
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>`;
                             }).join('')}
                         </div>
-                        <a href="invata.html" class="dash-see-all">View all courses</a>
+                        <a href="invata.html" class="dash-see-all">${I18nModule.t('home_courses_see_all')}</a>
                     `;
                 } else {
                     // Fallback: show general progress
@@ -338,13 +338,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="dash-courses-list">
                             <div class="dash-course-item">
                                 <div class="dash-course-info">
-                                    <span class="dash-course-name">Console Engineering</span>
+                                    <span class="dash-course-name">${I18nModule.t('home_continue_title')}</span>
                                     <span class="dash-course-pct">${percent}%</span>
                                 </div>
                                 <div class="progress-bar"><div style="width: ${Math.max(2, percent)}%;"></div></div>
                             </div>
                         </div>
-                        <a href="invata.html" class="dash-see-all">View all courses</a>
+                        <a href="invata.html" class="dash-see-all">${I18nModule.t('home_courses_see_all')}</a>
                     `;
                 }
             }
@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
                 } else {
-                    ratingsPreview.innerHTML = '<p class="dash-empty">No ratings yet. Explore consoles and share your thoughts!</p>';
+                    ratingsPreview.innerHTML = `<p class="dash-empty">${I18nModule.t('home_ratings_empty')}</p>`;
                 }
             }
 

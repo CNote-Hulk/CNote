@@ -471,19 +471,23 @@
 /* ── Sidebar ── */
 .profile-sidebar {
     border-right: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
-    background: linear-gradient(180deg, #2d251f 0%, #231d17 100%);
-    padding: 0 24px 40px;
+    background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
+    padding: 26px 16px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
     position: relative;
-    padding-top: 64px;
+    padding-top: 40px;
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #D4AF7A) transparent;
+    width: 230px;
+    margin-top: 10px;
+    margin-left: 10px;
+    box-shadow: #231d17 10px 10px 10px;
+    height: calc(100% - 30px);
+    border-radius: 25px;
 }
 
 .profile-sidebar::-webkit-scrollbar { width: 4px; }
@@ -2450,7 +2454,6 @@ a.chat-message__username:hover {
 
 [data-theme="light"] .owned-console-item:hover {
     background: rgba(0, 0, 0, 0.04);
-}
 }
 
 /* ═══════════════════════════════════════════════
