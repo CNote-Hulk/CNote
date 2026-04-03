@@ -153,6 +153,52 @@
 
 }
 
+/* ── Community page + mobile bottom nav: compact navbar ─── */
+@media (max-width: 768px) {
+    body.has-mbn:has(.community-page--hub) .navbar {
+        height: 56px;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    body.has-mbn:has(.community-page--hub) .navbar .container {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        padding: 0 14px;
+        gap: 0;
+        position: relative;
+    }
+
+    body.has-mbn:has(.community-page--hub) .logo {
+        position: static;
+        transform: none;
+        flex: 1;
+        text-align: center;
+        top: auto;
+        left: auto;
+    }
+
+    body.has-mbn:has(.community-page--hub) .navbar-search-btn {
+        position: static;
+        left: auto;
+        right: auto;
+        top: auto;
+        flex-shrink: 0;
+    }
+
+    body.has-mbn:has(.community-page--hub) .navbar-profile-wrap {
+        position: static;
+        right: auto;
+        top: auto;
+        flex-shrink: 0;
+    }
+
+    body.has-mbn:has(.community-page--hub) .community-hub {
+        padding: 0;
+    }
+}
+
 
 /* ── Sidebar ────────────────────────────────────────────── */
 
@@ -3270,7 +3316,7 @@
     }
 
     .chat-hdr {
-        padding: 12px 16px 12px 60px; /* room for hamburger btn */
+        padding: 12px 16px;
         border-radius: 0;
     }
 

@@ -39,10 +39,6 @@
 
     <div class="community-page community-page--hub">
 
-        <!-- Mobile hamburger + overlay -->
-        <button class="hub-mobile-hamburger" id="hub-mobile-hamburger" data-i18n="community_open_menu" data-i18n-attr="aria-label" aria-label="Open menu">
-            <span></span><span></span><span></span>
-        </button>
         <div class="hub-mobile-overlay" id="hub-mobile-overlay"></div>
 
         <div class="community-hub">
@@ -218,6 +214,10 @@
                 <span class="mbn-dd-icon">&#x2709;&#xFE0F;</span>
                 <span data-i18n="community_messages_direct">Direct messages</span>
             </button>
+            <button type="button" class="mbn-dd-item" id="mbn-notif-btn">
+                <span class="mbn-dd-icon">&#x1F514;</span>
+                <span data-i18n="community_notifications_toggle">Notifications</span>
+            </button>
             <div class="mbn-dd-sep"></div>
             <a href="profil.html" class="mbn-dd-item">
                 <span class="mbn-dd-icon">&#x1F464;</span>
@@ -277,6 +277,17 @@
                 if (btn) btn.setAttribute('aria-expanded', 'false');
             });
         });
+
+        // Notifications shortcut
+        var notifBtn = document.getElementById('mbn-notif-btn');
+        if (notifBtn) {
+            notifBtn.addEventListener('click', function () {
+                var toggle = document.getElementById('hub-notif-toggle');
+                if (toggle) toggle.click();
+                dd.classList.remove('is-open');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            });
+        }
 
         // Set initial active view (chat is default)
         switchView('chat');

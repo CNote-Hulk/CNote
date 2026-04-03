@@ -381,16 +381,10 @@
         width: auto;
         flex: 1;
         text-align: center;
-        font-size: 0.9rem;
         padding: 0;
     }
 
     body.has-mbn .logo.active::after {
-        display: none;
-    }
-
-    /* Nav-links: hidden — bottom nav handles navigation */
-    body.has-mbn .nav-links {
         display: none;
     }
 
