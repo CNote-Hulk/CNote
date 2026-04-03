@@ -562,17 +562,129 @@ document.addEventListener('DOMContentLoaded', () => {
             if (communityGrid && forumRes.success) {
                 communityGrid.innerHTML = '';
 
-                forumRes.threads.forEach((t) => {
-                    const card = document.createElement('article');
-                    card.className = 'community-card';
+                if (forumRes.threads && forumRes.threads.length > 0) {
+                    forumRes.threads.slice(0, 6).forEach((t) => {
+                        const card = document.createElement('article');
+                        card.className = 'community-card';
+                        card.innerHTML = `
+                            <h3>${escapeHtml(t.title)}</h3>
+                            <p>By ${escapeHtml(t.username)}</p>
+                        `;
+                        card.addEventListener('click', () => { window.location.href = `community.html?post=${t.id}`; });
+                        communityGrid.appendChild(card);
+                    });
+                } else {
+                    communityGrid.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">💬</span>
+                            <p class="dash-empty-state__text">No trending posts yet</p>
+                            <p class="dash-empty-state__hint">Be the first to start a discussion!</p>
+                            <a href="community.html" class="dash-empty-state__link">Go to community →</a>
+                        </div>`;
+                }
+            }
 
-                    card.innerHTML = `
-                        <h3>${escapeHtml(t.title)}</h3>
-                        <p>By ${escapeHtml(t.username)}</p>
+            // =========================
+            // HOME PANEL — Collection preview
+            // =========================
+            const homeCollectionPreview = document.getElementById('home-collection-preview');
+            if (homeCollectionPreview && Array.isArray(user.owned_console_ids)) {
+                const allConsoles = window.CONSOLES_DATA || [];
+                if (user.owned_console_ids.length > 0) {
+                    homeCollectionPreview.innerHTML = '';
+                    const emojis = ['🎮','🕹️','🔥','⚡','🌟','🎯'];
+                    user.owned_console_ids.slice(0, 6).forEach((cid, idx) => {
+                        const c = allConsoles.find(x => x.id === cid);
+                        if (!c) return;
+                        const btn = document.createElement('button');
+                        btn.className = 'console-card';
+                        btn.innerHTML = `${emojis[idx % emojis.length]} <span>${escapeHtml(c.name)}</span>`;
+                        btn.addEventListener('click', () => { window.location.href = `console.html?name=${encodeURIComponent(c.name)}`; });
+                        homeCollectionPreview.appendChild(btn);
+                    });
+                    if (user.owned_console_ids.length > 6) {
+                        const seeAll = document.createElement('a');
+                        seeAll.href = '#collection';
+                        seeAll.className = 'dash-see-all';
+                        seeAll.textContent = `See all ${user.owned_console_ids.length} consoles`;
+                        homeCollectionPreview.parentElement.appendChild(seeAll);
+                    }
+                } else {
+                    homeCollectionPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">📦</span>
+                            <p class="dash-empty-state__text">No consoles in your collection</p>
+                            <p class="dash-empty-state__hint">Browse the console library and start building your collection.</p>
+                            <a href="evolutie.html" class="dash-empty-state__link">Browse consoles →</a>
+                        </div>`;
+                }
+            }
+
+            // =========================
+            // HOME PANEL — Achievements preview
+            // =========================
+            const homeAchievementsPreview = document.getElementById('home-achievements-preview');
+            if (homeAchievementsPreview && achievementsRes.success) {
+                const badges = achievementsRes.achievements || [];
+                if (badges.length > 0) {
+                    homeAchievementsPreview.innerHTML = '';
+                    const sorted = [...badges].sort((a, b) => (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0));
+                    sorted.slice(0, 6).forEach(a => {
+                        const div = document.createElement('div');
+                        div.className = 'achievement-card' + (a.unlocked ? ' achievement-card--unlocked' : ' achievement-card--locked');
+                        div.innerHTML = `
+                            <span class="achievement-card__icon">${a.icon || '🏅'}</span>
+                            <strong class="achievement-card__name">${escapeHtml(a.label || a.name)}</strong>
+                            <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
+                        `;
+                        homeAchievementsPreview.appendChild(div);
+                    });
+                    if (badges.length > 6) {
+                        const seeAll = document.createElement('a');
+                        seeAll.href = '#achievements';
+                        seeAll.className = 'dash-see-all';
+                        const earned = badges.filter(b => b.unlocked).length;
+                        seeAll.textContent = `See all ${earned}/${badges.length} achievements`;
+                        homeAchievementsPreview.parentElement.appendChild(seeAll);
+                    }
+                } else {
+                    homeAchievementsPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">🏆</span>
+                            <p class="dash-empty-state__text">No achievements yet</p>
+                            <p class="dash-empty-state__hint">Complete lessons and interact with the community to earn badges.</p>
+                            <a href="invata.html" class="dash-empty-state__link">Start learning →</a>
+                        </div>`;
+                }
+            }
+
+            // =========================
+            // HOME PANEL — Friends preview
+            // =========================
+            const homeFriendsPreview = document.getElementById('home-friends-home-preview');
+            if (homeFriendsPreview) {
+                if (friendsRes.success && friendsRes.friends.length > 0) {
+                    const preview = friendsRes.friends.slice(0, 8);
+                    homeFriendsPreview.innerHTML = `
+                        <div class="dash-friends-list">
+                            ${preview.map(f => `
+                                <a href="user-profile.html?username=${encodeURIComponent(f.username)}" class="dash-friend-item">
+                                    <span class="dash-friend-avatar">${f.avatar ? `<img src="${escapeHtml(f.avatar)}" alt="">` : '<span class="dash-friend-fallback">👤</span>'}</span>
+                                    <span class="dash-friend-name">${escapeHtml(f.username)}</span>
+                                </a>
+                            `).join('')}
+                        </div>
+                        ${friendsRes.friends.length > 8 ? `<a href="#friends" class="dash-see-all">${I18nModule.t('home_friends_see_all').replace('{count}', friendsRes.friends.length)}</a>` : ''}
                     `;
-
-                    communityGrid.appendChild(card);
-                });
+                } else {
+                    homeFriendsPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">👥</span>
+                            <p class="dash-empty-state__text">No friends yet</p>
+                            <p class="dash-empty-state__hint">Join the community and connect with console enthusiasts!</p>
+                            <a href="community.html" class="dash-empty-state__link">Join community →</a>
+                        </div>`;
+                }
             }
 
         } catch (err) {

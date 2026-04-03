@@ -79,11 +79,11 @@ function getVisitedLessonsCount(userId) {
 /** Compute user level from weighted lesson/achievement/quiz scores */
 function computeLevel(lessonsPct, achievementsPct, quizAverage) {
     const score = Math.round((lessonsPct * 0.45) + (achievementsPct * 0.35) + (quizAverage * 0.20));
-    if (score >= 90) return { name: 'Legend', sub: 'You have fully mastered the platform.' };
-    if (score >= 75) return { name: 'Expert', sub: 'Excellent performance across all areas.' };
-    if (score >= 55) return { name: 'Advanced', sub: 'Solid progress, keep the momentum.' };
-    if (score >= 35) return { name: 'Intermediate', sub: 'Good foundation, keep building.' };
-    return { name: 'Novice', sub: 'You are just getting started. Keep going through lessons and quizzes.' };
+    if (score >= 90) return { name: 'Legend', sub: 'You have fully mastered the platform.', emoji: '👑' };
+    if (score >= 75) return { name: 'Expert', sub: 'Excellent performance across all areas.', emoji: '🔥' };
+    if (score >= 55) return { name: 'Advanced', sub: 'Solid progress, keep the momentum.', emoji: '⚡' };
+    if (score >= 35) return { name: 'Intermediate', sub: 'Good foundation, keep building.', emoji: '🌿' };
+    return { name: 'Novice', sub: 'You are just getting started. Keep going through lessons and quizzes.', emoji: '🌱' };
 }
 
 /** Render next achievement goals (up to 6 locked badges) */
@@ -159,6 +159,27 @@ function renderStats() {
 
     document.getElementById('stat-level').textContent = level.name;
     document.getElementById('stat-level-sub').textContent = level.sub;
+
+    // Update level emoji
+    const emojiEl = document.getElementById('stats-level-emoji');
+    if (emojiEl) emojiEl.textContent = level.emoji;
+
+    // Update username in greeting
+    const usernameEl = document.getElementById('statsd-username');
+    if (usernameEl) usernameEl.textContent = user.username || 'User';
+
+    // Update ring SVG
+    const ringArc = document.getElementById('stats-ring-arc');
+    if (ringArc) {
+        const circumference = 2 * Math.PI * 42; // r = 42
+        const offset = circumference - (circumference * lessonsPct / 100);
+        ringArc.style.strokeDasharray = String(circumference);
+        ringArc.style.strokeDashoffset = String(offset);
+    }
+
+    // Update ring percentage text
+    const ringPct = document.getElementById('stat-lessons-pct');
+    if (ringPct) ringPct.textContent = `${lessonsPct}%`;
 
     renderGoals(allBadges);
 }
