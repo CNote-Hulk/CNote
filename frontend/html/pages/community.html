@@ -205,29 +205,7 @@
 
     <!-- Mobile bottom navigation (hidden on desktop via CSS) -->
     <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
-        <div class="mbn-dropdown" id="mbn-dropdown">
-            <button type="button" class="mbn-dd-item" data-mbn-view="repair-requests">
-                <span class="mbn-dd-icon">&#x1F4CB;</span>
-                <span data-i18n="repair_my_requests">My Requests</span>
-            </button>
-            <button type="button" class="mbn-dd-item" data-mbn-view="dm">
-                <span class="mbn-dd-icon">&#x2709;&#xFE0F;</span>
-                <span data-i18n="community_messages_direct">Direct messages</span>
-            </button>
-            <button type="button" class="mbn-dd-item" id="mbn-notif-btn">
-                <span class="mbn-dd-icon">&#x1F514;</span>
-                <span data-i18n="community_notifications_toggle">Notifications</span>
-            </button>
-            <div class="mbn-dd-sep"></div>
-            <a href="profil.html" class="mbn-dd-item">
-                <span class="mbn-dd-icon">&#x1F464;</span>
-                <span data-i18n="navbar_profile">Profile</span>
-            </a>
-            <a href="evolutie.html" class="mbn-dd-item">
-                <span class="mbn-dd-icon">&#x1F579;&#xFE0F;</span>
-                <span data-i18n="sidebar_consoles">Consoles</span>
-            </a>
-        </div>
+        <div class="mbn-dropdown" id="mbn-dropdown"></div>
 
         <a href="home.html" class="mbn-item" data-mbn-page="home">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -255,141 +233,128 @@
         var btn = document.getElementById('mbn-more-btn');
         var dd  = document.getElementById('mbn-dropdown');
 
+        /* ── Navigate to a sidebar view ── */
         function switchRoute(view, consoleKey, categoryKey) {
             var target = null;
-
             if (view) {
-                var exactSelector = '.hub-sidebar__item[data-view="' + view + '"]';
-                if (consoleKey) exactSelector += '[data-console="' + consoleKey + '"]';
-                if (typeof categoryKey === 'string' && categoryKey.length) exactSelector += '[data-category="' + categoryKey + '"]';
-                target = document.querySelector(exactSelector);
-
-                if (!target && consoleKey) {
-                    target = document.querySelector('.hub-sidebar__item[data-view="' + view + '"][data-console="' + consoleKey + '"]');
-                }
-
-                if (!target && typeof categoryKey === 'string') {
-                    target = document.querySelector('.hub-sidebar__item[data-view="' + view + '"][data-category="' + categoryKey + '"]');
-                }
-
-                if (!target) {
-                    target = document.querySelector('.hub-sidebar__item[data-view="' + view + '"]:not([data-console]):not([data-category])') ||
-                             document.querySelector('.hub-sidebar__item[data-view="' + view + '"]');
-                }
+                var sel = '.hub-sidebar__item[data-view="' + view + '"]';
+                if (consoleKey) sel += '[data-console="' + consoleKey + '"]';
+                if (typeof categoryKey === 'string' && categoryKey.length) sel += '[data-category="' + categoryKey + '"]';
+                target = document.querySelector(sel);
+                if (!target) target = document.querySelector('.hub-sidebar__item[data-view="' + view + '"]');
             }
-
             if (target) target.click();
 
-            document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(function (el) {
-                var isActive = el.dataset.mbnView === view &&
-                    (el.dataset.mbnConsole || '') === (consoleKey || '') &&
-                    (el.dataset.mbnCategory || '') === (categoryKey || '');
-
-                if (!isActive && el.dataset.mbnView === view && !el.dataset.mbnConsole && !el.dataset.mbnCategory && !consoleKey && !categoryKey) {
-                    isActive = true;
-                }
-
-                el.classList.toggle('mbn-item--active', isActive);
-            });
-
-            document.querySelectorAll('.mbn-dd-item[data-mbn-view]').forEach(function (el) {
-                var isActive = el.dataset.mbnView === view &&
-                    (el.dataset.mbnConsole || '') === (consoleKey || '') &&
-                    (el.dataset.mbnCategory || '') === (categoryKey || '');
-
-                if (!isActive && el.dataset.mbnView === view && !el.dataset.mbnConsole && !el.dataset.mbnCategory && !consoleKey && !categoryKey) {
-                    isActive = true;
-                }
-
-                el.classList.toggle('mbn-item--active', isActive);
+            /* highlight bar + dropdown items */
+            ['.mbn-item[data-mbn-view]', '.mbn-dd-item[data-mbn-view]'].forEach(function (q) {
+                document.querySelectorAll(q).forEach(function (el) {
+                    var match = el.dataset.mbnView === view &&
+                        (el.dataset.mbnConsole || '') === (consoleKey || '') &&
+                        (el.dataset.mbnCategory || '') === (categoryKey || '');
+                    el.classList.toggle('mbn-item--active', match);
+                });
             });
         }
 
+        /* ── Build categorised dropdown from sidebar sections ── */
         function buildCommunityDropdown() {
             if (!dd) return;
+            dd.innerHTML = '';
 
-            dd.querySelectorAll('.mbn-dd-item[data-mbn-dynamic="1"]').forEach(function (el) { el.remove(); });
-            dd.querySelectorAll('.mbn-dd-sep[data-mbn-dynamic="1"]').forEach(function (el) { el.remove(); });
+            var sections = document.querySelectorAll('.hub-sidebar__section');
+            sections.forEach(function (section) {
+                var heading = section.querySelector('.hub-sidebar__heading');
+                if (!heading) return;
 
-            var sidebarItems = Array.prototype.slice.call(document.querySelectorAll('.hub-sidebar__item'));
-            var anchor = dd.querySelector('.mbn-dd-sep') || dd.firstChild;
-            var fragment = document.createDocumentFragment();
-            var hasItems = false;
+                var items = [];
 
-            sidebarItems.forEach(function (item) {
-                if (item.classList.contains('hub-sidebar__item--locked')) return;
-                if (item.id === 'hub-notif-toggle') return;
-                if (window.getComputedStyle(item).display === 'none') return;
+                /* Collect console sub-groups */
+                var consoleGroups = section.querySelectorAll('.hub-sidebar__console');
+                if (consoleGroups.length) {
+                    consoleGroups.forEach(function (cg) {
+                        var nameEl = cg.querySelector('.hub-sidebar__console-name');
+                        var consoleName = nameEl ? nameEl.textContent.replace(/\s+/g, ' ').trim() : '';
+                        var color = nameEl ? (nameEl.style.getPropertyValue('--console-color') || '') : '';
+                        cg.querySelectorAll('.hub-sidebar__item').forEach(function (item) {
+                            if (item.classList.contains('hub-sidebar__item--locked')) return;
+                            if (window.getComputedStyle(item).display === 'none') return;
+                            var text = item.textContent.replace(/\s+/g, ' ').trim();
+                            items.push({ el: item, label: consoleName + ' — ' + text, color: color });
+                        });
+                    });
+                } else {
+                    /* Normal flat items */
+                    section.querySelectorAll('.hub-sidebar__item').forEach(function (item) {
+                        if (item.classList.contains('hub-sidebar__item--locked')) return;
+                        if (item.id === 'hub-notif-toggle') return;
+                        if (window.getComputedStyle(item).display === 'none') return;
+                        items.push({ el: item, label: item.textContent.replace(/\s+/g, ' ').trim(), color: '' });
+                    });
+                }
 
-                var view = item.dataset.view || '';
-                if (!view) return;
+                if (!items.length) return;
 
-                var button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'mbn-dd-item';
-                button.dataset.mbnDynamic = '1';
-                button.dataset.mbnView = view;
-                if (item.dataset.console) button.dataset.mbnConsole = item.dataset.console;
-                if (typeof item.dataset.category === 'string') button.dataset.mbnCategory = item.dataset.category;
+                /* Section heading */
+                var h = document.createElement('div');
+                h.className = 'mbn-dd-heading';
+                h.textContent = heading.textContent.replace(/\s+/g, ' ').trim();
+                dd.appendChild(h);
 
-                var icon = document.createElement('span');
-                icon.className = 'mbn-dd-icon';
-                icon.textContent = '•';
+                /* Items */
+                items.forEach(function (it) {
+                    var b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'mbn-dd-item';
+                    b.dataset.mbnView = it.el.dataset.view || '';
+                    if (it.el.dataset.console) b.dataset.mbnConsole = it.el.dataset.console;
+                    if (typeof it.el.dataset.category === 'string') b.dataset.mbnCategory = it.el.dataset.category;
 
-                var label = document.createElement('span');
-                label.textContent = item.textContent.replace(/\s+/g, ' ').trim();
+                    if (it.color) {
+                        var dot = document.createElement('span');
+                        dot.className = 'mbn-dd-dot';
+                        dot.style.background = it.color;
+                        b.appendChild(dot);
+                    }
 
-                button.appendChild(icon);
-                button.appendChild(label);
-                button.addEventListener('click', function () {
-                    switchRoute(button.dataset.mbnView, button.dataset.mbnConsole || '', button.dataset.mbnCategory || '');
-                    dd.classList.remove('is-open');
-                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                    var span = document.createElement('span');
+                    span.textContent = it.label;
+                    b.appendChild(span);
+
+                    b.addEventListener('click', function () {
+                        switchRoute(b.dataset.mbnView, b.dataset.mbnConsole || '', b.dataset.mbnCategory || '');
+                        dd.classList.remove('is-open');
+                        btn.setAttribute('aria-expanded', 'false');
+                    });
+                    dd.appendChild(b);
                 });
-
-                fragment.appendChild(button);
-                hasItems = true;
             });
 
-            if (hasItems) {
-                var sep = document.createElement('div');
-                sep.className = 'mbn-dd-sep';
-                sep.dataset.mbnDynamic = '1';
-                fragment.appendChild(sep);
-            }
+            /* Static links at bottom */
+            var sep = document.createElement('div');
+            sep.className = 'mbn-dd-sep';
+            dd.appendChild(sep);
 
-            if (anchor) dd.insertBefore(fragment, anchor);
-            else dd.appendChild(fragment);
+            var statics = [
+                { href: 'profil.html', icon: '👤', label: 'Profile' },
+                { href: 'evolutie.html', icon: '🕹️', label: 'Consoles' }
+            ];
+            statics.forEach(function (s) {
+                var a = document.createElement('a');
+                a.href = s.href;
+                a.className = 'mbn-dd-item';
+                a.innerHTML = '<span class="mbn-dd-icon">' + s.icon + '</span><span>' + s.label + '</span>';
+                dd.appendChild(a);
+            });
         }
 
+        /* ── Wire up bottom bar buttons ── */
         document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(function (el) {
             el.addEventListener('click', function () {
                 switchRoute(el.dataset.mbnView, el.dataset.mbnConsole || '', el.dataset.mbnCategory || '');
             });
         });
 
-        document.querySelectorAll('.mbn-dd-item[data-mbn-view]').forEach(function (el) {
-            el.addEventListener('click', function () {
-                switchRoute(el.dataset.mbnView, el.dataset.mbnConsole || '', el.dataset.mbnCategory || '');
-                dd.classList.remove('is-open');
-                if (btn) btn.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        // Notifications shortcut
-        var notifBtn = document.getElementById('mbn-notif-btn');
-        if (notifBtn) {
-            notifBtn.addEventListener('click', function () {
-                var toggle = document.getElementById('hub-notif-toggle');
-                if (toggle) toggle.click();
-                dd.classList.remove('is-open');
-                if (btn) btn.setAttribute('aria-expanded', 'false');
-            });
-        }
-
         buildCommunityDropdown();
-
-        // Set initial active view (chat is default)
         switchRoute('chat', '', '');
 
         if (btn && dd) {

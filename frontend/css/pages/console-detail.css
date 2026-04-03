@@ -133,6 +133,9 @@
             "image"
             "text";
     }
+    .console-models {
+        justify-content: center;
+    }
 
     .console-hero-image {
         grid-area: image;
