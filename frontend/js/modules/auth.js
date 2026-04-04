@@ -551,6 +551,36 @@ return { success: false, error: 'Could not contact the server.' };
         }
     },
 
+    // ─── Backup Codes ───────────────────────────────────
+
+    /** Generate backup codes (after 2FA setup) */
+    async generateBackupCodes() {
+        try {
+            return await this._api('POST', '/2fa/backup-codes/generate');
+        } catch {
+            return { success: false, error: 'Could not contact the server.' };
+        }
+    },
+
+    /** Regenerate backup codes (requires password) */
+    async regenerateBackupCodes(password) {
+        try {
+            return await this._api('POST', '/2fa/backup-codes/regenerate', { password });
+        } catch {
+            return { success: false, error: 'Could not contact the server.' };
+        }
+    },
+
+    /** Get count of remaining unused backup codes */
+    async getBackupCodesCount() {
+        try {
+            const data = await this._api('GET', '/2fa/backup-codes/count');
+            return data.success ? data.remaining : 0;
+        } catch {
+            return 0;
+        }
+    },
+
     /** Redirect to Google OAuth for login/register */
     loginWithGoogle() {
         window.location.href = this._apiBase + '/auth/google';

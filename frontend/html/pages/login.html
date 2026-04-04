@@ -11,6 +11,8 @@
     <meta name="description" content="Login — Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <title>Login — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
 </head>
@@ -40,7 +42,7 @@
         </div>
     </nav>
 
-    <div class="auth-page">
+    <div class="auth-page auth-page--entry">
         <div class="auth-card auth-card--split">
             <div class="auth-card__form-col">
                 <h1 class="auth-card__title" data-i18n="login_title">Login</h1>
@@ -90,6 +92,9 @@
                         <p id="two-factor-fallback" style="display: none; text-align: center; margin-top: 10px; font-size: 0.88rem;">
                             <a href="#" id="two-factor-fallback-link" style="color: var(--color-text-muted, #aaa);" data-i18n="login_2fa_fallback">Don't have access to the app? Get a code via email</a>
                         </p>
+                        <p id="two-factor-backup" style="text-align: center; margin-top: 6px; font-size: 0.88rem;">
+                            <a href="#" id="two-factor-backup-link" style="color: var(--color-text-muted, #aaa);">Use a backup code</a>
+                        </p>
                         <p class="auth-link"><a href="#" id="two-factor-back" data-i18n="login_2fa_back">Back to login</a></p>
                     </div>
 
@@ -112,18 +117,16 @@
                 </div>
             </div>
             <div class="auth-card__desc-col">
-                <!-- Description and features -->
-                <h2 data-i18n="login_desc_title">Your Collection Awaits</h2>
-                <p data-i18n="login_desc_subtitle">Pick up where you left off — your collection, your consoles, your community.</p>
-                
-                <ul>
-                    <li data-i18n="login_desc_feature_1">🎮 Track your console collection</li>
-                    <li data-i18n="login_desc_feature_2">🔍 Explore and compare consoles</li>
-                    <li data-i18n="login_desc_feature_3">💬 Join discussions and marketplace</li>
-                    <li data-i18n="login_desc_feature_4">⭐ Save your favorites</li>
+                <h2>Your Collection<br>Awaits</h2>
+                <p>Pick up where you left off — your consoles, your community.</p>
+                <ul class="auth-features">
+                    <li>Track your console collection</li>
+                    <li>Explore and compare consoles</li>
+                    <li>Join discussions and marketplace</li>
+                    <li>Save your favorites</li>
                 </ul>
-
-              <p data-i18n="login_desc_closing">Your collection is still there — jump back in.</p>
+                <p class="auth-desc__closing">Your collection is still there — jump back in.</p>
+                <img class="auth-desc__console" src="../../assets/images/consoles/ps1.webp" alt="PlayStation 1" loading="lazy">
             </div>
         </div>
     </div>

@@ -902,8 +902,9 @@ router.post('/2fa/verify', async (req, res) => {
         }
 
         const { code, method: requestedMethod } = req.body || {};
-        if (!code || String(code).trim().length !== 6) {
-            return res.status(400).json({ success: false, error: 'Code must be 6 digits.' });
+        const codeStr = String(code || '').trim();
+        if (!codeStr || (requestedMethod === 'backup' ? codeStr.length !== 8 : codeStr.length !== 6)) {
+            return res.status(400).json({ success: false, error: requestedMethod === 'backup' ? 'Backup code must be 8 characters.' : 'Code must be 6 digits.' });
         }
 
         const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [decoded.userId]);
@@ -912,11 +913,11 @@ router.post('/2fa/verify', async (req, res) => {
             return res.status(401).json({ success: false, error: 'User not found.' });
         }
 
-        const cleanCode = String(code).trim();
+        const cleanCode = codeStr;
 
         // Determine which method to verify: use requested method if valid, else detect
         let verifyMethod = requestedMethod;
-        if (!verifyMethod || (verifyMethod !== 'email' && verifyMethod !== 'totp')) {
+        if (!verifyMethod || (verifyMethod !== 'email' && verifyMethod !== 'totp' && verifyMethod !== 'backup')) {
             // Auto-detect: if user has totp enabled and no explicit email request, use totp
             if (user.two_factor_totp_enabled) {
                 verifyMethod = 'totp';
@@ -948,6 +949,17 @@ router.post('/2fa/verify', async (req, res) => {
             if (!isValid) {
                 return res.status(401).json({ success: false, error: 'Invalid code.' });
             }
+        } else if (verifyMethod === 'backup') {
+            // Backup codes are 8-char alphanumeric, stored as SHA-256 hashes
+            const codeHash = crypto.createHash('sha256').update(cleanCode.toLowerCase()).digest('hex');
+            const backupResult = await pool.query(
+                'SELECT id FROM two_factor_backup_codes WHERE user_id = $1 AND code_hash = $2 AND used = FALSE LIMIT 1',
+                [user.id, codeHash]
+            );
+            if (!backupResult.rows[0]) {
+                return res.status(401).json({ success: false, error: 'Invalid backup code.' });
+            }
+            await pool.query('UPDATE two_factor_backup_codes SET used = TRUE, used_at = NOW() WHERE id = $1', [backupResult.rows[0].id]);
         } else {
             return res.status(400).json({ success: false, error: 'Unknown 2FA method.' });
         }
@@ -1136,6 +1148,7 @@ router.delete('/2fa/disable', authRequired, async (req, res) => {
                 'UPDATE users SET two_factor_totp_enabled = FALSE, two_factor_secret = NULL, two_factor_enabled = $1, two_factor_method = $2, updated_at = NOW() WHERE id = $3',
                 [stillHasEmail, stillHasEmail ? 'email' : null, req.user.id]
             );
+            await pool.query('DELETE FROM two_factor_backup_codes WHERE user_id = $1', [req.user.id]);
             res.json({ success: true, message: 'Authenticator 2FA has been disabled.' });
         } else if (method === 'email') {
             // Disable only email
@@ -1153,11 +1166,96 @@ router.delete('/2fa/disable', authRequired, async (req, res) => {
                 [req.user.id]
             );
             await pool.query('DELETE FROM two_factor_codes WHERE user_id = $1', [req.user.id]);
+            await pool.query('DELETE FROM two_factor_backup_codes WHERE user_id = $1', [req.user.id]);
             await pool.query('DELETE FROM trusted_devices WHERE user_id = $1', [req.user.id]);
             res.json({ success: true, message: '2FA has been completely disabled.' });
         }
     } catch (err) {
         console.error('2FA disable error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// POST /api/2fa/backup-codes/generate — Generate 10 backup codes (called after TOTP setup)
+router.post('/2fa/backup-codes/generate', authRequired, async (req, res) => {
+    try {
+        // Only allow if user has 2FA enabled
+        if (!req.user.two_factor_enabled) {
+            return res.status(400).json({ success: false, error: '2FA must be enabled first.' });
+        }
+
+        // Delete old backup codes
+        await pool.query('DELETE FROM two_factor_backup_codes WHERE user_id = $1', [req.user.id]);
+
+        // Generate 10 random 8-char alphanumeric backup codes
+        const codes = [];
+        for (let i = 0; i < 10; i++) {
+            const code = crypto.randomBytes(4).toString('hex'); // 8 hex chars
+            codes.push(code);
+            const hash = crypto.createHash('sha256').update(code.toLowerCase()).digest('hex');
+            await pool.query(
+                'INSERT INTO two_factor_backup_codes (user_id, code_hash) VALUES ($1, $2)',
+                [req.user.id, hash]
+            );
+        }
+
+        res.json({ success: true, codes });
+    } catch (err) {
+        console.error('Generate backup codes error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// POST /api/2fa/backup-codes/regenerate — Regenerate backup codes (requires password)
+router.post('/2fa/backup-codes/regenerate', authRequired, async (req, res) => {
+    try {
+        if (!req.user.two_factor_enabled) {
+            return res.status(400).json({ success: false, error: '2FA must be enabled first.' });
+        }
+
+        const { password } = req.body || {};
+        if (req.user.password_hash) {
+            if (!password) {
+                return res.status(400).json({ success: false, error: 'Password is required.' });
+            }
+            const valid = await bcrypt.compare(String(password), req.user.password_hash);
+            if (!valid) {
+                return res.status(401).json({ success: false, error: 'Incorrect password.' });
+            }
+        }
+
+        // Delete old backup codes
+        await pool.query('DELETE FROM two_factor_backup_codes WHERE user_id = $1', [req.user.id]);
+
+        // Generate 10 new codes
+        const codes = [];
+        for (let i = 0; i < 10; i++) {
+            const code = crypto.randomBytes(4).toString('hex');
+            codes.push(code);
+            const hash = crypto.createHash('sha256').update(code.toLowerCase()).digest('hex');
+            await pool.query(
+                'INSERT INTO two_factor_backup_codes (user_id, code_hash) VALUES ($1, $2)',
+                [req.user.id, hash]
+            );
+        }
+
+        res.json({ success: true, codes });
+    } catch (err) {
+        console.error('Regenerate backup codes error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// GET /api/2fa/backup-codes/count — Get count of remaining unused backup codes
+router.get('/2fa/backup-codes/count', authRequired, async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT COUNT(*) AS remaining FROM two_factor_backup_codes WHERE user_id = $1 AND used = FALSE',
+            [req.user.id]
+        );
+        res.json({ success: true, remaining: parseInt(result.rows[0].remaining, 10) });
+    } catch (err) {
+        console.error('Backup codes count error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });

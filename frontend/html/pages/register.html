@@ -11,6 +11,8 @@
     <meta name="description" content="Create account — Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <title>Create Account — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
 </head>
@@ -40,7 +42,7 @@
         </div>
     </nav>
 
-    <div class="auth-page">
+    <div class="auth-page auth-page--entry">
         <div class="auth-card">
             <div class="auth-card__form-col">
                 <h1 class="auth-card__title" data-i18n="register_title">Create Account</h1> 
@@ -94,18 +96,16 @@
             </div>
 
             <div class="auth-card__desc-col">
-                <!-- Description and features -->
-                <h2 data-i18n="register_desc_title">Start Your Console Journey</h2>
-                <p data-i18n="register_desc_subtitle">Create your profile and start building your own console collection from day one.</p>
-    
-                <ul>
-                    <li data-i18n="register_desc_feature_1">🎮 Build your personal console collection</li>
-                    <li data-i18n="register_desc_feature_2">⭐ Save your favorite consoles</li>
-                    <li data-i18n="register_desc_feature_3">⚔️ Compare consoles side by side</li>
-                    <li data-i18n="register_desc_feature_4">💬 Join the community and discussions</li>
+                <h2>Start Your Console<br>Journey</h2>
+                <p>Build your profile and start collecting from day one.</p>
+                <ul class="auth-features">
+                    <li>Build your personal console collection</li>
+                    <li>Save your favorite consoles</li>
+                    <li>Compare consoles side by side</li>
+                    <li>Join the community and discussions</li>
                 </ul>
-
-                <p data-i18n="register_desc_closing">It only takes a few seconds to get started.</p>
+                <p class="auth-desc__closing">It only takes a few seconds to get started.</p>
+                <img class="auth-desc__console" src="../../assets/images/consoles/xbox.webp" alt="Original Xbox" loading="lazy">
             </div>
 
             <!-- Success screen (hidden until registration succeeds) -->

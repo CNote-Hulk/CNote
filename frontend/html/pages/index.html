@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- ===========================
@@ -7,20 +7,20 @@
     <meta charset="UTF-8">
     <script>!function(){var t=localStorage.getItem("cnote-theme");if(t)document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cnote Bakery (Console Notebook) is a platform dedicated to gaming consoles: history, hardware specs, repair guides and a community for enthusiasts.">
+    <meta name="description" content="Cnote Bakery (Console Notebook) — a hobby dedicated to the world of gaming consoles. History, technology, and community in one place. Discover consoles, learn how they work, and preserve gaming culture.">
     <meta name="theme-color" content="#1B1714">
     <meta property="og:title" content="Console Notebook (Cnote Bakery)">
     <meta property="og:description" content="A platform dedicated to gaming consoles: history, hardware and repairs.">
     <meta property="og:url" content="https://consolenotebook.com">
     <meta property="og:type" content="website">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="canonical" href="https://consolenotebook.com/" />
 
-    <title>Cnote Bakery (Console Notebook)</title>
+    <title>Cnote Bakery — Console Notebook</title>
 
     <!-- Redirect logged-in users to the dashboard -->
     <script>
@@ -34,33 +34,32 @@
          STYLESHEETS
          =========================== -->
     <link rel="stylesheet" href="../../css/main.css">
-    
     <link rel="stylesheet" href="../../assets/vendor/katex/katex.min.css">
     <script defer src="../../assets/vendor/katex/katex.min.js"></script>
     <script defer src="../../assets/vendor/katex/contrib/auto-render.min.js"></script>
 </head>
-<body class="home-page">
+<body class="lp-page">
+
     <!-- ===========================
          NAVIGATION BAR
          =========================== -->
     <nav class="navbar">
         <div class="container">
-            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
+            <button class="navbar-search-btn" aria-label="Search" type="button">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
-            <a href="index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+            <a href="index.html" class="logo">Console Notebook</a>
 
             <ul class="nav-links">
-                <li><a href="community-welcome-page.html" data-i18n="nav_community">Community</a></li>
-                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
-                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
-                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
-                <li><a href="help.html" data-i18n="nav_help">Help</a></li>
-                <li><a href="help.html#contact" data-i18n="nav_contact">Contact</a></li>
+                <li><a href="community-welcome-page.html">Community</a></li>
+                <li><a href="invata.html">Learn</a></li>
+                <li><a href="evolutie.html">Evolution</a></li>
+                <li><a href="comparatie.html">Compare</a></li>
+                <li><a href="help.html">Help</a></li>
             </ul>
 
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -68,192 +67,249 @@
     </nav>
 
     <!-- ===========================
-         HOMEPAGE LANDING - wallpaper wrapper
-         Same technique as .community-landing:
-         div has bg image, ::before = dark overlay, content inside .hp-wrapper
+         MAIN BENTO GRID
          =========================== -->
-    <div class="hp-landing">
-        <div class="hp-wrapper">
+    <main class="lp-main">
+        <div class="lp-grid">
 
-    <!-- ===========================
-         1. HERO SECTION
-         Clean, focused - single column, no clutter
-         =========================== -->
-    <section class="hp-hero" id="hero">
-        <div class="hp-hero__inner">
-            <h1 class="hp-hero__title" data-i18n="hero_title">Console Notebook</h1>
-            <p class="hp-hero__subtitle" data-i18n="hero_subtitle">Welcome to the golden — or maybe bronze — age of gaming.</p>
-            <p class="hp-hero__desc" data-i18n="hero_subtitle_2">Build your console collection, discover what makes each system unique, and connect with real enthusiasts. Just curious? Dive in as a guest - no account needed.</p>
-            <div class="hp-hero__actions">
-                <a href="login.html" class="hero-button" data-i18n="hero_cta">Start your journey</a>
-                <a href="#why-join" class="hero-button" data-i18n="home_how_cta">Why join us?</a>
-            </div>
-        </div>
-    </section>
+            <!-- ─── HERO CARD ─────────────────────────────── -->
+            <div class="lp-card lp-card--hero">
 
-    <!-- ===========================
-     WHY JOIN SECTION (TOP)
-     Emotional hook before steps
-     =========================== -->
-    <section class="hp-section hp-section--soft hp-section--alt" id="why-join">
-        <div class="hp-container">
-            <div class="hp-section__header">
-                <h2 class="hp-section__title" data-i18n="home_why_title">More than a platform</h2>
-                <p class="hp-section__subtitle" data-i18n="home_why_subtitle">
-                    Cnote Bakery (Console Notebook) is like a hobby dedicated to the world of gaming consoles. It brings together history, technology, and community in one place. But it aims to go beyond documentation. Cnote Bakery seeks to revive a part of us - the authentic gaming spirit that many lost as the industry changed. Here you can discover consoles, learn how they work, and help preserve an important piece of gaming culture. You're just one button away from starting your own console journey, connecting with fellow enthusiasts, and diving into the rich world of gaming history and technology.
+                <!-- Top: badge only (login moved to bottom center) -->
+                <div class="lp-hero__top">
+                    <span class="lp-hero__since">✦ Since 1972</span>
+                </div>
+
+                <!-- Big title (z-index 1, behind image) -->
+                <h1 class="lp-hero__title">CONSOLE<br>NOTEBOOK</h1>
+
+                <!-- Xbox Series S hero image (z-index 2, over title) -->
+                <img
+                    class="lp-hero__img"
+                    src="../../assets/images/consoles/xbox-series-s.webp"
+                    alt="Xbox Series S"
+                    loading="eager"
+                >
+
+                <!-- Description (z-index 3) -->
+                <p class="lp-hero__desc">
+                    History, hardware &amp; community —<br>
+                    50+ consoles documented,<br>
+                    all in one place.
                 </p>
+
+                <!-- Bottom bar -->
+                <div class="lp-hero__bottom">
+                    <div class="lp-hero__stats">
+                        <b>50+</b>
+                        <span>consoles</span>
+                    </div>
+                    <div class="lp-hero__thumbs">
+                        <button class="lp-thumb lp-thumb--active" type="button"
+                            data-navigate="invata.html"
+                            data-img="../../assets/images/consoles/nintendo-switch.webp"
+                            data-alt="Nintendo Switch"
+                            data-year="2017"
+                            data-href="invata.html"
+                            data-desc="Discover its story, hardware &amp; legacy">
+                            <img src="../../assets/images/consoles/nintendo-switch.webp" alt="Nintendo Switch" loading="lazy">
+                        </button>
+                        <button class="lp-thumb" type="button"
+                            data-img="../../assets/images/consoles/ps2.webp"
+                            data-alt="PlayStation 2"
+                            data-year="2000"
+                            data-href="consoles/playstation-2.html"
+                            data-desc="Best-selling console of all time">
+                            <img src="../../assets/images/consoles/ps2.webp" alt="PS2" loading="lazy">
+                        </button>
+                        <button class="lp-thumb" type="button"
+                            data-img="../../assets/images/consoles/snes.webp"
+                            data-alt="SNES"
+                            data-year="1990"
+                            data-href="consoles/snes.html"
+                            data-desc="The golden age of 16-bit gaming">
+                            <img src="../../assets/images/consoles/snes.webp" alt="SNES" loading="lazy">
+                        </button>
+                        <button class="lp-thumb" type="button"
+                            data-img="../../assets/images/consoles/game-boy.webp"
+                            data-alt="Game Boy"
+                            data-year="1989"
+                            data-href="consoles/game-boy.html"
+                            data-desc="Gaming in your pocket, since 1989">
+                            <img src="../../assets/images/consoles/game-boy.webp" alt="Game Boy" loading="lazy">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="lp-hero__ctas">
+                    <a href="login.html" class="lp-btn lp-btn--dark">Log in →</a>
+                </div>
+
             </div>
+            <!-- ─── /HERO CARD ─────────────────────────────── -->
 
-            <div class="hp-why">
-                <div class="hp-why__item">
-                    <span>🛠️</span>
-                    <h3 data-i18n="home_why_craft">Craft</h3>
-                    <p data-i18n="home_why_craft_desc">Repair, restore, and understand hardware</p>
-                </div>
 
-                <div class="hp-why__item">
-                    <span>📚</span>
-                    <h3 data-i18n="home_why_knowledge">Knowledge</h3>
-                    <p data-i18n="home_why_knowledge_desc">Learn how consoles really work and track the progress of your learning journey</p>
-                </div>
 
-                <div class="hp-why__item">
-                    <span>🤝</span>
-                    <h3 data-i18n="home_why_community">Community</h3>
-                    <p data-i18n="home_why_community_desc">Connect with people who share the same passion</p>
+            <!-- ─── LEARN CARD ─────────────────────────────── -->
+            <div class="lp-card lp-card--learn">
+                <div class="lp-learn__top">
+                    <h2>LEARN</h2>
+                    <p>Discover how consoles work, inside and out</p>
                 </div>
-            </div>
-
-            <div class="hp-why__cta">
-                <a href="register.html" class="hero-button" data-i18n="home_why_cta">Create your account</a>
-                <p class="hp-why__hint" data-i18n="home_why_hint">It takes less than a minute.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===========================
-         2. HOW IT WORKS
-         Full visible timeline - spaced, clear, separated from hero
-         =========================== -->
-    <section class="hp-section" id="how-it-works">
-        <div class="hp-container">
-            <div class="hp-section__header">
-                <h2 class="hp-section__title" data-i18n="home_how_title">How it works</h2>
-                <p class="hp-section__subtitle" data-i18n="home_how_subtitle">Get started in just a few steps</p>
-            </div>
-
-            <div class="hp-timeline">
-                <div class="hp-timeline__item">
-                    <div class="hp-timeline__num">1</div>
-                    <div class="hp-timeline__content">
-                        <h3 data-i18n="hero_quickguide_step1">Create your profile</h3>
-                        <p data-i18n="hero_quickguide_step1_desc">Two minutes and you're in.</p>
-                    </div>
-                </div>
-                <div class="hp-timeline__item">
-                    <div class="hp-timeline__num">2</div>
-                    <div class="hp-timeline__content">
-                        <h3 data-i18n="hero_quickguide_step2">Pick your first console</h3>
-                        <p data-i18n="hero_quickguide_step2_desc">Mark it with ❤️ in the encyclopedia.</p>
-                    </div>
-                </div>
-                <div class="hp-timeline__item">
-                    <div class="hp-timeline__num">3</div>
-                    <div class="hp-timeline__content">
-                        <h3 data-i18n="home_step3_title">Build your collection</h3>
-                        <p data-i18n="home_step3_desc">Track owned and wanted consoles in your profile.</p>
-                    </div>
-                </div>
-                <div class="hp-timeline__item">
-                    <div class="hp-timeline__num">4</div>
-                    <div class="hp-timeline__content">
-                        <h3 data-i18n="hero_quickguide_step3">Compare systems</h3>
-                        <p data-i18n="hero_quickguide_step3_desc">The comparator helps you see clearly.</p>
-                    </div>
-                </div>
-                <div class="hp-timeline__item">
-                    <div class="hp-timeline__num">5</div>
-                    <div class="hp-timeline__content">
-                        <h3 data-i18n="hero_quickguide_step4">Join the community</h3>
-                        <p data-i18n="hero_quickguide_step4_desc">The forum and live chat are waiting for you.</p>
-                    </div>
+                <div class="lp-learn__bottom">
+                    <span class="lp-learn__label">Dive in!</span>
+                    <a href="invata.html" class="lp-btn lp-btn--accent">
+                        EXPLORE 📚
+                    </a>
                 </div>
             </div>
-        </div>
-    </section>
+            <!-- ─── /LEARN CARD ────────────────────────────── -->
 
-    <!-- ===========================
-         3. WHY CREATE AN ACCOUNT
-         Benefit-focused conversion section - same card layout
-         =========================== -->
-    <section class="hp-section hp-section--alt" id="content">
-        <div class="hp-container">
-            <div class="hp-section__header">
-                <h2 class="hp-section__title" data-i18n="section_why_title">Make it yours</h2>
-                <p class="hp-section__subtitle" data-i18n="section_why_text">Your consoles, your collection, your community - all in one place.</p>
+
+            <!-- ─── FEATURED CARD ──────────────────────────── -->
+            <div class="lp-card lp-card--featured">
+                <h2>FEATURED</h2>
+
+                <img
+                    class="lp-featured__img"
+                    id="lp-fc-img"
+                    src="../../assets/images/consoles/nintendo-switch.webp"
+                    alt="Nintendo Switch"
+                    loading="lazy"
+                >
+
+                <span class="lp-featured__year" id="lp-fc-year">2017</span>
+                <p class="lp-featured__desc" id="lp-fc-desc">Discover its story, hardware &amp; legacy</p>
+            </div>
+            <!-- ─── /FEATURED CARD ─────────────────────────── -->
+
+
+            <!-- ─── COMPARE CARD ───────────────────────────── -->
+            <div class="lp-card lp-card--compare">
+
+                <div class="lp-cmp__side lp-cmp__side--left">
+                    <img class="lp-cmp__img" src="../../assets/images/consoles/xbox-one.webp" alt="Xbox One" loading="lazy">
+                    <div class="lp-cmp__info">
+                        <span class="lp-cmp__name">Xbox One</span>
+                        <span class="lp-cmp__year">2013</span>
+                    </div>
+                </div>
+
+                <div class="lp-cmp__center">
+                    <span class="lp-cmp__vs">VS</span>
+                    <a href="comparatie.html" class="lp-btn lp-btn--accent lp-cmp__btn">Compare →</a>
+                </div>
+
+                <div class="lp-cmp__side lp-cmp__side--right">
+                    <img class="lp-cmp__img" src="../../assets/images/consoles/ps4.webp" alt="PlayStation 4" loading="lazy">
+                    <div class="lp-cmp__info">
+                        <span class="lp-cmp__name">PlayStation 4</span>
+                        <span class="lp-cmp__year">2013</span>
+                    </div>
+                </div>
+
+            </div>
+            <!-- ─── /COMPARE CARD ──────────────────────────── -->
+
+        </div><!-- /.lp-grid -->
+
+
+        <!-- ─── ABOUT / MISSION ──────────────────────────── -->
+        <div class="lp-about">
+
+            <div class="lp-about__text">
+                <span class="lp-about__tag">/ Our Mission /</span>
+                <h2 class="lp-about__headline">Beyond documentation.<br>A revival.</h2>
+                <p class="lp-about__body">Cnote Bakery seeks to revive the authentic gaming spirit that many lost as the industry changed. Here you can discover consoles, learn how they work, and help preserve an important piece of gaming culture — you're just one button away from starting your own console journey.</p>
             </div>
 
-            <div class="hp-features">
-
-                <a href="evolutie.html" class="hp-card">
-                    <span class="hp-card__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    </span>
-                    <div class="hp-card__body">
-                        <h3 class="hp-card__title" data-i18n="why_evolution_title">Explore every era</h3>
-                        <p class="hp-card__desc" data-i18n="why_evolution_desc">Browse 50 years of consoles and find the ones that matter to you.</p>
-                        <span class="hp-card__cta" data-i18n="evolution_cta">Explore timeline →</span>
-                    </div>
-                </a>
-
-                <a href="comparatie.html" class="hp-card">
-                    <span class="hp-card__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                    </span>
-                    <div class="hp-card__body">
-                        <h3 class="hp-card__title" data-i18n="why_compare_title">Compare before you choose</h3>
-                        <p class="hp-card__desc" data-i18n="why_compare_desc">See real specs side by side and make confident decisions.</p>
-                        <span class="hp-card__cta" data-i18n="compare_cta">Compare consoles →</span>
-                    </div>
-                </a>
-
-                <a href="invata.html" class="hp-card">
-                    <span class="hp-card__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    </span>
-                    <div class="hp-card__body">
-                        <h3 class="hp-card__title" data-i18n="why_learn_title">Learn how they work</h3>
-                        <p class="hp-card__desc" data-i18n="why_learn_desc">Go deeper with courses on hardware, repair, and engineering.</p>
-                        <span class="hp-card__cta" data-i18n="learn_cta">Start learning →</span>
-                    </div>
-                </a>
-
-                <a href="community.html#chat" class="hp-card">
-                    <span class="hp-card__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </span>
-                    <div class="hp-card__body">
-                        <h3 class="hp-card__title" data-i18n="why_community_title">Join the conversation</h3>
-                        <p class="hp-card__desc" data-i18n="why_community_desc">Talk with collectors, get repair help, and trade on the marketplace.</p>
-                        <span class="hp-card__cta" data-i18n="community_enter">Enter community →</span>
-                    </div>
-                </a>
-
-                <a href="profil.html" class="hp-card">
-                    <span class="hp-card__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    </span>
-                    <div class="hp-card__body">
-                        <h3 class="hp-card__title" data-i18n="why_activity_title">Track your progress</h3>
-                        <p class="hp-card__desc" data-i18n="why_activity_desc">Ratings, favorites, and collection - all saved to your profile.</p>
-                        <span class="hp-card__cta" data-i18n="home_activity_cta">View profile →</span>
-                    </div>
-                </a>
-
+            <div class="lp-about__pillars">
+                <div class="lp-about__pillar">
+                    <span class="lp-about__pillar-num">01</span>
+                    <strong>History</strong>
+                    <p>Dive into the stories behind every console ever made — from 1972 to today.</p>
+                </div>
+                <div class="lp-about__pillar">
+                    <span class="lp-about__pillar-num">02</span>
+                    <strong>Technology</strong>
+                    <p>Understand the hardware and software that shaped generations of gaming.</p>
+                </div>
+                <div class="lp-about__pillar">
+                    <span class="lp-about__pillar-num">03</span>
+                    <strong>Community</strong>
+                    <p>Connect with fellow enthusiasts and keep the gaming spirit alive together.</p>
+                </div>
             </div>
 
         </div>
-    </section>
+        <!-- ─── /ABOUT ────────────────────────────────────── -->
+
+
+        <!-- ─── TOP-5 STRIP ───────────────────────────────── -->
+        <div class="lp-top5">
+
+            <div class="lp-top5__header">
+                <h2 class="lp-top5__heading">TOP-5<br>PICKS</h2>
+            </div>
+
+            <div class="lp-top5__list">
+
+                <a href="consoles/playstation-2.html" class="lp-top5__item">
+                    <img class="lp-top5__thumb" src="../../assets/images/consoles/ps2.webp" alt="PS2" loading="lazy">
+                    <div class="lp-top5__info">
+                        <span class="lp-top5__name">PlayStation 2</span>
+                        <span class="lp-top5__desc">Best-selling console of all time</span>
+                    </div>
+                    <span class="lp-top5__year">2000</span>
+                    <span class="lp-top5__go">→</span>
+                </a>
+
+                <a href="consoles/snes.html" class="lp-top5__item">
+                    <img class="lp-top5__thumb" src="../../assets/images/consoles/snes.webp" alt="SNES" loading="lazy">
+                    <div class="lp-top5__info">
+                        <span class="lp-top5__name">Super Nintendo</span>
+                        <span class="lp-top5__desc">The golden age of 16-bit gaming</span>
+                    </div>
+                    <span class="lp-top5__year">1990</span>
+                    <span class="lp-top5__go">→</span>
+                </a>
+
+                <a href="consoles/game-boy.html" class="lp-top5__item">
+                    <img class="lp-top5__thumb" src="../../assets/images/consoles/game-boy.webp" alt="Game Boy" loading="lazy">
+                    <div class="lp-top5__info">
+                        <span class="lp-top5__name">Game Boy</span>
+                        <span class="lp-top5__desc">Gaming in your pocket, since 1989</span>
+                    </div>
+                    <span class="lp-top5__year">1989</span>
+                    <span class="lp-top5__go">→</span>
+                </a>
+
+                <a href="consoles/nintendo-switch.html" class="lp-top5__item">
+                    <img class="lp-top5__thumb" src="../../assets/images/consoles/nintendo-switch.webp" alt="Nintendo Switch" loading="lazy">
+                    <div class="lp-top5__info">
+                        <span class="lp-top5__name">Nintendo Switch</span>
+                        <span class="lp-top5__desc">Play anywhere, any time</span>
+                    </div>
+                    <span class="lp-top5__year">2017</span>
+                    <span class="lp-top5__go">→</span>
+                </a>
+
+                <a href="consoles/sega-genesis.html" class="lp-top5__item">
+                    <img class="lp-top5__thumb" src="../../assets/images/consoles/sega-genesis.webp" alt="Sega Genesis" loading="lazy">
+                    <div class="lp-top5__info">
+                        <span class="lp-top5__name">Sega Genesis</span>
+                        <span class="lp-top5__desc">Blast processing &amp; legendary rivalry</span>
+                    </div>
+                    <span class="lp-top5__year">1988</span>
+                    <span class="lp-top5__go">→</span>
+                </a>
+
+            </div>
+        </div>
+        <!-- ─── /TOP-5 STRIP ──────────────────────────────── -->
+
+    </main>
 
     <!-- ===========================
          FOOTER
@@ -270,23 +326,12 @@
         </div>
     </footer>
 
-        </div><!-- /.hp-wrapper -->
-    </div><!-- /.hp-landing -->
-
     <!-- ===========================
          JAVASCRIPT
          =========================== -->
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
     <script type="module" src="../../js/pages/index-cards.js"></script>
-    <script type="module" src="../../js/modules/home-timeline.js"></script>
-    
-    <!-- Fallback Scripts -->
     <script src="../../js/fallback/search-profile.js"></script>
 </body>
 </html>
-
-
-
-
-

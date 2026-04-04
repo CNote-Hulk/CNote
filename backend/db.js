@@ -228,6 +228,16 @@ async function initializeSchema() {
 			PRIMARY KEY (id, lang)
 		);
 
+		/* ── 2FA backup codes ── */
+		CREATE TABLE IF NOT EXISTS two_factor_backup_codes (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			code_hash   VARCHAR(128) NOT NULL,
+			used        BOOLEAN DEFAULT FALSE,
+			used_at     TIMESTAMP DEFAULT NULL,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
+
 		/* ── Trusted devices (skip 2FA) ── */
 		CREATE TABLE IF NOT EXISTS trusted_devices (
 			id          SERIAL PRIMARY KEY,

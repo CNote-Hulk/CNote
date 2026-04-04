@@ -129,11 +129,18 @@ document.getElementById('two-factor-back').addEventListener('click', (e) => {
     localStorage.removeItem('cnote_temp_token');
     document.getElementById('two-factor-section').style.display = 'none';
     document.getElementById('two-factor-fallback').style.display = 'none';
+    document.getElementById('two-factor-backup').style.display = 'none';
     document.getElementById('login-form').style.display = '';
     document.querySelector('.auth-separator').style.display = '';
     document.getElementById('google-login-btn').style.display = '';
     document.querySelector('#tab-server > .auth-link:last-child').style.display = '';
-    document.getElementById('two-factor-code').value = '';
+    const codeInput = document.getElementById('two-factor-code');
+    codeInput.value = '';
+    codeInput.maxLength = 6;
+    codeInput.placeholder = '000000';
+    codeInput.pattern = '[0-9]{6}';
+    codeInput.inputMode = 'numeric';
+    codeInput.style.letterSpacing = '0.5rem';
     document.getElementById('two-factor-error').classList.remove('visible');
 });
 
@@ -167,6 +174,26 @@ document.getElementById('two-factor-fallback-link').addEventListener('click', as
         link.style.pointerEvents = '';
         link.textContent = 'Can\'t access the app? Get code via email';
     }
+});
+
+// ─── 2FA backup code option ─────────────────────
+document.getElementById('two-factor-backup-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    const tfSection = document.getElementById('two-factor-section');
+    const codeInput = document.getElementById('two-factor-code');
+    const tfInfo = document.getElementById('two-factor-info');
+
+    tfSection.dataset.method = 'backup';
+    tfInfo.textContent = 'Enter one of your 8-character backup codes.';
+    codeInput.value = '';
+    codeInput.maxLength = 8;
+    codeInput.placeholder = 'abcd1234';
+    codeInput.pattern = '[a-fA-F0-9]{8}';
+    codeInput.inputMode = 'text';
+    codeInput.style.letterSpacing = '0.3rem';
+    document.getElementById('two-factor-fallback').style.display = 'none';
+    document.getElementById('two-factor-backup').style.display = 'none';
+    codeInput.focus();
 });
 
 // ─── Google login button ────────────────────────

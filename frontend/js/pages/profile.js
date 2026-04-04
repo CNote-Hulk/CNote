@@ -279,6 +279,36 @@ function initSettings() {
         setTimeout(() => msg.classList.remove('visible'), 3200);
     };
 
+    // ═══ BACKUP CODES MODAL ═══
+    const showBackupCodesModal = (codes) => {
+        let overlay = document.getElementById('backup-codes-overlay');
+        if (overlay) overlay.remove();
+        overlay = document.createElement('div');
+        overlay.id = 'backup-codes-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);';
+        const formatted = codes.map((c, i) => `${String(i + 1).padStart(2, ' ')}. ${c}`).join('\n');
+        overlay.innerHTML = `
+            <div style="background:var(--bg-card,#1e1e1e);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+                <h3 style="margin:0 0 8px;font-size:1.1rem;color:var(--text-primary,#fff);">Backup codes</h3>
+                <p style="color:var(--text-muted,#a89880);font-size:0.85rem;margin:0 0 16px;">Save these codes in a safe place. Each code can only be used once. They will not be shown again.</p>
+                <pre id="backup-codes-list" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px 20px;font-family:'Courier New',monospace;font-size:0.95rem;line-height:1.8;color:var(--text-light,#f5eee6);white-space:pre;margin:0 0 16px;user-select:all;">${formatted}</pre>
+                <div style="display:flex;gap:8px;justify-content:flex-end;">
+                    <button type="button" id="backup-codes-copy" class="auth-btn settings-row__btn" style="font-size:0.82rem;padding:6px 14px;">Copy</button>
+                    <button type="button" id="backup-codes-close" class="auth-btn settings-row__btn" style="font-size:0.82rem;padding:6px 14px;">Done</button>
+                </div>
+            </div>`;
+        document.body.appendChild(overlay);
+        overlay.querySelector('#backup-codes-copy').addEventListener('click', () => {
+            navigator.clipboard.writeText(codes.join('\n')).then(() => {
+                const btn = overlay.querySelector('#backup-codes-copy');
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+            });
+        });
+        overlay.querySelector('#backup-codes-close').addEventListener('click', () => overlay.remove());
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    };
+
     // Generic message helper for any message element
     const showMessage = (msgEl, message, isSuccess) => {
         if (!msgEl) return;
@@ -624,6 +654,16 @@ function initSettings() {
             </div>`;
         }
 
+        let backupSection = '';
+        if (totpEnabled || emailEnabled) {
+            backupSection = `
+                    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:2px 0;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+                        <span style="color:var(--text-light);font-size:0.88rem;">Backup codes — <span id="backup-codes-remaining" style="color:var(--text-muted,#a89880);">loading...</span></span>
+                        <button type="button" class="auth-btn settings-row__btn" id="regenerate-backup-codes-btn" style="font-size:0.82rem;padding:5px 12px;">Regenerate</button>
+                    </div>`;
+        }
+
         tfCard.innerHTML = `
             <div class="settings-injected-row__meta">
                 <div class="settings-injected-row__title">Two-factor auth (2FA)</div>
@@ -634,10 +674,20 @@ function initSettings() {
                     ${totpSection}
                     <hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:2px 0;">
                     ${emailSection}
+                    ${backupSection}
                 </div>
             </div>
         `;
         securityPanel.appendChild(tfCard);
+
+        // Load backup codes count
+        if (totpEnabled || emailEnabled) {
+            AuthModule.getBackupCodesCount().then(count => {
+                const el = document.getElementById('backup-codes-remaining');
+                if (el) el.textContent = count + ' remaining';
+                if (el && count === 0) el.style.color = '#e57373';
+            });
+        }
     }
 
     // Danger Zone Card
@@ -651,7 +701,7 @@ function initSettings() {
                 <div class="settings-injected-row__desc">Deleting your account is permanent and cannot be undone.</div>
             </div>
             <div class="settings-injected-row__body">
-                <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="delete-account-btn" style="background:transparent;border:1px solid rgba(229,115,115,0.55);color:#f3a5a5;">Delete account</button>
+                <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="delete-account-btn" style="background:rgba(127,29,29,0.35);border:1px solid rgba(239,68,68,0.5);color:#ff8080;">Delete account</button>
             </div>
         `;
         securityPanel.appendChild(dangerCard);
@@ -716,7 +766,15 @@ function initSettings() {
             const secret = document.getElementById('totp-setup-area').dataset.secret;
             if (!code || code.length !== 6) { showSettingsMessage('Enter the 6-digit code.', false); return; }
             const result = await AuthModule.confirmTOTP(code, secret);
-            if (result.success) { showSettingsMessage('Authenticator app 2FA has been enabled!', true); refreshTwoFactorCard(); }
+            if (result.success) {
+                showSettingsMessage('Authenticator app 2FA has been enabled!', true);
+                // Generate backup codes and show them
+                const backupResult = await AuthModule.generateBackupCodes();
+                if (backupResult.success && backupResult.codes) {
+                    showBackupCodesModal(backupResult.codes);
+                }
+                refreshTwoFactorCard();
+            }
             else showSettingsMessage(result.error || 'Invalid code.', false);
         });
     }
@@ -735,6 +793,24 @@ function initSettings() {
 
     const disableEmailBtn = document.getElementById('disable-email-btn');
     if (disableEmailBtn) disableEmailBtn.addEventListener('click', () => disable2faHandler('email', 'email'));
+
+    const regenBackupBtn = document.getElementById('regenerate-backup-codes-btn');
+    if (regenBackupBtn) {
+        regenBackupBtn.addEventListener('click', async () => {
+            const dialogResult = await showConfirmDialog({ title: 'Regenerate backup codes', message: 'This will invalidate all existing backup codes. Enter your password to continue.', confirmLabel: 'Regenerate', cancelLabel: 'Cancel', withPassword: true });
+            if (!dialogResult || !dialogResult.confirmed) return;
+            if (!dialogResult.password) { showSettingsMessage('Enter your password to confirm.', false); return; }
+            const result = await AuthModule.regenerateBackupCodes(dialogResult.password);
+            if (result.success && result.codes) {
+                showBackupCodesModal(result.codes);
+                showSettingsMessage('Backup codes have been regenerated.', true);
+                const el = document.getElementById('backup-codes-remaining');
+                if (el) { el.textContent = '10 remaining'; el.style.color = ''; }
+            } else {
+                showSettingsMessage(result.error || 'Error regenerating codes.', false);
+            }
+        });
+    }
 
     // Google link success from URL params
     const urlParams = new URLSearchParams(window.location.search);
