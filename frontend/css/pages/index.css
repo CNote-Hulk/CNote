@@ -175,13 +175,13 @@
 .hp-btn--primary:hover {
     background: var(--accent-light, #E6C48A);
     border-color: var(--accent-light, #E6C48A);
-    box-shadow: 0 0 28px rgba(212, 175, 122, 0.25), 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.28), 0 4px 16px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
 }
 
 .hp-btn--primary:active {
     transform: translateY(0);
-    box-shadow: 0 0 12px rgba(212, 175, 122, 0.15);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.18);
 }
 
 .hp-btn--ghost {
@@ -428,9 +428,9 @@
 }
 
 .hp-timeline__item:hover .hp-timeline__num {
-    background: rgba(212, 175, 122, 0.12);
-    border-color: rgba(212, 175, 122, 0.35);
-    box-shadow: 0 0 20px rgba(212, 175, 122, 0.1);
+    background: rgba(var(--accent-rgb), 0.12);
+    border-color: rgba(var(--accent-rgb), 0.35);
+    box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.12);
     transform: translateY(-2px);
 }
 
@@ -533,10 +533,10 @@
 }
 
 .hp-card:hover {
-    background: rgba(212, 175, 122, 0.045);
-    border-color: rgba(212, 175, 122, 0.16);
+    background: rgba(var(--accent-rgb), 0.04);
+    border-color: rgba(var(--accent-rgb), 0.16);
     transform: translateY(-4px);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25), 0 0 18px rgba(212, 175, 122, 0.06);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22), 0 0 18px rgba(var(--accent-rgb), 0.08);
 }
 
 .hp-card__icon {
@@ -557,8 +557,8 @@
 }
 
 .hp-card:hover .hp-card__icon {
-    background: rgba(212, 175, 122, 0.14);
-    box-shadow: 0 0 16px rgba(212, 175, 122, 0.08);
+    background: rgba(var(--accent-rgb), 0.14);
+    box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.1);
 }
 
 .hp-card__title {
@@ -809,8 +809,8 @@
 
 [data-theme="light"] .hp-card:hover {
     background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(184, 135, 46, 0.2);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), 0 0 18px rgba(184, 135, 46, 0.06);
+    border-color: rgba(var(--accent-rgb), 0.2);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), 0 0 18px rgba(var(--accent-rgb), 0.08);
 }
 
 [data-theme="light"] .hp-btn--ghost {

@@ -875,6 +875,10 @@ function initSettings() {
             else localStorage.removeItem('cnote-theme');
             themeCards.forEach(c => c.classList.remove('active'));
             card.classList.add('active');
+            // Sync accent picker if no custom accent is saved
+            if (!localStorage.getItem('cnote-accent-color')) {
+                requestAnimationFrame(() => syncPickerToAccent(getComputedAccent()));
+            }
         });
     });
 
@@ -912,6 +916,15 @@ function initSettings() {
         root.style.removeProperty('--glow-accent');
     }
 
+    function getComputedAccent() {
+        return getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#E06B58';
+    }
+
+    function syncPickerToAccent(hex) {
+        if (accentInput) accentInput.value = hex;
+        accentSwatches.forEach(s => s.classList.toggle('active', s.dataset.color === hex));
+    }
+
     const accentInput = document.getElementById('accent-color-input');
     const accentSwatches = document.querySelectorAll('.accent-swatch');
     const resetAccentBtn = document.getElementById('reset-accent-btn');
@@ -922,6 +935,8 @@ function initSettings() {
         accentSwatches.forEach(s => {
             s.classList.toggle('active', s.dataset.color === savedAccent);
         });
+    } else {
+        syncPickerToAccent(getComputedAccent());
     }
 
     if (accentInput) {
@@ -944,8 +959,7 @@ function initSettings() {
     if (resetAccentBtn) {
         resetAccentBtn.addEventListener('click', () => {
             resetAccentColor();
-            if (accentInput) accentInput.value = '#D4AF7A';
-            accentSwatches.forEach(s => s.classList.toggle('active', s.dataset.color === '#D4AF7A'));
+            syncPickerToAccent(getComputedAccent());
         });
     }
 }

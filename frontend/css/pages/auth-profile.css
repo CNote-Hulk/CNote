@@ -2357,6 +2357,8 @@ a.chat-message__username:hover {
 
 [data-theme="dark"] .profile-page {
     --p-bg: #050403;
+    --p-accent: var(--accent-color, #E06B58);
+    --p-accent-rgb: var(--accent-color-rgb, 224, 107, 88);
     --p-text: #ffffff;
     --p-text2: #e0d0b0;
     --p-muted: #b0a79e;
@@ -2729,8 +2731,8 @@ a.chat-message__username:hover {
     transform: scale(1.15);
 }
 .accent-swatch.active {
-    border-color: var(--p-text, #F5F0E8);
-    box-shadow: 0 0 8px rgba(var(--accent-rgb, 212, 175, 122), 0.3);
+    border-color: var(--p-accent, #D4AF7A);
+    box-shadow: 0 0 8px rgba(var(--p-accent-rgb, 212, 175, 122), 0.3);
 }
 
 .auth-btn--small {
@@ -2822,9 +2824,6 @@ a.chat-message__username:hover {
 }
 [data-theme="light"] .accent-color-input {
     border-color: rgba(0, 0, 0, 0.12);
-}
-[data-theme="light"] .accent-swatch.active {
-    border-color: #3d3530;
 }
 
 /* ── Mobile bottom nav clearance (profil.html) ── */

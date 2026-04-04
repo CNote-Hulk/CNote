@@ -30,7 +30,7 @@
     background: rgba(var(--panel-rgb), 0.78);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -70,7 +70,7 @@ body.home-page::before {
     width: 230px;
     margin-top: 10px;
     margin-left: 10px;
-    box-shadow: #231d17 10px 10px 10px;
+    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
     height: calc(100% - 30px);
     border-radius: 25px;
     z-index: 100;
@@ -362,7 +362,7 @@ body.home-page::before {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.10);
-    box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.25);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.28), 0 1px 4px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .continue-card {
@@ -458,8 +458,8 @@ body.home-page::before {
 
 .console-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, .2);
-    box-shadow: 0 10px 22px rgba(0,0,0,.28);
+    border-color: rgba(255, 255, 255, .18);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .activity-list {
@@ -540,13 +540,30 @@ body.home-page::before {
     background: var(--bg);
 }
 
+[data-theme="dark"] .dashboard-sidebar {
+    box-shadow: 2px 0 28px rgba(0, 0, 0, 0.5), inset -1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .stats-card,
+[data-theme="dark"] .continue-card,
+[data-theme="dark"] .achievement-card,
+[data-theme="dark"] .community-card {
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .console-card:hover {
+    border-color: rgba(255, 255, 255, .12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
 [data-theme="light"] .dashboard-shell {
     background: var(--bg);
 }
 
 [data-theme="light"] .dashboard-sidebar {
     background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
-    box-shadow: rgba(0, 0, 0, 0.06) 4px 4px 12px;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.07), 1px 0 0 rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="light"] .card,
@@ -562,6 +579,11 @@ body.home-page::before {
 [data-theme="light"] .console-card {
     background: rgba(var(--panel-rgb), 0.82);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .console-card:hover {
+    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] .activity-list li {

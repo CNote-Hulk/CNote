@@ -20,7 +20,7 @@
 .btn:hover {
     background: var(--secondary-color);
     border-color: var(--accent-color);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(var(--accent-rgb), 0.1);
     transform: translateY(-2px);
 }
 
@@ -81,7 +81,7 @@
 
 .demo-button:hover {
     background: var(--accent-light);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(var(--accent-rgb), 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 18px rgba(var(--accent-rgb), 0.2);
     transform: translateY(-2px);
 }
 
@@ -115,4 +115,13 @@
         padding: 0.85rem 1.25rem;
         font-size: 0.95rem;
     }
+}
+
+/* ── Light theme button shadows ── */
+[data-theme="light"] .btn:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(var(--accent-rgb), 0.12);
+}
+
+[data-theme="light"] .demo-button:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1), 0 0 14px rgba(var(--accent-rgb), 0.18);
 }
