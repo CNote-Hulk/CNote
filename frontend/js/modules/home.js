@@ -132,8 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         try {
             const data = JSON.parse(localStorage.getItem('cn_achievements')) || {};
-            const earned = data[userId] || {};
-            return { success: true, achievements: BADGES.map(b => ({ ...b, unlocked: !!earned[b.id] })) };
+            const earned = data[userId] || [];
+            const earnedIds = new Set(
+                Array.isArray(earned)
+                    ? earned.map(e => e.id)
+                    : Object.keys(earned).filter(k => earned[k])
+            );
+            return { success: true, achievements: BADGES.map(b => ({ ...b, unlocked: earnedIds.has(b.id) })) };
         } catch { return { success: false }; }
     }
 

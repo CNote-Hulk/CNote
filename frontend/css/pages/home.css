@@ -5,9 +5,9 @@
     --panel-rgb: 42, 35, 31;
     --text: #e7d4c4;
     --muted: #b1a294;
-    --accent: var(--accent-color, #E06B58);
-    --accent-soft: var(--accent-light, #C85A48);
-    --accent-rgb: var(--accent-color-rgb, 224, 107, 88);
+    --accent: var(--accent-color, #F5F0E8);
+    --accent-soft: var(--accent-light, #FAF7F3);
+    --accent-rgb: var(--accent-color-rgb, 245, 240, 232);
     --border: rgba(255, 255, 255, 0.08);
 }
 
@@ -501,15 +501,15 @@ body.home-page::before {
 
 [data-theme="dark"] {
     --bg: #0a0907;
-    --panel: #111009;
-    --panel-soft: #1c1714;
-    --panel-rgb: 17, 16, 9;
+    --panel: #1c1916;
+    --panel-soft: #261f1b;
+    --panel-rgb: 28, 25, 22;
     --text: #ffffff;
     --muted: #b0a79e;
-    --accent: var(--accent-color, #E06B58);
-    --accent-soft: var(--accent-light, #C85A48);
-    --accent-rgb: var(--accent-color-rgb, 224, 107, 88);
-    --border: rgba(255, 255, 255, 0.1);
+    --accent: var(--accent-color, #FFFFFF);
+    --accent-soft: var(--accent-light, #FFFFFF);
+    --accent-rgb: var(--accent-color-rgb, 255, 255, 255);
+    --border: rgba(255, 255, 255, 0.11);
 }
 
 [data-theme="light"] {
@@ -519,10 +519,10 @@ body.home-page::before {
     --panel-rgb: 255, 255, 255;
     --text: #111317;
     --muted: #6B7280;
-    --accent: var(--accent-color, #D64D3C);
-    --accent-soft: var(--accent-light, #B8372C);
-    --accent-rgb: var(--accent-color-rgb, 214, 77, 60);
-    --border: rgba(0, 0, 0, 0.06);
+    --accent: var(--accent-color, #111317);
+    --accent-soft: var(--accent-light, #2a2d35);
+    --accent-rgb: var(--accent-color-rgb, 17, 19, 23);
+    --border: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .achievement-card:hover,
@@ -589,6 +589,10 @@ body.home-page::before {
 [data-theme="light"] .activity-list li {
     background: rgba(255, 255, 255, 0.78);
     border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .primary-btn:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
 [data-theme="light"] .footer {

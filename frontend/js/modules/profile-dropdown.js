@@ -16,8 +16,9 @@ const ACCENT_KEY = 'cnote-accent-color';
     document.documentElement.dataset.theme = t;
 })();
 
-// Apply saved accent color immediately on module load
+// Apply saved accent color immediately on module load (only when logged in)
 (function () {
+    if (!localStorage.getItem('cn_session')) return;
     const hex = localStorage.getItem(ACCENT_KEY);
     if (!hex) return;
     const r = parseInt(hex.slice(1,3), 16);

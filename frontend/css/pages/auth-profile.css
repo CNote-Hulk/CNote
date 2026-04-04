@@ -23,7 +23,7 @@
     position: fixed;
     inset: -4px;
     background: url('../../assets/images/wallpapers/login.jpg') center/cover no-repeat;
-    filter: blur(3px) brightness(0.6);
+    filter: blur(3px) brightness(0.5);
     transform: scale(1.02);
     z-index: 0;
     pointer-events: none;
@@ -421,13 +421,13 @@
 /* Design tokens (scoped) */
 .profile-page {
     --p-bg: #141210;
-    --p-accent: var(--accent-color, #D4AF7A);
-    --p-accent-rgb: var(--accent-color-rgb, 212, 175, 122);
+    --p-accent: var(--accent-color, #F5F0E8);
+    --p-accent-rgb: var(--accent-color-rgb, 245, 240, 232);
     --p-text:  #e8d8b8;
     --p-text2: #c8b89a;
     --p-muted: #7a6e5e;
     --p-faint: #4a4234;
-    --p-card:  #181410;
+    --p-card:  #221e1a;
     --p-border: rgba(var(--p-accent-rgb), 0.1);
     --p-sidebar: #111009;
     --p-font-display: 'Playfair Display', Georgia, serif;
@@ -2357,19 +2357,19 @@ a.chat-message__username:hover {
 
 [data-theme="dark"] .profile-page {
     --p-bg: #050403;
-    --p-accent: var(--accent-color, #E06B58);
-    --p-accent-rgb: var(--accent-color-rgb, 224, 107, 88);
+    --p-accent: var(--accent-color, #FFFFFF);
+    --p-accent-rgb: var(--accent-color-rgb, 255, 255, 255);
     --p-text: #ffffff;
     --p-text2: #e0d0b0;
     --p-muted: #b0a79e;
     --p-faint: #1c1814;
-    --p-card: #0a0907;
-    --p-sidebar: #060504;
+    --p-card: #1c1916;
+    --p-sidebar: #0f0d0b;
 }
 
 [data-theme="light"] .profile-page {
-    --p-accent: var(--accent-color, #b8872e);
-    --p-accent-rgb: var(--accent-color-rgb, 184, 135, 46);
+    --p-accent: var(--accent-color, #111317);
+    --p-accent-rgb: var(--accent-color-rgb, 17, 19, 23);
     --p-text: #1B1714;
     --p-text2: #3a2f22;
     --p-muted: #6b5f57;

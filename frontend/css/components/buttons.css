@@ -119,9 +119,9 @@
 
 /* ── Light theme button shadows ── */
 [data-theme="light"] .btn:hover {
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(var(--accent-rgb), 0.12);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 [data-theme="light"] .demo-button:hover {
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1), 0 0 14px rgba(var(--accent-rgb), 0.18);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.07);
 }

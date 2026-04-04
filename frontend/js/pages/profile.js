@@ -917,7 +917,12 @@ function initSettings() {
     }
 
     function getComputedAccent() {
-        return getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#E06B58';
+        const theme = document.documentElement.dataset.theme || '';
+        const fromCss = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+        if (fromCss) return fromCss;
+        if (theme === 'dark') return '#FFFFFF';
+        if (theme === 'light') return '#111317';
+        return '#F5F0E8';
     }
 
     function syncPickerToAccent(hex) {

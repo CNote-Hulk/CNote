@@ -809,8 +809,8 @@
 
 [data-theme="light"] .hp-card:hover {
     background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(var(--accent-rgb), 0.2);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), 0 0 18px rgba(var(--accent-rgb), 0.08);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1), 0 0 18px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] .hp-btn--ghost {
@@ -826,4 +826,23 @@
 [data-theme="light"] .hp-landing .footer {
     background: rgba(245, 240, 232, 0.6);
     border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .hp-btn--primary:hover {
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .hp-btn--primary:active {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="light"] .hp-card:hover .hp-card__icon {
+    background: rgba(0, 0, 0, 0.06);
+    box-shadow: none;
+}
+
+[data-theme="light"] .hp-timeline__item:hover .hp-timeline__num {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.08);
 }
