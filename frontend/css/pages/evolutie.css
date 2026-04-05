@@ -11,12 +11,10 @@
     position: relative;
     isolation: isolate;
     width: 100%;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     background: url('../../assets/images/wallpapers/evolutie.jpg') center/cover no-repeat fixed;
     background-color: var(--dark-bg-2);
-    overflow: hidden;
 }
 
 /* Dark overlay */
@@ -458,7 +456,12 @@
     }
 }
 
-/* ── Light theme: force white text on hero (bg is always dark wallpaper) ── */
+/* ── Light theme: match index — use near-white overlay so nb-cards sit on a
+   light background (same effect as .nblp::before with primary-rgb 247,247,248) ── */
+[data-theme="light"] .evl-hero::before {
+    background: rgba(var(--primary-rgb), 0.85);
+}
+
 [data-theme="light"] .evl-hero .evl-t1,
 [data-theme="light"] .evl-hero .evl-t2 {
     color: #F5F0E8;
@@ -1447,4 +1450,46 @@
     [data-theme="light"] .section#index .console-card:active {
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 12px rgba(184, 135, 46, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.5);
     }
+}
+
+/* ── Light theme: timeline visibility fixes ── */
+[data-theme="light"] .timeline::before {
+    background: linear-gradient(180deg,
+        rgba(0, 0, 0, 0.06),
+        rgba(0, 0, 0, 0.15) 10%,
+        rgba(0, 0, 0, 0.15) 90%,
+        rgba(0, 0, 0, 0.06)
+    );
+}
+
+[data-theme="light"] .timeline-item::after {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.18);
+    color: #1B1714;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .timeline-content,
+[data-theme="light"] .timeline-image {
+    border-color: rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="light"] .timeline-content::before,
+[data-theme="light"] .timeline-image::before {
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.12), transparent);
+}
+
+[data-theme="light"] .timeline-content:hover,
+[data-theme="light"] .timeline-image:hover {
+    border-color: rgba(0, 0, 0, 0.14);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Light theme: generation header border ── */
+[data-theme="light"] .generation-header {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .section#index .section-intro {
+    border-bottom-color: rgba(0, 0, 0, 0.08);
 }

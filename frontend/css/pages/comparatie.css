@@ -957,9 +957,11 @@ a.ph-feat { cursor: pointer; }
    3-column: PS1 left | center title | NES right
    ===================================================== */
 
+/* cmp-hero__stage replaced by nb-scene on desktop */
+.cmp-hero__stage { display: none; }
+
 .cmp-hero {
     position: relative;
-    min-height: 100vh;
     background-image: url('../../assets/images/wallpapers/comparatie.jpg');
     background-size: cover;
     background-position: center;
@@ -1371,4 +1373,272 @@ a.ph-feat { cursor: pointer; }
 @media (max-width: 420px) {
     .cmp-side--left, .cmp-side--right { display: none; }
     .cmp-hero__stage { padding-top: 0; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NOTEBOOK — Compare Hero  ≤ 540px
+   Open-book layout: left page (PS1) | spine (VS + CTA) | right page (NES)
+   ══════════════════════════════════════════════════════════════ */
+
+.cmp-notebook { display: none; } /* hidden on desktop */
+
+@media (max-width: 540px) {
+
+    /* Hero: full viewport, centre the notebook */
+    .cmp-hero {
+        background-attachment: scroll;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Hide desktop three-column stage */
+    .cmp-hero__stage { display: none; }
+
+    /* ── Open notebook ─────────────────────────────── */
+    .cmp-notebook {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        width: calc(100% - 32px);
+        max-width: 460px;
+        margin: 0 auto;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow:
+            0 32px 80px rgba(0,0,0,0.7),
+            0 8px 24px rgba(0,0,0,0.45),
+            -6px 0 24px rgba(0,0,0,0.25);
+        position: relative;
+        z-index: 1;
+        max-height: calc(100dvh - 200px);
+    }
+
+    /* ── Pages ─────────────────────────────────────── */
+    .cmp-nb-page {
+        flex: 1;
+        background-color: var(--nb-paper-bg, #E9DCC7);
+        background-image:
+            linear-gradient(var(--nb-paper-line, rgba(0,0,0,0.08)) 1px, transparent 1px);
+        background-size: 100% 26px;
+        background-position: 0 38px;
+        padding: 14px 10px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Red margin line — left side of left page */
+    .cmp-nb-page--left::before {
+        content: '';
+        position: absolute;
+        left: 30px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: rgba(200, 50, 50, 0.3);
+        pointer-events: none;
+    }
+
+    /* Red margin line — right side of right page */
+    .cmp-nb-page--right::before {
+        content: '';
+        position: absolute;
+        right: 30px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: rgba(200, 50, 50, 0.3);
+        pointer-events: none;
+    }
+
+    /* ── Console image ──────────────────────────────── */
+    .cmp-nb-img-wrap {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        padding: 10px 0 2px;
+    }
+
+    .cmp-nb-img {
+        width: clamp(72px, 34vw, 130px);
+        height: auto;
+        object-fit: contain;
+    }
+
+    .cmp-nb-img--left {
+        transform: rotate(-6deg) translateX(4px);
+        filter:
+            drop-shadow(0 6px 18px rgba(0, 112, 209, 0.6))
+            drop-shadow(0 3px 8px rgba(0, 0, 0, 0.55));
+    }
+
+    .cmp-nb-img--right {
+        transform: rotate(6deg) translateX(-4px);
+        filter:
+            drop-shadow(0 6px 18px rgba(209, 148, 0, 0.6))
+            drop-shadow(0 3px 8px rgba(0, 0, 0, 0.55));
+    }
+
+    /* ── Console label ──────────────────────────────── */
+    .cmp-nb-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1px;
+        text-align: center;
+        flex: 0 0 auto;
+    }
+
+    .cmp-nb-gen {
+        font-family: var(--font-sans);
+        font-size: 0.5rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(27, 23, 20, 0.4);
+    }
+
+    .cmp-nb-name {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 700;
+        font-size: clamp(0.78rem, 3.5vw, 1rem);
+        color: #1B1714;
+        line-height: 1.1;
+    }
+
+    .cmp-nb-year {
+        font-family: Georgia, serif;
+        font-size: 0.58rem;
+        color: rgba(27, 23, 20, 0.48);
+        font-style: italic;
+    }
+
+    /* ── Fun facts ──────────────────────────────────── */
+    .cmp-nb-facts {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .cmp-nb-facts li {
+        font-family: Georgia, serif;
+        font-size: clamp(0.58rem, 2.3vw, 0.68rem);
+        color: rgba(27, 23, 20, 0.72);
+        line-height: 1.35;
+        padding: 5px 4px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    }
+
+    .cmp-nb-facts li:last-child { border-bottom: none; }
+
+    /* ── Spine ──────────────────────────────────────── */
+    .cmp-nb-spine {
+        width: 46px;
+        flex-shrink: 0;
+        background: #1a1008;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        box-shadow:
+            inset -5px 0 14px rgba(0,0,0,0.35),
+            inset 5px 0 14px rgba(0,0,0,0.35);
+        padding: 20px 0;
+        position: relative;
+    }
+
+    /* Subtle spine highlight strip */
+    .cmp-nb-spine::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .cmp-nb-vs {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: rgba(245, 240, 232, 0.75);
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        letter-spacing: 0.2em;
+    }
+
+    .cmp-nb-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--accent-color, #F5F0E8);
+        color: #1B1714;
+        text-decoration: none;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cmp-nb-btn:hover {
+        transform: scale(1.12);
+        box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+    }
+
+    .cmp-nb-btn svg { display: block; }
+
+    /* ── Feature strip: scrollable row ─────────────── */
+    .cmp-features {
+        padding: 12px 14px 16px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        gap: 7px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .cmp-features::-webkit-scrollbar { display: none; }
+
+    .cmp-feat {
+        flex-shrink: 0;
+        padding: 7px 14px 7px 7px;
+        font-size: 0.7rem;
+    }
+
+    .cmp-feat svg {
+        width: 24px;
+        height: 24px;
+        padding: 5px;
+    }
+}
+
+/* ── Light theme: brighter paper ───────────────────────── */
+[data-theme="light"] .cmp-nb-page {
+    background-color: var(--nb-paper-bg, #F8F2E4);
+}
+
+/* ── Dark theme: slightly warmer paper ─────────────────── */
+[data-theme="dark"] .cmp-nb-page {
+    background-color: var(--nb-paper-bg, #E1D3BC);
 }

@@ -2,9 +2,10 @@
    STATISTICS PAGE — Modern Dashboard Design
    ══════════════════════════════════════════════════════ */
 
+
 .stats-page {
     min-height: 100vh;
-    padding-top: 0;
+    padding-top: var(--spacing-xl); /* 3rem, ca pe alte pagini */
     background: transparent;
 }
 

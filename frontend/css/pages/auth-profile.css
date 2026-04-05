@@ -3253,3 +3253,152 @@ a.chat-message__username:hover {
         display: none;
     }
 }
+
+
+/* ══════════════════════════════════════════════════════════
+   NOTEBOOK VARIANT — auth-page--nb
+   Used by: login, register, reset-password, request-password-reset
+   The open-book notebook from index.html replaces the auth-card.
+   Forms live inside the notebook's left page (nb-left__inner).
+   ══════════════════════════════════════════════════════════ */
+
+/* Override flex-centering — nb-main handles all layout */
+.auth-page--nb {
+    display: block;
+    padding: 0;
+    overflow: visible;
+    min-height: 100vh;
+}
+
+/* Left-page body scrolls when the form is taller than the fixed book */
+.auth-page--nb .nb-left__body {
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+/* ── Form elements adapted for the warm paper background ─────── */
+
+.nb-left__inner .auth-form {
+    gap: 0.7rem;
+}
+
+.nb-left__inner .auth-field label {
+    color: rgba(61, 42, 26, 0.62);
+}
+
+.nb-left__inner .auth-field input {
+    background: rgba(61, 42, 26, 0.06);
+    border-color: rgba(130, 90, 20, 0.22);
+    color: #2a1a0e;
+}
+
+.nb-left__inner .auth-field input::placeholder {
+    color: rgba(61, 42, 26, 0.33);
+    opacity: 1;
+}
+
+.nb-left__inner .auth-field input:focus {
+    border-color: var(--accent-color);
+    background: rgba(61, 42, 26, 0.09);
+}
+
+/* Error / success banners on paper */
+.nb-left__inner .auth-error {
+    background: rgba(160, 30, 30, 0.07);
+    border-color: rgba(160, 30, 30, 0.2);
+    color: #7d2020;
+    margin-bottom: 0.5rem;
+}
+
+.nb-left__inner #register-success {
+    background: rgba(25, 110, 55, 0.07) !important;
+    border-color: rgba(25, 110, 55, 0.18) !important;
+    color: #1a5c2e !important;
+}
+
+/* Separator */
+.nb-left__inner .auth-separator {
+    margin: 0.75rem 0;
+}
+
+.nb-left__inner .auth-separator hr {
+    border-color: rgba(130, 90, 20, 0.2);
+}
+
+.nb-left__inner .auth-separator span {
+    color: rgba(61, 42, 26, 0.4);
+    font-size: 0.78rem;
+}
+
+/* Links */
+.nb-left__inner .auth-link {
+    color: rgba(61, 42, 26, 0.48);
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.nb-left__inner .auth-link a {
+    color: rgba(61, 42, 26, 0.68);
+    font-weight: 600;
+}
+
+.nb-left__inner .auth-link a:hover {
+    color: #2a1a0e;
+    text-decoration: none;
+}
+
+/* Google button on paper */
+.nb-left__inner .auth-btn--google {
+    background: rgba(61, 42, 26, 0.07);
+    color: #2a1a0e;
+    border: 1px solid rgba(130, 90, 20, 0.2);
+    box-shadow: none;
+    margin-top: 0;
+}
+
+.nb-left__inner .auth-btn--google:hover {
+    background: rgba(61, 42, 26, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 2FA & verify-warning text on paper */
+.nb-left__inner .auth-tab-info {
+    color: rgba(61, 42, 26, 0.6);
+    font-size: 0.82rem;
+    margin-bottom: 0.5rem;
+}
+
+.nb-left__inner #login-verify-warning {
+    background: rgba(140, 90, 5, 0.08) !important;
+    border-color: rgba(140, 90, 5, 0.2) !important;
+}
+
+.nb-left__inner #login-verify-warning p {
+    color: rgba(61, 42, 26, 0.72) !important;
+}
+
+/* Inline subtitle when used inside nb-left__body */
+.nb-left__inner .auth-nb-subtitle {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: rgba(61, 42, 26, 0.55);
+    margin: 0 0 0.75rem;
+    line-height: 1.5;
+}
+
+/* Success / invalid state headings inside nb */
+.nb-left__inner .auth-nb-state-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2a1a0e;
+    margin: 0 0 0.4rem;
+}
+
+.nb-left__inner .auth-nb-state-text {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.82rem;
+    color: rgba(61, 42, 26, 0.6);
+    margin: 0 0 1rem;
+    line-height: 1.5;
+}

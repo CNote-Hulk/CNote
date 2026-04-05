@@ -63,6 +63,7 @@ html[data-theme='light'] {
     align-items: center;
     justify-content: center;
     gap: 0;
+    padding-top: 20px;
 }
 
 
@@ -95,7 +96,7 @@ html[data-theme='light'] {
     display: flex;
     border-radius: 10px;
     overflow: hidden;
-    min-height: 390px;
+    height: clamp(480px, calc(100vh - 190px), 650px);
     box-shadow:
         0 48px 110px rgba(0, 0, 0, 0.70),
         0 14px 36px  rgba(0, 0, 0, 0.45),
@@ -216,7 +217,9 @@ html[data-theme='light'] {
     color: #3d2a1a;
     line-height: 1.65;
     margin: 0 0 12px;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-height: 0;
+    overflow: hidden;
 }
 
 /* Stats row */
@@ -351,26 +354,27 @@ html[data-theme='light'] {
     line-height: 1;
 }
 
-/* Atari image */
+/* Console image — full filter as default (default + dark theme) */
 .nb-right__img {
     width: 100%;
     max-width: 400px;
     object-fit: contain;
-    filter: drop-shadow(0 10px 28px rgba(20, 10, 2, 0.38));
     align-self: center;
     display: block;
     flex-shrink: 0;
-}
-
-html:not([data-theme]) body.nblp .nb-right__img,
-html[data-theme=''] body.nblp .nb-right__img,
-html[data-theme='dark'] body.nblp .nb-right__img {
     filter:
         drop-shadow(0 10px 20px rgba(0, 0, 0, 0.22))
         drop-shadow(0 26px 34px rgba(20, 10, 2, 0.18))
         brightness(1.16)
         contrast(1.07)
         saturate(1.08);
+}
+
+/* Light theme: softer shadow only, no brightness boost */
+[data-theme="light"] .nb-right__img {
+    filter:
+        drop-shadow(0 8px 18px rgba(0, 0, 0, 0.18))
+        drop-shadow(0 20px 28px rgba(20, 10, 2, 0.12));
 }
 
 /* Fun fact card */
@@ -613,14 +617,16 @@ html[data-theme='dark'] body.nblp .nb-right__img {
 /* ── Responsive — mobile ≤ 580px ─────────────────────── */
 
 @media (max-width: 580px) {
-    /* Stack pages vertically */
+    /* Stack pages vertically — height auto so both pages show in full */
     .nb-book {
         flex-direction: column;
-        min-height: 560px;
+        height: auto;
+        min-height: unset;
     }
 
     .nb-left, .nb-right {
-        min-height: 280px;
+        height: auto;
+        min-height: 300px;
     }
 
     /* Horizontal spine strip */
@@ -668,4 +674,173 @@ html[data-theme='dark'] body.nblp .nb-right__img {
     .nb-left__title { font-size: 1.7rem; }
     .nb-right__name { font-size: 1.3rem; }
     .nb-right__img  { width: 80%; }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   ACTIVE CARD — current page indicator
+   ══════════════════════════════════════════════════════════ */
+
+.nb-card--active {
+    cursor: default;
+    pointer-events: none;
+    border-top: 2.5px solid var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.1);
+    box-shadow:
+        0 0 0 1px rgba(var(--accent-rgb), 0.2),
+        0 10px 30px rgba(0, 0, 0, 0.28),
+        0 0 24px rgba(var(--accent-rgb), 0.08);
+    transform: translateY(-4px);
+}
+
+.nb-card--active .nb-card__icon {
+    background: rgba(var(--accent-rgb), 0.2);
+    border-color: rgba(var(--accent-rgb), 0.35);
+}
+
+.nb-card--active .nb-card__name {
+    color: var(--accent-color);
+}
+
+.nb-card--active .nb-card__sub {
+    color: rgba(var(--accent-rgb), 0.55);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   COMMUNITY REVIEWS (nb-recs) — left page of community nb
+   ══════════════════════════════════════════════════════════ */
+
+.nb-recs {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 12px;
+    flex-shrink: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.nb-rec {
+    background: rgba(150, 105, 20, 0.07);
+    border: 1px solid rgba(150, 105, 20, 0.16);
+    border-left: 3px solid rgba(150, 105, 20, 0.48);
+    border-radius: 0 8px 8px 0;
+    padding: 7px 12px;
+}
+
+.nb-rec__stars {
+    display: block;
+    font-size: 0.62rem;
+    color: rgba(150, 105, 20, 0.85);
+    margin-bottom: 3px;
+    letter-spacing: 0.04em;
+}
+
+.nb-rec__text {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: #3d2a1a;
+    line-height: 1.4;
+    margin: 0;
+    display: block;
+}
+
+.nb-rec__author {
+    display: block;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.63rem;
+    color: rgba(61, 42, 26, 0.5);
+    margin-top: 3px;
+}
+
+
+/* ── nb-left__cta as button ──────────────────────────── */
+button.nb-left__cta {
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   NON-INDEX PAGES — nb-main inside a hero section
+   (.nb-main used on community-welcome, evolutie etc.)
+   Adjustments so the scene sits correctly without .nblp bg
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Non-index pages: nb-main inside a hero wrapper ─────
+   navbar.css adds padding-top: var(--cn-nav-offset) to the
+   first element after <nav> via body > .navbar + * (0-1-1).
+   On index that selector hits .nb-main directly; since
+   0-1-1 > .nb-main's 0-1-0 it overrides the 90px to 64px.
+   On other pages it hits the HERO SECTION instead, so:
+     1. Reset hero padding-top to 0 (same 0-1-1 spec, later
+        cascade order wins over navbar.css line 13 vs here line 33)
+     2. Set nb-main inside each hero to 64px so it matches
+        exactly what index gets (specificity 0-2-0 beats 0-1-0).
+   ───────────────────────────────────────────────────────── */
+section.evl-hero,
+section.cmp-hero,
+section.ph-hero--nb,
+div.auth-page--nb {
+    padding-top: 0;
+}
+
+.evl-hero .nb-main,
+.clr-hero .nb-main,
+.ph-hero .nb-main,
+.cmp-hero .nb-main,
+.auth-page--nb .nb-main {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--cn-nav-offset, 64px);
+}
+
+@media (max-width: 768px) {
+    .evl-hero .nb-main,
+    .clr-hero .nb-main,
+    .ph-hero .nb-main,
+    .cmp-hero .nb-main,
+    .auth-page--nb .nb-main {
+        padding-top: var(--cn-nav-offset, 96px);
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   QUICK-LINKS LIST (nb-links) — used on help page left page
+   ══════════════════════════════════════════════════════════ */
+
+.nb-links {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.nb-links li a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: #3d2a1a;
+    line-height: 1.35;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    background: rgba(150, 105, 20, 0.06);
+    border: 1px solid rgba(150, 105, 20, 0.14);
+    transition: background 0.15s;
+}
+
+.nb-links li a:hover {
+    background: rgba(150, 105, 20, 0.13);
 }

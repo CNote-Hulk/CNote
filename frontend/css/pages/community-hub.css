@@ -1,3 +1,9 @@
+/* === LIGHT THEME SIDEBAR FIX === */
+[data-theme="light"] .hub-sidebar {
+    background: var(--card-bg, #fff) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-light);
+}
 /**
  * ConsoleHub Community Styles
  * Sidebar + content views for forum, marketplace, repair, DM.

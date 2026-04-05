@@ -18,6 +18,12 @@
     overflow: hidden;
 }
 
+/* When ph-hero wraps a nb-scene: match index height exactly */
+.ph-hero--nb {
+    min-height: auto;
+    overflow: visible;
+}
+
 .ph-hero::before {
     content: '';
     position: absolute;
@@ -154,4 +160,50 @@ a.ph-feat { cursor: pointer; }
     .ph-ann { display: none; }
     .ph-features { padding: 16px 16px 24px; gap: 8px; }
     .ph-feat { padding: 8px 14px; font-size: 0.76rem; }
+}
+
+/* ══════════════════════════════════════════════════
+   LIGHT THEME — ph-hero overrides
+   (text overrides for hero are in evolutie.css)
+   ══════════════════════════════════════════════════ */
+
+[data-theme="light"] .ph-hero::before {
+    /* Near-white overlay in light mode — matches index (rgba(primary-rgb, 0.78)) */
+    background: rgba(var(--primary-rgb), 0.85);
+}
+
+[data-theme="light"] .ph-card {
+    --ph-card-bg:     rgba(255, 255, 255, 0.96);
+    --ph-card-text:   #111317;
+    --ph-card-dim:    rgba(17, 19, 23, 0.5);
+    --ph-card-border: rgba(17, 19, 23, 0.1);
+    --ph-card-muted:  rgba(17, 19, 23, 0.05);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .ph-card__btn--primary:hover {
+    background: #1f2228;
+}
+
+[data-theme="light"] .ph-ann__tag {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .ph-ann__badge {
+    color: var(--accent-color);
+}
+
+[data-theme="light"] .ph-ann__name {
+    color: #111317;
+}
+
+[data-theme="light"] .ph-ann__meta {
+    color: rgba(17, 19, 23, 0.55);
+}
+
+[data-theme="light"] .ph-ann__arrow {
+    color: rgba(0, 0, 0, 0.3);
 }
