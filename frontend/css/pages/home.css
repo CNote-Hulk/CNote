@@ -1188,20 +1188,22 @@ body.home-page::before {
         letter-spacing: 0.01em;
     }
 
-    /* Restore emoji labels for all bottom-nav variants (page/view/tab based). */
-    .mobile-bottom-nav .mbn-item > span {
+    /* Restore the older emoji style only for core bottom-nav entries. */
+    .mobile-bottom-nav .mbn-item[data-mbn-page] > span,
+    .mobile-bottom-nav .mbn-item[data-mbn-view] > span {
         display: inline-flex;
         align-items: center;
         gap: 5px;
     }
 
-    .mobile-bottom-nav .mbn-item > span::before {
+    .mobile-bottom-nav .mbn-item[data-mbn-page] > span::before,
+    .mobile-bottom-nav .mbn-item[data-mbn-view] > span::before {
         content: '';
         line-height: 1;
     }
 
     .mobile-bottom-nav .mbn-item[data-mbn-page="home"] > span::before { content: "🏠"; }
-    .mobile-bottom-nav .mbn-item[data-mbn-page="evolutie"] > span::before { content: "🎮"; }
+    .mobile-bottom-nav .mbn-item[data-mbn-page="evolutie"] > span::before { content: "🕹️"; }
     .mobile-bottom-nav .mbn-item[data-mbn-page="comparatie"] > span::before { content: "⚖️"; }
     .mobile-bottom-nav .mbn-item[data-mbn-page="invata"] > span::before { content: "📚"; }
     .mobile-bottom-nav .mbn-item[data-mbn-page="community"] > span::before { content: "💬"; }
@@ -1211,13 +1213,6 @@ body.home-page::before {
     .mobile-bottom-nav .mbn-item[data-mbn-view="chat"] > span::before { content: "💬"; }
     .mobile-bottom-nav .mbn-item[data-mbn-view="forum"] > span::before { content: "👥"; }
     .mobile-bottom-nav .mbn-item[data-mbn-view="marketplace"] > span::before { content: "🛒"; }
-
-    .mobile-bottom-nav .mbn-item[data-mbn-tab="account"] > span::before { content: "👤"; }
-    .mobile-bottom-nav .mbn-item[data-mbn-tab="profil"] > span::before { content: "📝"; }
-    .mobile-bottom-nav .mbn-item[data-mbn-tab="security"] > span::before { content: "🔒"; }
-    .mobile-bottom-nav .mbn-item[data-mbn-tab="notifications"] > span::before { content: "🔔"; }
-
-    .mobile-bottom-nav .mbn-item.mbn-more-btn > span::before { content: "➕"; }
 
     .mbn-item.mbn-item--active {
         color: var(--accent-color, #E06B58);
