@@ -1175,19 +1175,6 @@ body.home-page::before {
         stroke-width: 1.8;
     }
 
-    /* Hide icons from main nav buttons — keep only "More" icon */
-    .mbn-item:not(.mbn-more-btn) svg {
-        display: none;
-    }
-
-    .mbn-item:not(.mbn-more-btn) {
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 10px 6px;
-        gap: 0;
-        letter-spacing: 0.01em;
-    }
-
     .mbn-item.mbn-item--active {
         color: var(--accent-color, #E06B58);
         background: rgba(var(--accent-rgb, 224, 107, 88), 0.13);
