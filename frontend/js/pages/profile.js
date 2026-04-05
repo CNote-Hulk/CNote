@@ -407,6 +407,40 @@ function initSettings() {
         showSettingsMessage('Settings updated successfully.', true);
     });
 
+    // ═══ OWNED CONSOLES SAVE ═══
+    const saveConsolesBtn = document.getElementById('save-owned-consoles-btn');
+    const consolesMsg = document.getElementById('owned-consoles-msg');
+    if (saveConsolesBtn && consolesMsg) {
+        saveConsolesBtn.addEventListener('click', async () => {
+            const owned_consoles = document.getElementById('set-owned-consoles').value;
+            consolesMsg.style.display = 'none';
+            saveConsolesBtn.disabled = true;
+            try {
+                const ownedList = owned_consoles.split(',').map(s => s.trim()).filter(Boolean);
+                const token = localStorage.getItem('cn_token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                const res = await fetch(API_BASE_URL + '/owned-consoles', {
+                    method: 'PUT', headers, credentials: 'include',
+                    body: JSON.stringify({ consoles: ownedList })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.success !== false) {
+                    consolesMsg.textContent = 'Consoles saved.';
+                    consolesMsg.style.color = 'var(--success, #4ade80)';
+                } else {
+                    consolesMsg.textContent = data.error || 'Failed to save consoles.';
+                    consolesMsg.style.color = 'var(--error, #e57373)';
+                }
+            } catch {
+                consolesMsg.textContent = 'Failed to save consoles.';
+                consolesMsg.style.color = 'var(--error, #e57373)';
+            }
+            consolesMsg.style.display = 'block';
+            saveConsolesBtn.disabled = false;
+        });
+    }
+
     // ═══ CONFIRM DIALOG ═══
     const showConfirmDialog = ({
         title, message, confirmLabel = 'Confirm', cancelLabel = 'Cancel',

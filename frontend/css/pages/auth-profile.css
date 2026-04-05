@@ -665,21 +665,19 @@
 .profile-sidebar {
     border-right: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
     background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
-    padding: 26px 16px;
+    padding: 40px 16px 26px;
     display: flex;
     flex-direction: column;
     position: relative;
-    padding-top: 40px;
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #D4AF7A) transparent;
     width: 230px;
-    margin-top: 10px;
-    margin-left: 10px;
+    margin: 10px 0 10px 10px;
     box-shadow: #231d17 10px 10px 10px;
-    height: calc(100% - 30px);
+    height: calc(100% - 20px);
     border-radius: 25px;
 }
 
@@ -966,13 +964,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 /* ── Settings page title wrapper ── */
 .settings-page-header {
     width: 100%;
     max-width: 920px;
-    margin: 0 auto 4px;
+    margin-bottom: 4px;
 }
 
 .settings-page-title {
@@ -996,7 +995,7 @@
     gap: 0;
     max-width: 920px;
     width: 100%;
-    margin: 0 auto 28px;
+    margin-bottom: 28px;
     border-bottom: 1px solid var(--p-border);
 }
 
@@ -1030,7 +1029,6 @@
     display: none;
     width: 100%;
     max-width: 920px;
-    margin: 0 auto;
 }
 
 .profile-panel.active {
