@@ -19,6 +19,7 @@ import { AchievementsModule } from './modules/achievements.js';
  */
 class App {
     constructor() {
+        this._navbarOffsetRaf = null;
         this.init();
     }
 
@@ -35,6 +36,7 @@ class App {
      */
     initializeModules() {
         console.log('🚀 Initializing Console Notebook App...');
+        this.initGlobalNavbarOffset();
         
         try {
             NavigationModule.init();
@@ -79,6 +81,30 @@ class App {
         } catch (error) {
             console.error('❌ Error initializing modules:', error);
         }
+    }
+
+    initGlobalNavbarOffset() {
+        const updateOffset = () => {
+            const navbar = document.querySelector('.navbar');
+            if (!navbar) return;
+            const rect = navbar.getBoundingClientRect();
+            const height = Math.max(0, Math.ceil(rect.height));
+            document.documentElement.style.setProperty('--cn-nav-offset', `${height}px`);
+        };
+
+        const scheduleOffsetUpdate = () => {
+            if (this._navbarOffsetRaf !== null) return;
+            this._navbarOffsetRaf = window.requestAnimationFrame(() => {
+                this._navbarOffsetRaf = null;
+                updateOffset();
+            });
+        };
+
+        scheduleOffsetUpdate();
+        window.addEventListener('resize', scheduleOffsetUpdate);
+        window.addEventListener('orientationchange', scheduleOffsetUpdate);
+        window.addEventListener('load', scheduleOffsetUpdate);
+        window.addEventListener('cn:language-changed', scheduleOffsetUpdate);
     }
 
     initAchievements() {

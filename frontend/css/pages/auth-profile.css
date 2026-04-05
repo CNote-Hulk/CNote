@@ -1527,7 +1527,7 @@
         position: static;
         height: auto;
         overflow: auto;
-        padding-top: 130px;
+        padding-top: 0;
     }
 
     .profile-layout {
@@ -1986,7 +1986,7 @@
 /* === COMMUNITY CHAT FULLWIDTH === */
 
 .community-page--fullwidth {
-    padding-top: 80px;
+    padding-top: 0;
 }
 
 .community-container--wide {
@@ -2011,7 +2011,7 @@ a.chat-message__username:hover {
 /* === USER PROFILE PAGE (public) === */
 
 .user-profile-page {
-    padding: 100px 20px 60px;
+    padding: 0 20px 60px;
 }
 
 .user-profile-loading {

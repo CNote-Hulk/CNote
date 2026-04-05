@@ -36,7 +36,7 @@
 
 /* Content offset so fixed navbar never overlaps the page content area */
 body > .navbar + * {
-    padding-top: var(--navbar-offset, 72px);
+    padding-top: var(--cn-nav-offset, 64px);
 }
 
 /* Navbar hidden on scroll down */
@@ -198,7 +198,7 @@ body > .navbar + * {
 
 @media (max-width: 768px) {
     body > .navbar + * {
-        padding-top: var(--navbar-offset-mobile, 128px);
+        padding-top: var(--cn-nav-offset, 96px);
     }
 
     /* ── Inline nav — no hamburger ── */

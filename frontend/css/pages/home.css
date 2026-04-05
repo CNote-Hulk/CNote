@@ -298,7 +298,7 @@ body.home-page::before {
     min-height: 100vh;
     width: 100%;
     gap: 22px;
-    padding-top: 40px;
+    padding-top: 0;
     display: flex;
     flex-direction: column;
 }
@@ -1105,7 +1105,7 @@ body.home-page::before {
 
     .dashboard-main {
         margin-left: 0;
-        padding-top: 86px;
+        padding-top: 0;
         min-height: 100dvh;
     }
 

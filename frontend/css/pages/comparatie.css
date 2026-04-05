@@ -1340,7 +1340,7 @@ a.ph-feat { cursor: pointer; }
     .cmp-hero__stage {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
-        padding-top: 110px;
+        padding-top: 0;
         padding-bottom: 10px;
         gap: 0;
     }
@@ -1370,5 +1370,5 @@ a.ph-feat { cursor: pointer; }
 
 @media (max-width: 420px) {
     .cmp-side--left, .cmp-side--right { display: none; }
-    .cmp-hero__stage { padding-top: 100px; }
+    .cmp-hero__stage { padding-top: 0; }
 }
