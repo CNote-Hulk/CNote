@@ -235,7 +235,7 @@
     isolation: isolate;
     width: 100%;
     min-height: 100vh;
-    padding-top: 64px;
+    padding-top: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -403,7 +403,7 @@
 @media (max-width: 768px) {
     .hero-cinematic {
         min-height: 100svh;
-        padding-top: 120px;
+        padding-top: 0;
     }
     
     .hero-cinematic h1 {

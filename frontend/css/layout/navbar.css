@@ -34,6 +34,11 @@
     will-change: transform;
 }
 
+/* Global content offset so fixed navbar never overlaps page content */
+body {
+    padding-top: var(--navbar-offset, 72px);
+}
+
 /* Navbar hidden on scroll down */
 .navbar.navbar--hidden {
     transform: translateY(-100%);
@@ -192,6 +197,10 @@
    ══════════════════════════════════════════ */
 
 @media (max-width: 768px) {
+    body {
+        padding-top: var(--navbar-offset-mobile, 128px);
+    }
+
     /* ── Inline nav — no hamburger ── */
     .navbar {
         height: auto;
