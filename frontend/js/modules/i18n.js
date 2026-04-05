@@ -23,6 +23,7 @@ const MESSAGES = {
             sidebar_community: 'Comunidad',
             sidebar_marketplace: 'Mercado',
             sidebar_repair: 'Reparar',
+            sidebar_stats: 'Estad\u00edsticas',
 
             home_welcome: 'Bienvenido de nuevo, usuario',
             home_pickup: 'Continúa donde lo dejaste',
@@ -56,6 +57,7 @@ const MESSAGES = {
             sidebar_community: 'Communauté',
             sidebar_marketplace: 'Marché',
             sidebar_repair: 'Réparer',
+            sidebar_stats: 'Statistiques',
 
             home_welcome: 'Bon retour, utilisateur',
             home_pickup: 'Reprenez là où vous vous êtes arrêté',
@@ -89,6 +91,7 @@ const MESSAGES = {
             sidebar_community: 'Community',
             sidebar_marketplace: 'Marktplatz',
             sidebar_repair: 'Reparatur',
+            sidebar_stats: 'Statistiken',
 
             home_welcome: 'Willkommen zurück, Nutzer',
             home_pickup: 'Mache dort weiter, wo du aufgehört hast',
@@ -122,6 +125,7 @@ const MESSAGES = {
             sidebar_community: 'Community',
             sidebar_marketplace: 'Mercato',
             sidebar_repair: 'Riparazione',
+            sidebar_stats: 'Statistiche',
 
             home_welcome: 'Bentornato, utente',
             home_pickup: 'Riprendi da dove avevi lasciato',
@@ -154,6 +158,7 @@ const MESSAGES = {
             sidebar_community: 'Community',
             sidebar_marketplace: 'Marketplace',
             sidebar_repair: 'Repair',
+            sidebar_stats: 'Statistics',
 
             // Home page sections
             home_welcome: 'Welcome back, user',
@@ -960,6 +965,7 @@ const MESSAGES = {
             sidebar_community: 'Comunitate',
             sidebar_marketplace: 'Marketplace',
             sidebar_repair: 'Reparații',
+            sidebar_stats: 'Statistici',
 
             // Home page sections
             home_welcome: 'Bine ai revenit, utilizator',
@@ -1771,6 +1777,7 @@ const MESSAGES = {
         sidebar_community: 'Comunidad',
         sidebar_marketplace: 'Mercado',
         sidebar_repair: 'Reparar',
+        sidebar_stats: 'Estad\u00edsticas',
 
         // Home page
         home_welcome: 'Bienvenido de nuevo, usuario',
@@ -2557,6 +2564,7 @@ const MESSAGES = {
         sidebar_community: 'Communauté',
         sidebar_marketplace: 'Marché',
         sidebar_repair: 'Réparer',
+        sidebar_stats: 'Statistiques',
 
         // Home page
         home_welcome: 'Bon retour, utilisateur',
@@ -3339,6 +3347,7 @@ const MESSAGES = {
         sidebar_community: 'Community',
         sidebar_marketplace: 'Mercato',
         sidebar_repair: 'Riparazione',
+        sidebar_stats: 'Statistiche',
 
         // Home page
         home_welcome: 'Bentornato, utente',
@@ -4127,6 +4136,7 @@ const MESSAGES = {
         sidebar_community: 'Community',
         sidebar_marketplace: 'Marktplatz',
         sidebar_repair: 'Reparatur',
+        sidebar_stats: 'Statistiken',
 
         // Home page
         home_welcome: 'Willkommen zurück, Nutzer',

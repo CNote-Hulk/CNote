@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -185,5 +185,67 @@
 		<script type="module" src="/js/pages/user-profile.js"></script>
 		<script src="/js/fallback/hamburger.js" defer></script>
 		<script src="/js/fallback/search-profile.js"></script>
-	</body>
+	
+    <!-- Mobile bottom navigation -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="statistici.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">📊</span>
+                <span data-i18n="sidebar_stats">Statistics</span>
+            </a>
+            <div class="mbn-dd-sep"></div>
+            <a href="marketplace.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🛒</span>
+                <span data-i18n="sidebar_marketplace">Marketplace</span>
+            </a>
+            <a href="repair.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🔧</span>
+                <span data-i18n="sidebar_repair">Repair</span>
+            </a>
+            <a href="help.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">❓</span>
+                <span data-i18n="nav_help">Help</span>
+            </a>
+        </div>
+
+        <a href="home.html" class="mbn-item" data-mbn-page="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-i18n="sidebar_home">Home</span>
+        </a>
+        <a href="evolutie.html" class="mbn-item" data-mbn-page="evolutie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+            <span data-i18n="sidebar_consoles">Consoles</span>
+        </a>
+        <a href="community-welcome-page.html" class="mbn-item" data-mbn-page="community">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-i18n="sidebar_community">Community</span>
+        </a>
+        <a href="profil.html" class="mbn-item mbn-item--active" data-mbn-page="profil">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-i18n="navbar_profile">Profile</span>
+        </a>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+            <span>More</span>
+        </button>
+    </nav>
+
+    <script>
+    (function () {
+        var btn = document.getElementById('mbn-more-btn');
+        var dd  = document.getElementById('mbn-dropdown');
+        if (btn && dd) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var open = dd.classList.toggle('is-open');
+                btn.setAttribute('aria-expanded', String(open));
+            });
+            document.addEventListener('click', function () {
+                dd.classList.remove('is-open');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            });
+        }
+    })();
+    </script>
+</body>
 </html>
