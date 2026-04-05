@@ -540,4 +540,16 @@ import { AchievementsModule } from '/js/modules/achievements.js';
         document.getElementById('avatar-lightbox-backdrop')?.addEventListener('click', closeAvatarLightbox);
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAvatarLightbox(); });
 
+        // Tab switcher: Ratings / Achievements
+        document.querySelectorAll('.up-reviews-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const type = tab.dataset.rtype;
+                document.querySelectorAll('.up-reviews-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.up-reviews-panel').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                const panel = document.getElementById(`user-dash-${type}-section`);
+                if (panel) panel.classList.add('active');
+            });
+        });
+
         loadUserProfile();

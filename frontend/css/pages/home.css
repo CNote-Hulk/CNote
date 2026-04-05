@@ -72,7 +72,7 @@ body.home-page::before {
     margin-top: 10px;
     margin-left: 10px;
     box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
-    height: calc(100% - 30px);
+    padding-bottom: 10px;
     border-radius: 25px;
     z-index: 100;
     padding-top: 70px;
