@@ -1,4 +1,5 @@
 import { I18nModule } from './i18n.js';
+import { AuthModule } from './auth.js';
 
 function normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
     const raw = typeof avatarUrl === 'string' ? avatarUrl.trim() : '';
@@ -16,7 +17,7 @@ function normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
     return upgraded;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     // =========================
     // SESSION
@@ -27,9 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (raw) currentUser = JSON.parse(raw);
     } catch {}
 
+    // If local session is missing or incomplete, rebuild it from a valid token.
+    if (!currentUser || !currentUser.id || !currentUser.username || String(currentUser.username).toLowerCase() === 'user') {
+        const restoredUser = await AuthModule.refreshSession();
+        if (restoredUser) {
+            currentUser = AuthModule.getCurrentUser() || restoredUser;
+        }
+    }
+
     if (!currentUser) return;
 
-    const username = currentUser.username;
+    const username = currentUser.username || currentUser.email || 'user';
 
     // =========================
     // API HELPER

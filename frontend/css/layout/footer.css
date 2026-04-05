@@ -7,6 +7,7 @@
     border-top: 1px solid var(--border-color);
     color: var(--text-gray);
     padding: 40px 0;
+    margin-top: auto !important;
 }
 
 .footer-inner {

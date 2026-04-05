@@ -4,6 +4,28 @@
    All notebook classes prefixed: nb-
    ===================================================== */
 
+/* Notebook paper tone by theme */
+:root {
+    --nb-paper-bg: #F8F2E4;
+    --nb-paper-line: rgba(155, 120, 75, 0.20);
+}
+
+html:not([data-theme]),
+html[data-theme=''] {
+    --nb-paper-bg: #E9DCC7;
+    --nb-paper-line: rgba(130, 95, 52, 0.24);
+}
+
+html[data-theme='dark'] {
+    --nb-paper-bg: #E1D3BC;
+    --nb-paper-line: rgba(120, 86, 45, 0.28);
+}
+
+html[data-theme='light'] {
+    --nb-paper-bg: #F8F2E4;
+    --nb-paper-line: rgba(155, 120, 75, 0.20);
+}
+
 
 /* ── Page shell ──────────────────────────────────────── */
 
@@ -50,7 +72,7 @@
     position: relative;
     flex: 1;
     min-width: 0;
-    max-width: 620px;
+    max-width: 1160px;
 }
 
 /* Cover depth illusion — two thin layers peeking behind the book */
@@ -73,7 +95,7 @@
     display: flex;
     border-radius: 10px;
     overflow: hidden;
-    min-height: 460px;
+    min-height: 390px;
     box-shadow:
         0 48px 110px rgba(0, 0, 0, 0.70),
         0 14px 36px  rgba(0, 0, 0, 0.45),
@@ -89,15 +111,15 @@
 .nb-right {
     flex: 1;
     position: relative;
-    /* Warm cream paper */
-    background-color: #F8F2E4;
+    /* Warm paper tone, theme-aware */
+    background-color: var(--nb-paper-bg);
     /* Horizontal ruled lines */
     background-image: repeating-linear-gradient(
         to bottom,
         transparent 0px,
         transparent 27px,
-        rgba(155, 120, 75, 0.20) 27px,
-        rgba(155, 120, 75, 0.20) 28px
+        var(--nb-paper-line) 27px,
+        var(--nb-paper-line) 28px
     );
     background-size: 100% 28px;
     overflow: hidden;
@@ -144,7 +166,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 36px 32px 32px 68px; /* left clears the margin line */
+    padding: 22px 32px 20px 68px; /* left clears the margin line */
 }
 
 /* Circular stamp / logo */
@@ -161,7 +183,7 @@
     font-size: 0.78rem;
     color: rgba(130, 90, 20, 0.65);
     letter-spacing: 0.04em;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
     flex-shrink: 0;
 }
 
@@ -173,7 +195,7 @@
     font-size: clamp(2rem, 3.5vw, 2.9rem);
     color: #2a1a0e;
     line-height: 1.0;
-    margin: 0 0 14px;
+    margin: 0 0 8px;
     flex-shrink: 0;
 }
 
@@ -183,7 +205,7 @@
     height: 2px;
     border-radius: 999px;
     background: rgba(130, 90, 20, 0.45);
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     flex-shrink: 0;
 }
 
@@ -192,8 +214,8 @@
     font-family: 'DM Sans', system-ui, sans-serif;
     font-size: 0.9rem;
     color: #3d2a1a;
-    line-height: 1.78;
-    margin: 0 0 22px;
+    line-height: 1.65;
+    margin: 0 0 12px;
     flex-shrink: 0;
 }
 
@@ -201,7 +223,7 @@
 .nb-left__stats {
     display: flex;
     gap: 22px;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
     flex-shrink: 0;
 }
 
@@ -300,7 +322,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 28px 30px 28px 26px;
+    padding: 18px 30px 18px 26px;
 }
 
 /* Console label */
@@ -308,7 +330,7 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
     flex-shrink: 0;
 }
 
@@ -324,20 +346,31 @@
 .nb-right__name {
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 700;
-    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    font-size: clamp(1.8rem, 2.4vw, 10rem);
     color: #2a1a0e;
     line-height: 1;
 }
 
 /* Atari image */
 .nb-right__img {
-    width: 90%;
-    max-width: 300px;
+    width: 100%;
+    max-width: 400px;
     object-fit: contain;
     filter: drop-shadow(0 10px 28px rgba(20, 10, 2, 0.38));
     align-self: center;
     display: block;
     flex-shrink: 0;
+}
+
+html:not([data-theme]) body.nblp .nb-right__img,
+html[data-theme=''] body.nblp .nb-right__img,
+html[data-theme='dark'] body.nblp .nb-right__img {
+    filter:
+        drop-shadow(0 10px 20px rgba(0, 0, 0, 0.22))
+        drop-shadow(0 26px 34px rgba(20, 10, 2, 0.18))
+        brightness(1.16)
+        contrast(1.07)
+        saturate(1.08);
 }
 
 /* Fun fact card */
@@ -377,7 +410,7 @@
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 }
 
 /* Each row = card + its own arrow */
@@ -394,9 +427,9 @@
 
 /* Per-card arrow */
 .nb-card__arr {
-    flex: 0 0 52px;
-    width: 52px;
-    height: 48px;
+    flex: 0 0 64px;
+    width: 64px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -406,12 +439,12 @@
 
 .nb-card__arr svg {
     width: 100%;
-    height: 14px;
+    height: 100%;
 }
 
 /* Fixed card width in side columns */
 .nb-side .nb-card {
-    width: 148px;
+    width: 172px;
     flex-shrink: 0;
 }
 
@@ -510,7 +543,7 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-top: 1px solid var(--border-color);
-    margin-top: 16px;
+    margin-top: auto;
     position: relative;
     z-index: 1;
 }
@@ -523,7 +556,7 @@
 /* ── Responsive — tablet ≤ 1100px ────────────────────── */
 
 @media (max-width: 1100px) {
-    .nb-card__arr { flex: 0 0 38px; width: 38px; }
+    .nb-card__arr { flex: 0 0 48px; width: 48px; }
 
     .nb-side .nb-card { width: 130px; }
 
@@ -553,7 +586,7 @@
     }
 
     .nb-book-wrap {
-        max-width: 680px;
+        max-width: 720px;
         width: 100%;
     }
 
