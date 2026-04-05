@@ -34,8 +34,8 @@
     will-change: transform;
 }
 
-/* Global content offset so fixed navbar never overlaps page content */
-body {
+/* Content offset so fixed navbar never overlaps the page content area */
+body > .navbar + * {
     padding-top: var(--navbar-offset, 72px);
 }
 
@@ -197,7 +197,7 @@ body {
    ══════════════════════════════════════════ */
 
 @media (max-width: 768px) {
-    body {
+    body > .navbar + * {
         padding-top: var(--navbar-offset-mobile, 128px);
     }
 
