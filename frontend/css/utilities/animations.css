@@ -69,10 +69,10 @@
 /* Glow Pulse Animation */
 @keyframes glowPulse {
     0%, 100% {
-        box-shadow: 0 0 15px rgba(212, 175, 122, 0.2);
+        box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
     }
     50% {
-        box-shadow: 0 0 25px rgba(212, 175, 122, 0.4), 0 0 40px rgba(212, 175, 122, 0.2);
+        box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.4), 0 0 40px rgba(var(--accent-rgb), 0.2);
     }
 }
 

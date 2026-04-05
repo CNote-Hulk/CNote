@@ -199,7 +199,7 @@
     outline: none;
     background: rgba(var(--primary-rgb), 0.8);
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(212, 175, 122, 0.12), 0 6px 16px rgba(212, 175, 122, 0.06);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12), 0 6px 16px rgba(var(--accent-rgb), 0.06);
     transform: scale(1.008);
 }
 
@@ -247,7 +247,7 @@
 
 .contact-form .demo-button:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(212, 175, 122, 0.25);
+    box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.25);
     background: var(--accent-light);
     color: #1B1714;
 }

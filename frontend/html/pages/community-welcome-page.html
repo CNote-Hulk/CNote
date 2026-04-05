@@ -23,19 +23,20 @@
     <!-- ── NAVBAR ─────────────────────────────────────────────── -->
     <nav class="navbar">
         <div class="container">
-            <button class="navbar-search-btn" aria-label="Search" type="button">
+            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
-            <a href="index.html" class="logo">Console Notebook</a>
+            <a href="index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
             <ul class="nav-links">
-                <li><a href="community-welcome-page.html" class="active">Community</a></li>
-                <li><a href="invata.html">Learn</a></li>
-                <li><a href="evolutie.html">Evolution</a></li>
-                <li><a href="comparatie.html">Compare</a></li>
-                <li><a href="help.html">Help</a></li>
+                <li><a href="community-welcome-page.html" class="active" data-i18n="nav_community">Community</a></li>
+                <li><a href="invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="help.html" data-i18n="nav_help">Help</a></li>
+                <li><a href="help.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
             <div class="navbar-profile-wrap">
-                <button class="navbar-profile-btn" aria-label="Profile" type="button">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
             </div>
@@ -62,8 +63,8 @@
                         <span class="clr-t2">CONSOLE</span>
                         <span class="clr-t3">COMMUNITY<sup class="clr-reg">®</sup></span>
                     </div>
-                    <p class="clr-tagline">/ Where gamers connect /</p>
-                    <button class="clr-join-btn" data-hub-navigate="chat" type="button">JOIN NOW</button>
+                    <p class="clr-tagline" data-i18n="cl_tagline">/ Where gamers connect /</p>
+                    <button class="clr-join-btn" data-hub-navigate="chat" type="button" data-i18n="cl_join_btn">JOIN NOW</button>
                 </div>
 
                 <!-- RIGHT: card + Xbox + annotation -->
@@ -72,17 +73,17 @@
                     <div class="clr-card">
                         <div class="clr-card__head">
                             <div class="clr-tabs">
-                                <span class="clr-tab clr-tab--active">Chat</span>
-                                <span class="clr-tab">Forum</span>
-                                <span class="clr-tab">Market</span>
+                                <span class="clr-tab clr-tab--active" data-i18n="cl_tab_chat">Chat</span>
+                                <span class="clr-tab" data-i18n="cl_tab_forum">Forum</span>
+                                <span class="clr-tab" data-i18n="cl_tab_market">Market</span>
                             </div>
-                            <a href="evolutie.html" class="clr-tour">CONSOLE TOUR →</a>
+                            <a href="evolutie.html" class="clr-tour" data-i18n="cl_console_tour">CONSOLE TOUR →</a>
                         </div>
-                        <h2 class="clr-card__title">Discuss &amp;<br>Discover</h2>
-                        <p class="clr-card__sub">From repairs to rare finds.</p>
+                        <h2 class="clr-card__title" data-i18n="cl_card_title">Discuss &amp;<br>Discover</h2>
+                        <p class="clr-card__sub" data-i18n="cl_card_sub">From repairs to rare finds.</p>
                         <div class="clr-card__actions">
-                            <button class="clr-card__btn clr-card__btn--primary" data-hub-navigate="chat" type="button">Open Chat</button>
-                            <button class="clr-card__btn" data-hub-navigate="forum" data-hub-console="general" type="button">Browse Forum</button>
+                            <button class="clr-card__btn clr-card__btn--primary" data-hub-navigate="chat" type="button" data-i18n="cl_open_chat">Open Chat</button>
+                            <button class="clr-card__btn" data-hub-navigate="forum" data-hub-console="general" type="button" data-i18n="cl_browse_forum">Browse Forum</button>
                         </div>
                     </div>
 
@@ -95,10 +96,10 @@
 
                     <div class="clr-ann" aria-hidden="true">
                         <div class="clr-ann__tag">
-                            <span class="clr-ann__badge">MARKETPLACE</span>
+                            <span class="clr-ann__badge" data-i18n="cl_ann_badge">MARKETPLACE</span>
                             <span class="clr-ann__name">Xbox Series X™</span>
-                            <span class="clr-ann__meta">Carbon Black · 1TB SSD</span>
-                            <span class="clr-ann__price">Like New — €399</span>
+                            <span class="clr-ann__meta" data-i18n="cl_ann_meta">Carbon Black · 1TB SSD</span>
+                            <span class="clr-ann__price" data-i18n="cl_ann_price">Like New — €399</span>
                         </div>
                         <svg class="clr-ann__arrow" viewBox="0 0 90 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M 5 5 C 28 8, 68 38, 85 65" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 3.5" stroke-linecap="round"/>
@@ -117,8 +118,8 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     </span>
                     <span class="clr-feat__text">
-                        <span class="clr-feat__name">Live Chat</span>
-                        <span class="clr-feat__sub">Talk with the community</span>
+                        <span class="clr-feat__name" data-i18n="cl_feat_chat">Live Chat</span>
+                        <span class="clr-feat__sub" data-i18n="cl_feat_chat_sub">Talk with the community</span>
                     </span>
                 </button>
 
@@ -127,8 +128,8 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     </span>
                     <span class="clr-feat__text">
-                        <span class="clr-feat__name">Forum</span>
-                        <span class="clr-feat__sub">Discuss &amp; explore topics</span>
+                        <span class="clr-feat__name" data-i18n="cl_feat_forum">Forum</span>
+                        <span class="clr-feat__sub" data-i18n="cl_feat_forum_sub">Discuss &amp; explore topics</span>
                     </span>
                 </button>
 
@@ -137,8 +138,8 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                     </span>
                     <span class="clr-feat__text">
-                        <span class="clr-feat__name">Marketplace</span>
-                        <span class="clr-feat__sub">Buy, sell &amp; trade</span>
+                        <span class="clr-feat__name" data-i18n="cl_feat_market">Marketplace</span>
+                        <span class="clr-feat__sub" data-i18n="cl_feat_market_sub">Buy, sell &amp; trade</span>
                     </span>
                 </button>
 
@@ -147,8 +148,8 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                     </span>
                     <span class="clr-feat__text">
-                        <span class="clr-feat__name">Repair Center</span>
-                        <span class="clr-feat__sub">Expert help &amp; guides</span>
+                        <span class="clr-feat__name" data-i18n="cl_feat_repair">Repair Center</span>
+                        <span class="clr-feat__sub" data-i18n="cl_feat_repair_sub">Expert help &amp; guides</span>
                     </span>
                 </button>
 
@@ -158,7 +159,7 @@
                     </span>
                     <span class="clr-feat__text">
                         <span class="clr-feat__name" id="cl-stat-members" data-count="0">—</span>
-                        <span class="clr-feat__sub">Active members</span>
+                        <span class="clr-feat__sub" data-i18n="cl_feat_members_sub">Active members</span>
                     </span>
                 </div>
 
@@ -177,9 +178,9 @@
             <section class="cl-timeline-sticky clr-section" id="cl-timeline-section">
                 <div class="clr-container">
                     <div class="clr-section__head">
-                        <span class="clr-label">Process</span>
-                        <h2 class="clr-heading">How it works</h2>
-                        <p class="clr-subheading">Get started in just a few steps</p>
+                        <span class="clr-label" data-i18n="cl_timeline_label">Process</span>
+                        <h2 class="clr-heading" data-i18n="cl_timeline_heading">How it works</h2>
+                        <p class="clr-subheading" data-i18n="cl_timeline_sub">Get started in just a few steps</p>
                     </div>
                     <div class="cl-timeline__container">
                         <div class="cl-timeline__track" id="cl-timeline">
@@ -191,32 +192,32 @@
                                     <span class="cl-timeline__dot-num">1</span>
                                     <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                 </div>
-                                <h3 class="cl-timeline__step-title">Choose a category</h3>
-                                <p class="cl-timeline__step-desc">Select your console or platform — PlayStation, Xbox, Nintendo, PC, or more.</p>
+                                <h3 class="cl-timeline__step-title" data-i18n="cl_step1_title">Choose a category</h3>
+                                <p class="cl-timeline__step-desc" data-i18n="cl_step1_desc">Select your console or platform — PlayStation, Xbox, Nintendo, PC, or more.</p>
                             </div>
                             <div class="cl-timeline__step" data-step data-ctx-label="Start a Discussion" data-ctx-text="Create your first post in seconds, or search thousands of existing threads." data-ctx-hint="Use tags like Help, Guide, or Bug to find exactly what you need.">
                                 <div class="cl-timeline__dot">
                                     <span class="cl-timeline__dot-num">2</span>
                                     <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                 </div>
-                                <h3 class="cl-timeline__step-title">Ask or explore topics</h3>
-                                <p class="cl-timeline__step-desc">Browse existing discussions or create a new thread with your question.</p>
+                                <h3 class="cl-timeline__step-title" data-i18n="cl_step2_title">Ask or explore topics</h3>
+                                <p class="cl-timeline__step-desc" data-i18n="cl_step2_desc">Browse existing discussions or create a new thread with your question.</p>
                             </div>
                             <div class="cl-timeline__step" data-step data-ctx-label="Community Support" data-ctx-text="Experienced members and verified repair technicians respond within hours." data-ctx-hint="Solved threads get marked so future visitors find answers faster.">
                                 <div class="cl-timeline__dot">
                                     <span class="cl-timeline__dot-num">3</span>
                                     <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                 </div>
-                                <h3 class="cl-timeline__step-title">Get answers or solutions</h3>
-                                <p class="cl-timeline__step-desc">Community members and repair experts will help you find the best solution.</p>
+                                <h3 class="cl-timeline__step-title" data-i18n="cl_step3_title">Get answers or solutions</h3>
+                                <p class="cl-timeline__step-desc" data-i18n="cl_step3_desc">Community members and repair experts will help you find the best solution.</p>
                             </div>
                             <div class="cl-timeline__step" data-step data-ctx-label="Give Back" data-ctx-text="Share your knowledge, write repair guides, and earn community reputation." data-ctx-hint="Top contributors get highlighted in the community leaderboard.">
                                 <div class="cl-timeline__dot">
                                     <span class="cl-timeline__dot-num">4</span>
                                     <svg class="cl-timeline__dot-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                 </div>
-                                <h3 class="cl-timeline__step-title">Help others</h3>
-                                <p class="cl-timeline__step-desc">Share your knowledge, answer questions, and grow the community together.</p>
+                                <h3 class="cl-timeline__step-title" data-i18n="cl_step4_title">Help others</h3>
+                                <p class="cl-timeline__step-desc" data-i18n="cl_step4_desc">Share your knowledge, answer questions, and grow the community together.</p>
                             </div>
                         </div>
                         <aside class="cl-timeline__context" id="cl-timeline-context">
@@ -228,7 +229,7 @@
                         </aside>
                     </div>
                     <div class="cl-timeline__scroll-hint" id="cl-timeline-hint">
-                        <span class="cl-timeline__scroll-hint-text">Scroll to explore</span>
+                        <span class="cl-timeline__scroll-hint-text" data-i18n="cl_scroll_hint">Scroll to explore</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                     </div>
                 </div>
@@ -243,8 +244,8 @@
                         <!-- Chat -->
                         <div class="clr-live__col">
                             <div class="clr-section__head">
-                                <span class="clr-label">Live</span>
-                                <h2 class="clr-heading">Community Chat</h2>
+                                <span class="clr-label" data-i18n="cl_live_label">Live</span>
+                                <h2 class="clr-heading" data-i18n="cl_live_heading">Community Chat</h2>
                             </div>
                             <div class="cl-chat-preview__panel clr-panel">
                                 <div class="cl-chat-preview__header">
@@ -260,8 +261,8 @@
                                     </div>
                                 </div>
                                 <div class="cl-chat-preview__footer">
-                                    <button class="cl-btn cl-btn--secondary cl-btn--sm" data-hub-navigate="chat" type="button">
-                                        Open Full Chat
+                                    <button class="cl-btn cl-btn--secondary cl-btn--sm" data-hub-navigate="chat" type="button" data-i18n="cl_open_full_chat">
+                                            Open Full Chat
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                     </button>
                                 </div>
@@ -271,8 +272,8 @@
                         <!-- Trending -->
                         <div class="clr-live__col" id="community-trending">
                             <div class="clr-section__head">
-                                <span class="clr-label">Popular</span>
-                                <h2 class="clr-heading">Trending</h2>
+                                <span class="clr-label" data-i18n="cl_trending_label">Popular</span>
+                                <h2 class="clr-heading" data-i18n="cl_trending_heading">Trending</h2>
                             </div>
                             <div class="cl-trending__list clr-panel" id="cl-trending-list">
                                 <div class="cl-trending__item cl-trending__item--placeholder" style="opacity:0.4;pointer-events:none">
@@ -289,8 +290,8 @@
             <section class="clr-section cl-reveal" id="community-categories">
                 <div class="clr-container">
                     <div class="clr-section__head clr-section__head--center">
-                        <span class="clr-label">Categories</span>
-                        <h2 class="clr-heading">Browse by platform</h2>
+                        <span class="clr-label" data-i18n="cl_categories_label">Categories</span>
+                        <h2 class="clr-heading" data-i18n="cl_categories_heading">Browse by platform</h2>
                     </div>
                     <div class="cl-categories__grid clr-platforms">
                         <button class="cl-category-card clr-platform-card" style="--cat-color:#0070D1" data-hub-navigate="forum" data-hub-console="ps" type="button">
@@ -329,15 +330,15 @@
 
                         <div class="clr-two-col__half">
                             <div class="clr-section__head">
-                                <span class="clr-label">Trade</span>
-                                <h2 class="clr-heading">Marketplace</h2>
-                                <p class="clr-subheading">Latest listings from the community</p>
+                                <span class="clr-label" data-i18n="cl_trade_label">Trade</span>
+                                <h2 class="clr-heading" data-i18n="cl_marketplace_heading">Marketplace</h2>
+                                <p class="clr-subheading" data-i18n="cl_marketplace_sub">Latest listings from the community</p>
                             </div>
                             <div class="cl-marketplace__grid" id="cl-marketplace-grid">
                                 <div class="cl-marketplace__loading">Loading listings&hellip;</div>
                             </div>
                             <div class="clr-section__cta">
-                                <button class="cl-btn cl-btn--secondary cl-btn--sm" data-hub-navigate="marketplace" type="button">
+                                <button class="cl-btn cl-btn--secondary cl-btn--sm" data-hub-navigate="marketplace" type="button" data-i18n="cl_browse_listings">
                                     Browse All Listings
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                                 </button>
@@ -346,13 +347,13 @@
 
                         <div class="clr-two-col__half" id="community-repair">
                             <div class="clr-section__head">
-                                <span class="clr-label">Help Center</span>
-                                <h2 class="clr-heading">Repair Center</h2>
-                                <p class="clr-subheading">Latest repair activity</p>
+                                <span class="clr-label" data-i18n="cl_help_label">Help Center</span>
+                                <h2 class="clr-heading" data-i18n="cl_repair_heading">Repair Center</h2>
+                                <p class="clr-subheading" data-i18n="cl_repair_sub">Latest repair activity</p>
                             </div>
                             <div class="cl-repair__grid" id="cl-repair-grid">
                                 <div class="cl-repair__column">
-                                    <h3 class="clr-repair-col-title"><span class="clr-dot clr-dot--pending"></span>Latest Requests</h3>
+                                    <h3 class="clr-repair-col-title"><span class="clr-dot clr-dot--pending"></span><span data-i18n="cl_repair_latest">Latest Requests</span></h3>
                                     <ul class="cl-repair-list" id="cl-repair-pending">
                                         <li class="cl-repair-list__item" style="opacity:0.4">
                                             <span class="cl-repair-list__text">Loading&hellip;</span>
@@ -360,7 +361,7 @@
                                     </ul>
                                 </div>
                                 <div class="cl-repair__column">
-                                    <h3 class="clr-repair-col-title"><span class="clr-dot clr-dot--solved"></span>Recently Solved</h3>
+                                    <h3 class="clr-repair-col-title"><span class="clr-dot clr-dot--solved"></span><span data-i18n="cl_repair_solved">Recently Solved</span></h3>
                                     <ul class="cl-repair-list" id="cl-repair-solved">
                                         <li class="cl-repair-list__item" style="opacity:0.4">
                                             <span class="cl-repair-list__text">Loading&hellip;</span>
@@ -378,21 +379,21 @@
             <section class="clr-section clr-stats cl-reveal" style="margin-bottom:0">
                 <div class="clr-container">
                     <div class="clr-section__head clr-section__head--center">
-                        <span class="clr-label">Numbers</span>
-                        <h2 class="clr-heading">Community in numbers</h2>
+                        <span class="clr-label" data-i18n="cl_stats_label">Numbers</span>
+                        <h2 class="clr-heading" data-i18n="cl_stats_heading">Community in numbers</h2>
                     </div>
                     <div class="cl-stats__grid">
                         <div class="cl-stat-card">
                             <div class="cl-stat-card__number" id="cl-stat-members-2" data-count="0">0</div>
-                            <div class="cl-stat-card__label">Active Now</div>
+                            <div class="cl-stat-card__label" data-i18n="cl_stat_active">Active Now</div>
                         </div>
                         <div class="cl-stat-card">
                             <div class="cl-stat-card__number" id="cl-stat-threads" data-count="0">0</div>
-                            <div class="cl-stat-card__label">Forum Threads</div>
+                            <div class="cl-stat-card__label" data-i18n="cl_stat_threads">Forum Threads</div>
                         </div>
                         <div class="cl-stat-card">
                             <div class="cl-stat-card__number" id="cl-stat-listings" data-count="0">0</div>
-                            <div class="cl-stat-card__label">Marketplace Listings</div>
+                            <div class="cl-stat-card__label" data-i18n="cl_stat_listings">Marketplace Listings</div>
                         </div>
                     </div>
                 </div>
@@ -423,5 +424,74 @@
     <script type="module" src="../../js/pages/community.js?v=20260320d"></script>
     <script type="module" src="../../js/pages/community-welcome-page.js?v=20260320d"></script>
     <script src="../../js/fallback/search-profile.js"></script>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="statistici.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">📊</span>
+                <span data-i18n="sidebar_stats">Statistici</span>
+            </a>
+            <div class="mbn-dd-sep"></div>
+            <a href="invata.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">📚</span>
+                <span data-i18n="sidebar_learn">Învață</span>
+            </a>
+            <a href="comparatie.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">⚔️</span>
+                <span data-i18n="sidebar_compare">Comparație</span>
+            </a>
+            <a href="repair.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🔧</span>
+                <span data-i18n="sidebar_repair">Reparație</span>
+            </a>
+            <a href="marketplace.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🛒</span>
+                <span data-i18n="sidebar_marketplace">Marketplace</span>
+            </a>
+            <div class="mbn-dd-sep"></div>
+            <a href="help.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">❓</span>
+                <span data-i18n="nav_help">Ajutor</span>
+            </a>
+        </div>
+        <a href="home.html" class="mbn-item" data-mbn-page="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-i18n="sidebar_home">Acasă</span>
+        </a>
+        <a href="evolutie.html" class="mbn-item" data-mbn-page="evolutie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+            <span data-i18n="sidebar_consoles">Console</span>
+        </a>
+        <a href="community-welcome-page.html" class="mbn-item mbn-item--active" data-mbn-page="community">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-i18n="sidebar_community">Comunitate</span>
+        </a>
+        <a href="profil.html" class="mbn-item" data-mbn-page="profil">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-i18n="navbar_profile">Profil</span>
+        </a>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+            <span>More</span>
+        </button>
+    </nav>
+    <script>
+        (function () {
+            var btn = document.getElementById('mbn-more-btn');
+            var dd  = document.getElementById('mbn-dropdown');
+            if (btn && dd) {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var open = dd.classList.toggle('is-open');
+                    btn.setAttribute('aria-expanded', String(open));
+                });
+                document.addEventListener('click', function () {
+                    dd.classList.remove('is-open');
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

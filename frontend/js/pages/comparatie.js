@@ -23,50 +23,113 @@ function genLabel(gen) {
     return prefix + ' ' + gen + (GEN_YEARS[gen] ? ' (' + GEN_YEARS[gen] + ')' : '');
 }
 
+// ── Spec help-icon tooltip definitions ─────────────────────────────────────
+const SPEC_TIPS = {
+    spec_label_architecture:    'The processor design family — defines supported instructions, efficiency, and performance generation (e.g. Zen 2, RDNA 2).',
+    spec_label_process:         'Manufacturing node in nanometres (nm). Smaller = more transistors in less space = faster and more power-efficient chip.',
+    spec_label_cores:           'Number of independent processing threads. More cores allow the system to run more tasks simultaneously.',
+    spec_label_clock:           'Operating frequency in GHz (billions of cycles per second). Higher frequency means instructions are processed faster.',
+    spec_label_tdp:             'Thermal Design Power in Watts — how much heat the chip produces at maximum load. Also reflects total power draw.',
+    spec_label_units:           'Compute Units or Shader Processors inside the GPU. More units = more parallel graphics calculations = better visual performance.',
+    spec_label_tflops:          'Trillion Floating-Point Operations Per Second — a measure of raw GPU compute power. Higher = faster 3D rendering.',
+    spec_label_capabilities:    'Extra hardware features and technologies supported by this chip.',
+    spec_label_type:            'Memory or storage technology standard. e.g. GDDR6 = fast video RAM; NVMe SSD = solid-state drive with fast PCIe interface.',
+    spec_label_capacity:        'Total amount in Gigabytes (GB). More memory allows the system to hold larger game worlds and assets without slowdowns.',
+    spec_label_bus:             'Width of the memory data channel in bits. A wider bus transfers more data per clock cycle.',
+    spec_label_bandwidth:       'Speed at which data moves between the CPU/GPU and memory, in GB/s. Higher bandwidth reduces bottlenecks.',
+    spec_label_interface:       'How the storage device connects to the system. PCIe 4.0/5.0 is significantly faster than SATA III.',
+    spec_label_speed:           'Sequential read/write throughput in GB/s. Directly affects load times and asset streaming speed.',
+    spec_label_resolution:      'Number of pixels displayed (e.g. 4K = 3840×2160). More pixels = sharper, more detailed image.',
+    spec_label_refresh:         'How many times per second the screen redraws the image (Hz). 60 Hz is smooth; 120 Hz is very smooth motion.',
+    spec_label_hdr:             'High Dynamic Range — a wider range of brightness and colour for more realistic, vivid visuals.',
+    spec_label_upscaling:       'Technology that renders at a lower resolution and intelligently scales up to the target resolution, saving GPU power.',
+    spec_label_backwards_compat:'Ability to run games designed for older, previous-generation consoles.',
+    spec_label_width:           'The left-to-right measurement of the console (in millimetres).',
+    spec_label_height:          'The top-to-bottom measurement of the console (in millimetres).',
+    spec_label_depth:           'The front-to-back measurement of the console (in millimetres).',
+};
+
+const FIXED_TIPS = {
+    'Ray Tracing': 'Simulates how light physically bounces off surfaces in real time — produces realistic reflections, shadows, and global illumination.',
+    'VRR':         'Variable Refresh Rate — the display dynamically syncs its refresh rate to the GPU\'s output, eliminating screen tearing and stutter.',
+};
+
+const HELP_SVG = `<svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="5.5" r="1"/><rect x="7.25" y="7.5" width="1.5" height="4" rx="0.75"/></svg>`;
+
+function tipLabel(label, tipKey) {
+    const tip = SPEC_TIPS[tipKey];
+    if (!tip) return label;
+    return label + `<button class="spec-help" type="button" aria-label="${tip}">${HELP_SVG}<span class="spec-tooltip">${tip}</span></button>`;
+}
+
+function fixedTip(label) {
+    const tip = FIXED_TIPS[label];
+    if (!tip) return label;
+    return label + `<button class="spec-help" type="button" aria-label="${tip}">${HELP_SVG}<span class="spec-tooltip">${tip}</span></button>`;
+}
+
+let _tooltipsListenerAdded = false;
+function initSpecTooltips() {
+    display.querySelectorAll('.spec-help').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const wasOpen = btn.classList.contains('is-open');
+            document.querySelectorAll('.spec-help.is-open').forEach(b => b.classList.remove('is-open'));
+            if (!wasOpen) btn.classList.add('is-open');
+        });
+    });
+    if (!_tooltipsListenerAdded) {
+        _tooltipsListenerAdded = true;
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.spec-help.is-open').forEach(b => b.classList.remove('is-open'));
+        });
+    }
+}
+
 // ── Spec sections (field labels are universal technical terms) ─────────────────
 function buildSpecSections() {
     return [
         { key: 'cpu',        labelKey: 'spec_cpu_title',     fields: [
-            { key: 'architecture', label: 'Architecture' },
-            { key: 'proces_nm',    label: 'Process (nm)' },
-            { key: 'cores',        label: 'Cores/Threads' },
-            { key: 'frequency',    label: 'Clock Speed' },
-            { key: 'tdp',          label: 'TDP' }
+            { key: 'architecture', label: 'Architecture',    tipKey: 'spec_label_architecture' },
+            { key: 'proces_nm',    label: 'Process (nm)',    tipKey: 'spec_label_process' },
+            { key: 'cores',        label: 'Cores/Threads',  tipKey: 'spec_label_cores' },
+            { key: 'frequency',    label: 'Clock Speed',    tipKey: 'spec_label_clock' },
+            { key: 'tdp',          label: 'TDP',            tipKey: 'spec_label_tdp' }
         ]},
         { key: 'gpu',        labelKey: 'spec_gpu_title',     fields: [
-            { key: 'architecture', label: 'Architecture' },
-            { key: 'units',        label: 'Units/CUs' },
-            { key: 'frequency',    label: 'Clock Speed' },
-            { key: 'tflops',       label: 'TFLOPS' },
-            { key: 'capabilities', label: 'Capabilities' }
+            { key: 'architecture', label: 'Architecture',   tipKey: 'spec_label_architecture' },
+            { key: 'units',        label: 'Units/CUs',      tipKey: 'spec_label_units' },
+            { key: 'frequency',    label: 'Clock Speed',    tipKey: 'spec_label_clock' },
+            { key: 'tflops',       label: 'TFLOPS',         tipKey: 'spec_label_tflops' },
+            { key: 'capabilities', label: 'Capabilities',  tipKey: 'spec_label_capabilities' }
         ]},
         { key: 'memory',     labelKey: 'spec_memory_title',  fields: [
-            { key: 'type',      label: 'Type' },
-            { key: 'capacity',  label: 'Capacity' },
-            { key: 'bus',       label: 'Bus' },
-            { key: 'bandwidth', label: 'Bandwidth' }
+            { key: 'type',      label: 'Type',      tipKey: 'spec_label_type' },
+            { key: 'capacity',  label: 'Capacity',  tipKey: 'spec_label_capacity' },
+            { key: 'bus',       label: 'Bus',       tipKey: 'spec_label_bus' },
+            { key: 'bandwidth', label: 'Bandwidth', tipKey: 'spec_label_bandwidth' }
         ]},
         { key: 'storage',    labelKey: 'spec_storage_title', fields: [
-            { key: 'type',      label: 'Type' },
-            { key: 'interface', label: 'Interface' },
-            { key: 'speed',     label: 'Speed' }
+            { key: 'type',      label: 'Type',      tipKey: 'spec_label_type' },
+            { key: 'interface', label: 'Interface', tipKey: 'spec_label_interface' },
+            { key: 'speed',     label: 'Speed',     tipKey: 'spec_label_speed' }
         ]},
         { key: 'output_video', labelKey: 'spec_output_title', fields: [
-            { key: 'resolution', label: 'Resolution' },
-            { key: 'refresh',    label: 'Refresh' },
-            { key: 'hdr',        label: 'HDR' },
-            { key: 'upscaling',  label: 'Upscaling' }
+            { key: 'resolution', label: 'Resolution', tipKey: 'spec_label_resolution' },
+            { key: 'refresh',    label: 'Refresh',    tipKey: 'spec_label_refresh' },
+            { key: 'hdr',        label: 'HDR',        tipKey: 'spec_label_hdr' },
+            { key: 'upscaling',  label: 'Upscaling',  tipKey: 'spec_label_upscaling' }
         ]},
         { key: 'technologies', labelKey: 'spec_tech_title', fields: [
-            { key: 'ray_tracing',           label: 'Ray Tracing' },
-            { key: 'vrr',                   label: 'VRR' },
-            { key: 'backwards_compatibility', label: 'Backwards Compat' },
-            { key: 'other',                 label: 'Other' }
+            { key: 'ray_tracing',           label: 'Ray Tracing',       tipKey: null },
+            { key: 'vrr',                   label: 'VRR',               tipKey: null },
+            { key: 'backwards_compatibility', label: 'Backwards Compat', tipKey: 'spec_label_backwards_compat' },
+            { key: 'other',                 label: 'Other',             tipKey: null }
         ]},
         { key: 'dimensions', labelKey: 'spec_dimensions_title', fields: [
-            { key: 'width_mm',  label: 'Width (mm)' },
-            { key: 'height_mm', label: 'Height (mm)' },
-            { key: 'depth_mm',  label: 'Depth (mm)' }
+            { key: 'width_mm',  label: 'Width (mm)',  tipKey: 'spec_label_width' },
+            { key: 'height_mm', label: 'Height (mm)', tipKey: 'spec_label_height' },
+            { key: 'depth_mm',  label: 'Depth (mm)',  tipKey: 'spec_label_depth' }
         ]}
     ];
 }
@@ -131,9 +194,12 @@ function update() {
             const vA = getVal(a, section.key, field.key);
             const vB = getVal(b, section.key, field.key);
             if (vA === null && vB === null) return '';
+            const labelHtml = field.tipKey
+                ? tipLabel(field.label, field.tipKey)
+                : fixedTip(field.label);
             return '<div class="spec-row">' +
                 '<div class="spec-value spec-left">'  + formatValue(vA) + '</div>' +
-                '<div class="spec-label">'            + field.label     + '</div>' +
+                '<div class="spec-label">'            + labelHtml       + '</div>' +
                 '<div class="spec-value spec-right">' + formatValue(vB) + '</div>' +
                 '</div>';
         }).filter(r => r.length > 0).join('');
@@ -178,6 +244,8 @@ function update() {
     display.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', () => img.classList.add('image-hidden'));
     });
+
+    initSpecTooltips();
 
     document.querySelectorAll('.console-card[data-console-id]').forEach(card => {
         card.style.cursor = 'pointer';

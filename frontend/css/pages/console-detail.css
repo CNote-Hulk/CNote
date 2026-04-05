@@ -449,7 +449,7 @@
     background: rgba(212, 175, 122, 0.15);
     border-color: rgba(212, 175, 122, 0.35);
     transform: translateX(-3px);
-    box-shadow: 0 4px 12px rgba(212, 175, 122, 0.2);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.2);
 }
 
 .back-link:active {
@@ -495,7 +495,7 @@
     .back-link:active {
         transform: scale(0.95);
         background: rgba(212, 175, 122, 0.25);
-        box-shadow: 0 2px 8px rgba(212, 175, 122, 0.3);
+        box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.3);
     }
 }
 

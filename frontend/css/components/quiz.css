@@ -96,7 +96,7 @@
     background: rgba(212, 175, 122, 0.12);
     border-color: rgba(212, 175, 122, 0.3);
     transform: translateX(4px);
-    box-shadow: 0 0 12px rgba(212, 175, 122, 0.08);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.08);
 }
 
 .quiz-option:active {

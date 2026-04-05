@@ -14,8 +14,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <title>Help &amp; Support — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="has-mbn">
     <!-- ===========================
          NAVIGATION BAR
          =========================== -->
@@ -31,7 +33,7 @@
                 <li><a href="evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
                 <li><a href="comparatie.html" data-i18n="nav_compare">Compare</a></li>
                 <li><a href="help.html" class="active" data-i18n="nav_help">Help</a></li>
-                <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+                <li><a href="help.html#contact" data-i18n="nav_contact">Contact</a></li>
             </ul>
             <div class="navbar-profile-wrap">
                 <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
@@ -42,16 +44,74 @@
     </nav>
 
     <!-- ===========================
-         HERO SECTION
+         HERO SECTION — Editorial redesign
          =========================== -->
-    <section class="hero hero-cinematic hero-help">
-        <div class="hero-content">
-            <h1 data-i18n="help_hero_title">Help &amp; Support</h1>
-            <p data-i18n="help_hero_subtitle">Find answers quickly or learn how to use the platform.</p>
-            <div class="hero-buttons">
-                <a class="hero-button" href="#discover" data-i18n="help_hero_btn">Discover</a>
-                <a class="hero-button" href="#contact" data-i18n="help_contact_btn">Contact Us</a>
+    <section class="ph-hero ph-hero--help">
+        <div class="ph-hero__inner">
+
+            <div class="ph-left">
+                <div class="ph-title-block">
+                    <span class="ph-t1">THE</span>
+                    <span class="ph-t2">SUPPORT</span>
+                    <span class="ph-t3">HUB</span>
+                </div>
+                <p class="ph-tagline">/ Find answers. Get help. /</p>
+                <a href="#discover" class="ph-cta-btn">DISCOVER</a>
             </div>
+
+            <div class="ph-right">
+                <div class="ph-card">
+                    <div class="ph-card__head">
+                        <span class="ph-badge">HELP CENTER</span>
+                        <a href="#contact" class="ph-action-link">CONTACT →</a>
+                    </div>
+                    <h2 class="ph-card__title">How can we<br>help you?</h2>
+                    <p class="ph-card__sub">Browse guides, FAQs, or reach out directly.</p>
+                    <ul class="ph-list">
+                        <li><a href="#discover" class="ph-list-item"><span class="ph-list-item__icon">❓</span> Frequently Asked Questions</a></li>
+                        <li><a href="#discover" class="ph-list-item"><span class="ph-list-item__icon">📖</span> Platform Guide</a></li>
+                        <li><a href="#contact" class="ph-list-item"><span class="ph-list-item__icon">📧</span> Contact Support</a></li>
+                        <li><a href="community-welcome-page.html" class="ph-list-item"><span class="ph-list-item__icon">💬</span> Ask the Community</a></li>
+                    </ul>
+                    <div class="ph-card__actions">
+                        <a href="#discover" class="ph-card__btn ph-card__btn--primary">Browse FAQ</a>
+                        <a href="#contact" class="ph-card__btn">Contact Us</a>
+                    </div>
+                </div>
+
+                <img class="ph-console-img" src="../../assets/images/consoles/nintendo-switch.webp" alt="Nintendo Switch" loading="eager">
+
+                <div class="ph-ann">
+                    <div class="ph-ann__tag">
+                        <span class="ph-ann__badge">SUPPORT</span>
+                        <span class="ph-ann__name">Nintendo Switch™</span>
+                        <span class="ph-ann__meta">Questions about your console?</span>
+                    </div>
+                    <svg class="ph-ann__arrow" viewBox="0 0 90 70" fill="none">
+                        <path d="M 5 5 C 28 8, 68 38, 85 65" stroke="currentColor" stroke-width="1.4" stroke-dasharray="5 3.5" stroke-linecap="round"/>
+                        <circle cx="85" cy="65" r="3" fill="currentColor"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="ph-features">
+            <a href="#discover" class="ph-feat">
+                <span class="ph-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                <span>FAQ</span>
+            </a>
+            <a href="#contact" class="ph-feat">
+                <span class="ph-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                <span>Contact</span>
+            </a>
+            <a href="#discover" class="ph-feat">
+                <span class="ph-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                <span>Platform Guide</span>
+            </a>
+            <a href="community-welcome-page.html" class="ph-feat">
+                <span class="ph-feat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                <span>Community</span>
+            </a>
         </div>
     </section>
 

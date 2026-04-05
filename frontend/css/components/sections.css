@@ -25,7 +25,7 @@
     padding: 1.5rem 2rem;
     
     /* Subtle shadow */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(var(--accent-rgb), 0.06);
 }
 
 
@@ -46,14 +46,14 @@
     border-radius: var(--radius-lg);
     margin-top: var(--spacing-md);
     object-fit: cover;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(var(--accent-rgb), 0.05);
     transition: all 0.3s ease;
     border: 1px solid var(--border-color);
 }
 
 .image:hover {
     transform: scale(1.02);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(var(--accent-rgb), 0.08);
 }
 
 .card .image {
@@ -74,15 +74,16 @@
     overflow: hidden;
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.04);
+        0 2px 12px rgba(var(--accent-rgb), 0.07),
+        0 0 0 1px rgba(var(--accent-rgb), 0.08);
     transition: box-shadow 0.3s ease;
 }
 
 .video-section:hover {
     box-shadow:
         0 14px 48px rgba(0, 0, 0, 0.6),
-        0 0 28px rgba(var(--accent-rgb), 0.08),
-        0 0 0 1px rgba(255, 255, 255, 0.06);
+        0 0 28px rgba(var(--accent-rgb), 0.1),
+        0 0 0 1px rgba(var(--accent-rgb), 0.15);
 }
 
 /* ── Player container ── */

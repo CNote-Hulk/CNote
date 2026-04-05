@@ -7,10 +7,23 @@ import { DOMUtils } from '../utils/dom.js';
 
 export const NavigationModule = {
     init() {
+        this.hideMbnIfGuest();
         this.setupSmoothScroll();
         this.setupActiveLinks();
         this.setupMobileMenu();
         this.setupAutoHideNavbar();
+    },
+
+    /**
+     * Hide the mobile bottom nav for logged-out users
+     */
+    hideMbnIfGuest() {
+        try {
+            const s = JSON.parse(localStorage.getItem('cn_session'));
+            if (s && s.id) return; // logged in — leave nav visible
+        } catch { /* fall through */ }
+        const mbn = document.getElementById('mobile-bottom-nav');
+        if (mbn) mbn.style.display = 'none';
     },
 
     /**
