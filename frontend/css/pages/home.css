@@ -868,61 +868,34 @@ body.home-page::before {
 
 .mbn-dropdown {
     display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: absolute;
+    bottom: calc(100% + 12px);
     right: 0;
-    width: 100%;
-    max-height: 70vh;
+    width: 280px;
+    max-height: 60vh;
     overflow-y: auto;
     overscroll-behavior: contain;
     background: rgba(22, 20, 18, 0.98);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px 20px 0 0;
-    padding: 6px 12px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 8px 6px;
     flex-direction: column;
     gap: 2px;
-    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.5);
-    z-index: 1001;
-    transform: translateY(100%);
-    transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+    box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    animation: mbn-dd-in 0.18s ease;
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.12) transparent;
-}
-
-/* Drag handle */
-.mbn-dropdown::after {
-    content: '';
-    position: sticky;
-    top: 0;
-    align-self: center;
-    width: 36px;
-    height: 4px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 8px auto 10px;
-    flex-shrink: 0;
 }
 
 .mbn-dropdown::-webkit-scrollbar { width: 4px; }
 .mbn-dropdown::-webkit-scrollbar-track { background: transparent; }
 .mbn-dropdown::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
 
-/* Backdrop overlay */
-.mbn-dropdown.is-open::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    z-index: -1;
-}
-
 .mbn-dropdown.is-open {
     display: flex;
-    transform: translateY(0);
 }
 
 @keyframes mbn-dd-in {
@@ -932,18 +905,18 @@ body.home-page::before {
 
 /* ── Dropdown section heading ── */
 .mbn-dd-heading {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: rgba(255, 255, 255, 0.35);
-    padding: 14px 14px 5px;
+    padding: 10px 12px 4px;
     margin-top: 2px;
     user-select: none;
 }
 
 .mbn-dd-heading:first-child {
-    padding-top: 6px;
+    padding-top: 4px;
     margin-top: 0;
 }
 
@@ -952,21 +925,20 @@ body.home-page::before {
     display: block;
     height: 1px;
     background: rgba(255, 255, 255, 0.06);
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 }
 
 .mbn-dd-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 11px 14px;
-    min-height: 44px;
+    gap: 8px;
+    padding: 8px 12px;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     text-decoration: none;
     background: transparent;
     color: var(--text-gray, #A89F94);
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 500;
     font-family: inherit;
     cursor: pointer;
@@ -988,13 +960,53 @@ body.home-page::before {
     transition-duration: 0.05s;
 }
 
+/* Console chips row */
+.mbn-dd-consoles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px 8px 2px;
+}
+
+.mbn-dd-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-gray, #A89F94);
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+}
+
+.mbn-dd-chip:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: var(--text-light, #F5F0E8);
+}
+
+.mbn-dd-chip:active {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.mbn-dd-chip .mbn-dd-dot {
+    width: 6px;
+    height: 6px;
+}
+
 /* Console color dot */
 .mbn-dd-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     flex-shrink: 0;
-    box-shadow: 0 0 6px currentColor;
 }
 
 .mbn-dd-icon {
@@ -1014,17 +1026,9 @@ body.home-page::before {
 /* Light theme: dropdown */
 [data-theme="light"] .mbn-dropdown {
     background: rgba(255, 255, 255, 0.98);
-    border-top-color: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.07);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
     scrollbar-color: rgba(0,0,0,0.1) transparent;
-}
-
-[data-theme="light"] .mbn-dropdown::after {
-    background: rgba(0, 0, 0, 0.15);
-}
-
-[data-theme="light"] .mbn-dropdown.is-open::before {
-    background: rgba(0, 0, 0, 0.25);
 }
 
 [data-theme="light"] .mbn-dd-heading {
@@ -1047,6 +1051,18 @@ body.home-page::before {
 
 [data-theme="light"] .mbn-dd-item:active {
     background: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .mbn-dd-chip {
+    border-color: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.03);
+    color: var(--text-gray, #6b6560);
+}
+
+[data-theme="light"] .mbn-dd-chip:hover {
+    background: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.12);
+    color: var(--text, #1B1714);
 }
 
 [data-theme="light"] .mbn-dd-sep {

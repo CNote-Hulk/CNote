@@ -2045,60 +2045,63 @@ initNotifications();
             if (!dd) return;
             dd.innerHTML = '';
 
+            /* ── Collect data from sidebar ── */
+            var consoles = [];   // { name, color, slug }
+            var flatSections = []; // { heading, items[] }
+
             var sections = document.querySelectorAll('.hub-sidebar__section');
             sections.forEach(function (section) {
                 var heading = section.querySelector('.hub-sidebar__heading');
                 if (!heading) return;
 
-                var items = [];
-
-                /* Collect console sub-groups */
                 var consoleGroups = section.querySelectorAll('.hub-sidebar__console');
                 if (consoleGroups.length) {
+                    /* Extract console names + colors */
                     consoleGroups.forEach(function (cg) {
                         var nameEl = cg.querySelector('.hub-sidebar__console-name');
                         var consoleName = nameEl ? nameEl.textContent.replace(/\s+/g, ' ').trim() : '';
                         var color = nameEl ? (nameEl.style.getPropertyValue('--console-color') || '') : '';
-                        cg.querySelectorAll('.hub-sidebar__item').forEach(function (item) {
-                            if (item.classList.contains('hub-sidebar__item--locked')) return;
-                            if (window.getComputedStyle(item).display === 'none') return;
-                            var text = item.textContent.replace(/\s+/g, ' ').trim();
-                            items.push({ el: item, label: consoleName + ' — ' + text, color: color });
-                        });
+                        var first = cg.querySelector('.hub-sidebar__item');
+                        var slug = first ? (first.dataset.console || '') : '';
+                        consoles.push({ name: consoleName, color: color, slug: slug });
                     });
-                } else {
-                    /* Normal flat items */
-                    section.querySelectorAll('.hub-sidebar__item').forEach(function (item) {
-                        if (item.classList.contains('hub-sidebar__item--locked')) return;
-                        if (item.id === 'hub-notif-toggle') return;
-                        if (window.getComputedStyle(item).display === 'none') return;
-                        items.push({ el: item, label: item.textContent.replace(/\s+/g, ' ').trim(), color: '' });
-                    });
+                    return;
                 }
 
-                if (!items.length) return;
+                var items = [];
+                section.querySelectorAll('.hub-sidebar__item').forEach(function (item) {
+                    if (item.classList.contains('hub-sidebar__item--locked')) return;
+                    if (item.id === 'hub-notif-toggle') return;
+                    if (window.getComputedStyle(item).display === 'none') return;
+                    items.push({
+                        el: item,
+                        label: item.textContent.replace(/\s+/g, ' ').trim()
+                    });
+                });
+                if (items.length) {
+                    flatSections.push({
+                        heading: heading.textContent.replace(/\s+/g, ' ').trim(),
+                        items: items
+                    });
+                }
+            });
 
-                /* Section heading */
+            /* ── Build DOM ── */
+
+            /* 1) Flat sections: General Chat, Repair, Marketplace, Messages */
+            flatSections.forEach(function (sec, i) {
                 var h = document.createElement('div');
                 h.className = 'mbn-dd-heading';
-                h.textContent = heading.textContent.replace(/\s+/g, ' ').trim();
+                h.textContent = sec.heading;
                 dd.appendChild(h);
 
-                /* Items */
-                items.forEach(function (it) {
+                sec.items.forEach(function (it) {
                     var b = document.createElement('button');
                     b.type = 'button';
                     b.className = 'mbn-dd-item';
                     b.dataset.mbnView = it.el.dataset.view || '';
                     if (it.el.dataset.console) b.dataset.mbnConsole = it.el.dataset.console;
                     if (typeof it.el.dataset.category === 'string') b.dataset.mbnCategory = it.el.dataset.category;
-
-                    if (it.color) {
-                        var dot = document.createElement('span');
-                        dot.className = 'mbn-dd-dot';
-                        dot.style.background = it.color;
-                        b.appendChild(dot);
-                    }
 
                     var span = document.createElement('span');
                     span.textContent = it.label;
@@ -2113,7 +2116,49 @@ initNotifications();
                 });
             });
 
-            /* Static links at bottom */
+            /* 2) Console sections — compact chip rows */
+            if (consoles.length) {
+                var groups = [
+                    { heading: 'Community', view: 'forum' },
+                    { heading: 'Repair', view: 'repair' }
+                ];
+                groups.forEach(function (g) {
+                    var h = document.createElement('div');
+                    h.className = 'mbn-dd-heading';
+                    h.textContent = g.heading;
+                    dd.appendChild(h);
+
+                    var row = document.createElement('div');
+                    row.className = 'mbn-dd-consoles';
+
+                    consoles.forEach(function (c) {
+                        var chip = document.createElement('button');
+                        chip.type = 'button';
+                        chip.className = 'mbn-dd-chip';
+                        chip.dataset.mbnView = g.view;
+                        chip.dataset.mbnConsole = c.slug;
+
+                        var dot = document.createElement('span');
+                        dot.className = 'mbn-dd-dot';
+                        dot.style.background = c.color;
+                        chip.appendChild(dot);
+
+                        var txt = document.createElement('span');
+                        txt.textContent = c.name;
+                        chip.appendChild(txt);
+
+                        chip.addEventListener('click', function () {
+                            switchRoute(g.view, c.slug, '');
+                            dd.classList.remove('is-open');
+                            btn.setAttribute('aria-expanded', 'false');
+                        });
+                        row.appendChild(chip);
+                    });
+                    dd.appendChild(row);
+                });
+            }
+
+            /* 3) Static links at bottom */
             var sep = document.createElement('div');
             sep.className = 'mbn-dd-sep';
             dd.appendChild(sep);
