@@ -2591,6 +2591,31 @@
     display: none;
 }
 
+@media (max-width: 768px) {
+    .hub-market-add-btn {
+        background: var(--accent-color);
+        color: var(--primary-color, #1B1714);
+        border: 1px solid rgba(var(--accent-color-rgb, 245, 240, 232), 0.35);
+    }
+
+    .hub-market-add-btn__text {
+        display: none !important;
+    }
+
+    .hub-market-add-btn__icon {
+        display: block !important;
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+}
+
+[data-theme="light"] .hub-market-add-btn {
+    background: #1b1f2a;
+    color: #f7f7f8;
+    border-color: rgba(27, 31, 42, 0.45);
+}
+
 /* ── Mobile Hamburger + Overlay (hidden on desktop) ─────── */
 
 .hub-mobile-hamburger {
