@@ -107,7 +107,7 @@ function initSettings() {
     const avatarInput = document.getElementById('avatar-upload');
     const avatarImg = document.getElementById('profile-avatar-img');
     const avatarFallback = document.getElementById('profile-avatar-fallback');
-    const getPreferredAvatar = () => AuthModule.normalizeAvatarUrl((user.avatar || '').trim() || (user.avatar_url || '').trim());
+    const getPreferredAvatar = () => AuthModule.normalizeAvatarUrl((user.avatar || '').trim());
 
     const renderAvatar = (avatar) => {
         const hasAvatar = !!avatar;

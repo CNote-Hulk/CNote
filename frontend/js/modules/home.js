@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (bioEl) bioEl.textContent = user.bio || currentUser.bio || '';
 
         if (avatarImg && avatarFallback) {
-            const avatar = normalizeAvatarUrl(user.avatar || user.avatar_url || currentUser.avatar || currentUser.avatar_url || '');
+            const avatar = normalizeAvatarUrl(user.avatar || currentUser.avatar || '');
             if (avatar) {
                 avatarImg.src = avatar;
                 avatarImg.hidden = false;

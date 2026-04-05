@@ -51,13 +51,15 @@ function setSessionCookie(res, token) {
  * @description Returns a safe user object (no password hash) for API responses.
  */
 function sanitizeUser(user) {
+    const rawAvatarUrl = typeof user.avatar_url === 'string' ? user.avatar_url.trim() : '';
+    const safeAvatarUrl = /googleusercontent\.com|ggpht\.com/i.test(rawAvatarUrl) ? '' : rawAvatarUrl;
     return {
         id: user.id,
         username: user.username,
         email: user.email,
         bio: user.bio || '',
         avatar: user.avatar || '',
-        avatar_url: user.avatar_url || '',
+        avatar_url: safeAvatarUrl,
         favorite_consoles: user.favorite_consoles || '',
         owned_consoles: user.owned_consoles || '',
         email_verified: !!user.email_verified,
@@ -145,7 +147,6 @@ router.get('/google/callback',
             const googleId = profile.id;
             const email = (profile.emails && profile.emails[0]?.value || '').toLowerCase().trim();
             const displayName = profile.displayName || email.split('@')[0];
-            const avatarUrl = (profile.photos && profile.photos[0]?.value) || '';
 
             const JWT_SECRET = req.app.get('JWT_SECRET');
             const linkUserId = req.cookies?.google_link_user;
@@ -168,8 +169,8 @@ router.get('/google/callback',
                 }
 
                 await pool.query(
-                    'UPDATE users SET google_id = $1, avatar_url = $2, updated_at = NOW() WHERE id = $3',
-                    [googleId, avatarUrl, userId]
+                    'UPDATE users SET google_id = $1, updated_at = NOW() WHERE id = $2',
+                    [googleId, userId]
                 );
                 return res.redirect('/html/pages/profil.html?google_linked=1#setari');
             }
@@ -184,11 +185,10 @@ router.get('/google/callback',
                 user = userResult.rows[0];
                 if (user) {
                     await pool.query(
-                        'UPDATE users SET google_id = $1, avatar_url = $2, email_verified = TRUE, updated_at = NOW() WHERE id = $3',
-                        [googleId, avatarUrl, user.id]
+                        'UPDATE users SET google_id = $1, email_verified = TRUE, updated_at = NOW() WHERE id = $2',
+                        [googleId, user.id]
                     );
                     user.google_id = googleId;
-                    user.avatar_url = avatarUrl;
                     user.email_verified = true;
                 }
             }
@@ -198,9 +198,9 @@ router.get('/google/callback',
                 // username_chosen = FALSE so user is redirected to pick a unique username
                 const isAdmin = displayName === 'AndreiHulk07' || email.toLowerCase() === 'console.notebook.app@gmail.com';
                 const insertResult = await pool.query(
-                    `INSERT INTO users (username, email, password_hash, google_id, avatar_url, email_verified, username_chosen, role)
-                     VALUES ($1, $2, NULL, $3, $4, TRUE, FALSE, $5) RETURNING *`,
-                    [displayName, email, googleId, avatarUrl, isAdmin ? 'admin' : 'user']
+                    `INSERT INTO users (username, email, password_hash, google_id, email_verified, username_chosen, role)
+                     VALUES ($1, $2, NULL, $3, TRUE, FALSE, $4) RETURNING *`,
+                    [displayName, email, googleId, isAdmin ? 'admin' : 'user']
                 );
                 user = insertResult.rows[0];
             }

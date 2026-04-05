@@ -154,13 +154,15 @@ function clearSessionCookie(res) {
 
 /** Return user object safe for API responses (no password hash) */
 function sanitizeUser(user) {
+    const rawAvatarUrl = typeof user.avatar_url === 'string' ? user.avatar_url.trim() : '';
+    const safeAvatarUrl = /googleusercontent\.com|ggpht\.com/i.test(rawAvatarUrl) ? '' : rawAvatarUrl;
     return {
         id: user.id,
         username: user.username,
         email: user.email,
         bio: user.bio || '',
         avatar: user.avatar || '',
-        avatar_url: user.avatar_url || '',
+        avatar_url: safeAvatarUrl,
         favorite_consoles: user.favorite_consoles || '',
         owned_consoles: user.owned_consoles || '',
         email_verified: !!user.email_verified,

@@ -23,8 +23,8 @@ export const AuthModule = {
 
     /** Cache user data locally so synchronous reads still work */
     _setSession(user) {
-        const normalizedAvatar = this.normalizeAvatarUrl(user.avatar || user.avatar_url || '');
-        const normalizedAvatarUrl = this.normalizeAvatarUrl(user.avatar_url || user.avatar || '');
+        const normalizedAvatar = this.normalizeAvatarUrl(user.avatar || '');
+        const normalizedAvatarUrl = this.normalizeAvatarUrl(user.avatar_url || '');
         const session = {
             id: user.id,
             username: user.username,

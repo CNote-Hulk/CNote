@@ -96,7 +96,7 @@
     }
 
     function resolveCommunityPath() { return resolvePagePath('community.html'); }
-    function resolveUserPath(username) { return resolvePagePath('user-profile.html?user=' + encodeURIComponent(username)); }
+    function resolveUserPath(username) { return resolvePagePath('user-profile.html?username=' + encodeURIComponent(username)); }
 
     function escHtml(value) {
         if (value === null || value === undefined) return '';
@@ -497,7 +497,7 @@
         var user = AuthHelper.getCurrentUser() || {};
         var name = escHtml(user.username || 'User');
         var email = escHtml(user.email || 'No email');
-        var avatarRaw = normalizeAvatarUrl(user.avatar || user.avatar_url || '');
+        var avatarRaw = normalizeAvatarUrl(user.avatar || '');
         var avatar = avatarRaw ? escHtml(avatarRaw) : '';
         var profilePath = resolvePagePath('profil.html');
         var avatarMarkup = avatar

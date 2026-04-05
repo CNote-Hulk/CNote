@@ -87,6 +87,8 @@ router.get('/users/:username', async (req, res) => {
         }
 
         const user = result.rows[0];
+        const rawAvatarUrl = typeof user.avatar_url === 'string' ? user.avatar_url.trim() : '';
+        const safeAvatarUrl = /googleusercontent\.com|ggpht\.com/i.test(rawAvatarUrl) ? '' : rawAvatarUrl;
 
         const favResult = await pool.query('SELECT console_id FROM user_favorites WHERE user_id = $1', [user.id]);
         const ownedResult = await pool.query('SELECT console_id FROM user_owned_consoles WHERE user_id = $1', [user.id]);
@@ -102,7 +104,7 @@ router.get('/users/:username', async (req, res) => {
                 username: user.username,
                 bio: user.bio || '',
                 avatar: user.avatar || '',
-                avatar_url: user.avatar_url || '',
+                avatar_url: safeAvatarUrl,
                 favorite_consoles: user.favorite_consoles || '',
                 owned_consoles: user.owned_consoles || '',
                 favorite_console_ids: favResult.rows.map(r => r.console_id),

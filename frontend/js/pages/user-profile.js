@@ -36,7 +36,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
         function resolveAvatar(profile) {
             if (!profile) return '';
-            return AuthModule.normalizeAvatarUrl((profile.avatar || '').trim() || (profile.avatar_url || '').trim());
+            return AuthModule.normalizeAvatarUrl((profile.avatar || '').trim());
         }
 
         /** Render the user's dashboard: progress, achievements, ratings, favorites */
@@ -386,7 +386,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
                 section.hidden = false;
                 list.innerHTML = data.friends.map(f => {
-                    const friendAvatar = AuthModule.normalizeAvatarUrl((f.avatar || '').trim() || (f.avatar_url || '').trim());
+                    const friendAvatar = AuthModule.normalizeAvatarUrl((f.avatar || '').trim());
                     const hasAvatar = friendAvatar && friendAvatar.length > 10;
                     const avatarHtml = hasAvatar
                         ? `<img src="${escapeHtml(friendAvatar)}" alt="" class="friend-card__avatar">`

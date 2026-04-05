@@ -181,7 +181,7 @@ export const SearchModule = {
 
     _resolveUserPath(username) {
         const path = window.location.pathname;
-        const file = 'user-profile.html?user=' + encodeURIComponent(username);
+        const file = 'user-profile.html?username=' + encodeURIComponent(username);
         if (path.includes('/pages/consoles/') || path.includes('\\pages\\consoles\\')) return '../' + file;
         if (path.includes('/pages/curs/')     || path.includes('\\pages\\curs\\'))     return '../' + file;
         if (path.includes('/pages/')          || path.includes('\\pages\\'))           return file;
