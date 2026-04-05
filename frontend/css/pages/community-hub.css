@@ -162,6 +162,12 @@
 }
 
 @media (max-width: 768px) {
+    .community-page--hub .hub-sidebar,
+    .community-page--hub .hub-mobile-overlay,
+    .community-page--hub .hub-mobile-hamburger {
+        display: none !important;
+    }
+
     .community-hub {
         flex-direction: column;
         flex: 1;
@@ -280,7 +286,7 @@
     /* Don't create stacking context — sidebar must be above overlay */
     .community-page--hub .community-hub {
         z-index: auto;
-        padding: 100px 0 0 0;
+        padding: 0;
     }
     /* Final mobile layering override (shared by community + welcome pages) */
     .community-page--hub .hub-sidebar {

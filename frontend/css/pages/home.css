@@ -905,12 +905,12 @@ body.home-page::before {
 
 /* ── Dropdown section heading ── */
 .mbn-dd-heading {
-    font-size: 0.68rem;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.4);
-    padding: 12px 14px 6px;
+    color: rgba(255, 255, 255, 0.72);
+    padding: 14px 14px 8px;
     margin-top: 4px;
     user-select: none;
 }
@@ -932,32 +932,34 @@ body.home-page::before {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 20px;
+    min-height: 42px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
     text-decoration: none;
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-gray, #A89F94);
-    font-size: 0.84rem;
-    font-weight: 500;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+    color: var(--text-light, #F5F0E8);
+    font-size: 0.92rem;
+    font-weight: 600;
     font-family: inherit;
     cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-tap-highlight-color: transparent;
-    margin: 1px 4px;
+    margin: 3px 4px;
 }
 
 .mbn-dd-item:hover,
 .mbn-dd-item.mbn-item--active {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--accent-rgb, 224, 107, 88), 0.2);
+    border-color: rgba(var(--accent-rgb, 224, 107, 88), 0.45);
     color: var(--text-light, #F5F0E8);
 }
 
 .mbn-dd-item:active {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--accent-rgb, 224, 107, 88), 0.24);
     transition-duration: 0.05s;
 }
 
@@ -973,12 +975,13 @@ body.home-page::before {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 7px 14px;
+    min-height: 38px;
+    padding: 8px 14px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-gray, #A89F94);
-    font-size: 0.78rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-light, #F5F0E8);
+    font-size: 0.88rem;
     font-weight: 500;
     font-family: inherit;
     cursor: pointer;
