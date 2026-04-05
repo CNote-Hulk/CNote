@@ -881,7 +881,7 @@ function initSettings() {
                 btn.addEventListener('click', async () => {
                     const result = await AuthModule.terminateSession(parseInt(btn.dataset.sessionId, 10));
                     if (!result.success) return;
-                    if (btn.dataset.isCurrent === '1') { await AuthModule.logout(); window.location.href = '/html/pages/login.html'; return; }
+                    if (btn.dataset.isCurrent === '1') { await AuthModule.logout(); window.location.href = '/html/pages/index.html'; return; }
                     loadSessions();
                 });
             });
@@ -894,7 +894,7 @@ function initSettings() {
         const confirmed = await showConfirmDialog({ title: 'Log out other devices', message: 'Do you want to log out from all other devices?', confirmLabel: 'Yes, log out', cancelLabel: 'Cancel' });
         if (!confirmed) return;
         const result = await AuthModule.terminateAllSessions();
-        if (result.success) window.location.href = '/html/pages/login.html';
+        if (result.success) window.location.href = '/html/pages/index.html';
     });
 
     // ═══ SECURITY — Trusted Devices ═══

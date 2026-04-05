@@ -551,7 +551,7 @@
         if (logoutBtn) {
             logoutBtn.addEventListener('click', function() {
                 AuthHelper.logout();
-                window.location.reload();
+                window.location.href = '/html/pages/index.html';
             });
         }
     }

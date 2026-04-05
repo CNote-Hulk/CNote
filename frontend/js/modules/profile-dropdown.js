@@ -221,7 +221,7 @@ export const ProfileDropdownModule = {
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async () => {
                 await AuthModule.logout();
-                window.location.reload();
+                window.location.href = '/html/pages/index.html';
             });
         }
 
