@@ -280,7 +280,7 @@
     /* Don't create stacking context — sidebar must be above overlay */
     .community-page--hub .community-hub {
         z-index: auto;
-        padding: 60px 0 0 0;
+        padding: 100px 0 0 0;
     }
     /* Final mobile layering override (shared by community + welcome pages) */
     .community-page--hub .hub-sidebar {

@@ -123,7 +123,7 @@
 @media (max-width: 768px) {
     .console-hero {
         min-height: auto;
-        padding: 80px 0 40px;
+        padding: 110px 0 40px;
     }
 
     .console-hero .container {
@@ -186,7 +186,7 @@
 
 @media (max-width: 480px) {
     .console-hero {
-        padding: 70px 0 30px;
+        padding: 105px 0 30px;
     }
 
     .console-hero .container {

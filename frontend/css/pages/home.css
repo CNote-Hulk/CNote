@@ -905,18 +905,18 @@ body.home-page::before {
 
 /* ── Dropdown section heading ── */
 .mbn-dd-heading {
-    font-size: 0.6rem;
+    font-size: 0.68rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.35);
-    padding: 10px 12px 4px;
-    margin-top: 2px;
+    color: rgba(255, 255, 255, 0.4);
+    padding: 12px 14px 6px;
+    margin-top: 4px;
     user-select: none;
 }
 
 .mbn-dd-heading:first-child {
-    padding-top: 4px;
+    padding-top: 6px;
     margin-top: 0;
 }
 
@@ -925,20 +925,20 @@ body.home-page::before {
     display: block;
     height: 1px;
     background: rgba(255, 255, 255, 0.06);
-    margin: 0 0 8px;
+    margin: 0 0 10px;
 }
 
 .mbn-dd-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     border: none;
-    border-radius: 10px;
+    border-radius: 20px;
     text-decoration: none;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.04);
     color: var(--text-gray, #A89F94);
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 500;
     font-family: inherit;
     cursor: pointer;
@@ -947,11 +947,12 @@ body.home-page::before {
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-tap-highlight-color: transparent;
+    margin: 1px 4px;
 }
 
 .mbn-dd-item:hover,
 .mbn-dd-item.mbn-item--active {
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text-light, #F5F0E8);
 }
 
@@ -964,20 +965,20 @@ body.home-page::before {
 .mbn-dd-consoles {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
-    padding: 4px 8px 2px;
+    gap: 6px;
+    padding: 4px 10px 4px;
 }
 
 .mbn-dd-chip {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 5px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
     color: var(--text-gray, #A89F94);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 500;
     font-family: inherit;
     cursor: pointer;
@@ -1041,16 +1042,17 @@ body.home-page::before {
 
 [data-theme="light"] .mbn-dd-item {
     color: var(--text-gray, #6b6560);
+    background: rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="light"] .mbn-dd-item:hover,
 [data-theme="light"] .mbn-dd-item.mbn-item--active {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.07);
     color: var(--text, #1B1714);
 }
 
 [data-theme="light"] .mbn-dd-item:active {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="light"] .mbn-dd-chip {
