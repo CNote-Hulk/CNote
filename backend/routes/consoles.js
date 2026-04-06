@@ -50,4 +50,39 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
+// POST /api/consoles/visit — Mark a console as visited by the current user
+router.post('/visit', require('../middleware/auth').authRequired, async (req, res) => {
+    const userId = req.user.id;
+    const { console_id } = req.body;
+    if (!console_id || typeof console_id !== 'string') {
+        return res.status(400).json({ success: false, error: 'Console ID required.' });
+    }
+    try {
+        await pool.query(
+            `INSERT INTO user_console_visits (user_id, console_id) VALUES ($1, $2)
+             ON CONFLICT (user_id, console_id) DO UPDATE SET visited_at = NOW()`,
+            [userId, console_id.trim()]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('POST /api/consoles/visit error:', err);
+        res.status(500).json({ success: false, error: 'Failed to record visit.' });
+    }
+});
+
+// GET /api/consoles/visited — Get all visited console IDs for current user
+router.get('/visited', require('../middleware/auth').authRequired, async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const result = await pool.query(
+            'SELECT console_id FROM user_console_visits WHERE user_id = $1',
+            [userId]
+        );
+        res.json({ success: true, consoles: result.rows.map(r => r.console_id) });
+    } catch (err) {
+        console.error('GET /api/consoles/visited error:', err);
+        res.status(500).json({ success: false, error: 'Failed to fetch visited consoles.' });
+    }
+});
+
 module.exports = router;

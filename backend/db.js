@@ -78,7 +78,16 @@ async function initializeSchema() {
 			created_at  TIMESTAMP DEFAULT NOW()
 		);
 
-		/* ── Social (ratings, favorites, owned, friends) ── */
+		/* ── Social (ratings, favorites, owned, friends, visits) ── */
+
+		CREATE TABLE IF NOT EXISTS user_console_visits (
+		    id SERIAL PRIMARY KEY,
+		    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+		    console_id TEXT NOT NULL,
+		    visited_at TIMESTAMP DEFAULT NOW(),
+		    UNIQUE(user_id, console_id)
+		);
+
 		CREATE TABLE IF NOT EXISTS console_ratings (
 			id          SERIAL PRIMARY KEY,
 			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

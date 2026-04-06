@@ -704,6 +704,18 @@ async function init() {
     renderRatingWidget(consoleId);
     initFavoriteButton(consoleId);
 
+    // Mark console as visited on server
+    try {
+        await fetch('/api/consoles/visit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ console_id: consoleId })
+        });
+    } catch (err) {
+        console.warn('Failed to mark console as visited:', err);
+    }
+
     // Scroll to hash target if present (e.g. #rating)
     if (window.location.hash) {
         setTimeout(function () {

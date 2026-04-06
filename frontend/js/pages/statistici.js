@@ -12,11 +12,16 @@ if (!user) {
     window.location.href = 'login.html';
 }
 
-/** Get count of unique consoles visited from localStorage */
-function getVisitedConsolesCount() {
+/** Get count of unique consoles visited from server */
+async function getVisitedConsolesCount() {
     try {
-        const visited = JSON.parse(localStorage.getItem('cn_visited_consoles')) || [];
-        return Array.isArray(visited) ? visited.length : 0;
+        const resp = await fetch('/api/consoles/visited', { credentials: 'include' });
+        if (!resp.ok) return 0;
+        const data = await resp.json();
+        if (data && Array.isArray(data.consoles)) {
+            return data.consoles.length;
+        }
+        return 0;
     } catch {
         return 0;
     }
