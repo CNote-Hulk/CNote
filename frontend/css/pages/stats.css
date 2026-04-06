@@ -5,13 +5,13 @@
 
 .stats-page {
     min-height: 100vh;
-    padding-top: var(--spacing-xl); /* 3rem, ca pe alte pagini */
+    padding-top: var(--cn-nav-offset, 64px);
     background: transparent;
 }
 
 @media (max-width: 820px) {
     .stats-page {
-        padding-top: 0;
+        padding-top: var(--cn-nav-offset, 64px);
     }
 }
 
@@ -146,17 +146,17 @@ body.stats-bg::before {
 
 /* ── Accent card (achievements) ── */
 .statsd-card--accent {
-    background: var(--accent-color);
-    border-color: transparent;
+    background: rgba(var(--accent-rgb), 0.12);
+    border-color: rgba(var(--accent-rgb), 0.22);
 }
 
 .statsd-card--accent .statsd-card__label,
 .statsd-card--accent .statsd-card__sub {
-    color: rgba(255, 255, 255, 0.78);
+    color: var(--text-gray);
 }
 
 .statsd-card--accent .statsd-card__num {
-    color: #fff;
+    color: var(--accent-color);
 }
 
 /* ── Level card ── */
