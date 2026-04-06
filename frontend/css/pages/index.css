@@ -597,12 +597,7 @@ html[data-theme='light'] {
     .nb-card__arr { display: none; }
 
     .nb-side {
-        flex: none;
-        width: 100%;
-        max-width: 680px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
+        display: none;
     }
 
     .nb-card-row { flex-direction: column; flex: 1 1 140px; }
@@ -650,9 +645,7 @@ html[data-theme='light'] {
     .nb-right__inner { padding: 22px 22px 24px 22px; }
 
     .nb-side {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        display: none;
     }
 
     .nb-card-row { flex-direction: column; }
