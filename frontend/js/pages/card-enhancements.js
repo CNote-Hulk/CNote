@@ -110,6 +110,22 @@ async function init() {
         // Make card position relative for overlay positioning
         card.style.position = 'relative';
         card.appendChild(overlay);
+
+        // Mark as visited on card click (before navigation)
+        card.addEventListener('click', async (e) => {
+            // Only mark as visited if user is logged in and card has a valid consoleId
+            if (!user || !consoleId) return;
+            try {
+                await fetch(`${API_BASE_URL}/consoles/visit`, {
+                    method: 'POST',
+                    headers: { ...headers, 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ consoleId })
+                });
+                // Notify other tabs/pages to update stats
+                localStorage.setItem('cn_console_visited_event', Date.now().toString());
+            } catch { /* silent */ }
+        });
     });
 }
 

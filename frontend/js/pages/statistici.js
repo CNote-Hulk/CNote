@@ -27,6 +27,19 @@ async function getVisitedConsolesCount() {
     }
 }
 
+// Listen for console visit events from other tabs/pages and update stat instantly
+if (typeof window !== 'undefined') {
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'cn_console_visited_event') {
+            // Re-fetch and update the visited consoles stat
+            getVisitedConsolesCount().then((count) => {
+                const el = document.getElementById('stat-consoles-visited');
+                if (el) el.textContent = String(count);
+            });
+        }
+    });
+}
+
 /** Aggregate quiz stats: total attempts, average best score, perfect lessons */
 function getQuizStatsSummary(userId) {
     try {
