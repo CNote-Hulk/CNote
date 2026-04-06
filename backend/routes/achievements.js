@@ -25,12 +25,25 @@ const BADGES = [
 
 // GET /api/achievements
 router.get('/', authRequired, async (req, res) => {
-    // TODO: Replace with real logic to check which badges are unlocked for req.user.id
-    // For now, return all locked (demo)
-    // You should implement logic to check user progress and mark unlocked badges
     const userId = req.user.id;
-    // Example: get unlocked badge ids from DB (not implemented)
+    const pool = require('../db');
+    let visitedCount = 0;
+    try {
+        // Count visited consoles for this user
+        const result = await pool.query('SELECT COUNT(*) FROM user_console_visits WHERE user_id = $1', [userId]);
+        visitedCount = parseInt(result.rows[0].count, 10);
+    } catch (err) {
+        console.error('Error counting visited consoles:', err);
+    }
+
+    // Unlock logic for visited consoles achievements
     const unlockedIds = new Set();
+    if (visitedCount >= 3) unlockedIds.add('console_scout');
+    if (visitedCount >= 10) unlockedIds.add('retro_master');
+    if (visitedCount >= 25) unlockedIds.add('archive_hunter');
+    // All-Rounder: needs 15 lessons and 10 consoles, but we only check consoles for now
+    // (leave locked until lesson data is available)
+
     const achievements = BADGES.map(b => ({ ...b, unlocked: unlockedIds.has(b.id) }));
     res.json({ success: true, achievements });
 });
