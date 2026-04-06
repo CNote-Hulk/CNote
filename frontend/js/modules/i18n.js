@@ -903,6 +903,69 @@ const MESSAGES = {
         cl_stat_active: 'Active Now',
         cl_stat_threads: 'Forum Threads',
         cl_stat_listings: 'Marketplace Listings',
+
+        // Shared notebook UI
+        nb_you_are_here: 'You are here',
+        nb_fun_fact: '\u2605 Fun Fact',
+        nb_compare_highlight: '\u2605 Compare Highlight',
+        nb_did_you_know: '\u2605 Did You Know?',
+        nb_rec_most_compared: '\u2605 Most Compared',
+        nb_rec_trending: '\u2605 Trending Now',
+        nb_rec_module1: 'MODULE 1',
+        nb_rec_module2: 'MODULE 2',
+        nb_card_join_discussion: 'Join the discussion',
+        nb_card_faq_support: 'FAQ & support',
+        nb_card_console_history: 'Console history',
+
+        // Notebook stats
+        nb_stat_consoles: 'Consoles',
+        nb_stat_generations: 'Generations',
+        nb_stat_free: 'Free',
+        nb_stat_since: 'Since',
+        nb_stat_modules: 'Modules',
+        nb_stat_quizzes: 'Quizzes',
+        nb_stat_prerequisites: 'Prerequisites',
+        nb_stat_topics: 'Topics',
+        nb_stat_support: 'Support',
+        nb_stat_rating: 'Rating',
+
+        // Compare page
+        cmp_body: 'Compare any two gaming consoles side by side \u2014 CPU, GPU, RAM, storage, launch price, and total sales. Pick your matchup and let the specs decide the winner.',
+        cmp_rec1_text: 'PlayStation 1 vs NES \u2014 the all-time classic matchup on CNote.',
+        cmp_rec2_text: 'PS5 vs Xbox Series X \u2014 specs that defined a generation.',
+        cmp_feat_performance: 'Performance',
+        cmp_feat_full_specs: 'Full Specs',
+        cmp_feat_auto_verdict: 'Auto Verdict',
+        cmp_feat_launch_date: 'Launch Date & Price',
+        cmp_cta: 'START COMPARING \u2192',
+
+        // Learn page
+        learn_body: 'Discover the physics and engineering behind every console \u2014 from basic electricity and transistors all the way to CPUs, GPUs, and the rendering pipeline.',
+        learn_rec1_text: 'Electricity & Circuits \u2014 voltage, current, resistance',
+        learn_rec2_text: 'Transistors & Logic Gates \u2014 the building blocks of computing',
+        learn_feat_physics: 'Physics',
+        learn_feat_electronics: 'Electronics',
+        learn_feat_architecture: 'Architecture',
+        learn_feat_diagnostics: 'Diagnostics',
+        learn_cta: 'START LEARNING \u2192',
+
+        // Help page
+        help_feat_faq: 'FAQ',
+        help_feat_contact: 'Contact',
+        help_feat_guide: 'Platform Guide',
+        help_feat_community: 'Community',
+        help_cta: 'BROWSE FAQ \u2192',
+
+        // Index page
+        index_body: 'Cnote Bakery is a platform dedicated to gaming consoles. History, technology, and community in one place.',
+        index_fun_fact: '\u2605 Fun Fact',
+        index_cta: 'Log in \u2192',
+
+        // Mobile nav
+        mbn_more: 'More',
+
+        // Settings page
+        settings_subtitle: 'Manage your account, profile and preferences.',
     },
     ro:{
 
@@ -1798,6 +1861,69 @@ const MESSAGES = {
         cl_stat_active: 'Activi acum',
         cl_stat_threads: 'Discu\u021bii forum',
         cl_stat_listings: 'Anun\u021buri pia\u021b\u0103',
+
+        // Shared notebook UI
+        nb_you_are_here: 'E\u0219ti aici',
+        nb_fun_fact: '\u2605 Fapt amuzant',
+        nb_compare_highlight: '\u2605 Highlight compara\u021bie',
+        nb_did_you_know: '\u2605 \u0218tiai c\u0103...?',
+        nb_rec_most_compared: '\u2605 Cele mai comparate',
+        nb_rec_trending: '\u2605 Trending acum',
+        nb_rec_module1: 'MODULUL 1',
+        nb_rec_module2: 'MODULUL 2',
+        nb_card_join_discussion: 'Al\u0103tur\u0103-te discu\u021biei',
+        nb_card_faq_support: 'FAQ & suport',
+        nb_card_console_history: 'Istoria consolelor',
+
+        // Notebook stats
+        nb_stat_consoles: 'Console',
+        nb_stat_generations: 'Genera\u021bii',
+        nb_stat_free: 'Gratuit',
+        nb_stat_since: 'Din',
+        nb_stat_modules: 'Module',
+        nb_stat_quizzes: 'Teste',
+        nb_stat_prerequisites: 'Cuno\u0219tin\u021be necesare',
+        nb_stat_topics: 'Subiecte',
+        nb_stat_support: 'Asisten\u021b\u0103',
+        nb_stat_rating: 'Evaluare',
+
+        // Compare page
+        cmp_body: 'Compar\u0103 orice dou\u0103 console de gaming fa\u021b\u0103 \u00een fa\u021b\u0103 \u2014 CPU, GPU, RAM, stocare, pre\u021b de lansare \u0219i v\u00e2nz\u0103ri totale.',
+        cmp_rec1_text: 'PlayStation 1 vs NES \u2014 duelul clasic pe CNote.',
+        cmp_rec2_text: 'PS5 vs Xbox Series X \u2014 specifica\u021bii care au definit o genera\u021bie.',
+        cmp_feat_performance: 'Performan\u021b\u0103',
+        cmp_feat_full_specs: 'Specifica\u021bii complete',
+        cmp_feat_auto_verdict: 'Verdict automat',
+        cmp_feat_launch_date: 'Dat\u0103 lansare & Pre\u021b',
+        cmp_cta: '\u00cencepe COMPARAREA \u2192',
+
+        // Learn page
+        learn_body: 'Descoper\u0103 fizica \u0219i ingineria din spatele fiec\u0103rei console \u2014 de la electricitate \u0219i tranzistori p\u00e2n\u0103 la CPU-uri, GPU-uri \u0219i pipeline-ul de randare.',
+        learn_rec1_text: 'Electricitate & Circuite \u2014 tensiune, curent, rezisten\u021b\u0103',
+        learn_rec2_text: 'Tranzistori & Por\u021bi logice \u2014 blocurile de construc\u021bie ale calculatoarelor',
+        learn_feat_physics: 'Fizic\u0103',
+        learn_feat_electronics: 'Electronic\u0103',
+        learn_feat_architecture: 'Arhitectur\u0103',
+        learn_feat_diagnostics: 'Diagnosticare',
+        learn_cta: '\u00cencepe S\u0102 \u00cenv\u0102\u021eI \u2192',
+
+        // Help page
+        help_feat_faq: 'FAQ',
+        help_feat_contact: 'Contact',
+        help_feat_guide: 'Ghid platform\u0103',
+        help_feat_community: 'Comunitate',
+        help_cta: 'EXPLOREAZ\u0102 FAQ \u2192',
+
+        // Index page
+        index_body: 'Cnote Bakery este o platform\u0103 dedicat\u0103 consolelor de gaming. Istorie, tehnologie \u0219i comunitate \u00eentr-un singur loc.',
+        index_fun_fact: '\u2605 Fapt amuzant',
+        index_cta: 'Autentific\u0103-te \u2192',
+
+        // Mobile nav
+        mbn_more: 'Mai mult',
+
+        // Settings page
+        settings_subtitle: 'Gestioneaz\u0103 contul, profilul \u0219i preferin\u021bele tale.',
     },
     es: {
         nav_community: 'Comunidad',
@@ -2674,6 +2800,69 @@ const MESSAGES = {
         cl_stat_active: 'Activos ahora',
         cl_stat_threads: 'Hilos del foro',
         cl_stat_listings: 'Anuncios del mercado',
+
+        // Shared notebook UI
+        nb_you_are_here: 'Est\u00e1s aqu\u00ed',
+        nb_fun_fact: '\u2605 Dato curioso',
+        nb_compare_highlight: '\u2605 Destacado de comparaci\u00f3n',
+        nb_did_you_know: '\u2605 \u00bfSab\u00edas que...?',
+        nb_rec_most_compared: '\u2605 M\u00e1s comparado',
+        nb_rec_trending: '\u2605 Tendencia ahora',
+        nb_rec_module1: 'M\u00d3DULO 1',
+        nb_rec_module2: 'M\u00d3DULO 2',
+        nb_card_join_discussion: '\u00danete a la discusi\u00f3n',
+        nb_card_faq_support: 'FAQ & soporte',
+        nb_card_console_history: 'Historia de consolas',
+
+        // Notebook stats
+        nb_stat_consoles: 'Consolas',
+        nb_stat_generations: 'Generaciones',
+        nb_stat_free: 'Gratis',
+        nb_stat_since: 'Desde',
+        nb_stat_modules: 'M\u00f3dulos',
+        nb_stat_quizzes: 'Pruebas',
+        nb_stat_prerequisites: 'Prerequisitos',
+        nb_stat_topics: 'Temas',
+        nb_stat_support: 'Soporte',
+        nb_stat_rating: 'Calificaci\u00f3n',
+
+        // Compare page
+        cmp_body: 'Compara dos consolas de videojuegos lado a lado \u2014 CPU, GPU, RAM, almacenamiento, precio de lanzamiento y ventas totales.',
+        cmp_rec1_text: 'PlayStation 1 vs NES \u2014 el duelo cl\u00e1sico en CNote.',
+        cmp_rec2_text: 'PS5 vs Xbox Series X \u2014 especificaciones que definieron una generaci\u00f3n.',
+        cmp_feat_performance: 'Rendimiento',
+        cmp_feat_full_specs: 'Especificaciones completas',
+        cmp_feat_auto_verdict: 'Veredicto autom\u00e1tico',
+        cmp_feat_launch_date: 'Fecha lanzamiento & Precio',
+        cmp_cta: 'EMPEZAR A COMPARAR \u2192',
+
+        // Learn page
+        learn_body: 'Descubre la f\u00edsica e ingenier\u00eda detr\u00e1s de cada consola \u2014 desde electricidad y transistores hasta CPUs, GPUs y el pipeline de renderizado.',
+        learn_rec1_text: 'Electricidad & Circuitos \u2014 voltaje, corriente, resistencia',
+        learn_rec2_text: 'Transistores & Puertas l\u00f3gicas \u2014 los bloques de construcci\u00f3n de la inform\u00e1tica',
+        learn_feat_physics: 'F\u00edsica',
+        learn_feat_electronics: 'Electr\u00f3nica',
+        learn_feat_architecture: 'Arquitectura',
+        learn_feat_diagnostics: 'Diagn\u00f3sticos',
+        learn_cta: 'EMPEZAR A APRENDER \u2192',
+
+        // Help page
+        help_feat_faq: 'FAQ',
+        help_feat_contact: 'Contacto',
+        help_feat_guide: 'Gu\u00eda de plataforma',
+        help_feat_community: 'Comunidad',
+        help_cta: 'VER FAQ \u2192',
+
+        // Index page
+        index_body: 'Cnote Bakery es una plataforma dedicada a las consolas de videojuegos. Historia, tecnolog\u00eda y comunidad en un solo lugar.',
+        index_fun_fact: '\u2605 Dato curioso',
+        index_cta: 'Iniciar sesi\u00f3n \u2192',
+
+        // Mobile nav
+        mbn_more: 'M\u00e1s',
+
+        // Settings page
+        settings_subtitle: 'Gestiona tu cuenta, perfil y preferencias.',
     },
     fr: {
 
@@ -3548,6 +3737,69 @@ const MESSAGES = {
         cl_stat_active: 'Actifs maintenant',
         cl_stat_threads: 'Fils du forum',
         cl_stat_listings: 'Annonces du march\u00e9',
+
+        // Shared notebook UI
+        nb_you_are_here: 'Vous \u00eates ici',
+        nb_fun_fact: '\u2605 Le saviez-vous\u00a0?',
+        nb_compare_highlight: '\u2605 Point fort de comparaison',
+        nb_did_you_know: '\u2605 Le saviez-vous\u00a0?',
+        nb_rec_most_compared: '\u2605 Plus compar\u00e9',
+        nb_rec_trending: '\u2605 Tendance maintenant',
+        nb_rec_module1: 'MODULE 1',
+        nb_rec_module2: 'MODULE 2',
+        nb_card_join_discussion: 'Rejoindre la discussion',
+        nb_card_faq_support: 'FAQ & support',
+        nb_card_console_history: 'Histoire des consoles',
+
+        // Notebook stats
+        nb_stat_consoles: 'Consoles',
+        nb_stat_generations: 'G\u00e9n\u00e9rations',
+        nb_stat_free: 'Gratuit',
+        nb_stat_since: 'Depuis',
+        nb_stat_modules: 'Modules',
+        nb_stat_quizzes: 'Quiz',
+        nb_stat_prerequisites: 'Pr\u00e9requis',
+        nb_stat_topics: 'Sujets',
+        nb_stat_support: 'Support',
+        nb_stat_rating: 'Note',
+
+        // Compare page
+        cmp_body: 'Comparez deux consoles de jeux c\u00f4te \u00e0 c\u00f4te \u2014 CPU, GPU, RAM, stockage, prix de lancement et ventes totales.',
+        cmp_rec1_text: 'PlayStation 1 vs NES \u2014 le duel classique sur CNote.',
+        cmp_rec2_text: 'PS5 vs Xbox Series X \u2014 les specs qui ont d\u00e9fini une g\u00e9n\u00e9ration.',
+        cmp_feat_performance: 'Performance',
+        cmp_feat_full_specs: 'Specs compl\u00e8tes',
+        cmp_feat_auto_verdict: 'Verdict automatique',
+        cmp_feat_launch_date: 'Date de lancement & Prix',
+        cmp_cta: 'COMMENCER LA COMPARAISON \u2192',
+
+        // Learn page
+        learn_body: 'D\u00e9couvrez la physique et l\'ing\u00e9nierie derri\u00e8re chaque console \u2014 de l\'\u00e9lectricit\u00e9 et des transistors jusqu\'aux CPU, GPU et au pipeline de rendu.',
+        learn_rec1_text: '\u00c9lectricit\u00e9 & Circuits \u2014 tension, courant, r\u00e9sistance',
+        learn_rec2_text: 'Transistors & Portes logiques \u2014 les blocs de construction de l\'informatique',
+        learn_feat_physics: 'Physique',
+        learn_feat_electronics: '\u00c9lectronique',
+        learn_feat_architecture: 'Architecture',
+        learn_feat_diagnostics: 'Diagnostics',
+        learn_cta: 'COMMENCER \u00c0 APPRENDRE \u2192',
+
+        // Help page
+        help_feat_faq: 'FAQ',
+        help_feat_contact: 'Contact',
+        help_feat_guide: 'Guide de la plateforme',
+        help_feat_community: 'Communaut\u00e9',
+        help_cta: 'PARCOURIR LA FAQ \u2192',
+
+        // Index page
+        index_body: 'Cnote Bakery est une plateforme d\u00e9di\u00e9e aux consoles de jeux. Histoire, technologie et communaut\u00e9 en un seul endroit.',
+        index_fun_fact: '\u2605 Le saviez-vous\u00a0?',
+        index_cta: 'Se connecter \u2192',
+
+        // Mobile nav
+        mbn_more: 'Plus',
+
+        // Settings page
+        settings_subtitle: 'G\u00e9rez votre compte, profil et pr\u00e9f\u00e9rences.',
     },
     it: {
         nav_community: 'Comunità',
@@ -4426,6 +4678,69 @@ const MESSAGES = {
         cl_stat_active: 'Attivi ora',
         cl_stat_threads: 'Thread del forum',
         cl_stat_listings: 'Annunci del mercato',
+
+        // Shared notebook UI
+        nb_you_are_here: 'Sei qui',
+        nb_fun_fact: '★ Lo sapevi?',
+        nb_compare_highlight: '★ Punto saliente del confronto',
+        nb_did_you_know: '★ Lo sapevi?',
+        nb_rec_most_compared: '★ Più confrontato',
+        nb_rec_trending: '★ Di tendenza ora',
+        nb_rec_module1: 'MODULO 1',
+        nb_rec_module2: 'MODULO 2',
+        nb_card_join_discussion: 'Partecipa alla discussione',
+        nb_card_faq_support: 'FAQ & supporto',
+        nb_card_console_history: 'Storia delle console',
+
+        // Notebook stats
+        nb_stat_consoles: 'Console',
+        nb_stat_generations: 'Generazioni',
+        nb_stat_free: 'Gratuito',
+        nb_stat_since: 'Dal',
+        nb_stat_modules: 'Moduli',
+        nb_stat_quizzes: 'Quiz',
+        nb_stat_prerequisites: 'Prerequisiti',
+        nb_stat_topics: 'Argomenti',
+        nb_stat_support: 'Supporto',
+        nb_stat_rating: 'Valutazione',
+
+        // Compare page
+        cmp_body: 'Confronta due console di gioco fianco a fianco — CPU, GPU, RAM, storage, prezzo di lancio e vendite totali.',
+        cmp_rec1_text: 'PlayStation 1 vs NES — il duello classico su CNote.',
+        cmp_rec2_text: 'PS5 vs Xbox Series X — le specifiche che hanno definito una generazione.',
+        cmp_feat_performance: 'Prestazioni',
+        cmp_feat_full_specs: 'Specifiche complete',
+        cmp_feat_auto_verdict: 'Verdetto automatico',
+        cmp_feat_launch_date: 'Data lancio & Prezzo',
+        cmp_cta: 'INIZIA A CONFRONTARE →',
+
+        // Learn page
+        learn_body: 'Scopri la fisica e l\'ingegneria dietro ogni console — dall\'elettricità e i transistor fino a CPU, GPU e la rendering pipeline.',
+        learn_rec1_text: 'Elettricità & Circuiti — tensione, corrente, resistenza',
+        learn_rec2_text: 'Transistor & Porte logiche — i mattoni fondamentali dell\'informatica',
+        learn_feat_physics: 'Fisica',
+        learn_feat_electronics: 'Elettronica',
+        learn_feat_architecture: 'Architettura',
+        learn_feat_diagnostics: 'Diagnostica',
+        learn_cta: 'INIZIA AD IMPARARE →',
+
+        // Help page
+        help_feat_faq: 'FAQ',
+        help_feat_contact: 'Contatto',
+        help_feat_guide: 'Guida alla piattaforma',
+        help_feat_community: 'Comunità',
+        help_cta: 'ESPLORA FAQ →',
+
+        // Index page
+        index_body: 'Cnote Bakery è una piattaforma dedicata alle console da gioco. Storia, tecnologia e comunità in un unico posto.',
+        index_fun_fact: '★ Lo sapevi?',
+        index_cta: 'Accedi →',
+
+        // Mobile nav
+        mbn_more: 'Altro',
+
+        // Settings page
+        settings_subtitle: 'Gestisci il tuo account, profilo e preferenze.',
     },
     de: {
         nav_community: 'Community',
@@ -5300,6 +5615,69 @@ const MESSAGES = {
         cl_stat_active: 'Jetzt aktiv',
         cl_stat_threads: 'Forum-Threads',
         cl_stat_listings: 'Marktplatz-Anzeigen',
+
+        // Shared notebook UI
+        nb_you_are_here: 'Du bist hier',
+        nb_fun_fact: '★ Wusstest du das?',
+        nb_compare_highlight: '★ Vergleichs-Highlight',
+        nb_did_you_know: '★ Wusstest du das?',
+        nb_rec_most_compared: '★ Meistverglchen',
+        nb_rec_trending: '★ Jetzt trending',
+        nb_rec_module1: 'MODUL 1',
+        nb_rec_module2: 'MODUL 2',
+        nb_card_join_discussion: 'An der Diskussion teilnehmen',
+        nb_card_faq_support: 'FAQ & Support',
+        nb_card_console_history: 'Konsolengeschichte',
+
+        // Notebook stats
+        nb_stat_consoles: 'Konsolen',
+        nb_stat_generations: 'Generationen',
+        nb_stat_free: 'Kostenlos',
+        nb_stat_since: 'Seit',
+        nb_stat_modules: 'Module',
+        nb_stat_quizzes: 'Quizze',
+        nb_stat_prerequisites: 'Voraussetzungen',
+        nb_stat_topics: 'Themen',
+        nb_stat_support: 'Support',
+        nb_stat_rating: 'Bewertung',
+
+        // Compare page
+        cmp_body: 'Vergleiche zwei Spielkonsolen nebeneinander — CPU, GPU, RAM, Speicher, Startpreis und Gesamtverkäufe.',
+        cmp_rec1_text: 'PlayStation 1 vs NES — das klassische Duell auf CNote.',
+        cmp_rec2_text: 'PS5 vs Xbox Series X — Specs, die eine Generation definierten.',
+        cmp_feat_performance: 'Leistung',
+        cmp_feat_full_specs: 'Vollständige Specs',
+        cmp_feat_auto_verdict: 'Automatisches Urteil',
+        cmp_feat_launch_date: 'Veröffentlichungsdatum & Preis',
+        cmp_cta: 'VERGLEICH STARTEN →',
+
+        // Learn page
+        learn_body: 'Entdecke die Physik und Technik hinter jeder Konsole — von Strom und Transistoren bis zu CPUs, GPUs und der Rendering-Pipeline.',
+        learn_rec1_text: 'Elektrizität & Schaltkreise — Spannung, Strom, Widerstand',
+        learn_rec2_text: 'Transistoren & Logikgatter — die Bausteine der Computertechnik',
+        learn_feat_physics: 'Physik',
+        learn_feat_electronics: 'Elektronik',
+        learn_feat_architecture: 'Architektur',
+        learn_feat_diagnostics: 'Diagnose',
+        learn_cta: 'LERNEN BEGINNEN →',
+
+        // Help page
+        help_feat_faq: 'FAQ',
+        help_feat_contact: 'Kontakt',
+        help_feat_guide: 'Plattform-Leitfaden',
+        help_feat_community: 'Gemeinschaft',
+        help_cta: 'FAQ DURCHSUCHEN →',
+
+        // Index page
+        index_body: 'Cnote Bakery ist eine Plattform für Gaming-Konsolen. Geschichte, Technik und Community an einem Ort.',
+        index_fun_fact: '★ Wusstest du das?',
+        index_cta: 'Anmelden →',
+
+        // Mobile nav
+        mbn_more: 'Mehr',
+
+        // Settings page
+        settings_subtitle: 'Verwalte dein Konto, Profil und Einstellungen.',
     }
 };
 
