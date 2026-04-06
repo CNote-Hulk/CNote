@@ -665,7 +665,7 @@
 .profile-sidebar {
     border-right: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
     background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
-    padding: 40px 16px 26px;
+    padding: 24px 16px 10px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -676,7 +676,7 @@
     scrollbar-color: var(--accent-color, #D4AF7A) transparent;
     width: 230px;
     margin: 10px 0 10px 10px;
-    box-shadow: #231d17 10px 10px 10px;
+    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
     height: calc(100% - 20px);
     border-radius: 25px;
 }

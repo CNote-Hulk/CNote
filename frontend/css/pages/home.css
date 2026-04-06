@@ -60,22 +60,20 @@ body.home-page::before {
 .dashboard-sidebar {
     background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
     border-right: 1px solid var(--border);
-    padding: 26px 16px;
+    padding: 24px 16px 10px;
     display: flex;
     position: fixed;
     flex-direction: column;
-    padding-top: 24px;
+    top: calc(var(--cn-nav-offset, 64px) + 10px);
+    left: 10px;
+    height: calc(100vh - var(--cn-nav-offset, 64px) - 20px);
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
     overflow-y: auto;
     width: 230px;
-    margin-top: 10px;
-    margin-left: 10px;
     box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
-    padding-bottom: 10px;
     border-radius: 25px;
     z-index: 100;
-    padding-top: 70px;
 }
 
 /* ── Sidebar Profile Section ── */
