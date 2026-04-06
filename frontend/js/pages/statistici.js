@@ -7,9 +7,21 @@ import { AuthModule } from '../modules/auth.js';
 import { ProgressModule } from '../modules/progress.js';
 import { AchievementsModule } from '../modules/achievements.js';
 
-const user = AuthModule.getCurrentUser();
+
+let user = AuthModule.getCurrentUser();
 if (!user) {
-    window.location.href = 'login.html';
+    // Încearcă să recuperezi userul din server dacă există token
+    AuthModule.autoLogin().then(u => {
+        if (u && u.id) {
+            user = u;
+            // Re-randează statistica cu userul corect
+            renderStats();
+        } else {
+            window.location.href = 'login.html';
+        }
+    });
+} else {
+    renderStats();
 }
 
 /** Get count of unique consoles visited from server */
@@ -222,4 +234,4 @@ function renderStats() {
     renderGoals(allBadges);
 }
 
-renderStats();
+// Nu mai apela direct, va fi apelat după ce userul e sigur încărcat
