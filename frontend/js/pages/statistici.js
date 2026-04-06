@@ -134,7 +134,14 @@ function renderStats() {
     const achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
 
     const quiz = getQuizStatsSummary(user.id);
-    const visitedConsoles = getVisitedConsolesCount();
+    // Await the async function to get the actual number, not a Promise
+    // (renderStats must be async for this)
+    // eslint-disable-next-line no-inner-declarations
+    async function updateAsyncStats() {
+        const visitedConsoles = await getVisitedConsolesCount();
+        document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);
+    }
+    updateAsyncStats();
     const visitedLessons = getVisitedLessonsCount(user.id);
 
     const createdAt = new Date(user.created_at);
