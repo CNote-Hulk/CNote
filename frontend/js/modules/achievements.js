@@ -89,11 +89,12 @@ export const AchievementsModule = {
 
     /** Check and award achievements based on current state */
     /** Check all badge conditions and award any newly earned ones */
-    checkAndAward(userId) {
+    checkAndAward(userId, visitedConsolesCount = null) {
         const awarded = [];
         const progress = ProgressModule.getAllProgress(userId);
         let totalCompleted = 0;
-        const visitedCount = this._getVisitedCount();
+        // Use provided count if available, else fallback to localStorage
+        const visitedCount = (typeof visitedConsolesCount === 'number') ? visitedConsolesCount : this._getVisitedCount();
         const quiz = this._getQuizSummary(userId);
 
         for (const courseId in progress) {
