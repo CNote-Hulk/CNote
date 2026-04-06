@@ -1635,6 +1635,11 @@ body.home-page::before {
     transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
 }
 
+.achievement-card__desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
 .achievement-card__icon {
     font-size: 1.8rem;
     line-height: 1;

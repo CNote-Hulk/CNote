@@ -332,6 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             div.innerHTML = `
                                 <span class="achievement-card__icon">${a.icon || '🏅'}</span>
                                 <strong class="achievement-card__name">${escapeHtml(a.label || a.name)}</strong>
+                                <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
                                 <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
                             `;
                             achievementsGrid.appendChild(div);
@@ -649,6 +650,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         div.innerHTML = `
                             <span class="achievement-card__icon">${a.icon || '🏅'}</span>
                             <strong class="achievement-card__name">${escapeHtml(a.label || a.name)}</strong>
+                            <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
                             <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
                         `;
                         homeAchievementsPreview.appendChild(div);
