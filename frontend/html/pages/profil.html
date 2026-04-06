@@ -213,10 +213,18 @@
                     <div class="settings-row">
                         <div class="settings-row__meta">
                             <div class="settings-row__title" data-i18n="settings_avatar_title">Profile picture</div>
-                            <div class="settings-row__desc" data-i18n="settings_avatar_desc">Click the avatar in the sidebar to change your picture.</div>
+                            <div class="settings-row__desc" data-i18n="settings_avatar_desc">Upload or remove your profile picture.</div>
                         </div>
                         <div class="settings-row__body">
-                            <p class="settings-row__note">Use the avatar button on the left sidebar to upload or remove your profile picture.</p>
+                            <div class="settings-avatar-wrap">
+                                <button type="button" class="settings-avatar-preview" id="settings-avatar-btn" title="Change profile picture">
+                                    <img id="settings-avatar-img" alt="Profile picture" hidden>
+                                    <span id="settings-avatar-fallback">👤</span>
+                                    <span class="settings-avatar-overlay">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                    </span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 

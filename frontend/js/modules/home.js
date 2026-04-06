@@ -383,8 +383,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <div class="dash-request-item">
                                 <span class="dash-request-name">${escapeHtml(r.username)}</span>
                                 <div class="dash-request-actions">
-                                    <button class="dash-request-btn dash-request-btn--accept" data-request-id="${r.request_id}">Accept</button>
-                                    <button class="dash-request-btn dash-request-btn--decline" data-request-id="${r.request_id}">Decline</button>
+                                    <button class="dash-request-btn dash-request-btn--accept btn primary" data-request-id="${r.request_id}">Accept</button>
+                                    <button class="dash-request-btn dash-request-btn--decline btn secondary" data-request-id="${r.request_id}">Decline</button>
                                 </div>
                             </div>
                         `).join('')}

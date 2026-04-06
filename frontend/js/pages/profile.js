@@ -107,6 +107,8 @@ function initSettings() {
     const avatarInput = document.getElementById('avatar-upload');
     const avatarImg = document.getElementById('profile-avatar-img');
     const avatarFallback = document.getElementById('profile-avatar-fallback');
+    const settingsAvatarImg = document.getElementById('settings-avatar-img');
+    const settingsAvatarFallback = document.getElementById('settings-avatar-fallback');
     const getPreferredAvatar = () => AuthModule.normalizeAvatarUrl((user.avatar || '').trim());
 
     const renderAvatar = (avatar) => {
@@ -115,6 +117,12 @@ function initSettings() {
         avatarFallback.hidden = hasAvatar;
         if (hasAvatar) avatarImg.src = avatar;
         else avatarImg.removeAttribute('src');
+        if (settingsAvatarImg) {
+            settingsAvatarImg.hidden = !hasAvatar;
+            settingsAvatarFallback.hidden = hasAvatar;
+            if (hasAvatar) settingsAvatarImg.src = avatar;
+            else settingsAvatarImg.removeAttribute('src');
+        }
     };
 
     const toCompressedDataUrl = (file) => new Promise((resolve, reject) => {
@@ -187,6 +195,7 @@ function initSettings() {
     });
 
     avatarBtn.addEventListener('click', openProfileLightbox);
+    document.getElementById('settings-avatar-btn')?.addEventListener('click', openProfileLightbox);
 
     avatarInput.addEventListener('change', async (event) => {
         const file = event.target.files && event.target.files[0];
