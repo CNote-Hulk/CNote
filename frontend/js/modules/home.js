@@ -1,5 +1,6 @@
 import { I18nModule } from './i18n.js';
 import { AuthModule } from './auth.js';
+import { AchievementsModule } from './achievements.js';
 
 function normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
     const raw = typeof avatarUrl === 'string' ? avatarUrl.trim() : '';
@@ -120,36 +121,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // =========================
     // DASHBOARD DATA
     // =========================
-    function getLocalAchievements(userId) {
-        const BADGES = [
-            { id: 'first_steps', name: 'First Steps', description: 'Complete 1 lesson (finish a lesson quiz).', icon: '🎯' },
-            { id: 'starter_pack', name: 'Starter Pack', description: 'Complete 3 lessons.', icon: '🧩' },
-            { id: 'tech_explorer', name: 'Tech Explorer', description: 'Complete 5 lessons.', icon: '🔬' },
-            { id: 'bookworm', name: 'Bookworm', description: 'Complete 15 lessons.', icon: '📚' },
-            { id: 'grinder_25', name: 'Grinder', description: 'Complete 25 lessons.', icon: '⚙️' },
-            { id: 'halfway', name: 'Halfway There', description: 'Reach 50% progress in a course.', icon: '⭐' },
-            { id: 'almost_there', name: 'Almost There', description: 'Reach 80% progress in a course.', icon: '🚀' },
-            { id: 'console_doctor', name: 'Console Doctor', description: 'Complete the entire course (100%).', icon: '🔧' },
-            { id: 'quiz_rookie', name: 'Quiz Rookie', description: 'Complete your first quiz.', icon: '❓' },
-            { id: 'quiz_veteran', name: 'Quiz Veteran', description: 'Complete 20 quizzes in total.', icon: '🧠' },
-            { id: 'perfect_hit', name: 'Perfect Hit', description: 'Score 100% on a quiz.', icon: '💯' },
-            { id: 'perfect_streak', name: 'Perfect Streak', description: 'Score 100% on 5 different quizzes.', icon: '🏅' },
-            { id: 'console_scout', name: 'Console Scout', description: 'Visit 3 console pages.', icon: '🧭' },
-            { id: 'retro_master', name: 'Retro Master', description: 'Visit 10 console pages.', icon: '🕹️' },
-            { id: 'archive_hunter', name: 'Archive Hunter', description: 'Visit 25 console pages.', icon: '🗂️' },
-            { id: 'all_rounder', name: 'All-Rounder', description: 'Complete 15 lessons and visit 10 consoles.', icon: '👑' }
-        ];
-        try {
-            const data = JSON.parse(localStorage.getItem('cn_achievements')) || {};
-            const earned = data[userId] || [];
-            const earnedIds = new Set(
-                Array.isArray(earned)
-                    ? earned.map(e => e.id)
-                    : Object.keys(earned).filter(k => earned[k])
-            );
-            return { success: true, achievements: BADGES.map(b => ({ ...b, unlocked: earnedIds.has(b.id) })) };
-        } catch { return { success: false }; }
-    }
+    // getLocalAchievements removed. Use AchievementsModule.BADGES if needed for static badge info.
 
     async function populateDashboard() {
         try {
@@ -170,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/forum/recent'),
                 apiFetch('/api/forum/my-posts'),
                 apiFetch('/api/forum/liked'),
-                Promise.resolve(getLocalAchievements(currentUser?.id)),
+                apiFetch('/api/achievements'),
                 apiFetch('/api/progress')
             ]);
 

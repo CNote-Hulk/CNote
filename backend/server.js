@@ -34,6 +34,7 @@ const repairRoutes = require('./routes/repair');
 const dmRoutes = require('./routes/dm');
 const notificationRoutes = require('./routes/notifications');
 const consolesRoutes = require('./routes/consoles');
+const achievementsRoutes = require('./routes/achievements');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -145,7 +146,9 @@ app.use('/api/marketplace', marketplaceRoutes);
 app.use('/api/repair', repairRoutes);
 app.use('/api/dm', dmRoutes);
 app.use('/api/notifications', notificationRoutes);
+
 app.use('/api/consoles', consolesRoutes);
+app.use('/api/achievements', achievementsRoutes);
 
 /* ── Static files & redirects ── */
 
