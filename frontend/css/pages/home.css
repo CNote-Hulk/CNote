@@ -414,24 +414,6 @@ body.home-page::before {
     transition: transform .1s ease, box-shadow .2s ease;
 }
 
-[data-theme="light"] .primary-btn {
-    color: var(--text);
-}
-[data-theme="dark"] .primary-btn {
-    color: var(--primary-color);
-}
-
-[data-theme="light"] .primary-btn {
-    color: var(--text);
-}
-[data-theme="dark"] .primary-btn {
-    color: var(--primary-color);
-}
-
-[data-theme="light"] .primary-btn {
-    color: var(--text);
-}
-
 .primary-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 10px 20px rgba(var(--accent-rgb), .4);

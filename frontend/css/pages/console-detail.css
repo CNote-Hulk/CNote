@@ -822,6 +822,12 @@
         0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
+.console-video__wrap iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
 /* ── Thumbnail / fake-player variant ── */
 .console-video__thumb-link {
     display: block;

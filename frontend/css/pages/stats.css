@@ -80,7 +80,6 @@ body.stats-bg::before {
     align-items: center;
     gap: 8px;
     background: var(--accent-color);
-    color: #fff;
     text-decoration: none;
     font-size: 0.88rem;
     font-weight: 600;

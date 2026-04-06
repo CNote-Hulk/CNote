@@ -93,7 +93,6 @@
 
 /* Card links - visible gold accent */
 .card a:not(.demo-button):not(.btn):not(.hero-button):not(.quiz-retry-btn) {
-    color: var(--accent-color);
     text-decoration: none;
     transition: color 0.2s ease, opacity 0.2s ease;
 }
