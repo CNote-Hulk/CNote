@@ -137,7 +137,7 @@ function renderGoals(badges) {
 }
 
 /** Compute all stats and update DOM elements */
-function renderStats() {
+async function renderStats() {
     const courses = ProgressModule.COURSES;
     const allProgress = ProgressModule.getAllProgress(user.id);
 
@@ -160,26 +160,36 @@ function renderStats() {
     let achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
 
     const quiz = getQuizStatsSummary(user.id);
-    // Await the async function to get the actual number, not a Promise
-    // (renderStats must be async for this)
-    // eslint-disable-next-line no-inner-declarations
-    async function updateAsyncStats() {
-        const visitedConsoles = await getVisitedConsolesCount();
-        document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);
-        // Check and award achievements using the server value
-        const awarded = AchievementsModule.checkAndAward(user.id, visitedConsoles);
-        // Actualizează lista de badge-uri după ce s-au deblocat
-        allBadges = AchievementsModule.getAllBadges(user.id);
-        earnedBadges = allBadges.filter((b) => b.earned).length;
-        achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
-        document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
-        document.getElementById('stat-achievements-sub').textContent = `of ${allBadges.length} badges (${achievementsPct}%)`;
-        renderGoals(allBadges);
-        if (awarded && awarded.length > 0) {
-            AchievementsModule.showUnlockNotifications(awarded);
-        }
+    // Obține numărul de console vizitate și actualizează statistica
+    const visitedConsoles = await getVisitedConsolesCount();
+    document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);
+    // Check and award achievements using the server value
+    const awarded = AchievementsModule.checkAndAward(user.id, visitedConsoles);
+    // Actualizează lista de badge-uri după ce s-au deblocat
+    allBadges = AchievementsModule.getAllBadges(user.id);
+    earnedBadges = allBadges.filter((b) => b.earned).length;
+    achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
+    document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
+    document.getElementById('stat-achievements-sub').textContent = `of ${allBadges.length} badges (${achievementsPct}%)`;
+    renderGoals(allBadges);
+    if (awarded && awarded.length > 0) {
+        AchievementsModule.showUnlockNotifications(awarded);
     }
-    updateAsyncStats();
+    let user = AuthModule.getCurrentUser();
+    if (!user) {
+        // Încearcă să recuperezi userul din server dacă există token
+        AuthModule.autoLogin().then(async u => {
+            if (u && u.id) {
+                user = u;
+                // Re-randează statistica cu userul corect
+                await renderStats();
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    } else {
+        renderStats();
+    }
     const visitedLessons = getVisitedLessonsCount(user.id);
 
     const createdAt = new Date(user.created_at);
@@ -204,7 +214,6 @@ function renderStats() {
     document.getElementById('stat-quiz-sub').textContent = `avg best score: ${quiz.bestAverage}%`;
 
     document.getElementById('stat-perfect-lessons').textContent = String(quiz.perfectLessons);
-    document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);
     document.getElementById('stat-days-member').textContent = String(daysMember);
 
     document.getElementById('stat-level').textContent = level.name;
