@@ -120,7 +120,7 @@ async function init() {
                     method: 'POST',
                     headers: { ...headers, 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ consoleId })
+                    body: JSON.stringify({ console_id: consoleId })
                 });
                 // Notify other tabs/pages to update stats
                 localStorage.setItem('cn_console_visited_event', Date.now().toString());
