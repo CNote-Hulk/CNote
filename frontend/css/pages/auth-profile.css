@@ -650,33 +650,31 @@
     z-index: 1;
 }
 
-/* ── Two-column grid ── */
+/* ── Layout wrapper ── */
 .profile-layout {
-    display: grid;
-    grid-template-columns: 260px 1fr;
+    display: block;
     width: 100%;
-    align-items: start;
 }
 
 /* ── Sidebar ── */
 .profile-sidebar {
-    border-right: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
     background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
     padding: 24px 16px 10px;
     display: flex;
     flex-direction: column;
-    position: sticky;
+    position: fixed;
     top: calc(var(--cn-nav-offset, 64px) + 10px);
+    left: 10px;
     overflow-y: auto;
     overflow-x: hidden;
     overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #D4AF7A) transparent;
     width: 230px;
-    margin: 10px 0 10px 10px;
-    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
     height: calc(100vh - var(--cn-nav-offset, 64px) - 20px);
+    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
     border-radius: 25px;
+    z-index: 100;
 }
 
 .profile-sidebar::-webkit-scrollbar { width: 4px; }
@@ -954,9 +952,9 @@
 
 /* ── Main Content ── */
 .profile-main {
+    margin-left: 250px;
     padding: 32px 40px 60px;
-    min-width: 0;
-    min-height: calc(100vh - var(--cn-nav-offset, 64px));
+    min-height: 100vh;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1525,17 +1523,16 @@
     }
 
     .profile-layout {
-        grid-template-columns: 1fr;
-        height: auto;
+        display: block;
     }
 
     .profile-sidebar {
         position: static;
         height: auto;
+        width: 100%;
         border-right: none;
         border-bottom: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
         padding: 0 20px 20px;
-        width: calc(100% - 20px);
         overscroll-behavior: auto;
     }
 
@@ -1554,8 +1551,8 @@
     }
 
     .profile-main {
+        margin-left: 0;
         padding: 24px 16px 60px;
-        height: auto;
         overflow: visible;
         overscroll-behavior: auto;
     }
