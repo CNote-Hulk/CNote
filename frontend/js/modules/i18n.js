@@ -58,6 +58,12 @@ const MESSAGES = {
             home_liked_subtitle: 'Posts you\'ve upvoted from the community',
             home_liked_explore: 'Explore →',
             home_progress_milestones: 'Milestones',
+            home_progress_subtitle: 'Track your learning journey',
+            home_milestone_account: 'Created your account',
+            home_milestone_first_lesson: 'Started first lesson',
+            home_milestone_10_lessons: 'Complete 10 lessons',
+            home_milestone_first_quiz: 'Pass your first quiz',
+            home_milestone_5_achievements: 'Earn 5 achievements',
         nav_community: 'Community',
         nav_learn: 'Learn',
         nav_evolution: 'Evolution',
@@ -509,6 +515,13 @@ const MESSAGES = {
         settings_tab_appearance: 'Appearance',
         settings_account_title: 'Account Settings',
         settings_account_desc: 'Manage your username, email and password.',
+        settings_username_desc: 'Your public display name on Console Notebook.',
+        settings_bio_desc: 'A short description shown on your public profile.',
+        settings_email_desc: 'Used for sign-in and notifications.',
+        settings_password_row_title: 'Password',
+        settings_password_desc: 'Change or set your account password.',
+        settings_save_changes: 'Save changes',
+        settings_save_desc: 'All fields are optional \u2014 only filled fields will be updated.',
         settings_consoles_title: 'Owned Consoles',
         settings_consoles_desc: 'Select the consoles you own.',
         settings_save_consoles: 'Save owned consoles',
@@ -916,6 +929,9 @@ const MESSAGES = {
         nb_card_join_discussion: 'Join the discussion',
         nb_card_faq_support: 'FAQ & support',
         nb_card_console_history: 'Console history',
+        nb_card_how_consoles_work: 'How consoles work',
+        nb_card_side_by_side: 'Side by side specs',
+        nb_most_asked: '\u2605 Most Asked',
 
         // Notebook stats
         nb_stat_consoles: 'Consoles',
@@ -938,6 +954,8 @@ const MESSAGES = {
         cmp_feat_auto_verdict: 'Auto Verdict',
         cmp_feat_launch_date: 'Launch Date & Price',
         cmp_cta: 'START COMPARING \u2192',
+        compare_title_hero: 'Console Face-Off',
+        cmp_ps1_fact: 'The PS1 vs NES pits a 32-bit CD powerhouse against an 8-bit cartridge legend. Over 50 years between them.',
 
         // Learn page
         learn_body: 'Discover the physics and engineering behind every console \u2014 from basic electricity and transistors all the way to CPUs, GPUs, and the rendering pipeline.',
@@ -948,6 +966,8 @@ const MESSAGES = {
         learn_feat_architecture: 'Architecture',
         learn_feat_diagnostics: 'Diagnostics',
         learn_cta: 'START LEARNING \u2192',
+        learn_title_hero: 'Console Science',
+        learn_gameboy_fact: 'The Game Boy\u2019s custom 8-bit CPU was so well-documented that it became a teaching tool for an entire generation of engineers.',
 
         // Help page
         help_feat_faq: 'FAQ',
@@ -955,11 +975,22 @@ const MESSAGES = {
         help_feat_guide: 'Platform Guide',
         help_feat_community: 'Community',
         help_cta: 'BROWSE FAQ \u2192',
+        help_title_hero: 'How Can We Help?',
+        help_body: 'Browse FAQs, read platform guides, or reach out directly. The CNote community is also available around the clock for console-specific questions.',
+        help_link_faq: '\u2753 Frequently Asked Questions',
+        help_link_guide: '\u{1F4D6} Platform Guide',
+        help_link_contact_support: '\u{1F4E7} Contact Support',
+        help_link_ask_community: '\u{1F4AC} Ask the Community',
+        help_switch_fact: 'Nintendo Switch Joy-Con drift is the most-asked repair question in our Help Center. We have a dedicated guide.',
 
         // Index page
         index_body: 'Cnote Bakery is a platform dedicated to gaming consoles. History, technology, and community in one place.',
         index_fun_fact: '\u2605 Fun Fact',
         index_cta: 'Log in \u2192',
+        index_title_hero: 'Who We Are',
+        evl_xbox_fact: 'The Original Xbox ran a modified Intel Pentium III \u2014 essentially a PC in a console case, making it the most powerful machine of its generation at launch.',
+        evl_stat_launch: 'Launch',
+        evl_stat_sold: 'Sold',
 
         // Mobile nav
         mbn_more: 'More',
@@ -1020,6 +1051,12 @@ const MESSAGES = {
             home_liked_subtitle: 'Postări apreciate din comunitate',
             home_liked_explore: 'Explorează →',
             home_progress_milestones: 'Obiective',
+            home_progress_subtitle: 'Urm\u0103re\u0219te-\u021bi parcursul de \u00eenv\u0103\u021bare',
+            home_milestone_account: '\u021ei-ai creat contul',
+            home_milestone_first_lesson: 'Ai \u00eenceput prima lec\u021bie',
+            home_milestone_10_lessons: 'Finalizeaz\u0103 10 lec\u021bii',
+            home_milestone_first_quiz: 'Treci primul test',
+            home_milestone_5_achievements: 'C\u00e2\u0219tig\u0103 5 realiz\u0103ri',
         nav_community: 'Comunitate',
         nav_learn: 'Învață',
         nav_evolution: 'Evoluție',
@@ -1874,6 +1911,9 @@ const MESSAGES = {
         nb_card_join_discussion: 'Al\u0103tur\u0103-te discu\u021biei',
         nb_card_faq_support: 'FAQ & suport',
         nb_card_console_history: 'Istoria consolelor',
+        nb_card_how_consoles_work: 'Cum func\u021bioneaz\u0103 consolele',
+        nb_card_side_by_side: 'Specifica\u021bii fa\u021b\u0103 \u00een fa\u021b\u0103',
+        nb_most_asked: '\u2605 Cel mai \u00eentrebat',
 
         // Notebook stats
         nb_stat_consoles: 'Console',
@@ -1896,6 +1936,8 @@ const MESSAGES = {
         cmp_feat_auto_verdict: 'Verdict automat',
         cmp_feat_launch_date: 'Dat\u0103 lansare & Pre\u021b',
         cmp_cta: '\u00cencepe COMPARAREA \u2192',
+        compare_title_hero: 'Duel de Console',
+        cmp_ps1_fact: 'PS1 vs NES pune un monstrulet de 32 de bi\u021bi CD \u00eempotriva unei legende de 8 bi\u021bi. Peste 50 de ani \u00eentre ele.',
 
         // Learn page
         learn_body: 'Descoper\u0103 fizica \u0219i ingineria din spatele fiec\u0103rei console \u2014 de la electricitate \u0219i tranzistori p\u00e2n\u0103 la CPU-uri, GPU-uri \u0219i pipeline-ul de randare.',
@@ -1906,6 +1948,8 @@ const MESSAGES = {
         learn_feat_architecture: 'Arhitectur\u0103',
         learn_feat_diagnostics: 'Diagnosticare',
         learn_cta: '\u00cencepe S\u0102 \u00cenv\u0102\u021eI \u2192',
+        learn_title_hero: '\u0218tiin\u021ba Consolelor',
+        learn_gameboy_fact: 'CPU-ul personalizat de 8 bi\u021bi al Game Boy era at\u00e2t de bine documentat \u00eenc\u00e2t a devenit instrument de \u00eenv\u0103\u021bare pentru o genera\u021bie \u00eentreag\u0103 de ingineri.',
 
         // Help page
         help_feat_faq: 'FAQ',
@@ -1913,17 +1957,35 @@ const MESSAGES = {
         help_feat_guide: 'Ghid platform\u0103',
         help_feat_community: 'Comunitate',
         help_cta: 'EXPLOREAZ\u0102 FAQ \u2192',
+        help_title_hero: 'Cum Te Putem Ajuta?',
+        help_body: 'Exploreaz\u0103 \u00eentreb\u0103rile frecvente, cite\u0219te ghidurile platformei sau contacteaz\u0103-ne direct. Comunitatea CNote este disponibil\u0103 non-stop pentru \u00eentreb\u0103ri despre console.',
+        help_link_faq: '\u2753 \u00centreb\u0103ri frecvente',
+        help_link_guide: '\u{1F4D6} Ghid platform\u0103',
+        help_link_contact_support: '\u{1F4E7} Contact suport',
+        help_link_ask_community: '\u{1F4AC} \u00centreab\u0103 comunitatea',
+        help_switch_fact: 'Deriva analog\u0103 a Joy-Con-ului Nintendo Switch este cea mai frecvent\u0103 \u00eentrebare despre repara\u021bii din centrul nostru de ajutor.',
 
         // Index page
         index_body: 'Cnote Bakery este o platform\u0103 dedicat\u0103 consolelor de gaming. Istorie, tehnologie \u0219i comunitate \u00eentr-un singur loc.',
         index_fun_fact: '\u2605 Fapt amuzant',
         index_cta: 'Autentific\u0103-te \u2192',
+        index_title_hero: 'Cine Suntem',
+        evl_xbox_fact: 'Xbox-ul original rula un Intel Pentium III modificat \u2014 practic un PC \u00een carcas\u0103 de consol\u0103, cel mai puternic aparat al genera\u021biei sale la lansare.',
+        evl_stat_launch: 'Lansare',
+        evl_stat_sold: 'V\u00e2ndut',
 
         // Mobile nav
         mbn_more: 'Mai mult',
 
         // Settings page
         settings_subtitle: 'Gestioneaz\u0103 contul, profilul \u0219i preferin\u021bele tale.',
+        settings_username_desc: 'Numele t\u0103u public pe Console Notebook.',
+        settings_bio_desc: 'O scurt\u0103 descriere afi\u0219at\u0103 pe profilul t\u0103u public.',
+        settings_email_desc: 'Folosit pentru autentificare \u0219i notific\u0103ri.',
+        settings_password_row_title: 'Parol\u0103',
+        settings_password_desc: 'Schimb\u0103 sau seteaz\u0103 parola contului t\u0103u.',
+        settings_save_changes: 'Salveaz\u0103 modific\u0103rile',
+        settings_save_desc: 'Toate c\u00e2mpurile sunt op\u021bionale \u2014 doar c\u00e2mpurile completate vor fi actualizate.',
     },
     es: {
         nav_community: 'Comunidad',
@@ -1984,6 +2046,12 @@ const MESSAGES = {
         home_liked_subtitle: 'Publicaciones que has votado de la comunidad',
         home_liked_explore: 'Explorar →',
         home_progress_milestones: 'Hitos',
+        home_progress_subtitle: 'Sigue tu camino de aprendizaje',
+        home_milestone_account: 'Cuenta creada',
+        home_milestone_first_lesson: 'Primera lecci\u00f3n iniciada',
+        home_milestone_10_lessons: 'Completa 10 lecciones',
+        home_milestone_first_quiz: 'Pasa tu primer test',
+        home_milestone_5_achievements: 'Consigue 5 logros',
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Bienvenido a la era dorada — o quizá bronce — del gaming.',
@@ -2813,6 +2881,9 @@ const MESSAGES = {
         nb_card_join_discussion: '\u00danete a la discusi\u00f3n',
         nb_card_faq_support: 'FAQ & soporte',
         nb_card_console_history: 'Historia de consolas',
+        nb_card_how_consoles_work: 'C\u00f3mo funcionan las consolas',
+        nb_card_side_by_side: 'Especificaciones lado a lado',
+        nb_most_asked: '\u2605 M\u00e1s preguntado',
 
         // Notebook stats
         nb_stat_consoles: 'Consolas',
@@ -2835,6 +2906,8 @@ const MESSAGES = {
         cmp_feat_auto_verdict: 'Veredicto autom\u00e1tico',
         cmp_feat_launch_date: 'Fecha lanzamiento & Precio',
         cmp_cta: 'EMPEZAR A COMPARAR \u2192',
+        compare_title_hero: 'Duelo de Consolas',
+        cmp_ps1_fact: 'PS1 vs NES enfrenta una potencia de 32 bits con CD contra una leyenda de 8 bits. M\u00e1s de 50 a\u00f1os entre ellas.',
 
         // Learn page
         learn_body: 'Descubre la f\u00edsica e ingenier\u00eda detr\u00e1s de cada consola \u2014 desde electricidad y transistores hasta CPUs, GPUs y el pipeline de renderizado.',
@@ -2845,6 +2918,8 @@ const MESSAGES = {
         learn_feat_architecture: 'Arquitectura',
         learn_feat_diagnostics: 'Diagn\u00f3sticos',
         learn_cta: 'EMPEZAR A APRENDER \u2192',
+        learn_title_hero: 'Ciencia de Consolas',
+        learn_gameboy_fact: 'La CPU personalizada de 8 bits del Game Boy estaba tan bien documentada que se convirti\u00f3 en herramienta de ense\u00f1anza para toda una generaci\u00f3n de ingenieros.',
 
         // Help page
         help_feat_faq: 'FAQ',
@@ -2852,17 +2927,35 @@ const MESSAGES = {
         help_feat_guide: 'Gu\u00eda de plataforma',
         help_feat_community: 'Comunidad',
         help_cta: 'VER FAQ \u2192',
+        help_title_hero: '\u00bfC\u00f3mo Podemos Ayudarte?',
+        help_body: 'Explora las preguntas frecuentes, lee gu\u00edas de la plataforma o cont\u00e1ctanos directamente. La comunidad CNote est\u00e1 disponible las 24 horas para preguntas sobre consolas.',
+        help_link_faq: '\u2753 Preguntas frecuentes',
+        help_link_guide: '\u{1F4D6} Gu\u00eda de plataforma',
+        help_link_contact_support: '\u{1F4E7} Contactar soporte',
+        help_link_ask_community: '\u{1F4AC} Preguntar a la comunidad',
+        help_switch_fact: 'El drift del Joy-Con del Nintendo Switch es la pregunta m\u00e1s frecuente en nuestro centro de ayuda sobre reparaciones.',
 
         // Index page
         index_body: 'Cnote Bakery es una plataforma dedicada a las consolas de videojuegos. Historia, tecnolog\u00eda y comunidad en un solo lugar.',
         index_fun_fact: '\u2605 Dato curioso',
         index_cta: 'Iniciar sesi\u00f3n \u2192',
+        index_title_hero: 'Qui\u00e9nes Somos',
+        evl_xbox_fact: 'La Xbox original ejecutaba un Intel Pentium III modificado \u2014 esencialmente un PC en caja de consola, siendo la m\u00e1quina m\u00e1s potente de su generaci\u00f3n al lanzamiento.',
+        evl_stat_launch: 'Lanzamiento',
+        evl_stat_sold: 'Vendido',
 
         // Mobile nav
         mbn_more: 'M\u00e1s',
 
         // Settings page
         settings_subtitle: 'Gestiona tu cuenta, perfil y preferencias.',
+        settings_username_desc: 'Tu nombre p\u00fablico en Console Notebook.',
+        settings_bio_desc: 'Una descripci\u00f3n breve mostrada en tu perfil p\u00fablico.',
+        settings_email_desc: 'Usado para iniciar sesi\u00f3n y notificaciones.',
+        settings_password_row_title: 'Contrase\u00f1a',
+        settings_password_desc: 'Cambia o establece la contrase\u00f1a de tu cuenta.',
+        settings_save_changes: 'Guardar cambios',
+        settings_save_desc: 'Todos los campos son opcionales \u2014 solo se actualizar\u00e1n los campos completados.',
     },
     fr: {
 
@@ -2924,6 +3017,12 @@ const MESSAGES = {
         home_liked_subtitle: 'Publications que vous avez aimées',
         home_liked_explore: 'Explorer →',
         home_progress_milestones: 'Jalons',
+        home_progress_subtitle: 'Suivez votre parcours d\u2019apprentissage',
+        home_milestone_account: 'Compte cr\u00e9\u00e9',
+        home_milestone_first_lesson: 'Premi\u00e8re le\u00e7on commenc\u00e9e',
+        home_milestone_10_lessons: 'Terminer 10 le\u00e7ons',
+        home_milestone_first_quiz: 'Passer votre premier quiz',
+        home_milestone_5_achievements: 'Gagner 5 r\u00e9alisations',
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Bienvenue à l\'âge d\'or — ou peut-être de bronze — du gaming.',
@@ -3750,6 +3849,9 @@ const MESSAGES = {
         nb_card_join_discussion: 'Rejoindre la discussion',
         nb_card_faq_support: 'FAQ & support',
         nb_card_console_history: 'Histoire des consoles',
+        nb_card_how_consoles_work: 'Comment fonctionnent les consoles',
+        nb_card_side_by_side: 'Specs c\u00f4te \u00e0 c\u00f4te',
+        nb_most_asked: '\u2605 Le plus demand\u00e9',
 
         // Notebook stats
         nb_stat_consoles: 'Consoles',
@@ -3772,6 +3874,8 @@ const MESSAGES = {
         cmp_feat_auto_verdict: 'Verdict automatique',
         cmp_feat_launch_date: 'Date de lancement & Prix',
         cmp_cta: 'COMMENCER LA COMPARAISON \u2192',
+        compare_title_hero: 'Face-\u00e0-face de Consoles',
+        cmp_ps1_fact: 'PS1 vs NES oppose une puissance CD 32 bits \u00e0 une l\u00e9gende 8 bits. Plus de 50 ans les s\u00e9parent.',
 
         // Learn page
         learn_body: 'D\u00e9couvrez la physique et l\'ing\u00e9nierie derri\u00e8re chaque console \u2014 de l\'\u00e9lectricit\u00e9 et des transistors jusqu\'aux CPU, GPU et au pipeline de rendu.',
@@ -3782,6 +3886,8 @@ const MESSAGES = {
         learn_feat_architecture: 'Architecture',
         learn_feat_diagnostics: 'Diagnostics',
         learn_cta: 'COMMENCER \u00c0 APPRENDRE \u2192',
+        learn_title_hero: 'Science des Consoles',
+        learn_gameboy_fact: 'Le CPU 8 bits personnalis\u00e9 du Game Boy \u00e9tait si bien document\u00e9 qu\u2019il est devenu un outil p\u00e9dagogique pour toute une g\u00e9n\u00e9ration d\u2019ing\u00e9nieurs.',
 
         // Help page
         help_feat_faq: 'FAQ',
@@ -3789,17 +3895,35 @@ const MESSAGES = {
         help_feat_guide: 'Guide de la plateforme',
         help_feat_community: 'Communaut\u00e9',
         help_cta: 'PARCOURIR LA FAQ \u2192',
+        help_title_hero: 'Comment Pouvons-Nous Vous Aider\u00a0?',
+        help_body: 'Parcourez les FAQ, lisez les guides de la plateforme ou contactez-nous directement. La communaut\u00e9 CNote est disponible 24h/24 pour les questions sp\u00e9cifiques aux consoles.',
+        help_link_faq: '\u2753 Questions fr\u00e9quentes',
+        help_link_guide: '\u{1F4D6} Guide de la plateforme',
+        help_link_contact_support: '\u{1F4E7} Contacter le support',
+        help_link_ask_community: '\u{1F4AC} Demander \u00e0 la communaut\u00e9',
+        help_switch_fact: 'Le drift des Joy-Con du Nintendo Switch est la question la plus pos\u00e9e dans notre centre d\u2019aide pour les r\u00e9parations.',
 
         // Index page
         index_body: 'Cnote Bakery est une plateforme d\u00e9di\u00e9e aux consoles de jeux. Histoire, technologie et communaut\u00e9 en un seul endroit.',
         index_fun_fact: '\u2605 Le saviez-vous\u00a0?',
         index_cta: 'Se connecter \u2192',
+        index_title_hero: 'Qui Sommes-Nous',
+        evl_xbox_fact: 'La Xbox originale fonctionnait sur un Intel Pentium III modifi\u00e9 \u2014 essentiellement un PC dans un bo\u00eetier de console, la machine la plus puissante de sa g\u00e9n\u00e9ration au lancement.',
+        evl_stat_launch: 'Lancement',
+        evl_stat_sold: 'Vendu',
 
         // Mobile nav
         mbn_more: 'Plus',
 
         // Settings page
         settings_subtitle: 'G\u00e9rez votre compte, profil et pr\u00e9f\u00e9rences.',
+        settings_username_desc: 'Votre nom d\u2019affichage public sur Console Notebook.',
+        settings_bio_desc: 'Une courte description affich\u00e9e sur votre profil public.',
+        settings_email_desc: 'Utilis\u00e9 pour la connexion et les notifications.',
+        settings_password_row_title: 'Mot de passe',
+        settings_password_desc: 'Modifiez ou d\u00e9finissez le mot de passe de votre compte.',
+        settings_save_changes: 'Enregistrer les modifications',
+        settings_save_desc: 'Tous les champs sont optionnels \u2014 seuls les champs remplis seront mis \u00e0 jour.',
     },
     it: {
         nav_community: 'Comunità',
@@ -3860,6 +3984,12 @@ const MESSAGES = {
         home_liked_subtitle: 'Post che hai apprezzato dalla community',
         home_liked_explore: 'Esplora →',
         home_progress_milestones: 'Traguardi',
+        home_progress_subtitle: 'Monitora il tuo percorso di apprendimento',
+        home_milestone_account: 'Account creato',
+        home_milestone_first_lesson: 'Prima lezione iniziata',
+        home_milestone_10_lessons: 'Completa 10 lezioni',
+        home_milestone_first_quiz: 'Supera il primo quiz',
+        home_milestone_5_achievements: 'Ottieni 5 traguardi',
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Benvenuto nell’era d’oro — o forse di bronzo — del gaming.',
@@ -4691,6 +4821,9 @@ const MESSAGES = {
         nb_card_join_discussion: 'Partecipa alla discussione',
         nb_card_faq_support: 'FAQ & supporto',
         nb_card_console_history: 'Storia delle console',
+        nb_card_how_consoles_work: 'Come funzionano le console',
+        nb_card_side_by_side: 'Specifiche a confronto',
+        nb_most_asked: '\u2605 Pi\u00f9 richiesto',
 
         // Notebook stats
         nb_stat_consoles: 'Console',
@@ -4713,6 +4846,8 @@ const MESSAGES = {
         cmp_feat_auto_verdict: 'Verdetto automatico',
         cmp_feat_launch_date: 'Data lancio & Prezzo',
         cmp_cta: 'INIZIA A CONFRONTARE →',
+        compare_title_hero: 'Sfida di Console',
+        cmp_ps1_fact: 'PS1 vs NES mette una potenza CD a 32 bit contro una leggenda a 8 bit. Oltre 50 anni li separano.',
 
         // Learn page
         learn_body: 'Scopri la fisica e l\'ingegneria dietro ogni console — dall\'elettricità e i transistor fino a CPU, GPU e la rendering pipeline.',
@@ -4723,24 +4858,44 @@ const MESSAGES = {
         learn_feat_architecture: 'Architettura',
         learn_feat_diagnostics: 'Diagnostica',
         learn_cta: 'INIZIA AD IMPARARE →',
+        learn_title_hero: 'Scienza delle Console',
+        learn_gameboy_fact: 'La CPU personalizzata a 8 bit del Game Boy era cos\u00ec ben documentata da diventare uno strumento didattico per un\'intera generazione di ingegneri.',
 
         // Help page
         help_feat_faq: 'FAQ',
         help_feat_contact: 'Contatto',
         help_feat_guide: 'Guida alla piattaforma',
-        help_feat_community: 'Comunità',
+        help_feat_community: 'Comunit\u00e0',
         help_cta: 'ESPLORA FAQ →',
+        help_title_hero: 'Come Possiamo Aiutarti?',
+        help_body: 'Sfoglia le FAQ, leggi le guide della piattaforma o contattaci direttamente. La community CNote \u00e8 disponibile 24 ore su 24 per domande specifiche sulle console.',
+        help_link_faq: '\u2753 Domande frequenti',
+        help_link_guide: '\u{1F4D6} Guida alla piattaforma',
+        help_link_contact_support: '\u{1F4E7} Contatta il supporto',
+        help_link_ask_community: '\u{1F4AC} Chiedi alla community',
+        help_switch_fact: 'Il drift dei Joy-Con del Nintendo Switch \u00e8 la domanda pi\u00f9 frequente nel nostro centro assistenza per le riparazioni.',
 
         // Index page
         index_body: 'Cnote Bakery è una piattaforma dedicata alle console da gioco. Storia, tecnologia e comunità in un unico posto.',
         index_fun_fact: '★ Lo sapevi?',
         index_cta: 'Accedi →',
+        index_title_hero: 'Chi Siamo',
+        evl_xbox_fact: 'La Xbox originale girava su un Intel Pentium III modificato \u2014 essenzialmente un PC in un case da console, la macchina pi\u00f9 potente della sua generazione al lancio.',
+        evl_stat_launch: 'Lancio',
+        evl_stat_sold: 'Venduto',
 
         // Mobile nav
         mbn_more: 'Altro',
 
         // Settings page
         settings_subtitle: 'Gestisci il tuo account, profilo e preferenze.',
+        settings_username_desc: 'Il tuo nome visualizzato pubblicamente su Console Notebook.',
+        settings_bio_desc: 'Una breve descrizione mostrata sul tuo profilo pubblico.',
+        settings_email_desc: 'Usato per l\'accesso e le notifiche.',
+        settings_password_row_title: 'Password',
+        settings_password_desc: 'Cambia o imposta la password del tuo account.',
+        settings_save_changes: 'Salva modifiche',
+        settings_save_desc: 'Tutti i campi sono opzionali \u2014 verranno aggiornati solo i campi compilati.',
     },
     de: {
         nav_community: 'Community',
@@ -4801,6 +4956,12 @@ const MESSAGES = {
         home_liked_subtitle: 'Beiträge, die du aus der Community geliked hast',
         home_liked_explore: 'Erkunden →',
         home_progress_milestones: 'Meilensteine',
+        home_progress_subtitle: 'Verfolge deinen Lernfortschritt',
+        home_milestone_account: 'Konto erstellt',
+        home_milestone_first_lesson: 'Erste Lektion begonnen',
+        home_milestone_10_lessons: '10 Lektionen abschlie\u00dfen',
+        home_milestone_first_quiz: 'Ersten Quiz bestehen',
+        home_milestone_5_achievements: '5 Erfolge erhalten',
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Willkommen im goldenen — oder vielleicht bronzenen — Zeitalter des Gaming.',
@@ -5628,6 +5789,9 @@ const MESSAGES = {
         nb_card_join_discussion: 'An der Diskussion teilnehmen',
         nb_card_faq_support: 'FAQ & Support',
         nb_card_console_history: 'Konsolengeschichte',
+        nb_card_how_consoles_work: 'Wie Konsolen funktionieren',
+        nb_card_side_by_side: 'Specs nebeneinander',
+        nb_most_asked: '\u2605 Am h\u00e4ufigsten gefragt',
 
         // Notebook stats
         nb_stat_consoles: 'Konsolen',
@@ -5650,6 +5814,8 @@ const MESSAGES = {
         cmp_feat_auto_verdict: 'Automatisches Urteil',
         cmp_feat_launch_date: 'Veröffentlichungsdatum & Preis',
         cmp_cta: 'VERGLEICH STARTEN →',
+        compare_title_hero: 'Konsolen-Duell',
+        cmp_ps1_fact: 'PS1 vs NES stellt einen 32-Bit-CD-Kraftprotz einer 8-Bit-Kartusch-Legende gegen\u00fcber. \u00dcber 50 Jahre liegen zwischen ihnen.',
 
         // Learn page
         learn_body: 'Entdecke die Physik und Technik hinter jeder Konsole — von Strom und Transistoren bis zu CPUs, GPUs und der Rendering-Pipeline.',
@@ -5660,6 +5826,8 @@ const MESSAGES = {
         learn_feat_architecture: 'Architektur',
         learn_feat_diagnostics: 'Diagnose',
         learn_cta: 'LERNEN BEGINNEN →',
+        learn_title_hero: 'Konsolen-Wissenschaft',
+        learn_gameboy_fact: 'Die angepasste 8-Bit-CPU des Game Boy war so gut dokumentiert, dass sie f\u00fcr eine ganze Ingenieurgeneration zum Lehrwerkzeug wurde.',
 
         // Help page
         help_feat_faq: 'FAQ',
@@ -5667,17 +5835,35 @@ const MESSAGES = {
         help_feat_guide: 'Plattform-Leitfaden',
         help_feat_community: 'Gemeinschaft',
         help_cta: 'FAQ DURCHSUCHEN →',
+        help_title_hero: 'Wie K\u00f6nnen Wir Helfen?',
+        help_body: 'Durchsuche die FAQ, lies Plattform-Leitf\u00e4den oder kontaktiere uns direkt. Die CNote-Community ist rund um die Uhr f\u00fcr konsolenspezifische Fragen verf\u00fcgbar.',
+        help_link_faq: '\u2753 H\u00e4ufig gestellte Fragen',
+        help_link_guide: '\u{1F4D6} Plattform-Leitfaden',
+        help_link_contact_support: '\u{1F4E7} Support kontaktieren',
+        help_link_ask_community: '\u{1F4AC} Community fragen',
+        help_switch_fact: 'Das Joy-Con-Drift des Nintendo Switch ist die am h\u00e4ufigsten gestellte Reparaturfrage in unserem Hilfezentrum.',
 
         // Index page
         index_body: 'Cnote Bakery ist eine Plattform für Gaming-Konsolen. Geschichte, Technik und Community an einem Ort.',
         index_fun_fact: '★ Wusstest du das?',
         index_cta: 'Anmelden →',
+        index_title_hero: 'Wer Wir Sind',
+        evl_xbox_fact: 'Die Original Xbox lief mit einem modifizierten Intel Pentium III \u2014 im Wesentlichen ein PC im Konsolengehäuse, die leistungsstärkste Maschine ihrer Generation beim Start.',
+        evl_stat_launch: 'Launch',
+        evl_stat_sold: 'Verkauft',
 
         // Mobile nav
         mbn_more: 'Mehr',
 
         // Settings page
         settings_subtitle: 'Verwalte dein Konto, Profil und Einstellungen.',
+        settings_username_desc: 'Dein \u00f6ffentlicher Anzeigename auf Console Notebook.',
+        settings_bio_desc: 'Eine kurze Beschreibung, die auf deinem \u00f6ffentlichen Profil angezeigt wird.',
+        settings_email_desc: 'Wird f\u00fcr Anmeldung und Benachrichtigungen verwendet.',
+        settings_password_row_title: 'Passwort',
+        settings_password_desc: '\u00c4ndere oder setze das Passwort deines Kontos.',
+        settings_save_changes: '\u00c4nderungen speichern',
+        settings_save_desc: 'Alle Felder sind optional \u2014 nur ausgef\u00fcllte Felder werden aktualisiert.',
     }
 };
 

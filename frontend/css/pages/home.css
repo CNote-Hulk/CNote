@@ -14,7 +14,6 @@
 * { box-sizing: border-box; }
 
 .footer {
-    width: 100%;
     padding: 25px 40px;
     margin-top: auto;
     background: rgba(var(--dark-rgb), 0.6);
@@ -404,7 +403,7 @@ body.home-page::before {
 
 .primary-btn {
     border: 0;
-    color: var(--bg);
+    color: var(--text-light);
     background: linear-gradient(135deg, var(--accent), var(--accent-soft));
     border-radius: 10px;
     padding: 12px;
@@ -413,6 +412,10 @@ body.home-page::before {
     width: 100%;
     text-align: center;
     transition: transform .1s ease, box-shadow .2s ease;
+}
+
+[data-theme="light"] .primary-btn {
+    color: var(--text);
 }
 
 .primary-btn:hover {
