@@ -403,7 +403,7 @@ body.home-page::before {
 
 .primary-btn {
     border: 0;
-    color: var(--text-light);
+    color: var(--primary-color);
     background: linear-gradient(135deg, var(--accent), var(--accent-soft));
     border-radius: 10px;
     padding: 12px;
@@ -412,6 +412,20 @@ body.home-page::before {
     width: 100%;
     text-align: center;
     transition: transform .1s ease, box-shadow .2s ease;
+}
+
+[data-theme="light"] .primary-btn {
+    color: var(--text);
+}
+[data-theme="dark"] .primary-btn {
+    color: var(--primary-color);
+}
+
+[data-theme="light"] .primary-btn {
+    color: var(--text);
+}
+[data-theme="dark"] .primary-btn {
+    color: var(--primary-color);
 }
 
 [data-theme="light"] .primary-btn {
