@@ -147,42 +147,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             ]);
 
             // =========================
-            // PROGRESS
+            // PROGRESS (temporarily in progress)
             // =========================
-            const progress = Array.isArray(user.owned_console_ids)
-                ? user.owned_console_ids.length
-                : 0;
-
-            const total = (window.CONSOLES_DATA || []).length || 52;
-            const percent = Math.round((progress / total) * 100);
-
             const continueProgress = document.getElementById('continue-progress');
             const activeProgress = document.getElementById('active-progress');
             const statProgress = document.getElementById('stat-progress');
-
-            if (continueProgress) {
-                continueProgress.innerHTML = `${progress}/${total}`;
-            }
-
-            if (activeProgress) {
-                activeProgress.style.width = `${Math.max(2, percent)}%`;
-            }
-
-            if (statProgress) {
-                statProgress.innerHTML = `<strong>${percent}%</strong>`;
-            }
-
-            // Progress panel ring + percentage
             const progressRingArc = document.getElementById('progress-ring-arc');
             const progressRingPct = document.getElementById('progress-ring-pct');
+            if (continueProgress) continueProgress.innerHTML = `<span style="color:#ad8b00" data-i18n="home_progress_working">In progress...</span>`;
+            if (activeProgress) activeProgress.style.width = '0%';
+            if (statProgress) statProgress.innerHTML = `<span style="color:#ad8b00" data-i18n="home_progress_working">In progress...</span>`;
             if (progressRingArc) {
-                const circumference = 2 * Math.PI * 42;
-                progressRingArc.style.strokeDasharray = circumference;
-                progressRingArc.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+                progressRingArc.style.strokeDasharray = 2 * Math.PI * 42;
+                progressRingArc.style.strokeDashoffset = 2 * Math.PI * 42;
             }
-            if (progressRingPct) {
-                progressRingPct.textContent = percent + '%';
-            }
+            if (progressRingPct) progressRingPct.setAttribute('data-i18n', 'home_progress_working');
 
             // =========================
             // STATS
@@ -411,46 +390,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // =========================
-            // MY COURSES (all + progress + button)
+            // MY COURSES (temporarily in progress)
             // =========================
             const coursesPreview = document.getElementById('home-courses-preview');
             if (coursesPreview) {
-                let courses = [];
-                if (coursesRes.success && Array.isArray(coursesRes.courses)) {
-                    courses = coursesRes.courses;
-                }
-
-                if (courses.length > 0) {
-                    coursesPreview.innerHTML = `
-                        <div class="dash-courses-list">
-                            ${courses.map(c => {
-                                const pct = c.total > 0 ? Math.round((c.completed / c.total) * 100) : 0;
-                                return `<div class="dash-course-item">
-                                    <div class="dash-course-info">
-                                        <span class="dash-course-name">${escapeHtml(c.name)}</span>
-                                        <span class="dash-course-pct">${pct}%</span>
-                                    </div>
-                                    <div class="progress-bar"><div style="width: ${Math.max(2, pct)}%;"></div></div>
-                                    <div class="dash-course-lessons">${c.completed || 0} / ${c.total || 0} lessons</div>
-                                </div>`;
-                            }).join('')}
-                        </div>
-                        <a href="invata.html" class="primary-btn" style="display:inline-block;margin-top:14px;text-decoration:none;text-align:center;">View all courses</a>
-                    `;
-                } else {
-                    coursesPreview.innerHTML = `
-                        <div class="dash-courses-list">
-                            <div class="dash-course-item">
-                                <div class="dash-course-info">
-                                    <span class="dash-course-name">${I18nModule.t('home_continue_title')}</span>
-                                    <span class="dash-course-pct">${percent}%</span>
-                                </div>
-                                <div class="progress-bar"><div style="width: ${Math.max(2, percent)}%;"></div></div>
-                            </div>
-                        </div>
-                        <a href="invata.html" class="primary-btn" style="display:inline-block;margin-top:14px;text-decoration:none;text-align:center;">View all courses</a>
-                    `;
-                }
+                coursesPreview.innerHTML = `<div class="dash-empty-state"><span class="dash-empty-state__icon">🚧</span><p class="dash-empty-state__text" data-i18n="home_courses_progress_working">Courses & progress section — <b>in progress</b></p></div>`;
             }
 
             // =========================

@@ -7,6 +7,11 @@ const STORAGE_KEY = 'cnote_lang';
 
 const MESSAGES = {
     en: {
+                // Home page temporary/working messages
+                home_courses_working: 'We are working on the <b>courses & lessons</b> section — check back soon for updates!',
+                home_lessons_working: 'Lessons & quizzes section — <b>coming soon</b>',
+                home_progress_working: 'In progress...'
+                ,home_courses_progress_working: 'Courses & progress section — <b>in progress</b>',
             // Sidebar
             sidebar_main: 'MAIN',
             sidebar_home: 'Home',
@@ -999,6 +1004,11 @@ const MESSAGES = {
         settings_subtitle: 'Manage your account, profile and preferences.',
     },
     ro:{
+    // Home page temporary/working messages
+    home_courses_working: 'Lucrăm la secțiunea de <b>cursuri & lecții</b> — revino în curând pentru noutăți!',
+    home_lessons_working: 'Secțiunea lecții & quiz-uri — <b>în curând</b>',
+    home_progress_working: 'În lucru...'
+    ,home_courses_progress_working: 'Secțiunea cursuri & progres — <b>în lucru</b>',
 
             // Sidebar
             sidebar_main: 'PRINCIPAL',
@@ -1988,6 +1998,11 @@ const MESSAGES = {
         settings_save_desc: 'Toate c\u00e2mpurile sunt op\u021bionale \u2014 doar c\u00e2mpurile completate vor fi actualizate.',
     },
     es: {
+            // Home page temporary/working messages
+            home_courses_working: 'Estamos trabajando en la sección de <b>cursos y lecciones</b> — ¡vuelve pronto para ver novedades!',
+            home_lessons_working: 'Sección de lecciones y cuestionarios — <b>próximamente</b>',
+            home_progress_working: 'En progreso...'
+            ,home_courses_progress_working: 'Sección de cursos y progreso — <b>en progreso</b>',
         nav_community: 'Comunidad',
         nav_learn: 'Aprender',
         nav_evolution: 'Evolución',
@@ -2958,6 +2973,11 @@ const MESSAGES = {
         settings_save_desc: 'Todos los campos son opcionales \u2014 solo se actualizar\u00e1n los campos completados.',
     },
     fr: {
+    // Home page temporary/working messages
+    home_courses_working: 'Nous travaillons sur la section <b>cours & leçons</b> — revenez bientôt pour les nouveautés !',
+    home_lessons_working: 'Section leçons & quiz — <b>bientôt disponible</b>',
+    home_progress_working: 'En cours...'
+    ,home_courses_progress_working: 'Section cours & progression — <b>en cours</b>',
 
         nav_community: 'Communauté',
         nav_learn: 'Apprendre',
@@ -3926,6 +3946,11 @@ const MESSAGES = {
         settings_save_desc: 'Tous les champs sont optionnels \u2014 seuls les champs remplis seront mis \u00e0 jour.',
     },
     it: {
+            // Home page temporary/working messages
+            home_courses_working: 'Stiamo lavorando alla sezione <b>corsi & lezioni</b> — torna presto per aggiornamenti!',
+            home_lessons_working: 'Sezione lezioni & quiz — <b>in arrivo</b>',
+            home_progress_working: 'In lavorazione...'
+            ,home_courses_progress_working: 'Sezione corsi & progressi — <b>in lavorazione</b>',
         nav_community: 'Comunità',
         nav_learn: 'Impara',
         nav_evolution: 'Evoluzione',
@@ -4898,6 +4923,11 @@ const MESSAGES = {
         settings_save_desc: 'Tutti i campi sono opzionali \u2014 verranno aggiornati solo i campi compilati.',
     },
     de: {
+            // Home page temporary/working messages
+            home_courses_working: 'Wir arbeiten am Bereich <b>Kurse & Lektionen</b> — schau bald wieder vorbei für Updates!',
+            home_lessons_working: 'Bereich Lektionen & Quiz — <b>demnächst</b>',
+            home_progress_working: 'In Arbeit...'
+            ,home_courses_progress_working: 'Bereich Kurse & Fortschritt — <b>in Arbeit</b>',
         nav_community: 'Community',
         nav_learn: 'Lernen',
         nav_evolution: 'Entwicklung',
