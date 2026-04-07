@@ -2558,13 +2558,13 @@
                            "models":  [
                                           {
                                               "label":  "Fat (SCPH-10000/30000, 2000)",
-                                              "width_mm":  301,
+                                              "width_mm":  302,
                                               "height_mm":  78,
                                               "depth_mm":  182
                                           },
                                           {
                                               "label":  "Slim (SCPH-70000, 2004)",
-                                              "width_mm":  230,
+                                              "width_mm":  231,
                                               "height_mm":  28,
                                               "depth_mm":  152
                                           }
