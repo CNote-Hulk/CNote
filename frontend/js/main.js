@@ -147,11 +147,6 @@ class App {
                 owned:           Array.isArray(ownedRes.value?.consoles)   ? ownedRes.value.consoles.length   : 0,
                 daysMember,
             };
-
-            const awarded = AchievementsModule.checkAndAward(user.id, stats);
-            if (awarded.length) {
-                AchievementsModule.showUnlockNotifications(awarded);
-            }
         };
 
         // Run on page load (non-blocking)

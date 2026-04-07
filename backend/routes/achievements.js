@@ -35,7 +35,7 @@ router.get('/', authRequired, async (req, res) => {
             pool.query('SELECT COUNT(*) FROM user_console_visits WHERE user_id = $1', [userId]),
             pool.query('SELECT COUNT(*) as total_friends FROM friends WHERE user1_id = $1 OR user2_id = $1', [userId]),
             pool.query('SELECT COUNT(*) as total_favs FROM listing_favorites WHERE user_id = $1', [userId]),
-            pool.query('SELECT COUNT(*) as total_owned FROM users_owned_consoles WHERE user_id = $1', [userId]),
+            pool.query('SELECT COUNT(*) as total_owned FROM user_owned_consoles WHERE user_id = $1', [userId]),
             pool.query('SELECT created_at FROM users WHERE id = $1', [userId])
         ]);
 

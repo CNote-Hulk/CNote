@@ -33,13 +33,17 @@ const userRoutes = require('./routes/users');
 const contactRoutes = require('./routes/contact');
 const googleAuthRoutes = require('./routes/google-auth');
 const forumRoutes = require('./routes/forum');
+const forumLikedRoutes = require('./routes/forum-liked');
+const forumMyPostsRoutes = require('./routes/forum-my-posts');
 const marketplaceRoutes = require('./routes/marketplace');
 const repairRoutes = require('./routes/repair');
 const dmRoutes = require('./routes/dm');
 const notificationRoutes = require('./routes/notifications');
 const consolesRoutes = require('./routes/consoles');
 const achievementsRoutes = require('./routes/achievements');
-const resetProgressRoutes = require('./routes/reset-progress');
+
+const ownedConsolesRoutes = require('./routes/owned-consoles');
+const progressRoutes = require('./routes/progress');
 
 app.set('JWT_SECRET', JWT_SECRET);
 
@@ -143,10 +147,15 @@ app.use('/api', userRoutes);
 app.use('/api', contactRoutes);
 app.use('/api/auth', googleAuthRoutes);
 app.use('/api/forum', forumRoutes);
+app.use('/api/forum/liked', forumLikedRoutes);
+app.use('/api/forum/my-posts', forumMyPostsRoutes);
 app.use('/api/marketplace', marketplaceRoutes);
 app.use('/api/repair', repairRoutes);
 app.use('/api/dm', dmRoutes);
 app.use('/api/notifications', notificationRoutes);
+
+app.use('/api/owned-consoles', ownedConsolesRoutes);
+app.use('/api/progress', progressRoutes);
 app.use('/api', resetProgressRoutes);
 
 app.use('/api/consoles', consolesRoutes);
