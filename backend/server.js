@@ -23,6 +23,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key';
 require('dotenv').config();
 
 /* ── Route imports ── */
+const resetProgressRoutes = require('./routes/reset-progress');
 const authRoutes = require('./routes/auth');
 const sessionRoutes = require('./routes/sessions');
 const chatRoutes = require('./routes/chat');
