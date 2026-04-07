@@ -2014,7 +2014,7 @@ initNotifications();
 } // end login gate else
 
 // ── Mobile bottom nav — community view routing ───────────────
-(function initMbnCommunity() {
+(function initMbnTabs() {
     const btn = document.getElementById('mbn-more-btn');
     const dd  = document.getElementById('mbn-dropdown');
 
