@@ -45,25 +45,40 @@ const BADGES = [
 router.get('/', authRequired, async (req, res) => {
     const userId = req.user.id;
     const pool = require('../db');
-    let visitedCount = 0;
-    try {
-        // Count visited consoles for this user
-        const result = await pool.query('SELECT COUNT(*) FROM user_console_visits WHERE user_id = $1', [userId]);
-        visitedCount = parseInt(result.rows[0].count, 10);
-    } catch (err) {
-        console.error('Error counting visited consoles:', err);
-    }
+    const awarded = [];
+        const visitedCount = typeof stats.visitedConsoles === 'number' ? stats.visitedConsoles : this._getVisitedCount();
+        const friends   = Number(stats.friends   || 0);
+        const favorites = Number(stats.favorites || 0);
+        const owned     = Number(stats.owned     || 0);
+        const days      = Number(stats.daysMember || 0);
 
-    // Unlock logic for visited consoles achievements
-    const unlockedIds = new Set();
-    if (visitedCount >= 3) unlockedIds.add('console_scout');
-    if (visitedCount >= 10) unlockedIds.add('retro_master');
-    if (visitedCount >= 25) unlockedIds.add('archive_hunter');
-    // All-Rounder: needs 15 lessons and 10 consoles, but we only check consoles for now
-    // (leave locked until lesson data is available)
+        // -- Lesson badges (in working) --
+        // -- Quiz badges (in working) --
 
-    const achievements = BADGES.map(b => ({ ...b, unlocked: unlockedIds.has(b.id) }));
-    res.json({ success: true, achievements });
+        // -- Console visit badges --
+        if (visitedCount >= 3  && this.award(userId, 'console_scout'))   awarded.push('console_scout');
+        if (visitedCount >= 10 && this.award(userId, 'retro_master'))    awarded.push('retro_master');
+        if (visitedCount >= 25 && this.award(userId, 'archive_hunter'))  awarded.push('archive_hunter');
+
+        // -- Friends badges --
+        if (friends >= 1  && this.award(userId, 'first_friend'))      awarded.push('first_friend');
+        if (friends >= 5  && this.award(userId, 'social_butterfly'))  awarded.push('social_butterfly');
+        if (friends >= 10 && this.award(userId, 'popular'))           awarded.push('popular');
+
+        // -- Favorites badges --
+        if (favorites >= 1 && this.award(userId, 'first_fav'))          awarded.push('first_fav');
+        if (favorites >= 5 && this.award(userId, 'collector_heart'))     awarded.push('collector_heart');
+
+        // -- Owned consoles badges --
+        if (owned >= 1 && this.award(userId, 'first_owned'))  awarded.push('first_owned');
+        if (owned >= 5 && this.award(userId, 'collector'))    awarded.push('collector');
+
+        // -- Veteran badges --
+        if (days >= 7   && this.award(userId, 'week_veteran'))   awarded.push('week_veteran');
+        if (days >= 30  && this.award(userId, 'month_veteran'))  awarded.push('month_veteran');
+        if (days >= 365 && this.award(userId, 'year_veteran'))   awarded.push('year_veteran');
+
+        return awarded;
 });
 
 module.exports = router;
