@@ -27,7 +27,10 @@ if (!user) {
 /** Get count of unique consoles visited from server */
 async function getVisitedConsolesCount() {
     try {
-        const resp = await fetch('/api/consoles/visited', { credentials: 'include' });
+        const headers = {};
+        const token = localStorage.getItem('cn_token');
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        const resp = await fetch('/api/consoles/visited', { headers, credentials: 'include' });
         if (!resp.ok) return 0;
         const data = await resp.json();
         if (data && Array.isArray(data.consoles)) {
@@ -174,21 +177,6 @@ async function renderStats() {
     renderGoals(allBadges);
     if (awarded && awarded.length > 0) {
         AchievementsModule.showUnlockNotifications(awarded);
-    }
-    let user = AuthModule.getCurrentUser();
-    if (!user) {
-        // Încearcă să recuperezi userul din server dacă există token
-        AuthModule.autoLogin().then(async u => {
-            if (u && u.id) {
-                user = u;
-                // Re-randează statistica cu userul corect
-                await renderStats();
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-    } else {
-        renderStats();
     }
     const visitedLessons = getVisitedLessonsCount(user.id);
 
