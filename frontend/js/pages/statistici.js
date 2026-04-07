@@ -127,24 +127,27 @@ async function renderStats() {
     // Owned consoles
     document.getElementById('stat-owned').textContent = String(ownedCount);
 
-    // Achievements — check and award with all available stats
-    const awarded = AchievementsModule.checkAndAward(user.id, {
-        visitedConsoles,
-        friends: friendsCount,
-        favorites: favoritesCount,
-        owned: ownedCount,
-        daysMember,
-    });
-    const allBadges = AchievementsModule.getAllBadges(user.id);
-    const earnedBadges = allBadges.filter((b) => b.earned).length;
-    const achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
+    // Achievements — fetch from backend and display
+    let allBadges = [];
+    let earnedBadges = 0;
+    let achievementsPct = 0;
+    try {
+        const resp = await fetch('/api/achievements', { headers: authHeaders(), credentials: 'include' });
+        if (resp.ok) {
+            const data = await resp.json();
+            allBadges = AchievementsModule.getAllBadges(data.achievements);
+            earnedBadges = allBadges.filter((b) => b.earned).length;
+            achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
+        }
+    } catch (err) {
+        // fallback: empty badges
+    }
 
     document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
     document.getElementById('stat-achievements-sub').textContent = `of ${allBadges.length} badges (${achievementsPct}%)`;
 
-    if (awarded && awarded.length > 0) {
-        AchievementsModule.showUnlockNotifications(awarded);
-    }
+    // Notificări pentru badge-uri noi (dacă backend-ul trimite awardedIds separat, adaptează aici)
+    // AchievementsModule.showUnlockNotifications(awardedIds, allBadges); // dacă ai awardedIds
 
     renderGoals(allBadges);
 

@@ -15,6 +15,10 @@ const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
+const http = require('http');
+const socketio = require('socket.io');
+const app = express();
+const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key';
 
 require('dotenv').config();
 
@@ -35,10 +39,7 @@ const dmRoutes = require('./routes/dm');
 const notificationRoutes = require('./routes/notifications');
 const consolesRoutes = require('./routes/consoles');
 const achievementsRoutes = require('./routes/achievements');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key';
+const resetProgressRoutes = require('./routes/reset-progress');
 
 app.set('JWT_SECRET', JWT_SECRET);
 
@@ -146,6 +147,7 @@ app.use('/api/marketplace', marketplaceRoutes);
 app.use('/api/repair', repairRoutes);
 app.use('/api/dm', dmRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api', resetProgressRoutes);
 
 app.use('/api/consoles', consolesRoutes);
 app.use('/api/achievements', achievementsRoutes);
@@ -178,10 +180,20 @@ app.use((err, req, res, next) => {
 	res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-	console.log('Server running on port:', PORT);
-	console.log('Database: PostgreSQL (Supabase)');
-	console.log('Allowed CORS origins:', allowedOrigins.join(', '));
-	console.log(`Serving static files from: ${FRONTEND_ROOT}`);
-	console.log(`API available at http://localhost:${PORT}/api`);
+// === SOCKET.IO SETUP (pentru notificări real-time) ===
+const httpServer = http.createServer(app);
+const io = socketio(httpServer, { cors: { origin: '*' } });
+app.set('io', io);
+
+io.on('connection', (socket) => {
+  // Userul se înregistrează pe canalul său după login
+  socket.on('register', (userId) => {
+    socket.join(userId);
+  });
+});
+
+// === PORNEȘTE SERVERUL PE httpServer, NU pe app direct ===
+const PORT = process.env.PORT || 3000;
+httpServer.listen(PORT, () => {
+  console.log(`Server + Socket.io running on port ${PORT}`);
 });

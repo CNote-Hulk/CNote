@@ -13,6 +13,7 @@ import { ProfileDropdownModule } from './modules/profile-dropdown.js';
 import { AuthModule } from './modules/auth.js';
 import { I18nModule } from './modules/i18n.js';
 import { AchievementsModule } from './modules/achievements.js';
+import { initAchievementSocket } from './modules/achievement-socket.js';
 
 /**
  * App Class - Orchestrates all modules
@@ -68,6 +69,19 @@ class App {
             if (user && privatePages.includes(currentPage)) {
                 AuthModule.startSessionWatch();
                 console.log('✓ Session watch initialized');
+                // Initialize real-time achievement notifications
+                // Fetch all badges from backend and pass to socket
+                fetch('/api/achievements', {
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cn_token') },
+                    credentials: 'include'
+                })
+                .then(r => r.ok ? r.json() : null)
+                .then(data => {
+                    if (data && data.achievements) {
+                        const allBadges = AchievementsModule.getAllBadges(data.achievements);
+                        initAchievementSocket(user.id, allBadges);
+                    }
+                });
             }
 
             this.initAchievements();

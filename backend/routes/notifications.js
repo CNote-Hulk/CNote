@@ -83,13 +83,17 @@ router.post('/read-all', authRequired, async (req, res) => {
  * Helper: create a notification (used by other routes)
  * Usage: const { createNotification } = require('./notifications');
  */
-async function createNotification(userId, type, message, link) {
+async function createNotification(userId, type, message, link, req) {
     if (!userId || !VALID_TYPES.includes(type)) return;
     try {
         await pool.query(
             'INSERT INTO notifications (user_id, type, message, link) VALUES ($1, $2, $3, $4)',
             [userId, type, String(message).slice(0, 500), String(link || '').slice(0, 500)]
         );
+        // Emitere notificare live dacă există io
+        if (req && req.app && req.app.get('io')) {
+            req.app.get('io').to(userId).emit('notification', { type, message, link });
+        }
     } catch (err) {
         console.error('createNotification error:', err);
     }

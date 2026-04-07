@@ -279,13 +279,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             // LEVEL CARD (progress panel)
             // =========================
             const levelCard = document.getElementById('progress-level-card');
-            if (levelCard) {
+            if (levelCard && achievementsRes.success) {
                 const visitedCount = Array.isArray(visitedRes?.consoles) ? visitedRes.consoles.length : 0;
-                const localBadges  = AchievementsModule.getAllBadges(currentUser.id);
-                const earnedLocal  = localBadges.filter(b => b.earned).length;
-                const totalLocal   = localBadges.length;
-                const achPct       = totalLocal > 0 ? (earnedLocal / totalLocal) * 100 : 0;
-                const lvl          = AchievementsModule.computeLevel(achPct, visitedCount, totalLocal);
+                const backendBadges = AchievementsModule.getAllBadges(achievementsRes.achievements);
+                const earned = backendBadges.filter(b => b.earned).length;
+                const total = backendBadges.length;
+                const achPct = total > 0 ? (earned / total) * 100 : 0;
+                const lvl = AchievementsModule.computeLevel(achPct, visitedCount, total);
 
                 const nextHtml = lvl.nextLevel ? `
                     <div class="level-next">

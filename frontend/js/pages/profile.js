@@ -536,17 +536,51 @@ function initSettings() {
     document.getElementById('reset-all-btn').addEventListener('click', async () => {
         const confirmed = await showConfirmDialog({
             title: 'Full Data Reset',
-            message: 'Course progress, achievements, and quiz history will be deleted. Do you want to continue?',
+            message: 'All progress will be deleted. Continue?',
             confirmLabel: 'Yes, reset', cancelLabel: 'Cancel'
         });
         if (!confirmed) return;
-        ProgressModule.resetUserProgress(user.id);
-        AchievementsModule.resetUserAchievements(user.id);
-        AchievementsModule.resetUserQuizStats(user.id);
-        AchievementsModule.resetVisitedConsoles();
-        localStorage.removeItem('cn_lesson_visits');
-        showSettingsMessage('Reset complete.', true);
+
+        try {
+            const token = localStorage.getItem('cn_token');
+            const resp = await fetch('/api/reset-progress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {})
+                }
+            });
+            if (!resp.ok) throw new Error('Reset failed');
+        
+            showSettingsMessage('Reset complete.', true);
+
+            // Re-fetch achievements & level
+            await loadAchievements(); 
+            await loadProfileStats();
+        } catch (err) {
+            showSettingsMessage('Reset failed. Please try again.', false);
+        }
     });
+
+    function updateAchievementsUI(userData) {
+        const badgeContainer = document.getElementById('badge-container');
+        badgeContainer.innerHTML = ''; // curățăm UI-ul
+        userData.badges.forEach(badge => {
+            const el = document.createElement('div');
+            el.className = 'badge';
+            el.innerHTML = `
+                <span class="badge-icon">${badge.icon}</span>
+                <span class="badge-name">${badge.name}</span>
+                ${badge.earned ? '<span class="badge-earned">✅</span>' : ''}
+            `;
+            badgeContainer.appendChild(el);
+        });
+
+        // Actualizare nivel
+        const levelEl = document.getElementById('user-level');
+        levelEl.textContent = `${userData.level.emoji} ${userData.level.name}`;
+    }
+
 
     // ═══ RESEND VERIFICATION ═══
     const resendVerificationBtn = document.getElementById('resend-verification-btn');
@@ -1175,6 +1209,52 @@ async function initOwnedConsolesSelect() {
     searchEl.addEventListener('input', () => renderList(searchEl.value));
     renderList();
     updateHidden();
+}
+
+/**
+ * Încarcă realizările utilizatorului și actualizează UI-ul.
+ */
+async function loadAchievements() {
+    try {
+        const token = localStorage.getItem('cn_token');
+        const resp = await fetch('/api/achievements', {
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            credentials: 'include'
+        });
+        if (!resp.ok) throw new Error('Could not load achievements');
+        const data = await resp.json();
+        // Adaptează dacă ai nevoie de altă structură
+        if (data.achievements) {
+            updateAchievementsUI({
+                badges: data.achievements,
+                level: calcLevelFromAchievements(data.achievements)
+            });
+        }
+    } catch (err) {
+        showSettingsMessage('Could not load achievements.', false);
+    }
+}
+
+/**
+ * Exemplu de funcție pentru calcularea nivelului din achievements (poți adapta după structura ta)
+ */
+function calcLevelFromAchievements(achievements) {
+    // Exemplu simplificat: numără câte sunt deblocate
+    const earned = achievements.filter(a => a.unlocked || a.earned).length;
+    const total = achievements.length;
+    // Poți folosi AchievementsModule.computeLevel dacă ai
+    if (window.AchievementsModule && AchievementsModule.computeLevel) {
+        return AchievementsModule.computeLevel(
+            total > 0 ? (earned / total) * 100 : 0,
+            0,
+            total
+        );
+    }
+    // Fallback simplu
+    return { name: 'Level', emoji: '🏅' };
 }
 
 initSettings();
