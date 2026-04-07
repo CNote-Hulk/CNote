@@ -4,6 +4,14 @@
  * Nu folosește localStorage.
  */
 export const AchievementsModule = {
+    // Lista de nivele expusă global pentru UI
+    LEVELS: [
+        { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started.' },
+        { name: 'Intermediate', emoji: '🌿', minScore: 35, description: 'Good progress.' },
+        { name: 'Advanced',     emoji: '⚡', minScore: 55, description: 'Solid platform knowledge.' },
+        { name: 'Expert',       emoji: '🔥', minScore: 75, description: 'Impressive activity.' },
+        { name: 'Legend',       emoji: '👑', minScore: 90, description: 'Elite status.' },
+    ],
 
     /**
      * Transformă datele primite de la backend într-un format ușor de afișat

@@ -72,7 +72,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             }
 
             // Achievements
-            const badges = AchievementsModule.getAllBadges(profile.id);
+            const badges = AchievementsModule.getAllBadges(profile.achievements || profile.badges || []);
             const earnedCount = badges.filter(b => b.earned).length;
             document.getElementById('user-dash-achievements').textContent = `${earnedCount} / ${badges.length}`;
             // Achievements preview

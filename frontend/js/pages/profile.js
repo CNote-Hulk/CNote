@@ -1226,8 +1226,19 @@ async function loadAchievements() {
         });
         if (!resp.ok) throw new Error('Could not load achievements');
         const data = await resp.json();
-        // Adaptează dacă ai nevoie de altă structură
         if (data.achievements) {
+            // Notificare pentru badge-uri noi
+            const allBadges = (window.AchievementsModule && AchievementsModule.getAllBadges)
+                ? AchievementsModule.getAllBadges(data.achievements)
+                : data.achievements;
+            const prevBadgeIds = JSON.parse(localStorage.getItem('cn_earned_badges') || '[]');
+            const currentBadgeIds = allBadges.filter(b => b.earned || b.unlocked).map(b => b.id);
+            const newBadgeIds = currentBadgeIds.filter(id => !prevBadgeIds.includes(id));
+            if (newBadgeIds.length > 0 && window.AchievementsModule && AchievementsModule.showUnlockNotifications) {
+                AchievementsModule.showUnlockNotifications(newBadgeIds, allBadges);
+                broadcastAchievementUnlock(newBadgeIds, allBadges);
+            }
+            localStorage.setItem('cn_earned_badges', JSON.stringify(currentBadgeIds));
             updateAchievementsUI({
                 badges: data.achievements,
                 level: calcLevelFromAchievements(data.achievements)
