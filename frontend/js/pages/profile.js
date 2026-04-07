@@ -1266,4 +1266,44 @@ function calcLevelFromAchievements(achievements) {
     return { name: 'Level', emoji: '🏅' };
 }
 
+// ── Mobile bottom nav — tab switching ────────────────────────
+(function initMbnTabs() {
+    const TABS = ['account', 'profil', 'security', 'notifications', 'appearance'];
+    const btn = document.getElementById('mbn-more-btn');
+    const dd  = document.getElementById('mbn-dropdown');
+
+    function setActive(tabKey) {
+        document.querySelectorAll('.mbn-item[data-mbn-tab]').forEach(el => {
+            el.classList.toggle('mbn-item--active', el.dataset.mbnTab === tabKey);
+        });
+        document.querySelectorAll('.mbn-dd-item[data-mbn-tab]').forEach(el => {
+            const match = el.dataset.mbnTab === tabKey;
+            el.classList.toggle('mbn-item--active', match);
+            if (match && btn) btn.classList.add('mbn-item--active');
+        });
+    }
+
+    function switchTab(tabKey) {
+        const profileBtn = document.querySelector(`.profile-tab[data-tab="${tabKey}"]`);
+        if (profileBtn) profileBtn.click();
+        setActive(tabKey);
+    }
+
+    const initial = location.hash.slice(1);
+    setActive(TABS.includes(initial) ? initial : 'account');
+
+    document.querySelectorAll('.mbn-item[data-mbn-tab], .mbn-dd-item[data-mbn-tab]').forEach(el => {
+        el.addEventListener('click', () => {
+            switchTab(el.dataset.mbnTab);
+            if (dd) dd.classList.remove('is-open');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    window.addEventListener('hashchange', () => {
+        const h = location.hash.slice(1);
+        if (TABS.includes(h)) setActive(h);
+    });
+}());
+
 initSettings();

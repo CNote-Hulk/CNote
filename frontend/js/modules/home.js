@@ -717,22 +717,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 });
 
-(function () {
-        var PANELS = ['home','collection','favorites','progress','achievements','courses','friends','posts','liked'];
-        var DEFAULT = 'home';
+// ── Panel hash routing ────────────────────────────────────────
+(function initPanelRouting() {
+    const PANELS = ['home','collection','favorites','progress','achievements','courses','friends','posts','liked'];
+    const DEFAULT = 'home';
 
-        function activatePanel(hash) {
-            var name = (hash || '').replace('#', '') || DEFAULT;
-            if (!PANELS.includes(name)) name = DEFAULT;
+    function activatePanel(hash) {
+        const name = PANELS.includes((hash || '').replace('#', ''))
+            ? hash.replace('#', '')
+            : DEFAULT;
+        document.querySelectorAll('.home-panel').forEach(p => {
+            p.classList.toggle('active', p.dataset.panel === name);
+        });
+        document.querySelectorAll('.sidebar-link[data-panel]').forEach(a => {
+            a.classList.toggle('active', a.dataset.panel === name);
+        });
+    }
 
-            document.querySelectorAll('.home-panel').forEach(function (p) {
-                p.classList.toggle('active', p.dataset.panel === name);
-            });
-            document.querySelectorAll('.sidebar-link[data-panel]').forEach(function (a) {
-                a.classList.toggle('active', a.dataset.panel === name);
-            });
-        }
-
-        activatePanel(location.hash);
-        window.addEventListener('hashchange', function () { activatePanel(location.hash); });
-    }());
+    activatePanel(location.hash);
+    window.addEventListener('hashchange', () => activatePanel(location.hash));
+}());

@@ -252,59 +252,61 @@ window.addEventListener('storage', (e) => {
     }
 });
 
-/* ── Populate header date ── */
-    (function () {
-        var d = new Date();
-        var dayEl = document.getElementById('statsd-day');
-        var wdEl  = document.getElementById('statsd-weekday');
-        var moEl  = document.getElementById('statsd-month');
-        if (dayEl) dayEl.textContent = d.getDate();
-        if (wdEl)  wdEl.textContent  = d.toLocaleDateString('en', { weekday: 'long' });
-        if (moEl)  moEl.textContent  = d.toLocaleDateString('en', { month: 'long' });
-    }());
+// ── Populate header date ─────────────────────────────────────
+function initHeaderDate() {
+    const d = new Date();
+    const dayEl = document.getElementById('statsd-day');
+    const wdEl  = document.getElementById('statsd-weekday');
+    const moEl  = document.getElementById('statsd-month');
+    if (dayEl) dayEl.textContent = d.getDate();
+    if (wdEl)  wdEl.textContent  = d.toLocaleDateString('en', { weekday: 'long' });
+    if (moEl)  moEl.textContent  = d.toLocaleDateString('en', { month: 'long' });
+}
+initHeaderDate();
 
-    /* ── Best-effort username from localStorage ── */
-    (function () {
-        try {
-            var keys = ['cn_user', 'cnote_user', 'user'];
-            for (var i = 0; i < keys.length; i++) {
-                var raw = localStorage.getItem(keys[i]);
-                if (!raw) continue;
-                var u = JSON.parse(raw);
-                var name = u.username || u.displayName || u.name || '';
-                if (name) {
-                    var el = document.getElementById('statsd-username');
-                    if (el) el.textContent = name;
-                    break;
-                }
+// ── Best-effort username from localStorage ───────────────────
+function initHeaderUsername() {
+    try {
+        for (const key of ['cn_user', 'cnote_user', 'user']) {
+            const raw = localStorage.getItem(key);
+            if (!raw) continue;
+            const u = JSON.parse(raw);
+            const name = u.username || u.displayName || u.name || '';
+            if (name) {
+                const el = document.getElementById('statsd-username');
+                if (el) el.textContent = name;
+                break;
             }
-        } catch(e) {}
-    }());
-
-    /* ── Progress ring: observe stat-lessons-fill and update SVG arc ── */
-    (function () {
-        var fill = document.getElementById('stat-lessons-fill');
-        var arc  = document.getElementById('stats-ring-arc');
-        var pct  = document.getElementById('stat-lessons-pct');
-        if (!fill || !arc) return;
-        var CIRC = 263.9; /* 2π × 42 */
-        function update() {
-            var w = parseFloat(fill.style.width) || 0;
-            arc.style.strokeDashoffset = CIRC * (1 - w / 100);
-            if (pct) pct.textContent = Math.round(w) + '%';
         }
-        new MutationObserver(update).observe(fill, { attributes: true, attributeFilter: ['style'] });
-        update();
-    }());
+    } catch { /* ignore */ }
+}
+initHeaderUsername();
 
-    /* ── Level emoji based on level text ── */
-    (function () {
-        var levelEl = document.getElementById('stat-level');
-        var emojiEl = document.getElementById('stats-level-emoji');
-        if (!levelEl || !emojiEl) return;
-        var map = { novice: '🌱', intermediate: '📖', advanced: '🎯', expert: '🔥', legend: '👑' };
-        new MutationObserver(function () {
-            var key = (levelEl.textContent || '').toLowerCase();
-            emojiEl.textContent = map[key] || '🌱';
-        }).observe(levelEl, { childList: true, characterData: true, subtree: true });
-    }());
+// ── Progress ring — observe fill width and update SVG arc ────
+function initProgressRing() {
+    const fill = document.getElementById('stat-lessons-fill');
+    const arc  = document.getElementById('stats-ring-arc');
+    const pct  = document.getElementById('stat-lessons-pct');
+    if (!fill || !arc) return;
+    const CIRC = 263.9; // 2π × 42
+    function update() {
+        const w = parseFloat(fill.style.width) || 0;
+        arc.style.strokeDashoffset = CIRC * (1 - w / 100);
+        if (pct) pct.textContent = Math.round(w) + '%';
+    }
+    new MutationObserver(update).observe(fill, { attributes: true, attributeFilter: ['style'] });
+    update();
+}
+initProgressRing();
+
+// ── Level emoji based on level text ─────────────────────────
+function initLevelEmoji() {
+    const levelEl = document.getElementById('stat-level');
+    const emojiEl = document.getElementById('stats-level-emoji');
+    if (!levelEl || !emojiEl) return;
+    const map = { novice: '🌱', intermediate: '📖', advanced: '🎯', expert: '🔥', legend: '👑' };
+    new MutationObserver(() => {
+        emojiEl.textContent = map[(levelEl.textContent || '').toLowerCase()] || '🌱';
+    }).observe(levelEl, { childList: true, characterData: true, subtree: true });
+}
+initLevelEmoji();

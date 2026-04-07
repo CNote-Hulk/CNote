@@ -2011,4 +2011,147 @@ initNotifications();
     navigate('chat', null, '');
 })();
 
+// ── Mobile bottom nav — community view routing ───────────────
+(function initMbnCommunity() {
+    const btn = document.getElementById('mbn-more-btn');
+    const dd  = document.getElementById('mbn-dropdown');
+
+    function switchView(view, con, cat) {
+        navigate(view || 'chat', con || null, cat || '');
+
+        // Sync active state on MBN items
+        document.querySelectorAll('.mbn-item[data-mbn-view], .mbn-dd-item[data-mbn-view]').forEach(el => {
+            const match = el.dataset.mbnView === view &&
+                (el.dataset.mbnConsole || '') === (con || '') &&
+                (el.dataset.mbnCategory || '') === (cat || '');
+            el.classList.toggle('mbn-item--active', match);
+        });
+    }
+
+    function buildDropdown() {
+        if (!dd) return;
+        dd.innerHTML = '';
+
+        // Collect data from sidebar sections
+        const consoles = [];
+        const flatSections = [];
+
+        document.querySelectorAll('.hub-sidebar__section').forEach(section => {
+            const heading = section.querySelector('.hub-sidebar__heading');
+            if (!heading) return;
+
+            const consoleGroups = section.querySelectorAll('.hub-sidebar__console');
+            if (consoleGroups.length) {
+                consoleGroups.forEach(cg => {
+                    const nameEl = cg.querySelector('.hub-sidebar__console-name');
+                    const consoleName = nameEl ? nameEl.textContent.replace(/\s+/g, ' ').trim() : '';
+                    const color = nameEl ? (nameEl.style.getPropertyValue('--console-color') || '') : '';
+                    const first = cg.querySelector('.hub-sidebar__item');
+                    consoles.push({ name: consoleName, color, slug: first?.dataset.console || '' });
+                });
+                return;
+            }
+
+            const items = [];
+            section.querySelectorAll('.hub-sidebar__item').forEach(item => {
+                if (item.classList.contains('hub-sidebar__item--locked')) return;
+                if (item.id === 'hub-notif-toggle') return;
+                if (window.getComputedStyle(item).display === 'none') return;
+                items.push({ el: item, label: item.textContent.replace(/\s+/g, ' ').trim() });
+            });
+            if (items.length) flatSections.push({ heading: heading.textContent.replace(/\s+/g, ' ').trim(), items });
+        });
+
+        // Flat sections (General Chat, Repair, Marketplace, Messages)
+        flatSections.forEach(sec => {
+            const h = document.createElement('div');
+            h.className = 'mbn-dd-heading';
+            h.textContent = sec.heading;
+            dd.appendChild(h);
+
+            sec.items.forEach(it => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'mbn-dd-item';
+                b.dataset.mbnView = it.el.dataset.view || '';
+                if (it.el.dataset.console) b.dataset.mbnConsole = it.el.dataset.console;
+                if (typeof it.el.dataset.category === 'string') b.dataset.mbnCategory = it.el.dataset.category;
+                b.innerHTML = `<span>${it.label}</span>`;
+                b.addEventListener('click', () => {
+                    switchView(b.dataset.mbnView, b.dataset.mbnConsole || '', b.dataset.mbnCategory || '');
+                    dd.classList.remove('is-open');
+                    btn.setAttribute('aria-expanded', 'false');
+                });
+                dd.appendChild(b);
+            });
+        });
+
+        // Console chip rows (Community + Repair)
+        if (consoles.length) {
+            [{ heading: 'Community', view: 'forum' }, { heading: 'Repair', view: 'repair' }].forEach(g => {
+                const h = document.createElement('div');
+                h.className = 'mbn-dd-heading';
+                h.textContent = g.heading;
+                dd.appendChild(h);
+
+                const row = document.createElement('div');
+                row.className = 'mbn-dd-consoles';
+                consoles.forEach(c => {
+                    const chip = document.createElement('button');
+                    chip.type = 'button';
+                    chip.className = 'mbn-dd-chip';
+                    chip.dataset.mbnView = g.view;
+                    chip.dataset.mbnConsole = c.slug;
+                    chip.innerHTML = `<span class="mbn-dd-dot" style="background:${c.color}"></span><span>${c.name}</span>`;
+                    chip.addEventListener('click', () => {
+                        switchView(g.view, c.slug, '');
+                        dd.classList.remove('is-open');
+                        btn.setAttribute('aria-expanded', 'false');
+                    });
+                    row.appendChild(chip);
+                });
+                dd.appendChild(row);
+            });
+        }
+
+        // Static links at bottom
+        const sep = document.createElement('div');
+        sep.className = 'mbn-dd-sep';
+        dd.appendChild(sep);
+
+        [{ href: 'profil.html', icon: '👤', label: 'Profile' },
+         { href: 'evolutie.html', icon: '🕹️', label: 'Consoles' }].forEach(s => {
+            const a = document.createElement('a');
+            a.href = s.href;
+            a.className = 'mbn-dd-item';
+            a.innerHTML = `<span class="mbn-dd-icon">${s.icon}</span><span>${s.label}</span>`;
+            dd.appendChild(a);
+        });
+    }
+
+    // Wire up static MBN items
+    document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(el => {
+        el.addEventListener('click', () => {
+            switchView(el.dataset.mbnView, el.dataset.mbnConsole || '', el.dataset.mbnCategory || '');
+        });
+    });
+
+    buildDropdown();
+    switchView('chat', '', '');
+
+    if (btn && dd) {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            buildDropdown();
+            const open = dd.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded', String(open));
+        });
+        document.addEventListener('click', () => {
+            dd.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+        });
+        dd.addEventListener('click', e => e.stopPropagation());
+    }
+}());
+
 } // end login gate else
