@@ -506,18 +506,14 @@
                 var path = '../../../js/data/consoles-' + lang + '.json';
                 if (window.location.protocol === 'file:') {
                     return loadJsonWithXhr(path).catch(function() {
-                        if (lang !== 'en') return loadJsonWithXhr('../../../js/data/consoles-en.json').catch(function() { return window.CONSOLES_DATA || null; });
-                        return window.CONSOLES_DATA || null;
+                        return loadJsonWithXhr('../../../js/data/consoles-en.json').catch(function() { return window.CONSOLES_DATA || null; });
                     });
                 }
                 return fetch(path).then(function (res) {
                     if (!res.ok) throw new Error('HTTP ' + res.status);
                     return res.json();
                 }).catch(function() {
-                    if (lang !== 'en') {
-                        return fetch('../../../js/data/consoles-en.json').then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).catch(function() { return window.CONSOLES_DATA || null; });
-                    }
-                    return window.CONSOLES_DATA || null;
+                    return fetch('../../../js/data/consoles-en.json').then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).catch(function() { return window.CONSOLES_DATA || null; });
                 });
             })()
         ])

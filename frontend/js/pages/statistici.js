@@ -186,6 +186,11 @@ function renderLevelsPanel(currentLevel) {
     const list = document.getElementById('levels-list');
     if (!list) return;
 
+    if (!AchievementsModule.LEVELS || !Array.isArray(AchievementsModule.LEVELS)) {
+        list.innerHTML = '<div class="level-row level-row--error">Levels data unavailable.</div>';
+        return;
+    }
+
     list.innerHTML = AchievementsModule.LEVELS.map((lvl, idx) => {
         const isCurrent = lvl.name === currentLevel.name;
         const isPast    = idx < currentLevel.index;
@@ -211,7 +216,7 @@ function renderLevelsPanel(currentLevel) {
                 <div class="level-row__info">
                     <div class="level-row__header">
                         <strong class="level-row__name">${lvl.emoji} ${lvl.name}</strong>
-                        <span class="level-row__score-req">${lvl.minScore > 0 ? `≥ ${lvl.minScore} pts` : 'Starting level'}</span>
+                        <span class="level-row__score-req">${lvl.minScore > 0 ? ` ${lvl.minScore} pts` : 'Starting level'}</span>
                     </div>
                     <div class="level-row__desc">${isCurrent ? lvl.description : (isFuture ? lvl.requirements : lvl.description)}</div>
                     ${barHtml}
