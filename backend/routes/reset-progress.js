@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { verifyToken } = require('../middleware/auth');
+const { authRequired } = require('../middleware/auth');
 
 
-router.post('/reset-progress', verifyToken, async (req, res) => {
+router.post('/reset-progress', authRequired, async (req, res) => {
     try {
         const userId = req.user.id; // extras din token
         await resetUserData(userId); // funcție care șterge tot progresul

@@ -1,5 +1,6 @@
 [build]
 builder = "RAILPACK"
+buildEnvironment = "V3"
 
 [deploy]
 startCommand = "node backend/js/import-consoles.js && npm start"
