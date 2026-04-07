@@ -273,24 +273,6 @@
             <span data-i18n="mbn_more">More</span>
         </button>
     </nav>
-    <script>
-    (function () {
-        var btn = document.getElementById('mbn-more-btn');
-        var dd  = document.getElementById('mbn-dropdown');
-        if (btn && dd) {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                var open = dd.classList.toggle('is-open');
-                btn.setAttribute('aria-expanded', String(open));
-            });
-            document.addEventListener('click', function () {
-                dd.classList.remove('is-open');
-                btn.setAttribute('aria-expanded', 'false');
-            });
-            dd.addEventListener('click', function (e) { e.stopPropagation(); });
-        }
-    }());
-    </script>
 
     <script>
     /* ── Populate header date ── */

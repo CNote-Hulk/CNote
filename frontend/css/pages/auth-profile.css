@@ -2223,7 +2223,7 @@ a.chat-message__username:hover {
 
 .friend-search-result__bio {
     font-size: 0.78rem;
-    color: var(--text-muted, #a89880);
+    color: var(--text-muted);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -20,6 +20,14 @@
     --border-color: rgba(255, 255, 255, 0.05);
     --grid-line: rgba(255, 255, 255, 0.03);
 
+    /* Aliases — used in component fallbacks */
+    --text-primary: var(--text-light);
+    --text-muted: var(--text-gray);
+
+    /* Semantic state colors */
+    --success-light: #86EFAC;
+    --error-light: #FCA5A5;
+
     /* RGB Helpers */
     --primary-rgb: 27, 23, 20;
     --secondary-rgb: 42, 35, 32;
@@ -96,6 +104,10 @@
     --accent-color-rgb: 255, 255, 255;
     --glow-accent: 0 0 20px rgba(255, 255, 255, 0.1);
     --error: #ef9a9a;
+    --success-light: #6ee7a0;
+    --error-light: #fca5a5;
+    --text-primary: var(--text-light);
+    --text-muted: var(--text-gray);
     color-scheme: dark;
 }
 
@@ -124,5 +136,9 @@
     --accent-rgb: 17, 19, 23;
     --accent-color-rgb: 17, 19, 23;
     --error: #B91C1C;
+    --success-light: #16a34a;
+    --error-light: #dc2626;
+    --text-primary: var(--text-light);
+    --text-muted: var(--text-gray);
     color-scheme: light;
 }

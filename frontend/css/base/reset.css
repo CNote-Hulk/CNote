@@ -82,11 +82,11 @@ body::before {
 
 /* Selection Color */
 ::selection {
-    background: #d4c09a;   /* cream */
-    color: #1a1a1a;        /* dark text for contrast */
+    background: rgba(var(--accent-rgb), 0.35);
+    color: var(--primary-color);
 }
 
 ::-moz-selection {
-    background: #d4c09a;   /* cream */
-    color: #1a1a1a;        /* dark text for contrast */
+    background: rgba(var(--accent-rgb), 0.35);
+    color: var(--primary-color);
 }

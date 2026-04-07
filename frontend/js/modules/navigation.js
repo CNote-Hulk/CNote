@@ -12,6 +12,7 @@ export const NavigationModule = {
         this.setupActiveLinks();
         this.setupMobileMenu();
         this.setupAutoHideNavbar();
+        this.setupMbnDropdown();
     },
 
     /**
@@ -175,6 +176,40 @@ export const NavigationModule = {
         
         // Update ARIA
         hamburger.setAttribute('aria-expanded', 'false');
+    },
+
+    /**
+     * Mobile bottom navigation — dropdown toggle and active-page marking.
+     * Handles pages that use data-mbn-page attributes on nav items.
+     */
+    setupMbnDropdown() {
+        const btn = document.getElementById('mbn-more-btn');
+        const dd  = document.getElementById('mbn-dropdown');
+
+        // Mark current page as active in the bottom nav
+        const page = location.pathname.split('/').pop().replace('.html', '') || 'home';
+        document.querySelectorAll('.mbn-item[data-mbn-page]').forEach(el => {
+            if (el.dataset.mbnPage === page) el.classList.add('mbn-item--active');
+        });
+        document.querySelectorAll('.mbn-dd-item[data-mbn-page]').forEach(el => {
+            if (el.dataset.mbnPage === page) {
+                el.classList.add('mbn-item--active');
+                if (btn) btn.classList.add('mbn-item--active');
+            }
+        });
+
+        if (!btn || !dd) return;
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = dd.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded', String(open));
+        });
+        document.addEventListener('click', () => {
+            dd.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+        });
+        dd.addEventListener('click', (e) => e.stopPropagation());
     },
 
     /**

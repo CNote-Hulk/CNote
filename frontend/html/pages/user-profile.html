@@ -267,23 +267,5 @@
             <span data-i18n="mbn_more">More</span>
         </button>
     </nav>
-
-    <script>
-    (function () {
-        var btn = document.getElementById('mbn-more-btn');
-        var dd  = document.getElementById('mbn-dropdown');
-        if (btn && dd) {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                var open = dd.classList.toggle('mbn-dropdown--open');
-                btn.setAttribute('aria-expanded', open);
-            });
-            document.addEventListener('click', function () {
-                dd.classList.remove('mbn-dropdown--open');
-                btn.setAttribute('aria-expanded', 'false');
-            });
-        }
-    })();
-    </script>
 </body>
 </html>
