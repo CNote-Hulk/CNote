@@ -287,33 +287,40 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const achPct = total > 0 ? (earned / total) * 100 : 0;
                 const lvl = AchievementsModule.computeLevel(achPct, visitedCount, total);
 
-                const nextHtml = lvl.nextLevel ? `
-                    <div class="level-next">
-                        <div class="level-next__label">Next: ${lvl.nextLevel.emoji} ${lvl.nextLevel.name} <span class="level-next__score">(${lvl.nextLevel.minScore} pts)</span></div>
-                        <div class="progress-bar" style="margin:6px 0 4px;">
-                            <div class="progress-bar__fill" style="width:${lvl.progressToNext}%;background:var(--accent-color);transition:width .4s;"></div>
-                        </div>
-                        <div class="level-next__hint">
-                            Need <strong>${lvl.nextRequirements.scoreNeeded} more points</strong> —
-                            earn <strong>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</strong>
-                            ${lvl.nextRequirements.consolesNeeded ? `or visit <strong>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</strong>` : ''}
-                        </div>
-                    </div>` : `<div class="level-next" style="color:var(--accent-color);font-weight:600;">🏆 Maximum level reached!</div>`;
-
-                levelCard.innerHTML = `
-                    <div class="level-card-inner">
-                        <div class="level-card-main">
-                            <span class="level-card-emoji">${lvl.emoji}</span>
-                            <div>
-                                <div class="level-card-name">${lvl.name}</div>
-                                <div class="level-card-score">Score: <strong>${lvl.score}</strong> / 100</div>
+                // Determină panelul activ
+                const activePanel = document.querySelector('.home-panel.active');
+                if (activePanel && activePanel.dataset.panel === 'home') {
+                    // Pe home: doar preview
+                    levelCard.innerHTML = `<div class="level-preview"><span class="level-label">Level:</span> <span class="level-emoji">${lvl.emoji}</span> <span class="level-name">${lvl.name}</span></div>`;
+                } else {
+                    // Pe progress: card complet
+                    const nextHtml = lvl.nextLevel ? `
+                        <div class="level-next">
+                            <div class="level-next__label">Next: ${lvl.nextLevel.emoji} ${lvl.nextLevel.name} <span class="level-next__score">(${lvl.nextLevel.minScore} pts)</span></div>
+                            <div class="progress-bar" style="margin:6px 0 4px;">
+                                <div class="progress-bar__fill" style="width:${lvl.progressToNext}%;background:var(--accent-color);transition:width .4s;"></div>
                             </div>
-                        </div>
-                        <div class="level-card-desc">${lvl.description}</div>
-                        ${nextHtml}
-                    </div>`;
+                            <div class="level-next__hint">
+                                Need <strong>${lvl.nextRequirements.scoreNeeded} more points</strong> —
+                                earn <strong>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</strong>
+                                ${lvl.nextRequirements.consolesNeeded ? `or visit <strong>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</strong>` : ''}
+                            </div>
+                        </div>` : `<div class="level-next" style="color:var(--accent-color);font-weight:600;">🏆 Maximum level reached!</div>`;
 
-                // Save to localStorage for other pages
+                    levelCard.innerHTML = `
+                        <div class="level-card-inner">
+                            <div class="level-card-main">
+                                <span class="level-card-emoji">${lvl.emoji}</span>
+                                <div>
+                                    <div class="level-card-name">${lvl.name}</div>
+                                    <div class="level-card-score">Score: <strong>${lvl.score}</strong> / 100</div>
+                                </div>
+                            </div>
+                            <div class="level-card-desc">${lvl.description}</div>
+                            ${nextHtml}
+                        </div>`;
+                }
+                // Save to localStorage pentru alte pagini
                 localStorage.setItem('cn_user_level', JSON.stringify({ name: lvl.name, emoji: lvl.emoji }));
             }
 

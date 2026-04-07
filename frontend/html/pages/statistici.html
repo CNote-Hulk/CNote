@@ -160,16 +160,32 @@
 
             </div>
 
+
+            <!-- ═══ LEVEL + GOALS ROW ═══ -->
+            <div class="statsd-row-level-goals">
+                <article class="statsd-card statsd-card--level statsd-card--wide statsd-card--clickable" id="level-card" role="button" tabindex="0" aria-expanded="false" title="Click to see all levels">
+                    <div class="statsd-level">
+                        <div class="statsd-level__body">
+                            <span class="statsd-card__label" data-i18n="stats_level">Overall Level</span>
+                            <div class="statsd-card__num statsd-card__num--level" id="stat-level">Novice</div>
+                            <div class="statsd-card__sub" id="stat-level-sub" data-i18n="stats_level_sub">Keep going for higher rank</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                            <span class="statsd-level__emoji" id="stats-level-emoji" aria-hidden="true">🌱</span>
+                            <span class="statsd-card__expand-hint" id="level-expand-hint">▼ See all levels</span>
+                        </div>
+                    </div>
+                </article>
+                <section class="statsd-goals">
+                    <h2 class="statsd-goals__title" data-i18n="stats_next_goals">Next Goals</h2>
+                    <div id="next-goals" class="next-goals"></div>
+                </section>
+            </div>
+
             <!-- ═══ LEVELS PANEL (expandable) ═══ -->
             <section class="statsd-levels-panel" id="levels-panel" hidden>
                 <h2 class="statsd-goals__title">All Levels</h2>
                 <div class="levels-list" id="levels-list"></div>
-            </section>
-
-            <!-- ═══ NEXT GOALS ═══ -->
-            <section class="statsd-goals">
-                <h2 class="statsd-goals__title" data-i18n="stats_next_goals">Next Goals</h2>
-                <div id="next-goals" class="next-goals"></div>
             </section>
 
         </div>

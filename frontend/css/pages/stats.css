@@ -1,3 +1,36 @@
+/* ══ LEVEL + GOALS ROW (side-by-side) ═══════════════ */
+.statsd-row-level-goals {
+        display: flex;
+        gap: 24px;
+        margin: 32px 0 0 0;
+        align-items: stretch;
+}
+.statsd-row-level-goals .statsd-card--level {
+        flex: 2 1 0;
+        min-width: 0;
+        margin: 0;
+}
+.statsd-row-level-goals .statsd-goals {
+        flex: 1 1 320px;
+        min-width: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+}
+
+@media (max-width: 1100px) {
+    .statsd-row-level-goals {
+        flex-direction: column;
+        gap: 18px;
+    }
+    .statsd-row-level-goals .statsd-card--level,
+    .statsd-row-level-goals .statsd-goals {
+        flex: unset;
+        width: 100%;
+        margin: 0;
+    }
+}
 /* ══════════════════════════════════════════════════════
    STATISTICS PAGE — Modern Dashboard Design
    ══════════════════════════════════════════════════════ */
