@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { verifyToken } = require('../middleware/auth');
-const { resetUserData } = require('../controllers/userController');
+
 
 router.post('/reset-progress', verifyToken, async (req, res) => {
     try {
@@ -15,9 +15,10 @@ router.post('/reset-progress', verifyToken, async (req, res) => {
 });
 
 
+
+// Dacă nu există controllers/userController.js, păstrează funcția locală:
 const pool = require('../db');
 async function resetUserData(userId) {
-    // Înlocuiește numele tabelelor cu cele reale din schema ta Supabase/PostgreSQL
     await pool.query('DELETE FROM user_lessons WHERE user_id = $1', [userId]);
     await pool.query('DELETE FROM user_achievements WHERE user_id = $1', [userId]);
     await pool.query('DELETE FROM user_console_visits WHERE user_id = $1', [userId]);
