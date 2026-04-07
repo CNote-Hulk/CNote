@@ -16,14 +16,20 @@ router.post('/reset-progress', authRequired, async (req, res) => {
 
 
 
-// Dacă nu există controllers/userController.js, păstrează funcția locală:
 const pool = require('../db');
+
+// Each query runs independently — a missing table won't block the rest
 async function resetUserData(userId) {
-    await pool.query('DELETE FROM user_lessons WHERE user_id = $1', [userId]);
-    await pool.query('DELETE FROM user_achievements WHERE user_id = $1', [userId]);
-    await pool.query('DELETE FROM user_console_visits WHERE user_id = $1', [userId]);
-    await pool.query('DELETE FROM user_favorites WHERE user_id = $1', [userId]);
-    await pool.query('DELETE FROM user_owned_consoles WHERE user_id = $1', [userId]);
+    const queries = [
+        'DELETE FROM user_lessons WHERE user_id = $1',
+        'DELETE FROM user_achievements WHERE user_id = $1',  // achievement unlock history
+        'DELETE FROM user_console_visits WHERE user_id = $1',
+        'DELETE FROM user_favorites WHERE user_id = $1',
+        'DELETE FROM user_owned_consoles WHERE user_id = $1',
+    ];
+    for (const q of queries) {
+        try { await pool.query(q, [userId]); } catch (_) { /* table may not exist yet */ }
+    }
 }
 
 module.exports = router;

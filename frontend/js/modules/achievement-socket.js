@@ -1,18 +1,24 @@
-// Socket.io client for real-time achievement notifications
-// This file is imported dynamically by main.js if not already present
 import { AchievementsModule } from './achievements.js';
 
 let socket = null;
 
-export function initAchievementSocket(userId, allBadges) {
+export function initAchievementSocket(userId) {
     if (!window.io || !userId) return;
-    if (socket) return; // Already initialized
-    socket = window.io();
-    socket.emit('register', userId);
+    if (socket) {
+        // Already connected — just re-register in the room (e.g. after page reload)
+        socket.emit('register', String(userId));
+        return;
+    }
+
+    socket = window.io({ reconnectionAttempts: Infinity, reconnectionDelay: 2000 });
+
+    // Register immediately and on every reconnect (covers phone wake-up / network switch)
+    socket.emit('register', String(userId));
+    socket.on('connect', () => socket.emit('register', String(userId)));
+
     socket.on('achievement_unlocked', (payload) => {
-        // payload: { awardedIds: ["badge_id1", ...] }
         if (payload && Array.isArray(payload.awardedIds)) {
-            AchievementsModule.showUnlockNotifications(payload.awardedIds, allBadges);
+            AchievementsModule.showUnlockNotifications(payload.awardedIds, AchievementsModule.BADGES);
         }
     });
 }

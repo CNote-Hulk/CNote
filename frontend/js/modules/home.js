@@ -284,10 +284,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // =========================
-            // LEVEL CARD (progress panel)
+            // LEVEL CARD (home preview + progress panel)
             // =========================
-            const levelCard = document.getElementById('progress-level-card');
-            if (levelCard && achievementsRes.success) {
+            if (achievementsRes.success) {
                 const visitedCount = Array.isArray(visitedRes?.consoles) ? visitedRes.consoles.length : 0;
                 const backendBadges = AchievementsModule.getAllBadges(achievementsRes.achievements);
                 const earned = backendBadges.filter(b => b.earned).length;
@@ -295,13 +294,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const achPct = total > 0 ? (earned / total) * 100 : 0;
                 const lvl = AchievementsModule.computeLevel(achPct, visitedCount, total);
 
-                // Determină panelul activ
-                const activePanel = document.querySelector('.home-panel.active');
-                if (activePanel && activePanel.dataset.panel === 'home') {
-                    // Pe home: doar preview
-                    levelCard.innerHTML = `<div class="level-preview"><span class="level-label">Level:</span> <span class="level-emoji">${lvl.emoji}</span> <span class="level-name">${lvl.name}</span></div>`;
-                } else {
-                    // Pe progress: card complet
+                // Home panel: mini preview
+                const homeLevelCard = document.getElementById('home-level-card');
+                if (homeLevelCard) {
+                    homeLevelCard.innerHTML = `<div class="level-preview"><span class="level-label">Level:</span> <span class="level-emoji">${lvl.emoji}</span> <span class="level-name">${lvl.name}</span></div>`;
+                }
+
+                // Progress panel: full card
+                const progressLevelCard = document.getElementById('progress-level-card');
+                if (progressLevelCard) {
                     const nextHtml = lvl.nextLevel ? `
                         <div class="level-next">
                             <div class="level-next__label">Next: ${lvl.nextLevel.emoji} ${lvl.nextLevel.name} <span class="level-next__score">(${lvl.nextLevel.minScore} pts)</span></div>
@@ -315,7 +316,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                         </div>` : `<div class="level-next" style="color:var(--accent-color);font-weight:600;">🏆 Maximum level reached!</div>`;
 
-                    levelCard.innerHTML = `
+                    progressLevelCard.innerHTML = `
                         <div class="level-card-inner">
                             <div class="level-card-main">
                                 <span class="level-card-emoji">${lvl.emoji}</span>
@@ -328,6 +329,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             ${nextHtml}
                         </div>`;
                 }
+
                 // Save to localStorage pentru alte pagini
                 localStorage.setItem('cn_user_level', JSON.stringify({ name: lvl.name, emoji: lvl.emoji }));
             }

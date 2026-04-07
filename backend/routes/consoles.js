@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { checkAndEmitAchievements } = require('../utils/check-achievements');
 
 const ALLOWED_LANGS = ['en', 'ro', 'es', 'fr', 'de', 'it'];
 
@@ -79,6 +80,7 @@ router.post('/visit', require('../middleware/auth').authRequired, async (req, re
             [userId, console_id.trim()]
         );
         res.json({ success: true });
+        checkAndEmitAchievements(req.app.get('io'), userId).catch(() => {});
     } catch (err) {
         console.error('POST /api/consoles/visit error:', err);
         res.status(500).json({ success: false, error: 'Failed to record visit.' });

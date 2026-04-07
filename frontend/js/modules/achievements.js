@@ -33,6 +33,23 @@ export const AchievementsModule = {
         };
     },
 
+    // Static badge definitions — keep in sync with backend/utils/check-achievements.js
+    BADGES: [
+        { id: 'console_scout',    name: 'Console Scout',     description: 'Visit 3 console pages.',              icon: '🧭' },
+        { id: 'retro_master',     name: 'Retro Master',      description: 'Visit 10 console pages.',             icon: '🕹️' },
+        { id: 'archive_hunter',   name: 'Archive Hunter',    description: 'Visit 25 console pages.',             icon: '🗂️' },
+        { id: 'first_friend',     name: 'First Friend',      description: 'Make your first friend.',             icon: '👋' },
+        { id: 'social_butterfly', name: 'Social Butterfly',  description: 'Have 5 friends on the platform.',     icon: '🦋' },
+        { id: 'popular',          name: 'Popular',           description: 'Have 10 friends on the platform.',    icon: '🌟' },
+        { id: 'first_fav',        name: 'First Favorite',    description: 'Add your first console to favorites.',icon: '❤️' },
+        { id: 'collector_heart',  name: "Collector's Heart", description: 'Have 5 favorite consoles.',           icon: '💝' },
+        { id: 'first_owned',      name: 'Owner',             description: 'Add your first console to your collection.', icon: '🎮' },
+        { id: 'collector',        name: 'Collector',         description: 'Own 5 consoles in your collection.', icon: '📦' },
+        { id: 'week_veteran',     name: 'Week Regular',      description: 'Be a member for 7 days.',             icon: '📅' },
+        { id: 'month_veteran',    name: 'Monthly',           description: 'Be a member for 30 days.',            icon: '🗓️' },
+        { id: 'year_veteran',     name: 'Veteran',           description: 'Be a member for 365 days.',           icon: '🏛️' },
+    ],
+
     // Lista de nivele expusă global pentru UI
     LEVELS: [
         { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started.' },

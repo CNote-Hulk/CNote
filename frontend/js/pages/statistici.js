@@ -82,16 +82,19 @@ function renderGoals(badges) {
     if (!container) return;
     const locked = badges.filter((b) => !b.earned).slice(0, 6);
     if (!locked.length) {
-        container.innerHTML = '<div class="next-goal-item">✅ You have unlocked all available achievements.</div>';
+        container.innerHTML = '<div class="next-goal-all-done"><span>✅</span><strong>All achievements unlocked!</strong></div>';
         return;
     }
     container.innerHTML = locked.map((b) => `
         <div class="next-goal-item">
-            <span class="next-goal-item__icon">${b.icon}</span>
-            <div>
-                <div class="next-goal-item__name">${b.name}</div>
-                <div class="next-goal-item__desc">${b.description}</div>
+            <div class="next-goal-item__icon-wrap">
+                <span class="next-goal-item__icon">${b.icon || '🏅'}</span>
             </div>
+            <div class="next-goal-item__body">
+                <div class="next-goal-item__name">${b.label || b.name}</div>
+                <div class="next-goal-item__desc">${b.description || ''}</div>
+            </div>
+            <span class="next-goal-item__lock" aria-hidden="true">🔒</span>
         </div>
     `).join('');
 }
@@ -157,6 +160,20 @@ async function renderStats() {
     document.getElementById('stat-level-sub').textContent = level.sub;
     const emojiEl = document.getElementById('stats-level-emoji');
     if (emojiEl) emojiEl.textContent = level.emoji;
+
+    // Progress bar to next level
+    const levelBarWrap = document.getElementById('stat-level-bar-wrap');
+    const levelBarFill = document.getElementById('stat-level-bar-fill');
+    const levelBarLabel = document.getElementById('stat-level-bar-label');
+    if (levelBarWrap && level.nextLevel) {
+        levelBarWrap.style.display = 'block';
+        setTimeout(() => { if (levelBarFill) levelBarFill.style.width = level.progressToNext + '%'; }, 80);
+        if (levelBarLabel) levelBarLabel.textContent = `${level.progressToNext}% to ${level.nextLevel.emoji} ${level.nextLevel.name} (${level.nextRequirements.scoreNeeded} pts needed)`;
+    } else if (levelBarWrap) {
+        levelBarWrap.style.display = 'block';
+        if (levelBarFill) levelBarFill.style.width = '100%';
+        if (levelBarLabel) levelBarLabel.textContent = '🏆 Maximum level reached!';
+    }
 
     // Save level to localStorage so it's available in other pages without refetching
     localStorage.setItem('cn_user_level', JSON.stringify({ name: level.name, emoji: level.emoji }));

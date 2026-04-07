@@ -11,6 +11,7 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const { checkAndEmitAchievements } = require('../utils/check-achievements');
 
 const router = express.Router();
 
@@ -71,6 +72,7 @@ router.post('/:consoleId', authRequired, async (req, res) => {
                 [req.user.id, consoleId]
             );
             res.json({ success: true, isFavorite: true });
+            checkAndEmitAchievements(req.app.get('io'), req.user.id).catch(() => {});
         }
     } catch (err) {
         console.error('Favorites toggle error:', err);
