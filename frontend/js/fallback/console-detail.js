@@ -502,14 +502,11 @@
         Promise.all([
             loadImageDimensions(),
             (function () {
-                var lang = localStorage.getItem('cnote_lang') || 'en';
-                var path = '../../../js/data/consoles-' + lang + '.json';
+                // Nu mai încercăm consoles.json, doar consoles-en.json sau API
                 if (window.location.protocol === 'file:') {
-                    return loadJsonWithXhr(path).catch(function() {
-                        return loadJsonWithXhr('../../../js/data/consoles-en.json').catch(function() { return window.CONSOLES_DATA || null; });
-                    });
+                    return loadJsonWithXhr('../../../js/data/consoles-en.json').catch(function() { return window.CONSOLES_DATA || null; });
                 }
-                return fetch(path).then(function (res) {
+                return fetch('/api/consoles?lang=en').then(function (res) {
                     if (!res.ok) throw new Error('HTTP ' + res.status);
                     return res.json();
                 }).catch(function() {

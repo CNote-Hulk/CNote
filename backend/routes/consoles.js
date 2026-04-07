@@ -25,6 +25,21 @@ router.get('/', async (req, res) => {
 	}
 });
 
+// GET /api/consoles/visited — Get all visited console IDs for current user
+router.get('/visited', require('../middleware/auth').authRequired, async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const result = await pool.query(
+            'SELECT console_id FROM user_console_visits WHERE user_id = $1',
+            [userId]
+        );
+        res.json({ success: true, consoles: result.rows.map(r => r.console_id) });
+    } catch (err) {
+        console.error('GET /api/consoles/visited error:', err);
+        res.status(500).json({ success: false, error: 'Failed to fetch visited consoles.' });
+    }
+});
+
 // GET /api/consoles/:id?lang=en  — single console by id
 router.get('/:id', async (req, res) => {
 	const lang = ALLOWED_LANGS.includes(req.query.lang) ? req.query.lang : 'en';
@@ -67,21 +82,6 @@ router.post('/visit', require('../middleware/auth').authRequired, async (req, re
     } catch (err) {
         console.error('POST /api/consoles/visit error:', err);
         res.status(500).json({ success: false, error: 'Failed to record visit.' });
-    }
-});
-
-// GET /api/consoles/visited — Get all visited console IDs for current user
-router.get('/visited', require('../middleware/auth').authRequired, async (req, res) => {
-    const userId = req.user.id;
-    try {
-        const result = await pool.query(
-            'SELECT console_id FROM user_console_visits WHERE user_id = $1',
-            [userId]
-        );
-        res.json({ success: true, consoles: result.rows.map(r => r.console_id) });
-    } catch (err) {
-        console.error('GET /api/consoles/visited error:', err);
-        res.status(500).json({ success: false, error: 'Failed to fetch visited consoles.' });
     }
 });
 

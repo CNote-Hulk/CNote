@@ -33,7 +33,7 @@
         });
     }
 
-    // === FALLBACK: Try loading consoles.json, else use embedded data ===
+    // === FALLBACK: Try loading consoles-en.json, else use embedded data ===
     const selectA = document.getElementById('console-a-select');
     const selectB = document.getElementById('console-b-select');
     const display = document.getElementById('comparison-display');
@@ -70,14 +70,12 @@
 
     /** Try loading console data for current language */
     function tryFetchJson() {
-        const lang = localStorage.getItem('cnote_lang') || 'en';
-        const path = '../../js/data/consoles-' + lang + '.json';
+        // Nu mai încercăm consoles.json, doar consoles-en.json sau API
         if (window.location.protocol === 'file:') {
-            return loadJsonWithXhr(path).catch(() => {
-                return loadJsonWithXhr('../../js/data/consoles-en.json').catch(() => window.CONSOLES_DATA || null);
-            });
+            return loadJsonWithXhr('../../js/data/consoles-en.json').catch(() => window.CONSOLES_DATA || null);
         }
-        return fetch(path)
+        // În mod HTTP, încearcă API-ul, apoi consoles-en.json
+        return fetch('/api/consoles?lang=en')
             .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
             .catch(() => {
                 return fetch('../../js/data/consoles-en.json')

@@ -1,3 +1,56 @@
+/* Alert Working (custom info alert for working sections) */
+.alert-working {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(90deg, rgba(var(--accent-rgb),0.10) 0%, rgba(40,40,40,0.95) 100%);
+    border: 1.5px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 12px rgba(var(--accent-rgb),0.08);
+}
+.alert-working__icon {
+    font-size: 1.5em;
+    filter: drop-shadow(0 1px 2px rgba(var(--accent-rgb),0.15));
+}
+
+/* Badge for 'In working' */
+.badge-working {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(var(--accent-rgb),0.10);
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow: 0 1px 6px rgba(var(--accent-rgb),0.07);
+    letter-spacing: 0.01em;
+    margin-top: 10px;
+}
+
+/* Custom Progress Bar for dashboard */
+.custom-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(var(--accent-rgb),0.10);
+    border-radius: 6px;
+    margin: 10px 0 0 0;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(var(--accent-rgb),0.07);
+}
+.custom-progress-bar__fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color) 60%, #fffbe6 100%);
+    border-radius: 6px 0 0 6px;
+    transition: width 0.4s cubic-bezier(.4,1.4,.6,1);
+}
 /**
  * Card Component - Refined Documentary Style
  */

@@ -558,6 +558,7 @@ body.search-open {
 
 .profile-dropdown__lang-select {
     max-width: 100%;
+    width: auto;
     box-sizing: border-box;
 }
 
