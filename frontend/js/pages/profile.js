@@ -102,6 +102,14 @@ function initSettings() {
     const adminBadge = document.getElementById('profile-admin-badge');
     if (adminBadge && user.role === 'admin') adminBadge.hidden = false;
 
+    const levelEl = document.getElementById('profile-level');
+    if (levelEl) {
+        try {
+            const storedLevel = JSON.parse(localStorage.getItem('cn_user_level') || 'null');
+            if (storedLevel) { levelEl.textContent = `${storedLevel.emoji} ${storedLevel.name}`; levelEl.hidden = false; }
+        } catch { /* ignore */ }
+    }
+
     // ═══ AVATAR ═══
     const avatarBtn = document.getElementById('profile-avatar');
     const avatarInput = document.getElementById('avatar-upload');
@@ -375,6 +383,7 @@ function initSettings() {
                 method: 'PUT', headers, credentials: 'include',
                 body: JSON.stringify({ consoles: ownedList })
             });
+            window.dispatchEvent(new CustomEvent('cn:owned-changed'));
         } catch { /* ignore */ }
 
         document.getElementById('profile-name').textContent = username;
@@ -437,6 +446,7 @@ function initSettings() {
                 if (res.ok && data.success !== false) {
                     consolesMsg.textContent = 'Consoles saved.';
                     consolesMsg.style.color = 'var(--success, #4ade80)';
+                    window.dispatchEvent(new CustomEvent('cn:owned-changed'));
                 } else {
                     consolesMsg.textContent = data.error || 'Failed to save consoles.';
                     consolesMsg.style.color = 'var(--error, #e57373)';

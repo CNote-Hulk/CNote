@@ -88,6 +88,7 @@ async function init() {
                     heart.classList.toggle('active', data.isFavorite);
                     heart.innerHTML = data.isFavorite ? '♥' : '♡';
                     heart.title = data.isFavorite ? 'Remove from favorites' : 'Add to favorites';
+                    window.dispatchEvent(new CustomEvent('cn:favorite-changed', { detail: { isFavorite: data.isFavorite } }));
                 }
             } catch { /* silent */ }
         });

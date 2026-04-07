@@ -108,19 +108,49 @@ class App {
     }
 
     initAchievements() {
-        const checkAndNotify = () => {
+        const fetchAndCheck = async () => {
             const user = AuthModule.getCurrentUser();
             if (!user) return;
-            const awarded = AchievementsModule.checkAndAward(user.id);
+
+            const token = localStorage.getItem('cn_token');
+            const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+            const opts = { headers, credentials: 'include' };
+
+            const daysMember = Math.max(1, Math.floor((Date.now() - new Date(user.created_at)) / (1000 * 60 * 60 * 24)) + 1);
+
+            // Fetch all relevant counts from server in parallel
+            const [visitedRes, friendsRes, favsRes, ownedRes] = await Promise.allSettled([
+                fetch('/api/consoles/visited', opts).then(r => r.ok ? r.json() : {}),
+                fetch('/api/friends',          opts).then(r => r.ok ? r.json() : {}),
+                fetch('/api/favorites',        opts).then(r => r.ok ? r.json() : {}),
+                fetch('/api/owned-consoles',   opts).then(r => r.ok ? r.json() : {}),
+            ]);
+
+            const stats = {
+                visitedConsoles: Array.isArray(visitedRes.value?.consoles) ? visitedRes.value.consoles.length : 0,
+                friends:         Array.isArray(friendsRes.value?.friends)  ? friendsRes.value.friends.length  : 0,
+                favorites:       Array.isArray(favsRes.value?.favorites)   ? favsRes.value.favorites.length   : 0,
+                owned:           Array.isArray(ownedRes.value?.consoles)   ? ownedRes.value.consoles.length   : 0,
+                daysMember,
+            };
+
+            const awarded = AchievementsModule.checkAndAward(user.id, stats);
             if (awarded.length) {
                 AchievementsModule.showUnlockNotifications(awarded);
             }
         };
 
-        checkAndNotify();
-        window.addEventListener('cn:lesson-completed', checkAndNotify);
-        window.addEventListener('cn:console-visited', checkAndNotify);
-        window.addEventListener('cn:quiz-finished', checkAndNotify);
+        // Run on page load (non-blocking)
+        fetchAndCheck();
+
+        // Re-run whenever relevant user actions fire
+        window.addEventListener('cn:console-visited',  fetchAndCheck);
+        window.addEventListener('cn:favorite-changed', fetchAndCheck);
+        window.addEventListener('cn:friend-changed',   fetchAndCheck);
+        window.addEventListener('cn:owned-changed',    fetchAndCheck);
+        // lesson/quiz kept for when those features ship
+        window.addEventListener('cn:lesson-completed', fetchAndCheck);
+        window.addEventListener('cn:quiz-finished',    fetchAndCheck);
     }
 
     /**

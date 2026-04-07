@@ -1,20 +1,18 @@
 /**
  * Statistics Page Script (statistici.html)
- * Computes and displays personal progress dashboard:
- * lessons, courses, achievements, quiz stats, and user level.
+ * Displays personal progress dashboard:
+ * achievements, console visits, friends, favorites, owned consoles.
+ * Quiz / lesson / course stats are in working — shown as 🚧.
  */
 import { AuthModule } from '../modules/auth.js';
-import { ProgressModule } from '../modules/progress.js';
 import { AchievementsModule } from '../modules/achievements.js';
 
 
 let user = AuthModule.getCurrentUser();
 if (!user) {
-    // Încearcă să recuperezi userul din server dacă există token
     AuthModule.autoLogin().then(u => {
         if (u && u.id) {
             user = u;
-            // Re-randează statistica cu userul corect
             renderStats();
         } else {
             window.location.href = 'login.html';
@@ -24,110 +22,69 @@ if (!user) {
     renderStats();
 }
 
-/** Get count of unique consoles visited from server */
+/** Build auth headers with JWT token */
+function authHeaders() {
+    const token = localStorage.getItem('cn_token');
+    return token ? { 'Authorization': 'Bearer ' + token } : {};
+}
+
+/** GET /api/consoles/visited — unique console pages visited */
 async function getVisitedConsolesCount() {
     try {
-        const headers = {};
-        const token = localStorage.getItem('cn_token');
-        if (token) headers['Authorization'] = 'Bearer ' + token;
-        const resp = await fetch('/api/consoles/visited', { headers, credentials: 'include' });
+        const resp = await fetch('/api/consoles/visited', { headers: authHeaders(), credentials: 'include' });
         if (!resp.ok) return 0;
         const data = await resp.json();
-        if (data && Array.isArray(data.consoles)) {
-            return data.consoles.length;
-        }
-        return 0;
+        return Array.isArray(data.consoles) ? data.consoles.length : 0;
     } catch {
         return 0;
     }
 }
 
-// Listen for console visit events from other tabs/pages and update stat instantly
-if (typeof window !== 'undefined') {
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'cn_console_visited_event') {
-            // Re-fetch and update the visited consoles stat
-            getVisitedConsolesCount().then((count) => {
-                const el = document.getElementById('stat-consoles-visited');
-                if (el) el.textContent = String(count);
-            });
-        }
-    });
-}
-
-/** Aggregate quiz stats: total attempts, average best score, perfect lessons */
-function getQuizStatsSummary(userId) {
+/** GET /api/friends — number of accepted friends */
+async function getFriendsCount() {
     try {
-        const all = JSON.parse(localStorage.getItem('cn_quiz_stats')) || {};
-        const byCourse = all[userId] || {};
-        let attempts = 0;
-        let bestSum = 0;
-        let bestCount = 0;
-        let perfectLessons = 0;
-
-        Object.values(byCourse).forEach((courseStats) => {
-            if (!courseStats || typeof courseStats !== 'object') return;
-            Object.values(courseStats).forEach((lessonStats) => {
-                if (!lessonStats || typeof lessonStats !== 'object') return;
-                attempts += Number(lessonStats.attempts || 0);
-
-                const best = Number(lessonStats.best_percent || 0);
-                if (!Number.isNaN(best)) {
-                    bestSum += best;
-                    bestCount += 1;
-                }
-
-                if (best >= 100) perfectLessons += 1;
-            });
-        });
-
-        return {
-            attempts,
-            bestAverage: bestCount > 0 ? Math.round(bestSum / bestCount) : 0,
-            perfectLessons
-        };
-    } catch {
-        return { attempts: 0, bestAverage: 0, perfectLessons: 0 };
-    }
-}
-
-/** Count unique lessons the user has visited */
-function getVisitedLessonsCount(userId) {
-    try {
-        const all = JSON.parse(localStorage.getItem('cn_lesson_visits')) || {};
-        const userVisits = all[userId] || {};
-        const unique = new Set();
-
-        Object.values(userVisits).forEach((courseVisits) => {
-            if (!Array.isArray(courseVisits)) return;
-            courseVisits.forEach((lessonId) => unique.add(String(lessonId)));
-        });
-
-        return unique.size;
+        const resp = await fetch('/api/friends', { headers: authHeaders(), credentials: 'include' });
+        if (!resp.ok) return 0;
+        const data = await resp.json();
+        return Array.isArray(data.friends) ? data.friends.length : 0;
     } catch {
         return 0;
     }
 }
 
-/** Compute user level from weighted lesson/achievement/quiz scores */
-function computeLevel(lessonsPct, achievementsPct, quizAverage) {
-    const score = Math.round((lessonsPct * 0.45) + (achievementsPct * 0.35) + (quizAverage * 0.20));
-    if (score >= 90) return { name: 'Legend', sub: 'You have fully mastered the platform.', emoji: '👑' };
-    if (score >= 75) return { name: 'Expert', sub: 'Excellent performance across all areas.', emoji: '🔥' };
-    if (score >= 55) return { name: 'Advanced', sub: 'Solid progress, keep the momentum.', emoji: '⚡' };
-    if (score >= 35) return { name: 'Intermediate', sub: 'Good foundation, keep building.', emoji: '🌿' };
-    return { name: 'Novice', sub: 'You are just getting started. Keep going through lessons and quizzes.', emoji: '🌱' };
+/** GET /api/favorites — number of favorited consoles */
+async function getFavoritesCount() {
+    try {
+        const resp = await fetch('/api/favorites', { headers: authHeaders(), credentials: 'include' });
+        if (!resp.ok) return 0;
+        const data = await resp.json();
+        return Array.isArray(data.favorites) ? data.favorites.length : 0;
+    } catch {
+        return 0;
+    }
+}
+
+/** GET /api/owned-consoles — number of owned consoles */
+async function getOwnedCount() {
+    try {
+        const resp = await fetch('/api/owned-consoles', { headers: authHeaders(), credentials: 'include' });
+        if (!resp.ok) return 0;
+        const data = await resp.json();
+        return Array.isArray(data.consoles) ? data.consoles.length : 0;
+    } catch {
+        return 0;
+    }
 }
 
 /** Render next achievement goals (up to 6 locked badges) */
 function renderGoals(badges) {
     const container = document.getElementById('next-goals');
+    if (!container) return;
     const locked = badges.filter((b) => !b.earned).slice(0, 6);
     if (!locked.length) {
         container.innerHTML = '<div class="next-goal-item">✅ You have unlocked all available achievements.</div>';
         return;
     }
-
     container.innerHTML = locked.map((b) => `
         <div class="next-goal-item">
             <span class="next-goal-item__icon">${b.icon}</span>
@@ -139,96 +96,133 @@ function renderGoals(badges) {
     `).join('');
 }
 
-/** Compute all stats and update DOM elements */
+/** Compute all stats and update DOM */
 async function renderStats() {
-    const courses = ProgressModule.COURSES;
-    const allProgress = ProgressModule.getAllProgress(user.id);
-
-    const totalLessons = courses.reduce((sum, c) => sum + Number(c.totalLessons || 0), 0);
-    const completedLessons = courses.reduce((sum, c) => {
-        const done = allProgress[c.id] || [];
-        return sum + done.length;
-    }, 0);
-
-    const completedCourses = courses.reduce((sum, c) => {
-        const done = allProgress[c.id] || [];
-        return sum + (done.length >= Number(c.totalLessons || 0) ? 1 : 0);
-    }, 0);
-
-    const lessonsPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
-
-    // Inițial, badge-urile pot fi incomplete, le vom actualiza după ce verificăm cu datele de la server
-    let allBadges = AchievementsModule.getAllBadges(user.id);
-    let earnedBadges = allBadges.filter((b) => b.earned).length;
-    let achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
-
-    const quiz = getQuizStatsSummary(user.id);
-    // Obține numărul de console vizitate și actualizează statistica
-    const visitedConsoles = await getVisitedConsolesCount();
-    document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);
-    // Check and award achievements using the server value
-    const awarded = AchievementsModule.checkAndAward(user.id, visitedConsoles);
-    // Actualizează lista de badge-uri după ce s-au deblocat
-    allBadges = AchievementsModule.getAllBadges(user.id);
-    earnedBadges = allBadges.filter((b) => b.earned).length;
-    achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
-    document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
-    document.getElementById('stat-achievements-sub').textContent = `of ${allBadges.length} badges (${achievementsPct}%)`;
-    renderGoals(allBadges);
-    if (awarded && awarded.length > 0) {
-        AchievementsModule.showUnlockNotifications(awarded);
-    }
-    const visitedLessons = getVisitedLessonsCount(user.id);
-
-    const createdAt = new Date(user.created_at);
-    const now = new Date();
-    const daysMember = Math.max(1, Math.floor((now - createdAt) / (1000 * 60 * 60 * 24)) + 1);
-
-    const level = computeLevel(lessonsPct, achievementsPct, quiz.bestAverage);
-
-    document.getElementById('stat-lessons-completed').textContent = String(completedLessons);
-    document.getElementById('stat-lessons-sub').textContent = `of ${totalLessons} lessons (${lessonsPct}%)`;
-    document.getElementById('stat-lessons-fill').style.width = `${lessonsPct}%`;
-    document.getElementById('stat-lessons-visited').textContent = String(visitedLessons);
-    document.getElementById('stat-lessons-visited-sub').textContent = `of ${totalLessons} lessons`;
-
-    document.getElementById('stat-courses-completed').textContent = String(completedCourses);
-    document.getElementById('stat-courses-sub').textContent = `of ${courses.length} courses`;
-
-    document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
-    document.getElementById('stat-achievements-sub').textContent = `of ${allBadges.length} badges (${achievementsPct}%)`;
-
-    document.getElementById('stat-quiz-attempts').textContent = String(quiz.attempts);
-    document.getElementById('stat-quiz-sub').textContent = `avg best score: ${quiz.bestAverage}%`;
-
-    document.getElementById('stat-perfect-lessons').textContent = String(quiz.perfectLessons);
-    document.getElementById('stat-days-member').textContent = String(daysMember);
-
-    document.getElementById('stat-level').textContent = level.name;
-    document.getElementById('stat-level-sub').textContent = level.sub;
-
-    // Update level emoji
-    const emojiEl = document.getElementById('stats-level-emoji');
-    if (emojiEl) emojiEl.textContent = level.emoji;
-
     // Update username in greeting
     const usernameEl = document.getElementById('statsd-username');
     if (usernameEl) usernameEl.textContent = user.username || 'User';
 
-    // Update ring SVG
-    const ringArc = document.getElementById('stats-ring-arc');
-    if (ringArc) {
-        const circumference = 2 * Math.PI * 42; // r = 42
-        const offset = circumference - (circumference * lessonsPct / 100);
-        ringArc.style.strokeDasharray = String(circumference);
-        ringArc.style.strokeDashoffset = String(offset);
+    // Days on platform
+    const createdAt = new Date(user.created_at);
+    const daysMember = Math.max(1, Math.floor((Date.now() - createdAt) / (1000 * 60 * 60 * 24)) + 1);
+    document.getElementById('stat-days-member').textContent = String(daysMember);
+
+    // Fetch all server data in parallel
+    const [visitedConsoles, friendsCount, favoritesCount, ownedCount] = await Promise.all([
+        getVisitedConsolesCount(),
+        getFriendsCount(),
+        getFavoritesCount(),
+        getOwnedCount(),
+    ]);
+
+    // Consoles visited
+    document.getElementById('stat-consoles-visited').textContent = String(visitedConsoles);
+
+    // Friends
+    document.getElementById('stat-friends').textContent = String(friendsCount);
+
+    // Favorite consoles
+    document.getElementById('stat-favorites').textContent = String(favoritesCount);
+
+    // Owned consoles
+    document.getElementById('stat-owned').textContent = String(ownedCount);
+
+    // Achievements — check and award with all available stats
+    const awarded = AchievementsModule.checkAndAward(user.id, {
+        visitedConsoles,
+        friends: friendsCount,
+        favorites: favoritesCount,
+        owned: ownedCount,
+        daysMember,
+    });
+    const allBadges = AchievementsModule.getAllBadges(user.id);
+    const earnedBadges = allBadges.filter((b) => b.earned).length;
+    const achievementsPct = allBadges.length > 0 ? Math.round((earnedBadges / allBadges.length) * 100) : 0;
+
+    document.getElementById('stat-achievements-earned').textContent = String(earnedBadges);
+    document.getElementById('stat-achievements-sub').textContent = `of ${allBadges.length} badges (${achievementsPct}%)`;
+
+    if (awarded && awarded.length > 0) {
+        AchievementsModule.showUnlockNotifications(awarded);
     }
 
-    // Update ring percentage text
-    const ringPct = document.getElementById('stat-lessons-pct');
-    if (ringPct) ringPct.textContent = `${lessonsPct}%`;
-
     renderGoals(allBadges);
+
+    // Level — based on achievements + console exploration
+    const level = AchievementsModule.computeLevel(achievementsPct, visitedConsoles, allBadges.length);
+    document.getElementById('stat-level').textContent = level.name;
+    document.getElementById('stat-level-sub').textContent = level.sub;
+    const emojiEl = document.getElementById('stats-level-emoji');
+    if (emojiEl) emojiEl.textContent = level.emoji;
+
+    // Save level to localStorage so it's available in other pages without refetching
+    localStorage.setItem('cn_user_level', JSON.stringify({ name: level.name, emoji: level.emoji }));
+
+    // Populate the expandable levels panel
+    renderLevelsPanel(level);
+
+    // Make level card toggle the panel on click / keyboard
+    const levelCard = document.getElementById('level-card');
+    const levelsPanel = document.getElementById('levels-panel');
+    const expandHint = document.getElementById('level-expand-hint');
+    if (levelCard && levelsPanel) {
+        const toggle = () => {
+            const open = levelsPanel.hidden;
+            levelsPanel.hidden = !open;
+            levelCard.setAttribute('aria-expanded', String(open));
+            if (expandHint) expandHint.textContent = open ? '▲ Hide levels' : '▼ See all levels';
+            if (open) levelsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        };
+        levelCard.addEventListener('click', toggle);
+        levelCard.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    }
 }
 
-// Nu mai apela direct, va fi apelat după ce userul e sigur încărcat
+/** Render the all-levels expandable panel */
+function renderLevelsPanel(currentLevel) {
+    const list = document.getElementById('levels-list');
+    if (!list) return;
+
+    list.innerHTML = AchievementsModule.LEVELS.map((lvl, idx) => {
+        const isCurrent = lvl.name === currentLevel.name;
+        const isPast    = idx < currentLevel.index;
+        const isFuture  = idx > currentLevel.index;
+
+        let statusIcon, statusClass;
+        if (isPast)    { statusIcon = '✓'; statusClass = 'level-row--done'; }
+        else if (isCurrent) { statusIcon = currentLevel.emoji; statusClass = 'level-row--current'; }
+        else           { statusIcon = '○'; statusClass = 'level-row--locked'; }
+
+        // Progress bar inside each row
+        let barHtml = '';
+        if (isCurrent && currentLevel.nextLevel) {
+            barHtml = `<div class="level-row__bar"><div class="level-row__bar-fill" style="width:${currentLevel.progressToNext}%"></div></div>
+                       <span class="level-row__bar-label">${currentLevel.progressToNext}% to ${currentLevel.nextLevel.name}</span>`;
+        } else if (isPast) {
+            barHtml = `<div class="level-row__bar"><div class="level-row__bar-fill" style="width:100%"></div></div>`;
+        }
+
+        return `
+            <div class="level-row ${statusClass}${isCurrent ? ' level-row--active' : ''}">
+                <span class="level-row__status">${statusIcon}</span>
+                <div class="level-row__info">
+                    <div class="level-row__header">
+                        <strong class="level-row__name">${lvl.emoji} ${lvl.name}</strong>
+                        <span class="level-row__score-req">${lvl.minScore > 0 ? `≥ ${lvl.minScore} pts` : 'Starting level'}</span>
+                    </div>
+                    <div class="level-row__desc">${isCurrent ? lvl.description : (isFuture ? lvl.requirements : lvl.description)}</div>
+                    ${barHtml}
+                </div>
+            </div>`;
+    }).join('');
+}
+
+// Re-fetch consoles visited when another tab triggers a visit event
+window.addEventListener('storage', (e) => {
+    if (e.key === 'cn_console_visited_event') {
+        getVisitedConsolesCount().then((count) => {
+            const el = document.getElementById('stat-consoles-visited');
+            if (el) el.textContent = String(count);
+        });
+    }
+});

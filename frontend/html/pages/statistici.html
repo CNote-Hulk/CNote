@@ -29,7 +29,7 @@
                             <span id="statsd-month">—</span>
                         </div>
                     </div>
-                    <a href="invata.html" class="statsd-cta" data-i18n="stats_continue_btn">Continue Learning →</a>
+                    <span class="statsd-cta" style="opacity:0.5;cursor:not-allowed;" title="In working">🚧 Continue Learning</span>
                 </div>
                 <div class="statsd-topbar__right">
                     <h1 class="statsd-greeting">Hey, <span id="statsd-username">User</span>! 👋</h1>
@@ -40,8 +40,8 @@
             <!-- ═══ STATS GRID ═══ -->
             <div class="statsd-grid">
 
-                <!-- 1 — Lessons progress (wide, with ring) -->
-                <article class="statsd-card statsd-card--ring statsd-card--wide">
+                <!-- 1 — Lessons progress (wide, with ring) — IN WORKING -->
+                <article class="statsd-card statsd-card--ring statsd-card--wide" style="opacity:0.45;pointer-events:none;">
                     <span class="statsd-card__label" data-i18n="stats_lessons_completed">Lessons Completed</span>
                     <div class="statsd-ring-layout">
                         <div class="statsd-ring">
@@ -50,13 +50,12 @@
                                 <circle class="statsd-ring__fill" cx="50" cy="50" r="42" id="stats-ring-arc"/>
                             </svg>
                             <div class="statsd-ring__center">
-                                <span class="statsd-ring__pct" id="stat-lessons-pct">0%</span>
+                                <span class="statsd-ring__pct" id="stat-lessons-pct">🚧</span>
                             </div>
                         </div>
                         <div class="statsd-ring__info">
-                            <div class="statsd-card__num" id="stat-lessons-completed">0</div>
-                            <div class="statsd-card__sub" id="stat-lessons-sub">of 0 lessons</div>
-                            <!-- Hidden progress bar kept for JS compatibility -->
+                            <div class="statsd-card__num" id="stat-lessons-completed">🚧</div>
+                            <div class="statsd-card__sub" id="stat-lessons-sub" data-i18n="stats_working">in working</div>
                             <div class="progress-bar" style="display:none">
                                 <div class="progress-bar__fill" id="stat-lessons-fill" style="width:0%"></div>
                             </div>
@@ -64,12 +63,12 @@
                     </div>
                 </article>
 
-                <!-- 2 — Quizzes -->
-                <article class="statsd-card">
+                <!-- 2 — Quizzes — IN WORKING -->
+                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
                     <span class="statsd-card__icon" aria-hidden="true">📝</span>
                     <span class="statsd-card__label" data-i18n="stats_quizzes">Quizzes Done</span>
-                    <div class="statsd-card__num" id="stat-quiz-attempts">0</div>
-                    <div class="statsd-card__sub" id="stat-quiz-sub">avg best score: 0%</div>
+                    <div class="statsd-card__num" id="stat-quiz-attempts">🚧</div>
+                    <div class="statsd-card__sub" id="stat-quiz-sub" data-i18n="stats_working">in working</div>
                 </article>
 
                 <!-- 3 — Achievements (accent card) -->
@@ -80,39 +79,63 @@
                     <div class="statsd-card__sub" id="stat-achievements-sub">of 0 badges</div>
                 </article>
 
-                <!-- 4 — Courses -->
-                <article class="statsd-card">
+                <!-- 4 — Courses — IN WORKING -->
+                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
                     <span class="statsd-card__icon" aria-hidden="true">📚</span>
                     <span class="statsd-card__label" data-i18n="stats_courses_completed">Courses Completed</span>
-                    <div class="statsd-card__num" id="stat-courses-completed">0</div>
-                    <div class="statsd-card__sub" id="stat-courses-sub">of 0 courses</div>
+                    <div class="statsd-card__num" id="stat-courses-completed">🚧</div>
+                    <div class="statsd-card__sub" id="stat-courses-sub" data-i18n="stats_working">in working</div>
                 </article>
 
-                <!-- 5 — Perfect quizzes -->
-                <article class="statsd-card">
+                <!-- 5 — Perfect quizzes — IN WORKING -->
+                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
                     <span class="statsd-card__icon" aria-hidden="true">⭐</span>
                     <span class="statsd-card__label" data-i18n="stats_perfect">Perfect Quizzes</span>
-                    <div class="statsd-card__num" id="stat-perfect-lessons">0</div>
-                    <div class="statsd-card__sub" data-i18n="stats_perfect_sub">100% score</div>
+                    <div class="statsd-card__num" id="stat-perfect-lessons">🚧</div>
+                    <div class="statsd-card__sub" data-i18n="stats_working">in working</div>
                 </article>
 
-                <!-- 6 — Lessons visited -->
-                <article class="statsd-card">
+                <!-- 6 — Lessons visited — IN WORKING -->
+                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
                     <span class="statsd-card__icon" aria-hidden="true">👁️</span>
                     <span class="statsd-card__label" data-i18n="stats_lessons_visited">Lessons Visited</span>
-                    <div class="statsd-card__num" id="stat-lessons-visited">0</div>
-                    <div class="statsd-card__sub" id="stat-lessons-visited-sub">of 0 lessons</div>
+                    <div class="statsd-card__num" id="stat-lessons-visited">🚧</div>
+                    <div class="statsd-card__sub" id="stat-lessons-visited-sub" data-i18n="stats_working">in working</div>
                 </article>
 
                 <!-- 7 — Consoles visited -->
                 <article class="statsd-card">
                     <span class="statsd-card__icon" aria-hidden="true">🕹️</span>
                     <span class="statsd-card__label" data-i18n="stats_consoles_visited">Consoles Visited</span>
-                    <div class="statsd-card__num" id="stat-consoles-visited">0</div>
+                    <div class="statsd-card__num" id="stat-consoles-visited">—</div>
                     <div class="statsd-card__sub" data-i18n="stats_consoles_sub">unique pages explored</div>
                 </article>
 
-                <!-- 8 — Days on platform -->
+                <!-- 8 — Friends -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">👥</span>
+                    <span class="statsd-card__label" data-i18n="stats_friends">Friends</span>
+                    <div class="statsd-card__num" id="stat-friends">—</div>
+                    <div class="statsd-card__sub" data-i18n="stats_friends_sub">on the platform</div>
+                </article>
+
+                <!-- 9 — Favorite consoles -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">❤️</span>
+                    <span class="statsd-card__label" data-i18n="stats_favorites">Favorite Consoles</span>
+                    <div class="statsd-card__num" id="stat-favorites">—</div>
+                    <div class="statsd-card__sub" data-i18n="stats_favorites_sub">consoles you love</div>
+                </article>
+
+                <!-- 10 — Owned consoles -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">🎮</span>
+                    <span class="statsd-card__label" data-i18n="stats_owned">Owned Consoles</span>
+                    <div class="statsd-card__num" id="stat-owned">—</div>
+                    <div class="statsd-card__sub" data-i18n="stats_owned_sub">in your collection</div>
+                </article>
+
+                <!-- 11 — Days on platform -->
                 <article class="statsd-card">
                     <span class="statsd-card__icon" aria-hidden="true">📅</span>
                     <span class="statsd-card__label" data-i18n="stats_days">Days on Platform</span>
@@ -120,19 +143,28 @@
                     <div class="statsd-card__sub" data-i18n="stats_days_sub">since account creation</div>
                 </article>
 
-                <!-- 9 — Level (wide accent card) -->
-                <article class="statsd-card statsd-card--level statsd-card--wide">
+                <!-- 12 — Level (wide accent card, clickable) -->
+                <article class="statsd-card statsd-card--level statsd-card--wide statsd-card--clickable" id="level-card" role="button" tabindex="0" aria-expanded="false" title="Click to see all levels">
                     <div class="statsd-level">
                         <div class="statsd-level__body">
                             <span class="statsd-card__label" data-i18n="stats_level">Overall Level</span>
                             <div class="statsd-card__num statsd-card__num--level" id="stat-level">Novice</div>
                             <div class="statsd-card__sub" id="stat-level-sub" data-i18n="stats_level_sub">Keep going for higher rank</div>
                         </div>
-                        <span class="statsd-level__emoji" id="stats-level-emoji" aria-hidden="true">🌱</span>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                            <span class="statsd-level__emoji" id="stats-level-emoji" aria-hidden="true">🌱</span>
+                            <span class="statsd-card__expand-hint" id="level-expand-hint">▼ See all levels</span>
+                        </div>
                     </div>
                 </article>
 
             </div>
+
+            <!-- ═══ LEVELS PANEL (expandable) ═══ -->
+            <section class="statsd-levels-panel" id="levels-panel" hidden>
+                <h2 class="statsd-goals__title">All Levels</h2>
+                <div class="levels-list" id="levels-list"></div>
+            </section>
 
             <!-- ═══ NEXT GOALS ═══ -->
             <section class="statsd-goals">

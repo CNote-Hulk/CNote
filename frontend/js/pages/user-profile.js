@@ -206,6 +206,20 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                     adminBadge.hidden = false;
                 }
 
+                // Level badge — computed from publicly available data
+                const userLevelEl = document.getElementById('user-level');
+                if (userLevelEl) {
+                    const favCount = (profile.favorite_console_ids || []).length
+                        || (profile.favorite_consoles || '').split(',').filter(Boolean).length;
+                    const ownedCount = (profile.owned_console_ids || []).length
+                        || (profile.owned_consoles || '').split(',').filter(Boolean).length;
+                    const friendCount = typeof profile.friend_count === 'number' ? profile.friend_count : 0;
+                    const daysMember = Math.max(1, Math.floor((Date.now() - new Date(profile.created_at)) / (1000 * 60 * 60 * 24)) + 1);
+                    const lvl = AchievementsModule.computePublicLevel(friendCount, favCount, ownedCount, daysMember);
+                    userLevelEl.textContent = `${lvl.emoji} ${lvl.name}`;
+                    userLevelEl.hidden = false;
+                }
+
                 // Console lists
                 const consolesSection = document.getElementById('user-profile-consoles');
                 if (consolesSection) {
@@ -333,11 +347,12 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                             <button class="user-action-btn user-action-btn--reject" id="reject-friend-btn">Reject</button>
                         `;
                         document.getElementById('accept-friend-btn').addEventListener('click', async () => {
-                            await fetch(`${API_BASE_URL}/friends/accept/${data.requestId}`, {
+                            const res = await fetch(`${API_BASE_URL}/friends/accept/${data.requestId}`, {
                                 method: 'POST',
                                 headers,
                                 credentials: 'include'
                             });
+                            if (res.ok) window.dispatchEvent(new CustomEvent('cn:friend-changed'));
                             renderFriendButton(container, targetUserId);
                         });
                         document.getElementById('reject-friend-btn').addEventListener('click', async () => {

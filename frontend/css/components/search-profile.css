@@ -492,6 +492,37 @@ body.search-open {
     text-overflow: ellipsis;
 }
 
+.profile-dropdown__level {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(var(--accent-rgb, 127,127,127), 0.15);
+    color: var(--accent-color, var(--text-light));
+    border: 1px solid rgba(var(--accent-rgb, 127,127,127), 0.25);
+    letter-spacing: 0.02em;
+}
+
+/* Level badge — used in sidebar, profil.html, user-profile.html */
+.profile-level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(var(--accent-rgb, 127,127,127), 0.12);
+    color: var(--accent-color, var(--text-light));
+    border: 1px solid rgba(var(--accent-rgb, 127,127,127), 0.22);
+    letter-spacing: 0.02em;
+    margin-top: 4px;
+}
+
 .profile-dropdown__profile:hover .profile-dropdown__avatar {
     transform: scale(1.04);
 }

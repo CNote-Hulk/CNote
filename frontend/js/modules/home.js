@@ -95,6 +95,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             adminBadge.hidden = false;
         }
 
+        // Level badge
+        let levelEl = document.getElementById('profile-level');
+        if (!levelEl) {
+            levelEl = document.createElement('span');
+            levelEl.id = 'profile-level';
+            levelEl.className = 'profile-level-badge';
+            const onlineDot = document.querySelector('.profile-online-dot');
+            if (onlineDot) onlineDot.after(levelEl);
+            else if (nameEl && nameEl.parentElement) nameEl.parentElement.appendChild(levelEl);
+        }
+        const storedLevel = (() => { try { return JSON.parse(localStorage.getItem('cn_user_level') || 'null'); } catch { return null; } })();
+        if (storedLevel && levelEl) {
+            levelEl.textContent = `${storedLevel.emoji} ${storedLevel.name}`;
+            levelEl.hidden = false;
+        }
+
         // Edit shortcuts → go to settings
         const editNameBtn = document.getElementById('edit-username-shortcut');
         const editBioBtn = document.getElementById('edit-bio-shortcut');
@@ -134,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSidebar(user);
 
             // parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, coursesRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, coursesRes, visitedRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
@@ -143,7 +159,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/forum/my-posts'),
                 apiFetch('/api/forum/liked'),
                 apiFetch('/api/achievements'),
-                apiFetch('/api/progress')
+                apiFetch('/api/progress'),
+                apiFetch('/api/consoles/visited'),
             ]);
 
             // =========================
@@ -259,6 +276,48 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // =========================
+            // LEVEL CARD (progress panel)
+            // =========================
+            const levelCard = document.getElementById('progress-level-card');
+            if (levelCard) {
+                const visitedCount = Array.isArray(visitedRes?.consoles) ? visitedRes.consoles.length : 0;
+                const localBadges  = AchievementsModule.getAllBadges(currentUser.id);
+                const earnedLocal  = localBadges.filter(b => b.earned).length;
+                const totalLocal   = localBadges.length;
+                const achPct       = totalLocal > 0 ? (earnedLocal / totalLocal) * 100 : 0;
+                const lvl          = AchievementsModule.computeLevel(achPct, visitedCount, totalLocal);
+
+                const nextHtml = lvl.nextLevel ? `
+                    <div class="level-next">
+                        <div class="level-next__label">Next: ${lvl.nextLevel.emoji} ${lvl.nextLevel.name} <span class="level-next__score">(${lvl.nextLevel.minScore} pts)</span></div>
+                        <div class="progress-bar" style="margin:6px 0 4px;">
+                            <div class="progress-bar__fill" style="width:${lvl.progressToNext}%;background:var(--accent-color);transition:width .4s;"></div>
+                        </div>
+                        <div class="level-next__hint">
+                            Need <strong>${lvl.nextRequirements.scoreNeeded} more points</strong> —
+                            earn <strong>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</strong>
+                            ${lvl.nextRequirements.consolesNeeded ? `or visit <strong>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</strong>` : ''}
+                        </div>
+                    </div>` : `<div class="level-next" style="color:var(--accent-color);font-weight:600;">🏆 Maximum level reached!</div>`;
+
+                levelCard.innerHTML = `
+                    <div class="level-card-inner">
+                        <div class="level-card-main">
+                            <span class="level-card-emoji">${lvl.emoji}</span>
+                            <div>
+                                <div class="level-card-name">${lvl.name}</div>
+                                <div class="level-card-score">Score: <strong>${lvl.score}</strong> / 100</div>
+                            </div>
+                        </div>
+                        <div class="level-card-desc">${lvl.description}</div>
+                        ${nextHtml}
+                    </div>`;
+
+                // Save to localStorage for other pages
+                localStorage.setItem('cn_user_level', JSON.stringify({ name: lvl.name, emoji: lvl.emoji }));
+            }
+
+            // =========================
             // ACHIEVEMENTS
             // =========================
             if (achievementsRes.success) {
@@ -344,7 +403,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
                 friendsRequests.querySelectorAll('.dash-request-btn--accept').forEach(btn => {
                     btn.addEventListener('click', async () => {
-                        await apiFetch(`/api/friends/accept/${encodeURIComponent(btn.dataset.requestId)}`, { method: 'POST' });
+                        const res = await apiFetch(`/api/friends/accept/${encodeURIComponent(btn.dataset.requestId)}`, { method: 'POST' });
+                        if (res && res.success !== false) window.dispatchEvent(new CustomEvent('cn:friend-changed'));
                         btn.closest('.dash-request-item').remove();
                     });
                 });

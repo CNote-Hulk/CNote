@@ -181,7 +181,7 @@
                                 <p><span data-i18n="home_continue_label">Progress:</span> <strong id="continue-progress">1/42</strong></p>
                                 <div class="progress-bar"><div id="active-progress" style="width: 2.5%;"></div></div>
                             </div>
-                            <button id="continue-btn" class="primary-btn" data-i18n="home_continue_btn">Continue</button>
+                            <span style="display:inline-flex;align-items:center;gap:6px;background:#fffbe6;border:1px solid #ffe58f;color:#ad8b00;padding:7px 14px;border-radius:8px;font-size:0.9rem;font-weight:500;">🚧 <span data-i18n="working_soon">In working</span></span>
                         </div>
                     </section>
 
@@ -190,7 +190,7 @@
                             <article class="stats-card">
                                 <span class="stats-card__icon">📊</span>
                                 <h3 data-i18n="home_stats_course">Course Progress</h3>
-                                <p><strong id="stat-progress">6%</strong></p>
+                                <p><strong>🚧</strong></p>
                             </article>
                             <article class="stats-card">
                                 <span class="stats-card__icon">🏆</span>
@@ -339,33 +339,38 @@
                         <p data-i18n="home_progress_subtitle">Track your learning journey</p>
                     </header>
 
+                    <div class="alert alert-info" style="margin-bottom:18px;background:#fffbe6;border:1px solid #ffe58f;color:#ad8b00;padding:12px 18px;border-radius:8px;font-size:1.05rem;display:flex;align-items:center;gap:10px;">
+                        <span style="font-size:1.5em;">🚧</span>
+                        <span data-i18n="home_courses_working">We are working on the <b>courses & lessons</b> section — check back soon for updates!</span>
+                    </div>
+
                     <!-- Ring + Course overview (în curând) -->
                     <section class="dashboard-section progress-overview-section">
-                        <div class="card progress-overview-card">
+                        <div class="card progress-overview-card" style="opacity:0.45;pointer-events:none;">
                             <div class="progress-ring-wrap">
                                 <svg class="progress-ring" viewBox="0 0 100 100">
                                     <circle class="progress-ring__bg" cx="50" cy="50" r="42"/>
                                     <circle class="progress-ring__fill" cx="50" cy="50" r="42" id="progress-ring-arc"/>
                                 </svg>
                                 <div class="progress-ring__center">
-                                    <span class="progress-ring__pct" id="progress-ring-pct">0%</span>
+                                    <span class="progress-ring__pct" id="progress-ring-pct">—</span>
                                 </div>
                             </div>
                             <div class="progress-overview-info">
                                 <h2 data-i18n="home_continue_title">Console Engineering</h2>
-                                <p><span data-i18n="home_continue_label">Progress:</span> <strong id="progress-continue-text">1/42</strong></p>
-                                <div class="progress-bar"><div id="progress-bar-fill" style="width: 2.5%;"></div></div>
-                                <a href="invata.html" class="primary-btn" data-i18n="home_continue_btn" style="margin-top:12px;display:inline-block;text-decoration:none;text-align:center;">Continue</a>
+                                <p><span data-i18n="home_continue_label">Progress:</span> <strong id="progress-continue-text">—</strong></p>
+                                <div class="progress-bar"><div id="progress-bar-fill" style="width: 0%;"></div></div>
+                                <span class="primary-btn" style="margin-top:12px;display:inline-block;text-align:center;cursor:not-allowed;">🚧 Coming soon</span>
                             </div>
                         </div>
                     </section>
 
                     <section class="dashboard-section stats-section">
                         <div class="stats-grid" style="grid-template-columns: repeat(2, minmax(110px, 1fr));">
-                            <article class="stats-card">
+                            <article class="stats-card" style="opacity:0.45;">
                                 <span class="stats-card__icon">📊</span>
                                 <h3 data-i18n="home_stats_course">Course Progress</h3>
-                                <p><strong id="progress-stat-course">6%</strong></p>
+                                <p><strong>🚧</strong></p>
                             </article>
                             <article class="stats-card">
                                 <span class="stats-card__icon">🏆</span>
@@ -382,11 +387,20 @@
                         </h2>
                         <div class="milestones-list" id="progress-milestones">
                             <div class="milestone-item milestone-item--done"><span class="milestone-icon">✓</span><span data-i18n="home_milestone_account">Created your account</span></div>
-                            <div class="milestone-item milestone-item--done"><span class="milestone-icon">✓</span><span data-i18n="home_milestone_first_lesson">Started first lesson</span></div>
-                            <div class="milestone-item"><span class="milestone-icon">○</span><span data-i18n="home_milestone_10_lessons">Complete 10 lessons</span></div>
-                            <div class="milestone-item"><span class="milestone-icon">○</span><span data-i18n="home_milestone_first_quiz">Pass your first quiz</span></div> -->
-                            <div class="milestone-item milestone-item--soon"><span class="milestone-icon">⏳</span> <span data-i18n="home_lessons_working">Lessons & quizzes section — <b>coming soon</b></span></div>
+                            <div class="milestone-item milestone-item--soon"><span class="milestone-icon">🚧</span><span data-i18n="home_milestone_first_lesson">Started first lesson</span></div>
+                            <div class="milestone-item milestone-item--soon"><span class="milestone-icon">🚧</span><span data-i18n="home_milestone_10_lessons">Complete 10 lessons</span></div>
+                            <div class="milestone-item milestone-item--soon"><span class="milestone-icon">🚧</span><span data-i18n="home_milestone_first_quiz">Pass your first quiz</span></div>
                             <div class="milestone-item"><span class="milestone-icon">○</span><span data-i18n="home_milestone_5_achievements">Earn 5 achievements</span></div>
+                        </div>
+                    </section>
+
+                    <section class="dashboard-section">
+                        <h2 class="panel-section-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span>Your Level</span>
+                        </h2>
+                        <div class="card dash-card" id="progress-level-card">
+                            <p class="dash-empty">Loading...</p>
                         </div>
                     </section>
                 </div>
@@ -428,16 +442,12 @@
                                 <h1 data-i18n="profile_courses">My Courses</h1>
                                 <p data-i18n="home_courses_subtitle">Track your enrolled courses and progress</p>
                             </div>
-                            <a href="invata.html" class="panel-header-link" data-i18n="home_courses_browse">Browse all →</a>
                         </div>
                     </header>
-                    <section class="dashboard-section courses-preview-section">
-                        <div class="card dash-card">
-                            <div id="home-courses-preview">
-                                <p class="dash-empty">Loading...</p>
-                            </div>
-                        </div>
-                    </section>
+                    <div class="alert alert-info" style="background:#fffbe6;border:1px solid #ffe58f;color:#ad8b00;padding:12px 18px;border-radius:8px;font-size:1.05rem;display:flex;align-items:center;gap:10px;">
+                        <span style="font-size:1.5em;">🚧</span>
+                        <span data-i18n="home_courses_working">We are working on the <b>courses & lessons</b> section — check back soon for updates!</span>
+                    </div>
                 </div>
 
                 <!-- ===========================

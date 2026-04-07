@@ -488,3 +488,168 @@ body.stats-bg::before {
         font-size: 1.15rem;
     }
 }
+
+/* ── Level card clickable state ── */
+.statsd-card--clickable {
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.statsd-card--clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+.statsd-card--clickable:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}
+.statsd-card__expand-hint {
+    font-size: 0.72rem;
+    opacity: 0.55;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+}
+
+/* ── Levels expandable panel ── */
+.statsd-levels-panel {
+    margin: 0 auto 28px;
+    max-width: 860px;
+    animation: slideDown 0.22s ease;
+}
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.levels-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.level-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    transition: border-color 0.2s;
+}
+.level-row--done {
+    opacity: 0.6;
+}
+.level-row--current,
+.level-row--active {
+    border-color: var(--accent-color);
+    background: rgba(var(--accent-rgb, 127,127,127), 0.06);
+}
+.level-row--locked {
+    opacity: 0.45;
+}
+.level-row__status {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+    margin-top: 2px;
+}
+.level-row__info {
+    flex: 1;
+    min-width: 0;
+}
+.level-row__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.level-row__name {
+    font-size: 1rem;
+    color: var(--text-light);
+}
+.level-row--active .level-row__name {
+    color: var(--accent-color);
+}
+.level-row__score-req {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    white-space: nowrap;
+}
+.level-row__desc {
+    font-size: 0.83rem;
+    color: var(--text-gray);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+.level-row__bar {
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+.level-row__bar-fill {
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+.level-row__bar-label {
+    font-size: 0.72rem;
+    color: var(--text-gray);
+    margin-top: 3px;
+    display: block;
+}
+
+/* ── Home progress panel — level card ── */
+.level-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.level-card-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.level-card-emoji {
+    font-size: 2rem;
+    line-height: 1;
+}
+.level-card-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+.level-card-score {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    margin-top: 2px;
+}
+.level-card-desc {
+    font-size: 0.84rem;
+    color: var(--text-gray);
+    line-height: 1.45;
+}
+.level-next {
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+    margin-top: 2px;
+}
+.level-next__label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+.level-next__score {
+    font-weight: 400;
+    color: var(--text-gray);
+    font-size: 0.78rem;
+}
+.level-next__hint {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    line-height: 1.4;
+}

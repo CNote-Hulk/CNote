@@ -137,12 +137,18 @@ export const ProfileDropdownModule = {
                     </svg>
                </span>`;
 
+        const storedLevel = (() => { try { return JSON.parse(localStorage.getItem('cn_user_level') || 'null'); } catch { return null; } })();
+        const levelMarkup = storedLevel
+            ? `<span class="profile-dropdown__level">${storedLevel.emoji} ${storedLevel.name}</span>`
+            : '';
+
         dd.innerHTML = `
             <a href="${profilePath}" class="profile-dropdown__profile">
                 <span class="profile-dropdown__avatar">${avatarMarkup}</span>
                 <span class="profile-dropdown__meta">
                     <span class="profile-dropdown__name">${name}</span>
                     <span class="profile-dropdown__email">${email}</span>
+                    ${levelMarkup}
                 </span>
             </a>
             <div class="profile-dropdown__divider profile-dropdown__divider--profile"></div>

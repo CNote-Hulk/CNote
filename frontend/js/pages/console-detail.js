@@ -670,6 +670,7 @@ async function initFavoriteButton(consoleId) {
                 btn.classList.toggle('active', data.isFavorite);
                 btn.innerHTML = data.isFavorite ? '♥' : '♡';
                 btn.title = data.isFavorite ? I18nModule.t('console_favorite_remove') : I18nModule.t('console_favorite_add');
+                window.dispatchEvent(new CustomEvent('cn:favorite-changed', { detail: { isFavorite: data.isFavorite } }));
             }
         } catch { /* ignore */ }
     });
