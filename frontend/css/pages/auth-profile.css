@@ -2359,16 +2359,8 @@ a.chat-message__username:hover {
     gap: 14px;
 }
 
-.dash-card {
-    background: var(--p-card, #181410);
-    border-radius: 12px;
-    border: 1px solid var(--p-border, rgba(180,140,80,0.1));
-    padding: 20px;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
 .dash-card:hover {
-    border-color: rgba(200,168,80,0.18);
+    border-color: rgba(200,168,80,0.2);
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
