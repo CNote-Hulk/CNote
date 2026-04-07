@@ -550,16 +550,15 @@ function initSettings() {
                     ...(token ? { Authorization: `Bearer ${token}` } : {})
                 }
             });
-            if (!resp.ok) throw new Error('Reset failed');
-        
+            if (!resp.ok) throw new Error();
             showSettingsMessage('Reset complete.', true);
-
-            // Re-fetch achievements & level
-            await loadAchievements(); 
-            await loadProfileStats();
-        } catch (err) {
+        } catch {
             showSettingsMessage('Reset failed. Please try again.', false);
+            return;
         }
+        // 👇 nu mai blochează mesajul
+        loadAchievements().catch(err => console.error(err));
+        loadProfileStats().catch(err => console.error(err));
     });
 
     function updateAchievementsUI(userData) {
@@ -1226,24 +1225,23 @@ async function loadAchievements() {
         });
         if (!resp.ok) throw new Error('Could not load achievements');
         const data = await resp.json();
-        if (data.achievements) {
-            // Notificare pentru badge-uri noi
-            const allBadges = (window.AchievementsModule && AchievementsModule.getAllBadges)
-                ? AchievementsModule.getAllBadges(data.achievements)
-                : data.achievements;
-            const prevBadgeIds = JSON.parse(localStorage.getItem('cn_earned_badges') || '[]');
-            const currentBadgeIds = allBadges.filter(b => b.earned || b.unlocked).map(b => b.id);
-            const newBadgeIds = currentBadgeIds.filter(id => !prevBadgeIds.includes(id));
-            if (newBadgeIds.length > 0 && window.AchievementsModule && AchievementsModule.showUnlockNotifications) {
-                AchievementsModule.showUnlockNotifications(newBadgeIds, allBadges);
-                broadcastAchievementUnlock(newBadgeIds, allBadges);
-            }
-            localStorage.setItem('cn_earned_badges', JSON.stringify(currentBadgeIds));
-            updateAchievementsUI({
-                badges: data.achievements,
-                level: calcLevelFromAchievements(data.achievements)
-            });
+        const achievements = Array.isArray(data.achievements) ? data.achievements : [];
+        // Notificare pentru badge-uri noi
+        const allBadges = (window.AchievementsModule && AchievementsModule.getAllBadges)
+            ? AchievementsModule.getAllBadges(achievements)
+            : achievements;
+        const prevBadgeIds = JSON.parse(localStorage.getItem('cn_earned_badges') || '[]');
+        const currentBadgeIds = allBadges.filter(b => b.earned || b.unlocked).map(b => b.id);
+        const newBadgeIds = currentBadgeIds.filter(id => !prevBadgeIds.includes(id));
+        if (newBadgeIds.length > 0 && window.AchievementsModule && AchievementsModule.showUnlockNotifications) {
+            AchievementsModule.showUnlockNotifications(newBadgeIds, allBadges);
+            broadcastAchievementUnlock(newBadgeIds, allBadges);
         }
+        localStorage.setItem('cn_earned_badges', JSON.stringify(currentBadgeIds));
+        updateAchievementsUI({
+            badges: achievements,
+            level: calcLevelFromAchievements(achievements)
+        });
     } catch (err) {
         showSettingsMessage('Could not load achievements.', false);
     }

@@ -72,12 +72,13 @@ router.get('/', authRequired, async (req, res) => {
         if (daysMember >= 30) unlockedIds.add('month_veteran');
         if (daysMember >= 365) unlockedIds.add('year_veteran');
 
-        const achievements = BADGES.map(b => ({ ...b, unlocked: unlockedIds.has(b.id) }));
-        res.json({ success: true, achievements });
+        let achievements = BADGES.map(b => ({ ...b, unlocked: unlockedIds.has(b.id) }));
+        if (!Array.isArray(achievements)) achievements = [];
+        res.json({ success: true, achievements: achievements || [] });
 
     } catch (err) {
         console.error('Error fetching achievements:', err);
-        res.status(500).json({ success: false, message: 'Server error fetching achievements.' });
+        res.status(500).json({ success: false, message: 'Server error fetching achievements.', achievements: [] });
     }
 });
 
