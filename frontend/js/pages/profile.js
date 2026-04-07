@@ -1269,7 +1269,6 @@ function calcLevelFromAchievements(achievements) {
 initSettings();
 
 document.addEventListener('DOMContentLoaded', function () {
-    (function () {
         var TABS = ['account', 'profil', 'security', 'notifications', 'appearance'];
         var btn = document.getElementById('mbn-more-btn');
         var dd  = document.getElementById('mbn-dropdown');
@@ -1319,5 +1318,4 @@ document.addEventListener('DOMContentLoaded', function () {
             var h = location.hash.slice(1);
             if (TABS.indexOf(h) >= 0) setActive(h);
         });
-    }());
-}
+});
