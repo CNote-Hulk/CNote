@@ -2140,18 +2140,4 @@ initNotifications();
 
     buildDropdown();
     switchView('chat', '', '');
-
-    if (btn && dd) {
-        btn.addEventListener('click', e => {
-            e.stopPropagation();
-            buildDropdown();
-            const open = dd.classList.toggle('is-open');
-            btn.setAttribute('aria-expanded', String(open));
-        });
-        document.addEventListener('click', () => {
-            dd.classList.remove('is-open');
-            btn.setAttribute('aria-expanded', 'false');
-        });
-        dd.addEventListener('click', e => e.stopPropagation());
-    }
 }());
