@@ -122,32 +122,11 @@ class App {
     }
 
     initAchievements() {
-        const fetchAndCheck = async () => {
-            const user = AuthModule.getCurrentUser();
-            if (!user) return;
 
-            const token = localStorage.getItem('cn_token');
-            const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
-            const opts = { headers, credentials: 'include' };
-
-            const daysMember = Math.max(1, Math.floor((Date.now() - new Date(user.created_at)) / (1000 * 60 * 60 * 24)) + 1);
-
-            // Fetch all relevant counts from server in parallel
-            const [visitedRes, friendsRes, favsRes, ownedRes] = await Promise.allSettled([
-                fetch('/api/consoles/visited', opts).then(r => r.ok ? r.json() : {}),
-                fetch('/api/friends',          opts).then(r => r.ok ? r.json() : {}),
-                fetch('/api/favorites',        opts).then(r => r.ok ? r.json() : {}),
-                fetch('/api/owned-consoles',   opts).then(r => r.ok ? r.json() : {}),
-            ]);
-
-            const stats = {
-                visitedConsoles: Array.isArray(visitedRes.value?.consoles) ? visitedRes.value.consoles.length : 0,
-                friends:         Array.isArray(friendsRes.value?.friends)  ? friendsRes.value.friends.length  : 0,
-                favorites:       Array.isArray(favsRes.value?.favorites)   ? favsRes.value.favorites.length   : 0,
-                owned:           Array.isArray(ownedRes.value?.consoles)   ? ownedRes.value.consoles.length   : 0,
-                daysMember,
-            };
-        };
+        // Notificările de achievements se trimit doar de la backend prin socket.io
+        // Nu mai calculăm local, totul vine din backend
+        // Dacă vrei să afișezi achievements noi, ascultă doar evenimentele de la backend
+        const fetchAndCheck = () => {};
 
         // Run on page load (non-blocking)
         fetchAndCheck();
