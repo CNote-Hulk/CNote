@@ -1266,7 +1266,10 @@ function calcLevelFromAchievements(achievements) {
     return { name: 'Level', emoji: '🏅' };
 }
 
-(function () {
+initSettings();
+
+document.addEventListener('DOMContentLoaded', function () {
+    (function () {
         var TABS = ['account', 'profil', 'security', 'notifications', 'appearance'];
         var btn = document.getElementById('mbn-more-btn');
         var dd  = document.getElementById('mbn-dropdown');
@@ -1317,5 +1320,4 @@ function calcLevelFromAchievements(achievements) {
             if (TABS.indexOf(h) >= 0) setActive(h);
         });
     }());
-
-initSettings();
+}

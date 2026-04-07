@@ -715,29 +715,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-});
-
-(function () {
-        var PANELS = ['home','collection','favorites','progress','achievements','courses','friends','posts','liked'];
-        var DEFAULT = 'home';
-
-        function activatePanel(hash) {
-            var name = (hash || '').replace('#', '') || DEFAULT;
-            if (!PANELS.includes(name)) name = DEFAULT;
-
-            document.querySelectorAll('.home-panel').forEach(function (p) {
-                p.classList.toggle('active', p.dataset.panel === name);
-            });
-            document.querySelectorAll('.sidebar-link[data-panel]').forEach(function (a) {
-                a.classList.toggle('active', a.dataset.panel === name);
-            });
-        }
-
-        activatePanel(location.hash);
-        window.addEventListener('hashchange', function () { activatePanel(location.hash); });
-    }());
-
-(function () {
+    (function () {
         var page = location.pathname.split('/').pop().replace('.html', '') || 'home';
         var btn = document.getElementById('mbn-more-btn');
         var dd  = document.getElementById('mbn-dropdown');
@@ -762,4 +740,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             dd.addEventListener('click', function (e) { e.stopPropagation(); });
         }
+    }());
+
+});
+
+(function () {
+        var PANELS = ['home','collection','favorites','progress','achievements','courses','friends','posts','liked'];
+        var DEFAULT = 'home';
+
+        function activatePanel(hash) {
+            var name = (hash || '').replace('#', '') || DEFAULT;
+            if (!PANELS.includes(name)) name = DEFAULT;
+
+            document.querySelectorAll('.home-panel').forEach(function (p) {
+                p.classList.toggle('active', p.dataset.panel === name);
+            });
+            document.querySelectorAll('.sidebar-link[data-panel]').forEach(function (a) {
+                a.classList.toggle('active', a.dataset.panel === name);
+            });
+        }
+
+        activatePanel(location.hash);
+        window.addEventListener('hashchange', function () { activatePanel(location.hash); });
     }());

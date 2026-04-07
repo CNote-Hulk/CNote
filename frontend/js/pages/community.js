@@ -2013,7 +2013,8 @@ initNotifications();
 
 } // end login gate else
 
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
+    (function () {
         var btn = document.getElementById('mbn-more-btn');
         var dd  = document.getElementById('mbn-dropdown');
 
@@ -2200,3 +2201,4 @@ initNotifications();
             dd.addEventListener('click', function (e) { e.stopPropagation(); });
         }
     }());
+});
