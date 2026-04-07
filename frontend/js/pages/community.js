@@ -2011,6 +2011,8 @@ initNotifications();
     navigate('chat', null, '');
 })();
 
+} // end login gate else
+
 // ── Mobile bottom nav — community view routing ───────────────
 (function initMbnCommunity() {
     const btn = document.getElementById('mbn-more-btn');
@@ -2153,5 +2155,3 @@ initNotifications();
         dd.addEventListener('click', e => e.stopPropagation());
     }
 }());
-
-} // end login gate else
