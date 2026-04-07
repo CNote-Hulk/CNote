@@ -609,14 +609,14 @@ body.stats-bg::before {
 
 /* ── Levels expandable panel ── */
 .statsd-levels-panel {
-    margin: 36px auto 36px;
-    max-width: 1100px;
+    margin: 28px auto 28px;
+    max-width: 900px;
+    padding: 22px 0 28px 0;
     background: var(--panel-blur-bg, rgba(var(--panel-rgb,255,255,255),0.72));
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border-radius: 28px;
     box-shadow: 0 8px 48px rgba(var(--shadow-rgb,0,0,0),0.13), 0 2px 12px rgba(var(--shadow-rgb,0,0,0),0.08);
-    padding: 38px 0 44px 0;
     animation: slideDown 0.22s ease;
 }
 @keyframes slideDown {
@@ -624,43 +624,36 @@ body.stats-bg::before {
     to   { opacity: 1; transform: translateY(0); }
 }
 .levels-list {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    padding: 0 48px;
-    max-width: 900px;
-    margin: 0 auto;
+    gap: 12px;
+    padding: 0 20px;
+    max-width: 700px;
 }
 .level-row {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 28px 32px;
-    border-radius: 18px;
+    gap: 16px;
+    padding: 16px 18px;
+    border-radius: 14px;
     border: 1.5px solid var(--border-color, #e0e0e0);
     background: var(--card-bg, rgba(var(--panel-rgb,255,255,255),0.92));
     box-shadow: 0 2px 16px rgba(var(--shadow-rgb,0,0,0),0.07);
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 .level-row__status {
-    font-size: 2.2rem;
+    font-size: 1.5rem;
     flex-shrink: 0;
-    width: 48px;
+    width: 32px;
     text-align: center;
     margin-top: 0;
     filter: drop-shadow(0 2px 8px rgba(var(--shadow-rgb,0,0,0),0.10));
 }
 .level-row__name {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: var(--text-light, var(--text));
     font-weight: 700;
     letter-spacing: 0.01em;
 }
 .statsd-levels-panel h2.statsd-goals__title {
-    margin-top: 0;
-    margin-bottom: 32px;
-    text-align: center;
-    font-size: 2.1rem;
+    margin-bottom: 18px;
+    font-size: 1.35rem;
     font-weight: 800;
     letter-spacing: 0.01em;
     color: var(--accent-color, #E06B58);
