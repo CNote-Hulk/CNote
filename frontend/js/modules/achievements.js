@@ -1,9 +1,38 @@
+// ...existing code...
+    /**
+     * Calculează nivelul public pentru profiluri (bazat pe prieteni, favorite, owned, zile)
+     * @param {number} friendCount
+     * @param {number} favCount
+     * @param {number} ownedCount
+     * @param {number} daysMember
+     * @returns {object} nivelul calculat
+     */
+    
 /**
  * AchievementsModule (Frontend)
  * Totul se bazează pe date de la backend.
  * Nu folosește localStorage.
  */
 export const AchievementsModule = {
+    computePublicLevel(friendCount, favCount, ownedCount, daysMember) {
+        // Poți ajusta formula după preferințe
+        // Exemplu: 1p/friend, 2p/favorite, 2p/owned, 0.2p/zi
+        const score = friendCount * 1 + favCount * 2 + ownedCount * 2 + daysMember * 0.2;
+        const levels = this.LEVELS;
+        let currentIdx = 0;
+        for (let i = levels.length - 1; i >= 0; i--) {
+            if (score >= levels[i].minScore) { currentIdx = i; break; }
+        }
+        const current = levels[currentIdx];
+        return {
+            name: current.name,
+            emoji: current.emoji,
+            description: current.description,
+            score,
+            index: currentIdx
+        };
+    },
+
     // Lista de nivele expusă global pentru UI
     LEVELS: [
         { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started.' },
