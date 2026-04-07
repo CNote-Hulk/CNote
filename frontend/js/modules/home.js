@@ -139,6 +139,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // =========================
     // getLocalAchievements removed. Use AchievementsModule.BADGES if needed for static badge info.
 
+    // Inițializare dashboard la încărcare
+    await populateDashboard();
+
+    // Re-populează dashboard la schimbarea panelului (hashchange)
+    window.addEventListener('hashchange', () => {
+        populateDashboard();
+    });
+
     async function populateDashboard() {
         try {
             const userRes = await apiFetch(`/api/users/${encodeURIComponent(username)}`);
