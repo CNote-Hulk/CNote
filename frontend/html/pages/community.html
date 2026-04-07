@@ -230,5 +230,195 @@
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
     <script src="../../js/fallback/search-profile.js"></script>
+
+    <script>
+        (function () {
+        var btn = document.getElementById('mbn-more-btn');
+        var dd  = document.getElementById('mbn-dropdown');
+
+        /* ── Navigate to a sidebar view ── */
+        function switchRoute(view, consoleKey, categoryKey) {
+            var target = null;
+            if (view) {
+                var sel = '.hub-sidebar__item[data-view="' + view + '"]';
+                if (consoleKey) sel += '[data-console="' + consoleKey + '"]';
+                if (typeof categoryKey === 'string' && categoryKey.length) sel += '[data-category="' + categoryKey + '"]';
+                target = document.querySelector(sel);
+                if (!target) target = document.querySelector('.hub-sidebar__item[data-view="' + view + '"]');
+            }
+            if (target) target.click();
+
+            /* highlight bar + dropdown items */
+            ['.mbn-item[data-mbn-view]', '.mbn-dd-item[data-mbn-view]'].forEach(function (q) {
+                document.querySelectorAll(q).forEach(function (el) {
+                    var match = el.dataset.mbnView === view &&
+                        (el.dataset.mbnConsole || '') === (consoleKey || '') &&
+                        (el.dataset.mbnCategory || '') === (categoryKey || '');
+                    el.classList.toggle('mbn-item--active', match);
+                });
+            });
+        }
+
+        /* ── Build categorised dropdown from sidebar sections ── */
+        function buildCommunityDropdown() {
+            if (!dd) return;
+            dd.innerHTML = '';
+
+            /* ── Collect data from sidebar ── */
+            var consoles = [];   // { name, color, slug }
+            var flatSections = []; // { heading, items[] }
+
+            var sections = document.querySelectorAll('.hub-sidebar__section');
+            sections.forEach(function (section) {
+                var heading = section.querySelector('.hub-sidebar__heading');
+                if (!heading) return;
+
+                var consoleGroups = section.querySelectorAll('.hub-sidebar__console');
+                if (consoleGroups.length) {
+                    /* Extract console names + colors */
+                    consoleGroups.forEach(function (cg) {
+                        var nameEl = cg.querySelector('.hub-sidebar__console-name');
+                        var consoleName = nameEl ? nameEl.textContent.replace(/\s+/g, ' ').trim() : '';
+                        var color = nameEl ? (nameEl.style.getPropertyValue('--console-color') || '') : '';
+                        var first = cg.querySelector('.hub-sidebar__item');
+                        var slug = first ? (first.dataset.console || '') : '';
+                        consoles.push({ name: consoleName, color: color, slug: slug });
+                    });
+                    return;
+                }
+
+                var items = [];
+                section.querySelectorAll('.hub-sidebar__item').forEach(function (item) {
+                    if (item.classList.contains('hub-sidebar__item--locked')) return;
+                    if (item.id === 'hub-notif-toggle') return;
+                    if (window.getComputedStyle(item).display === 'none') return;
+                    items.push({
+                        el: item,
+                        label: item.textContent.replace(/\s+/g, ' ').trim()
+                    });
+                });
+                if (items.length) {
+                    flatSections.push({
+                        heading: heading.textContent.replace(/\s+/g, ' ').trim(),
+                        items: items
+                    });
+                }
+            });
+
+            /* ── Build DOM ── */
+
+            /* 1) Flat sections: General Chat, Repair, Marketplace, Messages */
+            flatSections.forEach(function (sec, i) {
+                var h = document.createElement('div');
+                h.className = 'mbn-dd-heading';
+                h.textContent = sec.heading;
+                dd.appendChild(h);
+
+                sec.items.forEach(function (it) {
+                    var b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'mbn-dd-item';
+                    b.dataset.mbnView = it.el.dataset.view || '';
+                    if (it.el.dataset.console) b.dataset.mbnConsole = it.el.dataset.console;
+                    if (typeof it.el.dataset.category === 'string') b.dataset.mbnCategory = it.el.dataset.category;
+
+                    var span = document.createElement('span');
+                    span.textContent = it.label;
+                    b.appendChild(span);
+
+                    b.addEventListener('click', function () {
+                        switchRoute(b.dataset.mbnView, b.dataset.mbnConsole || '', b.dataset.mbnCategory || '');
+                        dd.classList.remove('is-open');
+                        btn.setAttribute('aria-expanded', 'false');
+                    });
+                    dd.appendChild(b);
+                });
+            });
+
+            /* 2) Console sections — compact chip rows */
+            if (consoles.length) {
+                var groups = [
+                    { heading: 'Community', view: 'forum' },
+                    { heading: 'Repair', view: 'repair' }
+                ];
+                groups.forEach(function (g) {
+                    var h = document.createElement('div');
+                    h.className = 'mbn-dd-heading';
+                    h.textContent = g.heading;
+                    dd.appendChild(h);
+
+                    var row = document.createElement('div');
+                    row.className = 'mbn-dd-consoles';
+
+                    consoles.forEach(function (c) {
+                        var chip = document.createElement('button');
+                        chip.type = 'button';
+                        chip.className = 'mbn-dd-chip';
+                        chip.dataset.mbnView = g.view;
+                        chip.dataset.mbnConsole = c.slug;
+
+                        var dot = document.createElement('span');
+                        dot.className = 'mbn-dd-dot';
+                        dot.style.background = c.color;
+                        chip.appendChild(dot);
+
+                        var txt = document.createElement('span');
+                        txt.textContent = c.name;
+                        chip.appendChild(txt);
+
+                        chip.addEventListener('click', function () {
+                            switchRoute(g.view, c.slug, '');
+                            dd.classList.remove('is-open');
+                            btn.setAttribute('aria-expanded', 'false');
+                        });
+                        row.appendChild(chip);
+                    });
+                    dd.appendChild(row);
+                });
+            }
+
+            /* 3) Static links at bottom */
+            var sep = document.createElement('div');
+            sep.className = 'mbn-dd-sep';
+            dd.appendChild(sep);
+
+            var statics = [
+                { href: 'profil.html', icon: '👤', label: 'Profile' },
+                { href: 'evolutie.html', icon: '🕹️', label: 'Consoles' }
+            ];
+            statics.forEach(function (s) {
+                var a = document.createElement('a');
+                a.href = s.href;
+                a.className = 'mbn-dd-item';
+                a.innerHTML = '<span class="mbn-dd-icon">' + s.icon + '</span><span>' + s.label + '</span>';
+                dd.appendChild(a);
+            });
+        }
+
+        /* ── Wire up bottom bar buttons ── */
+        document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                switchRoute(el.dataset.mbnView, el.dataset.mbnConsole || '', el.dataset.mbnCategory || '');
+            });
+        });
+
+        buildCommunityDropdown();
+        switchRoute('chat', '', '');
+
+        if (btn && dd) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                buildCommunityDropdown();
+                var open = dd.classList.toggle('is-open');
+                btn.setAttribute('aria-expanded', String(open));
+            });
+            document.addEventListener('click', function () {
+                dd.classList.remove('is-open');
+                btn.setAttribute('aria-expanded', 'false');
+            });
+            dd.addEventListener('click', function (e) { e.stopPropagation(); });
+        }
+    }());
+    </script>
 </body>
 </html>

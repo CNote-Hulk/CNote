@@ -714,6 +714,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.location.href = 'invata.html';
         });
     }
+
 });
 
 (function () {
@@ -735,30 +736,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         activatePanel(location.hash);
         window.addEventListener('hashchange', function () { activatePanel(location.hash); });
     }());
-
-document.addEventListener('DOMContentLoaded', function () {
-        var page = location.pathname.split('/').pop().replace('.html', '') || 'home';
-        var btn = document.getElementById('mbn-more-btn');
-        var dd  = document.getElementById('mbn-dropdown');
-        document.querySelectorAll('.mbn-item[data-mbn-page]').forEach(function (el) {
-            if (el.dataset.mbnPage === page) el.classList.add('mbn-item--active');
-        });
-        document.querySelectorAll('.mbn-dd-item[data-mbn-page]').forEach(function (el) {
-            if (el.dataset.mbnPage === page) {
-                el.classList.add('mbn-item--active');
-                if (btn) btn.classList.add('mbn-item--active');
-            }
-        });
-        if (btn && dd) {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                var open = dd.classList.toggle('is-open');
-                btn.setAttribute('aria-expanded', String(open));
-            });
-            document.addEventListener('click', function () {
-                dd.classList.remove('is-open');
-                btn.setAttribute('aria-expanded', 'false');
-            });
-            dd.addEventListener('click', function (e) { e.stopPropagation(); });
-        }
-    });
