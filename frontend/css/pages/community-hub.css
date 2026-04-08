@@ -1081,6 +1081,14 @@
     outline: none;
 }
 
+.hub-market-select {
+    color-scheme: dark;
+}
+
+[data-theme="light"] .hub-market-select {
+    color-scheme: light;
+}
+
 .hub-market-grid {
     flex: 1;
     overflow-y: auto;
@@ -2503,6 +2511,16 @@
     background-size: 13px;
     padding-right: 36px;
     cursor: pointer;
+    color-scheme: dark;
+}
+
+[data-theme="light"] .hub-form-select {
+    color-scheme: light;
+}
+
+[data-theme="default"] .hub-form-select,
+:root:not([data-theme]) .hub-form-select {
+    color-scheme: dark;
 }
 
 .hub-form-input:focus,
@@ -2518,6 +2536,52 @@
 .hub-form-select:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+/* ── Option styling (Chrome/Edge/Firefox support) ── */
+.hub-form-select option,
+.hub-form-select optgroup,
+.hub-market-select option,
+.hub-market-select optgroup {
+    background-color: #1e1b18;
+    color: #f0ece6;
+    font-family: var(--font-sans, system-ui);
+    font-size: 0.85rem;
+    padding: 8px 12px;
+}
+
+.hub-form-select option:checked,
+.hub-market-select option:checked {
+    background-color: rgba(var(--accent-rgb), 0.25);
+    color: var(--accent-color, #D4A24E);
+    font-weight: 600;
+}
+
+.hub-form-select option:hover,
+.hub-market-select option:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.hub-form-select optgroup {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+}
+
+[data-theme="light"] .hub-form-select option,
+[data-theme="light"] .hub-form-select optgroup,
+[data-theme="light"] .hub-market-select option,
+[data-theme="light"] .hub-market-select optgroup {
+    background-color: #ffffff;
+    color: #111317;
+}
+
+[data-theme="light"] .hub-form-select option:checked,
+[data-theme="light"] .hub-market-select option:checked {
+    background-color: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent-color);
 }
 
 .hub-form-textarea {
@@ -4394,4 +4458,183 @@
     .hub-toast {
         bottom: 24px;
     }
+}
+
+/* ── Custom Select Component (.hub-csel) ──────────────────── */
+
+.hub-csel {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+/* Inline variant for topbar sort select */
+.hub-csel--inline {
+    display: inline-flex;
+    width: auto;
+    min-width: 130px;
+    flex-shrink: 0;
+}
+
+.hub-csel__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 9px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    gap: 8px;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+    min-height: 42px;
+    box-sizing: border-box;
+}
+
+.hub-csel--inline .hub-csel__trigger {
+    min-height: 38px;
+    padding: 7px 12px;
+}
+
+.hub-csel__trigger:hover {
+    border-color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.07);
+}
+
+.hub-csel--open .hub-csel__trigger {
+    border-color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.1);
+}
+
+.hub-csel--disabled .hub-csel__trigger {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.hub-csel__value {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: inherit;
+}
+
+.hub-csel__arrow {
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.35);
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.hub-csel--open .hub-csel__arrow {
+    transform: rotate(180deg);
+    color: var(--accent-color);
+}
+
+/* Dropdown panel — appended to body, position: fixed */
+.hub-csel__dropdown {
+    position: fixed;
+    z-index: 9990;
+    background: var(--card-bg, #1c1916);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+    overflow-y: auto;
+    max-height: 280px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scaleY(0.93) translateY(-4px);
+    transform-origin: top center;
+    transition: opacity 0.15s, transform 0.15s;
+    min-width: 120px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+.hub-csel__dropdown--up {
+    transform-origin: bottom center;
+    transform: scaleY(0.93) translateY(4px);
+}
+
+.hub-csel__dropdown--visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scaleY(1) translateY(0);
+}
+
+.hub-csel__option {
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    font-family: var(--font-sans);
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hub-csel__option:first-child { border-radius: 9px 9px 0 0; }
+.hub-csel__option:last-child  { border-radius: 0 0 9px 9px; }
+.hub-csel__option:only-child  { border-radius: 9px; }
+
+.hub-csel__option:hover,
+.hub-csel__option--selected {
+    background: rgba(var(--accent-rgb), 0.15);
+    color: var(--accent-color);
+}
+
+.hub-csel__option--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+.hub-csel__option--disabled:hover {
+    background: transparent;
+    color: var(--text-light);
+}
+
+/* ── Light theme overrides ── */
+[data-theme="light"] .hub-csel__trigger {
+    background: #f0f0f0;
+    border-color: rgba(0, 0, 0, 0.14);
+    color: #111317;
+}
+
+[data-theme="light"] .hub-csel__trigger:hover,
+[data-theme="light"] .hub-csel--open .hub-csel__trigger {
+    border-color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.07);
+    color: #111317;
+}
+
+[data-theme="light"] .hub-csel__arrow {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .hub-csel--open .hub-csel__arrow {
+    color: var(--accent-color);
+}
+
+[data-theme="light"] .hub-csel__dropdown {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+[data-theme="light"] .hub-csel__option {
+    color: #111317;
+}
+
+[data-theme="light"] .hub-csel__option:hover,
+[data-theme="light"] .hub-csel__option--selected {
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent-color);
 }

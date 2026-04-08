@@ -155,6 +155,216 @@ function showToast(msg, type) {
     }, 3000);
 }
 
+// ── Custom Select Component ────────────────────────────────
+
+/**
+ * Wraps a native <select> with a fully custom dropdown UI.
+ * The native select remains hidden in the DOM so form .value reads still work.
+ * Dropdown is appended to document.body (position:fixed) to escape overflow:hidden parents.
+ */
+function createCustomSelect(sel) {
+    if (sel._hubCsel) return; // already initialized
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'hub-csel';
+    if (sel.classList.contains('hub-market-select')) wrapper.classList.add('hub-csel--inline');
+    if (sel.disabled) wrapper.classList.add('hub-csel--disabled');
+
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'hub-csel__trigger';
+    trigger.setAttribute('aria-haspopup', 'listbox');
+    trigger.setAttribute('aria-expanded', 'false');
+
+    const valueSpan = document.createElement('span');
+    valueSpan.className = 'hub-csel__value';
+
+    const arrowSpan = document.createElement('span');
+    arrowSpan.className = 'hub-csel__arrow';
+    arrowSpan.innerHTML = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    trigger.appendChild(valueSpan);
+    trigger.appendChild(arrowSpan);
+    wrapper.appendChild(trigger);
+
+    // Dropdown appended to body — escapes overflow:hidden / CSS transform parents
+    const dropdown = document.createElement('div');
+    dropdown.className = 'hub-csel__dropdown';
+    dropdown.setAttribute('role', 'listbox');
+    document.body.appendChild(dropdown);
+
+    let isOpen = false;
+
+    function getSelectedLabel() {
+        const opt = sel.options[sel.selectedIndex];
+        return opt ? opt.textContent.trim() : '';
+    }
+
+    function buildOptions() {
+        dropdown.innerHTML = '';
+        Array.from(sel.options).forEach((opt, i) => {
+            const item = document.createElement('div');
+            item.className = 'hub-csel__option';
+            item.setAttribute('role', 'option');
+            if (opt.disabled) item.classList.add('hub-csel__option--disabled');
+            if (i === sel.selectedIndex) {
+                item.classList.add('hub-csel__option--selected');
+                item.setAttribute('aria-selected', 'true');
+            }
+            item.textContent = opt.textContent.trim();
+            item.dataset.index = i;
+            item.addEventListener('mousedown', e => {
+                e.preventDefault(); // prevent trigger blur before selection
+                if (opt.disabled) return;
+                sel.selectedIndex = i;
+                sel.dispatchEvent(new Event('change', { bubbles: true }));
+                valueSpan.textContent = getSelectedLabel();
+                close();
+            });
+            dropdown.appendChild(item);
+        });
+        valueSpan.textContent = getSelectedLabel();
+    }
+
+    function positionDropdown() {
+        const rect = trigger.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const dropH = Math.min(dropdown.scrollHeight || 240, 280);
+        const goUp = spaceBelow < dropH + 8 && rect.top > dropH + 8;
+
+        dropdown.style.width = rect.width + 'px';
+        dropdown.style.left  = rect.left + 'px';
+
+        if (goUp) {
+            dropdown.classList.add('hub-csel__dropdown--up');
+            dropdown.style.top    = 'auto';
+            dropdown.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+        } else {
+            dropdown.classList.remove('hub-csel__dropdown--up');
+            dropdown.style.bottom = 'auto';
+            dropdown.style.top    = (rect.bottom + 4) + 'px';
+        }
+    }
+
+    function open() {
+        if (wrapper.classList.contains('hub-csel--disabled')) return;
+        // Close all other open selects first
+        document.querySelectorAll('.hub-csel--open').forEach(w => {
+            if (w !== wrapper && w._hubCselClose) w._hubCselClose();
+        });
+        buildOptions();
+        isOpen = true;
+        wrapper.classList.add('hub-csel--open');
+        trigger.setAttribute('aria-expanded', 'true');
+        positionDropdown();
+        dropdown.classList.add('hub-csel__dropdown--visible');
+    }
+
+    function close() {
+        isOpen = false;
+        wrapper.classList.remove('hub-csel--open');
+        trigger.setAttribute('aria-expanded', 'false');
+        dropdown.classList.remove('hub-csel__dropdown--visible');
+    }
+
+    trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        isOpen ? close() : open();
+    });
+
+    // Close when clicking outside
+    function outsideClick(e) {
+        if (!wrapper.contains(e.target) && !dropdown.contains(e.target)) close();
+    }
+    document.addEventListener('click', outsideClick);
+
+    // Keyboard navigation
+    trigger.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            isOpen ? close() : open();
+        } else if (e.key === 'Escape') {
+            close();
+        } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (!isOpen) open();
+            const items = [...dropdown.querySelectorAll('.hub-csel__option:not(.hub-csel__option--disabled)')];
+            const cur = dropdown.querySelector('.hub-csel__option--selected');
+            const idx = items.indexOf(cur);
+            let next;
+            if (e.key === 'ArrowDown') next = idx < items.length - 1 ? items[idx + 1] : items[0];
+            else next = idx > 0 ? items[idx - 1] : items[items.length - 1];
+            if (next) {
+                cur?.classList.remove('hub-csel__option--selected');
+                next.classList.add('hub-csel__option--selected');
+                next.scrollIntoView({ block: 'nearest' });
+                // Trigger selection immediately on arrow key
+                const i = +next.dataset.index;
+                sel.selectedIndex = i;
+                sel.dispatchEvent(new Event('change', { bubbles: true }));
+                valueSpan.textContent = getSelectedLabel();
+            }
+        }
+    });
+
+    // Watch for dynamic option rebuilds (e.g. city list updated after country change)
+    const mutObs = new MutationObserver(() => {
+        buildOptions();
+        if (isOpen) positionDropdown();
+    });
+    mutObs.observe(sel, { childList: true });
+
+    // Watch for disabled attribute changes (e.g. city disabled until country selected)
+    const disabledObs = new MutationObserver(() => {
+        const d = sel.disabled;
+        wrapper.classList.toggle('hub-csel--disabled', d);
+        if (d) close();
+    });
+    disabledObs.observe(sel, { attributes: true, attributeFilter: ['disabled'] });
+
+    // Sync label when native select value changes programmatically
+    sel.addEventListener('change', () => { valueSpan.textContent = getSelectedLabel(); });
+
+    // Insert wrapper before select; move select inside (hidden)
+    sel.parentNode.insertBefore(wrapper, sel);
+    wrapper.appendChild(sel);
+    sel.style.cssText += ';display:none!important';
+
+    buildOptions();
+
+    // Cleanup — restores native select and removes body dropdown
+    function destroy() {
+        close();
+        document.removeEventListener('click', outsideClick);
+        mutObs.disconnect();
+        disabledObs.disconnect();
+        dropdown.remove();
+        if (wrapper.parentNode) {
+            wrapper.parentNode.insertBefore(sel, wrapper);
+            sel.style.cssText = sel.style.cssText.replace(/;?display:none!important/g, '');
+            wrapper.remove();
+        }
+        sel._hubCsel = null;
+    }
+
+    sel._hubCsel = { destroy, dropdown };
+    wrapper._hubCselClose = close;
+}
+
+/** Initialize custom selects for all hub-form-select / hub-market-select in a container */
+function initHubSelects(container) {
+    container.querySelectorAll('.hub-form-select, .hub-market-select').forEach(sel => {
+        createCustomSelect(sel);
+    });
+}
+
+/** Destroy all custom selects in a container (call before innerHTML wipe or element removal) */
+function cleanupHubSelects(container) {
+    container.querySelectorAll('.hub-form-select, .hub-market-select').forEach(sel => {
+        if (sel._hubCsel) sel._hubCsel.destroy();
+    });
+}
+
 /** Render avatar: show image if available, fallback to initials with onerror */
 function avatarHtml(name, avatarUrl, size, extraStyle) {
     const sz = size || 36;
@@ -184,6 +394,10 @@ function user() { return AuthModule.getCurrentUser(); }
 
 /** Switch the active hub view panel with re-trigger animation */
 function showView(id) {
+    // Close any open custom dropdowns before switching views
+    document.querySelectorAll('.hub-csel--open').forEach(w => {
+        if (w._hubCselClose) w._hubCselClose();
+    });
     content.querySelectorAll('.hub-view').forEach(v => v.classList.remove('hub-view--active'));
     const el = document.getElementById('view-' + id);
     if (el) el.classList.add('hub-view--active');
@@ -579,6 +793,7 @@ function openNewThreadModal() {
 /** Render the marketplace view: listing grid, filters, add button */
 function renderMarketplace() {
     const v = document.getElementById('view-marketplace');
+    cleanupHubSelects(v); // destroy existing custom selects before wiping innerHTML
     const u = user();
 
     // Count active filters (excluding sort and search)
@@ -753,6 +968,9 @@ function renderMarketplace() {
         const b = e.target.closest('.hub-page-btn');
         if (b) { S.marketPage = +b.dataset.page; loadListings(); }
     });
+
+    // ── Custom dropdowns ──
+    initHubSelects(v);
 }
 
 /** Fetch and display marketplace listings with condition/category filters */
