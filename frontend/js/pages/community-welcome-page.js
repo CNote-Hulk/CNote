@@ -58,7 +58,6 @@
             function applyMobileMenuLayering() {
                 if (!sidebar) return;
                 sidebar.style.zIndex = '5001';
-                sidebar.style.background = '#0d0e14';
                 sidebar.style.opacity = '1';
                 sidebar.style.visibility = 'visible';
                 sidebar.style.display = 'flex';

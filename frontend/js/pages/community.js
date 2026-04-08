@@ -142,6 +142,19 @@ function timeAgo(d) {
 /** Get 2-letter initials from a username */
 function ini(n) { return n ? n.slice(0, 2).toUpperCase() : '?'; }
 
+/** Show a non-blocking toast notification */
+function showToast(msg, type) {
+    const el = document.createElement('div');
+    el.className = 'hub-toast' + (type === 'error' ? ' hub-toast--error' : type === 'success' ? ' hub-toast--success' : '');
+    el.textContent = msg;
+    document.body.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('hub-toast--visible'));
+    setTimeout(() => {
+        el.classList.remove('hub-toast--visible');
+        el.addEventListener('transitionend', () => el.remove(), { once: true });
+    }, 3000);
+}
+
 /** Render avatar: show image if available, fallback to initials with onerror */
 function avatarHtml(name, avatarUrl, size, extraStyle) {
     const sz = size || 36;
@@ -236,7 +249,6 @@ function applyMobileMenuLayering() {
     const overlay = document.getElementById('hub-mobile-overlay');
 
     sidebar.style.zIndex = '5001';
-    sidebar.style.background = '#0d0e14';
     sidebar.style.opacity = '1';
     sidebar.style.backdropFilter = 'none';
     sidebar.style.webkitBackdropFilter = 'none';
@@ -556,7 +568,7 @@ function openNewThreadModal() {
             window.dispatchEvent(new CustomEvent('cn:message-sent'));
             loadThreads();
         }
-        else { btn.disabled = false; alert(res.error || 'Error.'); }
+        else { btn.disabled = false; showToast(res.error || 'Error.', 'error'); }
     });
 }
 
@@ -710,6 +722,37 @@ function renderMarketplace() {
 
     v.querySelector('#market-add-btn')?.addEventListener('click', openAddListingModal);
     v.querySelector('#market-dm-btn')?.addEventListener('click', () => navigate('dm'));
+
+    // ── Grid click handler — delegated once per render to avoid accumulation on loadListings re-calls ──
+    const grid = v.querySelector('#market-grid');
+    grid.addEventListener('click', async e => {
+        const u = user();
+        const favBtn = e.target.closest('.hub-listing-fav-btn');
+        if (favBtn) {
+            e.stopPropagation();
+            if (!u) { showToast('Log in to save favorites'); return; }
+            const lid = +favBtn.dataset.favId;
+            favBtn.classList.add('hub-listing-fav-btn--pop');
+            const res = await api('POST', `/marketplace/listings/${lid}/favorite`);
+            if (res.success) {
+                if (res.favorited) { S.favoriteIds.add(lid); favBtn.innerHTML = '❤️'; favBtn.classList.add('hub-listing-fav-btn--active'); }
+                else { S.favoriteIds.delete(lid); favBtn.innerHTML = '🤍'; favBtn.classList.remove('hub-listing-fav-btn--active'); }
+            } else {
+                showToast(res.error || 'Could not update favorites.', 'error');
+            }
+            setTimeout(() => favBtn.classList.remove('hub-listing-fav-btn--pop'), 300);
+            return;
+        }
+        const c = e.target.closest('.hub-listing-card');
+        if (c) openListingDetail(+c.dataset.id);
+    });
+
+    // ── Pagination click handler — delegated once per render ──
+    const pag = v.querySelector('#market-pagination');
+    pag.addEventListener('click', e => {
+        const b = e.target.closest('.hub-page-btn');
+        if (b) { S.marketPage = +b.dataset.page; loadListings(); }
+    });
 }
 
 /** Fetch and display marketplace listings with condition/category filters */
@@ -717,27 +760,24 @@ async function loadListings() {
     const grid = document.getElementById('market-grid');
     const pag  = document.getElementById('market-pagination');
 
-    // Load favorite IDs if user is logged in
     const u = user();
-    if (u) {
-        try {
-            const favData = await api('GET', '/marketplace/favorites/ids');
-            if (favData.success) S.favoriteIds = new Set(favData.ids);
-        } catch {}
-    }
+    const p = new URLSearchParams();
+    if (S.category)        p.set('category',  S.category);
+    if (S.marketCondition) p.set('condition',  S.marketCondition);
+    if (S.marketConsole)   p.set('console_type', S.marketConsole);
+    if (S.marketSearch)    p.set('search',     S.marketSearch);
+    if (S.marketCountry)   p.set('country',    S.marketCountry);
+    if (S.marketCity)      p.set('city',       S.marketCity);
+    p.set('sort', S.marketSort);
+    p.set('page', S.marketPage);
 
+    // Fetch listings and favorite IDs in parallel
     try {
-        const p = new URLSearchParams();
-        if (S.category)        p.set('category',  S.category);
-        if (S.marketCondition) p.set('condition',  S.marketCondition);
-        if (S.marketConsole)   p.set('console_type', S.marketConsole);
-        if (S.marketSearch)    p.set('search',     S.marketSearch);
-        if (S.marketCountry) p.set('country', S.marketCountry);
-        if (S.marketCity)    p.set('city',    S.marketCity);
-        p.set('sort', S.marketSort);
-        p.set('page', S.marketPage);
-
-        const data = await api('GET', '/marketplace/listings?' + p);
+        const [data, favData] = await Promise.all([
+            api('GET', '/marketplace/listings?' + p),
+            u ? api('GET', '/marketplace/favorites/ids') : Promise.resolve(null),
+        ]);
+        if (favData && favData.success) S.favoriteIds = new Set(favData.ids);
         if (!data.success) throw 0;
         const listings = data.listings || [];
 
@@ -771,35 +811,11 @@ async function loadListings() {
                 </button>`;
         }).join('');
 
-        // Favorite button click handler
-        grid.addEventListener('click', async e => {
-            const favBtn = e.target.closest('.hub-listing-fav-btn');
-            if (favBtn) {
-                e.stopPropagation();
-                if (!u) { alert('Log in for favorites'); return; }
-                const lid = +favBtn.dataset.favId;
-                favBtn.classList.add('hub-listing-fav-btn--pop');
-                const res = await api('POST', `/marketplace/listings/${lid}/favorite`);
-                if (res.success) {
-                    if (res.favorited) { S.favoriteIds.add(lid); favBtn.innerHTML = '❤️'; favBtn.classList.add('hub-listing-fav-btn--active'); }
-                    else { S.favoriteIds.delete(lid); favBtn.innerHTML = '🤍'; favBtn.classList.remove('hub-listing-fav-btn--active'); }
-                }
-                setTimeout(() => favBtn.classList.remove('hub-listing-fav-btn--pop'), 300);
-                return;
-            }
-            const c = e.target.closest('.hub-listing-card');
-            if (c) openListingDetail(+c.dataset.id);
-        });
-
         const total = data.totalPages || 1;
         pag.innerHTML = total > 1
             ? Array.from({ length: total }, (_, i) => i + 1).map(pg =>
                 `<button class="hub-page-btn${pg === S.marketPage ? ' hub-page-btn--active' : ''}" data-page="${pg}">${pg}</button>`).join('')
             : '';
-        pag.addEventListener('click', e => {
-            const b = e.target.closest('.hub-page-btn');
-            if (b) { S.marketPage = +b.dataset.page; loadListings(); }
-        });
     } catch { grid.innerHTML = '<div class="hub-empty" style="grid-column:1/-1"><div class="hub-empty__icon">❌</div>Failed to load.</div>'; }
 }
 
@@ -997,13 +1013,15 @@ async function openListingDetail(id) {
 
         // Favorite toggle on detail page
         v.querySelector('#detail-fav-btn')?.addEventListener('click', async () => {
-            if (!u) { alert('Log in for favorites'); return; }
+            if (!u) { showToast('Log in to save favorites'); return; }
             const btn = v.querySelector('#detail-fav-btn');
             btn.classList.add('hub-detail-fav-btn--pop');
             const res = await api('POST', `/marketplace/listings/${id}/favorite`);
             if (res.success) {
                 if (res.favorited) { S.favoriteIds.add(id); btn.innerHTML = '❤️'; btn.classList.add('hub-detail-fav-btn--active'); }
                 else { S.favoriteIds.delete(id); btn.innerHTML = '🤍'; btn.classList.remove('hub-detail-fav-btn--active'); }
+            } else {
+                showToast(res.error || 'Could not update favorites.', 'error');
             }
             setTimeout(() => btn.classList.remove('hub-detail-fav-btn--pop'), 300);
         });
@@ -1052,13 +1070,15 @@ async function loadSimilarListings(listingId, container) {
             const favBtn = e.target.closest('.hub-listing-fav-btn');
             if (favBtn) {
                 e.stopPropagation();
-                if (!u) { alert('Log in for favorites'); return; }
+                if (!u) { showToast('Log in to save favorites'); return; }
                 const lid = +favBtn.dataset.favId;
                 favBtn.classList.add('hub-listing-fav-btn--pop');
                 const res = await api('POST', `/marketplace/listings/${lid}/favorite`);
                 if (res.success) {
                     if (res.favorited) { S.favoriteIds.add(lid); favBtn.innerHTML = '❤️'; favBtn.classList.add('hub-listing-fav-btn--active'); }
                     else { S.favoriteIds.delete(lid); favBtn.innerHTML = '🤍'; favBtn.classList.remove('hub-listing-fav-btn--active'); }
+                } else {
+                    showToast(res.error || 'Could not update favorites.', 'error');
                 }
                 setTimeout(() => favBtn.classList.remove('hub-listing-fav-btn--pop'), 300);
                 return;
@@ -1263,7 +1283,7 @@ function openAddListingModal() {
             images: finalImages,
         });
         if (res.success) { close(); loadListings(); }
-        else { btn.disabled = false; btn.textContent = 'Publish'; alert(res.error || 'Error.'); }
+        else { btn.disabled = false; btn.textContent = 'Publish'; showToast(res.error || 'Error.', 'error'); }
     });
 }
 
@@ -1380,7 +1400,7 @@ function openEditListingFromDetail(id, l) {
             olx_url: f.olx_url.value.trim(),
         });
         if (res.success) { close(); openListingDetail(id); } // reload detail
-        else { btn.disabled = false; btn.textContent = 'Save'; alert(res.error || 'Error.'); }
+        else { btn.disabled = false; btn.textContent = 'Save'; showToast(res.error || 'Error.', 'error'); }
     });
 }
 
@@ -1561,11 +1581,11 @@ async function submitRepair() {
             renderRepair();
         } else {
             if (btn) { btn.disabled = false; btn.textContent = t('repair_submit_btn'); }
-            alert(data.error || t('repair_submit_error'));
+            showToast(data.error || t('repair_submit_error'), 'error');
         }
     } catch {
         if (btn) { btn.disabled = false; btn.textContent = t('repair_submit_btn'); }
-        alert(t('repair_submit_error'));
+        showToast(t('repair_submit_error'), 'error');
     }
 }
 
@@ -1718,11 +1738,11 @@ async function renderRepairAdmin() {
                     setTimeout(() => { btn.disabled = false; btn.textContent = t('repair_admin_save'); }, 1500);
                 } else {
                     btn.disabled = false; btn.textContent = t('repair_admin_save');
-                    alert(res.error || 'Failed to save.');
+                    showToast(res.error || 'Failed to save.', 'error');
                 }
             } catch {
                 btn.disabled = false; btn.textContent = t('repair_admin_save');
-                alert('Failed to save.');
+                showToast('Failed to save.', 'error');
             }
         });
     } catch {
