@@ -732,7 +732,8 @@ async function openThread(id) {
 
 /** Open modal dialog to create a new forum thread */
 function openNewThreadModal() {
-    document.querySelector('.hub-modal-overlay')?.remove();
+    const _prev = document.querySelector('.hub-modal-overlay');
+    if (_prev) { cleanupHubSelects(_prev); _prev.remove(); }
 
     const overlay = document.createElement('div');
     overlay.className = 'hub-modal-overlay';
@@ -765,11 +766,12 @@ function openNewThreadModal() {
         </div>`;
 
     document.body.appendChild(overlay);
-    const close = () => overlay.remove();
+    initHubSelects(overlay);
+    const close = () => { cleanupHubSelects(overlay); overlay.remove(); };
     overlay.querySelector('.hub-modal__close').addEventListener('click', close);
     overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
-    
+
     overlay.querySelector('#new-thread-form').addEventListener('submit', async e => {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
@@ -1311,7 +1313,8 @@ async function loadSimilarListings(listingId, container) {
 
 /** Open modal dialog to create a new marketplace listing */
 function openAddListingModal() {
-    document.querySelector('.hub-modal-overlay')?.remove();
+    const _prev = document.querySelector('.hub-modal-overlay');
+    if (_prev) { cleanupHubSelects(_prev); _prev.remove(); }
 
     const MAX_IMAGES = 8;
     let selectedFiles = [];
@@ -1399,16 +1402,17 @@ function openAddListingModal() {
         </div>`;
 
     document.body.appendChild(overlay);
-    const close = () => overlay.remove();
+    initHubSelects(overlay);
+    const close = () => { cleanupHubSelects(overlay); overlay.remove(); };
     overlay.querySelector('.hub-modal__close').addEventListener('click', close);
     overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
     overlay.querySelector('[name="country"]').addEventListener('change', e => {
-    const citySelect = overlay.querySelector('[name="location"]');
-    const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
-    citySelect.innerHTML = '<option value="">— Select a city —</option>' +
-        (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
-    citySelect.disabled = !e.target.value;
+        const citySelect = overlay.querySelector('[name="location"]');
+        const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
+        citySelect.innerHTML = '<option value="">— Select a city —</option>' +
+            (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
+        citySelect.disabled = !e.target.value;
     });
 
     const uploadZone = overlay.querySelector('#upload-zone');
@@ -1508,7 +1512,8 @@ function openAddListingModal() {
 
 /** Open modal dialog to edit an existing listing (from detail view) */
 function openEditListingFromDetail(id, l) {
-    document.querySelector('.hub-modal-overlay')?.remove();
+    const _prev = document.querySelector('.hub-modal-overlay');
+    if (_prev) { cleanupHubSelects(_prev); _prev.remove(); }
 
     const overlay = document.createElement('div');
     overlay.className = 'hub-modal-overlay';
@@ -1587,7 +1592,8 @@ function openEditListingFromDetail(id, l) {
         </div>`;
 
     document.body.appendChild(overlay);
-    const close = () => overlay.remove();
+    initHubSelects(overlay);
+    const close = () => { cleanupHubSelects(overlay); overlay.remove(); };
     overlay.querySelector('.hub-modal__close').addEventListener('click', close);
     overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
