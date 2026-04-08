@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSidebar(user);
 
             // parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, coursesRes, visitedRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, coursesRes, visitedRes, myListingsRes, favListingsRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
@@ -169,6 +169,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/achievements'),
                 apiFetch('/api/progress'),
                 apiFetch('/api/consoles/visited'),
+                apiFetch('/api/marketplace/listings/mine'),
+                apiFetch('/api/marketplace/favorites'),
             ]);
 
             // =========================
@@ -245,6 +247,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const n = user.owned_console_ids.length;
                     collectionCount.textContent = n + (n === 1 ? ' console' : ' consoles');
                 }
+            }
+
+            // =========================
+            // MY LISTINGS (in collection panel)
+            // =========================
+            const myListingsSection = document.getElementById('my-listings-section');
+            const myListingsGrid = document.getElementById('my-listings-grid');
+            if (myListingsSection && myListingsGrid && myListingsRes.success && myListingsRes.listings && myListingsRes.listings.length > 0) {
+                myListingsSection.hidden = false;
+                myListingsGrid.innerHTML = myListingsRes.listings.map(l => {
+                    const imgs = Array.isArray(l.images) ? l.images : [];
+                    const img = imgs[0] || '/assets/images/graphics/no-image-placeholder.jpg';
+                    return `<a href="community.html#listing-${l.id}" class="home-listing-card">
+                        <div class="home-listing-card__img">
+                            <img src="${escapeHtml(img)}" alt="" loading="lazy">
+                            ${l.sold ? '<span class="home-listing-card__sold">SOLD</span>' : ''}
+                        </div>
+                        <div class="home-listing-card__info">
+                            <div class="home-listing-card__title">${escapeHtml(l.title)}</div>
+                            <div class="home-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
+                        </div>
+                    </a>`;
+                }).join('');
             }
 
             // =========================
@@ -397,6 +422,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <a href="evolutie.html" class="dash-empty-state__link">Browse consoles →</a>
                         </div>`;
                 }
+            }
+
+            // =========================
+            // FAVORITE LISTINGS (in favorites panel)
+            // =========================
+            const favListingsSection = document.getElementById('fav-listings-section');
+            const favListingsGrid = document.getElementById('fav-listings-grid');
+            if (favListingsSection && favListingsGrid && favListingsRes.success && favListingsRes.listings && favListingsRes.listings.length > 0) {
+                favListingsSection.hidden = false;
+                favListingsGrid.innerHTML = favListingsRes.listings.map(l => {
+                    const imgs = Array.isArray(l.images) ? l.images : [];
+                    const img = imgs[0] || '/assets/images/graphics/no-image-placeholder.jpg';
+                    return `<a href="community.html#listing-${l.id}" class="home-listing-card">
+                        <div class="home-listing-card__img">
+                            <img src="${escapeHtml(img)}" alt="" loading="lazy">
+                            ${l.sold ? '<span class="home-listing-card__sold">SOLD</span>' : ''}
+                        </div>
+                        <div class="home-listing-card__info">
+                            <div class="home-listing-card__title">${escapeHtml(l.title)}</div>
+                            <div class="home-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
+                            <div class="home-listing-card__seller">${escapeHtml(l.seller_name || '')}</div>
+                        </div>
+                    </a>`;
+                }).join('');
             }
 
             // =========================
