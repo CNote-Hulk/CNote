@@ -201,10 +201,21 @@ function formatList(pairs) {
 }
 
 function formatDimSingle(d) {
-    const w = I18nModule.t('spec_label_width');
-    const h = I18nModule.t('spec_label_height');
+    const w  = I18nModule.t('spec_label_width');
+    const h  = I18nModule.t('spec_label_height');
     const dp = I18nModule.t('spec_label_depth');
-    return `<strong>${w}:</strong> ${d.width_mm} mm<br><strong>${h}:</strong> ${d.height_mm} mm<br><strong>${dp}:</strong> ${d.depth_mm} mm`;
+
+    function fmt(mm) {
+        const cm   = (mm / 10).toFixed(1);
+        const inch = (mm / 25.4).toFixed(2);
+        return `<span class="dim-cm">${cm} cm</span><span class="dim-sep"> / </span><span class="dim-inch">${inch}"</span>`;
+    }
+
+    return `<table class="dim-table">
+        <tr><td class="dim-lbl">${w}</td><td class="dim-val">${fmt(d.width_mm)}</td></tr>
+        <tr><td class="dim-lbl">${h}</td><td class="dim-val">${fmt(d.height_mm)}</td></tr>
+        <tr><td class="dim-lbl">${dp}</td><td class="dim-val">${fmt(d.depth_mm)}</td></tr>
+    </table>`;
 }
 
 function formatDimensions(dim) {

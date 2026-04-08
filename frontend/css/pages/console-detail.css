@@ -620,6 +620,49 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
 }
 
+/* Dimensions card – table layout */
+.dim-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.dim-table tr + tr .dim-lbl,
+.dim-table tr + tr .dim-val {
+    padding-top: 4px;
+}
+
+.dim-lbl {
+    color: var(--text-muted, rgba(255, 255, 255, 0.5));
+    font-weight: 500;
+    white-space: nowrap;
+    padding-right: 10px;
+    width: 1%;
+}
+
+.dim-val {
+    color: var(--text-light);
+}
+
+.dim-cm {
+    font-weight: 600;
+}
+
+.dim-sep {
+    color: var(--text-muted, rgba(255, 255, 255, 0.3));
+    margin: 0 2px;
+}
+
+.dim-inch {
+    color: var(--text-muted, rgba(255, 255, 255, 0.65));
+    font-size: 0.84rem;
+}
+
+[data-theme="light"] .dim-lbl  { color: rgba(0, 0, 0, 0.45); }
+[data-theme="light"] .dim-val  { color: #111317; }
+[data-theme="light"] .dim-sep  { color: rgba(0, 0, 0, 0.25); }
+[data-theme="light"] .dim-inch { color: rgba(0, 0, 0, 0.55); }
+
 /* Dimensions card – multi-model separator & label */
 .dim-separator {
     border: none;
