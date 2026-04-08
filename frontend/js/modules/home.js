@@ -256,20 +256,84 @@ document.addEventListener('DOMContentLoaded', async () => {
             const myListingsGrid = document.getElementById('my-listings-grid');
             if (myListingsSection && myListingsGrid && myListingsRes.success && myListingsRes.listings && myListingsRes.listings.length > 0) {
                 myListingsSection.hidden = false;
-                myListingsGrid.innerHTML = myListingsRes.listings.map(l => {
+                renderMyListingCards(myListingsGrid, myListingsRes.listings);
+            }
+
+            function renderMyListingCards(grid, listings) {
+                grid.innerHTML = listings.map(l => {
                     const imgs = Array.isArray(l.images) ? l.images : [];
                     const img = imgs[0] || '/assets/images/graphics/no-image-placeholder.jpg';
-                    return `<a href="community.html#listing-${l.id}" class="home-listing-card">
-                        <div class="home-listing-card__img">
+                    const isSold = l.sold || l.status === 'sold';
+                    const isInactive = !isSold && l.status === 'inactive';
+                    return `<div class="home-listing-card" data-id="${l.id}">
+                        <a href="community.html#listing-${l.id}" class="home-listing-card__media">
                             <img src="${escapeHtml(img)}" alt="" loading="lazy">
-                            ${l.sold ? '<span class="home-listing-card__sold">SOLD</span>' : ''}
-                        </div>
+                            ${isSold ? '<span class="home-listing-card__sold">SOLD</span>' : ''}
+                            ${isInactive ? '<span class="home-listing-card__sold" style="background:rgba(100,100,100,.8)">INACTIVE</span>' : ''}
+                        </a>
                         <div class="home-listing-card__info">
                             <div class="home-listing-card__title">${escapeHtml(l.title)}</div>
                             <div class="home-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
                         </div>
-                    </a>`;
+                        <div class="home-listing-card__actions">
+                            <a href="community.html#listing-${l.id}" class="hlc-btn hlc-btn--edit" title="Edit listing">✏️</a>
+                            <button class="hlc-btn hlc-btn--sold" data-id="${l.id}" data-sold="${isSold}" title="${isSold ? 'Mark as unsold' : 'Mark as sold'}">
+                                ${isSold ? '↩️' : '✅'}
+                            </button>
+                            <button class="hlc-btn hlc-btn--delete" data-id="${l.id}" title="Delete listing">🗑️</button>
+                        </div>
+                    </div>`;
                 }).join('');
+
+                grid.querySelectorAll('.hlc-btn--sold').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.dataset.id;
+                        const wasSold = btn.dataset.sold === 'true';
+                        const newStatus = wasSold ? 'active' : 'sold';
+                        const res = await apiFetch(`/api/marketplace/listings/${id}/status`, {
+                            method: 'PATCH',
+                            body: JSON.stringify({ status: newStatus })
+                        });
+                        if (res && res.success) {
+                            const card = grid.querySelector(`.home-listing-card[data-id="${id}"]`);
+                            if (card) {
+                                const overlay = card.querySelector('.home-listing-card__sold');
+                                if (newStatus === 'sold') {
+                                    btn.textContent = '↩️';
+                                    btn.dataset.sold = 'true';
+                                    btn.title = 'Mark as unsold';
+                                    if (!overlay) {
+                                        const media = card.querySelector('.home-listing-card__media');
+                                        const span = document.createElement('span');
+                                        span.className = 'home-listing-card__sold';
+                                        span.textContent = 'SOLD';
+                                        media.appendChild(span);
+                                    } else {
+                                        overlay.textContent = 'SOLD';
+                                        overlay.style.background = '';
+                                    }
+                                } else {
+                                    btn.textContent = '✅';
+                                    btn.dataset.sold = 'false';
+                                    btn.title = 'Mark as sold';
+                                    if (overlay) overlay.remove();
+                                }
+                            }
+                        }
+                    });
+                });
+
+                grid.querySelectorAll('.hlc-btn--delete').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        if (!confirm('Delete this listing?')) return;
+                        const id = btn.dataset.id;
+                        const res = await apiFetch(`/api/marketplace/listings/${id}`, { method: 'DELETE' });
+                        if (res && res.success) {
+                            const card = grid.querySelector(`.home-listing-card[data-id="${id}"]`);
+                            if (card) { card.style.opacity = '0'; card.style.transition = 'opacity .2s'; setTimeout(() => { card.remove(); if (!grid.querySelector('.home-listing-card')) myListingsSection.hidden = true; }, 200); }
+                        }
+                    });
+                });
             }
 
             // =========================
