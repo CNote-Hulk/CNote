@@ -250,71 +250,120 @@
     </section>
 
     <!-- ===========================
+         FAQ CATEGORIES
+         =========================== -->
+    <section class="help-categories">
+        <div class="help-categories__inner">
+            <div class="help-categories__grid">
+                <button class="help-cat-card" data-category="cont" type="button">
+                    <span class="help-cat-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </span>
+                    <span class="help-cat-card__name">Cont &amp; Autentificare</span>
+                    <span class="help-cat-card__sub">probleme cu contul, login, parola</span>
+                </button>
+                <button class="help-cat-card" data-category="marketplace" type="button">
+                    <span class="help-cat-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    </span>
+                    <span class="help-cat-card__name">Marketplace</span>
+                    <span class="help-cat-card__sub">listări, cumpărare, vânzare</span>
+                </button>
+                <button class="help-cat-card" data-category="comunitate" type="button">
+                    <span class="help-cat-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </span>
+                    <span class="help-cat-card__name">Comunitate &amp; Forum</span>
+                    <span class="help-cat-card__sub">chat, forum, postări</span>
+                </button>
+                <button class="help-cat-card" data-category="repair" type="button">
+                    <span class="help-cat-card__icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    </span>
+                    <span class="help-cat-card__name">Repair Wizard</span>
+                    <span class="help-cat-card__sub">cereri de reparații, console</span>
+                </button>
+            </div>
+            <button class="help-cat-reset" id="help-cat-reset" type="button" hidden>Toate întrebările</button>
+        </div>
+    </section>
+
+    <!-- ===========================
          FAQ SECTION
          =========================== -->
-    <section class="help-faq">
+    <section class="help-faq" id="discover">
         <div class="help-faq__inner">
             <h2 class="help-faq__heading" data-i18n="help_faq_heading">Frequently Asked Questions</h2>
 
-            <div class="help-faq__item">
-                <button class="help-faq__question" type="button">
-                    <span data-i18n="help_faq1_q">What is Console Notebook?</span>
-                    <span class="help-faq__icon">+</span>
-                </button>
-                <div class="help-faq__answer">
-                    <div class="help-faq__answer-inner" data-i18n="help_faq1_a">A platform dedicated to gaming console culture. Explore history, join the community, and buy or sell consoles.</div>
+            <!-- Search -->
+            <div class="help-search">
+                <svg class="help-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="faq-search" class="help-search__input" type="search" placeholder="Caută în întrebări…" autocomplete="off">
+            </div>
+
+            <div id="faq-list">
+                <div class="help-faq__item" data-category="general">
+                    <button class="help-faq__question" type="button">
+                        <span data-i18n="help_faq1_q">What is Console Notebook?</span>
+                        <span class="help-faq__icon">+</span>
+                    </button>
+                    <div class="help-faq__answer">
+                        <div class="help-faq__answer-inner" data-i18n="help_faq1_a">Console Notebook este o platformă dedicată culturii consolelor de jocuri video. Poți explora enciclopedia cu 50+ console, urmări istoria lor, compara specificații tehnice, accesa cursuri despre cum funcționează hardware-ul, posta anunțuri în marketplace și interacționa cu comunitatea prin chat și forum.</div>
+                    </div>
+                </div>
+
+                <div class="help-faq__item" data-category="comunitate">
+                    <button class="help-faq__question" type="button">
+                        <span data-i18n="help_faq2_q">How do I use the Community Chat?</span>
+                        <span class="help-faq__icon">+</span>
+                    </button>
+                    <div class="help-faq__answer">
+                        <div class="help-faq__answer-inner" data-i18n="help_faq2_a">Accesează pagina Community din navbar. Trebuie să ai un cont activ și verificat pentru a putea trimite mesaje. Poți participa la discuții generale sau la canale specifice pe teme de console. Mesajele sunt în timp real prin WebSocket.</div>
+                    </div>
+                </div>
+
+                <div class="help-faq__item" data-category="marketplace">
+                    <button class="help-faq__question" type="button">
+                        <span data-i18n="help_faq3_q">How do I post in the marketplace?</span>
+                        <span class="help-faq__icon">+</span>
+                    </button>
+                    <div class="help-faq__answer">
+                        <div class="help-faq__answer-inner" data-i18n="help_faq3_a">Navighează la secțiunea Marketplace din profilul tău, apasă "Anunț nou" și completează detaliile: titlu, descriere, preț, stare produs și fotografii. Trebuie să fii autentificat. Anunțul devine vizibil imediat după postare.</div>
+                    </div>
+                </div>
+
+                <div class="help-faq__item" data-category="cont">
+                    <button class="help-faq__question" type="button">
+                        <span data-i18n="help_faq4_q">Do I need an account?</span>
+                        <span class="help-faq__icon">+</span>
+                    </button>
+                    <div class="help-faq__answer">
+                        <div class="help-faq__answer-inner" data-i18n="help_faq4_a">Poți naviga enciclopedia și cursurile fără cont. Un cont este necesar pentru: marketplace, chat comunitar, forum, cereri de reparații, salvarea consolelor favorite și accesul la profilul personal.</div>
+                    </div>
+                </div>
+
+                <div class="help-faq__item" data-category="repair">
+                    <button class="help-faq__question" type="button">
+                        <span data-i18n="help_faq5_q">Can I request console repairs?</span>
+                        <span class="help-faq__icon">+</span>
+                    </button>
+                    <div class="help-faq__answer">
+                        <div class="help-faq__answer-inner" data-i18n="help_faq5_a">Da. Din profilul tău, deschide tab-ul "Requests" și apasă "Repair Request nou". Completează tipul consolei, simptomele și orice detalii relevante. Cererea va fi vizibilă comunității care poate oferi soluții.</div>
+                    </div>
+                </div>
+
+                <div class="help-faq__item" data-category="general">
+                    <button class="help-faq__question" type="button">
+                        <span data-i18n="help_faq6_q">What categories are available?</span>
+                        <span class="help-faq__icon">+</span>
+                    </button>
+                    <div class="help-faq__answer">
+                        <div class="help-faq__answer-inner" data-i18n="help_faq6_a">Platforma acoperă console din toate generațiile: de la Atari 2600 (1977) până la PlayStation 5 și Xbox Series X (2020), inclusiv console portabile (Game Boy, PSP, Nintendo DS), console rare și hardware obscur. Fiecare consolă are specificații tehnice complete și istoric detaliat.</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="help-faq__item">
-                <button class="help-faq__question" type="button">
-                    <span data-i18n="help_faq2_q">How do I use the Community Chat?</span>
-                    <span class="help-faq__icon">+</span>
-                </button>
-                <div class="help-faq__answer">
-                    <div class="help-faq__answer-inner" data-i18n="help_faq2_a">Go to the Community page. You need an account to post. Join topic channels or start discussions in the forum.</div>
-                </div>
-            </div>
-
-            <div class="help-faq__item">
-                <button class="help-faq__question" type="button">
-                    <span data-i18n="help_faq3_q">How do I post in the marketplace?</span>
-                    <span class="help-faq__icon">+</span>
-                </button>
-                <div class="help-faq__answer">
-                    <div class="help-faq__answer-inner" data-i18n="help_faq3_a">Navigate to Marketplace, click "New Listing", fill in the details and upload photos. You must be logged in.</div>
-                </div>
-            </div>
-
-            <div class="help-faq__item">
-                <button class="help-faq__question" type="button">
-                    <span data-i18n="help_faq4_q">Do I need an account?</span>
-                    <span class="help-faq__icon">+</span>
-                </button>
-                <div class="help-faq__answer">
-                    <div class="help-faq__answer-inner" data-i18n="help_faq4_a">Browsing is free. An account is required for chat, marketplace listings, repair requests, and ratings.</div>
-                </div>
-            </div>
-
-            <div class="help-faq__item">
-                <button class="help-faq__question" type="button">
-                    <span data-i18n="help_faq5_q">Can I request console repairs?</span>
-                    <span class="help-faq__icon">+</span>
-                </button>
-                <div class="help-faq__answer">
-                    <div class="help-faq__answer-inner" data-i18n="help_faq5_a">Yes. Go to your profile, open the Requests tab, and submit a repair request with your console and symptoms.</div>
-                </div>
-            </div>
-
-            <div class="help-faq__item">
-                <button class="help-faq__question" type="button">
-                    <span data-i18n="help_faq6_q">What categories are available?</span>
-                    <span class="help-faq__icon">+</span>
-                </button>
-                <div class="help-faq__answer">
-                    <div class="help-faq__answer-inner" data-i18n="help_faq6_a">The platform covers consoles from Atari to modern systems, including handhelds and obscure hardware.</div>
-                </div>
-            </div>
+            <p class="help-faq__no-results" id="faq-no-results" hidden>Nu am găsit rezultate pentru această căutare.</p>
         </div>
     </section>
 
