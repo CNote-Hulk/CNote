@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSidebar(user);
 
             // parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, coursesRes, visitedRes, myListingsRes, favListingsRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, _coursesRes, visitedRes, myListingsRes, favListingsRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
@@ -337,39 +337,105 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // =========================
-            // ACTIVITY
+            // ACTIVITY FEED
             // =========================
-            const activityList = document.querySelector('.activity-list');
+            const activityList = document.getElementById('activity-list');
 
             if (activityList) {
-                activityList.innerHTML = '';
+                const allConsoles = window.CONSOLES_DATA || [];
+                const events = [];
 
-                if (ratingsRes.success && ratingsRes.ratings.length) {
-                    const last = ratingsRes.ratings[0];
-                    const c = (window.CONSOLES_DATA || []).find(x => x.id === last.console_id);
-
-                    if (c) {
-                        addActivity(`Rated <strong>${escapeHtml(c.name)}</strong> ${'★'.repeat(last.rating || 5)}`);
-                    }
+                // Ratings
+                if (ratingsRes.success && Array.isArray(ratingsRes.ratings)) {
+                    ratingsRes.ratings.forEach(r => {
+                        const c = allConsoles.find(x => x.id === r.console_id);
+                        if (!c) return;
+                        const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(5 - (r.rating || 0));
+                        events.push({
+                            ts: r.created_at ? new Date(r.created_at) : null,
+                            icon: '⭐',
+                            html: `Rated <a href="consoles/${escapeHtml(c.id)}.html"><strong>${escapeHtml(c.name)}</strong></a> <span class="activity-stars">${stars}</span>`
+                        });
+                    });
                 }
 
-                if (favoritesRes.success && favoritesRes.favorites.length) {
-                    const c = (window.CONSOLES_DATA || []).find(x => x.id === favoritesRes.favorites[0]);
-
-                    if (c) {
-                        addActivity(`Added <strong>${escapeHtml(c.name)}</strong> to favorites`);
-                    }
+                // Forum posts
+                if (myPostsRes.success && Array.isArray(myPostsRes.posts)) {
+                    myPostsRes.posts.forEach(p => {
+                        events.push({
+                            ts: p.created_at ? new Date(p.created_at) : null,
+                            icon: '💬',
+                            html: `Posted in forum: <strong>${escapeHtml(p.title)}</strong>`
+                        });
+                    });
                 }
 
-                if (friendsRes.success && friendsRes.friends.length) {
-                    addActivity(`Became friends with <strong>${escapeHtml(friendsRes.friends[0].username)}</strong>`);
+                // Marketplace listings
+                if (myListingsRes.success && Array.isArray(myListingsRes.listings)) {
+                    myListingsRes.listings.forEach(l => {
+                        events.push({
+                            ts: l.created_at ? new Date(l.created_at) : null,
+                            icon: '🏪',
+                            html: `Listed <strong>${escapeHtml(l.title)}</strong> for ${Number(l.price).toFixed(0)} RON`
+                        });
+                    });
                 }
 
-                function addActivity(html) {
-                    const li = document.createElement('li');
-                    li.innerHTML = html;
-                    activityList.appendChild(li);
+                // Console visits (most recent 5 only — noisy otherwise)
+                if (visitedRes.success && Array.isArray(visitedRes.visits)) {
+                    visitedRes.visits.slice(0, 5).forEach(v => {
+                        const c = allConsoles.find(x => x.id === v.console_id);
+                        if (!c) return;
+                        events.push({
+                            ts: v.visited_at ? new Date(v.visited_at) : null,
+                            icon: '👁️',
+                            html: `Visited <a href="consoles/${escapeHtml(c.id)}.html"><strong>${escapeHtml(c.name)}</strong></a>`
+                        });
+                    });
                 }
+
+                // Friends
+                if (friendsRes.success && Array.isArray(friendsRes.friends)) {
+                    friendsRes.friends.forEach(f => {
+                        events.push({
+                            ts: f.friends_since ? new Date(f.friends_since) : null,
+                            icon: '🤝',
+                            html: `Became friends with <a href="user-profile.html?u=${encodeURIComponent(f.username)}"><strong>${escapeHtml(f.username)}</strong></a>`
+                        });
+                    });
+                }
+
+                // Sort by timestamp descending, nulls last
+                events.sort((a, b) => {
+                    if (!a.ts && !b.ts) return 0;
+                    if (!a.ts) return 1;
+                    if (!b.ts) return -1;
+                    return b.ts - a.ts;
+                });
+
+                const MAX_ITEMS = 12;
+                const shown = events.slice(0, MAX_ITEMS);
+
+                if (shown.length === 0) {
+                    activityList.innerHTML = '<li class="activity-empty">No activity yet — start exploring consoles!</li>';
+                } else {
+                    activityList.innerHTML = shown.map(e => {
+                        const timeStr = e.ts ? `<time class="activity-time" title="${e.ts.toLocaleString()}">${relativeTime(e.ts)}</time>` : '';
+                        return `<li><span class="activity-icon">${e.icon}</span><span class="activity-text">${e.html}</span>${timeStr}</li>`;
+                    }).join('');
+                }
+            }
+
+            function relativeTime(date) {
+                const diff = Date.now() - date.getTime();
+                const mins = Math.floor(diff / 60000);
+                const hours = Math.floor(diff / 3600000);
+                const days = Math.floor(diff / 86400000);
+                if (mins < 1) return 'just now';
+                if (mins < 60) return `${mins}m ago`;
+                if (hours < 24) return `${hours}h ago`;
+                if (days < 7) return `${days}d ago`;
+                return date.toLocaleDateString();
             }
 
             // =========================

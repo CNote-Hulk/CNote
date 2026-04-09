@@ -222,7 +222,7 @@ router.get('/', authRequired, async (req, res) => {
     try {
         // DB: join friends table with users, finding both directions
         const result = await pool.query(
-            `SELECT u.id, u.username, u.avatar
+            `SELECT u.id, u.username, u.avatar, f.created_at AS friends_since
              FROM friends f
              JOIN users u ON (
                 (f.user1_id = $1 AND u.id = f.user2_id) OR

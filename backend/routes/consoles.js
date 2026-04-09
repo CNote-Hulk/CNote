@@ -31,10 +31,10 @@ router.get('/visited', require('../middleware/auth').authRequired, async (req, r
     const userId = req.user.id;
     try {
         const result = await pool.query(
-            'SELECT console_id FROM user_console_visits WHERE user_id = $1',
+            'SELECT console_id, visited_at FROM user_console_visits WHERE user_id = $1 ORDER BY visited_at DESC',
             [userId]
         );
-        res.json({ success: true, consoles: result.rows.map(r => r.console_id) });
+        res.json({ success: true, consoles: result.rows.map(r => r.console_id), visits: result.rows });
     } catch (err) {
         console.error('GET /api/consoles/visited error:', err);
         res.status(500).json({ success: false, error: 'Failed to fetch visited consoles.' });
