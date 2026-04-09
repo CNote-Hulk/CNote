@@ -191,15 +191,15 @@ let _cachedConsoleList = null; // In-memory cache for console list
 
 /**
  * loadConsoleList
- * @description Loads and parses consoles.json from the frontend data folder.
+ * @description Loads and parses consoles-en.json from the frontend data folder.
  *              Tries multiple candidate paths and strips UTF-8 BOM if present.
  * @returns {Array|null}
  */
 function loadConsoleList() {
     const candidates = [
-        path.join(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json'),
-        path.resolve(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles.json'),
-        path.resolve(process.cwd(), 'frontend', 'js', 'data', 'consoles.json')
+        path.join(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles-en.json'),
+        path.resolve(__dirname, '..', '..', 'frontend', 'js', 'data', 'consoles-en.json'),
+        path.resolve(process.cwd(), 'frontend', 'js', 'data', 'consoles-en.json')
     ];
     for (const p of candidates) {
         try {
@@ -224,7 +224,7 @@ function loadConsoleList() {
             console.error('Console list parse error at', p, err.message);
         }
     }
-    console.warn('consoles.json not found. Tried:', candidates.join(', '));
+    console.warn('consoles-en.json not found. Tried:', candidates.join(', '));
     return [];
 }
 
