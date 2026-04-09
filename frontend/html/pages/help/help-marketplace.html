@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ===========================
+         HELP — MARKETPLACE
+         =========================== -->
+    <meta charset="UTF-8">
+    <script>!function(){var t=localStorage.getItem("cnote-theme");if(t)document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Marketplace — Help &amp; Support — Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Marketplace — Help — Console Notebook</title>
+    <link rel="stylesheet" href="../../../css/main.css">
+</head>
+<body class="has-mbn">
+
+    <!-- ===========================
+         NAVIGATION BAR
+         =========================== -->
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="../index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+            <ul class="nav-links">
+                <li><a href="../community-welcome-page.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="../invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="../evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="../comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="../help.html" class="active" data-i18n="nav_help">Help</a></li>
+                <li><a href="../help.html#contact" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===========================
+         PAGE HEADER
+         =========================== -->
+    <header class="help-sub-header">
+        <div class="help-sub-header__inner">
+
+            <nav class="help-breadcrumb" aria-label="Breadcrumb">
+                <a href="../help.html">Help &amp; Support</a>
+                <span class="help-breadcrumb__sep">›</span>
+                <span class="help-breadcrumb__current">Marketplace</span>
+            </nav>
+
+            <a href="../help.html" class="help-sub-header__back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Help &amp; Support
+            </a>
+
+            <h1 class="help-sub-header__title">Marketplace</h1>
+            <p class="help-sub-header__subtitle">Posting listings, editing, contacting sellers, favourites, filters, and how transactions work.</p>
+
+        </div>
+    </header>
+
+    <!-- ===========================
+         FAQ ACCORDION
+         =========================== -->
+    <section class="help-sub-faq">
+        <div class="help-sub-faq__inner">
+
+            <!-- Q1 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I post a new listing?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">1</span>Go to <strong>Community → Marketplace</strong>.</li>
+                            <li><span class="help-steps__num">2</span>Click <strong>New listing</strong>.</li>
+                            <li><span class="help-steps__num">3</span>Fill in the form: title, description, price, condition, category, console type, location (country and city), and optionally a phone number and an OLX link.</li>
+                            <li><span class="help-steps__num">4</span>Add up to <strong>8 photos</strong>.</li>
+                            <li><span class="help-steps__num">5</span>Click <strong>Post listing</strong>.</li>
+                        </ol>
+                        The listing goes live immediately and is visible to all users.
+                        <div class="help-note">
+                            <span class="help-note__icon">💡</span>
+                            <span>You must be logged in to post a listing.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>What product categories can I list?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        The marketplace has four categories:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>Consoles</strong> — complete gaming consoles and handheld devices.</li>
+                            <li><span class="help-steps__num">•</span><strong>Games</strong> — physical game cartridges, discs, and digital codes.</li>
+                            <li><span class="help-steps__num">•</span><strong>Accessories</strong> — controllers, cables, memory cards, chargers, and other peripherals.</li>
+                            <li><span class="help-steps__num">•</span><strong>Parts</strong> — individual components intended for repair or modding.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>What condition options are available?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        There are five condition levels:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>New</strong> — unused, in original packaging.</li>
+                            <li><span class="help-steps__num">•</span><strong>Like new</strong> — used very little, no visible wear.</li>
+                            <li><span class="help-steps__num">•</span><strong>Good</strong> — normal signs of use, fully functional.</li>
+                            <li><span class="help-steps__num">•</span><strong>Fair</strong> — visible wear or minor cosmetic damage, still functional.</li>
+                            <li><span class="help-steps__num">•</span><strong>For parts</strong> — not fully functional; sold for repair or parts only.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How many photos can I add to a listing?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        You can add up to <strong>8 photos</strong> per listing. Photos are stored as image URLs — you can use links from image hosting services or upload directly if the interface supports it.
+                        <div class="help-note">
+                            <span class="help-note__icon">💡</span>
+                            <span>More photos significantly increase interest in a listing. Include shots from multiple angles and any visible wear.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I edit an existing listing?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">1</span>Open the listing you want to edit (you can find your listings in <strong>Home → My Listings</strong> or in your public profile).</li>
+                            <li><span class="help-steps__num">2</span>Click the <strong>Edit</strong> (pencil) button.</li>
+                            <li><span class="help-steps__num">3</span>Update any fields and save.</li>
+                        </ol>
+                        Only the owner of a listing can edit it.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I delete a listing?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">1</span>Find the listing in <strong>Home → My Listings</strong>.</li>
+                            <li><span class="help-steps__num">2</span>Click the <strong>Delete</strong> (trash) button on the listing card.</li>
+                            <li><span class="help-steps__num">3</span>Confirm the deletion.</li>
+                        </ol>
+                        Deletion is permanent — the listing cannot be recovered.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I mark a product as sold?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        In <strong>Home → My Listings</strong>, click the <strong>✅ Mark as sold</strong> button on the listing card. The listing will display a <em>SOLD</em> badge and be excluded from active search results. You can reverse this by clicking the same button again (it becomes <em>↩️ Mark as unsold</em>).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I contact a seller?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        On a listing's detail page you can contact the seller in three ways:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">1</span><strong>Direct message</strong> — send a private message to the seller through the platform's DM system (requires a logged-in account).</li>
+                            <li><span class="help-steps__num">2</span><strong>Phone</strong> — if the seller provided a phone number, it is shown on the listing.</li>
+                            <li><span class="help-steps__num">3</span><strong>OLX link</strong> — if the seller linked an external OLX listing, you can view it and contact them there.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I save a listing to favourites?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        On any listing, click the <strong>heart (♡) icon</strong> to add it to your favourites. Click it again to remove it.
+                        <br><br>
+                        Your saved listings are accessible in <strong>Home → Favourite Listings</strong>.
+                        <div class="help-note">
+                            <span class="help-note__icon">💡</span>
+                            <span>You must be logged in to save favourites.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I filter listings by country or city?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        In the Marketplace, use the filter panel on the left (or the filter bar on mobile). You can filter by:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>Category</strong> (Consoles, Games, Accessories, Parts)</li>
+                            <li><span class="help-steps__num">•</span><strong>Condition</strong></li>
+                            <li><span class="help-steps__num">•</span><strong>Console type</strong> (free text — e.g. "PlayStation 4")</li>
+                            <li><span class="help-steps__num">•</span><strong>Country</strong></li>
+                            <li><span class="help-steps__num">•</span><strong>City</strong></li>
+                            <li><span class="help-steps__num">•</span><strong>Keyword search</strong></li>
+                        </ol>
+                        All filters are applied server-side — results update when you change the selection.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q11 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I sort marketplace results?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Use the <strong>Sort</strong> dropdown in the Marketplace. Available options:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>Newest first</strong> — most recently posted listings appear at the top (default).</li>
+                            <li><span class="help-steps__num">•</span><strong>Oldest first</strong> — oldest listings appear at the top.</li>
+                            <li><span class="help-steps__num">•</span><strong>Price: low to high</strong></li>
+                            <li><span class="help-steps__num">•</span><strong>Price: high to low</strong></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q12 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>What if I am scammed in a transaction?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Console Notebook is a classifieds platform — it connects buyers and sellers but does not manage or guarantee any transaction. If you believe you have been scammed:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">1</span>Report the listing using the <strong>Report</strong> option on the listing page.</li>
+                            <li><span class="help-steps__num">2</span>Contact the Console Notebook team via the <a href="../help.html#contact">contact form</a> with details of the incident.</li>
+                            <li><span class="help-steps__num">3</span>For financial disputes, contact your local consumer protection authority or law enforcement — the platform cannot mediate or reverse transactions.</li>
+                        </ol>
+                        <div class="help-note help-note--warn">
+                            <span class="help-note__icon">⚠️</span>
+                            <span>Always meet in a public place for in-person transactions. Use secure payment methods with buyer protection (e.g. PayPal Goods &amp; Services) for remote purchases.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q13 -->
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>Does Console Notebook process payments?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        <strong>No.</strong> Console Notebook does not handle, process, or hold any money. The platform is purely a classifieds board — it connects buyers and sellers who then arrange payment and delivery independently. No transaction fees are charged.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===========================
+         BOTTOM LINKS
+         =========================== -->
+    <div class="help-sub-footer">
+        <div class="help-sub-footer__inner">
+            <span class="help-sub-footer__text">Couldn't find what you were looking for?</span>
+            <a href="../help.html#contact" class="help-sub-footer__link">Contact the team →</a>
+        </div>
+    </div>
+
+    <!-- ===========================
+         FOOTER
+         =========================== -->
+    <footer class="footer footer--fullwidth">
+        <div class="footer-inner container">
+            <div class="footer-left">
+                <p class="footer-main">&copy; 2026 Console Notebook</p>
+            </div>
+            <div class="footer-right">
+                <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
+                <a href="tel:+40758464907">+40 758 464 907</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="../../../js/main.js"></script>
+    <script src="../../../js/pages/help.js"></script>
+    <script src="../../../js/fallback/search-profile.js"></script>
+
+    <!-- Mobile bottom navigation -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="../statistici.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">📊</span>
+                <span data-i18n="sidebar_stats">Statistics</span>
+            </a>
+            <div class="mbn-dd-sep"></div>
+            <a href="../comparatie.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">⚔️</span>
+                <span data-i18n="sidebar_compare">Compare</span>
+            </a>
+        </div>
+        <a href="../home.html" class="mbn-item" data-mbn-page="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-i18n="sidebar_home">Home</span>
+        </a>
+        <a href="../evolutie.html" class="mbn-item" data-mbn-page="evolutie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+            <span data-i18n="sidebar_consoles">Consoles</span>
+        </a>
+        <a href="../community-welcome-page.html" class="mbn-item" data-mbn-page="community">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-i18n="sidebar_community">Community</span>
+        </a>
+        <a href="../help.html" class="mbn-item mbn-item--active" data-mbn-page="help">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="nav_help">Help</span>
+        </a>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+            <span data-i18n="mbn_more">More</span>
+        </button>
+    </nav>
+
+</body>
+</html>

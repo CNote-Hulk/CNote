@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ===========================
+         HELP — REPAIR WIZARD
+         =========================== -->
+    <meta charset="UTF-8">
+    <script>!function(){var t=localStorage.getItem("cnote-theme");if(t)document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Repair Wizard — Help &amp; Support — Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Repair Wizard — Help — Console Notebook</title>
+    <link rel="stylesheet" href="../../../css/main.css">
+</head>
+<body class="has-mbn">
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="../index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+            <ul class="nav-links">
+                <li><a href="../community-welcome-page.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="../invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="../evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="../comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="../help.html" class="active" data-i18n="nav_help">Help</a></li>
+                <li><a href="../help.html#contact" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="help-sub-header">
+        <div class="help-sub-header__inner">
+            <nav class="help-breadcrumb" aria-label="Breadcrumb">
+                <a href="../help.html">Help &amp; Support</a>
+                <span class="help-breadcrumb__sep">›</span>
+                <span class="help-breadcrumb__current">Repair Wizard</span>
+            </nav>
+            <a href="../help.html" class="help-sub-header__back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Help &amp; Support
+            </a>
+            <h1 class="help-sub-header__title">Repair Wizard</h1>
+            <p class="help-sub-header__subtitle">Submitting repair requests, tracking status, and receiving replies.</p>
+        </div>
+    </header>
+
+    <section class="help-sub-faq">
+        <div class="help-sub-faq__inner">
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I submit a repair request?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">1</span>Go to <strong>Community → Repair Wizard</strong>.</li>
+                            <li><span class="help-steps__num">2</span>Select your <strong>console brand</strong> (PlayStation, Xbox, Nintendo, PC, or Other).</li>
+                            <li><span class="help-steps__num">3</span>Enter the <strong>console model</strong> (e.g. PlayStation 4 Slim).</li>
+                            <li><span class="help-steps__num">4</span>Select one or more <strong>symptoms</strong> from the pre-defined list for your brand.</li>
+                            <li><span class="help-steps__num">5</span>Optionally describe a custom symptom or add more details in the description field.</li>
+                            <li><span class="help-steps__num">6</span>Click <strong>Submit request</strong>.</li>
+                        </ol>
+                        Your request is sent to the Console Notebook team and a notification email is dispatched immediately.
+                        <div class="help-note">
+                            <span class="help-note__icon">💡</span>
+                            <span>You must be logged in to submit a repair request.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>What information should I include?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        The more detail you provide, the faster and more accurate the response. Include:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span>The exact console model and any hardware revision (e.g. PS4 CUH-1200).</li>
+                            <li><span class="help-steps__num">•</span>When the problem started and what may have triggered it.</li>
+                            <li><span class="help-steps__num">•</span>Any error codes or messages displayed.</li>
+                            <li><span class="help-steps__num">•</span>What you have already tried.</li>
+                            <li><span class="help-steps__num">•</span>Whether the console has been previously repaired or modified.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>What console brands does the Repair Wizard cover?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        The Repair Wizard has pre-defined symptom lists for five brands:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>PlayStation</strong> — all PS consoles (PS1 through PS5).</li>
+                            <li><span class="help-steps__num">•</span><strong>Xbox</strong> — all Xbox consoles.</li>
+                            <li><span class="help-steps__num">•</span><strong>Nintendo</strong> — all Nintendo consoles and handhelds.</li>
+                            <li><span class="help-steps__num">•</span><strong>PC</strong> — PC gaming hardware issues.</li>
+                            <li><span class="help-steps__num">•</span><strong>Other</strong> — Sega, Atari, SNK, and any other brand not listed above.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I track the status of my request?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Go to <strong>Community → Repair Wizard → My Requests</strong>. Each request shows its current status:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>Pending</strong> — your request has been received and is waiting for review.</li>
+                            <li><span class="help-steps__num">•</span><strong>In progress</strong> — the team is actively working on a response.</li>
+                            <li><span class="help-steps__num">•</span><strong>Resolved</strong> — a reply has been provided.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I receive the reply to my request?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        When the team updates your request status or adds a reply, you will receive an <strong>email notification</strong> to the address registered on your account. You can also see the reply directly in <strong>My Requests</strong> at any time.
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How long does a response take?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Response times vary depending on the complexity of the issue and the current volume of requests. There is no guaranteed SLA. For urgent or complex repairs, we recommend also posting in the community forum where other users can offer help sooner.
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>Is the repair service free?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        <strong>Yes.</strong> Submitting a repair request and receiving advice through the Repair Wizard is completely free. The Repair Wizard provides diagnostic guidance and repair tips — it does not offer physical repair services or ship replacement parts.
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>Can I submit multiple repair requests?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Yes. There is no limit on the number of requests you can submit. Each request is tracked independently in your <strong>My Requests</strong> list.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="help-sub-footer">
+        <div class="help-sub-footer__inner">
+            <span class="help-sub-footer__text">Couldn't find what you were looking for?</span>
+            <a href="../help.html#contact" class="help-sub-footer__link">Contact the team →</a>
+        </div>
+    </div>
+
+    <footer class="footer footer--fullwidth">
+        <div class="footer-inner container">
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p></div>
+            <div class="footer-right">
+                <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
+                <a href="tel:+40758464907">+40 758 464 907</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="../../../js/main.js"></script>
+    <script src="../../../js/pages/help.js"></script>
+    <script src="../../../js/fallback/search-profile.js"></script>
+
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="../statistici.html" class="mbn-dd-item"><span class="mbn-dd-icon">📊</span><span data-i18n="sidebar_stats">Statistics</span></a>
+            <div class="mbn-dd-sep"></div>
+            <a href="../comparatie.html" class="mbn-dd-item"><span class="mbn-dd-icon">⚔️</span><span data-i18n="sidebar_compare">Compare</span></a>
+        </div>
+        <a href="../home.html" class="mbn-item" data-mbn-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span data-i18n="sidebar_home">Home</span></a>
+        <a href="../evolutie.html" class="mbn-item" data-mbn-page="evolutie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg><span data-i18n="sidebar_consoles">Consoles</span></a>
+        <a href="../community-welcome-page.html" class="mbn-item" data-mbn-page="community"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-i18n="sidebar_community">Community</span></a>
+        <a href="../help.html" class="mbn-item mbn-item--active" data-mbn-page="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span data-i18n="nav_help">Help</span></a>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span data-i18n="mbn_more">More</span></button>
+    </nav>
+</body>
+</html>

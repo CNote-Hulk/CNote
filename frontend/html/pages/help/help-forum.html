@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ===========================
+         HELP — FORUM
+         =========================== -->
+    <meta charset="UTF-8">
+    <script>!function(){var t=localStorage.getItem("cnote-theme");if(t)document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Forum — Help &amp; Support — Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Forum — Help — Console Notebook</title>
+    <link rel="stylesheet" href="../../../css/main.css">
+</head>
+<body class="has-mbn">
+    <nav class="navbar">
+        <div class="container">
+            <button class="navbar-search-btn" aria-label="Search" type="button" data-i18n="nav_search" data-i18n-attr="aria-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <a href="../index.html" class="logo" data-i18n="hero_title">Console Notebook</a>
+            <ul class="nav-links">
+                <li><a href="../community-welcome-page.html" data-i18n="nav_community">Community</a></li>
+                <li><a href="../invata.html" data-i18n="nav_learn">Learn</a></li>
+                <li><a href="../evolutie.html" data-i18n="nav_evolution">Evolution</a></li>
+                <li><a href="../comparatie.html" data-i18n="nav_compare">Compare</a></li>
+                <li><a href="../help.html" class="active" data-i18n="nav_help">Help</a></li>
+                <li><a href="../help.html#contact" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+            <div class="navbar-profile-wrap">
+                <button class="navbar-profile-btn" aria-label="Profile" type="button" data-i18n="navbar_profile" data-i18n-attr="aria-label">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="help-sub-header">
+        <div class="help-sub-header__inner">
+            <nav class="help-breadcrumb" aria-label="Breadcrumb">
+                <a href="../help.html">Help &amp; Support</a>
+                <span class="help-breadcrumb__sep">›</span>
+                <span class="help-breadcrumb__current">Forum</span>
+            </nav>
+            <a href="../help.html" class="help-sub-header__back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                Back to Help &amp; Support
+            </a>
+            <h1 class="help-sub-header__title">Forum</h1>
+            <p class="help-sub-header__subtitle">Creating threads, replying, upvoting, categories, tags, and finding your posts.</p>
+        </div>
+    </header>
+
+    <section class="help-sub-faq">
+        <div class="help-sub-faq__inner">
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I create a new thread?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">1</span>Go to <strong>Community → Forum</strong>.</li>
+                            <li><span class="help-steps__num">2</span>Select the category that fits your topic (PlayStation, Xbox, Nintendo, PC, or General).</li>
+                            <li><span class="help-steps__num">3</span>Click <strong>New thread</strong>.</li>
+                            <li><span class="help-steps__num">4</span>Enter a title, write your post, and choose a tag.</li>
+                            <li><span class="help-steps__num">5</span>Click <strong>Post</strong>.</li>
+                        </ol>
+                        <div class="help-note">
+                            <span class="help-note__icon">💡</span>
+                            <span>You must be logged in to create threads.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>What categories are available on the forum?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        There are five categories:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>PlayStation</strong> — PS1, PS2, PSP, PS3, PS4, PS5, PS Vita.</li>
+                            <li><span class="help-steps__num">•</span><strong>Xbox</strong> — original Xbox, 360, One, Series X/S.</li>
+                            <li><span class="help-steps__num">•</span><strong>Nintendo</strong> — NES, SNES, N64, GameCube, Wii, Switch, Game Boy, DS family.</li>
+                            <li><span class="help-steps__num">•</span><strong>PC</strong> — PC gaming hardware, emulation, and retro computing.</li>
+                            <li><span class="help-steps__num">•</span><strong>General</strong> — anything that doesn't fit the above.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>What tags can I add to a thread?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Each thread has one tag that helps users filter content:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span><strong>General</strong> — default tag for general discussion.</li>
+                            <li><span class="help-steps__num">•</span><strong>Help</strong> — asking for help with a problem.</li>
+                            <li><span class="help-steps__num">•</span><strong>Discussion</strong> — open topic for debate or opinions.</li>
+                            <li><span class="help-steps__num">•</span><strong>News</strong> — sharing or discussing news.</li>
+                            <li><span class="help-steps__num">•</span><strong>Bug</strong> — reporting a bug or technical issue.</li>
+                            <li><span class="help-steps__num">•</span><strong>Guide</strong> — step-by-step tutorial or guide.</li>
+                            <li><span class="help-steps__num">•</span><strong>Modding</strong> — console modifications and custom firmware.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I reply to an existing thread?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Open the thread you want to reply to. Scroll to the bottom and use the reply box. Type your message and click <strong>Post reply</strong>. You must be logged in to reply.
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>How do I upvote a thread or a reply?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Click the <strong>▲ upvote button</strong> next to any thread or reply. Upvotes are used to surface the most helpful content. You can upvote each thread and each reply once. You must be logged in to upvote.
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>Where can I see all my posts?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Go to <strong>Home → My Posts</strong> in the dashboard sidebar. This panel lists all threads you have created, sorted by most recent.
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>Where can I see the posts I have liked?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Go to <strong>Home → Liked Posts</strong> in the dashboard sidebar. This panel lists all forum threads you have upvoted.
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-faq__item">
+                <button class="help-faq__question" type="button">
+                    <span>Are there any rules I need to follow on the forum?</span>
+                    <span class="help-faq__icon">+</span>
+                </button>
+                <div class="help-faq__answer">
+                    <div class="help-faq__answer-inner">
+                        Keep discussions respectful and on-topic. The general guidelines are:
+                        <ol class="help-steps">
+                            <li><span class="help-steps__num">•</span>No harassment, hate speech, or personal attacks.</li>
+                            <li><span class="help-steps__num">•</span>No spam or repetitive posts.</li>
+                            <li><span class="help-steps__num">•</span>Post in the correct category and use the appropriate tag.</li>
+                            <li><span class="help-steps__num">•</span>No piracy links or illegal content.</li>
+                            <li><span class="help-steps__num">•</span>Search before posting — your question may already be answered.</li>
+                        </ol>
+                        Violations may result in post removal or account suspension.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="help-sub-footer">
+        <div class="help-sub-footer__inner">
+            <span class="help-sub-footer__text">Couldn't find what you were looking for?</span>
+            <a href="../help.html#contact" class="help-sub-footer__link">Contact the team →</a>
+        </div>
+    </div>
+
+    <footer class="footer footer--fullwidth">
+        <div class="footer-inner container">
+            <div class="footer-left"><p class="footer-main">&copy; 2026 Console Notebook</p></div>
+            <div class="footer-right">
+                <a href="mailto:console.notebook.app@gmail.com">console.notebook.app@gmail.com</a>
+                <a href="tel:+40758464907">+40 758 464 907</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="../../../js/main.js"></script>
+    <script src="../../../js/pages/help.js"></script>
+    <script src="../../../js/fallback/search-profile.js"></script>
+
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="../statistici.html" class="mbn-dd-item"><span class="mbn-dd-icon">📊</span><span data-i18n="sidebar_stats">Statistics</span></a>
+            <div class="mbn-dd-sep"></div>
+            <a href="../comparatie.html" class="mbn-dd-item"><span class="mbn-dd-icon">⚔️</span><span data-i18n="sidebar_compare">Compare</span></a>
+        </div>
+        <a href="../home.html" class="mbn-item" data-mbn-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span data-i18n="sidebar_home">Home</span></a>
+        <a href="../evolutie.html" class="mbn-item" data-mbn-page="evolutie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg><span data-i18n="sidebar_consoles">Consoles</span></a>
+        <a href="../community-welcome-page.html" class="mbn-item" data-mbn-page="community"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-i18n="sidebar_community">Community</span></a>
+        <a href="../help.html" class="mbn-item mbn-item--active" data-mbn-page="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span data-i18n="nav_help">Help</span></a>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><span data-i18n="mbn_more">More</span></button>
+    </nav>
+</body>
+</html>
