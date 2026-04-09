@@ -23,17 +23,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const contactForm = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
     const successMessage = document.getElementById('success-message');
-    const errorMessage = document.getElementById('error-message');
     const originalBtnText = submitBtn?.textContent || 'Send message';
     let isSubmitting = false;
     const isLocalFile = window.location.protocol === 'file:';
     const API_BASE_URL = (window.CN_API_BASE_URL || '/api').replace(/\/$/, '');
 
-    /** Set text content with fallback value */
-    function setMessageText(element, text, fallbackText) {
-        if (!element) return;
-        element.textContent = text || fallbackText;
-    }
+    // Auto-fill Name & Email from session
+    try {
+        const raw = localStorage.getItem('cn_session');
+        if (raw) {
+            const session = JSON.parse(raw);
+            const nameEl = document.getElementById('contact-name');
+            const emailEl = document.getElementById('contact-email');
+            if (session.username && nameEl) {
+                nameEl.value = session.username;
+                nameEl.closest('.input-group')?.querySelector('label')?.classList.add('label-active');
+            }
+            if (session.email && emailEl) {
+                emailEl.value = session.email;
+                emailEl.closest('.input-group')?.querySelector('label')?.classList.add('label-active');
+            }
+        }
+    } catch (e) {}
 
     // Form field validation helper
     /** Validate a single form input and toggle valid/invalid CSS classes */
@@ -50,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add validation listeners to form inputs
     if (contactForm) {
-        const inputs = contactForm.querySelectorAll('input[type="text"], input[type="email"], textarea');
+        const inputs = contactForm.querySelectorAll('input[type="text"], input[type="email"], textarea, select');
         inputs.forEach(input => {
             const inputGroup = input.closest('.input-group');
             const label = inputGroup ? inputGroup.querySelector('label') : null;
@@ -79,31 +90,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Util: Show message with animation
-    /** Show a success/error message element with optional auto-hide */
-    function showMessage(messageEl, duration = 5000) {
-        if (!messageEl) return;
-        messageEl.style.display = 'block';
-        messageEl.classList.add('message-visible');
-        messageEl.classList.remove('message-hidden');
-
-        setTimeout(() => {
-            messageEl.classList.remove('message-visible');
-            messageEl.classList.add('message-hidden');
-            setTimeout(() => {
-                messageEl.style.display = 'none';
-            }, 300);
-        }, duration);
-    }
-
     // Util: Set loading state
     /** Toggle loading spinner on submit button */
     function setLoading(isLoading) {
         if (!submitBtn) return;
         isSubmitting = isLoading;
         submitBtn.disabled = isLoading;
-        submitBtn.textContent = isLoading ? 'Sending...' : originalBtnText;
+        submitBtn.textContent = isLoading ? 'Se trimite...' : originalBtnText;
         submitBtn.classList.toggle('button-loading', isLoading);
+    }
+
+    function showInlineError(msg) {
+        var errorEl = document.getElementById('error-message');
+        if (!errorEl) return;
+        errorEl.textContent = msg;
+        errorEl.hidden = false;
+    }
+
+    function clearInlineError() {
+        var errorEl = document.getElementById('error-message');
+        if (errorEl) errorEl.hidden = true;
     }
 
     // Util: Smooth scroll to message (centered)
@@ -138,82 +144,57 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             if (isSubmitting) return;
 
-            const honeypot = contactForm.querySelector('input[name="_honey"]');
-            if (honeypot && honeypot.value.trim() !== '') {
-                console.warn('Honeypot triggered');
-                return;
-            }
+            clearInlineError();
 
-            const nameEl = document.getElementById('contact-name');
-            const emailEl = document.getElementById('contact-email');
-            const subjectEl = document.getElementById('contact-subject');
-            const messageEl = document.getElementById('contact-message');
-            const name = nameEl ? nameEl.value.trim() : '';
-            const email = emailEl ? emailEl.value.trim() : '';
-            const subject = subjectEl ? subjectEl.value.trim() : '';
-            const message = messageEl ? messageEl.value.trim() : '';
+            var honeypot = contactForm.querySelector('input[name="_honey"]');
+            if (honeypot && honeypot.value.trim() !== '') return;
+
+            var nameEl = document.getElementById('contact-name');
+            var emailEl = document.getElementById('contact-email');
+            var subjectEl = document.getElementById('contact-subject');
+            var messageEl = document.getElementById('contact-message');
+            var name = nameEl ? nameEl.value.trim() : '';
+            var email = emailEl ? emailEl.value.trim() : '';
+            var subject = subjectEl ? subjectEl.value.trim() : '';
+            var message = messageEl ? messageEl.value.trim() : '';
 
             if (!name || !email || !subject || !message) {
-                setMessageText(errorMessage, 'Completeaza toate campurile formularului.', 'Eroare la trimiterea mesajului.');
-                showMessage(errorMessage, 5000);
-                smoothScrollToMessage(errorMessage || contactForm);
+                showInlineError('Completează toate câmpurile formularului.');
                 return;
             }
 
             setLoading(true);
 
             try {
-                const isNameValid = validateField(nameEl);
-                const isEmailValid = validateField(emailEl);
-                const isSubjectValid = validateField(subjectEl);
-                const isMessageValid = validateField(messageEl);
-
-                if (!isNameValid || !isEmailValid || !isSubjectValid || !isMessageValid) {
-                    setMessageText(errorMessage, 'Verifica datele introduse si incearca din nou.', 'Eroare la trimiterea mesajului.');
-                    showMessage(errorMessage, 5000);
-                    smoothScrollToMessage(errorMessage || contactForm);
-                    return;
-                }
-
                 if (isLocalFile) {
                     sendLocalMailto(name, email, subject, message);
-                    setMessageText(successMessage, 'Mesaj pregatit. Verifica aplicatia ta de email pentru a-l trimite.', 'Mesaj trimis cu succes!');
-                    showMessage(successMessage, 5000);
-                    smoothScrollToMessage(successMessage || contactForm);
-                    contactForm.reset();
+                    contactForm.hidden = true;
+                    if (successMessage) successMessage.hidden = false;
+                    smoothScrollToMessage(successMessage);
                     return;
                 }
 
-                const payload = {
-                    name,
-                    email,
-                    subject,
-                    message,
-                    _honey: honeypot ? honeypot.value : ''
-                };
+                var payload = { name: name, email: email, subject: subject, message: message, _honey: honeypot ? honeypot.value : '' };
 
-                const response = await fetch(API_BASE_URL + '/contact', {
+                var response = await fetch(API_BASE_URL + '/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
                     body: JSON.stringify(payload)
                 });
 
-                const data = await response.json().catch(() => ({}));
+                var data = await response.json().catch(function() { return {}; });
 
                 if (response.ok && data.success) {
-                    setMessageText(successMessage, data.message || 'Mesajul a fost trimis.', 'Mesajul a fost trimis.');
-                    showMessage(successMessage, 5000);
-                    smoothScrollToMessage(successMessage || contactForm);
-                    contactForm.reset();
+                    contactForm.hidden = true;
+                    if (successMessage) successMessage.hidden = false;
+                    smoothScrollToMessage(successMessage);
                 } else {
-                    throw new Error(data.error || 'Server responded with error');
+                    throw new Error(data.error || 'Nu am putut trimite mesajul. Încearcă din nou.');
                 }
             } catch (error) {
                 console.error('Contact form error:', error);
-                setMessageText(errorMessage, error.message || 'Nu am putut trimite mesajul. Incearca din nou.', 'Eroare la trimiterea mesajului.');
-                showMessage(errorMessage, 5000);
-                smoothScrollToMessage(errorMessage || contactForm);
+                showInlineError(error.message || 'Nu am putut trimite mesajul. Încearcă din nou.');
             } finally {
                 setLoading(false);
             }

@@ -284,6 +284,64 @@
     animation: spin 0.8s linear infinite;
 }
 
+/* === SUBJECT DROPDOWN === */
+.contact-form .contact-select {
+    width: 100%;
+    background: rgba(var(--primary-rgb), 0.6);
+    border: 1.5px solid rgba(212, 175, 122, 0.12);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    color: var(--text-light);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    cursor: pointer;
+    transition: all 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.contact-form .contact-select:focus {
+    outline: none;
+    background-color: rgba(var(--primary-rgb), 0.8);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12), 0 6px 16px rgba(var(--accent-rgb), 0.06);
+}
+
+.contact-form .contact-select option {
+    background: var(--primary-color, #1B1714);
+    color: var(--text-light);
+}
+
+/* === SUCCESS STATE (replaces form) === */
+.contact-success-state {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    animation: fadeInSlideUp 0.4s ease forwards;
+}
+
+/* === INLINE ERROR (below button) === */
+.contact-inline-error {
+    margin-top: 0.6rem;
+    color: #ef4444;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.contact-submit-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* ══════════════════════════════════════════
    LIGHT THEME — Contact Page
    ══════════════════════════════════════════ */
@@ -306,9 +364,11 @@
 
 [data-theme="light"] .contact-form input[type="text"],
 [data-theme="light"] .contact-form input[type="email"],
-[data-theme="light"] .contact-form textarea {
+[data-theme="light"] .contact-form textarea,
+[data-theme="light"] .contact-form .contact-select {
     background: rgba(0, 0, 0, 0.03);
     border-color: rgba(184, 135, 46, 0.12);
+    color: var(--text-light);
 }
 
 [data-theme="light"] .contact-form input:focus,

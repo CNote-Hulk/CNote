@@ -12,11 +12,28 @@ export const ContactFormModule = {
         const contactForm = document.getElementById('contact-form');
         const submitBtn = document.getElementById('submit-btn');
         const successMessage = document.getElementById('success-message');
-        const errorMessage = document.getElementById('error-message');
 
         if (!contactForm || !submitBtn) return;
 
         window.__CONTACT_FORM_INITIALIZED__ = true;
+
+        // Auto-fill Name & Email from session
+        try {
+            const raw = localStorage.getItem('cn_session');
+            if (raw) {
+                const session = JSON.parse(raw);
+                const nameEl = document.getElementById('contact-name');
+                const emailEl = document.getElementById('contact-email');
+                if (session.username && nameEl) {
+                    nameEl.value = session.username;
+                    nameEl.closest('.input-group')?.querySelector('label')?.classList.add('label-active');
+                }
+                if (session.email && emailEl) {
+                    emailEl.value = session.email;
+                    emailEl.closest('.input-group')?.querySelector('label')?.classList.add('label-active');
+                }
+            }
+        } catch (e) {}
 
         const originalBtnText = submitBtn.textContent || 'Send message';
         const isLocalFile = window.location.protocol === 'file:';
@@ -36,7 +53,7 @@ export const ContactFormModule = {
             return isValid || value.length === 0;
         };
 
-        const inputs = contactForm.querySelectorAll('input[type="text"], input[type="email"], textarea');
+        const inputs = contactForm.querySelectorAll('input[type="text"], input[type="email"], textarea, select');
         inputs.forEach(input => {
             const inputGroup = input.closest('.input-group');
             const label = inputGroup ? inputGroup.querySelector('label') : null;
@@ -65,26 +82,23 @@ export const ContactFormModule = {
             });
         });
 
-        const showMessage = (messageEl, duration = 5000) => {
-            if (!messageEl) return;
-            messageEl.style.display = 'block';
-            messageEl.classList.add('message-visible');
-            messageEl.classList.remove('message-hidden');
-
-            setTimeout(() => {
-                messageEl.classList.remove('message-visible');
-                messageEl.classList.add('message-hidden');
-                setTimeout(() => {
-                    messageEl.style.display = 'none';
-                }, 300);
-            }, duration);
-        };
-
         const setLoading = (isLoading) => {
             isSubmitting = isLoading;
             submitBtn.disabled = isLoading;
-            submitBtn.textContent = isLoading ? 'Sending...' : originalBtnText;
+            submitBtn.textContent = isLoading ? 'Se trimite...' : originalBtnText;
             submitBtn.classList.toggle('button-loading', isLoading);
+        };
+
+        const showInlineError = (msg) => {
+            const errorEl = document.getElementById('error-message');
+            if (!errorEl) return;
+            errorEl.textContent = msg;
+            errorEl.hidden = false;
+        };
+
+        const clearInlineError = () => {
+            const errorEl = document.getElementById('error-message');
+            if (errorEl) errorEl.hidden = true;
         };
 
         const smoothScrollToMessage = (messageEl) => {
@@ -96,11 +110,6 @@ export const ContactFormModule = {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             }, 120);
-        };
-
-        const setMessageText = (element, text, fallbackText) => {
-            if (!element) return;
-            element.textContent = text || fallbackText;
         };
 
         const sendLocalMailto = (name, email, subject, message) => {
@@ -119,6 +128,8 @@ export const ContactFormModule = {
             e.preventDefault();
             if (isSubmitting) return;
 
+            clearInlineError();
+
             const honeypot = contactForm.querySelector('input[name="_honey"]');
             if (honeypot && honeypot.value.trim() !== '') return;
 
@@ -132,43 +143,22 @@ export const ContactFormModule = {
             const message = messageEl ? messageEl.value.trim() : '';
 
             if (!name || !email || !subject || !message) {
-                setMessageText(errorMessage, 'Please fill in all form fields.', 'Error sending message.');
-                showMessage(errorMessage, 5000);
-                smoothScrollToMessage(errorMessage || contactForm);
+                showInlineError('Completează toate câmpurile formularului.');
                 return;
             }
 
             setLoading(true);
 
             try {
-                const isNameValid = validateField(nameEl);
-                const isEmailValid = validateField(emailEl);
-                const isSubjectValid = validateField(subjectEl);
-                const isMessageValid = validateField(messageEl);
-
-                if (!isNameValid || !isEmailValid || !isSubjectValid || !isMessageValid) {
-                    setMessageText(errorMessage, 'Check the entered data and try again.', 'Error sending message.');
-                    showMessage(errorMessage, 5000);
-                    smoothScrollToMessage(errorMessage || contactForm);
-                    return;
-                }
-
                 if (isLocalFile) {
                     sendLocalMailto(name, email, subject, message);
-                    setMessageText(successMessage, 'Message prepared. Check your email app to send it.', 'Message sent successfully!');
-                    showMessage(successMessage, 5000);
-                    smoothScrollToMessage(successMessage || contactForm);
-                    contactForm.reset();
+                    contactForm.hidden = true;
+                    successMessage.hidden = false;
+                    smoothScrollToMessage(successMessage);
                     return;
                 }
 
-                const payload = {
-                    name,
-                    email,
-                    subject,
-                    message,
-                    _honey: honeypot ? honeypot.value : ''
-                };
+                const payload = { name, email, subject, message, _honey: honeypot ? honeypot.value : '' };
 
                 const response = await fetch(API_BASE_URL + '/contact', {
                     method: 'POST',
@@ -180,18 +170,15 @@ export const ContactFormModule = {
                 const data = await response.json().catch(() => ({}));
 
                 if (response.ok && data.success) {
-                    setMessageText(successMessage, data.message || 'Message sent.', 'Message sent.');
-                    showMessage(successMessage, 5000);
-                    smoothScrollToMessage(successMessage || contactForm);
-                    contactForm.reset();
+                    contactForm.hidden = true;
+                    successMessage.hidden = false;
+                    smoothScrollToMessage(successMessage);
                 } else {
-                    throw new Error(data.error || 'Server responded with error');
+                    throw new Error(data.error || 'Nu am putut trimite mesajul. Încearcă din nou.');
                 }
             } catch (error) {
                 console.error('Contact form error:', error);
-                setMessageText(errorMessage, error.message || 'Could not send message. Try again.', 'Error sending message.');
-                showMessage(errorMessage, 5000);
-                smoothScrollToMessage(errorMessage || contactForm);
+                showInlineError(error.message || 'Nu am putut trimite mesajul. Încearcă din nou.');
             } finally {
                 setLoading(false);
             }

@@ -336,12 +336,9 @@
             <p class="section-intro" data-i18n="contact_intro">Have questions or feedback about the project?</p>
 
             <div class="contact-card">
-                <div id="success-message" class="success-message" data-i18n="contact_success">
-                    ✓ Message sent successfully! I will reply soon.
-                </div>
-
-                <div id="error-message" class="error-message" data-i18n="contact_error">
-                    ✕ Error sending message. Please try again.
+                <!-- Shown after successful submit (replaces form) -->
+                <div id="success-message" class="contact-success-state" hidden>
+                    <span data-i18n="contact_success_state">Mesajul a fost trimis! Îți răspundem în 24–48 de ore.</span>
                 </div>
 
                 <form class="contact-form" id="contact-form" novalidate>
@@ -357,7 +354,14 @@
 
                     <div class="input-group">
                         <label for="contact-subject" data-i18n="contact_label_subject">Subject</label>
-                        <input id="contact-subject" name="subject" type="text" placeholder="Message subject" data-i18n="contact_placeholder_subject" data-i18n-attr="placeholder" required>
+                        <select id="contact-subject" name="subject" class="contact-select" required>
+                            <option value="" disabled selected data-i18n="contact_subject_placeholder">Alege subiectul</option>
+                            <option value="Problemă cont" data-i18n="contact_subject_account">Problemă cont</option>
+                            <option value="Marketplace" data-i18n="contact_subject_marketplace">Marketplace</option>
+                            <option value="Bug / Eroare" data-i18n="contact_subject_bug">Bug / Eroare</option>
+                            <option value="Sugestie" data-i18n="contact_subject_suggestion">Sugestie</option>
+                            <option value="Altele" data-i18n="contact_subject_other">Altele</option>
+                        </select>
                     </div>
 
                     <div class="input-group">
@@ -367,8 +371,9 @@
 
                     <input type="text" name="_honey" class="honeypot-input" tabindex="-1" autocomplete="off">
 
-                    <div class="input-group">
+                    <div class="input-group contact-submit-group">
                         <button type="submit" class="demo-button" id="submit-btn" data-i18n="contact_send">Send message</button>
+                        <div id="error-message" class="contact-inline-error" hidden></div>
                     </div>
                 </form>
             </div>
