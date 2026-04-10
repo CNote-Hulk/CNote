@@ -472,13 +472,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const achPct = total > 0 ? (earned / total) * 100 : 0;
                 const lvl = AchievementsModule.computeLevel(achPct, visitedCount, total);
 
-                // Home panel: mini preview
+
+                // Home panel: mini preview (stil mai dragut)
                 const homeLevelCard = document.getElementById('home-level-card');
                 if (homeLevelCard) {
-                    homeLevelCard.innerHTML = `<div class="level-preview"><span class="level-label">Level:</span> <span class="level-emoji">${lvl.emoji}</span> <span class="level-name">${lvl.name}</span></div>`;
+                    homeLevelCard.innerHTML = `
+                        <div style="background:rgba(30,25,20,0.85);border-radius:18px;box-shadow:0 2px 16px 0 rgba(0,0,0,0.18);padding:22px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;max-width:340px;margin:auto;">
+                            <div style="font-size:2.8rem;line-height:1;margin-bottom:2px;">${lvl.emoji}</div>
+                            <div style="font-size:1.3rem;font-weight:700;color:var(--accent-color);margin-bottom:2px;">${lvl.name}</div>
+                            <div style="font-size:1.05rem;color:#e6d6c3;opacity:0.85;margin-bottom:6px;">${lvl.description}</div>
+                            <div style="width:100%;margin:8px 0 0 0;">
+                                <div style="font-size:1rem;font-weight:500;color:#fff;">Score: <span style='color:var(--accent-color);font-weight:700;'>${lvl.score}</span> / 100</div>
+                                <div style="background:#2a2320;border-radius:8px;height:10px;width:100%;margin-top:4px;overflow:hidden;">
+                                    <div style="height:100%;width:${lvl.score}%;background:linear-gradient(90deg,var(--accent-color),#ffb86c);border-radius:8px;transition:width .4s;"></div>
+                                </div>
+                            </div>
+                            <div style="width:100%;margin-top:10px;">
+                                ${lvl.nextLevel ? `
+                                    <div style='font-size:1rem;color:#e6d6c3;opacity:0.85;margin-bottom:2px;'>Next: <span style='font-size:1.1rem;'>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</span> <span style='font-size:0.95rem;color:#ffb86c;'>(${lvl.nextLevel.minScore} pts)</span></div>
+                                    <div style='font-size:0.98rem;color:#fff;margin-top:2px;'>Need <b>${lvl.nextRequirements.scoreNeeded} more points</b> — earn <b>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</b>${lvl.nextRequirements.consolesNeeded ? ` or visit <b>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</b>` : ''}</div>
+                                ` : `<div style='color:var(--accent-color);font-weight:600;font-size:1.1rem;margin-top:4px;'>🏆 Maximum level reached!</div>`}
+                            </div>
+                        </div>
+                    `;
                 }
 
-                // Progress panel: full card
+                // Progress panel: full card (poate rămâne la fel sau se poate adapta la fel dacă vrei)
                 const progressLevelCard = document.getElementById('progress-level-card');
                 if (progressLevelCard) {
                     const nextHtml = lvl.nextLevel ? `
