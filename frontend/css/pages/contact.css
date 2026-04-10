@@ -64,13 +64,13 @@
 .contact-card {
     margin: 0 auto;
     background: linear-gradient(135deg, rgba(42, 35, 32, 0.85) 0%, rgba(27, 23, 20, 0.9) 100%);
-    border: 1px solid rgba(212, 175, 122, 0.15);
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
     border-top: 3px solid var(--accent-color);
     padding: clamp(28px, 4vw, 48px);
     border-radius: 16px;
     box-shadow:
         0 16px 48px rgba(0, 0, 0, 0.4),
-        0 0 40px rgba(212, 175, 122, 0.04),
+        0 0 40px rgba(var(--accent-rgb), 0.04),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
     position: relative;
     overflow: hidden;
@@ -84,7 +84,7 @@
     right: -60px;
     width: 400px;
     height: 160px;
-    background: radial-gradient(circle, rgba(212, 175, 122, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.08) 0%, transparent 70%);
     pointer-events: none;
     border-radius: 50%;
 }
@@ -185,7 +185,7 @@
 .contact-form textarea {
     transition: all 200ms cubic-bezier(0.23, 1, 0.32, 1);
     background: rgba(var(--primary-rgb), 0.6);
-    border: 1.5px solid rgba(212, 175, 122, 0.12);
+    border: 1.5px solid rgba(var(--accent-rgb), 0.12);
     border-radius: 10px;
     padding: 0.85rem 1rem;
     color: var(--text-light);
@@ -288,7 +288,7 @@
 .contact-form .contact-select {
     width: 100%;
     background: rgba(var(--primary-rgb), 0.6);
-    border: 1.5px solid rgba(212, 175, 122, 0.12);
+    border: 1.5px solid rgba(var(--accent-rgb), 0.12);
     border-radius: 10px;
     padding: 0.85rem 1rem;
     color: var(--text-light);

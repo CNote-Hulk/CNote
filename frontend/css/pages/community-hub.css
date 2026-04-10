@@ -2064,9 +2064,9 @@
 }
 
 .hub-status--pending {
-    background: rgba(234, 179, 8, 0.12);
-    color: #eab308;
-    border: 1px solid rgba(234, 179, 8, 0.25);
+    background: rgba(var(--accent-rgb), 0.1);
+    color: var(--accent-color);
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
 }
 
 .hub-status--in-progress {
@@ -2553,7 +2553,7 @@
 .hub-form-select option:checked,
 .hub-market-select option:checked {
     background-color: rgba(var(--accent-rgb), 0.25);
-    color: var(--accent-color, #D4A24E);
+    color: var(--accent-color);
     font-weight: 600;
 }
 

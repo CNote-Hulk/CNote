@@ -7,7 +7,7 @@
    ══════════════════════════════════════════ */
 .user-profile-page {
     --up-accent: var(--accent-color, #D4AF7A);
-    --up-accent-rgb: var(--accent-color-rgb, 212, 175, 122);
+    --up-accent-rgb: var(--accent-color-rgb);
     --up-border: rgba(var(--up-accent-rgb), 0.1);
     --up-card-bg: rgba(20, 18, 16, 0.72);
     padding: 64px 0 0;

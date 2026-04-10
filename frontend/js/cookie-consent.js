@@ -26,19 +26,19 @@ function loadYouTubeEmbeds() {
 
 function acceptAll() {
   localStorage.setItem(CONSENT_KEY, 'all');
-  hideBanner();
+  hideModal();
   loadGA();
   loadYouTubeEmbeds();
 }
 
 function acceptEssential() {
   localStorage.setItem(CONSENT_KEY, 'essential');
-  hideBanner();
+  hideModal();
 }
 
-function hideBanner() {
-  const banner = document.getElementById('cookie-banner');
-  if (banner) banner.remove();
+function hideModal() {
+  const overlay = document.getElementById('cookie-overlay');
+  if (overlay) overlay.remove();
 }
 
 function initConsent() {
@@ -46,21 +46,23 @@ function initConsent() {
   if (consent === 'all') { loadGA(); loadYouTubeEmbeds(); return; }
   if (consent === 'essential') return;
 
-  const banner = document.createElement('div');
-  banner.id = 'cookie-banner';
-  banner.innerHTML = `
-    <div class="cookie-banner-inner">
-      <div class="cookie-banner-text">
-        <span class="cookie-banner-title">🍪 Cookies</span>
-        <p>Folosim cookies pentru analytics (Google Analytics) și videoclipuri (YouTube). Cookies esențiale sunt întotdeauna active.</p>
-      </div>
-      <div class="cookie-banner-actions">
-        <button class="cookie-btn-essential" onclick="acceptEssential()">Doar esențiale</button>
-        <button class="cookie-btn-accept" onclick="acceptAll()">Acceptă toate</button>
-      </div>
+  const overlay = document.createElement('div');
+  overlay.id = 'cookie-overlay';
+
+  const modal = document.createElement('div');
+  modal.id = 'cookie-modal';
+  modal.innerHTML = `
+    <span class="cookie-modal-icon">🍪</span>
+    <p class="cookie-modal-title">Preferințe cookies</p>
+    <p class="cookie-modal-body">Folosim cookies pentru analytics (Google Analytics) și videoclipuri (YouTube). Cookies esențiale sunt întotdeauna active.</p>
+    <div class="cookie-modal-actions">
+      <button class="cookie-btn-accept" onclick="acceptAll()">Acceptă toate</button>
+      <button class="cookie-btn-essential" onclick="acceptEssential()">Doar esențiale</button>
     </div>
   `;
-  document.body.appendChild(banner);
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
 }
 
 window.acceptAll = acceptAll;

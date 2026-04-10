@@ -48,7 +48,7 @@
 
 .hero-quickguide__label {
     font-size: 13px;
-    color: rgba(212, 175, 122, 0.8);
+    color: rgba(var(--accent-rgb), 0.8);
     letter-spacing: 4px;
     text-transform: uppercase;
     font-family: var(--font-sans);
@@ -112,7 +112,7 @@
 
 .qg-step--done .qg-step__dot {
     border-color: var(--accent-color);
-    background: rgba(212, 175, 122, 0.15);
+    background: rgba(var(--accent-rgb), 0.15);
 }
 
 .qg-step--active .qg-step__dot {
@@ -156,7 +156,7 @@
 }
 
 .qg-step--active .qg-step__title { color: var(--text-light); }
-.qg-step--done .qg-step__title { color: rgba(212, 175, 122, 0.85); }
+.qg-step--done .qg-step__title { color: rgba(var(--accent-rgb), 0.85); }
 
 .qg-step__desc {
     font-size: 14px;
@@ -283,7 +283,7 @@
     background: url('../../assets/images/wallpapers/help.jpg') center/cover no-repeat;
 }
 
-/* Subtle centered glow - gold tone */
+/* Subtle centered glow */
 .hero-cinematic::before {
     content: '';
     position: absolute;
@@ -292,7 +292,7 @@
     transform: translate(-50%, -50%);
     width: 600px;
     height: 300px;
-    background: radial-gradient(ellipse, rgba(212, 175, 122, 0.04) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(var(--accent-rgb), 0.04) 0%, transparent 70%);
     z-index: 1;
     pointer-events: none;
 }
@@ -338,7 +338,7 @@
     flex-wrap: wrap;
 }
 
-/* Buton CTA - premium gold accent */
+/* Buton CTA */
 .hero-button {
     display: inline-block;
     padding: 16px 36px;

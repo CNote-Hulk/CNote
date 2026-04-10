@@ -75,8 +75,8 @@
     justify-content: center;
     font-size: 1.3rem;
     flex-shrink: 0;
-    background: rgba(212, 162, 78, 0.1);
-    border: 1px solid rgba(212, 162, 78, 0.18);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
 }
 
 .hub-card__title {
@@ -96,9 +96,9 @@
 .hub-card__badge {
     font-size: 0.68rem;
     font-weight: 500;
-    background: rgba(212, 162, 78, 0.1);
-    color: #D4A24E;
-    border: 1px solid rgba(212, 162, 78, 0.22);
+    background: rgba(var(--accent-rgb), 0.1);
+    color: var(--accent-color);
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
     border-radius: 20px;
     padding: 3px 10px;
     white-space: nowrap;
@@ -138,16 +138,16 @@
     font-weight: 500;
     font-family: 'DM Sans', sans-serif;
     text-decoration: none;
-    border: 1px solid rgba(212, 162, 78, 0.28);
-    background: rgba(212, 162, 78, 0.08);
-    color: #D4A24E;
+    border: 1px solid rgba(var(--accent-rgb), 0.28);
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent-color);
     transition: background 0.2s, border-color 0.2s, transform 0.15s;
     width: 100%;
 }
 
 .hub-card__cta:hover {
-    background: rgba(212, 162, 78, 0.18);
-    border-color: rgba(212, 162, 78, 0.5);
+    background: rgba(var(--accent-rgb), 0.18);
+    border-color: rgba(var(--accent-rgb), 0.5);
     transform: translateY(-1px);
 }
 
@@ -164,8 +164,8 @@
 /* -------------------------------------------------------------------------- */
 
 .lesson-featured {
-    background: rgba(212, 162, 78, 0.05);
-    border: 1px solid rgba(212, 162, 78, 0.1);
+    background: rgba(var(--accent-rgb), 0.05);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
     border-radius: 12px;
     padding: 12px 14px;
     display: flex;
@@ -180,7 +180,7 @@
 
 .lesson-featured__label {
     font-size: 0.65rem;
-    color: #D4A24E;
+    color: var(--accent-color);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -212,7 +212,7 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #D4A24E;
+    background: var(--accent-color);
     opacity: 0.45;
     flex-shrink: 0;
 }
@@ -235,7 +235,7 @@
     top: 0;
     bottom: 0;
     width: 2px;
-    background: linear-gradient(to bottom, #D4A24E, transparent);
+    background: linear-gradient(to bottom, var(--accent-color), transparent);
     opacity: 0.25;
 }
 
@@ -257,7 +257,7 @@
     height: 10px;
     border-radius: 50%;
     background: rgba(20, 20, 26, 0.85);
-    border: 2px solid #D4A24E;
+    border: 2px solid var(--accent-color);
     opacity: 0.7;
     transition: opacity 0.2s;
 }
@@ -268,7 +268,7 @@
 
 .idx-timeline-year {
     font-size: 0.7rem;
-    color: #D4A24E;
+    color: var(--accent-color);
     font-weight: 600;
     text-align: right;
     align-self: center;
@@ -363,7 +363,7 @@
 }
 
 .compare-highlight span {
-    color: #D4A24E;
+    color: var(--accent-color);
     font-weight: 500;
 }
 
@@ -391,14 +391,14 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: rgba(212, 162, 78, 0.1);
-    border: 1px solid rgba(212, 162, 78, 0.18);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.62rem;
     font-weight: 700;
-    color: #D4A24E;
+    color: var(--accent-color);
     flex-shrink: 0;
 }
 

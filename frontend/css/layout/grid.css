@@ -108,7 +108,7 @@
     }
     
     a, button, .btn, .card {
-        -webkit-tap-highlight-color: rgba(212, 175, 122, 0.2);
+        -webkit-tap-highlight-color: rgba(var(--accent-rgb), 0.2);
     }
 
     .grid-2, .grid-3, .grid-auto {

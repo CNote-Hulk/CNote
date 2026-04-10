@@ -589,7 +589,7 @@
 }
 
 .auth-tab.active {
-    background: rgba(212, 175, 122, 0.12);
+    background: rgba(var(--accent-rgb), 0.12);
     color: var(--accent-color, #D4AF7A);
 }
 
@@ -762,18 +762,18 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--accent-color, #D4AF7A);
-    background: linear-gradient(135deg, rgba(var(--accent-color-rgb, 212, 175, 122), 0.18), rgba(var(--accent-color-rgb, 212, 175, 122), 0.1));
-    border: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.25);
+    background: linear-gradient(135deg, rgba(var(--accent-color-rgb), 0.18), rgba(var(--accent-color-rgb), 0.1));
+    border: 1px solid rgba(var(--accent-color-rgb), 0.25);
     border-radius: 5px;
     padding: 3px 10px;
     line-height: 1.4;
     white-space: nowrap;
     margin-top: 6px;
-    box-shadow: 0 0 12px rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
+    box-shadow: 0 0 12px rgba(var(--accent-color-rgb), 0.15);
 }
 
 .profile-edit-shortcut {
-    border: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
+    border: 1px solid rgba(var(--accent-color-rgb), 0.15);
     background: transparent;
     color: var(--p-muted);
     border-radius: 4px;
@@ -785,7 +785,7 @@
 
 .profile-edit-shortcut:hover {
     color: var(--accent-color, #D4AF7A);
-    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.35);
+    border-color: rgba(var(--accent-color-rgb), 0.35);
 }
 
 /* Online dot */
@@ -859,8 +859,8 @@
     color: var(--p-faint);
     font-style: italic;
     padding: 8px 12px;
-    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.03);
-    border: 1px dashed rgba(var(--accent-color-rgb, 212, 175, 122), 0.1);
+    background: rgba(var(--accent-color-rgb), 0.03);
+    border: 1px dashed rgba(var(--accent-color-rgb), 0.1);
     border-radius: 6px;
     width: 100%;
     text-align: center;
@@ -868,8 +868,8 @@
 
 .profile-console-tag {
     display: inline-block;
-    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.08);
-    border: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.15);
+    background: rgba(var(--accent-color-rgb), 0.08);
+    border: 1px solid rgba(var(--accent-color-rgb), 0.15);
     color: var(--accent-color, #D4AF7A);
     padding: 4px 11px;
     border-radius: 12px;
@@ -880,8 +880,8 @@
 }
 
 .profile-console-tag:hover {
-    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.14);
-    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.3);
+    background: rgba(var(--accent-color-rgb), 0.14);
+    border-color: rgba(var(--accent-color-rgb), 0.3);
 }
 
 /* ── Sidebar Navigation ── */
@@ -924,7 +924,7 @@
 }
 
 .profile-tab:hover {
-    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.08);
+    background: rgba(var(--accent-color-rgb), 0.08);
     color: var(--p-text);
     transform: translateX(2px);
 }
@@ -934,11 +934,11 @@
 }
 
 .profile-tab.active {
-    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.14);
+    background: rgba(var(--accent-color-rgb), 0.14);
     color: var(--accent-color, #D4AF7A);
     border-left: 2px solid var(--accent-color, #D4AF7A);
     padding-left: 10px;
-    box-shadow: inset 0 0 12px rgba(var(--accent-color-rgb, 212, 175, 122), 0.05);
+    box-shadow: inset 0 0 12px rgba(var(--accent-color-rgb), 0.05);
 }
 
 .profile-tab.active::after {
@@ -1046,7 +1046,7 @@
 }
 
 .course-card:hover {
-    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.18);
+    border-color: rgba(var(--accent-color-rgb), 0.18);
 }
 
 .course-card__section-title {
@@ -1080,7 +1080,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.08);
+    background: rgba(var(--accent-color-rgb), 0.08);
     border-radius: 10px;
     flex-shrink: 0;
 }
@@ -1101,7 +1101,7 @@
 /* Progress Bar */
 .progress-bar {
     height: 8px;
-    background: rgba(var(--accent-color-rgb, 212, 175, 122), 0.06);
+    background: rgba(var(--accent-color-rgb), 0.06);
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 8px;
@@ -1119,7 +1119,7 @@
     border-radius: 6px;
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     width: 0;
-    box-shadow: 0 0 8px rgba(var(--accent-color-rgb, 212, 175, 122), 0.25);
+    box-shadow: 0 0 8px rgba(var(--accent-color-rgb), 0.25);
 }
 
 .progress-bar__text {
@@ -1150,12 +1150,12 @@
 }
 
 .achievement-badge.earned {
-    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.25);
+    border-color: rgba(var(--accent-color-rgb), 0.25);
 }
 
 .achievement-badge.earned:hover {
-    border-color: rgba(var(--accent-color-rgb, 212, 175, 122), 0.4);
-    box-shadow: 0 8px 24px rgba(var(--accent-color-rgb, 212, 175, 122), 0.1);
+    border-color: rgba(var(--accent-color-rgb), 0.4);
+    box-shadow: 0 8px 24px rgba(var(--accent-color-rgb), 0.1);
 }
 
 .achievement-badge.locked {
@@ -1410,7 +1410,7 @@
 }
 
 .achievement-toast__label {
-    color: var(--accent-color, var(--p-accent, #c8a850));
+    color: var(--accent-color, var(--p-accent));
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.7px;
@@ -1531,7 +1531,7 @@
         height: auto;
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid rgba(var(--accent-color-rgb, 212, 175, 122), 0.12);
+        border-bottom: 1px solid rgba(var(--accent-color-rgb), 0.12);
         padding: 0 20px 20px;
         overscroll-behavior: auto;
     }
@@ -2279,7 +2279,7 @@ a.chat-message__username:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--p-accent, #c8a850);
+    color: var(--p-accent, var(--accent-color));
     opacity: 0.5;
 }
 
@@ -2382,7 +2382,7 @@ a.chat-message__username:hover {
 .dash-card__link {
     font-family: var(--p-font-body, 'DM Sans', system-ui, sans-serif);
     font-size: 0.72rem;
-    color: var(--p-accent, #c8a850);
+    color: var(--p-accent, var(--accent-color));
     text-decoration: none;
     font-weight: 500;
     opacity: 0.8;
@@ -2461,7 +2461,7 @@ a.chat-message__username:hover {
 
 .dash-rating-row__stars {
     font-size: 0.8rem;
-    color: var(--p-accent, #c8a850);
+    color: var(--p-accent, var(--accent-color));
 }
 
 .dash-friends-row {
@@ -2756,7 +2756,7 @@ a.chat-message__username:hover {
 }
 .settings-back-link:hover {
     color: var(--accent-color, #D4AF7A);
-    background: rgba(var(--accent-rgb, 212, 175, 122), 0.08);
+    background: rgba(var(--accent-rgb), 0.08);
 }
 
 /* ── Horizontal Settings Tabs ── */
@@ -2821,11 +2821,11 @@ a.chat-message__username:hover {
 }
 .theme-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(var(--accent-rgb, 212, 175, 122), 0.3);
+    border-color: rgba(var(--accent-rgb), 0.3);
 }
 .theme-card.active {
     border-color: var(--accent-color, #D4AF7A);
-    box-shadow: 0 0 16px rgba(var(--accent-rgb, 212, 175, 122), 0.12);
+    box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.12);
 }
 .theme-card.active::after {
     content: '✓';
@@ -2921,7 +2921,7 @@ a.chat-message__username:hover {
 }
 .accent-swatch.active {
     border-color: var(--p-accent, #D4AF7A);
-    box-shadow: 0 0 8px rgba(var(--p-accent-rgb, 212, 175, 122), 0.3);
+    box-shadow: 0 0 8px rgba(var(--p-accent-rgb), 0.3);
 }
 
 .auth-btn--small {

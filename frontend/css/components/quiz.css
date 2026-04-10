@@ -5,8 +5,8 @@
 
 /* ── Score Bar ── */
 .quiz-score-bar {
-    background: rgba(212, 175, 122, 0.06);
-    border: 1px solid rgba(212, 175, 122, 0.15);
+    background: rgba(var(--accent-rgb), 0.06);
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
     border-radius: var(--radius-lg);
     padding: 1.2rem 1.5rem;
     margin-bottom: 2rem;
@@ -34,7 +34,7 @@
     min-width: 120px;
     max-width: 280px;
     height: 8px;
-    background: rgba(212, 175, 122, 0.1);
+    background: rgba(var(--accent-rgb), 0.1);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -79,8 +79,8 @@
     padding: 0.85rem 1.1rem !important;
     margin-bottom: 0.6rem;
     border-radius: var(--radius-md);
-    border: 1px solid rgba(212, 175, 122, 0.1);
-    background: rgba(212, 175, 122, 0.04);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
+    background: rgba(var(--accent-rgb), 0.04);
     transition: all 0.25s ease;
     list-style: none !important;
     position: relative;
@@ -93,8 +93,8 @@
 }
 
 .quiz-option:hover {
-    background: rgba(212, 175, 122, 0.12);
-    border-color: rgba(212, 175, 122, 0.3);
+    background: rgba(var(--accent-rgb), 0.12);
+    border-color: rgba(var(--accent-rgb), 0.3);
     transform: translateX(4px);
     box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.08);
 }
@@ -140,7 +140,7 @@
     margin-top: 1rem;
     padding: 1rem 1.2rem;
     border-radius: var(--radius-md);
-    background: rgba(212, 175, 122, 0.06);
+    background: rgba(var(--accent-rgb), 0.06);
     border-left: 3px solid var(--accent-color);
     color: var(--text-light);
     font-size: 0.92rem;
@@ -157,8 +157,8 @@
     display: none;
     margin-top: 1rem;
     padding: 0.7rem 1.5rem;
-    background: rgba(212, 175, 122, 0.1);
-    border: 1px solid rgba(212, 175, 122, 0.25);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
     border-radius: var(--radius-md);
     color: var(--accent-color);
     font-size: 0.9rem;
@@ -169,8 +169,8 @@
 }
 
 .quiz-retry-btn:hover {
-    background: rgba(212, 175, 122, 0.18);
-    border-color: rgba(212, 175, 122, 0.4);
+    background: rgba(var(--accent-rgb), 0.18);
+    border-color: rgba(var(--accent-rgb), 0.4);
     transform: translateY(-1px);
 }
 
@@ -193,8 +193,8 @@
 }
 
 .quiz-final-result.quiz-result-good {
-    background: rgba(212, 175, 122, 0.08);
-    border: 1px solid rgba(212, 175, 122, 0.25);
+    background: rgba(var(--accent-rgb), 0.08);
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
 }
 
 .quiz-final-result.quiz-result-retry {

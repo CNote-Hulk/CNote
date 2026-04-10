@@ -413,16 +413,35 @@ document.addEventListener('DOMContentLoaded', async () => {
                     return b.ts - a.ts;
                 });
 
-                const MAX_ITEMS = 12;
-                const shown = events.slice(0, MAX_ITEMS);
+                const INITIAL_SHOW = 5;
 
-                if (shown.length === 0) {
+                if (events.length === 0) {
                     activityList.innerHTML = '<li class="activity-empty">No activity yet — start exploring consoles!</li>';
                 } else {
-                    activityList.innerHTML = shown.map(e => {
+                    activityList.innerHTML = events.map((e, i) => {
                         const timeStr = e.ts ? `<time class="activity-time" title="${e.ts.toLocaleString()}">${relativeTime(e.ts)}</time>` : '';
-                        return `<li><span class="activity-icon">${e.icon}</span><span class="activity-text">${e.html}</span>${timeStr}</li>`;
+                        const hiddenClass = i >= INITIAL_SHOW ? ' activity-hidden' : '';
+                        return `<li class="${hiddenClass}"><span class="activity-icon">${e.icon}</span><span class="activity-text">${e.html}</span>${timeStr}</li>`;
                     }).join('');
+
+                    if (events.length > INITIAL_SHOW) {
+                        const btn = document.createElement('button');
+                        btn.className = 'activity-show-more';
+                        const remaining = events.length - INITIAL_SHOW;
+                        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show ${remaining} more`;
+                        let expanded = false;
+                        const extraItems = activityList.querySelectorAll('li.activity-hidden');
+                        btn.addEventListener('click', () => {
+                            expanded = !expanded;
+                            extraItems.forEach(li => li.classList.toggle('activity-hidden', !expanded));
+                            if (expanded) {
+                                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg> Show less`;
+                            } else {
+                                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show ${remaining} more`;
+                            }
+                        });
+                        activityList.after(btn);
+                    }
                 }
             }
 

@@ -650,8 +650,8 @@
     right: 0;
     height: 2px;
     background: linear-gradient(90deg, 
-        rgba(212, 175, 122, 0.5),
-        rgba(212, 175, 122, 0.15)
+        rgba(var(--accent-rgb), 0.5),
+        rgba(var(--accent-rgb), 0.15)
     );
     opacity: 1;
     transition: opacity 0.3s ease;
@@ -659,11 +659,11 @@
 
 .section#index .console-card:hover {
     background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(212, 175, 122, 0.2);
+    border-color: rgba(var(--accent-rgb), 0.2);
     transform: translateY(-4px);
     box-shadow: 
         0 12px 32px rgba(0, 0, 0, 0.25),
-        0 0 16px rgba(212, 175, 122, 0.06),
+        0 0 16px rgba(var(--accent-rgb), 0.06),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -673,21 +673,21 @@
 
 /* Featured Console Cards - Highlight */
 .section#index .console-card.featured {
-    background: rgba(212, 175, 122, 0.05);
-    border-color: rgba(212, 175, 122, 0.12);
+    background: rgba(var(--accent-rgb), 0.05);
+    border-color: rgba(var(--accent-rgb), 0.12);
 }
 
 .section#index .console-card.featured::before {
     background: linear-gradient(90deg, 
         transparent,
-        rgba(212, 175, 122, 0.5),
+        rgba(var(--accent-rgb), 0.5),
         transparent
     );
 }
 
 .section#index .console-card.featured:hover {
-    background: rgba(212, 175, 122, 0.1);
-    border-color: rgba(212, 175, 122, 0.25);
+    background: rgba(var(--accent-rgb), 0.1);
+    border-color: rgba(var(--accent-rgb), 0.25);
 }
 
 /* Card Contents */
@@ -890,8 +890,8 @@
     .section#index .console-card::before {
         height: 2px;
         background: linear-gradient(90deg,
-            rgba(212, 175, 122, 0.6),
-            rgba(212, 175, 122, 0.1)
+            rgba(var(--accent-rgb), 0.6),
+            rgba(var(--accent-rgb), 0.1)
         );
         box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.1);
     }
@@ -899,11 +899,11 @@
     /* Tap / hover */
     .section#index .console-card:hover,
     .section#index .console-card:active {
-        border-color: rgba(212, 175, 122, 0.2);
+        border-color: rgba(var(--accent-rgb), 0.2);
         transform: translateY(-2px);
         box-shadow:
             0 8px 24px rgba(0, 0, 0, 0.35),
-            0 0 12px rgba(212, 175, 122, 0.06),
+            0 0 12px rgba(var(--accent-rgb), 0.06),
             inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
@@ -911,10 +911,10 @@
     .section#index .console-card.featured {
         background: linear-gradient(
             160deg,
-            rgba(212, 175, 122, 0.06) 0%,
-            rgba(212, 175, 122, 0.015) 100%
+            rgba(var(--accent-rgb), 0.06) 0%,
+            rgba(var(--accent-rgb), 0.015) 100%
         );
-        border-color: rgba(212, 175, 122, 0.12);
+        border-color: rgba(var(--accent-rgb), 0.12);
     }
 
     .section#index .console-card.featured::before {
@@ -986,8 +986,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(212, 175, 122, 0.07);
-        border: 1px solid rgba(212, 175, 122, 0.1);
+        background: rgba(var(--accent-rgb), 0.07);
+        border: 1px solid rgba(var(--accent-rgb), 0.1);
         border-radius: 50%;
     }
 
@@ -1095,7 +1095,7 @@
 .timeline-content,
 .timeline-image {
     background: linear-gradient(145deg, rgba(27, 23, 20, 0.85) 0%, rgba(42, 35, 32, 0.3) 100%);
-    border: 1px solid rgba(212, 175, 122, 0.12);
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
     min-height: 280px;
@@ -1114,14 +1114,14 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(212, 175, 122, 0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.4), transparent);
     opacity: 0;
     transition: opacity 0.4s ease;
 }
 
 .timeline-content:hover,
 .timeline-image:hover {
-    border-color: rgba(212, 175, 122, 0.3);
+    border-color: rgba(var(--accent-rgb), 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(var(--accent-rgb), 0.1);
     transform: translateY(-4px);
 }
@@ -1168,7 +1168,7 @@
 .timeline-note {
     margin-top: auto;
     padding: 1rem 1.1rem;
-    background: linear-gradient(135deg, rgba(212, 175, 122, 0.08) 0%, rgba(212, 175, 122, 0.03) 100%);
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent-rgb), 0.03) 100%);
     border-left: 3px solid var(--accent-color);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     color: rgba(var(--cream-rgb), 0.9);

@@ -144,7 +144,7 @@
     border-bottom: none;
 }
 
-/* Card links - visible gold accent */
+/* Card links - accent color */
 .card a:not(.demo-button):not(.btn):not(.hero-button):not(.quiz-retry-btn) {
     text-decoration: none;
     transition: color 0.2s ease, opacity 0.2s ease;
@@ -155,7 +155,7 @@
     opacity: 1;
 }
 
-/* Card Variants - Gold accent */
+/* Card Variants */
 .card.physics-card,
 .card.cs-card {
     border-left: 3px solid rgba(var(--accent-rgb), 0.5);

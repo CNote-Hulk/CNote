@@ -1,15 +1,121 @@
-/* ── Cookie Banner ── */
-#cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999; background: rgba(20, 18, 16, 0.97); border-top: 1px solid #c8a850; backdrop-filter: blur(12px); padding: 1rem 2rem; }
-.cookie-banner-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
-.cookie-banner-title { font-family: 'Playfair Display', serif; color: #c8a850; font-size: 1.1rem; font-weight: 600; display: block; margin-bottom: 0.25rem; }
-.cookie-banner-text p { color: #e8d8b8; font-size: 0.85rem; margin: 0; opacity: 0.85; }
-.cookie-banner-actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
-.cookie-btn-essential { background: transparent; border: 1px solid #c8a850; color: #c8a850; padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
-.cookie-btn-essential:hover { background: rgba(200, 168, 80, 0.1); }
-.cookie-btn-accept { background: #c8a850; border: 1px solid #c8a850; color: #141210; padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: background 0.2s; }
-.cookie-btn-accept:hover { background: #d4b860; }
+/* ── Cookie Consent Modal ── */
+#cookie-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+#cookie-modal {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 440px;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cookie-modal-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.cookie-modal-title {
+  font-family: var(--font-serif);
+  color: var(--text-light);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cookie-modal-body {
+  color: var(--text-gray);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cookie-modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+}
+
+.cookie-btn-essential {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-gray);
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+  width: 100%;
+}
+
+.cookie-btn-essential:hover {
+  border-color: var(--text-gray);
+  color: var(--text-light);
+}
+
+.cookie-btn-accept {
+  background: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  color: var(--primary-color);
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: opacity var(--transition-fast);
+  width: 100%;
+}
+
+.cookie-btn-accept:hover {
+  opacity: 0.88;
+}
+
 /* ── YouTube Placeholder ── */
-.yt-placeholder { position: relative; width: 100%; aspect-ratio: 16/9; background: #1a1714; border: 1px solid #2a2520; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; gap: 0.75rem; }
-.yt-placeholder::before { content: '▶'; font-size: 2.5rem; color: #c8a850; opacity: 0.7; }
-.yt-placeholder span { color: #e8d8b8; font-size: 0.85rem; opacity: 0.6; }
-.yt-iframe { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 8px; }
+.yt-placeholder {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: default;
+}
+
+.yt-placeholder::before {
+  content: '▶';
+  font-size: 2.5rem;
+  color: var(--text-gray);
+  opacity: 0.5;
+}
+
+.yt-placeholder span {
+  color: var(--text-gray);
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.yt-iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: var(--radius-sm);
+}
