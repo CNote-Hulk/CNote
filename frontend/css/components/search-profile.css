@@ -66,7 +66,7 @@
     color: var(--text-light, #F5F0E8);
     font-size: 1rem;
     font-family: var(--font-sans);
-    caret-color: var(--accent-color, #D4AF7A);
+    caret-color: var(--accent-color);
 }
 
 .search-overlay__input::placeholder {
@@ -341,7 +341,7 @@
     justify-content: center;
     border-radius: 6px;
     background: rgba(var(--accent-rgb), 0.08);
-    color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color);
     flex-shrink: 0;
 }
 

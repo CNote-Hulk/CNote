@@ -6,7 +6,7 @@
    PAGE BASE
    ══════════════════════════════════════════ */
 .user-profile-page {
-    --up-accent: var(--accent-color, #D4AF7A);
+    --up-accent: var(--accent-color);
     --up-accent-rgb: var(--accent-color-rgb);
     --up-border: rgba(var(--up-accent-rgb), 0.1);
     --up-card-bg: rgba(20, 18, 16, 0.72);
@@ -678,7 +678,7 @@ a.user-social-link:hover {
     height: clamp(320px, 62vmin, 680px);
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid var(--accent-color, #D4AF7A);
+    border: 3px solid var(--accent-color);
     background: var(--dark-bg-2, #2a231f);
     display: flex;
     align-items: center;
@@ -725,7 +725,7 @@ a.user-social-link:hover {
 }
 
 .avatar-lb-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
-.avatar-lb-btn--change { background: var(--accent-color, #D4AF7A); color: #1a1208; }
+.avatar-lb-btn--change { background: var(--accent-color); color: #1a1208; }
 .avatar-lb-btn--remove { background: rgba(200, 60, 60, 0.75); color: #fff; border-color: rgba(200, 60, 60, 0.5); }
 
 .user-profile-avatar { cursor: pointer; background: none; border: none; padding: 0; transition: opacity 0.15s; }

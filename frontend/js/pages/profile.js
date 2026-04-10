@@ -269,7 +269,7 @@ function initSettings() {
         verifyBanner.innerHTML = `
             <div style="display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;">
                 <div>
-                    <div style="color:#f1d7a1;font-weight:700;margin-bottom:6px;">Email not verified</div>
+                    <div style="color:var(--accent-color);font-weight:700;margin-bottom:6px;">Email not verified</div>
                     <div style="color:var(--text-light);font-size:0.9rem;">Your email is not verified. Check your inbox.</div>
                 </div>
                 <button type="button" class="auth-btn" id="resend-verification-btn" style="white-space:nowrap;">Resend verification email</button>

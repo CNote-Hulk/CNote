@@ -181,9 +181,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             const statProgress = document.getElementById('stat-progress');
             const progressRingArc = document.getElementById('progress-ring-arc');
             const progressRingPct = document.getElementById('progress-ring-pct');
-            if (continueProgress) continueProgress.innerHTML = `<span style="color:#ad8b00" data-i18n="home_progress_working">In progress...</span>`;
+            if (continueProgress) continueProgress.innerHTML = `<span style="color:var(--accent-color)" data-i18n="home_progress_working">In progress...</span>`;
             if (activeProgress) activeProgress.style.width = '0%';
-            if (statProgress) statProgress.innerHTML = `<span style="color:#ad8b00" data-i18n="home_progress_working">In progress...</span>`;
+            if (statProgress) statProgress.innerHTML = `<span style="color:var(--accent-color)" data-i18n="home_progress_working">In progress...</span>`;
             if (progressRingArc) {
                 progressRingArc.style.strokeDasharray = 2 * Math.PI * 42;
                 progressRingArc.style.strokeDashoffset = 2 * Math.PI * 42;
@@ -423,6 +423,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const hiddenClass = i >= INITIAL_SHOW ? ' activity-hidden' : '';
                         return `<li class="${hiddenClass}"><span class="activity-icon">${e.icon}</span><span class="activity-text">${e.html}</span>${timeStr}</li>`;
                     }).join('');
+
+                    // Remove stale button from previous render
+                    const staleBtn = activityList.nextElementSibling;
+                    if (staleBtn && staleBtn.classList.contains('activity-show-more')) staleBtn.remove();
 
                     if (events.length > INITIAL_SHOW) {
                         const btn = document.createElement('button');

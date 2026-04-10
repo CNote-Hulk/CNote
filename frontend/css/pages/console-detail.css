@@ -528,11 +528,11 @@
 }
 
 .rating-stars-display .star--filled {
-    color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color);
 }
 
 .rating-stars-display .star--half {
-    color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color);
     opacity: 0.5;
 }
 
@@ -581,7 +581,7 @@
 }
 
 .star-btn.active {
-    color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color);
 }
 
 .star-btn.hover {
@@ -595,7 +595,7 @@
 }
 
 .rating-login-msg a {
-    color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color);
     font-weight: 600;
     text-decoration: none;
 }
@@ -714,7 +714,7 @@
     border-radius: 50%;
     background: rgba(var(--accent-rgb), 0.12);
     border: 1px solid rgba(var(--accent-rgb), 0.28);
-    color: var(--accent-color, #D4AF7A);
+    color: var(--accent-color);
     cursor: help;
     position: relative;
     vertical-align: middle;
