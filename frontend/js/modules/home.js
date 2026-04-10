@@ -473,58 +473,36 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const lvl = AchievementsModule.computeLevel(achPct, visitedCount, total);
 
 
-                // Home panel: mini preview (stil mai dragut)
+
+                // Home panel: mini preview (simplu)
                 const homeLevelCard = document.getElementById('home-level-card');
                 if (homeLevelCard) {
-                    homeLevelCard.innerHTML = `
-                        <div style="background:rgba(30,25,20,0.85);border-radius:18px;box-shadow:0 2px 16px 0 rgba(0,0,0,0.18);padding:22px 18px 18px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;max-width:340px;margin:auto;">
-                            <div style="font-size:2.8rem;line-height:1;margin-bottom:2px;">${lvl.emoji}</div>
-                            <div style="font-size:1.3rem;font-weight:700;color:var(--accent-color);margin-bottom:2px;">${lvl.name}</div>
-                            <div style="font-size:1.05rem;color:#e6d6c3;opacity:0.85;margin-bottom:6px;">${lvl.description}</div>
-                            <div style="width:100%;margin:8px 0 0 0;">
-                                <div style="font-size:1rem;font-weight:500;color:#fff;">Score: <span style='color:var(--accent-color);font-weight:700;'>${lvl.score}</span> / 100</div>
-                                <div style="background:#2a2320;border-radius:8px;height:10px;width:100%;margin-top:4px;overflow:hidden;">
+                    homeLevelCard.innerHTML = `<div class="level-preview"><span class="level-label">Level:</span> <span class="level-emoji">${lvl.emoji}</span> <span class="level-name">${lvl.name}</span></div>`;
+                }
+
+
+                // Progress panel: full card (design modern)
+                const progressLevelCard = document.getElementById('progress-level-card');
+                if (progressLevelCard) {
+                    progressLevelCard.innerHTML = `
+                        <div style="background:rgba(30,25,20,0.85);border-radius:18px;box-shadow:0 2px 16px 0 rgba(0,0,0,0.18);padding:32px 28px 28px 28px;display:flex;flex-direction:column;align-items:center;gap:12px;max-width:420px;margin:auto;">
+                            <div style="font-size:3.2rem;line-height:1;margin-bottom:2px;">${lvl.emoji}</div>
+                            <div style="font-size:1.7rem;font-weight:700;color:var(--accent-color);margin-bottom:2px;">${lvl.name}</div>
+                            <div style="font-size:1.13rem;color:#e6d6c3;opacity:0.88;margin-bottom:8px;text-align:center;">${lvl.description}</div>
+                            <div style="width:100%;margin:10px 0 0 0;">
+                                <div style="font-size:1.13rem;font-weight:500;color:#fff;">Score: <span style='color:var(--accent-color);font-weight:700;'>${lvl.score}</span> / 100</div>
+                                <div style="background:#2a2320;border-radius:8px;height:14px;width:100%;margin-top:5px;overflow:hidden;">
                                     <div style="height:100%;width:${lvl.score}%;background:linear-gradient(90deg,var(--accent-color),#ffb86c);border-radius:8px;transition:width .4s;"></div>
                                 </div>
                             </div>
-                            <div style="width:100%;margin-top:10px;">
+                            <div style="width:100%;margin-top:14px;">
                                 ${lvl.nextLevel ? `
-                                    <div style='font-size:1rem;color:#e6d6c3;opacity:0.85;margin-bottom:2px;'>Next: <span style='font-size:1.1rem;'>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</span> <span style='font-size:0.95rem;color:#ffb86c;'>(${lvl.nextLevel.minScore} pts)</span></div>
-                                    <div style='font-size:0.98rem;color:#fff;margin-top:2px;'>Need <b>${lvl.nextRequirements.scoreNeeded} more points</b> — earn <b>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</b>${lvl.nextRequirements.consolesNeeded ? ` or visit <b>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</b>` : ''}</div>
-                                ` : `<div style='color:var(--accent-color);font-weight:600;font-size:1.1rem;margin-top:4px;'>🏆 Maximum level reached!</div>`}
+                                    <div style='font-size:1.13rem;color:#e6d6c3;opacity:0.88;margin-bottom:2px;'>Next: <span style='font-size:1.18rem;'>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</span> <span style='font-size:1.05rem;color:#ffb86c;'>(${lvl.nextLevel.minScore} pts)</span></div>
+                                    <div style='font-size:1.07rem;color:#fff;margin-top:2px;'>Need <b>${lvl.nextRequirements.scoreNeeded} more points</b> — earn <b>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</b>${lvl.nextRequirements.consolesNeeded ? ` or visit <b>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</b>` : ''}</div>
+                                ` : `<div style='color:var(--accent-color);font-weight:600;font-size:1.18rem;margin-top:4px;'>🏆 Maximum level reached!</div>`}
                             </div>
                         </div>
                     `;
-                }
-
-                // Progress panel: full card (poate rămâne la fel sau se poate adapta la fel dacă vrei)
-                const progressLevelCard = document.getElementById('progress-level-card');
-                if (progressLevelCard) {
-                    const nextHtml = lvl.nextLevel ? `
-                        <div class="level-next">
-                            <div class="level-next__label">Next: ${lvl.nextLevel.emoji} ${lvl.nextLevel.name} <span class="level-next__score">(${lvl.nextLevel.minScore} pts)</span></div>
-                            <div class="progress-bar" style="margin:6px 0 4px;">
-                                <div class="progress-bar__fill" style="width:${lvl.progressToNext}%;background:var(--accent-color);transition:width .4s;"></div>
-                            </div>
-                            <div class="level-next__hint">
-                                Need <strong>${lvl.nextRequirements.scoreNeeded} more points</strong> —
-                                earn <strong>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</strong>
-                                ${lvl.nextRequirements.consolesNeeded ? `or visit <strong>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</strong>` : ''}
-                            </div>
-                        </div>` : `<div class="level-next" style="color:var(--accent-color);font-weight:600;">🏆 Maximum level reached!</div>`;
-
-                    progressLevelCard.innerHTML = `
-                        <div class="level-card-inner">
-                            <div class="level-card-main">
-                                <span class="level-card-emoji">${lvl.emoji}</span>
-                                <div>
-                                    <div class="level-card-name">${lvl.name}</div>
-                                    <div class="level-card-score">Score: <strong>${lvl.score}</strong> / 100</div>
-                                </div>
-                            </div>
-                            <div class="level-card-desc">${lvl.description}</div>
-                            ${nextHtml}
-                        </div>`;
                 }
 
                 // Save to localStorage pentru alte pagini
