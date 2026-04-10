@@ -851,12 +851,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                         homeAchievementsPreview.appendChild(div);
                     });
                     if (badges.length > 6) {
+                        // Elimină orice buton 'See all' existent
+                        const parent = homeAchievementsPreview.parentElement;
+                        if (parent) {
+                            parent.querySelectorAll('.dash-see-all').forEach(el => el.remove());
+                        }
                         const seeAll = document.createElement('a');
                         seeAll.href = '#achievements';
-                        seeAll.className = 'dash-see-all';
-                        const earned = badges.filter(b => b.unlocked).length;
-                        seeAll.textContent = `See all ${earned}/${badges.length} achievements`;
-                        homeAchievementsPreview.parentElement.appendChild(seeAll);
+                        seeAll.className = 'dash-see-all btn btn--primary';
+                        seeAll.innerHTML = `<span style="display:inline-flex;align-items:center;gap:6px;"><span>See all ${badges.filter(b => b.unlocked).length}/${badges.length} achievements</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>`;
+                        if (parent) parent.appendChild(seeAll);
                     }
                 } else {
                     homeAchievementsPreview.innerHTML = `
