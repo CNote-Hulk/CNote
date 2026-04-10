@@ -214,28 +214,31 @@ function renderLevelsPanel(currentLevel) {
         const isFuture  = idx > currentLevel.index;
 
         let statusIcon, statusClass;
-        if (isPast)    { statusIcon = '✓'; statusClass = 'level-row--done'; }
-        else if (isCurrent) { statusIcon = currentLevel.emoji; statusClass = 'level-row--current'; }
-        else           { statusIcon = '○'; statusClass = 'level-row--locked'; }
+        if (isPast)         { statusIcon = '✓';       statusClass = 'level-row--done'; }
+        else if (isCurrent) { statusIcon = lvl.emoji; statusClass = 'level-row--current'; }
+        else                { statusIcon = lvl.emoji; statusClass = 'level-row--locked'; }
 
-        // Progress bar inside each row
+        const scoreLabel = lvl.minScore > 0 ? `${lvl.minScore} pts` : 'Starting level';
+        const desc = isCurrent ? lvl.description : (isFuture ? lvl.requirements : lvl.description);
+
         let barHtml = '';
         if (isCurrent && currentLevel.nextLevel) {
-            barHtml = `<div class="level-row__bar"><div class="level-row__bar-fill" style="width:${currentLevel.progressToNext}%"></div></div>
-                       <span class="level-row__bar-label">${currentLevel.progressToNext}% to ${currentLevel.nextLevel.name}</span>`;
+            barHtml = `
+                <div class="level-row__bar"><div class="level-row__bar-fill" style="width:${currentLevel.progressToNext}%"></div></div>
+                <span class="level-row__bar-label">${currentLevel.progressToNext}% towards ${currentLevel.nextLevel.name}</span>`;
         } else if (isPast) {
             barHtml = `<div class="level-row__bar"><div class="level-row__bar-fill" style="width:100%"></div></div>`;
         }
 
         return `
-            <div class="level-row ${statusClass}${isCurrent ? ' level-row--active' : ''}">
-                <span class="level-row__status">${statusIcon}</span>
+            <div class="level-row ${statusClass}">
+                <div class="level-row__status">${statusIcon}</div>
                 <div class="level-row__info">
                     <div class="level-row__header">
-                        <strong class="level-row__name">${lvl.emoji} ${lvl.name}</strong>
-                        <span class="level-row__score-req">${lvl.minScore > 0 ? ` ${lvl.minScore} pts` : 'Starting level'}</span>
+                        <strong class="level-row__name">${lvl.name}</strong>
+                        <span class="level-row__score-req">${scoreLabel}</span>
                     </div>
-                    <div class="level-row__desc">${isCurrent ? lvl.description : (isFuture ? lvl.requirements : lvl.description)}</div>
+                    ${desc ? `<div class="level-row__desc">${desc}</div>` : ''}
                     ${barHtml}
                 </div>
             </div>`;
