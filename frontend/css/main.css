@@ -22,6 +22,7 @@
 @import url('./components/quiz.css');
 @import url('./components/search-profile.css');
 @import url('./components/index-cards.css');
+@import url('./components/cookies.css');
 
 /* === UTILITIES === */
 @import url('./utilities/animations.css');
