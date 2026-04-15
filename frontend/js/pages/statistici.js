@@ -219,7 +219,7 @@ function renderLevelsPanel(currentLevel) {
         else                { statusIcon = lvl.emoji; statusClass = 'level-row--locked'; }
 
         const scoreLabel = lvl.minScore > 0 ? `${lvl.minScore} pts` : 'Starting level';
-        const desc = isCurrent ? lvl.description : (isFuture ? lvl.requirements : lvl.description);
+        const desc = lvl.requirements || lvl.description;
 
         let barHtml = '';
         if (isCurrent && currentLevel.nextLevel) {
