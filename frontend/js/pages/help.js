@@ -53,7 +53,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (show) visible++;
         });
 
-        if (noResults) noResults.hidden = visible > 0;
+        // Dim category cards that don't match the search query
+        catButtons.forEach(function (card) {
+            var text = card.textContent.toLowerCase();
+            var matchSearch = !query || text.indexOf(query) !== -1;
+            card.classList.toggle('is-dimmed', !matchSearch);
+        });
+
+        if (noResults) noResults.hidden = visible > 0 || !query;
     }
 
     // --- Category filter ---

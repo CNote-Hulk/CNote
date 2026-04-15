@@ -152,6 +152,7 @@ export const ContactFormModule = {
             try {
                 if (isLocalFile) {
                     sendLocalMailto(name, email, subject, message);
+                    contactForm.reset();
                     contactForm.hidden = true;
                     successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);
@@ -170,6 +171,7 @@ export const ContactFormModule = {
                 const data = await response.json().catch(() => ({}));
 
                 if (response.ok && data.success) {
+                    contactForm.reset();
                     contactForm.hidden = true;
                     successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);

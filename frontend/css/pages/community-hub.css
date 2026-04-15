@@ -3714,6 +3714,89 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* ── Light theme: hub-view main panel ── */
+[data-theme="light"] .hub-view {
+    background: #ffffff;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Light theme: forum filter buttons ── */
+[data-theme="light"] .hub-filter-btn {
+    background: rgba(0, 0, 0, 0.05);
+    color: #4B5563;
+}
+[data-theme="light"] .hub-filter-btn:hover {
+    background: rgba(0, 0, 0, 0.09);
+    color: #111317;
+}
+[data-theme="light"] .hub-filter-btn--active {
+    background: #111317;
+    color: #F5F0E8;
+}
+
+/* ── Light theme: thread & content items ── */
+[data-theme="light"] .hub-thread-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+[data-theme="light"] .hub-thread-title {
+    color: #111317;
+}
+[data-theme="light"] .hub-thread-meta,
+[data-theme="light"] .hub-thread-preview {
+    color: #6B7280;
+}
+[data-theme="light"] .hub-thread-tag {
+    background: rgba(0, 0, 0, 0.06);
+    color: #374151;
+}
+
+/* ── Light theme: tab & section backgrounds ── */
+[data-theme="light"] .hub-tabs-bar {
+    background: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+[data-theme="light"] .hub-tab {
+    color: #6B7280;
+}
+[data-theme="light"] .hub-tab--active,
+[data-theme="light"] .hub-tab:hover {
+    color: #111317;
+}
+
+/* ── Light theme: repair & marketplace ── */
+[data-theme="light"] .hub-repair-item,
+[data-theme="light"] .hub-market-item {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.07);
+}
+[data-theme="light"] .hub-repair-item:hover,
+[data-theme="light"] .hub-market-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* ── Light theme: new topic / action buttons ── */
+[data-theme="light"] .hub-new-topic-btn,
+[data-theme="light"] .hub-view-header__action {
+    background: #111317;
+    color: #F5F0E8;
+}
+[data-theme="light"] .hub-new-topic-btn:hover,
+[data-theme="light"] .hub-view-header__action:hover {
+    background: #2a2d35;
+}
+[data-theme="light"] .hub-btn--secondary {
+    background: rgba(0, 0, 0, 0.06);
+    color: #111317;
+}
+[data-theme="light"] .hub-btn--secondary:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* ── Light theme: empty state ── */
+[data-theme="light"] .hub-empty {
+    color: #6B7280;
+}
+
 /* ══════════════════════════════════════════════════════════════
    MOBILE REDESIGN — Full section polish  ≤ 768px
    ══════════════════════════════════════════════════════════════ */

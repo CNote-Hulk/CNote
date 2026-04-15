@@ -52,11 +52,11 @@ export const AchievementsModule = {
 
     // Lista de nivele expusă global pentru UI
     LEVELS: [
-        { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started.' },
-        { name: 'Intermediate', emoji: '🌿', minScore: 35, description: 'Good progress.' },
-        { name: 'Advanced',     emoji: '⚡', minScore: 55, description: 'Solid platform knowledge.' },
-        { name: 'Expert',       emoji: '🔥', minScore: 75, description: 'Impressive activity.' },
-        { name: 'Legend',       emoji: '👑', minScore: 90, description: 'Elite status.' },
+        { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started. Explore consoles and unlock your first badges.',         requirements: 'Create your account and start exploring.' },
+        { name: 'Intermediate', emoji: '🌿', minScore: 35, description: 'Good progress! You\'ve visited consoles and earned some badges.',               requirements: 'Reach 35 pts — visit 10+ consoles and earn 3+ badges.' },
+        { name: 'Advanced',     emoji: '⚡', minScore: 55, description: 'Solid platform knowledge. You\'re an active member of the community.',          requirements: 'Reach 55 pts — visit 18+ consoles and earn 6+ badges.' },
+        { name: 'Expert',       emoji: '🔥', minScore: 75, description: 'Impressive activity! You know your consoles inside and out.',                   requirements: 'Reach 75 pts — visit 22+ consoles and earn 9+ badges.' },
+        { name: 'Legend',       emoji: '👑', minScore: 90, description: 'Elite status. You\'ve mastered the full platform — the rarest level.',          requirements: 'Reach 90 pts — explore all 25 consoles and unlock 11+ badges.' },
     ],
 
     /**
@@ -128,13 +128,7 @@ export const AchievementsModule = {
         const consolePct = Math.min((visitedConsoles / 25) * 100, 100);
         const score = Math.round((achievementsPct * 0.6) + (consolePct * 0.4));
 
-        const levels = [
-            { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started.' },
-            { name: 'Intermediate', emoji: '🌿', minScore: 35, description: 'Good progress.' },
-            { name: 'Advanced',     emoji: '⚡', minScore: 55, description: 'Solid platform knowledge.' },
-            { name: 'Expert',       emoji: '🔥', minScore: 75, description: 'Impressive activity.' },
-            { name: 'Legend',       emoji: '👑', minScore: 90, description: 'Elite status.' },
-        ];
+        const levels = this.LEVELS;
 
         let currentIdx = 0;
         for (let i = levels.length - 1; i >= 0; i--) {

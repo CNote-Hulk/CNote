@@ -146,6 +146,9 @@
     flex-direction: column;
     gap: 16px;
 }
+#contact-form[hidden] {
+    display: none !important;
+}
 
 /* === MESSAGES & HONEYPOT === */
 .contact-card .success-message,
@@ -380,4 +383,29 @@
 [data-theme="light"] .contact-form .button-loading::after {
     border-color: rgba(0, 0, 0, 0.2);
     border-top-color: var(--text-light);
+}
+
+[data-theme="light"] .contact-success-state {
+    color: #065f46;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.04));
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+[data-theme="light"] .contact-form input[type="text"]::placeholder,
+[data-theme="light"] .contact-form input[type="email"]::placeholder,
+[data-theme="light"] .contact-form textarea::placeholder {
+    color: rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] .contact-form .input-group label {
+    color: rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .contact-form .input-group label.label-active {
+    color: rgba(0, 0, 0, 0.75);
+}
+
+[data-theme="light"] .contact-form .contact-select option {
+    background: #ffffff;
+    color: #111317;
 }

@@ -168,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 if (isLocalFile) {
                     sendLocalMailto(name, email, subject, message);
+                    contactForm.reset();
                     contactForm.hidden = true;
                     if (successMessage) successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);
@@ -186,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var data = await response.json().catch(function() { return {}; });
 
                 if (response.ok && data.success) {
+                    contactForm.reset();
                     contactForm.hidden = true;
                     if (successMessage) successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);

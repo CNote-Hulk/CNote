@@ -947,6 +947,7 @@ const MESSAGES = {
 
         // Shared notebook UI
         nb_you_are_here: 'You are here',
+        nb_left_discuss_discover: 'Discuss &<br>Discover',
         nb_fun_fact: '\u2605 Fun Fact',
         nb_right_fun_fact: '\u2605 Fun Fact',
         nb_compare_highlight: '\u2605 Compare Highlight',
@@ -1950,6 +1951,7 @@ const MESSAGES = {
 
         // Shared notebook UI
         nb_you_are_here: 'E\u0219ti aici',
+        nb_left_discuss_discover: 'Discut\u0103 &<br>Descoper\u0103',
         nb_fun_fact: '\u2605 Fapt amuzant',
         nb_right_fun_fact: '\u2605 Fapt amuzant',
         nb_compare_highlight: '\u2605 Highlight compara\u021bie',
@@ -2941,6 +2943,7 @@ const MESSAGES = {
 
         // Shared notebook UI
         nb_you_are_here: 'Est\u00e1s aqu\u00ed',
+        nb_left_discuss_discover: 'Discute &<br>Descubre',
         nb_fun_fact: '\u2605 Dato curioso',
         nb_right_fun_fact: '\u2605 Dato curioso',
         nb_compare_highlight: '\u2605 Destacado de comparaci\u00f3n',
@@ -3930,6 +3933,7 @@ const MESSAGES = {
 
         // Shared notebook UI
         nb_you_are_here: 'Vous \u00eates ici',
+        nb_left_discuss_discover: 'Discutez &<br>D\u00e9couvrez',
         nb_fun_fact: '\u2605 Le saviez-vous\u00a0?',
         nb_right_fun_fact: '\u2605 Le saviez-vous\u00a0?',
         nb_compare_highlight: '\u2605 Point fort de comparaison',
@@ -4923,13 +4927,17 @@ const MESSAGES = {
 
         // Shared notebook UI
         nb_you_are_here: 'Sei qui',
+        nb_left_discuss_discover: 'Discuti &<br>Scopri',
         nb_fun_fact: '★ Lo sapevi?',
+        nb_right_fun_fact: '★ Lo sapevi?',
         nb_compare_highlight: '★ Punto saliente del confronto',
         nb_did_you_know: '★ Lo sapevi?',
         nb_rec_most_compared: '★ Più confrontato',
         nb_rec_trending: '★ Di tendenza ora',
         nb_rec_module1: 'MODULO 1',
         nb_rec_module2: 'MODULO 2',
+        nb_rec_repair: 'Puoi riparare o chiedere qualsiasi cosa sulle console, direttamente alla comunit\u00e0 o agli esperti.',
+        nb_rec_market: 'Da qui puoi acquistare, vendere o scambiare console e accessori con altri membri.',
         nb_card_join_discussion: 'Partecipa alla discussione',
         nb_card_faq_support: 'FAQ & supporto',
         nb_card_console_history: 'Storia delle console',
@@ -4995,6 +5003,8 @@ const MESSAGES = {
         evl_xbox_fact: 'La Xbox originale girava su un Intel Pentium III modificato \u2014 essenzialmente un PC in un case da console, la macchina pi\u00f9 potente della sua generazione al lancio.',
         evl_stat_launch: 'Lancio',
         evl_stat_sold: 'Venduto',
+        evl_title_hero: 'Xbox Originale',
+        evl_body: 'L\'ingresso di Microsoft nelle guerre delle console arriv\u00f2 nel 2001 con una macchina come nessuna prima. La Xbox originale era equipaggiata con un Intel Pentium III modificato, una GPU NVIDIA e \u2014 per la prima volta nella storia delle console \u2014 un hard disk integrato. Lanci\u00f2 Halo, gett\u00f2 le basi per Xbox Live e dimostr\u00f2 che un\'azienda tecnologica poteva sfidare Nintendo e Sony sul loro stesso campo.',
 
         // Mobile nav
         mbn_more: 'Altro',
@@ -5079,6 +5089,9 @@ const MESSAGES = {
         home_milestone_10_lessons: '10 Lektionen abschlie\u00dfen',
         home_milestone_first_quiz: 'Ersten Quiz bestehen',
         home_milestone_5_achievements: '5 Erfolge erhalten',
+        home_my_listings_title: 'Meine Anzeigen',
+        home_favorites_consoles_title: 'Lieblingskonsolen',
+        home_fav_listings_title: 'Lieblingsanzeigen',
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Willkommen im goldenen — oder vielleicht bronzenen — Zeitalter des Gaming.',
@@ -5904,13 +5917,17 @@ const MESSAGES = {
 
         // Shared notebook UI
         nb_you_are_here: 'Du bist hier',
+        nb_left_discuss_discover: 'Diskutiere &<br>Entdecke',
         nb_fun_fact: '★ Wusstest du das?',
+        nb_right_fun_fact: '★ Wusstest du das?',
         nb_compare_highlight: '★ Vergleichs-Highlight',
         nb_did_you_know: '★ Wusstest du das?',
         nb_rec_most_compared: '★ Meistverglchen',
         nb_rec_trending: '★ Jetzt trending',
         nb_rec_module1: 'MODUL 1',
         nb_rec_module2: 'MODUL 2',
+        nb_rec_repair: 'Du kannst Konsolen reparieren oder alles fragen, direkt von der Community oder Experten.',
+        nb_rec_market: 'Von hier aus kannst du Konsolen und Zubeh\u00f6r mit anderen Mitgliedern kaufen, verkaufen oder tauschen.',
         nb_card_join_discussion: 'An der Diskussion teilnehmen',
         nb_card_faq_support: 'FAQ & Support',
         nb_card_console_history: 'Konsolengeschichte',
@@ -5976,6 +5993,8 @@ const MESSAGES = {
         evl_xbox_fact: 'Die Original Xbox lief mit einem modifizierten Intel Pentium III \u2014 im Wesentlichen ein PC im Konsolengehäuse, die leistungsstärkste Maschine ihrer Generation beim Start.',
         evl_stat_launch: 'Launch',
         evl_stat_sold: 'Verkauft',
+        evl_title_hero: 'Original Xbox',
+        evl_body: 'Microsofts Einstieg in die Konsolenkriege kam 2001 mit einer Maschine wie keiner zuvor. Die Original Xbox hatte einen modifizierten Intel Pentium III, eine NVIDIA-GPU und \u2014 erstmals in der Konsolengeschichte \u2014 eine eingebaute Festplatte. Sie brachte Halo heraus, legte den Grundstein f\u00fcr Xbox Live und bewies, dass ein Technologieunternehmen Nintendo und Sony auf deren eigenem Terrain herausfordern kann.',
 
         // Mobile nav
         mbn_more: 'Mehr',
