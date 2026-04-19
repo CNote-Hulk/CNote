@@ -49,13 +49,19 @@ function renderTopbar(lesson, course) {
 
     if (crsCurrent) crsCurrent.textContent = lesson.title;
 
+    // Update header meta course name
+    const metaItem = document.querySelector('.lsn-header-meta-item');
+    if (metaItem && course) {
+        metaItem.lastChild.textContent = course.title;
+    }
+
     // Progress indicator (lesson X of Y)
     if (course) {
         const allLessons = (course.modules || []).flatMap(m => m.lessons || []);
         const idx = allLessons.findIndex(l => l.id === lesson.id);
         if (idx !== -1) {
             const indicator = document.querySelector('.lsn-progress-indicator');
-            if (indicator) indicator.textContent = `Lesson ${idx + 1} of ${allLessons.length}`;
+            if (indicator) indicator.textContent = `${idx + 1} / ${allLessons.length}`;
 
             // Store next lesson id for navigation
             const next = allLessons[idx + 1];
@@ -92,10 +98,17 @@ function renderQuiz(questions) {
         return;
     }
 
+    const header = document.createElement('div');
+    header.className = 'lsn-quiz-header';
     const title = document.createElement('h2');
     title.className = 'lsn-quiz-title';
     title.textContent = 'Quiz';
-    container.appendChild(title);
+    const badge = document.createElement('span');
+    badge.className = 'lsn-quiz-badge';
+    badge.textContent = `${questions.length} question${questions.length !== 1 ? 's' : ''}`;
+    header.appendChild(title);
+    header.appendChild(badge);
+    container.appendChild(header);
 
     questions.forEach((q, qIdx) => {
         const card = document.createElement('div');

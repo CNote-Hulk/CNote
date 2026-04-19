@@ -131,6 +131,7 @@ function renderModules(course) {
         const header = document.createElement('div');
         header.className = 'crs-module-header';
         header.innerHTML = `
+            <span class="crs-module-num">${modIdx + 1}</span>
             <span class="crs-module-title">${esc(mod.title)}</span>
             <span class="crs-module-count">${doneInMod}/${lessons.length}</span>
             <svg class="crs-module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
