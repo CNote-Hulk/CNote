@@ -48,12 +48,10 @@
     </nav>
 
     <!-- ===========================
-         LESSON CONTENT
+         LESSON HERO (full-width, wallpaper)
          =========================== -->
-    <div class="lsn-container">
-
-        <!-- Breadcrumb + progress pill -->
-        <div class="lsn-topbar">
+    <header class="lsn-hero">
+        <div class="lsn-hero__inner">
             <nav class="lsn-breadcrumb" aria-label="Breadcrumb">
                 <a href="invata.html">Learn</a>
                 <span class="lsn-breadcrumb-sep">›</span>
@@ -61,32 +59,34 @@
                 <span class="lsn-breadcrumb-sep">›</span>
                 <span class="lsn-breadcrumb-current"></span>
             </nav>
-            <span class="lsn-progress-indicator"></span>
-        </div>
-
-        <!-- Lesson header card -->
-        <div class="lsn-header-card">
             <h1 class="lsn-title">Loading…</h1>
-            <div class="lsn-header-meta">
-                <span class="lsn-header-meta-item">
+            <div class="lsn-hero__meta">
+                <span class="lsn-hero__meta-item">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                     Console Starter Guide
                 </span>
-            </div>
-
-            <!-- Guest banner — shown by JS if not logged in -->
-            <div class="lsn-guest-banner" role="alert">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <span><a href="login.html">Log in</a> to save your progress and track completed lessons.</span>
+                <span class="lsn-progress-indicator"></span>
             </div>
         </div>
+    </header>
 
-        <!-- Lesson article card -->
+    <!-- ===========================
+         LESSON CONTENT
+         =========================== -->
+    <div class="lsn-container">
+
+        <!-- Guest banner — shown by JS if not logged in -->
+        <div class="lsn-guest-banner" role="alert">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span><a href="login.html">Log in</a> to save your progress and track completed lessons.</span>
+        </div>
+
+        <!-- Lesson body -->
         <div class="lsn-article">
             <div class="lsn-content"></div>
         </div>
 
-        <!-- Quiz section (rendered by JS) -->
+        <!-- Quiz section -->
         <section class="lsn-quiz" aria-label="Lesson quiz"></section>
 
     </div>

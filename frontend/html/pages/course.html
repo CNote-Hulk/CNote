@@ -44,42 +44,46 @@
     </nav>
 
     <!-- ===========================
-         COURSE CONTENT
+         COURSE HERO (full-width, wallpaper)
          =========================== -->
-    <div class="crs-container">
-
-        <!-- Header -->
-        <header class="crs-header">
-            <div class="crs-header-card">
+    <header class="crs-hero">
+        <div class="crs-hero__inner">
+            <nav class="crs-hero__breadcrumb">
+                <a href="invata.html">← Learn</a>
+            </nav>
+            <div class="crs-hero__body">
                 <span class="crs-icon">📚</span>
                 <h1 class="crs-title">Loading…</h1>
                 <p class="crs-description"></p>
                 <span class="crs-badge"></span>
-
-                <!-- Progress bar -->
-                <div class="crs-progress-wrap">
-                    <div class="crs-progress-meta">
-                        <span class="crs-progress-text">0 / 0 lessons</span>
-                        <a href="#" class="crs-continue-btn" style="display:none">Continue →</a>
-                    </div>
-                    <div class="crs-progress-bar">
-                        <div class="crs-progress-fill"></div>
-                    </div>
+            </div>
+            <div class="crs-progress-wrap">
+                <div class="crs-progress-meta">
+                    <span class="crs-progress-text">0 / 0 lessons</span>
+                    <a href="#" class="crs-continue-btn" style="display:none">Continue →</a>
+                </div>
+                <div class="crs-progress-bar">
+                    <div class="crs-progress-fill"></div>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
+
+    <!-- ===========================
+         COURSE CONTENT
+         =========================== -->
+    <div class="crs-container">
 
         <!-- Tabs -->
         <div class="crs-tabs" role="tablist">
-            <button class="crs-tab-btn active" role="tab" data-target="crs-panel-learn" aria-selected="true">Learn new things</button>
-            <button class="crs-tab-btn" role="tab" data-target="crs-panel-test" aria-selected="false">Test what you learned</button>
+            <button class="crs-tab-btn active" role="tab" data-target="crs-panel-learn" aria-selected="true">Lessons</button>
+            <button class="crs-tab-btn" role="tab" data-target="crs-panel-test" aria-selected="false">Practice</button>
         </div>
 
         <!-- Tab: Learn -->
         <div class="crs-tab-panel active" id="crs-panel-learn" role="tabpanel">
             <div class="crs-module-list" id="crs-module-list">
-                <!-- Modules rendered by course.js -->
-                <div style="padding: 40px 0; text-align: center; color: var(--crs-muted);">Loading modules…</div>
+                <div style="padding: 40px 0; text-align: center; color: var(--text-gray);">Loading modules…</div>
             </div>
         </div>
 
