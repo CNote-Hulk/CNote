@@ -76,6 +76,17 @@ async function getOwnedCount() {
     }
 }
 
+/** GET /api/user/stats — lesson/course learning statistics */
+async function getLearningStats() {
+    try {
+        const resp = await fetch('/api/user/stats', { headers: authHeaders(), credentials: 'include' });
+        if (!resp.ok) return null;
+        return resp.json();
+    } catch {
+        return null;
+    }
+}
+
 /** Render next achievement goals (up to 6 locked badges) */
 function renderGoals(badges) {
     const container = document.getElementById('next-goals');
@@ -111,11 +122,12 @@ async function renderStats() {
     document.getElementById('stat-days-member').textContent = String(daysMember);
 
     // Fetch all server data in parallel
-    const [visitedConsoles, friendsCount, favoritesCount, ownedCount] = await Promise.all([
+    const [visitedConsoles, friendsCount, favoritesCount, ownedCount, learningStats] = await Promise.all([
         getVisitedConsolesCount(),
         getFriendsCount(),
         getFavoritesCount(),
         getOwnedCount(),
+        getLearningStats(),
     ]);
 
     // Consoles visited
@@ -129,6 +141,49 @@ async function renderStats() {
 
     // Owned consoles
     document.getElementById('stat-owned').textContent = String(ownedCount);
+
+    // Learning stats (lessons, quiz, courses)
+    if (learningStats && learningStats.success) {
+        const total = learningStats.lessons_completed_total || 0;
+        const thisWeek = learningStats.lessons_completed_this_week || 0;
+        const avgScore = learningStats.average_quiz_score || 0;
+        const inProgress = learningStats.courses_in_progress || 0;
+        const coursesCompleted = learningStats.courses_completed || 0;
+
+        // Ring card — lessons completed (use 19 as total for starter guide)
+        const totalLessons = 19;
+        const pct = totalLessons > 0 ? Math.min(100, Math.round((total / totalLessons) * 100)) : 0;
+        const completedEl = document.getElementById('stat-lessons-completed');
+        const subEl = document.getElementById('stat-lessons-sub');
+        const fillEl = document.getElementById('stat-lessons-fill');
+        if (completedEl) completedEl.textContent = String(total);
+        if (subEl) subEl.textContent = `of ${totalLessons} lessons`;
+        if (fillEl) setTimeout(() => { fillEl.style.width = pct + '%'; }, 80);
+
+        // Quiz average score
+        const quizEl = document.getElementById('stat-quiz-attempts');
+        const quizSubEl = document.getElementById('stat-quiz-sub');
+        if (quizEl) quizEl.textContent = avgScore > 0 ? avgScore + '%' : '—';
+        if (quizSubEl) quizSubEl.textContent = 'average quiz score';
+
+        // Courses in progress
+        const coursesEl = document.getElementById('stat-courses-completed');
+        if (coursesEl) coursesEl.textContent = String(inProgress);
+
+        // This week
+        const weekEl = document.getElementById('stat-perfect-lessons');
+        if (weekEl) weekEl.textContent = String(thisWeek);
+
+        // Courses completed
+        const completedCoursesEl = document.getElementById('stat-lessons-visited');
+        if (completedCoursesEl) completedCoursesEl.textContent = String(coursesCompleted);
+
+        // Update continue learning link to last lesson if available
+        const ctaBtn = document.getElementById('statsd-continue-btn');
+        if (ctaBtn && learningStats.last_lesson_id) {
+            ctaBtn.href = `lesson.html?id=${learningStats.last_lesson_id}&slug=starter-guide`;
+        }
+    }
 
     // Achievements — fetch from backend and display
     let allBadges = [];

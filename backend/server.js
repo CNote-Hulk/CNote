@@ -45,6 +45,7 @@ const achievementsRoutes = require('./routes/achievements');
 
 const ownedConsolesRoutes = require('./routes/owned-consoles');
 const progressRoutes = require('./routes/progress');
+const coursesRoutes = require('./routes/courses');
 
 app.set('JWT_SECRET', JWT_SECRET);
 
@@ -161,6 +162,7 @@ app.use('/api', resetProgressRoutes);
 
 app.use('/api/consoles', consolesRoutes);
 app.use('/api/achievements', achievementsRoutes);
+app.use('/api', coursesRoutes);
 
 /* ── Static files & redirects ── */
 

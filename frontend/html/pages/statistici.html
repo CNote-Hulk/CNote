@@ -29,7 +29,7 @@
                             <span id="statsd-month">—</span>
                         </div>
                     </div>
-                    <span class="statsd-cta" style="opacity:0.5;cursor:not-allowed;" title="In working">🚧 Continue Learning</span>
+                    <a href="invata.html" class="statsd-cta" id="statsd-continue-btn">▶ Continue Learning</a>
                 </div>
                 <div class="statsd-topbar__right">
                     <h1 class="statsd-greeting">Hey, <span id="statsd-username">User</span>! 👋</h1>
@@ -40,8 +40,8 @@
             <!-- ═══ STATS GRID ═══ -->
             <div class="statsd-grid">
 
-                <!-- 1 — Lessons progress (wide, with ring) — IN WORKING -->
-                <article class="statsd-card statsd-card--ring statsd-card--wide" style="opacity:0.45;pointer-events:none;">
+                <!-- 1 — Lessons progress (wide, with ring) -->
+                <article class="statsd-card statsd-card--ring statsd-card--wide">
                     <span class="statsd-card__label" data-i18n="stats_lessons_completed">Lessons Completed</span>
                     <div class="statsd-ring-layout">
                         <div class="statsd-ring">
@@ -50,25 +50,25 @@
                                 <circle class="statsd-ring__fill" cx="50" cy="50" r="42" id="stats-ring-arc"/>
                             </svg>
                             <div class="statsd-ring__center">
-                                <span class="statsd-ring__pct" id="stat-lessons-pct">🚧</span>
+                                <span class="statsd-ring__pct" id="stat-lessons-pct">—</span>
                             </div>
                         </div>
                         <div class="statsd-ring__info">
-                            <div class="statsd-card__num" id="stat-lessons-completed">🚧</div>
-                            <div class="statsd-card__sub" id="stat-lessons-sub" data-i18n="stats_working">in working</div>
-                            <div class="progress-bar" style="display:none">
+                            <div class="statsd-card__num" id="stat-lessons-completed">—</div>
+                            <div class="statsd-card__sub" id="stat-lessons-sub">lessons done</div>
+                            <div class="progress-bar">
                                 <div class="progress-bar__fill" id="stat-lessons-fill" style="width:0%"></div>
                             </div>
                         </div>
                     </div>
                 </article>
 
-                <!-- 2 — Quizzes — IN WORKING -->
-                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
+                <!-- 2 — Quizzes -->
+                <article class="statsd-card">
                     <span class="statsd-card__icon" aria-hidden="true">📝</span>
-                    <span class="statsd-card__label" data-i18n="stats_quizzes">Quizzes Done</span>
-                    <div class="statsd-card__num" id="stat-quiz-attempts">🚧</div>
-                    <div class="statsd-card__sub" id="stat-quiz-sub" data-i18n="stats_working">in working</div>
+                    <span class="statsd-card__label" data-i18n="stats_quizzes">Avg Quiz Score</span>
+                    <div class="statsd-card__num" id="stat-quiz-attempts">—</div>
+                    <div class="statsd-card__sub" id="stat-quiz-sub">across all quizzes</div>
                 </article>
 
                 <!-- 3 — Achievements (accent card) -->
@@ -79,28 +79,28 @@
                     <div class="statsd-card__sub" id="stat-achievements-sub">of 0 badges</div>
                 </article>
 
-                <!-- 4 — Courses — IN WORKING -->
-                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
+                <!-- 4 — Courses in progress -->
+                <article class="statsd-card">
                     <span class="statsd-card__icon" aria-hidden="true">📚</span>
-                    <span class="statsd-card__label" data-i18n="stats_courses_completed">Courses Completed</span>
-                    <div class="statsd-card__num" id="stat-courses-completed">🚧</div>
-                    <div class="statsd-card__sub" id="stat-courses-sub" data-i18n="stats_working">in working</div>
+                    <span class="statsd-card__label" data-i18n="stats_courses_completed">Courses In Progress</span>
+                    <div class="statsd-card__num" id="stat-courses-completed">—</div>
+                    <div class="statsd-card__sub" id="stat-courses-sub">active courses</div>
                 </article>
 
-                <!-- 5 — Perfect quizzes — IN WORKING -->
-                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
+                <!-- 5 — This week -->
+                <article class="statsd-card">
                     <span class="statsd-card__icon" aria-hidden="true">⭐</span>
-                    <span class="statsd-card__label" data-i18n="stats_perfect">Perfect Quizzes</span>
-                    <div class="statsd-card__num" id="stat-perfect-lessons">🚧</div>
-                    <div class="statsd-card__sub" data-i18n="stats_working">in working</div>
+                    <span class="statsd-card__label" data-i18n="stats_perfect">This Week</span>
+                    <div class="statsd-card__num" id="stat-perfect-lessons">—</div>
+                    <div class="statsd-card__sub">lessons completed</div>
                 </article>
 
-                <!-- 6 — Lessons visited — IN WORKING -->
-                <article class="statsd-card" style="opacity:0.45;pointer-events:none;">
-                    <span class="statsd-card__icon" aria-hidden="true">👁️</span>
-                    <span class="statsd-card__label" data-i18n="stats_lessons_visited">Lessons Visited</span>
-                    <div class="statsd-card__num" id="stat-lessons-visited">🚧</div>
-                    <div class="statsd-card__sub" id="stat-lessons-visited-sub" data-i18n="stats_working">in working</div>
+                <!-- 6 — Courses completed -->
+                <article class="statsd-card">
+                    <span class="statsd-card__icon" aria-hidden="true">🎓</span>
+                    <span class="statsd-card__label" data-i18n="stats_lessons_visited">Courses Completed</span>
+                    <div class="statsd-card__num" id="stat-lessons-visited">—</div>
+                    <div class="statsd-card__sub" id="stat-lessons-visited-sub">finished courses</div>
                 </article>
 
                 <!-- 7 — Consoles visited -->

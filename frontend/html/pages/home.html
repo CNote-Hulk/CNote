@@ -193,10 +193,10 @@
 
                     <section class="dashboard-section stats-section">
                         <div class="stats-grid">
-                            <article class="stats-card">
+                            <article class="stats-card" id="home-overview-course-card">
                                 <span class="stats-card__icon">📊</span>
                                 <h3 data-i18n="home_stats_course">Course Progress</h3>
-                                <p><strong>🚧</strong></p>
+                                <p><strong id="home-overview-course-stat">—</strong></p>
                             </article>
                             <article class="stats-card">
                                 <span class="stats-card__icon">🏆</span>
@@ -455,11 +455,11 @@
                                 <h1 data-i18n="profile_courses">My Courses</h1>
                                 <p data-i18n="home_courses_subtitle">Track your enrolled courses and progress</p>
                             </div>
+                            <a href="invata.html" class="panel-header-link">Browse courses →</a>
                         </div>
                     </header>
-                    <div class="alert alert-info" style="background:#fffbe6;border:1px solid #ffe58f;color:#ad8b00;padding:12px 18px;border-radius:8px;font-size:1.05rem;display:flex;align-items:center;gap:10px;">
-                        <span style="font-size:1.5em;">🚧</span>
-                        <span data-i18n="home_courses_working">We are working on the <b>courses & lessons</b> section — check back soon for updates!</span>
+                    <div id="home-courses-content">
+                        <p class="dash-empty">Loading…</p>
                     </div>
                 </div>
 

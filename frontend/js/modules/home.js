@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSidebar(user);
 
             // parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, _coursesRes, visitedRes, myListingsRes, favListingsRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/forum/my-posts'),
                 apiFetch('/api/forum/liked'),
                 apiFetch('/api/achievements'),
-                apiFetch('/api/progress'),
+                apiFetch('/api/courses/starter-guide/progress'),
                 apiFetch('/api/consoles/visited'),
                 apiFetch('/api/marketplace/listings/mine'),
                 apiFetch('/api/marketplace/favorites'),
@@ -666,11 +666,62 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // =========================
-            // MY COURSES (temporarily in progress)
+            // MY COURSES
             // =========================
-            const coursesPreview = document.getElementById('home-courses-preview');
-            if (coursesPreview) {
-                coursesPreview.innerHTML = `<div class="dash-empty-state"><span class="dash-empty-state__icon">🚧</span><p class="dash-empty-state__text" data-i18n="home_courses_progress_working">Courses & progress section — <b>in progress</b></p></div>`;
+            const coursesContent = document.getElementById('home-courses-content');
+            if (coursesContent) {
+                const sp = starterProgressRes;
+                const totalLessons = sp && sp.total_lessons > 0 ? sp.total_lessons : 19;
+                const completedIds = sp && Array.isArray(sp.completed_lesson_ids) ? sp.completed_lesson_ids : [];
+                const doneCount = completedIds.length;
+                const lastId = sp && sp.last_lesson_id;
+                const courseComplete = sp && sp.course_completed;
+
+                if (courseComplete) {
+                    coursesContent.innerHTML = `
+                        <div class="dash-course-card dash-course-card--complete">
+                            <div class="dash-course-card__icon">🏆</div>
+                            <div class="dash-course-card__body">
+                                <div class="dash-course-card__title">Console Starter Guide</div>
+                                <div class="dash-course-card__sub">Course complete — ${totalLessons}/${totalLessons} lessons</div>
+                            </div>
+                            <a href="course.html?slug=starter-guide" class="dash-course-card__btn">Review →</a>
+                        </div>
+                        <p class="dash-empty" style="margin-top:18px;text-align:center;">More courses coming soon.</p>`;
+                } else if (doneCount > 0) {
+                    const pct = Math.round((doneCount / totalLessons) * 100);
+                    const continueHref = lastId
+                        ? `lesson.html?id=${lastId}&slug=starter-guide`
+                        : `course.html?slug=starter-guide`;
+                    coursesContent.innerHTML = `
+                        <div class="dash-course-card">
+                            <div class="dash-course-card__icon">🎮</div>
+                            <div class="dash-course-card__body">
+                                <div class="dash-course-card__title">Console Starter Guide</div>
+                                <div class="dash-course-card__progress-bar"><div class="dash-course-card__progress-fill" style="width:${pct}%"></div></div>
+                                <div class="dash-course-card__sub">${doneCount} / ${totalLessons} lessons · ${pct}%</div>
+                            </div>
+                            <a href="${continueHref}" class="dash-course-card__btn">Continue →</a>
+                        </div>`;
+                } else {
+                    coursesContent.innerHTML = `
+                        <div class="dash-course-card">
+                            <div class="dash-course-card__icon">🎮</div>
+                            <div class="dash-course-card__body">
+                                <div class="dash-course-card__title">Console Starter Guide</div>
+                                <div class="dash-course-card__sub">Everything you need to know about gaming consoles</div>
+                            </div>
+                            <a href="course.html?slug=starter-guide" class="dash-course-card__btn">Start →</a>
+                        </div>`;
+                }
+            }
+
+            // Overview course stat
+            const overviewCourseStat = document.getElementById('home-overview-course-stat');
+            if (overviewCourseStat && starterProgressRes && starterProgressRes.total_lessons > 0) {
+                const done = (starterProgressRes.completed_lesson_ids || []).length;
+                const total = starterProgressRes.total_lessons;
+                overviewCourseStat.textContent = `${done}/${total}`;
             }
 
             // =========================
