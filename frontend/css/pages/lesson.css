@@ -1293,6 +1293,134 @@
 
 .lsn-bottom-banner__link:hover { opacity: 0.85; }
 
+/* ═══════════════════════════════
+   STICKY TOPBAR
+   Injected by lesson.js before .lsn-hero
+═══════════════════════════════ */
+.lsn-topbar {
+    position: sticky;
+    top: 64px;
+    z-index: 40;
+    background: rgba(var(--primary-rgb), 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.lsn-topbar__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.77rem;
+    color: var(--text-gray);
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.lsn-topbar__breadcrumb a {
+    color: var(--text-gray);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: color var(--transition-fast);
+}
+
+.lsn-topbar__breadcrumb a:hover { color: var(--text-light); }
+
+.lsn-topbar__sep {
+    opacity: 0.3;
+    flex-shrink: 0;
+}
+
+.lsn-topbar__current {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.lsn-topbar__badge {
+    flex-shrink: 0;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.08);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 20px;
+    padding: 3px 11px;
+    white-space: nowrap;
+}
+
+/* ═══════════════════════════════
+   LESSON NAV BUTTONS
+   Injected by lesson.js at bottom of .lsn-main
+═══════════════════════════════ */
+.lsn-nav-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.lsn-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity var(--transition-fast), transform 0.12s, border-color var(--transition-fast);
+    letter-spacing: 0.01em;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.lsn-nav-btn--prev {
+    background: transparent;
+    color: var(--text-gray);
+    border-color: var(--border-color);
+}
+
+.lsn-nav-btn--prev:hover:not(:disabled) {
+    border-color: rgba(var(--accent-rgb), 0.35);
+    color: var(--text-light);
+}
+
+.lsn-nav-btn--next {
+    background: var(--accent-color);
+    color: var(--primary-color);
+    border-color: transparent;
+    margin-left: auto;
+}
+
+.lsn-nav-btn--next:hover:not(:disabled) {
+    opacity: 0.86;
+    transform: translateX(2px);
+}
+
+.lsn-nav-btn:disabled,
+.lsn-nav-btn[disabled],
+.lsn-nav-btn--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
     .lsn-container { padding: 24px 32px 32px; gap: 32px; }
@@ -1323,6 +1451,9 @@
 }
 
 @media (max-width: 600px) {
+    .lsn-topbar { padding: 0 16px; }
+    .lsn-nav-buttons { flex-wrap: wrap; }
+    .lsn-nav-btn--next { margin-left: 0; width: 100%; justify-content: center; }
     .lsn-page { padding-top: 56px; padding-bottom: 80px; }
     .lsn-hero { padding: 40px 0 36px; background-attachment: scroll; }
     .lsn-hero__inner { padding: 0 18px; }

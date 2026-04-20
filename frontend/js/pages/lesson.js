@@ -209,6 +209,14 @@ function showResult(totalQuestions) {
     resultDiv.appendChild(nextBtn);
     container.appendChild(resultDiv);
     resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Enable the nav "Next →" button now that quiz is complete
+    const nextNavBtn = document.getElementById('lsn-next-nav-btn');
+    if (nextNavBtn && nextNavBtn.classList.contains('lsn-nav-btn--disabled')) {
+        nextNavBtn.classList.remove('lsn-nav-btn--disabled');
+        nextNavBtn.removeAttribute('aria-disabled');
+        if (nextNavBtn.dataset.href) nextNavBtn.href = nextNavBtn.dataset.href;
+    }
 }
 
 async function completeAndNavigate(score) {
@@ -605,6 +613,83 @@ function renderComments(data) {
 }
 
 /* ─────────────────────────────────────
+   NEW: STICKY TOPBAR
+   Injected before .lsn-hero
+───────────────────────────────────── */
+function buildTopbar(lesson, course, allLessons, lsnIdx) {
+    const topbar = document.createElement('div');
+    topbar.className = 'lsn-topbar';
+
+    const courseTitle = course ? course.title : 'Course';
+    const courseHref = courseSlug ? `course.html?slug=${encodeURIComponent(courseSlug)}` : 'invata.html';
+    const total = allLessons.length;
+    const num = lsnIdx >= 0 ? lsnIdx + 1 : 1;
+
+    topbar.innerHTML = `
+        <div class="lsn-topbar__breadcrumb">
+            <a href="invata.html">Learn</a>
+            <span class="lsn-topbar__sep">›</span>
+            <a href="${courseHref}">${esc(courseTitle)}</a>
+            <span class="lsn-topbar__sep">›</span>
+            <span class="lsn-topbar__current">${esc(lesson.title)}</span>
+        </div>
+        ${total > 0 ? `<span class="lsn-topbar__badge">Lesson ${num} / ${total}</span>` : ''}
+    `;
+
+    const hero = document.querySelector('.lsn-hero');
+    if (hero) hero.before(topbar);
+}
+
+/* ─────────────────────────────────────
+   NEW: PREV / NEXT NAV BUTTONS
+   Appended to .lsn-main (after two-column layout)
+───────────────────────────────────── */
+function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
+    const main = document.querySelector('.lsn-main');
+    if (!main) return;
+
+    const prevLesson = lsnIdx > 0 ? allLessons[lsnIdx - 1] : null;
+    const nextLesson = lsnIdx >= 0 && lsnIdx < allLessons.length - 1 ? allLessons[lsnIdx + 1] : null;
+    const isLastLesson = !nextLesson;
+
+    const nav = document.createElement('div');
+    nav.className = 'lsn-nav-buttons';
+
+    const prevBtn = document.createElement('a');
+    prevBtn.className = 'lsn-nav-btn lsn-nav-btn--prev';
+    prevBtn.innerHTML = '← Previous';
+    if (prevLesson) {
+        prevBtn.href = `lesson.html?id=${prevLesson.id}&slug=${encodeURIComponent(courseSlug)}`;
+    } else {
+        prevBtn.classList.add('lsn-nav-btn--disabled');
+        prevBtn.href = '#';
+        prevBtn.setAttribute('aria-disabled', 'true');
+    }
+
+    const nextBtn = document.createElement('a');
+    nextBtn.className = 'lsn-nav-btn lsn-nav-btn--next';
+    nextBtn.id = 'lsn-next-nav-btn';
+    nextBtn.innerHTML = isLastLesson ? 'View Course →' : 'Next →';
+
+    const resolvedNextHref = isLastLesson
+        ? (courseSlug ? `course.html?slug=${encodeURIComponent(courseSlug)}` : 'invata.html')
+        : `lesson.html?id=${nextLesson.id}&slug=${encodeURIComponent(courseSlug)}`;
+
+    if (hasQuiz) {
+        nextBtn.classList.add('lsn-nav-btn--disabled');
+        nextBtn.setAttribute('aria-disabled', 'true');
+        nextBtn.dataset.href = resolvedNextHref;
+        nextBtn.href = '#';
+    } else {
+        nextBtn.href = resolvedNextHref;
+    }
+
+    nav.appendChild(prevBtn);
+    nav.appendChild(nextBtn);
+    main.appendChild(nav);
+}
+
+/* ─────────────────────────────────────
    INIT
 ───────────────────────────────────── */
 async function init() {
@@ -644,8 +729,16 @@ async function init() {
     renderTopbar(lesson, course);
     renderQuiz(lesson.quiz_questions || []);
 
+    const allLessons = course ? (course.modules || []).flatMap(m => m.lessons || []) : [];
+    const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
+    const hasQuiz = (lesson.quiz_questions || []).length > 0;
+
+    buildTopbar(lesson, course, allLessons, lsnIdx);
+
     // ── Two-column layout ──
     buildTwoColumnLayout();
+
+    renderNavButtons(allLessons, lsnIdx, hasQuiz);
 
     // ── Fetch sidebar progress + reactions + comments in parallel ──
     const [progressData, reactionsData, commentsData] = await Promise.all([

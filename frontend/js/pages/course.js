@@ -27,11 +27,10 @@ async function fetchCourse() {
 }
 
 async function fetchProgress() {
-    const token = localStorage.getItem('cn_token');
-    if (!token) return null;
+    if (!_token) return null;
     try {
         const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(slug)}/progress`, {
-            headers: { 'Authorization': 'Bearer ' + token }
+            headers: { 'Authorization': 'Bearer ' + _token }
         });
         if (!res.ok) return null;
         return res.json();
@@ -44,42 +43,125 @@ function renderHeader(course, progress) {
     document.querySelector('.crs-title').textContent = course.title;
     document.querySelector('.crs-description').textContent = course.description || '';
     document.querySelector('.crs-badge').textContent = course.difficulty || '';
+}
 
-    const progressWrap = document.querySelector('.crs-progress-wrap');
-    if (!_token) {
-        // Guest on starter-guide: hide progress bar
-        if (progressWrap) progressWrap.style.display = 'none';
-        return;
+function renderHeroStats(course, progress) {
+    const inner = document.querySelector('.crs-hero__inner');
+    if (!inner) return;
+
+    const total = allLessons.length;
+    const completedArr = progress ? (progress.completed_lesson_ids || []) : [];
+    const completed = completedArr.length;
+    const chapters = (course.modules || []).length;
+    const totalMins = total * 5;
+    const timeStr = totalMins >= 60 ? `~${Math.round(totalMins / 60)}h` : `~${totalMins}m`;
+
+    const statsEl = document.createElement('div');
+    statsEl.className = 'crs-hero-stats';
+    statsEl.innerHTML = `
+        <span class="crs-hero-stat"><strong>${completed}</strong> Completed</span>
+        <span class="crs-hero-stat-sep">·</span>
+        <span class="crs-hero-stat"><strong>${total}</strong> Lessons</span>
+        <span class="crs-hero-stat-sep">·</span>
+        <span class="crs-hero-stat"><strong>${timeStr}</strong> Total Time</span>
+        <span class="crs-hero-stat-sep">·</span>
+        <span class="crs-hero-stat"><strong>${chapters}</strong> Chapters</span>
+    `;
+
+    const lastId = progress && progress.last_lesson_id;
+    const isCourseCompleted = progress && progress.course_completed;
+    let resumeHref = '#';
+    let resumeLabel = '▶ Start Course';
+    if (allLessons.length > 0) {
+        if (isCourseCompleted) {
+            resumeLabel = '✓ Completed';
+        } else if (lastId) {
+            resumeHref = `lesson.html?id=${lastId}&slug=${encodeURIComponent(slug)}`;
+            resumeLabel = '▶ Resume Course';
+        } else {
+            resumeHref = `lesson.html?id=${allLessons[0].id}&slug=${encodeURIComponent(slug)}`;
+        }
     }
+
+    const btnsEl = document.createElement('div');
+    btnsEl.className = 'crs-hero-btns';
+    btnsEl.innerHTML = `
+        <a href="${resumeHref}" class="crs-hero-btn crs-hero-btn--primary">${resumeLabel}</a>
+        <a href="#" class="crs-hero-btn crs-hero-btn--outline">View Certificate</a>
+    `;
+
+    const body = inner.querySelector('.crs-hero__body');
+    if (body) {
+        body.after(statsEl);
+        statsEl.after(btnsEl);
+    }
+}
+
+function buildCourseLayout(course, progress) {
+    const container = document.querySelector('.crs-container');
+    if (!container) return;
+
+    const main = document.createElement('div');
+    main.className = 'crs-main';
+    while (container.firstChild) main.appendChild(container.firstChild);
+    container.appendChild(main);
 
     const total = allLessons.length;
     const completedArr = progress ? (progress.completed_lesson_ids || []) : [];
     const completed = completedArr.length;
     const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-    document.querySelector('.crs-progress-fill').style.width = pct + '%';
-    document.querySelector('.crs-progress-text').textContent = `${completed} / ${total} lessons`;
-
-    // "Continue" button — links to last visited lesson or first uncompleted
-    const continueBtn = document.querySelector('.crs-continue-btn');
-    if (continueBtn && total > 0) {
-        if (progress && progress.course_completed) {
-            continueBtn.textContent = '✓ Completed';
-            continueBtn.classList.add('crs-continue-btn--done');
-            continueBtn.href = '#';
-        } else {
-            const lastId = progress && progress.last_lesson_id;
-            if (lastId) {
-                continueBtn.href = `lesson.html?id=${lastId}&slug=${encodeURIComponent(slug)}`;
-                continueBtn.textContent = 'Continue →';
-                continueBtn.style.display = 'inline-flex';
-            } else if (allLessons.length > 0) {
-                continueBtn.href = `lesson.html?id=${allLessons[0].id}&slug=${encodeURIComponent(slug)}`;
-                continueBtn.textContent = 'Start →';
-                continueBtn.style.display = 'inline-flex';
-            }
-        }
+    let instructorName = 'CNote';
+    if (_token) {
+        try {
+            const payload = JSON.parse(atob(_token.split('.')[1]));
+            instructorName = payload.username || instructorName;
+        } catch {}
     }
+
+    const lastId = progress && progress.last_lesson_id;
+    const isCourseCompleted = progress && progress.course_completed;
+    let resumeHref = allLessons.length > 0 ? `lesson.html?id=${allLessons[0].id}&slug=${encodeURIComponent(slug)}` : '#';
+    let resumeLabel = 'Start Course';
+    if (lastId && !isCourseCompleted) {
+        resumeHref = `lesson.html?id=${lastId}&slug=${encodeURIComponent(slug)}`;
+        resumeLabel = 'Resume Course';
+    } else if (isCourseCompleted) {
+        resumeLabel = 'Review Course';
+    }
+
+    const learnPoints = Array.isArray(course.learn_points) ? course.learn_points : [];
+    const learnHTML = learnPoints.length > 0
+        ? learnPoints.map(pt => `<li class="crs-sb-learn__item"><span class="crs-sb-learn__check">✓</span><span>${esc(pt)}</span></li>`).join('')
+        : '';
+
+    const sidebar = document.createElement('aside');
+    sidebar.className = 'crs-sidebar';
+    sidebar.innerHTML = `
+        <div class="crs-sb-card crs-sb-progress">
+            <div class="crs-sb-progress__top">
+                <span class="crs-sb-progress__pct">${pct}%</span>
+                <span class="crs-sb-progress__label">${completed} of ${total} completed</span>
+            </div>
+            <div class="crs-sb-progress__bar-wrap">
+                <div class="crs-sb-progress__bar"><div class="crs-sb-progress__fill" style="width:${pct}%"></div></div>
+            </div>
+            <a href="${resumeHref}" class="crs-sb-progress__btn">${resumeLabel}</a>
+        </div>
+        <div class="crs-sb-card crs-sb-instructor">
+            <p class="crs-sb-section-label">Instructor</p>
+            <div class="crs-sb-instructor__row">
+                <div class="crs-sb-instructor__avatar">${esc(instructorName.charAt(0).toUpperCase())}</div>
+                <div>
+                    <p class="crs-sb-instructor__name">${esc(instructorName)}</p>
+                    <p class="crs-sb-instructor__role">Console Notebook</p>
+                </div>
+            </div>
+        </div>
+        ${learnHTML ? `<div class="crs-sb-card crs-sb-learn"><p class="crs-sb-section-label">What You'll Learn</p><ul class="crs-sb-learn__list">${learnHTML}</ul></div>` : ''}
+    `;
+
+    container.appendChild(sidebar);
 }
 
 function buildLessonIcon(state) {
@@ -108,31 +190,39 @@ function renderModules(course) {
     list.innerHTML = '';
     allLessons = [];
 
-    // Build flat list first to determine next lesson
     (course.modules || []).forEach(mod => {
         (mod.lessons || []).forEach(l => allLessons.push(l));
     });
 
-    // The "next" lesson is the first one not yet completed
     const nextLesson = allLessons.find(l => !completedIds.has(l.id));
     const nextId = nextLesson ? nextLesson.id : null;
     let nextModuleOpenIdx = -1;
 
+    const isGuest = !_token;
+
     (course.modules || []).forEach((mod, modIdx) => {
         const lessons = mod.lessons || [];
+        const isModFree = isGuest ? (modIdx === 0) : true;
 
         const div = document.createElement('div');
-        // Open the module that contains the next lesson, or the first module
         const hasNext = lessons.some(l => l.id === nextId);
         if (hasNext) nextModuleOpenIdx = modIdx;
         div.className = 'crs-module';
 
         const doneInMod = lessons.filter(l => completedIds.has(l.id)).length;
+        const timeMins = lessons.length * 5;
+        const timeStr = timeMins >= 60 ? `${Math.floor(timeMins / 60)}h ${timeMins % 60 > 0 ? timeMins % 60 + 'm' : ''}` : `${timeMins}m`;
+        const badgeHTML = isGuest
+            ? `<span class="crs-module-badge ${isModFree ? 'crs-module-badge--free' : 'crs-module-badge--pro'}">${isModFree ? 'FREE' : 'PRO'}</span>`
+            : '';
+
         const header = document.createElement('div');
         header.className = 'crs-module-header';
         header.innerHTML = `
             <span class="crs-module-num">${modIdx + 1}</span>
             <span class="crs-module-title">${esc(mod.title)}</span>
+            ${badgeHTML}
+            <span class="crs-module-time">${timeStr}</span>
             <span class="crs-module-count">${doneInMod}/${lessons.length}</span>
             <svg class="crs-module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         `;
@@ -144,10 +234,18 @@ function renderModules(course) {
         lessons.forEach(lesson => {
             const done = completedIds.has(lesson.id);
             const isNext = lesson.id === nextId;
-            const state = done ? 'done' : isNext ? 'next' : nextId ? 'locked' : 'open';
+            const isProLocked = isGuest && !isModFree;
+            const state = isProLocked ? 'locked' : done ? 'done' : isNext ? 'next' : nextId ? 'locked' : 'open';
+
             const row = document.createElement('a');
-            row.className = 'crs-lesson-row' + (isNext ? ' crs-lesson-row--next' : '');
-            row.href = `lesson.html?id=${lesson.id}&slug=${encodeURIComponent(slug)}`;
+            row.className = 'crs-lesson-row' + (isNext ? ' crs-lesson-row--next' : '') + (isProLocked ? ' crs-lesson-row--locked' : '');
+
+            if (isProLocked) {
+                row.href = 'login.html';
+            } else {
+                row.href = `lesson.html?id=${lesson.id}&slug=${encodeURIComponent(slug)}`;
+            }
+
             row.innerHTML = buildLessonIcon(state) + `<span class="crs-lesson-title">${esc(lesson.title)}</span>`;
             lessonsDiv.appendChild(row);
         });
@@ -157,7 +255,6 @@ function renderModules(course) {
         list.appendChild(div);
     });
 
-    // Open the relevant module
     const modules = list.querySelectorAll('.crs-module');
     const openIdx = nextModuleOpenIdx >= 0 ? nextModuleOpenIdx : 0;
     if (modules[openIdx]) modules[openIdx].classList.add('open');
@@ -186,8 +283,11 @@ async function init() {
         completedIds = new Set(progress.completed_lesson_ids.map(Number));
     }
 
-    renderHeader(course, progress);
+    // renderModules first — populates allLessons
     renderModules(course);
+    renderHeader(course, progress);
+    renderHeroStats(course, progress);
+    buildCourseLayout(course, progress);
 }
 
 if (document.readyState === 'loading') {
