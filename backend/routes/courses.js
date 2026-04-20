@@ -1,11 +1,41 @@
 /* ─────────────────────────────────────────
    FILE: routes/courses.js
-   DESCRIPTION: Course, module, lesson, and quiz endpoints.
+   DESCRIPTION: Course, module, lesson, quiz, reactions, and comment endpoints.
    ───────────────────────────────────────── */
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
+
+/* ── One-time table creation for reactions + comments ── */
+(async function initLessonTables() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS lesson_reactions (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                lesson_id INTEGER REFERENCES lessons(id) ON DELETE CASCADE,
+                reaction_type VARCHAR(20) NOT NULL CHECK (reaction_type IN ('like','save','helpful')),
+                created_at TIMESTAMP DEFAULT NOW(),
+                UNIQUE(user_id, lesson_id, reaction_type)
+            );
+            CREATE TABLE IF NOT EXISTS lesson_comments (
+                id SERIAL PRIMARY KEY,
+                lesson_id INTEGER REFERENCES lessons(id) ON DELETE CASCADE,
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                content TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT NOW()
+            );
+            CREATE TABLE IF NOT EXISTS lesson_comment_likes (
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                comment_id INTEGER REFERENCES lesson_comments(id) ON DELETE CASCADE,
+                PRIMARY KEY(user_id, comment_id)
+            );
+        `);
+    } catch (err) {
+        console.error('[courses] lesson table init error:', err.message);
+    }
+})();
 
 // GET /api/courses — all published courses with counts
 router.get('/courses', async (req, res) => {
@@ -257,6 +287,168 @@ router.get('/user/stats', authRequired, async (req, res) => {
     } catch (err) {
         console.error('GET /user/stats error:', err);
         res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+/* ─────────────────────────────────────────
+   REACTIONS
+───────────────────────────────────────── */
+
+// GET /api/lessons/:id/reactions
+router.get('/lessons/:id/reactions', authOptional, async (req, res) => {
+    const lessonId = parseInt(req.params.id, 10);
+    if (isNaN(lessonId)) return res.status(400).json({ error: 'Invalid lesson id' });
+    const userId = req.user?.id;
+    try {
+        const countsResult = await pool.query(
+            `SELECT reaction_type, COUNT(*)::int AS count
+             FROM lesson_reactions WHERE lesson_id = $1
+             GROUP BY reaction_type`,
+            [lessonId]
+        );
+        const counts = { like: 0, save: 0, helpful: 0 };
+        countsResult.rows.forEach(r => { counts[r.reaction_type] = r.count; });
+
+        let userReactions = [];
+        if (userId) {
+            const ur = await pool.query(
+                `SELECT reaction_type FROM lesson_reactions WHERE lesson_id = $1 AND user_id = $2`,
+                [lessonId, userId]
+            );
+            userReactions = ur.rows.map(r => r.reaction_type);
+        }
+
+        res.json({ ...counts, user_reactions: userReactions });
+    } catch (err) {
+        console.error('GET /lessons/:id/reactions error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// POST /api/lessons/:id/react  — toggle reaction
+router.post('/lessons/:id/react', authRequired, async (req, res) => {
+    const lessonId = parseInt(req.params.id, 10);
+    if (isNaN(lessonId)) return res.status(400).json({ error: 'Invalid lesson id' });
+    const userId = req.user.id;
+    const { type } = req.body;
+    if (!['like', 'save', 'helpful'].includes(type)) {
+        return res.status(400).json({ error: 'Invalid reaction type' });
+    }
+    try {
+        const existing = await pool.query(
+            `SELECT id FROM lesson_reactions WHERE user_id = $1 AND lesson_id = $2 AND reaction_type = $3`,
+            [userId, lessonId, type]
+        );
+        if (existing.rows.length) {
+            await pool.query(
+                `DELETE FROM lesson_reactions WHERE user_id = $1 AND lesson_id = $2 AND reaction_type = $3`,
+                [userId, lessonId, type]
+            );
+            res.json({ active: false });
+        } else {
+            await pool.query(
+                `INSERT INTO lesson_reactions (user_id, lesson_id, reaction_type) VALUES ($1, $2, $3)`,
+                [userId, lessonId, type]
+            );
+            res.json({ active: true });
+        }
+    } catch (err) {
+        console.error('POST /lessons/:id/react error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+/* ─────────────────────────────────────────
+   COMMENTS
+───────────────────────────────────────── */
+
+// GET /api/lessons/:id/comments
+router.get('/lessons/:id/comments', authOptional, async (req, res) => {
+    const lessonId = parseInt(req.params.id, 10);
+    if (isNaN(lessonId)) return res.status(400).json({ error: 'Invalid lesson id' });
+    const userId = req.user?.id;
+    try {
+        const commentsResult = await pool.query(
+            `SELECT lc.id, lc.lesson_id, lc.user_id, lc.content, lc.created_at,
+                    u.username,
+                    COUNT(lcl.user_id)::int AS like_count
+             FROM lesson_comments lc
+             JOIN users u ON u.id = lc.user_id
+             LEFT JOIN lesson_comment_likes lcl ON lcl.comment_id = lc.id
+             WHERE lc.lesson_id = $1
+             GROUP BY lc.id, u.username
+             ORDER BY lc.created_at DESC`,
+            [lessonId]
+        );
+
+        let userCommentLikes = [];
+        if (userId) {
+            const likesResult = await pool.query(
+                `SELECT comment_id FROM lesson_comment_likes WHERE user_id = $1`,
+                [userId]
+            );
+            userCommentLikes = likesResult.rows.map(r => r.comment_id);
+        }
+
+        res.json({ comments: commentsResult.rows, user_comment_likes: userCommentLikes });
+    } catch (err) {
+        console.error('GET /lessons/:id/comments error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// POST /api/lessons/:id/comments
+router.post('/lessons/:id/comments', authRequired, async (req, res) => {
+    const lessonId = parseInt(req.params.id, 10);
+    if (isNaN(lessonId)) return res.status(400).json({ error: 'Invalid lesson id' });
+    const userId = req.user.id;
+    const content = (req.body.content || '').trim();
+    if (!content) return res.status(400).json({ error: 'Content is required' });
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO lesson_comments (lesson_id, user_id, content)
+             VALUES ($1, $2, $3)
+             RETURNING id, lesson_id, user_id, content, created_at`,
+            [lessonId, userId, content]
+        );
+        const comment = result.rows[0];
+        const userResult = await pool.query('SELECT username FROM users WHERE id = $1', [userId]);
+        comment.username = userResult.rows[0]?.username || 'User';
+        comment.like_count = 0;
+        res.status(201).json({ comment });
+    } catch (err) {
+        console.error('POST /lessons/:id/comments error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// POST /api/comments/:id/like  — toggle like on a comment
+router.post('/comments/:id/like', authRequired, async (req, res) => {
+    const commentId = parseInt(req.params.id, 10);
+    if (isNaN(commentId)) return res.status(400).json({ error: 'Invalid comment id' });
+    const userId = req.user.id;
+    try {
+        const existing = await pool.query(
+            `SELECT 1 FROM lesson_comment_likes WHERE user_id = $1 AND comment_id = $2`,
+            [userId, commentId]
+        );
+        if (existing.rows.length) {
+            await pool.query(
+                `DELETE FROM lesson_comment_likes WHERE user_id = $1 AND comment_id = $2`,
+                [userId, commentId]
+            );
+            res.json({ liked: false });
+        } else {
+            await pool.query(
+                `INSERT INTO lesson_comment_likes (user_id, comment_id) VALUES ($1, $2)`,
+                [userId, commentId]
+            );
+            res.json({ liked: true });
+        }
+    } catch (err) {
+        console.error('POST /comments/:id/like error:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

@@ -14,6 +14,9 @@ function esc(str) {
     return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+/* ─────────────────────────────────────
+   EXISTING DATA FETCHERS
+───────────────────────────────────── */
 async function fetchLesson() {
     const token = localStorage.getItem('cn_token');
     const headers = {};
@@ -35,6 +38,9 @@ async function fetchCourseStructure() {
     } catch { return null; }
 }
 
+/* ─────────────────────────────────────
+   EXISTING RENDERERS (unchanged)
+───────────────────────────────────── */
 function renderTopbar(lesson, course) {
     const crsCurrent = document.querySelector('.lsn-breadcrumb-current');
     const crsLink = document.querySelector('.lsn-breadcrumb-course');
@@ -49,13 +55,11 @@ function renderTopbar(lesson, course) {
 
     if (crsCurrent) crsCurrent.textContent = lesson.title;
 
-    // Update header meta course name
     const metaItem = document.querySelector('.lsn-header-meta-item');
     if (metaItem && course) {
         metaItem.lastChild.textContent = course.title;
     }
 
-    // Progress indicator (lesson X of Y)
     if (course) {
         const allLessons = (course.modules || []).flatMap(m => m.lessons || []);
         const idx = allLessons.findIndex(l => l.id === lesson.id);
@@ -63,7 +67,6 @@ function renderTopbar(lesson, course) {
             const indicator = document.querySelector('.lsn-progress-indicator');
             if (indicator) indicator.textContent = `${idx + 1} / ${allLessons.length}`;
 
-            // Store next lesson id for navigation
             const next = allLessons[idx + 1];
             if (next) window._lsnNextId = next.id;
         }
@@ -227,7 +230,6 @@ async function completeAndNavigate(score) {
     if (nextId) {
         window.location.href = `lesson.html?id=${nextId}&slug=${encodeURIComponent(courseSlug)}`;
     } else {
-        // Last lesson in course — show completion screen
         showCourseComplete();
     }
 }
@@ -251,10 +253,363 @@ function showCourseComplete() {
     screen.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+/* ─────────────────────────────────────
+   NEW: TWO-COLUMN LAYOUT
+   Wraps existing .lsn-container children
+   into .lsn-main and adds .lsn-sidebar
+───────────────────────────────────── */
+function buildTwoColumnLayout() {
+    const container = document.querySelector('.lsn-container');
+    if (!container || container.querySelector('.lsn-main')) return; // guard
+
+    // Wrap all existing children into .lsn-main
+    const main = document.createElement('div');
+    main.className = 'lsn-main';
+    while (container.firstChild) main.appendChild(container.firstChild);
+    container.appendChild(main);
+
+    // Build sidebar
+    const sidebar = document.createElement('aside');
+    sidebar.className = 'lsn-sidebar';
+    sidebar.innerHTML = `
+        <div class="lsn-sb-progress">
+            <div class="lsn-sb-progress__label">
+                Reading progress
+                <span class="lsn-sb-progress__pct" id="lsn-scroll-pct">0%</span>
+            </div>
+            <div class="lsn-sb-progress__track">
+                <div class="lsn-sb-progress__fill" id="lsn-scroll-fill"></div>
+            </div>
+        </div>
+        <div class="lsn-sb-toc" id="lsn-sb-toc">
+            <div class="lsn-sb-section-label">In this course</div>
+            <div class="lsn-sb-toc__list" id="lsn-toc-list"></div>
+        </div>
+        <div class="lsn-sb-author">
+            <div class="lsn-sb-section-label">Created by</div>
+            <div class="lsn-sb-author__card">
+                <div class="lsn-sb-author__avatar">CN</div>
+                <div class="lsn-sb-author__info">
+                    <span class="lsn-sb-author__name">Console Notebook Team</span>
+                    <span class="lsn-sb-author__desc">The official Console Notebook course team.</span>
+                </div>
+            </div>
+        </div>
+    `;
+    container.appendChild(sidebar);
+}
+
+/* ─────────────────────────────────────
+   NEW: SIDEBAR TOC
+───────────────────────────────────── */
+function renderSidebarTOC(course, completedIds) {
+    const tocList = document.getElementById('lsn-toc-list');
+    if (!tocList || !course) return;
+
+    const currentId = parseInt(lessonId, 10);
+    tocList.innerHTML = '';
+
+    (course.modules || []).forEach(mod => {
+        const modDiv = document.createElement('div');
+        modDiv.className = 'lsn-toc-module';
+
+        const modLabel = document.createElement('div');
+        modLabel.className = 'lsn-toc-module__title';
+        modLabel.textContent = mod.title;
+        modDiv.appendChild(modLabel);
+
+        (mod.lessons || []).forEach(l => {
+            const isDone = completedIds.has(l.id);
+            const isCurrent = l.id === currentId;
+
+            const a = document.createElement('a');
+            a.href = `lesson.html?id=${l.id}&slug=${encodeURIComponent(courseSlug)}`;
+            a.className = 'lsn-toc-lesson'
+                + (isCurrent ? ' lsn-toc-lesson--active' : '')
+                + (isDone ? ' lsn-toc-lesson--done' : '');
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'lsn-toc-lesson__icon';
+
+            if (isDone) {
+                iconSpan.className += ' lsn-toc-lesson__icon--done';
+                iconSpan.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+            } else if (isCurrent) {
+                iconSpan.className += ' lsn-toc-lesson__icon--active';
+                iconSpan.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`;
+            } else {
+                iconSpan.className += ' lsn-toc-lesson__icon--open';
+                iconSpan.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>`;
+            }
+
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'lsn-toc-lesson__title';
+            titleSpan.textContent = l.title;
+
+            a.appendChild(iconSpan);
+            a.appendChild(titleSpan);
+            modDiv.appendChild(a);
+        });
+
+        tocList.appendChild(modDiv);
+    });
+}
+
+/* ─────────────────────────────────────
+   NEW: SCROLL PROGRESS
+───────────────────────────────────── */
+function initScrollProgress() {
+    const fill = document.getElementById('lsn-scroll-fill');
+    const pct = document.getElementById('lsn-scroll-pct');
+    if (!fill) return;
+
+    function update() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+        fill.style.width = progress + '%';
+        if (pct) pct.textContent = progress + '%';
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+}
+
+/* ─────────────────────────────────────
+   NEW: COURSE PROGRESS (for TOC)
+───────────────────────────────────── */
+async function fetchCourseProgress() {
+    if (!courseSlug) return null;
+    const token = localStorage.getItem('cn_token');
+    if (!token) return null;
+    try {
+        const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(courseSlug)}/progress`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) return null;
+        return res.json();
+    } catch { return null; }
+}
+
+/* ─────────────────────────────────────
+   NEW: REACTIONS
+───────────────────────────────────── */
+async function fetchReactionsData() {
+    try {
+        const token = localStorage.getItem('cn_token');
+        const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+        const res = await fetch(`${API_BASE_URL}/lessons/${lessonId}/reactions`, { headers });
+        if (!res.ok) return null;
+        return res.json();
+    } catch { return null; }
+}
+
+function renderReactions(data) {
+    const main = document.querySelector('.lsn-main');
+    if (!main) return;
+
+    const token = localStorage.getItem('cn_token');
+    const userReactions = new Set(data ? (data.user_reactions || []) : []);
+    const counts = {
+        like:    data ? (data.like    || 0) : 0,
+        save:    data ? (data.save    || 0) : 0,
+        helpful: data ? (data.helpful || 0) : 0
+    };
+
+    const bar = document.createElement('div');
+    bar.className = 'lsn-reactions';
+    bar.id = 'lsn-reactions';
+
+    [
+        { type: 'like',    emoji: '👍', label: 'Like'    },
+        { type: 'save',    emoji: '🔖', label: 'Save'    },
+        { type: 'helpful', emoji: '⭐', label: 'Helpful' }
+    ].forEach(({ type, emoji, label }) => {
+        const btn = document.createElement('button');
+        btn.className = 'lsn-reaction-btn' + (userReactions.has(type) ? ' active' : '');
+        btn.dataset.type = type;
+        btn.innerHTML = `
+            <span class="lsn-reaction-btn__emoji">${emoji}</span>
+            <span class="lsn-reaction-btn__label">${label}</span>
+            <span class="lsn-reaction-btn__count">${counts[type]}</span>
+        `;
+
+        btn.addEventListener('click', async () => {
+            if (!token) { window.location.href = 'login.html'; return; }
+            const wasActive = btn.classList.contains('active');
+            btn.classList.toggle('active');
+            const countEl = btn.querySelector('.lsn-reaction-btn__count');
+            countEl.textContent = wasActive
+                ? Math.max(0, parseInt(countEl.textContent, 10) - 1)
+                : parseInt(countEl.textContent, 10) + 1;
+            try {
+                await fetch(`${API_BASE_URL}/lessons/${lessonId}/react`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ type })
+                });
+            } catch { /* ignore */ }
+        });
+
+        bar.appendChild(btn);
+    });
+
+    main.appendChild(bar);
+}
+
+/* ─────────────────────────────────────
+   NEW: COMMENTS
+───────────────────────────────────── */
+async function fetchCommentsData() {
+    try {
+        const token = localStorage.getItem('cn_token');
+        const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+        const res = await fetch(`${API_BASE_URL}/lessons/${lessonId}/comments`, { headers });
+        if (!res.ok) return null;
+        return res.json();
+    } catch { return null; }
+}
+
+function formatTimeAgo(date) {
+    const seconds = Math.floor((Date.now() - new Date(date)) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    return `${Math.floor(hours / 24)}d ago`;
+}
+
+function buildCommentEl(comment, userCommentLikes) {
+    const token = localStorage.getItem('cn_token');
+    const el = document.createElement('div');
+    el.className = 'lsn-comment';
+    el.dataset.id = comment.id;
+
+    const initials = (comment.username || 'U').slice(0, 2).toUpperCase();
+    const liked = userCommentLikes.has(comment.id);
+
+    el.innerHTML = `
+        <div class="lsn-comment__avatar">${initials}</div>
+        <div class="lsn-comment__body">
+            <div class="lsn-comment__meta">
+                <span class="lsn-comment__author">${esc(comment.username || 'User')}</span>
+                <span class="lsn-comment__time">${formatTimeAgo(comment.created_at)}</span>
+            </div>
+            <p class="lsn-comment__content">${esc(comment.content)}</p>
+            <button class="lsn-comment__like${liked ? ' active' : ''}" data-comment-id="${comment.id}">
+                ♥ <span class="lsn-comment__like-count">${comment.like_count || 0}</span>
+            </button>
+        </div>
+    `;
+
+    el.querySelector('.lsn-comment__like').addEventListener('click', async () => {
+        if (!token) { window.location.href = 'login.html'; return; }
+        const likeBtn = el.querySelector('.lsn-comment__like');
+        const wasLiked = likeBtn.classList.contains('active');
+        likeBtn.classList.toggle('active');
+        const countEl = likeBtn.querySelector('.lsn-comment__like-count');
+        countEl.textContent = wasLiked
+            ? Math.max(0, parseInt(countEl.textContent, 10) - 1)
+            : parseInt(countEl.textContent, 10) + 1;
+        try {
+            await fetch(`${API_BASE_URL}/comments/${comment.id}/like`, {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+        } catch { /* ignore */ }
+    });
+
+    return el;
+}
+
+function renderComments(data) {
+    const main = document.querySelector('.lsn-main');
+    if (!main) return;
+
+    const token = localStorage.getItem('cn_token');
+    const comments = data ? (data.comments || []) : [];
+    const userCommentLikes = new Set(data ? (data.user_comment_likes || []) : []);
+
+    const section = document.createElement('section');
+    section.className = 'lsn-comments';
+    section.id = 'lsn-comments';
+
+    const header = document.createElement('div');
+    header.className = 'lsn-comments__header';
+    header.innerHTML = `
+        <h2 class="lsn-comments__title">Comments</h2>
+        <span class="lsn-comments__count">${comments.length}</span>
+    `;
+    section.appendChild(header);
+
+    if (token) {
+        const form = document.createElement('div');
+        form.className = 'lsn-comment-form';
+
+        const textarea = document.createElement('textarea');
+        textarea.className = 'lsn-comment-input';
+        textarea.placeholder = 'Share your thoughts…';
+        textarea.rows = 3;
+
+        const submitBtn = document.createElement('button');
+        submitBtn.className = 'lsn-comment-submit';
+        submitBtn.textContent = 'Post comment';
+
+        submitBtn.addEventListener('click', async () => {
+            const content = textarea.value.trim();
+            if (!content) return;
+            submitBtn.disabled = true;
+            try {
+                const res = await fetch(`${API_BASE_URL}/lessons/${lessonId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ content })
+                });
+                if (res.ok) {
+                    const newData = await res.json();
+                    textarea.value = '';
+                    const listEl = section.querySelector('.lsn-comments__list');
+                    if (listEl && newData.comment) {
+                        listEl.prepend(buildCommentEl(newData.comment, new Set()));
+                        const countEl = section.querySelector('.lsn-comments__count');
+                        if (countEl) countEl.textContent = parseInt(countEl.textContent || '0', 10) + 1;
+                    }
+                }
+            } catch { /* ignore */ }
+            submitBtn.disabled = false;
+        });
+
+        form.appendChild(textarea);
+        form.appendChild(submitBtn);
+        section.appendChild(form);
+    } else {
+        const loginBanner = document.createElement('div');
+        loginBanner.className = 'lsn-comment-login';
+        loginBanner.innerHTML = `<a href="login.html">Log in</a> to leave a comment.`;
+        section.appendChild(loginBanner);
+    }
+
+    const list = document.createElement('div');
+    list.className = 'lsn-comments__list';
+    comments.forEach(c => list.appendChild(buildCommentEl(c, userCommentLikes)));
+    section.appendChild(list);
+
+    main.appendChild(section);
+}
+
+/* ─────────────────────────────────────
+   INIT
+───────────────────────────────────── */
 async function init() {
     const token = localStorage.getItem('cn_token');
 
-    // Fetch lesson first — we need course_slug from the response for access control
     const lesson = await fetchLesson();
 
     if (!lesson) {
@@ -263,20 +618,17 @@ async function init() {
         return;
     }
 
-    // Access control: if this lesson belongs to a non-starter course, require login
     const resolvedSlug = lesson.course_slug || courseSlug;
     if (resolvedSlug !== 'starter-guide' && !token) {
         window.location.href = 'login.html';
         return;
     }
 
-    // Persist slug for next-lesson navigation
     if (resolvedSlug) {
         courseSlug = resolvedSlug;
         sessionStorage.setItem('lsn_course_slug', resolvedSlug);
     }
 
-    // Guest on starter-guide: show top banner, show bottom progress banner
     if (!token) {
         const topBanner = document.querySelector('.lsn-guest-banner');
         if (topBanner) topBanner.style.display = 'flex';
@@ -288,10 +640,25 @@ async function init() {
     lessonData = lesson;
     renderLesson(lesson);
 
-    // Fetch course structure in parallel with rendering
     const course = await fetchCourseStructure();
     renderTopbar(lesson, course);
     renderQuiz(lesson.quiz_questions || []);
+
+    // ── Two-column layout ──
+    buildTwoColumnLayout();
+
+    // ── Fetch sidebar progress + reactions + comments in parallel ──
+    const [progressData, reactionsData, commentsData] = await Promise.all([
+        fetchCourseProgress(),
+        fetchReactionsData(),
+        fetchCommentsData()
+    ]);
+
+    const completedIds = new Set((progressData?.completed_lesson_ids || []).map(Number));
+    if (course) renderSidebarTOC(course, completedIds);
+    initScrollProgress();
+    renderReactions(reactionsData);
+    renderComments(commentsData);
 }
 
 if (document.readyState === 'loading') {
