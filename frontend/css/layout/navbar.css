@@ -417,9 +417,6 @@ body > .navbar + * {
         height: auto;
         padding: 0;
         overflow: visible;
-        background: rgba(var(--dark-rgb), 0.94);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
     }
 
     .navbar .container,
