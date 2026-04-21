@@ -418,6 +418,9 @@ body > .navbar + * {
         height: auto;
         padding: 0 14px;
         overflow: visible;
+        background: rgba(var(--dark-rgb), 0.94);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
     }
 
     .navbar .container,
@@ -452,30 +455,10 @@ body > .navbar + * {
 
     .logo.active::after { display: none; }
 
-    /* Search: rândul 1, icon compact */
-    .navbar-search-wrap {
-        order: 2;
-        flex: 0 0 36px;
-        width: 36px;
-        height: 36px;
-        margin: 0 6px 0 0;
-    }
+    /* Search: ascuns pe mobile — Ctrl+K funcționează */
+    .navbar-search-wrap { display: none; }
 
-    .navbar-search-wrap .navbar-search-btn {
-        width: 36px;
-        height: 36px;
-        padding: 0;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    .navbar-search-placeholder { display: none; }
-
-    /* Navbar right: rândul 1, dreapta — doar icoane */
+    /* Navbar right: rândul 1, dreapta — doar butonul de profil */
     .navbar-right {
         order: 3;
         flex: 0 0 auto;
@@ -486,7 +469,8 @@ body > .navbar + * {
         align-items: center;
     }
 
-    .navbar-notifications-btn { padding: 6px; }
+    /* Ascunde notificările din navbar pe mobile */
+    .navbar-notifications-btn { display: none !important; }
 
     .hamburger { display: none; }
     body.community-navbar-page .hamburger { display: none; }
