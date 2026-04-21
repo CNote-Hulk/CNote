@@ -413,10 +413,9 @@ body > .navbar + * {
         padding-top: var(--cn-nav-offset, 96px);
     }
 
-    /* ── Navbar mobile: rând 1 (logo+search+icoane) + rând 2 (linkuri) ── */
     .navbar {
         height: auto;
-        padding: 0 14px;
+        padding: 0;
         overflow: visible;
         background: rgba(var(--dark-rgb), 0.94);
         backdrop-filter: blur(12px);
@@ -425,26 +424,29 @@ body > .navbar + * {
 
     .navbar .container,
     .navbar-inner {
-        flex-wrap: wrap;
+        flex-direction: column;
         align-items: center;
-        padding: 0;
+        padding: 0 16px;
+        position: relative;
         gap: 0;
+        flex-wrap: nowrap;
         width: 100%;
         max-width: 100%;
         height: auto;
     }
 
-    /* Logo: rândul 1, stânga */
+    /* Logo: centrat */
     .logo {
-        order: 1;
-        flex: 1 1 auto;
-        font-size: 0.78rem;
-        letter-spacing: 0.5px;
-        padding: 10px 0;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        text-align: center;
+        width: 100%;
+        padding: 22px 0 8px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        min-width: 0;
+        display: inline-flex;
+        justify-content: center;
     }
 
     .logo-icon {
@@ -455,47 +457,64 @@ body > .navbar + * {
 
     .logo.active::after { display: none; }
 
-    /* Search: ascuns pe mobile — Ctrl+K funcționează */
-    .navbar-search-wrap { display: none; }
+    /* Search: icon-only, absolut stânga */
+    .navbar-search-wrap {
+        position: absolute;
+        left: 16px;
+        top: 14px;
+        width: auto;
+        margin: 0;
+    }
 
-    /* Navbar right: rândul 1, dreapta — doar butonul de profil */
+    .navbar-search-wrap .navbar-search-btn {
+        width: auto;
+        background: none;
+        border: none;
+        padding: 6px;
+        border-radius: 50%;
+        color: var(--text-gray, #A89F94);
+    }
+
+    .navbar-search-wrap .navbar-search-btn:hover {
+        background: rgba(255,255,255,0.08);
+        color: var(--text-light, #F5F0E8);
+    }
+
+    .navbar-search-placeholder { display: none; }
+
+    /* Profile: absolut dreapta */
     .navbar-right {
-        order: 3;
-        flex: 0 0 auto;
-        gap: 4px;
+        position: absolute;
+        right: 16px;
+        top: 14px;
         margin: 0;
         padding: 0;
+        gap: 4px;
         display: flex;
         align-items: center;
     }
 
-    /* Ascunde notificările din navbar pe mobile */
+    /* Notificările merg în mbn-dropdown */
     .navbar-notifications-btn { display: none !important; }
 
     .hamburger { display: none; }
     body.community-navbar-page .hamburger { display: none; }
 
-    /* Nav-links: rândul 2, lățime 100%, scrollabil orizontal */
+    /* Nav-links: pill container cu wrap */
     .nav-links {
-        order: 10;
         display: flex !important;
-        flex: 0 0 100%;
-        width: calc(100% + 28px);
-        margin: 0 -14px;
-        padding: 0 14px 8px;
+        width: calc(100% - 16px);
+        margin: 0 8px 10px;
+        padding: 4px;
         list-style: none;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        gap: 2px;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-        background: transparent;
-        justify-content: flex-start;
+        flex-wrap: wrap;
+        justify-content: center;
         align-items: center;
+        gap: 2px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
     }
-
-    .nav-links::-webkit-scrollbar { display: none; }
 
     .nav-links li {
         flex-shrink: 0;
@@ -505,24 +524,24 @@ body > .navbar + * {
 
     .nav-links a {
         display: inline-block;
-        font-size: 0.75rem;
-        font-weight: 500;
-        padding: 5px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 6px 12px;
         color: var(--text-gray);
-        border-radius: 6px;
+        border-radius: 10px;
         white-space: nowrap;
         transition: color 0.2s ease, background 0.2s ease;
-        letter-spacing: 0;
+        letter-spacing: 0.01em;
     }
 
     .nav-links a:hover {
         color: var(--text-light);
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.07);
     }
 
     .nav-links a.active {
         color: var(--accent-color);
-        background: rgba(var(--accent-rgb), 0.15);
+        background: rgba(var(--accent-rgb), 0.14);
     }
 
     .nav-links a.active::after { display: none; }
@@ -531,32 +550,27 @@ body > .navbar + * {
 }
 
 @media (max-width: 480px) {
-    .navbar {
+    .navbar .container,
+    .navbar-inner {
         padding: 0 10px;
     }
 
     .navbar-search-wrap {
-        margin-right: 4px;
+        left: 10px;
     }
 
-    .logo {
-        font-size: 0.72rem;
-        letter-spacing: 0.3px;
-    }
-
-    .logo-icon {
-        width: 18px;
-        height: 18px;
-    }
-
-    .navbar-notifications-btn {
-        padding: 5px;
+    .navbar-right {
+        right: 10px;
     }
 
     .nav-links {
-        width: calc(100% + 20px);
-        margin: 0 -10px;
-        padding: 0 10px 7px;
+        width: calc(100% - 12px);
+        margin: 0 6px 10px;
+    }
+
+    .nav-links a {
+        font-size: 0.78rem;
+        padding: 5px 9px;
     }
 }
 

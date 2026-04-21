@@ -1180,6 +1180,23 @@ body.home-page::before {
     flex-shrink: 0;
 }
 
+/* ── Notification badge inside mbn dropdown ── */
+.mbn-notif-badge-dd {
+    margin-left: auto;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 99px;
+    background: var(--accent-color, #E06B58);
+    font-size: 10px;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-weight: 700;
+    line-height: 1;
+}
+
 /* ── Separator between dropdown item groups ── */
 .mbn-dd-sep {
     height: 1px;
