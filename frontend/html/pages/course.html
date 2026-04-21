@@ -23,6 +23,9 @@
          =========================== -->
     <div id="navbar-placeholder"></div>
 
+    <!-- Scroll progress bar -->
+    <div id="crs-sp"></div>
+
     <!-- ===========================
          COURSE HERO (full-width, wallpaper)
          =========================== -->
@@ -31,19 +34,18 @@
             <nav class="crs-hero__breadcrumb">
                 <a href="invata.html">← Learn</a>
             </nav>
-            <div class="crs-hero__body">
-                <span class="crs-icon">📚</span>
-                <h1 class="crs-title">Loading…</h1>
-                <p class="crs-description"></p>
-                <span class="crs-badge"></span>
-            </div>
-            <div class="crs-progress-wrap">
-                <div class="crs-progress-meta">
-                    <span class="crs-progress-text">0 / 0 lessons</span>
-                    <a href="#" class="crs-continue-btn" style="display:none">Continue →</a>
+            <div class="crs-hero__grid">
+                <div class="crs-hero__left">
+                    <div class="crs-hero__body">
+                        <span class="crs-badge"></span>
+                        <span class="crs-icon">📚</span>
+                        <h1 class="crs-title">Loading…</h1>
+                        <p class="crs-description"></p>
+                    </div>
+                    <!-- course.js injects: crs-hero-stats, crs-hero-actions after .crs-hero__body -->
                 </div>
-                <div class="crs-progress-bar">
-                    <div class="crs-progress-fill"></div>
+                <div class="crs-hero__right" id="crs-hero-progress">
+                    <!-- course.js populates this with progress card -->
                 </div>
             </div>
         </div>
