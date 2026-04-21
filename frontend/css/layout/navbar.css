@@ -73,18 +73,18 @@ body > .navbar + * {
 .navbar-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     height: 100%;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0;
+    gap: 0;
 }
 
 .navbar-search-wrap {
-    flex: 1;
-    max-width: 340px;
-    margin: 0 32px;
+    flex-shrink: 0;
+    width: 260px;
+    margin: 0 28px;
 }
 
 .navbar-search-wrap .navbar-search-btn {
@@ -94,7 +94,6 @@ body > .navbar + * {
     gap: 8px;
     text-align: left;
     border-radius: 99px;
-    margin-right: 0;
     padding: 7px 14px;
     border: 1px solid rgba(255,255,255,0.10);
     background: rgba(255,255,255,0.05);
@@ -121,6 +120,7 @@ body > .navbar + * {
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
+    margin-left: 16px;
 }
 
 .navbar-notifications-btn {
@@ -320,9 +320,10 @@ body > .navbar + * {
     list-style: none;
     gap: 2.2rem;
     margin: 0;
-    margin-left: auto;
     padding: 0;
     align-items: center;
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .nav-links li {
@@ -409,34 +410,34 @@ body > .navbar + * {
 
 @media (max-width: 768px) {
     body > .navbar + * {
-        padding-top: var(--cn-nav-offset, 56px);
+        padding-top: var(--cn-nav-offset, 96px);
     }
 
-    /* ── Navbar mobile: single row ── */
+    /* ── Navbar mobile: rând 1 (logo+search+icoane) + rând 2 (linkuri) ── */
     .navbar {
-        height: 56px;
+        height: auto;
         padding: 0 14px;
         overflow: visible;
     }
 
     .navbar .container,
     .navbar-inner {
-        flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
         padding: 0;
-        gap: 8px;
+        gap: 0;
         width: 100%;
         max-width: 100%;
-        flex-wrap: nowrap;
-        height: 100%;
+        height: auto;
     }
 
-    /* Logo: left, no text wrap */
+    /* Logo: rândul 1, stânga */
     .logo {
+        order: 1;
+        flex: 1 1 auto;
         font-size: 0.78rem;
         letter-spacing: 0.5px;
-        padding: 0;
-        flex: 1 1 auto;
+        padding: 10px 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -451,12 +452,13 @@ body > .navbar + * {
 
     .logo.active::after { display: none; }
 
-    /* Search: compact icon button */
+    /* Search: rândul 1, icon compact */
     .navbar-search-wrap {
+        order: 2;
         flex: 0 0 36px;
         width: 36px;
         height: 36px;
-        margin: 0;
+        margin: 0 6px 0 0;
     }
 
     .navbar-search-wrap .navbar-search-btn {
@@ -473,17 +475,15 @@ body > .navbar + * {
 
     .navbar-search-placeholder { display: none; }
 
-    /* Navbar right: icon buttons only */
+    /* Navbar right: rândul 1, dreapta — doar icoane */
     .navbar-right {
-        position: static;
+        order: 3;
+        flex: 0 0 auto;
         gap: 4px;
-        width: auto;
-        flex-shrink: 0;
+        margin: 0;
+        padding: 0;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        padding: 0;
-        margin: 0;
     }
 
     .navbar-notifications-btn { padding: 6px; }
@@ -491,16 +491,68 @@ body > .navbar + * {
     .hamburger { display: none; }
     body.community-navbar-page .hamburger { display: none; }
 
-    /* Nav-links hidden on mobile — mobile-bottom-nav handles navigation */
-    .nav-links { display: none !important; }
+    /* Nav-links: rândul 2, lățime 100%, scrollabil orizontal */
+    .nav-links {
+        order: 10;
+        display: flex !important;
+        flex: 0 0 100%;
+        width: calc(100% + 28px);
+        margin: 0 -14px;
+        padding: 0 14px 8px;
+        list-style: none;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 2px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        background: transparent;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .nav-links::-webkit-scrollbar { display: none; }
+
+    .nav-links li {
+        flex-shrink: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 5px 10px;
+        color: var(--text-gray);
+        border-radius: 6px;
+        white-space: nowrap;
+        transition: color 0.2s ease, background 0.2s ease;
+        letter-spacing: 0;
+    }
+
+    .nav-links a:hover {
+        color: var(--text-light);
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-links a.active {
+        color: var(--accent-color);
+        background: rgba(var(--accent-rgb), 0.15);
+    }
+
+    .nav-links a.active::after { display: none; }
 
     body.menu-open { overflow: auto; }
 }
 
 @media (max-width: 480px) {
     .navbar {
-        height: 52px;
         padding: 0 10px;
+    }
+
+    .navbar-search-wrap {
+        margin-right: 4px;
     }
 
     .logo {
@@ -515,6 +567,12 @@ body > .navbar + * {
 
     .navbar-notifications-btn {
         padding: 5px;
+    }
+
+    .nav-links {
+        width: calc(100% + 20px);
+        margin: 0 -10px;
+        padding: 0 10px 7px;
     }
 }
 
