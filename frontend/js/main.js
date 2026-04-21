@@ -13,6 +13,7 @@ import { ProfileDropdownModule } from './modules/profile-dropdown.js';
 import { AuthModule } from './modules/auth.js';
 import { I18nModule } from './modules/i18n.js';
 import { initAchievementSocket } from './modules/achievement-socket.js';
+import { NotificationsModule } from './modules/notifications.js';
 
 /**
  * App Class - Orchestrates all modules
@@ -60,6 +61,9 @@ class App {
             ProfileDropdownModule.init();
             console.log('✓ Profile dropdown module initialized');
 
+            NotificationsModule.init();
+            console.log('✓ Notifications module initialized');
+
             const user = AuthModule.getCurrentUser();
 
             if (user) {
@@ -90,6 +94,7 @@ class App {
             window.__cn_reinit_navbar = () => {
                 try { ProfileDropdownModule.init(); } catch(e) {}
                 try { SearchModule.init(); } catch(e) {}
+                try { NotificationsModule.init(); } catch(e) {}
                 try { NavigationModule.setupActiveLinks(); } catch(e) {}
                 try { NavigationModule.setupAutoHideNavbar(); } catch(e) {}
                 try { I18nModule.apply(); } catch(e) {}
