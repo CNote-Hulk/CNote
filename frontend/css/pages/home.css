@@ -387,7 +387,6 @@ body.home-page::before {
 }
 
 .progress-bar {
-    width: 320px;
     height: 9px;
     background: rgba(255,255,255,.12);
     border-radius: 99px;
