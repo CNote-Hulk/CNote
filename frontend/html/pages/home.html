@@ -366,7 +366,7 @@
 
                     <!-- Ring + Course overview (în curând) -->
                     <section class="dashboard-section progress-overview-section">
-                        <div class="card progress-overview-card" style="opacity:0.45;pointer-events:none;">
+                        <div class="card progress-overview-card">
                             <div class="progress-ring-wrap">
                                 <svg class="progress-ring" viewBox="0 0 100 100">
                                     <circle class="progress-ring__bg" cx="50" cy="50" r="42"/>
@@ -380,17 +380,17 @@
                                 <h2 data-i18n="home_continue_title">Console Engineering</h2>
                                 <p><span data-i18n="home_continue_label">Progress:</span> <strong id="progress-continue-text">—</strong></p>
                                 <div class="progress-bar"><div id="progress-bar-fill" style="width: 0%;"></div></div>
-                                <span class="primary-btn" style="margin-top:12px;display:inline-block;text-align:center;cursor:not-allowed;">🚧 Coming soon</span>
+                                <span class="primary-btn" style="margin-top:12px;display:inline-block;text-align:center;" id="progress-panel-continue-btn">🚧 Coming soon</span>
                             </div>
                         </div>
                     </section>
 
                     <section class="dashboard-section">
                         <div class="stats-grid" style="grid-template-columns: repeat(2, minmax(110px, 1fr));">
-                            <article class="stats-card" style="opacity:0.45;">
+                            <article class="stats-card">
                                 <span class="stats-card__icon">📊</span>
                                 <h3 data-i18n="home_stats_course">Course Progress</h3>
-                                <p><strong>🚧</strong></p>
+                                <p><strong id="progress-panel-course-stat">🚧</strong></p>
                             </article>
                         </div>
                     </section>

@@ -778,6 +778,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 overviewCourseStat.textContent = `${done}/${total}`;
             }
 
+            // Progress panel course stat
+            const progressPanelCourseStat = document.getElementById('progress-panel-course-stat');
+            if (progressPanelCourseStat && starterProgressRes && starterProgressRes.total_lessons > 0) {
+                const done = (starterProgressRes.completed_lesson_ids || []).length;
+                const total = starterProgressRes.total_lessons;
+                progressPanelCourseStat.textContent = `${done}/${total}`;
+            }
+
             // =========================
             // MY POSTS
             // =========================
