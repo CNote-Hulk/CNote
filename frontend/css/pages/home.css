@@ -371,6 +371,10 @@ body.home-page::before {
     padding: 20px;
 }
 
+.continue-content {
+    width: 100%;
+}
+
 .continue-content h2 {
     margin: 0 0 8px;
     color: var(--accent);

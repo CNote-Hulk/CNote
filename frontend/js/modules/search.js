@@ -71,10 +71,10 @@ export const SearchModule = {
     /* ── Init ── */
 
     init() {
-        if (window.__SEARCH_PROFILE_INITIALIZED__) return;
-        window.__SEARCH_PROFILE_INITIALIZED__ = true;
-        this._loadConsoles();
-        this._createOverlay();
+        if (!this._overlay) {
+            this._loadConsoles();
+            this._createOverlay();
+        }
         this._bindNavButton();
         this._bindKeys();
 

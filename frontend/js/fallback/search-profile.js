@@ -197,6 +197,8 @@
 
     // ---- Overlay DOM ----
     function createSearchOverlay() {
+        if (document.querySelector('.search-overlay')) return;
+
         var filterHtml = FILTER_TABS.map(function(t) {
             return '<button class="search-filter-btn' + (t.id === 'all' ? ' search-filter-btn--active' : '') +
                    '" data-filter="' + t.id + '">' + t.label + '</button>';
