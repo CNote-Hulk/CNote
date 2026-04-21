@@ -1,6 +1,21 @@
 /* ── Course overview page ── */
 /* All values use globals from base/variables.css — zero hardcoded colors */
 
+/* Scroll progress bar */
+#crs-sp {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transform-origin: left;
+    transform: scaleX(0);
+    z-index: 9999;
+    transition: transform 0.08s linear;
+    pointer-events: none;
+}
+
 .crs-page {
     min-height: 100vh;
     background: var(--primary-color);
@@ -183,6 +198,120 @@
 
 /* Hide legacy progress wrap — replaced by hero-actions */
 .crs-progress-wrap { display: none !important; }
+
+/* ── Hero two-column grid ── */
+.crs-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 48px;
+    align-items: center;
+}
+
+.crs-hero__left { min-width: 0; }
+
+/* Hero progress card (right column) */
+.crs-hero-progress-card {
+    background: rgba(0, 0, 0, 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 22px 20px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.crs-hero-progress-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.crs-hero-progress-card__label {
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+}
+
+.crs-hero-progress-card__pct {
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    font-family: 'SFMono-Regular', 'Courier New', monospace;
+}
+
+.crs-hero-progress-card__track {
+    height: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.crs-hero-progress-card__fill {
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 3px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.88;
+}
+
+.crs-hero-progress-steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.crs-hero-progress-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.71rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.35;
+    min-width: 0;
+}
+
+.crs-hero-progress-step span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.crs-hero-step-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.58rem;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.crs-hero-step-dot--done {
+    background: rgba(var(--accent-rgb), 0.18);
+    border-color: rgba(var(--accent-rgb), 0.45);
+    color: var(--accent-color);
+}
+
+.crs-hero-step-dot--active {
+    background: rgba(var(--accent-rgb), 0.1);
+    border-color: rgba(var(--accent-rgb), 0.3);
+    color: var(--accent-color);
+}
+
+/* Fix: crs-hero-actions alias (JS injects this class) */
+.crs-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+}
 
 /* ═══════════════════════════════
    TWO-COLUMN LAYOUT
@@ -674,6 +803,7 @@
     .crs-hero__inner,
     .crs-container { padding-left: 32px; padding-right: 32px; }
     .crs-sidebar { width: 240px; }
+    .crs-hero__grid { grid-template-columns: 1fr 260px; gap: 32px; }
 }
 
 @media (max-width: 860px) {
@@ -694,6 +824,11 @@
     .crs-sb-progress,
     .crs-sb-learn { flex: 1; min-width: 200px; }
     .crs-sb-instructor { width: 100%; }
+    .crs-hero__grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .crs-hero__right { display: none; }
 }
 
 @media (max-width: 600px) {

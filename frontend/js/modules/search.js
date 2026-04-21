@@ -238,8 +238,12 @@ export const SearchModule = {
     },
 
     _bindNavButton() {
-        const btn = document.querySelector('.navbar-search-btn');
-        if (btn) btn.addEventListener('click', (e) => { e.preventDefault(); this.open(); });
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.navbar-search-btn')) {
+                e.preventDefault();
+                this.open();
+            }
+        });
     },
 
     _bindKeys() {

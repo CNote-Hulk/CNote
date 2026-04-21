@@ -84,7 +84,7 @@ function renderHeroStats(course, progress) {
     }
 
     const btnsEl = document.createElement('div');
-    btnsEl.className = 'crs-hero-btns';
+    btnsEl.className = 'crs-hero-actions';
     btnsEl.innerHTML = `
         <a href="${resumeHref}" class="crs-hero-btn crs-hero-btn--primary">${resumeLabel}</a>
         <a href="#" class="crs-hero-btn crs-hero-btn--outline">View Certificate</a>
@@ -94,6 +94,36 @@ function renderHeroStats(course, progress) {
     if (body) {
         body.after(statsEl);
         statsEl.after(btnsEl);
+    }
+
+    // Populate hero progress card (right column)
+    const progressCard = document.getElementById('crs-hero-progress');
+    if (progressCard) {
+        const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const stepsHTML = (course.modules || []).map((mod, i) => {
+            const modLessons = mod.lessons || [];
+            const doneMod = modLessons.filter(l => completedIds.has(l.id)).length;
+            const isDone = doneMod === modLessons.length && modLessons.length > 0;
+            const isActive = doneMod > 0 && !isDone;
+            const dotClass = isDone ? 'crs-hero-step-dot--done' : isActive ? 'crs-hero-step-dot--active' : '';
+            return `<div class="crs-hero-progress-step">
+                <div class="crs-hero-step-dot ${dotClass}">${isDone ? '✓' : i + 1}</div>
+                <span>${esc(mod.title)}</span>
+            </div>`;
+        }).join('');
+
+        progressCard.innerHTML = `
+            <div class="crs-hero-progress-card">
+                <div class="crs-hero-progress-card__header">
+                    <span class="crs-hero-progress-card__label">Your Progress</span>
+                    <span class="crs-hero-progress-card__pct">${pct}%</span>
+                </div>
+                <div class="crs-hero-progress-card__track">
+                    <div class="crs-hero-progress-card__fill" style="width:${pct}%"></div>
+                </div>
+                <div class="crs-hero-progress-steps">${stepsHTML}</div>
+            </div>
+        `;
     }
 }
 
@@ -138,27 +168,24 @@ function buildCourseLayout(course, progress) {
     const sidebar = document.createElement('aside');
     sidebar.className = 'crs-sidebar';
     sidebar.innerHTML = `
-        <div class="crs-sb-card crs-sb-progress">
-            <div class="crs-sb-progress__top">
-                <span class="crs-sb-progress__pct">${pct}%</span>
-                <span class="crs-sb-progress__label">${completed} of ${total} completed</span>
-            </div>
-            <div class="crs-sb-progress__bar-wrap">
-                <div class="crs-sb-progress__bar"><div class="crs-sb-progress__fill" style="width:${pct}%"></div></div>
-            </div>
+        <div class="crs-sb-progress">
+            <span class="crs-sb-label">Progress</span>
+            <span class="crs-sb-progress__pct">${pct}%</span>
+            <p class="crs-sb-progress__meta">${completed} of ${total} completed</p>
+            <div class="crs-sb-progress__track"><div class="crs-sb-progress__fill" style="width:${pct}%"></div></div>
             <a href="${resumeHref}" class="crs-sb-progress__btn">${resumeLabel}</a>
         </div>
-        <div class="crs-sb-card crs-sb-instructor">
-            <p class="crs-sb-section-label">Instructor</p>
-            <div class="crs-sb-instructor__row">
+        <div class="crs-sb-instructor">
+            <span class="crs-sb-label">Instructor</span>
+            <div class="crs-sb-instructor__body">
                 <div class="crs-sb-instructor__avatar">${esc(instructorName.charAt(0).toUpperCase())}</div>
-                <div>
+                <div class="crs-sb-instructor__info">
                     <p class="crs-sb-instructor__name">${esc(instructorName)}</p>
                     <p class="crs-sb-instructor__role">Console Notebook</p>
                 </div>
             </div>
         </div>
-        ${learnHTML ? `<div class="crs-sb-card crs-sb-learn"><p class="crs-sb-section-label">What You'll Learn</p><ul class="crs-sb-learn__list">${learnHTML}</ul></div>` : ''}
+        ${learnHTML ? `<div class="crs-sb-learn"><span class="crs-sb-label">What You'll Learn</span><ul class="crs-sb-learn__list">${learnHTML}</ul></div>` : ''}
     `;
 
     container.appendChild(sidebar);
@@ -275,6 +302,16 @@ function initTabs() {
 
 async function init() {
     initTabs();
+
+    // Scroll progress bar
+    const sp = document.getElementById('crs-sp');
+    if (sp) {
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) || 0;
+            sp.style.transform = `scaleX(${pct})`;
+        }, { passive: true });
+    }
 
     const [course, progress] = await Promise.all([fetchCourse(), fetchProgress()]);
     if (!course) return;

@@ -363,12 +363,16 @@ return { success: false, error: 'Could not contact the server.' };
         const authToken = sessionToken || jwtToken;
         if (!authToken) return;
 
+        let retries = 0;
+        const MAX_RETRIES = 3;
+
         const connect = () => {
             const url = `${this._apiBase}/sessions/events?token=${encodeURIComponent(authToken)}`;
             const source = new EventSource(url);
             this._sessionEventSource = source;
 
             source.onmessage = async (event) => {
+                retries = 0;
                 try {
                     const payload = JSON.parse(event.data || '{}');
                     if (payload.event === 'session_terminated') {
@@ -383,11 +387,13 @@ return { success: false, error: 'Could not contact the server.' };
 
             source.onerror = () => {
                 source.close();
+                if (retries >= MAX_RETRIES) return;
+                retries++;
                 if (this._sessionWatchRetryTimer) clearTimeout(this._sessionWatchRetryTimer);
                 this._sessionWatchRetryTimer = setTimeout(() => {
                     this._sessionWatchRetryTimer = null;
                     if (this.getCurrentUser()) connect();
-                }, 5000);
+                }, 5000 * retries);
             };
         };
 
