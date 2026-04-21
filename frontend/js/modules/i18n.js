@@ -40,6 +40,7 @@ const MESSAGES = {
             home_stats_ratings: 'Ratings',
             home_stats_favorites: 'Favorites',
             home_stats_friends: 'Friends',
+            home_stats_title: 'Your Stats',
             home_collection_title: 'Your Collection',
             home_activity_title: 'Recent Activity',
             home_achievements_title: 'Achievements',
@@ -79,6 +80,7 @@ const MESSAGES = {
         nav_contact: 'Contact',
         nav_home: 'Home',
         nav_search: 'Search',
+        nav_search_placeholder: 'Search anything...',
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Welcome to the golden — or maybe bronze — age of gaming.',
@@ -1067,6 +1069,7 @@ const MESSAGES = {
             home_stats_ratings: 'Evaluări',
             home_stats_favorites: 'Favorite',
             home_stats_friends: 'Prieteni',
+            home_stats_title: 'Statisticile tale',
             home_collection_title: 'Colecția ta',
             home_activity_title: 'Activitate recentă',
             home_achievements_title: 'Realizări',
@@ -1106,6 +1109,7 @@ const MESSAGES = {
         nav_contact: 'Contact',
         nav_home: 'Acasă',
         nav_search: 'Caută',
+        nav_search_placeholder: 'Caută orice...',
 
         hero_title: 'Console Notebook',
         hero_subtitle: 'Bine ai venit în era de aur — sau poate era de bronz — a gaming-ului.',
@@ -2056,6 +2060,7 @@ const MESSAGES = {
         nav_contact: 'Contacto',
         nav_home: 'Inicio',
         nav_search: 'Buscar',
+        nav_search_placeholder: 'Buscar cualquier cosa...',
 
         // Sidebar
         sidebar_main: 'PRINCIPAL',
@@ -2085,6 +2090,7 @@ const MESSAGES = {
         home_stats_ratings: 'Valoraciones',
         home_stats_favorites: 'Favoritos',
         home_stats_friends: 'Amigos',
+        home_stats_title: 'Tus estadísticas',
         home_collection_title: 'Tu colección',
         home_activity_title: 'Actividad reciente',
         home_achievements_title: 'Logros',
@@ -3049,6 +3055,7 @@ const MESSAGES = {
         nav_contact: 'Contact',
         nav_home: 'Accueil',
         nav_search: 'Rechercher',
+        nav_search_placeholder: 'Rechercher n\'importe quoi...',
 
         // Sidebar
         sidebar_main: 'PRINCIPAL',
@@ -3078,6 +3085,7 @@ const MESSAGES = {
         home_stats_ratings: 'Évaluations',
         home_stats_favorites: 'Favoris',
         home_stats_friends: 'Amis',
+        home_stats_title: 'Vos statistiques',
         home_collection_title: 'Votre collection',
         home_activity_title: 'Activité récente',
         home_achievements_title: 'Succès',
@@ -4038,6 +4046,7 @@ const MESSAGES = {
         nav_contact: 'Contatto',
         nav_home: 'Home',
         nav_search: 'Cerca',
+        nav_search_placeholder: 'Cerca qualsiasi cosa...',
 
         // Sidebar
         sidebar_main: 'PRINCIPALE',
@@ -4067,6 +4076,7 @@ const MESSAGES = {
         home_stats_ratings: 'Valutazioni',
         home_stats_favorites: 'Preferiti',
         home_stats_friends: 'Amici',
+        home_stats_title: 'Le tue statistiche',
         home_collection_title: 'La tua collezione',
         home_activity_title: 'Attività recente',
         home_achievements_title: 'Obiettivi',
@@ -5032,6 +5042,7 @@ const MESSAGES = {
         nav_contact: 'Kontakt',
         nav_home: 'Startseite',
         nav_search: 'Suche',
+        nav_search_placeholder: 'Suche nach allem...',
 
         // Sidebar
         sidebar_main: 'HAUPT',
@@ -5061,6 +5072,7 @@ const MESSAGES = {
         home_stats_ratings: 'Bewertungen',
         home_stats_favorites: 'Favoriten',
         home_stats_friends: 'Freunde',
+        home_stats_title: 'Deine Statistiken',
         home_collection_title: 'Deine Sammlung',
         home_activity_title: 'Letzte Aktivität',
         home_achievements_title: 'Erfolge',
