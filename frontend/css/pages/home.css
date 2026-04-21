@@ -69,7 +69,7 @@ body.home-page::before {
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
     overflow-y: auto;
-    width: 230px;
+    width: 280px;
     box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
     border-radius: 25px;
     z-index: 100;
@@ -290,7 +290,7 @@ body.home-page::before {
 }
 
 .dashboard-main {
-    margin-left: 250px;
+    margin-left: 300px;
     flex: 1;
     min-height: 100vh;
     width: 100%;
@@ -1238,11 +1238,11 @@ body.home-page::before {
 
 @media (max-width: 900px) {
     .dashboard-sidebar {
-        width: 190px;
+        width: 220px;
     }
 
     .dashboard-main {
-        margin-left: 210px;
+        margin-left: 240px;
     }
 
     .stats-grid {
@@ -2096,4 +2096,152 @@ body.home-page::before {
 
 .hlc-btn--delete:hover {
     background: rgba(220,60,60,0.15);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HOME HERO — two-column header
+   ══════════════════════════════════════════════════════════════ */
+
+.home-hero-section {
+    padding-top: 4px;
+}
+
+.home-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+}
+
+.home-hero__left {
+    flex: 1;
+    min-width: 0;
+    padding-top: 4px;
+}
+
+.home-hero__right {
+    width: 320px;
+    flex-shrink: 0;
+}
+
+.home-hero__date {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 6px;
+}
+
+.home-hero__welcome-text {
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 0;
+    font-weight: 400;
+}
+
+.home-hero__username {
+    font-size: 2.4rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 2px 0 6px;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.home-hero__subtitle {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin: 0 0 16px;
+}
+
+.home-hero__chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Level chip in hero — compact pill instead of full card */
+.level-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 99px;
+    background: rgba(var(--accent-rgb), 0.10);
+    border: 1px solid rgba(var(--accent-rgb), 0.20);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.level-chip .level-preview {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.level-chip .level-label {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HOME TWO-COLUMN SECTIONS
+   ══════════════════════════════════════════════════════════════ */
+
+.home-two-col {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.home-two-col__main {
+    flex: 0 0 60%;
+    min-width: 0;
+}
+
+.home-two-col__side {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 900px) {
+    .home-hero__right {
+        width: 260px;
+    }
+
+    .home-hero__username {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 680px) {
+    .home-hero {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .home-hero__right {
+        width: 100%;
+    }
+
+    .home-hero__username {
+        font-size: 1.8rem;
+        white-space: normal;
+    }
+
+    .home-two-col {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .home-two-col__main,
+    .home-two-col__side {
+        flex: 1 1 100%;
+    }
 }

@@ -69,6 +69,109 @@ body > .navbar + * {
     gap: 0;
 }
 
+/* ── Component navbar inner layout ── */
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.navbar-search-wrap {
+    flex: 1;
+    max-width: 340px;
+    margin: 0 32px;
+}
+
+.navbar-search-wrap .navbar-search-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+    border-radius: 99px;
+    margin-right: 0;
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.05);
+    justify-content: flex-start;
+}
+
+.navbar-search-wrap .navbar-search-btn:hover {
+    background: rgba(255,255,255,0.09);
+    border-color: rgba(255,255,255,0.16);
+}
+
+.navbar-search-placeholder {
+    font-size: 13px;
+    color: var(--text-gray, #A89F94);
+    font-family: var(--font-sans);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.navbar-notifications-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray, #A89F94);
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, background 0.3s ease;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.navbar-notifications-btn:hover {
+    color: var(--text-light, #F5F0E8);
+    background: rgba(255,255,255,0.06);
+}
+
+.navbar-notif-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 99px;
+    background: var(--accent-color, #E06B58);
+    font-size: 10px;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ── Light theme: search bar ── */
+[data-theme="light"] .navbar-search-wrap .navbar-search-btn {
+    border-color: rgba(0,0,0,0.10);
+    background: rgba(0,0,0,0.04);
+}
+
+[data-theme="light"] .navbar-search-wrap .navbar-search-btn:hover {
+    background: rgba(0,0,0,0.07);
+    border-color: rgba(0,0,0,0.14);
+}
+
 /* === LOGO === */
 .logo {
     color: var(--text-light);
@@ -208,12 +311,53 @@ body > .navbar + * {
         overflow: visible;
     }
 
-    .navbar .container {
+    .navbar .container,
+    .navbar-inner {
         flex-direction: column;
         align-items: center;
         padding: 0 16px;
         position: relative;
         gap: 0;
+    }
+
+    .navbar-search-wrap {
+        flex: none;
+        max-width: none;
+        width: calc(100% - 16px);
+        margin: 0 8px 8px;
+        order: 3;
+    }
+
+    .navbar-search-wrap .navbar-search-btn {
+        padding: 6px 12px;
+        font-size: 0.82rem;
+    }
+
+    .navbar-right {
+        position: static;
+        gap: 4px;
+        order: 2;
+        width: calc(100% - 16px);
+        justify-content: center;
+        padding-bottom: 8px;
+    }
+
+    .navbar-right .nav-links {
+        margin-left: 0;
+    }
+
+    .navbar-right .navbar-profile-wrap {
+        position: static;
+        margin-left: 0;
+    }
+
+    .navbar-notifications-btn {
+        padding: 6px;
+    }
+
+    /* Keep logo centered on mobile */
+    .navbar-inner .logo {
+        order: 1;
     }
 
     /* Logo: full-width centered row */

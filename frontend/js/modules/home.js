@@ -126,13 +126,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     // WELCOME
     // =========================
     const welcomeTitle = document.getElementById('welcome-title');
-    function renderWelcome() {
-        if (welcomeTitle) {
-            welcomeTitle.textContent = I18nModule.t('home_welcome').replace(/,\s*\S+$/, ', ' + username);
-        }
+    if (welcomeTitle) welcomeTitle.textContent = username;
+
+    // Set hero date
+    const dateEl = document.getElementById('home-date');
+    if (dateEl) {
+        dateEl.textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+        }).toUpperCase();
     }
-    renderWelcome();
-    window.addEventListener('cn:language-changed', renderWelcome);
 
     // =========================
     // DASHBOARD DATA

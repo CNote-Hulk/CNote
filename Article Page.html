@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What is a Console, Anyway? — Console Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #131110;
+    --bg2:      #1b1916;
+    --bg3:      #232018;
+    --bg4:      #2c2824;
+    --border:   rgba(255,255,255,0.07);
+    --border2:  rgba(255,255,255,0.12);
+    --text:     #f0ece6;
+    --text2:    #a09890;
+    --text3:    #6a6460;
+    --gold:     #d4a040;
+    --gold-dim: rgba(212,160,64,0.15);
+    --red:      #c44050;
+    --purple:   #7c5cbf;
+    --teal:     #3a9e7a;
+    --teal-dim: rgba(58,158,122,0.15);
+    --radius:   10px;
+    --radius-sm: 6px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(19,17,16,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 32px; height: 56px; gap: 32px;
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.18em; color: var(--text);
+    text-decoration: none; white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--bg4); border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .nav-links { display: flex; gap: 24px; margin-left: auto; }
+  .nav-links a {
+    font-size: 13px; color: var(--text2); text-decoration: none;
+    letter-spacing: 0.02em; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-right { display: flex; align-items: center; gap: 12px; margin-left: 24px; }
+  .nav-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--bg4); border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; cursor: pointer;
+  }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    max-width: 960px; margin: 0 auto;
+    padding: 20px 32px 0;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--text3);
+    font-family: 'Space Mono', monospace;
+  }
+  .breadcrumb a { color: var(--text3); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--text2); }
+  .breadcrumb span { color: var(--text2); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    max-width: 1100px; margin: 0 auto;
+    padding: 32px 32px 80px;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ── ARTICLE ── */
+  .article-header { margin-bottom: 32px; }
+
+  .article-tags {
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+    border: 1px solid var(--border2);
+    color: var(--text2); background: var(--bg3);
+  }
+  .tag.gold { border-color: rgba(212,160,64,0.4); color: var(--gold); background: var(--gold-dim); }
+
+  .article-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700; line-height: 1.15;
+    color: var(--text); margin-bottom: 16px;
+    text-wrap: pretty;
+  }
+
+  .article-subtitle {
+    font-family: 'Lora', serif;
+    font-size: 18px; font-style: italic;
+    color: var(--text2); margin-bottom: 24px;
+    line-height: 1.5; text-wrap: pretty;
+  }
+
+  .article-meta {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .meta-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .meta-info { flex: 1; }
+  .meta-name {
+    font-weight: 600; font-size: 14px; color: var(--text);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; letter-spacing: 0.08em;
+    padding: 2px 6px; border-radius: 4px; font-weight: 700;
+  }
+  .badge.admin { background: rgba(196,64,80,0.2); color: var(--red); border: 1px solid rgba(196,64,80,0.3); }
+  .badge.expert { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(58,158,122,0.3); }
+  .meta-date { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .meta-stats {
+    display: flex; gap: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--text3);
+  }
+  .meta-stats span { display: flex; align-items: center; gap: 4px; }
+
+  /* ── HERO IMAGE ── */
+  .hero-image {
+    width: 100%; aspect-ratio: 16/7;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 36px; overflow: hidden;
+    position: relative;
+  }
+  .hero-image-inner {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 12px;
+    color: var(--text3);
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+  .hero-image svg { opacity: 0.3; }
+  .hero-image-stripe {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      135deg, transparent 0, transparent 20px,
+      rgba(255,255,255,0.012) 20px, rgba(255,255,255,0.012) 40px
+    );
+  }
+
+  /* ── PROSE ── */
+  .prose { color: var(--text2); line-height: 1.8; }
+  .prose p { margin-bottom: 20px; font-size: 16px; text-wrap: pretty; }
+  .prose h2 {
+    font-size: 22px; font-weight: 700; color: var(--text);
+    margin: 40px 0 16px; padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .prose h3 {
+    font-size: 18px; font-weight: 600; color: var(--text);
+    margin: 28px 0 12px;
+  }
+  .prose strong { color: var(--text); font-weight: 600; }
+  .prose em { font-family: 'Lora', serif; font-style: italic; }
+  .prose blockquote {
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    background: var(--gold-dim);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin: 28px 0;
+    font-family: 'Lora', serif;
+    font-size: 17px; font-style: italic;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .prose ul { padding-left: 20px; margin-bottom: 20px; }
+  .prose ul li { margin-bottom: 8px; }
+  .prose ul li::marker { color: var(--gold); }
+
+  .callout {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+    margin: 28px 0; display: flex; gap: 16px;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .callout-text { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .callout-text strong { color: var(--text); }
+
+  /* inline console image */
+  .inline-image {
+    width: 100%; background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    aspect-ratio: 4/3; display: flex;
+    align-items: center; justify-content: center;
+    margin: 28px 0; overflow: hidden; position: relative;
+  }
+  .inline-image-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--text3); text-transform: uppercase;
+    z-index: 1;
+  }
+  .inline-image .hero-image-stripe { opacity: 0.5; }
+
+  /* ── REACTION BAR ── */
+  .reaction-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 20px 0; border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 40px 0 32px; flex-wrap: wrap;
+  }
+  .reaction-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: var(--bg3); cursor: pointer;
+    font-size: 13px; color: var(--text2);
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+  }
+  .reaction-btn:hover { background: var(--bg4); border-color: var(--border2); color: var(--text); }
+  .reaction-btn.active { background: var(--gold-dim); border-color: rgba(212,160,64,0.4); color: var(--gold); }
+  .reaction-btn.liked { background: rgba(196,64,80,0.12); border-color: rgba(196,64,80,0.3); color: var(--red); }
+  .reaction-share {
+    margin-left: auto; display: flex; gap: 8px;
+  }
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border2); background: var(--bg3);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text2); font-size: 14px;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { background: var(--bg4); color: var(--text); }
+
+  /* ── COMMENTS ── */
+  .comments-section { margin-top: 0; }
+  .section-title {
+    font-size: 16px; font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.06em;
+    color: var(--text); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title .count {
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text3);
+  }
+
+  .comment-input-wrap {
+    display: flex; gap: 12px; margin-bottom: 28px;
+  }
+  .comment-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg4); border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .comment-input-box { flex: 1; }
+  .comment-input {
+    width: 100%; background: var(--bg3);
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    color: var(--text); font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px; padding: 12px 16px; resize: none;
+    outline: none; transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+  .comment-input::placeholder { color: var(--text3); }
+  .comment-input:focus { border-color: rgba(212,160,64,0.4); }
+  .comment-submit {
+    margin-top: 8px; float: right;
+    background: var(--gold); color: #1a1208;
+    border: none; border-radius: var(--radius-sm);
+    padding: 8px 16px; font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .comment-submit:hover { opacity: 0.85; }
+
+  .comment {
+    display: flex; gap: 12px; margin-bottom: 20px;
+  }
+  .comment-body { flex: 1; }
+  .comment-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+  }
+  .comment-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .comment-time { font-size: 11px; color: var(--text3); font-family: 'Space Mono', monospace; }
+  .comment-text { font-size: 14px; color: var(--text2); line-height: 1.65; }
+  .comment-actions {
+    display: flex; gap: 12px; margin-top: 8px;
+  }
+  .comment-action {
+    font-size: 11px; color: var(--text3); cursor: pointer;
+    display: flex; align-items: center; gap: 4px;
+    background: none; border: none; font-family: 'Space Grotesk', sans-serif;
+    transition: color 0.15s; padding: 0;
+  }
+  .comment-action:hover { color: var(--text2); }
+  .comment-action.liked { color: var(--red); }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 76px; }
+
+  .sidebar-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px;
+  }
+  .sidebar-card-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 14px;
+  }
+
+  /* TOC */
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+  .toc-item a {
+    display: block; font-size: 13px; color: var(--text2);
+    text-decoration: none; padding: 6px 10px; border-radius: var(--radius-sm);
+    transition: all 0.15s; border-left: 2px solid transparent;
+  }
+  .toc-item a:hover { color: var(--text); background: var(--bg3); }
+  .toc-item.active a {
+    color: var(--gold); border-left-color: var(--gold); background: var(--gold-dim);
+  }
+
+  /* Author card */
+  .author-card-top {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+  }
+  .author-card-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--bg4); border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .author-card-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .author-card-badges { display: flex; gap: 4px; margin-top: 4px; }
+  .author-card-bio { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .author-follow {
+    width: 100%; margin-top: 12px; padding: 8px;
+    background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--text2);
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+    font-weight: 500; cursor: pointer; transition: all 0.15s;
+  }
+  .author-follow:hover { background: var(--bg4); color: var(--text); }
+
+  /* Related */
+  .related-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    cursor: pointer; text-decoration: none;
+  }
+  .related-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .related-item:first-of-type { padding-top: 0; }
+  .related-thumb {
+    width: 48px; height: 36px; border-radius: var(--radius-sm);
+    background: var(--bg4); border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .related-title {
+    font-size: 12px; font-weight: 600; color: var(--text2);
+    line-height: 1.4; text-wrap: pretty;
+    transition: color 0.15s;
+  }
+  .related-item:hover .related-title { color: var(--text); }
+  .related-date { font-size: 10px; color: var(--text3); margin-top: 4px; font-family: 'Space Mono', monospace; }
+
+  /* Progress */
+  .progress-bar-wrap { margin-top: 8px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+  .progress-bar { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.3s; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px; color: var(--text3);
+    font-family: 'Space Mono', monospace; letter-spacing: 0.06em;
+    flex-wrap: wrap; gap: 12px;
+  }
+  footer a { color: var(--text3); text-decoration: none; }
+  footer a:hover { color: var(--text2); }
+
+  /* ── TWEAKS PANEL ── */
+  .tweaks-panel {
+    display: none; position: fixed; bottom: 24px; right: 24px;
+    width: 240px; background: var(--bg2);
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    padding: 16px; z-index: 200;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  }
+  .tweaks-panel.visible { display: block; }
+  .tweaks-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 14px;
+  }
+  .tweak-row { margin-bottom: 12px; }
+  .tweak-label { font-size: 11px; color: var(--text2); margin-bottom: 6px; display: block; }
+  .tweak-options { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tweak-opt {
+    padding: 4px 10px; border-radius: 4px; font-size: 11px;
+    border: 1px solid var(--border2); background: var(--bg3);
+    color: var(--text2); cursor: pointer; transition: all 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .tweak-opt:hover { background: var(--bg4); color: var(--text); }
+  .tweak-opt.selected { background: var(--gold-dim); border-color: rgba(212,160,64,0.4); color: var(--gold); }
+
+  /* Scroll progress */
+  #scroll-progress {
+    position: fixed; top: 56px; left: 0; right: 0;
+    height: 2px; background: var(--gold);
+    transform-origin: left; transform: scaleX(0);
+    z-index: 99; transition: transform 0.1s;
+  }
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">📓</div>
+    CONSOLE NOTEBOOK
+  </a>
+  <div class="nav-links">
+    <a href="#">Community</a>
+    <a href="#">Learn</a>
+    <a href="#">Evolution</a>
+    <a href="#">Compare</a>
+    <a href="#">Help</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-avatar">🎮</div>
+  </div>
+</nav>
+
+<!-- SCROLL PROGRESS INIT -->
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('scroll-progress');
+    const h = document.documentElement;
+    const pct = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    el.style.transform = `scaleX(${pct})`;
+  });
+</script>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Home</a> / <a href="#">Articles</a> / <span>What is a Console, Anyway?</span>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- MAIN ARTICLE -->
+  <main>
+    <header class="article-header">
+      <div class="article-tags">
+        <span class="tag gold">Featured</span>
+        <span class="tag">History</span>
+        <span class="tag">Fundamentals</span>
+        <span class="tag">Gaming</span>
+      </div>
+
+      <h1 class="article-title">What is a Console, Anyway?</h1>
+      <p class="article-subtitle">A deep dive into the machines that shaped modern gaming — from Magnavox Odyssey to today's silicon powerhouses.</p>
+
+      <div class="article-meta">
+        <div class="meta-avatar">🎮</div>
+        <div class="meta-info">
+          <div class="meta-name">
+            AndreiHulk07
+            <span class="badge admin">ADMIN</span>
+            <span class="badge expert">Expert</span>
+          </div>
+          <div class="meta-date">April 15, 2026 · 8 min read</div>
+        </div>
+        <div class="meta-stats">
+          <span>👁 2.4k</span>
+          <span>❤️ 187</span>
+          <span>💬 24</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO IMAGE -->
+    <div class="hero-image">
+      <div class="hero-image-stripe"></div>
+      <div class="hero-image-inner">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="8" y="20" width="48" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <rect x="14" y="26" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="40" cy="31" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="50" cy="31" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="26" y1="48" x2="20" y2="56" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="38" y1="48" x2="44" y2="56" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>console hero image</span>
+      </div>
+    </div>
+
+    <!-- PROSE -->
+    <article class="prose" id="article-body">
+
+      <h2 id="intro">The Box That Changed Everything</h2>
+      <p>
+        At its core, a gaming console is a <strong>dedicated electronic device</strong> designed primarily for playing video games. Unlike a general-purpose computer, the console strips away everything superfluous — no spreadsheets, no email — and focuses every transistor and algorithm on one objective: play.
+      </p>
+      <p>
+        But this seemingly simple definition hides a remarkably rich history. The console has evolved from a primitive box with toggle switches to a cloud-connected entertainment hub that streams 4K video, hosts social networks, and runs apps. What remained constant, through every generation, is the intent: <em>to bring interactive entertainment into the living room.</em>
+      </p>
+
+      <blockquote>
+        "The console is not a product. It's a promise — that the most immersive experiences in the world can live in your home."
+      </blockquote>
+
+      <h2 id="origins">Origins: The Magnavox Odyssey</h2>
+      <p>
+        The story begins in 1972, when Ralph Baer's invention reached living rooms as the <strong>Magnavox Odyssey</strong> — the world's first commercial home video game console. It used analog circuitry, had no microprocessor, and relied on plastic overlays placed on top of TV screens to simulate game environments.
+      </p>
+
+      <div class="callout">
+        <div class="callout-icon">💡</div>
+        <div class="callout-text">
+          <strong>Did you know?</strong> The Magnavox Odyssey used no software. Games were controlled entirely by circuit cards inserted into the unit — each card changed how the machine behaved at the hardware level.
+        </div>
+      </div>
+
+      <p>
+        In 1977, Atari's <strong>2600</strong> introduced interchangeable ROM cartridges, separating hardware from software for the first time. This was the architectural leap that defined consoles for the next two decades.
+      </p>
+
+      <div class="inline-image">
+        <div class="hero-image-stripe"></div>
+        <span class="inline-image-label">Atari 2600 — 1977</span>
+      </div>
+
+      <h2 id="generations">The Console Generations</h2>
+      <p>
+        The industry organizes consoles into <strong>generations</strong> — rough groupings by era and hardware capability. Each generation typically spans six to eight years and is defined by a technical threshold: a new CPU architecture, optical media, HD graphics, or online connectivity.
+      </p>
+      <ul>
+        <li><strong>1st Gen (1972–1977):</strong> Magnavox Odyssey, Pong machines</li>
+        <li><strong>2nd Gen (1976–1992):</strong> Atari 2600, Intellivision, Colecovision</li>
+        <li><strong>3rd Gen (1983–2003):</strong> NES, Sega Master System</li>
+        <li><strong>4th Gen (1987–2004):</strong> SNES, Sega Genesis — the golden era</li>
+        <li><strong>5th Gen (1993–2006):</strong> PlayStation, Nintendo 64, 3D graphics</li>
+        <li><strong>6th–9th Gen:</strong> DVD, Blu-ray, HD, 4K, SSD, ray tracing</li>
+      </ul>
+
+      <h2 id="anatomy">Anatomy of a Modern Console</h2>
+      <p>
+        Today's consoles are essentially <strong>specialized computers</strong>. They feature a custom System-on-Chip (SoC) designed in partnership with AMD or Nvidia, high-bandwidth GDDR memory, ultra-fast NVMe SSD storage, and wireless controllers with haptic feedback and adaptive triggers.
+      </p>
+      <p>
+        The operating system layer handles user accounts, storefronts, streaming, voice commands, and background downloads — all while the game runs in a dedicated partition of RAM at a guaranteed performance envelope. This is the promise of a console: <em>consistent, predictable performance</em>, no driver updates required.
+      </p>
+
+      <h2 id="vs-pc">Console vs. PC: A False War</h2>
+      <p>
+        The console/PC debate misses the point entirely. Consoles are an <strong>experience design</strong> choice, not a hardware benchmark. They offer plug-and-play simplicity, couch-optimized interfaces, exclusive software ecosystems, and a price-to-performance ratio that is genuinely difficult to match with a purpose-built gaming PC in the same fiscal year.
+      </p>
+
+      <blockquote>
+        "The best console is the one your friends play on. Everything else is a spec sheet."
+      </blockquote>
+
+      <h2 id="future">What Comes Next</h2>
+      <p>
+        The boundary between console and cloud is dissolving. Services like PlayStation Now and Xbox Cloud Gaming allow games to stream directly to phones, smart TVs, and browsers — no hardware required. The console of the future may be a subscription, a peripheral, or a standard built into every screen.
+      </p>
+      <p>
+        But as long as games are made, there will be dedicated hardware optimized to run them. The form factor evolves; the mission stays the same.
+      </p>
+
+    </article>
+
+    <!-- REACTION BAR -->
+    <div class="reaction-bar">
+      <button class="reaction-btn" id="btn-like" onclick="toggleReact('like')">❤️ Like <span id="like-count">187</span></button>
+      <button class="reaction-btn" id="btn-bookmark" onclick="toggleReact('bookmark')">🔖 Save</button>
+      <button class="reaction-btn" id="btn-helpful" onclick="toggleReact('helpful')">⭐ Helpful <span id="helpful-count">94</span></button>
+      <div class="reaction-share">
+        <div class="icon-btn" title="Copy link" onclick="copyLink()">🔗</div>
+        <div class="icon-btn" title="Share">↗</div>
+      </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <section class="comments-section">
+      <div class="section-title">Comments <span class="count">24</span></div>
+
+      <div class="comment-input-wrap">
+        <div class="comment-avatar">🎮</div>
+        <div class="comment-input-box">
+          <textarea class="comment-input" rows="3" placeholder="Share your thoughts..." id="comment-textarea"></textarea>
+          <button class="comment-submit" onclick="postComment()">Post comment</button>
+        </div>
+      </div>
+
+      <div id="comments-list">
+        <!-- Comments injected by JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Reading progress -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Reading Progress</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label">
+          <span>Progress</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Table of Contents</div>
+      <ul class="toc-list" id="toc-list">
+        <li class="toc-item" data-target="intro"><a href="#intro">The Box That Changed Everything</a></li>
+        <li class="toc-item" data-target="origins"><a href="#origins">Origins: The Magnavox Odyssey</a></li>
+        <li class="toc-item" data-target="generations"><a href="#generations">The Console Generations</a></li>
+        <li class="toc-item" data-target="anatomy"><a href="#anatomy">Anatomy of a Modern Console</a></li>
+        <li class="toc-item" data-target="vs-pc"><a href="#vs-pc">Console vs. PC</a></li>
+        <li class="toc-item" data-target="future"><a href="#future">What Comes Next</a></li>
+      </ul>
+    </div>
+
+    <!-- Author -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Author</div>
+      <div class="author-card-top">
+        <div class="author-card-avatar">🎮</div>
+        <div>
+          <div class="author-card-name">AndreiHulk07</div>
+          <div class="author-card-badges">
+            <span class="badge admin">ADMIN</span>
+            <span class="badge expert">Expert</span>
+          </div>
+        </div>
+      </div>
+      <div class="author-card-bio">Founder of Console Notebook. Gaming historian, hardware nerd, and chronic console collector since 1998.</div>
+      <button class="author-follow" id="follow-btn" onclick="toggleFollow()">+ Follow</button>
+    </div>
+
+    <!-- Related -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Related Articles</div>
+      <a class="related-item" href="#">
+        <div class="related-thumb"></div>
+        <div>
+          <div class="related-title">The History of PlayStation</div>
+          <div class="related-date">Mar 2026</div>
+        </div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-thumb"></div>
+        <div>
+          <div class="related-title">Nintendo 64 — Engineering a Legend</div>
+          <div class="related-date">Feb 2026</div>
+        </div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-thumb"></div>
+        <div>
+          <div class="related-title">Sega's Rise and Fall</div>
+          <div class="related-date">Jan 2026</div>
+        </div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-thumb"></div>
+        <div>
+          <div class="related-title">How Cartridges Worked</div>
+          <div class="related-date">Dec 2025</div>
+        </div>
+      </a>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Console Notebook</span>
+  <div style="display:flex;gap:20px;">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <span>Made with ❤️ for gamers</span>
+</footer>
+
+<!-- TWEAKS PANEL -->
+<div class="tweaks-panel" id="tweaks-panel">
+  <div class="tweaks-title">Tweaks</div>
+
+  <div class="tweak-row">
+    <span class="tweak-label">Font Style</span>
+    <div class="tweak-options">
+      <div class="tweak-opt selected" onclick="setFont('grotesk',this)">Modern</div>
+      <div class="tweak-opt" onclick="setFont('serif',this)">Serif</div>
+      <div class="tweak-opt" onclick="setFont('mono',this)">Mono</div>
+    </div>
+  </div>
+
+  <div class="tweak-row">
+    <span class="tweak-label">Accent Color</span>
+    <div class="tweak-options">
+      <div class="tweak-opt selected" onclick="setAccent('#d4a040',this)">Gold</div>
+      <div class="tweak-opt" onclick="setAccent('#3a9e7a',this)">Teal</div>
+      <div class="tweak-opt" onclick="setAccent('#7c5cbf',this)">Purple</div>
+      <div class="tweak-opt" onclick="setAccent('#c44050',this)">Red</div>
+    </div>
+  </div>
+
+  <div class="tweak-row">
+    <span class="tweak-label">Background</span>
+    <div class="tweak-options">
+      <div class="tweak-opt selected" onclick="setBg('dark',this)">Dark</div>
+      <div class="tweak-opt" onclick="setBg('darker',this)">Darker</div>
+      <div class="tweak-opt" onclick="setBg('warm',this)">Warm</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TWEAKS PROTOCOL ──
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('visible');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+function selectOnly(container, el) {
+  container.querySelectorAll('.tweak-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function setFont(f, el) {
+  selectOnly(el.parentElement, el);
+  const map = { grotesk: "'Space Grotesk', sans-serif", serif: "'Lora', serif", mono: "'Space Mono', monospace" };
+  document.body.style.fontFamily = map[f];
+}
+function setAccent(color, el) {
+  selectOnly(el.parentElement, el);
+  document.documentElement.style.setProperty('--gold', color);
+  const r = parseInt(color.slice(1,3),16), g = parseInt(color.slice(3,5),16), b = parseInt(color.slice(5,7),16);
+  document.documentElement.style.setProperty('--gold-dim', `rgba(${r},${g},${b},0.13)`);
+}
+function setBg(mode, el) {
+  selectOnly(el.parentElement, el);
+  const map = { dark: '#131110', darker: '#0a0908', warm: '#171410' };
+  document.documentElement.style.setProperty('--bg', map[mode]);
+}
+
+// ── TOC ACTIVE ──
+const tocItems = document.querySelectorAll('.toc-item');
+const headings = ['intro','origins','generations','anatomy','vs-pc','future'].map(id => document.getElementById(id));
+function updateTOC() {
+  let active = 0;
+  headings.forEach((h, i) => {
+    if (h && h.getBoundingClientRect().top < 120) active = i;
+  });
+  tocItems.forEach((t, i) => t.classList.toggle('active', i === active));
+}
+
+// ── READING PROGRESS ──
+function updateProgress() {
+  const article = document.getElementById('article-body');
+  if (!article) return;
+  const rect = article.getBoundingClientRect();
+  const total = article.offsetHeight;
+  const seen = Math.max(0, -rect.top + window.innerHeight * 0.6);
+  const pct = Math.min(100, Math.round((seen / total) * 100));
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+window.addEventListener('scroll', () => { updateTOC(); updateProgress(); });
+
+// ── REACTIONS ──
+let liked = false, bookmarked = false, helpful = false;
+function toggleReact(type) {
+  if (type === 'like') {
+    liked = !liked;
+    const btn = document.getElementById('btn-like');
+    btn.classList.toggle('liked', liked);
+    document.getElementById('like-count').textContent = liked ? 188 : 187;
+  }
+  if (type === 'bookmark') {
+    bookmarked = !bookmarked;
+    document.getElementById('btn-bookmark').classList.toggle('active', bookmarked);
+  }
+  if (type === 'helpful') {
+    helpful = !helpful;
+    document.getElementById('btn-helpful').classList.toggle('active', helpful);
+    document.getElementById('helpful-count').textContent = helpful ? 95 : 94;
+  }
+}
+function copyLink() {
+  navigator.clipboard?.writeText(location.href);
+  const btn = event.target;
+  btn.textContent = '✓';
+  setTimeout(() => btn.textContent = '🔗', 1500);
+}
+
+// ── FOLLOW ──
+let following = false;
+function toggleFollow() {
+  following = !following;
+  const btn = document.getElementById('follow-btn');
+  btn.textContent = following ? '✓ Following' : '+ Follow';
+  btn.style.color = following ? 'var(--gold)' : '';
+  btn.style.borderColor = following ? 'rgba(212,160,64,0.4)' : '';
+}
+
+// ── COMMENTS ──
+const sampleComments = [
+  { name: 'RetroGamer92', badge: null, time: '2h ago', text: 'Great article! The Magnavox section is something most people completely overlook. The Odyssey was revolutionary but totally forgotten.', likes: 14 },
+  { name: 'NintendoNerd', badge: 'expert', time: '5h ago', text: 'The console vs PC debate section nails it. It\'s always been about the experience, never the specs. My friends are on PS5, so I\'m on PS5. Simple as that.', likes: 31 },
+  { name: 'SegaForever', badge: null, time: '1d ago', text: 'Would love a follow-up piece specifically about Sega\'s role in pushing the industry forward. The Genesis and Saturn deserve more attention.', likes: 9 },
+];
+
+function renderComments(list) {
+  const container = document.getElementById('comments-list');
+  container.innerHTML = list.map((c, i) => `
+    <div class="comment">
+      <div class="comment-avatar" style="font-size:14px">🎮</div>
+      <div class="comment-body">
+        <div class="comment-header">
+          <span class="comment-name">${c.name}</span>
+          ${c.badge ? `<span class="badge ${c.badge}">${c.badge.toUpperCase()}</span>` : ''}
+          <span class="comment-time">${c.time}</span>
+        </div>
+        <div class="comment-text">${c.text}</div>
+        <div class="comment-actions">
+          <button class="comment-action" id="clk-${i}" onclick="likeComment(${i}, ${c.likes})">❤ ${c.likes}</button>
+          <button class="comment-action" onclick="replyComment('${c.name}')">Reply</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderComments(sampleComments);
+
+function likeComment(i, base) {
+  const btn = document.getElementById('clk-'+i);
+  const liked = btn.classList.toggle('liked');
+  btn.textContent = `❤ ${liked ? base + 1 : base}`;
+}
+
+function replyComment(name) {
+  const ta = document.getElementById('comment-textarea');
+  ta.value = `@${name} `;
+  ta.focus();
+}
+
+function postComment() {
+  const ta = document.getElementById('comment-textarea');
+  const text = ta.value.trim();
+  if (!text) return;
+  sampleComments.unshift({ name: 'AndreiHulk07', badge: 'admin', time: 'just now', text, likes: 0 });
+  renderComments(sampleComments);
+  ta.value = '';
+}
+</script>
+
+</body>
+</html>

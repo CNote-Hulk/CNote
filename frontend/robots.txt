@@ -7,8 +7,6 @@ Disallow: /html/pages/reset-password.html
 Disallow: /html/pages/request-password-reset.html
 Disallow: /html/pages/setup-username.html
 Disallow: /html/pages/verify-success.html
-Disallow: /html/pages/home.html
-Disallow: /html/pages/profil.html
 Disallow: /html/pages/user-profile.html
 Disallow: /api/
 

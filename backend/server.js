@@ -4,6 +4,7 @@
    middleware, CORS, mounts all API routes, and serves
    static frontend files. Uses PostgreSQL via Supabase.
    ───────────────────────────────────────── */
+
 /* ── REQUIRED IMPORTS — DO NOT REMOVE ──────
    If you add a new package:
      1. require() it here
@@ -99,6 +100,13 @@ optionalEnv.forEach(name => {
 });
 
 app.set('trust proxy', 1);
+
+app.use((req, res, next) => {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    return res.redirect(301, `https://${req.hostname}${req.url}`);
+  }
+  next();
+});
 
 app.use(helmet({
 	contentSecurityPolicy: false,

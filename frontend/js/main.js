@@ -85,6 +85,17 @@ class App {
             
             console.log('✅ All modules initialized successfully');
             this.initMathRendering();
+
+            // Expose re-init hook for components.js (async navbar injection)
+            window.__cn_reinit_navbar = () => {
+                try { ProfileDropdownModule.init(); } catch(e) {}
+                try { SearchModule.init(); } catch(e) {}
+                try { NavigationModule.setupActiveLinks(); } catch(e) {}
+                try { NavigationModule.setupAutoHideNavbar(); } catch(e) {}
+                try { I18nModule.apply(); } catch(e) {}
+            };
+            if (window.__cn_navbar_ready) window.__cn_reinit_navbar();
+
         } catch (error) {
             console.error('❌ Error initializing modules:', error);
         }
