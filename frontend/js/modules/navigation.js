@@ -4,6 +4,7 @@
  */
 
 import { DOMUtils } from '../utils/dom.js';
+import { I18nModule } from './i18n.js';
 
 export const NavigationModule = {
     init() {
@@ -13,6 +14,7 @@ export const NavigationModule = {
         this.setupMobileMenu();
         this.setupAutoHideNavbar();
         this.setupMbnDropdown();
+        this.setupMbnNotifPanel();
     },
 
     /**
@@ -210,6 +212,138 @@ export const NavigationModule = {
             btn.setAttribute('aria-expanded', 'false');
         });
         dd.addEventListener('click', (e) => e.stopPropagation());
+    },
+
+    /**
+     * Inline notification panel inside the mbn-dropdown.
+     * Clicking the notification item slides in a sub-panel with notifications.
+     */
+    setupMbnNotifPanel() {
+        const dd = document.getElementById('mbn-dropdown');
+        const notifLink = document.getElementById('mbn-notif-link');
+        if (!dd || !notifLink) return;
+
+        // Build the panel HTML and inject into the dropdown
+        const panel = document.createElement('div');
+        panel.className = 'mbn-notif-panel';
+        panel.id = 'mbn-notif-panel';
+        panel.innerHTML = `
+            <div class="mbn-notif-panel__header">
+                <button class="mbn-notif-panel__back" id="mbn-notif-back" type="button"
+                        data-i18n="notif_panel_back">← Back</button>
+                <span class="mbn-notif-panel__title" data-i18n="nav_notifications">Notifications</span>
+                <button class="mbn-notif-panel__read-all" id="mbn-notif-read-all" type="button"
+                        data-i18n="notif_panel_read_all">Mark all read</button>
+            </div>
+            <div class="mbn-notif-panel__list" id="mbn-notif-panel-list">
+                <div class="mbn-notif-panel__loading" data-i18n="notif_panel_loading">Loading...</div>
+            </div>
+        `;
+        dd.appendChild(panel);
+        I18nModule.apply();
+
+        // Collect all the regular dropdown items (not the panel)
+        const ddItems = () => dd.querySelectorAll(':scope > :not(#mbn-notif-panel)');
+
+        const openPanel = () => {
+            ddItems().forEach(el => el.style.display = 'none');
+            panel.classList.add('is-open');
+            this._loadMbnNotifs();
+        };
+
+        const closePanel = () => {
+            panel.classList.remove('is-open');
+            ddItems().forEach(el => el.style.display = '');
+        };
+
+        notifLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openPanel();
+        });
+
+        document.getElementById('mbn-notif-back').addEventListener('click', (e) => {
+            e.stopPropagation();
+            closePanel();
+        });
+
+        document.getElementById('mbn-notif-read-all').addEventListener('click', async (e) => {
+            e.stopPropagation();
+            try {
+                const token = localStorage.getItem('cn_token');
+                if (!token) return;
+                const { API_BASE_URL } = await import('../config.js');
+                await fetch(`${API_BASE_URL}/notifications/read-all`, {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                this._loadMbnNotifs();
+                document.getElementById('mbn-notif-badge-dd').style.display = 'none';
+            } catch {}
+        });
+
+        // Close panel when dropdown closes
+        const observer = new MutationObserver(() => {
+            if (!dd.classList.contains('is-open')) closePanel();
+        });
+        observer.observe(dd, { attributes: true, attributeFilter: ['class'] });
+    },
+
+    async _loadMbnNotifs() {
+        const list = document.getElementById('mbn-notif-panel-list');
+        if (!list) return;
+
+        const t = (key, fallback) => I18nModule.t(key) || fallback;
+
+        list.innerHTML = `<div class="mbn-notif-panel__loading">${t('notif_panel_loading', 'Loading...')}</div>`;
+
+        try {
+            const token = localStorage.getItem('cn_token');
+            if (!token) {
+                list.innerHTML = `<div class="mbn-notif-panel__empty">${t('notif_panel_empty', 'No notifications yet')}</div>`;
+                return;
+            }
+            const { API_BASE_URL } = await import('../config.js');
+            const res = await fetch(`${API_BASE_URL}/notifications`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            const notifs = data.notifications || [];
+
+            if (notifs.length === 0) {
+                list.innerHTML = `<div class="mbn-notif-panel__empty">${t('notif_panel_empty', 'No notifications yet')}</div>`;
+                return;
+            }
+
+            const timeAgo = (iso) => {
+                const diff = (Date.now() - new Date(iso)) / 1000;
+                if (diff < 60) return 'Just now';
+                if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+                if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+                return `${Math.floor(diff / 86400)}d ago`;
+            };
+
+            list.innerHTML = notifs.map(n => `
+                <a href="${n.link || '#'}" class="mbn-notif-row${n.read ? '' : ' mbn-notif-row--unread'}">
+                    <div class="mbn-notif-row__dot"></div>
+                    <div class="mbn-notif-row__body">
+                        <div class="mbn-notif-row__msg">${n.message || ''}</div>
+                        <div class="mbn-notif-row__time">${timeAgo(n.created_at)}</div>
+                    </div>
+                </a>
+            `).join('');
+
+            // Update badge count
+            const unread = notifs.filter(n => !n.read).length;
+            const badge = document.getElementById('mbn-notif-badge-dd');
+            if (badge) {
+                badge.textContent = unread > 9 ? '9+' : String(unread);
+                badge.style.display = unread > 0 ? 'inline-flex' : 'none';
+            }
+        } catch {
+            list.innerHTML = `<div class="mbn-notif-panel__empty">${t('notif_panel_empty', 'No notifications yet')}</div>`;
+        }
     },
 
     /**

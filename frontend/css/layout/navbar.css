@@ -461,7 +461,7 @@ body > .navbar + * {
     .navbar-search-wrap {
         position: absolute;
         left: 16px;
-        top: 14px;
+        top: 10px;
         width: auto;
         margin: 0;
     }
@@ -486,7 +486,7 @@ body > .navbar + * {
     .navbar-right {
         position: absolute;
         right: 16px;
-        top: 14px;
+        top: 10px;
         margin: 0;
         padding: 0;
         gap: 4px;

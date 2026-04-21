@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Simple i18n module for Console Notebook
  * Stores language selection in localStorage and updates any element with data-i18n.
  */
@@ -1030,6 +1030,11 @@ const MESSAGES = {
 
         // Mobile nav
         mbn_more: 'More',
+        nav_notifications: 'Notifications',
+        notif_panel_back: '← Back',
+        notif_panel_read_all: 'Mark all read',
+        notif_panel_empty: 'No notifications yet',
+        notif_panel_loading: 'Loading...',
 
         // Settings page
         settings_subtitle: 'Manage your account, profile and preferences.',
@@ -2036,6 +2041,11 @@ const MESSAGES = {
 
         // Mobile nav
         mbn_more: 'Mai mult',
+        nav_notifications: 'Notificări',
+        notif_panel_back: '← Înapoi',
+        notif_panel_read_all: 'Marchează tot citit',
+        notif_panel_empty: 'Nicio notificare încă',
+        notif_panel_loading: 'Se încarcă...',
 
         // Settings page
         settings_subtitle: 'Gestioneaz\u0103 contul, profilul \u0219i preferin\u021bele tale.',
@@ -3030,6 +3040,11 @@ const MESSAGES = {
 
         // Mobile nav
         mbn_more: 'M\u00e1s',
+        nav_notifications: 'Notificaciones',
+        notif_panel_back: '← Volver',
+        notif_panel_read_all: 'Marcar todo leído',
+        notif_panel_empty: 'Sin notificaciones aún',
+        notif_panel_loading: 'Cargando...',
 
         // Settings page
         settings_subtitle: 'Gestiona tu cuenta, perfil y preferencias.',
@@ -4022,6 +4037,11 @@ const MESSAGES = {
 
         // Mobile nav
         mbn_more: 'Plus',
+        nav_notifications: 'Notifications',
+        notif_panel_back: '← Retour',
+        notif_panel_read_all: 'Tout marquer comme lu',
+        notif_panel_empty: 'Aucune notification pour l’instant',
+        notif_panel_loading: 'Chargement...',
 
         // Settings page
         settings_subtitle: 'G\u00e9rez votre compte, profil et pr\u00e9f\u00e9rences.',
@@ -5018,6 +5038,11 @@ const MESSAGES = {
 
         // Mobile nav
         mbn_more: 'Altro',
+        nav_notifications: 'Notifiche',
+        notif_panel_back: '← Indietro',
+        notif_panel_read_all: 'Segna tutto come letto',
+        notif_panel_empty: 'Nessuna notifica ancora',
+        notif_panel_loading: 'Caricamento...',
 
         // Settings page
         settings_subtitle: 'Gestisci il tuo account, profilo e preferenze.',
@@ -6010,6 +6035,11 @@ const MESSAGES = {
 
         // Mobile nav
         mbn_more: 'Mehr',
+        nav_notifications: 'Benachrichtigungen',
+        notif_panel_back: '← Zurück',
+        notif_panel_read_all: 'Alle als gelesen markieren',
+        notif_panel_empty: 'Noch keine Benachrichtigungen',
+        notif_panel_loading: 'Laden...',
 
         // Settings page
         settings_subtitle: 'Verwalte dein Konto, Profil und Einstellungen.',
