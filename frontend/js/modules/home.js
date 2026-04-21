@@ -176,21 +176,73 @@ document.addEventListener('DOMContentLoaded', async () => {
             ]);
 
             // =========================
-            // PROGRESS (temporarily in progress)
+            // PROGRESS — real course data
             // =========================
-            const continueProgress = document.getElementById('continue-progress');
-            const activeProgress = document.getElementById('active-progress');
-            const statProgress = document.getElementById('stat-progress');
-            const progressRingArc = document.getElementById('progress-ring-arc');
-            const progressRingPct = document.getElementById('progress-ring-pct');
-            if (continueProgress) continueProgress.innerHTML = `<span style="color:var(--accent-color)" data-i18n="home_progress_working">In progress...</span>`;
-            if (activeProgress) activeProgress.style.width = '0%';
-            if (statProgress) statProgress.innerHTML = `<span style="color:var(--accent-color)" data-i18n="home_progress_working">In progress...</span>`;
-            if (progressRingArc) {
-                progressRingArc.style.strokeDasharray = 2 * Math.PI * 42;
-                progressRingArc.style.strokeDashoffset = 2 * Math.PI * 42;
+            {
+                const sp = starterProgressRes;
+                const totalLessons = sp && sp.total_lessons > 0 ? sp.total_lessons : 0;
+                const completedIds = sp && Array.isArray(sp.completed_lesson_ids) ? sp.completed_lesson_ids : [];
+                const doneCount = completedIds.length;
+                const lastId = sp && sp.last_lesson_id;
+                const courseComplete = sp && sp.course_completed;
+                const pct = totalLessons > 0 ? Math.round((doneCount / totalLessons) * 100) : 0;
+                const CIRC = 2 * Math.PI * 42;
+
+                const continueHref = courseComplete
+                    ? 'course.html?slug=starter-guide'
+                    : lastId
+                        ? `lesson.html?id=${lastId}&slug=starter-guide`
+                        : 'course.html?slug=starter-guide';
+
+                // Hero continue-card
+                const continueProgress = document.getElementById('continue-progress');
+                const activeProgress = document.getElementById('active-progress');
+                const continueTitle = document.getElementById('home-continue-title');
+                const homeContinueBtn = document.getElementById('home-continue-btn');
+                if (continueTitle) continueTitle.textContent = sp && sp.course_title ? sp.course_title : 'Console Starter Guide';
+                if (continueProgress) continueProgress.textContent = totalLessons > 0 ? `${doneCount}/${totalLessons}` : '—';
+                if (activeProgress) setTimeout(() => { activeProgress.style.width = pct + '%'; }, 80);
+                if (homeContinueBtn) {
+                    homeContinueBtn.href = continueHref;
+                    homeContinueBtn.textContent = courseComplete ? 'Review →' : doneCount > 0 ? 'Continue →' : 'Start →';
+                }
+
+                // Progress ring (progress panel)
+                const progressRingArc = document.getElementById('progress-ring-arc');
+                const progressRingPct = document.getElementById('progress-ring-pct');
+                const progressContinueText = document.getElementById('progress-continue-text');
+                const progressBarFill = document.getElementById('progress-bar-fill');
+                const progressPanelBtn = document.getElementById('progress-panel-continue-btn');
+                const progressPanelTitle = document.getElementById('progress-panel-title');
+                if (progressPanelTitle) progressPanelTitle.textContent = sp && sp.course_title ? sp.course_title : 'Console Starter Guide';
+                if (progressRingArc) {
+                    progressRingArc.style.strokeDasharray = CIRC;
+                    setTimeout(() => { progressRingArc.style.strokeDashoffset = CIRC * (1 - pct / 100); }, 80);
+                }
+                if (progressRingPct) progressRingPct.textContent = pct + '%';
+                if (progressContinueText) progressContinueText.textContent = totalLessons > 0 ? `${doneCount}/${totalLessons} lessons` : '—';
+                if (progressBarFill) setTimeout(() => { progressBarFill.style.width = pct + '%'; }, 80);
+                if (progressPanelBtn) {
+                    progressPanelBtn.href = continueHref;
+                    progressPanelBtn.textContent = courseComplete ? '✓ Review course' : doneCount > 0 ? '▶ Continue' : '▶ Start course';
+                }
+
+                // Milestones
+                const milestonesEl = document.getElementById('progress-milestones');
+                if (milestonesEl) {
+                    const m = (done, label) =>
+                        `<div class="milestone-item${done ? ' milestone-item--done' : ''}">
+                            <span class="milestone-icon">${done ? '✓' : '○'}</span>
+                            <span>${label}</span>
+                        </div>`;
+                    milestonesEl.innerHTML =
+                        m(true,           'Created your account') +
+                        m(doneCount > 0,  'Started first lesson') +
+                        m(doneCount >= 10,'Complete 10 lessons') +
+                        m(doneCount >= 20,'Complete 20 lessons') +
+                        m(courseComplete, 'Complete your first course');
+                }
             }
-            if (progressRingPct) progressRingPct.setAttribute('data-i18n', 'home_progress_working');
 
             // =========================
             // STATS
