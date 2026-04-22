@@ -59,13 +59,10 @@ function renderHeroStats(course, progress) {
     const statsEl = document.createElement('div');
     statsEl.className = 'crs-hero-stats';
     statsEl.innerHTML = `
-        <span class="crs-hero-stat"><strong>${completed}</strong> Completed</span>
-        <span class="crs-hero-stat-sep">·</span>
-        <span class="crs-hero-stat"><strong>${total}</strong> Lessons</span>
-        <span class="crs-hero-stat-sep">·</span>
-        <span class="crs-hero-stat"><strong>${timeStr}</strong> Total Time</span>
-        <span class="crs-hero-stat-sep">·</span>
-        <span class="crs-hero-stat"><strong>${chapters}</strong> Chapters</span>
+        <div class="crs-hero-stat"><span class="crs-hero-stat-val">${completed}</span><span class="crs-hero-stat-label">Completed</span></div>
+        <div class="crs-hero-stat"><span class="crs-hero-stat-val">${total}</span><span class="crs-hero-stat-label">Lessons</span></div>
+        <div class="crs-hero-stat"><span class="crs-hero-stat-val">${timeStr}</span><span class="crs-hero-stat-label">Total Time</span></div>
+        <div class="crs-hero-stat"><span class="crs-hero-stat-val">${chapters}</span><span class="crs-hero-stat-label">Chapters</span></div>
     `;
 
     const lastId = progress && progress.last_lesson_id;
@@ -92,8 +89,8 @@ function renderHeroStats(course, progress) {
 
     const body = inner.querySelector('.crs-hero__body');
     if (body) {
-        body.after(statsEl);
-        statsEl.after(btnsEl);
+        body.after(btnsEl);
+        btnsEl.after(statsEl);
     }
 
     // Populate hero progress card (right column)
@@ -245,12 +242,14 @@ function renderModules(course) {
 
         const header = document.createElement('div');
         header.className = 'crs-module-header';
+        const isModDone = doneInMod === lessons.length && lessons.length > 0;
         header.innerHTML = `
-            <span class="crs-module-num">${modIdx + 1}</span>
-            <span class="crs-module-title">${esc(mod.title)}</span>
+            <span class="crs-module-num${isModDone ? ' crs-module-num--done' : ''}">${isModDone ? '✓' : modIdx + 1}</span>
+            <div class="crs-module-info">
+                <span class="crs-module-title">${esc(mod.title)}</span>
+                <span class="crs-module-meta">${doneInMod}/${lessons.length} lessons · ${timeStr}</span>
+            </div>
             ${badgeHTML}
-            <span class="crs-module-time">${timeStr}</span>
-            <span class="crs-module-count">${doneInMod}/${lessons.length}</span>
             <svg class="crs-module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         `;
         header.addEventListener('click', () => div.classList.toggle('open'));
@@ -273,7 +272,7 @@ function renderModules(course) {
                 row.href = `lesson.html?id=${lesson.id}&slug=${encodeURIComponent(slug)}`;
             }
 
-            row.innerHTML = buildLessonIcon(state) + `<span class="crs-lesson-title">${esc(lesson.title)}</span>`;
+            row.innerHTML = buildLessonIcon(state) + `<span class="crs-lesson-title">${esc(lesson.title)}</span><span class="crs-lesson-time">5m</span>`;
             lessonsDiv.appendChild(row);
         });
 
