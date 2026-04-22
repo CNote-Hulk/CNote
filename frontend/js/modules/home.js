@@ -233,15 +233,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (milestonesEl) {
                     const m = (done, label) =>
                         `<div class="milestone-item${done ? ' milestone-item--done' : ''}">
-                            <span class="milestone-icon">${done ? '✓' : '○'}</span>
-                            <span>${label}</span>
+                            <span class="milestone-dot"></span>
+                            <span class="milestone-label">${label}</span>
                         </div>`;
                     milestonesEl.innerHTML =
-                        m(true,           'Created your account') +
-                        m(doneCount > 0,  'Started first lesson') +
-                        m(doneCount >= 10,'Complete 10 lessons') +
-                        m(doneCount >= 20,'Complete 20 lessons') +
-                        m(courseComplete, 'Complete your first course');
+                        m(true,            'Created your account') +
+                        m(doneCount > 0,   'Started first lesson') +
+                        m(doneCount >= 10, 'Completed 10 lessons') +
+                        m(doneCount >= 20, 'Completed 20 lessons') +
+                        m(courseComplete,  'Finished your first course');
                 }
             }
 
@@ -536,28 +536,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
 
-                // Progress panel: full card (design modern)
+                // Progress panel: full level card
                 const progressLevelCard = document.getElementById('progress-level-card');
                 if (progressLevelCard) {
+                    const nextHtml = lvl.nextLevel
+                        ? `<p class="prog-level-next">Next: <strong>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</strong> — need <strong>${lvl.nextRequirements.scoreNeeded} pts</strong></p>`
+                        : `<p class="prog-level-next" style="color:var(--accent-color);font-weight:600;">🏆 Max level!</p>`;
                     progressLevelCard.innerHTML = `
-                        <div style="background:rgba(30,25,20,0.85);border-radius:14px;box-shadow:0 2px 10px 0 rgba(0,0,0,0.13);padding:18px 20px 16px 20px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-width:340px;margin-left:0;">
-                            <div style="font-size:1.7rem;line-height:1;margin-bottom:2px;">${lvl.emoji}</div>
-                            <div style="font-size:1.18rem;font-weight:700;color:var(--accent-color);margin-bottom:2px;">${lvl.name}</div>
-                            <div style="font-size:1rem;color:#e6d6c3;opacity:0.88;margin-bottom:6px;text-align:left;">${lvl.description}</div>
-                            <div style="width:100%;margin:6px 0 0 0;">
-                                <div style="font-size:1rem;font-weight:500;color:#fff;">Score: <span style='color:var(--accent-color);font-weight:700;'>${lvl.score}</span> / 100</div>
-                                <div style="background:#2a2320;border-radius:7px;height:10px;width:100%;margin-top:4px;overflow:hidden;">
-                                    <div style="height:100%;width:${lvl.score}%;background:linear-gradient(90deg,var(--accent-color),#ffb86c);border-radius:7px;transition:width .4s;"></div>
-                                </div>
-                            </div>
-                            <div style="width:100%;margin-top:8px;">
-                                ${lvl.nextLevel ? `
-                                    <div style='font-size:1rem;color:#e6d6c3;opacity:0.88;margin-bottom:2px;'>Next: <span style='font-size:1.05rem;'>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</span> <span style='font-size:0.97rem;color:#ffb86c;'>(${lvl.nextLevel.minScore} pts)</span></div>
-                                    <div style='font-size:0.97rem;color:#fff;margin-top:2px;'>Need <b>${lvl.nextRequirements.scoreNeeded} more points</b> — earn <b>${lvl.nextRequirements.badgesNeeded} badge${lvl.nextRequirements.badgesNeeded !== 1 ? 's' : ''}</b>${lvl.nextRequirements.consolesNeeded ? ` or visit <b>${lvl.nextRequirements.consolesNeeded} more console${lvl.nextRequirements.consolesNeeded !== 1 ? 's' : ''}</b>` : ''}</div>
-                                ` : `<div style='color:var(--accent-color);font-weight:600;font-size:1.05rem;margin-top:4px;'>🏆 Maximum level reached!</div>`}
+                        <div class="prog-level-emoji">${lvl.emoji}</div>
+                        <p class="prog-level-name">${lvl.name}</p>
+                        <p class="prog-level-desc">${lvl.description}</p>
+                        <div class="prog-level-score-bar">
+                            <span class="prog-level-score-label">Score: <strong>${lvl.score}</strong> / 100</span>
+                            <div class="prog-level-bar-track">
+                                <div class="prog-level-bar-fill" style="width:0%"></div>
                             </div>
                         </div>
+                        ${nextHtml}
                     `;
+                    setTimeout(() => {
+                        const fill = progressLevelCard.querySelector('.prog-level-bar-fill');
+                        if (fill) fill.style.width = lvl.score + '%';
+                    }, 100);
                 }
 
                 // Save to localStorage pentru alte pagini

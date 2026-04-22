@@ -354,58 +354,60 @@
                         <p data-i18n="home_progress_subtitle">Track your learning journey</p>
                     </header>
 
+                    <!-- 2-col: level + course -->
                     <section class="dashboard-section">
-                        <h2 class="panel-section-title">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            <span>Your Level</span>
-                        </h2>
-                        <div class="card dash-card" id="progress-level-card">
-                            <p class="dash-empty">Loading...</p>
-                        </div>
-                    </section>
-
-                    <!-- Ring + Course overview (în curând) -->
-                    <section class="dashboard-section progress-overview-section">
-                        <div class="card progress-overview-card">
-                            <div class="progress-ring-wrap">
-                                <svg class="progress-ring" viewBox="0 0 100 100">
-                                    <circle class="progress-ring__bg" cx="50" cy="50" r="42"/>
-                                    <circle class="progress-ring__fill" cx="50" cy="50" r="42" id="progress-ring-arc"/>
-                                </svg>
-                                <div class="progress-ring__center">
-                                    <span class="progress-ring__pct" id="progress-ring-pct">—</span>
+                        <div class="progress-top-grid">
+                            <div class="card prog-level-card" id="progress-level-card">
+                                <p class="dash-empty">Loading...</p>
+                            </div>
+                            <div class="card progress-overview-card">
+                                <div class="progress-ring-wrap">
+                                    <svg class="progress-ring" viewBox="0 0 100 100">
+                                        <circle class="progress-ring__bg" cx="50" cy="50" r="42"/>
+                                        <circle class="progress-ring__fill" cx="50" cy="50" r="42" id="progress-ring-arc"/>
+                                    </svg>
+                                    <div class="progress-ring__center">
+                                        <span class="progress-ring__pct" id="progress-ring-pct">—</span>
+                                    </div>
+                                </div>
+                                <div class="progress-overview-info">
+                                    <span class="prog-course-label">Current course</span>
+                                    <h2 id="progress-panel-title">Console Starter Guide</h2>
+                                    <p><strong id="progress-continue-text">—</strong></p>
+                                    <div class="progress-bar"><div id="progress-bar-fill" style="width: 0%;"></div></div>
+                                    <a id="progress-panel-continue-btn" href="course.html?slug=starter-guide" class="progress-overview-btn">▶ Start course</a>
                                 </div>
                             </div>
-                            <div class="progress-overview-info">
-                                <h2 id="progress-panel-title">Console Starter Guide</h2>
-                                <p><span data-i18n="home_continue_label">Progress:</span> <strong id="progress-continue-text">—</strong></p>
-                                <div class="progress-bar"><div id="progress-bar-fill" style="width: 0%;"></div></div>
-                                <a id="progress-panel-continue-btn" href="course.html?slug=starter-guide" class="progress-overview-btn">▶ Start course</a>
-                            </div>
                         </div>
                     </section>
 
-                    <section class="dashboard-section">
-                        <h2 class="panel-section-title">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-                            <span data-i18n="home_achievements_title">Achievements</span>
-                        </h2>
-                        <div class="achievements-grid" id="home-achievements-preview">
-                            <p class="dash-empty">Loading...</p>
-                        </div>
-                    </section>
-
+                    <!-- Milestones -->
                     <section class="dashboard-section">
                         <h2 class="panel-section-title">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                             <span data-i18n="home_progress_milestones">Milestones</span>
                         </h2>
                         <div class="milestones-list" id="progress-milestones">
-                            <div class="milestone-item milestone-item--done"><span class="milestone-icon">✓</span><span data-i18n="home_milestone_account">Created your account</span></div>
-                            <div class="milestone-item milestone-item--soon"><span class="milestone-icon">🚧</span><span data-i18n="home_milestone_first_lesson">Started first lesson</span></div>
-                            <div class="milestone-item milestone-item--soon"><span class="milestone-icon">🚧</span><span data-i18n="home_milestone_10_lessons">Complete 10 lessons</span></div>
-                            <div class="milestone-item milestone-item--soon"><span class="milestone-icon">🚧</span><span data-i18n="home_milestone_first_quiz">Pass your first quiz</span></div>
-                            <div class="milestone-item"><span class="milestone-icon">○</span><span data-i18n="home_milestone_5_achievements">Earn 5 achievements</span></div>
+                            <div class="milestone-item milestone-item--done">
+                                <span class="milestone-dot"></span>
+                                <span class="milestone-label" data-i18n="home_milestone_account">Created your account</span>
+                            </div>
+                            <div class="milestone-item">
+                                <span class="milestone-dot"></span>
+                                <span class="milestone-label" data-i18n="home_milestone_first_lesson">Started first lesson</span>
+                            </div>
+                            <div class="milestone-item">
+                                <span class="milestone-dot"></span>
+                                <span class="milestone-label" data-i18n="home_milestone_10_lessons">Complete 10 lessons</span>
+                            </div>
+                            <div class="milestone-item">
+                                <span class="milestone-dot"></span>
+                                <span class="milestone-label">Complete 20 lessons</span>
+                            </div>
+                            <div class="milestone-item">
+                                <span class="milestone-dot"></span>
+                                <span class="milestone-label">Complete your first course</span>
+                            </div>
                         </div>
                     </section>
                 </div>

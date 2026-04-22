@@ -1949,50 +1949,171 @@ body.home-page::before {
     border-color: rgba(var(--accent-rgb), 0.35);
 }
 
-/* ── Milestones ── */
+/* ── Progress panel top grid (level card + course card) ── */
+
+.progress-top-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+    align-items: stretch;
+}
+
+/* Level card inside the grid */
+.prog-level-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px 18px;
+    background: linear-gradient(145deg, rgba(var(--accent-rgb), 0.09) 0%, rgba(var(--panel-rgb), 0.6) 100%);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 14px;
+}
+
+.prog-level-emoji {
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.prog-level-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 0;
+}
+
+.prog-level-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.prog-level-score-bar {
+    width: 100%;
+    margin-top: 2px;
+}
+
+.prog-level-score-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 5px;
+    display: block;
+}
+
+.prog-level-score-label strong {
+    color: var(--accent-color);
+}
+
+.prog-level-bar-track {
+    width: 100%;
+    height: 5px;
+    background: rgba(var(--accent-rgb), 0.12);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.prog-level-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-light, #FAF7F3));
+    border-radius: 3px;
+    transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 6px rgba(var(--accent-rgb), 0.35);
+}
+
+.prog-level-next {
+    font-size: 0.79rem;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.prog-level-next strong {
+    color: var(--text);
+}
+
+/* "Current course" small label above course title */
+.prog-course-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: -4px;
+}
+
+/* ── Milestones — timeline style ── */
 
 .milestones-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
+    position: relative;
+    padding-left: 20px;
+}
+
+/* vertical connector line */
+.milestones-list::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: var(--border);
+    border-radius: 1px;
 }
 
 .milestone-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    background: rgba(var(--panel-rgb), 0.7);
-    border: 1px solid var(--border);
+    padding: 9px 0;
     font-size: 0.88rem;
     color: var(--muted);
-    transition: border-color 0.2s;
+    position: relative;
 }
 
-.milestone-item--done {
-    color: var(--text);
-    border-color: rgba(var(--accent-rgb), 0.2);
-}
-
-.milestone-icon {
-    width: 22px;
-    height: 22px;
+.milestone-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--bg, #1a1613);
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
-    border-radius: 50%;
-    flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--muted);
+    font-size: 0.65rem;
+    color: transparent;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+    margin-left: -29px;
+    z-index: 1;
 }
 
-.milestone-item--done .milestone-icon {
-    background: rgba(var(--accent-rgb), 0.15);
-    color: var(--accent);
-    font-weight: 700;
+.milestone-item--done .milestone-dot {
+    border-color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.18);
+    color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
 }
+
+.milestone-item--done .milestone-dot::after {
+    content: '✓';
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.milestone-label {
+    color: inherit;
+    transition: color 0.2s;
+}
+
+.milestone-item--done .milestone-label {
+    color: var(--text);
+    font-weight: 500;
+}
+
 
 /* ── Achievements Progress Bar ── */
 
@@ -2151,12 +2272,24 @@ body.home-page::before {
         gap: 8px;
     }
 
+    .progress-top-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .prog-level-card {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .prog-level-emoji { font-size: 1.8rem; }
+
     .progress-overview-card {
         flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 20px;
-        padding: 24px 20px;
         padding: 20px 16px;
     }
 
