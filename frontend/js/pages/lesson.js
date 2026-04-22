@@ -765,6 +765,10 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
 async function init() {
     const token = localStorage.getItem('cn_token');
 
+    // Set up 3-column DOM structure immediately (before any async fetch)
+    // so the CSS grid never renders with unstructured children
+    buildTwoColumnLayout();
+
     const lesson = await fetchLesson();
 
     if (!lesson) {
@@ -794,10 +798,10 @@ async function init() {
 
     lessonData = lesson;
     renderLesson(lesson);
+    renderQuiz(lesson.quiz_questions || []);
+    buildArticleTOC();
 
     const course = await fetchCourseStructure();
-    renderTopbar(lesson, course);
-    renderQuiz(lesson.quiz_questions || []);
 
     const allLessons = course ? (course.modules || []).flatMap(m => m.lessons || []) : [];
     const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
@@ -808,14 +812,7 @@ async function init() {
     window._lsnNextId = nextLesson ? nextLesson.id : null;
 
     buildTopbar(lesson, course, allLessons, lsnIdx);
-
-    // ── Three-column layout ──
-    buildTwoColumnLayout();
-
     renderNavButtons(allLessons, lsnIdx, hasQuiz);
-
-    // Article h2 TOC (right sidebar)
-    buildArticleTOC();
 
     // ── Fetch sidebar progress + reactions + comments in parallel ──
     const [progressData, reactionsData, commentsData] = await Promise.all([
