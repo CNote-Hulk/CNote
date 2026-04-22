@@ -227,6 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     progressPanelBtn.textContent = courseComplete ? '✓ Review course' : doneCount > 0 ? '▶ Continue' : '▶ Start course';
                 }
 
+
                 // Milestones
                 const milestonesEl = document.getElementById('progress-milestones');
                 if (milestonesEl) {

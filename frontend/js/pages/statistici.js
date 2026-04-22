@@ -87,6 +87,17 @@ async function getLearningStats() {
     }
 }
 
+/** GET /api/courses/starter-guide/progress — real lesson totals + last lesson */
+async function getCourseProgress() {
+    try {
+        const resp = await fetch('/api/courses/starter-guide/progress', { headers: authHeaders(), credentials: 'include' });
+        if (!resp.ok) return null;
+        return resp.json();
+    } catch {
+        return null;
+    }
+}
+
 /** Render next achievement goals (up to 6 locked badges) */
 function renderGoals(badges) {
     const container = document.getElementById('next-goals');
@@ -122,12 +133,13 @@ async function renderStats() {
     document.getElementById('stat-days-member').textContent = String(daysMember);
 
     // Fetch all server data in parallel
-    const [visitedConsoles, friendsCount, favoritesCount, ownedCount, learningStats] = await Promise.all([
+    const [visitedConsoles, friendsCount, favoritesCount, ownedCount, learningStats, courseProgress] = await Promise.all([
         getVisitedConsolesCount(),
         getFriendsCount(),
         getFavoritesCount(),
         getOwnedCount(),
         getLearningStats(),
+        getCourseProgress(),
     ]);
 
     // Consoles visited
@@ -150,9 +162,12 @@ async function renderStats() {
         const inProgress = learningStats.courses_in_progress || 0;
         const coursesCompleted = learningStats.courses_completed || 0;
 
-        // Ring card — lessons completed (use 19 as total for starter guide)
-        const totalLessons = 19;
+        // Real total from course progress API (fallback to learningStats if unavailable)
+        const totalLessons = courseProgress && courseProgress.total_lessons > 0
+            ? courseProgress.total_lessons
+            : (learningStats.total_lessons || 0);
         const pct = totalLessons > 0 ? Math.min(100, Math.round((total / totalLessons) * 100)) : 0;
+
         const completedEl = document.getElementById('stat-lessons-completed');
         const subEl = document.getElementById('stat-lessons-sub');
         const fillEl = document.getElementById('stat-lessons-fill');
@@ -178,10 +193,15 @@ async function renderStats() {
         const completedCoursesEl = document.getElementById('stat-lessons-visited');
         if (completedCoursesEl) completedCoursesEl.textContent = String(coursesCompleted);
 
-        // Update continue learning link to last lesson if available
+        // Continue learning link — prefer last_lesson_id from course progress (has slug context)
+        const lastLessonId = (courseProgress && courseProgress.last_lesson_id)
+            || learningStats.last_lesson_id;
+        const courseSlug = courseProgress ? 'starter-guide' : 'starter-guide';
         const ctaBtn = document.getElementById('statsd-continue-btn');
-        if (ctaBtn && learningStats.last_lesson_id) {
-            ctaBtn.href = `lesson.html?id=${learningStats.last_lesson_id}&slug=starter-guide`;
+        if (ctaBtn && lastLessonId) {
+            ctaBtn.href = `lesson.html?id=${lastLessonId}&slug=${courseSlug}`;
+        } else if (ctaBtn && totalLessons > 0) {
+            ctaBtn.href = 'course.html?slug=starter-guide';
         }
     }
 
