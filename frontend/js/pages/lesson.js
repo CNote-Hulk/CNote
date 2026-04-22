@@ -262,21 +262,27 @@ function showCourseComplete() {
 }
 
 /* ─────────────────────────────────────
-   NEW: TWO-COLUMN LAYOUT
-   Wraps existing .lsn-container children
-   into .lsn-main and adds .lsn-sidebar
+   THREE-COLUMN LAYOUT
+   Left: course nav | Center: main | Right: sidebar
 ───────────────────────────────────── */
 function buildTwoColumnLayout() {
     const container = document.querySelector('.lsn-container');
-    if (!container || container.querySelector('.lsn-main')) return; // guard
+    if (!container || container.querySelector('.lsn-main')) return;
 
-    // Wrap all existing children into .lsn-main
+    // Left: course outline nav
+    const courseNav = document.createElement('nav');
+    courseNav.className = 'lsn-course-nav';
+    courseNav.innerHTML = `
+        <div class="lsn-course-nav__title">Course Outline</div>
+        <div id="lsn-course-nav-list"></div>
+    `;
+
+    // Center: wrap existing children
     const main = document.createElement('div');
     main.className = 'lsn-main';
     while (container.firstChild) main.appendChild(container.firstChild);
-    container.appendChild(main);
 
-    // Build sidebar
+    // Right: sidebar (reading progress + article TOC + author)
     const sidebar = document.createElement('aside');
     sidebar.className = 'lsn-sidebar';
     sidebar.innerHTML = `
@@ -290,8 +296,8 @@ function buildTwoColumnLayout() {
             </div>
         </div>
         <div class="lsn-sb-toc" id="lsn-sb-toc">
-            <div class="lsn-sb-section-label">In this course</div>
-            <div class="lsn-sb-toc__list" id="lsn-toc-list"></div>
+            <span class="lsn-sb-section-label">In this lesson</span>
+            <div id="lsn-toc-list"></div>
         </div>
         <div class="lsn-sb-author">
             <div class="lsn-sb-section-label">Created by</div>
@@ -304,27 +310,30 @@ function buildTwoColumnLayout() {
             </div>
         </div>
     `;
+
+    container.appendChild(courseNav);
+    container.appendChild(main);
     container.appendChild(sidebar);
 }
 
 /* ─────────────────────────────────────
-   NEW: SIDEBAR TOC
+   LEFT COURSE NAV (full course outline)
 ───────────────────────────────────── */
 function renderSidebarTOC(course, completedIds) {
-    const tocList = document.getElementById('lsn-toc-list');
-    if (!tocList || !course) return;
+    const navList = document.getElementById('lsn-course-nav-list');
+    if (!navList || !course) return;
 
     const currentId = parseInt(lessonId, 10);
-    tocList.innerHTML = '';
+    navList.innerHTML = '';
 
     (course.modules || []).forEach(mod => {
-        const modDiv = document.createElement('div');
-        modDiv.className = 'lsn-toc-module';
+        const section = document.createElement('div');
+        section.className = 'lsn-cnav-section';
 
-        const modLabel = document.createElement('div');
-        modLabel.className = 'lsn-toc-module__title';
-        modLabel.textContent = mod.title;
-        modDiv.appendChild(modLabel);
+        const header = document.createElement('div');
+        header.className = 'lsn-cnav-section__header';
+        header.textContent = mod.title;
+        section.appendChild(header);
 
         (mod.lessons || []).forEach(l => {
             const isDone = completedIds.has(l.id);
@@ -332,35 +341,64 @@ function renderSidebarTOC(course, completedIds) {
 
             const a = document.createElement('a');
             a.href = `lesson.html?id=${l.id}&slug=${encodeURIComponent(courseSlug)}`;
-            a.className = 'lsn-toc-lesson'
-                + (isCurrent ? ' lsn-toc-lesson--active' : '')
-                + (isDone ? ' lsn-toc-lesson--done' : '');
+            a.className = 'lsn-cnav-lesson'
+                + (isCurrent ? ' lsn-cnav-lesson--active' : '')
+                + (isDone ? ' lsn-cnav-lesson--done' : '');
 
-            const iconSpan = document.createElement('span');
-            iconSpan.className = 'lsn-toc-lesson__icon';
+            const check = document.createElement('div');
+            check.className = 'lsn-cnav-check'
+                + (isDone ? ' lsn-cnav-check--done' : '')
+                + (isCurrent && !isDone ? ' lsn-cnav-check--active' : '');
+            if (isDone) check.textContent = '✓';
 
-            if (isDone) {
-                iconSpan.className += ' lsn-toc-lesson__icon--done';
-                iconSpan.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-            } else if (isCurrent) {
-                iconSpan.className += ' lsn-toc-lesson__icon--active';
-                iconSpan.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`;
-            } else {
-                iconSpan.className += ' lsn-toc-lesson__icon--open';
-                iconSpan.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>`;
-            }
+            const label = document.createElement('div');
+            label.className = 'lsn-cnav-label';
+            label.textContent = l.title;
 
-            const titleSpan = document.createElement('span');
-            titleSpan.className = 'lsn-toc-lesson__title';
-            titleSpan.textContent = l.title;
-
-            a.appendChild(iconSpan);
-            a.appendChild(titleSpan);
-            modDiv.appendChild(a);
+            a.appendChild(check);
+            a.appendChild(label);
+            section.appendChild(a);
         });
 
-        tocList.appendChild(modDiv);
+        navList.appendChild(section);
     });
+}
+
+/* ─────────────────────────────────────
+   RIGHT SIDEBAR: article h2 TOC
+───────────────────────────────────── */
+function buildArticleTOC() {
+    const tocList = document.getElementById('lsn-toc-list');
+    const tocBlock = document.getElementById('lsn-sb-toc');
+    if (!tocList) return;
+
+    const headings = document.querySelectorAll('.lsn-content h2');
+    if (headings.length === 0) {
+        if (tocBlock) tocBlock.style.display = 'none';
+        return;
+    }
+
+    tocList.innerHTML = '';
+    headings.forEach((h, i) => {
+        if (!h.id) h.id = 'lsn-h-' + i;
+        const item = document.createElement('div');
+        item.className = 'lsn-toc-item';
+        item.dataset.target = h.id;
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        item.appendChild(a);
+        tocList.appendChild(item);
+    });
+
+    const items = tocList.querySelectorAll('.lsn-toc-item');
+    window.addEventListener('scroll', () => {
+        let active = 0;
+        headings.forEach((h, i) => {
+            if (h.getBoundingClientRect().top < 140) active = i;
+        });
+        items.forEach((t, i) => t.classList.toggle('active', i === active));
+    }, { passive: true });
 }
 
 /* ─────────────────────────────────────
@@ -613,36 +651,41 @@ function renderComments(data) {
 }
 
 /* ─────────────────────────────────────
-   NEW: STICKY TOPBAR
-   Injected before .lsn-hero
+   LESSON BANNER (sticky, replaces old topbar)
 ───────────────────────────────────── */
 function buildTopbar(lesson, course, allLessons, lsnIdx) {
-    const topbar = document.createElement('div');
-    topbar.className = 'lsn-topbar';
+    const banner = document.createElement('div');
+    banner.className = 'lsn-lesson-banner';
 
     const courseTitle = course ? course.title : 'Course';
     const courseHref = courseSlug ? `course.html?slug=${encodeURIComponent(courseSlug)}` : 'invata.html';
     const total = allLessons.length;
     const num = lsnIdx >= 0 ? lsnIdx + 1 : 1;
 
-    topbar.innerHTML = `
-        <div class="lsn-topbar__breadcrumb">
-            <a href="invata.html">Learn</a>
-            <span class="lsn-topbar__sep">›</span>
-            <a href="${courseHref}">${esc(courseTitle)}</a>
-            <span class="lsn-topbar__sep">›</span>
-            <span class="lsn-topbar__current">${esc(lesson.title)}</span>
+    banner.innerHTML = `
+        <div class="lsn-lesson-banner__inner">
+            <a class="lsn-course-pill" href="${courseHref}">
+                <div class="lsn-course-pill-dot"></div>
+                <span>${esc(courseTitle)}</span>
+            </a>
+            <span class="lsn-banner-sep">·</span>
+            <span class="lsn-banner-lesson-num">Lesson ${num}${total > 0 ? ' of ' + total : ''}</span>
+            ${total > 0 ? `<div class="lsn-banner-progress">
+                <span class="lsn-banner-progress__label">Progress</span>
+                <div class="lsn-banner-progress__bar">
+                    <div class="lsn-banner-progress__fill" id="lsn-banner-fill" style="width:0%"></div>
+                </div>
+                <span class="lsn-banner-progress__pct" id="lsn-banner-pct">0%</span>
+            </div>` : ''}
         </div>
-        ${total > 0 ? `<span class="lsn-topbar__badge">Lesson ${num} / ${total}</span>` : ''}
     `;
 
     const hero = document.querySelector('.lsn-hero');
-    if (hero) hero.before(topbar);
+    if (hero) hero.before(banner);
 }
 
 /* ─────────────────────────────────────
-   NEW: PREV / NEXT NAV BUTTONS
-   Appended to .lsn-main (after two-column layout)
+   PREV / NEXT NAV BUTTONS (card style)
 ───────────────────────────────────── */
 function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
     const main = document.querySelector('.lsn-main');
@@ -651,29 +694,56 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
     const prevLesson = lsnIdx > 0 ? allLessons[lsnIdx - 1] : null;
     const nextLesson = lsnIdx >= 0 && lsnIdx < allLessons.length - 1 ? allLessons[lsnIdx + 1] : null;
     const isLastLesson = !nextLesson;
+    const total = allLessons.length;
 
     const nav = document.createElement('div');
     nav.className = 'lsn-nav-buttons';
 
     const prevBtn = document.createElement('a');
     prevBtn.className = 'lsn-nav-btn lsn-nav-btn--prev';
-    prevBtn.innerHTML = '← Previous';
     if (prevLesson) {
         prevBtn.href = `lesson.html?id=${prevLesson.id}&slug=${encodeURIComponent(courseSlug)}`;
+        prevBtn.innerHTML = `
+            <div class="lsn-nav-btn__direction">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M6 2L3 5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Previous
+            </div>
+            <div class="lsn-nav-btn__title">${esc(prevLesson.title)}</div>
+            <div class="lsn-nav-btn__num">Lesson ${lsnIdx} of ${total}</div>
+        `;
     } else {
         prevBtn.classList.add('lsn-nav-btn--disabled');
         prevBtn.href = '#';
         prevBtn.setAttribute('aria-disabled', 'true');
+        prevBtn.innerHTML = `
+            <div class="lsn-nav-btn__direction">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M6 2L3 5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Previous
+            </div>
+            <div class="lsn-nav-btn__title">Start of course</div>
+        `;
     }
 
     const nextBtn = document.createElement('a');
     nextBtn.className = 'lsn-nav-btn lsn-nav-btn--next';
     nextBtn.id = 'lsn-next-nav-btn';
-    nextBtn.innerHTML = isLastLesson ? 'View Course →' : 'Next →';
 
     const resolvedNextHref = isLastLesson
         ? (courseSlug ? `course.html?slug=${encodeURIComponent(courseSlug)}` : 'invata.html')
         : `lesson.html?id=${nextLesson.id}&slug=${encodeURIComponent(courseSlug)}`;
+
+    const nextTitle = isLastLesson ? 'View course overview' : esc(nextLesson.title);
+    const nextNum = !isLastLesson
+        ? `<div class="lsn-nav-btn__num">Lesson ${lsnIdx + 2} of ${total}</div>` : '';
+
+    nextBtn.innerHTML = `
+        <div class="lsn-nav-btn__direction">
+            Next lesson
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M4 2l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="lsn-nav-btn__title">${nextTitle}</div>
+        ${nextNum}
+    `;
 
     if (hasQuiz) {
         nextBtn.classList.add('lsn-nav-btn--disabled');
@@ -733,12 +803,19 @@ async function init() {
     const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
     const hasQuiz = (lesson.quiz_questions || []).length > 0;
 
+    // Set _lsnNextId for showResult()
+    const nextLesson = lsnIdx >= 0 && lsnIdx < allLessons.length - 1 ? allLessons[lsnIdx + 1] : null;
+    window._lsnNextId = nextLesson ? nextLesson.id : null;
+
     buildTopbar(lesson, course, allLessons, lsnIdx);
 
-    // ── Two-column layout ──
+    // ── Three-column layout ──
     buildTwoColumnLayout();
 
     renderNavButtons(allLessons, lsnIdx, hasQuiz);
+
+    // Article h2 TOC (right sidebar)
+    buildArticleTOC();
 
     // ── Fetch sidebar progress + reactions + comments in parallel ──
     const [progressData, reactionsData, commentsData] = await Promise.all([
@@ -749,6 +826,16 @@ async function init() {
 
     const completedIds = new Set((progressData?.completed_lesson_ids || []).map(Number));
     if (course) renderSidebarTOC(course, completedIds);
+
+    // Update banner progress bar
+    if (allLessons.length > 0) {
+        const pct = Math.round((completedIds.size / allLessons.length) * 100);
+        const bannerFill = document.getElementById('lsn-banner-fill');
+        const bannerPct = document.getElementById('lsn-banner-pct');
+        if (bannerFill) bannerFill.style.width = pct + '%';
+        if (bannerPct) bannerPct.textContent = pct + '%';
+    }
+
     initScrollProgress();
     renderReactions(reactionsData);
     renderComments(commentsData);
