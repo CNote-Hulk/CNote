@@ -17,7 +17,6 @@
     min-height: 100vh;
     background: var(--primary-color);
     color: var(--text-light);
-    padding-bottom: 80px;
 }
 
 /* ═══════════════════════════════
@@ -322,7 +321,7 @@
 .crs-container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0 48px 60px;
+    padding: 20px 48px 60px;
     display: flex;
     gap: 36px;
     align-items: flex-start;

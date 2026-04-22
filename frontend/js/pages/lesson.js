@@ -651,40 +651,6 @@ function renderComments(data) {
 }
 
 /* ─────────────────────────────────────
-   LESSON BANNER (sticky, replaces old topbar)
-───────────────────────────────────── */
-function buildTopbar(lesson, course, allLessons, lsnIdx) {
-    const banner = document.createElement('div');
-    banner.className = 'lsn-lesson-banner';
-
-    const courseTitle = course ? course.title : 'Course';
-    const courseHref = courseSlug ? `course.html?slug=${encodeURIComponent(courseSlug)}` : 'invata.html';
-    const total = allLessons.length;
-    const num = lsnIdx >= 0 ? lsnIdx + 1 : 1;
-
-    banner.innerHTML = `
-        <div class="lsn-lesson-banner__inner">
-            <a class="lsn-course-pill" href="${courseHref}">
-                <div class="lsn-course-pill-dot"></div>
-                <span>${esc(courseTitle)}</span>
-            </a>
-            <span class="lsn-banner-sep">·</span>
-            <span class="lsn-banner-lesson-num">Lesson ${num}${total > 0 ? ' of ' + total : ''}</span>
-            ${total > 0 ? `<div class="lsn-banner-progress">
-                <span class="lsn-banner-progress__label">Progress</span>
-                <div class="lsn-banner-progress__bar">
-                    <div class="lsn-banner-progress__fill" id="lsn-banner-fill" style="width:0%"></div>
-                </div>
-                <span class="lsn-banner-progress__pct" id="lsn-banner-pct">0%</span>
-            </div>` : ''}
-        </div>
-    `;
-
-    const hero = document.querySelector('.lsn-hero');
-    if (hero) hero.before(banner);
-}
-
-/* ─────────────────────────────────────
    PREV / NEXT NAV BUTTONS (card style)
 ───────────────────────────────────── */
 function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
