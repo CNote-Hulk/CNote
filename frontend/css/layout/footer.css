@@ -6,12 +6,14 @@
     backdrop-filter: blur(8px);
     border-top: 1px solid var(--border-color);
     margin-top: auto;
+    margin-right: 28px;
+    margin-bottom: 28px;
+    margin-left: 28px;
     position: relative;
     z-index: 1;
     color: var(--text-gray);
     padding: 40px 0 100px 0;
     text-align: center;
-    margin: auto 28px 28px;
     width: auto;
     border-radius: 18px;
     border: 1px solid var(--border);
@@ -79,7 +81,10 @@
 @media (max-width: 768px) {
     .footer {
         padding: 24px 0 100px 0;
-        margin: 0;
+        margin-top: auto;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
         width: 100%;
         border-radius: 0;
         border: none;
