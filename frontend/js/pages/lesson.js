@@ -73,9 +73,28 @@ function renderTopbar(lesson, course) {
     }
 }
 
-function renderLesson(lesson) {
+function renderLesson(lesson, course, lsnIdx) {
     document.title = `${lesson.title} — Console Notebook`;
-    document.querySelector('.lsn-title').textContent = lesson.title;
+    
+    // Build title with module and lesson number
+    let titleText = lesson.title;
+    if (course && lsnIdx !== undefined && lsnIdx >= 0) {
+        // Find which module this lesson belongs to
+        let moduleNum = 1;
+        let lessonNumInModule = 1;
+        for (let m = 0; m < (course.modules || []).length; m++) {
+            const module = course.modules[m];
+            const lessonPos = (module.lessons || []).findIndex(l => l.id === lesson.id);
+            if (lessonPos >= 0) {
+                moduleNum = m + 1;
+                lessonNumInModule = lessonPos + 1;
+                break;
+            }
+        }
+        titleText = `Module ${moduleNum}, Lesson ${lessonNumInModule} • ${lesson.title}`;
+    }
+    
+    document.querySelector('.lsn-title').textContent = titleText;
 
     const content = document.querySelector('.lsn-content');
     if (lesson.content_html && lesson.content_html.trim()) {
@@ -382,8 +401,6 @@ function renderSidebarTOC(course, completedIds) {
     const nav = document.createElement('div');
     nav.className = 'lsn-course-nav';
 
-    const title = document.createElement('div');
-    title.className = 'lsn-course-nav__title';
     const currentModule = (course.modules || []).find(m => (m.lessons || []).some(l => String(l.id) === String(lessonData?.id)));
     title.textContent = currentModule?.title || 'Course content';
     nav.appendChild(title);
@@ -783,15 +800,14 @@ async function init() {
     }
 
     if (!token) {
-        const topBanner = document.querySelector('.lsn-guest-banner');
-        if (topBanner) topBanner.style.display = 'flex';
+        const bannerSection = document.querySelector('.lsn-guest-banner-section');
+        if (bannerSection) bannerSection.style.display = 'block';
 
         const bottomBanner = document.querySelector('.lsn-bottom-banner');
         if (bottomBanner) bottomBanner.style.display = 'flex';
     }
 
     lessonData = lesson;
-    renderLesson(lesson);
     renderQuiz(lesson.quiz_questions || []);
     buildArticleTOC();
 
@@ -799,6 +815,9 @@ async function init() {
 
     const allLessons = course ? (course.modules || []).flatMap(m => m.lessons || []) : [];
     const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
+    
+    // Now render lesson with module and lesson info
+    renderLesson(lesson, course, lsnIdx);
     const hasQuiz = (lesson.quiz_questions || []).length > 0;
 
     // Set _lsnNextId for showResult()

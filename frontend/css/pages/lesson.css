@@ -191,6 +191,7 @@
 
 /* Guest banner section */
 .lsn-guest-banner-section {
+    display: none;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 12px 32px;
@@ -238,11 +239,8 @@
 
 /* Quiz section - scrollable */
 .lsn-quiz-section {
-    overflow-y: auto;
-    overflow-x: hidden;
     padding: 32px;
     border-top: 1px solid var(--border);
-    max-height: 40vh;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
 }
