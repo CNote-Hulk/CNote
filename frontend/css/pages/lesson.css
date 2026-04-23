@@ -190,7 +190,6 @@
     position: sticky;
     top: 112px;
     max-height: calc(100vh - 120px);
-    overflow-y: auto;
     scrollbar-width: none;
     border-right: 1px solid var(--border-color);
 }

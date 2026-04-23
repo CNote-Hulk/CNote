@@ -384,7 +384,8 @@ function renderSidebarTOC(course, completedIds) {
 
     const title = document.createElement('div');
     title.className = 'lsn-course-nav__title';
-    title.textContent = 'Course content';
+    const currentModule = (course.modules || []).find(m => (m.lessons || []).some(l => String(l.id) === String(lessonData?.id)));
+    title.textContent = currentModule?.title || 'Course content';
     nav.appendChild(title);
 
     (course.modules || []).forEach(module => {
