@@ -298,22 +298,9 @@ function buildTwoColumnLayout() {
     const container = document.querySelector('.lsn-container');
     if (!container || container.querySelector('.lsn-main')) return;
 
-    // Left: course outline nav
-    const courseNav = document.createElement('nav');
-    courseNav.className = 'lsn-course-nav';
-    courseNav.innerHTML = `
-        <div class="lsn-course-nav__title">Course Outline</div>
-        <div id="lsn-course-nav-list"></div>
-    `;
-
-    // Center: wrap existing children
-    const main = document.createElement('div');
-    main.className = 'lsn-main';
-    while (container.firstChild) main.appendChild(container.firstChild);
-
-    // Right: sidebar (reading progress + article TOC + author)
+    /// Left: sidebar (reading progress + article TOC + author)
     const sidebar = document.createElement('aside');
-    sidebar.className = 'lsn-sidebar';
+    sidebar.className = 'lsn-course-nav';
     sidebar.innerHTML = `
         <div class="lsn-sb-progress">
             <div class="lsn-sb-progress__label">
@@ -338,7 +325,13 @@ function buildTwoColumnLayout() {
                 </div>
             </div>
         </div>
+        <div id="lsn-course-nav-list"></div>
     `;
+    
+    // Center: wrap existing children
+    const main = document.createElement('div');
+    main.className = 'lsn-main';
+    while (container.firstChild) main.appendChild(container.firstChild);
 
     container.appendChild(courseNav);
     container.appendChild(main);
