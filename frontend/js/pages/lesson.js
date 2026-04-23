@@ -374,6 +374,60 @@ function buildArticleTOC() {
     }, { passive: true });
 }
 
+function renderSidebarTOC(course, completedIds) {
+    const container = document.getElementById('lsn-course-nav-list');
+    if (!container) return;
+
+    container.innerHTML = '';
+    const nav = document.createElement('div');
+    nav.className = 'lsn-course-nav';
+
+    const title = document.createElement('div');
+    title.className = 'lsn-course-nav__title';
+    title.textContent = 'Course content';
+    nav.appendChild(title);
+
+    (course.modules || []).forEach(module => {
+        const section = document.createElement('div');
+        section.className = 'lsn-cnav-section';
+
+        const header = document.createElement('div');
+        header.className = 'lsn-cnav-section__header';
+        header.textContent = module.title || 'Module';
+        section.appendChild(header);
+
+        (module.lessons || []).forEach(lsn => {
+            const lessonLink = document.createElement('a');
+            lessonLink.className = 'lsn-cnav-lesson';
+            lessonLink.href = `lesson.html?id=${encodeURIComponent(lsn.id)}&slug=${encodeURIComponent(courseSlug)}`;
+            if (lessonData && lsn.id === lessonData.id) {
+                lessonLink.classList.add('lsn-cnav-lesson--active');
+            }
+
+            const check = document.createElement('span');
+            check.className = 'lsn-cnav-check';
+            if (completedIds.has(Number(lsn.id))) {
+                check.classList.add('lsn-cnav-check--done');
+            }
+            if (lessonData && lsn.id === lessonData.id) {
+                check.classList.add('lsn-cnav-check--active');
+            }
+            check.setAttribute('aria-hidden', 'true');
+            section.appendChild(lessonLink);
+            lessonLink.appendChild(check);
+
+            const label = document.createElement('span');
+            label.className = 'lsn-cnav-label';
+            label.textContent = lsn.title;
+            lessonLink.appendChild(label);
+        });
+
+        nav.appendChild(section);
+    });
+
+    container.appendChild(nav);
+}
+
 /* ─────────────────────────────────────
    NEW: SCROLL PROGRESS
 ───────────────────────────────────── */
@@ -704,7 +758,7 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
 async function init() {
     const token = localStorage.getItem('cn_token');
 
-    // Set up 3-column DOM structure immediately (before any async fetch)
+    // Set up 2-column DOM structure immediately (before any async fetch)
     // so the CSS grid never renders with unstructured children
     buildTwoColumnLayout();
 

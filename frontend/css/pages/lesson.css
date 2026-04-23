@@ -1291,7 +1291,7 @@
 /* ── Responsive ── */
 @media (max-width: 1100px) {
     .lsn-container { grid-template-columns: 220px 1fr; }
-    .lsn-course-nav { display: none; }
+    .lsn-course-nav { display: block; }
     .lsn-sidebar { padding: 28px 0 28px 20px; }
 }
 
