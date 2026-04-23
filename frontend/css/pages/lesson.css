@@ -5,7 +5,6 @@
     background: var(--primary-color);
     color: var(--text-light);
     padding-top: 64px;
-    padding-bottom: 80px;
 }
 
 /* ═══════════════════════════════
@@ -22,7 +21,7 @@
 }
 
 .lsn-lesson-banner__inner {
-    max-width: 1160px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -122,7 +121,7 @@
 
 .lsn-hero__inner {
     position: relative;
-    max-width: 1160px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 40px 28px;
     border-bottom: 1px solid var(--border-color);
@@ -174,14 +173,11 @@
    THREE-COLUMN LAYOUT
 ═══════════════════════════════ */
 .lsn-container {
-    max-width: 1160px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 40px 80px;
-    display: grid;
-    grid-template-columns: 220px 1fr 240px;
-    gap: 0;
-    align-items: start;
-    min-height: calc(100vh - 200px);
+    display: block;
+    min-height: calc(100vh - 112px);
 }
 
 /* ── LEFT: Course nav ── */

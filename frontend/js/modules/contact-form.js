@@ -17,6 +17,9 @@ export const ContactFormModule = {
 
         window.__CONTACT_FORM_INITIALIZED__ = true;
 
+        // Clear any browser-restored form data before auto-fill
+        contactForm.reset();
+
         // Auto-fill Name & Email from session
         try {
             const raw = localStorage.getItem('cn_session');
@@ -153,7 +156,6 @@ export const ContactFormModule = {
                 if (isLocalFile) {
                     sendLocalMailto(name, email, subject, message);
                     contactForm.reset();
-                    contactForm.hidden = true;
                     successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);
                     return;
@@ -172,7 +174,6 @@ export const ContactFormModule = {
 
                 if (response.ok && data.success) {
                     contactForm.reset();
-                    contactForm.hidden = true;
                     successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);
                 } else {

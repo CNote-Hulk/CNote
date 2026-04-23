@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const isLocalFile = window.location.protocol === 'file:';
     const API_BASE_URL = (window.CN_API_BASE_URL || '/api').replace(/\/$/, '');
 
+    // Clear any browser-restored form data before auto-fill
+    if (contactForm) contactForm.reset();
+
     // Auto-fill Name & Email from session
     try {
         const raw = localStorage.getItem('cn_session');
@@ -169,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (isLocalFile) {
                     sendLocalMailto(name, email, subject, message);
                     contactForm.reset();
-                    contactForm.hidden = true;
                     if (successMessage) successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);
                     return;
@@ -188,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (response.ok && data.success) {
                     contactForm.reset();
-                    contactForm.hidden = true;
                     if (successMessage) successMessage.hidden = false;
                     smoothScrollToMessage(successMessage);
                 } else {

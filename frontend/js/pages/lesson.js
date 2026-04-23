@@ -262,6 +262,35 @@ function showCourseComplete() {
 }
 
 /* ─────────────────────────────────────
+   TOPBAR (sticky lesson banner)
+───────────────────────────────────── */
+function buildTopbar(lesson, course, allLessons, lsnIdx) {
+    const courseLink = document.getElementById('lsn-course-link');
+    const coursePillName = document.getElementById('lsn-course-pill-name');
+    const lessonNumEl = document.getElementById('lsn-banner-lesson-num');
+
+    if (courseLink && courseSlug) {
+        courseLink.href = `course.html?slug=${encodeURIComponent(courseSlug)}`;
+    }
+    if (coursePillName && course) {
+        coursePillName.textContent = course.title;
+    }
+    if (lessonNumEl && lsnIdx >= 0) {
+        lessonNumEl.textContent = `Lesson ${lsnIdx + 1} / ${allLessons.length}`;
+    }
+
+    const indicator = document.querySelector('.lsn-progress-indicator');
+    if (indicator && lsnIdx >= 0) {
+        indicator.textContent = `${lsnIdx + 1} / ${allLessons.length}`;
+    }
+
+    const metaItem = document.querySelector('.lsn-hero__meta-item');
+    if (metaItem && course) {
+        metaItem.lastChild.textContent = course.title;
+    }
+}
+
+/* ─────────────────────────────────────
    THREE-COLUMN LAYOUT
    Left: course nav | Center: main | Right: sidebar
 ───────────────────────────────────── */
