@@ -5,6 +5,7 @@
     background: var(--primary-color);
     color: var(--text-light);
     padding-top: 64px;
+
 }
 
 /* ═══════════════════════════════
@@ -178,6 +179,9 @@
     padding: 0 40px 80px;
     display: block;
     min-height: calc(100vh - 112px);
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: 24px;
 }
 
 /* ── LEFT: Course nav ── */
