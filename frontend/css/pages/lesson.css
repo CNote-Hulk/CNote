@@ -180,7 +180,7 @@
     display: block;
     min-height: calc(100vh - 112px);
     display: grid;
-    grid-template-columns: 250px 1fr 250px;
+    grid-template-columns: 250px 1fr;
     gap: 24px;
 }
 
@@ -283,13 +283,13 @@
 
 /* ── RIGHT: Sidebar ── */
 .lsn-sidebar {
-    padding: 28px 0 28px 24px;
+    padding: 28px 24px 28px 0;
     position: sticky;
     top: 112px;
     max-height: calc(100vh - 120px);
     overflow-y: auto;
     scrollbar-width: none;
-    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -1290,7 +1290,7 @@
 
 /* ── Responsive ── */
 @media (max-width: 1100px) {
-    .lsn-container { grid-template-columns: 1fr 220px; }
+    .lsn-container { grid-template-columns: 220px 1fr; }
     .lsn-course-nav { display: none; }
     .lsn-sidebar { padding: 28px 0 28px 20px; }
 }

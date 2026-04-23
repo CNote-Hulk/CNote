@@ -292,15 +292,20 @@ function buildTopbar(lesson, course, allLessons, lsnIdx) {
 
 /* ─────────────────────────────────────
    THREE-COLUMN LAYOUT
-   Left: course nav | Center: main | Right: sidebar
+   Left: sidebar | Center: main
 ───────────────────────────────────── */
 function buildTwoColumnLayout() {
     const container = document.querySelector('.lsn-container');
     if (!container || container.querySelector('.lsn-main')) return;
+    
+    // Center: wrap existing children
+    const main = document.createElement('div');
+    main.className = 'lsn-main';
+    while (container.firstChild) main.appendChild(container.firstChild);
 
-    /// Left: sidebar (reading progress + article TOC + author)
+    // Left: sidebar (reading progress + article TOC + author)
     const sidebar = document.createElement('aside');
-    sidebar.className = 'lsn-course-nav';
+    sidebar.className = 'lsn-sidebar';
     sidebar.innerHTML = `
         <div class="lsn-sb-progress">
             <div class="lsn-sb-progress__label">
@@ -327,67 +332,13 @@ function buildTwoColumnLayout() {
         </div>
         <div id="lsn-course-nav-list"></div>
     `;
-    
-    // Center: wrap existing children
-    const main = document.createElement('div');
-    main.className = 'lsn-main';
-    while (container.firstChild) main.appendChild(container.firstChild);
 
-    container.appendChild(courseNav);
-    container.appendChild(main);
     container.appendChild(sidebar);
+    container.appendChild(main);
 }
 
 /* ─────────────────────────────────────
-   LEFT COURSE NAV (full course outline)
-───────────────────────────────────── */
-function renderSidebarTOC(course, completedIds) {
-    const navList = document.getElementById('lsn-course-nav-list');
-    if (!navList || !course) return;
-
-    const currentId = parseInt(lessonId, 10);
-    navList.innerHTML = '';
-
-    (course.modules || []).forEach(mod => {
-        const section = document.createElement('div');
-        section.className = 'lsn-cnav-section';
-
-        const header = document.createElement('div');
-        header.className = 'lsn-cnav-section__header';
-        header.textContent = mod.title;
-        section.appendChild(header);
-
-        (mod.lessons || []).forEach(l => {
-            const isDone = completedIds.has(l.id);
-            const isCurrent = l.id === currentId;
-
-            const a = document.createElement('a');
-            a.href = `lesson.html?id=${l.id}&slug=${encodeURIComponent(courseSlug)}`;
-            a.className = 'lsn-cnav-lesson'
-                + (isCurrent ? ' lsn-cnav-lesson--active' : '')
-                + (isDone ? ' lsn-cnav-lesson--done' : '');
-
-            const check = document.createElement('div');
-            check.className = 'lsn-cnav-check'
-                + (isDone ? ' lsn-cnav-check--done' : '')
-                + (isCurrent && !isDone ? ' lsn-cnav-check--active' : '');
-            if (isDone) check.textContent = '✓';
-
-            const label = document.createElement('div');
-            label.className = 'lsn-cnav-label';
-            label.textContent = l.title;
-
-            a.appendChild(check);
-            a.appendChild(label);
-            section.appendChild(a);
-        });
-
-        navList.appendChild(section);
-    });
-}
-
-/* ─────────────────────────────────────
-   RIGHT SIDEBAR: article h2 TOC
+   LEFT SIDEBAR: article h2 TOC
 ───────────────────────────────────── */
 function buildArticleTOC() {
     const tocList = document.getElementById('lsn-toc-list');
