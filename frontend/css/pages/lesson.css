@@ -4,7 +4,6 @@
     min-height: 100vh;
     background: var(--primary-color);
     color: var(--text-light);
-    padding-top: 64px;
 }
 
 .lsn-page::before {
@@ -22,7 +21,6 @@
     display: flex;
     position: relative;
     flex: 1;
-    padding-top: 0 !important;
 }
 
 .lsn-dashboard .dashboard-sidebar {

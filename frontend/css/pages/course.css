@@ -14,7 +14,6 @@
 }
 
 .crs-page {
-    min-height: 100vh;
     background: var(--primary-color);
     color: var(--text-light);
 }
@@ -895,7 +894,6 @@
 }
 
 @media (max-width: 600px) {
-    .crs-page { padding-bottom: 90px; }
     .crs-hero { padding: 24px 0 28px; }
     .crs-hero__inner { padding: 0 18px; }
     .crs-container { padding: 0 16px 32px; }
