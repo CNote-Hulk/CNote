@@ -1438,7 +1438,7 @@
 
 @media (max-width: 720px) {
     .lsn-container { grid-template-columns: 1fr; padding: 0 16px 60px; }
-    .lsn-sidebar { display: none; }
+    .lsn-sidebar { display: none !important; }
     .lsn-main { padding: 24px 0; }
     .lsn-lesson-banner { padding: 0 16px; }
     .lsn-banner-progress { display: none; }
@@ -1456,7 +1456,6 @@
     .lsn-nav-btn--next { align-items: flex-start; }
 
     .lsn-main-wrapper {
-        margin-left: 250px;
         padding: 0;
     }
 
