@@ -22,7 +22,7 @@
     display: flex;
     position: relative;
     flex: 1;
-    padding-top: 0;
+    padding-top: 0 !important;
 }
 
 .lsn-dashboard .dashboard-sidebar {
