@@ -28,40 +28,53 @@
     <div id="navbar-placeholder"></div>
 
     <!-- ===========================
-         LESSON HERO (full-width, wallpaper)
+         DASHBOARD LAYOUT
          =========================== -->
-    <header class="lsn-hero">
-        <div class="lsn-hero__inner">
-            <h1 class="lsn-title">Loading…</h1>
-            <div class="lsn-hero__meta">
-                <span class="lsn-hero__meta-item">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    Console Starter Guide
-                </span>
-                <span class="lsn-progress-indicator"></span>
-            </div>
-        </div>
-    </header>
+    <div class="dashboard-shell lsn-dashboard">
+        <!-- SIDEBAR -->
+        <aside class="dashboard-sidebar lsn-sidebar">
+            <!-- Course Navigation - will be populated by JS -->
+            <div id="lsn-course-nav-list"></div>
+        </aside>
 
-    <!-- ===========================
-         LESSON CONTENT
-         =========================== -->
-    <div class="lsn-container">
+        <!-- MAIN CONTENT -->
+        <main class="dashboard-main lsn-main-wrapper">
+            <!-- Hero Section -->
+            <section class="lsn-hero-section">
+                <header class="lsn-hero">
+                    <div class="lsn-hero__inner">
+                        <h1 class="lsn-title">Loading…</h1>
+                        <div class="lsn-hero__meta">
+                            <span class="lsn-hero__meta-item">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                Console Starter Guide
+                            </span>
+                            <span class="lsn-progress-indicator"></span>
+                        </div>
+                    </div>
+                </header>
+            </section>
 
-        <!-- Guest banner — shown by JS if not logged in -->
-        <div class="lsn-guest-banner" role="alert">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span><a href="login.html">Log in</a> to save your progress and track completed lessons.</span>
-        </div>
+            <!-- Guest banner — shown by JS if not logged in -->
+            <section class="lsn-guest-banner-section">
+                <div class="lsn-guest-banner" role="alert">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span><a href="login.html">Log in</a> to save your progress and track completed lessons.</span>
+                </div>
+            </section>
 
-        <!-- Lesson body -->
-        <div class="lsn-article">
-            <div class="lsn-content"></div>
-        </div>
+            <!-- Lesson Content Section -->
+            <section class="lsn-content-section">
+                <div class="lsn-article">
+                    <div class="lsn-content"></div>
+                </div>
+            </section>
 
-        <!-- Quiz section -->
-        <section class="lsn-quiz" aria-label="Lesson quiz"></section>
-
+            <!-- Quiz Section -->
+            <section class="lsn-quiz-section">
+                <section class="lsn-quiz" aria-label="Lesson quiz"></section>
+            </section>
+        </main>
     </div>
 
     <!-- Bottom progress banner — shown only to guests on starter-guide (toggled by lesson.js) -->
