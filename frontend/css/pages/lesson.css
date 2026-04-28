@@ -2,17 +2,10 @@
 
 .lsn-page {
     min-height: 100vh;
-    background: var(--primary-color);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.12) 0%, transparent 55%),
+        linear-gradient(180deg, var(--dark-bg, #0e0b08) 0%, #1B1714 100%);
     color: var(--text-light);
-}
-
-.lsn-page::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: url('../../assets/images/wallpapers/invata.jpg') center/cover no-repeat;
-    opacity: 0.4;
 }
 
 /* Dashboard shell for lesson page */
@@ -28,8 +21,10 @@
 }
 
 .lsn-dashboard .lsn-sidebar {
-    background: linear-gradient(180deg, rgba(var(--panel-rgb), 0.9) 0%, var(--bg) 100%);
-    border-right: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 100%);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
     padding: 24px 16px 10px;
     display: flex;
     position: fixed;
@@ -41,8 +36,8 @@
     scrollbar-color: var(--accent-color, #E06B58) transparent;
     overflow-y: auto;
     width: 280px;
-    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
-    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(2, 6, 20, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
     z-index: 100;
 }
 
@@ -167,7 +162,10 @@
     height: auto;
     max-height: 30vh;
     padding: 24px 32px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.10);
+    background:
+        radial-gradient(ellipse at 60% 100%, rgba(var(--accent-rgb), 0.13) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.025) 0%, transparent 100%);
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
 }
@@ -191,7 +189,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: 12px 32px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.10);
     max-height: 20vh;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
@@ -215,7 +213,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     flex: 1;
-    padding: 32px;
+    padding: 28px 32px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
 }
@@ -235,8 +233,8 @@
 
 /* Quiz section - scrollable */
 .lsn-quiz-section {
-    padding: 32px;
-    border-top: 1px solid var(--border);
+    padding: 28px 32px;
+    border-top: 1px solid rgba(var(--accent-rgb), 0.10);
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color, #E06B58) transparent;
 }
@@ -452,13 +450,16 @@
    ARTICLE CARD
 ═══════════════════════════════ */
 .lsn-article {
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    box-shadow: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    box-shadow: 0 8px 22px rgba(2, 6, 20, 0.55), inset 0 1px 0 rgba(255,255,255,0.02);
+    border-radius: 14px;
+    padding: 28px 32px;
     position: relative;
     overflow: visible;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .lsn-article::before {
@@ -500,7 +501,7 @@
     color: var(--text-light);
     line-height: 1.26;
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.10);
 }
 
 .lsn-content h3 {
@@ -535,9 +536,10 @@
 }
 
 .lsn-content pre {
-    background: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm, 8px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 10px;
     padding: 20px 24px;
     overflow-x: auto;
     margin: 0 0 1.5em;
@@ -574,10 +576,12 @@
 .lesson-image-wrap {
     text-align: center;
     margin: 2em 0;
-    background: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm,8px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 12px;
     padding: 20px;
+    box-shadow: 0 4px 14px rgba(2, 6, 20, 0.4);
 }
 
 .lesson-image-wrap img {
@@ -615,14 +619,16 @@
 }
 
 .lesson-recap {
-    background: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm,8px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 10px;
     padding: 16px 20px;
     margin: 1.6em 0;
     color: var(--text-gray);
     font-size: 0.91rem;
     line-height: 1.65;
+    box-shadow: 0 4px 12px rgba(2, 6, 20, 0.35);
 }
 
 .lesson-recap::before {
@@ -683,9 +689,11 @@
 }
 
 .glossary-block {
-    background: var(--secondary-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm,8px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    box-shadow: 0 4px 12px rgba(2, 6, 20, 0.35);
+    border-radius: 10px;
     padding: 16px 20px;
     margin: 1.6em 0;
     font-size: 0.88rem;
@@ -768,12 +776,14 @@
 }
 
 .lsn-quiz-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md,12px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 14px;
     padding: 26px 30px;
     margin-bottom: 12px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 8px 22px rgba(2, 6, 20, 0.55), inset 0 1px 0 rgba(255,255,255,0.02);
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -811,9 +821,10 @@
     align-items: center;
     gap: 13px;
     padding: 13px 18px;
-    border-radius: var(--radius-sm,8px);
-    border: 1px solid var(--border-color);
-    background: var(--secondary-color);
+    border-radius: 10px;
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    backdrop-filter: blur(6px);
     cursor: pointer;
     transition: border-color 0.15s, background 0.15s, transform 0.1s;
     font-size: 0.9rem;
@@ -865,9 +876,10 @@
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm,8px);
-    background: var(--secondary-color);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    backdrop-filter: blur(6px);
     cursor: pointer;
     transition: border-color 0.15s, background 0.15s;
     font-size: 0.88rem;
@@ -915,13 +927,15 @@
 }
 
 .lsn-quiz-result {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md,12px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 14px;
     padding: 52px 32px;
     text-align: center;
     margin-top: 14px;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 8px 22px rgba(2, 6, 20, 0.55), inset 0 1px 0 rgba(255,255,255,0.02);
     position: relative;
     overflow: hidden;
 }
@@ -991,11 +1005,13 @@
 .lsn-course-complete {
     text-align: center;
     padding: 60px 32px 52px;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md,12px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 14px;
     margin-top: 14px;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 8px 22px rgba(2, 6, 20, 0.55), inset 0 1px 0 rgba(255,255,255,0.02);
     position: relative;
     overflow: hidden;
 }
@@ -1033,7 +1049,7 @@
     align-items: center;
     gap: 10px;
     padding: 18px 0;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid rgba(var(--accent-rgb), 0.10);
     margin-top: 28px;
     flex-wrap: wrap;
 }
@@ -1043,8 +1059,9 @@
     align-items: center;
     gap: 7px;
     padding: 8px 16px;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
     border-radius: 20px;
     color: var(--text-gray);
     font-size: 0.84rem;
@@ -1075,7 +1092,7 @@
 /* ═══════════════════════════════
    COMMENTS SECTION
 ═══════════════════════════════ */
-.lsn-comments { margin-top: 32px; border-top: 1px solid var(--border-color); padding-top: 28px; }
+.lsn-comments { margin-top: 32px; border-top: 1px solid rgba(var(--accent-rgb), 0.10); padding-top: 28px; }
 
 .lsn-comments__header { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
 
@@ -1092,14 +1109,17 @@
 }
 
 .lsn-comment-form {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md,12px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 12px;
     padding: 16px;
     margin-bottom: 22px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    box-shadow: 0 4px 14px rgba(2, 6, 20, 0.4);
 }
 
 .lsn-comment-input {
@@ -1201,11 +1221,13 @@
 
 /* Reading progress */
 .lsn-sb-progress {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md,12px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 12px;
     padding: 14px 16px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 14px rgba(2, 6, 20, 0.45), inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
 .lsn-sb-progress__label {
@@ -1247,11 +1269,13 @@
 
 /* Article h2 TOC */
 .lsn-sb-toc {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md,12px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 14px rgba(2, 6, 20, 0.45), inset 0 1px 0 rgba(255,255,255,0.02);
     padding: 14px 0 8px;
 }
 
@@ -1295,11 +1319,13 @@
 
 /* Author card */
 .lsn-sb-author {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md,12px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 14px rgba(2, 6, 20, 0.45), inset 0 1px 0 rgba(255,255,255,0.02);
     padding: 14px 16px 16px;
 }
 
@@ -1340,7 +1366,7 @@
     gap: 10px;
     margin-top: 48px;
     padding-top: 28px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid rgba(var(--accent-rgb), 0.10);
 }
 
 .lsn-nav-btn {
@@ -1348,17 +1374,22 @@
     flex-direction: column;
     gap: 5px;
     padding: 16px 18px;
-    border-radius: var(--radius-sm,8px);
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
+    box-shadow: 0 4px 14px rgba(2, 6, 20, 0.4), inset 0 1px 0 rgba(255,255,255,0.02);
     cursor: pointer;
     text-decoration: none;
-    transition: background 0.18s, border-color 0.18s;
+    transition: background 0.18s, border-color 0.18s, box-shadow 0.18s, transform 0.18s;
 }
 
 .lsn-nav-btn:hover:not(.lsn-nav-btn--disabled) {
-    background: rgba(var(--accent-rgb),0.04);
-    border-color: rgba(var(--accent-rgb),0.25);
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
+    border-color: rgba(var(--accent-rgb), 0.20);
+    box-shadow: 0 8px 22px rgba(2, 6, 20, 0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+    transform: translateY(-3px);
 }
 
 .lsn-nav-btn--next { align-items: flex-end; }
@@ -1467,4 +1498,35 @@
     .lsn-hero-section {
         max-height: 25vh;
     }
+}
+
+/* ══════════════════════════════════════════
+   LIGHT THEME — Lesson Page
+   ══════════════════════════════════════════ */
+[data-theme="light"] .lsn-page {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.08) 0%, transparent 55%),
+        linear-gradient(180deg, var(--dark-bg, #f7f4ef) 0%, #ede8df 100%);
+}
+
+[data-theme="light"] .lsn-dashboard .lsn-sidebar,
+[data-theme="light"] .lsn-article,
+[data-theme="light"] .lsn-quiz-card,
+[data-theme="light"] .lsn-quiz-result,
+[data-theme="light"] .lsn-course-complete,
+[data-theme="light"] .lsn-nav-btn,
+[data-theme="light"] .lsn-sb-progress,
+[data-theme="light"] .lsn-sb-toc,
+[data-theme="light"] .lsn-sb-author,
+[data-theme="light"] .lsn-comment-form,
+[data-theme="light"] .lsn-reaction-btn,
+[data-theme="light"] .lsn-quiz-option,
+[data-theme="light"] .quiz-option,
+[data-theme="light"] .lesson-recap,
+[data-theme="light"] .glossary-block,
+[data-theme="light"] .lesson-image-wrap,
+[data-theme="light"] .lsn-content pre {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
 }
