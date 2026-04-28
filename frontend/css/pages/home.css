@@ -353,10 +353,6 @@ body.home-page::before {
     color: var(--muted);
 }
 
-.dashboard-section {
-    margin-top: 18px;
-}
-
 .card,
 .stats-card,
 .continue-card,
@@ -2567,11 +2563,6 @@ body.home-page::before {
 /* ══════════════════════════════════════════════════════════════
    HOME HERO — two-column header
    ══════════════════════════════════════════════════════════════ */
-
-.home-hero-section {
-    padding-top: 4px;
-}
-
 .home-hero {
     display: flex;
     align-items: flex-start;
