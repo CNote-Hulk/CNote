@@ -107,7 +107,19 @@ export const AuthModule = {
             opts.body = JSON.stringify(body);
         }
         const res = await fetch(this._apiBase + path, opts);
-        return res.json();
+        if (!res.ok) {
+            if (res.status === 401 || res.status === 403) {
+                localStorage.removeItem(this.SESSION_KEY);
+                localStorage.removeItem(this.TOKEN_KEY);
+                localStorage.removeItem(this.SERVER_SESSION_TOKEN_KEY);
+            }
+            try {
+                return await res.json();
+            } catch {
+                return { success: false, status: res.status, error: 'API error.' };
+            }
+        }
+        return await res.json();
     },
 
     // ─── Register ───────────────────────────────────────
@@ -211,6 +223,7 @@ return { success: false, error: 'Could not contact the server.' };
             // Session invalid on server — clear local cache
             localStorage.removeItem(this.SESSION_KEY);
             localStorage.removeItem(this.TOKEN_KEY);
+            localStorage.removeItem(this.SERVER_SESSION_TOKEN_KEY);
             return null;
         } catch {
             return null;

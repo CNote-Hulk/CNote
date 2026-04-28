@@ -29,12 +29,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (raw) currentUser = JSON.parse(raw);
     } catch {}
 
-    // If local session is missing or incomplete, rebuild it from a valid token.
-    if (!currentUser || !currentUser.id || !currentUser.username || String(currentUser.username).toLowerCase() === 'user') {
-        const restoredUser = await AuthModule.refreshSession();
-        if (restoredUser) {
-            currentUser = AuthModule.getCurrentUser() || restoredUser;
-        }
+    const restoredUser = await AuthModule.refreshSession();
+    if (restoredUser) {
+        currentUser = AuthModule.getCurrentUser() || restoredUser;
     }
 
     if (!currentUser) return;
@@ -56,6 +53,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 },
                 credentials: 'include'
             });
+            if (res.status === 401 || res.status === 403) {
+                localStorage.removeItem('cn_session');
+                localStorage.removeItem('cn_token');
+                localStorage.removeItem('cn_session_token');
+            }
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return await res.json();
         } catch (err) {
