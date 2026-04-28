@@ -640,6 +640,42 @@ function initSettings() {
         }
     }
 
+    function calcLevelFromAchievements(achievements) {
+        const earned = achievements.filter(a => a.unlocked || a.earned).length;
+        const total = achievements.length;
+        if (window.AchievementsModule && AchievementsModule.computeLevel) {
+            return AchievementsModule.computeLevel(total > 0 ? (earned / total) * 100 : 0, 0, total);
+        }
+        return { name: 'Level', emoji: '🏅' };
+    }
+
+    async function loadAchievements() {
+        const badgeContainer = document.getElementById('badge-container');
+        if (badgeContainer) badgeContainer.innerHTML = '<p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Loading…</p>';
+        try {
+            const token = localStorage.getItem('cn_token');
+            const resp = await fetch('/api/achievements', {
+                headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+                credentials: 'include'
+            });
+            if (!resp.ok) throw new Error('Could not load achievements');
+            const data = await resp.json();
+            const achievements = Array.isArray(data.achievements) ? data.achievements : [];
+            const allBadges = (window.AchievementsModule && AchievementsModule.getAllBadges)
+                ? AchievementsModule.getAllBadges(achievements) : achievements;
+            const prevBadgeIds = JSON.parse(localStorage.getItem('cn_earned_badges') || '[]');
+            const currentBadgeIds = allBadges.filter(b => b.earned || b.unlocked).map(b => b.id);
+            const newBadgeIds = currentBadgeIds.filter(id => !prevBadgeIds.includes(id));
+            if (newBadgeIds.length > 0 && window.AchievementsModule && AchievementsModule.showUnlockNotifications) {
+                AchievementsModule.showUnlockNotifications(newBadgeIds, allBadges);
+            }
+            localStorage.setItem('cn_earned_badges', JSON.stringify(currentBadgeIds));
+            updateAchievementsUI({ badges: achievements, level: calcLevelFromAchievements(achievements) });
+        } catch (err) {
+            const bc = document.getElementById('badge-container');
+            if (bc) bc.innerHTML = '<p style="color:var(--error,#e57373);font-size:0.9rem;">Could not load achievements.</p>';
+        }
+    }
 
     // ═══ RESEND VERIFICATION ═══
     const resendVerificationBtn = document.getElementById('resend-verification-btn');
@@ -1268,61 +1304,6 @@ async function initOwnedConsolesSelect() {
     searchEl.addEventListener('input', () => renderList(searchEl.value));
     renderList();
     updateHidden();
-}
-
-/**
- * Încarcă realizările utilizatorului și actualizează UI-ul.
- */
-async function loadAchievements() {
-    try {
-        const token = localStorage.getItem('cn_token');
-        const resp = await fetch('/api/achievements', {
-            headers: {
-                'Content-Type': 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {})
-            },
-            credentials: 'include'
-        });
-        if (!resp.ok) throw new Error('Could not load achievements');
-        const data = await resp.json();
-        const achievements = Array.isArray(data.achievements) ? data.achievements : [];
-        // Notificare pentru badge-uri noi
-        const allBadges = (window.AchievementsModule && AchievementsModule.getAllBadges)
-            ? AchievementsModule.getAllBadges(achievements)
-            : achievements;
-        const prevBadgeIds = JSON.parse(localStorage.getItem('cn_earned_badges') || '[]');
-        const currentBadgeIds = allBadges.filter(b => b.earned || b.unlocked).map(b => b.id);
-        const newBadgeIds = currentBadgeIds.filter(id => !prevBadgeIds.includes(id));
-        if (newBadgeIds.length > 0 && window.AchievementsModule && AchievementsModule.showUnlockNotifications) {
-            AchievementsModule.showUnlockNotifications(newBadgeIds, allBadges);
-        }
-        localStorage.setItem('cn_earned_badges', JSON.stringify(currentBadgeIds));
-        updateAchievementsUI({
-            badges: achievements,
-            level: calcLevelFromAchievements(achievements)
-        });
-    } catch (err) {
-        showSettingsMessage('Could not load achievements.', false);
-    }
-}
-
-/**
- * Exemplu de funcție pentru calcularea nivelului din achievements (poți adapta după structura ta)
- */
-function calcLevelFromAchievements(achievements) {
-    // Exemplu simplificat: numără câte sunt deblocate
-    const earned = achievements.filter(a => a.unlocked || a.earned).length;
-    const total = achievements.length;
-    // Poți folosi AchievementsModule.computeLevel dacă ai
-    if (window.AchievementsModule && AchievementsModule.computeLevel) {
-        return AchievementsModule.computeLevel(
-            total > 0 ? (earned / total) * 100 : 0,
-            0,
-            total
-        );
-    }
-    // Fallback simplu
-    return { name: 'Level', emoji: '🏅' };
 }
 
 // ── Mobile bottom nav — tab switching ────────────────────────
