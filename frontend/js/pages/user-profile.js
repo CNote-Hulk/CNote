@@ -439,13 +439,13 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 section.hidden = false;
                 grid.innerHTML = data.listings.map(l => {
                     const imgs = Array.isArray(l.images) ? l.images : [];
-                    return `<a href="/html/pages/community.html" class="user-listing-card">
+                    const condLabels = { new: 'New', like_new: 'Like new', good: 'Good', fair: 'Fair', parts: 'Parts' };
+                    return `<a href="marketplace.html?listing=${l.id}" class="user-listing-card">
                         <div class="user-listing-card__img">
-                            ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy">'}
-                            ${l.sold ? '<div class="hub-listing-sold-overlay"><span class="hub-listing-sold-badge">VÂNDUT</span></div>' : ''}
+                            ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="" loading="lazy">` : `<img src="../../assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy">`}
                         </div>
                         <div class="user-listing-card__info">
-                            <div class="user-listing-card__condition"><span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span></div>
+                            <div class="user-listing-card__condition">${condLabels[l.condition] || l.condition || ''}</div>
                             <div class="user-listing-card__title">${escapeHtml(l.title)}</div>
                             <div class="user-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
                         </div>

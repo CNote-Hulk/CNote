@@ -581,19 +581,47 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const achievementsGrid = document.getElementById('achievements-grid');
                 if (achievementsGrid) {
                     achievementsGrid.innerHTML = '';
-                    // Show unlocked first, then locked
-                    const sorted = [...achievementsRes.achievements].sort((a, b) => (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0));
-                    sorted.forEach(a => {
+                    const ACH_CATEGORIES = [
+                        { id: 'learning',  label: 'Learning',  icon: '📚' },
+                        { id: 'explorer',  label: 'Explorer',  icon: '🌍' },
+                        { id: 'social',    label: 'Social',    icon: '👥' },
+                        { id: 'collector', label: 'Collector', icon: '💾' },
+                        { id: 'veteran',   label: 'Veteran',   icon: '🏛️' },
+                    ];
+                    const grouped = {};
+                    achievementsRes.achievements.forEach(a => {
+                        const cat = a.category || 'other';
+                        if (!grouped[cat]) grouped[cat] = [];
+                        grouped[cat].push(a);
+                    });
+                    ACH_CATEGORIES.forEach(cat => {
+                        const items = grouped[cat.id];
+                        if (!items || items.length === 0) return;
+                        const catEarned = items.filter(a => a.unlocked).length;
+                        const section = document.createElement('div');
+                        section.className = 'ach-category';
+                        section.innerHTML = `
+                            <div class="ach-category__header">
+                                <span class="ach-category__icon">${cat.icon}</span>
+                                <span class="ach-category__label">${cat.label}</span>
+                                <span class="ach-category__count">${catEarned}/${items.length}</span>
+                            </div>
+                            <div class="ach-category__grid"></div>
+                        `;
+                        const catGrid = section.querySelector('.ach-category__grid');
+                        items.forEach(a => {
                             const div = document.createElement('div');
                             div.className = 'achievement-card' + (a.unlocked ? ' achievement-card--unlocked' : ' achievement-card--locked');
                             div.innerHTML = `
                                 <span class="achievement-card__icon">${a.icon || '🏅'}</span>
-                                <strong class="achievement-card__name">${escapeHtml(a.label || a.name)}</strong>
+                                <strong class="achievement-card__name">${escapeHtml(a.name)}</strong>
                                 <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
                                 <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
                             `;
-                            achievementsGrid.appendChild(div);
+                            catGrid.appendChild(div);
                         });
+                        achievementsGrid.appendChild(section);
+                    });
                 }
             }
 
@@ -947,32 +975,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             const homeAchievementsPreview = document.getElementById('home-achievements-preview');
             if (homeAchievementsPreview && achievementsRes.success) {
                 const badges = achievementsRes.achievements || [];
+                const earnedBadges = badges.filter(b => b.unlocked);
                 if (badges.length > 0) {
                     homeAchievementsPreview.innerHTML = '';
-                    const sorted = [...badges].sort((a, b) => (b.unlocked ? 1 : 0) - (a.unlocked ? 1 : 0));
-                    sorted.slice(0, 6).forEach(a => {
+                    // Show earned first, then up to 6 total
+                    const preview = [...earnedBadges, ...badges.filter(b => !b.unlocked)].slice(0, 6);
+                    preview.forEach(a => {
                         const div = document.createElement('div');
                         div.className = 'achievement-card' + (a.unlocked ? ' achievement-card--unlocked' : ' achievement-card--locked');
                         div.innerHTML = `
                             <span class="achievement-card__icon">${a.icon || '🏅'}</span>
-                            <strong class="achievement-card__name">${escapeHtml(a.label || a.name)}</strong>
+                            <strong class="achievement-card__name">${escapeHtml(a.name)}</strong>
                             <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
                             <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
                         `;
                         homeAchievementsPreview.appendChild(div);
                     });
-                    if (badges.length > 6) {
-                        // Elimină orice buton 'See all' existent
-                        const parent = homeAchievementsPreview.parentElement;
-                        if (parent) {
-                            parent.querySelectorAll('.dash-see-all').forEach(el => el.remove());
-                        }
-                        const seeAll = document.createElement('a');
-                        seeAll.href = '#achievements';
-                        seeAll.className = 'dash-see-all btn btn--primary';
-                        seeAll.innerHTML = `<span style="display:inline-flex;align-items:center;gap:6px;"><span>See all ${badges.filter(b => b.unlocked).length}/${badges.length} achievements</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>`;
-                        if (parent) parent.appendChild(seeAll);
-                    }
+                    const parent = homeAchievementsPreview.parentElement;
+                    if (parent) parent.querySelectorAll('.dash-see-all').forEach(el => el.remove());
+                    const seeAll = document.createElement('a');
+                    seeAll.href = '#achievements';
+                    seeAll.className = 'dash-see-all btn btn--primary';
+                    seeAll.innerHTML = `See all ${earnedBadges.length}/${badges.length} achievements →`;
+                    if (parent) parent.appendChild(seeAll);
                 } else {
                     homeAchievementsPreview.innerHTML = `
                         <div class="dash-empty-state">

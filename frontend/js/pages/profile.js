@@ -59,6 +59,7 @@ function initSettings() {
     if (!user) return;
 
     // ═══ TAB SYSTEM ═══
+    let achievementsLoaded = false;
     const activateTab = (tabKey, syncHash = false) => {
         let tabBtn = document.querySelector(`.profile-tab[data-tab="${tabKey}"]`);
         let panel = document.querySelector(`.profile-panel[data-panel="${tabKey}"]`);
@@ -69,6 +70,11 @@ function initSettings() {
 
         tabBtn.classList.add('active');
         panel.classList.add('active');
+
+        if (tabKey === 'achievements' && !achievementsLoaded) {
+            achievementsLoaded = true;
+            loadAchievements().catch(err => console.error(err));
+        }
 
         if (syncHash) {
             const nextHash = `#${tabKey}`;
@@ -572,7 +578,7 @@ function initSettings() {
             showSettingsMessage('Reset failed. Please try again.', false);
             return;
         }
-        // 👇 nu mai blochează mesajul
+        achievementsLoaded = false;
         loadAchievements().catch(err => console.error(err));
     });
 
@@ -1321,7 +1327,7 @@ function calcLevelFromAchievements(achievements) {
 
 // ── Mobile bottom nav — tab switching ────────────────────────
 (function initMbnTabs() {
-    const TABS = ['account', 'profil', 'security', 'notifications', 'appearance'];
+    const TABS = ['account', 'profil', 'security', 'notifications', 'appearance', 'achievements'];
     const btn = document.getElementById('mbn-more-btn');
     const dd  = document.getElementById('mbn-dropdown');
 

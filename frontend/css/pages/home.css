@@ -57,8 +57,10 @@ body.home-page::before {
 }
 
 .dashboard-sidebar {
-    background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
-    border-right: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(var(--accent-rgb), 0.10);
     padding: 24px 16px 10px;
     display: flex;
     position: fixed;
@@ -70,9 +72,15 @@ body.home-page::before {
     scrollbar-color: var(--accent-color, #E06B58) transparent;
     overflow-y: auto;
     width: 280px;
-    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.35), inset -1px 0 0 rgba(255, 255, 255, 0.03);
-    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(2,6,20,0.55), inset -1px 0 0 rgba(255,255,255,0.03);
+    border-radius: 18px;
     z-index: 100;
+}
+
+[data-theme="light"] .dashboard-sidebar {
+    background: rgba(255,255,255,0.88);
+    border-color: rgba(0,0,0,0.07);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 
 /* ── Sidebar Profile Section ── */
@@ -561,23 +569,105 @@ body.home-page::before {
     color: var(--text);
 }
 
-.achievements-grid,
+/* Achievement categories — full panel view */
+.achievements-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Category section */
+.ach-category {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ach-category__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 2px;
+}
+
+.ach-category__icon { font-size: 1rem; flex-shrink: 0; }
+
+.ach-category__label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex: 1;
+}
+
+.ach-category__count {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.10);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 20px;
+    padding: 2px 9px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ach-category__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+/* Home preview grid */
+.achievements-grid.home-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(130px, 1fr));
+    gap: 10px;
+    flex-direction: unset;
+}
+
 .community-grid {
     display: grid;
-    grid-template-columns: repeat(3,minmax(160px,1fr));
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
     gap: 12px;
 }
 
 .achievement-card,
 .community-card {
-    padding: 12px;
+    padding: 14px 12px;
     color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
 }
 
 .achievement-card:hover,
 .community-card:hover {
-    border-color: rgba(var(--cream-rgb), .2);
+    border-color: rgba(var(--accent-rgb), .22);
     transform: translateY(-1px);
+}
+
+.achievement-card--unlocked {
+    border-color: rgba(var(--accent-rgb), 0.22) !important;
+}
+
+.achievement-card--locked {
+    opacity: 0.45;
+    filter: grayscale(0.4);
+}
+
+.achievement-card__icon { font-size: 1.6rem; line-height: 1; }
+.achievement-card__name { font-size: 0.78rem; font-weight: 700; color: var(--text); line-height: 1.3; margin-top: 2px; }
+.achievement-card__desc { font-size: 0.68rem; color: var(--muted); line-height: 1.4; }
+.achievement-card__status {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    color: var(--accent);
+    opacity: 0.8;
 }
 
 /* ── Theme Overrides ──────────────────────────────────────── */
@@ -613,10 +703,13 @@ body.home-page::before {
     border-color: rgba(0, 0, 0, .15);
 }
 
-/* ── No wallpaper in light/dark — use solid background ── */
-[data-theme="dark"] body.home-page::before,
+/* ── Wallpaper brightness per theme ── */
+[data-theme="dark"] body.home-page::before {
+    filter: brightness(0.25) saturate(0.7);
+}
+
 [data-theme="light"] body.home-page::before {
-    display: none;
+    filter: brightness(1.3) saturate(0.35) opacity(0.18);
 }
 
 [data-theme="dark"] .dashboard-shell {
@@ -624,7 +717,7 @@ body.home-page::before {
 }
 
 [data-theme="dark"] .dashboard-sidebar {
-    box-shadow: 2px 0 28px rgba(0, 0, 0, 0.5), inset -1px 0 0 rgba(255, 255, 255, 0.04);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.65), inset -1px 0 0 rgba(255,255,255,0.04);
 }
 
 [data-theme="dark"] .card,
