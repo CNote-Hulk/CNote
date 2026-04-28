@@ -35,7 +35,33 @@
     <div class="dashboard-shell lsn-dashboard">
         <!-- SIDEBAR -->
         <aside class="dashboard-sidebar lsn-sidebar">
-            <!-- Course Navigation - will be populated by JS -->
+            <!-- Reading progress -->
+            <div class="lsn-sb-progress">
+                <div class="lsn-sb-progress__label">
+                    Reading progress
+                    <span class="lsn-sb-progress__pct" id="lsn-scroll-pct">0%</span>
+                </div>
+                <div class="lsn-sb-progress__track">
+                    <div class="lsn-sb-progress__fill" id="lsn-scroll-fill"></div>
+                </div>
+            </div>
+            <!-- Article heading TOC - populated by JS -->
+            <div class="lsn-sb-toc" id="lsn-sb-toc">
+                <span class="lsn-sb-section-label">In this lesson</span>
+                <div id="lsn-toc-list"></div>
+            </div>
+            <!-- Author card -->
+            <div class="lsn-sb-author">
+                <div class="lsn-sb-section-label">Created by</div>
+                <div class="lsn-sb-author__card">
+                    <div class="lsn-sb-author__avatar">CN</div>
+                    <div class="lsn-sb-author__info">
+                        <span class="lsn-sb-author__name">Console Notebook Team</span>
+                        <span class="lsn-sb-author__desc">The official Console Notebook course team.</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Course navigation - populated by JS -->
             <div id="lsn-course-nav-list"></div>
         </aside>
 

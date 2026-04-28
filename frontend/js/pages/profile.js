@@ -104,10 +104,26 @@ function initSettings() {
 
     const levelEl = document.getElementById('profile-level');
     if (levelEl) {
-        try {
-            const storedLevel = JSON.parse(localStorage.getItem('cn_user_level') || 'null');
-            if (storedLevel) { levelEl.textContent = `${storedLevel.emoji} ${storedLevel.name}`; levelEl.hidden = false; }
-        } catch { /* ignore */ }
+        const token = localStorage.getItem('cn_token');
+        if (token) {
+            fetch(`${API_BASE_URL}/me/level`, { headers: { 'Authorization': 'Bearer ' + token } })
+                .then(r => r.json())
+                .then(d => {
+                    if (d.success) {
+                        levelEl.textContent = `${d.emoji} ${d.level}`;
+                        levelEl.hidden = false;
+                        localStorage.setItem('cn_user_level', JSON.stringify({ emoji: d.emoji, name: d.level }));
+                        const progressEl = document.getElementById('profile-level-progress');
+                        if (progressEl && d.level === 'Reader') {
+                            const courses = Math.min(d.courses_completed, d.requirements.courses);
+                            const consoles = Math.min(d.console_visits, d.requirements.consoles);
+                            progressEl.innerHTML = `<span>To reach <strong>Beginner</strong>: complete ${d.requirements.courses - courses} more course${d.requirements.courses - courses !== 1 ? 's' : ''} and visit ${Math.max(0, d.requirements.consoles - consoles)} more console page${Math.max(0, d.requirements.consoles - consoles) !== 1 ? 's' : ''}</span>`;
+                            progressEl.hidden = false;
+                        }
+                    }
+                })
+                .catch(() => {});
+        }
     }
 
     // ═══ AVATAR ═══
@@ -558,26 +574,64 @@ function initSettings() {
         }
         // 👇 nu mai blochează mesajul
         loadAchievements().catch(err => console.error(err));
-        loadProfileStats().catch(err => console.error(err));
     });
 
     function updateAchievementsUI(userData) {
         const badgeContainer = document.getElementById('badge-container');
-        badgeContainer.innerHTML = ''; // curățăm UI-ul
-        userData.badges.forEach(badge => {
-            const el = document.createElement('div');
-            el.className = 'badge';
-            el.innerHTML = `
-                <span class="badge-icon">${badge.icon}</span>
-                <span class="badge-name">${badge.name}</span>
-                ${badge.earned ? '<span class="badge-earned">✅</span>' : ''}
-            `;
-            badgeContainer.appendChild(el);
-        });
+        if (badgeContainer) {
+            badgeContainer.innerHTML = '';
+            const badges = Array.isArray(userData.badges) ? userData.badges : [];
+            const CATEGORIES = window.AchievementsModule ? AchievementsModule.CATEGORIES : [];
+            const categoryOrder = CATEGORIES.map(c => c.id);
 
-        // Actualizare nivel
+            // Group badges by category
+            const grouped = {};
+            badges.forEach(badge => {
+                const cat = badge.category || 'other';
+                if (!grouped[cat]) grouped[cat] = [];
+                grouped[cat].push(badge);
+            });
+
+            const renderGroup = (catId) => {
+                const items = grouped[catId];
+                if (!items || items.length === 0) return;
+                const catDef = CATEGORIES.find(c => c.id === catId);
+                const earned = items.filter(b => b.unlocked || b.earned).length;
+
+                const section = document.createElement('div');
+                section.className = 'ach-category';
+                section.innerHTML = `<div class="ach-category__header">
+                    <span class="ach-category__icon">${catDef ? catDef.icon : '🏅'}</span>
+                    <span class="ach-category__label">${catDef ? catDef.label : catId}</span>
+                    <span class="ach-category__count">${earned}/${items.length}</span>
+                </div>
+                <div class="ach-category__grid"></div>`;
+
+                const grid = section.querySelector('.ach-category__grid');
+                items.forEach(badge => {
+                    const isEarned = !!(badge.unlocked || badge.earned);
+                    const el = document.createElement('div');
+                    el.className = 'achievement-badge' + (isEarned ? ' earned' : ' locked');
+                    el.innerHTML = `
+                        <div class="achievement-badge__icon">${badge.icon}</div>
+                        <div class="achievement-badge__name">${badge.name}</div>
+                        <div class="achievement-badge__desc">${badge.description || ''}</div>
+                        <div class="achievement-badge__status">${isEarned ? '✓ Earned' : '🔒 Locked'}</div>
+                    `;
+                    grid.appendChild(el);
+                });
+                badgeContainer.appendChild(section);
+            };
+
+            categoryOrder.forEach(renderGroup);
+            // Render any uncategorized
+            Object.keys(grouped).filter(k => !categoryOrder.includes(k)).forEach(renderGroup);
+        }
+
         const levelEl = document.getElementById('user-level');
-        levelEl.textContent = `${userData.level.emoji} ${userData.level.name}`;
+        if (levelEl && userData.level) {
+            levelEl.textContent = `${userData.level.emoji} ${userData.level.name}`;
+        }
     }
 
 
@@ -1235,7 +1289,6 @@ async function loadAchievements() {
         const newBadgeIds = currentBadgeIds.filter(id => !prevBadgeIds.includes(id));
         if (newBadgeIds.length > 0 && window.AchievementsModule && AchievementsModule.showUnlockNotifications) {
             AchievementsModule.showUnlockNotifications(newBadgeIds, allBadges);
-            broadcastAchievementUnlock(newBadgeIds, allBadges);
         }
         localStorage.setItem('cn_earned_badges', JSON.stringify(currentBadgeIds));
         updateAchievementsUI({

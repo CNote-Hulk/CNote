@@ -522,6 +522,23 @@ body.search-open {
     margin-top: 4px;
 }
 
+.profile-level-progress {
+    font-size: 0.72rem;
+    color: var(--text-gray);
+    opacity: 0.7;
+    line-height: 1.5;
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: rgba(var(--accent-rgb, 127,127,127), 0.06);
+    border-radius: 8px;
+    border: 1px solid rgba(var(--accent-rgb, 127,127,127), 0.10);
+}
+
+.profile-level-progress strong {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
 .profile-dropdown__profile:hover .profile-dropdown__avatar {
     transform: scale(1.04);
 }

@@ -1,67 +1,53 @@
-// ...existing code...
-    /**
-     * Calculează nivelul public pentru profiluri (bazat pe prieteni, favorite, owned, zile)
-     * @param {number} friendCount
-     * @param {number} favCount
-     * @param {number} ownedCount
-     * @param {number} daysMember
-     * @returns {object} nivelul calculat
-     */
-    
 /**
  * AchievementsModule (Frontend)
- * Totul se bazează pe date de la backend.
- * Nu folosește localStorage.
+ * Badge definitions, level calculation, and toast notifications.
  */
 export const AchievementsModule = {
-    computePublicLevel(friendCount, favCount, ownedCount, daysMember) {
-        // Poți ajusta formula după preferințe
-        // Exemplu: 1p/friend, 2p/favorite, 2p/owned, 0.2p/zi
-        const score = friendCount * 1 + favCount * 2 + ownedCount * 2 + daysMember * 0.2;
-        const levels = this.LEVELS;
-        let currentIdx = 0;
-        for (let i = levels.length - 1; i >= 0; i--) {
-            if (score >= levels[i].minScore) { currentIdx = i; break; }
-        }
-        const current = levels[currentIdx];
-        return {
-            name: current.name,
-            emoji: current.emoji,
-            description: current.description,
-            score,
-            index: currentIdx
-        };
-    },
 
-    // Static badge definitions — keep in sync with backend/utils/check-achievements.js
+    // Static badge definitions — keep in sync with backend/routes/achievements.js
     BADGES: [
-        { id: 'console_scout',    name: 'Console Scout',     description: 'Visit 3 console pages.',              icon: '🧭' },
-        { id: 'retro_master',     name: 'Retro Master',      description: 'Visit 10 console pages.',             icon: '🕹️' },
-        { id: 'archive_hunter',   name: 'Archive Hunter',    description: 'Visit 25 console pages.',             icon: '🗂️' },
-        { id: 'first_friend',     name: 'First Friend',      description: 'Make your first friend.',             icon: '👋' },
-        { id: 'social_butterfly', name: 'Social Butterfly',  description: 'Have 5 friends on the platform.',     icon: '🦋' },
-        { id: 'popular',          name: 'Popular',           description: 'Have 10 friends on the platform.',    icon: '🌟' },
-        { id: 'first_fav',        name: 'First Favorite',    description: 'Add your first console to favorites.',icon: '❤️' },
-        { id: 'collector_heart',  name: "Collector's Heart", description: 'Have 5 favorite consoles.',           icon: '💝' },
-        { id: 'first_owned',      name: 'Owner',             description: 'Add your first console to your collection.', icon: '🎮' },
-        { id: 'collector',        name: 'Collector',         description: 'Own 5 consoles in your collection.', icon: '📦' },
-        { id: 'week_veteran',     name: 'Week Regular',      description: 'Be a member for 7 days.',             icon: '📅' },
-        { id: 'month_veteran',    name: 'Monthly',           description: 'Be a member for 30 days.',            icon: '🗓️' },
-        { id: 'year_veteran',     name: 'Veteran',           description: 'Be a member for 365 days.',           icon: '🏛️' },
+        // Learning
+        { id: 'first_lesson',     name: 'First Lesson',       description: 'Complete your first lesson.',         icon: '📝', category: 'learning' },
+        { id: 'knowledge_seeker', name: 'Knowledge Seeker',   description: 'Complete 5 lessons.',                 icon: '🔍', category: 'learning' },
+        { id: 'bookworm',         name: 'Bookworm',           description: 'Complete 10 lessons.',                icon: '📖', category: 'learning' },
+        { id: 'course_finisher',  name: 'Course Finisher',    description: 'Complete your first full course.',    icon: '🎓', category: 'learning' },
+        // Explorer
+        { id: 'console_scout',   name: 'Console Scout',       description: 'Visit 3 console pages.',              icon: '🧭', category: 'explorer' },
+        { id: 'retro_master',    name: 'Retro Master',         description: 'Visit 10 console pages.',             icon: '🕹️', category: 'explorer' },
+        { id: 'archive_hunter',  name: 'Archive Hunter',       description: 'Visit 25 console pages.',             icon: '🗂️', category: 'explorer' },
+        // Social
+        { id: 'first_friend',     name: 'First Friend',        description: 'Make your first friend.',             icon: '👋', category: 'social' },
+        { id: 'social_butterfly', name: 'Social Butterfly',    description: 'Have 5 friends on the platform.',    icon: '🦋', category: 'social' },
+        { id: 'popular',          name: 'Popular',             description: 'Have 10 friends on the platform.',   icon: '🌟', category: 'social' },
+        // Collector
+        { id: 'first_fav',        name: 'First Favorite',      description: 'Add your first console to favorites.',       icon: '❤️', category: 'collector' },
+        { id: 'collector_heart',  name: "Collector's Heart",   description: 'Have 5 favorite consoles.',                  icon: '💝', category: 'collector' },
+        { id: 'first_owned',      name: 'Owner',               description: 'Add your first console to your collection.', icon: '🎮', category: 'collector' },
+        { id: 'collector',        name: 'Collector',           description: 'Own 5 consoles in your collection.',         icon: '📦', category: 'collector' },
+        // Veteran
+        { id: 'week_veteran',     name: 'Week Regular',        description: 'Be a member for 7 days.',   icon: '📅', category: 'veteran' },
+        { id: 'month_veteran',    name: 'Monthly',             description: 'Be a member for 30 days.',  icon: '🗓️', category: 'veteran' },
+        { id: 'year_veteran',     name: 'Veteran',             description: 'Be a member for 365 days.', icon: '🏛️', category: 'veteran' },
     ],
 
-    // Lista de nivele expusă global pentru UI
+    CATEGORIES: [
+        { id: 'learning',  label: 'Learning',  icon: '📚' },
+        { id: 'explorer',  label: 'Explorer',  icon: '🌍' },
+        { id: 'social',    label: 'Social',    icon: '👥' },
+        { id: 'collector', label: 'Collector', icon: '💾' },
+        { id: 'veteran',   label: 'Veteran',   icon: '🏛️' },
+    ],
+
     LEVELS: [
-        { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started. Explore consoles and unlock your first badges.',         requirements: 'Create your account and start exploring.' },
-        { name: 'Intermediate', emoji: '🌿', minScore: 35, description: 'Good progress! You\'ve visited consoles and earned some badges.',               requirements: 'Reach 35 pts — visit 10+ consoles and earn 3+ badges.' },
-        { name: 'Advanced',     emoji: '⚡', minScore: 55, description: 'Solid platform knowledge. You\'re an active member of the community.',          requirements: 'Reach 55 pts — visit 18+ consoles and earn 6+ badges.' },
-        { name: 'Expert',       emoji: '🔥', minScore: 75, description: 'Impressive activity! You know your consoles inside and out.',                   requirements: 'Reach 75 pts — visit 22+ consoles and earn 9+ badges.' },
-        { name: 'Legend',       emoji: '👑', minScore: 90, description: 'Elite status. You\'ve mastered the full platform — the rarest level.',          requirements: 'Reach 90 pts — explore all 25 consoles and unlock 11+ badges.' },
+        { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started. Explore consoles and unlock your first badges.',       requirements: 'Create your account and start exploring.' },
+        { name: 'Intermediate', emoji: '🌿', minScore: 35, description: 'Good progress! You\'ve visited consoles and earned some badges.',             requirements: 'Reach 35 pts — visit 10+ consoles and earn 3+ badges.' },
+        { name: 'Advanced',     emoji: '⚡', minScore: 55, description: 'Solid platform knowledge. You\'re an active member of the community.',        requirements: 'Reach 55 pts — visit 18+ consoles and earn 6+ badges.' },
+        { name: 'Expert',       emoji: '🔥', minScore: 75, description: 'Impressive activity! You know your consoles inside and out.',                 requirements: 'Reach 75 pts — visit 22+ consoles and earn 9+ badges.' },
+        { name: 'Legend',       emoji: '👑', minScore: 90, description: 'Elite status. You\'ve mastered the full platform — the rarest level.',        requirements: 'Reach 90 pts — explore all 25 consoles and unlock 13+ badges.' },
     ],
 
     /**
-     * Transformă datele primite de la backend într-un format ușor de afișat
-     * @param {Array} badgesFromBackend - lista de badge-uri cu {id, name, description, icon, unlocked, earned_at}
+     * Transform backend badge array into enriched format
      */
     getAllBadges(badgesFromBackend) {
         return badgesFromBackend.map(b => ({
@@ -72,64 +58,13 @@ export const AchievementsModule = {
     },
 
     /**
-     * Afișează notificări toast pentru badge-uri noi
-     * @param {Array} awardedIds - lista de ID-uri de badge-uri de la backend
-     * @param {Array} allBadges - lista completă a badge-urilor
+     * Compute user level from achievement% + console visits
      */
-    showUnlockNotifications(awardedIds, allBadges) {
-        if (!Array.isArray(awardedIds) || awardedIds.length === 0) return;
-
-        let stack = document.querySelector('.achievement-toast-stack');
-        if (!stack) {
-            stack = document.createElement('div');
-            stack.className = 'achievement-toast-stack';
-            document.body.appendChild(stack);
-        }
-
-        awardedIds.forEach((badgeId, index) => {
-            const badge = allBadges.find(b => b.id === badgeId);
-            if (!badge) return;
-
-            const toast = document.createElement('div');
-            toast.className = 'achievement-toast';
-            toast.innerHTML = `
-                <div class="achievement-toast__icon">${badge.icon}</div>
-                <div class="achievement-toast__content">
-                    <div class="achievement-toast__label">Achievement Deblocat</div>
-                    <div class="achievement-toast__title">${badge.name}</div>
-                    <div class="achievement-toast__desc">${badge.description}</div>
-                </div>
-            `;
-
-            // Animare intrare
-            setTimeout(() => {
-                stack.appendChild(toast);
-                requestAnimationFrame(() => toast.classList.add('visible'));
-            }, index * 180);
-
-            // Animare ieșire
-            setTimeout(() => {
-                toast.classList.remove('visible');
-                setTimeout(() => {
-                    toast.remove();
-                    if (stack && !stack.children.length) stack.remove();
-                }, 260);
-            }, 4200 + index * 220);
-        });
-    },
-
-    /**
-     * Calculează nivelul și progresul utilizatorului
-     * @param {number} achievementsPct - procentaj realizări (0-100) de la backend
-     * @param {number} visitedConsoles - număr de console vizitate (backend)
-     * @param {number} totalBadges - total badge-uri active (default 13)
-     */
-    computeLevel(achievementsPct, visitedConsoles, totalBadges = 13) {
+    computeLevel(achievementsPct, visitedConsoles, totalBadges = 17) {
         const consolePct = Math.min((visitedConsoles / 25) * 100, 100);
         const score = Math.round((achievementsPct * 0.6) + (consolePct * 0.4));
 
         const levels = this.LEVELS;
-
         let currentIdx = 0;
         for (let i = levels.length - 1; i >= 0; i--) {
             if (score >= levels[i].minScore) { currentIdx = i; break; }
@@ -140,12 +75,11 @@ export const AchievementsModule = {
 
         let progressToNext = 100;
         let nextRequirements = null;
-
         if (next) {
             progressToNext = Math.round(((score - current.minScore) / (next.minScore - current.minScore)) * 100);
+            const needed = next.minScore - score;
             const pointsPerBadge = (100 / totalBadges) * 0.6;
             const pointsPerConsole = visitedConsoles < 25 ? 4 * 0.4 : 0;
-            const needed = next.minScore - score;
             nextRequirements = {
                 scoreNeeded:    needed,
                 badgesNeeded:   Math.ceil(needed / pointsPerBadge),
@@ -169,22 +103,45 @@ export const AchievementsModule = {
     },
 
     /**
-     * Renderizare badge-uri în HTML
-     * @param {Array} badges - lista badge-urilor cu earned status
-     * @param {HTMLElement} container - container unde se vor afișa badge-urile
+     * Display toast notifications for newly unlocked badges
      */
-    renderBadges(badges, container) {
-        if (!container) return;
-        container.innerHTML = '';
-        badges.forEach(b => {
-            const badgeEl = document.createElement('div');
-            badgeEl.className = 'badge';
-            badgeEl.innerHTML = `
-                <div class="badge__icon">${b.icon}</div>
-                <div class="badge__name">${b.name}</div>
-                ${b.earned ? `<div class="badge__earned">Deblocat: ${b.earned_at}</div>` : ''}
+    showUnlockNotifications(awardedIds, allBadges) {
+        if (!Array.isArray(awardedIds) || awardedIds.length === 0) return;
+
+        let stack = document.querySelector('.achievement-toast-stack');
+        if (!stack) {
+            stack = document.createElement('div');
+            stack.className = 'achievement-toast-stack';
+            document.body.appendChild(stack);
+        }
+
+        awardedIds.forEach((badgeId, index) => {
+            const badge = allBadges.find(b => b.id === badgeId);
+            if (!badge) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'achievement-toast';
+            toast.innerHTML = `
+                <div class="achievement-toast__icon">${badge.icon}</div>
+                <div class="achievement-toast__content">
+                    <div class="achievement-toast__label">Achievement Unlocked</div>
+                    <div class="achievement-toast__title">${badge.name}</div>
+                    <div class="achievement-toast__desc">${badge.description}</div>
+                </div>
             `;
-            container.appendChild(badgeEl);
+
+            setTimeout(() => {
+                stack.appendChild(toast);
+                requestAnimationFrame(() => toast.classList.add('visible'));
+            }, index * 180);
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => {
+                    toast.remove();
+                    if (stack && !stack.children.length) stack.remove();
+                }, 260);
+            }, 4200 + index * 220);
         });
-    }
+    },
 };

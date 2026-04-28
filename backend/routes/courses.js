@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
+const { checkAndEmitAchievements } = require('../utils/check-achievements');
 
 /* ── One-time table creation for reactions + comments ── */
 (async function initLessonTables() {
@@ -235,6 +236,7 @@ router.post('/lessons/:id/complete', authRequired, async (req, res) => {
         `, [userId, course_id, lessonId, allDone ? new Date() : null]);
 
         res.json({ ok: true });
+        checkAndEmitAchievements(req.app.get('io'), userId).catch(() => {});
     } catch (err) {
         console.error('POST /lessons/:id/complete error:', err);
         res.status(500).json({ success: false, error: 'Internal server error' });

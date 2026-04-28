@@ -29,6 +29,7 @@
     display: flex;
     position: fixed;
     flex-direction: column;
+    gap: 12px;
     top: calc(var(--cn-nav-offset, 64px) + 10px);
     left: 10px;
     height: calc(100vh - var(--cn-nav-offset, 64px) - 20px);

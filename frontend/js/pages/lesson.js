@@ -492,7 +492,7 @@ async function fetchReactionsData() {
 }
 
 function renderReactions(data) {
-    const main = document.querySelector('.lsn-main');
+    const main = document.querySelector('.lsn-article') || document.querySelector('.lsn-content-section');
     if (!main) return;
 
     const token = localStorage.getItem('cn_token');
@@ -614,7 +614,7 @@ function buildCommentEl(comment, userCommentLikes) {
 }
 
 function renderComments(data) {
-    const main = document.querySelector('.lsn-main');
+    const main = document.querySelector('.lsn-article') || document.querySelector('.lsn-content-section');
     if (!main) return;
 
     const token = localStorage.getItem('cn_token');
@@ -695,8 +695,8 @@ function renderComments(data) {
    PREV / NEXT NAV BUTTONS (card style)
 ───────────────────────────────────── */
 function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
-    const main = document.querySelector('.lsn-main');
-    if (!main) return;
+    const quizSection = document.querySelector('.lsn-quiz-section');
+    if (!quizSection) return;
 
     const prevLesson = lsnIdx > 0 ? allLessons[lsnIdx - 1] : null;
     const nextLesson = lsnIdx >= 0 && lsnIdx < allLessons.length - 1 ? allLessons[lsnIdx + 1] : null;
@@ -763,7 +763,7 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
 
     nav.appendChild(prevBtn);
     nav.appendChild(nextBtn);
-    main.appendChild(nav);
+    quizSection.appendChild(nav);
 }
 
 /* ─────────────────────────────────────
@@ -771,10 +771,6 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
 ───────────────────────────────────── */
 async function init() {
     const token = localStorage.getItem('cn_token');
-
-    // Set up 2-column DOM structure immediately (before any async fetch)
-    // so the CSS grid never renders with unstructured children
-    buildTwoColumnLayout();
 
     const lesson = await fetchLesson();
 
@@ -805,15 +801,15 @@ async function init() {
 
     lessonData = lesson;
     renderQuiz(lesson.quiz_questions || []);
-    buildArticleTOC();
 
     const course = await fetchCourseStructure();
 
     const allLessons = course ? (course.modules || []).flatMap(m => m.lessons || []) : [];
     const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
-    
-    // Now render lesson with module and lesson info
+
+    // Render lesson content first, then build TOC from the rendered headings
     renderLesson(lesson, course, lsnIdx);
+    buildArticleTOC();
     const hasQuiz = (lesson.quiz_questions || []).length > 0;
 
     // Set _lsnNextId for showResult()

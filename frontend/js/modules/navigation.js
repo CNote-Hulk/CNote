@@ -348,6 +348,7 @@ export const NavigationModule = {
 
     /**
      * Auto-hide navbar on scroll down, show on scroll up
+     * Desktop: always fixed (no auto-hide). Mobile only.
      * Anti-jitter: ignore moves < 15px, stays visible near top (< 80px)
      */
     setupAutoHideNavbar() {
@@ -356,11 +357,10 @@ export const NavigationModule = {
 
         const mbn = document.getElementById('mobile-bottom-nav');
 
-        const isHomePage = document.body.classList.contains('home-page');
         const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
 
-        // Home desktop keeps navbar fixed; Home mobile uses auto-hide.
-        if (isHomePage && !isMobileViewport) {
+        // Desktop: keep navbar always visible on all pages.
+        if (!isMobileViewport) {
             navbar.classList.remove('navbar--hidden');
             if (mbn) mbn.classList.remove('mbn--hidden');
             return;

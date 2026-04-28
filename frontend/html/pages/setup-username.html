@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- ===========================
@@ -13,32 +13,216 @@
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
     <title>Choose Username — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
+    <style>
+        .su-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb, 200,180,140), 0.12) 0%, transparent 55%),
+                linear-gradient(180deg, var(--dark-bg, #0e0b08) 0%, #1B1714 100%);
+        }
+        [data-theme="light"] .su-page {
+            background: linear-gradient(180deg, #f8f6f4 0%, #f0ece7 100%);
+        }
+        .su-wrap {
+            width: 100%;
+            max-width: 460px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        /* Main form card */
+        .su-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(var(--accent-rgb, 200,180,140), 0.13);
+            border-radius: 20px;
+            padding: 36px 32px;
+            box-shadow: 0 12px 40px rgba(2,6,20,0.55);
+        }
+        [data-theme="light"] .su-card {
+            background: rgba(255,255,255,0.92);
+            border-color: rgba(0,0,0,0.07);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .su-card__icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(var(--accent-rgb, 200,180,140), 0.10);
+            border: 1px solid rgba(var(--accent-rgb, 200,180,140), 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 18px;
+        }
+        .su-card__title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0 0 6px;
+            letter-spacing: -0.01em;
+        }
+        .su-card__subtitle {
+            font-size: 0.88rem;
+            color: var(--text-gray);
+            margin: 0 0 26px;
+            line-height: 1.6;
+        }
+        /* Course recommendation card — shown after success */
+        .su-recommend {
+            background: linear-gradient(135deg, rgba(var(--accent-rgb, 200,180,140), 0.08) 0%, rgba(var(--accent-rgb, 200,180,140), 0.03) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(var(--accent-rgb, 200,180,140), 0.18);
+            border-radius: 16px;
+            padding: 22px 24px;
+            box-shadow: 0 8px 28px rgba(2,6,20,0.40);
+            display: none;
+        }
+        .su-recommend.visible { display: block; }
+        [data-theme="light"] .su-recommend {
+            background: rgba(255,255,255,0.85);
+            border-color: rgba(var(--accent-rgb, 0,0,0), 0.10);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        .su-recommend__label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        .su-recommend__title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0 0 6px;
+            line-height: 1.3;
+        }
+        .su-recommend__desc {
+            font-size: 0.84rem;
+            color: var(--text-gray);
+            line-height: 1.55;
+            margin: 0 0 18px;
+        }
+        .su-recommend__stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .su-recommend__stat {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .su-recommend__stat svg { opacity: 0.5; flex-shrink: 0; }
+        .su-recommend__actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .su-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+        }
+        .su-btn--primary {
+            background: var(--accent-color);
+            color: var(--primary-color, #0e0b08);
+            box-shadow: 0 3px 14px rgba(var(--accent-rgb, 200,180,140), 0.3);
+        }
+        .su-btn--primary:hover { opacity: 0.88; transform: translateY(-1px); }
+        .su-btn--ghost {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-gray);
+            border: 1px solid rgba(var(--accent-rgb, 200,180,140), 0.14);
+        }
+        .su-btn--ghost:hover { background: rgba(255,255,255,0.09); color: var(--text-light); }
+        [data-theme="light"] .su-btn--ghost {
+            background: rgba(0,0,0,0.04);
+            border-color: rgba(0,0,0,0.10);
+        }
+    </style>
 </head>
 <body>
     <!-- NAVIGATION BAR -->
     <div id="navbar-placeholder"></div>
 
-    <div class="auth-page">
-        <div class="auth-card">
-            <h1 class="auth-card__title" data-i18n="setup_username_title">✏️ Choose your username</h1>
-            <p class="auth-card__subtitle" data-i18n="setup_username_subtitle">Pick a unique username to complete your account setup</p>
+    <div class="su-page">
+        <div class="su-wrap">
+            <!-- Username form card -->
+            <div class="su-card" id="su-form-card">
+                <div class="su-card__icon">✏️</div>
+                <h1 class="su-card__title" data-i18n="setup_username_title">Choose your username</h1>
+                <p class="su-card__subtitle" data-i18n="setup_username_subtitle">Pick a unique username to complete your account setup.</p>
 
-            <div class="auth-error" id="setup-error"></div>
-            <div class="auth-success" id="setup-success"></div>
+                <div class="auth-error" id="setup-error"></div>
+                <div class="auth-success" id="setup-success"></div>
 
-            <form class="auth-form" id="setup-username-form" autocomplete="off">
-                <div class="auth-field">
-                    <label for="setup-username" data-i18n="setup_username_label">👤 Username</label>
-                    <input type="text" id="setup-username" name="username" required
-                           minlength="3" maxlength="20"
-                           pattern="^[a-zA-Z0-9_]+$"
-                           placeholder="Letters, numbers, underscores (3-20 chars)"
-                           data-i18n="setup_username_placeholder" data-i18n-attr="placeholder"
-                           autocomplete="off">
-                    <span class="username-status" id="username-status"></span>
+                <form class="auth-form" id="setup-username-form" autocomplete="off">
+                    <div class="auth-field">
+                        <label for="setup-username" data-i18n="setup_username_label">Username</label>
+                        <input type="text" id="setup-username" name="username" required
+                               minlength="3" maxlength="20"
+                               pattern="^[a-zA-Z0-9_]+$"
+                               placeholder="Letters, numbers, underscores (3-20 chars)"
+                               data-i18n="setup_username_placeholder" data-i18n-attr="placeholder"
+                               autocomplete="off">
+                        <span class="username-status" id="username-status"></span>
+                    </div>
+                    <button type="submit" class="auth-btn" id="setup-submit-btn" data-i18n="setup_username_btn">Set Username</button>
+                </form>
+            </div>
+
+            <!-- Course recommendation — shown after success -->
+            <div class="su-recommend" id="su-recommend">
+                <div class="su-recommend__label">Recommended for you</div>
+                <div class="su-recommend__title">📚 Console Starter Guide</div>
+                <div class="su-recommend__desc">
+                    Start your journey into gaming history. Learn how consoles evolved from the first cartridge machines to modern powerhouses — no prior knowledge needed.
                 </div>
-                <button type="submit" class="auth-btn" id="setup-submit-btn" data-i18n="setup_username_btn">✅ Set Username</button>
-            </form>
+                <div class="su-recommend__stats">
+                    <span class="su-recommend__stat">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        Free course
+                    </span>
+                    <span class="su-recommend__stat">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        ~30 min read
+                    </span>
+                    <span class="su-recommend__stat">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>
+                        Beginner-friendly
+                    </span>
+                </div>
+                <div class="su-recommend__actions">
+                    <a href="course.html?slug=starter-guide" class="su-btn su-btn--primary">Start Course →</a>
+                    <a href="profil.html" class="su-btn su-btn--ghost">Go to Profile</a>
+                </div>
+            </div>
         </div>
     </div>
 

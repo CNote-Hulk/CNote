@@ -99,7 +99,7 @@ function renderHeroStats(course, progress) {
         const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
         const stepsHTML = (course.modules || []).map((mod, i) => {
             const modLessons = mod.lessons || [];
-            const doneMod = modLessons.filter(l => completedIds.has(l.id)).length;
+            const doneMod = modLessons.filter(l => completedIds.has(Number(l.id))).length;
             const isDone = doneMod === modLessons.length && modLessons.length > 0;
             const isActive = doneMod > 0 && !isDone;
             const dotClass = isDone ? 'crs-hero-step-dot--done' : isActive ? 'crs-hero-step-dot--active' : '';
@@ -218,8 +218,8 @@ function renderModules(course) {
         (mod.lessons || []).forEach(l => allLessons.push(l));
     });
 
-    const nextLesson = allLessons.find(l => !completedIds.has(l.id));
-    const nextId = nextLesson ? nextLesson.id : null;
+    const nextLesson = allLessons.find(l => !completedIds.has(Number(l.id)));
+    const nextId = nextLesson ? Number(nextLesson.id) : null;
     let nextModuleOpenIdx = -1;
 
     const isGuest = !_token;
@@ -229,11 +229,11 @@ function renderModules(course) {
         const isModFree = isGuest ? (modIdx === 0) : true;
 
         const div = document.createElement('div');
-        const hasNext = lessons.some(l => l.id === nextId);
+        const hasNext = lessons.some(l => Number(l.id) === nextId);
         if (hasNext) nextModuleOpenIdx = modIdx;
         div.className = 'crs-module';
 
-        const doneInMod = lessons.filter(l => completedIds.has(l.id)).length;
+        const doneInMod = lessons.filter(l => completedIds.has(Number(l.id))).length;
         const timeMins = lessons.length * 5;
         const timeStr = timeMins >= 60 ? `${Math.floor(timeMins / 60)}h ${timeMins % 60 > 0 ? timeMins % 60 + 'm' : ''}` : `${timeMins}m`;
         const badgeHTML = isGuest
@@ -258,8 +258,8 @@ function renderModules(course) {
         lessonsDiv.className = 'crs-module-lessons';
 
         lessons.forEach(lesson => {
-            const done = completedIds.has(lesson.id);
-            const isNext = lesson.id === nextId;
+            const done = completedIds.has(Number(lesson.id));
+            const isNext = Number(lesson.id) === nextId;
             const isProLocked = isGuest && !isModFree;
             const state = isProLocked ? 'locked' : done ? 'done' : isNext ? 'next' : nextId ? 'locked' : 'open';
 

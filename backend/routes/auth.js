@@ -539,6 +539,38 @@ router.get('/me', authRequired, (req, res) => {
     res.json({ success: true, user: sanitizeUser(req.user) });
 });
 
+// GET /api/me/level — Compute user level dynamically
+// Reader (default) → Beginner (requires 1 completed course + 2 console visits)
+router.get('/me/level', authRequired, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const [courseRes, consoleRes] = await Promise.all([
+            pool.query(
+                'SELECT COUNT(*)::int AS completed FROM user_course_progress WHERE user_id = $1 AND completed_at IS NOT NULL',
+                [userId]
+            ),
+            pool.query(
+                'SELECT COUNT(*)::int AS visits FROM user_console_visits WHERE user_id = $1',
+                [userId]
+            )
+        ]);
+        const coursesCompleted = courseRes.rows[0].completed;
+        const consoleVisits = consoleRes.rows[0].visits;
+        const isBeginner = coursesCompleted >= 1 && consoleVisits >= 2;
+        res.json({
+            success: true,
+            level: isBeginner ? 'Beginner' : 'Reader',
+            emoji: isBeginner ? '📖' : '📰',
+            courses_completed: coursesCompleted,
+            console_visits: consoleVisits,
+            requirements: { courses: 1, consoles: 2 }
+        });
+    } catch (err) {
+        console.error('GET /me/level error:', err);
+        res.status(500).json({ success: false, error: 'Internal error' });
+    }
+});
+
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
     const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links } = req.body;

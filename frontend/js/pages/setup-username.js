@@ -125,9 +125,16 @@ form.addEventListener('submit', async (e) => {
 
         if (data.success && data.user) {
             AuthModule._setSession(data.user);
-            successEl.textContent = t('setup_username_success', '🎉 Username set! Redirecting...');
+            successEl.textContent = t('setup_username_success', '🎉 Username set!');
             successEl.classList.add('visible');
-            setTimeout(() => { window.location.href = 'profil.html'; }, 800);
+            // Show course recommendation instead of immediate redirect
+            const recommend = document.getElementById('su-recommend');
+            if (recommend) {
+                recommend.classList.add('visible');
+                recommend.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                setTimeout(() => { window.location.href = 'profil.html'; }, 800);
+            }
         } else {
             errorEl.textContent = data.error || t('setup_username_error_generic', '❌ Could not set username.');
             errorEl.classList.add('visible');
