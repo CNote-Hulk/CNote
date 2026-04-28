@@ -103,6 +103,20 @@ export const AchievementsModule = {
     },
 
     /**
+     * Compute public profile level from visible counts.
+     * Uses friend / favorite / owned / membership duration data only.
+     */
+    computePublicLevel(friendCount = 0, favoriteCount = 0, ownedCount = 0, daysMember = 1) {
+        const friendsScore = Math.min(Math.max(friendCount, 0), 25) * 1.8;
+        const favoriteScore = Math.min(Math.max(favoriteCount, 0), 25) * 1.6;
+        const ownedScore = Math.min(Math.max(ownedCount, 0), 25) * 1.4;
+        const veteranScore = Math.min(Math.max(daysMember, 1), 365) / 365 * 20;
+        const totalScore = Math.min(100, Math.round(friendsScore + favoriteScore + ownedScore + veteranScore));
+        const level = this.LEVELS.slice().reverse().find(l => totalScore >= l.minScore) || this.LEVELS[0];
+        return { emoji: level.emoji, name: level.name };
+    },
+
+    /**
      * Display toast notifications for newly unlocked badges
      */
     showUnlockNotifications(awardedIds, allBadges) {
