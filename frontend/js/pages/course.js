@@ -46,89 +46,97 @@ function getUsername() {
     return user ? user.username : null;
 }
 
-function showIncompleteModal(completed, total) {
-    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
-    const overlay = document.createElement('div');
-    overlay.className = 'crs-modal-overlay';
-    overlay.innerHTML = `
-        <div class="crs-modal" role="dialog" aria-modal="true">
-            <button class="crs-modal__close" aria-label="Close">✕</button>
-            <div class="crs-modal__icon">🔒</div>
-            <h3 class="crs-modal__title">Certificate Locked</h3>
-            <p class="crs-modal__text">Complete all lessons to unlock your certificate of completion.</p>
-            <div class="crs-modal__progress">
-                <div class="crs-modal__progress-header">
-                    <span>Progress</span>
-                    <span>${pct}%</span>
-                </div>
-                <div class="crs-modal__progress-track">
-                    <div class="crs-modal__progress-fill" style="width:${pct}%"></div>
-                </div>
-                <p class="crs-modal__progress-sub">${completed} of ${total} lessons completed</p>
-            </div>
-        </div>
-    `;
-    overlay.querySelector('.crs-modal__close').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
-    document.body.appendChild(overlay);
-    requestAnimationFrame(() => overlay.classList.add('crs-modal-overlay--visible'));
+function closePopover() {
+    document.querySelectorAll('.crs-popover').forEach(p => p.remove());
+    document.removeEventListener('click', _popoverOutsideHandler, true);
 }
 
-function showCertificateModal(course, completedCount) {
+let _popoverOutsideHandler = null;
+
+function openPopover(anchor, html) {
+    closePopover();
+    const pop = document.createElement('div');
+    pop.className = 'crs-popover';
+    pop.innerHTML = html;
+    pop.querySelector('.crs-popover__close')?.addEventListener('click', closePopover);
+
+    const wrap = anchor.closest('.crs-hero-actions');
+    if (wrap) {
+        wrap.style.position = 'relative';
+        wrap.appendChild(pop);
+    } else {
+        anchor.parentElement.style.position = 'relative';
+        anchor.parentElement.appendChild(pop);
+    }
+
+    requestAnimationFrame(() => pop.classList.add('crs-popover--visible'));
+
+    _popoverOutsideHandler = e => {
+        if (!pop.contains(e.target) && e.target !== anchor) closePopover();
+    };
+    setTimeout(() => document.addEventListener('click', _popoverOutsideHandler, true), 0);
+}
+
+function showIncompleteModal(anchor, completed, total) {
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    openPopover(anchor, `
+        <div class="crs-popover__icon">🔒</div>
+        <h3 class="crs-popover__title">Certificate Locked</h3>
+        <p class="crs-popover__text">Complete all lessons to unlock your certificate.</p>
+        <div class="crs-popover__prog-header">
+            <span>Progress</span><span>${pct}%</span>
+        </div>
+        <div class="crs-popover__track"><div class="crs-popover__fill" style="width:${pct}%"></div></div>
+        <p class="crs-popover__sub">${completed} of ${total} lessons completed</p>
+        <button class="crs-popover__close" aria-label="Close">✕</button>
+    `);
+}
+
+function showCertificateModal(anchor, course, completedCount) {
     const userName = getUsername() || 'Learner';
     const now = new Date();
     const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    const overlay = document.createElement('div');
-    overlay.className = 'crs-modal-overlay';
-    overlay.innerHTML = `
-        <div class="crs-cert" role="dialog" aria-modal="true">
-            <button class="crs-cert__close" aria-label="Close">✕</button>
-            <div class="crs-cert__deco crs-cert__deco--tl"></div>
-            <div class="crs-cert__deco crs-cert__deco--br"></div>
-            <div class="crs-cert__inner">
-                <div class="crs-cert__top">
-                    <div class="crs-cert__logo-wrap">
-                        <span class="crs-cert__logo-icon">📜</span>
-                        <span class="crs-cert__logo-text">Console Notebook</span>
-                    </div>
-                    <p class="crs-cert__subtitle">Certificate of Completion</p>
-                </div>
-                <div class="crs-cert__divider"></div>
-                <div class="crs-cert__body">
-                    <p class="crs-cert__awarded-to">This certifies that</p>
-                    <h2 class="crs-cert__name">${esc(userName)}</h2>
-                    <p class="crs-cert__completed-text">has successfully completed the course</p>
-                    <h3 class="crs-cert__course">${esc(course.title)}</h3>
-                    <div class="crs-cert__rank-wrap">
-                        <div class="crs-cert__rank">
-                            <span class="crs-cert__rank-label">Earned Rank</span>
-                            <span class="crs-cert__rank-value">Adept</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="crs-cert__divider"></div>
-                <div class="crs-cert__footer">
-                    <div class="crs-cert__date-block">
-                        <span class="crs-cert__footer-label">Date</span>
-                        <span class="crs-cert__footer-val">${dateStr}</span>
-                    </div>
-                    <div class="crs-cert__lessons-block">
-                        <span class="crs-cert__footer-label">Lessons Completed</span>
-                        <span class="crs-cert__footer-val">${completedCount}</span>
-                    </div>
-                    <div class="crs-cert__sig-block">
-                        <div class="crs-cert__sig-line"></div>
-                        <span class="crs-cert__footer-label">Console Notebook</span>
-                    </div>
+    openPopover(anchor, `
+        <button class="crs-popover__close" aria-label="Close">✕</button>
+        <div class="crs-cert__deco crs-cert__deco--tl"></div>
+        <div class="crs-cert__deco crs-cert__deco--br"></div>
+        <div class="crs-cert__top">
+            <div class="crs-cert__logo-wrap">
+                <span class="crs-cert__logo-icon">📜</span>
+                <span class="crs-cert__logo-text">Console Notebook</span>
+            </div>
+            <p class="crs-cert__subtitle">Certificate of Completion</p>
+        </div>
+        <div class="crs-cert__divider"></div>
+        <div class="crs-cert__body">
+            <p class="crs-cert__awarded-to">This certifies that</p>
+            <h2 class="crs-cert__name">${esc(userName)}</h2>
+            <p class="crs-cert__completed-text">has successfully completed</p>
+            <h3 class="crs-cert__course">${esc(course.title)}</h3>
+            <div class="crs-cert__rank-wrap">
+                <div class="crs-cert__rank">
+                    <span class="crs-cert__rank-label">Earned Rank</span>
+                    <span class="crs-cert__rank-value">Adept</span>
                 </div>
             </div>
         </div>
-    `;
-    overlay.querySelector('.crs-cert__close').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
-    document.body.appendChild(overlay);
-    requestAnimationFrame(() => overlay.classList.add('crs-modal-overlay--visible'));
+        <div class="crs-cert__divider"></div>
+        <div class="crs-cert__footer">
+            <div class="crs-cert__date-block">
+                <span class="crs-cert__footer-label">Date</span>
+                <span class="crs-cert__footer-val">${dateStr}</span>
+            </div>
+            <div class="crs-cert__lessons-block">
+                <span class="crs-cert__footer-label">Completed</span>
+                <span class="crs-cert__footer-val">${completedCount} lessons</span>
+            </div>
+            <div class="crs-cert__sig-block">
+                <div class="crs-cert__sig-line"></div>
+                <span class="crs-cert__footer-label">Console Notebook</span>
+            </div>
+        </div>
+    `);
 }
 
 function renderHeader(course, progress) {
@@ -189,11 +197,12 @@ function renderHeroStats(course, progress) {
 
     const certBtn = btnsEl.querySelector('#crs-cert-btn');
     if (certBtn) {
-        certBtn.addEventListener('click', () => {
+        certBtn.addEventListener('click', e => {
+            e.stopPropagation();
             if (isCourseCompleted) {
-                showCertificateModal(course, completed);
+                showCertificateModal(certBtn, course, completed);
             } else {
-                showIncompleteModal(completed, total);
+                showIncompleteModal(certBtn, completed, total);
             }
         });
     }

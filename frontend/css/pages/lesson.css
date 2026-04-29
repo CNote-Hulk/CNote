@@ -1475,6 +1475,17 @@
     pointer-events: none;
 }
 
+.lsn-nav-btn--ready {
+    border-color: rgba(var(--accent-rgb), 0.4);
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.12), 0 8px 24px rgba(0,0,0,0.4);
+    animation: lsn-nav-pulse 2s ease-in-out infinite;
+}
+
+@keyframes lsn-nav-pulse {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.12), 0 8px 24px rgba(0,0,0,0.4); }
+    50% { box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.22), 0 8px 24px rgba(0,0,0,0.4); }
+}
+
 /* Bottom guest banner */
 .lsn-bottom-banner {
     display: none;

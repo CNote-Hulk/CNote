@@ -9,6 +9,7 @@ if (!lessonId) window.location.href = 'invata.html';
 
 let lessonData = null;
 let quizAnswers = {};
+let quizScore = null;
 
 function esc(str) {
     return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -172,14 +173,7 @@ function renderQuiz(questions) {
     container.innerHTML = '';
 
     if (!questions || !questions.length) {
-        const noQuiz = document.createElement('div');
-        noQuiz.className = 'lsn-no-quiz';
-        const btn = document.createElement('button');
-        btn.className = 'lsn-btn-next';
-        btn.textContent = 'Complete Lesson →';
-        btn.addEventListener('click', () => completeAndNavigate(0));
-        noQuiz.appendChild(btn);
-        container.appendChild(noQuiz);
+        quizScore = 0;
         return;
     }
 
@@ -267,6 +261,7 @@ function handleAnswer(btn, card, question, totalQuestions) {
 function showResult(totalQuestions) {
     const correctCount = Object.values(quizAnswers).filter(a => a.isCorrect).length;
     const score = Math.round((correctCount / totalQuestions) * 100);
+    quizScore = score;
 
     const container = document.querySelector('.lsn-quiz');
     const resultDiv = document.createElement('div');
@@ -280,24 +275,17 @@ function showResult(totalQuestions) {
     labelEl.className = 'lsn-quiz-score-label';
     labelEl.textContent = `${correctCount} out of ${totalQuestions} correct`;
 
-    const isLastLesson = !window._lsnNextId;
-    const nextBtn = document.createElement('button');
-    nextBtn.className = 'lsn-btn-next';
-    nextBtn.textContent = isLastLesson ? 'Complete Course →' : 'Next Lesson →';
-    nextBtn.addEventListener('click', () => completeAndNavigate(score));
-
     resultDiv.appendChild(scoreEl);
     resultDiv.appendChild(labelEl);
-    resultDiv.appendChild(nextBtn);
     container.appendChild(resultDiv);
     resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-    // Enable the nav "Next →" button now that quiz is complete
+    // Unlock the bottom nav "Next lesson" button — it handles saving + navigation
     const nextNavBtn = document.getElementById('lsn-next-nav-btn');
-    if (nextNavBtn && nextNavBtn.classList.contains('lsn-nav-btn--disabled')) {
+    if (nextNavBtn) {
         nextNavBtn.classList.remove('lsn-nav-btn--disabled');
         nextNavBtn.removeAttribute('aria-disabled');
-        if (nextNavBtn.dataset.href) nextNavBtn.href = nextNavBtn.dataset.href;
+        nextNavBtn.classList.add('lsn-nav-btn--ready');
     }
 }
 
@@ -817,13 +805,16 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
         ${nextNum}
     `;
 
+    nextBtn.href = '#';
+    nextBtn.addEventListener('click', e => {
+        e.preventDefault();
+        if (nextBtn.classList.contains('lsn-nav-btn--disabled')) return;
+        completeAndNavigate(quizScore ?? 0);
+    });
+
     if (hasQuiz) {
         nextBtn.classList.add('lsn-nav-btn--disabled');
         nextBtn.setAttribute('aria-disabled', 'true');
-        nextBtn.dataset.href = resolvedNextHref;
-        nextBtn.href = '#';
-    } else {
-        nextBtn.href = resolvedNextHref;
     }
 
     nav.appendChild(prevBtn);
