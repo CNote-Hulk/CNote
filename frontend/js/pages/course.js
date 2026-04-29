@@ -220,70 +220,71 @@ function renderModules(course) {
 
     const nextLesson = allLessons.find(l => !completedIds.has(Number(l.id)));
     const nextId = nextLesson ? Number(nextLesson.id) : null;
-    let nextModuleOpenIdx = -1;
-
     const isGuest = !_token;
 
     (course.modules || []).forEach((mod, modIdx) => {
         const lessons = mod.lessons || [];
         const isModFree = isGuest ? (modIdx === 0) : true;
-
-        const div = document.createElement('div');
-        const hasNext = lessons.some(l => Number(l.id) === nextId);
-        if (hasNext) nextModuleOpenIdx = modIdx;
-        div.className = 'crs-module';
-
         const doneInMod = lessons.filter(l => completedIds.has(Number(l.id))).length;
-        const timeMins = lessons.length * 5;
-        const timeStr = timeMins >= 60 ? `${Math.floor(timeMins / 60)}h ${timeMins % 60 > 0 ? timeMins % 60 + 'm' : ''}` : `${timeMins}m`;
+        const isModDone = doneInMod === lessons.length && lessons.length > 0;
+
+        const section = document.createElement('div');
+        section.className = 'crs-section';
+
+        // Section header
         const badgeHTML = isGuest
             ? `<span class="crs-module-badge ${isModFree ? 'crs-module-badge--free' : 'crs-module-badge--pro'}">${isModFree ? 'FREE' : 'PRO'}</span>`
             : '';
-
-        const header = document.createElement('div');
-        header.className = 'crs-module-header';
-        const isModDone = doneInMod === lessons.length && lessons.length > 0;
-        header.innerHTML = `
-            <span class="crs-module-num${isModDone ? ' crs-module-num--done' : ''}">${isModDone ? '✓' : modIdx + 1}</span>
-            <div class="crs-module-info">
-                <span class="crs-module-title">${esc(mod.title)}</span>
-                <span class="crs-module-meta">${doneInMod}/${lessons.length} lessons · ${timeStr}</span>
+        section.innerHTML = `
+            <div class="crs-section-header">
+                <span class="crs-section-num${isModDone ? ' crs-section-num--done' : ''}">${isModDone ? '✓' : modIdx + 1}</span>
+                <div class="crs-section-info">
+                    <h2 class="crs-section-title">${esc(mod.title)}</h2>
+                    <span class="crs-section-meta">${doneInMod}/${lessons.length} lessons</span>
+                </div>
+                ${badgeHTML}
             </div>
-            ${badgeHTML}
-            <svg class="crs-module-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            <div class="crs-lessons-grid"></div>
         `;
-        header.addEventListener('click', () => div.classList.toggle('open'));
 
-        const lessonsDiv = document.createElement('div');
-        lessonsDiv.className = 'crs-module-lessons';
+        const grid = section.querySelector('.crs-lessons-grid');
 
-        lessons.forEach(lesson => {
+        lessons.forEach((lesson, lessonIdx) => {
             const done = completedIds.has(Number(lesson.id));
             const isNext = Number(lesson.id) === nextId;
             const isProLocked = isGuest && !isModFree;
-            const state = isProLocked ? 'locked' : done ? 'done' : isNext ? 'next' : nextId ? 'locked' : 'open';
 
-            const row = document.createElement('a');
-            row.className = 'crs-lesson-row' + (isNext ? ' crs-lesson-row--next' : '') + (isProLocked ? ' crs-lesson-row--locked' : '');
+            const card = document.createElement('a');
+            card.className = 'crs-lesson-card'
+                + (done ? ' crs-lesson-card--done' : '')
+                + (isNext ? ' crs-lesson-card--next' : '')
+                + (isProLocked ? ' crs-lesson-card--locked' : '');
 
-            if (isProLocked) {
-                row.href = 'login.html';
+            card.href = isProLocked
+                ? 'login.html'
+                : `lesson.html?id=${lesson.id}&slug=${encodeURIComponent(slug)}`;
+
+            const numStr = String(lessonIdx + 1).padStart(2, '0') + '.';
+            let actionHTML;
+            if (done) {
+                actionHTML = `<span class="crs-lesson-card__check">✓ Completed</span>`;
+            } else if (isProLocked) {
+                actionHTML = `<span>🔒 PRO</span>`;
             } else {
-                row.href = `lesson.html?id=${lesson.id}&slug=${encodeURIComponent(slug)}`;
+                actionHTML = `Check lesson <span class="crs-lesson-card__arrow">›</span>`;
             }
 
-            row.innerHTML = buildLessonIcon(state) + `<span class="crs-lesson-title">${esc(lesson.title)}</span><span class="crs-lesson-time">5m</span>`;
-            lessonsDiv.appendChild(row);
+            card.innerHTML = `
+                <div class="crs-lesson-card__num">${numStr}</div>
+                <span class="crs-lesson-card__badge">${esc(mod.title)}</span>
+                <div class="crs-lesson-card__title">${esc(lesson.title)}</div>
+                <div class="crs-lesson-card__action">${actionHTML}</div>
+            `;
+            grid.appendChild(card);
         });
 
-        div.appendChild(header);
-        div.appendChild(lessonsDiv);
-        list.appendChild(div);
+        list.appendChild(section);
     });
-
-    const modules = list.querySelectorAll('.crs-module');
-    const openIdx = nextModuleOpenIdx >= 0 ? nextModuleOpenIdx : 0;
-    if (modules[openIdx]) modules[openIdx].classList.add('open');
 }
 
 function initTabs() {

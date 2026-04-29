@@ -642,12 +642,17 @@
     pointer-events: none;
 }
 
-[data-theme="dark"] .profile-page::before {
-    filter: brightness(0.25) saturate(0.7);
+[data-theme="dark"] .profile-page::before,
+[data-theme="light"] .profile-page::before {
+    display: none;
 }
 
-[data-theme="light"] .profile-page::before {
-    filter: brightness(1.3) saturate(0.35) opacity(0.18);
+[data-theme="dark"] .profile-page {
+    background: radial-gradient(ellipse at 20% 0%, #1c1916 0%, #050403 60%);
+}
+
+[data-theme="light"] .profile-page {
+    background: linear-gradient(160deg, #f8f6f4 0%, #ece7e0 100%);
 }
 
 .profile-page > * { position: relative; }
@@ -2624,6 +2629,7 @@ a.chat-message__username:hover {
     --p-faint: #1c1814;
     --p-card: #1c1916;
     --p-sidebar: #0f0d0b;
+    background: radial-gradient(ellipse at 20% 0%, #1c1916 0%, #050403 60%);
 }
 
 [data-theme="light"] .profile-page {
@@ -2636,6 +2642,7 @@ a.chat-message__username:hover {
     --p-card: rgba(255, 255, 255, 0.82);
     --p-border: rgba(var(--p-accent-rgb), 0.18);
     --p-sidebar: rgba(245, 240, 232, 0.88);
+    background: linear-gradient(160deg, #f8f6f4 0%, #ece7e0 100%);
 }
 
 /* ══════════════════════════════════════════
