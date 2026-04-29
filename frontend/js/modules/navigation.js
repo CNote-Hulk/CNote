@@ -347,22 +347,29 @@ export const NavigationModule = {
     },
 
     /**
-     * Auto-hide navbar on scroll down, show on scroll up
-     * Desktop: always fixed (no auto-hide). Mobile only.
-     * Anti-jitter: ignore moves < 15px, stays visible near top (< 80px)
+     * Auto-hide navbar on scroll down, show on scroll up.
+     * Mobile only (≤768px). Desktop always shows the navbar.
+     * Anti-jitter: ignore moves < 15px, stays visible near top (< 80px).
      */
     setupAutoHideNavbar() {
         const navbar = document.querySelector('.navbar');
         if (!navbar) return;
 
         const mbn = document.getElementById('mobile-bottom-nav');
+        const mq  = window.matchMedia('(max-width: 768px)');
 
-        const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
-
-        // Desktop: keep navbar always visible on all pages.
-        if (!isMobileViewport) {
+        const showAll = () => {
             navbar.classList.remove('navbar--hidden');
             if (mbn) mbn.classList.remove('mbn--hidden');
+        };
+
+        const hideAll = () => {
+            navbar.classList.add('navbar--hidden');
+            if (mbn) mbn.classList.add('mbn--hidden');
+        };
+
+        if (!mq.matches) {
+            showAll();
             return;
         }
 
@@ -373,39 +380,31 @@ export const NavigationModule = {
             const currentY = window.scrollY;
             const delta = currentY - lastScrollY;
 
-            // Don't hide if mobile menu is open
             if (document.body.classList.contains('menu-open')) {
                 lastScrollY = currentY;
                 ticking = false;
                 return;
             }
 
-            // Stay visible near top
             if (currentY < 80) {
-                navbar.classList.remove('navbar--hidden');
-                if (mbn && !isHomePage) mbn.classList.remove('mbn--hidden');
+                showAll();
                 lastScrollY = currentY;
                 ticking = false;
                 return;
             }
 
-            // Anti-jitter: ignore small movements
             if (Math.abs(delta) < 15) {
                 ticking = false;
                 return;
             }
 
             if (delta > 0) {
-                // Scroll down → hide
-                navbar.classList.add('navbar--hidden');
-                if (mbn && !isHomePage) mbn.classList.add('mbn--hidden');
+                hideAll();
             } else {
-                // Scroll up → show
-                navbar.classList.remove('navbar--hidden');
-                if (mbn && !isHomePage) mbn.classList.remove('mbn--hidden');
+                showAll();
             }
 
-            lastScrollY = currentY < 0 ? 0 : currentY; // iOS elastic scroll protection
+            lastScrollY = currentY < 0 ? 0 : currentY;
             ticking = false;
         };
 
@@ -415,5 +414,9 @@ export const NavigationModule = {
                 ticking = true;
             }
         }, { passive: true });
+
+        mq.addEventListener('change', (e) => {
+            if (!e.matches) showAll();
+        });
     }
 };

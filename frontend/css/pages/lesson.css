@@ -1476,10 +1476,8 @@
     .lsn-main { padding: 24px 0; }
     .lsn-lesson-banner { padding: 0 16px; }
     .lsn-banner-progress { display: none; }
-    .lsn-hero { padding: 28px 0 24px; }
     .lsn-hero__inner { padding: 0 18px; }
     .lsn-title { font-size: 1.65rem; }
-    .lsn-article { padding: 24px 22px; }
     .lsn-quiz-card { padding: 20px 22px; }
     .lsn-quiz-result { padding: 36px 20px; }
     .lsn-content img, .lesson-image-wrap img { max-height: 240px; }
@@ -1489,6 +1487,10 @@
     .lsn-nav-buttons { grid-template-columns: 1fr; }
     .lsn-nav-btn--next { align-items: flex-start; }
 
+    /* Hide mobile bottom nav on lesson page */
+    .mobile-bottom-nav { display: none !important; }
+    body.has-mbn { padding-bottom: 0 !important; }
+
     .lsn-main-wrapper {
         padding: 0;
     }
@@ -1497,11 +1499,26 @@
     .lsn-guest-banner-section,
     .lsn-content-section,
     .lsn-quiz-section {
-        padding: 20px;
+        padding: 20px 16px;
     }
 
     .lsn-hero-section {
         max-height: 25vh;
+    }
+
+    /* Remove card styling on mobile — full-width flat content */
+    .lsn-article {
+        background: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    .lsn-content-section {
+        padding: 16px;
     }
 }
 
