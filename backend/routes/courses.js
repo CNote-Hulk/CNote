@@ -60,7 +60,7 @@ router.get('/courses', async (req, res) => {
 });
 
 // GET /api/courses/:slug — course with full module/lesson structure
-router.get('/courses/:slug', async (req, res) => {
+router.get('/courses/:slug', authOptional, async (req, res) => {
     try {
         const { slug } = req.params;
         const courseResult = await pool.query(
@@ -89,6 +89,36 @@ router.get('/courses/:slug', async (req, res) => {
         `, [course.id]);
 
         course.modules = modulesResult.rows;
+
+        // Attach instructor (admin/creator) info
+        const instructorResult = await pool.query(
+            `SELECT id, username, avatar, bio FROM users WHERE role = 'admin' ORDER BY id LIMIT 1`
+        );
+        const instructor = instructorResult.rows[0] || null;
+
+        if (instructor && req.user) {
+            const [friendRow, reqRow] = await Promise.all([
+                pool.query(
+                    `SELECT 1 FROM friends WHERE (user1_id=$1 AND user2_id=$2) OR (user1_id=$2 AND user2_id=$1)`,
+                    [req.user.id, instructor.id]
+                ),
+                pool.query(
+                    `SELECT id, sender_id FROM friend_requests WHERE ((sender_id=$1 AND receiver_id=$2) OR (sender_id=$2 AND receiver_id=$1)) AND status='pending'`,
+                    [req.user.id, instructor.id]
+                ),
+            ]);
+            if (req.user.id === instructor.id) {
+                instructor.friend_status = 'self';
+            } else if (friendRow.rows.length) {
+                instructor.friend_status = 'friends';
+            } else if (reqRow.rows.length) {
+                instructor.friend_status = reqRow.rows[0].sender_id === req.user.id ? 'pending_sent' : 'pending_received';
+            } else {
+                instructor.friend_status = 'none';
+            }
+        }
+
+        course.instructor = instructor;
         res.json({ success: true, course });
     } catch (err) {
         console.error('GET /courses/:slug error:', err);

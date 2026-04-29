@@ -847,19 +847,76 @@
 }
 
 .crs-sb-instructor__avatar {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: rgba(var(--accent-rgb), 0.1);
     border: 1px solid rgba(var(--accent-rgb), 0.2);
     color: var(--accent-color);
-    font-size: 0.75rem;
+    font-size: 0.82rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-family: 'SFMono-Regular', monospace;
+}
+
+.crs-sb-instructor__avatar-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    flex-shrink: 0;
+}
+
+/* Add Friend button */
+.crs-sb-friend-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 32px);
+    margin: 10px 16px 4px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.1s;
+    border: 1px solid rgba(var(--accent-rgb), 0.30);
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent-color);
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.crs-sb-friend-btn:hover:not(:disabled) {
+    background: rgba(var(--accent-rgb), 0.14);
+    transform: translateY(-1px);
+}
+
+.crs-sb-friend-btn--pending,
+.crs-sb-friend-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+}
+
+.crs-sb-friend-label {
+    display: block;
+    text-align: center;
+    margin: 10px 16px 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--success, #4ade80);
+    opacity: 0.85;
+}
+
+[data-theme="light"] .crs-sb-friend-btn {
+    border-color: rgba(var(--accent-rgb), 0.22);
+    background: rgba(var(--accent-rgb), 0.06);
 }
 
 .crs-sb-instructor__info {

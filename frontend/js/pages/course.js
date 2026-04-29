@@ -139,14 +139,6 @@ function buildCourseLayout(course, progress) {
     const completed = completedArr.length;
     const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-    let instructorName = 'CNote';
-    if (_token) {
-        try {
-            const payload = JSON.parse(atob(_token.split('.')[1]));
-            instructorName = payload.username || instructorName;
-        } catch {}
-    }
-
     const lastId = progress && progress.last_lesson_id;
     const isCourseCompleted = progress && progress.course_completed;
     let resumeHref = allLessons.length > 0 ? `lesson.html?id=${allLessons[0].id}&slug=${encodeURIComponent(slug)}` : '#';
@@ -163,6 +155,27 @@ function buildCourseLayout(course, progress) {
         ? learnPoints.map(pt => `<li class="crs-sb-learn__item"><span class="crs-sb-learn__check">✓</span><span>${esc(pt)}</span></li>`).join('')
         : '';
 
+    const instructor = course.instructor;
+    const instrName = instructor ? esc(instructor.username) : 'CNote';
+    const instrBio = instructor && instructor.bio ? `<p class="crs-sb-instructor__bio">${esc(instructor.bio)}</p>` : '';
+    const instrAvatarHTML = instructor && instructor.avatar
+        ? `<img src="${esc(instructor.avatar)}" alt="${instrName}" class="crs-sb-instructor__avatar-img">`
+        : `<div class="crs-sb-instructor__avatar">${instrName.charAt(0).toUpperCase()}</div>`;
+
+    let friendBtnHTML = '';
+    if (instructor && _token) {
+        const st = instructor.friend_status;
+        if (st === 'none') {
+            friendBtnHTML = `<button class="crs-sb-friend-btn" data-instructor-id="${instructor.id}" data-action="add">+ Add Friend</button>`;
+        } else if (st === 'pending_sent') {
+            friendBtnHTML = `<button class="crs-sb-friend-btn crs-sb-friend-btn--pending" disabled>Request Sent</button>`;
+        } else if (st === 'friends') {
+            friendBtnHTML = `<span class="crs-sb-friend-label">✓ Friends</span>`;
+        }
+    } else if (instructor && !_token) {
+        friendBtnHTML = `<a href="login.html" class="crs-sb-friend-btn">+ Add Friend</a>`;
+    }
+
     const sidebar = document.createElement('aside');
     sidebar.className = 'crs-sidebar';
     sidebar.innerHTML = `
@@ -174,17 +187,45 @@ function buildCourseLayout(course, progress) {
             <a href="${resumeHref}" class="crs-sb-progress__btn">${resumeLabel}</a>
         </div>
         <div class="crs-sb-instructor">
-            <span class="crs-sb-label">Instructor</span>
+            <span class="crs-sb-label">Creator</span>
             <div class="crs-sb-instructor__body">
-                <div class="crs-sb-instructor__avatar">${esc(instructorName.charAt(0).toUpperCase())}</div>
+                ${instrAvatarHTML}
                 <div class="crs-sb-instructor__info">
-                    <p class="crs-sb-instructor__name">${esc(instructorName)}</p>
+                    <p class="crs-sb-instructor__name">${instrName}</p>
                     <p class="crs-sb-instructor__role">Console Notebook</p>
                 </div>
             </div>
+            ${instrBio}
+            ${friendBtnHTML}
         </div>
         ${learnHTML ? `<div class="crs-sb-learn"><span class="crs-sb-label">What You'll Learn</span><ul class="crs-sb-learn__list">${learnHTML}</ul></div>` : ''}
     `;
+
+    // Add Friend button handler
+    const friendBtn = sidebar.querySelector('.crs-sb-friend-btn[data-action="add"]');
+    if (friendBtn) {
+        friendBtn.addEventListener('click', async () => {
+            friendBtn.disabled = true;
+            friendBtn.textContent = '…';
+            try {
+                const res = await fetch(`${API_BASE_URL}/friends/request/${friendBtn.dataset.instructorId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + _token }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    friendBtn.textContent = data.status === 'friends' ? '✓ Friends' : 'Request Sent';
+                    friendBtn.classList.add('crs-sb-friend-btn--pending');
+                } else {
+                    friendBtn.textContent = data.error || 'Error';
+                    setTimeout(() => { friendBtn.textContent = '+ Add Friend'; friendBtn.disabled = false; }, 2000);
+                }
+            } catch {
+                friendBtn.textContent = '+ Add Friend';
+                friendBtn.disabled = false;
+            }
+        });
+    }
 
     container.appendChild(sidebar);
 }
