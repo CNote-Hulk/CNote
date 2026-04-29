@@ -538,7 +538,14 @@
     transform: translateY(-2px);
 }
 
-/* Number */
+/* Number row (number + score badge side by side) */
+.crs-lesson-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
 .crs-lesson-card__num {
     font-size: 1.5rem;
     font-weight: 700;
@@ -550,6 +557,35 @@
 }
 
 [data-theme="light"] .crs-lesson-card__num { opacity: 0.22; color: #3a3028; }
+
+/* Quiz score badge */
+.crs-lesson-card__score {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+}
+
+.crs-lesson-card__score--high {
+    background: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.28);
+    color: var(--success, #4ade80);
+}
+
+.crs-lesson-card__score--mid {
+    background: rgba(250, 189, 47, 0.12);
+    border: 1px solid rgba(250, 189, 47, 0.28);
+    color: #fabd2f;
+}
+
+.crs-lesson-card__score--low {
+    background: rgba(229, 115, 115, 0.12);
+    border: 1px solid rgba(229, 115, 115, 0.28);
+    color: var(--error, #e57373);
+}
 
 /* Category badge */
 .crs-lesson-card__badge {

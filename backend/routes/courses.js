@@ -113,7 +113,7 @@ router.get('/courses/:slug/progress', authRequired, async (req, res) => {
 
         const [completedResult, progressResult, totalResult] = await Promise.all([
             pool.query(`
-                SELECT ul.lesson_id FROM user_lessons ul
+                SELECT ul.lesson_id, ul.quiz_score FROM user_lessons ul
                 JOIN lessons l ON l.id = ul.lesson_id
                 JOIN modules m ON m.id = l.module_id
                 WHERE ul.user_id = $1 AND m.course_id = $2 AND ul.completed = true
@@ -133,9 +133,15 @@ router.get('/courses/:slug/progress', authRequired, async (req, res) => {
         const completedIds = completedResult.rows.map(r => r.lesson_id);
         const total = totalResult.rows[0].total;
 
+        const quizScores = {};
+        completedResult.rows.forEach(r => {
+            if (r.quiz_score != null) quizScores[r.lesson_id] = r.quiz_score;
+        });
+
         res.json({
             success: true,
             completed_lesson_ids: completedIds,
+            quiz_scores: quizScores,
             last_lesson_id: progress.last_lesson_id || null,
             course_completed: !!progress.completed_at,
             total_lessons: total
@@ -167,10 +173,20 @@ router.get('/lessons/:id', authOptional, async (req, res) => {
         const lesson = lessonResult.rows[0];
 
         const quizResult = await pool.query(
-            'SELECT id, question, options, correct_option, explanation FROM quiz_questions WHERE lesson_id = $1 ORDER BY id',
+            'SELECT id, question, options, correct_option, explanation FROM quiz_questions WHERE lesson_id = $1 ORDER BY RANDOM()',
             [lessonId]
         );
-        lesson.quiz_questions = quizResult.rows;
+
+        lesson.quiz_questions = quizResult.rows.map(q => {
+            const options = Array.isArray(q.options) ? q.options : Object.values(q.options);
+            const correctText = options[q.correct_option];
+            const shuffled = [...options].sort(() => Math.random() - 0.5);
+            return {
+                ...q,
+                options: shuffled,
+                correct_option: shuffled.indexOf(correctText),
+            };
+        });
 
         res.json({ success: true, lesson });
     } catch (err) {

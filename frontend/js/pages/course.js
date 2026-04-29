@@ -13,6 +13,7 @@ if (slug !== 'starter-guide' && !_token) {
 }
 
 let completedIds = new Set();
+let lessonScores = {};
 let allLessons = [];
 
 function esc(str) {
@@ -265,6 +266,8 @@ function renderModules(course) {
                 : `lesson.html?id=${lesson.id}&slug=${encodeURIComponent(slug)}`;
 
             const numStr = String(lessonIdx + 1).padStart(2, '0') + '.';
+            const score = done ? lessonScores[lesson.id] : null;
+
             let actionHTML;
             if (done) {
                 actionHTML = `<span class="crs-lesson-card__check">✓ Completed</span>`;
@@ -274,8 +277,15 @@ function renderModules(course) {
                 actionHTML = `Check lesson <span class="crs-lesson-card__arrow">›</span>`;
             }
 
+            const scoreHTML = (score != null && score > 0)
+                ? `<span class="crs-lesson-card__score${score >= 80 ? ' crs-lesson-card__score--high' : score >= 50 ? ' crs-lesson-card__score--mid' : ' crs-lesson-card__score--low'}">${score}%</span>`
+                : '';
+
             card.innerHTML = `
-                <div class="crs-lesson-card__num">${numStr}</div>
+                <div class="crs-lesson-card__top">
+                    <div class="crs-lesson-card__num">${numStr}</div>
+                    ${scoreHTML}
+                </div>
                 <span class="crs-lesson-card__badge">${esc(mod.title)}</span>
                 <div class="crs-lesson-card__title">${esc(lesson.title)}</div>
                 <div class="crs-lesson-card__action">${actionHTML}</div>
@@ -318,6 +328,9 @@ async function init() {
 
     if (progress && progress.completed_lesson_ids) {
         completedIds = new Set(progress.completed_lesson_ids.map(Number));
+    }
+    if (progress && progress.quiz_scores) {
+        lessonScores = progress.quiz_scores;
     }
 
     // renderModules first — populates allLessons
