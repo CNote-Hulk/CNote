@@ -1358,9 +1358,56 @@
     font-family: 'SFMono-Regular', 'Courier New', monospace;
 }
 
+.lsn-sb-author__avatar-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.2);
+    flex-shrink: 0;
+}
+
 .lsn-sb-author__info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .lsn-sb-author__name { font-size: 0.85rem; font-weight: 600; color: var(--text-light); line-height: 1.3; }
 .lsn-sb-author__desc { font-size: 0.75rem; color: var(--text-gray); line-height: 1.4; opacity: 0.65; }
+
+.lsn-sb-friend-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.1s;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.30);
+    background: rgba(var(--accent-color-rgb), 0.08);
+    color: var(--accent-color);
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.lsn-sb-friend-btn:hover:not(:disabled) {
+    background: rgba(var(--accent-color-rgb), 0.14);
+    transform: translateY(-1px);
+}
+
+.lsn-sb-friend-btn--pending,
+.lsn-sb-friend-btn:disabled { opacity: 0.5; cursor: default; pointer-events: none; }
+
+.lsn-sb-friend-label {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--success, #4ade80);
+}
 
 /* ═══════════════════════════════
    LESSON NAV BUTTONS (card style)

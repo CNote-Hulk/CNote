@@ -21,7 +21,9 @@ function esc(str) {
 }
 
 async function fetchCourse() {
-    const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(slug)}`);
+    const headers = {};
+    if (_token) headers['Authorization'] = 'Bearer ' + _token;
+    const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(slug)}`, { headers });
     if (!res.ok) { window.location.href = 'invata.html'; return null; }
     const data = await res.json();
     return data.course;
@@ -31,11 +33,102 @@ async function fetchProgress() {
     if (!_token) return null;
     try {
         const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(slug)}/progress`, {
-            headers: { 'Authorization': 'Bearer ' + _token }
+            headers: { 'Authorization': 'Bearer ' + _token },
+            cache: 'no-store'
         });
         if (!res.ok) return null;
         return res.json();
     } catch { return null; }
+}
+
+function getUsername() {
+    const user = AuthModule.getCurrentUser();
+    return user ? user.username : null;
+}
+
+function showIncompleteModal(completed, total) {
+    const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+    const overlay = document.createElement('div');
+    overlay.className = 'crs-modal-overlay';
+    overlay.innerHTML = `
+        <div class="crs-modal" role="dialog" aria-modal="true">
+            <button class="crs-modal__close" aria-label="Close">✕</button>
+            <div class="crs-modal__icon">🔒</div>
+            <h3 class="crs-modal__title">Certificate Locked</h3>
+            <p class="crs-modal__text">Complete all lessons to unlock your certificate of completion.</p>
+            <div class="crs-modal__progress">
+                <div class="crs-modal__progress-header">
+                    <span>Progress</span>
+                    <span>${pct}%</span>
+                </div>
+                <div class="crs-modal__progress-track">
+                    <div class="crs-modal__progress-fill" style="width:${pct}%"></div>
+                </div>
+                <p class="crs-modal__progress-sub">${completed} of ${total} lessons completed</p>
+            </div>
+        </div>
+    `;
+    overlay.querySelector('.crs-modal__close').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('crs-modal-overlay--visible'));
+}
+
+function showCertificateModal(course, completedCount) {
+    const userName = getUsername() || 'Learner';
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const overlay = document.createElement('div');
+    overlay.className = 'crs-modal-overlay';
+    overlay.innerHTML = `
+        <div class="crs-cert" role="dialog" aria-modal="true">
+            <button class="crs-cert__close" aria-label="Close">✕</button>
+            <div class="crs-cert__deco crs-cert__deco--tl"></div>
+            <div class="crs-cert__deco crs-cert__deco--br"></div>
+            <div class="crs-cert__inner">
+                <div class="crs-cert__top">
+                    <div class="crs-cert__logo-wrap">
+                        <span class="crs-cert__logo-icon">📜</span>
+                        <span class="crs-cert__logo-text">Console Notebook</span>
+                    </div>
+                    <p class="crs-cert__subtitle">Certificate of Completion</p>
+                </div>
+                <div class="crs-cert__divider"></div>
+                <div class="crs-cert__body">
+                    <p class="crs-cert__awarded-to">This certifies that</p>
+                    <h2 class="crs-cert__name">${esc(userName)}</h2>
+                    <p class="crs-cert__completed-text">has successfully completed the course</p>
+                    <h3 class="crs-cert__course">${esc(course.title)}</h3>
+                    <div class="crs-cert__rank-wrap">
+                        <div class="crs-cert__rank">
+                            <span class="crs-cert__rank-label">Earned Rank</span>
+                            <span class="crs-cert__rank-value">Adept</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="crs-cert__divider"></div>
+                <div class="crs-cert__footer">
+                    <div class="crs-cert__date-block">
+                        <span class="crs-cert__footer-label">Date</span>
+                        <span class="crs-cert__footer-val">${dateStr}</span>
+                    </div>
+                    <div class="crs-cert__lessons-block">
+                        <span class="crs-cert__footer-label">Lessons Completed</span>
+                        <span class="crs-cert__footer-val">${completedCount}</span>
+                    </div>
+                    <div class="crs-cert__sig-block">
+                        <div class="crs-cert__sig-line"></div>
+                        <span class="crs-cert__footer-label">Console Notebook</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    overlay.querySelector('.crs-cert__close').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('crs-modal-overlay--visible'));
 }
 
 function renderHeader(course, progress) {
@@ -85,13 +178,24 @@ function renderHeroStats(course, progress) {
     btnsEl.className = 'crs-hero-actions';
     btnsEl.innerHTML = `
         <a href="${resumeHref}" class="crs-hero-btn crs-hero-btn--primary">${resumeLabel}</a>
-        <a href="#" class="crs-hero-btn crs-hero-btn--outline">View Certificate</a>
+        <button type="button" class="crs-hero-btn crs-hero-btn--outline" id="crs-cert-btn">View Certificate</button>
     `;
 
     const body = inner.querySelector('.crs-hero__body');
     if (body) {
         body.after(btnsEl);
         btnsEl.after(statsEl);
+    }
+
+    const certBtn = btnsEl.querySelector('#crs-cert-btn');
+    if (certBtn) {
+        certBtn.addEventListener('click', () => {
+            if (isCourseCompleted) {
+                showCertificateModal(course, completed);
+            } else {
+                showIncompleteModal(completed, total);
+            }
+        });
     }
 
     // Populate hero progress card (right column)
@@ -117,11 +221,15 @@ function renderHeroStats(course, progress) {
                     <span class="crs-hero-progress-card__pct">${pct}%</span>
                 </div>
                 <div class="crs-hero-progress-card__track">
-                    <div class="crs-hero-progress-card__fill" style="width:${pct}%"></div>
+                    <div class="crs-hero-progress-card__fill" style="width:0%"></div>
                 </div>
                 <div class="crs-hero-progress-steps">${stepsHTML}</div>
             </div>
         `;
+        requestAnimationFrame(() => {
+            const fill = progressCard.querySelector('.crs-hero-progress-card__fill');
+            if (fill) fill.style.width = pct + '%';
+        });
     }
 }
 
@@ -183,7 +291,7 @@ function buildCourseLayout(course, progress) {
             <span class="crs-sb-label">Progress</span>
             <span class="crs-sb-progress__pct">${pct}%</span>
             <p class="crs-sb-progress__meta">${completed} of ${total} completed</p>
-            <div class="crs-sb-progress__track"><div class="crs-sb-progress__fill" style="width:${pct}%"></div></div>
+            <div class="crs-sb-progress__track"><div class="crs-sb-progress__fill" id="crs-sb-fill" style="width:0%"></div></div>
             <a href="${resumeHref}" class="crs-sb-progress__btn">${resumeLabel}</a>
         </div>
         <div class="crs-sb-instructor">
@@ -228,6 +336,11 @@ function buildCourseLayout(course, progress) {
     }
 
     container.appendChild(sidebar);
+
+    requestAnimationFrame(() => {
+        const sbFill = document.getElementById('crs-sb-fill');
+        if (sbFill) sbFill.style.width = pct + '%';
+    });
 }
 
 function buildLessonIcon(state) {

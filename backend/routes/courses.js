@@ -202,6 +202,24 @@ router.get('/lessons/:id', authOptional, async (req, res) => {
         }
         const lesson = lessonResult.rows[0];
 
+        // Attach instructor info to lesson too
+        const lessonInstructorResult = await pool.query(
+            `SELECT id, username, avatar, bio FROM users WHERE role = 'admin' ORDER BY id LIMIT 1`
+        );
+        lesson.instructor = lessonInstructorResult.rows[0] || null;
+
+        if (lesson.instructor && req.user) {
+            const instrId = lesson.instructor.id;
+            const [fr, rr] = await Promise.all([
+                pool.query(`SELECT 1 FROM friends WHERE (user1_id=$1 AND user2_id=$2) OR (user1_id=$2 AND user2_id=$1)`, [req.user.id, instrId]),
+                pool.query(`SELECT id, sender_id FROM friend_requests WHERE ((sender_id=$1 AND receiver_id=$2) OR (sender_id=$2 AND receiver_id=$1)) AND status='pending'`, [req.user.id, instrId]),
+            ]);
+            lesson.instructor.friend_status = req.user.id === instrId ? 'self'
+                : fr.rows.length ? 'friends'
+                : rr.rows.length ? (rr.rows[0].sender_id === req.user.id ? 'pending_sent' : 'pending_received')
+                : 'none';
+        }
+
         const quizResult = await pool.query(
             'SELECT id, question, options, correct_option, explanation FROM quiz_questions WHERE lesson_id = $1 ORDER BY RANDOM()',
             [lessonId]

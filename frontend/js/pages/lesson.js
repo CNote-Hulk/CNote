@@ -104,6 +104,69 @@ function renderLesson(lesson, course, lsnIdx) {
     }
 }
 
+function renderAuthorCard(instructor) {
+    const wrap = document.getElementById('lsn-sb-author');
+    if (!wrap) return;
+
+    const name = instructor ? esc(instructor.username) : 'Console Notebook';
+    const bio  = instructor && instructor.bio ? esc(instructor.bio) : 'The official Console Notebook course team.';
+    const avatarHTML = instructor && instructor.avatar
+        ? `<img src="${esc(instructor.avatar)}" alt="${name}" class="lsn-sb-author__avatar-img">`
+        : `<div class="lsn-sb-author__avatar">${name.charAt(0).toUpperCase()}</div>`;
+
+    const token = localStorage.getItem('cn_token');
+    let friendHTML = '';
+    if (instructor && token) {
+        const st = instructor.friend_status;
+        if (st === 'none') {
+            friendHTML = `<button class="lsn-sb-friend-btn" data-id="${instructor.id}">+ Add Friend</button>`;
+        } else if (st === 'pending_sent') {
+            friendHTML = `<button class="lsn-sb-friend-btn lsn-sb-friend-btn--pending" disabled>Request Sent</button>`;
+        } else if (st === 'friends') {
+            friendHTML = `<span class="lsn-sb-friend-label">✓ Friends</span>`;
+        }
+    } else if (instructor && !token) {
+        friendHTML = `<a href="login.html" class="lsn-sb-friend-btn">+ Add Friend</a>`;
+    }
+
+    wrap.innerHTML = `
+        <div class="lsn-sb-section-label">Created by</div>
+        <div class="lsn-sb-author__card">
+            ${avatarHTML}
+            <div class="lsn-sb-author__info">
+                <span class="lsn-sb-author__name">${name}</span>
+                <span class="lsn-sb-author__desc">${bio}</span>
+            </div>
+        </div>
+        ${friendHTML}
+    `;
+
+    const btn = wrap.querySelector('.lsn-sb-friend-btn[data-id]');
+    if (btn) {
+        btn.addEventListener('click', async () => {
+            btn.disabled = true;
+            btn.textContent = '…';
+            try {
+                const res = await fetch(`${API_BASE_URL}/friends/request/${btn.dataset.id}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    btn.textContent = data.status === 'friends' ? '✓ Friends' : 'Request Sent';
+                    btn.classList.add('lsn-sb-friend-btn--pending');
+                } else {
+                    btn.textContent = data.error || 'Error';
+                    setTimeout(() => { btn.textContent = '+ Add Friend'; btn.disabled = false; }, 2000);
+                }
+            } catch {
+                btn.textContent = '+ Add Friend';
+                btn.disabled = false;
+            }
+        });
+    }
+}
+
 function renderQuiz(questions) {
     const container = document.querySelector('.lsn-quiz');
     container.innerHTML = '';
@@ -802,6 +865,7 @@ async function init() {
     }
 
     lessonData = lesson;
+    renderAuthorCard(lesson.instructor);
     renderQuiz(lesson.quiz_questions || []);
 
     const course = await fetchCourseStructure();
