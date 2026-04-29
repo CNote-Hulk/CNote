@@ -33,6 +33,11 @@ const { checkAndEmitAchievements } = require('../utils/check-achievements');
                 PRIMARY KEY(user_id, comment_id)
             );
         `);
+        // Ensure user_lessons has the unique constraint required for ON CONFLICT upsert
+        await pool.query(`
+            CREATE UNIQUE INDEX IF NOT EXISTS user_lessons_user_lesson_uidx
+            ON user_lessons(user_id, lesson_id)
+        `);
     } catch (err) {
         console.error('[courses] lesson table init error:', err.message);
     }
