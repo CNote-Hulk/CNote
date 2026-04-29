@@ -877,11 +877,7 @@ async function init() {
     renderNavButtons(allLessons, lsnIdx, hasQuiz);
 
     // ── Fetch sidebar progress + reactions + comments in parallel ──
-    const [progressData, reactionsData, commentsData] = await Promise.all([
-        fetchCourseProgress(),
-        fetchReactionsData(),
-        fetchCommentsData()
-    ]);
+    const progressData = await fetchCourseProgress();
 
     const completedIds = new Set((progressData?.completed_lesson_ids || []).map(Number));
     if (course) renderSidebarTOC(course, completedIds);
@@ -896,8 +892,6 @@ async function init() {
     }
 
     initScrollProgress();
-    renderReactions(reactionsData);
-    renderComments(commentsData);
 }
 
 if (document.readyState === 'loading') {
