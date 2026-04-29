@@ -1,45 +1,54 @@
 /**
  * Learn Page Script (invata.html)
- * Updates course card progress bars from localStorage data.
+ * Fetches real course progress from the API for logged-in users
+ * and updates course card progress bars.
  */
 import { AuthModule } from '../modules/auth.js';
-import { ProgressModule } from '../modules/progress.js';
+import { API_BASE_URL } from '../config.js';
 
-/** Update all course cards with current progress percentages */
-function initCourseCardsProgress() {
-    const cards = document.querySelectorAll('[data-course-id]');
+async function initCourseCardsProgress() {
+    const user = AuthModule.getCurrentUser();
+    if (!user) return;
+
+    const token = localStorage.getItem('cn_token');
+    if (!token) return;
+
+    const cards = document.querySelectorAll('[data-course-slug]');
     if (!cards.length) return;
 
-    const user = AuthModule.getCurrentUser();
+    await Promise.all([...cards].map(async (card) => {
+        const slug = card.dataset.courseSlug;
+        if (!slug) return;
 
-    cards.forEach((card) => {
-        const courseId = card.dataset.courseId;
-        const fallbackTotal = Number(card.dataset.totalLessons) || 0;
-        const courseDef = ProgressModule.COURSES.find((course) => course.id === courseId);
-        const totalLessons = courseDef?.totalLessons || fallbackTotal;
+        try {
+            const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(slug)}/progress`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!res.ok) return;
+            const data = await res.json();
 
-        const fillEl = card.querySelector('[data-course-progress-fill]');
-        const labelEl = card.querySelector('[data-course-progress-label]');
-        const hintEl = card.querySelector('[data-course-progress-hint]');
+            const completed = (data.completed_lesson_ids || []).length;
+            const total     = data.total_lessons || 0;
+            const pct       = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-        const progress = user
-            ? ProgressModule.getCourseProgress(user.id, courseId, totalLessons)
-            : { completed_lessons: [], total_lessons: totalLessons, percentage: 0 };
+            const wrap  = card.querySelector('[data-course-progress-wrap]');
+            const fill  = card.querySelector('[data-course-progress-fill]');
+            const label = card.querySelector('[data-course-progress-label]');
+            const cta   = card.querySelector('[data-course-cta]');
 
-        if (fillEl) {
-            fillEl.style.width = `${progress.percentage}%`;
-        }
+            if (fill)  setTimeout(() => { fill.style.width = pct + '%'; }, 80);
+            if (label) label.textContent = `${completed} / ${total} (${pct}%)`;
+            if (wrap && completed > 0) wrap.style.display = 'block';
 
-        if (labelEl) {
-            labelEl.textContent = `${progress.completed_lessons.length} / ${progress.total_lessons} (${progress.percentage}%)`;
-        }
-
-        if (hintEl) {
-            hintEl.textContent = user
-                ? 'Continue the course to increase your progress.'
-                : 'Log in to see your progress.';
-        }
-    });
+            // Change button text if user has already started
+            if (cta && completed > 0) {
+                cta.textContent = data.course_completed ? 'Review Course →' : 'Continue →';
+                if (data.last_lesson_id) {
+                    cta.href = `lesson.html?id=${data.last_lesson_id}&slug=${encodeURIComponent(slug)}`;
+                }
+            }
+        } catch { /* network error — ignore */ }
+    }));
 }
 
 if (document.readyState === 'loading') {

@@ -229,8 +229,16 @@ async function renderStats() {
 
     renderGoals(allBadges);
 
-    // Level — based on achievements + console exploration
-    const level = AchievementsModule.computeLevel(achievementsPct, visitedConsoles, allBadges.length);
+    // Level — fetch from API (requirement-based: Novice → Beginner)
+    let level = { name: 'Novice', emoji: '🌱', progressToNext: 0, nextLevel: { name: 'Beginner', emoji: '📖' }, sub: '' };
+    try {
+        const lvlResp = await fetch('/api/me/level', { headers: authHeaders(), credentials: 'include' });
+        if (lvlResp.ok) {
+            const lvlData = await lvlResp.json();
+            if (lvlData.success) level = AchievementsModule.computeLevel(lvlData);
+        }
+    } catch { /* keep default */ }
+
     document.getElementById('stat-level').textContent = level.name;
     document.getElementById('stat-level-sub').textContent = level.sub;
     const emojiEl = document.getElementById('stats-level-emoji');
@@ -240,14 +248,15 @@ async function renderStats() {
     const levelBarWrap = document.getElementById('stat-level-bar-wrap');
     const levelBarFill = document.getElementById('stat-level-bar-fill');
     const levelBarLabel = document.getElementById('stat-level-bar-label');
-    if (levelBarWrap && level.nextLevel) {
+    if (levelBarWrap) {
         levelBarWrap.style.display = 'block';
-        setTimeout(() => { if (levelBarFill) levelBarFill.style.width = level.progressToNext + '%'; }, 80);
-        if (levelBarLabel) levelBarLabel.textContent = `${level.progressToNext}% to ${level.nextLevel.emoji} ${level.nextLevel.name} (${level.nextRequirements.scoreNeeded} pts needed)`;
-    } else if (levelBarWrap) {
-        levelBarWrap.style.display = 'block';
-        if (levelBarFill) levelBarFill.style.width = '100%';
-        if (levelBarLabel) levelBarLabel.textContent = '🏆 Maximum level reached!';
+        if (level.nextLevel) {
+            setTimeout(() => { if (levelBarFill) levelBarFill.style.width = level.progressToNext + '%'; }, 80);
+            if (levelBarLabel) levelBarLabel.textContent = `${level.progressToNext}% to ${level.nextLevel.emoji} ${level.nextLevel.name}`;
+        } else {
+            if (levelBarFill) levelBarFill.style.width = '100%';
+            if (levelBarLabel) levelBarLabel.textContent = 'More levels coming soon!';
+        }
     }
 
     // Save level to localStorage so it's available in other pages without refetching
@@ -283,17 +292,17 @@ function renderLevelsPanel(currentLevel) {
         return;
     }
 
+    const currentIdx = AchievementsModule.LEVELS.findIndex(l => l.name === currentLevel.name);
+
     list.innerHTML = AchievementsModule.LEVELS.map((lvl, idx) => {
-        const isCurrent = lvl.name === currentLevel.name;
-        const isPast    = idx < currentLevel.index;
-        const isFuture  = idx > currentLevel.index;
+        const isCurrent = idx === currentIdx;
+        const isPast    = idx < currentIdx;
 
         let statusIcon, statusClass;
         if (isPast)         { statusIcon = '✓';       statusClass = 'level-row--done'; }
         else if (isCurrent) { statusIcon = lvl.emoji; statusClass = 'level-row--current'; }
-        else                { statusIcon = lvl.emoji; statusClass = 'level-row--locked'; }
+        else                { statusIcon = '🔒';      statusClass = 'level-row--locked'; }
 
-        const scoreLabel = lvl.minScore > 0 ? `${lvl.minScore} pts` : 'Starting level';
         const desc = lvl.requirements || lvl.description;
 
         let barHtml = '';
@@ -310,8 +319,7 @@ function renderLevelsPanel(currentLevel) {
                 <div class="level-row__status">${statusIcon}</div>
                 <div class="level-row__info">
                     <div class="level-row__header">
-                        <strong class="level-row__name">${lvl.name}</strong>
-                        <span class="level-row__score-req">${scoreLabel}</span>
+                        <strong class="level-row__name">${lvl.emoji} ${lvl.name}</strong>
                     </div>
                     ${desc ? `<div class="level-row__desc">${desc}</div>` : ''}
                     ${barHtml}

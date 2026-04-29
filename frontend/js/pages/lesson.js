@@ -420,10 +420,12 @@ function renderSidebarTOC(course, completedIds) {
 
             const check = document.createElement('span');
             check.className = 'lsn-cnav-check';
-            if (completedIds.has(Number(lsn.id))) {
+            const isDone = completedIds.has(Number(lsn.id));
+            const isCurrent = lessonData && lsn.id === lessonData.id;
+            if (isDone) {
                 check.classList.add('lsn-cnav-check--done');
-            }
-            if (lessonData && lsn.id === lessonData.id) {
+                check.textContent = '✓';
+            } else if (isCurrent) {
                 check.classList.add('lsn-cnav-check--active');
             }
             check.setAttribute('aria-hidden', 'true');

@@ -402,10 +402,16 @@
    MODULE / CHAPTER LIST
 ═══════════════════════════════ */
 .crs-module-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
     width: 100%;
+}
+
+@media (max-width: 980px) {
+    .crs-module-list {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Chapter card */
@@ -416,13 +422,14 @@
     border: 1px solid rgba(var(--accent-rgb), 0.10);
     border-radius: var(--radius-md, 12px);
     overflow: hidden;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     box-shadow: 0 4px 16px rgba(2,6,20,0.40);
 }
 
 .crs-module:hover {
     border-color: rgba(var(--accent-rgb), 0.20);
     box-shadow: 0 8px 24px rgba(2,6,20,0.55);
+    transform: translateY(-2px);
 }
 
 [data-theme="light"] .crs-module {
@@ -444,12 +451,12 @@
 
 .crs-module-header {
     display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 15px 20px;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 28px 24px;
     cursor: pointer;
     user-select: none;
-    transition: background 0.15s;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
 .crs-module-header:hover { background: rgba(var(--accent-rgb), 0.04); }
@@ -461,13 +468,13 @@
 
 /* Chapter number circle */
 .crs-module-num {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.08);
     border: 1px solid rgba(var(--accent-rgb), 0.15);
     color: var(--text-gray);
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -494,40 +501,41 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 8px;
     min-width: 0;
 }
 
 .crs-module-title {
-    font-weight: 600;
-    font-size: 0.92rem;
+    font-weight: 700;
+    font-size: 1rem;
     color: var(--text-light);
-    white-space: nowrap;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
 .crs-module-meta {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     color: var(--text-gray);
-    opacity: 0.6;
+    opacity: 0.75;
     font-variant-numeric: tabular-nums;
 }
 
 /* FREE / PRO badges */
 .crs-module-badge {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 5px;
+    padding: 6px 12px;
+    border-radius: 999px;
     flex-shrink: 0;
     white-space: nowrap;
-    border: 1px solid rgba(var(--accent-rgb), 0.12);
-    background: rgba(255,255,255,0.04);
-    color: var(--text-gray);
+    margin-left: auto;
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
+    background: rgba(255, 216, 64, 0.12);
+    color: #FFC941;
 }
 
 .crs-module-badge--free {
@@ -546,6 +554,7 @@
     transition: transform 0.22s ease;
     flex-shrink: 0;
     opacity: 0.4;
+    margin-left: 6px;
 }
 
 .crs-module.open .crs-module-chevron { transform: rotate(180deg); opacity: 0.65; }
@@ -945,6 +954,8 @@
         padding-left: 24px;
         padding-right: 24px;
         gap: 20px;
+        width: 100%;
+        max-width: 100%;
     }
     .crs-sidebar {
         width: 100%;
@@ -954,6 +965,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 12px;
+        box-sizing: border-box;
     }
     .crs-sb-progress { flex: 1; min-width: 200px; }
     .crs-sb-learn { flex: 1; min-width: 200px; }
@@ -961,8 +973,25 @@
     .crs-hero__grid {
         grid-template-columns: 1fr;
         gap: 20px;
+        width: 100%;
+        max-width: 100%;
     }
     .crs-hero__right { display: none; }
+    .crs-hero__inner,
+    .crs-module,
+    .crs-lesson-row,
+    .crs-hero-actions,
+    .crs-hero-stats {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .crs-module-title,
+    .crs-lesson-title,
+    .crs-hero-progress-step span {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
 }
 
 @media (max-width: 600px) {

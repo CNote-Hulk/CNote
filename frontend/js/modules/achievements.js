@@ -39,11 +39,18 @@ export const AchievementsModule = {
     ],
 
     LEVELS: [
-        { name: 'Novice',       emoji: '🌱', minScore: 0,  description: 'Just getting started. Explore consoles and unlock your first badges.',       requirements: 'Create your account and start exploring.' },
-        { name: 'Intermediate', emoji: '🌿', minScore: 35, description: 'Good progress! You\'ve visited consoles and earned some badges.',             requirements: 'Reach 35 pts — visit 10+ consoles and earn 3+ badges.' },
-        { name: 'Advanced',     emoji: '⚡', minScore: 55, description: 'Solid platform knowledge. You\'re an active member of the community.',        requirements: 'Reach 55 pts — visit 18+ consoles and earn 6+ badges.' },
-        { name: 'Expert',       emoji: '🔥', minScore: 75, description: 'Impressive activity! You know your consoles inside and out.',                 requirements: 'Reach 75 pts — visit 22+ consoles and earn 9+ badges.' },
-        { name: 'Legend',       emoji: '👑', minScore: 90, description: 'Elite status. You\'ve mastered the full platform — the rarest level.',        requirements: 'Reach 90 pts — explore all 25 consoles and unlock 13+ badges.' },
+        {
+            name: 'Novice',
+            emoji: '🌱',
+            description: 'You just registered on Console Notebook. Welcome!',
+            requirements: 'Create an account.',
+        },
+        {
+            name: 'Beginner',
+            emoji: '📖',
+            description: 'You know the basics of gaming consoles.',
+            requirements: 'Complete the Console Starter Guide and visit 10 console pages.',
+        },
     ],
 
     /**
@@ -58,62 +65,43 @@ export const AchievementsModule = {
     },
 
     /**
-     * Compute user level from achievement% + console visits
+     * Compute level from API response data.
+     * Pass the parsed /api/me/level response object.
      */
-    computeLevel(achievementsPct, visitedConsoles, totalBadges = 17) {
-        const consolePct = Math.min((visitedConsoles / 25) * 100, 100);
-        const score = Math.round((achievementsPct * 0.6) + (consolePct * 0.4));
+    computeLevel(apiData) {
+        const level = apiData.level || 'Novice';
+        const emoji = apiData.emoji || '🌱';
+        const progressToNext = apiData.progressToNext ?? 0;
+        const nextLevel = apiData.nextLevel || null;
+        const req = apiData.requirements || {};
 
-        const levels = this.LEVELS;
-        let currentIdx = 0;
-        for (let i = levels.length - 1; i >= 0; i--) {
-            if (score >= levels[i].minScore) { currentIdx = i; break; }
+        let sub;
+        if (!nextLevel) {
+            sub = 'More levels coming soon!';
+        } else {
+            const parts = [];
+            if (!req.starter_guide_complete) parts.push('Complete the Console Starter Guide');
+            const stillNeeded = Math.max(0, (req.console_visits_needed || 10) - (req.console_visits || 0));
+            if (stillNeeded > 0) parts.push(`Visit ${stillNeeded} more console page${stillNeeded !== 1 ? 's' : ''}`);
+            sub = parts.length
+                ? `To reach ${nextLevel.emoji} ${nextLevel.name}: ${parts.join(' · ')}`
+                : `${progressToNext}% to ${nextLevel.emoji} ${nextLevel.name}`;
         }
 
-        const current = levels[currentIdx];
-        const next = levels[currentIdx + 1] || null;
-
-        let progressToNext = 100;
-        let nextRequirements = null;
-        if (next) {
-            progressToNext = Math.round(((score - current.minScore) / (next.minScore - current.minScore)) * 100);
-            const needed = next.minScore - score;
-            const pointsPerBadge = (100 / totalBadges) * 0.6;
-            const pointsPerConsole = visitedConsoles < 25 ? 4 * 0.4 : 0;
-            nextRequirements = {
-                scoreNeeded:    needed,
-                badgesNeeded:   Math.ceil(needed / pointsPerBadge),
-                consolesNeeded: pointsPerConsole > 0 ? Math.ceil(needed / pointsPerConsole) : null,
-            };
-        }
-
-        return {
-            name: current.name,
-            emoji: current.emoji,
-            description: current.description,
-            score,
-            index: currentIdx,
-            nextLevel: next,
-            nextRequirements,
-            progressToNext,
-            sub: next
-                ? `${next.emoji} ${next.name} in ${next.minScore - score} points — earn more badges or visit more consoles!`
-                : 'You have fully mastered the platform.'
-        };
+        const def = this.LEVELS.find(l => l.name === level) || this.LEVELS[0];
+        return { name: level, emoji, description: def.description, progressToNext, nextLevel, sub };
     },
 
     /**
-     * Compute public profile level from visible counts.
-     * Uses friend / favorite / owned / membership duration data only.
+     * Estimate level for a public profile from visible social/collection data.
+     * Approximate only — console visits and course completion aren't public.
      */
     computePublicLevel(friendCount = 0, favoriteCount = 0, ownedCount = 0, daysMember = 1) {
-        const friendsScore = Math.min(Math.max(friendCount, 0), 25) * 1.8;
-        const favoriteScore = Math.min(Math.max(favoriteCount, 0), 25) * 1.6;
-        const ownedScore = Math.min(Math.max(ownedCount, 0), 25) * 1.4;
-        const veteranScore = Math.min(Math.max(daysMember, 1), 365) / 365 * 20;
-        const totalScore = Math.min(100, Math.round(friendsScore + favoriteScore + ownedScore + veteranScore));
-        const level = this.LEVELS.slice().reverse().find(l => totalScore >= l.minScore) || this.LEVELS[0];
-        return { emoji: level.emoji, name: level.name };
+        // Rough heuristic: active collectors with friends are likely at least Beginner
+        const active = favoriteCount >= 5 || ownedCount >= 3 || friendCount >= 3 || daysMember >= 30;
+        return active
+            ? { emoji: '📖', name: 'Beginner' }
+            : { emoji: '🌱', name: 'Novice' };
     },
 
     /**

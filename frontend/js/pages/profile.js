@@ -120,10 +120,19 @@ function initSettings() {
                         levelEl.hidden = false;
                         localStorage.setItem('cn_user_level', JSON.stringify({ emoji: d.emoji, name: d.level }));
                         const progressEl = document.getElementById('profile-level-progress');
-                        if (progressEl && d.level === 'Reader') {
-                            const courses = Math.min(d.courses_completed, d.requirements.courses);
-                            const consoles = Math.min(d.console_visits, d.requirements.consoles);
-                            progressEl.innerHTML = `<span>To reach <strong>Beginner</strong>: complete ${d.requirements.courses - courses} more course${d.requirements.courses - courses !== 1 ? 's' : ''} and visit ${Math.max(0, d.requirements.consoles - consoles)} more console page${Math.max(0, d.requirements.consoles - consoles) !== 1 ? 's' : ''}</span>`;
+                        if (progressEl) {
+                            if (d.nextLevel) {
+                                const req = d.requirements || {};
+                                const parts = [];
+                                if (!req.starter_guide_complete) parts.push('Complete the Console Starter Guide');
+                                const stillNeeded = Math.max(0, (req.console_visits_needed || 10) - (req.console_visits || 0));
+                                if (stillNeeded > 0) parts.push(`Visit ${stillNeeded} more console page${stillNeeded !== 1 ? 's' : ''}`);
+                                const barHtml = `<div style="margin-top:6px;height:3px;background:rgba(var(--accent-rgb),0.12);border-radius:2px;overflow:hidden;"><div style="width:${d.progressToNext}%;height:100%;background:var(--accent-color);border-radius:2px;transition:width 0.5s;"></div></div>`;
+                                const msg = parts.length ? parts.join(' · ') : `${d.progressToNext}% to ${d.nextLevel.emoji} ${d.nextLevel.name}`;
+                                progressEl.innerHTML = `<span>To reach ${d.nextLevel.emoji} <strong>${d.nextLevel.name}</strong>: ${msg}</span>${barHtml}`;
+                            } else {
+                                progressEl.innerHTML = '<span>More levels coming soon! 🏆</span>';
+                            }
                             progressEl.hidden = false;
                         }
                     }

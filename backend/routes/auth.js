@@ -539,31 +539,43 @@ router.get('/me', authRequired, (req, res) => {
     res.json({ success: true, user: sanitizeUser(req.user) });
 });
 
-// GET /api/me/level — Compute user level dynamically
-// Reader (default) → Beginner (requires 1 completed course + 2 console visits)
+// GET /api/me/level — Requirement-based level system
+// Novice (registered) → Beginner (starter-guide complete + 10 console visits)
 router.get('/me/level', authRequired, async (req, res) => {
+    const BEGINNER_CONSOLES = 10;
     try {
         const userId = req.user.id;
-        const [courseRes, consoleRes] = await Promise.all([
-            pool.query(
-                'SELECT COUNT(*)::int AS completed FROM user_course_progress WHERE user_id = $1 AND completed_at IS NOT NULL',
-                [userId]
-            ),
-            pool.query(
-                'SELECT COUNT(*)::int AS visits FROM user_console_visits WHERE user_id = $1',
-                [userId]
-            )
+        const [courseRes, visitRes] = await Promise.all([
+            pool.query(`
+                SELECT 1 FROM user_course_progress ucp
+                JOIN courses c ON c.id = ucp.course_id
+                WHERE ucp.user_id = $1 AND c.slug = 'starter-guide' AND ucp.completed_at IS NOT NULL
+                LIMIT 1
+            `, [userId]),
+            pool.query('SELECT COUNT(*)::int AS visits FROM user_console_visits WHERE user_id = $1', [userId]),
         ]);
-        const coursesCompleted = courseRes.rows[0].completed;
-        const consoleVisits = consoleRes.rows[0].visits;
-        const isBeginner = coursesCompleted >= 1 && consoleVisits >= 2;
+
+        const completedStarterGuide = courseRes.rows.length > 0;
+        const consoleVisits = visitRes.rows[0].visits;
+        const isBeginner = completedStarterGuide && consoleVisits >= BEGINNER_CONSOLES;
+
+        // Progress toward Beginner: course = 50 pts, consoles = 50 pts
+        const progressToNext = isBeginner ? 100 : Math.round(
+            (completedStarterGuide ? 50 : 0) +
+            Math.min((consoleVisits / BEGINNER_CONSOLES) * 50, 50)
+        );
+
         res.json({
             success: true,
-            level: isBeginner ? 'Beginner' : 'Reader',
-            emoji: isBeginner ? '📖' : '📰',
-            courses_completed: coursesCompleted,
-            console_visits: consoleVisits,
-            requirements: { courses: 1, consoles: 2 }
+            level: isBeginner ? 'Beginner' : 'Novice',
+            emoji: isBeginner ? '📖' : '🌱',
+            progressToNext,
+            nextLevel: isBeginner ? null : { name: 'Beginner', emoji: '📖' },
+            requirements: {
+                starter_guide_complete: completedStarterGuide,
+                console_visits: consoleVisits,
+                console_visits_needed: BEGINNER_CONSOLES,
+            },
         });
     } catch (err) {
         console.error('GET /me/level error:', err);
