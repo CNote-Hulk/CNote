@@ -355,7 +355,15 @@ function buildTopbar(lesson, course, allLessons, lsnIdx) {
     }
 
     const metaItem = document.querySelector('.lsn-hero__meta-item');
-    if (metaItem && course) {
+    if (metaItem && course && courseSlug) {
+        const link = document.createElement('a');
+        link.href = `course.html?slug=${encodeURIComponent(courseSlug)}`;
+        link.textContent = course.title;
+        link.className = 'lsn-hero__course-link';
+        const lastChild = metaItem.lastChild;
+        if (lastChild) metaItem.replaceChild(link, lastChild);
+        else metaItem.appendChild(link);
+    } else if (metaItem && course) {
         metaItem.lastChild.textContent = course.title;
     }
 }
@@ -451,6 +459,14 @@ function renderSidebarTOC(course, completedIds) {
     container.innerHTML = '';
     const nav = document.createElement('div');
     nav.className = 'lsn-course-nav';
+
+    if (courseSlug) {
+        const backLink = document.createElement('a');
+        backLink.className = 'lsn-cnav-back';
+        backLink.href = `course.html?slug=${encodeURIComponent(courseSlug)}`;
+        backLink.innerHTML = `<svg width="12" height="12" viewBox="0 0 10 10" fill="none"><path d="M6 2L3 5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> ${course ? course.title : 'Course'}`;
+        nav.appendChild(backLink);
+    }
 
     (course.modules || []).forEach(module => {
         const section = document.createElement('div');

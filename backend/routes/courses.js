@@ -276,8 +276,8 @@ router.post('/lessons/:id/complete', authRequired, async (req, res) => {
             SET completed = true, quiz_score = $3, completed_at = NOW()
         `, [userId, lessonId, quiz_score || 0]);
 
-        // Check if all course lessons are complete
-        const [totalResult, doneResult] = await Promise.all([
+        // Check if all course lessons are complete + find next lesson
+        const [totalResult, doneResult, nextLessonResult] = await Promise.all([
             pool.query(`
                 SELECT COUNT(l.id)::int AS total FROM lessons l
                 JOIN modules m ON m.id = l.module_id
@@ -288,12 +288,26 @@ router.post('/lessons/:id/complete', authRequired, async (req, res) => {
                 JOIN lessons l ON l.id = ul.lesson_id
                 JOIN modules m ON m.id = l.module_id
                 WHERE ul.user_id = $1 AND m.course_id = $2 AND ul.completed = true
-            `, [userId, course_id])
+            `, [userId, course_id]),
+            pool.query(`
+                SELECT l.id FROM lessons l
+                JOIN modules m ON m.id = l.module_id
+                WHERE m.course_id = $1 AND l.is_published = true
+                  AND (m.order_index * 100000 + l.order_index) > (
+                    SELECT m2.order_index * 100000 + l2.order_index
+                    FROM lessons l2 JOIN modules m2 ON m2.id = l2.module_id
+                    WHERE l2.id = $2
+                  )
+                ORDER BY m.order_index, l.order_index
+                LIMIT 1
+            `, [course_id, lessonId])
         ]);
 
         const total = totalResult.rows[0].total;
         const done = doneResult.rows[0].done;
         const allDone = total > 0 && done >= total;
+        // Store the NEXT lesson so "Continue" resumes at the right place
+        const nextLessonId = nextLessonResult.rows[0]?.id ?? lessonId;
 
         // Upsert user_course_progress — only set completed_at when finishing
         await pool.query(`
@@ -302,7 +316,7 @@ router.post('/lessons/:id/complete', authRequired, async (req, res) => {
             ON CONFLICT (user_id, course_id) DO UPDATE
             SET last_lesson_id = $3,
                 completed_at = CASE WHEN $4 IS NOT NULL THEN $4 ELSE user_course_progress.completed_at END
-        `, [userId, course_id, lessonId, allDone ? new Date() : null]);
+        `, [userId, course_id, nextLessonId, allDone ? new Date() : null]);
 
         res.json({ ok: true });
         checkAndEmitAchievements(req.app.get('io'), userId).catch(() => {});
