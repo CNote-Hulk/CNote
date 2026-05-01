@@ -130,7 +130,7 @@ function renderAuthorCard(instructor) {
         friendHTML = `<a href="login.html" class="lsn-sb-friend-btn">+ Add Friend</a>`;
     }
 
-    const profileHref = instructor ? `user-profile.html?id=${instructor.id}` : null;
+    const profileHref = instructor ? `user-profile.html?username=${encodeURIComponent(instructor.username)}` : null;
     wrap.innerHTML = `
         <div class="lsn-sb-section-label">Created by</div>
         ${profileHref

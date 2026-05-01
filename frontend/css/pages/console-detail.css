@@ -762,13 +762,13 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* Arrow */
+/* Arrow — left corner on desktop, dynamic on mobile */
 .spec-tooltip::after {
     content: '';
     position: absolute;
     top: 100%;
-    left: var(--arrow-left, 50%);
-    transform: translateX(-50%);
+    left: var(--arrow-left, 12px);
+    transform: none;
     border: 5px solid transparent;
     border-top-color: rgba(var(--accent-rgb), 0.22);
 }
@@ -781,17 +781,6 @@
     visibility: visible;
 }
 
-/* Prevent tooltip clipping at left/right edges */
-.spec-help:first-child .spec-tooltip,
-.spec-tooltip--left {
-    left: 0;
-    transform: none;
-}
-
-.spec-tooltip--left::after {
-    left: 12px;
-    transform: none;
-}
 
 /* Light theme */
 [data-theme="light"] .spec-help {
