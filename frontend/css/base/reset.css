@@ -34,18 +34,6 @@ img {
     height: auto;
 }
 
-/* Default theme — slight cinematic warmth, keep images natural */
-html:not([data-theme="dark"]):not([data-theme="light"]) img {
-    filter: brightness(0.96);
-}
-
-/* Cancel filter for small UI images that shouldn't be softened */
-html:not([data-theme="dark"]):not([data-theme="light"]) img[class*="avatar"],
-html:not([data-theme="dark"]):not([data-theme="light"]) img[class*="icon"],
-html:not([data-theme="dark"]):not([data-theme="light"]) img[class*="logo"],
-html:not([data-theme="dark"]):not([data-theme="light"]) img[class*="emoji"] {
-    filter: none;
-}
 
 /* Background Gradient — uses ::before so it stays fixed on iOS */
 body::before {
