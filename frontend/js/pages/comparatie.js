@@ -74,14 +74,45 @@ function initSpecTooltips() {
         btn.addEventListener('click', e => {
             e.stopPropagation();
             const wasOpen = btn.classList.contains('is-open');
-            document.querySelectorAll('.spec-help.is-open').forEach(b => b.classList.remove('is-open'));
-            if (!wasOpen) btn.classList.add('is-open');
+            document.querySelectorAll('.spec-help.is-open').forEach(b => {
+                b.classList.remove('is-open');
+                const t = b.querySelector('.spec-tooltip');
+                if (t) { t.style.left = ''; t.style.transform = ''; }
+            });
+            if (!wasOpen) {
+                btn.classList.add('is-open');
+                // Clamp tooltip within viewport on mobile
+                const tip = btn.querySelector('.spec-tooltip');
+                if (tip) {
+                    tip.style.left = '';
+                    tip.style.transform = '';
+                    const rect = tip.getBoundingClientRect();
+                    const vw = window.innerWidth;
+                    const MARGIN = 10;
+                    if (rect.left < MARGIN) {
+                        const shift = MARGIN - rect.left;
+                        tip.style.left = `calc(50% + ${shift}px)`;
+                    } else if (rect.right > vw - MARGIN) {
+                        const shift = rect.right - (vw - MARGIN);
+                        tip.style.left = `calc(50% - ${shift}px)`;
+                    }
+                    // Keep the arrow centered over the button
+                    const btnRect = btn.getBoundingClientRect();
+                    const tipRect = tip.getBoundingClientRect();
+                    const arrowLeft = btnRect.left + btnRect.width / 2 - tipRect.left;
+                    tip.style.setProperty('--arrow-left', `${arrowLeft}px`);
+                }
+            }
         });
     });
     if (!_tooltipsListenerAdded) {
         _tooltipsListenerAdded = true;
         document.addEventListener('click', () => {
-            document.querySelectorAll('.spec-help.is-open').forEach(b => b.classList.remove('is-open'));
+            document.querySelectorAll('.spec-help.is-open').forEach(b => {
+                b.classList.remove('is-open');
+                const t = b.querySelector('.spec-tooltip');
+                if (t) { t.style.left = ''; t.style.transform = ''; }
+            });
         });
     }
 }

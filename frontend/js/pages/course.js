@@ -278,6 +278,7 @@ function buildCourseLayout(course, progress) {
     const instrAvatarHTML = instructor && instructor.avatar
         ? `<img src="${esc(instructor.avatar)}" alt="${instrName}" class="crs-sb-instructor__avatar-img">`
         : `<div class="crs-sb-instructor__avatar">${instrName.charAt(0).toUpperCase()}</div>`;
+    const instrProfileHref = instructor ? `user-profile.html?id=${instructor.id}` : null;
 
     let friendBtnHTML = '';
     if (instructor && _token) {
@@ -305,13 +306,15 @@ function buildCourseLayout(course, progress) {
         </div>
         <div class="crs-sb-instructor">
             <span class="crs-sb-label">Creator</span>
-            <div class="crs-sb-instructor__body">
+            ${instrProfileHref
+                ? `<a href="${instrProfileHref}" class="crs-sb-instructor__body crs-sb-instructor__body--link">`
+                : `<div class="crs-sb-instructor__body">`}
                 ${instrAvatarHTML}
                 <div class="crs-sb-instructor__info">
                     <p class="crs-sb-instructor__name">${instrName}</p>
                     <p class="crs-sb-instructor__role">Console Notebook</p>
                 </div>
-            </div>
+            ${instrProfileHref ? `</a>` : `</div>`}
             ${instrBio}
             ${friendBtnHTML}
         </div>

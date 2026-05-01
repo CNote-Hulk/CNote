@@ -1292,6 +1292,18 @@
     margin-top: 10px;
 }
 
+.lsn-sb-author__card--link {
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 4px;
+    margin: 6px -4px 0;
+    transition: background 0.15s;
+}
+
+.lsn-sb-author__card--link:hover {
+    background: rgba(var(--accent-rgb), 0.07);
+}
+
 .lsn-sb-author__avatar {
     width: 40px;
     height: 40px;

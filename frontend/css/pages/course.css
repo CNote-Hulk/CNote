@@ -848,6 +848,16 @@
     padding: 12px 16px 0;
 }
 
+.crs-sb-instructor__body--link {
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.15s;
+}
+
+.crs-sb-instructor__body--link:hover {
+    background: rgba(var(--accent-rgb), 0.07);
+}
+
 .crs-sb-instructor__avatar {
     width: 44px;
     height: 44px;
@@ -1021,10 +1031,12 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
-        margin-top: 20px;
+        margin-top: 0;
+        margin-bottom: 20px;
         right: auto;
         top: auto;
         z-index: auto;
+        order: -1;
     }
     .crs-sb-instructor { grid-column: 1 / -1; }
     .crs-hero__grid {

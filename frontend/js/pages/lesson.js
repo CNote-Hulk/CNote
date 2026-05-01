@@ -130,15 +130,18 @@ function renderAuthorCard(instructor) {
         friendHTML = `<a href="login.html" class="lsn-sb-friend-btn">+ Add Friend</a>`;
     }
 
+    const profileHref = instructor ? `user-profile.html?id=${instructor.id}` : null;
     wrap.innerHTML = `
         <div class="lsn-sb-section-label">Created by</div>
-        <div class="lsn-sb-author__card">
+        ${profileHref
+            ? `<a href="${profileHref}" class="lsn-sb-author__card lsn-sb-author__card--link">`
+            : `<div class="lsn-sb-author__card">`}
             ${avatarHTML}
             <div class="lsn-sb-author__info">
                 <span class="lsn-sb-author__name">${name}</span>
                 <span class="lsn-sb-author__desc">${bio}</span>
             </div>
-        </div>
+        ${profileHref ? `</a>` : `</div>`}
         ${friendHTML}
     `;
 

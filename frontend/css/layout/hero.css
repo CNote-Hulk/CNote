@@ -102,7 +102,7 @@
     align-items: center;
     justify-content: center;
     border: 2px solid rgba(255, 255, 255, 0.15);
-    background: rgba(21, 18, 16, 0.85);
+    background: color-mix(in srgb, var(--dark-bg-2) 85%, transparent);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     transition: all 0.3s ease;
@@ -242,8 +242,8 @@
     color: var(--text-light);
     
     /* Fundal cinematic - warm documentary overlay */
-    background: 
-        linear-gradient(rgba(21, 18, 16, 0.75), rgba(21, 18, 16, 0.85)),
+    background:
+        linear-gradient(color-mix(in srgb, var(--dark-bg-2) 75%, transparent), color-mix(in srgb, var(--dark-bg-2) 85%, transparent)),
         linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-2) 100%);
     
 
@@ -386,7 +386,7 @@
 .hero:not(.hero-cinematic) {
     text-align: center;
     padding: var(--spacing-2xl) 0;
-    background: linear-gradient(180deg, rgba(27, 23, 20, 0.5) 0%, var(--dark-bg) 100%);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--dark-bg) 50%, transparent) 0%, var(--dark-bg) 100%);
     position: relative;
 }
 
@@ -496,40 +496,40 @@
 }
 
 [data-theme="light"] .hero-cinematic::before {
-    background: radial-gradient(ellipse, rgba(184, 135, 46, 0.06) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(var(--accent-rgb), 0.06) 0%, transparent 70%);
 }
 
 [data-theme="light"] .hero-button {
-    box-shadow: 0 4px 16px rgba(184, 135, 46, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.3), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="light"] .hero-button:hover {
-    box-shadow: 0 6px 24px rgba(184, 135, 46, 0.45), 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 24px rgba(var(--accent-rgb), 0.45), 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="light"] .hero-home .hero-content {
-    border-right-color: rgba(0, 0, 0, 0.08);
+    border-right-color: var(--border-color);
 }
 
 [data-theme="light"] .qg-step__dot {
-    border-color: rgba(0, 0, 0, 0.12);
-    background: rgba(245, 240, 232, 0.9);
+    border-color: var(--border-color);
+    background: var(--card-bg);
 }
 
 [data-theme="light"] .qg-step--done .qg-step__dot {
-    background: rgba(184, 135, 46, 0.15);
+    background: rgba(var(--accent-rgb), 0.15);
 }
 
 [data-theme="light"] .qg-step--active .qg-step__dot {
-    box-shadow: 0 0 0 5px rgba(184, 135, 46, 0.12);
+    box-shadow: 0 0 0 5px rgba(var(--accent-rgb), 0.12);
 }
 
 [data-theme="light"] .qg-step__num {
-    color: rgba(0, 0, 0, 0.3);
+    color: var(--text-gray);
 }
 
 [data-theme="light"] .qg-step__title {
-    color: rgba(0, 0, 0, 0.6);
+    color: var(--text-gray);
     text-shadow: none;
 }
 
@@ -538,17 +538,17 @@
 }
 
 [data-theme="light"] .qg-step--done .qg-step__title {
-    color: rgba(184, 135, 46, 0.9);
+    color: var(--accent-color);
 }
 
 [data-theme="light"] .qg-step--active .qg-step__desc {
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--text-gray);
 }
 
 [data-theme="light"] .hero-quickguide__track {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--border-color);
 }
 
 [data-theme="light"] .hero-quickguide__label {
-    color: rgba(184, 135, 46, 0.85);
+    color: var(--accent-color);
 }
