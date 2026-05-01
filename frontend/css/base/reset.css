@@ -34,9 +34,9 @@ img {
     height: auto;
 }
 
-/* Default theme — cinematic image treatment (slightly darker + softened) */
+/* Default theme — slight cinematic warmth, keep images natural */
 html:not([data-theme="dark"]):not([data-theme="light"]) img {
-    filter: brightness(0.82) blur(0.5px);
+    filter: brightness(0.96);
 }
 
 /* Cancel filter for small UI images that shouldn't be softened */
