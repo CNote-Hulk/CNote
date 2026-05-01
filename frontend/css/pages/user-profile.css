@@ -93,28 +93,28 @@
 .up-cover {
     height: 90px;
     background: linear-gradient(135deg,
-        #1C0E06 0%,
-        #6B3315 30%,
-        #B8722E 62%,
-        #D4A86A 100%);
+        #2A1F14 0%,
+        #7A6248 35%,
+        #C4AE8C 68%,
+        #F0E8D8 100%);
     position: relative;
     flex-shrink: 0;
 }
 
 [data-theme="dark"] .up-cover {
     background: linear-gradient(135deg,
-        #0e0804 0%,
-        #4a2008 30%,
-        #8B5020 62%,
-        #B8852E 100%);
+        #1a120a 0%,
+        #5a4432 35%,
+        #9A8268 68%,
+        #C8B89A 100%);
 }
 
 [data-theme="light"] .up-cover {
     background: linear-gradient(135deg,
-        #5C2E0E 0%,
-        #9B5A22 35%,
-        #C8904A 65%,
-        #E8C48A 100%);
+        #6B5540 0%,
+        #A8906E 35%,
+        #D4C0A0 65%,
+        #F5F0E8 100%);
 }
 
 .up-cover__actions {
