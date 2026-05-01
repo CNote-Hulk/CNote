@@ -69,6 +69,14 @@ function fixedTip(label) {
 }
 
 let _tooltipsListenerAdded = false;
+function resetTooltipStyle(tip) {
+    if (!tip) return;
+    tip.style.left = '';
+    tip.style.transform = '';
+    tip.style.removeProperty('--arrow-left');
+    tip.style.removeProperty('--arrow-transform');
+}
+
 function initSpecTooltips() {
     display.querySelectorAll('.spec-help').forEach(btn => {
         btn.addEventListener('click', e => {
@@ -76,31 +84,33 @@ function initSpecTooltips() {
             const wasOpen = btn.classList.contains('is-open');
             document.querySelectorAll('.spec-help.is-open').forEach(b => {
                 b.classList.remove('is-open');
-                const t = b.querySelector('.spec-tooltip');
-                if (t) { t.style.left = ''; t.style.transform = ''; }
+                resetTooltipStyle(b.querySelector('.spec-tooltip'));
             });
             if (!wasOpen) {
                 btn.classList.add('is-open');
-                // Clamp tooltip within viewport on mobile
                 const tip = btn.querySelector('.spec-tooltip');
                 if (tip) {
-                    tip.style.left = '';
-                    tip.style.transform = '';
+                    resetTooltipStyle(tip);
                     const rect = tip.getBoundingClientRect();
                     const vw = window.innerWidth;
                     const MARGIN = 10;
                     if (rect.left < MARGIN) {
                         const shift = MARGIN - rect.left;
                         tip.style.left = `calc(50% + ${shift}px)`;
+                        const btnRect = btn.getBoundingClientRect();
+                        const tipRect = tip.getBoundingClientRect();
+                        const arrowLeft = btnRect.left + btnRect.width / 2 - tipRect.left;
+                        tip.style.setProperty('--arrow-left', `${arrowLeft}px`);
+                        tip.style.setProperty('--arrow-transform', 'none');
                     } else if (rect.right > vw - MARGIN) {
                         const shift = rect.right - (vw - MARGIN);
                         tip.style.left = `calc(50% - ${shift}px)`;
+                        const btnRect = btn.getBoundingClientRect();
+                        const tipRect = tip.getBoundingClientRect();
+                        const arrowLeft = btnRect.left + btnRect.width / 2 - tipRect.left;
+                        tip.style.setProperty('--arrow-left', `${arrowLeft}px`);
+                        tip.style.setProperty('--arrow-transform', 'none');
                     }
-                    // Keep the arrow centered over the button
-                    const btnRect = btn.getBoundingClientRect();
-                    const tipRect = tip.getBoundingClientRect();
-                    const arrowLeft = btnRect.left + btnRect.width / 2 - tipRect.left;
-                    tip.style.setProperty('--arrow-left', `${arrowLeft}px`);
                 }
             }
         });
@@ -110,8 +120,7 @@ function initSpecTooltips() {
         document.addEventListener('click', () => {
             document.querySelectorAll('.spec-help.is-open').forEach(b => {
                 b.classList.remove('is-open');
-                const t = b.querySelector('.spec-tooltip');
-                if (t) { t.style.left = ''; t.style.transform = ''; }
+                resetTooltipStyle(b.querySelector('.spec-tooltip'));
             });
         });
     }

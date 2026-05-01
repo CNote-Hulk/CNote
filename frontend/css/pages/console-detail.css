@@ -762,13 +762,13 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* Arrow — left corner on desktop, dynamic on mobile */
+/* Arrow */
 .spec-tooltip::after {
     content: '';
     position: absolute;
     top: 100%;
-    left: var(--arrow-left, 12px);
-    transform: none;
+    left: var(--arrow-left, 50%);
+    transform: var(--arrow-transform, translateX(-50%));
     border: 5px solid transparent;
     border-top-color: rgba(var(--accent-rgb), 0.22);
 }
