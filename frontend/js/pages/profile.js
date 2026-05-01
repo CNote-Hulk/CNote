@@ -950,6 +950,15 @@ function initSettings() {
         });
     }
 
+    const totpConfirmInput = document.getElementById('totp-confirm-code');
+    if (totpConfirmInput) {
+        totpConfirmInput.addEventListener('input', () => {
+            if (totpConfirmInput.value.replace(/\D/g, '').length === 6) {
+                document.getElementById('totp-confirm-btn')?.click();
+            }
+        });
+    }
+
     const totpConfirmBtn = document.getElementById('totp-confirm-btn');
     if (totpConfirmBtn) {
         totpConfirmBtn.addEventListener('click', async () => {
