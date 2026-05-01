@@ -778,7 +778,7 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
     const prevBtn = document.createElement('a');
     prevBtn.className = 'lsn-nav-btn lsn-nav-btn--prev';
     if (prevLesson) {
-        prevBtn.href = `lesson.html?id=${prevLesson.id}&slug=${encodeURIComponent(courseSlug)}`;
+        prevBtn.href = '#';
         prevBtn.innerHTML = `
             <div class="lsn-nav-btn__direction">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M6 2L3 5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -787,6 +787,10 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
             <div class="lsn-nav-btn__title">${esc(prevLesson.title)}</div>
             <div class="lsn-nav-btn__num">Lesson ${lsnIdx} of ${total}</div>
         `;
+        prevBtn.addEventListener('click', e => {
+            e.preventDefault();
+            window.location.href = `lesson.html?id=${prevLesson.id}&slug=${encodeURIComponent(courseSlug)}`;
+        });
     } else {
         prevBtn.classList.add('lsn-nav-btn--disabled');
         prevBtn.href = '#';

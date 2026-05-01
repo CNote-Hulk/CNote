@@ -159,6 +159,7 @@
 ═══════════════════════════════ */
 .lsn-hero-section {
     padding: 40px 48px 32px;
+    padding-left: 340px;
     border-bottom: 1px solid rgba(var(--accent-rgb), 0.10);
     background:
         radial-gradient(ellipse at 55% 120%, rgba(var(--accent-rgb), 0.14) 0%, transparent 60%),
