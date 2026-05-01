@@ -36,10 +36,14 @@ function generateToken() {
  *              If found, reuses it (updates last_activity + metadata). Otherwise creates a new one.
  * @returns {string} session_token
  */
+/** SHA-256 hash a session token for safe DB storage */
+function hashSessionToken(token) {
+    return crypto.createHash('sha256').update(token).digest('hex');
+}
+
 async function findOrCreateSession(userId, deviceInfo) {
-    // Reuse the same session for the same device family, even if IP or app version changed.
     const existing = await pool.query(
-        `SELECT id, session_token FROM user_sessions
+        `SELECT id FROM user_sessions
          WHERE user_id = $1
            AND device_type = $2
            AND browser ILIKE ($3 || '%')
@@ -55,27 +59,30 @@ async function findOrCreateSession(userId, deviceInfo) {
         ]
     );
 
+    const rawToken = generateToken();
+    const tokenHash = hashSessionToken(rawToken);
+
     if (existing.rows.length > 0) {
-        // Refresh metadata so the UI keeps latest browser version/IP while preserving the same session.
+        // Reuse session but rotate the token for security
         await pool.query(
             `UPDATE user_sessions
              SET last_activity = NOW(),
-                 browser = $2,
-                 operating_system = $3,
-                 ip_address = $4
+                 session_token = $2,
+                 browser = $3,
+                 operating_system = $4,
+                 ip_address = $5
              WHERE id = $1`,
-            [existing.rows[0].id, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
+            [existing.rows[0].id, tokenHash, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
         );
-        return existing.rows[0].session_token;
+        return rawToken;
     }
 
     // No matching session — create a new one
-    const sessionToken = generateToken();
     await pool.query(
         'INSERT INTO user_sessions (user_id, session_token, device_type, browser, operating_system, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-        [userId, sessionToken, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
+        [userId, tokenHash, deviceInfo.deviceType, deviceInfo.browser, deviceInfo.os, deviceInfo.ip]
     );
-    return sessionToken;
+    return rawToken;
 }
 
 /** Calculate expiry date N hours from now */
@@ -607,11 +614,13 @@ router.put('/me', authRequired, async (req, res) => {
     }
     if (bio !== undefined) {
         updates.push(`bio = $${paramIndex++}`);
-        params.push(String(bio));
+        params.push(String(bio).trim().slice(0, 500));
     }
     if (avatar !== undefined) {
+        const av = String(avatar).trim();
+        const safeAvatar = (av === '' || av.startsWith('https://') || av.startsWith('http://')) ? av.slice(0, 2000) : '';
         updates.push(`avatar = $${paramIndex++}`);
-        params.push(String(avatar));
+        params.push(safeAvatar);
     }
     if (favorite_consoles !== undefined) {
         updates.push(`favorite_consoles = $${paramIndex++}`);

@@ -9,11 +9,16 @@
      2. Add it to package.json dependencies
    ────────────────────────────────────────── */
 const express = require('express');
+const crypto = require('crypto');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
-const sseClientsBySessionToken = new Map(); // sessionToken → Set of SSE clients
+const sseClientsBySessionToken = new Map(); // tokenHash → Set of SSE clients
+
+function hashToken(token) {
+    return crypto.createHash('sha256').update(token).digest('hex');
+}
 
 /**
  * registerSseClient
@@ -63,10 +68,11 @@ function notifySessionTerminated(sessionToken) {
 
 // GET /api/sessions/events — SSE endpoint for real-time session termination alerts
 router.get('/events', authRequired, async (req, res) => {
-    const sessionToken = req.sessionToken || (typeof req.query.token === 'string' ? req.query.token.trim() : '');
-    if (!sessionToken) {
+    const rawToken = req.sessionToken || (typeof req.query.token === 'string' ? req.query.token.trim() : '');
+    if (!rawToken) {
         return res.status(401).json({ success: false, error: 'Sesiune invalida.' });
     }
+    const sessionToken = hashToken(rawToken);
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache, no-transform');
@@ -102,7 +108,7 @@ router.get('/', authRequired, async (req, res) => {
          FROM user_sessions
          WHERE user_id = $2 AND is_active = true
          ORDER BY last_activity DESC`,
-        [req.sessionToken || '', req.user.id]
+        [req.sessionToken ? hashToken(req.sessionToken) : '', req.user.id]
     );
 
     const formatted = result.rows.map(s => ({

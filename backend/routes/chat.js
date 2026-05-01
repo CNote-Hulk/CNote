@@ -15,8 +15,7 @@ const { authRequired } = require('../middleware/auth');
 const router = express.Router();
 
 const MAX_MESSAGE_LENGTH = 500;
-const COOLDOWN_MS = 3000;          // Min interval between messages per user
-const lastMessageTime = new Map(); // In-memory cooldown tracker (userId → timestamp)
+const COOLDOWN_MS = 3000;
 
 // GET /api/chat/messages — Fetch recent messages with cursor-based pagination
 router.get('/messages', async (req, res) => {
@@ -86,12 +85,17 @@ router.post('/messages', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters.` });
         }
 
-        // Cooldown check: prevent spam by enforcing minimum interval
-        const now = Date.now();
-        const lastTime = lastMessageTime.get(req.user.id) || 0;
-        if (now - lastTime < COOLDOWN_MS) {
-            const wait = Math.ceil((COOLDOWN_MS - (now - lastTime)) / 1000);
-            return res.status(429).json({ success: false, error: `Wait ${wait} seconds before sending another message.` });
+        // Cooldown check via DB — survives restarts and scales across instances
+        const lastMsg = await pool.query(
+            'SELECT created_at FROM messages WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
+            [req.user.id]
+        );
+        if (lastMsg.rows.length > 0) {
+            const elapsed = Date.now() - new Date(lastMsg.rows[0].created_at).getTime();
+            if (elapsed < COOLDOWN_MS) {
+                const wait = Math.ceil((COOLDOWN_MS - elapsed) / 1000);
+                return res.status(429).json({ success: false, error: `Wait ${wait} seconds before sending another message.` });
+            }
         }
 
         // DB: insert message and return generated ID + timestamp
@@ -100,7 +104,6 @@ router.post('/messages', authRequired, async (req, res) => {
             [req.user.id, text]
         );
 
-        lastMessageTime.set(req.user.id, now);
 
         res.status(201).json({
             success: true,

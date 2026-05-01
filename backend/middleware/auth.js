@@ -6,7 +6,12 @@
    ───────────────────────────────────────── */
 
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const pool = require('../db');
+
+function hashSessionToken(token) {
+    return crypto.createHash('sha256').update(token).digest('hex');
+}
 
 /**
  * authRequired
@@ -69,7 +74,7 @@ async function authRequired(req, res, next) {
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = true
-        `, [token]);
+        `, [hashSessionToken(token)]);
     } catch (dbErr) {
         console.error('Auth session DB error:', dbErr);
         return res.status(500).json({ success: false, error: 'Internal error.' });
@@ -166,7 +171,7 @@ async function authOptional(req, res, next) {
             SELECT s.user_id, u.username FROM user_sessions s
             JOIN users u ON u.id = s.user_id
             WHERE s.session_token = $1 AND s.is_active = true
-        `, [token]);
+        `, [hashSessionToken(token)]);
         if (sessionResult.rows[0]) {
             req.user = { id: sessionResult.rows[0].user_id, username: sessionResult.rows[0].username };
         }

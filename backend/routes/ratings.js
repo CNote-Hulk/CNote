@@ -188,9 +188,11 @@ async function resolveUserId(req, token) {
         const decoded = jwt.verify(token, JWT_SECRET);
         return decoded.userId;
     } catch {
+        const crypto = require('crypto');
+        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
         const result = await pool.query(
             'SELECT user_id FROM user_sessions WHERE session_token = $1 AND is_active = true',
-            [token]
+            [tokenHash]
         );
         return result.rows[0]?.user_id || null;
     }
