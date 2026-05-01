@@ -16,7 +16,7 @@ function loadYouTubeEmbeds() {
   document.querySelectorAll('.yt-placeholder').forEach(placeholder => {
     const videoId = placeholder.dataset.videoId;
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&enablejsapi=1`;
+    iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0`;
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
     iframe.classList.add('yt-iframe');
@@ -25,21 +25,6 @@ function loadYouTubeEmbeds() {
     iframe.addEventListener('error', () => showYtFallback(iframe, videoId));
 
     placeholder.replaceWith(iframe);
-  });
-
-  // YouTube sends error 153 (embedding disabled) via postMessage — 'error' event won't fire
-  window.addEventListener('message', function onYtMessage(e) {
-    if (e.origin !== 'https://www.youtube-nocookie.com' && e.origin !== 'https://www.youtube.com') return;
-    try {
-      const data = JSON.parse(e.data);
-      if (data.event === 'error') {
-        document.querySelectorAll('iframe.yt-iframe').forEach(iframe => {
-          if (iframe.contentWindow === e.source) {
-            showYtFallback(iframe, iframe.dataset.videoId);
-          }
-        });
-      }
-    } catch (_) {}
   });
 }
 
