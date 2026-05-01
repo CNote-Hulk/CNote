@@ -826,7 +826,7 @@ function initSettings() {
                 <div id="totp-qr-container" style="text-align:center;margin-bottom:12px;"></div>
                 <p id="totp-secret-display" style="font-family:monospace;font-size:0.85rem;color:var(--text-light);word-break:break-all;margin-bottom:12px;text-align:center;"></p>
                 <div style="display:flex;gap:8px;align-items:center;">
-                    <input type="text" id="totp-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" style="text-align:center;font-size:1.2rem;letter-spacing:0.3rem;padding:8px 12px;border:1px solid var(--color-border, #444);border-radius:6px;background:var(--bg-card, #1a1a1a);color:var(--text-primary, #fff);width:140px;">
+                    <input type="text" id="totp-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" autocomplete="one-time-code" style="text-align:center;font-size:1.2rem;letter-spacing:0.3rem;padding:8px 12px;border:1px solid var(--color-border, #444);border-radius:6px;background:var(--bg-card, #1a1a1a);color:var(--text-primary, #fff);width:140px;">
                     <button type="button" class="auth-btn settings-row__btn" id="totp-confirm-btn">Confirm</button>
                 </div>
             </div>`;
