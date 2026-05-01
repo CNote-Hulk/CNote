@@ -16,19 +16,30 @@ function loadYouTubeEmbeds() {
   document.querySelectorAll('.yt-placeholder').forEach(placeholder => {
     const videoId = placeholder.dataset.videoId;
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
+    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&enablejsapi=1`;
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
     iframe.classList.add('yt-iframe');
+    iframe.dataset.videoId = videoId;
 
-    // Fallback: if embedding is blocked, show a link to YouTube
-    iframe.addEventListener('error', () => showYtFallback(placeholder, videoId));
-    iframe.addEventListener('load', () => {
-      // Error 153 / blocked videos still fire "load" — check via postMessage if needed.
-      // Replace placeholder and let the browser show YouTube's own error UI with the link.
-    });
+    iframe.addEventListener('error', () => showYtFallback(iframe, videoId));
 
     placeholder.replaceWith(iframe);
+  });
+
+  // YouTube sends error 153 (embedding disabled) via postMessage — 'error' event won't fire
+  window.addEventListener('message', function onYtMessage(e) {
+    if (e.origin !== 'https://www.youtube-nocookie.com' && e.origin !== 'https://www.youtube.com') return;
+    try {
+      const data = JSON.parse(e.data);
+      if (data.event === 'error') {
+        document.querySelectorAll('iframe.yt-iframe').forEach(iframe => {
+          if (iframe.contentWindow === e.source) {
+            showYtFallback(iframe, iframe.dataset.videoId);
+          }
+        });
+      }
+    } catch (_) {}
   });
 }
 
