@@ -1519,10 +1519,6 @@
         padding: 20px 16px;
     }
 
-    .lsn-hero-section {
-        max-height: 25vh;
-    }
-
     /* Remove card styling on mobile — full-width flat content */
     .lsn-article {
         background: none;
@@ -1546,26 +1542,4 @@
     background:
         radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.08) 0%, transparent 55%),
         linear-gradient(180deg, var(--dark-bg, #f7f4ef) 0%, #ede8df 100%);
-}
-
-[data-theme="light"] .lsn-dashboard .lsn-sidebar,
-[data-theme="light"] .lsn-article,
-[data-theme="light"] .lsn-quiz-card,
-[data-theme="light"] .lsn-quiz-result,
-[data-theme="light"] .lsn-course-complete,
-[data-theme="light"] .lsn-nav-btn,
-[data-theme="light"] .lsn-sb-progress,
-[data-theme="light"] .lsn-sb-toc,
-[data-theme="light"] .lsn-sb-author,
-[data-theme="light"] .lsn-comment-form,
-[data-theme="light"] .lsn-reaction-btn,
-[data-theme="light"] .lsn-quiz-option,
-[data-theme="light"] .quiz-option,
-[data-theme="light"] .lesson-recap,
-[data-theme="light"] .glossary-block,
-[data-theme="light"] .lesson-image-wrap,
-[data-theme="light"] .lsn-content pre {
-    background: rgba(255, 255, 255, 0.85);
-    border-color: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.03);
 }
