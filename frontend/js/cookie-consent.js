@@ -16,7 +16,7 @@ function loadYouTubeEmbeds() {
   document.querySelectorAll('.yt-placeholder').forEach(placeholder => {
     const videoId = placeholder.dataset.videoId;
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&enablejsapi=1`;
+    iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&enablejsapi=1`;
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
     iframe.classList.add('yt-iframe');
