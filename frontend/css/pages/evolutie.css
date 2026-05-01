@@ -1387,13 +1387,13 @@
 }
 
 [data-theme="light"] .section#index .console-card {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(245, 240, 232, 0.9);
     border-color: rgba(0, 0, 0, 0.06);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 [data-theme="light"] .section#index .console-card:hover {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(245, 240, 232, 0.98);
     border-color: rgba(184, 135, 46, 0.25);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
@@ -1409,16 +1409,16 @@
 }
 
 [data-theme="light"] .section#index .card-heart {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(245, 240, 232, 0.85);
     border-color: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .section#index .card-heart:hover {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(245, 240, 232, 0.98);
 }
 
 [data-theme="light"] .section#index .card-rating {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(245, 240, 232, 0.85);
     border-color: rgba(0, 0, 0, 0.08);
 }
 
@@ -1441,9 +1441,9 @@
 /* Mobile glassmorphism overrides for light theme */
 @media (max-width: 680px) {
     [data-theme="light"] .section#index .console-card {
-        background: linear-gradient(160deg, rgba(255, 255, 255, 0.8) 0%, rgba(245, 240, 232, 0.6) 100%);
+        background: rgba(245, 240, 232, 0.9);
         border-color: rgba(0, 0, 0, 0.06);
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
     [data-theme="light"] .section#index .console-card:hover,
