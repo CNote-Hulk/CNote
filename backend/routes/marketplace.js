@@ -337,7 +337,8 @@ router.post('/listings', authRequired, async (req, res) => {
     const safeLocation    = String(location || '').trim().slice(0, 100);
     const safeCountry     = String(country || '').trim().slice(0, 10);
     const safePhone       = String(phone || '').trim().slice(0, 30);
-    const safeOlx         = String(olx_url || '').trim().slice(0, 500);
+    const rawOlx = String(olx_url || '').trim();
+    const safeOlx = (rawOlx === '' || rawOlx.startsWith('https://') || rawOlx.startsWith('http://')) ? rawOlx.slice(0, 500) : '';
     const safeImages      = JSON.stringify(Array.isArray(images) ? images.slice(0, 8).map(u => String(u).slice(0, 200000)) : []);
     const safeConsoleType = String(console_type || '').trim().slice(0, 100);
 
@@ -382,7 +383,7 @@ router.put('/listings/:id', authRequired, async (req, res) => {
         if (location !== undefined)    { sets.push(`location = $${idx++}`);     params.push(String(location).trim().slice(0, 100)); }
         if (country !== undefined)     { sets.push(`country = $${idx++}`);      params.push(String(country).trim().slice(0, 10)); }
         if (phone !== undefined)       { sets.push(`phone = $${idx++}`);        params.push(String(phone).trim().slice(0, 30)); }
-        if (olx_url !== undefined)     { sets.push(`olx_url = $${idx++}`);      params.push(String(olx_url).trim().slice(0, 500)); }
+        if (olx_url !== undefined)     { const u = String(olx_url).trim(); sets.push(`olx_url = $${idx++}`); params.push((u === '' || u.startsWith('https://') || u.startsWith('http://')) ? u.slice(0, 500) : ''); }
         if (console_type !== undefined){ sets.push(`console_type = $${idx++}`); params.push(String(console_type).trim().slice(0, 100)); }
         if (images !== undefined && Array.isArray(images)) {
             sets.push(`images = $${idx++}`);

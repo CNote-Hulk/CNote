@@ -10,6 +10,8 @@
      1. require() it here
      2. Add it to package.json dependencies
    ────────────────────────────────────────── */
+require('dotenv').config();
+
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -18,10 +20,8 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const http = require('http');
 const socketio = require('socket.io');
+const rateLimit = require('express-rate-limit');
 const app = express();
-const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key';
-
-require('dotenv').config();
 
 /* ── Route imports ── */
 const resetProgressRoutes = require('./routes/reset-progress');
@@ -47,8 +47,6 @@ const achievementsRoutes = require('./routes/achievements');
 const ownedConsolesRoutes = require('./routes/owned-consoles');
 const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
-
-app.set('JWT_SECRET', JWT_SECRET);
 
 /* ── Environment validation ── */
 
@@ -83,9 +81,7 @@ function getOriginHost(value) {
 	}
 }
 
-// Only DATABASE_URL is strictly required — server cannot function without DB.
-// FRONTEND_URL, BASE_URL, etc. are optional CORS helpers.
-const requiredEnv = ['DATABASE_URL'];
+const requiredEnv = ['DATABASE_URL', 'JWT_SECRET'];
 
 const missingEnv = getMissingEnvVars(requiredEnv);
 if (missingEnv.length > 0) {
@@ -93,8 +89,10 @@ if (missingEnv.length > 0) {
 	process.exit(1);
 }
 
-// Warn about missing optional but important vars
-const optionalEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL', 'JWT_SECRET'];
+app.set('JWT_SECRET', process.env.JWT_SECRET);
+
+// Warn about missing optional vars
+const optionalEnv = ['NODE_ENV', 'FRONTEND_URL', 'BASE_URL'];
 optionalEnv.forEach(name => {
 	if (!process.env[name]) console.warn(`Warning: ${name} is not set — using default.`);
 });
@@ -126,8 +124,8 @@ const allowedOrigins = [
 
 const allowedOriginHosts = allowedOrigins.map(getOriginHost).filter(Boolean);
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: false, limit: '100kb' }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
@@ -148,6 +146,38 @@ app.use('/api', (req, res, next) => {
 	})(req, res, next);
 });
 
+/* ── Rate limiters ── */
+const authLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 15,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many attempts, please try again later.' }
+});
+
+const twoFactorLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 10,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many 2FA attempts, please try again later.' }
+});
+
+const registerLimiter = rateLimit({
+	windowMs: 60 * 60 * 1000,
+	max: 10,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many registrations from this IP, please try again later.' }
+});
+
+app.post('/api/login', authLimiter);
+app.post('/api/register', registerLimiter);
+app.post('/api/request-reset', authLimiter);
+app.post('/api/reset-password', authLimiter);
+app.post('/api/2fa/verify', twoFactorLimiter);
+app.post('/api/2fa/email-fallback', twoFactorLimiter);
+
 /* ── Route mounting ── */
 app.use('/api', authRoutes);
 app.use('/api/sessions', sessionRoutes);
@@ -161,7 +191,7 @@ app.use('/api/auth', googleAuthRoutes);
 app.use('/api/forum', forumRoutes);
 app.use('/api/forum/liked', forumLikedRoutes);
 app.use('/api/forum/my-posts', forumMyPostsRoutes);
-app.use('/api/marketplace', marketplaceRoutes);
+app.use('/api/marketplace', express.json({ limit: '10mb' }), marketplaceRoutes);
 app.use('/api/repair', repairRoutes);
 app.use('/api/dm', dmRoutes);
 app.use('/api/notifications', notificationRoutes);
@@ -204,13 +234,32 @@ app.use((err, req, res, next) => {
 
 // === SOCKET.IO SETUP (pentru notificări real-time) ===
 const httpServer = http.createServer(app);
-const io = socketio(httpServer, { cors: { origin: '*' } });
+const io = socketio(httpServer, { cors: { origin: allowedOrigins, credentials: true } });
 app.set('io', io);
 
+const { authRequired: _authReq } = require('./middleware/auth');
+const jwt = require('jsonwebtoken');
+const pool = require('./db');
+
 io.on('connection', (socket) => {
-  // Userul se înregistrează pe canalul său după login
-  socket.on('register', (userId) => {
-    socket.join(userId);
+  socket.on('register', async (token) => {
+    if (!token || typeof token !== 'string') return;
+    try {
+      const JWT_SECRET = app.get('JWT_SECRET');
+      let userId;
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        userId = decoded.userId;
+      } catch {
+        const result = await pool.query(
+          'SELECT user_id FROM user_sessions WHERE session_token = $1 AND is_active = true',
+          [token]
+        );
+        if (!result.rows[0]) return;
+        userId = result.rows[0].user_id;
+      }
+      if (userId) socket.join(String(userId));
+    } catch {}
   });
 });
 

@@ -42,12 +42,10 @@ async function authRequired(req, res, next) {
             email_verified: user.email_verified,
             two_factor_enabled: user.two_factor_enabled,
             two_factor_method: user.two_factor_method,
-            two_factor_secret: user.two_factor_secret,
             two_factor_totp_enabled: user.two_factor_totp_enabled,
             two_factor_email_enabled: user.two_factor_email_enabled,
             google_id: user.google_id,
             avatar_url: user.avatar_url,
-            password_hash: user.password_hash,
             role: user.role || 'user',
             username_chosen: user.username_chosen !== false,
             created_at: user.created_at
@@ -64,8 +62,8 @@ async function authRequired(req, res, next) {
         SELECT s.id AS session_id, s.user_id, u.id, u.username, u.email, u.bio, u.avatar,
                u.favorite_consoles, u.owned_consoles,
                u.email_verified, u.two_factor_enabled, u.two_factor_method,
-               u.two_factor_secret, u.two_factor_totp_enabled, u.two_factor_email_enabled,
-               u.google_id, u.avatar_url, u.password_hash,
+               u.two_factor_totp_enabled, u.two_factor_email_enabled,
+               u.google_id, u.avatar_url,
                u.role, u.username_chosen,
                u.created_at
         FROM user_sessions s
@@ -96,12 +94,10 @@ async function authRequired(req, res, next) {
         email_verified: session.email_verified,
         two_factor_enabled: session.two_factor_enabled,
         two_factor_method: session.two_factor_method,
-        two_factor_secret: session.two_factor_secret,
         two_factor_totp_enabled: session.two_factor_totp_enabled,
         two_factor_email_enabled: session.two_factor_email_enabled,
         google_id: session.google_id,
         avatar_url: session.avatar_url,
-        password_hash: session.password_hash,
         role: session.role || 'user',
         username_chosen: session.username_chosen !== false,
         created_at: session.created_at
@@ -123,10 +119,10 @@ function extractToken(req) {
     const cookies = parseCookies(req.headers.cookie || '');
     if (cookies['cn_session_token']) return cookies['cn_session_token'];
 
-    const queryToken = req.query && typeof req.query.token === 'string'
-        ? req.query.token.trim()
-        : '';
-    if (queryToken) return queryToken;
+    // Only allow ?token= for SSE endpoint (EventSource doesn't support custom headers)
+    if (req.path === '/events' && req.query && typeof req.query.token === 'string') {
+        return req.query.token.trim() || null;
+    }
 
     return null;
 }

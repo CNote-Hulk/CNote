@@ -4,17 +4,18 @@ let socket = null;
 
 export function initAchievementSocket(userId) {
     if (!window.io || !userId) return;
+    const token = localStorage.getItem('cn_session_token') || '';
+    if (!token) return;
+
     if (socket) {
-        // Already connected — just re-register in the room (e.g. after page reload)
-        socket.emit('register', String(userId));
+        socket.emit('register', token);
         return;
     }
 
     socket = window.io({ reconnectionAttempts: Infinity, reconnectionDelay: 2000 });
 
-    // Register immediately and on every reconnect (covers phone wake-up / network switch)
-    socket.emit('register', String(userId));
-    socket.on('connect', () => socket.emit('register', String(userId)));
+    socket.emit('register', token);
+    socket.on('connect', () => socket.emit('register', localStorage.getItem('cn_session_token') || ''));
 
     socket.on('achievement_unlocked', (payload) => {
         if (payload && Array.isArray(payload.awardedIds)) {

@@ -324,11 +324,17 @@ export const NavigationModule = {
                 return `${Math.floor(diff / 86400)}d ago`;
             };
 
+            const esc = (s) => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            const safeHref = (link) => {
+                const s = String(link || '');
+                return (s.startsWith('/') || s.startsWith('https://') || s.startsWith('http://')) ? s : '#';
+            };
+
             list.innerHTML = notifs.map(n => `
-                <a href="${n.link || '#'}" class="mbn-notif-row${n.read ? '' : ' mbn-notif-row--unread'}">
+                <a href="${safeHref(n.link)}" class="mbn-notif-row${n.read ? '' : ' mbn-notif-row--unread'}">
                     <div class="mbn-notif-row__dot"></div>
                     <div class="mbn-notif-row__body">
-                        <div class="mbn-notif-row__msg">${n.message || ''}</div>
+                        <div class="mbn-notif-row__msg">${esc(n.message)}</div>
                         <div class="mbn-notif-row__time">${timeAgo(n.created_at)}</div>
                     </div>
                 </a>
