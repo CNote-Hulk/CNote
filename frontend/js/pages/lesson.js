@@ -792,16 +792,20 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
             window.location.href = `lesson.html?id=${prevLesson.id}&slug=${encodeURIComponent(courseSlug)}`;
         });
     } else {
-        prevBtn.classList.add('lsn-nav-btn--disabled');
         prevBtn.href = '#';
-        prevBtn.setAttribute('aria-disabled', 'true');
         prevBtn.innerHTML = `
             <div class="lsn-nav-btn__direction">
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M6 2L3 5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
                 Previous
             </div>
-            <div class="lsn-nav-btn__title">Start of course</div>
+            <div class="lsn-nav-btn__title">Course overview</div>
         `;
+        prevBtn.addEventListener('click', e => {
+            e.preventDefault();
+            window.location.href = courseSlug
+                ? `course.html?slug=${encodeURIComponent(courseSlug)}`
+                : 'invata.html';
+        });
     }
 
     const nextBtn = document.createElement('a');

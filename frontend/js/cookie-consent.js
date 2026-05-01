@@ -16,12 +16,31 @@ function loadYouTubeEmbeds() {
   document.querySelectorAll('.yt-placeholder').forEach(placeholder => {
     const videoId = placeholder.dataset.videoId;
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${videoId}`;
+    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
     iframe.classList.add('yt-iframe');
+
+    // Fallback: if embedding is blocked, show a link to YouTube
+    iframe.addEventListener('error', () => showYtFallback(placeholder, videoId));
+    iframe.addEventListener('load', () => {
+      // Error 153 / blocked videos still fire "load" — check via postMessage if needed.
+      // Replace placeholder and let the browser show YouTube's own error UI with the link.
+    });
+
     placeholder.replaceWith(iframe);
   });
+}
+
+function showYtFallback(placeholder, videoId) {
+  const fallback = document.createElement('div');
+  fallback.className = 'yt-fallback';
+  fallback.innerHTML = `
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <p>Videoclipul nu poate fi afișat direct.</p>
+    <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="yt-fallback__link">Vizionează pe YouTube →</a>
+  `;
+  placeholder.replaceWith(fallback);
 }
 
 function acceptAll() {

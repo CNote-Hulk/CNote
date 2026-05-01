@@ -146,4 +146,14 @@ export const AchievementsModule = {
             }, 4200 + index * 220);
         });
     },
+
+    trackConsoleVisit(consoleId) {
+        try {
+            const visited = JSON.parse(localStorage.getItem('cn_visited_consoles')) || [];
+            if (!visited.includes(consoleId)) {
+                visited.push(consoleId);
+                localStorage.setItem('cn_visited_consoles', JSON.stringify(visited));
+            }
+        } catch { /* noop */ }
+    },
 };
