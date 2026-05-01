@@ -748,7 +748,7 @@
     border: 1px solid rgba(var(--accent-rgb), 0.10);
     border-radius: var(--radius-md, 12px);
     overflow: hidden;
-    box-shadow: 0 8px 22px rgba(2,6,20,0.55);
+    box-shadow: var(--shadow-card);
 }
 
 [data-theme="light"] .crs-sb-progress {
@@ -832,7 +832,7 @@
     border: 1px solid rgba(var(--accent-rgb), 0.10);
     border-radius: var(--radius-md, 12px);
     overflow: hidden;
-    box-shadow: 0 8px 22px rgba(2,6,20,0.55);
+    box-shadow: var(--shadow-card);
     padding-bottom: 16px;
 }
 

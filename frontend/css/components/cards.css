@@ -88,11 +88,7 @@
     /* Prevent content overflow */
     overflow: hidden;
     
-    /* Documentary shadow */
-    box-shadow: 
-        0 4px 24px rgba(0, 0, 0, 0.35),
-        0 2px 8px rgba(var(--accent-rgb), 0.07),
-        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    box-shadow: var(--shadow-card);
     
     transition: all 0.3s ease !important;
     position: relative;
@@ -102,11 +98,7 @@
 .card:hover {
     border-color: rgba(var(--accent-rgb), 0.2);
     transform: translateY(-6px);
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.5),
-        0 0 30px rgba(var(--accent-rgb), 0.1),
-        0 4px 12px rgba(var(--accent-rgb), 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    box-shadow: var(--shadow-lg);
 }
 
 .card h3 {
