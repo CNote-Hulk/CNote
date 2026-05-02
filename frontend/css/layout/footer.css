@@ -54,6 +54,25 @@
     font-size: 0.9rem;
 }
 
+.footer-center {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-center a {
+    color: var(--text-gray);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color var(--transition-fast);
+}
+
+.footer-center a:hover {
+    color: var(--text-light);
+}
+
 .footer-right {
     color: var(--text-gray);
     text-align: right;
@@ -105,8 +124,16 @@
         padding: 0;
     }
 
-    .footer-right {
+    .footer-center {
         margin-top: 18px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.25rem 1.25rem;
+    }
+
+    .footer-right {
+        margin-top: 4px;
         text-align: center;
         align-items: center;
     }
