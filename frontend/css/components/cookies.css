@@ -84,6 +84,121 @@
   opacity: 0.88;
 }
 
+/* ── Cookie Settings Panel ── */
+.cookie-settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  margin-top: 1.25rem;
+}
+
+.cookie-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cookie-setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cookie-setting-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.cookie-setting-desc {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+}
+
+.cookie-setting-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--accent-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cookie-toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.cookie-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.cookie-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--border-color);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.cookie-toggle-slider::before {
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background: var(--text-light);
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+}
+
+.cookie-toggle input:checked + .cookie-toggle-slider {
+  background: var(--accent-color);
+}
+
+.cookie-toggle input:checked + .cookie-toggle-slider::before {
+  transform: translateX(20px);
+}
+
+.cookie-toggle input:disabled + .cookie-toggle-slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cookie-settings-save {
+  align-self: flex-start;
+  background: var(--accent-color);
+  color: var(--primary-color);
+  border: none;
+  padding: 0.625rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.cookie-settings-save:hover {
+  opacity: 0.88;
+}
+
 /* ── YouTube Placeholder ── */
 .yt-placeholder {
   position: relative;

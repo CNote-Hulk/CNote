@@ -21,9 +21,7 @@ function loadYouTubeEmbeds() {
     iframe.allowFullscreen = true;
     iframe.classList.add('yt-iframe');
     iframe.dataset.videoId = videoId;
-
     iframe.addEventListener('error', () => showYtFallback(iframe, videoId));
-
     placeholder.replaceWith(iframe);
   });
 }
@@ -39,16 +37,12 @@ function showYtFallback(placeholder, videoId) {
   placeholder.replaceWith(fallback);
 }
 
-function acceptAll() {
-  localStorage.setItem(CONSENT_KEY, 'all');
-  hideModal();
-  loadGA();
-  loadYouTubeEmbeds();
-}
-
-function acceptEssential() {
-  localStorage.setItem(CONSENT_KEY, 'essential');
-  hideModal();
+function getStoredConsent() {
+  try {
+    return JSON.parse(localStorage.getItem(CONSENT_KEY));
+  } catch (e) {
+    return null;
+  }
 }
 
 function hideModal() {
@@ -56,10 +50,22 @@ function hideModal() {
   if (overlay) overlay.remove();
 }
 
+function acceptAll() {
+  localStorage.setItem(CONSENT_KEY, JSON.stringify({ necessary: true, analytics: true }));
+  hideModal();
+  loadGA();
+  loadYouTubeEmbeds();
+}
+
+function decline() {
+  localStorage.setItem(CONSENT_KEY, JSON.stringify({ necessary: true, analytics: false }));
+  hideModal();
+}
+
 function initConsent() {
-  const consent = localStorage.getItem(CONSENT_KEY);
-  if (consent === 'all') { loadGA(); loadYouTubeEmbeds(); return; }
-  if (consent === 'essential') return;
+  const consent = getStoredConsent();
+  if (consent && consent.analytics) { loadGA(); loadYouTubeEmbeds(); return; }
+  if (consent && consent.necessary) return;
 
   const overlay = document.createElement('div');
   overlay.id = 'cookie-overlay';
@@ -71,15 +77,16 @@ function initConsent() {
     <p class="cookie-modal-title">Preferințe cookies</p>
     <p class="cookie-modal-body">Folosim cookies pentru analytics (Google Analytics) și videoclipuri (YouTube). Cookies esențiale sunt întotdeauna active.</p>
     <div class="cookie-modal-actions">
-      <button class="cookie-btn-accept" onclick="acceptAll()">Acceptă toate</button>
-      <button class="cookie-btn-essential" onclick="acceptEssential()">Doar esențiale</button>
+      <button class="cookie-btn-accept" type="button">Accept All</button>
+      <button class="cookie-btn-essential" type="button">Decline</button>
     </div>
   `;
+
+  modal.querySelector('.cookie-btn-accept').addEventListener('click', acceptAll);
+  modal.querySelector('.cookie-btn-essential').addEventListener('click', decline);
 
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 }
 
-window.acceptAll = acceptAll;
-window.acceptEssential = acceptEssential;
 document.addEventListener('DOMContentLoaded', initConsent);
