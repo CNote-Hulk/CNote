@@ -91,6 +91,7 @@
         var p = window.location.pathname;
         if (p.indexOf('/pages/consoles/') !== -1 || p.indexOf('\\pages\\consoles\\') !== -1) return '../' + page;
         if (p.indexOf('/pages/curs/')     !== -1 || p.indexOf('\\pages\\curs\\')     !== -1) return '../' + page;
+        if (p.indexOf('/pages/help/')     !== -1 || p.indexOf('\\pages\\help\\')     !== -1) return '../' + page;
         if (p.indexOf('/pages/')          !== -1 || p.indexOf('\\pages\\')           !== -1) return page;
         return '/html/pages/' + page;
     }
