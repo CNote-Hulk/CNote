@@ -1114,6 +1114,7 @@ async function openListingDetail(id) {
                     <div class="hub-detail-actions">
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
                         ${l.olx_url ? `<a href="${esc(l.olx_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 OLX</a>` : ''}
+                        ${l.ebay_url ? `<a href="${esc(l.ebay_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 eBay</a>` : ''}
                         ${own && !l.sold ? '<button class="hub-btn hub-btn--primary" id="listing-sold-btn">✓ Mark as sold</button>' : ''}
                         ${own ? '<button class="hub-btn hub-btn--secondary" id="listing-edit-btn">✏️ Edit</button>' : ''}
                         ${own ? '<button class="hub-btn hub-btn--danger" id="listing-del-btn">Delete</button>' : ''}
@@ -1385,6 +1386,10 @@ function openAddListingModal() {
                     <input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…">
                 </div>
                 <div class="hub-form-group">
+                    <label class="hub-form-label">eBay Link (optional)</label>
+                    <input class="hub-form-input" name="ebay_url" type="url" placeholder="https://www.ebay.com/…">
+                </div>
+                <div class="hub-form-group">
                     <label class="hub-form-label">Images (max ${MAX_IMAGES} photos)</label>
                     <div class="hub-upload-zone" id="upload-zone">
                         <input type="file" id="upload-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
@@ -1502,6 +1507,7 @@ function openAddListingModal() {
             location: f.location.value.trim(),
             phone: f.phone.value.trim(),
             olx_url: f.olx_url.value.trim(),
+            ebay_url: f.ebay_url.value.trim(),
             images: finalImages,
         });
         if (res.success) { close(); loadListings(); }
@@ -1584,6 +1590,10 @@ function openEditListingFromDetail(id, l) {
                     <label class="hub-form-label">OLX Link (optional)</label>
                     <input class="hub-form-input" name="olx_url" type="url" value="${esc(l.olx_url || '')}">
                 </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">eBay Link (optional)</label>
+                    <input class="hub-form-input" name="ebay_url" type="url" value="${esc(l.ebay_url || '')}">
+                </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
                     <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
                     <button type="submit" class="hub-btn hub-btn--primary">Save</button>
@@ -1622,6 +1632,7 @@ function openEditListingFromDetail(id, l) {
             location: f.location.value.trim(),
             phone: f.phone.value.trim(),
             olx_url: f.olx_url.value.trim(),
+            ebay_url: f.ebay_url.value.trim(),
         });
         if (res.success) { close(); openListingDetail(id); } // reload detail
         else { btn.disabled = false; btn.textContent = 'Save'; showToast(res.error || 'Error.', 'error'); }
