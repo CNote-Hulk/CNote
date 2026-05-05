@@ -73,6 +73,10 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                         <span data-i18n="settings_tab_profile">Profile</span>
                     </button>
+                    <button class="profile-tab sidebar-link" data-tab="privacy" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <span>Privacy</span>
+                    </button>
                     <button class="profile-tab sidebar-link" data-tab="security" type="button">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         <span data-i18n="settings_tab_security">Security</span>
@@ -118,25 +122,13 @@
                         <div class="settings-row">
                             <div class="settings-row__meta">
                                 <div class="settings-row__title" data-i18n="profile_settings_label_username">Username</div>
-                                <div class="settings-row__desc" data-i18n="settings_username_desc">Your public display name on Console Notebook.</div>
+                                <div class="settings-row__desc" data-i18n="settings_username_desc">Your unique identifier on Console Notebook. Can be changed once every 7 days.</div>
                             </div>
                             <div class="settings-row__body">
                                 <div class="auth-field">
                                     <input type="text" id="set-username" placeholder="Your name" data-i18n="profile_settings_placeholder_username" data-i18n-attr="placeholder">
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Bio row -->
-                        <div class="settings-row">
-                            <div class="settings-row__meta">
-                                <div class="settings-row__title" data-i18n="profile_settings_label_bio">Bio</div>
-                                <div class="settings-row__desc" data-i18n="settings_bio_desc">A short description shown on your public profile.</div>
-                            </div>
-                            <div class="settings-row__body">
-                                <div class="auth-field">
-                                    <input type="text" id="set-bio" placeholder="Write something about yourself..." maxlength="200" data-i18n="profile_settings_placeholder_bio" data-i18n-attr="placeholder">
-                                </div>
+                                <p id="username-cooldown-hint" style="display:none;font-size:0.82rem;color:var(--text-muted,#a89880);margin:6px 0 0;"></p>
                             </div>
                         </div>
 
@@ -199,6 +191,17 @@
                         </div>
 
                     </form>
+
+                    <!-- Danger zone -->
+                    <div class="settings-row settings-row--danger" style="margin-top:8px;border-top:1px solid rgba(239,68,68,0.15);padding-top:24px;">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title" style="color:#ff8080;">Danger zone</div>
+                            <div class="settings-row__desc">Deleting your account is permanent and cannot be undone.</div>
+                        </div>
+                        <div class="settings-row__body">
+                            <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="delete-account-btn" style="background:rgba(127,29,29,0.35);border:1px solid rgba(239,68,68,0.5);color:#ff8080;">Delete account</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- ═══ PROFILE PANEL ═══ -->
@@ -223,37 +226,31 @@
                         </div>
                     </div>
 
-                    <!-- Privacy row -->
+                    <!-- Nickname row -->
                     <div class="settings-row">
                         <div class="settings-row__meta">
-                            <div class="settings-row__title" data-i18n="settings_privacy_title">Privacy</div>
-                            <div class="settings-row__desc" data-i18n="settings_privacy_desc">Control what others can see on your public profile.</div>
+                            <div class="settings-row__title">Nickname</div>
+                            <div class="settings-row__desc">An optional display name shown on your profile alongside your username. Max 50 characters.</div>
                         </div>
                         <div class="settings-row__body">
-                            <div class="notif-toggles">
-                                <label class="notif-toggle" for="show-email">
-                                    <span class="notif-toggle__label" data-i18n="settings_show_email">Show email on profile</span>
-                                    <input type="checkbox" id="show-email" class="notif-toggle__input">
-                                    <span class="notif-toggle__switch"></span>
-                                </label>
-                                <label class="notif-toggle" for="show-stats">
-                                    <span class="notif-toggle__label" data-i18n="settings_show_stats">Show stats on profile</span>
-                                    <input type="checkbox" id="show-stats" class="notif-toggle__input" checked>
-                                    <span class="notif-toggle__switch"></span>
-                                </label>
-                                <label class="notif-toggle" for="show-friends">
-                                    <span class="notif-toggle__label" data-i18n="settings_show_friends">Show friends on profile</span>
-                                    <input type="checkbox" id="show-friends" class="notif-toggle__input" checked>
-                                    <span class="notif-toggle__switch"></span>
-                                </label>
-                                <label class="notif-toggle" for="show-social-links">
-                                    <span class="notif-toggle__label" data-i18n="settings_show_social">Show social links on profile</span>
-                                    <input type="checkbox" id="show-social-links" class="notif-toggle__input" checked>
-                                    <span class="notif-toggle__switch"></span>
-                                </label>
+                            <div class="auth-field">
+                                <input type="text" id="set-nickname" placeholder="Your display name" maxlength="50">
                             </div>
-                            <button type="button" class="auth-btn settings-row__btn" id="save-privacy-btn" data-i18n="settings_save_privacy">Save privacy settings</button>
-                            <div class="auth-error" id="privacy-msg"></div>
+                            <button type="button" class="auth-btn settings-row__btn" id="save-nickname-btn">Save nickname</button>
+                            <div class="auth-error" id="nickname-msg"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bio row -->
+                    <div class="settings-row">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title" data-i18n="profile_settings_label_bio">Bio</div>
+                            <div class="settings-row__desc" data-i18n="settings_bio_desc">A short description shown on your public profile.</div>
+                        </div>
+                        <div class="settings-row__body">
+                            <div class="auth-field">
+                                <input type="text" id="set-bio" placeholder="Write something about yourself..." maxlength="200" data-i18n="profile_settings_placeholder_bio" data-i18n-attr="placeholder">
+                            </div>
                         </div>
                     </div>
 
@@ -317,6 +314,45 @@
                             </div>
                             <button type="button" class="auth-btn settings-row__btn" id="save-social-btn" data-i18n="settings_save_social">Save social links</button>
                             <div class="auth-error" id="social-msg"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ═══ PRIVACY PANEL ═══ -->
+                <div class="profile-panel" id="panel-privacy" data-panel="privacy">
+
+                    <!-- Profile visibility row -->
+                    <div class="settings-row">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title">Profile visibility</div>
+                            <div class="settings-row__desc">Control what other users can see on your public profile page.</div>
+                        </div>
+                        <div class="settings-row__body">
+                            <div class="notif-toggles">
+                                <label class="notif-toggle" for="show-email">
+                                    <span class="notif-toggle__label" data-i18n="settings_show_email">Show email on profile</span>
+                                    <input type="checkbox" id="show-email" class="notif-toggle__input">
+                                    <span class="notif-toggle__switch"></span>
+                                </label>
+                                <label class="notif-toggle" for="show-stats">
+                                    <span class="notif-toggle__label" data-i18n="settings_show_stats">Show stats on profile</span>
+                                    <input type="checkbox" id="show-stats" class="notif-toggle__input" checked>
+                                    <span class="notif-toggle__switch"></span>
+                                </label>
+                                <label class="notif-toggle" for="show-friends">
+                                    <span class="notif-toggle__label" data-i18n="settings_show_friends">Show friends list on profile</span>
+                                    <input type="checkbox" id="show-friends" class="notif-toggle__input" checked>
+                                    <span class="notif-toggle__switch"></span>
+                                </label>
+                                <label class="notif-toggle" for="show-social-links">
+                                    <span class="notif-toggle__label" data-i18n="settings_show_social">Show social links on profile</span>
+                                    <input type="checkbox" id="show-social-links" class="notif-toggle__input" checked>
+                                    <span class="notif-toggle__switch"></span>
+                                </label>
+                            </div>
+                            <button type="button" class="auth-btn settings-row__btn" id="save-privacy-btn" data-i18n="settings_save_privacy">Save privacy settings</button>
+                            <div class="auth-error" id="privacy-msg"></div>
                         </div>
                     </div>
 
@@ -452,17 +488,6 @@
                                 <button class="auth-btn auth-btn--small" id="reset-accent-btn" type="button" data-i18n="settings_accent_reset">Reset to default</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- ═══ ACHIEVEMENTS PANEL ═══ -->
-                <div class="profile-panel" id="panel-achievements" data-panel="achievements">
-                    <div class="settings-page-header" style="margin-bottom:24px;">
-                        <h2 class="settings-section-title">Achievements</h2>
-                        <p class="settings-page-subtitle">Badges you've earned on your journey.</p>
-                    </div>
-                    <div id="badge-container">
-                        <p style="color:var(--text-muted,#a89880);font-size:0.9rem;">Loading achievements…</p>
                     </div>
                 </div>
 

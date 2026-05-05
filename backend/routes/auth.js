@@ -192,7 +192,9 @@ function sanitizeUser(user) {
         show_email: !!user.show_email,
         show_stats: user.show_stats !== false,
         show_friends: user.show_friends !== false,
-        show_social_links: user.show_social_links !== false
+        show_social_links: user.show_social_links !== false,
+        nickname: user.nickname || '',
+        username_changed_at: user.username_changed_at || null
     };
 }
 
@@ -590,9 +592,11 @@ router.get('/me/level', authRequired, async (req, res) => {
     }
 });
 
+const USERNAME_COOLDOWN_DAYS = 7;
+
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
-    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links } = req.body;
+    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links, nickname } = req.body;
     const updates = [];
     const params = [];
     let paramIndex = 1;
@@ -605,9 +609,23 @@ router.put('/me', authRequired, async (req, res) => {
         if (!/^[a-zA-Z0-9_]+$/.test(trimmed)) {
             return res.status(400).json({ success: false, error: 'Username may only contain letters, numbers and underscores.' });
         }
-        const dup = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1) AND id != $2', [trimmed, req.user.id]);
-        if (dup.rows.length > 0) {
-            return res.status(400).json({ success: false, error: 'Username is already taken.' });
+        // Check if username is actually changing
+        const currentResult = await pool.query('SELECT username, username_changed_at FROM users WHERE id = $1', [req.user.id]);
+        const current = currentResult.rows[0];
+        const usernameChanging = current && current.username.toLowerCase() !== trimmed.toLowerCase();
+        if (usernameChanging) {
+            if (current.username_changed_at) {
+                const daysSince = (Date.now() - new Date(current.username_changed_at).getTime()) / (1000 * 60 * 60 * 24);
+                if (daysSince < USERNAME_COOLDOWN_DAYS) {
+                    const nextChange = new Date(new Date(current.username_changed_at).getTime() + USERNAME_COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
+                    return res.status(429).json({ success: false, error: `You can change your username again on ${nextChange.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.` });
+                }
+            }
+            const dup = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1) AND id != $2', [trimmed, req.user.id]);
+            if (dup.rows.length > 0) {
+                return res.status(400).json({ success: false, error: 'Username is already taken.' });
+            }
+            updates.push(`username_changed_at = NOW()`);
         }
         updates.push(`username = $${paramIndex++}`);
         params.push(trimmed);
@@ -673,6 +691,10 @@ router.put('/me', authRequired, async (req, res) => {
     if (show_social_links !== undefined) {
         updates.push(`show_social_links = $${paramIndex++}`);
         params.push(!!show_social_links);
+    }
+    if (nickname !== undefined) {
+        updates.push(`nickname = $${paramIndex++}`);
+        params.push(String(nickname).trim().slice(0, 50));
     }
 
     if (updates.length === 0) {

@@ -275,6 +275,22 @@ function initSettings() {
     document.getElementById('set-bio').value = user.bio || '';
     document.getElementById('set-email').value = user.email || '';
 
+    // Username cooldown hint
+    const USERNAME_COOLDOWN_DAYS = 7;
+    const usernameCooldownHint = document.getElementById('username-cooldown-hint');
+    const usernameInput = document.getElementById('set-username');
+    if (usernameCooldownHint && user.username_changed_at) {
+        const changedAt = new Date(user.username_changed_at);
+        const nextAllowed = new Date(changedAt.getTime() + USERNAME_COOLDOWN_DAYS * 24 * 60 * 60 * 1000);
+        const now = new Date();
+        if (nextAllowed > now) {
+            const dateStr = nextAllowed.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            usernameCooldownHint.textContent = 'Next username change available on ' + dateStr + '.';
+            usernameCooldownHint.style.display = '';
+            if (usernameInput) usernameInput.disabled = true;
+        }
+    }
+
     initOwnedConsolesSelect();
 
     // Password section toggle for Google-only users
@@ -775,6 +791,19 @@ function initSettings() {
         });
     }
 
+    // ═══ PROFILE TAB — Nickname ═══
+    const nicknameInput = document.getElementById('set-nickname');
+    const saveNicknameBtn = document.getElementById('save-nickname-btn');
+    const nicknameMsg = document.getElementById('nickname-msg');
+    if (nicknameInput) nicknameInput.value = user.nickname || '';
+    if (saveNicknameBtn) {
+        saveNicknameBtn.addEventListener('click', async () => {
+            const result = await AuthModule.updateProfile({ nickname: nicknameInput?.value || '' });
+            if (result?.success) user.nickname = (nicknameInput?.value || '').trim();
+            showMessage(nicknameMsg, result?.success ? 'Nickname saved.' : (result?.error || 'Error.'), !!result?.success);
+        });
+    }
+
     // ═══ PROFILE TAB — Privacy toggles ═══
     const showEmailToggle = document.getElementById('show-email');
     const showStatsToggle = document.getElementById('show-stats');
@@ -947,22 +976,7 @@ function initSettings() {
         }
     }
 
-    // Danger Zone Card
-    if (securityPanel && !document.getElementById('danger-zone-card')) {
-        const dangerCard = document.createElement('div');
-        dangerCard.className = 'settings-injected-row settings-injected-row--danger';
-        dangerCard.id = 'danger-zone-card';
-        dangerCard.innerHTML = `
-            <div class="settings-injected-row__meta">
-                <div class="settings-injected-row__title">Danger zone</div>
-                <div class="settings-injected-row__desc">Deleting your account is permanent and cannot be undone.</div>
-            </div>
-            <div class="settings-injected-row__body">
-                <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="delete-account-btn" style="background:rgba(127,29,29,0.35);border:1px solid rgba(239,68,68,0.5);color:#ff8080;">Delete account</button>
-            </div>
-        `;
-        securityPanel.appendChild(dangerCard);
-    }
+    // Delete account button is now in the Account tab (static HTML)
 
     // ═══ SECURITY — Google handlers ═══
     const googleLinkBtn = document.getElementById('google-link-btn');
@@ -1089,7 +1103,7 @@ function initSettings() {
         history.replaceState(null, '', window.location.pathname + window.location.hash);
     }
 
-    // ═══ SECURITY — Delete account ═══
+    // ═══ ACCOUNT — Delete account ═══
     const deleteAccountBtn = document.getElementById('delete-account-btn');
     if (deleteAccountBtn) {
         deleteAccountBtn.addEventListener('click', async () => {
