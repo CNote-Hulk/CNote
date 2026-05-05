@@ -150,6 +150,10 @@
                                 <div class="auth-field">
                                     <input type="email" id="set-email" placeholder="email@example.com" autocomplete="email" data-i18n="profile_settings_placeholder_email" data-i18n-attr="placeholder">
                                 </div>
+                                <div class="auth-field" id="email-confirm-password-field" style="display:none;">
+                                    <label for="set-email-confirm-password" data-i18n="settings_email_confirm_pw_label">Enter your current password to confirm email change</label>
+                                    <input type="password" id="set-email-confirm-password" placeholder="Current password" autocomplete="current-password" data-i18n="profile_settings_placeholder_current_pw" data-i18n-attr="placeholder">
+                                </div>
                             </div>
                         </div>
 
@@ -160,19 +164,21 @@
                                 <div class="settings-row__desc" data-i18n="settings_password_desc">Change or set your account password.</div>
                             </div>
                             <div class="settings-row__body">
+                                <!-- Google-only: send set-password link by email -->
                                 <div id="password-section-info" style="display:none;">
-                                    <p class="settings-info-title" data-i18n="profile_settings_password_title">Set a password</p>
-                                    <p class="settings-info-desc" data-i18n="profile_settings_password_desc">Your account uses Google for authentication. You can set a password to log in without Google.</p>
+                                    <p class="settings-info-desc" data-i18n="profile_settings_password_desc">Your account uses Google sign-in. We'll send you an email with a link to set a password.</p>
+                                    <button type="button" class="auth-btn settings-row__btn" id="send-set-password-btn" data-i18n="settings_send_set_password_btn">Send set-password email</button>
+                                    <div class="auth-error" id="set-password-link-msg"></div>
                                 </div>
                                 <div class="auth-field" id="current-password-field">
                                     <label for="set-current-password" data-i18n="profile_settings_label_current_pw">Current password</label>
                                     <input type="password" id="set-current-password" placeholder="Current password" autocomplete="current-password" data-i18n="profile_settings_placeholder_current_pw" data-i18n-attr="placeholder">
                                 </div>
-                                <div class="auth-field">
-                                    <label for="set-new-password" data-i18n="profile_settings_label_new_pw">New password (optional)</label>
+                                <div class="auth-field" id="new-password-field">
+                                    <label for="set-new-password" data-i18n="profile_settings_label_new_pw">New password</label>
                                     <input type="password" id="set-new-password" placeholder="Minimum 6 characters" autocomplete="new-password" data-i18n="profile_settings_placeholder_new_pw" data-i18n-attr="placeholder">
                                 </div>
-                                <div class="auth-field">
+                                <div class="auth-field" id="confirm-password-field">
                                     <label for="set-new-password-confirm" data-i18n="profile_settings_label_confirm_pw">Confirm new password</label>
                                     <input type="password" id="set-new-password-confirm" placeholder="Repeat new password" autocomplete="new-password" data-i18n="profile_settings_placeholder_confirm_pw" data-i18n-attr="placeholder">
                                 </div>

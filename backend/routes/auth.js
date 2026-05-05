@@ -1364,5 +1364,88 @@ router.delete('/trusted-devices', authRequired, async (req, res) => {
     }
 });
 
+// POST /api/me/set-password-email — Send a set-password link to a Google-only account's email
+router.post('/me/set-password-email', authRequired, async (req, res) => {
+    try {
+        const userResult = await pool.query('SELECT id, email, password_hash FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
+        if (!user) return res.status(404).json({ success: false, error: 'User not found.' });
+
+        if (user.password_hash) {
+            return res.status(400).json({ success: false, error: 'Your account already has a password. Use the change password option instead.' });
+        }
+
+        // Reuse the password_reset_tokens table — same flow, same page, just different email copy
+        await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [user.id]);
+        const token = generateToken();
+        await pool.query(
+            'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [user.id, token, expiresAt()]
+        );
+
+        emailService.sendSetPasswordEmail(user.email, token, process.env.BASE_URL).then(result => {
+            if (!result.success) console.error('Failed to send set-password email:', result.error);
+        });
+
+        res.json({ success: true, message: 'Email sent! Check your inbox for the set-password link.' });
+    } catch (err) {
+        console.error('Set-password-email error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// POST /api/me/email-change-notify — Send security notification to old email after email change
+router.post('/me/email-change-notify', authRequired, async (req, res) => {
+    try {
+        const { oldEmail, newEmail } = req.body || {};
+        if (!oldEmail || !newEmail) {
+            return res.status(400).json({ success: false, error: 'Missing oldEmail or newEmail.' });
+        }
+
+        // Generate a reset token so the user can recover access if the change was unauthorised
+        await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [req.user.id]);
+        const token = generateToken();
+        await pool.query(
+            'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [req.user.id, token, expiresAt()]
+        );
+
+        emailService.sendEmailChangedNotification(oldEmail, newEmail, token, process.env.BASE_URL).then(result => {
+            if (!result.success) console.error('Failed to send email-changed notification:', result.error);
+        });
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Email-change-notify error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// POST /api/me/password-changed-notify — Send security notification email after password change
+router.post('/me/password-changed-notify', authRequired, async (req, res) => {
+    try {
+        const userResult = await pool.query('SELECT email FROM users WHERE id = $1', [req.user.id]);
+        const user = userResult.rows[0];
+        if (!user) return res.status(404).json({ success: false, error: 'User not found.' });
+
+        // Generate a fresh reset token so the user can undo if unauthorised
+        await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [req.user.id]);
+        const token = generateToken();
+        await pool.query(
+            'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
+            [req.user.id, token, expiresAt()]
+        );
+
+        emailService.sendPasswordChangedNotification(user.email, token, process.env.BASE_URL).then(result => {
+            if (!result.success) console.error('Failed to send password-changed notification:', result.error);
+        });
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Password-changed-notify error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
 router.findOrCreateSession = findOrCreateSession;
 module.exports = router;

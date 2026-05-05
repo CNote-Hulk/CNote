@@ -280,12 +280,56 @@ function initSettings() {
     // Password section toggle for Google-only users
     const passwordSectionInfo = document.getElementById('password-section-info');
     const currentPasswordField = document.getElementById('current-password-field');
+    const newPasswordField = document.getElementById('new-password-field');
+    const confirmPasswordField = document.getElementById('confirm-password-field');
     if (!user.has_password) {
         if (passwordSectionInfo) passwordSectionInfo.style.display = '';
         if (currentPasswordField) currentPasswordField.style.display = 'none';
+        if (newPasswordField) newPasswordField.style.display = 'none';
+        if (confirmPasswordField) confirmPasswordField.style.display = 'none';
     } else {
         if (passwordSectionInfo) passwordSectionInfo.style.display = 'none';
         if (currentPasswordField) currentPasswordField.style.display = '';
+        if (newPasswordField) newPasswordField.style.display = '';
+        if (confirmPasswordField) confirmPasswordField.style.display = '';
+    }
+
+    // "Send set-password email" button for Google-only accounts
+    const sendSetPasswordBtn = document.getElementById('send-set-password-btn');
+    const setPasswordLinkMsg = document.getElementById('set-password-link-msg');
+    if (sendSetPasswordBtn) {
+        sendSetPasswordBtn.addEventListener('click', async () => {
+            sendSetPasswordBtn.disabled = true;
+            sendSetPasswordBtn.textContent = 'Sending…';
+            try {
+                const token = localStorage.getItem('cn_token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                const res = await fetch(API_BASE_URL + '/me/set-password-email', {
+                    method: 'POST', headers, credentials: 'include',
+                    body: JSON.stringify({})
+                });
+                const data = await res.json().catch(() => ({}));
+                showMessage(setPasswordLinkMsg, data.message || 'Email sent! Check your inbox.', true);
+            } catch {
+                showMessage(setPasswordLinkMsg, 'Could not send the email. Try again later.', false);
+            } finally {
+                sendSetPasswordBtn.disabled = false;
+                sendSetPasswordBtn.textContent = 'Send set-password email';
+            }
+        });
+    }
+
+    // Show password confirmation field when email differs from current
+    const emailInput = document.getElementById('set-email');
+    const emailConfirmPasswordField = document.getElementById('email-confirm-password-field');
+    const emailConfirmPasswordInput = document.getElementById('set-email-confirm-password');
+    if (emailInput && emailConfirmPasswordField && user.has_password) {
+        emailInput.addEventListener('input', () => {
+            const changed = emailInput.value.trim().toLowerCase() !== (user.email || '').toLowerCase();
+            emailConfirmPasswordField.style.display = changed ? '' : 'none';
+            if (!changed && emailConfirmPasswordInput) emailConfirmPasswordInput.value = '';
+        });
     }
 
     // Email verification banner
@@ -382,6 +426,7 @@ function initSettings() {
         const owned_consoles = document.getElementById('set-owned-consoles').value;
         const email = document.getElementById('set-email').value;
         const currentPassword = document.getElementById('set-current-password').value;
+        const emailConfirmPassword = (document.getElementById('set-email-confirm-password') || {}).value || '';
         const newPassword = document.getElementById('set-new-password').value;
         const confirmPassword = document.getElementById('set-new-password-confirm').value;
 
@@ -389,8 +434,16 @@ function initSettings() {
         const wantsPasswordChange = newPassword.length > 0 || confirmPassword.length > 0;
         const isSetPasswordMode = !user.has_password;
 
-        if (!isSetPasswordMode && (emailChanged || wantsPasswordChange) && !currentPassword) {
-            showSettingsMessage('Enter your current password to change email/password.', false);
+        // For email change: require the email-specific password field
+        if (emailChanged && user.has_password && !emailConfirmPassword) {
+            showSettingsMessage('Enter your current password to confirm the email change.', false);
+            if (emailConfirmPasswordField) emailConfirmPasswordField.style.display = '';
+            if (emailConfirmPasswordInput) emailConfirmPasswordInput.focus();
+            return;
+        }
+
+        if (!isSetPasswordMode && wantsPasswordChange && !currentPassword) {
+            showSettingsMessage('Enter your current password to change your password.', false);
             return;
         }
         if (wantsPasswordChange && newPassword !== confirmPassword) {
@@ -421,29 +474,42 @@ function initSettings() {
         document.getElementById('profile-bio').textContent = bio || 'No description yet.';
 
         if (emailChanged) {
-            const emailResult = await AuthModule.updateEmail(email, currentPassword);
+            const oldEmail = user.email || '';
+            const emailResult = await AuthModule.updateEmail(email, emailConfirmPassword || currentPassword);
             if (!emailResult.success) {
                 showSettingsMessage(emailResult.error || 'Could not change email.', false);
                 return;
             }
+            // Notify old address about the change (best-effort)
+            try {
+                const token = localStorage.getItem('cn_token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                await fetch(API_BASE_URL + '/me/email-change-notify', {
+                    method: 'POST', headers, credentials: 'include',
+                    body: JSON.stringify({ oldEmail, newEmail: email.trim().toLowerCase() })
+                });
+            } catch { /* non-critical */ }
+            if (emailConfirmPasswordField) emailConfirmPasswordField.style.display = 'none';
+            if (emailConfirmPasswordInput) emailConfirmPasswordInput.value = '';
         }
 
-        if (wantsPasswordChange) {
-            let passwordResult;
-            if (isSetPasswordMode) {
-                passwordResult = await AuthModule.setPassword(newPassword, confirmPassword);
-            } else {
-                passwordResult = await AuthModule.updatePassword(currentPassword, newPassword);
-            }
+        if (wantsPasswordChange && !isSetPasswordMode) {
+            const passwordResult = await AuthModule.updatePassword(currentPassword, newPassword);
             if (!passwordResult.success) {
                 showSettingsMessage(passwordResult.error || 'Could not change password.', false);
                 return;
             }
-            if (isSetPasswordMode) {
-                user.has_password = true;
-                if (passwordSectionInfo) passwordSectionInfo.style.display = 'none';
-                if (currentPasswordField) currentPasswordField.style.display = '';
-            }
+            // Notify user by email that their password was changed
+            try {
+                const token = localStorage.getItem('cn_token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = 'Bearer ' + token;
+                await fetch(API_BASE_URL + '/me/password-changed-notify', {
+                    method: 'POST', headers, credentials: 'include',
+                    body: JSON.stringify({})
+                });
+            } catch { /* non-critical */ }
             document.getElementById('set-new-password').value = '';
             document.getElementById('set-new-password-confirm').value = '';
         }

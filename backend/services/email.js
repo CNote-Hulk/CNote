@@ -435,13 +435,138 @@ async function sendFriendAcceptedNotification({ to, username, accepterUsername, 
   }
 }
 
+/**
+ * sendSetPasswordEmail
+ * @description Email: sent to Google-only users when they request a link to set a password.
+ *              Uses the same reset-password page but with a "set" context.
+ */
+async function sendSetPasswordEmail(to, token, baseUrl) {
+    const setLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(token) + '&mode=set';
+    const html = wrapTemplate('Set Your Password', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                You requested to set a password for your Console Notebook account.
+                Click the button below to choose your password.
+              </p>
+              <a href="${setLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+                Set Password
+              </a>
+              <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+                This link expires in 24 hours. If you did not request this, you can safely ignore it — your account is not affected.
+              </p>`);
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM,
+            to,
+            subject: 'Set your password — Console Notebook',
+            html
+        });
+        if (error) {
+            console.error('Resend error (set-password):', error);
+            return { success: false, error: error.message };
+        }
+        console.log('Set-password email sent to:', to, '| Id:', data?.id);
+        return { success: true };
+    } catch (err) {
+        console.error('Resend exception (set-password):', err);
+        return { success: false, error: err.message };
+    }
+}
+
+/**
+ * sendEmailChangedNotification
+ * @description Email: notifies the OLD email address that the account email was changed.
+ *              Includes a reset link so the user can recover access if the change was unauthorised.
+ */
+async function sendEmailChangedNotification(oldEmail, newEmail, resetToken, baseUrl) {
+    const safeNew = escapeHtml(newEmail);
+    const resetLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(resetToken);
+    const html = wrapTemplate('Your Email Address Was Changed', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                The email address on your Console Notebook account has been changed to
+                <strong style="color:#e8d5b7;">${safeNew}</strong>.
+              </p>
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                If you made this change, no further action is needed.
+                If you did <strong>not</strong> authorise this change, click the button below to reset your password and secure your account immediately.
+              </p>
+              <a href="${resetLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+                Secure My Account
+              </a>
+              <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+                This reset link expires in 24 hours.
+              </p>`);
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM,
+            to: oldEmail,
+            subject: 'Your Console Notebook email address was changed',
+            html
+        });
+        if (error) {
+            console.error('Resend error (email-changed-notify):', error);
+            return { success: false, error: error.message };
+        }
+        console.log('Email-changed notification sent to:', oldEmail, '| Id:', data?.id);
+        return { success: true };
+    } catch (err) {
+        console.error('Resend exception (email-changed-notify):', err);
+        return { success: false, error: err.message };
+    }
+}
+
+/**
+ * sendPasswordChangedNotification
+ * @description Email: security notification sent after a successful password change.
+ *              Includes a reset link in case the change was unauthorised.
+ */
+async function sendPasswordChangedNotification(to, resetToken, baseUrl) {
+    const resetLink = String(baseUrl || BASE_URL()).replace(/\/$/, '') + '/html/pages/reset-password.html?token=' + encodeURIComponent(resetToken);
+    const html = wrapTemplate('Your Password Was Changed', `
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                The password for your Console Notebook account was recently changed.
+              </p>
+              <p style="color:#c8b99a;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                If you made this change, no further action is needed.
+                If you did <strong>not</strong> change your password, click the button below to reset it and secure your account immediately.
+              </p>
+              <a href="${resetLink}" style="display:inline-block;background:#e8d5b7;color:#0a0a14;font-weight:700;font-size:14px;padding:14px 32px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;">
+                Reset My Password
+              </a>
+              <p style="color:#5a5070;font-size:12px;margin:20px 0 0;">
+                This reset link expires in 24 hours.
+              </p>`);
+
+    try {
+        const { data, error } = await resend.emails.send({
+            from: FROM,
+            to,
+            subject: 'Your Console Notebook password was changed',
+            html
+        });
+        if (error) {
+            console.error('Resend error (password-changed-notify):', error);
+            return { success: false, error: error.message };
+        }
+        console.log('Password-changed notification sent to:', to, '| Id:', data?.id);
+        return { success: true };
+    } catch (err) {
+        console.error('Resend exception (password-changed-notify):', err);
+        return { success: false, error: err.message };
+    }
+}
+
 module.exports = {
     sendVerificationEmail,
     sendPasswordResetEmail,
     sendTwoFactorEmail,
     sendContactEmail,
     sendRepairRequestNotification,
-  sendRepairReplyNotification,
+    sendRepairReplyNotification,
     sendFriendRequestNotification,
-    sendFriendAcceptedNotification
+    sendFriendAcceptedNotification,
+    sendSetPasswordEmail,
+    sendEmailChangedNotification,
+    sendPasswordChangedNotification
 };
