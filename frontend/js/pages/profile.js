@@ -314,7 +314,15 @@ function initSettings() {
     const sendSetPasswordBtn = document.getElementById('send-set-password-btn');
     const setPasswordLinkMsg = document.getElementById('set-password-link-msg');
     if (sendSetPasswordBtn) {
+        // Hide immediately if user already has a password (session may be stale)
+        if (user.has_password) {
+            if (passwordSectionInfo) passwordSectionInfo.style.display = 'none';
+            if (currentPasswordField) currentPasswordField.style.display = '';
+            if (newPasswordField) newPasswordField.style.display = '';
+            if (confirmPasswordField) confirmPasswordField.style.display = '';
+        }
         sendSetPasswordBtn.addEventListener('click', async () => {
+            if (user.has_password) return;
             sendSetPasswordBtn.disabled = true;
             sendSetPasswordBtn.textContent = 'Sending…';
             try {
