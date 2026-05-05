@@ -89,10 +89,6 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17.5 10.5A2.5 2.5 0 0 1 20 13"/><circle cx="6.5" cy="11.5" r="2.5"/><path d="M3 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
                         <span data-i18n="settings_tab_appearance">Appearance</span>
                     </button>
-                    <button class="profile-tab sidebar-link" data-tab="marketplace" type="button">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                        <span>Marketplace</span>
-                    </button>
                 </div>
 
                 <div class="sidebar-profile-divider"></div>
@@ -317,6 +313,65 @@
                         </div>
                     </div>
 
+                    <!-- Marketplace Connections row -->
+                    <div class="settings-row">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title">Marketplace Connections</div>
+                            <div class="settings-row__desc">Connect your OLX and eBay accounts to sync your listings to Console Notebook.</div>
+                        </div>
+                        <div class="settings-row__body">
+                            <div class="marketplace-providers">
+                                <!-- OLX Provider -->
+                                <div class="marketplace-provider-card" id="olx-provider-card">
+                                    <div class="provider-header">
+                                        <div class="provider-logo">🛒</div>
+                                        <div class="provider-info">
+                                            <h3>OLX</h3>
+                                            <p class="provider-status" id="olx-status">Not connected</p>
+                                        </div>
+                                    </div>
+                                    <div class="provider-actions">
+                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-olx-btn">Connect OLX</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-olx-btn" hidden>Disconnect</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-olx-btn" hidden>Sync listings</button>
+                                    </div>
+                                    <div class="provider-last-sync" id="olx-last-sync" hidden></div>
+                                </div>
+
+                                <!-- eBay Provider -->
+                                <div class="marketplace-provider-card" id="ebay-provider-card">
+                                    <div class="provider-header">
+                                        <div class="provider-logo">🏪</div>
+                                        <div class="provider-info">
+                                            <h3>eBay</h3>
+                                            <p class="provider-status" id="ebay-status">Not connected</p>
+                                        </div>
+                                    </div>
+                                    <div class="provider-actions">
+                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-ebay-btn">Connect eBay</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-ebay-btn" hidden>Disconnect</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-ebay-btn" hidden>Sync listings</button>
+                                    </div>
+                                    <div class="provider-last-sync" id="ebay-last-sync" hidden></div>
+                                </div>
+                            </div>
+                            <div class="auth-error" id="marketplace-msg" style="display:none;margin-top:16px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Synced Listings row -->
+                    <div class="settings-row">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title">Imported Listings</div>
+                            <div class="settings-row__desc">Listings synced from your connected marketplaces appear on your public profile.</div>
+                        </div>
+                        <div class="settings-row__body">
+                            <div id="marketplace-listings-preview" class="marketplace-listings-preview">
+                                <p class="listings-loading">No listings synced yet.</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- ═══ PRIVACY PANEL ═══ -->
@@ -490,71 +545,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- ═══ MARKETPLACE PANEL ═══ -->
-                <div class="profile-panel" id="panel-marketplace" data-panel="marketplace">
-
-                    <!-- Marketplace Connections row -->
-                    <div class="settings-row">
-                        <div class="settings-row__meta">
-                            <div class="settings-row__title">Marketplace Connections</div>
-                            <div class="settings-row__desc">Connect your OLX and eBay accounts to sync your listings to Console Notebook.</div>
-                        </div>
-                        <div class="settings-row__body">
-                            <div class="marketplace-providers">
-                                <!-- OLX Provider -->
-                                <div class="marketplace-provider-card" id="olx-provider-card">
-                                    <div class="provider-header">
-                                        <div class="provider-logo">🛒</div>
-                                        <div class="provider-info">
-                                            <h3>OLX</h3>
-                                            <p class="provider-status" id="olx-status">Not connected</p>
-                                        </div>
-                                    </div>
-                                    <div class="provider-actions">
-                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-olx-btn">Connect OLX</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-olx-btn" hidden>Disconnect</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-olx-btn" hidden>Sync listings</button>
-                                    </div>
-                                    <div class="provider-last-sync" id="olx-last-sync" hidden></div>
-                                </div>
-
-                                <!-- eBay Provider -->
-                                <div class="marketplace-provider-card" id="ebay-provider-card">
-                                    <div class="provider-header">
-                                        <div class="provider-logo">🏪</div>
-                                        <div class="provider-info">
-                                            <h3>eBay</h3>
-                                            <p class="provider-status" id="ebay-status">Not connected</p>
-                                        </div>
-                                    </div>
-                                    <div class="provider-actions">
-                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-ebay-btn">Connect eBay</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-ebay-btn" hidden>Disconnect</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-ebay-btn" hidden>Sync listings</button>
-                                    </div>
-                                    <div class="provider-last-sync" id="ebay-last-sync" hidden></div>
-                                </div>
-                            </div>
-                            <div class="auth-error" id="marketplace-msg" style="display:none;margin-top:16px;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Synced Listings row -->
-                    <div class="settings-row">
-                        <div class="settings-row__meta">
-                            <div class="settings-row__title">Imported Listings</div>
-                            <div class="settings-row__desc">Listings synced from your connected marketplaces appear on your public profile.</div>
-                        </div>
-                        <div class="settings-row__body">
-                            <div id="marketplace-listings-preview" class="marketplace-listings-preview">
-                                <p class="listings-loading">No listings synced yet.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
             </main>
         </div>
     </div>
