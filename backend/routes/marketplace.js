@@ -6,6 +6,9 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
+const MarketplaceSyncService = require('../services/marketplace-sync');
+const OlxProvider = require('../providers/OlxProvider');
+const EbayProvider = require('../providers/EbayProvider');
 
 const router = express.Router();
 
@@ -561,6 +564,241 @@ router.delete('/listings/:id', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Marketplace DELETE error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   MARKETPLACE INTEGRATION (OLX, eBay)
+   ═══════════════════════════════════════════════════════════ */
+
+// ── GET /api/marketplace/accounts ───────────────────────
+// Get user's connected marketplace accounts
+router.get('/accounts', authRequired, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, provider, provider_user_id, last_sync, connected_at
+             FROM marketplace_accounts
+             WHERE user_id = $1
+             ORDER BY connected_at DESC`,
+            [req.user.id]
+        );
+
+        const accounts = result.rows.map(row => ({
+            id: row.id,
+            provider: row.provider,
+            providerUserId: row.provider_user_id,
+            lastSync: row.last_sync,
+            connectedAt: row.connected_at
+        }));
+
+        res.json({ success: true, accounts });
+    } catch (err) {
+        console.error('Marketplace accounts GET error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── GET /api/marketplace/:provider/auth-url ─────────────
+// Get OAuth authorization URL for a marketplace provider
+router.get('/:provider/auth-url', authRequired, async (req, res) => {
+    const provider = (req.params.provider || '').toLowerCase();
+    if (!['olx', 'ebay'].includes(provider)) {
+        return res.status(400).json({ success: false, error: 'Invalid provider.' });
+    }
+
+    try {
+        // Generate state token (for CSRF protection)
+        const crypto = require('crypto');
+        const state = crypto.randomBytes(32).toString('hex');
+        const stateKey = `oauth_state_${provider}_${req.user.id}_${Date.now()}`;
+
+        // Store state in memory (ideally use Redis for production)
+        if (!global.oauthStates) global.oauthStates = {};
+        global.oauthStates[stateKey] = {
+            userId: req.user.id,
+            provider: provider,
+            createdAt: Date.now()
+        };
+
+        let authUrl;
+        if (provider === 'olx') {
+            const olxProvider = new OlxProvider();
+            authUrl = olxProvider.getAuthorizationUrl(state);
+        } else if (provider === 'ebay') {
+            const ebayProvider = new EbayProvider();
+            authUrl = ebayProvider.getAuthorizationUrl(state);
+        }
+
+        res.json({ success: true, authUrl, state });
+    } catch (err) {
+        console.error(`Marketplace auth-url error (${provider}):`, err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/marketplace/:provider/callback ────────────
+// Handle OAuth callback from marketplace provider
+router.post('/:provider/callback', authRequired, async (req, res) => {
+    const provider = (req.params.provider || '').toLowerCase();
+    const { code, state } = req.body;
+
+    if (!['olx', 'ebay'].includes(provider)) {
+        return res.status(400).json({ success: false, error: 'Invalid provider.' });
+    }
+
+    if (!code || !state) {
+        return res.status(400).json({ success: false, error: 'Missing code or state.' });
+    }
+
+    try {
+        // Verify state (CSRF protection)
+        const stateKey = `oauth_state_${provider}_${req.user.id}_${Date.now()}`;
+        if (!global.oauthStates || !global.oauthStates[state]) {
+            return res.status(400).json({ success: false, error: 'Invalid or expired state.' });
+        }
+
+        const stateData = global.oauthStates[state];
+        if (stateData.userId !== req.user.id || stateData.provider !== provider) {
+            return res.status(403).json({ success: false, error: 'State mismatch.' });
+        }
+
+        delete global.oauthStates[state];
+
+        // Authenticate with provider
+        let providerInstance;
+        if (provider === 'olx') {
+            providerInstance = new OlxProvider();
+        } else {
+            providerInstance = new EbayProvider();
+        }
+
+        const auth = await providerInstance.authenticate(code);
+
+        // Check if account already exists
+        const existing = await pool.query(
+            'SELECT id FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
+            [req.user.id, provider]
+        );
+
+        if (existing.rows.length > 0) {
+            // Update existing
+            await pool.query(
+                `UPDATE marketplace_accounts
+                 SET access_token = $1, refresh_token = $2, expires_at = $3, 
+                     provider_user_id = $4, updated_at = NOW()
+                 WHERE user_id = $5 AND provider = $6`,
+                [auth.accessToken, auth.refreshToken, auth.expiresAt, auth.providerUserId, req.user.id, provider]
+            );
+        } else {
+            // Create new
+            await pool.query(
+                `INSERT INTO marketplace_accounts 
+                 (user_id, provider, access_token, refresh_token, expires_at, provider_user_id, last_sync, connected_at)
+                 VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())`,
+                [req.user.id, provider, auth.accessToken, auth.refreshToken, auth.expiresAt, auth.providerUserId]
+            );
+        }
+
+        // Trigger initial sync
+        const syncResult = await MarketplaceSyncService.syncUserListings(req.user.id, provider);
+
+        res.json({
+            success: true,
+            message: `Connected to ${provider}`,
+            provider: provider,
+            syncResult: syncResult
+        });
+    } catch (err) {
+        console.error(`Marketplace callback error (${provider}):`, err);
+        res.status(500).json({ success: false, error: err.message || 'Internal error.' });
+    }
+});
+
+// ── POST /api/marketplace/:provider/disconnect ──────────
+// Disconnect a marketplace account
+router.post('/:provider/disconnect', authRequired, async (req, res) => {
+    const provider = (req.params.provider || '').toLowerCase();
+
+    if (!['olx', 'ebay'].includes(provider)) {
+        return res.status(400).json({ success: false, error: 'Invalid provider.' });
+    }
+
+    try {
+        const result = await pool.query(
+            'DELETE FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
+            [req.user.id, provider]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ success: false, error: 'Account not connected.' });
+        }
+
+        // Delete associated listings
+        await pool.query(
+            'DELETE FROM listings WHERE user_id = $1 AND provider = $2',
+            [req.user.id, provider]
+        );
+
+        res.json({ success: true, message: `Disconnected from ${provider}` });
+    } catch (err) {
+        console.error(`Marketplace disconnect error (${provider}):`, err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/marketplace/:provider/sync ────────────────
+// Manually sync listings from a marketplace provider
+router.post('/:provider/sync', authRequired, async (req, res) => {
+    const provider = (req.params.provider || '').toLowerCase();
+
+    if (!['olx', 'ebay'].includes(provider)) {
+        return res.status(400).json({ success: false, error: 'Invalid provider.' });
+    }
+
+    try {
+        const syncResult = await MarketplaceSyncService.syncUserListings(req.user.id, provider);
+        res.json(syncResult);
+    } catch (err) {
+        console.error(`Marketplace sync error (${provider}):`, err);
+        res.status(500).json({ success: false, error: err.message || 'Sync failed.' });
+    }
+});
+
+// ── GET /api/marketplace/listings/marketplace ───────────
+// Get all marketplace-imported listings for a user
+router.get('/listings/marketplace/:userId', async (req, res) => {
+    const userId = parseInt(req.params.userId);
+    if (isNaN(userId)) return res.status(400).json({ success: false, error: 'ID invalid.' });
+
+    try {
+        const result = await pool.query(
+            `SELECT id, provider, external_listing_id, title, description, price, currency, 
+                    condition, images, url, status, synced_at
+             FROM listings
+             WHERE user_id = $1 AND status = 'active'
+             ORDER BY synced_at DESC`,
+            [userId]
+        );
+
+        const listings = result.rows.map(row => ({
+            id: row.id,
+            provider: row.provider,
+            externalListingId: row.external_listing_id,
+            title: row.title,
+            description: row.description,
+            price: parseFloat(row.price),
+            currency: row.currency,
+            condition: row.condition,
+            images: typeof row.images === 'string' ? JSON.parse(row.images) : row.images,
+            url: row.url,
+            status: row.status,
+            syncedAt: row.synced_at
+        }));
+
+        res.json({ success: true, listings });
+    } catch (err) {
+        console.error('Marketplace listings GET error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });

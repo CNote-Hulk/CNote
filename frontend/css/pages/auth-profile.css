@@ -3535,3 +3535,156 @@ a.chat-message__username:hover {
     margin: 0 0 1rem;
     line-height: 1.5;
 }
+
+/* ═══════════════════════════════════════════
+   MARKETPLACE INTEGRATION STYLES
+   ═══════════════════════════════════════════ */
+
+.marketplace-providers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.marketplace-provider-card {
+    background: rgba(32, 27, 24, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.25s ease;
+}
+
+.marketplace-provider-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(32, 27, 24, 0.8);
+}
+
+.provider-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.provider-logo {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.provider-info h3 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-light, #F5F0E8);
+    margin: 0 0 4px;
+}
+
+.provider-status {
+    font-size: 0.75rem;
+    color: var(--text-muted, #a89880);
+    margin: 0;
+}
+
+.provider-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.marketplace-connect-btn,
+.marketplace-disconnect-btn,
+.marketplace-sync-btn {
+    font-size: 0.75rem !important;
+    padding: 6px 10px !important;
+}
+
+.provider-last-sync {
+    font-size: 0.72rem;
+    color: var(--text-muted, #a89880);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Marketplace badges */
+.marketplace-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(0, 102, 204, 0.1);
+    color: #5B8DEF;
+    white-space: nowrap;
+}
+
+.marketplace-badge--olx {
+    background: rgba(0, 102, 204, 0.1);
+    color: #5B8DEF;
+}
+
+.marketplace-badge--ebay {
+    background: rgba(229, 50, 56, 0.1);
+    color: #e57373;
+}
+
+/* Marketplace action buttons */
+.marketplace-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    padding: 6px 10px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    color: var(--text-light, #F5F0E8);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.marketplace-action-btn:hover {
+    border-color: rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.marketplace-action-btn--olx {
+    border-color: rgba(91, 141, 239, 0.3);
+    color: #5B8DEF;
+}
+
+.marketplace-action-btn--olx:hover {
+    background: rgba(91, 141, 239, 0.08);
+    border-color: rgba(91, 141, 239, 0.6);
+}
+
+.marketplace-action-btn--ebay {
+    border-color: rgba(229, 115, 115, 0.3);
+    color: #e57373;
+}
+
+.marketplace-action-btn--ebay:hover {
+    background: rgba(229, 115, 115, 0.08);
+    border-color: rgba(229, 115, 115, 0.6);
+}
+
+/* Marketplace listings preview */
+.marketplace-listings-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.marketplace-listings-preview .listings-loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted, #a89880);
+    font-size: 0.85rem;
+    padding: 20px;
+}

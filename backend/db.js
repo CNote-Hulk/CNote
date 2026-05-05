@@ -258,6 +258,21 @@ async function initializeSchema() {
 			expires_at  TIMESTAMP NOT NULL,
 			UNIQUE(user_id, device_hash)
 		);
+
+		/* ── Marketplace Integration (OLX, eBay) ── */
+		CREATE TABLE IF NOT EXISTS marketplace_accounts (
+			id              SERIAL PRIMARY KEY,
+			user_id         INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			provider        TEXT NOT NULL CHECK (provider IN ('olx', 'ebay')),
+			access_token    TEXT NOT NULL,
+			refresh_token   TEXT DEFAULT NULL,
+			provider_user_id TEXT NOT NULL,
+			expires_at      TIMESTAMP DEFAULT NULL,
+			last_sync       TIMESTAMP DEFAULT NULL,
+			connected_at    TIMESTAMP DEFAULT NOW(),
+			updated_at      TIMESTAMP DEFAULT NOW(),
+			UNIQUE(user_id, provider)
+		);
 	`);
 
 	// Column migrations — idempotent ALTER statements to evolve schema
@@ -297,7 +312,10 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS show_friends BOOLEAN DEFAULT TRUE`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS show_social_links BOOLEAN DEFAULT TRUE`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS username_changed_at TIMESTAMP DEFAULT NULL`,
-		`ALTER TABLE users ADD COLUMN IF NOT EXISTS nickname TEXT DEFAULT ''`
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS nickname TEXT DEFAULT ''`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS marketplace_provider TEXT DEFAULT NULL`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS external_listing_id TEXT DEFAULT NULL`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_from_external BOOLEAN DEFAULT FALSE`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

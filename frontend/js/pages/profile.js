@@ -1453,3 +1453,177 @@ async function initOwnedConsolesSelect() {
 }());
 
 initSettings();
+
+/** Initialize marketplace connections panel */
+async function initMarketplace() {
+    // Load connected marketplace accounts
+    async function loadMarketplaceAccounts() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/marketplace/accounts`, {
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cn_token') }
+            });
+            const data = await res.json();
+
+            if (!data.success || !data.accounts) return;
+
+            const accounts = data.accounts;
+            const olxAccount = accounts.find(a => a.provider === 'olx');
+            const ebayAccount = accounts.find(a => a.provider === 'ebay');
+
+            // Update OLX status
+            const olxStatus = document.getElementById('olx-status');
+            const olxConnect = document.getElementById('connect-olx-btn');
+            const olxDisconnect = document.getElementById('disconnect-olx-btn');
+            const olxSync = document.getElementById('sync-olx-btn');
+            const olxLastSync = document.getElementById('olx-last-sync');
+
+            if (olxAccount) {
+                olxStatus.textContent = '✓ Connected';
+                olxConnect.hidden = true;
+                olxDisconnect.hidden = false;
+                olxSync.hidden = false;
+                if (olxAccount.lastSync) {
+                    const syncDate = new Date(olxAccount.lastSync);
+                    olxLastSync.textContent = `Last synced: ${syncDate.toLocaleDateString()} at ${syncDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}`;
+                    olxLastSync.hidden = false;
+                }
+            } else {
+                olxStatus.textContent = 'Not connected';
+                olxConnect.hidden = false;
+                olxDisconnect.hidden = true;
+                olxSync.hidden = true;
+                olxLastSync.hidden = true;
+            }
+
+            // Update eBay status
+            const ebayStatus = document.getElementById('ebay-status');
+            const ebayConnect = document.getElementById('connect-ebay-btn');
+            const ebayDisconnect = document.getElementById('disconnect-ebay-btn');
+            const ebaySync = document.getElementById('sync-ebay-btn');
+            const ebayLastSync = document.getElementById('ebay-last-sync');
+
+            if (ebayAccount) {
+                ebayStatus.textContent = '✓ Connected';
+                ebayConnect.hidden = true;
+                ebayDisconnect.hidden = false;
+                ebaySync.hidden = false;
+                if (ebayAccount.lastSync) {
+                    const syncDate = new Date(ebayAccount.lastSync);
+                    ebayLastSync.textContent = `Last synced: ${syncDate.toLocaleDateString()} at ${syncDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}`;
+                    ebayLastSync.hidden = false;
+                }
+            } else {
+                ebayStatus.textContent = 'Not connected';
+                ebayConnect.hidden = false;
+                ebayDisconnect.hidden = true;
+                ebaySync.hidden = true;
+                ebayLastSync.hidden = true;
+            }
+        } catch (err) {
+            console.error('Failed to load marketplace accounts:', err);
+        }
+    }
+
+    // Connect provider
+    async function connectProvider(provider) {
+        try {
+            const res = await fetch(`${API_BASE_URL}/marketplace/${provider}/auth-url`, {
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cn_token') }
+            });
+            const data = await res.json();
+            if (!data.success || !data.authUrl) {
+                showMarketplaceMessage(`Failed to get ${provider} auth URL`, false);
+                return;
+            }
+            window.location.href = data.authUrl;
+        } catch (err) {
+            console.error(`Connect ${provider} error:`, err);
+            showMarketplaceMessage(`Connection failed: ${err.message}`, false);
+        }
+    }
+
+    // Disconnect provider
+    async function disconnectProvider(provider) {
+        const confirmed = await showConfirmDialog({
+            title: `Disconnect ${provider.toUpperCase()}`,
+            message: `Are you sure you want to disconnect from ${provider}? Your synced listings will be removed.`,
+            confirmLabel: 'Disconnect',
+            cancelLabel: 'Cancel'
+        });
+        if (!confirmed) return;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/marketplace/${provider}/disconnect`, {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cn_token') }
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMarketplaceMessage(`Disconnected from ${provider}`, true);
+                loadMarketplaceAccounts();
+            } else {
+                showMarketplaceMessage(data.error || 'Failed to disconnect', false);
+            }
+        } catch (err) {
+            console.error(`Disconnect ${provider} error:`, err);
+            showMarketplaceMessage('Disconnection failed', false);
+        }
+    }
+
+    // Sync provider listings
+    async function syncProvider(provider) {
+        const btn = document.getElementById(`sync-${provider}-btn`);
+        if (btn) btn.disabled = true;
+
+        try {
+            const res = await fetch(`${API_BASE_URL}/marketplace/${provider}/sync`, {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cn_token') }
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMarketplaceMessage(`Synced ${data.listingsAdded + data.listingsUpdated} listings from ${provider}`, true);
+                loadMarketplaceAccounts();
+            } else {
+                showMarketplaceMessage(data.message || 'Sync failed', false);
+            }
+        } catch (err) {
+            console.error(`Sync ${provider} error:`, err);
+            showMarketplaceMessage('Sync failed', false);
+        } finally {
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    // Show marketplace messages
+    function showMarketplaceMessage(msg, isSuccess) {
+        const el = document.getElementById('marketplace-msg');
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = 'block';
+        el.style.color = isSuccess ? 'var(--success, #4ade80)' : '#e57373';
+        setTimeout(() => el.style.display = 'none', 5000);
+    }
+
+    // Event listeners
+    document.getElementById('connect-olx-btn').addEventListener('click', () => connectProvider('olx'));
+    document.getElementById('disconnect-olx-btn').addEventListener('click', () => disconnectProvider('olx'));
+    document.getElementById('sync-olx-btn').addEventListener('click', () => syncProvider('olx'));
+
+    document.getElementById('connect-ebay-btn').addEventListener('click', () => connectProvider('ebay'));
+    document.getElementById('disconnect-ebay-btn').addEventListener('click', () => disconnectProvider('ebay'));
+    document.getElementById('sync-ebay-btn').addEventListener('click', () => syncProvider('ebay'));
+
+    // Initial load
+    loadMarketplaceAccounts();
+
+    // Check for OAuth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('marketplace_connected') === '1') {
+        showMarketplaceMessage('Marketplace account connected successfully!', true);
+        loadMarketplaceAccounts();
+        history.replaceState(null, '', window.location.pathname + window.location.hash);
+    }
+}
+
+initMarketplace();
