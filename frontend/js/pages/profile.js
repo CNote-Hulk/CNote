@@ -1452,6 +1452,8 @@ async function initOwnedConsolesSelect() {
     });
 }());
 
+initSettings();
+
 /** Initialize marketplace connections panel */
 async function initMarketplace() {
     // Load connected marketplace accounts
@@ -1624,4 +1626,4 @@ async function initMarketplace() {
     }
 }
 
-initSettings();
+initMarketplace();
