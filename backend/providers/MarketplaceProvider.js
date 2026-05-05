@@ -1,52 +1,86 @@
 /**
  * Abstract Marketplace Provider Base Class
- * Defines the interface that all marketplace providers must implement
+ * Defines the contract for all marketplace integrations
+ * (OLX, eBay, etc.)
  */
 class MarketplaceProvider {
-	constructor(credentials) {
+	constructor(credentials = {}) {
+		if (new.target === MarketplaceProvider) {
+			throw new Error('MarketplaceProvider is abstract and cannot be instantiated directly');
+		}
+
 		this.credentials = credentials;
+		this.providerName = this.getProviderName();
 	}
 
 	/**
-	 * Authenticate with the marketplace
-	 * @returns {Promise<{accessToken, refreshToken, expiresAt, providerUserId}>}
+	 * Authenticate with marketplace (OAuth or API keys)
+	 * @returns {Promise<{
+	 *  accessToken: string,
+	 *  refreshToken?: string,
+	 *  expiresAt?: number,
+	 *  providerUserId?: string
+	 * }>}
 	 */
 	async authenticate() {
-		throw new Error('authenticate() must be implemented');
+		throw new Error(`[${this.providerName}] authenticate() must be implemented`);
 	}
 
 	/**
 	 * Fetch all listings from marketplace
-	 * @returns {Promise<Array>} Array of normalized listings
+	 * Must return normalized listings
+	 * @returns {Promise<Array<NormalizedListing>>}
 	 */
 	async fetchListings() {
-		throw new Error('fetchListings() must be implemented');
+		throw new Error(`[${this.providerName}] fetchListings() must be implemented`);
 	}
 
 	/**
-	 * Refresh authentication token
+	 * Refresh access token if supported
 	 * @param {string} refreshToken
-	 * @returns {Promise<{accessToken, refreshToken, expiresAt}>}
+	 * @returns {Promise<{
+	 *  accessToken: string,
+	 *  refreshToken?: string,
+	 *  expiresAt?: number
+	 * }>}
 	 */
 	async refreshToken(refreshToken) {
-		throw new Error('refreshToken() must be implemented');
+		throw new Error(`[${this.providerName}] refreshToken() must be implemented`);
 	}
 
 	/**
-	 * Normalize marketplace-specific listing format to standard format
-	 * @param {Object} listing Marketplace-specific listing data
-	 * @returns {Object} Normalized listing
+	 * Normalize raw marketplace listing into standard format
+	 * @param {Object} listing
+	 * @returns {NormalizedListing}
 	 */
 	normalizeData(listing) {
-		throw new Error('normalizeData() must be implemented');
+		throw new Error(`[${this.providerName}] normalizeData() must be implemented`);
 	}
 
 	/**
-	 * Get provider name
-	 * @returns {string} Provider identifier (olx, ebay, etc.)
+	 * Provider identifier
+	 * @returns {string} e.g. 'olx', 'ebay'
 	 */
 	getProviderName() {
 		throw new Error('getProviderName() must be implemented');
+	}
+
+	/**
+	 * Optional: validate credentials before requests
+	 * @returns {boolean}
+	 */
+	validateCredentials() {
+		return !!this.credentials;
+	}
+
+	/**
+	 * Optional helper: standard error wrapper
+	 */
+	throwError(message, originalError = null) {
+		throw new Error(
+			`[${this.providerName}] ${message}` +
+			(originalError ? ` | ${originalError.message}` : '')
+		);
 	}
 }
 
