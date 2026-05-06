@@ -18,7 +18,7 @@
     <div class="profile-page user-profile-page" id="user-profile-page">
 
         <!-- Loading state -->
-        <div class="user-profile-loading" id="user-profile-loading">Loading profile...</div>
+        <div class="user-profile-loading" id="user-profile-loading" data-i18n="up_loading">Loading profile...</div>
 
         <!-- ══ TWO-COLUMN LAYOUT — shown by JS when profile data loads ══ -->
         <div class="up-layout" id="user-profile-header" hidden>
@@ -53,41 +53,41 @@
                 <!-- Stats card (experience-style) -->
                 <div class="up-card up-stats-card" id="user-dashboard-panel" hidden>
                     <div class="up-card__header">
-                        <h3 class="up-card__title">Stats</h3>
+                        <h3 class="up-card__title" data-i18n="up_stats_title">Stats</h3>
                     </div>
                     <div class="dash-stats">
                         <div class="dash-stat">
                             <span class="dash-stat__icon">📚</span>
                             <div class="dash-stat__info">
-                                <span class="dash-stat__label">Course progress</span>
+                                <span class="dash-stat__label" data-i18n="up_stat_courses">Course progress</span>
                                 <span class="dash-stat__value" id="user-dash-courses-pct">0%</span>
                             </div>
                         </div>
                         <div class="dash-stat">
                             <span class="dash-stat__icon">🏆</span>
                             <div class="dash-stat__info">
-                                <span class="dash-stat__label">Achievements</span>
+                                <span class="dash-stat__label" data-i18n="up_stat_achievements">Achievements</span>
                                 <span class="dash-stat__value" id="user-dash-achievements">0 / 0</span>
                             </div>
                         </div>
                         <div class="dash-stat">
                             <span class="dash-stat__icon">⭐</span>
                             <div class="dash-stat__info">
-                                <span class="dash-stat__label">Ratings given</span>
+                                <span class="dash-stat__label" data-i18n="up_stat_ratings">Ratings given</span>
                                 <span class="dash-stat__value" id="user-dash-ratings">0</span>
                             </div>
                         </div>
                         <div class="dash-stat">
                             <span class="dash-stat__icon">👥</span>
                             <div class="dash-stat__info">
-                                <span class="dash-stat__label">Friends</span>
+                                <span class="dash-stat__label" data-i18n="up_stat_friends">Friends</span>
                                 <span class="dash-stat__value" id="user-dash-friends">0</span>
                             </div>
                         </div>
                         <div class="dash-stat">
                             <span class="dash-stat__icon">❤️</span>
                             <div class="dash-stat__info">
-                                <span class="dash-stat__label">Favorites</span>
+                                <span class="dash-stat__label" data-i18n="up_stat_favorites">Favorites</span>
                                 <span class="dash-stat__value" id="user-dash-favorites">0</span>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                 <!-- Top Consoles card (like "Top Skills") -->
                 <div class="up-card up-consoles-card" id="user-about-section">
                     <div class="up-card__header">
-                        <h3 class="up-card__title">Top Consoles</h3>
+                        <h3 class="up-card__title" data-i18n="up_top_consoles">Top Consoles</h3>
                     </div>
                     <div class="user-social-links" id="user-social-links" hidden></div>
                     <div class="up-consoles-inline" id="user-profile-consoles">
@@ -124,8 +124,8 @@
                 <!-- Ratings / Achievements tabbed card (like "Reviews / Pending") -->
                 <div class="up-card up-reviews-card">
                     <div class="up-reviews-tabs-header">
-                        <button class="up-reviews-tab active" data-rtype="ratings" type="button">Ratings</button>
-                        <button class="up-reviews-tab" data-rtype="achievements" type="button">Achievements</button>
+                        <button class="up-reviews-tab active" data-rtype="ratings" type="button" data-i18n="up_tab_ratings">Ratings</button>
+                        <button class="up-reviews-tab" data-rtype="achievements" type="button" data-i18n="up_tab_achievements">Achievements</button>
                     </div>
                     <div class="up-reviews-panel active" id="user-dash-ratings-section">
                         <div id="user-dash-ratings-preview"></div>
@@ -138,7 +138,7 @@
                 <!-- Course Progress -->
                 <div class="up-card up-courses-card" id="user-dash-courses-section">
                     <div class="up-card__header">
-                        <h3 class="up-card__title">📚 Course Progress</h3>
+                        <h3 class="up-card__title" data-i18n="up_course_progress">📚 Course Progress</h3>
                     </div>
                     <div id="user-dash-course-preview"></div>
                 </div>
@@ -149,19 +149,19 @@
 
         <!-- FORUM ACTIVITY -->
         <div class="up-section" id="user-forum-section" hidden>
-            <h3 class="user-section-title">💬 Forum Activity</h3>
+            <h3 class="user-section-title" data-i18n="up_forum_activity">💬 Forum Activity</h3>
             <div class="up-card" id="user-forum-activity"></div>
         </div>
 
         <!-- ACTIVE LISTINGS -->
         <div class="up-section user-listings-section" id="user-listings-section" hidden>
-            <h3 class="user-section-title">📋 Active Marketplace Listings</h3>
+            <h3 class="user-section-title" data-i18n="up_marketplace_listings">📋 Active Marketplace Listings</h3>
             <div class="user-listings-grid" id="user-listings-grid"></div>
         </div>
 
         <!-- FRIENDS -->
         <div class="up-section user-friends-section" id="user-friends-section" hidden>
-            <h3 class="user-section-title">👥 Friends</h3>
+            <h3 class="user-section-title" data-i18n="up_friends_section">👥 Friends</h3>
             <div class="user-friends-list" id="user-friends-list"></div>
         </div>
 

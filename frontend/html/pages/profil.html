@@ -64,7 +64,7 @@
 
                 <!-- Settings Navigation -->
                 <div class="sidebar-section">
-                    <h3>SETTINGS</h3>
+                    <h3 data-i18n="settings_nav_title">SETTINGS</h3>
                     <button class="profile-tab sidebar-link active" data-tab="account" type="button">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         <span data-i18n="settings_tab_account">Account</span>
@@ -75,7 +75,7 @@
                     </button>
                     <button class="profile-tab sidebar-link" data-tab="privacy" type="button">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <span>Privacy</span>
+                        <span data-i18n="settings_tab_privacy">Privacy</span>
                     </button>
                     <button class="profile-tab sidebar-link" data-tab="security" type="button">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -191,11 +191,11 @@
                     <!-- Danger zone -->
                     <div class="settings-row settings-row--danger" style="margin-top:8px;border-top:1px solid rgba(239,68,68,0.15);padding-top:24px;">
                         <div class="settings-row__meta">
-                            <div class="settings-row__title" style="color:#ff8080;">Danger zone</div>
-                            <div class="settings-row__desc">Deleting your account is permanent and cannot be undone.</div>
+                            <div class="settings-row__title" style="color:#ff8080;" data-i18n="settings_danger_zone_title">Danger zone</div>
+                            <div class="settings-row__desc" data-i18n="settings_danger_zone_desc">Deleting your account is permanent and cannot be undone.</div>
                         </div>
                         <div class="settings-row__body">
-                            <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="delete-account-btn" style="background:rgba(127,29,29,0.35);border:1px solid rgba(239,68,68,0.5);color:#ff8080;">Delete account</button>
+                            <button type="button" class="auth-btn auth-btn--danger settings-row__btn" id="delete-account-btn" style="background:rgba(127,29,29,0.35);border:1px solid rgba(239,68,68,0.5);color:#ff8080;" data-i18n="settings_delete_account_btn">Delete account</button>
                         </div>
                     </div>
                 </div>
@@ -225,14 +225,14 @@
                     <!-- Nickname row -->
                     <div class="settings-row">
                         <div class="settings-row__meta">
-                            <div class="settings-row__title">Nickname</div>
-                            <div class="settings-row__desc">An optional display name shown on your profile alongside your username. Max 50 characters.</div>
+                            <div class="settings-row__title" data-i18n="settings_nickname_title">Nickname</div>
+                            <div class="settings-row__desc" data-i18n="settings_nickname_desc">An optional display name shown on your profile alongside your username. Max 50 characters.</div>
                         </div>
                         <div class="settings-row__body">
                             <div class="auth-field">
-                                <input type="text" id="set-nickname" placeholder="Your display name" maxlength="50">
+                                <input type="text" id="set-nickname" placeholder="Your display name" maxlength="50" data-i18n="settings_nickname_placeholder" data-i18n-attr="placeholder">
                             </div>
-                            <button type="button" class="auth-btn settings-row__btn" id="save-nickname-btn">Save nickname</button>
+                            <button type="button" class="auth-btn settings-row__btn" id="save-nickname-btn" data-i18n="settings_save_nickname">Save nickname</button>
                             <div class="auth-error" id="nickname-msg"></div>
                         </div>
                     </div>
@@ -316,8 +316,8 @@
                     <!-- Marketplace Connections row -->
                     <div class="settings-row">
                         <div class="settings-row__meta">
-                            <div class="settings-row__title">Marketplace Connections</div>
-                            <div class="settings-row__desc">Connect your OLX and eBay accounts to sync your listings to Console Notebook.</div>
+                            <div class="settings-row__title" data-i18n="settings_marketplace_title">Marketplace Connections</div>
+                            <div class="settings-row__desc" data-i18n="settings_marketplace_desc">Connect your OLX and eBay accounts to sync your listings to Console Notebook.</div>
                         </div>
                         <div class="settings-row__body">
                             <div class="marketplace-providers">
@@ -327,13 +327,13 @@
                                         <div class="provider-logo">🛒</div>
                                         <div class="provider-info">
                                             <h3>OLX</h3>
-                                            <p class="provider-status" id="olx-status">Not connected</p>
+                                            <p class="provider-status" id="olx-status" data-i18n="settings_provider_not_connected">Not connected</p>
                                         </div>
                                     </div>
                                     <div class="provider-actions">
-                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-olx-btn">Connect OLX</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-olx-btn" hidden>Disconnect</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-olx-btn" hidden>Sync listings</button>
+                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-olx-btn" data-i18n="settings_connect_olx">Connect OLX</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-olx-btn" hidden data-i18n="settings_disconnect">Disconnect</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-olx-btn" hidden data-i18n="settings_sync_listings">Sync listings</button>
                                     </div>
                                     <div class="provider-last-sync" id="olx-last-sync" hidden></div>
                                 </div>
@@ -344,13 +344,13 @@
                                         <div class="provider-logo">🏪</div>
                                         <div class="provider-info">
                                             <h3>eBay</h3>
-                                            <p class="provider-status" id="ebay-status">Not connected</p>
+                                            <p class="provider-status" id="ebay-status" data-i18n="settings_provider_not_connected">Not connected</p>
                                         </div>
                                     </div>
                                     <div class="provider-actions">
-                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-ebay-btn">Connect eBay</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-ebay-btn" hidden>Disconnect</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-ebay-btn" hidden>Sync listings</button>
+                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-ebay-btn" data-i18n="settings_connect_ebay">Connect eBay</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-ebay-btn" hidden data-i18n="settings_disconnect">Disconnect</button>
+                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-ebay-btn" hidden data-i18n="settings_sync_listings">Sync listings</button>
                                     </div>
                                     <div class="provider-last-sync" id="ebay-last-sync" hidden></div>
                                 </div>
@@ -362,12 +362,12 @@
                     <!-- Synced Listings row -->
                     <div class="settings-row">
                         <div class="settings-row__meta">
-                            <div class="settings-row__title">Imported Listings</div>
-                            <div class="settings-row__desc">Listings synced from your connected marketplaces appear on your public profile.</div>
+                            <div class="settings-row__title" data-i18n="settings_imported_listings_title">Imported Listings</div>
+                            <div class="settings-row__desc" data-i18n="settings_imported_listings_desc">Listings synced from your connected marketplaces appear on your public profile.</div>
                         </div>
                         <div class="settings-row__body">
                             <div id="marketplace-listings-preview" class="marketplace-listings-preview">
-                                <p class="listings-loading">No listings synced yet.</p>
+                                <p class="listings-loading" data-i18n="settings_no_synced_listings">No listings synced yet.</p>
                             </div>
                         </div>
                     </div>
@@ -380,8 +380,8 @@
                     <!-- Profile visibility row -->
                     <div class="settings-row">
                         <div class="settings-row__meta">
-                            <div class="settings-row__title">Profile visibility</div>
-                            <div class="settings-row__desc">Control what other users can see on your public profile page.</div>
+                            <div class="settings-row__title" data-i18n="settings_privacy_visibility_title">Profile visibility</div>
+                            <div class="settings-row__desc" data-i18n="settings_privacy_visibility_desc">Control what other users can see on your public profile page.</div>
                         </div>
                         <div class="settings-row__body">
                             <div class="notif-toggles">
@@ -561,11 +561,11 @@
             <div class="avatar-lightbox__actions">
                 <button type="button" class="avatar-lb-btn avatar-lb-btn--change btn primary" id="avatar-lb-change">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
-                    Change
+                    <span data-i18n="settings_avatar_change">Change</span>
                 </button>
                 <button type="button" class="avatar-lb-btn avatar-lb-btn--remove" id="avatar-lb-remove">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                    Remove
+                    <span data-i18n="settings_avatar_remove">Remove</span>
                 </button>
             </div>
         </div>
@@ -605,7 +605,7 @@
             </button>
             <button type="button" class="mbn-dd-item" data-mbn-tab="achievements">
                 <span class="mbn-dd-icon">🏅</span>
-                <span>Achievements</span>
+                <span data-i18n="up_tab_achievements">Achievements</span>
             </button>
             <div class="mbn-dd-sep"></div>
             <a href="home.html" class="mbn-dd-item">

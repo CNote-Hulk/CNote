@@ -315,7 +315,11 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS nickname TEXT DEFAULT ''`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS marketplace_provider TEXT DEFAULT NULL`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS external_listing_id TEXT DEFAULT NULL`,
-		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_from_external BOOLEAN DEFAULT FALSE`
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_from_external BOOLEAN DEFAULT FALSE`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS provider TEXT DEFAULT NULL`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'RON'`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS url TEXT DEFAULT ''`,
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_at TIMESTAMP DEFAULT NULL`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

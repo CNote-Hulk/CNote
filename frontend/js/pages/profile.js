@@ -8,6 +8,10 @@ import { AchievementsModule } from '../../js/modules/achievements.js';
 import { SearchModule } from '../../js/modules/search.js';
 import { API_BASE_URL } from '../../js/config.js';
 import { confirmModal } from '../../js/utils/confirm-modal.js';
+import { I18nModule } from '../../js/modules/i18n.js';
+
+/** Shortcut pentru traduceri */
+const t = key => I18nModule.t(key);
 
 // Init search + profile dropdown
 SearchModule.init();
@@ -1504,18 +1508,18 @@ async function initMarketplace() {
 		if (!status || !connectBtn || !disconnectBtn || !syncBtn) return;
 
 		if (account) {
-			status.textContent = '✓ Connected';
+			status.textContent = t('settings_provider_connected');
 			connectBtn.hidden = true;
 			disconnectBtn.hidden = false;
 			syncBtn.hidden = false;
 
 			if (account.lastSync && lastSync) {
 				const d = new Date(account.lastSync);
-				lastSync.textContent = `Last synced: ${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+				lastSync.textContent = `${t('settings_last_sync')} ${d.toLocaleDateString(I18nModule.lang)} ${d.toLocaleTimeString(I18nModule.lang, { hour: '2-digit', minute: '2-digit' })}`;
 				lastSync.hidden = false;
 			}
 		} else {
-			status.textContent = 'Not connected';
+			status.textContent = t('settings_provider_not_connected');
 			connectBtn.hidden = false;
 			disconnectBtn.hidden = true;
 			syncBtn.hidden = true;
@@ -1540,7 +1544,7 @@ async function initMarketplace() {
 
 			if (!data.success || !data.authUrl) {
 				return showMarketplaceMessage(
-					`Failed to get ${provider.toUpperCase()} auth URL`,
+					`${t('settings_marketplace_auth_url_failed')} ${provider.toUpperCase()}`,
 					false
 				);
 			}
@@ -1557,10 +1561,10 @@ async function initMarketplace() {
 	// -----------------------------
 	async function disconnectProvider(provider) {
 		const confirmed = await showConfirmDialog({
-			title: `Disconnect ${provider.toUpperCase()}`,
-			message: `Disconnect ${provider}? Synced listings will be removed.`,
-			confirmLabel: 'Disconnect',
-			cancelLabel: 'Cancel'
+			title: `${t('settings_disconnect_confirm_title')} ${provider.toUpperCase()}`,
+			message: `${t('settings_disconnect_confirm_title')} ${provider.toUpperCase()}? ${t('settings_disconnect_confirm_msg')}`,
+			confirmLabel: t('settings_disconnect'),
+			cancelLabel: t('profile_modal_cancel')
 		});
 
 		if (!confirmed) return;
@@ -1577,14 +1581,14 @@ async function initMarketplace() {
 			const data = await res.json();
 
 			if (data.success) {
-				showMarketplaceMessage(`Disconnected from ${provider}`, true);
+				showMarketplaceMessage(`${t('settings_disconnected_from')} ${provider.toUpperCase()}`, true);
 				loadMarketplaceAccounts();
 			} else {
-				showMarketplaceMessage(data.error || 'Disconnect failed', false);
+				showMarketplaceMessage(data.error || t('settings_disconnect_failed'), false);
 			}
 		} catch (err) {
 			console.error(err);
-			showMarketplaceMessage('Disconnect failed', false);
+			showMarketplaceMessage(t('settings_disconnect_failed'), false);
 		}
 	}
 
@@ -1608,16 +1612,16 @@ async function initMarketplace() {
 
 			if (data.success) {
 				showMarketplaceMessage(
-					`Synced ${data.listingsAdded || 0} listings from ${provider}`,
+					`${data.listingsAdded || 0} ${t('settings_sync_success')} ${provider.toUpperCase()}`,
 					true
 				);
 				loadMarketplaceAccounts();
 			} else {
-				showMarketplaceMessage(data.message || 'Sync failed', false);
+				showMarketplaceMessage(data.message || t('settings_sync_failed'), false);
 			}
 		} catch (err) {
 			console.error(err);
-			showMarketplaceMessage('Sync failed', false);
+			showMarketplaceMessage(t('settings_sync_failed'), false);
 		} finally {
 			if (btn) btn.disabled = false;
 		}
@@ -1663,7 +1667,7 @@ async function initMarketplace() {
 		const params = new URLSearchParams(window.location.search);
 
 		if (params.get('marketplace_connected') === '1') {
-			showMarketplaceMessage('Marketplace connected successfully!', true);
+			showMarketplaceMessage(t('settings_marketplace_connected'), true);
 			loadMarketplaceAccounts();
 			history.replaceState(null, '', window.location.pathname);
 		}

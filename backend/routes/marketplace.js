@@ -611,11 +611,10 @@ router.get('/:provider/auth-url', authRequired, async (req, res) => {
         // Generate state token (for CSRF protection)
         const crypto = require('crypto');
         const state = crypto.randomBytes(32).toString('hex');
-        const stateKey = `oauth_state_${provider}_${req.user.id}_${Date.now()}`;
 
-        // Store state in memory (ideally use Redis for production)
+        // Store state under the random hex key — same key the OAuth provider echoes back
         if (!global.oauthStates) global.oauthStates = {};
-        global.oauthStates[stateKey] = {
+        global.oauthStates[state] = {
             userId: req.user.id,
             provider: provider,
             createdAt: Date.now()
@@ -634,6 +633,81 @@ router.get('/:provider/auth-url', authRequired, async (req, res) => {
     } catch (err) {
         console.error(`Marketplace auth-url error (${provider}):`, err);
         res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── GET /api/marketplace/:provider/callback ─────────────
+// Real OAuth redirect handler — providers redirect users here via GET
+router.get('/:provider/callback', async (req, res) => {
+    const provider = (req.params.provider || '').toLowerCase();
+    const { code, state } = req.query;
+    const frontendBase = process.env.FRONTEND_URL || '';
+
+    if (!['olx', 'ebay'].includes(provider)) {
+        return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_error=invalid_provider`);
+    }
+    if (!code || !state) {
+        return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_error=missing_params`);
+    }
+
+    try {
+        // Validate state (CSRF protection)
+        if (!global.oauthStates || !global.oauthStates[state]) {
+            return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_error=invalid_state`);
+        }
+
+        const stateData = global.oauthStates[state];
+        if (stateData.provider !== provider) {
+            return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_error=state_mismatch`);
+        }
+
+        delete global.oauthStates[state];
+        const userId = stateData.userId;
+
+        // Exchange code for token
+        let providerInstance;
+        if (provider === 'olx') {
+            providerInstance = new OlxProvider();
+        } else {
+            providerInstance = new EbayProvider();
+        }
+
+        const auth = await providerInstance.authenticate(code);
+
+        // Upsert marketplace account
+        const existing = await pool.query(
+            'SELECT id FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
+            [userId, provider]
+        );
+
+        if (existing.rows.length > 0) {
+            await pool.query(
+                `UPDATE marketplace_accounts
+                 SET access_token = $1, refresh_token = $2, expires_at = $3,
+                     provider_user_id = $4, updated_at = NOW()
+                 WHERE user_id = $5 AND provider = $6`,
+                [auth.accessToken, auth.refreshToken, auth.expiresAt,
+                 auth.providerUserId || '', userId, provider]
+            );
+        } else {
+            await pool.query(
+                `INSERT INTO marketplace_accounts
+                 (user_id, provider, access_token, refresh_token, expires_at, provider_user_id, last_sync, connected_at)
+                 VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())`,
+                [userId, provider, auth.accessToken, auth.refreshToken,
+                 auth.expiresAt, auth.providerUserId || '']
+            );
+        }
+
+        // Kick off first sync in the background (don't block the redirect)
+        MarketplaceSyncService.syncUserListings(userId, provider).catch(err =>
+            console.error(`Background sync failed (${provider}, user ${userId}):`, err)
+        );
+
+        res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_connected=1`);
+    } catch (err) {
+        console.error(`Marketplace GET callback error (${provider}):`, err);
+        res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_error=auth_failed`);
     }
 });
 

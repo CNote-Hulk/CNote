@@ -7,6 +7,10 @@ import { AuthModule } from '/js/modules/auth.js';
 import { API_BASE_URL } from '/js/config.js';
 import { ProgressModule } from '/js/modules/progress.js';
 import { AchievementsModule } from '/js/modules/achievements.js';
+import { I18nModule } from '/js/modules/i18n.js';
+
+/** Shortcut pentru traduceri */
+const t = key => I18nModule.t(key);
 
 
         /** Escape HTML special characters */
@@ -83,7 +87,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                     `<span class="dash-badge" title="${escapeHtml(b.name)}">${b.icon}</span>`
                 ).join('') + '</div>';
             } else {
-                achPreview.innerHTML = '<p class="dash-empty">No achievements yet.</p>';
+                achPreview.innerHTML = `<p class="dash-empty">${t('up_no_achievements')}</p>`;
             }
 
             // Ratings
@@ -102,10 +106,10 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                         </a>`;
                     }).join('');
                 } else {
-                    ratingsPreview.innerHTML = '<p class="dash-empty">No ratings yet.</p>';
+                    ratingsPreview.innerHTML = `<p class="dash-empty">${t('up_no_ratings')}</p>`;
                 }
             } catch {
-                document.getElementById('user-dash-ratings-preview').innerHTML = '<p class="dash-empty">—</p>';
+                document.getElementById('user-dash-ratings-preview').innerHTML = `<p class="dash-empty">${t('up_no_ratings')}</p>`;
             }
 
             // Favorites
@@ -149,7 +153,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
             const loadingEl = document.getElementById('user-profile-loading');
 
             if (!username) {
-                loadingEl.textContent = 'Invalid URL.';
+                loadingEl.textContent = t('up_invalid_url');
                 return;
             }
 
@@ -158,7 +162,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 const data = await res.json();
 
                 if (!data.success || !data.user) {
-                    loadingEl.textContent = 'User not found.';
+                    loadingEl.textContent = t('up_user_not_found');
                     return;
                 }
 
@@ -197,8 +201,8 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
                 // Info
                 document.getElementById('user-name').textContent = profile.username;
-                document.getElementById('user-bio').textContent = profile.bio || 'No description.';
-                document.getElementById('user-date').textContent = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+                document.getElementById('user-bio').textContent = profile.bio || t('up_no_description');
+                document.getElementById('user-date').textContent = t('up_member_since') + ' ' + new Date(profile.created_at).toLocaleDateString(I18nModule.lang, { year: 'numeric', month: 'long' });
 
                 // Show admin badge if user is admin
                 const adminBadge = document.getElementById('user-admin-badge');
@@ -283,7 +287,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 if (currentUser && currentUser.id !== profile.id) {
                     await renderFriendButton(actionsEl, profile.id);
                 } else if (currentUser && currentUser.id === profile.id) {
-                    actionsEl.innerHTML = '<a href="/html/pages/profil.html#account" class="user-action-btn user-action-btn--edit">Edit Profile</a>';
+                    actionsEl.innerHTML = `<a href="/html/pages/profil.html#account" class="user-action-btn user-action-btn--edit">${t('up_edit_profile')}</a>`;
                 }
 
                 // Friends list
@@ -302,7 +306,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
             } catch (err) {
                 console.error('Profile load error:', err);
-                loadingEl.textContent = 'An error occurred while loading the profile.';
+                loadingEl.textContent = t('up_load_error');
             }
         }
 
@@ -324,8 +328,8 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 switch (data.status) {
                     case 'friends':
                         container.innerHTML = `
-                            <span class="user-action-btn user-action-btn--friends">✓ Friends</span>
-                            <button class="user-action-btn user-action-btn--remove" id="remove-friend-btn">Remove friend</button>
+                            <span class="user-action-btn user-action-btn--friends">${t('up_friends_status')}</span>
+                            <button class="user-action-btn user-action-btn--remove" id="remove-friend-btn">${t('up_remove_friend')}</button>
                         `;
                         document.getElementById('remove-friend-btn').addEventListener('click', async () => {
                             await fetch(`${API_BASE_URL}/friends/${targetUserId}`, {
@@ -338,13 +342,13 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                         break;
 
                     case 'request_sent':
-                        container.innerHTML = '<span class="user-action-btn user-action-btn--pending">⏳ Request sent</span>';
+                        container.innerHTML = `<span class="user-action-btn user-action-btn--pending">${t('up_request_sent')}</span>`;
                         break;
 
                     case 'request_received':
                         container.innerHTML = `
-                            <button class="user-action-btn user-action-btn--accept" id="accept-friend-btn">Accept request</button>
-                            <button class="user-action-btn user-action-btn--reject" id="reject-friend-btn">Reject</button>
+                            <button class="user-action-btn user-action-btn--accept" id="accept-friend-btn">${t('up_accept_request')}</button>
+                            <button class="user-action-btn user-action-btn--reject" id="reject-friend-btn">${t('up_reject')}</button>
                         `;
                         document.getElementById('accept-friend-btn').addEventListener('click', async () => {
                             const res = await fetch(`${API_BASE_URL}/friends/accept/${data.requestId}`, {
@@ -366,7 +370,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                         break;
 
                     default: // 'none'
-                        container.innerHTML = '<button class="user-action-btn user-action-btn--add" id="add-friend-btn">+ Add friend</button>';
+                        container.innerHTML = `<button class="user-action-btn user-action-btn--add" id="add-friend-btn">${t('up_add_friend')}</button>`;
                         document.getElementById('add-friend-btn').addEventListener('click', async () => {
                             await fetch(`${API_BASE_URL}/friends/request/${targetUserId}`, {
                                 method: 'POST',
@@ -393,7 +397,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
                 if (!data.success || !data.friends || data.friends.length === 0) {
                     section.hidden = false;
-                    if (list) list.innerHTML = '<p class="user-listings-empty">No friends yet.</p>';
+                    if (list) list.innerHTML = `<p class="user-listings-empty">${t('up_no_friends')}</p>`;
                     return;
                 }
 
@@ -414,7 +418,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 }).join('');
             } catch {
                 section.hidden = false;
-                if (list) list.innerHTML = '<p class="user-listings-empty">Unable to load friends.</p>';
+                if (list) list.innerHTML = `<p class="user-listings-empty">${t('up_friends_error')}</p>`;
             }
         }
 
@@ -430,7 +434,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 
                 if (!data.success || !data.listings || data.listings.length === 0) {
                     section.hidden = false;
-                    grid.innerHTML = '<p class="user-listings-empty">No active listings at the moment.</p>';
+                    grid.innerHTML = `<p class="user-listings-empty">${t('up_no_listings')}</p>`;
                     return;
                 }
 
@@ -453,7 +457,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
                 }).join('');
             } catch {
                 section.hidden = false;
-                grid.innerHTML = '<p class="user-listings-empty">Unable to load listings.</p>';
+                grid.innerHTML = `<p class="user-listings-empty">${t('up_listings_error')}</p>`;
             }
         }
 
