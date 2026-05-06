@@ -6420,10 +6420,10 @@ const MESSAGES = {
         nb_stat_since: 'Seit',
         nb_stat_modules: 'Module',
         nb_stat_quizzes: 'Quiz',
-        nb_stat_prerequisites: 'Prerequisiti',
-        nb_stat_topics: 'Argomenti',
-        nb_stat_support: 'Supporto',
-        nb_stat_rating: 'Valutazione',
+        nb_stat_prerequisites: 'Voraussetzungen',
+        nb_stat_topics: 'Themen',
+        nb_stat_support: 'Support',
+        nb_stat_rating: 'Bewertung',
 
         // Compare page
         cmp_body: 'Confronta due console di gioco fianco a fianco — CPU, GPU, RAM, storage, prezzo di lancio e vendite totali.',
@@ -6491,5 +6491,66 @@ const MESSAGES = {
         settings_password_desc: 'Cambia o imposta la password del tuo account.',
         settings_save_changes: 'Salva modifiche',
         settings_save_desc: 'Tutti i campi sono opzionali \u2014 verranno aggiornati solo i campi compilati.',
-}
+        }
+};
+
+export const I18nModule = {
+    lang: 'en',
+
+    init() {
+        this.lang = this.getStoredLang();
+        this.apply();
+
+        window.addEventListener('cn:language-changed', () => {
+            this.lang = this.getStoredLang();
+            this.apply();
+        });
+    },
+
+    getStoredLang() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return 'en';
+        return Object.keys(MESSAGES).includes(stored) ? stored : 'en';
+    },
+
+    setLang(lang) {
+        if (!MESSAGES[lang]) return;
+        localStorage.setItem(STORAGE_KEY, lang);
+        this.lang = lang;
+        window.dispatchEvent(new CustomEvent('cn:language-changed'));
+    },
+
+    t(key) {
+        const translations = MESSAGES[this.lang] || MESSAGES.en;
+        return translations[key] || MESSAGES.en[key] || key;
+    },
+
+    apply() {
+        document.documentElement.lang = this.lang;
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (!key) return;
+            const text = this.t(key);
+
+            // If element specifies an attribute to translate, only set that attribute
+            if (el.hasAttribute('data-i18n-attr')) return;
+
+            el.textContent = text;
+            if (text.includes('<')) el.innerHTML = text;
+        });
+
+        document.querySelectorAll('[data-i18n-attr]').forEach(el => {
+            const attr = el.getAttribute('data-i18n-attr');
+            const key = el.getAttribute('data-i18n');
+            if (!key || !attr) return;
+            const text = this.t(key);
+            el.setAttribute(attr, text);
+        });
+
+        const langSelect = document.querySelector('.profile-dropdown__lang-select');
+        if (langSelect) {
+            langSelect.value = this.lang;
+        }
+    }
 };
