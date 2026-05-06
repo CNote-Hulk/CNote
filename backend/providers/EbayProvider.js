@@ -2,6 +2,7 @@
  * eBay Marketplace Provider
  * Handles OAuth, listings fetch, and normalization using real eBay APIs
  */
+
 const MarketplaceProvider = require('./MarketplaceProvider');
 
 class EbayProvider extends MarketplaceProvider {
@@ -13,9 +14,8 @@ class EbayProvider extends MarketplaceProvider {
 		this.clientId = process.env.EBAY_CLIENT_ID;
 		this.clientSecret = process.env.EBAY_CLIENT_SECRET;
 
-		this.redirectUri =
-			process.env.EBAY_REDIRECT_URI ||
-			`${process.env.API_BASE_URL}/marketplace/ebay/callback`;
+		// eBay uses RuName, NOT direct redirect URL
+		this.ruName = process.env.EBAY_RU_NAME;
 	}
 
 	// 🔐 OAuth authorization URL
@@ -23,8 +23,12 @@ class EbayProvider extends MarketplaceProvider {
 		const params = new URLSearchParams({
 			response_type: 'code',
 			client_id: this.clientId,
-			redirect_uri: this.redirectUri,
+
+			// IMPORTANT: must be RuName
+			redirect_uri: this.ruName,
+
 			state,
+
 			scope:
 				'https://api.ebay.com/oauth/api_scope ' +
 				'https://api.ebay.com/oauth/api_scope/sell.inventory ' +
@@ -44,25 +48,31 @@ class EbayProvider extends MarketplaceProvider {
 			`${this.baseUrl}/identity/v1/oauth2/token`,
 			{
 				method: 'POST',
+
 				headers: {
 					Authorization: `Basic ${basicAuth}`,
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
+
 				body: new URLSearchParams({
 					grant_type: 'authorization_code',
+
 					code,
-					redirect_uri: this.redirectUri
+
+					// IMPORTANT: must be RuName
+					redirect_uri: this.ruName
 				}).toString()
 			}
 		);
 
 		if (!response.ok) {
-			throw new Error(`eBay auth failed: ${response.statusText}`);
+			const errText = await response.text();
+			throw new Error(`eBay auth failed: ${errText}`);
 		}
 
 		const data = await response.json();
 
-		// user identity (real endpoint)
+		// fetch user identity
 		const userRes = await fetch(
 			`${this.baseUrl}/commerce/identity/v1/user/`,
 			{
@@ -76,9 +86,15 @@ class EbayProvider extends MarketplaceProvider {
 
 		return {
 			accessToken: data.access_token,
+
 			refreshToken: data.refresh_token || null,
+
 			expiresAt: Date.now() + data.expires_in * 1000,
-			providerUserId: userData.username || userData.userId || null
+
+			providerUserId:
+				userData.username ||
+				userData.userId ||
+				null
 		};
 	}
 
@@ -92,10 +108,12 @@ class EbayProvider extends MarketplaceProvider {
 			`${this.baseUrl}/identity/v1/oauth2/token`,
 			{
 				method: 'POST',
+
 				headers: {
 					Authorization: `Basic ${basicAuth}`,
 					'Content-Type': 'application/x-www-form-urlencoded'
 				},
+
 				body: new URLSearchParams({
 					grant_type: 'refresh_token',
 					refresh_token: refreshToken
@@ -104,19 +122,25 @@ class EbayProvider extends MarketplaceProvider {
 		);
 
 		if (!response.ok) {
-			throw new Error(`eBay refresh failed: ${response.statusText}`);
+			const errText = await response.text();
+			throw new Error(`eBay refresh failed: ${errText}`);
 		}
 
 		const data = await response.json();
 
 		return {
 			accessToken: data.access_token,
-			refreshToken: data.refresh_token || refreshToken,
-			expiresAt: Date.now() + data.expires_in * 1000
+
+			refreshToken:
+				data.refresh_token ||
+				refreshToken,
+
+			expiresAt:
+				Date.now() + data.expires_in * 1000
 		};
 	}
 
-	// 📦 Fetch listings (REALISTIC Sell Inventory API)
+	// 📦 Fetch inventory items
 	async fetchListings(accessToken) {
 		const response = await fetch(
 			`${this.baseUrl}/sell/inventory/v1/inventory_item`,
@@ -129,7 +153,8 @@ class EbayProvider extends MarketplaceProvider {
 		);
 
 		if (!response.ok) {
-			throw new Error(`eBay listings fetch failed: ${response.statusText}`);
+			const errText = await response.text();
+			throw new Error(`eBay listings fetch failed: ${errText}`);
 		}
 
 		const data = await response.json();
@@ -139,32 +164,42 @@ class EbayProvider extends MarketplaceProvider {
 		return items.map(item => this.normalizeData(item));
 	}
 
-	// 🔄 Normalize eBay listing
+	// 🔄 Normalize listing
 	normalizeData(item) {
 		const offer = item.offer || {};
 		const product = item.product || {};
 
 		return {
-			externalListingId: item.sku || item.inventoryItemId,
+			externalListingId:
+				item.sku ||
+				item.inventoryItemId,
 
 			title: product.title || '',
-			description: product.description || '',
+
+			description:
+				product.description || '',
 
 			price: offer.price?.value
 				? parseFloat(offer.price.value)
 				: null,
 
-			currency: offer.price?.currency || 'USD',
+			currency:
+				offer.price?.currency || 'USD',
 
-			condition: this.mapCondition(item.condition),
+			condition:
+				this.mapCondition(item.condition),
 
-			images: product.imageUrls || [],
+			images:
+				product.imageUrls || [],
 
 			url:
 				offer.listingUrl ||
 				`https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(product.title || '')}`,
 
-			status: offer.status === 'ACTIVE' ? 'active' : 'inactive',
+			status:
+				offer.status === 'ACTIVE'
+					? 'active'
+					: 'inactive',
 
 			provider: 'ebay'
 		};
