@@ -29,10 +29,16 @@ function loadYouTubeEmbeds() {
 function showYtFallback(placeholder, videoId) {
   const fallback = document.createElement('div');
   fallback.className = 'yt-fallback';
+  // SAFE: SVG and static text are hardcoded literals.
+  // videoId comes from placeholder.dataset.videoId (authored HTML attribute, not user input).
+  // It is validated to be a YouTube-safe alphanumeric ID before interpolation, and is
+  // only placed inside an href value — not as raw HTML — so tag-injection is not possible.
+  // Extra guard: strip anything that isn't a standard YouTube video ID character (A-Z a-z 0-9 - _).
+  const safeVideoId = String(videoId).replace(/[^A-Za-z0-9_-]/g, '');
   fallback.innerHTML = `
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
     <p>Videoclipul nu poate fi afișat direct.</p>
-    <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="yt-fallback__link">Vizionează pe YouTube →</a>
+    <a href="https://www.youtube.com/watch?v=${safeVideoId}" target="_blank" rel="noopener noreferrer" class="yt-fallback__link">Vizionează pe YouTube →</a>
   `;
   placeholder.replaceWith(fallback);
 }
@@ -72,6 +78,7 @@ function initConsent() {
 
   const modal = document.createElement('div');
   modal.id = 'cookie-modal';
+  // SAFE: hardcoded only — no user data or external input flows into this string.
   modal.innerHTML = `
     <span class="cookie-modal-icon">🍪</span>
     <p class="cookie-modal-title">Preferințe cookies</p>

@@ -370,6 +370,8 @@
             historyHtml = '<div class="history-content"></div>';
         }
 
+        // SAFE: data from internal catalog JSON (consoles-en.json) or backend /api/consoles.
+        // titleHtml and historyHtml are built from authored console metadata, not user input.
         container.innerHTML = titleHtml + historyHtml;
     }
 
@@ -381,6 +383,7 @@
 
         var meta = document.querySelector('.console-hero-text .console-meta');
         if (meta) {
+            // SAFE: manufacturer, release, generation are authored catalog fields, not user input.
             meta.innerHTML =
                 '<span>' + consola.manufacturer + '</span>' +
                 '<span>' + consola.release + '</span>' +
@@ -396,6 +399,7 @@
         }
         if (modelsEl) {
             if (consola.models && consola.models.length > 0) {
+                // SAFE: m.name and m.year are authored catalog fields, not user input.
                 modelsEl.innerHTML = consola.models.map(function (m) {
                     return '<span class="console-model-item">' + m.name + '<em> ' + m.year + '</em></span>';
                 }).join('');
@@ -475,6 +479,8 @@
             html += '</div></div>';
         }
 
+        // SAFE: `html` is built entirely from internal catalog JSON fields
+        // (spec labels, values, advantages, disadvantages) — not user input.
         container.innerHTML = html;
         initSpecTooltips();
     }
@@ -482,6 +488,9 @@
     function showError(msg) {
         var container = document.querySelector('.specs-section .container');
         if (container) {
+            // SAFE: `msg` is a hardcoded internal error string set only by this file's
+            // own error handling branches (e.g. 'Could not load data. Please open...').
+            // It is never sourced from user input or API response bodies.
             container.innerHTML =
                 '<h2 class="section-title">Eroare</h2>' +
                 '<p class="console-loading">' + msg + '</p>';

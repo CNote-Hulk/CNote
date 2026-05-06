@@ -207,6 +207,9 @@
 
         var ov = document.createElement('div');
         ov.className = 'search-overlay';
+        // SAFE: filter tab labels (t.label) come from a hardcoded FILTER_CATEGORIES
+        // constant in this file and are not user-controlled. The overlay shell is
+        // otherwise all hardcoded HTML structure.
         ov.innerHTML =
             '<div class="search-overlay__backdrop"></div>' +
             '<div class="search-overlay__container">' +
@@ -365,6 +368,7 @@
     function showRecent() {
         var recent = getRecent();
         if (!recent.length) {
+            // SAFE: hardcoded only.
             searchResults.innerHTML = '<div class="search-overlay__empty">Start typing to search...</div>';
             return;
         }
@@ -380,6 +384,8 @@
             '</button>';
         });
         html += '</div>';
+        // SAFE: all user-sourced values (recent search strings from localStorage)
+        // are passed through escHtml() before insertion. ICONS.recent is a hardcoded SVG.
         searchResults.innerHTML = html;
 
         var clearBtn = searchResults.querySelector('.search-recent__clear');
@@ -435,9 +441,12 @@
         });
 
         if (!hasAny) {
+            // SAFE: hardcoded only.
             searchResults.innerHTML = '<div class="search-overlay__empty">No results found</div>';
             return;
         }
+        // SAFE: all user-sourced values (item.name, item.desc, item.href, item.img,
+        // item.badge) are passed through escHtml() before insertion. See render() above.
         searchResults.innerHTML = html;
 
         searchResults.querySelectorAll('.search-result').forEach(function(a) {
@@ -509,6 +518,9 @@
 
         var dd = document.createElement('div');
         dd.className = 'profile-dropdown';
+        // SAFE: all user-sourced values (name, email, avatar) are passed through
+        // escHtml() before use (see lines above). All hrefs resolve to internal pages
+        // via resolvePagePath(). No external or user-supplied URLs are injected.
         dd.innerHTML =
             '<a href="' + profilePath + '" class="profile-dropdown__profile">' +
                 '<span class="profile-dropdown__avatar">' + avatarMarkup + '</span>' +

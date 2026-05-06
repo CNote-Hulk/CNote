@@ -58,6 +58,11 @@ export const DOMUtils = {
 
     /**
      * Set HTML
+     * ⚠ SECURITY: This method has no callers in the current codebase.
+     * If you add a call site in the future, the `html` argument MUST be
+     * sanitized with DOMPurify.sanitize() before passing it here if it
+     * contains any data that is not a fully hardcoded literal.
+     * DO NOT pass user input, API responses, or localStorage values directly.
      */
     setHTML(el, html) {
         if (el) el.innerHTML = html;

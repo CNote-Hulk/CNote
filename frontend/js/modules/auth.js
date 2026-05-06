@@ -134,8 +134,10 @@ export const AuthModule = {
             return { success: false, error: 'Username is required.' };
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
             return { success: false, error: 'Email address is not valid.' };
-        if (!password || password.length < 6)
-            return { success: false, error: 'Password must be at least 6 characters.' };
+        if (!password || password.length < 8 ||
+            !/[A-Z]/.test(password) || !/[a-z]/.test(password) ||
+            !/[0-9]/.test(password) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password))
+            return { success: false, error: 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.' };
 
         try {
             const data = await this._api('POST', '/register', { username, email, password });
@@ -271,8 +273,10 @@ return { success: false, error: 'Could not contact the server.' };
     async updatePassword(currentPassword, newPassword) {
         if (!currentPassword)
             return { success: false, error: 'Enter your current password.' };
-        if (!newPassword || newPassword.length < 6)
-            return { success: false, error: 'New password must be at least 6 characters.' };
+        if (!newPassword || newPassword.length < 8 ||
+            !/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) ||
+            !/[0-9]/.test(newPassword) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword))
+            return { success: false, error: 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.' };
 
         try {
             const data = await this._api('PUT', '/me/password', { currentPassword, newPassword });
@@ -336,8 +340,10 @@ return { success: false, error: 'Could not contact the server.' };
 
     /** Set initial password for Google-only accounts */
     async setPassword(password, confirmPassword) {
-        if (!password || password.length < 8)
-            return { success: false, error: 'Parola trebuie s\u0103 aib\u0103 minim 8 caractere.' };
+        if (!password || password.length < 8 ||
+            !/[A-Z]/.test(password) || !/[a-z]/.test(password) ||
+            !/[0-9]/.test(password) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password))
+            return { success: false, error: 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.' };
         if (password !== confirmPassword)
             return { success: false, error: 'Passwords do not match.' };
         try {

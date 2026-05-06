@@ -88,6 +88,7 @@
     function startApp(data) {
         consolesData = data;
         if (!consolesData || consolesData.length === 0) {
+            // SAFE: hardcoded only — no user data in this string.
             display.innerHTML = '<p class="comparison-error">Could not load console data. Use a local HTTP server.</p>';
             return;
         }
@@ -121,7 +122,7 @@
         });
 
         [selectA, selectB].forEach(sel => {
-            sel.innerHTML = '';
+            sel.innerHTML = ''; // SAFE: clearing only — no content injected.
             Object.keys(gens).sort((a, b) => b - a).forEach(gen => {
                 const og = document.createElement('optgroup');
                 og.label = GEN_LABELS[gen] || ('Generation ' + gen);
@@ -229,6 +230,11 @@
             (consB ? '<div class="cons-list"><h5 class="list-title cons-title">Disadvantages</h5><ul>' + consB + '</ul></div>' : '') +
             '</div></div></div></div>' : '';
 
+        // SAFE: data sourced from internal catalog JSON (consoles-en.json) or the
+        // backend's own /api/consoles endpoint — not from user-generated input.
+        // Fields: a.name, a.manufacturer, a.release, a.generation, a.image, a.id, etc.
+        // are all authored console metadata. If this data source ever becomes
+        // user-editable (e.g. user-submitted listings), sanitize with DOMPurify here.
         display.innerHTML =
             '<div class="comparison-grid">' +
             '<div class="console-card" data-console-id="' + a.id + '"><div class="console-card-image"><img src="' + resolveImg(a.image) + '" alt="' + a.name + '"></div>' +

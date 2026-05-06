@@ -17,6 +17,7 @@ const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
 const emailService = require('../services/email');
+const { validatePassword } = require('../utils/passwordPolicy');
 
 const router = express.Router();
 
@@ -273,10 +274,10 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Email address is not valid.' });
         }
 
-    // Password strength: min 8 chars, uppercase, lowercase, number, special char
-        const pwd = String(password || '');
-        if (pwd.length < 8 || !/[A-Z]/.test(pwd) || !/[a-z]/.test(pwd) || !/[0-9]/.test(pwd) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)) {
-            return res.status(400).json({ success: false, error: 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, a number, and a special character.' });
+        // Password strength — validated via shared policy (backend/utils/passwordPolicy.js)
+        const pwdCheck = validatePassword(String(password || ''), { email, username: usernameTrimmed });
+        if (!pwdCheck.valid) {
+            return res.status(400).json({ success: false, error: pwdCheck.error });
         }
 
         const usernameCheck = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [usernameTrimmed]);
@@ -768,8 +769,10 @@ router.put('/me/password', authRequired, async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
-        if (!newPassword || String(newPassword).length < 6) {
-            return res.status(400).json({ success: false, error: 'New password must be at least 6 characters.' });
+        // Full policy check — applies to both Google-only and normal-password paths
+        const pwdCheck = validatePassword(String(newPassword || ''));
+        if (!pwdCheck.valid) {
+            return res.status(400).json({ success: false, error: pwdCheck.error });
         }
 
         const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
@@ -816,8 +819,9 @@ router.post('/account/set-password', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'You already have a password set. Use the change password option.' });
         }
 
-        if (!password || String(password).length < 8) {
-            return res.status(400).json({ success: false, error: 'Password must be at least 8 characters.' });
+        const pwdCheck = validatePassword(String(password || ''));
+        if (!pwdCheck.valid) {
+            return res.status(400).json({ success: false, error: pwdCheck.error });
         }
         if (password !== confirmPassword) {
             return res.status(400).json({ success: false, error: 'Passwords do not match.' });
@@ -921,8 +925,9 @@ router.post('/reset-password', async (req, res) => {
         const { token, newPassword } = req.body;
 
         if (!token) return res.status(400).json({ success: false, error: 'Missing token.' });
-        if (!newPassword || String(newPassword).length < 6) {
-            return res.status(400).json({ success: false, error: 'Password must be at least 6 characters.' });
+        const pwdCheck = validatePassword(String(newPassword || ''));
+        if (!pwdCheck.valid) {
+            return res.status(400).json({ success: false, error: pwdCheck.error });
         }
 
         const rowResult = await pool.query('SELECT * FROM password_reset_tokens WHERE token = $1', [token]);

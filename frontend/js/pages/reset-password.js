@@ -43,8 +43,10 @@ import { API_BASE_URL } from '../config.js';
             return;
         }
 
-        if (password.length < 6) {
-            errorEl.textContent = 'Password must be at least 6 characters long.';
+        if (password.length < 8 ||
+            !/[A-Z]/.test(password) || !/[a-z]/.test(password) ||
+            !/[0-9]/.test(password) || !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+            errorEl.textContent = 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
             errorEl.classList.add('visible');
             return;
         }

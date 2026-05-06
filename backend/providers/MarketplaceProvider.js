@@ -1,81 +1,112 @@
 /**
  * Abstract Marketplace Provider Base Class
  * Defines the contract for all marketplace integrations
- * (OLX, eBay, etc.)
  */
+
 class MarketplaceProvider {
 	constructor(credentials = {}) {
 		if (new.target === MarketplaceProvider) {
-			throw new Error('MarketplaceProvider is abstract and cannot be instantiated directly');
+			throw new Error(
+				'MarketplaceProvider is abstract and cannot be instantiated directly'
+			);
 		}
 
 		this.credentials = credentials;
-		this.providerName = this.getProviderName();
 	}
 
-	/**
-	 * Authenticate with marketplace (OAuth or API keys)
-	 * @returns {Promise<{
-	 *  accessToken: string,
-	 *  refreshToken?: string,
-	 *  expiresAt?: number,
-	 *  providerUserId?: string
-	 * }>}
-	 */
-	async authenticate() {
-		throw new Error(`[${this.providerName}] authenticate() must be implemented`);
+	// -----------------------------------
+	// Provider identity
+	// -----------------------------------
+
+	get providerName() {
+		return this.getProviderName();
 	}
 
-	/**
-	 * Fetch all listings from marketplace
-	 * Must return normalized listings
-	 * @returns {Promise<Array<NormalizedListing>>}
-	 */
-	async fetchListings() {
-		throw new Error(`[${this.providerName}] fetchListings() must be implemented`);
-	}
-
-	/**
-	 * Refresh access token if supported
-	 * @param {string} refreshToken
-	 * @returns {Promise<{
-	 *  accessToken: string,
-	 *  refreshToken?: string,
-	 *  expiresAt?: number
-	 * }>}
-	 */
-	async refreshToken(refreshToken) {
-		throw new Error(`[${this.providerName}] refreshToken() must be implemented`);
-	}
-
-	/**
-	 * Normalize raw marketplace listing into standard format
-	 * @param {Object} listing
-	 * @returns {NormalizedListing}
-	 */
-	normalizeData(listing) {
-		throw new Error(`[${this.providerName}] normalizeData() must be implemented`);
-	}
-
-	/**
-	 * Provider identifier
-	 * @returns {string} e.g. 'olx', 'ebay'
-	 */
 	getProviderName() {
 		throw new Error('getProviderName() must be implemented');
 	}
 
+	// -----------------------------------
+	// OAuth / Authentication
+	// -----------------------------------
+
 	/**
-	 * Optional: validate credentials before requests
-	 * @returns {boolean}
+	 * Authenticate with marketplace
+	 * @returns {Promise<AuthResult>}
 	 */
-	validateCredentials() {
-		return !!this.credentials;
+	async authenticate() {
+		this.notImplemented('authenticate');
 	}
 
 	/**
-	 * Optional helper: standard error wrapper
+	 * Refresh OAuth token
+	 * @param {string} refreshToken
+	 * @returns {Promise<AuthResult>}
 	 */
+	async refreshToken(refreshToken) {
+		this.notImplemented('refreshToken');
+	}
+
+	// -----------------------------------
+	// Listings
+	// -----------------------------------
+
+	/**
+	 * Fetch marketplace listings
+	 * @returns {Promise<Array<NormalizedListing>>}
+	 */
+	async fetchListings() {
+		this.notImplemented('fetchListings');
+	}
+
+	/**
+	 * Normalize provider listing
+	 * @param {Object} listing
+	 * @returns {NormalizedListing}
+	 */
+	normalizeData(listing) {
+		this.notImplemented('normalizeData');
+	}
+
+	// -----------------------------------
+	// Validation
+	// -----------------------------------
+
+	/**
+	 * Validate provider credentials
+	 * Override in providers if needed
+	 */
+	validateCredentials() {
+		return true;
+	}
+
+	// -----------------------------------
+	// Capabilities
+	// -----------------------------------
+
+	/**
+	 * Provider feature flags
+	 */
+	getCapabilities() {
+		return {
+			oauth: true,
+			refreshTokens: true,
+			autoSync: true,
+			imageImport: true,
+			messaging: false
+		};
+	}
+
+	// -----------------------------------
+	// Helpers
+	// -----------------------------------
+
+	notImplemented(method) {
+		throw new Error(
+			`[${this.providerName}] ${method}() must be implemented`
+		);
+	}
+
 	throwError(message, originalError = null) {
 		throw new Error(
 			`[${this.providerName}] ${message}` +

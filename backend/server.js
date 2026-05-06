@@ -108,9 +108,91 @@ app.use((req, res, next) => {
 });
 
 app.use(helmet({
-	contentSecurityPolicy: false,
+	// ── Content-Security-Policy ────────────────────────────────────────────
+	// Running in REPORT-ONLY mode. Switch reportOnly → false once logs are
+	// clean for 24-48 h. See POST /api/csp-report for the violation sink.
+	//
+	// External origins inventoried from the frontend (2026-05-06):
+	//   cdn.socket.io          – Socket.IO client script
+	//   cdn.jsdelivr.net       – DOMPurify + Supabase JS client (ESM)
+	//   www.googletagmanager.com – GA4 loader script
+	//   www.google-analytics.com – GA4 data collection (connect + script)
+	//   fonts.googleapis.com   – Google Fonts CSS
+	//   fonts.gstatic.com      – Google Fonts actual font files
+	//   www.youtube.com        – YouTube iframe embeds (consent-gated)
+	//   www.youtube-nocookie.com – YouTube privacy-enhanced variant
+	//   *.googleusercontent.com / *.ggpht.com – Google user avatars (img)
+	//   *.supabase.co          – Supabase auth & realtime (connect)
+	contentSecurityPolicy: {
+		reportOnly: true, // ← FLIP TO false AFTER VALIDATING REPORTS
+		directives: {
+			defaultSrc:      ["'self'"],
+
+			scriptSrc: [
+				"'self'",
+				'https://cdn.socket.io',           // Socket.IO client
+				'https://cdn.jsdelivr.net',         // DOMPurify, Supabase ESM
+				'https://www.googletagmanager.com', // GA4 loader
+				'https://www.google-analytics.com', // GA4 secondary scripts
+			],
+
+			styleSrc: [
+				"'self'",
+				"'unsafe-inline'",                  // Inline styles used throughout UI
+				'https://fonts.googleapis.com',     // Google Fonts CSS
+			],
+
+			fontSrc: [
+				"'self'",
+				'data:',
+				'https://fonts.gstatic.com',        // Google Fonts font files
+			],
+
+			imgSrc: [
+				"'self'",
+				'data:',
+				'blob:',
+				'https:',                           // Covers *.googleusercontent.com,
+				                                    // *.ggpht.com user avatars, and
+				                                    // any other HTTPS image
+			],
+
+			connectSrc: [
+				"'self'",                           // API calls + same-origin WebSocket (Socket.IO)
+				'https://www.google-analytics.com', // GA4 beacon / collect
+				'https://www.googletagmanager.com', // GA4 config fetch
+				'https://*.supabase.co',            // Supabase auth & realtime
+			],
+
+			frameSrc: [
+				'https://www.youtube.com',          // YouTube embeds (consent-gated)
+				'https://www.youtube-nocookie.com', // YouTube privacy-enhanced mode
+			],
+
+			frameAncestors: ["'self'"],             // Clickjacking protection
+
+			objectSrc:  ["'none'"],                 // No Flash / plugins
+			baseUri:    ["'self'"],                 // Prevent base-tag hijacking
+			formAction: ["'self'"],                 // Google OAuth is server-side redirect
+
+			upgradeInsecureRequests: [],            // Auto-upgrade HTTP sub-resources
+
+			reportUri: ['/api/csp-report'],         // Violation sink (report-only mode)
+		},
+	},
+
+	// ── HSTS ──────────────────────────────────────────────────────────────
+	// 1-year max-age. preload: false until we are certain all subdomains
+	// are HTTPS-only and we are ready for the public preload list.
+	strictTransportSecurity: {
+		maxAge: 31536000,        // 1 year
+		includeSubDomains: true,
+		preload: false,
+	},
+
+	// crossOriginEmbedderPolicy must stay false — Socket.IO needs it
 	crossOriginEmbedderPolicy: false,
-	referrerPolicy: { policy: 'no-referrer-when-downgrade' }
+	referrerPolicy: { policy: 'no-referrer-when-downgrade' },
 }));
 
 /* ── CORS configuration ── */
@@ -177,6 +259,46 @@ app.post('/api/request-reset', authLimiter);
 app.post('/api/reset-password', authLimiter);
 app.post('/api/2fa/verify', twoFactorLimiter);
 app.post('/api/2fa/email-fallback', twoFactorLimiter);
+
+/* ── CSP violation report sink ───────────────────────────────────────────
+   Intentionally NOT rate-limited so violations are never silently dropped.
+   Browsers send Content-Type: application/csp-report (old) or
+   application/reports+json (Reporting API v1). Both are handled here.
+   In production, forward violations to Sentry or a log aggregator.
+   ─────────────────────────────────────────────────────────────────────── */
+app.post(
+	'/api/csp-report',
+	express.text({ type: ['application/csp-report', 'application/reports+json'], limit: '50kb' }),
+	(req, res) => {
+		try {
+			const raw = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
+			// Reporting API v1 sends an array of report objects
+			const reports = Array.isArray(raw) ? raw : [raw];
+
+			reports.forEach((report) => {
+				// CSP Level 2 shape: { "csp-report": { ... } }
+				// Reporting API v1 shape: { "type": "csp-violation", "body": { ... } }
+				const violation = report['csp-report'] || report.body || report;
+				console.warn('[CSP Violation]', JSON.stringify({
+					documentUri:       violation['document-uri']        || violation.documentURL,
+					blockedUri:        violation['blocked-uri']         || violation.blockedURL,
+					violatedDirective: violation['violated-directive']  || violation.effectiveDirective,
+					originalPolicy:    violation['original-policy']     || violation.originalPolicy,
+					sourceFile:        violation['source-file']         || violation.sourceFile,
+					lineNumber:        violation['line-number']         || violation.lineNumber,
+					columnNumber:      violation['column-number']       || violation.columnNumber,
+					disposition:       violation.disposition,
+					referrer:          violation.referrer               || violation['referrer'],
+					timestamp:         new Date().toISOString(),
+				}));
+			});
+		} catch (err) {
+			console.warn('[CSP Violation] Failed to parse report body:', err.message);
+		}
+		res.status(204).end();
+	}
+);
 
 /* ── Route mounting ── */
 app.use('/api', authRoutes);

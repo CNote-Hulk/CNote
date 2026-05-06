@@ -7,6 +7,8 @@ function _getOrCreate() {
 
     _overlay = document.createElement('div');
     _overlay.className = 'confirm-overlay';
+    // SAFE: hardcoded only — this is a static SVG + empty structural shell.
+    // The `message` parameter is written via .textContent (line below), never innerHTML.
     _overlay.innerHTML = `
         <div class="confirm-box">
             <div class="confirm-icon">

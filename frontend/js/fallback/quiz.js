@@ -276,6 +276,7 @@
         // ── Create Score Bar ──
         var scoreBar = document.createElement('div');
         scoreBar.className = 'quiz-score-bar';
+        // SAFE: totalQuestions is a counted integer from the DOM, not user input.
         scoreBar.innerHTML =
             '<p>Scor: <span class="quiz-score-count"><strong>0</strong> / ' + totalQuestions + '</span></p>' +
             '<div class="quiz-progress-track"><div class="quiz-progress-fill"></div></div>';
@@ -328,6 +329,10 @@
             // Show explanation
             var explDiv = document.createElement('div');
             explDiv.className = 'quiz-explanation';
+            // SAFE: qData.explanation is read from detailP.innerHTML, which is the innerHTML
+            // of a <p> element authored in the lesson page HTML (course content written by the
+            // site team). It is re-injected here to preserve inline <strong> formatting.
+            // No user input flows into this value.
             explDiv.innerHTML = qData.explanation;
             qData.card.appendChild(explDiv);
 
@@ -344,6 +349,7 @@
         function updateScore() {
             var countEl = scoreBar.querySelector('.quiz-score-count');
             if (countEl) {
+                // SAFE: correctCount and totalQuestions are counted integers, not user input.
                 countEl.innerHTML = '<strong>' + correctCount + '</strong> / ' + totalQuestions;
             }
 
@@ -377,6 +383,8 @@
 
             var resultDiv = document.createElement('div');
             resultDiv.className = 'quiz-final-result ' + resultClass;
+            // SAFE: emoji and message are selected from hardcoded literals; percent,
+            // correctCount, and totalQuestions are counted integers — no user input.
             resultDiv.innerHTML =
                 '<h3>' + emoji + ' ' + percent + '% — ' + correctCount + ' / ' + totalQuestions + ' corecte</h3>' +
                 '<p>' + message + '</p>';
