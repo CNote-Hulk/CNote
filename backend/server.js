@@ -21,6 +21,8 @@ const passport = require('passport');
 const http = require('http');
 const socketio = require('socket.io');
 const rateLimit = require('express-rate-limit');
+const crypto = require('crypto');
+const fs = require('fs').promises;
 const app = express();
 
 /* ── Route imports ── */
@@ -107,6 +109,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// ── CSP nonce — generate a fresh nonce for every request ─────────────────
+// Must run BEFORE helmet so the nonce is in res.locals when helmet builds
+// the CSP header via the scriptSrc function below.
+app.use((req, res, next) => {
+	res.locals.cspNonce = crypto.randomBytes(16).toString('base64');
+	next();
+});
+
 app.use(helmet({
 	// ── Content-Security-Policy ────────────────────────────────────────────
 	// Running in REPORT-ONLY mode. Switch reportOnly → false once logs are
@@ -130,10 +140,11 @@ app.use(helmet({
 
 			scriptSrc: [
 				"'self'",
+				(req, res) => `'nonce-${res.locals.cspNonce}'`, // per-request nonce for inline scripts
 				'https://cdn.socket.io',           // Socket.IO client
 				'https://cdn.jsdelivr.net',         // DOMPurify, Supabase ESM
 				'https://www.googletagmanager.com', // GA4 loader
-				'https://www.google-analytics.com', // GA4 secondary scripts
+				'https://*.google-analytics.com',  // GA4 secondary scripts
 			],
 
 			styleSrc: [
@@ -158,10 +169,11 @@ app.use(helmet({
 			],
 
 			connectSrc: [
-				"'self'",                           // API calls + same-origin WebSocket (Socket.IO)
-				'https://www.google-analytics.com', // GA4 beacon / collect
-				'https://www.googletagmanager.com', // GA4 config fetch
-				'https://*.supabase.co',            // Supabase auth & realtime
+				"'self'",                             // API calls + same-origin WebSocket (Socket.IO)
+				'https://*.google-analytics.com',     // GA4 beacon / collect (covers region1, region2, www)
+				'https://*.analytics.google.com',     // GA4 alternative collection endpoint
+				'https://www.googletagmanager.com',   // GA4 config fetch
+				'https://*.supabase.co',              // Supabase auth & realtime
 			],
 
 			frameSrc: [
@@ -337,6 +349,43 @@ app.get('/src/*', (req, res) => {
 });
 
 const FRONTEND_ROOT = path.join(__dirname, '..', 'frontend');
+
+/* ── HTML nonce-injection middleware ──────────────────────────────────────
+   Intercepts GET requests for .html files BEFORE express.static handles
+   them. Reads the file from disk, injects nonce="<nonce>" into every
+   inline <script> tag (those without src= or nonce= attributes), then
+   sends the modified HTML. Falls through to next() on read error so
+   express.static can serve a proper 404.
+   No caching intentionally — nonce must be unique per request.
+   ─────────────────────────────────────────────────────────────────────── */
+async function serveHTMLWithNonce(req, res, next, filePath) {
+	try {
+		let html = await fs.readFile(filePath, 'utf8');
+		const nonce = res.locals.cspNonce;
+		// Inject nonce into inline <script> tags.
+		// Negative lookahead skips any tag that already has src= or nonce=.
+		// Covers:  <script>, <script defer>, <script type="module">,
+		//          <script type="application/ld+json">
+		// Skips:   <script src="...">, <script nonce="...">, external modules
+		html = html.replace(
+			/<script(?![^>]*\b(?:src|nonce)=)([^>]*)>/g,
+			`<script nonce="${nonce}"$1>`
+		);
+		res.type('html').send(html);
+	} catch {
+		next();
+	}
+}
+
+app.use(async (req, res, next) => {
+	if (req.method !== 'GET') return next();
+	if (!req.path.endsWith('.html')) return next();
+	const filePath = path.join(FRONTEND_ROOT, req.path);
+	// Path traversal guard: resolved path must stay inside FRONTEND_ROOT
+	if (!filePath.startsWith(FRONTEND_ROOT + path.sep)) return next();
+	await serveHTMLWithNonce(req, res, next, filePath);
+});
+
 app.use(express.static(FRONTEND_ROOT));
 
 app.get('/', (req, res) => {
@@ -344,8 +393,9 @@ app.get('/', (req, res) => {
 });
 
 // Catch-all for /user/:username → serve user-profile.html (SPA-style route)
-app.get('/user/:username', (req, res) => {
-	res.sendFile(path.join(FRONTEND_ROOT, 'html', 'pages', 'user-profile.html'));
+app.get('/user/:username', (req, res, next) => {
+	// Use nonce-injecting helper — same as .html middleware above
+	serveHTMLWithNonce(req, res, next, path.join(FRONTEND_ROOT, 'html', 'pages', 'user-profile.html'));
 });
 
 // Global error handler
