@@ -1648,6 +1648,9 @@ async function initMarketplace() {
 
 		if (!status || !connectBtn || !disconnectBtn || !syncBtn) return;
 
+		const userDiv = document.getElementById(`${provider}-user`);
+		const usernameSpan = document.getElementById(`${provider}-username`);
+
 		if (account) {
 			status.textContent = t('settings_provider_connected');
 			connectBtn.hidden = true;
@@ -1659,6 +1662,13 @@ async function initMarketplace() {
 				lastSync.textContent = `${t('settings_last_sync')} ${d.toLocaleDateString(I18nModule.lang)} ${d.toLocaleTimeString(I18nModule.lang, { hour: '2-digit', minute: '2-digit' })}`;
 				lastSync.hidden = false;
 			}
+
+			if (userDiv && usernameSpan && account.providerUserId) {
+				usernameSpan.textContent = `@${account.providerUserId}`;
+				userDiv.hidden = false;
+			} else if (userDiv) {
+				userDiv.hidden = true;
+			}
 		} else {
 			status.textContent = t('settings_provider_not_connected');
 			connectBtn.hidden = false;
@@ -1666,6 +1676,7 @@ async function initMarketplace() {
 			syncBtn.hidden = true;
 
 			if (lastSync) lastSync.hidden = true;
+			if (userDiv) userDiv.hidden = true;
 		}
 	}
 
@@ -1742,6 +1753,10 @@ async function initMarketplace() {
 
 			if (data.success) {
 				showMarketplaceMessage(`${t('settings_disconnected_from')} ${provider.toUpperCase()}`, true);
+				if (provider === 'ebay') {
+					const logoutPopup = window.open('https://www.ebay.com/logout', 'ebay-logout', 'width=1,height=1,left=-1000,top=-1000');
+					setTimeout(() => logoutPopup?.close(), 3000);
+				}
 				loadMarketplaceAccounts();
 			} else {
 				showMarketplaceMessage(data.error || t('settings_disconnect_failed'), false);

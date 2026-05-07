@@ -158,8 +158,11 @@ class EbayProvider extends MarketplaceProvider {
 			`${this.baseUrl}/sell/inventory/v1/inventory_item`,
 			{
 				headers: {
-					Authorization: `Bearer ${accessToken}`,
-					'Content-Type': 'application/json'
+					'Authorization': `Bearer ${accessToken}`,
+					'Content-Type': 'application/json',
+					'Accept-Language': 'en-US',
+					'Content-Language': 'en-US',
+					'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US'
 				}
 			}
 		);

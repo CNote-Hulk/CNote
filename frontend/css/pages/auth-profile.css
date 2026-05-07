@@ -3582,8 +3582,14 @@ a.chat-message__username:hover {
 
 .provider-status {
     font-size: 0.75rem;
-    color: var(--text-muted, #a89880);
+    color: var(--text-light, #F5F0E8);
     margin: 0;
+}
+
+.provider-user {
+    font-size: 0.75rem;
+    color: var(--text-gray, #a89880);
+    margin: 2px 0 0;
 }
 
 .provider-actions {

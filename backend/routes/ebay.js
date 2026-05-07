@@ -70,6 +70,7 @@ router.get('/connect', authRequired, async (req, res) => {
             client_id: process.env.EBAY_CLIENT_ID,
             redirect_uri: process.env.EBAY_RU_NAME,
             state,
+            prompt: 'login',
             scope: [
                 'https://api.ebay.com/oauth/api_scope',
                 'https://api.ebay.com/oauth/api_scope/sell.inventory',
@@ -120,8 +121,8 @@ router.get('/callback', async (req, res) => {
 
         let providerUserId = '';
         try {
-            const userRes = await fetch('https://api.ebay.com/commerce/identity/v1/user/', {
-                headers: { Authorization: `Bearer ${tokenData.access_token}` }
+            const userRes = await fetch('https://apiz.ebay.com/commerce/identity/v1/user/', {
+                headers: { Authorization: `Bearer ${tokenData.access_token}`, 'Content-Type': 'application/json' }
             });
             const userData = await userRes.json();
             providerUserId = userData.username || userData.userId || '';
@@ -181,7 +182,7 @@ router.get('/status', authRequired, async (req, res) => {
         res.json({
             success: true,
             connected: true,
-            ebayUsername: row.provider_user_id || 'eBay User',
+            ebayUsername: row.provider_user_id || null,
             connectedAt: row.connected_at
         });
     } catch (err) {
@@ -202,7 +203,7 @@ router.delete('/disconnect', authRequired, async (req, res) => {
             "DELETE FROM listings WHERE user_id = $1 AND provider = 'ebay'",
             [req.user.id]
         );
-        res.json({ success: true });
+        res.json({ success: true, ebayLogoutUrl: 'https://www.ebay.com/logout' });
     } catch (err) {
         console.error('eBay disconnect error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
