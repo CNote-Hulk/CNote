@@ -9,17 +9,14 @@
 (function () {
     'use strict';
 
-    // ── Labels ──────────────────────────────────────────────────────────────
+    // ── i18n helper (uses global I18nModule exposed by i18n.js init) ─────────
+    const _t = key => (window.I18nModule ? window.I18nModule.t(key) : key);
 
-    const REASON_LABELS = {
-        illegal_content:  'Conținut ilegal',
-        hate_speech:      'Discurs de ură',
-        harassment:       'Hărțuire',
-        spam:             'Spam',
-        csam:             'Conținut sexual cu minori (CSAM)',
-        misinformation:   'Dezinformare',
-        other:            'Altceva',
-    };
+    // ── Reason keys ──────────────────────────────────────────────────────────
+    const REASON_KEYS = [
+        'illegal_content', 'hate_speech', 'harassment',
+        'spam', 'csam', 'misinformation', 'other',
+    ];
 
     // ── Helpers ─────────────────────────────────────────────────────────────
 
@@ -68,65 +65,85 @@
         overlay.id = 'report-modal-overlay';
 
         const previewText = contentPreview
-            ? String(contentPreview).substring(0, 60) + (contentPreview.length > 60 ? '…' : '')
+            ? String(contentPreview).substring(0, 60) + (contentPreview.length > 60 ? '...' : '')
             : '';
 
-        // SAFE: all user-visible strings are escaped via textContent/value assignment below.
-        // Only static structural HTML is interpolated here.
+        // SAFE: all user-visible strings are set via textContent/placeholder below.
+        // Only static structural HTML is in this template.
         overlay.innerHTML = `
             <div id="report-modal-box" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
-                <p class="report-modal__title" id="report-modal-title">Raportează conținut</p>
+                <p class="report-modal__title" id="report-modal-title"></p>
                 ${previewText ? `<p class="report-modal__preview" id="report-modal-preview"></p>` : ''}
 
                 <div>
-                    <label class="report-modal__label" for="report-reason">Motivul raportului *</label>
+                    <label class="report-modal__label" for="report-reason"></label>
                     <select class="report-modal__select" id="report-reason">
-                        <option value="" disabled selected>— Selectează un motiv —</option>
-                        ${Object.entries(REASON_LABELS).map(([v, l]) =>
-                            `<option value="${v}"></option>`
-                        ).join('')}
+                        <option value="" disabled selected></option>
+                        ${REASON_KEYS.map(k => `<option value="${k}"></option>`).join('')}
                     </select>
                 </div>
 
                 <div>
-                    <label class="report-modal__label" for="report-description">Descriere (opțional)</label>
-                    <textarea class="report-modal__textarea" id="report-description" maxlength="2000" rows="3" placeholder="Descrie problema în detaliu…"></textarea>
+                    <label class="report-modal__label" for="report-description"></label>
+                    <textarea class="report-modal__textarea" id="report-description" maxlength="2000" rows="3"></textarea>
                     <div class="report-modal__char-counter" id="report-char-counter">0 / 2000</div>
                 </div>
 
                 <div>
-                    <label class="report-modal__label" for="report-contact">Email contact (opțional)</label>
-                    <input class="report-modal__input" type="email" id="report-contact" placeholder="email@exemplu.com" maxlength="255">
+                    <label class="report-modal__label" for="report-contact"></label>
+                    <input class="report-modal__input" type="email" id="report-contact" maxlength="255">
                 </div>
 
                 <p class="report-modal__error" id="report-error" hidden></p>
 
                 <div class="report-modal__actions">
-                    <button class="report-modal__btn-submit" id="report-submit" type="button">Trimite raportul</button>
-                    <button class="report-modal__btn-cancel" id="report-cancel" type="button">Anulează</button>
+                    <button class="report-modal__btn-submit" id="report-submit" type="button"></button>
+                    <button class="report-modal__btn-cancel" id="report-cancel" type="button"></button>
                 </div>
             </div>`;
 
         document.body.appendChild(overlay);
 
+        // ── Set all labels/buttons via textContent (XSS-safe) ────────────────
+        document.getElementById('report-modal-title').textContent = _t('report_modal_title');
+
+        const reasonLabel = overlay.querySelector('label[for="report-reason"]');
+        if (reasonLabel) reasonLabel.textContent = _t('report_field_reason');
+
+        const descLabel = overlay.querySelector('label[for="report-description"]');
+        if (descLabel) descLabel.textContent = _t('report_field_description');
+
+        const contactLabel = overlay.querySelector('label[for="report-contact"]');
+        if (contactLabel) contactLabel.textContent = _t('report_field_email');
+
+        document.getElementById('report-submit').textContent = _t('report_btn_submit');
+        document.getElementById('report-cancel').textContent = _t('report_btn_cancel');
+
         // ── Set option text via textContent (XSS-safe) ───────────────────────
         const select = document.getElementById('report-reason');
-        const options = select.querySelectorAll('option[value]');
-        Object.keys(REASON_LABELS).forEach((v, i) => {
-            options[i].textContent = REASON_LABELS[v];
+        const placeholderOpt = select.querySelector('option[value=""]');
+        if (placeholderOpt) placeholderOpt.textContent = _t('report_field_reason_placeholder');
+
+        const options = select.querySelectorAll('option:not([value=""])');
+        REASON_KEYS.forEach((k, i) => {
+            if (options[i]) options[i].textContent = _t('report_reason_' + k);
         });
 
-        // Set preview text safely
+        // ── Set placeholder attributes ────────────────────────────────────────
+        document.getElementById('report-description').placeholder = _t('report_field_description_placeholder');
+        document.getElementById('report-contact').placeholder = 'email@exemplu.com';
+
+        // ── Set preview text safely ───────────────────────────────────────────
         if (previewText) {
             const prev = document.getElementById('report-modal-preview');
-            if (prev) prev.textContent = `"${previewText}"`;
+            if (prev) prev.textContent = '"' + previewText + '"';
         }
 
         // ── Char counter ─────────────────────────────────────────────────────
         const textarea = document.getElementById('report-description');
         const counter  = document.getElementById('report-char-counter');
         textarea.addEventListener('input', () => {
-            counter.textContent = `${textarea.value.length} / 2000`;
+            counter.textContent = textarea.value.length + ' / 2000';
         });
 
         // ── Close handlers ───────────────────────────────────────────────────
@@ -150,22 +167,22 @@
 
             // Client-side validation
             if (!reason) {
-                errorEl.textContent = 'Te rugăm să selectezi un motiv.';
+                errorEl.textContent = _t('report_error_no_reason');
                 errorEl.hidden = false;
                 return;
             }
 
             // Loading state
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Se trimite…';
+            submitBtn.textContent = _t('report_btn_submitting');
             errorEl.hidden = true;
 
             try {
                 const token = getToken();
                 const headers = { 'Content-Type': 'application/json' };
-                if (token) headers['Authorization'] = `Bearer ${token}`;
+                if (token) headers['Authorization'] = 'Bearer ' + token;
 
-                const resp = await fetch(`${apiBase()}/reports`, {
+                const resp = await fetch(apiBase() + '/reports', {
                     method: 'POST',
                     headers,
                     body: JSON.stringify({
@@ -184,23 +201,25 @@
                     const box = document.getElementById('report-modal-box');
                     box.innerHTML = `
                         <div class="report-modal__success">
-                            <span style="font-size:2rem">✓</span>
-                            <p>Raportul a fost trimis. Mulțumim.</p>
-                            <button class="report-modal__btn-cancel" id="report-close-success" type="button">Închide</button>
+                            <span style="font-size:2rem">&#10003;</span>
+                            <p id="report-success-text"></p>
+                            <button class="report-modal__btn-cancel" id="report-close-success" type="button"></button>
                         </div>`;
+                    document.getElementById('report-success-text').textContent = _t('report_success');
+                    document.getElementById('report-close-success').textContent = _t('report_btn_close');
                     document.getElementById('report-close-success').addEventListener('click', removeModal);
                 } else {
                     // Error — keep form open
-                    errorEl.textContent = data.error || 'A apărut o eroare. Încearcă din nou.';
+                    errorEl.textContent = data.error || _t('report_error_generic');
                     errorEl.hidden = false;
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Trimite raportul';
+                    submitBtn.textContent = _t('report_btn_submit');
                 }
-            } catch {
-                errorEl.textContent = 'A apărut o eroare. Încearcă din nou.';
+            } catch (e) {
+                errorEl.textContent = _t('report_error_generic');
                 errorEl.hidden = false;
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Trimite raportul';
+                submitBtn.textContent = _t('report_btn_submit');
             }
         });
 

@@ -289,7 +289,7 @@ const t = key => I18nModule.t(key);
                     // DSA Art. 16 — report this profile
                     const reportBtn = document.createElement('button');
                     reportBtn.className = 'report-trigger-btn';
-                    reportBtn.textContent = '⚑ Raportează profilul';
+                    reportBtn.textContent = '⚑ ' + t('report_btn_trigger_profile');
                     reportBtn.addEventListener('click', () => {
                         if (typeof window.openReportModal === 'function') {
                             window.openReportModal({

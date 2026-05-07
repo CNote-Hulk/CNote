@@ -644,7 +644,7 @@ async function loadThreads() {
                         </div>
                     </div>
                 </button>
-                ${(user() && user().id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}" title="Raportează">⚑ Raportează</button>` : ''}
+                ${(user() && user().id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}" title="${I18nModule.t('report_btn_trigger')}">⚑ ${I18nModule.t('report_btn_trigger')}</button>` : ''}
             </div>`).join('');
 
         list.addEventListener('click', e => {
@@ -694,7 +694,7 @@ async function openThread(id) {
                     <div class="hub-thread-original__text" style="margin-top:8px">${esc(t.body)}</div>
                     <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                         <button class="hub-btn hub-btn--secondary hub-btn--sm" data-upvote="thread" data-id="${t.id}">↑ ${t.upvotes || 0}</button>
-                        ${(u && u.id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}">⚑ Raportează</button>` : ''}
+                        ${(u && u.id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}">⚑ ${I18nModule.t('report_btn_trigger')}</button>` : ''}
                     </div>
                 </div>
                 <div class="hub-replies-heading">Replies (${replies.length})</div>
@@ -708,7 +708,7 @@ async function openThread(id) {
                         <div class="hub-reply-text">${esc(r.body)}</div>
                         <div style="padding-left:32px;margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                             <button class="hub-btn hub-btn--secondary hub-btn--sm" data-upvote="reply" data-id="${r.id}">↑ ${r.upvotes || 0}</button>
-                            ${(u && u.id !== r.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_reply" data-report-id="${r.id}" data-report-preview="${esc((r.body || '').substring(0, 60))}">⚑ Raportează</button>` : ''}
+                            ${(u && u.id !== r.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_reply" data-report-id="${r.id}" data-report-preview="${esc((r.body || '').substring(0, 60))}">⚑ ${I18nModule.t('report_btn_trigger')}</button>` : ''}
                         </div>
                     </div>`).join('')}
             </div>
@@ -1138,7 +1138,7 @@ async function openListingDetail(id) {
                             <div style="color:var(--text-gray);font-size:.78rem">Seller</div>
                         </div>
                         ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
-                        ${u && !own ? `<button class="report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">⚑ Raportează anunțul</button>` : ''}
+                        ${u && !own ? `<button class="report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">⚑ ${I18nModule.t('report_btn_trigger_listing')}</button>` : ''}
                     </div>
                     <div class="hub-detail-actions">
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
@@ -2114,7 +2114,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                 <div class="hub-dm-msg ${m.sender_id === u.id ? 'hub-dm-msg--mine' : 'hub-dm-msg--theirs'}">
                     ${esc(m.message)}
                     <div class="hub-dm-msg__time">${timeAgo(m.created_at)}</div>
-                    ${m.sender_id !== u.id ? `<button class="report-trigger-btn" data-report-type="direct_message" data-report-id="${m.id}" data-report-preview="${esc((m.message || '').substring(0, 60))}" title="Raportează mesajul">⚑</button>` : ''}
+                    ${m.sender_id !== u.id ? `<button class="report-trigger-btn" data-report-type="direct_message" data-report-id="${m.id}" data-report-preview="${esc((m.message || '').substring(0, 60))}" title="${I18nModule.t('report_btn_trigger_dm_title')}">⚑</button>` : ''}
                 </div>`).join('');
             el.scrollTop = el.scrollHeight;
         }

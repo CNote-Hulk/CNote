@@ -1345,29 +1345,29 @@ function initSettings() {
 
 // ── DSA Art. 16 — My Reports ─────────────────────────────────
 
-const CONTENT_TYPE_RO = {
-    forum_thread:   'Postare forum',
-    forum_reply:    'Răspuns forum',
-    direct_message: 'Mesaj direct',
-    listing:        'Anunț marketplace',
-    user_profile:   'Profil utilizator',
+const CONTENT_TYPE_KEYS = {
+    forum_thread:   'report_content_type_forum_thread',
+    forum_reply:    'report_content_type_forum_reply',
+    direct_message: 'report_content_type_direct_message',
+    listing:        'report_content_type_listing',
+    user_profile:   'report_content_type_user_profile',
 };
 
-const REASON_RO = {
-    illegal_content: 'Conținut ilegal',
-    hate_speech:     'Discurs de ură',
-    harassment:      'Hărțuire',
-    spam:            'Spam',
-    csam:            'CSAM',
-    misinformation:  'Dezinformare',
-    other:           'Altceva',
+const REASON_KEYS_PROFILE = {
+    illegal_content: 'report_reason_illegal_content',
+    hate_speech:     'report_reason_hate_speech',
+    harassment:      'report_reason_harassment',
+    spam:            'report_reason_spam',
+    csam:            'report_reason_csam',
+    misinformation:  'report_reason_misinformation',
+    other:           'report_reason_other',
 };
 
-const STATUS_RO = {
-    pending:   { label: 'În așteptare',  cls: 'pending' },
-    reviewed:  { label: 'Revizuit',      cls: 'reviewed' },
-    actioned:  { label: 'Rezolvat',      cls: 'actioned' },
-    dismissed: { label: 'Respins',       cls: 'dismissed' },
+const STATUS_CLS = {
+    pending:   'pending',
+    reviewed:  'reviewed',
+    actioned:  'actioned',
+    dismissed: 'dismissed',
 };
 
 /**
@@ -1379,7 +1379,7 @@ async function loadMyReports() {
     const container = document.getElementById('my-reports-container');
     if (!container) return;
 
-    container.innerHTML = '<p class="my-reports-empty">Se încarcă…</p>';
+    container.innerHTML = `<p class="my-reports-empty">${t('report_my_reports_loading')}</p>`;
 
     try {
         const session = AuthModule.getCurrentUser();
@@ -1396,23 +1396,24 @@ async function loadMyReports() {
         const reports = data.reports || [];
 
         if (!reports.length) {
-            container.innerHTML = '<p class="my-reports-empty">Nu ai trimis niciun raport.</p>';
+            container.innerHTML = `<p class="my-reports-empty">${t('report_my_reports_empty')}</p>`;
             return;
         }
 
         const rows = reports.map(r => {
-            const s = STATUS_RO[r.status] || { label: r.status, cls: 'pending' };
-            const date = new Date(r.created_at).toLocaleDateString('ro-RO', {
+            const cls = STATUS_CLS[r.status] || 'pending';
+            const statusLabel = t('report_status_' + (r.status || 'pending'));
+            const date = new Date(r.created_at).toLocaleDateString(I18nModule.lang === 'ro' ? 'ro-RO' : undefined, {
                 day: '2-digit', month: '2-digit', year: 'numeric'
             });
-            const typeLabel  = CONTENT_TYPE_RO[r.content_type] || r.content_type;
-            const reasonLabel = REASON_RO[r.reason] || r.reason;
+            const typeLabel   = t(CONTENT_TYPE_KEYS[r.content_type] || 'report_col_content_type');
+            const reasonLabel = t(REASON_KEYS_PROFILE[r.reason] || 'report_col_reason');
 
             // All values are from our own API — safe to template directly
             return `<tr>
                 <td>${typeLabel}</td>
                 <td>${reasonLabel}</td>
-                <td><span class="report-status-badge report-status-badge--${s.cls}">${s.label}</span></td>
+                <td><span class="report-status-badge report-status-badge--${cls}">${statusLabel}</span></td>
                 <td>${date}</td>
             </tr>`;
         }).join('');
@@ -1421,10 +1422,10 @@ async function loadMyReports() {
             <table class="my-reports-table">
                 <thead>
                     <tr>
-                        <th>Tip conținut</th>
-                        <th>Motiv</th>
-                        <th>Status</th>
-                        <th>Data</th>
+                        <th>${t('report_col_content_type')}</th>
+                        <th>${t('report_col_reason')}</th>
+                        <th>${t('report_col_status')}</th>
+                        <th>${t('report_col_date')}</th>
                     </tr>
                 </thead>
                 <tbody>${rows}</tbody>
@@ -1432,7 +1433,7 @@ async function loadMyReports() {
 
     } catch (err) {
         console.error('[loadMyReports]', err);
-        container.innerHTML = '<p class="my-reports-empty">Nu s-au putut încărca rapoartele. Încearcă din nou.</p>';
+        container.innerHTML = `<p class="my-reports-empty">${t('report_my_reports_load_error')}</p>`;
     }
 }
 
