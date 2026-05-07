@@ -50,6 +50,7 @@ const ownedConsolesRoutes = require('./routes/owned-consoles');
 const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
 const reportsRoutes = require('./routes/reports');
+const ebayRoutes = require('./routes/ebay');
 
 /* ── Environment validation ── */
 
@@ -358,6 +359,7 @@ app.use('/api/consoles', consolesRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api', coursesRoutes);
 app.use('/api', reportsRoutes);
+app.use('/api/ebay', ebayRoutes);
 
 /* ── Static files & redirects ── */
 
