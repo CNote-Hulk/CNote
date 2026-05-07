@@ -52,19 +52,19 @@
 
 .cookie-btn-essential {
   background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-gray);
+  border: 1px solid var(--text-light); /* same resolved value as --accent-color border on Accept All */
+  color: var(--text-light);
   padding: 0.625rem 1.25rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 0.875rem;
-  transition: border-color var(--transition-fast), color var(--transition-fast);
+  font-weight: 600;
+  transition: border-color var(--transition-fast), opacity var(--transition-fast);
   width: 100%;
 }
 
 .cookie-btn-essential:hover {
-  border-color: var(--text-gray);
-  color: var(--text-light);
+  opacity: 0.75;
 }
 
 .cookie-btn-accept {
