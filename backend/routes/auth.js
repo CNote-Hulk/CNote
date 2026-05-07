@@ -280,6 +280,24 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ success: false, error: pwdCheck.error });
         }
 
+        // Birth date — optional field, minimum age 16 (Law 190/2018 Art. 5)
+        const { birth_date } = req.body;
+        if (birth_date !== undefined && birth_date !== null && birth_date !== '') {
+            const dob = new Date(birth_date);
+            if (isNaN(dob.getTime())) {
+                return res.status(400).json({ success: false, error: 'Invalid birth date format.' });
+            }
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            if (age < 16) {
+                return res.status(400).json({ success: false, error: 'Trebuie să ai cel puțin 16 ani pentru a te înregistra.' });
+            }
+        }
+
         const usernameCheck = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [usernameTrimmed]);
         if (usernameCheck.rows[0]) {
             return res.status(409).json({ success: false, error: 'Username is already taken. Choose another one.' });

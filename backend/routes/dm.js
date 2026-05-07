@@ -14,6 +14,79 @@ const { authRequired } = require('../middleware/auth');
 
 const router = express.Router();
 
+// ── Spam prevention — in-memory, resets on server restart ──────────────────
+
+// Pattern 2: DM flood — same sender → same recipient, burst
+// Key: `dm_flood:${senderId}:${recipientId}` — 10 messages / 10 sec
+const dmFloodMap = new Map();
+
+// Pattern 1: DM mass spam — same sender → many different recipients
+// Key: `dm_unique_recipients:${senderId}` — 50 unique recipients / 1 hour
+const dmUniqueRecipientsMap = new Map();
+// Pair tracker: key `dm_pair:${senderId}:${recipientId}` — whether pair is new in window
+const dmPairMap = new Map();
+
+/**
+ * checkDmFlood
+ * Returns { blocked, msBeforeNext } for Pattern 2 (burst flood).
+ * Limit: 10 messages per 10 seconds per sender-recipient pair.
+ */
+function checkDmFlood(senderId, recipientId) {
+    const key = `dm_flood:${senderId}:${recipientId}`;
+    const now = Date.now();
+    const window = 10 * 1000; // 10 seconds
+    const limit = 10;
+    let entry = dmFloodMap.get(key);
+    if (!entry || now > entry.resetTime) {
+        entry = { count: 0, resetTime: now + window };
+        dmFloodMap.set(key, entry);
+    }
+    entry.count++;
+    if (entry.count > limit) {
+        return { blocked: true, msBeforeNext: entry.resetTime - now };
+    }
+    return { blocked: false };
+}
+
+/**
+ * checkDmUniqueRecipients
+ * Returns { blocked, msBeforeNext } for Pattern 1 (mass spam).
+ * Limit: 50 unique recipients per hour per sender.
+ * A recipient is "new" if this sender has not messaged them in the current 1-hour window.
+ */
+function checkDmUniqueRecipients(senderId, recipientId) {
+    const now = Date.now();
+    const window = 3600 * 1000; // 1 hour
+    const limit = 50;
+
+    // Check if this sender-recipient pair is new in the current window
+    const pairKey = `dm_pair:${senderId}:${recipientId}`;
+    const pairEntry = dmPairMap.get(pairKey);
+    const isNewPair = !pairEntry || now > pairEntry.resetTime;
+
+    if (!isNewPair) {
+        // Already messaged this person this hour — don't charge the unique-recipients counter
+        return { blocked: false };
+    }
+
+    // New pair — check and increment unique recipients counter
+    const senderKey = `dm_unique_recipients:${senderId}`;
+    let senderEntry = dmUniqueRecipientsMap.get(senderKey);
+    if (!senderEntry || now > senderEntry.resetTime) {
+        senderEntry = { count: 0, resetTime: now + window };
+        dmUniqueRecipientsMap.set(senderKey, senderEntry);
+    }
+
+    if (senderEntry.count >= limit) {
+        return { blocked: true, msBeforeNext: senderEntry.resetTime - now };
+    }
+
+    // Record pair as seen and increment unique count
+    senderEntry.count++;
+    dmPairMap.set(pairKey, { resetTime: now + window });
+    return { blocked: false };
+}
+
 // ── GET /api/dm/conversations ────────────────────────────
 router.get('/conversations', authRequired, async (req, res) => {
     try {
@@ -124,6 +197,30 @@ router.post('/send', authRequired, async (req, res) => {
 
     const safeMessage = String(message).trim().slice(0, 2000);
     const safeListing = listingId ? parseInt(listingId) || null : null;
+
+    // ── Pattern 2: flood check (burst) — runs first, cheaper ──────────────
+    try {
+        const floodResult = checkDmFlood(req.user.id, receiverId);
+        if (floodResult.blocked) {
+            res.set('Retry-After', Math.ceil(floodResult.msBeforeNext / 1000));
+            return res.status(429).json({ success: false, error: 'Trimiți prea repede. Așteaptă puțin.' });
+        }
+    } catch (limiterErr) {
+        console.error('DM flood limiter error:', limiterErr.message);
+        // Never block request on limiter failure
+    }
+
+    // ── Pattern 1: unique recipients check (mass spam) ─────────────────────
+    try {
+        const uniqueResult = checkDmUniqueRecipients(req.user.id, receiverId);
+        if (uniqueResult.blocked) {
+            res.set('Retry-After', Math.ceil(uniqueResult.msBeforeNext / 1000));
+            return res.status(429).json({ success: false, error: 'Ai atins limita de conversații noi. Încearcă mâine.' });
+        }
+    } catch (limiterErr) {
+        console.error('DM unique recipients limiter error:', limiterErr.message);
+        // Never block request on limiter failure
+    }
 
     try {
         // Verify receiver exists

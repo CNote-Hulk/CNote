@@ -6708,7 +6708,7 @@ const MESSAGES = {
         cmp_feat_launch_date: 'Veröffentlichungsdatum & Preis',
         cmp_cta: 'VERGLEICH STARTEN →',
         compare_title_hero: 'Konsolen-Duell',
-        cmp_ps1_fact: 'PS1 vs NES stellt einen 32-Bit-CD-Kraftpro'PS1 vs NES stellt einen 32-Bit-CD-Kraftprotz einem 8-Bit-Cartridge-Klassiker gegenüber. Über 50 Jahre liegen zwischen ihnen.',
+        cmp_ps1_fact: 'PS1 vs NES stellt einen 32-Bit-CD-Kraftprotz einem 8-Bit-Cartridge-Klassiker gegenüber. Über 50 Jahre liegen zwischen ihnen.',
 
         // Learn page
         learn_body: 'Entdecke die Physik und Technik hinter jeder Konsole — von Grundelektrizität und Transistoren bis zu CPUs, GPUs und der Rendering-Pipeline.',

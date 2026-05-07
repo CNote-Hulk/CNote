@@ -18,6 +18,57 @@ const router = express.Router();
 const VALID_CONSOLES = ['ps', 'xbox', 'nintendo', 'pc', 'general'];
 const VALID_TAGS = ['General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];
 
+// ── Forum spam prevention — in-memory, resets on server restart ────────────
+
+// Pattern 3a: forum thread spam — 5 threads per 10 minutes per user
+const forumThreadMap = new Map();
+// Pattern 3b: forum reply spam — 20 replies per 5 minutes per user
+const forumReplyMap = new Map();
+
+/**
+ * checkForumThreadLimit
+ * Returns { blocked, msBeforeNext }.
+ * Limit: 5 threads per 10 minutes per user.
+ */
+function checkForumThreadLimit(userId) {
+    const key = `forum_threads:${userId}`;
+    const now = Date.now();
+    const window = 600 * 1000; // 10 minutes
+    const limit = 5;
+    let entry = forumThreadMap.get(key);
+    if (!entry || now > entry.resetTime) {
+        entry = { count: 0, resetTime: now + window };
+        forumThreadMap.set(key, entry);
+    }
+    entry.count++;
+    if (entry.count > limit) {
+        return { blocked: true, msBeforeNext: entry.resetTime - now };
+    }
+    return { blocked: false };
+}
+
+/**
+ * checkForumReplyLimit
+ * Returns { blocked, msBeforeNext }.
+ * Limit: 20 replies per 5 minutes per user.
+ */
+function checkForumReplyLimit(userId) {
+    const key = `forum_replies:${userId}`;
+    const now = Date.now();
+    const window = 300 * 1000; // 5 minutes
+    const limit = 20;
+    let entry = forumReplyMap.get(key);
+    if (!entry || now > entry.resetTime) {
+        entry = { count: 0, resetTime: now + window };
+        forumReplyMap.set(key, entry);
+    }
+    entry.count++;
+    if (entry.count > limit) {
+        return { blocked: true, msBeforeNext: entry.resetTime - now };
+    }
+    return { blocked: false };
+}
+
 // ── GET /api/forum/recent ────────────────────────────────
 router.get('/recent', async (req, res) => {
     try {
@@ -117,6 +168,18 @@ router.post('/:console/threads', authRequired, async (req, res) => {
     const safeTitle = String(title).trim().slice(0, 120);
     const safeBody = String(body).trim().slice(0, 5000);
 
+    // ── Pattern 3a: thread spam check ─────────────────────────────────────
+    try {
+        const threadLimit = checkForumThreadLimit(req.user.id);
+        if (threadLimit.blocked) {
+            res.set('Retry-After', Math.ceil(threadLimit.msBeforeNext / 1000));
+            return res.status(429).json({ success: false, error: 'Postezi prea multe topicuri. Așteaptă 10 minute.' });
+        }
+    } catch (limiterErr) {
+        console.error('Forum thread limiter error:', limiterErr.message);
+        // Never block request on limiter failure
+    }
+
     try {
         const result = await pool.query(`
             INSERT INTO forum_threads (user_id, console, title, body, tag)
@@ -148,6 +211,18 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
     }
 
     const safeBody = String(body).trim().slice(0, 3000);
+
+    // ── Pattern 3b: reply spam check ──────────────────────────────────────
+    try {
+        const replyLimit = checkForumReplyLimit(req.user.id);
+        if (replyLimit.blocked) {
+            res.set('Retry-After', Math.ceil(replyLimit.msBeforeNext / 1000));
+            return res.status(429).json({ success: false, error: 'Postezi prea repede. Așteaptă câteva minute.' });
+        }
+    } catch (limiterErr) {
+        console.error('Forum reply limiter error:', limiterErr.message);
+        // Never block request on limiter failure
+    }
 
     try {
         // Verify thread exists

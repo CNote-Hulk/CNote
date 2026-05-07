@@ -211,11 +211,12 @@ app.use(helmet({
 /* ── CORS configuration ── */
 
 const allowedOrigins = [
-	'http://localhost:3000',
-	'http://localhost:5173',
 	normalizeOrigin(process.env.FRONTEND_URL),
 	normalizeOrigin(process.env.BASE_URL)
 ].filter(Boolean);
+if (process.env.NODE_ENV !== 'production') {
+	allowedOrigins.push('http://localhost:3000', 'http://localhost:5173');
+}
 
 const allowedOriginHosts = allowedOrigins.map(getOriginHost).filter(Boolean);
 
@@ -260,10 +261,10 @@ const twoFactorLimiter = rateLimit({
 
 const registerLimiter = rateLimit({
 	windowMs: 60 * 60 * 1000,
-	max: 10,
+	max: 5,
 	standardHeaders: true,
 	legacyHeaders: false,
-	message: { success: false, error: 'Too many registrations from this IP, please try again later.' }
+	message: { success: false, error: 'Prea multe înregistrări de pe acest IP. Încearcă mai târziu.' }
 });
 
 app.post('/api/login', authLimiter);
