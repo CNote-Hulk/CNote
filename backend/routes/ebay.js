@@ -65,18 +65,8 @@ router.get('/connect', authRequired, async (req, res) => {
         if (!global.oauthStates) global.oauthStates = {};
         global.oauthStates[state] = { userId: req.user.id, provider: 'ebay', createdAt: Date.now() };
 
-        const params = new URLSearchParams({
-            response_type: 'code',
-            client_id: process.env.EBAY_CLIENT_ID,
-            redirect_uri: process.env.EBAY_RU_NAME,
-            state,
-            scope: [
-                'https://api.ebay.com/oauth/api_scope',
-                'https://api.ebay.com/oauth/api_scope/sell.inventory',
-                'https://api.ebay.com/oauth/api_scope/sell.account.readonly'
-            ].join(' ')
-        });
-        const authUrl = `https://auth.ebay.com/oauth2/authorize?${params}`;
+        const ebayProvider = new EbayProvider();
+        const authUrl = ebayProvider.getAuthorizationUrl(state);
         res.json({ success: true, authUrl });
     } catch (err) {
         console.error('eBay connect error:', err);
@@ -103,35 +93,9 @@ router.get('/callback', async (req, res) => {
 
     try {
         const userId = stateData.userId;
-        const basicAuth = Buffer
-            .from(`${process.env.EBAY_CLIENT_ID}:${process.env.EBAY_CLIENT_SECRET}`)
-            .toString('base64');
-        const tokenRes = await fetch('https://api.ebay.com/identity/v1/oauth2/token', {
-            method: 'POST',
-            headers: { Authorization: `Basic ${basicAuth}`, 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-                grant_type: 'authorization_code',
-                code,
-                redirect_uri: process.env.EBAY_RU_NAME
-            }).toString()
-        });
-        if (!tokenRes.ok) throw new Error(`eBay token exchange failed: ${await tokenRes.text()}`);
-        const tokenData = await tokenRes.json();
-
-        let providerUserId = '';
-        try {
-            const userRes = await fetch('https://api.ebay.com/commerce/identity/v1/user/', {
-                headers: { Authorization: `Bearer ${tokenData.access_token}` }
-            });
-            const userData = await userRes.json();
-            providerUserId = userData.username || userData.userId || '';
-        } catch (_) {}
-
-        const auth = {
-            accessToken: tokenData.access_token,
-            refreshToken: tokenData.refresh_token || null,
-            expiresAt: new Date(Date.now() + tokenData.expires_in * 1000)
-        };
+        const ebayProvider = new EbayProvider();
+        const auth = await ebayProvider.authenticate(code);
+        const providerUserId = auth.providerUserId || '';
 
         const existing = await pool.query(
             'SELECT id FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
