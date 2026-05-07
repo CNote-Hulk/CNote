@@ -174,15 +174,37 @@ router.get('/callback', async (req, res) => {
 router.get('/status', authRequired, async (req, res) => {
     try {
         const result = await pool.query(
-            'SELECT provider_user_id, connected_at FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
+            'SELECT provider_user_id, access_token, connected_at FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
             [req.user.id, 'ebay']
         );
         if (result.rows.length === 0) return res.json({ success: true, connected: false });
         const row = result.rows[0];
+
+        let ebayUsername = row.provider_user_id || null;
+
+        // Backfill username if missing — fetch from eBay and persist
+        if (!ebayUsername && row.access_token) {
+            try {
+                const userRes = await fetch('https://apiz.ebay.com/commerce/identity/v1/user/', {
+                    headers: { Authorization: `Bearer ${row.access_token}`, 'Content-Type': 'application/json' }
+                });
+                if (userRes.ok) {
+                    const userData = await userRes.json();
+                    ebayUsername = userData.username || userData.userId || null;
+                    if (ebayUsername) {
+                        await pool.query(
+                            'UPDATE marketplace_accounts SET provider_user_id = $1 WHERE user_id = $2 AND provider = $3',
+                            [ebayUsername, req.user.id, 'ebay']
+                        );
+                    }
+                }
+            } catch (_) {}
+        }
+
         res.json({
             success: true,
             connected: true,
-            ebayUsername: row.provider_user_id || null,
+            ebayUsername,
             connectedAt: row.connected_at
         });
     } catch (err) {

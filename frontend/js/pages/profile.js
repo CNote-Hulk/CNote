@@ -1631,6 +1631,20 @@ async function initMarketplace() {
 				const account = accounts.find(a => a.provider === id);
 				updateProviderUI(id, account);
 			});
+
+			// Fetch eBay username separately (backfills if missing in DB)
+			const ebayAccount = accounts.find(a => a.provider === 'ebay');
+			if (ebayAccount) {
+				fetch(`${API_BASE_URL}/ebay/status`, { headers: { Authorization: `Bearer ${token}` } })
+					.then(r => r.json())
+					.then(s => {
+						if (s.success && s.ebayUsername) {
+							ebayAccount.providerUserId = s.ebayUsername;
+							updateProviderUI('ebay', ebayAccount);
+						}
+					})
+					.catch(() => {});
+			}
 		} catch (err) {
 			console.error('Failed to load marketplace accounts:', err);
 		}
