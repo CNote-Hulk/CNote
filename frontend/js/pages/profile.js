@@ -1734,11 +1734,12 @@ async function initMarketplace() {
 	// Disconnect provider
 	// -----------------------------
 	async function disconnectProvider(provider) {
-		const confirmed = window.confirm(
-        	`Disconnect ${provider.toUpperCase()}?\n\nThis will remove your connection.`
-        );
+		const confirmed = await confirmModal(
+			`Disconnect ${provider.toUpperCase()}? This will remove your connection.`,
+			{ ok: 'Disconnect', cancel: 'Cancel' }
+		);
 
-        if (!confirmed) return;
+		if (!confirmed) return;
 
 		try {
 			const res = await fetch(

@@ -3101,6 +3101,29 @@ a.chat-message__username:hover {
     border-color: rgba(0, 0, 0, 0.12);
 }
 
+[data-theme="light"] .marketplace-provider-card {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+[data-theme="light"] .marketplace-provider-card:hover {
+    background: rgba(255, 255, 255, 0.97);
+    border-color: rgba(0, 0, 0, 0.14);
+}
+[data-theme="light"] .provider-info h3 {
+    color: #2b2420;
+}
+[data-theme="light"] .provider-status {
+    color: #6b5e54;
+}
+[data-theme="light"] .provider-user {
+    color: #8a7e72;
+}
+[data-theme="light"] .provider-last-sync {
+    color: #8a7e72;
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
 /* ── Mobile bottom nav clearance (profil.html) ── */
 @media (max-width: 680px) {
     .profile-page {
