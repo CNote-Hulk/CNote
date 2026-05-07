@@ -17,6 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/components/report-modal.css">
 </head>
 <body class="has-mbn">
     <!-- ===========================
@@ -88,6 +89,10 @@
                     <button class="profile-tab sidebar-link" data-tab="appearance" type="button">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17.5 10.5A2.5 2.5 0 0 1 20 13"/><circle cx="6.5" cy="11.5" r="2.5"/><path d="M3 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
                         <span data-i18n="settings_tab_appearance">Appearance</span>
+                    </button>
+                    <button class="profile-tab sidebar-link" data-tab="reports" type="button">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                        <span>Rapoartele mele</span>
                     </button>
                 </div>
 
@@ -545,6 +550,20 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- ═══ MY REPORTS PANEL (DSA Art. 16) ═══ -->
+                <div class="profile-panel" id="panel-reports" data-panel="reports">
+                    <div class="settings-row">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title">Rapoartele mele</div>
+                            <div class="settings-row__desc">Rapoartele de conținut trimise de tine. Statusul este actualizat de echipa de moderare.</div>
+                        </div>
+                    </div>
+                    <div id="my-reports-container">
+                        <p class="my-reports-empty">Se încarcă…</p>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>

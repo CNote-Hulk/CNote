@@ -49,6 +49,7 @@ const achievementsRoutes = require('./routes/achievements');
 const ownedConsolesRoutes = require('./routes/owned-consoles');
 const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
+const reportsRoutes = require('./routes/reports');
 
 /* ── Environment validation ── */
 
@@ -134,7 +135,7 @@ app.use(helmet({
 	//   *.googleusercontent.com / *.ggpht.com – Google user avatars (img)
 	//   *.supabase.co          – Supabase auth & realtime (connect)
 	contentSecurityPolicy: {
-		reportOnly: true, // ← FLIP TO false AFTER VALIDATING REPORTS
+		reportOnly: false, // enforcing — flipped from report-only after log validation
 		directives: {
 			defaultSrc:      ["'self'"],
 
@@ -337,6 +338,7 @@ app.use('/api', resetProgressRoutes);
 app.use('/api/consoles', consolesRoutes);
 app.use('/api/achievements', achievementsRoutes);
 app.use('/api', coursesRoutes);
+app.use('/api', reportsRoutes);
 
 /* ── Static files & redirects ── */
 

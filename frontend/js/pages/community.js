@@ -628,23 +628,38 @@ async function loadThreads() {
             return;
         }
         list.innerHTML = threads.map(t => `
-            <button class="hub-thread-item" data-id="${t.id}">
-                <div class="hub-thread-avatar">${avatarHtml(t.username, t.avatar, 36)}</div>
-                <div class="hub-thread-body">
-                    <div class="hub-thread-title">
-                        ${esc(t.title)}
-                        <span class="hub-tag hub-tag--${(t.tag || 'general').toLowerCase()}">${esc(t.tag || 'General')}</span>
+            <div class="hub-thread-item-wrap">
+                <button class="hub-thread-item" data-id="${t.id}">
+                    <div class="hub-thread-avatar">${avatarHtml(t.username, t.avatar, 36)}</div>
+                    <div class="hub-thread-body">
+                        <div class="hub-thread-title">
+                            ${esc(t.title)}
+                            <span class="hub-tag hub-tag--${(t.tag || 'general').toLowerCase()}">${esc(t.tag || 'General')}</span>
+                        </div>
+                        <div class="hub-thread-meta">
+                            <span>${esc(t.username)}</span>
+                            <span>${timeAgo(t.created_at)}</span>
+                            <span>↑ ${t.upvotes || 0}</span>
+                            <span>💬 ${t.reply_count || 0}</span>
+                        </div>
                     </div>
-                    <div class="hub-thread-meta">
-                        <span>${esc(t.username)}</span>
-                        <span>${timeAgo(t.created_at)}</span>
-                        <span>↑ ${t.upvotes || 0}</span>
-                        <span>💬 ${t.reply_count || 0}</span>
-                    </div>
-                </div>
-            </button>`).join('');
+                </button>
+                ${(user() && user().id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}" title="Raportează">⚑ Raportează</button>` : ''}
+            </div>`).join('');
 
         list.addEventListener('click', e => {
+            const reportBtn = e.target.closest('.report-trigger-btn');
+            if (reportBtn) {
+                e.stopPropagation();
+                if (typeof window.openReportModal === 'function') {
+                    window.openReportModal({
+                        contentType: reportBtn.dataset.reportType,
+                        contentId:   reportBtn.dataset.reportId,
+                        contentPreview: reportBtn.dataset.reportPreview,
+                    });
+                }
+                return;
+            }
             const item = e.target.closest('.hub-thread-item');
             if (item) openThread(+item.dataset.id);
         });
@@ -677,8 +692,9 @@ async function openThread(id) {
                         <span class="hub-tag hub-tag--${(t.tag || 'general').toLowerCase()}">${esc(t.tag || 'General')}</span>
                     </div>
                     <div class="hub-thread-original__text" style="margin-top:8px">${esc(t.body)}</div>
-                    <div style="margin-top:10px">
+                    <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                         <button class="hub-btn hub-btn--secondary hub-btn--sm" data-upvote="thread" data-id="${t.id}">↑ ${t.upvotes || 0}</button>
+                        ${(u && u.id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}">⚑ Raportează</button>` : ''}
                     </div>
                 </div>
                 <div class="hub-replies-heading">Replies (${replies.length})</div>
@@ -690,8 +706,9 @@ async function openThread(id) {
                             <span class="hub-reply-time">${timeAgo(r.created_at)}</span>
                         </div>
                         <div class="hub-reply-text">${esc(r.body)}</div>
-                        <div style="padding-left:32px;margin-top:6px">
+                        <div style="padding-left:32px;margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                             <button class="hub-btn hub-btn--secondary hub-btn--sm" data-upvote="reply" data-id="${r.id}">↑ ${r.upvotes || 0}</button>
+                            ${(u && u.id !== r.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_reply" data-report-id="${r.id}" data-report-preview="${esc((r.body || '').substring(0, 60))}">⚑ Raportează</button>` : ''}
                         </div>
                     </div>`).join('')}
             </div>
@@ -705,6 +722,17 @@ async function openThread(id) {
         });
 
         v.querySelector('#thread-detail').addEventListener('click', async e => {
+            const reportBtn = e.target.closest('.report-trigger-btn');
+            if (reportBtn) {
+                if (typeof window.openReportModal === 'function') {
+                    window.openReportModal({
+                        contentType: reportBtn.dataset.reportType,
+                        contentId:   reportBtn.dataset.reportId,
+                        contentPreview: reportBtn.dataset.reportPreview,
+                    });
+                }
+                return;
+            }
             const btn = e.target.closest('[data-upvote]');
             if (!btn || !u) return;
             const type = btn.dataset.upvote;
@@ -1110,6 +1138,7 @@ async function openListingDetail(id) {
                             <div style="color:var(--text-gray);font-size:.78rem">Seller</div>
                         </div>
                         ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
+                        ${u && !own ? `<button class="report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">⚑ Raportează anunțul</button>` : ''}
                     </div>
                     <div class="hub-detail-actions">
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
@@ -1212,6 +1241,16 @@ async function openListingDetail(id) {
                 if (Math.abs(dx) > 50) { dx > 0 ? goTo(lbIdx - 1) : goTo(lbIdx + 1); }
             });
         }
+
+        v.querySelector('#listing-report-btn')?.addEventListener('click', () => {
+            if (typeof window.openReportModal === 'function') {
+                window.openReportModal({
+                    contentType: 'listing',
+                    contentId:   String(l.id),
+                    contentPreview: l.title,
+                });
+            }
+        });
 
         v.querySelector('#listing-dm-btn')?.addEventListener('click', () => {
             S.dmPartner = l.seller_id;
@@ -2075,12 +2114,24 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                 <div class="hub-dm-msg ${m.sender_id === u.id ? 'hub-dm-msg--mine' : 'hub-dm-msg--theirs'}">
                     ${esc(m.message)}
                     <div class="hub-dm-msg__time">${timeAgo(m.created_at)}</div>
+                    ${m.sender_id !== u.id ? `<button class="report-trigger-btn" data-report-type="direct_message" data-report-id="${m.id}" data-report-preview="${esc((m.message || '').substring(0, 60))}" title="Raportează mesajul">⚑</button>` : ''}
                 </div>`).join('');
             el.scrollTop = el.scrollHeight;
         }
     } catch {
         document.getElementById('dm-messages').innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Error.</div>';
     }
+
+    document.getElementById('dm-messages').addEventListener('click', e => {
+        const reportBtn = e.target.closest('.report-trigger-btn');
+        if (reportBtn && typeof window.openReportModal === 'function') {
+            window.openReportModal({
+                contentType: reportBtn.dataset.reportType,
+                contentId:   reportBtn.dataset.reportId,
+                contentPreview: reportBtn.dataset.reportPreview,
+            });
+        }
+    });
 
     document.getElementById('dm-form').addEventListener('submit', async e => {
         e.preventDefault();

@@ -286,6 +286,20 @@ const t = key => I18nModule.t(key);
 
                 if (currentUser && currentUser.id !== profile.id) {
                     await renderFriendButton(actionsEl, profile.id);
+                    // DSA Art. 16 — report this profile
+                    const reportBtn = document.createElement('button');
+                    reportBtn.className = 'report-trigger-btn';
+                    reportBtn.textContent = '⚑ Raportează profilul';
+                    reportBtn.addEventListener('click', () => {
+                        if (typeof window.openReportModal === 'function') {
+                            window.openReportModal({
+                                contentType: 'user_profile',
+                                contentId:   String(profile.id),
+                                contentPreview: profile.username,
+                            });
+                        }
+                    });
+                    actionsEl.appendChild(reportBtn);
                 } else if (currentUser && currentUser.id === profile.id) {
                     actionsEl.innerHTML = `<a href="/html/pages/profil.html#account" class="user-action-btn user-action-btn--edit">${t('up_edit_profile')}</a>`;
                 }

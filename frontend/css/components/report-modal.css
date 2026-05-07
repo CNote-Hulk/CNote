@@ -1,0 +1,267 @@
+/* ── Report Modal — DSA Article 16 Notice & Action ── */
+
+/* Overlay */
+#report-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Modal box */
+#report-modal-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 460px;
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Title */
+.report-modal__title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin: 0;
+}
+
+/* Content preview subtitle */
+.report-modal__preview {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    margin: 0;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Form fields */
+.report-modal__label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+
+.report-modal__select,
+.report-modal__textarea,
+.report-modal__input {
+    width: 100%;
+    background: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-light);
+    font-size: 0.875rem;
+    font-family: var(--font-sans);
+    padding: 0.6rem 0.75rem;
+    box-sizing: border-box;
+    transition: border-color var(--transition-fast);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.report-modal__select:focus,
+.report-modal__textarea:focus,
+.report-modal__input:focus {
+    outline: none;
+    border-color: var(--text-gray);
+}
+
+.report-modal__textarea {
+    resize: vertical;
+    min-height: 80px;
+    max-height: 200px;
+    line-height: 1.5;
+}
+
+.report-modal__char-counter {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    text-align: right;
+    margin-top: 0.25rem;
+}
+
+/* Inline error */
+.report-modal__error {
+    font-size: 0.8rem;
+    color: var(--error);
+    margin: 0;
+}
+
+/* Success state */
+.report-modal__success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    padding: 1rem 0;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* Action buttons row */
+.report-modal__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* Primary button — Submit */
+.report-modal__btn-submit {
+    background: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    color: var(--primary-color);
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: opacity var(--transition-fast);
+    width: 100%;
+}
+
+.report-modal__btn-submit:hover:not(:disabled) {
+    opacity: 0.88;
+}
+
+.report-modal__btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Secondary/ghost button — Cancel (mirrors .cookie-btn-essential after EDPB fix) */
+.report-modal__btn-cancel {
+    background: transparent;
+    border: 1px solid var(--text-light);
+    color: var(--text-light);
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: border-color var(--transition-fast), opacity var(--transition-fast);
+    width: 100%;
+}
+
+.report-modal__btn-cancel:hover {
+    opacity: 0.75;
+}
+
+/* ── Report trigger button — inline ghost/text ── */
+.report-trigger-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast);
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.report-trigger-btn:hover {
+    color: var(--text-light);
+}
+
+/* DM hover report button */
+.hub-dm-msg {
+    position: relative;
+}
+
+.hub-dm-msg .report-trigger-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    opacity: 0;
+    transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+.hub-dm-msg:hover .report-trigger-btn {
+    opacity: 1;
+}
+
+/* ── My Reports table ── */
+.my-reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.my-reports-table th {
+    text-align: left;
+    color: var(--text-gray);
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.my-reports-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.my-reports-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status badges */
+.report-status-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.report-status-badge--pending {
+    background: rgba(224, 107, 88, 0.15);
+    color: var(--warning);
+}
+
+.report-status-badge--reviewed {
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--text-gray);
+}
+
+.report-status-badge--actioned {
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--success);
+}
+
+.report-status-badge--dismissed {
+    background: rgba(168, 159, 148, 0.1);
+    color: var(--text-gray);
+}
+
+.my-reports-empty {
+    color: var(--text-gray);
+    font-size: 0.875rem;
+    padding: 1rem 0;
+}

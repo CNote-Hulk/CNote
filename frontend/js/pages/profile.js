@@ -64,6 +64,7 @@ function initSettings() {
 
     // ═══ TAB SYSTEM ═══
     let achievementsLoaded = false;
+    let reportsLoaded = false;
     const activateTab = (tabKey, syncHash = false) => {
         let tabBtn = document.querySelector(`.profile-tab[data-tab="${tabKey}"]`);
         let panel = document.querySelector(`.profile-panel[data-panel="${tabKey}"]`);
@@ -78,6 +79,11 @@ function initSettings() {
         if (tabKey === 'achievements' && !achievementsLoaded) {
             achievementsLoaded = true;
             loadAchievements().catch(err => console.error(err));
+        }
+
+        if (tabKey === 'reports' && !reportsLoaded) {
+            reportsLoaded = true;
+            loadMyReports().catch(err => console.error('[reports]', err));
         }
 
         if (syncHash) {
@@ -1334,6 +1340,99 @@ function initSettings() {
             resetAccentColor();
             syncPickerToAccent(getComputedAccent());
         });
+    }
+}
+
+// ── DSA Art. 16 — My Reports ─────────────────────────────────
+
+const CONTENT_TYPE_RO = {
+    forum_thread:   'Postare forum',
+    forum_reply:    'Răspuns forum',
+    direct_message: 'Mesaj direct',
+    listing:        'Anunț marketplace',
+    user_profile:   'Profil utilizator',
+};
+
+const REASON_RO = {
+    illegal_content: 'Conținut ilegal',
+    hate_speech:     'Discurs de ură',
+    harassment:      'Hărțuire',
+    spam:            'Spam',
+    csam:            'CSAM',
+    misinformation:  'Dezinformare',
+    other:           'Altceva',
+};
+
+const STATUS_RO = {
+    pending:   { label: 'În așteptare',  cls: 'pending' },
+    reviewed:  { label: 'Revizuit',      cls: 'reviewed' },
+    actioned:  { label: 'Rezolvat',      cls: 'actioned' },
+    dismissed: { label: 'Respins',       cls: 'dismissed' },
+};
+
+/**
+ * loadMyReports
+ * Fetches GET /api/reports/my and renders a table in #my-reports-container.
+ * Called lazily the first time the "reports" tab is opened.
+ */
+async function loadMyReports() {
+    const container = document.getElementById('my-reports-container');
+    if (!container) return;
+
+    container.innerHTML = '<p class="my-reports-empty">Se încarcă…</p>';
+
+    try {
+        const session = AuthModule.getCurrentUser();
+        const token = session?.token
+            || localStorage.getItem('cn_token')
+            || (() => { try { return JSON.parse(localStorage.getItem('cn_session') || 'null')?.token; } catch { return null; } })();
+
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+        const resp = await fetch(`${API_BASE_URL}/reports/my`, { headers });
+        const data = await resp.json().catch(() => ({}));
+
+        if (!resp.ok || !data.success) throw new Error(data.error || 'Error');
+
+        const reports = data.reports || [];
+
+        if (!reports.length) {
+            container.innerHTML = '<p class="my-reports-empty">Nu ai trimis niciun raport.</p>';
+            return;
+        }
+
+        const rows = reports.map(r => {
+            const s = STATUS_RO[r.status] || { label: r.status, cls: 'pending' };
+            const date = new Date(r.created_at).toLocaleDateString('ro-RO', {
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            });
+            const typeLabel  = CONTENT_TYPE_RO[r.content_type] || r.content_type;
+            const reasonLabel = REASON_RO[r.reason] || r.reason;
+
+            // All values are from our own API — safe to template directly
+            return `<tr>
+                <td>${typeLabel}</td>
+                <td>${reasonLabel}</td>
+                <td><span class="report-status-badge report-status-badge--${s.cls}">${s.label}</span></td>
+                <td>${date}</td>
+            </tr>`;
+        }).join('');
+
+        container.innerHTML = `
+            <table class="my-reports-table">
+                <thead>
+                    <tr>
+                        <th>Tip conținut</th>
+                        <th>Motiv</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>`;
+
+    } catch (err) {
+        console.error('[loadMyReports]', err);
+        container.innerHTML = '<p class="my-reports-empty">Nu s-au putut încărca rapoartele. Încearcă din nou.</p>';
     }
 }
 
