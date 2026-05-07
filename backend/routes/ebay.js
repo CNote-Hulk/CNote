@@ -1,5 +1,9 @@
 const express = require('express');
 const crypto = require('crypto');
+const pool = require('../db');
+const { authRequired } = require('../middleware/auth');
+const EbayProvider = require('../providers/EbayProvider');
+const MarketplaceSyncService = require('../services/marketplace-sync');
 
 const router = express.Router();
 
@@ -50,6 +54,139 @@ router.post('/account-deletion', async (req, res) => {
         console.error('eBay account-deletion handler error:', err.message);
         // Always return 200 — eBay retries on 5xx
         return res.json({ acknowledged: true });
+    }
+});
+
+// ── GET /api/ebay/connect ─────────────────────────────────
+// Generate eBay OAuth authorization URL and return it to the frontend
+router.get('/connect', authRequired, async (req, res) => {
+    try {
+        const state = crypto.randomBytes(32).toString('hex');
+        if (!global.oauthStates) global.oauthStates = {};
+        global.oauthStates[state] = { userId: req.user.id, provider: 'ebay', createdAt: Date.now() };
+
+        const ebay = new EbayProvider();
+        const authUrl = ebay.getAuthorizationUrl(state);
+        res.json({ success: true, authUrl });
+    } catch (err) {
+        console.error('eBay connect error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── GET /api/ebay/callback ────────────────────────────────
+// eBay redirects here after user authorizes. Exchanges code for tokens,
+// saves to marketplace_accounts, kicks off background sync.
+router.get('/callback', async (req, res) => {
+    const { code, state } = req.query;
+    const frontendBase = process.env.FRONTEND_URL || '';
+
+    if (!code || !state || !global.oauthStates?.[state]) {
+        return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_connected=0&ebay=error`);
+    }
+
+    const stateData = global.oauthStates[state];
+    if (stateData.provider !== 'ebay') {
+        return res.redirect(`${frontendBase}/html/pages/profil.html?ebay=error`);
+    }
+    delete global.oauthStates[state];
+
+    try {
+        const ebay = new EbayProvider();
+        const auth = await ebay.authenticate(code);
+        const userId = stateData.userId;
+
+        const existing = await pool.query(
+            'SELECT id FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
+            [userId, 'ebay']
+        );
+
+        if (existing.rows.length > 0) {
+            await pool.query(
+                `UPDATE marketplace_accounts
+                 SET access_token = $1, refresh_token = $2, expires_at = $3,
+                     provider_user_id = $4, updated_at = NOW()
+                 WHERE user_id = $5 AND provider = $6`,
+                [auth.accessToken, auth.refreshToken, new Date(auth.expiresAt),
+                 auth.providerUserId || '', userId, 'ebay']
+            );
+        } else {
+            await pool.query(
+                `INSERT INTO marketplace_accounts
+                 (user_id, provider, access_token, refresh_token, expires_at, provider_user_id, last_sync, connected_at)
+                 VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())`,
+                [userId, 'ebay', auth.accessToken, auth.refreshToken,
+                 new Date(auth.expiresAt), auth.providerUserId || '']
+            );
+        }
+
+        MarketplaceSyncService.syncUserListings(userId, 'ebay').catch(err =>
+            console.error('eBay background sync error:', err)
+        );
+
+        res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_connected=1`);
+    } catch (err) {
+        console.error('eBay callback error:', err);
+        res.redirect(`${frontendBase}/html/pages/profil.html?ebay=error`);
+    }
+});
+
+// ── GET /api/ebay/status ──────────────────────────────────
+// Returns whether current user has eBay connected
+router.get('/status', authRequired, async (req, res) => {
+    try {
+        const result = await pool.query(
+            'SELECT provider_user_id, connected_at FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
+            [req.user.id, 'ebay']
+        );
+        if (result.rows.length === 0) return res.json({ success: true, connected: false });
+        const row = result.rows[0];
+        res.json({
+            success: true,
+            connected: true,
+            ebayUsername: row.provider_user_id || 'eBay User',
+            connectedAt: row.connected_at
+        });
+    } catch (err) {
+        console.error('eBay status error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── DELETE /api/ebay/disconnect ───────────────────────────
+// Remove eBay connection and delete imported listings
+router.delete('/disconnect', authRequired, async (req, res) => {
+    try {
+        await pool.query(
+            'DELETE FROM marketplace_accounts WHERE user_id = $1 AND provider = $2',
+            [req.user.id, 'ebay']
+        );
+        await pool.query(
+            "DELETE FROM listings WHERE user_id = $1 AND provider = 'ebay'",
+            [req.user.id]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('eBay disconnect error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── GET /api/ebay/listings/import ────────────────────────
+// Fetch active listings from eBay and import new ones into listings table
+router.get('/listings/import', authRequired, async (req, res) => {
+    try {
+        const result = await MarketplaceSyncService.syncUserListings(req.user.id, 'ebay');
+        res.json({
+            success: result.success,
+            imported: result.listingsAdded || 0,
+            skipped: result.listingsUpdated || 0,
+            total: (result.listingsAdded || 0) + (result.listingsUpdated || 0),
+            errors: []
+        });
+    } catch (err) {
+        console.error('eBay import error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
 

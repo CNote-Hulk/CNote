@@ -1690,7 +1690,29 @@ async function initMarketplace() {
 				);
 			}
 
-			window.location.href = data.authUrl;
+			// Open OAuth in a popup so user stays on the settings page
+			const w = 600, h = 700;
+			const left = Math.round(window.screenX + (window.outerWidth - w) / 2);
+			const top = Math.round(window.screenY + (window.outerHeight - h) / 2);
+			const popup = window.open(
+				data.authUrl,
+				'marketplace-auth',
+				`width=${w},height=${h},left=${left},top=${top},toolbar=no,menubar=no,location=yes`
+			);
+
+			if (!popup || popup.closed) {
+				// Popup blocked — fall back to full redirect
+				window.location.href = data.authUrl;
+				return;
+			}
+
+			// Poll until popup closes, then refresh account list
+			const poll = setInterval(async () => {
+				if (!popup || popup.closed) {
+					clearInterval(poll);
+					await loadMarketplaceAccounts();
+				}
+			}, 1000);
 		} catch (err) {
 			console.error(`Connect ${provider} error:`, err);
 			showMarketplaceMessage(err.message, false);
@@ -1807,12 +1829,43 @@ async function initMarketplace() {
 	function handleOAuthCallback() {
 		const params = new URLSearchParams(window.location.search);
 
+		// If this page is the popup target, notify the opener and close
+		if (window.opener && !window.opener.closed) {
+			if (params.get('marketplace_connected') === '1') {
+				try { window.opener.postMessage({ type: 'marketplace_connected' }, window.location.origin); } catch (_) {}
+				window.close();
+				return;
+			}
+			if (params.get('ebay') === 'error' || params.get('marketplace_error')) {
+				try { window.opener.postMessage({ type: 'marketplace_error' }, window.location.origin); } catch (_) {}
+				window.close();
+				return;
+			}
+		}
+
+		// Normal (non-popup) callback handling
 		if (params.get('marketplace_connected') === '1') {
 			showMarketplaceMessage(t('settings_marketplace_connected'), true);
 			loadMarketplaceAccounts();
 			history.replaceState(null, '', window.location.pathname);
 		}
+		if (params.get('ebay') === 'error' || params.get('marketplace_error')) {
+			showMarketplaceMessage(t('settings_sync_failed'), false);
+			history.replaceState(null, '', window.location.pathname);
+		}
 	}
+
+	// Listen for messages from the OAuth popup
+	window.addEventListener('message', (e) => {
+		if (e.origin !== window.location.origin) return;
+		if (e.data?.type === 'marketplace_connected') {
+			showMarketplaceMessage(t('settings_marketplace_connected'), true);
+			loadMarketplaceAccounts();
+		}
+		if (e.data?.type === 'marketplace_error') {
+			showMarketplaceMessage(t('settings_sync_failed'), false);
+		}
+	});
 
 	// Init
 	bindEvents();
