@@ -68,7 +68,7 @@ router.get('/connect', authRequired, async (req, res) => {
         const params = new URLSearchParams({
             response_type: 'code',
             client_id: process.env.EBAY_CLIENT_ID,
-            redirect_uri: process.env.EBAY_RUNAME,
+            redirect_uri: process.env.EBAY_RU_NAME,
             state,
             scope: [
                 'https://api.ebay.com/oauth/api_scope',
@@ -112,7 +112,7 @@ router.get('/callback', async (req, res) => {
             body: new URLSearchParams({
                 grant_type: 'authorization_code',
                 code,
-                redirect_uri: process.env.EBAY_RUNAME
+                redirect_uri: process.env.EBAY_RU_NAME
             }).toString()
         });
         if (!tokenRes.ok) throw new Error(`eBay token exchange failed: ${await tokenRes.text()}`);
