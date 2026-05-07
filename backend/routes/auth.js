@@ -211,7 +211,7 @@ router.get('/check-username', async (req, res) => {
         const result = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [username]);
         res.json({ available: !result.rows[0] });
     } catch (err) {
-        console.error('Check username error:', err);
+        console.error('Check username error:', err.message);
         res.status(500).json({ available: false });
     }
 });
@@ -251,7 +251,7 @@ router.post('/setup-username', authRequired, async (req, res) => {
 
         res.json({ success: true, user: sanitizeUser(result.rows[0]) });
     } catch (err) {
-        console.error('Setup username error:', err);
+        console.error('Setup username error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -312,10 +312,27 @@ router.post('/register', async (req, res) => {
         const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
         const verificationToken = generateToken();
         const verificationExpiry = expiresAt();
-        const insertResult = await pool.query(
-            'INSERT INTO users (username, email, password_hash, email_verified) VALUES ($1, $2, $3, FALSE) RETURNING *',
-            [usernameTrimmed, emailLower, passwordHash]
-        );
+        // birth_date column added via: ALTER TABLE users ADD COLUMN IF NOT EXISTS birth_date DATE;
+        // Graceful fallback: if the column doesn't exist yet (error code 42703),
+        // fall back to the INSERT without it so registration keeps working.
+        const safeBirthDate = (birth_date !== undefined && birth_date !== null && birth_date !== '') ? birth_date : null;
+        let insertResult;
+        try {
+            insertResult = await pool.query(
+                'INSERT INTO users (username, email, password_hash, email_verified, birth_date) VALUES ($1, $2, $3, FALSE, $4) RETURNING *',
+                [usernameTrimmed, emailLower, passwordHash, safeBirthDate]
+            );
+        } catch (insertErr) {
+            if (insertErr.code === '42703') {
+                // Column not yet added — fall back to INSERT without birth_date
+                insertResult = await pool.query(
+                    'INSERT INTO users (username, email, password_hash, email_verified) VALUES ($1, $2, $3, FALSE) RETURNING *',
+                    [usernameTrimmed, emailLower, passwordHash]
+                );
+            } else {
+                throw insertErr;
+            }
+        }
 
         const user = insertResult.rows[0];
         await pool.query(
@@ -335,7 +352,7 @@ router.post('/register', async (req, res) => {
                 : 'Account created, but the verification email could not be sent at this time.'
         });
     } catch (err) {
-        console.error('Register error:', err);
+        console.error('Register error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error. Please try again.' });
     }
 });
@@ -451,7 +468,7 @@ router.post('/login', async (req, res) => {
             session_token: sessionToken
         });
     } catch (err) {
-        console.error('Login error:', err);
+        console.error('Login error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error. Please try again.' });
     }
 });
@@ -492,7 +509,7 @@ router.get('/verify-email', async (req, res) => {
 
         return res.json({ success: true, message: 'Email verified successfully! You can now log in.' });
     } catch (err) {
-        console.error('Verify email error:', err);
+        console.error('Verify email error:', err.message);
         return res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -523,7 +540,7 @@ router.post('/resend-verification', authRequired, async (req, res) => {
         }
         return res.json({ success: true, emailSent: true, message: 'Verification email has been resent.' });
     } catch (err) {
-        console.error('Resend verification error:', err);
+        console.error('Resend verification error:', err.message);
         return res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -556,7 +573,7 @@ router.post('/resend-verification-public', async (req, res) => {
         await emailService.sendVerificationEmail(user.email, token, process.env.BASE_URL);
         return res.json({ success: true, message: 'If an unverified account with this email exists, we have resent the link.' });
     } catch (err) {
-        console.error('Public resend verification error:', err);
+        console.error('Public resend verification error:', err.message);
         // Still return success to avoid leaking account existence
         return res.status(500).json({ success: false, error: 'Internal error.' });
     }
@@ -606,7 +623,7 @@ router.get('/me/level', authRequired, async (req, res) => {
             },
         });
     } catch (err) {
-        console.error('GET /me/level error:', err);
+        console.error('GET /me/level error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error' });
     }
 });
@@ -728,7 +745,7 @@ router.put('/me', authRequired, async (req, res) => {
         const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
         res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
     } catch (err) {
-        console.error('Update profile error:', err);
+        console.error('Update profile error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -777,7 +794,7 @@ router.put('/me/email', authRequired, async (req, res) => {
         const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
         res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]), message: 'Email changed. Check the new email to confirm it.' });
     } catch (err) {
-        console.error('Update email error:', err);
+        console.error('Update email error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -817,7 +834,7 @@ router.put('/me/password', authRequired, async (req, res) => {
 
         res.json({ success: true });
     } catch (err) {
-        console.error('Update password error:', err);
+        console.error('Update password error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -850,7 +867,7 @@ router.post('/account/set-password', authRequired, async (req, res) => {
 
         res.json({ success: true, message: 'Password has been set successfully.' });
     } catch (err) {
-        console.error('Set password error:', err);
+        console.error('Set password error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -901,7 +918,7 @@ router.delete('/account', authRequired, async (req, res) => {
         return res.json({ success: true });
     } catch (err) {
         try { await client.query('ROLLBACK'); } catch { }
-        console.error('Delete account error:', err);
+        console.error('Delete account error:', err.message);
         return res.status(500).json({ success: false, error: 'Internal error.' });
     } finally {
         client.release();
@@ -932,7 +949,7 @@ router.post('/request-reset', async (req, res) => {
 
         res.json({ success: true, message: 'If an account with this email exists, you will receive a reset link.' });
     } catch (err) {
-        console.error('Request reset error:', err);
+        console.error('Request reset error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -967,7 +984,7 @@ router.post('/reset-password', async (req, res) => {
 
         res.json({ success: true, message: 'Password has been reset. You can now log in with your new password.' });
     } catch (err) {
-        console.error('Reset password error:', err);
+        console.error('Reset password error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1088,7 +1105,7 @@ router.post('/2fa/verify', async (req, res) => {
             session_token: sessionToken
         });
     } catch (err) {
-        console.error('2FA verify error:', err);
+        console.error('2FA verify error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1142,7 +1159,7 @@ router.post('/2fa/fallback-email', async (req, res) => {
 
         res.json({ success: true, message: 'Code has been sent to your email.' });
     } catch (err) {
-        console.error('2FA fallback-email error:', err);
+        console.error('2FA fallback-email error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1166,7 +1183,7 @@ router.post('/2fa/setup/totp', authRequired, async (req, res) => {
             qrCode
         });
     } catch (err) {
-        console.error('TOTP setup error:', err);
+        console.error('TOTP setup error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1199,7 +1216,7 @@ router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
 
         res.json({ success: true, message: 'Authenticator 2FA has been enabled.' });
     } catch (err) {
-        console.error('TOTP confirm error:', err);
+        console.error('TOTP confirm error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1218,7 +1235,7 @@ router.post('/2fa/setup/email', authRequired, async (req, res) => {
         );
         res.json({ success: true, message: 'Email 2FA has been enabled.' });
     } catch (err) {
-        console.error('Email 2FA setup error:', err);
+        console.error('Email 2FA setup error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1271,7 +1288,7 @@ router.delete('/2fa/disable', authRequired, async (req, res) => {
             res.json({ success: true, message: '2FA has been completely disabled.' });
         }
     } catch (err) {
-        console.error('2FA disable error:', err);
+        console.error('2FA disable error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1301,7 +1318,7 @@ router.post('/2fa/backup-codes/generate', authRequired, async (req, res) => {
 
         res.json({ success: true, codes });
     } catch (err) {
-        console.error('Generate backup codes error:', err);
+        console.error('Generate backup codes error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1341,7 +1358,7 @@ router.post('/2fa/backup-codes/regenerate', authRequired, async (req, res) => {
 
         res.json({ success: true, codes });
     } catch (err) {
-        console.error('Regenerate backup codes error:', err);
+        console.error('Regenerate backup codes error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1355,7 +1372,7 @@ router.get('/2fa/backup-codes/count', authRequired, async (req, res) => {
         );
         res.json({ success: true, remaining: parseInt(result.rows[0].remaining, 10) });
     } catch (err) {
-        console.error('Backup codes count error:', err);
+        console.error('Backup codes count error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1372,7 +1389,7 @@ router.get('/trusted-devices', authRequired, async (req, res) => {
         );
         res.json({ success: true, devices: result.rows });
     } catch (err) {
-        console.error('List trusted devices error:', err);
+        console.error('List trusted devices error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1390,7 +1407,7 @@ router.delete('/trusted-devices/:id', authRequired, async (req, res) => {
         );
         res.json({ success: true, message: 'Device has been revoked.' });
     } catch (err) {
-        console.error('Revoke trusted device error:', err);
+        console.error('Revoke trusted device error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1404,7 +1421,7 @@ router.delete('/trusted-devices', authRequired, async (req, res) => {
         );
         res.json({ success: true, message: 'All trusted devices have been revoked.' });
     } catch (err) {
-        console.error('Revoke all trusted devices error:', err);
+        console.error('Revoke all trusted devices error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1434,7 +1451,7 @@ router.post('/me/set-password-email', authRequired, async (req, res) => {
 
         res.json({ success: true, message: 'Email sent! Check your inbox for the set-password link.' });
     } catch (err) {
-        console.error('Set-password-email error:', err);
+        console.error('Set-password-email error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1461,7 +1478,7 @@ router.post('/me/email-change-notify', authRequired, async (req, res) => {
 
         res.json({ success: true });
     } catch (err) {
-        console.error('Email-change-notify error:', err);
+        console.error('Email-change-notify error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
@@ -1487,7 +1504,135 @@ router.post('/me/password-changed-notify', authRequired, async (req, res) => {
 
         res.json({ success: true });
     } catch (err) {
-        console.error('Password-changed-notify error:', err);
+        console.error('Password-changed-notify error:', err.message);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── GDPR data export — in-memory rate limit (3 exports per day per user) ──
+const exportRateLimitMap = new Map();
+
+function checkExportRateLimit(userId) {
+    const key = `export:${userId}`;
+    const now = Date.now();
+    const window = 24 * 3600 * 1000; // 24 hours
+    const limit = 3;
+    let entry = exportRateLimitMap.get(key);
+    if (!entry || now > entry.resetTime) {
+        entry = { count: 0, resetTime: now + window };
+        exportRateLimitMap.set(key, entry);
+    }
+    entry.count++;
+    if (entry.count > limit) {
+        return { blocked: true, msBeforeNext: entry.resetTime - now };
+    }
+    return { blocked: false };
+}
+
+// GET /api/me/export — GDPR data export (synchronous JSON download)
+router.get('/me/export', authRequired, async (req, res) => {
+    // Rate limit: 3 exports per day per user
+    try {
+        const limitResult = checkExportRateLimit(req.user.id);
+        if (limitResult.blocked) {
+            res.set('Retry-After', Math.ceil(limitResult.msBeforeNext / 1000));
+            return res.status(429).json({ success: false, error: 'Poți exporta datele de cel mult 3 ori pe zi.' });
+        }
+    } catch (limiterErr) {
+        console.error('Export rate limiter error:', limiterErr.message);
+        // Never block on limiter failure
+    }
+
+    try {
+        // ── Profile (exclude password_hash and 2FA secrets) ─────────────
+        const userResult = await pool.query(
+            `SELECT id, username, email, bio, avatar, avatar_url,
+                    favorite_consoles, owned_consoles, email_verified,
+                    two_factor_enabled, two_factor_method,
+                    two_factor_totp_enabled, two_factor_email_enabled,
+                    google_id IS NOT NULL AS google_linked,
+                    role, created_at, updated_at,
+                    notify_new_friend, notify_new_message, notify_repair_reply,
+                    social_discord, social_twitter, social_youtube, social_instagram,
+                    show_email, show_stats, show_friends, show_social_links,
+                    nickname, username_changed_at, birth_date
+             FROM users WHERE id = $1`,
+            [req.user.id]
+        );
+        // birth_date column may not exist yet — suppress that error gracefully
+        let profileRow = userResult.rows[0];
+        if (!profileRow) {
+            return res.status(404).json({ success: false, error: 'User not found.' });
+        }
+
+        // ── Forum threads ────────────────────────────────────────────────
+        const threadsResult = await pool.query(
+            'SELECT id, console, title, body, tag, views, upvotes, created_at FROM forum_threads WHERE user_id = $1 ORDER BY created_at DESC',
+            [req.user.id]
+        );
+
+        // ── Forum replies ────────────────────────────────────────────────
+        const repliesResult = await pool.query(
+            'SELECT id, thread_id, body, upvotes, created_at FROM forum_replies WHERE user_id = $1 ORDER BY created_at DESC',
+            [req.user.id]
+        );
+
+        // ── DMs sent ─────────────────────────────────────────────────────
+        const dmsResult = await pool.query(
+            'SELECT id, receiver_id, message, listing_id, created_at FROM direct_messages WHERE sender_id = $1 ORDER BY created_at DESC',
+            [req.user.id]
+        );
+
+        // ── Marketplace listings ─────────────────────────────────────────
+        const listingsResult = await pool.query(
+            'SELECT id, title, description, price, condition, category, location, country, created_at FROM listings WHERE user_id = $1 ORDER BY created_at DESC',
+            [req.user.id]
+        );
+
+        // ── Favorites ────────────────────────────────────────────────────
+        const consoleFavsResult = await pool.query(
+            'SELECT console_id, created_at FROM user_favorites WHERE user_id = $1 ORDER BY created_at DESC',
+            [req.user.id]
+        );
+        const listingFavsResult = await pool.query(
+            'SELECT listing_id, created_at FROM listing_favorites WHERE user_id = $1 ORDER BY created_at DESC',
+            [req.user.id]
+        );
+
+        // ── Achievements (optional table) ─────────────────────────────────
+        let achievements = [];
+        try {
+            const achievementsResult = await pool.query(
+                'SELECT achievement_id, unlocked_at FROM user_achievements WHERE user_id = $1 ORDER BY unlocked_at DESC',
+                [req.user.id]
+            );
+            achievements = achievementsResult.rows;
+        } catch { /* table may not exist — skip silently */ }
+
+        // ── Reports submitted ─────────────────────────────────────────────
+        const reportsResult = await pool.query(
+            'SELECT id, content_type, content_id, reason, description, created_at FROM content_reports WHERE reporter_id = $1 ORDER BY created_at DESC',
+            [req.user.id]
+        );
+
+        const payload = {
+            exportedAt: new Date().toISOString(),
+            user: profileRow,
+            forum_threads: threadsResult.rows,
+            forum_replies: repliesResult.rows,
+            direct_messages: dmsResult.rows,
+            listings: listingsResult.rows,
+            favorites: {
+                consoles: consoleFavsResult.rows,
+                listings: listingFavsResult.rows
+            },
+            achievements,
+            reports: reportsResult.rows
+        };
+
+        res.json({ success: true, ...payload });
+    } catch (err) {
+        console.error('GDPR export error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });

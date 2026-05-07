@@ -1143,6 +1143,47 @@ function initSettings() {
         });
     }
 
+    // ═══ ACCOUNT — GDPR data export ═══
+    const exportDataBtn = document.getElementById('export-data-btn');
+    if (exportDataBtn) {
+        exportDataBtn.addEventListener('click', async () => {
+            const originalText = exportDataBtn.textContent;
+            exportDataBtn.disabled = true;
+            exportDataBtn.textContent = t('gdpr.export.loading');
+
+            try {
+                const token = localStorage.getItem('cn_token');
+                const res = await fetch(`${API_BASE_URL}/me/export`, {
+                    headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+                    credentials: 'include'
+                });
+
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    showSettingsMessage(data.error || t('gdpr.export.error'), false);
+                    return;
+                }
+
+                const data = await res.json();
+                const filename = `cnote-export-${user.username}-${new Date().toISOString().slice(0, 10)}.json`;
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            } catch {
+                showSettingsMessage(t('gdpr.export.error'), false);
+            } finally {
+                exportDataBtn.disabled = false;
+                exportDataBtn.textContent = originalText;
+            }
+        });
+    }
+
     // ═══ SECURITY — Sessions ═══
     function timeAgo(dateStr) {
         if (!dateStr) return 'unknown';

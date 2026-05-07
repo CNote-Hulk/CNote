@@ -274,6 +274,24 @@ app.post('/api/reset-password', authLimiter);
 app.post('/api/2fa/verify', twoFactorLimiter);
 app.post('/api/2fa/email-fallback', twoFactorLimiter);
 
+/* ── Request sanitize logger — scrubs sensitive fields before logging ─────
+   Only active in development (NODE_ENV !== 'production').
+   Must run after express.json() so req.body is parsed.
+   ──────────────────────────────────────────────────────────────────────── */
+app.use((req, res, next) => {
+	if (req.path.startsWith('/api/') && req.method !== 'GET') {
+		const sanitized = { ...req.body };
+		['password', 'newPassword', 'currentPassword', 'token',
+		 'secret', 'code', 'backup_code'].forEach(k => {
+			if (sanitized[k]) sanitized[k] = '[REDACTED]';
+		});
+		if (process.env.NODE_ENV !== 'production') {
+			console.log(`${req.method} ${req.path}`, sanitized);
+		}
+	}
+	next();
+});
+
 /* ── CSP violation report sink ───────────────────────────────────────────
    Intentionally NOT rate-limited so violations are never silently dropped.
    Browsers send Content-Type: application/csp-report (old) or

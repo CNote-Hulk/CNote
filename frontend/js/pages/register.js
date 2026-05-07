@@ -5,6 +5,7 @@
  */
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
+import { I18nModule } from '../modules/i18n.js';
 
 // Redirect if already logged in
 if (AuthModule.isLoggedIn()) {
@@ -72,18 +73,43 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
     const confirm = document.getElementById('reg-password-confirm').value;
-        if (password !== confirm) {
-            const errorEl = document.getElementById('register-error');
-            const submitBtn = e.target.querySelector('button[type="submit"]');  
+    const birthDateVal = (document.getElementById('reg-birth-date')?.value || '').trim();
+    const birthDateErrorEl = document.getElementById('birth-date-error');
+
+    const errorEl = document.getElementById('register-error');
+    const successEl = document.getElementById('register-success');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+
+    // ── Client-side age gate ──────────────────────────────────────────────
+    if (birthDateErrorEl) birthDateErrorEl.style.display = 'none';
+    if (birthDateVal) {
+        const dob = new Date(birthDateVal);
+        if (!isNaN(dob.getTime())) {
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) age--;
+            if (age < 16) {
+                const msg = I18nModule.t('register.error.underage');
+                if (birthDateErrorEl) {
+                    birthDateErrorEl.textContent = msg;
+                    birthDateErrorEl.style.display = 'block';
+                } else {
+                    errorEl.textContent = msg;
+                    errorEl.classList.add('visible');
+                }
+                return;
+            }
+        }
+    }
+
+    if (password !== confirm) {
             errorEl.textContent = 'Passwords do not match.';
             errorEl.classList.add('visible');
             submitBtn.disabled = false;
             submitBtn.textContent = 'Create account';
             return;
         }
-    const errorEl = document.getElementById('register-error');
-    const successEl = document.getElementById('register-success');
-    const submitBtn = e.target.querySelector('button[type="submit"]');
 
     errorEl.classList.remove('visible');
     if (successEl) successEl.classList.remove('visible');
@@ -91,7 +117,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     submitBtn.textContent = 'Creating account...';
 
     try {
-        const result = await AuthModule.register(username, email, password);
+        const result = await AuthModule.register(username, email, password, birthDateVal || undefined);
         if (result.success) {
             document.getElementById('register-form-wrap').style.display = 'none';
             document.getElementById('register-sent-email').textContent = email;
