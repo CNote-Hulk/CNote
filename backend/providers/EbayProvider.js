@@ -85,16 +85,22 @@ class EbayProvider extends MarketplaceProvider {
 		const data = await response.json();
 
 		// fetch user identity
-		const userRes = await fetch(
-			`${this.baseUrl}/commerce/identity/v1/user/`,
-			{
-				headers: {
-					Authorization: `Bearer ${data.access_token}`
+		let providerUserId = null;
+		try {
+			const userRes = await fetch(
+				'https://apiz.ebay.com/commerce/identity/v1/user/',
+				{
+					headers: {
+						Authorization: `Bearer ${data.access_token}`,
+						'Content-Type': 'application/json'
+					}
 				}
+			);
+			if (userRes.ok) {
+				const userData = await userRes.json();
+				providerUserId = userData.username || userData.userId || null;
 			}
-		);
-
-		const userData = await userRes.json();
+		} catch (_) {}
 
 		return {
 			accessToken: data.access_token,
@@ -103,10 +109,7 @@ class EbayProvider extends MarketplaceProvider {
 
 			expiresAt: Date.now() + data.expires_in * 1000,
 
-			providerUserId:
-				userData.username ||
-				userData.userId ||
-				null
+			providerUserId
 		};
 	}
 
