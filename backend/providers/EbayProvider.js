@@ -20,23 +20,31 @@ class EbayProvider extends MarketplaceProvider {
 
 	// 🔐 OAuth authorization URL
 	getAuthorizationUrl(state) {
-		const params = new URLSearchParams({
-			response_type: 'code',
-			client_id: this.clientId,
+	console.log({
+		clientId: this.clientId,
+		ruName: this.ruName
+	});
 
-			// IMPORTANT: must be RuName
-			redirect_uri: this.ruName,
+	const params = new URLSearchParams({
+		response_type: 'code',
 
-			state,
+		client_id: this.clientId,
 
-			scope:
-				'https://api.ebay.com/oauth/api_scope ' +
-				'https://api.ebay.com/oauth/api_scope/sell.inventory ' +
-				'https://api.ebay.com/oauth/api_scope/sell.account.readonly'
-		});
+		redirect_uri: this.ruName,
 
-		return `https://auth.ebay.com/oauth2/authorize?${params.toString()}`;
-	}
+		state,
+
+		// MINIMAL SCOPE
+		scope: 'https://api.ebay.com/oauth/api_scope'
+	});
+
+	const url =
+		`https://auth.ebay.com/oauth2/authorize?${params.toString()}`;
+
+	console.log('eBay OAuth URL:', url);
+
+	return url;
+}
 
 	// 🔐 Exchange code → access token
 	async authenticate(code) {
