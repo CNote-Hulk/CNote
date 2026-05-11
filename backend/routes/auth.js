@@ -23,6 +23,7 @@ const router = express.Router();
 
 const BCRYPT_ROUNDS = 12;
 const TOKEN_EXPIRY_HOURS = 24;
+const PASSWORD_RESET_EXPIRY_HOURS = 1;
 
 /* ── Helper functions ── */
 
@@ -941,7 +942,7 @@ router.post('/request-reset', async (req, res) => {
         await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [user.id]);
 
         const token = generateToken();
-        await pool.query('INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)', [user.id, token, expiresAt()]);
+        await pool.query('INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)', [user.id, token, expiresAt(PASSWORD_RESET_EXPIRY_HOURS)]);
 
         emailService.sendPasswordResetEmail(user.email, token, process.env.BASE_URL).then(result => {
             if (!result.success) console.error('Failed to send reset email:', result.error);
@@ -965,15 +966,13 @@ router.post('/reset-password', async (req, res) => {
             return res.status(400).json({ success: false, error: pwdCheck.error });
         }
 
-        const rowResult = await pool.query('SELECT * FROM password_reset_tokens WHERE token = $1', [token]);
+        const rowResult = await pool.query(
+            'SELECT * FROM password_reset_tokens WHERE token = $1 AND expires_at > NOW()',
+            [token]
+        );
         const row = rowResult.rows[0];
         if (!row) {
             return res.status(400).json({ success: false, error: 'Invalid or expired token.' });
-        }
-
-        if (new Date(row.expires_at) < new Date()) {
-            await pool.query('DELETE FROM password_reset_tokens WHERE id = $1', [row.id]);
-            return res.status(400).json({ success: false, error: 'Token has expired. Request a new link.' });
         }
 
         const hash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
@@ -1442,7 +1441,7 @@ router.post('/me/set-password-email', authRequired, async (req, res) => {
         const token = generateToken();
         await pool.query(
             'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)',
-            [user.id, token, expiresAt()]
+            [user.id, token, expiresAt(PASSWORD_RESET_EXPIRY_HOURS)]
         );
 
         emailService.sendSetPasswordEmail(user.email, token, process.env.BASE_URL).then(result => {
