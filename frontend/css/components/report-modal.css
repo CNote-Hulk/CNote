@@ -265,3 +265,12 @@
     font-size: 0.875rem;
     padding: 1rem 0;
 }
+
+.report-content-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+.report-content-link:hover {
+    text-decoration: underline;
+}

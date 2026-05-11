@@ -53,7 +53,8 @@ async function authRequired(req, res, next) {
             avatar_url: user.avatar_url,
             role: user.role || 'user',
             username_chosen: user.username_chosen !== false,
-            created_at: user.created_at
+            created_at: user.created_at,
+            birth_date: user.birth_date || null
         };
         return next();
     } catch (jwtErr) {
@@ -70,7 +71,7 @@ async function authRequired(req, res, next) {
                u.two_factor_totp_enabled, u.two_factor_email_enabled,
                u.google_id, u.avatar_url,
                u.role, u.username_chosen,
-               u.created_at
+               u.created_at, u.birth_date
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = true
@@ -105,7 +106,8 @@ async function authRequired(req, res, next) {
         avatar_url: session.avatar_url,
         role: session.role || 'user',
         username_chosen: session.username_chosen !== false,
-        created_at: session.created_at
+        created_at: session.created_at,
+        birth_date: session.birth_date || null
     };
     req.sessionId = session.session_id;
     req.sessionToken = token;

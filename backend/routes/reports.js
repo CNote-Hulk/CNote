@@ -147,7 +147,35 @@ router.get('/reports/my', authRequired, async (req, res) => {
             LIMIT 20
         `, [req.user.id]);
 
-        return res.json({ success: true, reports: result.rows });
+        const reports = result.rows;
+
+        // Enrich each report with a label and link for the reported content
+        for (const r of reports) {
+            try {
+                if (r.content_type === 'user_profile') {
+                    const u = await pool.query('SELECT username FROM users WHERE id = $1', [r.content_id]);
+                    r.content_label = u.rows[0]?.username || null;
+                    r.content_link = u.rows[0] ? `/html/pages/user-profile.html?u=${u.rows[0].username}` : null;
+                } else if (r.content_type === 'forum_thread') {
+                    const t = await pool.query('SELECT title, console FROM forum_threads WHERE id = $1', [r.content_id]);
+                    r.content_label = t.rows[0]?.title || null;
+                    r.content_link = t.rows[0] ? `/html/pages/community.html#forum/${t.rows[0].console}/thread/${r.content_id}` : null;
+                } else if (r.content_type === 'forum_reply') {
+                    const t = await pool.query('SELECT ft.id, ft.console FROM forum_replies fr JOIN forum_threads ft ON ft.id = fr.thread_id WHERE fr.id = $1', [r.content_id]);
+                    r.content_label = `Reply #${r.content_id}`;
+                    r.content_link = t.rows[0] ? `/html/pages/community.html#forum/${t.rows[0].console}/thread/${t.rows[0].id}` : null;
+                } else if (r.content_type === 'listing') {
+                    const l = await pool.query('SELECT title FROM marketplace_listings WHERE id = $1', [r.content_id]);
+                    r.content_label = l.rows[0]?.title || null;
+                    r.content_link = `/html/pages/community.html#listing-${r.content_id}`;
+                } else if (r.content_type === 'direct_message') {
+                    r.content_label = `Message #${r.content_id}`;
+                    r.content_link = null;
+                }
+            } catch { /* ignore enrichment errors */ }
+        }
+
+        return res.json({ success: true, reports });
     } catch (err) {
         console.error('[reports] GET /api/reports/my error:', err.message || err);
         return res.status(500).json({ success: false, error: 'Internal error.' });

@@ -284,6 +284,19 @@ function initSettings() {
     document.getElementById('set-username').value = user.username;
     document.getElementById('set-bio').value = user.bio || '';
     document.getElementById('set-email').value = user.email || '';
+    const birthDateInput = document.getElementById('set-birth-date');
+    if (birthDateInput) {
+        if (user.birth_date) {
+            birthDateInput.value = user.birth_date.slice(0, 10);
+        } else {
+            // Session cache may predate birth_date field — fetch fresh
+            const token = localStorage.getItem('cn_token');
+            fetch(`${API_BASE_URL}/me`, { headers: token ? { 'Authorization': 'Bearer ' + token } : {} })
+                .then(r => r.json()).then(d => {
+                    if (d.user?.birth_date) birthDateInput.value = d.user.birth_date.slice(0, 10);
+                }).catch(() => {});
+        }
+    }
 
     // Username cooldown hint
     const USERNAME_COOLDOWN_DAYS = 7;
@@ -485,7 +498,8 @@ function initSettings() {
             return;
         }
 
-        const profileResult = await AuthModule.updateProfile({ username, bio, owned_consoles });
+        const birthDateVal = (document.getElementById('set-birth-date') || {}).value || '';
+        const profileResult = await AuthModule.updateProfile({ username, bio, owned_consoles, birth_date: birthDateVal || null });
         if (profileResult === false || (profileResult && !profileResult.success && profileResult.error)) {
             showSettingsMessage(profileResult?.error || 'Username is already taken.', false);
             return;
@@ -1450,9 +1464,14 @@ async function loadMyReports() {
             const typeLabel   = t(CONTENT_TYPE_KEYS[r.content_type] || 'report_col_content_type');
             const reasonLabel = t(REASON_KEYS_PROFILE[r.reason] || 'report_col_reason');
 
-            // All values are from our own API — safe to template directly
+            const labelSuffix = r.content_label ? ': ' + escapeHtml(r.content_label.slice(0, 40)) : '';
+            const safeLink = r.content_link ? r.content_link.replace(/"/g, '%22') : '';
+            const contentCell = safeLink
+                ? `<a href="${safeLink}" class="report-content-link" target="_blank" rel="noopener">${typeLabel}${labelSuffix}</a>`
+                : `${typeLabel}${labelSuffix}`;
+
             return `<tr>
-                <td>${typeLabel}</td>
+                <td>${contentCell}</td>
                 <td>${reasonLabel}</td>
                 <td><span class="report-status-badge report-status-badge--${cls}">${statusLabel}</span></td>
                 <td>${date}</td>

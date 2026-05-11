@@ -196,7 +196,8 @@ function sanitizeUser(user) {
         show_friends: user.show_friends !== false,
         show_social_links: user.show_social_links !== false,
         nickname: user.nickname || '',
-        username_changed_at: user.username_changed_at || null
+        username_changed_at: user.username_changed_at || null,
+        birth_date: user.birth_date || null
     };
 }
 
@@ -633,7 +634,7 @@ const USERNAME_COOLDOWN_DAYS = 7;
 
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
-    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links, nickname } = req.body;
+    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links, nickname, birth_date } = req.body;
     const updates = [];
     const params = [];
     let paramIndex = 1;
@@ -732,6 +733,23 @@ router.put('/me', authRequired, async (req, res) => {
     if (nickname !== undefined) {
         updates.push(`nickname = $${paramIndex++}`);
         params.push(String(nickname).trim().slice(0, 50));
+    }
+    if (birth_date !== undefined) {
+        if (birth_date === null || birth_date === '') {
+            updates.push(`birth_date = NULL`);
+        } else {
+            const dob = new Date(birth_date);
+            if (isNaN(dob.getTime())) {
+                return res.status(400).json({ success: false, error: 'Invalid birth date format.' });
+            }
+            const minAge = new Date();
+            minAge.setFullYear(minAge.getFullYear() - 13);
+            if (dob > minAge) {
+                return res.status(400).json({ success: false, error: 'You must be at least 13 years old.' });
+            }
+            updates.push(`birth_date = $${paramIndex++}`);
+            params.push(birth_date);
+        }
     }
 
     if (updates.length === 0) {
