@@ -2297,7 +2297,7 @@ function handleHashNavigation() {
     if (threadDeepMatch) {
         const con = threadDeepMatch[1];
         const tid = +threadDeepMatch[2];
-        const validConsoles = ['ps', 'xbox', 'nintendo', 'pc', 'general'];
+        const validConsoles = ['ps', 'xbox', 'nintendo', 'pc', 'general', 'other'];
         if (validConsoles.includes(con)) {
             S.console = con;
             renderForum();

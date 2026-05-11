@@ -123,8 +123,9 @@ export const NotificationsModule = {
             notifs.forEach(n => {
                 const item = document.createElement('a');
                 item.className = 'notif-item' + (n.read ? '' : ' notif-item--unread');
-                const hasLink = n.link && n.link.trim() !== '' && n.link !== '#';
-                item.href = hasLink ? n.link : '#';
+                const resolvedLink = this._resolveLink(n.link, n.type);
+                const hasLink = !!resolvedLink;
+                item.href = hasLink ? resolvedLink : '#';
                 item.addEventListener('click', (e) => {
                     if (!hasLink) e.preventDefault();
                     if (!n.read) this._markRead(n.id, item);
@@ -155,6 +156,20 @@ export const NotificationsModule = {
             _unreadCount = Math.max(0, _unreadCount - 1);
             this._setBadge(_unreadCount);
         } catch { /* ignore */ }
+    },
+
+    _resolveLink(link, type) {
+        if (!link || link.trim() === '' || link === '#') {
+            // Old notifications with no link — infer from type
+            if (type === 'friend_request' || type === 'friend_accepted') return '/html/pages/home.html#friends';
+            if (type === 'new_dm') return '/html/pages/community.html#dm';
+            return null;
+        }
+        // Remap stale links stored in DB before the fix
+        if (link.includes('profil.html?view=friends') || link.includes('profil.html') && link.includes('friends')) {
+            return '/html/pages/home.html#friends';
+        }
+        return link;
     },
 
     async _markAllRead() {
