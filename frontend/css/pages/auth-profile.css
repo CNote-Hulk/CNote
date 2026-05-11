@@ -3433,8 +3433,13 @@ a.chat-message__username:hover {
 
 /* Left-page body scrolls when the form is taller than the fixed book */
 .auth-page--nb .nb-left__body {
-    overflow-y: auto;
+    overflow: visible;
     padding-right: 2px;
+    padding-bottom: 8px;
+}
+
+.auth-page--nb .nb-left__inner {
+    padding-bottom: 28px;
 }
 
 /* ── Form elements adapted for the warm paper background ─────── */

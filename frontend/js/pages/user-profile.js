@@ -458,7 +458,7 @@ const t = key => I18nModule.t(key);
                 grid.innerHTML = data.listings.map(l => {
                     const imgs = Array.isArray(l.images) ? l.images : [];
                     const condLabels = { new: 'New', like_new: 'Like new', good: 'Good', fair: 'Fair', parts: 'Parts' };
-                    return `<a href="marketplace.html?listing=${l.id}" class="user-listing-card">
+                    return `<a href="/html/pages/community.html#listing-${l.id}" class="user-listing-card">
                         <div class="user-listing-card__img">
                             ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="" loading="lazy">` : `<img src="../../assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy">`}
                         </div>

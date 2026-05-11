@@ -2461,5 +2461,10 @@ window.addEventListener('hashchange', handleHashNavigation);
     });
 
     buildDropdown();
-    switchView('chat', '', '');
+
+    // Sync MBN active state to current hash without navigating
+    const _initView = (window.location.hash.slice(1).split('/')[0]) || 'chat';
+    document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(el => {
+        el.classList.toggle('mbn-item--active', el.dataset.mbnView === _initView);
+    });
 }());
