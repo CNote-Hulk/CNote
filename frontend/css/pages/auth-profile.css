@@ -372,6 +372,11 @@
         font-size: 1.25rem;
         text-align: center;
     }
+
+    .auth-card--standalone .auth-card__title,
+    .auth-card--standalone .auth-card__subtitle {
+        display: block;
+    }
 }
 
 /* ── Trust device toggle ── */

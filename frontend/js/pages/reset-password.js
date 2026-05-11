@@ -5,10 +5,17 @@
  */
 import { API_BASE_URL } from '../config.js';
 
-(function() {
+(async function() {
     var params = new URLSearchParams(window.location.search);
     var token = params.get('token');
     var isSetMode = params.get('mode') === 'set';
+
+    function showInvalid(msg) {
+        document.getElementById('reset-form-section').hidden = true;
+        document.getElementById('reset-invalid').hidden = false;
+        var msgEl = document.getElementById('reset-invalid-msg');
+        if (msgEl && msg) msgEl.textContent = msg;
+    }
 
     // Adapt copy for set-password mode
     if (isSetMode) {
@@ -23,8 +30,20 @@ import { API_BASE_URL } from '../config.js';
     }
 
     if (!token) {
-        document.getElementById('reset-form-section').hidden = true;
-        document.getElementById('reset-invalid').hidden = false;
+        showInvalid('Reset link is missing or invalid.');
+        return;
+    }
+
+    // Validate token on load — show expired state immediately if invalid
+    try {
+        var checkRes = await fetch(API_BASE_URL + '/check-reset-token?token=' + encodeURIComponent(token));
+        var checkData = await checkRes.json();
+        if (!checkData.valid) {
+            showInvalid('This link has expired or is invalid. Please request a new one.');
+            return;
+        }
+    } catch {
+        showInvalid('Unable to contact the server. Please try again later.');
         return;
     }
 

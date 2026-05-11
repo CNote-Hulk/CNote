@@ -926,6 +926,23 @@ router.delete('/account', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/check-reset-token — Validate a reset token without consuming it
+router.get('/check-reset-token', async (req, res) => {
+    const token = String(req.query.token || '').trim();
+    if (!token) return res.status(400).json({ valid: false, error: 'Missing token.' });
+    try {
+        const result = await pool.query(
+            'SELECT id FROM password_reset_tokens WHERE token = $1 AND expires_at > NOW()',
+            [token]
+        );
+        if (!result.rows[0]) return res.status(400).json({ valid: false, error: 'Invalid or expired token.' });
+        res.json({ valid: true });
+    } catch (err) {
+        console.error('check-reset-token error:', err.message);
+        res.status(500).json({ valid: false, error: 'Internal error.' });
+    }
+});
+
 // POST /api/request-reset — Request password reset (sends email with token)
 router.post('/request-reset', async (req, res) => {
     try {
