@@ -9,6 +9,7 @@ import { SearchModule } from '../../js/modules/search.js';
 import { API_BASE_URL } from '../../js/config.js';
 import { confirmModal } from '../../js/utils/confirm-modal.js';
 import { I18nModule } from '../../js/modules/i18n.js';
+import { createDatePicker } from '../../js/utils/date-picker.js';
 
 /** Shortcut pentru traduceri */
 const t = key => I18nModule.t(key);
@@ -284,16 +285,24 @@ function initSettings() {
     document.getElementById('set-username').value = user.username;
     document.getElementById('set-bio').value = user.bio || '';
     document.getElementById('set-email').value = user.email || '';
-    const birthDateInput = document.getElementById('set-birth-date');
-    if (birthDateInput) {
-        if (user.birth_date) {
-            birthDateInput.value = user.birth_date.slice(0, 10);
-        } else {
-            // Session cache may predate birth_date field — fetch fresh
+    // ── Custom date picker for birth date ──
+    let _birthDatePicker = null;
+    const birthDateContainer = document.getElementById('birth-date-picker');
+    if (birthDateContainer) {
+        const today = new Date();
+        const maxISO = `${today.getFullYear() - 13}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        const initVal = user.birth_date ? user.birth_date.slice(0, 10) : '';
+        _birthDatePicker = createDatePicker(birthDateContainer, {
+            value: initVal,
+            placeholder: 'Select date of birth',
+            maxDate: maxISO,
+        });
+        // If session cache is old, fetch fresh birth_date
+        if (!user.birth_date) {
             const token = localStorage.getItem('cn_token');
             fetch(`${API_BASE_URL}/me`, { headers: token ? { 'Authorization': 'Bearer ' + token } : {} })
                 .then(r => r.json()).then(d => {
-                    if (d.user?.birth_date) birthDateInput.value = d.user.birth_date.slice(0, 10);
+                    if (d.user?.birth_date) _birthDatePicker.setValue(d.user.birth_date.slice(0, 10));
                 }).catch(() => {});
         }
     }
@@ -498,7 +507,7 @@ function initSettings() {
             return;
         }
 
-        const birthDateVal = (document.getElementById('set-birth-date') || {}).value || '';
+        const birthDateVal = _birthDatePicker ? _birthDatePicker.getValue() : '';
         const profileResult = await AuthModule.updateProfile({ username, bio, owned_consoles, birth_date: birthDateVal || null });
         if (profileResult === false || (profileResult && !profileResult.success && profileResult.error)) {
             showSettingsMessage(profileResult?.error || 'Username is already taken.', false);

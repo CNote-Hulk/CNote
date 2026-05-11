@@ -165,7 +165,7 @@ router.get('/reports/my', authRequired, async (req, res) => {
                     r.content_label = `Reply #${r.content_id}`;
                     r.content_link = t.rows[0] ? `/html/pages/community.html#forum/${t.rows[0].console}/thread/${t.rows[0].id}` : null;
                 } else if (r.content_type === 'listing') {
-                    const l = await pool.query('SELECT title FROM marketplace_listings WHERE id = $1', [r.content_id]);
+                    const l = await pool.query('SELECT title FROM listings WHERE id = $1', [r.content_id]);
                     r.content_label = l.rows[0]?.title || null;
                     r.content_link = `/html/pages/community.html#listing-${r.content_id}`;
                 } else if (r.content_type === 'direct_message') {
