@@ -242,16 +242,17 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
 
         // Notify thread author (if not self-reply)
         try {
-            const threadOwner = await pool.query('SELECT user_id, title FROM forum_threads WHERE id = $1', [threadId]);
+            const threadOwner = await pool.query('SELECT user_id, title, console FROM forum_threads WHERE id = $1', [threadId]);
             const ownerId = threadOwner.rows[0]?.user_id;
             if (ownerId && ownerId !== req.user.id) {
                 const { createNotification } = require('./notifications');
                 const threadTitle = String(threadOwner.rows[0].title).slice(0, 60);
+                const consoleKey = threadOwner.rows[0].console;
                 await createNotification(
                     ownerId,
                     'forum_reply',
                     `${req.user.username} replied to "${threadTitle}"`,
-                    ''
+                    `/html/pages/community.html#forum/${consoleKey}/thread/${threadId}`
                 );
             }
         } catch { /* notification is non-critical */ }

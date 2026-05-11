@@ -245,7 +245,7 @@ router.post('/send', authRequired, async (req, res) => {
                 receiverId,
                 'new_dm',
                 `${req.user.username} sent you a message`,
-                ''
+                '/html/pages/community.html#dm'
             );
         } catch { /* notification is non-critical */ }
 

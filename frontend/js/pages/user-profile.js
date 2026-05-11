@@ -493,7 +493,7 @@ const t = key => I18nModule.t(key);
                 container.innerHTML = userThreads.map(t => {
                     const date = new Date(t.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                     const consoleName = (t.console || 'general').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                    return `<a href="/html/pages/community.html" class="up-forum-row">
+                    return `<a href="/html/pages/community.html#forum/${t.console || 'general'}/thread/${t.id}" class="up-forum-row">
                         <div class="up-forum-row__info">
                             <span class="up-forum-row__title">${escapeHtml(t.title)}</span>
                             <span class="up-forum-row__meta">${escapeHtml(consoleName)} · ${date}</span>

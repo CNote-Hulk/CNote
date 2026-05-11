@@ -826,7 +826,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     postsPreview.innerHTML = `
                         <div class="dash-posts-list">
                             ${myPostsRes.posts.slice(0, 5).map(p => `
-                                <a href="community.html?post=${p.id}" class="dash-post-item">
+                                <a href="community.html#forum/${p.console}/thread/${p.id}" class="dash-post-item">
                                     <span class="dash-post-title">${escapeHtml(p.title || p.content || 'Post')}</span>
                                     <span class="dash-post-meta">${p.replies || 0} replies</span>
                                 </a>
@@ -850,11 +850,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             // =========================
             const likedPreview = document.getElementById('home-liked-preview');
             if (likedPreview) {
-                if (likedPostsRes.success && Array.isArray(likedPostsRes.posts) && likedPostsRes.posts.length > 0) {
+                const likedItems = likedPostsRes.liked || likedPostsRes.posts || [];
+                if (likedPostsRes.success && Array.isArray(likedItems) && likedItems.length > 0) {
                     likedPreview.innerHTML = `
                         <div class="dash-posts-list">
-                            ${likedPostsRes.posts.slice(0, 5).map(p => `
-                                <a href="community.html?post=${p.id}" class="dash-post-item">
+                            ${likedItems.slice(0, 5).map(p => `
+                                <a href="community.html#forum/${p.console}/thread/${p.id}" class="dash-post-item">
                                     <span class="dash-post-title">${escapeHtml(p.title || p.content || 'Post')}</span>
                                     <span class="dash-post-meta">by ${escapeHtml(p.username || '')}</span>
                                 </a>
@@ -921,7 +922,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <h3>${escapeHtml(t.title)}</h3>
                             <p>By ${escapeHtml(t.username)}</p>
                         `;
-                        card.addEventListener('click', () => { window.location.href = `community.html?post=${t.id}`; });
+                        card.addEventListener('click', () => { window.location.href = `community.html#forum/${t.console}/thread/${t.id}`; });
                         communityGrid.appendChild(card);
                     });
                 } else {

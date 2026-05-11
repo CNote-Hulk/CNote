@@ -65,7 +65,7 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                         receiverId,
                         'friend_accepted',
                         `${req.user.username} accepted your friend request.`,
-                        '/html/pages/profil.html?view=friends'
+                        '/html/pages/home.html#friends'
                     );
                 }
 
@@ -95,7 +95,7 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                 receiverId,
                 'friend_request',
                 `${req.user.username} sent you a friend request.`,
-                '/html/pages/profil.html?view=friends'
+                '/html/pages/home.html#friends'
             );
         }
 
@@ -150,7 +150,7 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
                 request.sender_id,
                 'friend_accepted',
                 `${req.user.username} accepted your friend request.`,
-                '/html/pages/profil.html?view=friends'
+                '/html/pages/home.html#friends'
             );
         }
 

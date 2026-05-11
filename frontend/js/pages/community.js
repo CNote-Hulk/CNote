@@ -2280,8 +2280,8 @@ initNotifications();
     });
 })();
 
-// Deep link: #listing-{id} opens listing detail directly
-(function checkDeepLink() {
+// Deep link: handles hash-based navigation on load and hash changes
+function handleHashNavigation() {
     const hash = window.location.hash;
 
     // Deep link listing: #listing-123
@@ -2290,6 +2290,20 @@ initNotifications();
         showView('marketplace');
         openListingDetail(+listingMatch[1]);
         return;
+    }
+
+    // Deep link forum thread: #forum/ps/thread/123
+    const threadDeepMatch = hash.match(/^#forum\/([^/]+)\/thread\/(\d+)$/);
+    if (threadDeepMatch) {
+        const con = threadDeepMatch[1];
+        const tid = +threadDeepMatch[2];
+        const validConsoles = ['ps', 'xbox', 'nintendo', 'pc', 'general'];
+        if (validConsoles.includes(con)) {
+            S.console = con;
+            renderForum();
+            openThread(tid);
+            return;
+        }
     }
 
     // Section: #marketplace, #marketplace/consoles, #forum/ps, etc.
@@ -2315,7 +2329,9 @@ initNotifications();
 
     // Default route
     navigate('chat', null, '');
-})();
+}
+handleHashNavigation();
+window.addEventListener('hashchange', handleHashNavigation);
 
 } // end login gate else
 

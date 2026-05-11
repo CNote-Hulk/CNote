@@ -123,7 +123,13 @@ export const NotificationsModule = {
             notifs.forEach(n => {
                 const item = document.createElement('a');
                 item.className = 'notif-item' + (n.read ? '' : ' notif-item--unread');
-                item.href = n.link || '#';
+                const hasLink = n.link && n.link.trim() !== '' && n.link !== '#';
+                item.href = hasLink ? n.link : '#';
+                item.addEventListener('click', (e) => {
+                    if (!hasLink) e.preventDefault();
+                    if (!n.read) this._markRead(n.id, item);
+                    this._close();
+                });
                 item.innerHTML = `
                     <div class="notif-item__dot"></div>
                     <div class="notif-item__body">
@@ -131,9 +137,6 @@ export const NotificationsModule = {
                         <div class="notif-item__time">${this._timeAgo(n.created_at)}</div>
                     </div>
                 `;
-                item.addEventListener('click', () => {
-                    if (!n.read) this._markRead(n.id, item);
-                });
                 list.appendChild(item);
             });
         } catch {

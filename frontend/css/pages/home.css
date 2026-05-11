@@ -300,7 +300,6 @@ body.home-page::before {
 .dashboard-main {
     margin-left: 300px;
     flex: 1;
-    min-height: 100vh;
     width: 100%;
     gap: 22px;
     padding-top: 0;
