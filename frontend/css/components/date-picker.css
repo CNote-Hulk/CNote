@@ -12,8 +12,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(245, 240, 232, 0.12);
+    background: rgba(var(--accent-color-rgb), 0.04);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-sm, 8px);
     padding: 10px 14px;
     color: var(--text-light);
@@ -25,11 +25,11 @@
     min-height: 42px;
 }
 .cn-datepicker__trigger:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(245, 240, 232, 0.22);
+    background: rgba(var(--accent-color-rgb), 0.07);
+    border-color: rgba(var(--accent-color-rgb), 0.22);
 }
 .cn-datepicker__trigger:focus-visible {
-    outline: 2px solid rgba(var(--accent-color-rgb, 245, 240, 232), 0.4);
+    outline: 2px solid rgba(var(--accent-color-rgb), 0.4);
     outline-offset: 2px;
 }
 .cn-datepicker__trigger svg {
@@ -63,10 +63,10 @@
     top: calc(100% + 6px);
     left: 0;
     z-index: 9000;
-    background: #242019;
-    border: 1px solid rgba(245, 240, 232, 0.12);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-md, 12px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-lg);
     padding: 16px;
     width: 280px;
     opacity: 0;
@@ -93,15 +93,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(var(--accent-color-rgb), 0.05);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     color: var(--text-gray);
     cursor: pointer;
     transition: background 0.15s, color 0.15s;
 }
 .cn-datepicker__nav:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--accent-color-rgb), 0.1);
     color: var(--text-light);
 }
 .cn-datepicker__month-label {
@@ -115,7 +115,7 @@
     transition: background 0.15s;
 }
 .cn-datepicker__month-label:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(var(--accent-color-rgb), 0.06);
 }
 
 /* Day-of-week header row */
@@ -155,10 +155,11 @@
     position: relative;
 }
 .cn-datepicker__day:hover:not(:disabled) {
-    background: rgba(245, 240, 232, 0.1);
+    background: rgba(var(--accent-color-rgb), 0.1);
 }
 .cn-datepicker__day--other-month {
-    color: rgba(168, 159, 148, 0.35);
+    color: var(--text-gray);
+    opacity: 0.4;
 }
 .cn-datepicker__day--today {
     color: var(--accent-color);
@@ -177,10 +178,10 @@
     opacity: 0.6;
 }
 .cn-datepicker__day--selected {
-    background: rgba(var(--accent-color-rgb, 245, 240, 232), 0.18) !important;
+    background: rgba(var(--accent-color-rgb), 0.18) !important;
     color: var(--accent-color) !important;
     font-weight: 700;
-    box-shadow: inset 0 0 0 1px rgba(var(--accent-color-rgb, 245, 240, 232), 0.35);
+    box-shadow: inset 0 0 0 1px rgba(var(--accent-color-rgb), 0.35);
 }
 .cn-datepicker__day:disabled {
     opacity: 0.25;
@@ -195,7 +196,7 @@
     max-height: 200px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,0.15) transparent;
+    scrollbar-color: rgba(var(--accent-color-rgb), 0.15) transparent;
 }
 .cn-datepicker__year-btn {
     padding: 7px 4px;
@@ -209,12 +210,12 @@
     text-align: center;
 }
 .cn-datepicker__year-btn:hover {
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(var(--accent-color-rgb), 0.07);
     color: var(--text-light);
 }
 .cn-datepicker__year-btn--selected {
-    background: rgba(var(--accent-color-rgb, 245, 240, 232), 0.14);
-    border-color: rgba(var(--accent-color-rgb, 245, 240, 232), 0.3);
+    background: rgba(var(--accent-color-rgb), 0.14);
+    border-color: rgba(var(--accent-color-rgb), 0.3);
     color: var(--accent-color);
     font-weight: 600;
 }
@@ -225,7 +226,7 @@
     justify-content: space-between;
     margin-top: 12px;
     padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid var(--border-color);
 }
 .cn-datepicker__footer-btn {
     background: none;
@@ -239,7 +240,7 @@
 }
 .cn-datepicker__footer-btn:hover {
     color: var(--text-light);
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(var(--accent-color-rgb), 0.06);
 }
 .cn-datepicker__footer-btn--today {
     color: var(--accent-color);
@@ -247,5 +248,5 @@
 }
 .cn-datepicker__footer-btn--today:hover {
     opacity: 1;
-    background: rgba(var(--accent-color-rgb, 245, 240, 232), 0.08);
+    background: rgba(var(--accent-color-rgb), 0.08);
 }
