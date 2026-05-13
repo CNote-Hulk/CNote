@@ -63,8 +63,8 @@ export function createDatePicker(container, opts = {}) {
             <span class="cn-datepicker__trigger-text ${!selectedISO ? 'cn-datepicker__trigger-text--placeholder' : ''}">
                 ${selectedISO ? formatDisplay(selectedISO) : placeholder}
             </span>
-            <button type="button" class="cn-datepicker__clear" aria-label="Clear date" tabindex="-1">✕</button>
         </button>
+        <button type="button" class="cn-datepicker__clear" aria-label="Clear date" tabindex="-1">✕</button>
         <div class="cn-datepicker__panel" role="dialog" aria-label="Date picker">
             <div class="cn-datepicker__header">
                 <button type="button" class="cn-datepicker__nav cn-datepicker__prev" aria-label="Previous month">
@@ -282,9 +282,10 @@ export function createDatePicker(container, opts = {}) {
         if (!isDisabled(todayISO)) selectDate(todayISO);
     });
 
-    // Close on outside click
+    // Close on outside click — use composedPath so clicks inside still-rendering
+    // panels (where innerHTML just changed) don't falsely trigger a close
     document.addEventListener('click', (e) => {
-        if (isOpen && !container.contains(e.target)) close();
+        if (isOpen && !e.composedPath().includes(container)) close();
     });
 
     // Close on Escape
