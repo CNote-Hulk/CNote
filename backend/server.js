@@ -10,6 +10,21 @@
      1. require() it here
      2. Add it to package.json dependencies
    ────────────────────────────────────────── */
+
+// Sentry must be initialised before any other require so it can instrument
+// http, pg, and express automatically. DSN comes from the process environment
+// (Railway injects it natively; .env is loaded on the next line).
+const Sentry = require('@sentry/node');
+Sentry.init({
+	dsn: process.env.SENTRY_DSN_BACKEND,
+	environment: process.env.NODE_ENV || 'production',
+	tracesSampleRate: 0.1,
+	integrations: [
+		Sentry.httpIntegration(),
+		Sentry.expressIntegration(),
+	],
+});
+
 require('dotenv').config();
 
 const express = require('express');
@@ -147,6 +162,7 @@ app.use(helmet({
 				'https://cdn.jsdelivr.net',         // DOMPurify, Supabase ESM
 				'https://www.googletagmanager.com', // GA4 loader
 				'https://*.google-analytics.com',  // GA4 secondary scripts
+				'https://browser.sentry-cdn.com',  // Sentry browser SDK
 			],
 
 			styleSrc: [
@@ -176,6 +192,8 @@ app.use(helmet({
 				'https://*.analytics.google.com',     // GA4 alternative collection endpoint
 				'https://www.googletagmanager.com',   // GA4 config fetch
 				'https://*.supabase.co',              // Supabase auth & realtime
+				'https://*.sentry.io',                // Sentry error reporting
+				'https://*.ingest.sentry.io',         // Sentry ingest endpoint
 			],
 
 			frameSrc: [
@@ -385,6 +403,16 @@ async function serveHTMLWithNonce(req, res, next, filePath) {
 	try {
 		let html = await fs.readFile(filePath, 'utf8');
 		const nonce = res.locals.cspNonce;
+
+		// Inject the frontend Sentry DSN as a global variable so sentry-init.js
+		// can read it at runtime without committing the value to source control.
+		// The script tag carries the per-request nonce — CSP-compliant.
+		const frontendDsn = process.env.SENTRY_DSN_FRONTEND || '';
+		html = html.replace(
+			'</head>',
+			`<script nonce="${nonce}">window.SENTRY_DSN_FRONTEND = ${JSON.stringify(frontendDsn)};</script>\n</head>`
+		);
+
 		// Inject nonce into inline <script> tags.
 		// Negative lookahead skips any tag that already has src= or nonce=.
 		// Covers:  <script>, <script defer>, <script type="module">,
@@ -421,8 +449,12 @@ app.get('/user/:username', (req, res, next) => {
 	serveHTMLWithNonce(req, res, next, path.join(FRONTEND_ROOT, 'html', 'pages', 'user-profile.html'));
 });
 
+// Sentry must capture the error before the generic handler sends the response
+app.use(Sentry.expressErrorHandler());
+
 // Global error handler
 app.use((err, req, res, next) => {
+	Sentry.captureException(err);
 	console.error('Unhandled server error:', err);
 	res.status(500).json({ error: 'Internal server error' });
 });

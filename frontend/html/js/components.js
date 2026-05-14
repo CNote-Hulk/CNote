@@ -1,6 +1,36 @@
 (function () {
     'use strict';
 
+    // ── Sentry ────────────────────────────────────────────────────────────────
+    // Loaded dynamically so every page gets error tracking without touching
+    // each HTML file individually.
+    // DSN is injected server-side as window.SENTRY_DSN_FRONTEND per request.
+
+    var SENTRY_CDN_SRC = 'https://browser.sentry-cdn.com/latest/bundle.min.js';
+    var SENTRY_INIT_SRC = '/js/modules/sentry-init.js';
+
+    function loadSentry() {
+        // Skip if DSN is absent (e.g. local dev without env var set)
+        if (!window.SENTRY_DSN_FRONTEND) return;
+        // Skip if already loaded
+        if (window.Sentry) {
+            loadSentryInit();
+            return;
+        }
+        var s = document.createElement('script');
+        s.src = SENTRY_CDN_SRC;
+        s.crossOrigin = 'anonymous';
+        s.onload = function () { loadSentryInit(); };
+        s.onerror = function () { console.warn('[components] Sentry CDN failed to load.'); };
+        document.head.appendChild(s);
+    }
+
+    function loadSentryInit() {
+        var s = document.createElement('script');
+        s.src = SENTRY_INIT_SRC;
+        document.head.appendChild(s);
+    }
+
     // ── DOMPurify ─────────────────────────────────────────────────────────────
     // Loaded dynamically so every page benefits without touching 84 HTML files.
     // If the CDN load fails, injection is intentionally aborted (fail-safe).
@@ -259,6 +289,7 @@
     // Load DOMPurify first, then run init. The DOMContentLoaded check is kept
     // inside loadDOMPurify's callback so the timing contract is preserved.
     function bootstrap() {
+        loadSentry();
         loadDOMPurify(function () {
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
