@@ -11,6 +11,7 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const { awardXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -250,6 +251,7 @@ router.post('/send', authRequired, async (req, res) => {
         } catch { /* notification is non-critical */ }
 
         res.status(201).json({ success: true, message: dm });
+        awardXP(pool, req.app.get('io'), req.user.id, 'first_dm', 'first').catch(() => {});
     } catch (err) {
         console.error('DM send POST error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });

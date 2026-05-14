@@ -11,6 +11,7 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const { awardXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -192,6 +193,7 @@ router.post('/:console/threads', authRequired, async (req, res) => {
         thread.reply_count = 0;
 
         res.status(201).json({ success: true, thread });
+        awardXP(pool, req.app.get('io'), req.user.id, 'forum_post', thread.id.toString()).catch(() => {});
     } catch (err) {
         console.error('Forum thread POST error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
@@ -258,6 +260,7 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
         } catch { /* notification is non-critical */ }
 
         res.status(201).json({ success: true, reply });
+        awardXP(pool, req.app.get('io'), req.user.id, 'forum_reply', reply.id.toString()).catch(() => {});
     } catch (err) {
         console.error('Forum reply POST error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
@@ -283,9 +286,14 @@ router.post('/:console/threads/:id/upvote', authRequired, async (req, res) => {
             await pool.query('DELETE FROM forum_upvotes WHERE user_id = $1 AND thread_id = $2', [req.user.id, threadId]);
             await pool.query('UPDATE forum_threads SET upvotes = GREATEST(upvotes - 1, 0) WHERE id = $1', [threadId]);
         } else {
-            // Add upvote
+            // Add upvote — award XP to thread author
             await pool.query('INSERT INTO forum_upvotes (user_id, thread_id) VALUES ($1, $2)', [req.user.id, threadId]);
             await pool.query('UPDATE forum_threads SET upvotes = upvotes + 1 WHERE id = $1', [threadId]);
+            const authorRes = await pool.query('SELECT user_id FROM forum_threads WHERE id = $1', [threadId]);
+            const authorId = authorRes.rows[0]?.user_id;
+            if (authorId && authorId !== req.user.id) {
+                awardXP(pool, req.app.get('io'), authorId, 'post_upvoted', threadId.toString()).catch(() => {});
+            }
         }
 
         const result = await pool.query('SELECT upvotes FROM forum_threads WHERE id = $1', [threadId]);

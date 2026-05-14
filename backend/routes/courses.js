@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
-const { checkAndEmitAchievements } = require('../utils/check-achievements');
+const { awardXP } = require('../utils/gamification');
 
 /* ── One-time table creation for reactions + comments ── */
 (async function initLessonTables() {
@@ -319,7 +319,24 @@ router.post('/lessons/:id/complete', authRequired, async (req, res) => {
         `, [userId, course_id, nextLessonId, allDone ? new Date() : null]);
 
         res.json({ ok: true });
-        checkAndEmitAchievements(req.app.get('io'), userId).catch(() => {});
+        // Fire-and-forget XP awards (sequential so level-up detection is accurate)
+        ;(async () => {
+            const io = req.app.get('io');
+            await awardXP(pool, io, userId, 'lesson_complete', lessonId.toString());
+            if (Number(quiz_score) === 100) {
+                await awardXP(pool, io, userId, 'lesson_perfect', lessonId.toString());
+            }
+            if (allDone) {
+                await awardXP(pool, io, userId, 'course_complete', course_id.toString());
+                const firstCheck = await pool.query(
+                    'SELECT COUNT(*)::int AS count FROM user_course_progress WHERE user_id=$1 AND completed_at IS NOT NULL',
+                    [userId]
+                );
+                if (firstCheck.rows[0].count === 1) {
+                    await awardXP(pool, io, userId, 'first_course', 'first');
+                }
+            }
+        })().catch(() => {});
     } catch (err) {
         console.error('POST /lessons/:id/complete error:', err);
         res.status(500).json({ success: false, error: 'Internal server error' });

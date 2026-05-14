@@ -4,6 +4,7 @@ const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const EbayProvider = require('../providers/EbayProvider');
 const MarketplaceSyncService = require('../services/marketplace-sync');
+const { awardXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -161,6 +162,7 @@ router.get('/callback', async (req, res) => {
         MarketplaceSyncService.syncUserListings(userId, 'ebay').catch(err =>
             console.error('eBay background sync error:', err)
         );
+        awardXP(pool, req.app.get('io'), userId, 'ebay_connected', 'connected').catch(() => {});
 
         res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_connected=1`);
     } catch (err) {

@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSidebar(user);
 
             // parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/consoles/visited'),
                 apiFetch('/api/marketplace/listings/mine'),
                 apiFetch('/api/marketplace/favorites'),
+                apiFetch('/api/me/level'),
             ]);
 
             // =========================
@@ -521,35 +522,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             // =========================
             // LEVEL CARD (home preview + progress panel)
             // =========================
-            if (achievementsRes.success) {
-                const visitedCount = Array.isArray(visitedRes?.consoles) ? visitedRes.consoles.length : 0;
-                const backendBadges = AchievementsModule.getAllBadges(achievementsRes.achievements);
-                const earned = backendBadges.filter(b => b.earned).length;
-                const total = backendBadges.length;
-                const achPct = total > 0 ? (earned / total) * 100 : 0;
-                const lvl = AchievementsModule.computeLevel(achPct, visitedCount, total);
+            if (levelRes?.level) {
+                const lvl = AchievementsModule.computeLevel(levelRes);
 
-
-
-                // Home panel: mini preview (simplu)
+                // Home panel: mini preview
                 const homeLevelCard = document.getElementById('home-level-card');
                 if (homeLevelCard) {
-                    homeLevelCard.innerHTML = `<div class="level-preview"><span class="level-label">Level:</span> <span class="level-emoji">${lvl.emoji}</span> <span class="level-name">${lvl.name}</span></div>`;
+                    homeLevelCard.innerHTML = `<div class="level-preview"><span class="level-badge level-${lvl.level}">${lvl.emoji} ${lvl.name}</span></div>`;
                 }
-
 
                 // Progress panel: full level card
                 const progressLevelCard = document.getElementById('progress-level-card');
                 if (progressLevelCard) {
-                    const nextHtml = lvl.nextLevel
-                        ? `<p class="prog-level-next">Next: <strong>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</strong> — need <strong>${lvl.nextRequirements.scoreNeeded} pts</strong></p>`
-                        : `<p class="prog-level-next" style="color:var(--accent-color);font-weight:600;">🏆 Max level!</p>`;
+                    const xpLabel = lvl.isMaxLevel ? 'Max Level' : `${lvl.xp} / ${lvl.xpForNext} XP`;
+                    const nextHtml = lvl.isMaxLevel
+                        ? `<p class="prog-level-next" style="color:var(--accent-color);font-weight:600;">👑 Max level reached!</p>`
+                        : `<p class="prog-level-next">Next: <strong>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</strong> — ${lvl.xpNeeded} XP needed</p>`;
                     progressLevelCard.innerHTML = `
                         <div class="prog-level-emoji">${lvl.emoji}</div>
                         <p class="prog-level-name">${lvl.name}</p>
-                        <p class="prog-level-desc">${lvl.description}</p>
                         <div class="prog-level-score-bar">
-                            <span class="prog-level-score-label">Score: <strong>${lvl.score}</strong> / 100</span>
+                            <span class="prog-level-score-label">${xpLabel}</span>
                             <div class="prog-level-bar-track">
                                 <div class="prog-level-bar-fill" style="width:0%"></div>
                             </div>
@@ -558,12 +551,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     `;
                     setTimeout(() => {
                         const fill = progressLevelCard.querySelector('.prog-level-bar-fill');
-                        if (fill) fill.style.width = lvl.score + '%';
+                        if (fill) fill.style.width = lvl.progressPercent + '%';
                     }, 100);
                 }
 
-                // Save to localStorage pentru alte pagini
-                localStorage.setItem('cn_user_level', JSON.stringify({ name: lvl.name, emoji: lvl.emoji }));
+                // Save to localStorage for other pages
+                localStorage.setItem('cn_user_level', JSON.stringify({ level: lvl.level, name: lvl.name, emoji: lvl.emoji }));
             }
 
             // =========================

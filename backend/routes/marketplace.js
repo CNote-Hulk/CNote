@@ -6,6 +6,7 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
+const { awardXP } = require('../utils/gamification');
 const MarketplaceSyncService = require('../services/marketplace-sync');
 const OlxProvider = require('../providers/OlxProvider');
 const EbayProvider = require('../providers/EbayProvider');
@@ -356,6 +357,7 @@ router.post('/listings', authRequired, async (req, res) => {
         listing.seller_name = req.user.username;
 
         res.status(201).json({ success: true, listing });
+        awardXP(pool, req.app.get('io'), req.user.id, 'marketplace_listing', listing.id.toString()).catch(() => {});
     } catch (err) {
         console.error('Marketplace POST error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });

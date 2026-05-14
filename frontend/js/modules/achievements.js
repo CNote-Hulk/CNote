@@ -1,113 +1,72 @@
 /**
  * AchievementsModule (Frontend)
- * Badge definitions, level calculation, and toast notifications.
+ * Display logic, level computation, and toast notifications.
+ * Achievement/level definitions live in gamification-data.js (window.GAMIFICATION_DATA).
  */
 export const AchievementsModule = {
 
-    // Static badge definitions — keep in sync with backend/routes/achievements.js
-    BADGES: [
-        // Learning
-        { id: 'first_lesson',     name: 'First Lesson',       description: 'Complete your first lesson.',         icon: '📝', category: 'learning' },
-        { id: 'knowledge_seeker', name: 'Knowledge Seeker',   description: 'Complete 5 lessons.',                 icon: '🔍', category: 'learning' },
-        { id: 'bookworm',         name: 'Bookworm',           description: 'Complete 10 lessons.',                icon: '📖', category: 'learning' },
-        { id: 'course_finisher',  name: 'Course Finisher',    description: 'Complete your first full course.',    icon: '🎓', category: 'learning' },
-        // Explorer
-        { id: 'console_scout',   name: 'Console Scout',       description: 'Visit 3 console pages.',              icon: '🧭', category: 'explorer' },
-        { id: 'retro_master',    name: 'Retro Master',         description: 'Visit 10 console pages.',             icon: '🕹️', category: 'explorer' },
-        { id: 'archive_hunter',  name: 'Archive Hunter',       description: 'Visit 25 console pages.',             icon: '🗂️', category: 'explorer' },
-        // Social
-        { id: 'first_friend',     name: 'First Friend',        description: 'Make your first friend.',             icon: '👋', category: 'social' },
-        { id: 'social_butterfly', name: 'Social Butterfly',    description: 'Have 5 friends on the platform.',    icon: '🦋', category: 'social' },
-        { id: 'popular',          name: 'Popular',             description: 'Have 10 friends on the platform.',   icon: '🌟', category: 'social' },
-        // Collector
-        { id: 'first_fav',        name: 'First Favorite',      description: 'Add your first console to favorites.',       icon: '❤️', category: 'collector' },
-        { id: 'collector_heart',  name: "Collector's Heart",   description: 'Have 5 favorite consoles.',                  icon: '💝', category: 'collector' },
-        { id: 'first_owned',      name: 'Owner',               description: 'Add your first console to your collection.', icon: '🎮', category: 'collector' },
-        { id: 'collector',        name: 'Collector',           description: 'Own 5 consoles in your collection.',         icon: '📦', category: 'collector' },
-        // Veteran
-        { id: 'week_veteran',     name: 'Week Regular',        description: 'Be a member for 7 days.',   icon: '📅', category: 'veteran' },
-        { id: 'month_veteran',    name: 'Monthly',             description: 'Be a member for 30 days.',  icon: '🗓️', category: 'veteran' },
-        { id: 'year_veteran',     name: 'Veteran',             description: 'Be a member for 365 days.', icon: '🏛️', category: 'veteran' },
-    ],
+    get BADGES() {
+        return window.GAMIFICATION_DATA?.ACHIEVEMENTS ?? [];
+    },
 
-    CATEGORIES: [
-        { id: 'learning',  label: 'Learning',  icon: '📚' },
-        { id: 'explorer',  label: 'Explorer',  icon: '🌍' },
-        { id: 'social',    label: 'Social',    icon: '👥' },
-        { id: 'collector', label: 'Collector', icon: '💾' },
-        { id: 'veteran',   label: 'Veteran',   icon: '🏛️' },
-    ],
+    get CATEGORIES() {
+        return window.GAMIFICATION_DATA?.CATEGORIES ?? [];
+    },
 
-    LEVELS: [
-        {
-            name: 'Novice',
-            emoji: '🌱',
-            description: 'You just registered on Console Notebook. Welcome!',
-            requirements: 'Create an account.',
-        },
-        {
-            name: 'Beginner',
-            emoji: '📖',
-            description: 'You know the basics of gaming consoles.',
-            requirements: 'Complete the Console Starter Guide and visit 10 console pages.',
-        },
-    ],
+    get LEVELS() {
+        return window.GAMIFICATION_DATA?.LEVELS ?? [];
+    },
 
     /**
-     * Transform backend badge array into enriched format
+     * Transform backend badge array into enriched format.
      */
     getAllBadges(badgesFromBackend) {
         return badgesFromBackend.map(b => ({
             ...b,
             earned: !!b.unlocked,
-            earned_at: b.earned_at || null
+            earned_at: b.earned_at || null,
         }));
     },
 
     /**
-     * Compute level from API response data.
-     * Pass the parsed /api/me/level response object.
+     * Compute display-ready level object from /api/me/level response.
+     * Accepts the new shape: { level, name, emoji, xp, xpForCurrent, xpForNext, progressPercent, isMaxLevel }
      */
     computeLevel(apiData) {
-        const level = apiData.level || 'Novice';
-        const emoji = apiData.emoji || '🌱';
-        const progressToNext = apiData.progressToNext ?? 0;
-        const nextLevel = apiData.nextLevel || null;
-        const req = apiData.requirements || {};
-
-        let sub;
-        if (!nextLevel) {
-            sub = 'More levels coming soon!';
-        } else {
-            const parts = [];
-            if (!req.starter_guide_complete) parts.push('Complete the Console Starter Guide');
-            const stillNeeded = Math.max(0, (req.console_visits_needed || 10) - (req.console_visits || 0));
-            if (stillNeeded > 0) parts.push(`Visit ${stillNeeded} more console page${stillNeeded !== 1 ? 's' : ''}`);
-            sub = parts.length
-                ? `To reach ${nextLevel.emoji} ${nextLevel.name}: ${parts.join(' · ')}`
-                : `${progressToNext}% to ${nextLevel.emoji} ${nextLevel.name}`;
+        if (!apiData || !apiData.level) {
+            return { level: 1, name: 'Newcomer', emoji: '🔌', xp: 0, progressPercent: 0, isMaxLevel: false, xpForNext: 150, xpNeeded: 150, nextLevel: null, sub: '150 XP to reach 📺 Watcher' };
         }
+        const { level, name, emoji, xp = 0, xpForNext, progressPercent = 0, isMaxLevel = false } = apiData;
+        const xpNeeded = isMaxLevel ? 0 : Math.max(0, (xpForNext ?? 0) - xp);
+        const levels = this.LEVELS;
+        const nextLevelData = isMaxLevel ? null : (levels.find(l => l.level === level + 1) ?? null);
+        const sub = isMaxLevel
+            ? '👑 Maximum level reached!'
+            : `${xpNeeded} XP to reach ${nextLevelData?.emoji ?? ''} ${nextLevelData?.name ?? 'next level'}`;
 
-        const def = this.LEVELS.find(l => l.name === level) || this.LEVELS[0];
-        return { name: level, emoji, description: def.description, progressToNext, nextLevel, sub };
+        return { level, name, emoji, xp, progressPercent, isMaxLevel, xpForNext, xpNeeded, nextLevel: nextLevelData, sub };
     },
 
     /**
      * Estimate level for a public profile from visible social/collection data.
-     * Approximate only — console visits and course completion aren't public.
+     * Rough heuristic only — actual XP is not public.
      */
     computePublicLevel(friendCount = 0, favoriteCount = 0, ownedCount = 0, daysMember = 1) {
-        // Rough heuristic: active collectors with friends are likely at least Beginner
-        const active = favoriteCount >= 5 || ownedCount >= 3 || friendCount >= 3 || daysMember >= 30;
-        return active
-            ? { emoji: '📖', name: 'Beginner' }
-            : { emoji: '🌱', name: 'Novice' };
+        const levels = this.LEVELS;
+        if (!levels.length) return { level: 1, emoji: '🔌', name: 'Newcomer' };
+        // Rough score: weight visible signals
+        const score = (friendCount * 15) + (favoriteCount * 5) + (ownedCount * 8) + Math.min(daysMember * 1, 365);
+        const match = [...levels].reverse().find(l => score >= l.xpRequired) ?? levels[0];
+        return { level: match.level, emoji: match.emoji, name: match.name };
     },
 
     /**
-     * Display toast notifications for newly unlocked badges
+     * Display toast notifications for newly unlocked achievements.
+     * awardedIds: string[] — IDs from socket payload
+     * allBadges: badge objects from GAMIFICATION_DATA (used as fallback)
+     * enriched: full achievement objects from socket payload (includes xpReward)
      */
-    showUnlockNotifications(awardedIds, allBadges) {
+    showUnlockNotifications(awardedIds, allBadges, enriched = []) {
         if (!Array.isArray(awardedIds) || awardedIds.length === 0) return;
 
         let stack = document.querySelector('.achievement-toast-stack');
@@ -118,17 +77,26 @@ export const AchievementsModule = {
         }
 
         awardedIds.forEach((badgeId, index) => {
-            const badge = allBadges.find(b => b.id === badgeId);
+            const badge = enriched.find(b => b.id === badgeId)
+                ?? allBadges.find(b => b.id === badgeId);
             if (!badge) return;
+
+            const xpHtml = badge.xpReward
+                ? `<div class="achievement-toast__xp">+${badge.xpReward} XP</div>`
+                : '';
+            const categoryLabel = badge.category
+                ? `<div class="achievement-toast__category">${badge.category}</div>`
+                : '';
 
             const toast = document.createElement('div');
             toast.className = 'achievement-toast';
             toast.innerHTML = `
-                <div class="achievement-toast__icon">${badge.icon}</div>
+                <div class="achievement-toast__icon">${badge.emoji ?? badge.icon ?? '🏆'}</div>
                 <div class="achievement-toast__content">
-                    <div class="achievement-toast__label">Achievement Unlocked</div>
+                    <div class="achievement-toast__label">Achievement Unlocked ${categoryLabel}</div>
                     <div class="achievement-toast__title">${badge.name}</div>
                     <div class="achievement-toast__desc">${badge.description}</div>
+                    ${xpHtml}
                 </div>
             `;
 

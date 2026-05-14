@@ -19,7 +19,12 @@ export function initAchievementSocket(userId) {
 
     socket.on('achievement_unlocked', (payload) => {
         if (payload && Array.isArray(payload.awardedIds)) {
-            AchievementsModule.showUnlockNotifications(payload.awardedIds, AchievementsModule.BADGES);
+            const allBadges = window.GAMIFICATION_DATA?.ACHIEVEMENTS ?? AchievementsModule.BADGES;
+            AchievementsModule.showUnlockNotifications(
+                payload.awardedIds,
+                allBadges,
+                payload.achievements ?? []
+            );
         }
     });
 }

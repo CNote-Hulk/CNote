@@ -18,6 +18,7 @@ const { authRequired } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
 const emailService = require('../services/email');
 const { validatePassword } = require('../utils/passwordPolicy');
+const { getLevelFromXP, awardXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -353,6 +354,7 @@ router.post('/register', async (req, res) => {
                 ? 'Account created successfully! Check your email to activate your account.'
                 : 'Account created, but the verification email could not be sent at this time.'
         });
+        awardXP(pool, null, user.id, 'welcome_bonus', 'signup').catch(() => {});
     } catch (err) {
         console.error('Register error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error. Please try again.' });
@@ -586,43 +588,23 @@ router.get('/me', authRequired, (req, res) => {
     res.json({ success: true, user: sanitizeUser(req.user) });
 });
 
-// GET /api/me/level — Requirement-based level system
-// Novice (registered) → Beginner (starter-guide complete + 10 console visits)
+// GET /api/me/level — XP-based level system (10 levels)
 router.get('/me/level', authRequired, async (req, res) => {
-    const BEGINNER_CONSOLES = 10;
     try {
         const userId = req.user.id;
-        const [courseRes, visitRes] = await Promise.all([
-            pool.query(`
-                SELECT 1 FROM user_course_progress ucp
-                JOIN courses c ON c.id = ucp.course_id
-                WHERE ucp.user_id = $1 AND c.slug = 'starter-guide' AND ucp.completed_at IS NOT NULL
-                LIMIT 1
-            `, [userId]),
-            pool.query('SELECT COUNT(*)::int AS visits FROM user_console_visits WHERE user_id = $1', [userId]),
-        ]);
-
-        const completedStarterGuide = courseRes.rows.length > 0;
-        const consoleVisits = visitRes.rows[0].visits;
-        const isBeginner = completedStarterGuide && consoleVisits >= BEGINNER_CONSOLES;
-
-        // Progress toward Beginner: course = 50 pts, consoles = 50 pts
-        const progressToNext = isBeginner ? 100 : Math.round(
-            (completedStarterGuide ? 50 : 0) +
-            Math.min((consoleVisits / BEGINNER_CONSOLES) * 50, 50)
-        );
-
+        const result = await pool.query('SELECT COALESCE(xp, 0)::int AS xp FROM users WHERE id = $1', [userId]);
+        const xp = result.rows[0]?.xp ?? 0;
+        const levelData = getLevelFromXP(xp);
         res.json({
             success: true,
-            level: isBeginner ? 'Beginner' : 'Novice',
-            emoji: isBeginner ? '📖' : '🌱',
-            progressToNext,
-            nextLevel: isBeginner ? null : { name: 'Beginner', emoji: '📖' },
-            requirements: {
-                starter_guide_complete: completedStarterGuide,
-                console_visits: consoleVisits,
-                console_visits_needed: BEGINNER_CONSOLES,
-            },
+            xp,
+            level: levelData.level,
+            name: levelData.name,
+            emoji: levelData.emoji,
+            xpForCurrent: levelData.xpRequired,
+            xpForNext: levelData.xpForNext,
+            progressPercent: levelData.progressPercent,
+            isMaxLevel: levelData.isMaxLevel,
         });
     } catch (err) {
         console.error('GET /me/level error:', err.message);
@@ -762,7 +744,11 @@ router.put('/me', authRequired, async (req, res) => {
     try {
         await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = $${paramIndex}`, params);
         const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
-        res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
+        const updatedUser = updatedResult.rows[0];
+        res.json({ success: true, user: sanitizeUser(updatedUser) });
+        if (updatedUser.avatar && updatedUser.bio) {
+            awardXP(pool, req.app.get('io'), req.user.id, 'profile_complete', 'done').catch(() => {});
+        }
     } catch (err) {
         console.error('Update profile error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });

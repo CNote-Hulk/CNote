@@ -1,0 +1,351 @@
+/**
+ * gamification.js — Single source of truth for levels, XP, and achievements.
+ * All other files import from here. Never define levels/achievements/XP values elsewhere.
+ */
+
+const LEVELS = [
+    { level: 1,  name: 'Newcomer',   emoji: '🔌', xpRequired: 0     },
+    { level: 2,  name: 'Watcher',    emoji: '📺', xpRequired: 150   },
+    { level: 3,  name: 'Player',     emoji: '🕹️', xpRequired: 400   },
+    { level: 4,  name: 'Collector',  emoji: '🧩', xpRequired: 800   },
+    { level: 5,  name: 'Tinkerer',   emoji: '🔧', xpRequired: 1500  },
+    { level: 6,  name: 'Explorer',   emoji: '📡', xpRequired: 2500  },
+    { level: 7,  name: 'Enthusiast', emoji: '🏆', xpRequired: 4000  },
+    { level: 8,  name: 'Historian',  emoji: '🎓', xpRequired: 6000  },
+    { level: 9,  name: 'Technician', emoji: '⚙️', xpRequired: 9000  },
+    { level: 10, name: 'Legend',     emoji: '👑', xpRequired: 13000 },
+];
+
+const XP_ACTIONS = {
+    welcome_bonus:       { xp: 50,  limit: 'once',         description: 'Welcome to Console Notebook' },
+    lesson_complete:     { xp: 50,  limit: 'per_item',      description: 'Completed a lesson' },
+    lesson_perfect:      { xp: 30,  limit: 'per_item',      description: 'Perfect quiz score' },
+    course_complete:     { xp: 200, limit: 'per_item',      description: 'Completed a course' },
+    first_course:        { xp: 100, limit: 'once',          description: 'First course completed' },
+    console_visit:       { xp: 10,  limit: 'per_item',      description: 'Visited a console page' },
+    console_favorite:    { xp: 5,   limit: 'per_item',      description: 'Added console to favorites' },
+    console_owned:       { xp: 8,   limit: 'per_item',      description: 'Added console to owned' },
+    friend_added:        { xp: 15,  limit: 'daily_cap_150', description: 'Added a friend' },
+    forum_post:          { xp: 20,  limit: 'daily_cap_100', description: 'Posted in forum' },
+    forum_reply:         { xp: 10,  limit: 'daily_cap_60',  description: 'Replied in forum' },
+    post_upvoted:        { xp: 5,   limit: 'daily_cap_50',  description: 'Your post was upvoted' },
+    first_dm:            { xp: 10,  limit: 'once',          description: 'Sent first DM' },
+    marketplace_listing: { xp: 15,  limit: 'daily_cap_45',  description: 'Created a listing' },
+    profile_complete:    { xp: 25,  limit: 'once',          description: 'Completed your profile' },
+    ebay_connected:      { xp: 30,  limit: 'once',          description: 'Connected eBay account' },
+};
+
+const ACHIEVEMENTS = [
+    // Learning (7)
+    { id: 'first_lesson',    name: 'First Step',        emoji: '📝', category: 'learning',
+      description: 'Complete your first lesson',
+      condition: { type: 'lessons_completed', threshold: 1 },  xpReward: 20 },
+    { id: 'lesson_5',        name: 'Quick Learner',     emoji: '🔍', category: 'learning',
+      description: 'Complete 5 lessons',
+      condition: { type: 'lessons_completed', threshold: 5 },  xpReward: 30 },
+    { id: 'lesson_15',       name: 'Dedicated Student', emoji: '📚', category: 'learning',
+      description: 'Complete 15 lessons',
+      condition: { type: 'lessons_completed', threshold: 15 }, xpReward: 50 },
+    { id: 'lesson_30',       name: 'Scholar',           emoji: '🎒', category: 'learning',
+      description: 'Complete 30 lessons',
+      condition: { type: 'lessons_completed', threshold: 30 }, xpReward: 75 },
+    { id: 'first_course',    name: 'Graduate',          emoji: '🎓', category: 'learning',
+      description: 'Complete your first course',
+      condition: { type: 'courses_completed', threshold: 1 },  xpReward: 100 },
+    { id: 'perfect_quiz',    name: 'Perfectionist',     emoji: '💯', category: 'learning',
+      description: 'Score 100% on a quiz',
+      condition: { type: 'perfect_quizzes', threshold: 1 },    xpReward: 40 },
+    { id: 'quiz_streak_5',   name: 'Quiz Master',       emoji: '🧠', category: 'learning',
+      description: '5 perfect quiz scores',
+      condition: { type: 'perfect_quizzes', threshold: 5 },    xpReward: 80 },
+
+    // Explorer (6)
+    { id: 'console_3',       name: 'Scout',             emoji: '🧭', category: 'explorer',
+      description: 'Visit 3 console pages',
+      condition: { type: 'consoles_visited', threshold: 3 },   xpReward: 15 },
+    { id: 'console_10',      name: 'Explorer',          emoji: '🗺️', category: 'explorer',
+      description: 'Visit 10 console pages',
+      condition: { type: 'consoles_visited', threshold: 10 },  xpReward: 30 },
+    { id: 'console_25',      name: 'Archivist',         emoji: '🗂️', category: 'explorer',
+      description: 'Visit 25 console pages',
+      condition: { type: 'consoles_visited', threshold: 25 },  xpReward: 50 },
+    { id: 'console_52',      name: 'Encyclopedia',      emoji: '📖', category: 'explorer',
+      description: 'Visit all console pages',
+      condition: { type: 'consoles_visited', threshold: 52 },  xpReward: 150 },
+    { id: 'first_favorite',  name: 'Wishlist',          emoji: '❤️', category: 'explorer',
+      description: 'Add your first console to favorites',
+      condition: { type: 'consoles_favorited', threshold: 1 }, xpReward: 10 },
+    { id: 'first_owned',     name: 'Owner',             emoji: '🎮', category: 'explorer',
+      description: 'Add your first owned console',
+      condition: { type: 'consoles_owned', threshold: 1 },     xpReward: 10 },
+
+    // Community (6)
+    { id: 'first_post',      name: 'Voice',             emoji: '💬', category: 'community',
+      description: 'Create your first forum post',
+      condition: { type: 'forum_posts', threshold: 1 },        xpReward: 25 },
+    { id: 'post_10',         name: 'Contributor',       emoji: '✍️', category: 'community',
+      description: 'Create 10 forum posts',
+      condition: { type: 'forum_posts', threshold: 10 },       xpReward: 50 },
+    { id: 'first_friend',    name: 'Connected',         emoji: '👋', category: 'community',
+      description: 'Add your first friend',
+      condition: { type: 'friends_count', threshold: 1 },      xpReward: 20 },
+    { id: 'friends_5',       name: 'Sociable',          emoji: '🦋', category: 'community',
+      description: 'Have 5 friends',
+      condition: { type: 'friends_count', threshold: 5 },      xpReward: 40 },
+    { id: 'first_dm',        name: 'Messenger',         emoji: '✉️', category: 'community',
+      description: 'Send your first direct message',
+      condition: { type: 'dms_sent', threshold: 1 },           xpReward: 10 },
+    { id: 'helpful_5',       name: 'Helper',            emoji: '⭐', category: 'community',
+      description: 'Receive 5 upvotes on your posts',
+      condition: { type: 'upvotes_received', threshold: 5 },   xpReward: 30 },
+
+    // Marketplace (4)
+    { id: 'first_listing',   name: 'Seller',            emoji: '🏷️', category: 'marketplace',
+      description: 'Create your first listing',
+      condition: { type: 'listings_created', threshold: 1 },   xpReward: 25 },
+    { id: 'listing_5',       name: 'Dealer',            emoji: '🛒', category: 'marketplace',
+      description: 'Create 5 listings',
+      condition: { type: 'listings_created', threshold: 5 },   xpReward: 50 },
+    { id: 'first_ebay',      name: 'Connected Seller',  emoji: '🔗', category: 'marketplace',
+      description: 'Connect your eBay account',
+      condition: { type: 'ebay_connected', threshold: 1 },     xpReward: 30 },
+    { id: 'collector_5',     name: 'Hoarder',           emoji: '📦', category: 'marketplace',
+      description: 'Own 5 consoles in your collection',
+      condition: { type: 'consoles_owned', threshold: 5 },     xpReward: 40 },
+
+    // Veteran (4)
+    { id: 'week_1',          name: 'Regular',           emoji: '📅', category: 'veteran',
+      description: 'Member for 7 days',
+      condition: { type: 'days_member', threshold: 7 },        xpReward: 20 },
+    { id: 'month_1',         name: 'Loyal',             emoji: '🗓️', category: 'veteran',
+      description: 'Member for 30 days',
+      condition: { type: 'days_member', threshold: 30 },       xpReward: 50 },
+    { id: 'month_3',         name: 'Dedicated',         emoji: '🏅', category: 'veteran',
+      description: 'Member for 90 days',
+      condition: { type: 'days_member', threshold: 90 },       xpReward: 80 },
+    { id: 'year_1',          name: 'Veteran',           emoji: '🏛️', category: 'veteran',
+      description: 'Member for 365 days',
+      condition: { type: 'days_member', threshold: 365 },      xpReward: 150 },
+
+    // Special (3)
+    { id: 'profile_complete', name: 'Identity',         emoji: '✨', category: 'special',
+      description: 'Complete your profile (avatar + bio)',
+      condition: { type: 'profile_complete', threshold: 1 },   xpReward: 30 },
+    { id: 'early_adopter',   name: 'Founder',           emoji: '🌟', category: 'special',
+      description: 'One of the first 100 members',
+      condition: { type: 'user_id_under', threshold: 100 },    xpReward: 100 },
+    { id: 'completionist',   name: 'Completionist',     emoji: '💎', category: 'special',
+      description: 'Unlock all other achievements',
+      condition: { type: 'achievements_count', threshold: 29 }, xpReward: 500 },
+];
+
+/**
+ * Returns the current level object plus progress info for a given XP amount.
+ */
+function getLevelFromXP(xp) {
+    let current = LEVELS[0];
+    for (const lvl of LEVELS) {
+        if (xp >= lvl.xpRequired) current = lvl;
+        else break;
+    }
+
+    const next = LEVELS.find(l => l.xpRequired > xp) || null;
+    const isMaxLevel = !next;
+
+    let progressPercent = 100;
+    if (!isMaxLevel) {
+        const range = next.xpRequired - current.xpRequired;
+        const progress = xp - current.xpRequired;
+        progressPercent = Math.min(99, Math.round((progress / range) * 100));
+    }
+
+    return {
+        level: current.level,
+        name: current.name,
+        emoji: current.emoji,
+        xpRequired: current.xpRequired,
+        xpForNext: next ? next.xpRequired : null,
+        progressPercent,
+        isMaxLevel,
+    };
+}
+
+/**
+ * Award XP to a user. Idempotent — duplicate calls for the same action+reference are safe.
+ * Internally calls checkAchievements after every successful award.
+ *
+ * @returns {{ xpAwarded: number, newTotal: number, leveledUp: boolean, newLevel: object|null }}
+ */
+async function awardXP(pool, io, userId, actionType, referenceId = null) {
+    const action = XP_ACTIONS[actionType];
+    if (!action) return { xpAwarded: 0 };
+
+    try {
+        // Check daily cap before attempting insert
+        if (action.limit && action.limit.startsWith('daily_cap_')) {
+            const cap = parseInt(action.limit.replace('daily_cap_', ''), 10);
+            const capRes = await pool.query(
+                `SELECT COALESCE(SUM(xp_amount), 0)::int AS total
+                 FROM xp_transactions
+                 WHERE user_id = $1 AND action_type = $2 AND created_at >= CURRENT_DATE`,
+                [userId, actionType]
+            );
+            if (capRes.rows[0].total >= cap) return { xpAwarded: 0 };
+        }
+
+        // Idempotent insert — UNIQUE(user_id, action_type, reference_id) blocks duplicates
+        const txRes = await pool.query(
+            `INSERT INTO xp_transactions (user_id, action_type, xp_amount, reference_id)
+             VALUES ($1, $2, $3, $4)
+             ON CONFLICT (user_id, action_type, reference_id) DO NOTHING
+             RETURNING xp_amount`,
+            [userId, actionType, action.xp, referenceId]
+        );
+
+        if (!txRes.rows.length) return { xpAwarded: 0 }; // duplicate, already awarded
+
+        const updRes = await pool.query(
+            `UPDATE users SET xp = xp + $1, xp_updated_at = NOW() WHERE id = $2 RETURNING xp`,
+            [action.xp, userId]
+        );
+
+        const newTotal = updRes.rows[0].xp;
+        const prevTotal = newTotal - action.xp;
+        const prevLvl = getLevelFromXP(prevTotal);
+        const newLvl = getLevelFromXP(newTotal);
+        const leveledUp = newLvl.level > prevLvl.level;
+
+        await checkAchievements(pool, io, userId);
+
+        return { xpAwarded: action.xp, newTotal, leveledUp, newLevel: leveledUp ? newLvl : null };
+    } catch (err) {
+        console.error(`awardXP(${actionType}) error:`, err.message);
+        return { xpAwarded: 0 };
+    }
+}
+
+/**
+ * Check and unlock newly earned achievements for a user.
+ * Persists to DB and emits via Socket.io if io is provided.
+ * Called automatically by awardXP — no need to call this directly.
+ *
+ * @returns {Array} newly unlocked achievement objects
+ */
+async function checkAchievements(pool, io, userId) {
+    try {
+        const [
+            visitedRes, friendsRes, favRes, ownedRes, userRes,
+            lessonsRes, courseRes, perfectRes, postsRes, dmsRes,
+            upvotesRes, listingsRes, ebayRes, storedRes,
+        ] = await Promise.all([
+            pool.query('SELECT COUNT(*)::int AS count FROM user_console_visits WHERE user_id = $1', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM friends WHERE user1_id = $1 OR user2_id = $1', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM user_favorites WHERE user_id = $1', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM user_owned_consoles WHERE user_id = $1', [userId]),
+            pool.query('SELECT id, created_at, avatar, bio FROM users WHERE id = $1', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM user_lessons WHERE user_id = $1 AND completed = true', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM user_course_progress WHERE user_id = $1 AND completed_at IS NOT NULL', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM user_lessons WHERE user_id = $1 AND quiz_score = 100', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM forum_threads WHERE user_id = $1', [userId]),
+            pool.query('SELECT COUNT(*)::int AS count FROM direct_messages WHERE sender_id = $1', [userId]),
+            pool.query(
+                `SELECT (SELECT COALESCE(SUM(upvotes),0) FROM forum_threads WHERE user_id=$1) +
+                        (SELECT COALESCE(SUM(upvotes),0) FROM forum_replies WHERE user_id=$1) AS count`,
+                [userId]
+            ),
+            pool.query('SELECT COUNT(*)::int AS count FROM listings WHERE user_id = $1', [userId]),
+            pool.query(`SELECT COUNT(*)::int AS count FROM marketplace_accounts WHERE user_id = $1 AND provider = 'ebay'`, [userId]),
+            pool.query('SELECT badge_id FROM user_achievements WHERE user_id = $1', [userId]),
+        ]);
+
+        const metrics = {
+            lessons_completed:  lessonsRes.rows[0].count,
+            courses_completed:  courseRes.rows[0].count,
+            perfect_quizzes:    perfectRes.rows[0].count,
+            consoles_visited:   visitedRes.rows[0].count,
+            consoles_favorited: favRes.rows[0].count,
+            consoles_owned:     ownedRes.rows[0].count,
+            forum_posts:        postsRes.rows[0].count,
+            friends_count:      friendsRes.rows[0].count,
+            dms_sent:           dmsRes.rows[0].count,
+            upvotes_received:   parseInt(upvotesRes.rows[0].count, 10) || 0,
+            listings_created:   listingsRes.rows[0].count,
+            ebay_connected:     ebayRes.rows[0].count > 0 ? 1 : 0,
+            days_member:        Math.floor((Date.now() - new Date(userRes.rows[0].created_at)) / 86400000),
+            profile_complete:   (userRes.rows[0].avatar && userRes.rows[0].bio) ? 1 : 0,
+            user_id_value:      userRes.rows[0].id,
+        };
+
+        const storedIds = new Set(storedRes.rows.map(r => r.badge_id));
+
+        // Compute which achievements are currently unlocked
+        const currentlyUnlocked = new Set();
+        for (const ach of ACHIEVEMENTS) {
+            const { type, threshold } = ach.condition;
+            let value;
+            if (type === 'user_id_under') {
+                value = metrics.user_id_value < threshold ? 1 : 0;
+            } else if (type === 'achievements_count') {
+                value = storedIds.size;
+            } else {
+                value = metrics[type] ?? 0;
+            }
+            if (value >= threshold) currentlyUnlocked.add(ach.id);
+        }
+
+        const newlyUnlocked = [...currentlyUnlocked].filter(id => !storedIds.has(id));
+        if (!newlyUnlocked.length) return [];
+
+        const awardedAchievements = [];
+
+        for (const badgeId of newlyUnlocked) {
+            const ach = ACHIEVEMENTS.find(a => a.id === badgeId);
+            if (!ach) continue;
+
+            await pool.query(
+                `INSERT INTO user_achievements (user_id, badge_id, xp_awarded)
+                 VALUES ($1, $2, $3)
+                 ON CONFLICT DO NOTHING`,
+                [userId, badgeId, ach.xpReward]
+            );
+
+            // Award XP directly (not through awardXP to avoid recursion)
+            const xpTxRes = await pool.query(
+                `INSERT INTO xp_transactions (user_id, action_type, xp_amount, reference_id)
+                 VALUES ($1, 'achievement_reward', $2, $3)
+                 ON CONFLICT (user_id, action_type, reference_id) DO NOTHING
+                 RETURNING xp_amount`,
+                [userId, ach.xpReward, `ach_${badgeId}`]
+            );
+            if (xpTxRes.rows.length > 0) {
+                await pool.query(
+                    `UPDATE users SET xp = xp + $1, xp_updated_at = NOW() WHERE id = $2`,
+                    [ach.xpReward, userId]
+                );
+            }
+
+            awardedAchievements.push(ach);
+        }
+
+        if (io && awardedAchievements.length > 0) {
+            io.to(String(userId)).emit('achievement_unlocked', {
+                awardedIds: awardedAchievements.map(a => a.id),
+                achievements: awardedAchievements.map(a => ({
+                    id: a.id,
+                    name: a.name,
+                    emoji: a.emoji,
+                    category: a.category,
+                    description: a.description,
+                    xpReward: a.xpReward,
+                })),
+            });
+        }
+
+        return awardedAchievements;
+    } catch (err) {
+        console.error('checkAchievements error:', err.message);
+        return [];
+    }
+}
+
+module.exports = { LEVELS, XP_ACTIONS, ACHIEVEMENTS, getLevelFromXP, awardXP, checkAchievements };

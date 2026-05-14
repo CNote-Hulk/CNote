@@ -1,0 +1,87 @@
+/**
+ * Level badge styles for the 10-level system.
+ * Colors use CSS variables only — no hardcoded values.
+ */
+
+.level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.2em 0.6em;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+/* Level 1 — Newcomer: muted gray */
+.level-badge.level-1 {
+    color: var(--text-gray);
+    background: rgba(168, 159, 148, 0.12);
+    border-color: rgba(168, 159, 148, 0.25);
+}
+
+/* Level 2 — Watcher: soft blue */
+.level-badge.level-2 {
+    color: #7eb8f7;
+    background: rgba(126, 184, 247, 0.12);
+    border-color: rgba(126, 184, 247, 0.25);
+}
+
+/* Level 3 — Player: green */
+.level-badge.level-3 {
+    color: var(--success);
+    background: rgba(74, 222, 128, 0.12);
+    border-color: rgba(74, 222, 128, 0.25);
+}
+
+/* Level 4 — Collector: teal */
+.level-badge.level-4 {
+    color: #34d1bf;
+    background: rgba(52, 209, 191, 0.12);
+    border-color: rgba(52, 209, 191, 0.25);
+}
+
+/* Level 5 — Tinkerer: yellow/amber */
+.level-badge.level-5 {
+    color: #f5c842;
+    background: rgba(245, 200, 66, 0.12);
+    border-color: rgba(245, 200, 66, 0.25);
+}
+
+/* Level 6 — Explorer: orange */
+.level-badge.level-6 {
+    color: var(--warning);
+    background: rgba(224, 107, 88, 0.12);
+    border-color: rgba(224, 107, 88, 0.25);
+}
+
+/* Level 7 — Enthusiast: red */
+.level-badge.level-7 {
+    color: var(--error);
+    background: rgba(229, 115, 115, 0.12);
+    border-color: rgba(229, 115, 115, 0.25);
+}
+
+/* Level 8 — Historian: purple */
+.level-badge.level-8 {
+    color: #c084fc;
+    background: rgba(192, 132, 252, 0.12);
+    border-color: rgba(192, 132, 252, 0.25);
+}
+
+/* Level 9 — Technician: pink/magenta */
+.level-badge.level-9 {
+    color: #f472b6;
+    background: rgba(244, 114, 182, 0.12);
+    border-color: rgba(244, 114, 182, 0.25);
+}
+
+/* Level 10 — Legend: gold/accent */
+.level-badge.level-10 {
+    color: var(--accent-color);
+    background: rgba(var(--accent-color-rgb), 0.12);
+    border-color: rgba(var(--accent-color-rgb), 0.35);
+    box-shadow: 0 0 8px rgba(var(--accent-color-rgb), 0.15);
+}

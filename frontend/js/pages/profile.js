@@ -773,12 +773,12 @@ function initSettings() {
     }
 
     function calcLevelFromAchievements(achievements) {
+        // Fallback estimate using public signals — real level comes from /api/me/level
         const earned = achievements.filter(a => a.unlocked || a.earned).length;
-        const total = achievements.length;
-        if (window.AchievementsModule && AchievementsModule.computeLevel) {
-            return AchievementsModule.computeLevel(total > 0 ? (earned / total) * 100 : 0, 0, total);
+        if (window.AchievementsModule?.computePublicLevel) {
+            return AchievementsModule.computePublicLevel(0, earned, 0, 1);
         }
-        return { name: 'Level', emoji: '🏅' };
+        return { level: 1, name: 'Newcomer', emoji: '🔌' };
     }
 
     async function loadAchievements() {

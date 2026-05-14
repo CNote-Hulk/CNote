@@ -13,7 +13,7 @@ const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const emailService = require('../services/email');
 const { createNotification } = require('./notifications');
-const { checkAndEmitAchievements } = require('../utils/check-achievements');
+const { awardXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -81,9 +81,10 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                 }
 
                 const io = req.app.get('io');
-                checkAndEmitAchievements(io, req.user.id).catch(() => {});
-                checkAndEmitAchievements(io, receiverId).catch(() => {});
-                return res.json({ success: true, status: 'friends' });
+                res.json({ success: true, status: 'friends' });
+                awardXP(pool, io, req.user.id, 'friend_added', receiverId.toString()).catch(() => {});
+                awardXP(pool, io, receiverId, 'friend_added', req.user.id.toString()).catch(() => {});
+                return;
             }
             return res.status(400).json({ success: false, error: 'Friend request has already been sent.' });
         }
@@ -167,8 +168,8 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
 
         res.json({ success: true });
         const io = req.app.get('io');
-        checkAndEmitAchievements(io, req.user.id).catch(() => {});
-        checkAndEmitAchievements(io, request.sender_id).catch(() => {});
+        awardXP(pool, io, req.user.id, 'friend_added', request.sender_id.toString()).catch(() => {});
+        awardXP(pool, io, request.sender_id, 'friend_added', req.user.id.toString()).catch(() => {});
     } catch (err) {
         console.error('Accept friend error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
