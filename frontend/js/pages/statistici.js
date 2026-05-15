@@ -229,8 +229,8 @@ async function renderStats() {
 
     renderGoals(allBadges);
 
-    // Level — fetch from API (requirement-based: Novice → Beginner)
-    let level = { name: 'Novice', emoji: '🌱', progressToNext: 0, nextLevel: { name: 'Beginner', emoji: '📖' }, sub: '' };
+    // Level — fetch from API (XP-based: Newcomer → Legend)
+    let level = AchievementsModule.computeLevel(null);
     try {
         const lvlResp = await fetch('/api/me/level', { headers: authHeaders(), credentials: 'include' });
         if (lvlResp.ok) {
@@ -239,7 +239,7 @@ async function renderStats() {
         }
     } catch { /* keep default */ }
 
-    document.getElementById('stat-level').textContent = level.name;
+    document.getElementById('stat-level').textContent = `${level.emoji} ${level.name}`;
     document.getElementById('stat-level-sub').textContent = level.sub;
     const emojiEl = document.getElementById('stats-level-emoji');
     if (emojiEl) emojiEl.textContent = level.emoji;
@@ -250,12 +250,12 @@ async function renderStats() {
     const levelBarLabel = document.getElementById('stat-level-bar-label');
     if (levelBarWrap) {
         levelBarWrap.style.display = 'block';
-        if (level.nextLevel) {
-            setTimeout(() => { if (levelBarFill) levelBarFill.style.width = level.progressToNext + '%'; }, 80);
-            if (levelBarLabel) levelBarLabel.textContent = `${level.progressToNext}% to ${level.nextLevel.emoji} ${level.nextLevel.name}`;
+        if (!level.isMaxLevel && level.nextLevel) {
+            setTimeout(() => { if (levelBarFill) levelBarFill.style.width = level.progressPercent + '%'; }, 80);
+            if (levelBarLabel) levelBarLabel.textContent = `${level.xp} / ${level.xpForNext} XP — ${level.progressPercent}% to ${level.nextLevel.emoji} ${level.nextLevel.name}`;
         } else {
             if (levelBarFill) levelBarFill.style.width = '100%';
-            if (levelBarLabel) levelBarLabel.textContent = 'More levels coming soon!';
+            if (levelBarLabel) levelBarLabel.textContent = '👑 Maximum level reached!';
         }
     }
 
@@ -287,7 +287,7 @@ function renderLevelsPanel(currentLevel) {
     const list = document.getElementById('levels-list');
     if (!list) return;
 
-    if (!AchievementsModule.LEVELS || !Array.isArray(AchievementsModule.LEVELS)) {
+    if (!AchievementsModule.LEVELS || !AchievementsModule.LEVELS.length) {
         list.innerHTML = '<div class="level-row level-row--error">Levels data unavailable.</div>';
         return;
     }
@@ -303,13 +303,13 @@ function renderLevelsPanel(currentLevel) {
         else if (isCurrent) { statusIcon = lvl.emoji; statusClass = 'level-row--current'; }
         else                { statusIcon = '🔒';      statusClass = 'level-row--locked'; }
 
-        const desc = lvl.requirements || lvl.description;
+        const desc = lvl.xpRequired === 0 ? 'Starting level' : `Requires ${lvl.xpRequired.toLocaleString()} XP`;
 
         let barHtml = '';
         if (isCurrent && currentLevel.nextLevel) {
             barHtml = `
-                <div class="level-row__bar"><div class="level-row__bar-fill" style="width:${currentLevel.progressToNext}%"></div></div>
-                <span class="level-row__bar-label">${currentLevel.progressToNext}% towards ${currentLevel.nextLevel.name}</span>`;
+                <div class="level-row__bar"><div class="level-row__bar-fill" style="width:${currentLevel.progressPercent}%"></div></div>
+                <span class="level-row__bar-label">${currentLevel.xp} / ${currentLevel.xpForNext} XP — ${currentLevel.progressPercent}% towards ${currentLevel.nextLevel.name}</span>`;
         } else if (isPast) {
             barHtml = `<div class="level-row__bar"><div class="level-row__bar-fill" style="width:100%"></div></div>`;
         }
@@ -385,14 +385,4 @@ function initProgressRing() {
 }
 initProgressRing();
 
-// ── Level emoji based on level text ─────────────────────────
-function initLevelEmoji() {
-    const levelEl = document.getElementById('stat-level');
-    const emojiEl = document.getElementById('stats-level-emoji');
-    if (!levelEl || !emojiEl) return;
-    const map = { novice: '🌱', intermediate: '📖', advanced: '🎯', expert: '🔥', legend: '👑' };
-    new MutationObserver(() => {
-        emojiEl.textContent = map[(levelEl.textContent || '').toLowerCase()] || '🌱';
-    }).observe(levelEl, { childList: true, characterData: true, subtree: true });
-}
-initLevelEmoji();
+// Level emoji is set directly in renderStats from the API response; no observer needed.
