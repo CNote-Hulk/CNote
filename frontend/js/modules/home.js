@@ -535,7 +535,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const progressLevelCard = document.getElementById('progress-level-card');
                 if (progressLevelCard) {
                     const xpLabel = lvl.isMaxLevel ? 'Max Level' : `${lvl.xp} / ${lvl.xpForNext} XP`;
-                    const nextHtml = lvl.isMaxLevel
+                    const nextHtml = (lvl.isMaxLevel || !lvl.nextLevel)
                         ? `<p class="prog-level-next" style="color:var(--accent-color);font-weight:600;">👑 Max level reached!</p>`
                         : `<p class="prog-level-next">Next: <strong>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</strong> — ${lvl.xpNeeded} XP needed</p>`;
                     progressLevelCard.innerHTML = `

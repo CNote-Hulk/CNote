@@ -141,32 +141,29 @@ const ACHIEVEMENTS = [
 
 /**
  * Returns the current level object plus progress info for a given XP amount.
+ * Always returns a valid object — never null/undefined.
  */
 function getLevelFromXP(xp) {
-    let current = LEVELS[0];
-    for (const lvl of LEVELS) {
-        if (xp >= lvl.xpRequired) current = lvl;
-        else break;
+    const safeXp = Math.max(0, parseInt(xp) || 0);
+    let currentLevel = LEVELS[0];
+    for (const level of LEVELS) {
+        if (safeXp >= level.xpRequired) {
+            currentLevel = level;
+        } else {
+            break;
+        }
     }
-
-    const next = LEVELS.find(l => l.xpRequired > xp) || null;
-    const isMaxLevel = !next;
-
-    let progressPercent = 100;
-    if (!isMaxLevel) {
-        const range = next.xpRequired - current.xpRequired;
-        const progress = xp - current.xpRequired;
-        progressPercent = Math.min(99, Math.round((progress / range) * 100));
-    }
-
+    const currentIndex = LEVELS.indexOf(currentLevel);
+    const nextLevel = LEVELS[currentIndex + 1] || null;
     return {
-        level: current.level,
-        name: current.name,
-        emoji: current.emoji,
-        xpRequired: current.xpRequired,
-        xpForNext: next ? next.xpRequired : null,
-        progressPercent,
-        isMaxLevel,
+        ...currentLevel,
+        xp: safeXp,
+        xpForNext: nextLevel ? nextLevel.xpRequired : currentLevel.xpRequired,
+        progressPercent: nextLevel
+            ? Math.round(((safeXp - currentLevel.xpRequired) /
+                (nextLevel.xpRequired - currentLevel.xpRequired)) * 100)
+            : 100,
+        isMaxLevel: !nextLevel,
     };
 }
 

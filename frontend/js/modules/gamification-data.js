@@ -91,6 +91,31 @@ window.GAMIFICATION_DATA = {
           description: 'Unlock all other achievements',    xpReward: 500 },
     ],
 
+    getLevelFromXP(xp) {
+        const safeXp = Math.max(0, parseInt(xp) || 0);
+        const levels = this.LEVELS;
+        let currentLevel = levels[0];
+        for (const level of levels) {
+            if (safeXp >= level.xpRequired) {
+                currentLevel = level;
+            } else {
+                break;
+            }
+        }
+        const currentIndex = levels.indexOf(currentLevel);
+        const nextLevel = levels[currentIndex + 1] || null;
+        return {
+            ...currentLevel,
+            xp: safeXp,
+            xpForNext: nextLevel ? nextLevel.xpRequired : currentLevel.xpRequired,
+            progressPercent: nextLevel
+                ? Math.round(((safeXp - currentLevel.xpRequired) /
+                    (nextLevel.xpRequired - currentLevel.xpRequired)) * 100)
+                : 100,
+            isMaxLevel: !nextLevel,
+        };
+    },
+
     CATEGORIES: [
         { id: 'learning',    label: 'Learning',    icon: '📚' },
         { id: 'explorer',    label: 'Explorer',    icon: '🌍' },
