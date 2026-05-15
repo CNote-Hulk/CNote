@@ -603,6 +603,8 @@ router.get('/me/level', authRequired, async (req, res) => {
             emoji: levelData.emoji,
             xpForCurrent: levelData.xpRequired,
             xpForNext: levelData.xpForNext,
+            nextLevelName: levelData.nextLevelName,
+            nextLevelEmoji: levelData.nextLevelEmoji,
             progressPercent: levelData.progressPercent,
             isMaxLevel: levelData.isMaxLevel,
         });

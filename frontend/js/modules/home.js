@@ -576,13 +576,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const achievementsGrid = document.getElementById('achievements-grid');
                 if (achievementsGrid) {
                     achievementsGrid.innerHTML = '';
-                    const ACH_CATEGORIES = [
-                        { id: 'learning',  label: 'Learning',  icon: '📚' },
-                        { id: 'explorer',  label: 'Explorer',  icon: '🌍' },
-                        { id: 'social',    label: 'Social',    icon: '👥' },
-                        { id: 'collector', label: 'Collector', icon: '💾' },
-                        { id: 'veteran',   label: 'Veteran',   icon: '🏛️' },
-                    ];
+                    const ACH_CATEGORIES = AchievementsModule.CATEGORIES;
                     const grouped = {};
                     achievementsRes.achievements.forEach(a => {
                         const cat = a.category || 'other';
@@ -598,20 +592,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                         section.innerHTML = `
                             <div class="ach-category__header">
                                 <span class="ach-category__icon">${cat.icon}</span>
-                                <span class="ach-category__label">${cat.label}</span>
+                                <span class="ach-category__label">${I18nModule.t('ach_cat_' + cat.id)}</span>
                                 <span class="ach-category__count">${catEarned}/${items.length}</span>
                             </div>
                             <div class="ach-category__grid"></div>
                         `;
                         const catGrid = section.querySelector('.ach-category__grid');
                         items.forEach(a => {
+                            const earnedDate = a.unlocked && a.earned_at
+                                ? new Date(a.earned_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                                : '';
                             const div = document.createElement('div');
                             div.className = 'achievement-card' + (a.unlocked ? ' achievement-card--unlocked' : ' achievement-card--locked');
                             div.innerHTML = `
-                                <span class="achievement-card__icon">${a.icon || '🏅'}</span>
+                                <span class="achievement-card__icon">${a.emoji || a.icon || '🏅'}</span>
                                 <strong class="achievement-card__name">${escapeHtml(a.name)}</strong>
                                 <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
-                                <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
+                                <span class="achievement-card__status">${a.unlocked ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</span>
                             `;
                             catGrid.appendChild(div);
                         });
@@ -971,19 +968,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             const homeAchievementsPreview = document.getElementById('home-achievements-preview');
             if (homeAchievementsPreview && achievementsRes.success) {
                 const badges = achievementsRes.achievements || [];
-                const earnedBadges = badges.filter(b => b.unlocked);
+                const earnedBadges = badges.filter(b => b.unlocked)
+                    .sort((a, b) => new Date(b.earned_at || 0) - new Date(a.earned_at || 0));
                 if (badges.length > 0) {
                     homeAchievementsPreview.innerHTML = '';
-                    // Show earned first, then up to 6 total
-                    const preview = [...earnedBadges, ...badges.filter(b => !b.unlocked)].slice(0, 6);
+                    // Up to 4 most recently earned, fill remainder with next locked
+                    const recentEarned = earnedBadges.slice(0, 4);
+                    const lockedFill = badges.filter(b => !b.unlocked).slice(0, 4 - recentEarned.length);
+                    const preview = [...recentEarned, ...lockedFill];
                     preview.forEach(a => {
+                        const earnedDate = a.unlocked && a.earned_at
+                            ? new Date(a.earned_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                            : '';
                         const div = document.createElement('div');
                         div.className = 'achievement-card' + (a.unlocked ? ' achievement-card--unlocked' : ' achievement-card--locked');
                         div.innerHTML = `
-                            <span class="achievement-card__icon">${a.icon || '🏅'}</span>
+                            <span class="achievement-card__icon">${a.emoji || a.icon || '🏅'}</span>
                             <strong class="achievement-card__name">${escapeHtml(a.name)}</strong>
                             <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
-                            <span class="achievement-card__status">${a.unlocked ? '✓ Earned' : '🔒 Locked'}</span>
+                            <span class="achievement-card__status">${a.unlocked ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</span>
                         `;
                         homeAchievementsPreview.appendChild(div);
                     });

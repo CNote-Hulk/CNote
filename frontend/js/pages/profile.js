@@ -127,22 +127,19 @@ function initSettings() {
                 .then(r => r.json())
                 .then(d => {
                     if (d.success) {
-                        levelEl.textContent = `${d.emoji} ${d.level}`;
+                        levelEl.textContent = `${d.emoji} ${d.name}`;
                         levelEl.hidden = false;
-                        localStorage.setItem('cn_user_level', JSON.stringify({ emoji: d.emoji, name: d.level }));
+                        localStorage.setItem('cn_user_level', JSON.stringify({ emoji: d.emoji, name: d.name }));
                         const progressEl = document.getElementById('profile-level-progress');
                         if (progressEl) {
-                            if (d.nextLevel) {
-                                const req = d.requirements || {};
-                                const parts = [];
-                                if (!req.starter_guide_complete) parts.push('Complete the Console Starter Guide');
-                                const stillNeeded = Math.max(0, (req.console_visits_needed || 10) - (req.console_visits || 0));
-                                if (stillNeeded > 0) parts.push(`Visit ${stillNeeded} more console page${stillNeeded !== 1 ? 's' : ''}`);
-                                const barHtml = `<div style="margin-top:6px;height:3px;background:rgba(var(--accent-rgb),0.12);border-radius:2px;overflow:hidden;"><div style="width:${d.progressToNext}%;height:100%;background:var(--accent-color);border-radius:2px;transition:width 0.5s;"></div></div>`;
-                                const msg = parts.length ? parts.join(' · ') : `${d.progressToNext}% to ${d.nextLevel.emoji} ${d.nextLevel.name}`;
-                                progressEl.innerHTML = `<span>To reach ${d.nextLevel.emoji} <strong>${d.nextLevel.name}</strong>: ${msg}</span>${barHtml}`;
+                            const barHtml = `<div style="margin-top:6px;height:3px;background:rgba(var(--accent-rgb),0.12);border-radius:2px;overflow:hidden;"><div style="width:${d.progressPercent}%;height:100%;background:var(--accent-color);border-radius:2px;transition:width 0.5s;"></div></div>`;
+                            if (d.isMaxLevel) {
+                                progressEl.innerHTML = '<span>👑 Maximum Level</span>';
                             } else {
-                                progressEl.innerHTML = '<span>More levels coming soon! 🏆</span>';
+                                const nextLabel = d.nextLevelEmoji && d.nextLevelName
+                                    ? `🔝 Next: ${d.nextLevelEmoji} ${d.nextLevelName}`
+                                    : 'next level';
+                                progressEl.innerHTML = `<span>${d.xp} / ${d.xpForNext} XP — ${nextLabel}</span>${barHtml}`;
                             }
                             progressEl.hidden = false;
                         }
@@ -740,7 +737,7 @@ function initSettings() {
                 section.className = 'ach-category';
                 section.innerHTML = `<div class="ach-category__header">
                     <span class="ach-category__icon">${catDef ? catDef.icon : '🏅'}</span>
-                    <span class="ach-category__label">${catDef ? catDef.label : catId}</span>
+                    <span class="ach-category__label">${t('ach_cat_' + catId)}</span>
                     <span class="ach-category__count">${earned}/${items.length}</span>
                 </div>
                 <div class="ach-category__grid"></div>`;
@@ -748,13 +745,16 @@ function initSettings() {
                 const grid = section.querySelector('.ach-category__grid');
                 items.forEach(badge => {
                     const isEarned = !!(badge.unlocked || badge.earned);
+                    const earnedDate = isEarned && badge.earned_at
+                        ? new Date(badge.earned_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                        : '';
                     const el = document.createElement('div');
                     el.className = 'achievement-badge' + (isEarned ? ' earned' : ' locked');
                     el.innerHTML = `
-                        <div class="achievement-badge__icon">${badge.icon}</div>
+                        <div class="achievement-badge__icon">${badge.emoji || badge.icon || '🏅'}</div>
                         <div class="achievement-badge__name">${badge.name}</div>
                         <div class="achievement-badge__desc">${badge.description || ''}</div>
-                        <div class="achievement-badge__status">${isEarned ? '✓ Earned' : '🔒 Locked'}</div>
+                        <div class="achievement-badge__status">${isEarned ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</div>
                     `;
                     grid.appendChild(el);
                 });

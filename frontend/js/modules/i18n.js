@@ -756,6 +756,37 @@ const MESSAGES = {
         stats_level_novice: '🌱 Novice',
         stats_level_novice_desc: 'You are just getting started.',
         stats_all_achievements: '✅ You have unlocked all available achievements.',
+        ach_cat_learning: 'Learning',
+        ach_cat_explorer: 'Explorer',
+        ach_cat_community: 'Community',
+        ach_cat_marketplace: 'Marketplace',
+        ach_cat_veteran: 'Veteran',
+        ach_cat_special: 'Special',
+
+        // Level names — 10-level XP system
+        level_name_1:  'Newcomer',
+        level_name_2:  'Watcher',
+        level_name_3:  'Player',
+        level_name_4:  'Collector',
+        level_name_5:  'Tinkerer',
+        level_name_6:  'Explorer',
+        level_name_7:  'Enthusiast',
+        level_name_8:  'Historian',
+        level_name_9:  'Technician',
+        level_name_10: 'Legend',
+
+        // Level & achievement UI strings
+        level_max_reached:  '👑 Maximum level reached!',
+        level_max_label:    'Maximum Level',
+        level_xp_needed:    'XP needed',
+        level_starting:     'Starting level',
+        level_requires_xp:  'Requires {xp} XP',
+        level_towards:      'towards',
+        level_next_label:   '🔝 Next',
+        ach_earned:         '✓ Earned',
+        ach_locked:         '🔒 Locked',
+        ach_all_unlocked:   'All achievements unlocked!',
+        ach_see_all:        'See all {earned}/{total} achievements →',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 No description yet.',
@@ -2128,6 +2159,12 @@ const MESSAGES = {
         stats_level_novice: '🌱 Novice',
         stats_level_novice_desc: 'Abia ai început.',
         stats_all_achievements: '✅ Ai deblocat toate realizările disponibile.',
+        ach_cat_learning: 'Învățare',
+        ach_cat_explorer: 'Explorer',
+        ach_cat_community: 'Comunitate',
+        ach_cat_marketplace: 'Marketplace',
+        ach_cat_veteran: 'Veteran',
+        ach_cat_special: 'Special',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Nicio descriere încă.',
@@ -3491,6 +3528,12 @@ const MESSAGES = {
         stats_level_novice: '🌱 Novato',
         stats_level_novice_desc: 'Apenas estás comenzando.',
         stats_all_achievements: '✅ Has desbloqueado todos los logros disponibles.',
+        ach_cat_learning: 'Aprendizaje',
+        ach_cat_explorer: 'Explorador',
+        ach_cat_community: 'Comunidad',
+        ach_cat_marketplace: 'Mercado',
+        ach_cat_veteran: 'Veterano',
+        ach_cat_special: 'Especial',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Sin descripción aún.',
@@ -4849,6 +4892,12 @@ const MESSAGES = {
         stats_level_novice: '🌱 Novice',
         stats_level_novice_desc: 'Vous venez de commencer.',
         stats_all_achievements: '✅ Vous avez débloqué tous les succès disponibles.',
+        ach_cat_learning: 'Apprentissage',
+        ach_cat_explorer: 'Explorateur',
+        ach_cat_community: 'Communauté',
+        ach_cat_marketplace: 'Marketplace',
+        ach_cat_veteran: 'Vétéran',
+        ach_cat_special: 'Spécial',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Pas de description encore.',
@@ -6213,6 +6262,12 @@ const MESSAGES = {
         stats_level_novice: '🌱 Principiante',
         stats_level_novice_desc: 'Hai appena iniziato.',
         stats_all_achievements: '✅ Hai sbloccato tutti i traguardi disponibili.',
+        ach_cat_learning: 'Apprendimento',
+        ach_cat_explorer: 'Esploratore',
+        ach_cat_community: 'Comunità',
+        ach_cat_marketplace: 'Marketplace',
+        ach_cat_veteran: 'Veterano',
+        ach_cat_special: 'Speciale',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Nessuna descrizione ancora.',
@@ -7571,6 +7626,12 @@ const MESSAGES = {
         stats_level_novice: '🌱 Anfänger',
         stats_level_novice_desc: 'Du hast gerade erst angefangen.',
         stats_all_achievements: '✅ Du hast alle verfügbaren Erfolge freigeschaltet.',
+        ach_cat_learning: 'Lernen',
+        ach_cat_explorer: 'Entdecker',
+        ach_cat_community: 'Gemeinschaft',
+        ach_cat_marketplace: 'Marktplatz',
+        ach_cat_veteran: 'Veteran',
+        ach_cat_special: 'Besonderes',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Noch keine Beschreibung.',

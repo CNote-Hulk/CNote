@@ -108,6 +108,8 @@ window.GAMIFICATION_DATA = {
             ...currentLevel,
             xp: safeXp,
             xpForNext: nextLevel ? nextLevel.xpRequired : currentLevel.xpRequired,
+            nextLevelName: nextLevel ? nextLevel.name : null,
+            nextLevelEmoji: nextLevel ? nextLevel.emoji : null,
             progressPercent: nextLevel
                 ? Math.round(((safeXp - currentLevel.xpRequired) /
                     (nextLevel.xpRequired - currentLevel.xpRequired)) * 100)
@@ -118,10 +120,10 @@ window.GAMIFICATION_DATA = {
 
     CATEGORIES: [
         { id: 'learning',    label: 'Learning',    icon: '📚' },
-        { id: 'explorer',    label: 'Explorer',    icon: '🌍' },
+        { id: 'explorer',    label: 'Explorer',    icon: '🗺️' },
         { id: 'community',   label: 'Community',   icon: '👥' },
         { id: 'marketplace', label: 'Marketplace', icon: '🛒' },
-        { id: 'veteran',     label: 'Veteran',     icon: '🏛️' },
+        { id: 'veteran',     label: 'Veteran',     icon: '⏳' },
         { id: 'special',     label: 'Special',     icon: '✨' },
     ],
 };

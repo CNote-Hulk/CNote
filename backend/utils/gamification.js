@@ -159,6 +159,8 @@ function getLevelFromXP(xp) {
         ...currentLevel,
         xp: safeXp,
         xpForNext: nextLevel ? nextLevel.xpRequired : currentLevel.xpRequired,
+        nextLevelName: nextLevel ? nextLevel.name : null,
+        nextLevelEmoji: nextLevel ? nextLevel.emoji : null,
         progressPercent: nextLevel
             ? Math.round(((safeXp - currentLevel.xpRequired) /
                 (nextLevel.xpRequired - currentLevel.xpRequired)) * 100)

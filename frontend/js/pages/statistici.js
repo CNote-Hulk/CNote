@@ -6,6 +6,7 @@
  */
 import { AuthModule } from '../modules/auth.js';
 import { AchievementsModule } from '../modules/achievements.js';
+import { I18nModule } from '../modules/i18n.js';
 
 
 let user = AuthModule.getCurrentUser();
@@ -110,7 +111,7 @@ function renderGoals(badges) {
     container.innerHTML = locked.map((b) => `
         <div class="next-goal-item">
             <div class="next-goal-item__icon-wrap">
-                <span class="next-goal-item__icon">${b.icon || '🏅'}</span>
+                <span class="next-goal-item__icon">${b.emoji || b.icon || '🏅'}</span>
             </div>
             <div class="next-goal-item__body">
                 <div class="next-goal-item__name">${b.label || b.name}</div>
@@ -119,6 +120,46 @@ function renderGoals(badges) {
             <span class="next-goal-item__lock" aria-hidden="true">🔒</span>
         </div>
     `).join('');
+}
+
+/** Render all achievements grouped by category */
+function renderAchievementsPanel(allBadges) {
+    const container = document.getElementById('stat-achievements-panel');
+    if (!container) return;
+    const CATS = window.GAMIFICATION_DATA?.CATEGORIES || [];
+    if (!CATS.length || !allBadges.length) { container.hidden = true; return; }
+    container.hidden = false;
+    const grouped = {};
+    allBadges.forEach(b => {
+        const cat = b.category || 'other';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(b);
+    });
+    const sectionsHtml = CATS.map(cat => {
+        const items = grouped[cat.id] || [];
+        if (!items.length) return '';
+        const earnedCount = items.filter(b => b.earned).length;
+        const cards = items.map(b => {
+            const earnedDate = b.earned && b.earned_at
+                ? new Date(b.earned_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                : '';
+            return `<div class="achievement-card ${b.earned ? 'achievement-card--unlocked' : 'achievement-card--locked'}">
+                <span class="achievement-card__icon">${b.emoji || b.icon || '🏅'}</span>
+                <strong class="achievement-card__name">${b.label || b.name}</strong>
+                <span class="achievement-card__desc">${b.description || ''}</span>
+                <span class="achievement-card__status">${b.earned ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</span>
+            </div>`;
+        }).join('');
+        return `<div class="ach-category">
+            <div class="ach-category__header">
+                <span class="ach-category__icon">${cat.icon}</span>
+                <span class="ach-category__label">${I18nModule.t('ach_cat_' + cat.id)}</span>
+                <span class="ach-category__count">${earnedCount}/${items.length}</span>
+            </div>
+            <div class="ach-category__grid">${cards}</div>
+        </div>`;
+    }).join('');
+    container.querySelector('.statsd-ach-grid').innerHTML = sectionsHtml;
 }
 
 /** Compute all stats and update DOM */
@@ -228,6 +269,7 @@ async function renderStats() {
     // AchievementsModule.showUnlockNotifications(awardedIds, allBadges); // dacă ai awardedIds
 
     renderGoals(allBadges);
+    renderAchievementsPanel(allBadges);
 
     // Level — fetch from API (XP-based: Newcomer → Legend)
     let level = AchievementsModule.computeLevel(null);
