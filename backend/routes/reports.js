@@ -202,20 +202,47 @@ router.get('/reports/admin', authRequired, async (req, res) => {
         const reports = result.rows;
 
         for (const r of reports) {
+            r.content_link = null;
+            r.content_body = null;
             try {
                 if (r.content_type === 'user_profile') {
-                    const u = await pool.query('SELECT username FROM users WHERE id = $1', [r.content_id]);
-                    r.content_label = u.rows[0]?.username ? `@${u.rows[0].username}` : `User #${r.content_id}`;
+                    const u = await pool.query('SELECT username, bio FROM users WHERE id = $1', [r.content_id]);
+                    const row = u.rows[0];
+                    r.content_label = row?.username ? `@${row.username}` : `User #${r.content_id}`;
+                    r.content_link = row?.username ? `/html/pages/user-profile.html?u=${row.username}` : null;
+                    r.content_body = row?.bio || null;
                 } else if (r.content_type === 'forum_thread') {
-                    const t = await pool.query('SELECT title FROM forum_threads WHERE id = $1', [r.content_id]);
-                    r.content_label = t.rows[0]?.title || `Thread #${r.content_id}`;
+                    const t = await pool.query('SELECT id, title, body, console FROM forum_threads WHERE id = $1', [r.content_id]);
+                    const row = t.rows[0];
+                    r.content_label = row?.title || `Thread #${r.content_id}`;
+                    r.content_link = row ? `/html/pages/community.html#forum/${row.console}/thread/${row.id}` : null;
+                    r.content_body = row?.body || null;
                 } else if (r.content_type === 'forum_reply') {
-                    r.content_label = `Reply #${r.content_id}`;
+                    const t = await pool.query(
+                        `SELECT fr.body, ft.id AS thread_id, ft.console, ft.title
+                         FROM forum_replies fr
+                         JOIN forum_threads ft ON ft.id = fr.thread_id
+                         WHERE fr.id = $1`, [r.content_id]);
+                    const row = t.rows[0];
+                    r.content_label = row?.title ? `Reply in "${row.title}"` : `Reply #${r.content_id}`;
+                    r.content_link = row ? `/html/pages/community.html#forum/${row.console}/thread/${row.thread_id}` : null;
+                    r.content_body = row?.body || null;
                 } else if (r.content_type === 'listing') {
-                    const l = await pool.query('SELECT title FROM listings WHERE id = $1', [r.content_id]);
-                    r.content_label = l.rows[0]?.title || `Listing #${r.content_id}`;
+                    const l = await pool.query('SELECT title, description FROM listings WHERE id = $1', [r.content_id]);
+                    const row = l.rows[0];
+                    r.content_label = row?.title || `Listing #${r.content_id}`;
+                    r.content_link = `/html/pages/community.html#listing-${r.content_id}`;
+                    r.content_body = row?.description || null;
                 } else if (r.content_type === 'direct_message') {
-                    r.content_label = `Message #${r.content_id}`;
+                    const m = await pool.query(
+                        `SELECT dm.message, s.username AS sender, rc.username AS receiver
+                         FROM direct_messages dm
+                         JOIN users s ON s.id = dm.sender_id
+                         JOIN users rc ON rc.id = dm.receiver_id
+                         WHERE dm.id = $1`, [r.content_id]);
+                    const row = m.rows[0];
+                    r.content_label = row ? `DM from @${row.sender} to @${row.receiver}` : `Message #${r.content_id}`;
+                    r.content_body = row?.message || null;
                 } else {
                     r.content_label = `${r.content_type} #${r.content_id}`;
                 }

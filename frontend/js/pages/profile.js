@@ -1443,6 +1443,7 @@ const STATUS_CLS = {
     pending:   'pending',
     reviewed:  'reviewed',
     actioned:  'actioned',
+    resolved:  'resolved',
     dismissed: 'dismissed',
 };
 
@@ -1520,7 +1521,7 @@ async function loadMyReports() {
 
 /**
  * loadAdminReports
- * Fetches GET /api/reports/admin and renders an interactive table.
+ * Fetches GET /api/reports/admin and renders interactive report cards.
  * Admin only — tab is hidden for non-admins.
  */
 async function loadAdminReports() {
@@ -1530,100 +1531,124 @@ async function loadAdminReports() {
     const token = localStorage.getItem('cn_token') || '';
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
-    const STATUS_LABELS = {
-        pending:   'Pending',
-        reviewed:  'Reviewed',
-        resolved:  'Resolved',
-        dismissed: 'Dismissed',
+    const REASON_ICONS = {
+        spam: '🚫', hate_speech: '💢', harassment: '😡',
+        illegal_content: '⚠️', csam: '🔞', misinformation: '❌', other: '📋',
     };
-    const STATUS_NEXT = {
-        pending:   ['reviewed', 'resolved', 'dismissed'],
-        reviewed:  ['resolved', 'dismissed', 'pending'],
-        resolved:  ['dismissed', 'pending'],
-        dismissed: ['pending'],
+    const REASON_LABELS = {
+        spam: 'Spam', hate_speech: 'Hate speech', harassment: 'Harassment',
+        illegal_content: 'Illegal content', csam: 'CSAM', misinformation: 'Misinformation', other: 'Other',
+    };
+    const TYPE_ICONS = {
+        forum_thread: '💬', forum_reply: '↩️', user_profile: '👤',
+        listing: '🏷️', direct_message: '✉️',
+    };
+    const TYPE_LABELS = {
+        forum_thread: 'Forum post', forum_reply: 'Forum reply', user_profile: 'User profile',
+        listing: 'Marketplace listing', direct_message: 'Direct message',
+    };
+    // Action buttons per status
+    const STATUS_ACTIONS = {
+        pending:   [
+            { status: 'reviewed',  label: '👁 Mark reviewed',  cls: 'ar-btn--review' },
+            { status: 'resolved',  label: '✅ Resolve',         cls: 'ar-btn--resolve' },
+            { status: 'dismissed', label: '✖ Dismiss',          cls: 'ar-btn--dismiss' },
+        ],
+        reviewed:  [
+            { status: 'resolved',  label: '✅ Resolve',         cls: 'ar-btn--resolve' },
+            { status: 'dismissed', label: '✖ Dismiss',          cls: 'ar-btn--dismiss' },
+        ],
+        resolved:  [
+            { status: 'dismissed', label: '✖ Dismiss',          cls: 'ar-btn--dismiss' },
+            { status: 'pending',   label: '↩ Reopen',           cls: 'ar-btn--reopen' },
+        ],
+        dismissed: [
+            { status: 'pending',   label: '↩ Reopen',           cls: 'ar-btn--reopen' },
+        ],
     };
 
     let allReports = [];
     let activeFilter = 'all';
 
-    function renderTable(reports) {
+    async function setStatus(reportId, newStatus, cardEl) {
+        cardEl.classList.add('ar-card--loading');
+        try {
+            const res = await fetch(`${API_BASE_URL}/reports/admin/${reportId}`, {
+                method: 'PATCH',
+                headers: { ...headers, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus }),
+                credentials: 'include',
+            });
+            const data = await res.json();
+            if (data.success) {
+                const r = allReports.find(x => String(x.id) === String(reportId));
+                if (r) r.status = newStatus;
+                applyFilter(activeFilter);
+            } else {
+                cardEl.classList.remove('ar-card--loading');
+                alert('Error: ' + (data.error || 'Unknown error'));
+            }
+        } catch {
+            cardEl.classList.remove('ar-card--loading');
+        }
+    }
+
+    function renderCards(reports) {
         if (!reports.length) {
-            container.innerHTML = `<p class="my-reports-empty">No reports found.</p>`;
+            container.innerHTML = `<p class="my-reports-empty">No reports in this category.</p>`;
             return;
         }
-        const rows = reports.map(r => {
+
+        const cards = reports.map(r => {
             const cls = STATUS_CLS[r.status] || 'pending';
+            const statusLabel = { pending: 'Pending', reviewed: 'Reviewed', resolved: 'Resolved', dismissed: 'Dismissed' }[r.status] || r.status;
             const date = new Date(r.created_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const reporter = r.reporter_username ? `<a href="/user/${escapeHtml(r.reporter_username)}" target="_blank">@${escapeHtml(r.reporter_username)}</a>` : 'Anonymous';
-            const nextOpts = (STATUS_NEXT[r.status] || []).map(s =>
-                `<option value="${s}">${STATUS_LABELS[s]}</option>`
+            const typeIcon = TYPE_ICONS[r.content_type] || '📄';
+            const typeLabel = TYPE_LABELS[r.content_type] || r.content_type.replace(/_/g, ' ');
+            const reasonIcon = REASON_ICONS[r.reason] || '📋';
+            const reasonLabel = REASON_LABELS[r.reason] || r.reason.replace(/_/g, ' ');
+            const reporter = r.reporter_username
+                ? `<a href="/user/${escapeHtml(r.reporter_username)}" target="_blank" class="ar-reporter">@${escapeHtml(r.reporter_username)}</a>`
+                : '<span class="ar-reporter ar-reporter--anon">Anonymous</span>';
+            const rawLabel = r.content_label || `#${r.content_id}`;
+            const contentLabel = r.content_link
+                ? `<a href="${escapeHtml(r.content_link)}" target="_blank" class="ar-content-link">${escapeHtml(rawLabel)} ↗</a>`
+                : `<span>${escapeHtml(rawLabel)}</span>`;
+            const contentBody = r.content_body
+                ? `<div class="ar-content-body">${escapeHtml(r.content_body)}</div>`
+                : '';
+            const reporterNote = r.description ? `<div class="ar-description">"${escapeHtml(r.description)}"</div>` : '';
+            const actions = (STATUS_ACTIONS[r.status] || []).map(a =>
+                `<button class="ar-btn ${a.cls}" data-id="${r.id}" data-status="${a.status}">${a.label}</button>`
             ).join('');
 
-            return `<tr data-report-id="${r.id}">
-                <td class="ar-cell-content">
-                    <span class="ar-content-type">${escapeHtml(r.content_type.replace(/_/g, ' '))}</span>
-                    <span class="ar-content-label">${escapeHtml(r.content_label || r.content_id)}</span>
-                </td>
-                <td>${escapeHtml(r.reason.replace(/_/g, ' '))}</td>
-                <td>${reporter}</td>
-                <td>${date}</td>
-                <td>${r.description ? `<span class="ar-desc" title="${escapeHtml(r.description)}">…</span>` : ''}</td>
-                <td>
-                    <span class="report-status-badge report-status-badge--${cls}">${STATUS_LABELS[r.status] || r.status}</span>
-                </td>
-                <td>
-                    <div class="ar-actions">
-                        <select class="ar-status-select" data-id="${r.id}" data-current="${r.status}">
-                            <option value="">Change…</option>
-                            ${nextOpts}
-                        </select>
+            return `<div class="ar-card" data-report-id="${r.id}">
+                <div class="ar-card__header">
+                    <div class="ar-card__type">${typeIcon} ${typeLabel}</div>
+                    <span class="report-status-badge report-status-badge--${cls}">${statusLabel}</span>
+                </div>
+                <div class="ar-card__content">
+                    <div class="ar-card__label">${contentLabel}</div>
+                    ${contentBody}
+                    <div class="ar-card__meta">
+                        <span>${reasonIcon} <strong>${reasonLabel}</strong></span>
+                        <span>·</span>
+                        <span>Reported by ${reporter}</span>
+                        <span>·</span>
+                        <span>${date}</span>
                     </div>
-                </td>
-            </tr>`;
+                    ${reporterNote}
+                </div>
+                <div class="ar-card__actions">${actions || '<span class="ar-no-actions">No further actions</span>'}</div>
+            </div>`;
         }).join('');
 
-        container.innerHTML = `
-            <table class="my-reports-table admin-reports-table">
-                <thead>
-                    <tr>
-                        <th>Content</th>
-                        <th>Reason</th>
-                        <th>Reporter</th>
-                        <th>Date</th>
-                        <th>Note</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-            </table>`;
+        container.innerHTML = `<div class="ar-card-list">${cards}</div>`;
 
-        // Status change handlers
-        container.querySelectorAll('.ar-status-select').forEach(sel => {
-            sel.addEventListener('change', async () => {
-                const newStatus = sel.value;
-                const reportId = sel.dataset.id;
-                if (!newStatus) return;
-                sel.disabled = true;
-                try {
-                    const res = await fetch(`${API_BASE_URL}/reports/admin/${reportId}`, {
-                        method: 'PATCH',
-                        headers: { ...headers, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ status: newStatus }),
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        const r = allReports.find(x => String(x.id) === String(reportId));
-                        if (r) r.status = newStatus;
-                        applyFilter(activeFilter);
-                    } else {
-                        sel.value = '';
-                        sel.disabled = false;
-                    }
-                } catch {
-                    sel.value = '';
-                    sel.disabled = false;
-                }
+        container.querySelectorAll('.ar-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const card = btn.closest('.ar-card');
+                setStatus(btn.dataset.id, btn.dataset.status, card);
             });
         });
     }
@@ -1634,18 +1659,16 @@ async function loadAdminReports() {
             b.classList.toggle('active', b.dataset.filter === filter);
         });
         const filtered = filter === 'all' ? allReports : allReports.filter(r => r.status === filter);
-        renderTable(filtered);
+        renderCards(filtered);
     }
 
-    // Filter buttons
     document.querySelectorAll('.admin-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
     });
 
-    // Initial load
     container.innerHTML = `<p class="my-reports-empty">Loading…</p>`;
     try {
-        const resp = await fetch(`${API_BASE_URL}/reports/admin`, { headers });
+        const resp = await fetch(`${API_BASE_URL}/reports/admin`, { headers, credentials: 'include' });
         const data = await resp.json().catch(() => ({}));
         if (!resp.ok || !data.success) throw new Error(data.error || 'Error');
         allReports = data.reports || [];
