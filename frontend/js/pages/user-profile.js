@@ -91,43 +91,25 @@ const t = key => I18nModule.t(key);
             if (earnedCount === 0) {
                 achPreview.innerHTML = `<p class="dash-empty">${t('up_no_achievements')}</p>`;
             } else {
-                const grouped = {};
-                badges.forEach(b => {
-                    const cat = b.category || 'other';
-                    if (!grouped[cat]) grouped[cat] = [];
-                    grouped[cat].push(b);
-                });
-                const catOrder = CATEGORIES.map(c => c.id);
-                const renderCat = (catId) => {
-                    const items = grouped[catId];
-                    if (!items || !items.some(b => b.earned)) return '';
-                    const catDef = CATEGORIES.find(c => c.id === catId);
-                    const earned = items.filter(b => b.earned).length;
-                    const cards = items.filter(b => b.earned).map(b => {
-                        const dateStr = b.earned_at
-                            ? new Date(b.earned_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' })
-                            : '';
-                        return `<div class="achievement-badge earned">
-                            <div class="achievement-badge__icon">${b.emoji || b.icon || '🏅'}</div>
-                            <div class="achievement-badge__name">${escapeHtml(b.name)}</div>
-                            <div class="achievement-badge__desc">${escapeHtml(b.description || '')}</div>
-                            <div class="achievement-badge__status">${t('ach_earned')}${dateStr ? ' ' + dateStr : ''}</div>
-                        </div>`;
-                    }).join('');
-                    return `<div class="ach-category">
-                        <div class="ach-category__header">
-                            <span class="ach-category__icon">${catDef ? catDef.icon : '🏅'}</span>
-                            <span class="ach-category__label">${t('ach_cat_' + catId)}</span>
-                            <span class="ach-category__count">${earned}/${items.length}</span>
-                        </div>
-                        <div class="ach-category__grid">${cards}</div>
+                // Show 6 most recently earned as compact mini-cards
+                const recentEarned = badges
+                    .filter(b => b.earned)
+                    .sort((a, b) => new Date(b.earned_at || 0) - new Date(a.earned_at || 0))
+                    .slice(0, 6);
+                const miniCards = recentEarned.map(b => `
+                    <div class="up-ach-mini" title="${escapeHtml(b.name)}">
+                        <div class="up-ach-mini__icon">${b.emoji || b.icon || '🏅'}</div>
+                        <div class="up-ach-mini__name">${escapeHtml(b.name)}</div>
+                    </div>`).join('');
+                const btnLabel = t('ach_see_all').replace('{earned}', earnedCount).replace('{total}', badges.length);
+                achPreview.innerHTML = `
+                    <div class="up-ach-preview-wrap">
+                        <div class="up-ach-mini-grid">${miniCards}</div>
+                        <button class="up-ach-view-all-btn" id="up-ach-view-all-btn">${btnLabel}</button>
                     </div>`;
-                };
-                const otherKeys = Object.keys(grouped).filter(k => !catOrder.includes(k));
-                achPreview.innerHTML = `<div class="achievements-grid" style="display:flex;flex-direction:column;gap:20px;padding:8px 0;">
-                    ${catOrder.map(renderCat).join('')}
-                    ${otherKeys.map(renderCat).join('')}
-                </div>`;
+                document.getElementById('up-ach-view-all-btn').addEventListener('click', () => {
+                    openAchievementsModal(badges, CATEGORIES, earnedCount, t);
+                });
             }
 
             // Ratings
@@ -155,6 +137,75 @@ const t = key => I18nModule.t(key);
             // Favorites
             const favCount = (profile.favorite_console_ids || []).length || (profile.favorite_consoles || '').split(',').filter(Boolean).length;
             document.getElementById('user-dash-favorites').textContent = favCount;
+        }
+
+        /** Open full achievements modal */
+        function openAchievementsModal(badges, CATEGORIES, earnedCount, t) {
+            document.getElementById('up-ach-modal')?.remove();
+
+            const grouped = {};
+            badges.forEach(b => {
+                const cat = b.category || 'other';
+                if (!grouped[cat]) grouped[cat] = [];
+                grouped[cat].push(b);
+            });
+            const catOrder = CATEGORIES.map(c => c.id);
+            const otherKeys = Object.keys(grouped).filter(k => !catOrder.includes(k));
+
+            const renderCat = (catId) => {
+                const items = grouped[catId];
+                if (!items) return '';
+                const catDef = CATEGORIES.find(c => c.id === catId);
+                const earned = items.filter(b => b.earned).length;
+                const cards = items.map(b => {
+                    const isEarned = b.earned;
+                    const dateStr = isEarned && b.earned_at
+                        ? new Date(b.earned_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                        : '';
+                    return `<div class="achievement-badge ${isEarned ? 'earned' : 'locked'}">
+                        <div class="achievement-badge__icon">${b.emoji || b.icon || '🏅'}</div>
+                        <div class="achievement-badge__name">${escapeHtml(b.name)}</div>
+                        <div class="achievement-badge__desc">${escapeHtml(b.description || '')}</div>
+                        <div class="achievement-badge__status">${isEarned ? `${t('ach_earned')}${dateStr ? ' ' + dateStr : ''}` : t('ach_locked')}</div>
+                    </div>`;
+                }).join('');
+                return `<div class="ach-category">
+                    <div class="ach-category__header">
+                        <span class="ach-category__icon">${catDef ? catDef.icon : '🏅'}</span>
+                        <span class="ach-category__label">${t('ach_cat_' + catId)}</span>
+                        <span class="ach-category__count">${earned}/${items.length}</span>
+                    </div>
+                    <div class="ach-category__grid">${cards}</div>
+                </div>`;
+            };
+
+            const modal = document.createElement('div');
+            modal.id = 'up-ach-modal';
+            modal.className = 'up-ach-modal-overlay';
+            modal.innerHTML = `
+                <div class="up-ach-modal" role="dialog" aria-modal="true">
+                    <div class="up-ach-modal__header">
+                        <h3 class="up-ach-modal__title">🏅 ${t('up_tab_achievements')} <span class="up-ach-modal__count">${earnedCount} / ${badges.length}</span></h3>
+                        <button class="up-ach-modal__close" aria-label="Close">✕</button>
+                    </div>
+                    <div class="up-ach-modal__body">
+                        <div class="up-ach-modal__grid">
+                            ${[...catOrder, ...otherKeys].map(renderCat).join('')}
+                        </div>
+                    </div>
+                </div>`;
+
+            document.body.appendChild(modal);
+            requestAnimationFrame(() => modal.classList.add('visible'));
+
+            const close = () => {
+                modal.classList.remove('visible');
+                setTimeout(() => modal.remove(), 220);
+            };
+            modal.querySelector('.up-ach-modal__close').addEventListener('click', close);
+            modal.addEventListener('click', e => { if (e.target === modal) close(); });
+            const onKey = e => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } };
+            document.addEventListener('keydown', onKey);
         }
 
         /** Render social links if user has them and privacy allows */
