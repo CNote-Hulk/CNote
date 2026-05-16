@@ -224,6 +224,62 @@ async function awardXP(pool, io, userId, actionType, referenceId = null) {
 }
 
 /**
+ * Inner helper: given pre-fetched metrics + a current storedIds set,
+ * insert any newly-unlocked achievements and award their XP.
+ * Returns the list of achievement objects that were actually inserted.
+ */
+async function _unlockNewAchievements(pool, userId, metrics, storedIds) {
+    const currentlyUnlocked = new Set();
+    for (const ach of ACHIEVEMENTS) {
+        const { type, threshold } = ach.condition;
+        let value;
+        if (type === 'user_id_under') {
+            value = metrics.user_id_value < threshold ? 1 : 0;
+        } else if (type === 'achievements_count') {
+            value = storedIds.size;
+        } else {
+            value = metrics[type] ?? 0;
+        }
+        if (value >= threshold) currentlyUnlocked.add(ach.id);
+    }
+
+    const newlyUnlocked = [...currentlyUnlocked].filter(id => !storedIds.has(id));
+    const awarded = [];
+
+    for (const badgeId of newlyUnlocked) {
+        const ach = ACHIEVEMENTS.find(a => a.id === badgeId);
+        if (!ach) continue;
+
+        const insertRes = await pool.query(
+            `INSERT INTO user_achievements (user_id, badge_id, xp_awarded)
+             VALUES ($1, $2, $3)
+             ON CONFLICT DO NOTHING
+             RETURNING badge_id`,
+            [userId, badgeId, ach.xpReward]
+        );
+        if (!insertRes.rows.length) continue; // already stored by a concurrent call
+
+        const xpTxRes = await pool.query(
+            `INSERT INTO xp_transactions (user_id, action_type, xp_amount, reference_id)
+             VALUES ($1, 'achievement_reward', $2, $3)
+             ON CONFLICT (user_id, action_type, reference_id) DO NOTHING
+             RETURNING xp_amount`,
+            [userId, ach.xpReward, `ach_${badgeId}`]
+        );
+        if (xpTxRes.rows.length > 0) {
+            await pool.query(
+                `UPDATE users SET xp = xp + $1, xp_updated_at = NOW() WHERE id = $2`,
+                [ach.xpReward, userId]
+            );
+        }
+
+        awarded.push(ach);
+    }
+
+    return awarded;
+}
+
+/**
  * Check and unlock newly earned achievements for a user.
  * Persists to DB and emits via Socket.io if io is provided.
  * Called automatically by awardXP — no need to call this directly.
@@ -277,53 +333,15 @@ async function checkAchievements(pool, io, userId) {
 
         const storedIds = new Set(storedRes.rows.map(r => r.badge_id));
 
-        // Compute which achievements are currently unlocked
-        const currentlyUnlocked = new Set();
-        for (const ach of ACHIEVEMENTS) {
-            const { type, threshold } = ach.condition;
-            let value;
-            if (type === 'user_id_under') {
-                value = metrics.user_id_value < threshold ? 1 : 0;
-            } else if (type === 'achievements_count') {
-                value = storedIds.size;
-            } else {
-                value = metrics[type] ?? 0;
-            }
-            if (value >= threshold) currentlyUnlocked.add(ach.id);
-        }
+        const awardedAchievements = await _unlockNewAchievements(pool, userId, metrics, storedIds);
 
-        const newlyUnlocked = [...currentlyUnlocked].filter(id => !storedIds.has(id));
-        if (!newlyUnlocked.length) return [];
-
-        const awardedAchievements = [];
-
-        for (const badgeId of newlyUnlocked) {
-            const ach = ACHIEVEMENTS.find(a => a.id === badgeId);
-            if (!ach) continue;
-
-            await pool.query(
-                `INSERT INTO user_achievements (user_id, badge_id, xp_awarded)
-                 VALUES ($1, $2, $3)
-                 ON CONFLICT DO NOTHING`,
-                [userId, badgeId, ach.xpReward]
-            );
-
-            // Award XP directly (not through awardXP to avoid recursion)
-            const xpTxRes = await pool.query(
-                `INSERT INTO xp_transactions (user_id, action_type, xp_amount, reference_id)
-                 VALUES ($1, 'achievement_reward', $2, $3)
-                 ON CONFLICT (user_id, action_type, reference_id) DO NOTHING
-                 RETURNING xp_amount`,
-                [userId, ach.xpReward, `ach_${badgeId}`]
-            );
-            if (xpTxRes.rows.length > 0) {
-                await pool.query(
-                    `UPDATE users SET xp = xp + $1, xp_updated_at = NOW() WHERE id = $2`,
-                    [ach.xpReward, userId]
-                );
-            }
-
-            awardedAchievements.push(ach);
+        // Second pass: re-evaluate achievements_count after the batch so the
+        // completionist badge (and any future count-gated ones) can fire in
+        // the same run that pushed the count over the threshold.
+        if (awardedAchievements.length > 0) {
+            const updatedStoredIds = new Set([...storedIds, ...awardedAchievements.map(a => a.id)]);
+            const bonus = await _unlockNewAchievements(pool, userId, metrics, updatedStoredIds);
+            awardedAchievements.push(...bonus);
         }
 
         if (io && awardedAchievements.length > 0) {

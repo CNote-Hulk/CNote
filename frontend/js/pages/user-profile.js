@@ -252,7 +252,7 @@ const t = key => I18nModule.t(key);
             modal.innerHTML = `
                 <div class="up-ach-modal" role="dialog" aria-modal="true">
                     <div class="up-ach-modal__header">
-                        <h3 class="up-ach-modal__title">📚 ${t('up_course_progress')} <span class="up-ach-modal__count">${overallPct}%</span></h3>
+                        <h3 class="up-ach-modal__title">${t('up_course_progress')} <span class="up-ach-modal__count">${overallPct}%</span></h3>
                         <button class="up-ach-modal__close" aria-label="Close">✕</button>
                     </div>
                     <div class="up-ach-modal__body">

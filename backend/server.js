@@ -467,6 +467,7 @@ app.set('io', io);
 const { authRequired: _authReq } = require('./middleware/auth');
 const jwt = require('jsonwebtoken');
 const pool = require('./db');
+const { checkAchievements } = require('./utils/gamification');
 
 io.on('connection', (socket) => {
   socket.on('register', async (token) => {
@@ -486,7 +487,11 @@ io.on('connection', (socket) => {
         if (!result.rows[0]) return;
         userId = result.rows[0].user_id;
       }
-      if (userId) socket.join(String(userId));
+      if (userId) {
+        socket.join(String(userId));
+        // Emit any achievements earned since last connection (catches missed notifications)
+        checkAchievements(pool, io, userId).catch(() => {});
+      }
     } catch {}
   });
 });
