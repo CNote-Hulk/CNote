@@ -572,6 +572,13 @@ body.home-page::before {
 }
 
 /* Category section */
+/* Full achievements panel — each category is its own row */
+#achievements-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
 .ach-category {
     display: flex;
     flex-direction: column;
@@ -582,7 +589,9 @@ body.home-page::before {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0 2px;
+    padding: 0 2px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 2px;
 }
 
 .ach-category__icon { font-size: 1rem; flex-shrink: 0; }
@@ -609,8 +618,14 @@ body.home-page::before {
 
 .ach-category__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 10px;
+}
+
+@media (min-width: 900px) {
+    .ach-category__grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 200px));
+    }
 }
 
 /* Home preview grid */

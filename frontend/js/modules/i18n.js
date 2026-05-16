@@ -787,6 +787,7 @@ const MESSAGES = {
         ach_locked:         '🔒 Locked',
         ach_all_unlocked:   'All achievements unlocked!',
         ach_see_all:        'See all {earned}/{total} achievements →',
+        ach_panel_desc:     'Track your progress and unlocked achievements.',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 No description yet.',
@@ -2190,6 +2191,7 @@ const MESSAGES = {
         ach_locked:         '🔒 Blocat',
         ach_all_unlocked:   'Toate realizările deblocate!',
         ach_see_all:        'Vezi toate {earned}/{total} realizări →',
+        ach_panel_desc:     'Urmărește-ți progresul și realizările deblocate.',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Nicio descriere încă.',
@@ -3584,6 +3586,7 @@ const MESSAGES = {
         ach_locked:         '🔒 Bloqueado',
         ach_all_unlocked:   '¡Todos los logros desbloqueados!',
         ach_see_all:        'Ver todos los {earned}/{total} logros →',
+        ach_panel_desc:     'Rastrea tu progreso y los logros desbloqueados.',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Sin descripción aún.',
@@ -4973,6 +4976,7 @@ const MESSAGES = {
         ach_locked:         '🔒 Verrouillé',
         ach_all_unlocked:   'Tous les succès débloqués !',
         ach_see_all:        'Voir tous les {earned}/{total} succès →',
+        ach_panel_desc:     'Suivez votre progression et vos succès débloqués.',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Pas de description encore.',
@@ -6368,6 +6372,7 @@ const MESSAGES = {
         ach_locked:         '🔒 Bloccato',
         ach_all_unlocked:   'Tutti i traguardi sbloccati!',
         ach_see_all:        'Vedi tutti i {earned}/{total} traguardi →',
+        ach_panel_desc:     'Tieni traccia dei tuoi progressi e traguardi sbloccati.',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Nessuna descrizione ancora.',
@@ -7757,6 +7762,7 @@ const MESSAGES = {
         ach_locked:         '🔒 Gesperrt',
         ach_all_unlocked:   'Alle Erfolge freigeschaltet!',
         ach_see_all:        'Alle {earned}/{total} Erfolge ansehen →',
+        ach_panel_desc:     'Verfolge deinen Fortschritt und freigeschaltete Erfolge.',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Noch keine Beschreibung.',
