@@ -268,21 +268,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSidebar(user);
 
             // parallel fetch
+            const sf = { success: false };
             const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes] = await Promise.all([
-                apiFetch('/api/ratings/user/all'),
-                apiFetch('/api/favorites'),
-                apiFetch('/api/friends'),
-                apiFetch('/api/friends/requests'),
-                apiFetch('/api/forum/recent'),
-                apiFetch('/api/forum/my-posts'),
-                apiFetch('/api/forum/liked'),
-                apiFetch('/api/achievements'),
-                apiFetch('/api/courses/starter-guide/progress'),
-                apiFetch('/api/consoles/visited'),
-                apiFetch('/api/marketplace/listings/mine'),
-                apiFetch('/api/marketplace/favorites'),
-                apiFetch('/api/me/level'),
-                apiFetch('/api/me/quick-start-status'),
+                apiFetch('/api/ratings/user/all').catch(() => sf),
+                apiFetch('/api/favorites').catch(() => sf),
+                apiFetch('/api/friends').catch(() => sf),
+                apiFetch('/api/friends/requests').catch(() => sf),
+                apiFetch('/api/forum/recent').catch(() => sf),
+                apiFetch('/api/forum/my-posts').catch(() => sf),
+                apiFetch('/api/forum/liked').catch(() => sf),
+                apiFetch('/api/achievements').catch(() => sf),
+                apiFetch('/api/courses/starter-guide/progress').catch(() => sf),
+                apiFetch('/api/consoles/visited').catch(() => sf),
+                apiFetch('/api/marketplace/listings/mine').catch(() => sf),
+                apiFetch('/api/marketplace/favorites').catch(() => sf),
+                apiFetch('/api/me/level').catch(() => sf),
+                apiFetch('/api/me/quick-start-status').catch(() => sf),
             ]);
 
             // =========================
@@ -1150,6 +1151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // QUICK START GUIDE
             // =========================
             try {
+                console.log('[QSG]', qsgRes);
                 if (qsgRes && qsgRes.success) {
                     if (qsgRes.show) {
                         renderQuickStart(qsgRes);

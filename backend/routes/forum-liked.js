@@ -17,7 +17,7 @@ router.get('/', authRequired, async (req, res) => {
         res.json({ success: true, liked: result.rows });
     } catch (err) {
         console.error('Forum liked GET error:', err);
-        res.status(500).json({ success: false, error: 'Internal error.' });
+        res.json({ success: true, liked: [] });
     }
 });
 
