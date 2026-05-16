@@ -2136,6 +2136,20 @@ body.home-page::before {
     color: var(--text);
 }
 
+.prog-level-hint {
+    display: block;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--accent-color);
+    opacity: 0.75;
+    letter-spacing: 0.01em;
+}
+
+.prog-level-card:hover .prog-level-hint {
+    opacity: 1;
+}
+
 /* "Current course" small label above course title */
 .prog-course-label {
     font-size: 0.72rem;

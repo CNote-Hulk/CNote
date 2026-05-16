@@ -627,6 +627,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 // Save to localStorage for other pages
                 localStorage.setItem('cn_user_level', JSON.stringify({ level: lvl.level, name: lvl.name, emoji: lvl.emoji }));
+
+                // ── Expandable levels panel ──
+                renderHomeLevelsPanel(lvl);
+                const progressLevelCardEl = document.getElementById('progress-level-card');
+                const homeLevelsPanel = document.getElementById('home-levels-panel');
+                if (progressLevelCardEl && homeLevelsPanel) {
+                    const toggleLevels = () => {
+                        const open = homeLevelsPanel.hidden;
+                        homeLevelsPanel.hidden = !open;
+                        progressLevelCardEl.setAttribute('aria-expanded', String(open));
+                        const hint = progressLevelCardEl.querySelector('.prog-level-hint');
+                        if (hint) hint.textContent = open ? '▲ ' + I18nModule.t('level_hide') : '▼ ' + I18nModule.t('level_see_all');
+                        if (open) homeLevelsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    };
+                    progressLevelCardEl.addEventListener('click', toggleLevels);
+                    progressLevelCardEl.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleLevels(); }
+                    });
+                    // Append expand hint to card
+                    if (progressLevelCardEl.querySelector('.prog-level-hint') === null) {
+                        const hint = document.createElement('span');
+                        hint.className = 'prog-level-hint';
+                        hint.textContent = '▼ ' + I18nModule.t('level_see_all');
+                        progressLevelCardEl.appendChild(hint);
+                    }
+                }
             }
 
             // =========================
@@ -1292,6 +1318,50 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (task && task.modalTitleKey) openQsgModal(task);
             });
         });
+    }
+
+    function renderHomeLevelsPanel(currentLevel) {
+        const list = document.getElementById('home-levels-list');
+        if (!list || !AchievementsModule.LEVELS?.length) return;
+
+        const currentIdx = AchievementsModule.LEVELS.findIndex(l => l.name === currentLevel.name);
+
+        list.innerHTML = AchievementsModule.LEVELS.map((lvl, idx) => {
+            const isCurrent = idx === currentIdx;
+            const isPast    = idx < currentIdx;
+
+            let statusIcon, statusClass;
+            if (isPast)         { statusIcon = '✓';       statusClass = 'level-row--done'; }
+            else if (isCurrent) { statusIcon = lvl.emoji; statusClass = 'level-row--current'; }
+            else                { statusIcon = '🔒';      statusClass = 'level-row--locked'; }
+
+            const t = k => I18nModule.t(k);
+            const translatedName = t('level_name_' + lvl.level) || lvl.name;
+            const desc = lvl.xpRequired === 0
+                ? t('level_starting')
+                : t('level_requires_xp').replace('{xp}', lvl.xpRequired.toLocaleString());
+
+            let barHtml = '';
+            if (isCurrent && currentLevel.nextLevel) {
+                barHtml = `
+                    <div class="level-row__bar"><div class="level-row__bar-fill" style="width:${currentLevel.progressPercent}%"></div></div>
+                    <span class="level-row__bar-label">${currentLevel.xp} / ${currentLevel.xpForNext} XP — ${currentLevel.progressPercent}% ${t('level_towards')} ${currentLevel.nextLevel.emoji} ${t('level_name_' + currentLevel.nextLevel.level) || currentLevel.nextLevel.name}</span>`;
+            } else if (isPast) {
+                barHtml = `<div class="level-row__bar"><div class="level-row__bar-fill" style="width:100%"></div></div>`;
+            }
+
+            return `
+                <div class="level-row ${statusClass}">
+                    <div class="level-row__status">${statusIcon}</div>
+                    <div class="level-row__info">
+                        <div class="level-row__header">
+                            <strong class="level-row__name">${lvl.emoji} ${translatedName}</strong>
+                        </div>
+                        ${desc ? `<div class="level-row__desc">${desc}</div>` : ''}
+                        ${barHtml}
+                    </div>
+                </div>`;
+        }).join('');
     }
 
     function renderQuickStartCompleted(data) {

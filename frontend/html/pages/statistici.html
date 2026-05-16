@@ -151,7 +151,7 @@
                     <h2 class="statsd-goals__title" data-i18n="stats_next_goals">Next Goals</h2>
                     <div id="next-goals" class="next-goals"></div>
                 </section>
-                <article class="statsd-card statsd-card--level statsd-card--wide statsd-card--clickable" id="level-card" role="button" tabindex="0" aria-expanded="false" title="Click to see all levels">
+                <article class="statsd-card statsd-card--level statsd-card--wide" id="level-card">
                     <div class="statsd-level">
                         <div class="statsd-level__body">
                             <span class="statsd-card__label" data-i18n="stats_level">Overall Level</span>
@@ -164,25 +164,10 @@
                                 <span class="statsd-level__bar-label" id="stat-level-bar-label"></span>
                             </div>
                         </div>
-                        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-                            <span class="statsd-level__emoji" id="stats-level-emoji" aria-hidden="true">🌱</span>
-                            <span class="statsd-card__expand-hint" id="level-expand-hint">▼ See all levels</span>
-                        </div>
+                        <span class="statsd-level__emoji" id="stats-level-emoji" aria-hidden="true">🌱</span>
                     </div>
                 </article>
             </div>
-
-            <!-- ═══ ACHIEVEMENTS PANEL ═══ -->
-            <section class="statsd-levels-panel" id="stat-achievements-panel" hidden>
-                <h2 class="statsd-goals__title" data-i18n="stats_achievements_unlocked">Achievements</h2>
-                <div class="statsd-ach-grid"></div>
-            </section>
-
-            <!-- ═══ LEVELS PANEL (expandable) ═══ -->
-            <section class="statsd-levels-panel" id="levels-panel" hidden>
-                <h2 class="statsd-goals__title">All Levels</h2>
-                <div class="levels-list" id="levels-list" role="list"></div>
-            </section>
 
         </div>
 

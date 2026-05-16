@@ -305,24 +305,6 @@ async function renderStats() {
     // Save level to localStorage so it's available in other pages without refetching
     localStorage.setItem('cn_user_level', JSON.stringify({ name: level.name, emoji: level.emoji }));
 
-    // Populate the expandable levels panel
-    renderLevelsPanel(level);
-
-    // Make level card toggle the panel on click / keyboard
-    const levelCard = document.getElementById('level-card');
-    const levelsPanel = document.getElementById('levels-panel');
-    const expandHint = document.getElementById('level-expand-hint');
-    if (levelCard && levelsPanel) {
-        const toggle = () => {
-            const open = levelsPanel.hidden;
-            levelsPanel.hidden = !open;
-            levelCard.setAttribute('aria-expanded', String(open));
-            if (expandHint) expandHint.textContent = open ? '▲ Hide levels' : '▼ See all levels';
-            if (open) levelsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        };
-        levelCard.addEventListener('click', toggle);
-        levelCard.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
-    }
 }
 
 /** Render the all-levels expandable panel */
