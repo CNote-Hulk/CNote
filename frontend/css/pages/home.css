@@ -1216,6 +1216,8 @@ body.home-page::before {
     margin: 3px 4px;
 }
 
+.mbn-dd-item[hidden] { display: none !important; }
+
 .mbn-dd-item:hover,
 .mbn-dd-item.mbn-item--active {
     background: rgba(var(--accent-rgb, 224, 107, 88), 0.2);
