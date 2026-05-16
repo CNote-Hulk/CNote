@@ -22,14 +22,17 @@ const pool = require('../db');
 async function resetUserData(userId) {
     const queries = [
         'DELETE FROM user_lessons WHERE user_id = $1',
-        'DELETE FROM user_achievements WHERE user_id = $1',  // achievement unlock history
+        'DELETE FROM user_achievements WHERE user_id = $1',
         'DELETE FROM user_console_visits WHERE user_id = $1',
         'DELETE FROM user_favorites WHERE user_id = $1',
         'DELETE FROM user_owned_consoles WHERE user_id = $1',
+        'DELETE FROM xp_transactions WHERE user_id = $1',
     ];
     for (const q of queries) {
         try { await pool.query(q, [userId]); } catch (_) { /* table may not exist yet */ }
     }
+    // Reset XP counter on the user row
+    try { await pool.query('UPDATE users SET xp = 0, xp_updated_at = NOW() WHERE id = $1', [userId]); } catch (_) {}
 }
 
 module.exports = router;

@@ -643,21 +643,25 @@ router.get('/me/quick-start-status', authRequired, async (req, res) => {
         const xp = parseInt(row.xp, 10) || 0;
         const XP_WATCHER = 150;
 
+        const tasks = {
+            registered: true,
+            profile_complete: row.profile_complete,
+            lesson_complete: row.lesson_complete,
+            console_3: row.console_3,
+            first_favorite: row.first_favorite,
+            first_chat_message: row.first_chat_message,
+            first_post: row.first_post,
+        };
+
+        const allDone = Object.values(tasks).every(Boolean);
+
         res.json({
             success: true,
-            show: xp < XP_WATCHER,
+            show: !allDone,
             xp,
             xpNeeded: XP_WATCHER,
             progressPercent: Math.min(100, Math.round((xp / XP_WATCHER) * 100)),
-            tasks: {
-                registered: true,
-                profile_complete: row.profile_complete,
-                lesson_complete: row.lesson_complete,
-                console_3: row.console_3,
-                first_favorite: row.first_favorite,
-                first_chat_message: row.first_chat_message,
-                first_post: row.first_post,
-            },
+            tasks,
         });
     } catch (err) {
         console.error('GET /me/quick-start-status error:', err.message);
