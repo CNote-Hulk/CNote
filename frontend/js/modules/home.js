@@ -534,10 +534,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Progress panel: full level card
                 const progressLevelCard = document.getElementById('progress-level-card');
                 if (progressLevelCard) {
-                    const xpLabel = lvl.isMaxLevel ? 'Max Level' : `${lvl.xp} / ${lvl.xpForNext} XP`;
+                    const t = k => I18nModule.t(k);
+                    const xpLabel = lvl.isMaxLevel ? t('level_max_label') : `${lvl.xp} / ${lvl.xpForNext} XP`;
+                    const nextLvlName = lvl.nextLevel ? (t('level_name_' + lvl.nextLevel.level) || lvl.nextLevel.name) : '';
                     const nextHtml = (lvl.isMaxLevel || !lvl.nextLevel)
-                        ? `<p class="prog-level-next" style="color:var(--accent-color);font-weight:600;">👑 Max level reached!</p>`
-                        : `<p class="prog-level-next">Next: <strong>${lvl.nextLevel.emoji} ${lvl.nextLevel.name}</strong> — ${lvl.xpNeeded} XP needed</p>`;
+                        ? `<p class="prog-level-next" style="color:var(--accent-color);font-weight:600;">${t('level_max_reached')}</p>`
+                        : `<p class="prog-level-next">${t('level_next_label')}: <strong>${lvl.nextLevel.emoji} ${nextLvlName}</strong> — ${lvl.xpNeeded} ${t('level_xp_needed')}</p>`;
                     progressLevelCard.innerHTML = `
                         <div class="prog-level-emoji">${lvl.emoji}</div>
                         <p class="prog-level-name">${lvl.name}</p>
@@ -608,7 +610,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <span class="achievement-card__icon">${a.emoji || a.icon || '🏅'}</span>
                                 <strong class="achievement-card__name">${escapeHtml(a.name)}</strong>
                                 <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
-                                <span class="achievement-card__status">${a.unlocked ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</span>
+                                <span class="achievement-card__status">${a.unlocked ? `${I18nModule.t('ach_earned')}${earnedDate ? ' ' + earnedDate : ''}` : I18nModule.t('ach_locked')}</span>
                             `;
                             catGrid.appendChild(div);
                         });
@@ -986,7 +988,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <span class="achievement-card__icon">${a.emoji || a.icon || '🏅'}</span>
                             <strong class="achievement-card__name">${escapeHtml(a.name)}</strong>
                             <span class="achievement-card__desc">${escapeHtml(a.description || '')}</span>
-                            <span class="achievement-card__status">${a.unlocked ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</span>
+                            <span class="achievement-card__status">${a.unlocked ? `${I18nModule.t('ach_earned')}${earnedDate ? ' ' + earnedDate : ''}` : I18nModule.t('ach_locked')}</span>
                         `;
                         homeAchievementsPreview.appendChild(div);
                     });
@@ -995,7 +997,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const seeAll = document.createElement('a');
                     seeAll.href = '#achievements';
                     seeAll.className = 'dash-see-all btn btn--primary';
-                    seeAll.innerHTML = `See all ${earnedBadges.length}/${badges.length} achievements →`;
+                    seeAll.innerHTML = I18nModule.t('ach_see_all').replace('{earned}', earnedBadges.length).replace('{total}', badges.length);
                     if (parent) parent.appendChild(seeAll);
                 } else {
                     homeAchievementsPreview.innerHTML = `

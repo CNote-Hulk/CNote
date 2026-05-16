@@ -33,16 +33,19 @@ export const AchievementsModule = {
      * Accepts the new shape: { level, name, emoji, xp, xpForCurrent, xpForNext, progressPercent, isMaxLevel }
      */
     computeLevel(apiData) {
+        const t = k => window.I18nModule?.t(k) || k;
         if (!apiData || !apiData.level) {
-            return { level: 1, name: 'Newcomer', emoji: '🔌', xp: 0, progressPercent: 0, isMaxLevel: false, xpForNext: 150, xpNeeded: 150, nextLevel: null, sub: '150 XP to reach 📺 Watcher' };
+            const defaultSub = `150 XP ${t('level_next_label')} 📺 ${t('level_name_2')}`;
+            return { level: 1, name: t('level_name_1'), emoji: '🔌', xp: 0, progressPercent: 0, isMaxLevel: false, xpForNext: 150, xpNeeded: 150, nextLevel: null, sub: defaultSub };
         }
         const { level, name, emoji, xp = 0, xpForNext, progressPercent = 0, isMaxLevel = false } = apiData;
         const xpNeeded = isMaxLevel ? 0 : Math.max(0, (xpForNext ?? 0) - xp);
         const levels = this.LEVELS;
         const nextLevelData = isMaxLevel ? null : (levels.find(l => l.level === level + 1) ?? null);
+        const nextName = nextLevelData ? (t('level_name_' + nextLevelData.level) || nextLevelData.name) : t('level_name_' + level);
         const sub = isMaxLevel
-            ? '👑 Maximum level reached!'
-            : `${xpNeeded} XP to reach ${nextLevelData?.emoji ?? ''} ${nextLevelData?.name ?? 'next level'}`;
+            ? t('level_max_reached')
+            : `${xpNeeded} ${t('level_xp_needed')} — ${nextLevelData?.emoji ?? ''} ${nextName}`;
 
         return { level, name, emoji, xp, progressPercent, isMaxLevel, xpForNext, xpNeeded, nextLevel: nextLevelData, sub };
     },

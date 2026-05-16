@@ -105,7 +105,7 @@ function renderGoals(badges) {
     if (!container) return;
     const locked = badges.filter((b) => !b.earned).slice(0, 6);
     if (!locked.length) {
-        container.innerHTML = '<div class="next-goal-all-done"><span>✅</span><strong>All achievements unlocked!</strong></div>';
+        container.innerHTML = `<div class="next-goal-all-done"><span>✅</span><strong>${I18nModule.t('ach_all_unlocked')}</strong></div>`;
         return;
     }
     container.innerHTML = locked.map((b) => `
@@ -147,7 +147,7 @@ function renderAchievementsPanel(allBadges) {
                 <span class="achievement-card__icon">${b.emoji || b.icon || '🏅'}</span>
                 <strong class="achievement-card__name">${b.label || b.name}</strong>
                 <span class="achievement-card__desc">${b.description || ''}</span>
-                <span class="achievement-card__status">${b.earned ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</span>
+                <span class="achievement-card__status">${b.earned ? `${I18nModule.t('ach_earned')}${earnedDate ? ' ' + earnedDate : ''}` : I18nModule.t('ach_locked')}</span>
             </div>`;
         }).join('');
         return `<div class="ach-category">
@@ -294,10 +294,11 @@ async function renderStats() {
         levelBarWrap.style.display = 'block';
         if (!level.isMaxLevel && level.nextLevel) {
             setTimeout(() => { if (levelBarFill) levelBarFill.style.width = level.progressPercent + '%'; }, 80);
-            if (levelBarLabel) levelBarLabel.textContent = `${level.xp} / ${level.xpForNext} XP — ${level.progressPercent}% to ${level.nextLevel.emoji} ${level.nextLevel.name}`;
+            const nextName = I18nModule.t('level_name_' + level.nextLevel.level) || level.nextLevel.name;
+            if (levelBarLabel) levelBarLabel.textContent = `${level.xp} / ${level.xpForNext} XP — ${level.progressPercent}% ${I18nModule.t('level_towards')} ${level.nextLevel.emoji} ${nextName}`;
         } else {
             if (levelBarFill) levelBarFill.style.width = '100%';
-            if (levelBarLabel) levelBarLabel.textContent = '👑 Maximum level reached!';
+            if (levelBarLabel) levelBarLabel.textContent = I18nModule.t('level_max_reached');
         }
     }
 
@@ -345,13 +346,16 @@ function renderLevelsPanel(currentLevel) {
         else if (isCurrent) { statusIcon = lvl.emoji; statusClass = 'level-row--current'; }
         else                { statusIcon = '🔒';      statusClass = 'level-row--locked'; }
 
-        const desc = lvl.xpRequired === 0 ? 'Starting level' : `Requires ${lvl.xpRequired.toLocaleString()} XP`;
+        const translatedName = I18nModule.t('level_name_' + lvl.level) || lvl.name;
+        const desc = lvl.xpRequired === 0
+            ? I18nModule.t('level_starting')
+            : I18nModule.t('level_requires_xp').replace('{xp}', lvl.xpRequired.toLocaleString());
 
         let barHtml = '';
         if (isCurrent && currentLevel.nextLevel) {
             barHtml = `
                 <div class="level-row__bar"><div class="level-row__bar-fill" style="width:${currentLevel.progressPercent}%"></div></div>
-                <span class="level-row__bar-label">${currentLevel.xp} / ${currentLevel.xpForNext} XP — ${currentLevel.progressPercent}% towards ${currentLevel.nextLevel.name}</span>`;
+                <span class="level-row__bar-label">${currentLevel.xp} / ${currentLevel.xpForNext} XP — ${currentLevel.progressPercent}% ${I18nModule.t('level_towards')} ${currentLevel.nextLevel.emoji} ${I18nModule.t('level_name_' + currentLevel.nextLevel.level) || currentLevel.nextLevel.name}</span>`;
         } else if (isPast) {
             barHtml = `<div class="level-row__bar"><div class="level-row__bar-fill" style="width:100%"></div></div>`;
         }
@@ -361,7 +365,7 @@ function renderLevelsPanel(currentLevel) {
                 <div class="level-row__status">${statusIcon}</div>
                 <div class="level-row__info">
                     <div class="level-row__header">
-                        <strong class="level-row__name">${lvl.emoji} ${lvl.name}</strong>
+                        <strong class="level-row__name">${lvl.emoji} ${translatedName}</strong>
                     </div>
                     ${desc ? `<div class="level-row__desc">${desc}</div>` : ''}
                     ${barHtml}

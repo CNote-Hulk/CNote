@@ -134,11 +134,11 @@ function initSettings() {
                         if (progressEl) {
                             const barHtml = `<div style="margin-top:6px;height:3px;background:rgba(var(--accent-rgb),0.12);border-radius:2px;overflow:hidden;"><div style="width:${d.progressPercent}%;height:100%;background:var(--accent-color);border-radius:2px;transition:width 0.5s;"></div></div>`;
                             if (d.isMaxLevel) {
-                                progressEl.innerHTML = '<span>👑 Maximum Level</span>';
+                                progressEl.innerHTML = `<span>${t('level_max_reached')}</span>`;
                             } else {
                                 const nextLabel = d.nextLevelEmoji && d.nextLevelName
-                                    ? `🔝 Next: ${d.nextLevelEmoji} ${d.nextLevelName}`
-                                    : 'next level';
+                                    ? `${t('level_next_label')}: ${d.nextLevelEmoji} ${d.nextLevelName}`
+                                    : t('level_next_label');
                                 progressEl.innerHTML = `<span>${d.xp} / ${d.xpForNext} XP — ${nextLabel}</span>${barHtml}`;
                             }
                             progressEl.hidden = false;
@@ -754,7 +754,7 @@ function initSettings() {
                         <div class="achievement-badge__icon">${badge.emoji || badge.icon || '🏅'}</div>
                         <div class="achievement-badge__name">${badge.name}</div>
                         <div class="achievement-badge__desc">${badge.description || ''}</div>
-                        <div class="achievement-badge__status">${isEarned ? `✓ Earned${earnedDate ? ' ' + earnedDate : ''}` : '🔒 Locked'}</div>
+                        <div class="achievement-badge__status">${isEarned ? `${t('ach_earned')}${earnedDate ? ' ' + earnedDate : ''}` : t('ach_locked')}</div>
                     `;
                     grid.appendChild(el);
                 });

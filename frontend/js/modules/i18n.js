@@ -2166,6 +2166,31 @@ const MESSAGES = {
         ach_cat_veteran: 'Veteran',
         ach_cat_special: 'Special',
 
+        // Nume niveluri — sistem XP cu 10 niveluri
+        level_name_1:  'Nou-venit',
+        level_name_2:  'Observator',
+        level_name_3:  'Jucător',
+        level_name_4:  'Colecționar',
+        level_name_5:  'Bricoleur',
+        level_name_6:  'Explorator',
+        level_name_7:  'Entuziast',
+        level_name_8:  'Istoric',
+        level_name_9:  'Tehnician',
+        level_name_10: 'Legendă',
+
+        // Texte UI niveluri & realizări
+        level_max_reached:  '👑 Nivel maxim atins!',
+        level_max_label:    'Nivel Maxim',
+        level_xp_needed:    'XP necesari',
+        level_starting:     'Nivel de start',
+        level_requires_xp:  'Necesită {xp} XP',
+        level_towards:      'spre',
+        level_next_label:   '🔝 Următor',
+        ach_earned:         '✓ Obținut',
+        ach_locked:         '🔒 Blocat',
+        ach_all_unlocked:   'Toate realizările deblocate!',
+        ach_see_all:        'Vezi toate {earned}/{total} realizări →',
+
         // JS dynamic — Profile
         profile_no_bio: '📝 Nicio descriere încă.',
         profile_member_since: '📅 Membru din',
@@ -3535,6 +3560,31 @@ const MESSAGES = {
         ach_cat_veteran: 'Veterano',
         ach_cat_special: 'Especial',
 
+        // Nombres de niveles — sistema XP con 10 niveles
+        level_name_1:  'Recién llegado',
+        level_name_2:  'Espectador',
+        level_name_3:  'Jugador',
+        level_name_4:  'Coleccionista',
+        level_name_5:  'Manitas',
+        level_name_6:  'Explorador',
+        level_name_7:  'Entusiasta',
+        level_name_8:  'Historiador',
+        level_name_9:  'Técnico',
+        level_name_10: 'Leyenda',
+
+        // Textos UI de niveles y logros
+        level_max_reached:  '👑 ¡Nivel máximo alcanzado!',
+        level_max_label:    'Nivel Máximo',
+        level_xp_needed:    'XP necesarios',
+        level_starting:     'Nivel inicial',
+        level_requires_xp:  'Requiere {xp} XP',
+        level_towards:      'hacia',
+        level_next_label:   '🔝 Siguiente',
+        ach_earned:         '✓ Obtenido',
+        ach_locked:         '🔒 Bloqueado',
+        ach_all_unlocked:   '¡Todos los logros desbloqueados!',
+        ach_see_all:        'Ver todos los {earned}/{total} logros →',
+
         // JS dynamic — Profile
         profile_no_bio: '📝 Sin descripción aún.',
         profile_member_since: '📅 Miembro desde',
@@ -4898,6 +4948,31 @@ const MESSAGES = {
         ach_cat_marketplace: 'Marketplace',
         ach_cat_veteran: 'Vétéran',
         ach_cat_special: 'Spécial',
+
+        // Noms des niveaux — système XP à 10 niveaux
+        level_name_1:  'Nouveau venu',
+        level_name_2:  'Observateur',
+        level_name_3:  'Joueur',
+        level_name_4:  'Collectionneur',
+        level_name_5:  'Bricoleur',
+        level_name_6:  'Explorateur',
+        level_name_7:  'Enthousiaste',
+        level_name_8:  'Historien',
+        level_name_9:  'Technicien',
+        level_name_10: 'Légende',
+
+        // Textes UI niveaux & succès
+        level_max_reached:  '👑 Niveau maximum atteint !',
+        level_max_label:    'Niveau Maximum',
+        level_xp_needed:    'XP nécessaires',
+        level_starting:     'Niveau de départ',
+        level_requires_xp:  'Requiert {xp} XP',
+        level_towards:      'vers',
+        level_next_label:   '🔝 Suivant',
+        ach_earned:         '✓ Obtenu',
+        ach_locked:         '🔒 Verrouillé',
+        ach_all_unlocked:   'Tous les succès débloqués !',
+        ach_see_all:        'Voir tous les {earned}/{total} succès →',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Pas de description encore.',
@@ -6269,6 +6344,31 @@ const MESSAGES = {
         ach_cat_veteran: 'Veterano',
         ach_cat_special: 'Speciale',
 
+        // Nomi dei livelli — sistema XP a 10 livelli
+        level_name_1:  'Nuovo arrivato',
+        level_name_2:  'Spettatore',
+        level_name_3:  'Giocatore',
+        level_name_4:  'Collezionista',
+        level_name_5:  'Smanettone',
+        level_name_6:  'Esploratore',
+        level_name_7:  'Entusiasta',
+        level_name_8:  'Storico',
+        level_name_9:  'Tecnico',
+        level_name_10: 'Leggenda',
+
+        // Testi UI livelli e traguardi
+        level_max_reached:  '👑 Livello massimo raggiunto!',
+        level_max_label:    'Livello Massimo',
+        level_xp_needed:    'XP necessari',
+        level_starting:     'Livello iniziale',
+        level_requires_xp:  'Richiede {xp} XP',
+        level_towards:      'verso',
+        level_next_label:   '🔝 Prossimo',
+        ach_earned:         '✓ Ottenuto',
+        ach_locked:         '🔒 Bloccato',
+        ach_all_unlocked:   'Tutti i traguardi sbloccati!',
+        ach_see_all:        'Vedi tutti i {earned}/{total} traguardi →',
+
         // JS dynamic — Profile
         profile_no_bio: '📝 Nessuna descrizione ancora.',
         profile_member_since: '📅 Membro dal',
@@ -7632,6 +7732,31 @@ const MESSAGES = {
         ach_cat_marketplace: 'Marktplatz',
         ach_cat_veteran: 'Veteran',
         ach_cat_special: 'Besonderes',
+
+        // Level-Namen — XP-System mit 10 Stufen
+        level_name_1:  'Neuankömmling',
+        level_name_2:  'Zuschauer',
+        level_name_3:  'Spieler',
+        level_name_4:  'Sammler',
+        level_name_5:  'Tüftler',
+        level_name_6:  'Entdecker',
+        level_name_7:  'Enthusiast',
+        level_name_8:  'Historiker',
+        level_name_9:  'Techniker',
+        level_name_10: 'Legende',
+
+        // UI-Texte für Level & Erfolge
+        level_max_reached:  '👑 Maximales Level erreicht!',
+        level_max_label:    'Maximales Level',
+        level_xp_needed:    'XP benötigt',
+        level_starting:     'Startlevel',
+        level_requires_xp:  'Benötigt {xp} XP',
+        level_towards:      'Richtung',
+        level_next_label:   '🔝 Nächstes',
+        ach_earned:         '✓ Verdient',
+        ach_locked:         '🔒 Gesperrt',
+        ach_all_unlocked:   'Alle Erfolge freigeschaltet!',
+        ach_see_all:        'Alle {earned}/{total} Erfolge ansehen →',
 
         // JS dynamic — Profile
         profile_no_bio: '📝 Noch keine Beschreibung.',
