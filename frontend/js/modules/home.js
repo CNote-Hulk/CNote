@@ -21,106 +21,57 @@ function normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
 const QUICK_START_TASKS = [
     {
         id: 'registered',
-        label: 'Te-ai înregistrat pe Console Notebook',
         xp: 50,
         autoComplete: true,
-        modalTitle: null,
+        modalTitleKey: null,
     },
     {
         id: 'profile_complete',
-        label: 'Completează-ți profilul',
         xp: 25,
-        xpAction: 'profile_complete',
-        modalTitle: '✨ Completează-ți profilul',
-        modalBody: `Profilul tău este cartea ta de vizită pe Console Notebook.
-Un profil complet cu avatar și descriere te ajută să fii recunoscut
-de comunitate și să câștigi încrederea celorlalți membri.
-
-Pentru a-ți completa profilul:
-— Adaugă o fotografie de profil (avatar)
-— Scrie o scurtă descriere despre tine în câmpul "Bio"
-
-Vei câștiga +25 XP automat când ambele câmpuri sunt completate.`,
-        modalLink: { label: '→ Mergi la Profil', url: '/html/pages/profil.html#profil' },
+        modalTitleKey: 'qsg_modal_profile_title',
+        modalBodyKey:  'qsg_modal_profile_body',
+        modalLinkKey:  'qsg_modal_profile_link',
+        modalLinkUrl:  '/html/pages/profil.html#profil',
     },
     {
         id: 'lesson_complete',
-        label: 'Completează prima lecție',
         xp: 50,
-        xpAction: 'lesson_complete',
-        modalTitle: '📚 Completează prima lecție',
-        modalBody: `Console Notebook are cursuri complete despre istoria și tehnologia
-consolelor de gaming. Primul curs, Console Starter Guide, este
-perfect pentru începători — acoperă istoria consolelor, generații
-importante și cum să identifici o consolă.
-
-Fiecare lecție durează 3-7 minute și include un quiz la final.
-Completând prima lecție câștigi +50 XP.`,
-        modalLink: { label: '→ Mergi la Console Starter Guide', url: '/html/pages/course.html?slug=console-starter-guide' },
+        modalTitleKey: 'qsg_modal_lesson_title',
+        modalBodyKey:  'qsg_modal_lesson_body',
+        modalLinkKey:  'qsg_modal_lesson_link',
+        modalLinkUrl:  '/html/pages/course.html?slug=console-starter-guide',
     },
     {
         id: 'console_3',
-        label: 'Vizitează 3 pagini de console',
         xp: 30,
-        xpAction: 'console_visit',
-        modalTitle: '🕹️ Descoperă consolele',
-        modalBody: `Console Notebook are o bază de date cu 52 de console retro și moderne,
-fiecare cu istoricul complet, specificații tehnice, imagini și detalii
-despre lansare.
-
-Poți naviga prin console din meniul "Evolution" de sus sau poți
-căuta direct o consolă în bara de căutare.
-
-Vizitează 3 pagini de console diferite pentru a câștiga +30 XP.`,
-        modalLink: { label: '→ Mergi la Evolution', url: '/html/pages/evolutie.html' },
+        modalTitleKey: 'qsg_modal_console_title',
+        modalBodyKey:  'qsg_modal_console_body',
+        modalLinkKey:  'qsg_modal_console_link',
+        modalLinkUrl:  '/html/pages/evolutie.html',
     },
     {
         id: 'first_favorite',
-        label: 'Adaugă o consolă la Favorites',
         xp: 5,
-        xpAction: 'console_favorite',
-        modalTitle: '❤️ Adaugă la Favorites',
-        modalBody: `Pe fiecare pagină de consolă găsești un buton de "Favorite" (inimioară).
-Apasă-l pentru a salva consolele care îți plac în colecția ta personală.
-
-Poți vedea toate consolele favorite din meniul "Favorites" din
-bara laterală stângă. Colecția ta apare și pe profilul public.
-
-Adaugă prima consolă la favorite pentru a câștiga +5 XP.`,
-        modalLink: { label: '→ Mergi la Evolution', url: '/html/pages/evolutie.html' },
+        modalTitleKey: 'qsg_modal_favorite_title',
+        modalBodyKey:  'qsg_modal_favorite_body',
+        modalLinkKey:  'qsg_modal_favorite_link',
+        modalLinkUrl:  '/html/pages/evolutie.html',
     },
     {
         id: 'first_chat_message',
-        label: 'Scrie un mesaj în Community Chat',
         xp: 10,
-        xpAction: 'first_chat_message',
-        modalTitle: '💬 Community Chat',
-        modalBody: `Chat-ul general este locul unde toți membrii Console Notebook
-discută în timp real — despre console, tranzacții, reparații,
-sau orice altceva legat de gaming retro.
-
-Găsești chat-ul apăsând pe "Community" din meniul de navigare de sus.
-Este deschis tuturor membrilor înregistrați.
-
-Scrie primul tău mesaj și câștigi +10 XP automat.`,
-        modalLink: { label: '→ Mergi la Community', url: '/html/pages/community.html' },
+        modalTitleKey: 'qsg_modal_chat_title',
+        modalBodyKey:  'qsg_modal_chat_body',
+        modalLinkKey:  'qsg_modal_chat_link',
+        modalLinkUrl:  '/html/pages/community.html',
     },
     {
         id: 'first_post',
-        label: 'Postează în Forum',
         xp: 20,
-        xpAction: 'forum_post',
-        modalTitle: '📋 Forum',
-        modalBody: `Forumul Console Notebook este organizat pe categorii de console —
-PlayStation, Xbox, Nintendo, Sega și altele. Poți deschide discuții
-despre orice subiect legat de console: reparații, colecții,
-prețuri, recenzii sau amintiri.
-
-Spre deosebire de chat, postările din forum rămân permanent și
-pot fi căutate și accesate oricând.
-
-Creează primul tău topic în forum și câștigi +20 XP.`,
-        modalLink: { label: '→ Mergi la Forum', url: '/html/pages/community.html#forum' },
+        modalTitleKey: 'qsg_modal_forum_title',
+        modalBodyKey:  'qsg_modal_forum_body',
+        modalLinkKey:  'qsg_modal_forum_link',
+        modalLinkUrl:  '/html/pages/community.html#forum',
     },
 ];
 
@@ -1222,11 +1173,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function openQsgModal(task) {
         const overlay = ensureQsgOverlay();
-        document.getElementById('qsg-modal-title').textContent = task.modalTitle;
-        document.getElementById('qsg-modal-body').textContent = task.modalBody.trim();
+        document.getElementById('qsg-modal-title').textContent = I18nModule.t(task.modalTitleKey);
+        document.getElementById('qsg-modal-body').textContent = I18nModule.t(task.modalBodyKey).trim();
         const linkEl = document.getElementById('qsg-modal-link');
-        linkEl.textContent = task.modalLink.label;
-        linkEl.href = task.modalLink.url;
+        linkEl.textContent = I18nModule.t(task.modalLinkKey);
+        linkEl.href = task.modalLinkUrl;
         overlay.classList.add('is-open');
     }
 
@@ -1255,7 +1206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const done = data.tasks[task.id] === true;
             const doneClass = done ? ' qsg-task--done' : '';
             const label = I18nModule.t(taskLabelKeys[task.id]) || task.label;
-            const btn = (!task.autoComplete && !done)
+            const btn = (!task.autoComplete && !done && task.modalTitleKey)
                 ? `<button class="qsg-task-btn" data-task="${task.id}">${I18nModule.t('qsg_btn_open')}</button>`
                 : '';
             return `<div class="qsg-task${doneClass}">
@@ -1293,7 +1244,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             btn.addEventListener('click', () => {
                 const taskId = btn.dataset.task;
                 const task = QUICK_START_TASKS.find(t => t.id === taskId);
-                if (task && task.modalTitle) openQsgModal(task);
+                if (task && task.modalTitleKey) openQsgModal(task);
             });
         });
     }
