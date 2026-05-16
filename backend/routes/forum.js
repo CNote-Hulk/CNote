@@ -360,4 +360,24 @@ router.post('/:console/threads/:id/replies/:replyId/upvote', authRequired, async
     }
 });
 
+// GET /api/forum/liked-posts — threads upvoted by the current user
+router.get('/liked-posts', authRequired, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT ft.id, ft.title, ft.console, ft.tag, ft.upvotes, ft.created_at,
+                    u.username, u.avatar
+             FROM forum_threads ft
+             JOIN forum_upvotes fu ON fu.thread_id = ft.id
+             JOIN users u ON u.id = ft.user_id
+             WHERE fu.user_id = $1
+             ORDER BY fu.created_at DESC
+             LIMIT 50`,
+            [req.user.id]
+        );
+        res.json({ success: true, posts: result.rows });
+    } catch (e) {
+        res.json({ success: true, posts: [] });
+    }
+});
+
 module.exports = router;

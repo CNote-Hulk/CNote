@@ -879,4 +879,27 @@ router.get('/listings/marketplace/:userId', async (req, res) => {
     }
 });
 
+// GET /api/marketplace/my-listings — alias pentru listings/mine
+router.get('/my-listings', authRequired, async (req, res) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, title, price, condition, category, location,
+                    images, sold, status, views, console_type, created_at
+             FROM listings
+             WHERE user_id = $1
+             ORDER BY created_at DESC`,
+            [req.user.id]
+        );
+        const listings = result.rows.map(row => ({
+            ...row,
+            price: parseFloat(row.price),
+            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+            status: row.status || 'active',
+        }));
+        res.json({ success: true, listings });
+    } catch (e) {
+        res.json({ success: true, listings: [] });
+    }
+});
+
 module.exports = router;
