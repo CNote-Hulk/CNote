@@ -1526,6 +1526,88 @@
     color: var(--muted, #b1a294);
 }
 
+/* ── Responsive: achievements & course modals ──────────────────────── */
+@media (max-width: 600px) {
+    /* Modal overlay — use almost full screen */
+    .up-ach-modal-overlay {
+        padding: 8px;
+        align-items: flex-end;
+    }
+
+    .up-ach-modal {
+        max-width: 100%;
+        max-height: 91vh;
+        border-radius: 18px 18px 10px 10px;
+    }
+
+    .up-ach-modal__header {
+        padding: 14px 16px 10px;
+    }
+
+    .up-ach-modal__title {
+        font-size: 0.88rem;
+    }
+
+    .up-ach-modal__body {
+        padding: 14px 14px;
+    }
+
+    /* Achievement category grid — 2 fixed cols on narrow screens */
+    .ach-category__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Achievement badge — more compact */
+    .achievement-badge {
+        padding: 12px 8px;
+    }
+
+    .achievement-badge__icon {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+    }
+
+    .achievement-badge__name {
+        font-size: 0.78rem;
+    }
+
+    .achievement-badge__desc {
+        font-size: 0.7rem;
+    }
+
+    /* Achievement mini-grid — 3 cols on mobile */
+    .up-ach-mini-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Course preview "view all" button — full-width on mobile */
+    .up-course-preview-wrap .up-ach-view-all-btn,
+    .up-ach-preview-wrap .up-ach-view-all-btn {
+        align-self: stretch;
+        text-align: center;
+    }
+
+    /* Course modal rows — more compact */
+    .up-course-modal-row {
+        padding: 10px 12px;
+    }
+
+    .up-course-modal-row__name {
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 400px) {
+    /* Very small screens — 2 cols for mini achievement grid */
+    .up-ach-mini-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .up-ach-mini__icon {
+        font-size: 1.3rem;
+    }
+}
+
 /* Settings Form */
 .settings-form {
     display: flex;

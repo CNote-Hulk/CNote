@@ -857,6 +857,14 @@ a.user-social-link:hover {
 
     .up-profile-card {
         max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .up-stats-card {
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .up-stats-card .dash-stats {
@@ -902,6 +910,20 @@ a.user-social-link:hover {
     .avatar-lightbox__img-wrap {
         width: min(90vw, 500px);
         height: min(90vw, 500px);
+    }
+
+    /* 3-column stats too cramped below 420px — go back to 2-col */
+    .up-stats-card .dash-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Course progress preview text */
+    .up-course-row__name {
+        font-size: 0.76rem;
+    }
+
+    .up-course-row__count {
+        font-size: 0.7rem;
     }
 }
 
