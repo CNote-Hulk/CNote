@@ -9,7 +9,7 @@
     padding: 1.75rem 2rem;
     box-shadow: var(--shadow-card);
     transition: opacity 0.4s ease, transform 0.4s ease;
-    margin-bottom: 0;
+    margin-top: 10px;
 }
 
 .quick-start-guide.qsg-fade-out {
