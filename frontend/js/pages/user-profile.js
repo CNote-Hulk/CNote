@@ -5,7 +5,6 @@
  */
 import { AuthModule } from '/js/modules/auth.js';
 import { API_BASE_URL } from '/js/config.js';
-import { ProgressModule } from '/js/modules/progress.js';
 import { AchievementsModule } from '/js/modules/achievements.js';
 import { I18nModule } from '/js/modules/i18n.js';
 
@@ -49,40 +48,45 @@ const t = key => I18nModule.t(key);
             document.getElementById('user-dashboard-panel').hidden = false;
 
             // Progress — fetch from server (localStorage only has the viewer's own data)
-            const courses = ProgressModule.COURSES;
-            let serverProgress = {};
+            let serverCourses = [];
             try {
                 const progRes = await fetch(`${API_BASE_URL}/user/progress/${encodeURIComponent(profile.username)}`);
                 const progData = await progRes.json();
-                if (progData.success) serverProgress = progData.progress || {};
+                if (progData.success) serverCourses = progData.courses || [];
             } catch { /* fall through with empty */ }
 
             let totalLessons = 0, completedLessons = 0;
-            courses.forEach(c => {
-                const p = serverProgress[c.id] || { completed: 0, total: c.totalLessons };
-                totalLessons += p.total || c.totalLessons;
-                completedLessons += p.completed || 0;
+            serverCourses.forEach(c => {
+                totalLessons += c.total || 0;
+                completedLessons += c.completed || 0;
             });
             const overallPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
             document.getElementById('user-dash-courses-pct').textContent = overallPct + '%';
 
             const coursePreview = document.getElementById('user-dash-course-preview');
-            if (courses.length > 0) {
-                coursePreview.innerHTML = courses.map(c => {
-                    const p = serverProgress[c.id] || { completed: 0, total: c.totalLessons };
-                    const done = p.completed || 0;
-                    const total = p.total || c.totalLessons;
+            if (serverCourses.length > 0) {
+                const previewCourses = serverCourses.slice(0, 3);
+                const previewHtml = previewCourses.map(c => {
+                    const done = c.completed || 0;
+                    const total = c.total || 0;
                     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-                    return `<div style="margin-bottom:10px;">
-                        <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-light);margin-bottom:4px;">
-                            <span>${c.icon} ${c.name}</span>
-                            <span>${done}/${total}</span>
+                    return `<div class="up-course-row">
+                        <div class="up-course-row__top">
+                            <span class="up-course-row__name">${escapeHtml(c.title || c.slug)}</span>
+                            <span class="up-course-row__count">${done}/${total}</span>
                         </div>
                         <div class="progress-bar"><div class="progress-bar__fill" style="width:${pct}%"></div></div>
                     </div>`;
                 }).join('');
+                coursePreview.innerHTML = `<div class="up-course-preview-wrap">
+                    ${previewHtml}
+                    <button class="up-ach-view-all-btn" id="up-course-view-all-btn">${t('home_courses_see_all')} →</button>
+                </div>`;
+                document.getElementById('up-course-view-all-btn').addEventListener('click', () => {
+                    openCoursesModal(serverCourses, completedLessons, totalLessons, t);
+                });
             } else {
-                coursePreview.innerHTML = '<p class="dash-empty">No courses.</p>';
+                coursePreview.innerHTML = '<p class="dash-empty">No courses available.</p>';
             }
 
             // Achievements — fetch computed dynamically (same logic as authenticated endpoint)
@@ -203,6 +207,56 @@ const t = key => I18nModule.t(key);
                         <div class="up-ach-modal__grid">
                             ${[...catOrder, ...otherKeys].map(renderCat).join('')}
                         </div>
+                    </div>
+                </div>`;
+
+            document.body.appendChild(modal);
+            requestAnimationFrame(() => modal.classList.add('visible'));
+
+            const close = () => {
+                modal.classList.remove('visible');
+                setTimeout(() => modal.remove(), 220);
+            };
+            modal.querySelector('.up-ach-modal__close').addEventListener('click', close);
+            modal.addEventListener('click', e => { if (e.target === modal) close(); });
+            const onKey = e => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } };
+            document.addEventListener('keydown', onKey);
+        }
+
+        /** Open full courses modal */
+        function openCoursesModal(courses, completedLessons, totalLessons, t) {
+            document.getElementById('up-course-modal')?.remove();
+
+            const overallPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+            const courseCards = courses.map(c => {
+                const done = c.completed || 0;
+                const total = c.total || 0;
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                const isComplete = total > 0 && done >= total;
+                return `<div class="up-course-modal-row${isComplete ? ' completed' : ''}">
+                    <div class="up-course-modal-row__top">
+                        <span class="up-course-modal-row__name">${escapeHtml(c.title || c.slug)}</span>
+                        <span class="up-course-modal-row__pct">${pct}%</span>
+                    </div>
+                    <div class="progress-bar up-course-modal-row__bar">
+                        <div class="progress-bar__fill" style="width:${pct}%"></div>
+                    </div>
+                    <div class="up-course-modal-row__count">${done} / ${total} ${t('profile_courses_lessons')}</div>
+                </div>`;
+            }).join('');
+
+            const modal = document.createElement('div');
+            modal.id = 'up-course-modal';
+            modal.className = 'up-ach-modal-overlay';
+            modal.innerHTML = `
+                <div class="up-ach-modal" role="dialog" aria-modal="true">
+                    <div class="up-ach-modal__header">
+                        <h3 class="up-ach-modal__title">📚 ${t('up_course_progress')} <span class="up-ach-modal__count">${overallPct}%</span></h3>
+                        <button class="up-ach-modal__close" aria-label="Close">✕</button>
+                    </div>
+                    <div class="up-ach-modal__body">
+                        <div class="up-course-modal-list">${courseCards}</div>
                     </div>
                 </div>`;
 

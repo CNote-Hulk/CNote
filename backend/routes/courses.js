@@ -402,25 +402,30 @@ router.get('/user/progress/:username', async (req, res) => {
 
         const result = await pool.query(`
             SELECT
-                m.course_id,
-                COUNT(DISTINCT ul.lesson_id)::int AS completed_count,
-                COUNT(DISTINCT l.id)::int         AS total_count
-            FROM lessons l
-            JOIN modules m ON m.id = l.module_id
+                c.id          AS course_id,
+                c.slug        AS course_slug,
+                c.title       AS course_title,
+                COUNT(DISTINCT l.id)::int                                           AS total_count,
+                COUNT(DISTINCT ul.lesson_id)::int                                   AS completed_count
+            FROM courses c
+            LEFT JOIN modules m   ON m.course_id = c.id
+            LEFT JOIN lessons l   ON l.module_id = m.id AND l.is_published = true
             LEFT JOIN user_lessons ul
                 ON ul.lesson_id = l.id AND ul.user_id = $1 AND ul.completed = true
-            WHERE l.is_published = true
-            GROUP BY m.course_id
+            WHERE c.is_published = true
+            GROUP BY c.id, c.slug, c.title
+            ORDER BY c.id
         `, [userId]);
 
-        const byCourse = {};
-        for (const row of result.rows) {
-            if (!byCourse[row.course_id]) byCourse[row.course_id] = { completed: 0, total: 0 };
-            byCourse[row.course_id].completed += row.completed_count;
-            byCourse[row.course_id].total     += row.total_count;
-        }
+        const courses = result.rows.map(r => ({
+            id:        r.course_id,
+            slug:      r.course_slug,
+            title:     r.course_title,
+            completed: r.completed_count,
+            total:     r.total_count,
+        }));
 
-        res.json({ success: true, progress: byCourse });
+        res.json({ success: true, courses });
     } catch (err) {
         console.error('GET /user/progress/:username error:', err);
         res.status(500).json({ success: false, error: 'Internal server error.' });

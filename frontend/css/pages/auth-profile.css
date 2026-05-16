@@ -1436,6 +1436,96 @@
     gap: 24px;
 }
 
+/* ── Course progress preview ───────────────────────────────────────── */
+.up-course-preview-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 4px 0 8px;
+}
+
+.up-course-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.up-course-row__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.8rem;
+}
+
+.up-course-row__name {
+    color: var(--text, #e7d4c4);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 72%;
+}
+
+.up-course-row__count {
+    color: var(--muted, #b1a294);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* ── Course modal ──────────────────────────────────────────────────── */
+.up-course-modal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.up-course-modal-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    transition: background 0.15s;
+}
+
+.up-course-modal-row:hover {
+    background: rgba(255,255,255,0.055);
+}
+
+.up-course-modal-row.completed {
+    border-color: rgba(var(--accent-color-rgb, 245,240,232), 0.22);
+}
+
+.up-course-modal-row__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.up-course-modal-row__name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text, #e7d4c4);
+}
+
+.up-course-modal-row__pct {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.up-course-modal-row__bar {
+    height: 6px;
+    border-radius: 3px;
+}
+
+.up-course-modal-row__count {
+    font-size: 0.72rem;
+    color: var(--muted, #b1a294);
+}
+
 /* Settings Form */
 .settings-form {
     display: flex;
