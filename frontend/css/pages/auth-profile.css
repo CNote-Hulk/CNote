@@ -12,7 +12,7 @@
     padding: 110px 20px 40px;
     position: relative;
     isolation: isolate;
-    overflow: hidden;
+    overflow-x: hidden;
     background:
         linear-gradient(rgba(21, 18, 16, 0.78), rgba(21, 18, 16, 0.88)),
         linear-gradient(180deg, var(--dark-bg, #1B1714) 0%, var(--dark-bg-2, #151210) 100%);
