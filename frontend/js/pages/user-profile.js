@@ -48,27 +48,37 @@ const t = key => I18nModule.t(key);
             // Show dashboard
             document.getElementById('user-dashboard-panel').hidden = false;
 
-            // Progress
+            // Progress — fetch from server (localStorage only has the viewer's own data)
             const courses = ProgressModule.COURSES;
+            let serverProgress = {};
+            try {
+                const progRes = await fetch(`${API_BASE_URL}/user/progress/${encodeURIComponent(profile.username)}`);
+                const progData = await progRes.json();
+                if (progData.success) serverProgress = progData.progress || {};
+            } catch { /* fall through with empty */ }
+
             let totalLessons = 0, completedLessons = 0;
             courses.forEach(c => {
-                const p = ProgressModule.getCourseProgress(profile.id, c.id, c.totalLessons);
-                totalLessons += p.total_lessons;
-                completedLessons += p.completed_lessons.length;
+                const p = serverProgress[c.id] || { completed: 0, total: c.totalLessons };
+                totalLessons += p.total || c.totalLessons;
+                completedLessons += p.completed || 0;
             });
             const overallPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
             document.getElementById('user-dash-courses-pct').textContent = overallPct + '%';
-            // Course preview
+
             const coursePreview = document.getElementById('user-dash-course-preview');
             if (courses.length > 0) {
                 coursePreview.innerHTML = courses.map(c => {
-                    const p = ProgressModule.getCourseProgress(profile.id, c.id, c.totalLessons);
+                    const p = serverProgress[c.id] || { completed: 0, total: c.totalLessons };
+                    const done = p.completed || 0;
+                    const total = p.total || c.totalLessons;
+                    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
                     return `<div style="margin-bottom:10px;">
                         <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-light);margin-bottom:4px;">
                             <span>${c.icon} ${c.name}</span>
-                            <span>${p.completed_lessons.length}/${p.total_lessons}</span>
+                            <span>${done}/${total}</span>
                         </div>
-                        <div class="progress-bar"><div class="progress-bar__fill" style="width:${p.percentage}%"></div></div>
+                        <div class="progress-bar"><div class="progress-bar__fill" style="width:${pct}%"></div></div>
                     </div>`;
                 }).join('');
             } else {

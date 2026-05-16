@@ -392,6 +392,41 @@ router.get('/user/stats', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/user/progress/:username — Public course progress for any user
+router.get('/user/progress/:username', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const userRes = await pool.query('SELECT id FROM users WHERE LOWER(username) = LOWER($1)', [username]);
+        if (!userRes.rows.length) return res.status(404).json({ success: false, error: 'User not found.' });
+        const userId = userRes.rows[0].id;
+
+        const result = await pool.query(`
+            SELECT
+                m.course_id,
+                COUNT(DISTINCT ul.lesson_id)::int AS completed_count,
+                COUNT(DISTINCT l.id)::int         AS total_count
+            FROM lessons l
+            JOIN modules m ON m.id = l.module_id
+            LEFT JOIN user_lessons ul
+                ON ul.lesson_id = l.id AND ul.user_id = $1 AND ul.completed = true
+            WHERE l.is_published = true
+            GROUP BY m.course_id
+        `, [userId]);
+
+        const byCourse = {};
+        for (const row of result.rows) {
+            if (!byCourse[row.course_id]) byCourse[row.course_id] = { completed: 0, total: 0 };
+            byCourse[row.course_id].completed += row.completed_count;
+            byCourse[row.course_id].total     += row.total_count;
+        }
+
+        res.json({ success: true, progress: byCourse });
+    } catch (err) {
+        console.error('GET /user/progress/:username error:', err);
+        res.status(500).json({ success: false, error: 'Internal server error.' });
+    }
+});
+
 /* ─────────────────────────────────────────
    REACTIONS
 ───────────────────────────────────────── */
