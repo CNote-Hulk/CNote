@@ -76,18 +76,58 @@ const t = key => I18nModule.t(key);
             }
 
             // Achievements
-            const badges = AchievementsModule.getAllBadges(profile.achievements || profile.badges || []);
+            const earnedFromProfile = profile.achievements || profile.badges || [];
+            const allDefs = window.GAMIFICATION_DATA?.ACHIEVEMENTS ?? [];
+            const CATEGORIES = window.GAMIFICATION_DATA?.CATEGORIES ?? [];
+            // Merge earned data with full definitions
+            const badges = allDefs.map(def => {
+                const earned = earnedFromProfile.find(e => e.id === def.id || e.badge_id === def.id);
+                return { ...def, unlocked: !!earned, earned: !!earned, earned_at: earned?.earned_at || null };
+            });
             const earnedCount = badges.filter(b => b.earned).length;
             document.getElementById('user-dash-achievements').textContent = `${earnedCount} / ${badges.length}`;
-            // Achievements preview
+
             const achPreview = document.getElementById('user-dash-achievements-preview');
-            const recentBadges = badges.filter(b => b.earned).slice(-6).reverse();
-            if (recentBadges.length > 0) {
-                achPreview.innerHTML = '<div class="dash-badges">' + recentBadges.map(b =>
-                    `<span class="dash-badge" title="${escapeHtml(b.name)}">${b.icon}</span>`
-                ).join('') + '</div>';
-            } else {
+            if (earnedCount === 0) {
                 achPreview.innerHTML = `<p class="dash-empty">${t('up_no_achievements')}</p>`;
+            } else {
+                const grouped = {};
+                badges.forEach(b => {
+                    const cat = b.category || 'other';
+                    if (!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push(b);
+                });
+                const catOrder = CATEGORIES.map(c => c.id);
+                const renderCat = (catId) => {
+                    const items = grouped[catId];
+                    if (!items || !items.some(b => b.earned)) return '';
+                    const catDef = CATEGORIES.find(c => c.id === catId);
+                    const earned = items.filter(b => b.earned).length;
+                    const cards = items.filter(b => b.earned).map(b => {
+                        const dateStr = b.earned_at
+                            ? new Date(b.earned_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                            : '';
+                        return `<div class="achievement-badge earned">
+                            <div class="achievement-badge__icon">${b.emoji || b.icon || '🏅'}</div>
+                            <div class="achievement-badge__name">${escapeHtml(b.name)}</div>
+                            <div class="achievement-badge__desc">${escapeHtml(b.description || '')}</div>
+                            <div class="achievement-badge__status">${t('ach_earned')}${dateStr ? ' ' + dateStr : ''}</div>
+                        </div>`;
+                    }).join('');
+                    return `<div class="ach-category">
+                        <div class="ach-category__header">
+                            <span class="ach-category__icon">${catDef ? catDef.icon : '🏅'}</span>
+                            <span class="ach-category__label">${t('ach_cat_' + catId)}</span>
+                            <span class="ach-category__count">${earned}/${items.length}</span>
+                        </div>
+                        <div class="ach-category__grid">${cards}</div>
+                    </div>`;
+                };
+                const otherKeys = Object.keys(grouped).filter(k => !catOrder.includes(k));
+                achPreview.innerHTML = `<div class="achievements-grid" style="display:flex;flex-direction:column;gap:20px;padding:8px 0;">
+                    ${catOrder.map(renderCat).join('')}
+                    ${otherKeys.map(renderCat).join('')}
+                </div>`;
             }
 
             // Ratings

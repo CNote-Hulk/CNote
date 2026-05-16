@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     btn.innerHTML = `${emoji} <span>${c.name}</span>`;
 
                     btn.addEventListener('click', () => {
-                        window.location.href = `console.html?name=${encodeURIComponent(c.name)}`;
+                        window.location.href = `consoles/${c.id}.html`;
                     });
 
                     collectionGrid.appendChild(btn);
@@ -634,7 +634,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const btn = document.createElement('button');
                         btn.className = 'console-card';
                         btn.innerHTML = `${emojis[idx % emojis.length]} <span>${escapeHtml(c.name)}</span>`;
-                        btn.addEventListener('click', () => { window.location.href = `console.html?name=${encodeURIComponent(c.name)}`; });
+                        btn.addEventListener('click', () => { window.location.href = `consoles/${c.id}.html`; });
                         favoritesGrid.appendChild(btn);
                     });
                     // Update favorites count badge
@@ -943,7 +943,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const btn = document.createElement('button');
                         btn.className = 'console-card';
                         btn.innerHTML = `${emojis[idx % emojis.length]} <span>${escapeHtml(c.name)}</span>`;
-                        btn.addEventListener('click', () => { window.location.href = `console.html?name=${encodeURIComponent(c.name)}`; });
+                        btn.addEventListener('click', () => { window.location.href = `consoles/${c.id}.html`; });
                         homeCollectionPreview.appendChild(btn);
                     });
                     if (user.owned_console_ids.length > 6) {
