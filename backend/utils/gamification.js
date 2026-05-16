@@ -32,6 +32,7 @@ const XP_ACTIONS = {
     first_dm:            { xp: 10,  limit: 'once',          description: 'Sent first DM' },
     marketplace_listing: { xp: 15,  limit: 'daily_cap_45',  description: 'Created a listing' },
     profile_complete:    { xp: 25,  limit: 'once',          description: 'Completed your profile' },
+    first_chat_message:  { xp: 10,  limit: 'once',          description: 'First chat message' },
     ebay_connected:      { xp: 30,  limit: 'once',          description: 'Connected eBay account' },
 };
 

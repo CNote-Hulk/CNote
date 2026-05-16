@@ -621,16 +621,15 @@ router.get('/me/quick-start-status', authRequired, async (req, res) => {
         const result = await pool.query(
             `SELECT
                u.xp,
-               EXISTS(SELECT 1 FROM xp_transactions
-                 WHERE user_id = u.id AND action_type = 'profile_complete') AS profile_complete,
+               (u.avatar IS NOT NULL AND u.avatar != '' AND u.bio IS NOT NULL AND u.bio != '') AS profile_complete,
                EXISTS(SELECT 1 FROM user_lessons
                  WHERE user_id = u.id AND completed = true) AS lesson_complete,
                EXISTS(SELECT 1 FROM user_achievements
                  WHERE user_id = u.id AND badge_id = 'console_3') AS console_3,
                EXISTS(SELECT 1 FROM user_achievements
                  WHERE user_id = u.id AND badge_id = 'first_favorite') AS first_favorite,
-               EXISTS(SELECT 1 FROM xp_transactions
-                 WHERE user_id = u.id AND action_type = 'first_chat_message') AS first_chat_message,
+               EXISTS(SELECT 1 FROM messages
+                 WHERE user_id = u.id) AS first_chat_message,
                EXISTS(SELECT 1 FROM user_achievements
                  WHERE user_id = u.id AND badge_id = 'first_post') AS first_post
              FROM users u WHERE u.id = $1`,

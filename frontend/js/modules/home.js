@@ -186,8 +186,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const avatarFallback = document.getElementById('profile-avatar-fallback');
         const adminBadge = document.getElementById('profile-admin-badge');
 
-        if (nameEl) nameEl.textContent = user.username || currentUser.username;
+        const freshName = user.username || currentUser.username;
+        if (nameEl) nameEl.textContent = freshName;
         if (bioEl) bioEl.textContent = user.bio || currentUser.bio || '';
+
+        // Also update mobile hero (sidebar is hidden on mobile)
+        const welcomeTitle = document.getElementById('welcome-title');
+        if (welcomeTitle) welcomeTitle.textContent = freshName;
 
         if (avatarImg && avatarFallback) {
             const avatar = normalizeAvatarUrl(user.avatar || currentUser.avatar || '');
@@ -1236,29 +1241,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         section.hidden = false;
 
+        const taskLabelKeys = {
+            registered:        'qsg_task_registered',
+            profile_complete:  'qsg_task_profile_complete',
+            lesson_complete:   'qsg_task_lesson_complete',
+            console_3:         'qsg_task_console_3',
+            first_favorite:    'qsg_task_first_favorite',
+            first_chat_message:'qsg_task_first_chat',
+            first_post:        'qsg_task_first_post',
+        };
+
         const tasksHtml = QUICK_START_TASKS.map(task => {
             const done = data.tasks[task.id] === true;
             const doneClass = done ? ' qsg-task--done' : '';
-            const checkIcon = done ? '✅' : '☐';
+            const label = I18nModule.t(taskLabelKeys[task.id]) || task.label;
             const btn = (!task.autoComplete && !done)
-                ? `<button class="qsg-task-btn" data-task="${task.id}">Deschide</button>`
+                ? `<button class="qsg-task-btn" data-task="${task.id}">${I18nModule.t('qsg_btn_open')}</button>`
                 : '';
             return `<div class="qsg-task${doneClass}">
-                <span class="qsg-task-check">${checkIcon}</span>
-                <span class="qsg-task-label">${escapeHtml(task.label)}</span>
+                <span class="qsg-task-check">${done ? '✓' : ''}</span>
+                <span class="qsg-task-label">${escapeHtml(label)}</span>
                 <span class="qsg-task-xp">+${task.xp} XP</span>
                 ${btn}
             </div>`;
         }).join('');
 
+        const xpLabel = (I18nModule.t('qsg_xp_progress') || '{xp} / 150 XP').replace('{xp}', data.xp);
+
         section.innerHTML = `
             <div class="qsg-header">
-                <span class="qsg-title">🚀 Quick Start Guide</span>
-                <span class="qsg-subtitle">Completează pașii pentru a deveni 📺 Watcher</span>
+                <div class="qsg-header-top">
+                    <div>
+                        <span class="qsg-title">${I18nModule.t('qsg_title')}</span>
+                        <span class="qsg-subtitle">${I18nModule.t('qsg_subtitle')}</span>
+                    </div>
+                    <span class="qsg-xp-badge">${xpLabel}</span>
+                </div>
                 <div class="qsg-progress-bar">
                     <div class="qsg-progress-fill" style="width: 0%"></div>
                 </div>
-                <span class="qsg-xp-label">${data.xp} / 150 XP</span>
             </div>
             <div class="qsg-tasks">${tasksHtml}</div>
         `;

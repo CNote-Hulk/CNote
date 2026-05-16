@@ -11,6 +11,7 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const { awardXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -118,6 +119,7 @@ router.post('/messages', authRequired, async (req, res) => {
                 }
             }
         });
+        awardXP(pool, req.app.get('io'), req.user.id, 'first_chat_message', 'done').catch(() => {});
     } catch (err) {
         console.error('Chat POST error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
