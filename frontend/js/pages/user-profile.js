@@ -75,15 +75,16 @@ const t = key => I18nModule.t(key);
                 coursePreview.innerHTML = '<p class="dash-empty">No courses.</p>';
             }
 
-            // Achievements
-            const earnedFromProfile = profile.achievements || profile.badges || [];
-            const allDefs = window.GAMIFICATION_DATA?.ACHIEVEMENTS ?? [];
+            // Achievements — fetch computed dynamically (same logic as authenticated endpoint)
             const CATEGORIES = window.GAMIFICATION_DATA?.CATEGORIES ?? [];
-            // Merge earned data with full definitions
-            const badges = allDefs.map(def => {
-                const earned = earnedFromProfile.find(e => e.id === def.id || e.badge_id === def.id);
-                return { ...def, unlocked: !!earned, earned: !!earned, earned_at: earned?.earned_at || null };
-            });
+            let badges = [];
+            try {
+                const achRes = await fetch(`${API_BASE_URL}/achievements/user/${encodeURIComponent(profile.username)}`);
+                const achData = await achRes.json();
+                badges = achData.achievements || [];
+                // Normalise: use `earned` = unlocked for consistency
+                badges = badges.map(b => ({ ...b, earned: !!b.unlocked }));
+            } catch { /* leave badges empty */ }
             const earnedCount = badges.filter(b => b.earned).length;
             document.getElementById('user-dash-achievements').textContent = `${earnedCount} / ${badges.length}`;
 

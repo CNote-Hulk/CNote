@@ -96,12 +96,6 @@ router.get('/users/:username', async (req, res) => {
             'SELECT COUNT(*) AS count FROM friends WHERE user1_id = $1 OR user2_id = $1',
             [user.id]
         );
-        const achResult = await pool.query(
-            'SELECT badge_id, earned_at FROM user_achievements WHERE user_id = $1 ORDER BY earned_at DESC',
-            [user.id]
-        );
-        const achievements = achResult.rows.map(r => ({ id: r.badge_id, unlocked: true, earned_at: r.earned_at }));
-
         res.json({
             success: true,
             user: {
@@ -115,7 +109,6 @@ router.get('/users/:username', async (req, res) => {
                 favorite_console_ids: favResult.rows.map(r => r.console_id),
                 owned_console_ids: ownedResult.rows.map(r => r.console_id),
                 friend_count: user.show_friends !== false ? parseInt(friendCount.rows[0].count) : null,
-                achievements: user.show_stats !== false ? achievements : [],
                 role: user.role || 'user',
                 created_at: user.created_at,
                 social_discord: user.show_social_links !== false ? (user.social_discord || '') : '',
