@@ -164,11 +164,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 localStorage.removeItem('cn_token');
                 localStorage.removeItem('cn_session_token');
             }
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            if (!res.ok) return null;
             return await res.json();
-        } catch (err) {
-            console.error('API error:', err);
-            return { success: false };
+        } catch {
+            return null;
         }
     }
 
@@ -269,22 +268,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // parallel fetch
             const sf = { success: false };
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes] = await Promise.all([
-                apiFetch('/api/ratings/user/all').catch(() => sf),
-                apiFetch('/api/favorites').catch(() => sf),
-                apiFetch('/api/friends').catch(() => sf),
-                apiFetch('/api/friends/requests').catch(() => sf),
-                apiFetch('/api/forum/recent').catch(() => sf),
-                apiFetch('/api/forum/my-posts').catch(() => sf),
-                apiFetch('/api/forum/liked').catch(() => sf),
-                apiFetch('/api/achievements').catch(() => sf),
-                apiFetch('/api/courses/starter-guide/progress').catch(() => sf),
-                apiFetch('/api/consoles/visited').catch(() => sf),
-                apiFetch('/api/marketplace/listings/mine').catch(() => sf),
-                apiFetch('/api/marketplace/favorites').catch(() => sf),
-                apiFetch('/api/me/level').catch(() => sf),
-                apiFetch('/api/me/quick-start-status').catch(() => sf),
-            ]);
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes] = (await Promise.all([
+                apiFetch('/api/ratings/user/all').catch(() => null),
+                apiFetch('/api/favorites').catch(() => null),
+                apiFetch('/api/friends').catch(() => null),
+                apiFetch('/api/friends/requests').catch(() => null),
+                apiFetch('/api/forum/recent').catch(() => null),
+                apiFetch('/api/forum/my-posts').catch(() => null),
+                apiFetch('/api/forum/liked').catch(() => null),
+                apiFetch('/api/achievements').catch(() => null),
+                apiFetch('/api/courses/starter-guide/progress').catch(() => null),
+                apiFetch('/api/consoles/visited').catch(() => null),
+                apiFetch('/api/marketplace/listings/mine').catch(() => null),
+                apiFetch('/api/marketplace/favorites').catch(() => null),
+                apiFetch('/api/me/level').catch(() => null),
+                apiFetch('/api/me/quick-start-status').catch(() => null),
+            ])).map(r => r ?? sf);
 
             // =========================
             // PROGRESS — real course data
@@ -1157,9 +1156,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         renderQuickStart(qsgRes);
                     } else {
                         const existing = document.getElementById('quick-start-guide');
-                        if (existing) {
+                        if (existing && !existing.hidden) {
                             existing.classList.add('qsg-fade-out');
-                            setTimeout(() => existing.remove(), 420);
+                            setTimeout(() => { existing.hidden = true; existing.classList.remove('qsg-fade-out'); }, 420);
                         }
                     }
                 }
@@ -1232,19 +1231,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function renderQuickStart(data) {
-        const homePanel = document.querySelector('[data-panel="home"]');
-        if (!homePanel) return;
+        const section = document.getElementById('quick-start-guide');
+        if (!section) return;
 
-        const statsSection = homePanel.querySelector('.stats-section');
-        if (!statsSection) return;
-
-        let section = document.getElementById('quick-start-guide');
-        if (!section) {
-            section = document.createElement('section');
-            section.className = 'dashboard-section quick-start-guide';
-            section.id = 'quick-start-guide';
-            statsSection.before(section);
-        }
+        section.hidden = false;
 
         const tasksHtml = QUICK_START_TASKS.map(task => {
             const done = data.tasks[task.id] === true;
@@ -1293,9 +1283,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const existing = document.getElementById('quick-start-guide');
         if (!data.show) {
-            if (existing) {
+            if (existing && !existing.hidden) {
                 existing.classList.add('qsg-fade-out');
-                setTimeout(() => existing.remove(), 420);
+                setTimeout(() => { existing.hidden = true; existing.classList.remove('qsg-fade-out'); }, 420);
             }
             return;
         }
