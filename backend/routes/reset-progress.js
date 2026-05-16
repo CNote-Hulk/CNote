@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
-
+const { checkAchievements } = require('../utils/gamification');
 
 router.post('/reset-progress', authRequired, async (req, res) => {
     try {
-        const userId = req.user.id; // extras din token
-        await resetUserData(userId); // funcție care șterge tot progresul
+        const userId = req.user.id;
+        await resetUserData(userId);
+        // Re-calculează achievements din zero pe baza datelor rămase
+        // (postări, prieteni, DM-uri — care nu se șterg la reset)
+        await checkAchievements(pool, null, userId);
         res.json({ success: true, message: 'All progress has been reset.' });
     } catch (err) {
         console.error(err);
@@ -15,8 +19,6 @@ router.post('/reset-progress', authRequired, async (req, res) => {
 });
 
 
-
-const pool = require('../db');
 
 // Each query runs independently — a missing table won't block the rest
 async function resetUserData(userId) {
