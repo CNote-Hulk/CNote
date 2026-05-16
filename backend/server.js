@@ -467,7 +467,7 @@ app.set('io', io);
 const { authRequired: _authReq } = require('./middleware/auth');
 const jwt = require('jsonwebtoken');
 const pool = require('./db');
-const { checkAchievements } = require('./utils/gamification');
+const { checkAchievements, ACHIEVEMENTS } = require('./utils/gamification');
 
 io.on('connection', (socket) => {
   socket.on('register', async (token) => {
@@ -487,10 +487,31 @@ io.on('connection', (socket) => {
         if (!result.rows[0]) return;
         userId = result.rows[0].user_id;
       }
-      if (userId) {
-        socket.join(String(userId));
-        // Emit any achievements earned since last connection (catches missed notifications)
-        checkAchievements(pool, io, userId).catch(() => {});
+      if (!userId) return;
+
+      socket.join(String(userId));
+
+      // Deliver any achievements that were earned but not yet notified
+      // (socket was offline / in wrong room when they fired)
+      const pending = await pool.query(
+        `SELECT badge_id FROM user_achievements WHERE user_id = $1 AND notified_at IS NULL`,
+        [userId]
+      );
+      if (pending.rows.length > 0) {
+        const pendingIds = pending.rows.map(r => r.badge_id);
+        const pendingAchs = ACHIEVEMENTS.filter(a => pendingIds.includes(a.id));
+        socket.emit('achievement_unlocked', {
+          awardedIds: pendingIds,
+          achievements: pendingAchs.map(a => ({
+            id: a.id, name: a.name, emoji: a.emoji,
+            category: a.category, description: a.description, xpReward: a.xpReward,
+          })),
+        });
+        await pool.query(
+          `UPDATE user_achievements SET notified_at = NOW()
+           WHERE user_id = $1 AND notified_at IS NULL`,
+          [userId]
+        );
       }
     } catch {}
   });

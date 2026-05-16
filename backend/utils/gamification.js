@@ -345,17 +345,27 @@ async function checkAchievements(pool, io, userId) {
         }
 
         if (io && awardedAchievements.length > 0) {
-            io.to(String(userId)).emit('achievement_unlocked', {
-                awardedIds: awardedAchievements.map(a => a.id),
-                achievements: awardedAchievements.map(a => ({
-                    id: a.id,
-                    name: a.name,
-                    emoji: a.emoji,
-                    category: a.category,
-                    description: a.description,
-                    xpReward: a.xpReward,
-                })),
-            });
+            const room = io.sockets.adapter.rooms.get(String(userId));
+            const delivered = room && room.size > 0;
+            if (delivered) {
+                io.to(String(userId)).emit('achievement_unlocked', {
+                    awardedIds: awardedAchievements.map(a => a.id),
+                    achievements: awardedAchievements.map(a => ({
+                        id: a.id,
+                        name: a.name,
+                        emoji: a.emoji,
+                        category: a.category,
+                        description: a.description,
+                        xpReward: a.xpReward,
+                    })),
+                });
+                await pool.query(
+                    `UPDATE user_achievements SET notified_at = NOW()
+                     WHERE user_id = $1 AND badge_id = ANY($2) AND notified_at IS NULL`,
+                    [userId, awardedAchievements.map(a => a.id)]
+                );
+            }
+            // If no socket in room, notified_at stays NULL — will be delivered on next register
         }
 
         return awardedAchievements;
