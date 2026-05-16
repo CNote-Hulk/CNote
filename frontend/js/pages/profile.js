@@ -125,10 +125,9 @@ function initSettings() {
     const adminBadge = document.getElementById('profile-admin-badge');
     if (adminBadge && user.role === 'admin') adminBadge.hidden = false;
 
-    // Show admin tab for admins
+    // Show admin tabs (sidebar + mobile dropdown) for admins
     if (user.role === 'admin') {
-        const adminTab = document.querySelector('.admin-only-tab');
-        if (adminTab) adminTab.hidden = false;
+        document.querySelectorAll('.admin-only-tab').forEach(el => { el.hidden = false; });
     }
 
     const levelEl = document.getElementById('profile-level');
@@ -1760,7 +1759,7 @@ async function initOwnedConsolesSelect() {
 
 // ── Mobile bottom nav — tab switching ────────────────────────
 (function initMbnTabs() {
-    const TABS = ['account', 'profil', 'security', 'notifications', 'appearance', 'achievements'];
+    const TABS = ['account', 'profil', 'privacy', 'security', 'notifications', 'appearance', 'reports', 'admin-reports'];
     const btn = document.getElementById('mbn-more-btn');
     const dd  = document.getElementById('mbn-dropdown');
 

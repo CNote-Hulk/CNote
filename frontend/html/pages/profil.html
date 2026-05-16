@@ -16,10 +16,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/components/date-picker.css">
-    <link rel="stylesheet" href="../../css/components/report-modal.css">
-    <link rel="stylesheet" href="../../css/components/levels.css">
+    <link rel="stylesheet" href="../../css/main.css?v=2">
+    <link rel="stylesheet" href="../../css/components/date-picker.css?v=2">
+    <link rel="stylesheet" href="../../css/components/report-modal.css?v=2">
+    <link rel="stylesheet" href="../../css/components/levels.css?v=2">
 </head>
 <body class="has-mbn">
     <!-- ===========================
@@ -648,27 +648,30 @@
     <!-- Scripts -->
     <script src="../../js/data/consoles-data.js"></script>
     <script src="../../js/data/location-data.js"></script>
-    <script src="../../js/modules/gamification-data.js"></script>
-    <script type="module" src="../../js/main.js"></script>
-    <script type="module" src="../../js/pages/profile.js"></script>
+    <script src="../../js/modules/gamification-data.js?v=2"></script>
+    <script type="module" src="../../js/main.js?v=2"></script>
+    <script type="module" src="../../js/pages/profile.js?v=2"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
 
     <!-- Mobile bottom navigation (hidden on desktop via CSS) -->
     <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
         <div class="mbn-dropdown" id="mbn-dropdown">
-            <a href="#" class="mbn-dd-item" id="mbn-notif-link">
-                <span class="mbn-dd-icon">🔔</span>
-                <span data-i18n="nav_notifications">Notifications</span>
-                <span class="mbn-notif-badge-dd" id="mbn-notif-badge-dd" style="display:none"></span>
-            </a>
+            <button type="button" class="mbn-dd-item" data-mbn-tab="privacy">
+                <span class="mbn-dd-icon">👁</span>
+                <span data-i18n="settings_tab_privacy">Privacy</span>
+            </button>
             <button type="button" class="mbn-dd-item" data-mbn-tab="appearance">
                 <span class="mbn-dd-icon">🎨</span>
                 <span data-i18n="settings_tab_appearance">Appearance</span>
             </button>
-            <button type="button" class="mbn-dd-item" data-mbn-tab="achievements">
-                <span class="mbn-dd-icon">🏅</span>
-                <span data-i18n="up_tab_achievements">Achievements</span>
+            <button type="button" class="mbn-dd-item" data-mbn-tab="reports">
+                <span class="mbn-dd-icon">🚩</span>
+                <span data-i18n="settings_tab_reports">My Reports</span>
+            </button>
+            <button type="button" class="mbn-dd-item admin-only-tab" data-mbn-tab="admin-reports" hidden>
+                <span class="mbn-dd-icon">🛡</span>
+                <span>Admin Reports</span>
             </button>
             <div class="mbn-dd-sep"></div>
             <a href="home.html" class="mbn-dd-item">
