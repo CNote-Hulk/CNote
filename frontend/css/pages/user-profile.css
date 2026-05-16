@@ -867,8 +867,18 @@ a.user-social-link:hover {
         margin-right: auto;
     }
 
+    /* At mid-width: 3+2 layout — 3 in first row, 2 centered in second */
     .up-stats-card .dash-stats {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* 5th stat: stays in normal flow at col 3 start for 860px  */
+    .up-stats-card .dash-stat:nth-child(4) {
+        grid-column: 1;
+    }
+
+    .up-stats-card .dash-stat:nth-child(5) {
+        grid-column: 2;
     }
 
     .up-stats-card .dash-stat:last-child:nth-child(odd) {
@@ -893,8 +903,19 @@ a.user-social-link:hover {
         grid-template-columns: 1fr 1fr;
     }
 
+    /* 5th stat: keep same 2-col cell, don't stretch */
     .up-stats-card .dash-stat:last-child:nth-child(odd) {
-        grid-column: span 2;
+        grid-column: span 1;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        padding: 16px 10px 14px;
+    }
+
+    .up-stats-card .dash-stat:last-child:nth-child(odd) .dash-stat__info {
+        flex-direction: column-reverse;
+        gap: 3px;
+        align-items: center;
     }
 
     .up-consoles-card .up-consoles-inline {

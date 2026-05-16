@@ -110,7 +110,7 @@ const t = key => I18nModule.t(key);
                 const recentEarned = badges
                     .filter(b => b.earned)
                     .sort((a, b) => new Date(b.earned_at || 0) - new Date(a.earned_at || 0))
-                    .slice(0, 6);
+                    .slice(0, 4);
                 const miniCards = recentEarned.map(b => `
                     <div class="up-ach-mini" title="${escapeHtml(b.name)}">
                         <div class="up-ach-mini__icon">${b.emoji || b.icon || '🏅'}</div>

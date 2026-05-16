@@ -1528,16 +1528,16 @@
 
 /* ── Responsive: achievements & course modals ──────────────────────── */
 @media (max-width: 600px) {
-    /* Modal overlay — use almost full screen */
+    /* Modal overlay — centered, full width, compact */
     .up-ach-modal-overlay {
-        padding: 8px;
-        align-items: flex-end;
+        padding: 12px;
+        align-items: center;
     }
 
     .up-ach-modal {
         max-width: 100%;
-        max-height: 91vh;
-        border-radius: 18px 18px 10px 10px;
+        max-height: 88vh;
+        border-radius: 16px;
     }
 
     .up-ach-modal__header {
@@ -1546,38 +1546,62 @@
 
     .up-ach-modal__title {
         font-size: 0.88rem;
+        gap: 6px;
     }
 
     .up-ach-modal__body {
-        padding: 14px 14px;
+        padding: 12px 14px;
     }
 
-    /* Achievement category grid — 2 fixed cols on narrow screens */
+    /* Achievement category grid — 2 fixed cols, tighter */
     .ach-category__grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
     }
 
-    /* Achievement badge — more compact */
+    /* Achievement badge — compact */
     .achievement-badge {
-        padding: 12px 8px;
+        padding: 10px 6px;
+        gap: 2px;
     }
 
     .achievement-badge__icon {
-        font-size: 1.5rem;
-        margin-bottom: 6px;
+        font-size: 1.4rem;
+        margin-bottom: 4px;
     }
 
     .achievement-badge__name {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
+        margin-bottom: 2px;
     }
 
     .achievement-badge__desc {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
+        line-height: 1.3;
     }
 
-    /* Achievement mini-grid — 3 cols on mobile */
+    .achievement-badge__status {
+        font-size: 0.58rem;
+        margin-top: 2px;
+    }
+
+    /* Achievement mini-grid — 2 cols on mobile for readability */
     .up-ach-mini-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+    }
+
+    .up-ach-mini {
+        padding: 8px 6px;
+        gap: 4px;
+    }
+
+    .up-ach-mini__icon {
+        font-size: 1.35rem;
+    }
+
+    .up-ach-mini__name {
+        font-size: 0.62rem;
     }
 
     /* Course preview "view all" button — full-width on mobile */
@@ -1594,17 +1618,6 @@
 
     .up-course-modal-row__name {
         font-size: 0.82rem;
-    }
-}
-
-@media (max-width: 400px) {
-    /* Very small screens — 2 cols for mini achievement grid */
-    .up-ach-mini-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .up-ach-mini__icon {
-        font-size: 1.3rem;
     }
 }
 
