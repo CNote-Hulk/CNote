@@ -614,6 +614,57 @@ router.get('/me/level', authRequired, async (req, res) => {
     }
 });
 
+// GET /api/me/quick-start-status — Newcomer onboarding checklist (level 1 only)
+router.get('/me/quick-start-status', authRequired, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const result = await pool.query(
+            `SELECT
+               u.xp,
+               EXISTS(SELECT 1 FROM xp_transactions
+                 WHERE user_id = u.id AND action_type = 'profile_complete') AS profile_complete,
+               EXISTS(SELECT 1 FROM user_lessons
+                 WHERE user_id = u.id AND completed = true) AS lesson_complete,
+               EXISTS(SELECT 1 FROM user_achievements
+                 WHERE user_id = u.id AND badge_id = 'console_3') AS console_3,
+               EXISTS(SELECT 1 FROM user_achievements
+                 WHERE user_id = u.id AND badge_id = 'first_favorite') AS first_favorite,
+               EXISTS(SELECT 1 FROM xp_transactions
+                 WHERE user_id = u.id AND action_type = 'first_chat_message') AS first_chat_message,
+               EXISTS(SELECT 1 FROM user_achievements
+                 WHERE user_id = u.id AND badge_id = 'first_post') AS first_post
+             FROM users u WHERE u.id = $1`,
+            [userId]
+        );
+
+        if (!result.rows.length) return res.status(404).json({ success: false });
+
+        const row = result.rows[0];
+        const xp = parseInt(row.xp, 10) || 0;
+        const XP_WATCHER = 150;
+
+        res.json({
+            success: true,
+            show: xp < XP_WATCHER,
+            xp,
+            xpNeeded: XP_WATCHER,
+            progressPercent: Math.min(100, Math.round((xp / XP_WATCHER) * 100)),
+            tasks: {
+                registered: true,
+                profile_complete: row.profile_complete,
+                lesson_complete: row.lesson_complete,
+                console_3: row.console_3,
+                first_favorite: row.first_favorite,
+                first_chat_message: row.first_chat_message,
+                first_post: row.first_post,
+            },
+        });
+    } catch (err) {
+        console.error('GET /me/quick-start-status error:', err.message);
+        res.status(500).json({ success: false, error: 'Internal error' });
+    }
+});
+
 const USERNAME_COOLDOWN_DAYS = 7;
 
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)

@@ -30,5 +30,6 @@ export function initAchievementSocket(userId) {
                 payload.achievements ?? []
             );
         }
+        window.dispatchEvent(new CustomEvent('cn:xp-update'));
     });
 }
