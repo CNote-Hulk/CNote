@@ -274,3 +274,115 @@
 .report-content-link:hover {
     text-decoration: underline;
 }
+
+/* ── Admin Reports ── */
+.admin-reports-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.admin-filter-btn {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.admin-filter-btn:hover {
+    background: rgba(var(--accent-color-rgb, 245,240,232), 0.07);
+    color: var(--text-light);
+}
+
+.admin-filter-btn.active {
+    background: rgba(var(--accent-color-rgb, 245,240,232), 0.12);
+    border-color: rgba(var(--accent-color-rgb, 245,240,232), 0.35);
+    color: var(--accent-color);
+}
+
+.admin-reports-table {
+    font-size: 0.82rem;
+}
+
+.admin-reports-table td {
+    vertical-align: middle;
+}
+
+.ar-cell-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 120px;
+}
+
+.ar-content-type {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-gray);
+}
+
+.ar-content-label {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+    display: block;
+}
+
+.ar-desc {
+    cursor: help;
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.ar-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ar-status-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--dark-bg-2, #2a231f);
+    color: var(--text-light);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+
+.ar-status-select:hover:not(:disabled) {
+    border-color: rgba(var(--accent-color-rgb, 245,240,232), 0.3);
+}
+
+.ar-status-select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* resolved badge */
+.report-status-badge--resolved {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+}
+
+@media (max-width: 680px) {
+    .admin-reports-table th:nth-child(3),
+    .admin-reports-table td:nth-child(3),
+    .admin-reports-table th:nth-child(5),
+    .admin-reports-table td:nth-child(5) {
+        display: none;
+    }
+}

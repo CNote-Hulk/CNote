@@ -182,4 +182,80 @@ router.get('/reports/my', authRequired, async (req, res) => {
     }
 });
 
+// ── GET /api/reports/admin ────────────────────────────────────────────────
+// Admin only. Returns all reports, newest first, with basic enrichment.
+
+router.get('/reports/admin', authRequired, async (req, res) => {
+    if (req.user.role !== 'admin') return res.status(403).json({ success: false, error: 'Forbidden.' });
+
+    try {
+        const result = await pool.query(`
+            SELECT cr.id, cr.content_type, cr.content_id, cr.reason, cr.description,
+                   cr.status, cr.created_at, cr.reporter_contact,
+                   u.username AS reporter_username
+            FROM content_reports cr
+            LEFT JOIN users u ON u.id = cr.reporter_id
+            ORDER BY cr.created_at DESC
+            LIMIT 200
+        `);
+
+        const reports = result.rows;
+
+        for (const r of reports) {
+            try {
+                if (r.content_type === 'user_profile') {
+                    const u = await pool.query('SELECT username FROM users WHERE id = $1', [r.content_id]);
+                    r.content_label = u.rows[0]?.username ? `@${u.rows[0].username}` : `User #${r.content_id}`;
+                } else if (r.content_type === 'forum_thread') {
+                    const t = await pool.query('SELECT title FROM forum_threads WHERE id = $1', [r.content_id]);
+                    r.content_label = t.rows[0]?.title || `Thread #${r.content_id}`;
+                } else if (r.content_type === 'forum_reply') {
+                    r.content_label = `Reply #${r.content_id}`;
+                } else if (r.content_type === 'listing') {
+                    const l = await pool.query('SELECT title FROM listings WHERE id = $1', [r.content_id]);
+                    r.content_label = l.rows[0]?.title || `Listing #${r.content_id}`;
+                } else if (r.content_type === 'direct_message') {
+                    r.content_label = `Message #${r.content_id}`;
+                } else {
+                    r.content_label = `${r.content_type} #${r.content_id}`;
+                }
+            } catch { r.content_label = `${r.content_type} #${r.content_id}`; }
+        }
+
+        return res.json({ success: true, reports });
+    } catch (err) {
+        console.error('[reports] GET /api/reports/admin error:', err.message || err);
+        return res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── PATCH /api/reports/admin/:id ──────────────────────────────────────────
+// Admin only. Updates report status: pending → reviewed | resolved | dismissed.
+
+const VALID_STATUSES = ['pending', 'reviewed', 'resolved', 'dismissed'];
+
+router.patch('/reports/admin/:id', authRequired, async (req, res) => {
+    if (req.user.role !== 'admin') return res.status(403).json({ success: false, error: 'Forbidden.' });
+
+    const reportId = parseInt(req.params.id, 10);
+    if (!reportId) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
+
+    const { status } = req.body || {};
+    if (!status || !VALID_STATUSES.includes(status)) {
+        return res.status(400).json({ success: false, error: `status must be one of: ${VALID_STATUSES.join(', ')}` });
+    }
+
+    try {
+        const result = await pool.query(
+            `UPDATE content_reports SET status = $1 WHERE id = $2 RETURNING id, status`,
+            [status, reportId]
+        );
+        if (!result.rows.length) return res.status(404).json({ success: false, error: 'Report not found.' });
+        return res.json({ success: true, report: result.rows[0] });
+    } catch (err) {
+        console.error('[reports] PATCH /api/reports/admin error:', err.message || err);
+        return res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
 module.exports = router;

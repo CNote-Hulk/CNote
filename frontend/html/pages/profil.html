@@ -96,6 +96,10 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
                         <span data-i18n="settings_tab_reports">Rapoartele mele</span>
                     </button>
+                    <button class="profile-tab sidebar-link admin-only-tab" data-tab="admin-reports" type="button" hidden>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>Admin Reports</span>
+                    </button>
                 </div>
 
                 <div class="sidebar-profile-divider"></div>
@@ -579,6 +583,26 @@
                         </div>
                     </div>
                     <div id="my-reports-container">
+                        <p class="my-reports-empty">Se încarcă…</p>
+                    </div>
+                </div>
+
+                <!-- Admin Reports Panel — visible only to admins -->
+                <div class="profile-panel" id="panel-admin-reports" data-panel="admin-reports">
+                    <div class="settings-row settings-row--meta-only">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title">🛡️ Admin — Content Reports</div>
+                            <div class="settings-row__desc">All user-submitted reports. Update status to review, resolve, or dismiss each one.</div>
+                        </div>
+                    </div>
+                    <div class="admin-reports-filters">
+                        <button class="admin-filter-btn active" data-filter="all">All</button>
+                        <button class="admin-filter-btn" data-filter="pending">Pending</button>
+                        <button class="admin-filter-btn" data-filter="reviewed">Reviewed</button>
+                        <button class="admin-filter-btn" data-filter="resolved">Resolved</button>
+                        <button class="admin-filter-btn" data-filter="dismissed">Dismissed</button>
+                    </div>
+                    <div id="admin-reports-container">
                         <p class="my-reports-empty">Se încarcă…</p>
                     </div>
                 </div>

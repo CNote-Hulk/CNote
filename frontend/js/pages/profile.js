@@ -66,6 +66,7 @@ function initSettings() {
     // ═══ TAB SYSTEM ═══
     let achievementsLoaded = false;
     let reportsLoaded = false;
+    let adminReportsLoaded = false;
     const activateTab = (tabKey, syncHash = false) => {
         let tabBtn = document.querySelector(`.profile-tab[data-tab="${tabKey}"]`);
         let panel = document.querySelector(`.profile-panel[data-panel="${tabKey}"]`);
@@ -85,6 +86,11 @@ function initSettings() {
         if (tabKey === 'reports' && !reportsLoaded) {
             reportsLoaded = true;
             loadMyReports().catch(err => console.error('[reports]', err));
+        }
+
+        if (tabKey === 'admin-reports' && !adminReportsLoaded) {
+            adminReportsLoaded = true;
+            loadAdminReports().catch(err => console.error('[admin-reports]', err));
         }
 
         if (syncHash) {
@@ -118,6 +124,12 @@ function initSettings() {
 
     const adminBadge = document.getElementById('profile-admin-badge');
     if (adminBadge && user.role === 'admin') adminBadge.hidden = false;
+
+    // Show admin tab for admins
+    if (user.role === 'admin') {
+        const adminTab = document.querySelector('.admin-only-tab');
+        if (adminTab) adminTab.hidden = false;
+    }
 
     const levelEl = document.getElementById('profile-level');
     if (levelEl) {
@@ -1503,6 +1515,144 @@ async function loadMyReports() {
     } catch (err) {
         console.error('[loadMyReports]', err);
         container.innerHTML = `<p class="my-reports-empty">${t('report_my_reports_load_error')}</p>`;
+    }
+}
+
+/**
+ * loadAdminReports
+ * Fetches GET /api/reports/admin and renders an interactive table.
+ * Admin only — tab is hidden for non-admins.
+ */
+async function loadAdminReports() {
+    const container = document.getElementById('admin-reports-container');
+    if (!container) return;
+
+    const token = localStorage.getItem('cn_token') || '';
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+    const STATUS_LABELS = {
+        pending:   'Pending',
+        reviewed:  'Reviewed',
+        resolved:  'Resolved',
+        dismissed: 'Dismissed',
+    };
+    const STATUS_NEXT = {
+        pending:   ['reviewed', 'resolved', 'dismissed'],
+        reviewed:  ['resolved', 'dismissed', 'pending'],
+        resolved:  ['dismissed', 'pending'],
+        dismissed: ['pending'],
+    };
+
+    let allReports = [];
+    let activeFilter = 'all';
+
+    function renderTable(reports) {
+        if (!reports.length) {
+            container.innerHTML = `<p class="my-reports-empty">No reports found.</p>`;
+            return;
+        }
+        const rows = reports.map(r => {
+            const cls = STATUS_CLS[r.status] || 'pending';
+            const date = new Date(r.created_at).toLocaleDateString('ro-RO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const reporter = r.reporter_username ? `<a href="/user/${escapeHtml(r.reporter_username)}" target="_blank">@${escapeHtml(r.reporter_username)}</a>` : 'Anonymous';
+            const nextOpts = (STATUS_NEXT[r.status] || []).map(s =>
+                `<option value="${s}">${STATUS_LABELS[s]}</option>`
+            ).join('');
+
+            return `<tr data-report-id="${r.id}">
+                <td class="ar-cell-content">
+                    <span class="ar-content-type">${escapeHtml(r.content_type.replace(/_/g, ' '))}</span>
+                    <span class="ar-content-label">${escapeHtml(r.content_label || r.content_id)}</span>
+                </td>
+                <td>${escapeHtml(r.reason.replace(/_/g, ' '))}</td>
+                <td>${reporter}</td>
+                <td>${date}</td>
+                <td>${r.description ? `<span class="ar-desc" title="${escapeHtml(r.description)}">…</span>` : ''}</td>
+                <td>
+                    <span class="report-status-badge report-status-badge--${cls}">${STATUS_LABELS[r.status] || r.status}</span>
+                </td>
+                <td>
+                    <div class="ar-actions">
+                        <select class="ar-status-select" data-id="${r.id}" data-current="${r.status}">
+                            <option value="">Change…</option>
+                            ${nextOpts}
+                        </select>
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+
+        container.innerHTML = `
+            <table class="my-reports-table admin-reports-table">
+                <thead>
+                    <tr>
+                        <th>Content</th>
+                        <th>Reason</th>
+                        <th>Reporter</th>
+                        <th>Date</th>
+                        <th>Note</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>`;
+
+        // Status change handlers
+        container.querySelectorAll('.ar-status-select').forEach(sel => {
+            sel.addEventListener('change', async () => {
+                const newStatus = sel.value;
+                const reportId = sel.dataset.id;
+                if (!newStatus) return;
+                sel.disabled = true;
+                try {
+                    const res = await fetch(`${API_BASE_URL}/reports/admin/${reportId}`, {
+                        method: 'PATCH',
+                        headers: { ...headers, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: newStatus }),
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        const r = allReports.find(x => String(x.id) === String(reportId));
+                        if (r) r.status = newStatus;
+                        applyFilter(activeFilter);
+                    } else {
+                        sel.value = '';
+                        sel.disabled = false;
+                    }
+                } catch {
+                    sel.value = '';
+                    sel.disabled = false;
+                }
+            });
+        });
+    }
+
+    function applyFilter(filter) {
+        activeFilter = filter;
+        document.querySelectorAll('.admin-filter-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.filter === filter);
+        });
+        const filtered = filter === 'all' ? allReports : allReports.filter(r => r.status === filter);
+        renderTable(filtered);
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.admin-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+    });
+
+    // Initial load
+    container.innerHTML = `<p class="my-reports-empty">Loading…</p>`;
+    try {
+        const resp = await fetch(`${API_BASE_URL}/reports/admin`, { headers });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok || !data.success) throw new Error(data.error || 'Error');
+        allReports = data.reports || [];
+        applyFilter('all');
+    } catch (err) {
+        console.error('[loadAdminReports]', err);
+        container.innerHTML = `<p class="my-reports-empty">Failed to load reports.</p>`;
     }
 }
 
