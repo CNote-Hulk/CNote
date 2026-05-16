@@ -194,9 +194,9 @@
                                 <p><strong id="home-overview-course-stat">—</strong></p>
                             </article>
                             <article class="stats-card">
-                                <span class="stats-card__icon">🏆</span>
-                                <h3 data-i18n="home_stats_achievements">Achievements</h3>
-                                <p><strong id="stat-achievements">5/16</strong></p>
+                                <span class="stats-card__icon" id="stat-level-emoji">⭐</span>
+                                <h3 data-i18n="home_stats_level">Level</h3>
+                                <p><strong id="stat-level">—</strong></p>
                             </article>
                             <article class="stats-card">
                                 <span class="stats-card__icon">⭐</span>
@@ -385,34 +385,13 @@
                         </div>
                     </section>
 
-                    <!-- Milestones -->
-                    <section class="dashboard-section">
+                    <!-- Quick Start Tasks (in progress panel) -->
+                    <section class="dashboard-section" id="progress-qsg-section" hidden>
                         <h2 class="panel-section-title">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                            <span data-i18n="home_progress_milestones">Milestones</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span data-i18n="qsg_title">Quick Start Guide</span>
                         </h2>
-                        <div class="milestones-list" id="progress-milestones">
-                            <div class="milestone-item milestone-item--done">
-                                <span class="milestone-dot"></span>
-                                <span class="milestone-label" data-i18n="home_milestone_account">Created your account</span>
-                            </div>
-                            <div class="milestone-item">
-                                <span class="milestone-dot"></span>
-                                <span class="milestone-label" data-i18n="home_milestone_first_lesson">Started first lesson</span>
-                            </div>
-                            <div class="milestone-item">
-                                <span class="milestone-dot"></span>
-                                <span class="milestone-label" data-i18n="home_milestone_10_lessons">Complete 10 lessons</span>
-                            </div>
-                            <div class="milestone-item">
-                                <span class="milestone-dot"></span>
-                                <span class="milestone-label">Complete 20 lessons</span>
-                            </div>
-                            <div class="milestone-item">
-                                <span class="milestone-dot"></span>
-                                <span class="milestone-label">Complete your first course</span>
-                            </div>
-                        </div>
+                        <div id="progress-qsg-tasks"></div>
                     </section>
                 </div>
 

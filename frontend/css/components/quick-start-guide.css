@@ -54,6 +54,20 @@
     line-height: 1.5;
 }
 
+.qsg-header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+    flex-shrink: 0;
+}
+
+.qsg-counter {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
 .qsg-xp-badge {
     flex-shrink: 0;
     font-size: 0.8rem;
@@ -64,6 +78,19 @@
     border-radius: 99px;
     padding: 0.3rem 0.9rem;
     white-space: nowrap;
+}
+
+.qsg-task--current {
+    border-color: rgba(var(--accent-rgb), 0.35);
+    background: rgba(var(--accent-rgb), 0.05);
+}
+
+.qsg-task--current .qsg-task-check {
+    border-color: var(--accent-color);
+}
+
+.qsg-task--current .qsg-task-label {
+    font-weight: 500;
 }
 
 .qsg-progress-bar {
@@ -172,6 +199,35 @@
 .qsg-task-btn:hover {
     background: rgba(var(--accent-rgb), 0.22);
     border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+/* ── Completed state ── */
+
+.qsg-completed {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.qsg-completed-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.qsg-completed-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.qsg-completed-sub {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    line-height: 1.5;
 }
 
 /* ── Light theme ── */

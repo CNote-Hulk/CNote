@@ -588,6 +588,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (levelRes?.level) {
                 const lvl = AchievementsModule.computeLevel(levelRes);
 
+                // Stats card — level
+                setStat('stat-level', lvl.name);
+                const statLevelEmoji = document.getElementById('stat-level-emoji');
+                if (statLevelEmoji) statLevelEmoji.textContent = lvl.emoji;
+
                 // Home panel: mini preview
                 const homeLevelCard = document.getElementById('home-level-card');
                 if (homeLevelCard) {
@@ -1111,11 +1116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (qsgRes.show) {
                         renderQuickStart(qsgRes);
                     } else {
-                        const existing = document.getElementById('quick-start-guide');
-                        if (existing && !existing.hidden) {
-                            existing.classList.add('qsg-fade-out');
-                            setTimeout(() => { existing.hidden = true; existing.classList.remove('qsg-fade-out'); }, 420);
-                        }
+                        renderQuickStartCompleted(qsgRes);
                     }
                 }
             } catch (qsgErr) {
@@ -1202,22 +1203,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             first_post:        'qsg_task_first_post',
         };
 
-        const tasksHtml = QUICK_START_TASKS.map(task => {
-            const done = data.tasks[task.id] === true;
-            const doneClass = done ? ' qsg-task--done' : '';
-            const label = I18nModule.t(taskLabelKeys[task.id]) || task.label;
-            const btn = (!task.autoComplete && !done && task.modalTitleKey)
-                ? `<button class="qsg-task-btn" data-task="${task.id}">${I18nModule.t('qsg_btn_open')}</button>`
-                : '';
-            return `<div class="qsg-task${doneClass}">
-                <span class="qsg-task-check">${done ? '✓' : ''}</span>
-                <span class="qsg-task-label">${escapeHtml(label)}</span>
-                <span class="qsg-task-xp">+${task.xp} XP</span>
-                ${btn}
-            </div>`;
-        }).join('');
+        const doneTasks = QUICK_START_TASKS.filter(t => data.tasks[t.id] === true);
+        const nextTask  = QUICK_START_TASKS.find(t => data.tasks[t.id] !== true);
+        const doneCount = doneTasks.length;
+        const totalCount = QUICK_START_TASKS.length;
 
         const xpLabel = (I18nModule.t('qsg_xp_progress') || '{xp} / 150 XP').replace('{xp}', data.xp);
+        const counterLabel = `${doneCount} / ${totalCount}`;
+
+        let currentTaskHtml = '';
+        if (nextTask) {
+            const label = I18nModule.t(taskLabelKeys[nextTask.id]);
+            const btn = nextTask.modalTitleKey
+                ? `<button class="qsg-task-btn" data-task="${nextTask.id}">${I18nModule.t('qsg_btn_open')}</button>`
+                : '';
+            currentTaskHtml = `<div class="qsg-task qsg-task--current">
+                <span class="qsg-task-check"></span>
+                <span class="qsg-task-label">${escapeHtml(label)}</span>
+                <span class="qsg-task-xp">+${nextTask.xp} XP</span>
+                ${btn}
+            </div>`;
+        }
 
         section.innerHTML = `
             <div class="qsg-header">
@@ -1226,13 +1232,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <span class="qsg-title">${I18nModule.t('qsg_title')}</span>
                         <span class="qsg-subtitle">${I18nModule.t('qsg_subtitle')}</span>
                     </div>
-                    <span class="qsg-xp-badge">${xpLabel}</span>
+                    <div class="qsg-header-right">
+                        <span class="qsg-counter">${counterLabel}</span>
+                        <span class="qsg-xp-badge">${xpLabel}</span>
+                    </div>
                 </div>
                 <div class="qsg-progress-bar">
                     <div class="qsg-progress-fill" style="width: 0%"></div>
                 </div>
             </div>
-            <div class="qsg-tasks">${tasksHtml}</div>
+            <div class="qsg-tasks">${currentTaskHtml}</div>
         `;
 
         setTimeout(() => {
@@ -1247,22 +1256,86 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (task && task.modalTitleKey) openQsgModal(task);
             });
         });
+
+        // ── Populate progress panel QSG (all tasks) ──
+        renderProgressQsg(data, taskLabelKeys);
+    }
+
+    function renderProgressQsg(data, taskLabelKeys) {
+        const section = document.getElementById('progress-qsg-section');
+        const container = document.getElementById('progress-qsg-tasks');
+        if (!section || !container) return;
+
+        section.hidden = false;
+
+        const allTasksHtml = QUICK_START_TASKS.map(task => {
+            const done = data.tasks[task.id] === true;
+            const doneClass = done ? ' qsg-task--done' : '';
+            const label = I18nModule.t(taskLabelKeys[task.id]);
+            const btn = (!done && task.modalTitleKey)
+                ? `<button class="qsg-task-btn" data-task="${task.id}">${I18nModule.t('qsg_btn_open')}</button>`
+                : '';
+            return `<div class="qsg-task${doneClass}">
+                <span class="qsg-task-check">${done ? '✓' : ''}</span>
+                <span class="qsg-task-label">${escapeHtml(label)}</span>
+                <span class="qsg-task-xp">+${task.xp} XP</span>
+                ${btn}
+            </div>`;
+        }).join('');
+
+        container.innerHTML = `<div class="qsg-tasks">${allTasksHtml}</div>`;
+
+        container.querySelectorAll('.qsg-task-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const taskId = btn.dataset.task;
+                const task = QUICK_START_TASKS.find(t => t.id === taskId);
+                if (task && task.modalTitleKey) openQsgModal(task);
+            });
+        });
+    }
+
+    function renderQuickStartCompleted(data) {
+        // Home card — show completed state, then fade out after 4s
+        const section = document.getElementById('quick-start-guide');
+        if (section) {
+            section.hidden = false;
+            section.innerHTML = `
+                <div class="qsg-completed">
+                    <span class="qsg-completed-icon">🎉</span>
+                    <div>
+                        <span class="qsg-completed-title">${I18nModule.t('qsg_completed_title')}</span>
+                        <span class="qsg-completed-sub">${I18nModule.t('qsg_completed_sub')}</span>
+                    </div>
+                </div>
+            `;
+            setTimeout(() => {
+                section.classList.add('qsg-fade-out');
+                setTimeout(() => { section.hidden = true; section.classList.remove('qsg-fade-out'); }, 500);
+            }, 4000);
+        }
+
+        // Progress panel — always show all tasks as done
+        const taskLabelKeys = {
+            registered:        'qsg_task_registered',
+            profile_complete:  'qsg_task_profile_complete',
+            lesson_complete:   'qsg_task_lesson_complete',
+            console_3:         'qsg_task_console_3',
+            first_favorite:    'qsg_task_first_favorite',
+            first_chat_message:'qsg_task_first_chat',
+            first_post:        'qsg_task_first_post',
+        };
+        renderProgressQsg(data, taskLabelKeys);
     }
 
     async function initQuickStart() {
         const data = await apiFetch('/api/me/quick-start-status');
         if (!data || !data.success) return;
 
-        const existing = document.getElementById('quick-start-guide');
         if (!data.show) {
-            if (existing && !existing.hidden) {
-                existing.classList.add('qsg-fade-out');
-                setTimeout(() => { existing.hidden = true; existing.classList.remove('qsg-fade-out'); }, 420);
-            }
-            return;
+            renderQuickStartCompleted(data);
+        } else {
+            renderQuickStart(data);
         }
-
-        renderQuickStart(data);
     }
 
     window.addEventListener('cn:xp-update', () => initQuickStart());
