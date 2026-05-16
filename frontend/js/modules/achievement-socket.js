@@ -2,9 +2,13 @@ import { AchievementsModule } from './achievements.js';
 
 let socket = null;
 
+function getAuthToken() {
+    return localStorage.getItem('cn_session_token') || localStorage.getItem('cn_token') || '';
+}
+
 export function initAchievementSocket(userId) {
     if (!window.io || !userId) return;
-    const token = localStorage.getItem('cn_session_token') || '';
+    const token = getAuthToken();
     if (!token) return;
 
     if (socket) {
@@ -15,7 +19,7 @@ export function initAchievementSocket(userId) {
     socket = window.io({ reconnectionAttempts: Infinity, reconnectionDelay: 2000 });
 
     socket.emit('register', token);
-    socket.on('connect', () => socket.emit('register', localStorage.getItem('cn_session_token') || ''));
+    socket.on('connect', () => socket.emit('register', getAuthToken()));
 
     socket.on('achievement_unlocked', (payload) => {
         if (payload && Array.isArray(payload.awardedIds)) {

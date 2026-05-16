@@ -13,6 +13,7 @@ const path = require('path');
 const fs = require('fs');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const { awardXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -259,18 +260,30 @@ router.put('/owned-consoles', authRequired, async (req, res) => {
             return res.status(400).json({ success: false, error: 'Format invalid.' });
         }
 
+        // Find which consoles are newly added (not already owned)
+        const existingRes = await pool.query('SELECT console_id FROM user_owned_consoles WHERE user_id = $1', [req.user.id]);
+        const existingIds = new Set(existingRes.rows.map(r => r.console_id));
+
         await pool.query('DELETE FROM user_owned_consoles WHERE user_id = $1', [req.user.id]);
 
+        const newlyAdded = [];
         for (const consoleId of consoles) {
-            if (consoleId && String(consoleId).trim()) {
-                await pool.query(
-                    'INSERT INTO user_owned_consoles (user_id, console_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
-                    [req.user.id, String(consoleId).trim()]
-                );
-            }
+            const id = String(consoleId || '').trim();
+            if (!id) continue;
+            await pool.query(
+                'INSERT INTO user_owned_consoles (user_id, console_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+                [req.user.id, id]
+            );
+            if (!existingIds.has(id)) newlyAdded.push(id);
         }
 
         res.json({ success: true });
+
+        // Award XP for each newly added console (fire-and-forget)
+        const io = req.app.get('io');
+        for (const id of newlyAdded) {
+            awardXP(pool, io, req.user.id, 'console_owned', id).catch(() => {});
+        }
     } catch (err) {
         console.error('Owned consoles PUT error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
