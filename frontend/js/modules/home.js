@@ -1308,10 +1308,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 </div>
             `;
-            setTimeout(() => {
-                section.classList.add('qsg-fade-out');
-                setTimeout(() => { section.hidden = true; section.classList.remove('qsg-fade-out'); }, 500);
-            }, 4000);
         }
 
         // Progress panel — always show all tasks as done
