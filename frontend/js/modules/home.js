@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderSidebar(user);
 
             // parallel fetch
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes] = await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes] = await Promise.all([
                 apiFetch('/api/ratings/user/all'),
                 apiFetch('/api/favorites'),
                 apiFetch('/api/friends'),
@@ -282,6 +282,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/marketplace/listings/mine'),
                 apiFetch('/api/marketplace/favorites'),
                 apiFetch('/api/me/level'),
+                apiFetch('/api/me/quick-start-status'),
             ]);
 
             // =========================
@@ -1145,6 +1146,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
+            // =========================
+            // QUICK START GUIDE
+            // =========================
+            try {
+                if (qsgRes && qsgRes.success) {
+                    if (qsgRes.show) {
+                        renderQuickStart(qsgRes);
+                    } else {
+                        const existing = document.getElementById('quick-start-guide');
+                        if (existing) {
+                            existing.classList.add('qsg-fade-out');
+                            setTimeout(() => existing.remove(), 420);
+                        }
+                    }
+                }
+            } catch (qsgErr) {
+                console.warn('QSG render error:', qsgErr);
+            }
+
         } catch (err) {
             console.error('Dashboard error:', err);
         }
@@ -1281,7 +1301,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderQuickStart(data);
     }
 
-    initQuickStart();
     window.addEventListener('cn:xp-update', () => initQuickStart());
 
 });
