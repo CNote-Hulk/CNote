@@ -106,9 +106,18 @@
                                                 <input type="password" id="reg-password-confirm" name="confirm-password" required autocomplete="new-password" placeholder="Repeat your password" minlength="8" data-i18n="register_placeholder_password_confirm" data-i18n-attr="placeholder">
                                             </div>
                                             <div class="auth-field">
-                                                <label for="reg-birth-date" data-i18n="register.birth_date">Date of birth (optional)</label>
-                                                <input type="date" id="reg-birth-date" name="birth_date" autocomplete="bday">
+                                                <label data-i18n="register.birth_date">Date of birth (optional)</label>
+                                                <div id="reg-birth-date-picker"></div>
+                                                <input type="hidden" id="reg-birth-date" name="birth_date">
                                                 <div id="birth-date-error" class="auth-error" style="display:none;"></div>
+                                            </div>
+                                            <div class="auth-field auth-check-field">
+                                                <input type="checkbox" id="reg-terms">
+                                                <label for="reg-terms" data-i18n="register_terms">I agree to the <a href="terms.html" target="_blank" data-i18n="register_terms_link">Terms &amp; Conditions</a></label>
+                                            </div>
+                                            <div class="auth-field auth-check-field">
+                                                <input type="checkbox" id="reg-privacy">
+                                                <label for="reg-privacy" data-i18n="register_privacy">I accept the <a href="terms.html#privacy" target="_blank" data-i18n="register_privacy_link">Privacy Policy</a></label>
                                             </div>
                                             <button type="submit" class="auth-btn" data-i18n="register_btn">Create account</button>
                                         </form>

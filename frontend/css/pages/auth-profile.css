@@ -3772,7 +3772,17 @@ a.chat-message__username:hover {
     min-height: 100vh;
 }
 
-/* Left-page body scrolls when the form is taller than the fixed book */
+/* Left page scrolls when the register form overflows the fixed book height */
+.auth-page--nb .nb-left {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(130, 90, 20, 0.22) transparent;
+}
+.auth-page--nb .nb-left::-webkit-scrollbar { width: 4px; }
+.auth-page--nb .nb-left::-webkit-scrollbar-track { background: transparent; }
+.auth-page--nb .nb-left::-webkit-scrollbar-thumb { background: rgba(130, 90, 20, 0.25); border-radius: 2px; }
+
 .auth-page--nb .nb-left__body {
     overflow: visible;
     padding-right: 2px;
@@ -3908,6 +3918,126 @@ a.chat-message__username:hover {
     color: rgba(61, 42, 26, 0.6);
     margin: 0 0 1rem;
     line-height: 1.5;
+}
+
+/* Custom date picker inside notebook paper */
+.nb-left__inner .cn-datepicker__trigger {
+    background: rgba(61, 42, 26, 0.06);
+    border-color: rgba(130, 90, 20, 0.22);
+    color: #2a1a0e;
+    font-family: var(--font-sans);
+}
+.nb-left__inner .cn-datepicker__trigger:hover {
+    background: rgba(61, 42, 26, 0.09);
+    border-color: rgba(130, 90, 20, 0.38);
+}
+.nb-left__inner .cn-datepicker__trigger-text--placeholder {
+    color: rgba(61, 42, 26, 0.33);
+}
+.nb-left__inner .cn-datepicker__panel {
+    background: #fdf8f0;
+    border-color: rgba(130, 90, 20, 0.2);
+    box-shadow: 0 12px 40px rgba(20, 10, 2, 0.22);
+}
+.nb-left__inner .cn-datepicker__nav,
+.nb-left__inner .cn-datepicker__month-label {
+    color: rgba(61, 42, 26, 0.7);
+}
+.nb-left__inner .cn-datepicker__nav {
+    background: rgba(61, 42, 26, 0.05);
+    border-color: rgba(130, 90, 20, 0.18);
+}
+.nb-left__inner .cn-datepicker__nav:hover {
+    background: rgba(61, 42, 26, 0.1);
+}
+.nb-left__inner .cn-datepicker__weekday {
+    color: rgba(61, 42, 26, 0.45);
+}
+.nb-left__inner .cn-datepicker__day {
+    color: #2a1a0e;
+}
+.nb-left__inner .cn-datepicker__day--other-month {
+    color: rgba(61, 42, 26, 0.3);
+}
+.nb-left__inner .cn-datepicker__day--today {
+    color: var(--accent-color);
+}
+.nb-left__inner .cn-datepicker__day:hover:not(:disabled) {
+    background: rgba(130, 90, 20, 0.1);
+}
+.nb-left__inner .cn-datepicker__footer {
+    border-top-color: rgba(130, 90, 20, 0.15);
+}
+.nb-left__inner .cn-datepicker__footer-btn {
+    color: rgba(61, 42, 26, 0.5);
+}
+.nb-left__inner .cn-datepicker__footer-btn:hover {
+    color: #2a1a0e;
+    background: rgba(61, 42, 26, 0.06);
+}
+.nb-left__inner .cn-datepicker__year-btn {
+    color: rgba(61, 42, 26, 0.55);
+}
+.nb-left__inner .cn-datepicker__year-btn:hover {
+    color: #2a1a0e;
+    background: rgba(61, 42, 26, 0.07);
+}
+.nb-left__inner .cn-datepicker__year-btn--selected {
+    color: var(--accent-color);
+    background: rgba(130, 90, 20, 0.1);
+    border-color: rgba(130, 90, 20, 0.28);
+}
+
+/* T&C / Privacy checkboxes inside notebook paper */
+.nb-left__inner .auth-check-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-top: 2px;
+}
+.nb-left__inner .auth-check-field input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    border: 1.5px solid rgba(130, 90, 20, 0.35);
+    border-radius: 3px;
+    background: rgba(61, 42, 26, 0.05);
+    cursor: pointer;
+    margin-top: 1px;
+    transition: background 0.15s, border-color 0.15s;
+    position: relative;
+}
+.nb-left__inner .auth-check-field input[type="checkbox"]:checked {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+.nb-left__inner .auth-check-field input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+.nb-left__inner .auth-check-field label {
+    font-size: 0.76rem;
+    color: rgba(61, 42, 26, 0.58);
+    line-height: 1.4;
+    cursor: pointer;
+}
+.nb-left__inner .auth-check-field label a {
+    color: rgba(61, 42, 26, 0.75);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.nb-left__inner .auth-check-field label a:hover {
+    color: #2a1a0e;
 }
 
 /* ═══════════════════════════════════════════

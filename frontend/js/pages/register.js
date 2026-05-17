@@ -6,11 +6,23 @@
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
 import { I18nModule } from '../modules/i18n.js';
+import { createDatePicker } from '../utils/date-picker.js';
 
 // Redirect if already logged in
 if (AuthModule.isLoggedIn()) {
     window.location.href = 'profil.html';
 }
+
+// ─── Custom Date Picker ───────────────────────────
+const birthDateInput = document.getElementById('reg-birth-date');
+const birthDatePickerContainer = document.getElementById('reg-birth-date-picker');
+const today = new Date();
+const maxISO = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+createDatePicker(birthDatePickerContainer, {
+    placeholder: 'Select date of birth',
+    maxDate: maxISO,
+    onChange: (iso) => { birthDateInput.value = iso || ''; }
+});
 
 // ─── Password strength indicator ──────────────────
 const pwdInput = document.getElementById('reg-password');
@@ -79,6 +91,18 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const errorEl = document.getElementById('register-error');
     const successEl = document.getElementById('register-success');
     const submitBtn = e.target.querySelector('button[type="submit"]');
+
+    // ── T&C + Privacy validation ──────────────────────────────────────────
+    if (!document.getElementById('reg-terms').checked) {
+        errorEl.textContent = I18nModule.t('register.error.terms') || 'You must agree to the Terms & Conditions.';
+        errorEl.classList.add('visible');
+        return;
+    }
+    if (!document.getElementById('reg-privacy').checked) {
+        errorEl.textContent = I18nModule.t('register.error.privacy') || 'You must accept the Privacy Policy.';
+        errorEl.classList.add('visible');
+        return;
+    }
 
     // ── Client-side age gate ──────────────────────────────────────────────
     if (birthDateErrorEl) birthDateErrorEl.style.display = 'none';
