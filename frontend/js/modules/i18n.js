@@ -1479,6 +1479,10 @@ const MESSAGES = {
         help_fri_a5: 'Go to <strong>Home → Friends</strong> and select the <strong>Pending</strong> tab. It shows:<ol class="help-steps"><li><span class="help-steps__num">•</span><div><strong>Received requests</strong> — requests sent by others, waiting for your response.</div></li><li><span class="help-steps__num">•</span><div><strong>Sent requests</strong> — requests you sent that are still awaiting a response.</div></li></ol>Received requests also appear in the <strong>notifications panel</strong> with a real-time badge.',
         help_fri_q6: 'Can I view a friend\'s profile and activity?',
         help_fri_a6: 'Yes. Click on the username or avatar of any friend to open their public profile. Depending on their privacy settings, the profile may show:<ol class="help-steps"><li><span class="help-steps__num">•</span><div>Username, avatar, and bio.</div></li><li><span class="help-steps__num">•</span><div>Achievements and level.</div></li><li><span class="help-steps__num">•</span><div>Favourite consoles.</div></li><li><span class="help-steps__num">•</span><div>Progress stats.</div></li><li><span class="help-steps__num">•</span><div>Social links.</div></li></ol>Users can hide stats, the friends list, and social links from <strong>privacy settings</strong>.',
+        footer_terms: 'Terms & Conditions',
+        footer_privacy: 'Privacy Policy',
+        footer_cookies: 'Cookie Policy',
+        footer_community_rules: 'Community Rules',
     },
     ro:{
     // Home page temporary/working messages
@@ -2938,6 +2942,10 @@ const MESSAGES = {
         help_fri_a5: 'Mergi la <strong>Acasă → Prieteni</strong> și selectează tab-ul <strong>În așteptare</strong>. Acesta afișează:<ol class="help-steps"><li><span class="help-steps__num">•</span><div><strong>Cereri primite</strong> — cereri trimise de alții, care așteaptă răspunsul tău.</div></li><li><span class="help-steps__num">•</span><div><strong>Cereri trimise</strong> — cereri trimise de tine care așteaptă încă un răspuns.</div></li></ol>Cererile primite apar și în <strong>panoul de notificări</strong> cu un badge în timp real.',
         help_fri_q6: 'Pot vedea profilul și activitatea unui prieten?',
         help_fri_a6: 'Da. Apasă pe numele de utilizator sau avatarul oricărui prieten pentru a deschide profilul său public. În funcție de setările sale de confidențialitate, profilul poate afișa:<ol class="help-steps"><li><span class="help-steps__num">•</span><div>Nume de utilizator, avatar și bio.</div></li><li><span class="help-steps__num">•</span><div>Realizări și nivel.</div></li><li><span class="help-steps__num">•</span><div>Console favorite.</div></li><li><span class="help-steps__num">•</span><div>Statistici de progres.</div></li><li><span class="help-steps__num">•</span><div>Linkuri sociale.</div></li></ol>Utilizatorii pot ascunde statisticile, lista de prieteni și linkurile sociale din <strong>setările de confidențialitate</strong>.',
+        footer_terms: 'Termeni și Condiții',
+        footer_privacy: 'Politică de Confidențialitate',
+        footer_cookies: 'Politică Cookie',
+        footer_community_rules: 'Regulamentul Comunității',
     },
     es: {
             // Home page temporary/working messages
@@ -4376,6 +4384,10 @@ const MESSAGES = {
         help_fri_a5: 'Ve a <strong>Inicio → Amigos</strong> y selecciona la pestaña <strong>Pendientes</strong>. Muestra:<ol class="help-steps"><li><span class="help-steps__num">•</span><div><strong>Solicitudes recibidas</strong> — solicitudes enviadas por otros, esperando tu respuesta.</div></li><li><span class="help-steps__num">•</span><div><strong>Solicitudes enviadas</strong> — solicitudes que enviaste que aún esperan una respuesta.</div></li></ol>Las solicitudes recibidas también aparecen en el <strong>panel de notificaciones</strong> con un distintivo en tiempo real.',
         help_fri_q6: '¿Puedo ver el perfil y la actividad de un amigo?',
         help_fri_a6: 'Sí. Haz clic en el nombre de usuario o avatar de cualquier amigo para abrir su perfil público. Dependiendo de sus ajustes de privacidad, el perfil puede mostrar:<ol class="help-steps"><li><span class="help-steps__num">•</span><div>Nombre de usuario, avatar y biografía.</div></li><li><span class="help-steps__num">•</span><div>Logros y nivel.</div></li><li><span class="help-steps__num">•</span><div>Consolas favoritas.</div></li><li><span class="help-steps__num">•</span><div>Estadísticas de progreso.</div></li><li><span class="help-steps__num">•</span><div>Enlaces sociales.</div></li></ol>Los usuarios pueden ocultar estadísticas, la lista de amigos y los enlaces sociales desde los <strong>ajustes de privacidad</strong>.',
+        footer_terms: 'Términos y Condiciones',
+        footer_privacy: 'Política de Privacidad',
+        footer_cookies: 'Política de Cookies',
+        footer_community_rules: 'Normas de la Comunidad',
     },
     fr: {
     // Home page temporary/working messages
@@ -5813,6 +5825,10 @@ const MESSAGES = {
         help_fri_a5: 'Allez dans <strong>Accueil → Amis</strong> et sélectionnez l\'onglet <strong>En attente</strong>. Il affiche :<ol class="help-steps"><li><span class="help-steps__num">•</span><div><strong>Demandes reçues</strong> — demandes envoyées par d\'autres, en attente de votre réponse.</div></li><li><span class="help-steps__num">•</span><div><strong>Demandes envoyées</strong> — demandes que vous avez envoyées et qui attendent encore une réponse.</div></li></ol>Les demandes reçues apparaissent également dans le <strong>panneau de notifications</strong> avec un badge en temps réel.',
         help_fri_q6: 'Puis-je voir le profil et l\'activité d\'un ami ?',
         help_fri_a6: 'Oui. Cliquez sur le nom d\'utilisateur ou l\'avatar de n\'importe quel ami pour ouvrir son profil public. Selon ses paramètres de confidentialité, le profil peut afficher :<ol class="help-steps"><li><span class="help-steps__num">•</span><div>Nom d\'utilisateur, avatar et biographie.</div></li><li><span class="help-steps__num">•</span><div>Succès et niveau.</div></li><li><span class="help-steps__num">•</span><div>Consoles favorites.</div></li><li><span class="help-steps__num">•</span><div>Statistiques de progression.</div></li><li><span class="help-steps__num">•</span><div>Liens sociaux.</div></li></ol>Les utilisateurs peuvent masquer les statistiques, la liste d\'amis et les liens sociaux depuis les <strong>paramètres de confidentialité</strong>.',
+        footer_terms: 'Conditions Générales',
+        footer_privacy: 'Politique de Confidentialité',
+        footer_cookies: 'Politique Cookies',
+        footer_community_rules: 'Règlement de la Communauté',
     },
     it: {
             // Home page temporary/working messages
@@ -7254,6 +7270,10 @@ const MESSAGES = {
         help_fri_a5: 'Vai su <strong>Home → Amici</strong> e seleziona la scheda <strong>In attesa</strong>. Mostra:<ol class="help-steps"><li><span class="help-steps__num">•</span><div><strong>Richieste ricevute</strong> — richieste inviate da altri, in attesa della tua risposta.</div></li><li><span class="help-steps__num">•</span><div><strong>Richieste inviate</strong> — richieste che hai inviato che attendono ancora risposta.</div></li></ol>Le richieste ricevute appaiono anche nel <strong>pannello notifiche</strong> con un badge in tempo reale.',
         help_fri_q6: 'Posso vedere il profilo e l\'attività di un amico?',
         help_fri_a6: 'Sì. Clicca sul nome utente o sull\'avatar di qualsiasi amico per aprire il suo profilo pubblico. In base alle sue impostazioni sulla privacy, il profilo può mostrare:<ol class="help-steps"><li><span class="help-steps__num">•</span><div>Nome utente, avatar e biografia.</div></li><li><span class="help-steps__num">•</span><div>Traguardi e livello.</div></li><li><span class="help-steps__num">•</span><div>Console preferite.</div></li><li><span class="help-steps__num">•</span><div>Statistiche di avanzamento.</div></li><li><span class="help-steps__num">•</span><div>Link social.</div></li></ol>Gli utenti possono nascondere statistiche, lista amici e link social dalle <strong>impostazioni sulla privacy</strong>.',
+        footer_terms: 'Termini e Condizioni',
+        footer_privacy: 'Informativa sulla Privacy',
+        footer_cookies: 'Cookie Policy',
+        footer_community_rules: 'Regolamento della Community',
     },
     de: {
             // Home page temporary/working messages
@@ -8684,6 +8704,10 @@ const MESSAGES = {
         help_fri_a5: 'Gehe zu <strong>Startseite → Freunde</strong> und wähle den Tab <strong>Ausstehend</strong>. Er zeigt:<ol class="help-steps"><li><span class="help-steps__num">•</span><div><strong>Empfangene Anfragen</strong> — Anfragen von anderen, die auf deine Antwort warten.</div></li><li><span class="help-steps__num">•</span><div><strong>Gesendete Anfragen</strong> — Anfragen, die du gesendet hast und die noch auf eine Antwort warten.</div></li></ol>Empfangene Anfragen erscheinen auch im <strong>Benachrichtigungs-Panel</strong> mit einem Echtzeit-Badge.',
         help_fri_q6: 'Kann ich das Profil und die Aktivität eines Freundes sehen?',
         help_fri_a6: 'Ja. Klicke auf den Benutzernamen oder Avatar eines beliebigen Freundes, um sein öffentliches Profil zu öffnen. Je nach seinen Datenschutzeinstellungen kann das Profil Folgendes anzeigen:<ol class="help-steps"><li><span class="help-steps__num">•</span><div>Benutzername, Avatar und Biografie.</div></li><li><span class="help-steps__num">•</span><div>Erfolge und Level.</div></li><li><span class="help-steps__num">•</span><div>Lieblingskonsolen.</div></li><li><span class="help-steps__num">•</span><div>Fortschrittsstatistiken.</div></li><li><span class="help-steps__num">•</span><div>Social-Links.</div></li></ol>Nutzer können Statistiken, die Freundesliste und Social-Links über die <strong>Datenschutzeinstellungen</strong> verbergen.',
+        footer_terms: 'AGB',
+        footer_privacy: 'Datenschutzerklärung',
+        footer_cookies: 'Cookie-Richtlinie',
+        footer_community_rules: 'Community-Regeln',
     }
 };
 
