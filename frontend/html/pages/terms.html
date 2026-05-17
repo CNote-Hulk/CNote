@@ -1,11 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
-    <!-- ===========================
-         TERMS AND CONDITIONS PAGE
-         =========================== -->
     <meta charset="UTF-8">
     <script>!function(){var t=localStorage.getItem("cnote-theme");if(t)document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
+    <script>!function(){var l=localStorage.getItem("cnote_lang");if(!l||l==="ro")return;var m={en:"terms-en.html",de:"terms-de.html",es:"terms-es.html",fr:"terms-fr.html",it:"terms-it.html"};if(m[l])location.replace(m[l])}()</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Termeni și Condiții — Console Notebook">
     <meta name="theme-color" content="#1B1714">
@@ -13,108 +11,173 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="canonical" href="https://consolenotebook.com/html/pages/terms.html" />
+    <link rel="alternate" hreflang="ro" href="https://consolenotebook.com/html/pages/terms.html" />
+    <link rel="alternate" hreflang="en" href="https://consolenotebook.com/html/pages/terms-en.html" />
+    <link rel="alternate" hreflang="de" href="https://consolenotebook.com/html/pages/terms-de.html" />
+    <link rel="alternate" hreflang="es" href="https://consolenotebook.com/html/pages/terms-es.html" />
+    <link rel="alternate" hreflang="fr" href="https://consolenotebook.com/html/pages/terms-fr.html" />
+    <link rel="alternate" hreflang="it" href="https://consolenotebook.com/html/pages/terms-it.html" />
+    <link rel="alternate" hreflang="x-default" href="https://consolenotebook.com/html/pages/terms-en.html" />
     <title>Termeni și Condiții — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
 </head>
 <body class="has-mbn">
 
-    <!-- ===========================
-         NAVIGATION BAR
-         =========================== -->
     <div id="navbar-placeholder"></div>
 
-    <!-- ===========================
-         TERMS PAGE
-         =========================== -->
     <main class="terms-page">
         <div class="terms-page__inner container">
 
-            <!-- SIDEBAR -->
             <aside class="terms-sidebar">
                 <div class="terms-sidebar__wrap">
                     <p class="terms-sidebar__label">Cuprins</p>
                     <nav class="terms-sidebar__nav">
                         <a href="#introducere" class="terms-sidebar__link">1. Introducere</a>
-                        <a href="#utilizare" class="terms-sidebar__link">2. Utilizarea platformei</a>
-                        <a href="#conturi" class="terms-sidebar__link">3. Conturi de utilizator</a>
-                        <a href="#marketplace" class="terms-sidebar__link">4. Marketplace</a>
-                        <a href="#continut" class="terms-sidebar__link">5. Conținut utilizator</a>
-                        <a href="#proprietate" class="terms-sidebar__link">6. Proprietate intelectuală</a>
-                        <a href="#raspundere" class="terms-sidebar__link">7. Limitarea răspunderii</a>
-                        <a href="#modificari" class="terms-sidebar__link">8. Modificări</a>
-                        <a href="#contact" class="terms-sidebar__link">9. Contact</a>
-                        <a href="#dsa-raportare" class="terms-sidebar__link">10. Raportare conținut (DSA)</a>
+                        <a href="#identitate" class="terms-sidebar__link">2. Identitatea operatorului</a>
+                        <a href="#descriere" class="terms-sidebar__link">3. Descrierea serviciului</a>
+                        <a href="#varsta" class="terms-sidebar__link">4. Vârstă și capacitate</a>
+                        <a href="#conturi" class="terms-sidebar__link">5. Conturi de utilizator</a>
+                        <a href="#conduita" class="terms-sidebar__link">6. Conduită și conținut interzis</a>
+                        <a href="#ugc" class="terms-sidebar__link">7. Conținut utilizator (UGC)</a>
+                        <a href="#marketplace" class="terms-sidebar__link">8. Marketplace P2P</a>
+                        <a href="#cursuri" class="terms-sidebar__link">9. Cursuri și conținut educațional</a>
+                        <a href="#ip" class="terms-sidebar__link">10. Proprietate intelectuală</a>
+                        <a href="#suspendare" class="terms-sidebar__link">11. Suspendare și terminare</a>
+                        <a href="#raspundere" class="terms-sidebar__link">12. Limitarea răspunderii</a>
+                        <a href="#forta-majora" class="terms-sidebar__link">13. Forța majoră</a>
+                        <a href="#dsa" class="terms-sidebar__link">14. Raportare conținut (DSA)</a>
+                        <a href="#legea" class="terms-sidebar__link">15. Legea aplicabilă și ODR</a>
+                        <a href="#modificari" class="terms-sidebar__link">16. Modificări</a>
+                        <a href="#diverse" class="terms-sidebar__link">17. Clauze finale</a>
+                        <a href="#contact" class="terms-sidebar__link">18. Contact</a>
                     </nav>
                 </div>
             </aside>
 
-            <!-- CONTENT -->
             <article class="terms-content">
                 <header class="terms-content__header">
                     <h1 class="terms-content__title">Termeni și Condiții</h1>
-                    <p class="terms-content__meta">Ultima actualizare: Aprilie 2026 &nbsp;·&nbsp; consolenotebook.com</p>
+                    <p class="terms-content__meta">Ultima actualizare: Mai 2026 &nbsp;·&nbsp; consolenotebook.com</p>
                 </header>
 
                 <section id="introducere" class="terms-section">
                     <h2 class="terms-section__heading">1. Introducere</h2>
-                    <p class="terms-section__body">Console Notebook (<a href="https://consolenotebook.com" class="terms-link">consolenotebook.com</a>) este o platformă web dedicată culturii consolelor de jocuri video, oferind enciclopedie, cursuri, marketplace, forum și funcționalități comunitare. Prin utilizarea platformei, ești de acord cu acești termeni.</p>
+                    <p class="terms-section__body">Prezentul document („Termeni”) reglementează accesul și utilizarea platformei <a href="https://consolenotebook.com" class="terms-link">consolenotebook.com</a> și a tuturor serviciilor asociate („Platforma”, „Serviciul”). Prin accesarea, înregistrarea sau utilizarea Platformei, declari că ai citit, înțeles și accepți integral acești Termeni, precum și <a href="privacy.html" class="terms-link">Politica de Confidențialitate</a>, <a href="cookies.html" class="terms-link">Politica Cookie</a> și <a href="community-rules.html" class="terms-link">Regulamentul Comunității</a>, care fac parte integrantă din acest acord.</p>
+                    <p class="terms-section__body">Dacă nu ești de acord cu oricare dintre aceste prevederi, te rugăm să nu utilizezi Platforma.</p>
                 </section>
 
-                <section id="utilizare" class="terms-section">
-                    <h2 class="terms-section__heading">2. Utilizarea platformei</h2>
-                    <p class="terms-section__body">Platforma este destinată utilizatorilor cu vârsta de minimum 13 ani. Te angajezi să folosești platforma în mod responsabil, fără a deranja alți utilizatori, fără a posta conținut ofensator, ilegal sau înșelător pe forum sau în chat.</p>
+                <section id="identitate" class="terms-section">
+                    <h2 class="terms-section__heading">2. Identitatea operatorului</h2>
+                    <p class="terms-section__body">Platforma este operată de <strong>Andrei Halcu</strong>, persoană fizică („Operatorul”, „noi”), cu jurisdicția în România.</p>
+                    <p class="terms-section__body">Date de contact:</p>
+                    <p class="terms-section__body">— Email: <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a><br>— Telefon: +40 758 464 907<br>— Formular contact: <a href="help.html#contact" class="terms-link">help.html#contact</a></p>
+                </section>
+
+                <section id="descriere" class="terms-section">
+                    <h2 class="terms-section__heading">3. Descrierea serviciului</h2>
+                    <p class="terms-section__body">Console Notebook este o platformă comunitară dedicată consolelor de jocuri video, care include: enciclopedie de console, sistem de comparare, cursuri educaționale despre hardware și reparații, forum tematic, chat în timp real, sistem de mesaje private, secțiune marketplace pentru anunțuri între utilizatori, cereri de reparații, sistem de prietenii, profile publice, evaluări (rating-uri) și sistem de progres/gamificare.</p>
+                    <p class="terms-section__body">Serviciul este oferit gratuit, fără abonament. Operatorul își rezervă dreptul de a introduce, modifica sau elimina funcționalități în orice moment.</p>
+                </section>
+
+                <section id="varsta" class="terms-section">
+                    <h2 class="terms-section__heading">4. Vârstă și capacitate</h2>
+                    <p class="terms-section__body">Platforma este destinată utilizatorilor cu vârsta de cel puțin <strong>16 ani</strong>, în conformitate cu art. 8 din Regulamentul (UE) 2016/679 (GDPR) și art. 8 din Legea nr. 190/2018. Prin crearea unui cont, declari că ai cel puțin 16 ani și că ai capacitatea legală de a încheia acest acord.</p>
+                    <p class="terms-section__body">Dacă luăm cunoștință că un utilizator are sub 16 ani, contul va fi suspendat, iar datele asociate vor fi șterse în condițiile prevăzute de lege.</p>
                 </section>
 
                 <section id="conturi" class="terms-section">
-                    <h2 class="terms-section__heading">3. Conturi de utilizator</h2>
-                    <p class="terms-section__body">Ești responsabil pentru securitatea contului tău și pentru toate activitățile desfășurate prin acesta. Console Notebook își rezervă dreptul de a suspenda sau șterge orice cont care încalcă acești termeni.</p>
+                    <h2 class="terms-section__heading">5. Conturi de utilizator</h2>
+                    <p class="terms-section__body">Pentru a accesa funcționalitățile complete ale Platformei, este necesară crearea unui cont, prin email și parolă sau prin autentificare Google OAuth. Te angajezi:</p>
+                    <p class="terms-section__body">— să furnizezi informații exacte, actuale și complete;<br>— să păstrezi confidențialitatea parolei și a tokenurilor de sesiune;<br>— să ne notifici imediat orice utilizare neautorizată a contului tău;<br>— să nu creezi conturi multiple cu scopul de a eluda sancțiuni sau a manipula sistemul de rating/progres;<br>— să nu cesionezi contul către terți.</p>
+                    <p class="terms-section__body">Ești singurul responsabil pentru toate activitățile desfășurate prin contul tău.</p>
+                </section>
+
+                <section id="conduita" class="terms-section">
+                    <h2 class="terms-section__heading">6. Conduită și conținut interzis</h2>
+                    <p class="terms-section__body">Pe Platformă este interzis:</p>
+                    <p class="terms-section__body">— conținutul ilegal, defăimător, calomnios, obscen, pornografic, violent sau care incită la ură ori discriminare;<br>— conținutul care încalcă drepturi de autor, mărci sau alte drepturi ale terților;<br>— spam, mesaje comerciale neautorizate, scheme piramidale sau publicitate înșelătoare;<br>— vânzarea sau promovarea de produse contrafăcute, ilegale, periculoase sau interzise prin lege;<br>— accesarea neautorizată a sistemelor noastre, încercări de exploatare a vulnerabilităților, atacuri DDoS, scraping automat masiv, reverse engineering;<br>— uzurparea identității altei persoane sau entități;<br>— orice acțiune care perturbă funcționarea Platformei sau experiența celorlalți utilizatori.</p>
+                    <p class="terms-section__body">Detalii suplimentare despre conduită sunt prevăzute în <a href="community-rules.html" class="terms-link">Regulamentul Comunității</a>.</p>
+                </section>
+
+                <section id="ugc" class="terms-section">
+                    <h2 class="terms-section__heading">7. Conținut utilizator (UGC)</h2>
+                    <p class="terms-section__body">Conținutul pe care îl postezi (mesaje în chat, postări în forum, anunțuri în marketplace, evaluări, fotografii profil, bio, conținut în cereri de reparații) rămâne proprietatea ta. Prin postare, acorzi Operatorului o licență neexclusivă, gratuită, transferabilă, valabilă la nivel mondial, pe durata existenței contului, de a stoca, reproduce, afișa, traduce, adapta și distribui acel conținut exclusiv în vederea funcționării și promovării Platformei.</p>
+                    <p class="terms-section__body">Garantezi că deții toate drepturile asupra conținutului postat și că publicarea acestuia nu încalcă drepturi ale terților. Răspunzi integral pentru conținutul tău.</p>
+                    <p class="terms-section__body">Operatorul își rezervă dreptul de a elimina, edita sau ascunde orice conținut care încalcă acești Termeni sau Regulamentul Comunității, fără notificare prealabilă în cazuri grave.</p>
                 </section>
 
                 <section id="marketplace" class="terms-section">
-                    <h2 class="terms-section__heading">4. Marketplace</h2>
-                    <p class="terms-section__body">Tranzacțiile din marketplace se desfășoară direct între utilizatori. Console Notebook nu este parte în nicio tranzacție și nu își asumă responsabilitatea pentru produsele listate, plăți sau livrări. Utilizatorii sunt responsabili pentru acuratețea anunțurilor postate.</p>
+                    <h2 class="terms-section__heading">8. Marketplace P2P</h2>
+                    <p class="terms-section__body">Secțiunea Marketplace permite utilizatorilor să publice anunțuri de vânzare/cumpărare între persoane (peer-to-peer). Operatorul oferă doar infrastructura tehnică pentru intermediere informațională și <strong>nu este parte</strong> în tranzacțiile dintre utilizatori. Nu garantăm acuratețea anunțurilor, calitatea produselor, identitatea sau bonitatea părților.</p>
+                    <p class="terms-section__body">Plățile, livrările, garanțiile, restituirile și orice litigii rezultate din tranzacții se gestionează exclusiv între utilizatori. Sunteți responsabili pentru respectarea legislației aplicabile (TVA, drepturi consumator, vânzare bunuri etc.).</p>
+                    <p class="terms-section__body">Marketplace-ul include și anunțuri integrate din surse externe (eBay, OLX) afișate cu titlu informativ; nu controlăm conținutul acestora.</p>
                 </section>
 
-                <section id="continut" class="terms-section">
-                    <h2 class="terms-section__heading">5. Conținut utilizator</h2>
-                    <p class="terms-section__body">Conținutul postat pe platformă (mesaje, anunțuri, postări forum) rămâne proprietatea utilizatorului. Prin postare, acorzi Console Notebook dreptul neexclusiv de a afișa acel conținut în cadrul platformei. Console Notebook poate șterge orice conținut care încalcă regulile comunității.</p>
+                <section id="cursuri" class="terms-section">
+                    <h2 class="terms-section__heading">9. Cursuri și conținut educațional</h2>
+                    <p class="terms-section__body">Cursurile și lecțiile (inclusiv reparații hardware) sunt furnizate exclusiv în scop educațional și informativ. Operatorul nu garantează rezultate specifice și nu își asumă responsabilitatea pentru aplicarea practică a informațiilor.</p>
+                    <p class="terms-section__body"><strong>Avertisment:</strong> intervențiile asupra consolelor de jocuri pot implica riscuri de electrocuție, deteriorare ireversibilă, pierdere de date sau anularea garanției producătorului. Intervențiile se realizează pe propria răspundere.</p>
                 </section>
 
-                <section id="proprietate" class="terms-section">
-                    <h2 class="terms-section__heading">6. Proprietate intelectuală</h2>
-                    <p class="terms-section__body">Conținutul editorial al platformei (texte despre console, cursuri, design) este proprietatea Console Notebook și nu poate fi reprodus fără acord scris.</p>
+                <section id="ip" class="terms-section">
+                    <h2 class="terms-section__heading">10. Proprietate intelectuală</h2>
+                    <p class="terms-section__body">Toate elementele Platformei (design, cod, texte editoriale, structura cursurilor, baza de date a consolelor, logo, denumirile „Console Notebook” și „Cnote Bakery”) sunt proprietatea Operatorului sau a licențiatorilor săi și sunt protejate de legea drepturilor de autor și a mărcilor.</p>
+                    <p class="terms-section__body">Reproducerea, distribuirea sau modificarea fără acord scris este interzisă. Denumirile de console, mărcile comerciale (PlayStation, Xbox, Nintendo, Sega etc.) și imaginile aferente sunt proprietatea respectivilor titulari și sunt folosite în temeiul utilizării legitime/citării pentru scop educațional.</p>
+                </section>
+
+                <section id="suspendare" class="terms-section">
+                    <h2 class="terms-section__heading">11. Suspendare și terminare</h2>
+                    <p class="terms-section__body">Operatorul poate suspenda sau șterge orice cont, fără preaviz, în cazul încălcării Termenilor, Regulamentului Comunității sau a legii aplicabile. Pentru încălcări minore, vom emite avertismente.</p>
+                    <p class="terms-section__body">Poți să-ți ștergi contul oricând din setări sau prin solicitare la <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a>. Ștergerea contului determină eliminarea datelor personale conform Politicii de Confidențialitate.</p>
                 </section>
 
                 <section id="raspundere" class="terms-section">
-                    <h2 class="terms-section__heading">7. Limitarea răspunderii</h2>
-                    <p class="terms-section__body">Platforma este oferită "ca atare", fără garanții de disponibilitate continuă. Console Notebook nu este responsabil pentru pierderi de date, întreruperi de serviciu sau daune rezultate din utilizarea platformei.</p>
+                    <h2 class="terms-section__heading">12. Limitarea răspunderii</h2>
+                    <p class="terms-section__body">Platforma este oferită „ca atare” și „cum este disponibilă”, fără garanții exprese sau implicite privind disponibilitatea continuă, lipsa erorilor, acuratețea conținutului sau adecvarea pentru un anumit scop.</p>
+                    <p class="terms-section__body">În limita maximă permisă de lege, Operatorul nu răspunde pentru: pierderea de date, întreruperi de serviciu, daune indirecte, pierderi de profit, oportunități comerciale ratate sau prejudicii rezultate din utilizarea Platformei. Răspunderea totală cumulată, oricare ar fi cauza, nu va depăși echivalentul a 50 EUR.</p>
+                    <p class="terms-section__body">Aceste limitări nu se aplică în cazul dolului, culpei grave sau în orice altă situație în care legea aplicabilă interzice limitarea răspunderii (inclusiv față de consumatori conform OUG 34/2014).</p>
+                </section>
+
+                <section id="forta-majora" class="terms-section">
+                    <h2 class="terms-section__heading">13. Forța majoră</h2>
+                    <p class="terms-section__body">Operatorul nu răspunde pentru neexecutarea sau executarea cu întârziere a obligațiilor în caz de forță majoră sau caz fortuit, inclusiv (fără limitare): atacuri cibernetice, întreruperi ale furnizorilor terți (Supabase, Railway, Google), pene de internet, cataclisme naturale, conflicte sau acte ale autorităților.</p>
+                </section>
+
+                <section id="dsa" class="terms-section">
+                    <h2 class="terms-section__heading">14. Raportarea conținutului ilegal (DSA Art. 16)</h2>
+                    <p class="terms-section__body">În conformitate cu Regulamentul (UE) 2022/2065 privind Serviciile Digitale (DSA), orice utilizator sau terț poate raporta conținut ilegal prin butonul ⚑ <em>Raportează</em> disponibil pe fiecare postare, anunț, profil sau mesaj public. Sesizarea trebuie să cuprindă: justificarea ilegalității, URL-ul exact, datele de contact ale notificatorului și o declarație de bună-credință.</p>
+                    <p class="terms-section__body">Rapoartele sunt analizate de echipa de moderare în mod nediscriminatoriu, obiectiv și cu diligență. Vei primi confirmarea primirii și informații privind decizia luată, cu o motivare clară.</p>
+                    <p class="terms-section__body">Dacă conținutul tău a fost eliminat sau contul tău a fost restricționat, poți contesta decizia în termen de 6 luni printr-o cerere motivată trimisă la <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a>. Decizia finală îți va fi comunicată în maximum 14 zile.</p>
+                    <p class="terms-section__body"><strong>Punctul unic de contact</strong> pentru utilizatori și autorități (DSA Art. 11–12): <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a> (limbi: română, engleză).</p>
+                </section>
+
+                <section id="legea" class="terms-section">
+                    <h2 class="terms-section__heading">15. Legea aplicabilă și soluționarea litigiilor</h2>
+                    <p class="terms-section__body">Acești Termeni sunt guvernați de legea română. Pentru utilizatorii consumatori cu reședința în alte state membre UE, se aplică dispozițiile imperative mai favorabile din legea reședinței obișnuite.</p>
+                    <p class="terms-section__body">Orice litigiu va fi soluționat pe cale amiabilă. În caz contrar, instanțele competente sunt cele din România. Consumatorii pot apela și la platforma europeană de soluționare online a litigiilor (ODR): <a href="https://ec.europa.eu/consumers/odr" class="terms-link" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
                 </section>
 
                 <section id="modificari" class="terms-section">
-                    <h2 class="terms-section__heading">8. Modificări</h2>
-                    <p class="terms-section__body">Console Notebook își rezervă dreptul de a modifica acești termeni oricând. Utilizatorii vor fi notificați prin email sau prin anunț pe platformă. Ultima actualizare: Aprilie 2026.</p>
+                    <h2 class="terms-section__heading">16. Modificări</h2>
+                    <p class="terms-section__body">Putem actualiza Termenii oricând. Modificările substanțiale vor fi notificate prin email și/sau printr-un anunț vizibil pe Platformă, cu cel puțin 15 zile înainte de intrarea în vigoare. Continuarea utilizării după această dată echivalează cu acceptarea noii versiuni.</p>
+                </section>
+
+                <section id="diverse" class="terms-section">
+                    <h2 class="terms-section__heading">17. Clauze finale</h2>
+                    <p class="terms-section__body">Dacă oricare clauză din acești Termeni este declarată nulă, celelalte rămân în vigoare. Toleranța Operatorului față de o încălcare nu echivalează cu renunțarea la dreptul de a invoca aceeași încălcare ulterior. Termenii reprezintă acordul integral între părți cu privire la utilizarea Platformei.</p>
                 </section>
 
                 <section id="contact" class="terms-section">
-                    <h2 class="terms-section__heading">9. Contact</h2>
-                    <p class="terms-section__body">Pentru întrebări legate de acești termeni, ne poți contacta la: <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a> sau prin <a href="help.html#contact" class="terms-link">pagina de Contact</a> a platformei.</p>
-                </section>
-
-                <section id="dsa-raportare" class="terms-section">
-                    <h2 class="terms-section__heading">10. Raportarea conținutului ilegal (DSA Art. 16)</h2>
-                    <p class="terms-section__body">Conform Regulamentului UE privind Serviciile Digitale (DSA), utilizatorii pot raporta conținut ilegal prin butonul ⚑ Raportează disponibil pe fiecare postare, anunț sau profil. Rapoartele sunt analizate de echipa de moderare. Vei fi notificat cu privire la decizia luată. Dacă conținutul tău a fost eliminat, poți contesta decizia prin email la <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a>.</p>
+                    <h2 class="terms-section__heading">18. Contact</h2>
+                    <p class="terms-section__body">Pentru întrebări legate de acești Termeni: <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a> sau prin <a href="help.html#contact" class="terms-link">pagina de Contact</a>.</p>
                 </section>
             </article>
 
         </div>
     </main>
 
-    <!-- ===========================
-         FOOTER
-         =========================== -->
     <div id="footer-placeholder"></div>
 
-    <!-- Scripts -->
     <script type="module" src="../../js/main.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
     <script>
@@ -137,7 +200,6 @@
     </script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
-    <!-- Mobile bottom navigation -->
     <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
         <div class="mbn-dropdown" id="mbn-dropdown">
             <a href="#" class="mbn-dd-item" id="mbn-notif-link">

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>!function(){var t=localStorage.getItem("cnote-theme");if(t)document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
+    <script>!function(){var l=localStorage.getItem("cnote_lang");if(!l||l==="en")return;var m={ro:"privacy.html",de:"privacy-de.html",es:"privacy-es.html",fr:"privacy-fr.html",it:"privacy-it.html"};if(m[l])location.replace(m[l])}()</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Privacy Policy — Console Notebook">
+    <meta name="theme-color" content="#1B1714">
+    <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://consolenotebook.com/html/pages/privacy-en.html" />
+    <link rel="alternate" hreflang="ro" href="https://consolenotebook.com/html/pages/privacy.html" />
+    <link rel="alternate" hreflang="en" href="https://consolenotebook.com/html/pages/privacy-en.html" />
+    <link rel="alternate" hreflang="de" href="https://consolenotebook.com/html/pages/privacy-de.html" />
+    <link rel="alternate" hreflang="es" href="https://consolenotebook.com/html/pages/privacy-es.html" />
+    <link rel="alternate" hreflang="fr" href="https://consolenotebook.com/html/pages/privacy-fr.html" />
+    <link rel="alternate" hreflang="it" href="https://consolenotebook.com/html/pages/privacy-it.html" />
+    <link rel="alternate" hreflang="x-default" href="https://consolenotebook.com/html/pages/privacy-en.html" />
+    <title>Privacy Policy — Console Notebook</title>
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body class="has-mbn">
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="terms-page">
+        <div class="terms-page__inner container">
+
+            <aside class="terms-sidebar">
+                <div class="terms-sidebar__wrap">
+                    <p class="terms-sidebar__label">Contents</p>
+                    <nav class="terms-sidebar__nav">
+                        <a href="#intro" class="terms-sidebar__link">1. Introduction</a>
+                        <a href="#controller" class="terms-sidebar__link">2. Data controller</a>
+                        <a href="#data" class="terms-sidebar__link">3. Data we collect</a>
+                        <a href="#purposes" class="terms-sidebar__link">4. Purposes and legal bases</a>
+                        <a href="#recipients" class="terms-sidebar__link">5. Recipients and processors</a>
+                        <a href="#transfer" class="terms-sidebar__link">6. International transfers</a>
+                        <a href="#retention" class="terms-sidebar__link">7. Retention</a>
+                        <a href="#security" class="terms-sidebar__link">8. Security</a>
+                        <a href="#rights" class="terms-sidebar__link">9. Your rights</a>
+                        <a href="#minors" class="terms-sidebar__link">10. Minors</a>
+                        <a href="#profiling" class="terms-sidebar__link">11. Automated decisions</a>
+                        <a href="#cookies" class="terms-sidebar__link">12. Cookies</a>
+                        <a href="#changes" class="terms-sidebar__link">13. Changes</a>
+                        <a href="#contact" class="terms-sidebar__link">14. Contact</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <article class="terms-content">
+                <header class="terms-content__header">
+                    <h1 class="terms-content__title">Privacy Policy</h1>
+                    <p class="terms-content__meta">Last updated: May 2026 &nbsp;·&nbsp; consolenotebook.com</p>
+                </header>
+
+                <section id="intro" class="terms-section">
+                    <h2 class="terms-section__heading">1. Introduction</h2>
+                    <p class="terms-section__body">This Privacy Policy explains how Console Notebook ("Platform") collects, uses and protects your personal data, in accordance with Regulation (EU) 2016/679 (GDPR), Romanian Law no. 190/2018 and applicable national law.</p>
+                </section>
+
+                <section id="controller" class="terms-section">
+                    <h2 class="terms-section__heading">2. Data controller</h2>
+                    <p class="terms-section__body"><strong>Andrei Halcu</strong>, natural person, jurisdiction Romania, is the controller of your personal data.</p>
+                    <p class="terms-section__body">Contact: <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a> · +40 758 464 907</p>
+                    <p class="terms-section__body">No Data Protection Officer (DPO) has been appointed as the criteria of GDPR Art. 37 are not met. For any data-related request, please use the email above.</p>
+                </section>
+
+                <section id="data" class="terms-section">
+                    <h2 class="terms-section__heading">3. Data we collect</h2>
+                    <p class="terms-section__body"><strong>a) Account identification data:</strong> username, email address, password (stored only as a bcrypt hash), avatar, bio.</p>
+                    <p class="terms-section__body"><strong>b) Authentication data:</strong> JWT tokens, session ID, refresh token, IP at login, user-agent, timestamp.</p>
+                    <p class="terms-section__body"><strong>c) Google OAuth data (optional):</strong> if you choose Google sign-in — Google ID, email, name, profile picture.</p>
+                    <p class="terms-section__body"><strong>d) User-generated content:</strong> forum posts, chat messages, direct messages, marketplace listings, repair requests, ratings, favourite/owned console lists, achievements, course/lesson progress.</p>
+                    <p class="terms-section__body"><strong>e) Relational data:</strong> friend list, blocks, reports sent/received.</p>
+                    <p class="terms-section__body"><strong>f) Technical data:</strong> IP address, user-agent, request timestamps, server logs (Railway), error logs (Sentry).</p>
+                    <p class="terms-section__body"><strong>g) Communication data:</strong> messages sent via the contact form and email.</p>
+                    <p class="terms-section__body"><strong>h) Analytics data (optional, with consent only):</strong> Google Analytics 4 collects pseudonymised data about visited pages, session duration, traffic source, device, country.</p>
+                </section>
+
+                <section id="purposes" class="terms-section">
+                    <h2 class="terms-section__heading">4. Purposes and legal bases</h2>
+                    <p class="terms-section__body"><strong>— Service delivery</strong> (account creation, authentication, profile, UGC, marketplace, chat, forum, courses, gamification). Basis: <em>Art. 6(1)(b) GDPR — performance of the contract</em> represented by the Terms.</p>
+                    <p class="terms-section__body"><strong>— Security, fraud prevention, technical logs, DSA mechanism.</strong> Basis: <em>Art. 6(1)(f) — legitimate interest</em> to maintain the integrity of the Platform.</p>
+                    <p class="terms-section__body"><strong>— Transactional emails</strong> (account verification, password reset, critical account notifications). Basis: <em>Art. 6(1)(b)</em>.</p>
+                    <p class="terms-section__body"><strong>— In-app notifications</strong> (forum replies, incoming messages, achievements). Basis: <em>Art. 6(1)(b)</em> or your notification preferences.</p>
+                    <p class="terms-section__body"><strong>— Site analytics (GA4) and embedded YouTube videos.</strong> Basis: <em>Art. 6(1)(a) — consent</em>, given via the cookie banner.</p>
+                    <p class="terms-section__body"><strong>— Compliance with legal obligations</strong> (log retention for authority requests, DSA, GDPR). Basis: <em>Art. 6(1)(c) — legal obligation</em>.</p>
+                </section>
+
+                <section id="recipients" class="terms-section">
+                    <h2 class="terms-section__heading">5. Recipients and processors</h2>
+                    <p class="terms-section__body">Your data may be accessed or processed by the following processors (under Art. 28 GDPR DPAs):</p>
+                    <p class="terms-section__body">— <strong>Supabase Inc.</strong> — PostgreSQL database hosting (EU servers). <a href="https://supabase.com/privacy" class="terms-link" target="_blank" rel="noopener">supabase.com/privacy</a></p>
+                    <p class="terms-section__body">— <strong>Railway Corp.</strong> — Node.js app hosting. <a href="https://railway.app/legal/privacy" class="terms-link" target="_blank" rel="noopener">railway.app/legal/privacy</a></p>
+                    <p class="terms-section__body">— <strong>Google LLC</strong> — Google OAuth (login), Google Analytics (opt-in), Gmail (transactional email), YouTube (opt-in video embed). <a href="https://policies.google.com/privacy" class="terms-link" target="_blank" rel="noopener">policies.google.com/privacy</a></p>
+                    <p class="terms-section__body">— <strong>Functional Software Inc. (Sentry)</strong> — frontend and backend error telemetry. <a href="https://sentry.io/privacy/" class="terms-link" target="_blank" rel="noopener">sentry.io/privacy</a></p>
+                    <p class="terms-section__body">— <strong>eBay Inc.</strong> — public listings data via API (marketplace integration, read-only). <a href="https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy" class="terms-link" target="_blank" rel="noopener">eBay Privacy</a></p>
+                    <p class="terms-section__body">— <strong>Cloudflare Inc.</strong> (socket.io CDN, fonts.googleapis.com) — static resource delivery.</p>
+                    <p class="terms-section__body">Data <strong>is not sold, rented or transferred</strong> to third parties for commercial or marketing purposes.</p>
+                    <p class="terms-section__body">Data may be disclosed to public authorities only upon formal legal request (court order, DSA Art. 9 request, etc.).</p>
+                </section>
+
+                <section id="transfer" class="terms-section">
+                    <h2 class="terms-section__heading">6. International transfers</h2>
+                    <p class="terms-section__body">Some processors (Google, Sentry, Railway) may transfer data outside the European Economic Area (EEA), notably to the US. Such transfers rely on:</p>
+                    <p class="terms-section__body">— EU-US "Data Privacy Framework" adequacy decision;<br>— Standard Contractual Clauses (SCC) adopted by the European Commission;<br>— Additional technical measures (encryption at rest and in transit).</p>
+                </section>
+
+                <section id="retention" class="terms-section">
+                    <h2 class="terms-section__heading">7. Retention</h2>
+                    <p class="terms-section__body">— <strong>Active account data:</strong> for the lifetime of the account.<br>— <strong>After account deletion:</strong> personal data is deleted within 30 days. Forum/chat messages may be anonymised (username replaced with "[deleted]") to preserve conversation coherence.<br>— <strong>Technical and security logs:</strong> 90 days.<br>— <strong>DSA and moderation reports:</strong> 6 months from the final decision (DSA Art. 17).<br>— <strong>GA4 analytics data:</strong> Google's default settings (max. 14 months, pseudonymised).<br>— <strong>Accounting/legal records</strong> (if transactions occur): 10 years per the Romanian Fiscal Code.</p>
+                </section>
+
+                <section id="security" class="terms-section">
+                    <h2 class="terms-section__heading">8. Security</h2>
+                    <p class="terms-section__body">We apply appropriate technical and organisational measures: HTTPS/TLS encryption, bcrypt password hashing, signed JWTs, Helmet HTTP headers, rate-limiting, strict CORS, Sentry for early error detection, automated database backups, least-privilege access control.</p>
+                    <p class="terms-section__body">In the event of a breach posing risk to your rights, we will notify ANSPDCP within 72 hours and inform you directly under Art. 33–34 GDPR.</p>
+                </section>
+
+                <section id="rights" class="terms-section">
+                    <h2 class="terms-section__heading">9. Your rights (Art. 15–22 GDPR)</h2>
+                    <p class="terms-section__body">— <strong>Access</strong> to your data and a copy thereof;<br>— <strong>Rectification</strong> of inaccurate or incomplete data;<br>— <strong>Erasure</strong> ("right to be forgotten") — from settings or by email;<br>— <strong>Restriction</strong> of processing in legally defined cases;<br>— <strong>Portability</strong> — export your data in a structured format (JSON);<br>— <strong>Objection</strong> to processing based on legitimate interest;<br>— <strong>Consent withdrawal</strong> at any time (cookie settings or email), without affecting prior lawful processing;<br>— <strong>Complaint</strong> to <strong>ANSPDCP</strong> (Romanian Data Protection Authority), B-dul G-ral. Gheorghe Magheru 28-30, Bucharest, <a href="https://www.dataprotection.ro" class="terms-link" target="_blank" rel="noopener">dataprotection.ro</a>. EU residents may also lodge complaints with their local supervisory authority.</p>
+                    <p class="terms-section__body">To exercise rights: <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a>. We respond within 30 days (extendable by 60 days in complex cases).</p>
+                </section>
+
+                <section id="minors" class="terms-section">
+                    <h2 class="terms-section__heading">10. Minors</h2>
+                    <p class="terms-section__body">The Platform is intended for users aged 16 or above. We do not knowingly collect data from individuals under that age. If we become aware of, or are notified about, a minor's account, the account will be suspended and the data deleted.</p>
+                </section>
+
+                <section id="profiling" class="terms-section">
+                    <h2 class="terms-section__heading">11. Automated decisions and profiling</h2>
+                    <p class="terms-section__body">We do not use automated decision-making producing legal effects on you (Art. 22 GDPR). The gamification system (XP, achievements, levels) is purely algorithmic and based solely on your visible Platform activity.</p>
+                </section>
+
+                <section id="cookies" class="terms-section">
+                    <h2 class="terms-section__heading">12. Cookies</h2>
+                    <p class="terms-section__body">For details on cookies and similar technologies used, see the <a href="cookies-en.html" class="terms-link">Cookie Policy</a>.</p>
+                </section>
+
+                <section id="changes" class="terms-section">
+                    <h2 class="terms-section__heading">13. Changes</h2>
+                    <p class="terms-section__body">We may update this Policy. Substantial changes will be notified by email and/or a visible banner on the Platform, at least 15 days before taking effect. The last-updated date appears at the top of this document.</p>
+                </section>
+
+                <section id="contact" class="terms-section">
+                    <h2 class="terms-section__heading">14. Contact</h2>
+                    <p class="terms-section__body">Questions or requests about personal data: <a href="mailto:console.notebook.app@gmail.com" class="terms-link">console.notebook.app@gmail.com</a> or the <a href="help.html#contact" class="terms-link">Contact page</a>.</p>
+                </section>
+            </article>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script type="module" src="../../js/main.js"></script>
+    <script src="../../js/fallback/search-profile.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+        <div class="mbn-dropdown" id="mbn-dropdown">
+            <a href="#" class="mbn-dd-item" id="mbn-notif-link">
+                <span class="mbn-dd-icon">🔔</span>
+                <span data-i18n="nav_notifications">Notifications</span>
+                <span class="mbn-notif-badge-dd" id="mbn-notif-badge-dd" style="display:none"></span>
+            </a>
+            <a href="statistici.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">📊</span>
+                <span data-i18n="sidebar_stats">Statistics</span>
+            </a>
+            <div class="mbn-dd-sep"></div>
+            <a href="/html/pages/community.html#repair-requests" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🔧</span>
+                <span data-i18n="sidebar_repair">Repair</span>
+            </a>
+            <a href="/html/pages/community.html#marketplace" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🛒</span>
+                <span data-i18n="sidebar_marketplace">Marketplace</span>
+            </a>
+            <a href="comparatie.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">⚔️</span>
+                <span data-i18n="sidebar_compare">Compare</span>
+            </a>
+        </div>
+
+        <a href="home.html" class="mbn-item" data-mbn-page="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-i18n="sidebar_home">Home</span>
+        </a>
+        <a href="evolutie.html" class="mbn-item" data-mbn-page="evolutie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+            <span data-i18n="sidebar_consoles">Consoles</span>
+        </a>
+        <a href="community-welcome-page.html" class="mbn-item" data-mbn-page="community">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span data-i18n="sidebar_community">Community</span>
+        </a>
+        <a href="help.html" class="mbn-item" data-mbn-page="help">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="nav_help">Help</span>
+        </a>
+        <button type="button" class="mbn-item mbn-more-btn" id="mbn-more-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+            <span data-i18n="mbn_more">More</span>
+        </button>
+    </nav>
+
+    <script src="/js/cookie-consent.js"></script>
+    <script src="../js/components.js"></script>
+</body>
+</html>
