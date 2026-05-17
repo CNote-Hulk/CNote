@@ -221,11 +221,14 @@ function formatDimSingle(d) {
 function formatWeight(w) {
     if (w === null || w === undefined) return null;
     if (typeof w === 'number') {
-        return `${w} g`;
+        return `<span class="dim-weight-val">${w}</span><span class="dim-weight-unit"> g</span>`;
     }
-    return Object.entries(w)
-        .map(([k, v]) => `<span class="dim-model-label">${k.replace(/_/g, ' ')}:</span> ${v} g`)
-        .join('<br>');
+    return `<span class="dim-weight-variants">${
+        Object.entries(w)
+            .map(([k, v]) =>
+                `<span class="dim-weight-row"><span class="dim-weight-key">${k.replace(/_/g, ' ')}</span><span class="dim-weight-val">${v}</span><span class="dim-weight-unit"> g</span></span>`)
+            .join('')
+    }</span>`;
 }
 
 function formatDimensions(dim) {

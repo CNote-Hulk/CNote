@@ -678,6 +678,35 @@
     margin-bottom: 0.15rem;
 }
 
+/* Weight field */
+.dim-weight-val {
+    font-weight: 600;
+    color: var(--text-light);
+}
+.dim-weight-unit {
+    color: var(--text-muted, rgba(255,255,255,0.45));
+    font-size: 0.82rem;
+}
+.dim-weight-variants {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.dim-weight-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.dim-weight-key {
+    font-size: 0.78rem;
+    color: var(--text-muted, rgba(255,255,255,0.45));
+    text-transform: capitalize;
+    min-width: 70px;
+}
+[data-theme="light"] .dim-weight-val  { color: #111317; }
+[data-theme="light"] .dim-weight-unit { color: rgba(0,0,0,0.4); }
+[data-theme="light"] .dim-weight-key  { color: rgba(0,0,0,0.45); }
+
 [data-theme="light"] .spec-card:hover {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
