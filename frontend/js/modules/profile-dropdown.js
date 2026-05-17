@@ -64,6 +64,7 @@ export const ProfileDropdownModule = {
         if (path.includes('/pages/consoles/') || path.includes('\\pages\\consoles\\')) return '../' + page;
         if (path.includes('/pages/curs/')     || path.includes('\\pages\\curs\\'))     return '../' + page;
         if (path.includes('/pages/help/')     || path.includes('\\pages\\help\\'))     return '../' + page;
+        if (path.includes('/pages/legal files/') || path.includes('\\pages\\legal files\\')) return '../' + page;
         if (path.includes('/pages/')          || path.includes('\\pages\\'))           return page;
         return '/html/pages/' + page;
     },
