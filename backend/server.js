@@ -61,7 +61,6 @@ const notificationRoutes = require('./routes/notifications');
 const consolesRoutes = require('./routes/consoles');
 const achievementsRoutes = require('./routes/achievements');
 
-const ownedConsolesRoutes = require('./routes/owned-consoles');
 const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
 const reportsRoutes = require('./routes/reports');
@@ -369,7 +368,6 @@ app.use('/api/repair', repairRoutes);
 app.use('/api/dm', dmRoutes);
 app.use('/api/notifications', notificationRoutes);
 
-app.use('/api/owned-consoles', ownedConsolesRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api', resetProgressRoutes);
 
