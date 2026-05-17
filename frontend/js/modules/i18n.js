@@ -8742,7 +8742,8 @@ export const I18nModule = {
     redirectLegalPage(lang) {
         const legalBases = ['terms', 'privacy', 'cookies', 'community-rules'];
         const path = window.location.pathname;
-        if (!path.includes('/pages/legal files/') && !path.includes('/pages/legal%20files/')) {
+        // Ensure we only redirect when inside the legal files folder (accept encoded or raw)
+        if (!(path.includes('/pages/legal files/') || path.includes('/pages/legal%20files/'))) {
             return false;
         }
         const file = path.split('/').pop();
@@ -8752,9 +8753,17 @@ export const I18nModule = {
         const base = match[1];
         if (!legalBases.includes(base)) return false;
         const target = base + (lang === 'ro' ? '' : '-' + lang) + '.html';
-        if (file === target) return false;
-        const newPath = path.replace(/[^/]+$/, target);
-        window.location.replace(newPath);
+
+        // Build a safe absolute URL to the canonical legal files folder to avoid
+        // relative-resolution issues that can produce paths like /html/pages/pages/...
+        const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+        const encodedFolder = 'legal%20files';
+        const targetUrl = origin + '/html/pages/' + encodedFolder + '/' + target;
+
+        // If already on the target, do nothing
+        if (path.endsWith('/' + target)) return false;
+
+        window.location.replace(targetUrl);
         return true;
     },
 
