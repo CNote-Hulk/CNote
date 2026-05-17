@@ -262,7 +262,11 @@ router.post('/setup-username', authRequired, async (req, res) => {
 // POST /api/register — Create new account with email verification
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, terms_accepted, privacy_accepted } = req.body;
+
+        if (!terms_accepted || !privacy_accepted) {
+            return res.status(400).json({ success: false, error: 'You must accept the Terms & Conditions and Privacy Policy.' });
+        }
 
         // Username validation
         const usernameTrimmed = String(username || '').trim();
