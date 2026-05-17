@@ -3783,6 +3783,24 @@ a.chat-message__username:hover {
 .auth-page--nb .nb-left::-webkit-scrollbar-track { background: transparent; }
 .auth-page--nb .nb-left::-webkit-scrollbar-thumb { background: rgba(130, 90, 20, 0.25); border-radius: 2px; }
 
+/* Red margin line lives on ::before which is pinned to the scroll viewport,
+   so in the auth scroll context we redraw it on nb-left__inner which grows
+   with content and scrolls with the page body. */
+.auth-page--nb .nb-left::before {
+    display: none;
+}
+.auth-page--nb .nb-left__inner::before {
+    content: '';
+    position: absolute;
+    left: 52px;   /* same visual position as the original ::before */
+    top: 0;
+    bottom: 0;
+    width: 1.5px;
+    background: rgba(195, 60, 60, 0.28);
+    z-index: 1;
+    pointer-events: none;
+}
+
 .auth-page--nb .nb-left__body {
     overflow: visible;
     padding-right: 2px;
@@ -3790,7 +3808,9 @@ a.chat-message__username:hover {
 }
 
 .auth-page--nb .nb-left__inner {
-    padding-bottom: 28px;
+    height: auto;        /* allow inner to grow past book height */
+    min-height: 100%;   /* still fill the book when content is short */
+    padding-bottom: 40px;
 }
 
 /* ── Form elements adapted for the warm paper background ─────── */
@@ -3920,100 +3940,111 @@ a.chat-message__username:hover {
     line-height: 1.5;
 }
 
-/* Custom date picker inside notebook paper */
-.nb-left__inner .cn-datepicker__trigger {
-    background: rgba(61, 42, 26, 0.06);
-    border-color: rgba(130, 90, 20, 0.22);
-    color: #2a1a0e;
+/* Custom date picker inside notebook paper — explicit paper-tone overrides */
+.auth-page--nb .cn-datepicker__trigger {
+    background: rgba(61, 42, 26, 0.06) !important;
+    border: 1px solid rgba(130, 90, 20, 0.28) !important;
+    color: #2a1a0e !important;
     font-family: var(--font-sans);
+    min-height: 42px;
 }
-.nb-left__inner .cn-datepicker__trigger:hover {
-    background: rgba(61, 42, 26, 0.09);
-    border-color: rgba(130, 90, 20, 0.38);
+.auth-page--nb .cn-datepicker__trigger:hover {
+    background: rgba(61, 42, 26, 0.10) !important;
+    border-color: rgba(130, 90, 20, 0.45) !important;
 }
-.nb-left__inner .cn-datepicker__trigger-text--placeholder {
-    color: rgba(61, 42, 26, 0.33);
+.auth-page--nb .cn-datepicker__trigger svg {
+    color: rgba(61, 42, 26, 0.45);
 }
-.nb-left__inner .cn-datepicker__panel {
+.auth-page--nb .cn-datepicker__trigger-text--placeholder {
+    color: rgba(61, 42, 26, 0.33) !important;
+}
+.auth-page--nb .cn-datepicker__clear {
+    color: rgba(61, 42, 26, 0.4);
+}
+.auth-page--nb .cn-datepicker__panel {
     background: #fdf8f0;
     border-color: rgba(130, 90, 20, 0.2);
     box-shadow: 0 12px 40px rgba(20, 10, 2, 0.22);
 }
-.nb-left__inner .cn-datepicker__nav,
-.nb-left__inner .cn-datepicker__month-label {
-    color: rgba(61, 42, 26, 0.7);
-}
-.nb-left__inner .cn-datepicker__nav {
+.auth-page--nb .cn-datepicker__nav {
     background: rgba(61, 42, 26, 0.05);
     border-color: rgba(130, 90, 20, 0.18);
+    color: rgba(61, 42, 26, 0.6);
 }
-.nb-left__inner .cn-datepicker__nav:hover {
+.auth-page--nb .cn-datepicker__nav:hover {
     background: rgba(61, 42, 26, 0.1);
-}
-.nb-left__inner .cn-datepicker__weekday {
-    color: rgba(61, 42, 26, 0.45);
-}
-.nb-left__inner .cn-datepicker__day {
     color: #2a1a0e;
 }
-.nb-left__inner .cn-datepicker__day--other-month {
+.auth-page--nb .cn-datepicker__month-label {
+    color: rgba(61, 42, 26, 0.75);
+}
+.auth-page--nb .cn-datepicker__weekday {
+    color: rgba(61, 42, 26, 0.45);
+}
+.auth-page--nb .cn-datepicker__day {
+    color: #2a1a0e;
+}
+.auth-page--nb .cn-datepicker__day--other-month {
     color: rgba(61, 42, 26, 0.3);
 }
-.nb-left__inner .cn-datepicker__day--today {
+.auth-page--nb .cn-datepicker__day--today {
     color: var(--accent-color);
 }
-.nb-left__inner .cn-datepicker__day:hover:not(:disabled) {
+.auth-page--nb .cn-datepicker__day:hover:not(:disabled) {
     background: rgba(130, 90, 20, 0.1);
 }
-.nb-left__inner .cn-datepicker__footer {
+.auth-page--nb .cn-datepicker__footer {
     border-top-color: rgba(130, 90, 20, 0.15);
 }
-.nb-left__inner .cn-datepicker__footer-btn {
+.auth-page--nb .cn-datepicker__footer-btn {
     color: rgba(61, 42, 26, 0.5);
 }
-.nb-left__inner .cn-datepicker__footer-btn:hover {
+.auth-page--nb .cn-datepicker__footer-btn:hover {
     color: #2a1a0e;
     background: rgba(61, 42, 26, 0.06);
 }
-.nb-left__inner .cn-datepicker__year-btn {
+.auth-page--nb .cn-datepicker__year-btn {
     color: rgba(61, 42, 26, 0.55);
 }
-.nb-left__inner .cn-datepicker__year-btn:hover {
+.auth-page--nb .cn-datepicker__year-btn:hover {
     color: #2a1a0e;
     background: rgba(61, 42, 26, 0.07);
 }
-.nb-left__inner .cn-datepicker__year-btn--selected {
+.auth-page--nb .cn-datepicker__year-btn--selected {
     color: var(--accent-color);
     background: rgba(130, 90, 20, 0.1);
     border-color: rgba(130, 90, 20, 0.28);
 }
 
-/* T&C / Privacy checkboxes inside notebook paper */
-.nb-left__inner .auth-check-field {
+/* T&C / Privacy checkbox rows inside notebook */
+.nb-left__inner .auth-check-row {
     display: flex;
+    flex-direction: row;
     align-items: flex-start;
     gap: 9px;
     margin-top: 2px;
 }
-.nb-left__inner .auth-check-field input[type="checkbox"] {
+.nb-left__inner .auth-check-row input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     width: 15px;
     height: 15px;
     min-width: 15px;
+    max-width: 15px;
     border: 1.5px solid rgba(130, 90, 20, 0.35);
     border-radius: 3px;
     background: rgba(61, 42, 26, 0.05);
     cursor: pointer;
-    margin-top: 1px;
+    margin-top: 2px;
     transition: background 0.15s, border-color 0.15s;
     position: relative;
+    padding: 0;
 }
-.nb-left__inner .auth-check-field input[type="checkbox"]:checked {
+.nb-left__inner .auth-check-row input[type="checkbox"]:checked {
     background: var(--accent-color);
     border-color: var(--accent-color);
 }
-.nb-left__inner .auth-check-field input[type="checkbox"]:checked::after {
+.nb-left__inner .auth-check-row input[type="checkbox"]:checked::after {
     content: '';
     position: absolute;
     left: 3px;
@@ -4025,18 +4056,21 @@ a.chat-message__username:hover {
     border-left: none;
     transform: rotate(45deg);
 }
-.nb-left__inner .auth-check-field label {
+.nb-left__inner .auth-check-row label {
     font-size: 0.76rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
     color: rgba(61, 42, 26, 0.58);
-    line-height: 1.4;
+    line-height: 1.5;
     cursor: pointer;
 }
-.nb-left__inner .auth-check-field label a {
+.nb-left__inner .auth-check-row label a {
     color: rgba(61, 42, 26, 0.75);
     text-decoration: underline;
     text-underline-offset: 2px;
 }
-.nb-left__inner .auth-check-field label a:hover {
+.nb-left__inner .auth-check-row label a:hover {
     color: #2a1a0e;
 }
 
