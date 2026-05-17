@@ -429,7 +429,8 @@ async function serveHTMLWithNonce(req, res, next, filePath) {
 app.use(async (req, res, next) => {
 	if (req.method !== 'GET') return next();
 	if (!req.path.endsWith('.html')) return next();
-	const filePath = path.join(FRONTEND_ROOT, req.path);
+	const decodedPath = decodeURIComponent(req.path);
+	const filePath = path.join(FRONTEND_ROOT, decodedPath);
 	// Path traversal guard: resolved path must stay inside FRONTEND_ROOT
 	if (!filePath.startsWith(FRONTEND_ROOT + path.sep)) return next();
 	await serveHTMLWithNonce(req, res, next, filePath);
