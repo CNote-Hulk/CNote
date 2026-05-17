@@ -3783,22 +3783,32 @@ a.chat-message__username:hover {
 .auth-page--nb .nb-left::-webkit-scrollbar-track { background: transparent; }
 .auth-page--nb .nb-left::-webkit-scrollbar-thumb { background: rgba(130, 90, 20, 0.25); border-radius: 2px; }
 
-/* Red margin line lives on ::before which is pinned to the scroll viewport,
-   so in the auth scroll context we redraw it on nb-left__inner which grows
-   with content and scrolls with the page body. */
-.auth-page--nb .nb-left::before {
+/* Both ::before (red line) and ::after (spine shadow) are position:absolute
+   on .nb-left and anchored to its declared height — not the scroll height.
+   Move them to .nb-left__inner which grows with content. */
+.auth-page--nb .nb-left::before,
+.auth-page--nb .nb-left::after {
     display: none;
 }
 .auth-page--nb .nb-left__inner::before {
     content: '';
     position: absolute;
-    left: 52px;   /* same visual position as the original ::before */
+    left: 52px;
     top: 0;
     bottom: 0;
     width: 1.5px;
     background: rgba(195, 60, 60, 0.28);
     z-index: 1;
     pointer-events: none;
+}
+.auth-page--nb .nb-left__inner::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 30px;
+    background: linear-gradient(to right, transparent, rgba(20, 10, 2, 0.13));
+    pointer-events: none;
+    z-index: 1;
 }
 
 .auth-page--nb .nb-left__body {
@@ -3808,9 +3818,9 @@ a.chat-message__username:hover {
 }
 
 .auth-page--nb .nb-left__inner {
-    height: auto;        /* allow inner to grow past book height */
-    min-height: 100%;   /* still fill the book when content is short */
-    padding-bottom: 40px;
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 24px;
 }
 
 /* ── Form elements adapted for the warm paper background ─────── */
@@ -3967,53 +3977,74 @@ a.chat-message__username:hover {
     box-shadow: 0 12px 40px rgba(20, 10, 2, 0.22);
 }
 .auth-page--nb .cn-datepicker__nav {
-    background: rgba(61, 42, 26, 0.05);
-    border-color: rgba(130, 90, 20, 0.18);
-    color: rgba(61, 42, 26, 0.6);
+    background: rgba(61, 42, 26, 0.06) !important;
+    border: 1px solid rgba(130, 90, 20, 0.2) !important;
+    color: rgba(61, 42, 26, 0.55) !important;
 }
 .auth-page--nb .cn-datepicker__nav:hover {
-    background: rgba(61, 42, 26, 0.1);
-    color: #2a1a0e;
+    background: rgba(61, 42, 26, 0.12) !important;
+    color: #2a1a0e !important;
 }
 .auth-page--nb .cn-datepicker__month-label {
-    color: rgba(61, 42, 26, 0.75);
+    background: transparent !important;
+    color: rgba(61, 42, 26, 0.75) !important;
+    font-weight: 600;
+}
+.auth-page--nb .cn-datepicker__month-label:hover {
+    background: rgba(61, 42, 26, 0.06) !important;
 }
 .auth-page--nb .cn-datepicker__weekday {
-    color: rgba(61, 42, 26, 0.45);
+    color: rgba(61, 42, 26, 0.4) !important;
 }
 .auth-page--nb .cn-datepicker__day {
-    color: #2a1a0e;
+    color: #2a1a0e !important;
 }
 .auth-page--nb .cn-datepicker__day--other-month {
-    color: rgba(61, 42, 26, 0.3);
+    color: rgba(61, 42, 26, 0.28) !important;
 }
 .auth-page--nb .cn-datepicker__day--today {
-    color: var(--accent-color);
+    color: #8b4513 !important;
+    font-weight: 700;
+}
+.auth-page--nb .cn-datepicker__day--today::after {
+    background: #8b4513 !important;
 }
 .auth-page--nb .cn-datepicker__day:hover:not(:disabled) {
-    background: rgba(130, 90, 20, 0.1);
+    background: rgba(130, 90, 20, 0.1) !important;
+    color: #2a1a0e !important;
+}
+.auth-page--nb .cn-datepicker__day--selected {
+    background: rgba(130, 90, 20, 0.18) !important;
+    color: #5a2d00 !important;
+    box-shadow: inset 0 0 0 1px rgba(130, 90, 20, 0.35) !important;
 }
 .auth-page--nb .cn-datepicker__footer {
-    border-top-color: rgba(130, 90, 20, 0.15);
+    border-top-color: rgba(130, 90, 20, 0.15) !important;
 }
 .auth-page--nb .cn-datepicker__footer-btn {
-    color: rgba(61, 42, 26, 0.5);
+    color: rgba(61, 42, 26, 0.45) !important;
 }
 .auth-page--nb .cn-datepicker__footer-btn:hover {
-    color: #2a1a0e;
-    background: rgba(61, 42, 26, 0.06);
+    color: #2a1a0e !important;
+    background: rgba(61, 42, 26, 0.06) !important;
+}
+.auth-page--nb .cn-datepicker__footer-btn--today {
+    color: #7a3b00 !important;
+    opacity: 0.85;
 }
 .auth-page--nb .cn-datepicker__year-btn {
-    color: rgba(61, 42, 26, 0.55);
+    color: rgba(61, 42, 26, 0.55) !important;
+    border-color: transparent !important;
 }
 .auth-page--nb .cn-datepicker__year-btn:hover {
-    color: #2a1a0e;
-    background: rgba(61, 42, 26, 0.07);
+    color: #2a1a0e !important;
+    background: rgba(61, 42, 26, 0.07) !important;
 }
 .auth-page--nb .cn-datepicker__year-btn--selected {
-    color: var(--accent-color);
-    background: rgba(130, 90, 20, 0.1);
-    border-color: rgba(130, 90, 20, 0.28);
+    color: #5a2d00 !important;
+    background: rgba(130, 90, 20, 0.12) !important;
+    border-color: rgba(130, 90, 20, 0.3) !important;
+    font-weight: 600;
 }
 
 /* T&C / Privacy checkbox rows inside notebook */
