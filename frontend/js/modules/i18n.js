@@ -8758,7 +8758,12 @@ export const I18nModule = {
         // relative-resolution issues that can produce paths like /html/pages/pages/...
         const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
         const encodedFolder = 'legal%20files';
-        const targetUrl = origin + '/html/pages/' + encodedFolder + '/' + target;
+        let targetUrl = origin + '/html/pages/' + encodedFolder + '/' + target;
+
+        // Defensive normalization: some redirects historically produced
+        // duplicate '/pages/pages/' segments (see reported screenshots).
+        // Collapse any repeated '/pages/' sequences to a single one.
+        targetUrl = targetUrl.replace(/\/pages\/(?:pages\/)+/g, '/pages/');
 
         // If already on the target, do nothing
         if (path.endsWith('/' + target)) return false;
