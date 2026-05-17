@@ -196,6 +196,8 @@
         var sectionActive = null;
         if (pathname.includes('/consoles/')) sectionActive = 'evolutie.html';
         if (pathname.includes('/help/')) sectionActive = 'help.html';
+        if (pathname.includes('/curs/')) sectionActive = 'curs.html';
+        if (pathname.includes('/legal files/') || pathname.includes('/legal%20files/')) sectionActive = 'legal.html';
 
         document.querySelectorAll('.nav-links a').forEach(function (a) {
             a.classList.remove('active');
