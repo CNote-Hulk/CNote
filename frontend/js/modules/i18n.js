@@ -8734,8 +8734,28 @@ export const I18nModule = {
     setLang(lang) {
         if (!MESSAGES[lang]) return;
         localStorage.setItem('cnote_lang', lang);
+        if (this.redirectLegalPage(lang)) return;
         this.lang = lang;
         window.dispatchEvent(new CustomEvent('cn:language-changed'));
+    },
+
+    redirectLegalPage(lang) {
+        const legalBases = ['terms', 'privacy', 'cookies', 'community-rules'];
+        const path = window.location.pathname;
+        if (!path.includes('/pages/legal files/') && !path.includes('/pages/legal%20files/')) {
+            return false;
+        }
+        const file = path.split('/').pop();
+        if (!file) return false;
+        const match = file.match(/^(.+?)(?:-([a-z]{2}))?\.html$/i);
+        if (!match) return false;
+        const base = match[1];
+        if (!legalBases.includes(base)) return false;
+        const target = base + (lang === 'ro' ? '' : '-' + lang) + '.html';
+        if (file === target) return false;
+        const newPath = path.replace(/[^/]+$/, target);
+        window.location.replace(newPath);
+        return true;
     },
 
     t(key) {
