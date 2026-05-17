@@ -3,13 +3,13 @@
         <div class="footer-left">
             <p class="footer-main">© 2026 Console Notebook - All rights reserved.</p>
             <div class="footer-legal">
-                <a href="#" data-legal-link="terms" data-i18n="footer_terms">Terms &amp; Conditions</a>
+                <a href="../pages/legal files/terms-en.html" data-legal-link="terms" data-i18n="footer_terms">Terms &amp; Conditions</a>
                 <span class="footer-legal-sep">·</span>
-                <a href="#" data-legal-link="privacy" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="../pages/legal files/privacy-en.html" data-legal-link="privacy" data-i18n="footer_privacy">Privacy Policy</a>
                 <span class="footer-legal-sep">·</span>
-                <a href="#" data-legal-link="cookies" data-i18n="footer_cookies">Cookie Policy</a>
+                <a href="../pages/legal files/cookies-en.html" data-legal-link="cookies" data-i18n="footer_cookies">Cookie Policy</a>
                 <span class="footer-legal-sep">·</span>
-                <a href="#" data-legal-link="community-rules" data-i18n="footer_community_rules">Community Rules</a>
+                <a href="../pages/legal files/community-rules-en.html" data-legal-link="community-rules" data-i18n="footer_community_rules">Community Rules</a>
             </div>
         </div>
         <div class="footer-right">
@@ -18,17 +18,4 @@
         </div>
     </div>
 </footer>
-<script>
-(function(){
-    var lang = (function(){
-        try { var l = localStorage.getItem('cnote_lang'); return l || 'en'; }
-        catch (e) { return 'en'; }
-    })();
-    var suffix = (lang === 'ro') ? '' : ('-' + lang);
-    var base = '/html/pages/';
-    document.querySelectorAll('[data-legal-link]').forEach(function(a){
-        var name = a.getAttribute('data-legal-link');
-        a.setAttribute('href', base + name + suffix + '.html');
-    });
-})();
-</script>
+
