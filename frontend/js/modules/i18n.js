@@ -8715,6 +8715,21 @@ export const I18nModule = {
     lang: 'en',
 
     init() {
+        // Defensive normalization: fix malformed URLs that accidentally
+        // contain duplicated '/pages/pages/' segments (observed in production).
+        try {
+            var p = window.location.pathname || '';
+            if (p.indexOf('/pages/pages/') !== -1) {
+                var normalized = p.replace(/\/pages\/(?:pages\/)+/g, '/pages/');
+                if (normalized !== p) {
+                    var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+                    var newUrl = origin + normalized + (window.location.search || '') + (window.location.hash || '');
+                    window.location.replace(newUrl);
+                    return; // stop initialization, page will reload
+                }
+            }
+        } catch (e) { /* ignore */ }
+
         this.lang = this.getStoredLang();
         this.apply();
         window.I18nModule = this;
