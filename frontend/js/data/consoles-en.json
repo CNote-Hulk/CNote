@@ -58,7 +58,8 @@
         "dimensions": {
             "width_mm": 419.1,
             "height_mm": 95.25,
-            "depth_mm": 419.1
+            "depth_mm": 419.1,
+            "weight_g": null
         }
     },
     {
@@ -123,7 +124,8 @@
         "dimensions": {
             "width_mm": 790,
             "height_mm": 1500,
-            "depth_mm": 740
+            "depth_mm": 740,
+            "weight_g": null
         }
     },
     {
@@ -216,7 +218,8 @@
         "dimensions": {
             "width_mm": 190.5,
             "height_mm": 457.2,
-            "depth_mm": 406.4
+            "depth_mm": 406.4,
+            "weight_g": null
         }
     },
     {
@@ -306,7 +309,13 @@
         "dimensions": {
             "width_mm": 346.1,
             "height_mm": 88.9,
-            "depth_mm": 231.8
+            "depth_mm": 231.8,
+            "weight_g": {
+                "heavy_sixer": 2300,
+                "light_sixer": 1900,
+                "four_switch": 1700,
+                "jr": 700
+            }
         }
     },
     {
@@ -387,7 +396,8 @@
         "dimensions": {
             "width_mm": 304,
             "height_mm": 38,
-            "depth_mm": 165
+            "depth_mm": 165,
+            "weight_g": 2270
         }
     },
     {
@@ -468,7 +478,8 @@
         "dimensions": {
             "width_mm": 292,
             "height_mm": 63.5,
-            "depth_mm": 187
+            "depth_mm": 187,
+            "weight_g": 1090
         }
     },
     {
@@ -533,7 +544,8 @@
         "dimensions": {
             "width_mm": 157,
             "height_mm": 79,
-            "depth_mm": 25
+            "depth_mm": 25,
+            "weight_g": 200
         }
     },
     {
@@ -604,7 +616,8 @@
         "dimensions": {
             "width_mm": 381,
             "height_mm": 101.6,
-            "depth_mm": 304
+            "depth_mm": 304,
+            "weight_g": 4100
         }
     },
     {
@@ -667,7 +680,8 @@
         "dimensions": {
             "width_mm": 349,
             "height_mm": 63.5,
-            "depth_mm": 241
+            "depth_mm": 241,
+            "weight_g": 2000
         }
     },
     {
@@ -731,7 +745,8 @@
         "dimensions": {
             "width_mm": 191,
             "height_mm": 409,
-            "depth_mm": 127
+            "depth_mm": 127,
+            "weight_g": 4000
         }
     },
     {
@@ -805,7 +820,8 @@
         "dimensions": {
             "width_mm": 150,
             "height_mm": 60,
-            "depth_mm": 89
+            "depth_mm": 89,
+            "weight_g": 620
         }
     },
     {
@@ -882,7 +898,8 @@
         "dimensions": {
             "width_mm": 290,
             "height_mm": 50,
-            "depth_mm": 152
+            "depth_mm": 152,
+            "weight_g": 1000
         }
     },
     {
@@ -955,7 +972,8 @@
         "dimensions": {
             "width_mm": 241,
             "height_mm": 53,
-            "depth_mm": 140
+            "depth_mm": 140,
+            "weight_g": 2270
         }
     },
     {
@@ -1028,7 +1046,8 @@
         "dimensions": {
             "width_mm": 236,
             "height_mm": 50,
-            "depth_mm": 160
+            "depth_mm": 160,
+            "weight_g": 1400
         }
     },
     {
@@ -1097,7 +1116,8 @@
         "dimensions": {
             "width_mm": 308,
             "height_mm": 60,
-            "depth_mm": 155
+            "depth_mm": 155,
+            "weight_g": 1400
         }
     },
     {
@@ -1189,7 +1209,11 @@
                     "height_mm": 36,
                     "depth_mm": 230
                 }
-            ]
+            ],
+            "weight_g": {
+                "pc_engine": 360,
+                "turbografx_16": 640
+            }
         }
     },
     {
@@ -1277,7 +1301,12 @@
                     "height_mm": 55,
                     "depth_mm": 176
                 }
-            ]
+            ],
+            "weight_g": {
+                "model_1": 1930,
+                "model_2": 900,
+                "model_3": 500
+            }
         }
     },
     {
@@ -1353,7 +1382,13 @@
         "dimensions": {
             "width_mm": 90,
             "height_mm": 148,
-            "depth_mm": 32
+            "depth_mm": 32,
+            "weight_g": {
+                "original": 220,
+                "pocket": 125,
+                "light": 140,
+                "color": 138
+            }
         }
     },
     {
@@ -1438,7 +1473,11 @@
                     "height_mm": 58,
                     "depth_mm": 38
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 567,
+                "lynx_ii": 287
+            }
         }
     },
     {
@@ -1500,7 +1539,8 @@
         "dimensions": {
             "width_mm": 209,
             "height_mm": 83,
-            "depth_mm": 45
+            "depth_mm": 45,
+            "weight_g": 400
         }
     },
     {
@@ -1573,7 +1613,8 @@
         "dimensions": {
             "width_mm": 424,
             "height_mm": 76,
-            "depth_mm": 260
+            "depth_mm": 260,
+            "weight_g": 3500
         }
     },
     {
@@ -1661,7 +1702,8 @@
                     "height_mm": 68,
                     "depth_mm": 195
                 }
-            ]
+            ],
+            "weight_g": 960
         }
     },
     {
@@ -1742,7 +1784,8 @@
         "dimensions": {
             "width_mm": 450,
             "height_mm": 64,
-            "depth_mm": 297
+            "depth_mm": 297,
+            "weight_g": 3200
         }
     },
     {
@@ -1823,7 +1866,8 @@
         "dimensions": {
             "width_mm": 464,
             "height_mm": 102,
-            "depth_mm": 276
+            "depth_mm": 276,
+            "weight_g": 2700
         }
     },
     {
@@ -1896,7 +1940,8 @@
         "dimensions": {
             "width_mm": 384,
             "height_mm": 37,
-            "depth_mm": 260
+            "depth_mm": 260,
+            "weight_g": 1200
         }
     },
     {
@@ -1980,7 +2025,11 @@
                     "height_mm": 40,
                     "depth_mm": 144
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 1500,
+                "psone": 550
+            }
         }
     },
     {
@@ -2053,7 +2102,8 @@
         "dimensions": {
             "width_mm": 260,
             "height_mm": 83,
-            "depth_mm": 230
+            "depth_mm": 230,
+            "weight_g": 1660
         }
     },
     {
@@ -2128,7 +2178,8 @@
         "dimensions": {
             "width_mm": 284,
             "height_mm": 64,
-            "depth_mm": 168
+            "depth_mm": 168,
+            "weight_g": 1100
         }
     },
     {
@@ -2191,7 +2242,8 @@
         "dimensions": {
             "width_mm": 133.5,
             "height_mm": 78,
-            "depth_mm": 26.5
+            "depth_mm": 26.5,
+            "weight_g": 138
         }
     },
     {
@@ -2253,7 +2305,8 @@
         "dimensions": {
             "width_mm": 125,
             "height_mm": 75,
-            "depth_mm": 25
+            "depth_mm": 25,
+            "weight_g": 190
         }
     },
     {
@@ -2328,7 +2381,8 @@
         "dimensions": {
             "width_mm": 190,
             "height_mm": 75,
-            "depth_mm": 195
+            "depth_mm": 195,
+            "weight_g": 1500
         }
     },
     {
@@ -2391,7 +2445,8 @@
         "dimensions": {
             "width_mm": 125,
             "height_mm": 75,
-            "depth_mm": 25
+            "depth_mm": 25,
+            "weight_g": 175
         }
     },
     {
@@ -2466,7 +2521,8 @@
         "dimensions": {
             "width_mm": 124,
             "height_mm": 64,
-            "depth_mm": 20
+            "depth_mm": 20,
+            "weight_g": 93
         }
     },
     {
@@ -2550,7 +2606,11 @@
                     "height_mm": 28,
                     "depth_mm": 152
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 2200,
+                "slim": 900
+            }
         }
     },
     {
@@ -2626,7 +2686,12 @@
         "dimensions": {
             "width_mm": 144.5,
             "height_mm": 82,
-            "depth_mm": 24.5
+            "depth_mm": 24.5,
+            "weight_g": {
+                "original": 140,
+                "sp": 143,
+                "micro": 80
+            }
         }
     },
     {
@@ -2701,7 +2766,8 @@
         "dimensions": {
             "width_mm": 148,
             "height_mm": 150,
-            "depth_mm": 161
+            "depth_mm": 161,
+            "weight_g": 1400
         }
     },
     {
@@ -2776,7 +2842,8 @@
         "dimensions": {
             "width_mm": 320,
             "height_mm": 95,
-            "depth_mm": 265
+            "depth_mm": 265,
+            "weight_g": 3860
         }
     },
     {
@@ -2856,7 +2923,13 @@
         "dimensions": {
             "width_mm": 148.7,
             "height_mm": 84,
-            "depth_mm": 27.9
+            "depth_mm": 27.9,
+            "weight_g": {
+                "original": 275,
+                "lite": 218,
+                "dsi": 214,
+                "dsi_xl": 314
+            }
         }
     },
     {
@@ -2942,7 +3015,13 @@
         "dimensions": {
             "width_mm": 170,
             "height_mm": 73.9,
-            "depth_mm": 23.5
+            "depth_mm": 23.5,
+            "weight_g": {
+                "3000": 189,
+                "original": 280,
+                "slim": 189,
+                "go": 158
+            }
         }
     },
     {
@@ -3032,7 +3111,12 @@
                     "height_mm": 76,
                     "depth_mm": 220
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 3500,
+                "slim": 2900,
+                "e": 2400
+            }
         }
     },
     {
@@ -3109,7 +3193,8 @@
         "dimensions": {
             "width_mm": 157,
             "height_mm": 44,
-            "depth_mm": 215.4
+            "depth_mm": 215.4,
+            "weight_g": 1200
         }
     },
     {
@@ -3205,7 +3290,12 @@
                     "height_mm": 50,
                     "depth_mm": 195
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 5000,
+                "slim": 3200,
+                "super_slim": 2100
+            }
         }
     },
     {
@@ -3303,7 +3393,13 @@
                     "height_mm": 93.5,
                     "depth_mm": 21.5
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 235,
+                "xl": 336,
+                "new_3ds": 253,
+                "new_3ds_xl": 329
+            }
         }
     },
     {
@@ -3388,7 +3484,11 @@
                     "height_mm": 85.1,
                     "depth_mm": 15
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 279,
+                "slim": 219
+            }
         }
     },
     {
@@ -3470,7 +3570,8 @@
                     "height_mm": 109,
                     "depth_mm": 51.5
                 }
-            ]
+            ],
+            "weight_g": 1500
         }
     },
     {
@@ -3564,7 +3665,12 @@
                     "height_mm": 55,
                     "depth_mm": 327
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 2800,
+                "slim": 2100,
+                "pro": 3300
+            }
         }
     },
     {
@@ -3662,7 +3768,12 @@
                     "height_mm": 60,
                     "depth_mm": 230
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 3560,
+                "s": 2900,
+                "x": 3810
+            }
         }
     },
     {
@@ -3750,7 +3861,12 @@
                     "height_mm": 91.1,
                     "depth_mm": 13.9
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 398,
+                "lite": 275,
+                "oled": 420
+            }
         }
     },
     {
@@ -3842,7 +3958,13 @@
                     "height_mm": 358,
                     "depth_mm": 216
                 }
-            ]
+            ],
+            "weight_g": {
+                "original": 4500,
+                "digital": 3900,
+                "slim": 3200,
+                "pro": 3100
+            }
         }
     },
     {
@@ -3910,7 +4032,8 @@
         "dimensions": {
             "width_mm": 151,
             "height_mm": 301,
-            "depth_mm": 151
+            "depth_mm": 151,
+            "weight_g": 4450
         }
     },
     {
@@ -3982,7 +4105,8 @@
         "dimensions": {
             "width_mm": 151,
             "height_mm": 275,
-            "depth_mm": 64
+            "depth_mm": 64,
+            "weight_g": 1930
         }
     },
     {
@@ -4055,7 +4179,8 @@
         "dimensions": {
             "width_mm": 272,
             "height_mm": 116.8,
-            "depth_mm": 14.6
+            "depth_mm": 14.6,
+            "weight_g": 534
         }
     }
 ]

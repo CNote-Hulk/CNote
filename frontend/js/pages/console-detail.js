@@ -218,15 +218,34 @@ function formatDimSingle(d) {
     </table>`;
 }
 
+function formatWeight(w) {
+    if (w === null || w === undefined) return null;
+    if (typeof w === 'number') {
+        return `${w} g`;
+    }
+    return Object.entries(w)
+        .map(([k, v]) => `<span class="dim-model-label">${k.replace(/_/g, ' ')}:</span> ${v} g`)
+        .join('<br>');
+}
+
 function formatDimensions(dim) {
     if (!dim) return '<p>—</p>';
+    const weightRow = dim.weight_g !== undefined ? formatWeight(dim.weight_g) : null;
+    const wLabel = I18nModule.t('spec_label_weight') || 'Weight';
+
     if (dim.models && Array.isArray(dim.models)) {
-        return dim.models.map(m => {
+        const modelRows = dim.models.map(m => {
             const label = m.label ? `<em class="dim-model-label">${m.label}</em><br>` : '';
             return label + formatDimSingle(m);
         }).join('<hr class="dim-separator">');
+        if (!weightRow) return modelRows;
+        return modelRows + `<hr class="dim-separator"><table class="dim-table"><tr><td class="dim-lbl">${wLabel}</td><td class="dim-val">${weightRow}</td></tr></table>`;
     }
-    return formatDimSingle(dim);
+
+    const baseTable = formatDimSingle(dim);
+    if (!weightRow) return baseTable;
+    const weightRowHtml = `<tr><td class="dim-lbl">${wLabel}</td><td class="dim-val">${weightRow}</td></tr>`;
+    return baseTable.replace('</table>', weightRowHtml + '</table>');
 }
 
 function getLocalizedField(obj, key) {

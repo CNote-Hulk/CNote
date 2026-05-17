@@ -169,7 +169,8 @@ function buildSpecSections() {
         { key: 'dimensions', labelKey: 'spec_dimensions_title', fields: [
             { key: 'width_mm',  label: 'Width (mm)',  tipKey: 'spec_label_width' },
             { key: 'height_mm', label: 'Height (mm)', tipKey: 'spec_label_height' },
-            { key: 'depth_mm',  label: 'Depth (mm)',  tipKey: 'spec_label_depth' }
+            { key: 'depth_mm',  label: 'Depth (mm)',  tipKey: 'spec_label_depth' },
+            { key: 'weight_g',  label: 'Weight (g)',  tipKey: 'spec_label_weight' }
         ]}
     ];
 }
@@ -178,18 +179,27 @@ function buildSpecSections() {
 function formatValue(val) {
     if (val === true)  return '<span class="flag yes"></span>';
     if (val === false) return '<span class="flag no"></span>';
-    return val && String(val).trim().length && val !== 'N/A' ? val : 'N/A';
+    if (val !== null && typeof val === 'object') {
+        return Object.entries(val)
+            .map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v} g`)
+            .join('<br>');
+    }
+    return val !== null && val !== undefined && String(val).trim().length && val !== 'N/A' ? val : 'N/A';
 }
 
 function getVal(obj, sectionKey, fieldKey) {
     if (!obj || !obj[sectionKey]) return null;
-    // For multi-model dimensions, show the first model's value
-    if (sectionKey === 'dimensions' && obj[sectionKey].models) {
-        const first = obj[sectionKey].models[0];
+    const sec = obj[sectionKey];
+    // weight_g lives on dimensions itself, not inside each model
+    if (sectionKey === 'dimensions' && fieldKey === 'weight_g') {
+        return sec.weight_g !== undefined ? sec.weight_g : null;
+    }
+    // For other dimension fields on multi-model consoles, show first model's value
+    if (sectionKey === 'dimensions' && sec.models) {
+        const first = sec.models[0];
         return first && first[fieldKey] !== undefined ? first[fieldKey] : null;
     }
-    return obj[sectionKey][fieldKey] !== undefined
-        ? obj[sectionKey][fieldKey] : null;
+    return sec[fieldKey] !== undefined ? sec[fieldKey] : null;
 }
 
 function resolveImg(imgPath) {
