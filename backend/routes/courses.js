@@ -68,6 +68,7 @@ router.get('/courses', async (req, res) => {
 router.get('/courses/:slug', authOptional, async (req, res) => {
     try {
         const { slug } = req.params;
+        const lang = (req.query.lang || 'en').toLowerCase().slice(0, 5);
         const courseResult = await pool.query(
             'SELECT * FROM courses WHERE slug = $1',
             [slug]
@@ -78,20 +79,28 @@ router.get('/courses/:slug', authOptional, async (req, res) => {
         const course = courseResult.rows[0];
 
         const modulesResult = await pool.query(`
-            SELECT m.id, m.title, m.order_index,
+            SELECT m.id,
+                COALESCE(mt.title, m.title) AS title,
+                m.order_index,
                 COALESCE(
                     json_agg(
-                        json_build_object('id', l.id, 'title', l.title, 'order_index', l.order_index)
+                        json_build_object(
+                            'id', l.id,
+                            'title', COALESCE(lt.title, l.title),
+                            'order_index', l.order_index
+                        )
                         ORDER BY l.order_index
                     ) FILTER (WHERE l.id IS NOT NULL),
                     '[]'
                 ) AS lessons
             FROM modules m
+            LEFT JOIN module_translations mt ON mt.module_id = m.id AND mt.lang = $2
             LEFT JOIN lessons l ON l.module_id = m.id AND l.is_published = true
+            LEFT JOIN lesson_translations lt ON lt.lesson_id = l.id AND lt.lang = $2
             WHERE m.course_id = $1
-            GROUP BY m.id
+            GROUP BY m.id, mt.title
             ORDER BY m.order_index
-        `, [course.id]);
+        `, [course.id, lang]);
 
         course.modules = modulesResult.rows;
 
@@ -194,14 +203,19 @@ router.get('/lessons/:id', authOptional, async (req, res) => {
         if (isNaN(lessonId)) {
             return res.status(400).json({ success: false, error: 'Invalid lesson id' });
         }
+        const lang = (req.query.lang || 'en').toLowerCase().slice(0, 5);
 
         const lessonResult = await pool.query(`
-            SELECT l.*, c.slug AS course_slug
+            SELECT l.id, l.module_id, l.order_index, l.is_published,
+                COALESCE(lt.title, l.title) AS title,
+                COALESCE(lt.content_html, l.content_html) AS content_html,
+                c.slug AS course_slug
             FROM lessons l
             JOIN modules m ON m.id = l.module_id
             JOIN courses c ON c.id = m.course_id
+            LEFT JOIN lesson_translations lt ON lt.lesson_id = l.id AND lt.lang = $2
             WHERE l.id = $1 AND l.is_published = true
-        `, [lessonId]);
+        `, [lessonId, lang]);
         if (!lessonResult.rows.length) {
             return res.status(404).json({ success: false, error: 'Lesson not found' });
         }

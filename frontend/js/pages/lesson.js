@@ -18,12 +18,17 @@ function esc(str) {
 /* ─────────────────────────────────────
    EXISTING DATA FETCHERS
 ───────────────────────────────────── */
+function getCurrentLang() {
+    return localStorage.getItem('cnote_lang') || 'en';
+}
+
 async function fetchLesson() {
     const token = localStorage.getItem('cn_token');
     const headers = {};
     if (token) headers['Authorization'] = 'Bearer ' + token;
+    const lang = getCurrentLang();
     try {
-        const res = await fetch(`${API_BASE_URL}/lessons/${encodeURIComponent(lessonId)}`, { headers });
+        const res = await fetch(`${API_BASE_URL}/lessons/${encodeURIComponent(lessonId)}?lang=${encodeURIComponent(lang)}`, { headers });
         if (!res.ok) return null;
         const data = await res.json();
         return data.lesson;
@@ -32,8 +37,9 @@ async function fetchLesson() {
 
 async function fetchCourseStructure() {
     if (!courseSlug) return null;
+    const lang = getCurrentLang();
     try {
-        const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(courseSlug)}`);
+        const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(courseSlug)}?lang=${encodeURIComponent(lang)}`);
         if (!res.ok) return null;
         return (await res.json()).course;
     } catch { return null; }

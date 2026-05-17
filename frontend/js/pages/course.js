@@ -20,10 +20,15 @@ function esc(str) {
     return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function getCurrentLang() {
+    return localStorage.getItem('cnote_lang') || 'en';
+}
+
 async function fetchCourse() {
     const headers = {};
     if (_token) headers['Authorization'] = 'Bearer ' + _token;
-    const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(slug)}`, { headers });
+    const lang = getCurrentLang();
+    const res = await fetch(`${API_BASE_URL}/courses/${encodeURIComponent(slug)}?lang=${encodeURIComponent(lang)}`, { headers });
     if (!res.ok) { window.location.href = 'invata.html'; return null; }
     const data = await res.json();
     return data.course;
