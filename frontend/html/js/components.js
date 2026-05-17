@@ -134,6 +134,9 @@
         if (path.includes('/pages/consoles/') || path.includes('/pages/help/') || path.includes('/pages/curs/')) {
             return '../../components/';
         }
+        if (path.includes('/pages/legal files/') || path.includes('/pages/legal%20files/')) {
+            return '../../components/';
+        }
         if (path.includes('/pages/')) {
             return '../components/';
         }
