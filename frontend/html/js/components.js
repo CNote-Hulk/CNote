@@ -15,23 +15,24 @@
         // Skip if already loaded
         if (window.Sentry) {
             loadSentryInit();
-            try {
-                var footerAnchors = Array.from(document.querySelectorAll('.footer-legal a'));
-                footerAnchors.forEach(function (a) {
-                    var href = a.getAttribute('href') || '';
-                    // Replace any leading ../ sequences that end up before
-                    // pages/legal files/ with the absolute path used by the
-                    // deployed site. This is simpler and less error-prone
-                    // than complex relative rewrites.
-                    var newHref = href.replace(/^(?:\.\.\/)+pages\/(?:legal%20files|legal files)\//, '/html/pages/legal%20files/');
-                    if (newHref !== href) {
-                        a.setAttribute('href', newHref);
-                    }
-                });
-            } catch (e) {
-                // Non-fatal; don't block page when normalization fails
-                console.warn('[components] Failed to normalize footer links', e);
-            }
+            return;
+        }
+        var s = document.createElement('script');
+        s.src = SENTRY_CDN_SRC;
+        s.crossOrigin = 'anonymous';
+        s.onload = function () { loadSentryInit(); };
+        s.onerror = function () { console.warn('[components] Sentry CDN failed to load.'); };
+        document.head.appendChild(s);
+    }
+
+    function loadSentryInit() {
+        var s = document.createElement('script');
+        s.src = SENTRY_INIT_SRC;
+        document.head.appendChild(s);
+    }
+
+    // ── DOMPurify ─────────────────────────────────────────────────────────────
+    // Loaded dynamically so every page benefits without touching 84 HTML files.
     // If the CDN load fails, injection is intentionally aborted (fail-safe).
 
     var DOMPURIFY_SRC = 'https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js';
@@ -282,24 +283,6 @@
         ]).then(function (results) {
             injectHTML('navbar-placeholder', results[0]);
             injectHTML('footer-placeholder', results[1]);
-
-            // Normalize footer links to avoid broken relative paths when pages
-            // live under `/html/pages/legal files/` (or encoded variants).
-            try {
-                var footerAnchors = Array.from(document.querySelectorAll('.footer-legal a'));
-                footerAnchors.forEach(function (a) {
-                    var href = a.getAttribute('href') || '';
-                    var normalizedHref = href.replace(/ /g, '%20');
-                    if (normalizedHref.indexOf('../pages/legal%20files/') === 0 ||
-                        normalizedHref.indexOf('../../pages/legal%20files/') === 0 ||
-                        normalizedHref.indexOf('../../../pages/legal%20files/') === 0) {
-                        a.setAttribute('href', '/html/pages/legal%20files/' + normalizedHref.split('/').slice(-1)[0]);
-                    }
-                });
-            } catch (e) {
-                // Non-fatal; don't block page when normalization fails
-                console.warn('[components] Failed to normalize footer links', e);
-            }
             setActiveLink();
             handleNotifications();
             scheduleReinit();
@@ -320,6 +303,5 @@
     }
 
     bootstrap();
-    }
-}
+
 })();

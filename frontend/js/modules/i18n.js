@@ -8715,21 +8715,6 @@ export const I18nModule = {
     lang: 'en',
 
     init() {
-        // Defensive normalization: fix malformed URLs that accidentally
-        // contain duplicated '/pages/pages/' segments (observed in production).
-        try {
-            var p = window.location.pathname || '';
-            if (p.indexOf('/pages/pages/') !== -1) {
-                var normalized = p.replace(/\/pages\/(?:pages\/)+/g, '/pages/');
-                if (normalized !== p) {
-                    var origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
-                    var newUrl = origin + normalized + (window.location.search || '') + (window.location.hash || '');
-                    window.location.replace(newUrl);
-                    return; // stop initialization, page will reload
-                }
-            }
-        } catch (e) { /* ignore */ }
-
         this.lang = this.getStoredLang();
         this.apply();
         window.I18nModule = this;
@@ -8757,8 +8742,7 @@ export const I18nModule = {
     redirectLegalPage(lang) {
         const legalBases = ['terms', 'privacy', 'cookies', 'community-rules'];
         const path = window.location.pathname;
-        // Ensure we only redirect when inside the legal files folder (accept encoded or raw)
-        if (!(path.includes('/pages/legal files/') || path.includes('/pages/legal%20files/'))) {
+        if (!path.includes('/pages/legal files/') && !path.includes('/pages/legal%20files/')) {
             return false;
         }
         const file = path.split('/').pop();
@@ -8768,22 +8752,9 @@ export const I18nModule = {
         const base = match[1];
         if (!legalBases.includes(base)) return false;
         const target = base + (lang === 'ro' ? '' : '-' + lang) + '.html';
-
-        // Build a safe absolute URL to the canonical legal files folder to avoid
-        // relative-resolution issues that can produce paths like /html/pages/pages/...
-        const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
-        const encodedFolder = 'legal%20files';
-        let targetUrl = origin + '/html/pages/' + encodedFolder + '/' + target;
-
-        // Defensive normalization: some redirects historically produced
-        // duplicate '/pages/pages/' segments (see reported screenshots).
-        // Collapse any repeated '/pages/' sequences to a single one.
-        targetUrl = targetUrl.replace(/\/pages\/(?:pages\/)+/g, '/pages/');
-
-        // If already on the target, do nothing
-        if (path.endsWith('/' + target)) return false;
-
-        window.location.replace(targetUrl);
+        if (file === target) return false;
+        const newPath = path.replace(/[^/]+$/, target);
+        window.location.replace(newPath);
         return true;
     },
 
