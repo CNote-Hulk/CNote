@@ -932,3 +932,21 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+window.addEventListener('cn:language-changed', async () => {
+    const [lesson, course] = await Promise.all([fetchLesson(), fetchCourseStructure()]);
+    if (!lesson) return;
+    lessonData = lesson;
+
+    const allLessons = course ? (course.modules || []).flatMap(m => m.lessons || []) : [];
+    const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
+
+    renderLesson(lesson, course, lsnIdx);
+    buildArticleTOC();
+
+    if (course) {
+        const progressData = await fetchCourseProgress();
+        const completedIds = new Set((progressData?.completed_lesson_ids || []).map(Number));
+        renderSidebarTOC(course, completedIds);
+    }
+});

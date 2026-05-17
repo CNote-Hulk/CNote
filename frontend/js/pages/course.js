@@ -516,3 +516,10 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+window.addEventListener('cn:language-changed', async () => {
+    const course = await fetchCourse();
+    if (!course) return;
+    renderModules(course);
+    renderHeader(course, null);
+});
