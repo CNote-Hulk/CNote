@@ -354,15 +354,41 @@ function initSettings() {
     const sendSetPasswordBtn = document.getElementById('send-set-password-btn');
     const setPasswordLinkMsg = document.getElementById('set-password-link-msg');
     if (sendSetPasswordBtn) {
-        // Hide immediately if user already has a password (session may be stale)
-        if (user.has_password) {
-            if (passwordSectionInfo) passwordSectionInfo.style.display = 'none';
-            if (currentPasswordField) currentPasswordField.style.display = '';
-            if (newPasswordField) newPasswordField.style.display = '';
-            if (confirmPasswordField) confirmPasswordField.style.display = '';
+        // Refresh has_password from API in case session cache is stale
+        const _refreshPwSection = (hasPassword) => {
+            if (hasPassword) {
+                if (passwordSectionInfo) passwordSectionInfo.style.display = 'none';
+                if (currentPasswordField) currentPasswordField.style.display = '';
+                if (newPasswordField) newPasswordField.style.display = '';
+                if (confirmPasswordField) confirmPasswordField.style.display = '';
+            } else {
+                if (passwordSectionInfo) passwordSectionInfo.style.display = '';
+                if (currentPasswordField) currentPasswordField.style.display = 'none';
+                if (newPasswordField) newPasswordField.style.display = 'none';
+                if (confirmPasswordField) confirmPasswordField.style.display = 'none';
+            }
+        };
+        {
+            const _t = localStorage.getItem('cn_token');
+            fetch(API_BASE_URL + '/me', {
+                headers: _t ? { 'Authorization': 'Bearer ' + _t } : {},
+                credentials: 'include'
+            }).then(r => r.json()).then(d => {
+                if (!d.user) return;
+                const fresh = d.user.has_password;
+                if (fresh !== user.has_password) {
+                    _refreshPwSection(fresh);
+                    const cached = AuthModule.getCurrentUser();
+                    if (cached) {
+                        cached.has_password = fresh;
+                        localStorage.setItem(AuthModule.SESSION_KEY, JSON.stringify(cached));
+                    }
+                }
+            }).catch(() => {});
         }
         sendSetPasswordBtn.addEventListener('click', async () => {
-            if (user.has_password) return;
+            const cached = AuthModule.getCurrentUser();
+            if (cached && cached.has_password) return;
             sendSetPasswordBtn.disabled = true;
             sendSetPasswordBtn.textContent = 'Sending…';
             try {
@@ -374,7 +400,11 @@ function initSettings() {
                     body: JSON.stringify({})
                 });
                 const data = await res.json().catch(() => ({}));
-                showMessage(setPasswordLinkMsg, data.message || 'Email sent! Check your inbox.', true);
+                if (!res.ok || !data.success) {
+                    showMessage(setPasswordLinkMsg, data.error || 'Could not send the email. Try again later.', false);
+                } else {
+                    showMessage(setPasswordLinkMsg, data.message || 'Email sent! Check your inbox.', true);
+                }
             } catch {
                 showMessage(setPasswordLinkMsg, 'Could not send the email. Try again later.', false);
             } finally {
@@ -1160,7 +1190,19 @@ function initSettings() {
     if (deleteAccountBtn) {
         deleteAccountBtn.addEventListener('click', async () => {
             let result;
-            if (user.has_password) {
+            let currentHasPassword = user.has_password;
+            try {
+                const t = localStorage.getItem('cn_token');
+                const meRes = await fetch(API_BASE_URL + '/me', {
+                    headers: t ? { 'Authorization': 'Bearer ' + t } : {},
+                    credentials: 'include'
+                });
+                if (meRes.ok) {
+                    const meData = await meRes.json();
+                    if (meData.user) currentHasPassword = meData.user.has_password;
+                }
+            } catch {}
+            if (currentHasPassword) {
                 const dialogResult = await showConfirmDialog({ title: 'Delete account', message: 'This action is permanent. Enter your password to confirm.', confirmLabel: 'Delete account', cancelLabel: 'Cancel', withPassword: true });
                 if (!dialogResult || !dialogResult.confirmed) return;
                 if (!dialogResult.password) { showSettingsMessage('Enter your password to confirm.', false); return; }
