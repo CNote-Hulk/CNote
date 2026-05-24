@@ -124,9 +124,12 @@ router.get('/google', (req, res, next) => {
         } catch { /* invalid token, proceed as login */ }
     }
 
+    const state = req.query.platform === 'android' ? 'platform=android' : '';
+
     passport.authenticate('google', {
         scope: ['profile', 'email'],
-        session: false
+        session: false,
+        state: state
     })(req, res, next);
 });
 
@@ -216,6 +219,12 @@ router.get('/google/callback',
                 JWT_SECRET,
                 { expiresIn: '7d' }
             );
+
+            const isMobile = req.query.state && req.query.state.includes('platform=android');
+            if (isMobile) {
+                // Redirect to Android deep link with JWT token
+                return res.redirect(`cnote://auth/callback?token=${jwtToken}`);
+            }
 
             // Redirect with tokens encoded as base64 JSON in the URL hash
             // The frontend captures this on page load to store auth tokens
