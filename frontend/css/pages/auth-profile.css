@@ -101,7 +101,7 @@
 }
 
 .auth-card__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-light, #F5F0E8);
@@ -208,7 +208,7 @@
 }
 
 .auth-card__desc-col h2 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(1.4rem, 2.2vw, 1.9rem);
     color: var(--text-light, #F5F0E8);
@@ -628,11 +628,9 @@
     --p-card:  #221e1a;
     --p-border: rgba(var(--p-accent-rgb), 0.1);
     --p-sidebar: #111009;
-    --p-font-display: 'Playfair Display', Georgia, serif;
-    --p-font-body:    'DM Sans', system-ui, sans-serif;
     min-height: 100vh;
     background: transparent;
-    font-family: var(--p-font-body);
+    font-family: var(--font-sans);
     color: var(--p-text);
     position: relative;
     width: 100%;
@@ -751,7 +749,7 @@
 
 /* Name */
 .profile-name {
-    font-family: var(--p-font-display);
+    font-family: var(--font-serif);
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--p-text);
@@ -866,7 +864,7 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 8px;
-    font-family: var(--p-font-body);
+    font-family: var(--font-sans);
 }
 
 .profile-console-list__items {
@@ -896,7 +894,7 @@
     border-radius: 12px;
     font-size: 0.72rem;
     font-weight: 500;
-    font-family: var(--p-font-body);
+    font-family: var(--font-sans);
     transition: background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -932,7 +930,7 @@
     border: none;
     border-left: 2px solid transparent;
     background: transparent;
-    font-family: var(--p-font-body);
+    font-family: var(--font-sans);
     border-radius: 6px;
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     text-align: left;
@@ -990,7 +988,7 @@
 }
 
 .settings-page-title {
-    font-family: var(--p-font-display, 'Playfair Display', Georgia, serif);
+    font-family: var(--font-serif);
     font-size: 2.2rem;
     font-weight: 700;
     color: var(--p-text);
@@ -1023,7 +1021,7 @@
     border: none;
     border-bottom: 2px solid transparent;
     cursor: pointer;
-    font-family: var(--p-font-body);
+    font-family: var(--font-sans);
     transition: color 0.2s ease, border-color 0.2s ease;
     white-space: nowrap;
     margin-bottom: -1px;
@@ -1071,7 +1069,7 @@
 }
 
 .course-card__section-title {
-    font-family: var(--p-font-body);
+    font-family: var(--font-sans);
     font-size: 0.88rem;
     font-weight: 600;
     text-transform: none;
@@ -1107,7 +1105,7 @@
 }
 
 .course-card__name {
-    font-family: var(--p-font-display);
+    font-family: var(--font-serif);
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--p-text);
@@ -1251,7 +1249,7 @@
 }
 
 .achievement-badge__name {
-    font-family: var(--p-font-display);
+    font-family: var(--font-serif);
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--p-text);
@@ -1785,7 +1783,7 @@
 }
 
 .my-listings-header__title {
-    font-family: var(--p-font-display);
+    font-family: var(--font-serif);
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--p-text);
@@ -1897,7 +1895,7 @@
 
 .app-modal__title {
     color: var(--p-text, #e8d8b8);
-    font-family: var(--p-font-display, Georgia, serif);
+    font-family: var(--font-serif);
     font-size: 1.1rem;
     margin-bottom: 8px;
 }
@@ -1922,7 +1920,7 @@
     font-size: 0.86rem;
     font-weight: 700;
     cursor: pointer;
-    font-family: var(--p-font-body, system-ui, sans-serif);
+    font-family: var(--font-sans);
 }
 
 .app-modal__btn--ghost {
@@ -2733,7 +2731,7 @@ a.chat-message__username:hover {
 }
 
 .dash-stat__value {
-    font-family: var(--p-font-display, 'Playfair Display', Georgia, serif);
+    font-family: var(--font-serif);
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--p-text, #e8d8b8);
@@ -2741,7 +2739,7 @@ a.chat-message__username:hover {
 }
 
 .dash-stat__label {
-    font-family: var(--p-font-body, 'DM Sans', system-ui, sans-serif);
+    font-family: var(--font-sans);
     font-size: 0.62rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -2761,7 +2759,7 @@ a.chat-message__username:hover {
 }
 
 .dash-section__head h3 {
-    font-family: var(--p-font-body, 'DM Sans', system-ui, sans-serif);
+    font-family: var(--font-sans);
     font-size: 0.7rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -2802,7 +2800,7 @@ a.chat-message__username:hover {
 }
 
 .dash-card__head h3 {
-    font-family: var(--p-font-body, 'DM Sans', system-ui, sans-serif);
+    font-family: var(--font-sans);
     font-size: 0.82rem;
     font-weight: 500;
     color: var(--p-text, #e8d8b8);
@@ -2810,7 +2808,7 @@ a.chat-message__username:hover {
 }
 
 .dash-card__link {
-    font-family: var(--p-font-body, 'DM Sans', system-ui, sans-serif);
+    font-family: var(--font-sans);
     font-size: 0.72rem;
     color: var(--p-accent, var(--accent-color));
     text-decoration: none;
@@ -3164,7 +3162,7 @@ a.chat-message__username:hover {
 
 /* Page title */
 .settings-page-title {
-    font-family: var(--p-font-display, 'Playfair Display', serif);
+    font-family: var(--font-serif);
     font-size: 2.2rem;
     font-weight: 700;
     color: var(--p-text, #F5F0E8);
@@ -3217,7 +3215,7 @@ a.chat-message__username:hover {
     cursor: pointer;
     white-space: nowrap;
     transition: color 0.2s, border-color 0.2s;
-    font-family: var(--p-font-body, 'DM Sans', sans-serif);
+    font-family: var(--font-sans);
 }
 .settings-tab:hover {
     color: var(--p-text, #F5F0E8);
@@ -3926,7 +3924,7 @@ a.chat-message__username:hover {
 
 /* Inline subtitle when used inside nb-left__body */
 .nb-left__inner .auth-nb-subtitle {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.8rem;
     color: rgba(61, 42, 26, 0.55);
     margin: 0 0 0.75rem;
@@ -3935,7 +3933,7 @@ a.chat-message__username:hover {
 
 /* Success / invalid state headings inside nb */
 .nb-left__inner .auth-nb-state-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 1.3rem;
     font-weight: 700;
     color: #2a1a0e;
@@ -3943,7 +3941,7 @@ a.chat-message__username:hover {
 }
 
 .nb-left__inner .auth-nb-state-text {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.82rem;
     color: rgba(61, 42, 26, 0.6);
     margin: 0 0 1rem;
@@ -4142,7 +4140,7 @@ a.chat-message__username:hover {
 }
 
 .provider-info h3 {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-light, #F5F0E8);

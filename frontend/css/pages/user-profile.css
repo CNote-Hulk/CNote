@@ -13,7 +13,7 @@
     padding: calc(var(--cn-nav-offset, 64px) + 8px) 0 0;
     background: transparent;
     color: var(--text-light);
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     min-height: 100vh;
     width: 100%;
     position: relative;
@@ -202,7 +202,7 @@
 }
 
 .up-profile-info .profile-name {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 1.15rem;
     font-weight: 700;
     color: var(--text-light, #F5F0E8);
@@ -265,7 +265,7 @@
 }
 
 .up-card__title {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--text-light, #F5F0E8);
@@ -331,7 +331,7 @@
 }
 
 .up-stats-card .dash-stat__value {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-light, #F5F0E8);
@@ -429,7 +429,7 @@
     color: var(--text-gray, #A89F94);
     font-size: 0.83rem;
     font-weight: 600;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     cursor: pointer;
     transition: color 0.18s ease, background 0.18s ease;
 }
@@ -528,7 +528,7 @@
 }
 
 .user-section-title {
-    font-family: 'DM Sans', system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.88rem;
     font-weight: 700;
     color: var(--text-light, #F5F0E8);

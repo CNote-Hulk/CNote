@@ -58,7 +58,7 @@
 }
 
 .evl-t1 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(1.6rem, 2.8vw, 2.6rem);
     color: var(--text-light);
@@ -67,7 +67,7 @@
 }
 
 .evl-t2 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(3.5rem, 7.5vw, 6.5rem);
     color: var(--text-light);
@@ -76,7 +76,7 @@
 }
 
 .evl-t3 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(1.8rem, 3.5vw, 3rem);
     color: var(--accent-color);
@@ -86,7 +86,7 @@
 }
 
 .evl-tagline {
-    font-family: Georgia, serif;
+    font-family: var(--font-serif);
     font-size: clamp(0.88rem, 1.3vw, 1rem);
     color: var(--text-gray);
     letter-spacing: 0.06em;
@@ -187,7 +187,7 @@
 }
 
 .evl-card__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(1.4rem, 2vw, 1.8rem);
     color: var(--card-text);
@@ -200,7 +200,7 @@
     color: var(--card-dim);
     margin: 0 0 18px;
     font-style: italic;
-    font-family: Georgia, serif;
+    font-family: var(--font-serif);
 }
 
 /* Stats row */
@@ -225,7 +225,7 @@
 .evl-stat:last-child { border-right: none; }
 
 .evl-stat__num {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--card-text);
@@ -1161,7 +1161,7 @@
     padding: 0.35rem 0;
     color: var(--text-gray);
     font-size: 0.85rem;
-    font-family: 'Consolas', 'Monaco', monospace;
+    font-family: var(--font-mono);
 }
 
 /* Timeline Note/Comment Box */

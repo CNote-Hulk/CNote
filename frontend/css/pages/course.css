@@ -125,7 +125,7 @@
 
 /* Title */
 .crs-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: clamp(1.8rem, 3.2vw, 2.6rem);
     font-weight: 700;
     color: var(--text-light);
@@ -1204,7 +1204,7 @@
 .crs-cert__awarded-to { font-size: 0.72rem; color: var(--text-gray); margin: 0 0 5px; }
 [data-theme="light"] .crs-cert__awarded-to { color: #6b6560; }
 .crs-cert__name {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 1.55rem;
     font-weight: 700;
     font-style: italic;

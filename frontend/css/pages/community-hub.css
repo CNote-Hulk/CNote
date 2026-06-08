@@ -3479,7 +3479,7 @@
 }
 
 .hub-login-gate__title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--text-light);
@@ -3487,7 +3487,7 @@
 }
 
 .hub-login-gate__text {
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.95rem;
     color: var(--text-gray);
     max-width: 420px;
@@ -3497,7 +3497,7 @@
 
 .hub-login-gate__btn {
     display: inline-block;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.92rem;
     font-weight: 600;
     color: var(--primary-color, #1B1714);

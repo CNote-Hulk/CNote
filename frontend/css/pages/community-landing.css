@@ -107,7 +107,7 @@
 }
 
 .clr-t1 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(1.8rem, 3vw, 2.8rem);
     color: var(--text-light);
@@ -116,7 +116,7 @@
 }
 
 .clr-t2 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(4rem, 8vw, 7rem);
     color: var(--text-light);
@@ -125,7 +125,7 @@
 }
 
 .clr-t3 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(2rem, 3.8vw, 3.2rem);
     color: var(--text-light);
@@ -143,7 +143,7 @@
 }
 
 .clr-tagline {
-    font-family: Georgia, serif;
+    font-family: var(--font-serif);
     font-size: clamp(0.88rem, 1.3vw, 1rem);
     color: var(--text-gray);
     letter-spacing: 0.06em;
@@ -252,7 +252,7 @@
 }
 
 .clr-card__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(1.5rem, 2.2vw, 1.9rem);
     color: var(--card-text);
@@ -265,7 +265,7 @@
     color: var(--card-dim);
     margin: 0 0 20px;
     font-style: italic;
-    font-family: Georgia, serif;
+    font-family: var(--font-serif);
     line-height: 1.5;
 }
 
@@ -355,7 +355,7 @@
 }
 
 .clr-ann__name {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-style: italic;
     font-size: clamp(1rem, 1.5vw, 1.25rem);
@@ -538,7 +538,7 @@
 }
 
 .clr-heading {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-size: clamp(1.75rem, 2.8vw, 2.4rem);
     color: var(--text-light);
@@ -548,7 +548,7 @@
 }
 
 .clr-subheading {
-    font-family: Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 0.9rem;
     color: var(--text-gray);
     margin: 8px 0 0;
@@ -1033,7 +1033,7 @@
 .cl-trending__item:hover { background: rgba(255,255,255,0.025); }
 
 .cl-trending__rank {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-style: italic;
     font-size: 1.1rem;
@@ -1328,7 +1328,7 @@
 }
 
 .cl-stat-card__number {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-weight: 700;
     font-style: italic;
     font-size: clamp(2.2rem, 4vw, 3.4rem);

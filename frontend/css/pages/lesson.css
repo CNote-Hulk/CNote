@@ -257,7 +257,7 @@
 }
 
 .lsn-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: clamp(1.8rem, 3.5vw, 3rem);
     font-weight: 700;
     color: var(--text-light);
@@ -712,7 +712,7 @@
 }
 
 .lsn-quiz-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-light);
@@ -911,7 +911,7 @@
     font-size: 3.5rem;
     font-weight: 700;
     color: var(--accent-color);
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     margin: 0 0 8px;
     line-height: 1;
 }
@@ -995,7 +995,7 @@
     to   { transform: scale(1); opacity: 1; }
 }
 
-.lsn-course-complete__title { font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 700; color: var(--text-light); margin: 0 0 14px; }
+.lsn-course-complete__title { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--text-light); margin: 0 0 14px; }
 .lsn-course-complete__sub { color: var(--text-gray); font-size: 0.96rem; line-height: 1.6; max-width: 400px; margin: 0 auto 40px; }
 .lsn-course-complete__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
@@ -1054,7 +1054,7 @@
 
 .lsn-comments__header { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
 
-.lsn-comments__title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.18rem; font-weight: 700; color: var(--text-light); margin: 0; }
+.lsn-comments__title { font-family: var(--font-serif); font-size: 1.18rem; font-weight: 700; color: var(--text-light); margin: 0; }
 
 .lsn-comments__count {
     font-size: 0.72rem;

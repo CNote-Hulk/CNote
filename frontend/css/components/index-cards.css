@@ -80,7 +80,7 @@
 }
 
 .hub-card__title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.15rem;
     font-weight: 600;
     color: var(--text-primary);
@@ -136,7 +136,7 @@
     border-radius: 12px;
     font-size: 0.85rem;
     font-weight: 500;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-sans);
     text-decoration: none;
     border: 1px solid rgba(var(--accent-rgb), 0.28);
     background: rgba(var(--accent-rgb), 0.08);

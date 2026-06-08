@@ -73,7 +73,7 @@ li {
 
 /* Code & Pre */
 code, pre {
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: 0.9em;
     background: rgba(var(--secondary-rgb), 0.12);
     padding: 0.2em 0.4em;

@@ -46,7 +46,7 @@
     margin-bottom: 18px;
 }
 .su-card__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: var(--font-serif);
     font-size: 1.55rem;
     font-weight: 700;
     color: var(--text-light);
