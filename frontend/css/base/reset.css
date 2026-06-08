@@ -22,7 +22,7 @@ body {
     background: var(--dark-bg);
     color: var(--text-light);
     line-height: 1.6;
-    font-family: var(--font-sans);
+    font-family: var(--font-serif);
     overflow-x: hidden;
     min-height: 100vh;
     display: flex;
