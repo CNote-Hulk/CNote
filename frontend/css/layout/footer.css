@@ -21,6 +21,7 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    font-family: var(--font-sans);
 }
 
 .footer .footer-main,

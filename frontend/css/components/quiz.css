@@ -165,7 +165,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
-    font-family: inherit;
+    font-family: var(--font-sans);
 }
 
 .quiz-retry-btn:hover {

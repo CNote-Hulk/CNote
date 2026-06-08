@@ -29,6 +29,8 @@
     justify-content: space-between;
     overflow: visible;
 
+    font-family: var(--font-sans);
+
     /* Auto-hide smooth transition */
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
