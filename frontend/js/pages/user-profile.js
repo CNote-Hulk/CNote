@@ -701,7 +701,8 @@ const t = key => I18nModule.t(key);
                 `;
                 document.getElementById('avatar-remove-btn').addEventListener('click', async () => {
                     try {
-                        await AuthModule.updateProfile({ avatar: '' });
+                        const result = await AuthModule.removeAvatar();
+                        if (!result || !result.success) return;
                         document.getElementById('user-avatar-img').hidden = true;
                         document.getElementById('user-avatar-fallback').hidden = false;
                         closeAvatarLightbox();

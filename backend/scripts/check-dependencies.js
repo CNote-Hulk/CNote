@@ -13,6 +13,7 @@ const pkg = JSON.parse(
 
 // Every external (non-built-in) package used in backend/ code
 const required = [
+    '@supabase/supabase-js',
     'bcrypt',
     'cookie-parser',
     'cors',
@@ -20,11 +21,13 @@ const required = [
     'express',
     'helmet',
     'jsonwebtoken',
+    'multer',
     'passport',
     'passport-google-oauth20',
     'pg',
     'qrcode',
     'resend',
+    'sharp',
     'speakeasy',
     'ua-parser-js'
 ];

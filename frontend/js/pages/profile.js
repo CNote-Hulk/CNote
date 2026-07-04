@@ -183,7 +183,7 @@ function initSettings() {
         }
     };
 
-    const toCompressedDataUrl = (file) => new Promise((resolve, reject) => {
+    const toCompressedBlob = (file) => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
             const img = new Image();
@@ -195,7 +195,10 @@ function initSettings() {
                 const canvas = document.createElement('canvas');
                 canvas.width = w; canvas.height = h;
                 canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                resolve(canvas.toDataURL('image/jpeg', 0.9));
+                canvas.toBlob(blob => {
+                    if (blob) resolve(blob);
+                    else reject(new Error('Could not process image.'));
+                }, 'image/jpeg', 0.9);
             };
             img.onerror = () => reject(new Error('Selected file is not a valid image.'));
             img.src = reader.result;
@@ -241,8 +244,12 @@ function initSettings() {
 
     lbRemoveBtn?.addEventListener('click', async () => {
         try {
-            await AuthModule.updateProfile({ avatar: '' });
-            user.avatar = '';
+            const result = await AuthModule.removeAvatar();
+            if (!result || !result.success) {
+                showSettingsMessage(result?.error || 'Could not remove profile picture.', false);
+                return;
+            }
+            user.avatar = result.user.avatar;
             renderAvatar('');
             if (lbImg) { lbImg.hidden = true; lbFallback.hidden = false; }
             showSettingsMessage('Profile picture removed.', true);
@@ -269,9 +276,13 @@ function initSettings() {
             return;
         }
         try {
-            const avatarDataUrl = await toCompressedDataUrl(file);
-            await AuthModule.updateProfile({ avatar: avatarDataUrl });
-            user.avatar = avatarDataUrl;
+            const blob = await toCompressedBlob(file);
+            const result = await AuthModule.uploadAvatar(blob);
+            if (!result || !result.success) {
+                showSettingsMessage(result?.error || 'Could not update profile picture.', false);
+                return;
+            }
+            user.avatar = result.user.avatar;
             renderAvatar(getPreferredAvatar());
             showSettingsMessage('Profile picture has been updated.', true);
         } catch (error) {

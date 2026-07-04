@@ -482,7 +482,7 @@ export const SearchModule = {
             html += `<div class="search-category__label search-category__label--${cat}">${ICONS[cat] || ''} ${CATEGORY_LABELS[cat] || cat}</div>`;
             items.forEach(item => {
                 const imgTag = item.img
-                    ? `<img class="search-result__img" src="${item.img}" alt="" loading="lazy" onerror="this.style.display='none'">`
+                    ? `<img class="search-result__img" src="${this._escHtml(item.img)}" alt="" loading="lazy" onerror="this.style.display='none'">`
                     : `<span class="search-result__icon search-result__icon--${cat}">${ICONS[cat] || ''}</span>`;
                 const badgeHtml = item.badge
                     ? `<span class="search-result__badge">${this._escHtml(item.badge)}</span>`

@@ -319,7 +319,10 @@ async function initializeSchema() {
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS provider TEXT DEFAULT NULL`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'RON'`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS url TEXT DEFAULT ''`,
-		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_at TIMESTAMP DEFAULT NULL`
+		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_at TIMESTAMP DEFAULT NULL`,
+		`INSERT INTO storage.buckets (id, name, public, allowed_mime_types, file_size_limit)
+			VALUES ('avatars', 'avatars', true, ARRAY['image/jpeg','image/png','image/webp'], 2097152)
+			ON CONFLICT (id) DO NOTHING`
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

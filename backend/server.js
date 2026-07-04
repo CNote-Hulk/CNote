@@ -99,7 +99,7 @@ function getOriginHost(value) {
 	}
 }
 
-const requiredEnv = ['DATABASE_URL', 'JWT_SECRET'];
+const requiredEnv = ['DATABASE_URL', 'JWT_SECRET', 'SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
 
 const missingEnv = getMissingEnvVars(requiredEnv);
 if (missingEnv.length > 0) {
@@ -285,12 +285,22 @@ const registerLimiter = rateLimit({
 	message: { success: false, error: 'Prea multe înregistrări de pe acest IP. Încearcă mai târziu.' }
 });
 
+const avatarLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 20,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many avatar changes, please try again later.' }
+});
+
 app.post('/api/login', authLimiter);
 app.post('/api/register', registerLimiter);
 app.post('/api/request-reset', authLimiter);
 app.post('/api/reset-password', authLimiter);
 app.post('/api/2fa/verify', twoFactorLimiter);
 app.post('/api/2fa/email-fallback', twoFactorLimiter);
+app.post('/api/me/avatar', avatarLimiter);
+app.delete('/api/me/avatar', avatarLimiter);
 
 /* ── Request sanitize logger — scrubs sensitive fields before logging ─────
    Only active in development (NODE_ENV !== 'production').

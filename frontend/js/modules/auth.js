@@ -102,7 +102,10 @@ export const AuthModule = {
             headers,
             credentials: 'include'
         };
-        if (body !== undefined) {
+        if (body instanceof FormData) {
+            // Let the browser set Content-Type so the multipart boundary is included
+            opts.body = body;
+        } else if (body !== undefined) {
             headers['Content-Type'] = 'application/json';
             opts.body = JSON.stringify(body);
         }
@@ -242,6 +245,40 @@ return { success: false, error: 'Could not contact the server.' };
 
         try {
             const data = await this._api('PUT', '/me', fields);
+            if (data.success && data.user) {
+                this._setSession(data.user);
+            }
+            return data;
+        } catch {
+            return { success: false, error: 'Could not contact the server.' };
+        }
+    },
+
+    /** Upload a new profile picture. `blob` is a File/Blob (image). */
+    async uploadAvatar(blob) {
+        const cur = this.getCurrentUser();
+        if (!cur) return { success: false, error: 'Not logged in.' };
+
+        try {
+            const formData = new FormData();
+            formData.append('avatar', blob, 'avatar.jpg');
+            const data = await this._api('POST', '/me/avatar', formData);
+            if (data.success && data.user) {
+                this._setSession(data.user);
+            }
+            return data;
+        } catch {
+            return { success: false, error: 'Could not contact the server.' };
+        }
+    },
+
+    /** Remove the current profile picture. */
+    async removeAvatar() {
+        const cur = this.getCurrentUser();
+        if (!cur) return { success: false, error: 'Not logged in.' };
+
+        try {
+            const data = await this._api('DELETE', '/me/avatar');
             if (data.success && data.user) {
                 this._setSession(data.user);
             }

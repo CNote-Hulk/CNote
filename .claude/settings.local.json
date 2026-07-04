@@ -3,7 +3,11 @@
     "allow": [
       "WebFetch(domain:www.resetera.com)",
       "WebSearch",
-      "WebFetch(domain:www.youtube.com)"
+      "WebFetch(domain:www.youtube.com)",
+      "mcp__claude_ai_Supabase__list_projects",
+      "mcp__claude_ai_Supabase__execute_sql",
+      "Bash(node -e \"const p=require\\('./backend/package.json'\\); console.log\\(Object.keys\\(p.dependencies||{}\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(grep -rn \"http\\(s\\)\\\\|startsWith\\('http'\\)\\\\|/^https\\\\?/\\\\|isValidUrl\\\\|data:image\" backend/routes backend/utils backend/middleware)"
     ]
   }
 }

@@ -13,14 +13,37 @@ const express = require('express');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const sharp = require('sharp');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
 const emailService = require('../services/email');
 const { validatePassword } = require('../utils/passwordPolicy');
 const { getLevelFromXP, awardXP } = require('../utils/gamification');
+const { supabaseAdmin } = require('../utils/supabaseStorage');
 
 const router = express.Router();
+
+const avatarUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 }
+});
+
+/**
+ * Checks the actual file signature (magic bytes) for JPEG/PNG/WebP/GIF.
+ * Rejects anything else — including SVG, which `sharp` would otherwise
+ * rasterize via librsvg instead of erroring, letting untrusted markup
+ * (script tags, external entity/XXE references) reach an XML parser.
+ */
+function isRasterImage(buffer) {
+    if (!buffer || buffer.length < 12) return false;
+    if (buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF) return true; // JPEG
+    if (buffer.slice(0, 8).equals(Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]))) return true; // PNG
+    if (buffer.slice(0, 4).toString('ascii') === 'RIFF' && buffer.slice(8, 12).toString('ascii') === 'WEBP') return true; // WebP
+    if (buffer.slice(0, 6).toString('ascii') === 'GIF87a' || buffer.slice(0, 6).toString('ascii') === 'GIF89a') return true; // GIF
+    return false;
+}
 
 const BCRYPT_ROUNDS = 12;
 const TOKEN_EXPIRY_HOURS = 24;
@@ -676,7 +699,7 @@ const USERNAME_COOLDOWN_DAYS = 7;
 
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
-    const { username, bio, avatar, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links, nickname, birth_date } = req.body;
+    const { username, bio, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links, nickname, birth_date } = req.body;
     const updates = [];
     const params = [];
     let paramIndex = 1;
@@ -713,12 +736,6 @@ router.put('/me', authRequired, async (req, res) => {
     if (bio !== undefined) {
         updates.push(`bio = $${paramIndex++}`);
         params.push(String(bio).trim().slice(0, 500));
-    }
-    if (avatar !== undefined) {
-        const av = String(avatar).trim();
-        const safeAvatar = (av === '' || av.startsWith('https://') || av.startsWith('http://')) ? av.slice(0, 2000) : '';
-        updates.push(`avatar = $${paramIndex++}`);
-        params.push(safeAvatar);
     }
     if (favorite_consoles !== undefined) {
         updates.push(`favorite_consoles = $${paramIndex++}`);
@@ -811,6 +828,70 @@ router.put('/me', authRequired, async (req, res) => {
         }
     } catch (err) {
         console.error('Update profile error:', err.message);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// POST /api/me/avatar — Upload a new profile picture
+router.post('/me/avatar', authRequired, (req, res) => {
+    avatarUpload.single('avatar')(req, res, async (err) => {
+        if (err) {
+            const message = err.code === 'LIMIT_FILE_SIZE'
+                ? 'Image must be smaller than 5MB.'
+                : 'Could not process upload.';
+            return res.status(400).json({ success: false, error: message });
+        }
+        if (!req.file) {
+            return res.status(400).json({ success: false, error: 'No image provided.' });
+        }
+        if (!isRasterImage(req.file.buffer)) {
+            return res.status(400).json({ success: false, error: 'Invalid image file.' });
+        }
+
+        let processed;
+        try {
+            processed = await sharp(req.file.buffer)
+                .rotate()
+                .resize(512, 512, { fit: 'cover' })
+                .webp({ quality: 85 })
+                .toBuffer();
+        } catch {
+            return res.status(400).json({ success: false, error: 'Invalid image file.' });
+        }
+
+        const objectPath = `${req.user.id}.webp`;
+        try {
+            const { error: uploadError } = await supabaseAdmin.storage
+                .from('avatars')
+                .upload(objectPath, processed, { contentType: 'image/webp', upsert: true });
+            if (uploadError) throw uploadError;
+
+            const { data } = supabaseAdmin.storage.from('avatars').getPublicUrl(objectPath);
+            const avatarUrl = `${data.publicUrl}?v=${Date.now()}`;
+
+            await pool.query('UPDATE users SET avatar = $1, updated_at = NOW() WHERE id = $2', [avatarUrl, req.user.id]);
+            const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+            const updatedUser = updatedResult.rows[0];
+            res.json({ success: true, user: sanitizeUser(updatedUser) });
+            if (updatedUser.avatar && updatedUser.bio) {
+                awardXP(pool, req.app.get('io'), req.user.id, 'profile_complete', 'done').catch(() => {});
+            }
+        } catch (uploadErr) {
+            console.error('Avatar upload error:', uploadErr.message);
+            res.status(500).json({ success: false, error: 'Internal error.' });
+        }
+    });
+});
+
+// DELETE /api/me/avatar — Remove the current profile picture
+router.delete('/me/avatar', authRequired, async (req, res) => {
+    try {
+        await supabaseAdmin.storage.from('avatars').remove([`${req.user.id}.webp`]);
+        await pool.query('UPDATE users SET avatar = $1, updated_at = NOW() WHERE id = $2', ['', req.user.id]);
+        const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+        res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });
+    } catch (err) {
+        console.error('Avatar remove error:', err.message);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
