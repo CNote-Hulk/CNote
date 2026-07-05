@@ -254,6 +254,7 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
       - typography.css
       - variables.css
     - **components/**
+      - avatar-crop.css
       - buttons.css
       - cards.css
       - cookies.css
@@ -434,6 +435,7 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
       - achievements.js
       - animations.js
       - auth.js
+      - avatar-cropper.js
       - contact-form.js
       - custom-player.js
       - diacritics.js
