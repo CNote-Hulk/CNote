@@ -48,6 +48,7 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
     - insert-translations.js
   - **services/**
     - email.js
+    - firebaseAdmin.js
     - marketplace-sync.js
   - **utils/**
     - device.js

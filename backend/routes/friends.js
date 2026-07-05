@@ -14,6 +14,7 @@ const { authRequired } = require('../middleware/auth');
 const emailService = require('../services/email');
 const { createNotification } = require('./notifications');
 const { awardXP } = require('../utils/gamification');
+const { sendPushToUser } = require('../services/firebaseAdmin');
 
 const router = express.Router();
 
@@ -67,6 +68,13 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                         `${req.user.username} accepted your friend request.`,
                         '/html/pages/home.html#friends'
                     );
+                    // FCM push — fire-and-forget, same pattern as DM push (routes/dm.js)
+                    sendPushToUser(
+                        receiverId,
+                        req.user.username,
+                        'accepted your friend request.',
+                        { type: 'friend_accepted', userId: String(req.user.id) }
+                    ).catch(err => console.error('Friend accepted push error:', err));
                 }
 
                 if (receiver.email && receiver.notify_new_friend !== false) {
@@ -98,6 +106,12 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                 `${req.user.username} sent you a friend request.`,
                 '/html/pages/home.html#friends'
             );
+            sendPushToUser(
+                receiverId,
+                req.user.username,
+                'sent you a friend request.',
+                { type: 'friend_request', userId: String(req.user.id) }
+            ).catch(err => console.error('Friend request push error:', err));
         }
 
         if (receiver.email && receiver.notify_new_friend !== false) {
@@ -153,6 +167,12 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
                 `${req.user.username} accepted your friend request.`,
                 '/html/pages/home.html#friends'
             );
+            sendPushToUser(
+                request.sender_id,
+                req.user.username,
+                'accepted your friend request.',
+                { type: 'friend_accepted', userId: String(req.user.id) }
+            ).catch(err => console.error('Friend accepted push error:', err));
         }
 
         if (request.sender_email && request.sender_notify_new_friend !== false) {

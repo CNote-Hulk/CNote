@@ -72,4 +72,22 @@ async function sendPushNotification(fcmToken, title, body, data) {
     }
 }
 
-module.exports = { sendPushNotification };
+/**
+ * sendPushToUser
+ * @description Fans one push message out to every device a user has registered
+ * in user_fcm_tokens. Silently does nothing when the user has no tokens (the
+ * normal case for users who never opened the Android app).
+ */
+async function sendPushToUser(userId, title, body, data) {
+    if (!firebaseConfigured) return;
+    const tokensResult = await pool.query(
+        'SELECT fcm_token FROM user_fcm_tokens WHERE user_id = $1',
+        [userId]
+    );
+    if (tokensResult.rows.length === 0) return;
+    await Promise.all(
+        tokensResult.rows.map(row => sendPushNotification(row.fcm_token, title, body, data))
+    );
+}
+
+module.exports = { sendPushNotification, sendPushToUser };
