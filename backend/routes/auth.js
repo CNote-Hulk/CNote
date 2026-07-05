@@ -859,6 +859,9 @@ router.post('/me/avatar', authRequired, (req, res) => {
             return res.status(400).json({ success: false, error: 'Invalid image file.' });
         }
 
+        if (!supabaseAdmin) {
+            return res.status(503).json({ success: false, error: 'Avatar storage is not configured on the server.' });
+        }
         const objectPath = `${req.user.id}.webp`;
         try {
             const { error: uploadError } = await supabaseAdmin.storage
@@ -885,6 +888,9 @@ router.post('/me/avatar', authRequired, (req, res) => {
 
 // DELETE /api/me/avatar — Remove the current profile picture
 router.delete('/me/avatar', authRequired, async (req, res) => {
+    if (!supabaseAdmin) {
+        return res.status(503).json({ success: false, error: 'Avatar storage is not configured on the server.' });
+    }
     try {
         await supabaseAdmin.storage.from('avatars').remove([`${req.user.id}.webp`]);
         await pool.query('UPDATE users SET avatar = $1, updated_at = NOW() WHERE id = $2', ['', req.user.id]);
