@@ -360,6 +360,13 @@ const t = key => I18nModule.t(key);
                 document.getElementById('user-bio').textContent = profile.bio || t('up_no_description');
                 document.getElementById('user-date').textContent = t('up_member_since') + ' ' + new Date(profile.created_at).toLocaleDateString(I18nModule.lang, { year: 'numeric', month: 'long' });
 
+                // Email — only sent by the API when the user enabled "show email"
+                const emailEl = document.getElementById('user-email');
+                if (emailEl && profile.email) {
+                    emailEl.textContent = '✉️ ' + profile.email;
+                    emailEl.hidden = false;
+                }
+
                 // Show admin badge if user is admin
                 const adminBadge = document.getElementById('user-admin-badge');
                 if (adminBadge && profile.role === 'admin') {

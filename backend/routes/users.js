@@ -76,7 +76,7 @@ router.get('/users/:username', async (req, res) => {
     try {
         const { username } = req.params;
         const result = await pool.query(
-            `SELECT id, username, bio, avatar, avatar_url, favorite_consoles, owned_consoles, role, created_at,
+            `SELECT id, username, email, bio, avatar, favorite_consoles, owned_consoles, role, created_at,
                     social_discord, social_twitter, social_youtube, social_instagram,
                     show_email, show_stats, show_friends, show_social_links
              FROM users WHERE LOWER(username) = LOWER($1)`,
@@ -88,8 +88,6 @@ router.get('/users/:username', async (req, res) => {
         }
 
         const user = result.rows[0];
-        const rawAvatarUrl = typeof user.avatar_url === 'string' ? user.avatar_url.trim() : '';
-        const safeAvatarUrl = /googleusercontent\.com|ggpht\.com/i.test(rawAvatarUrl) ? '' : rawAvatarUrl;
 
         const favResult = await pool.query('SELECT console_id FROM user_favorites WHERE user_id = $1', [user.id]);
         const ownedResult = await pool.query('SELECT console_id FROM user_owned_consoles WHERE user_id = $1', [user.id]);
@@ -102,9 +100,10 @@ router.get('/users/:username', async (req, res) => {
             user: {
                 id: user.id,
                 username: user.username,
+                email: user.show_email === true ? (user.email || '') : '',
+                show_email: user.show_email === true,
                 bio: user.bio || '',
                 avatar: user.avatar || '',
-                avatar_url: safeAvatarUrl,
                 favorite_consoles: user.favorite_consoles || '',
                 owned_consoles: user.owned_consoles || '',
                 favorite_console_ids: favResult.rows.map(r => r.console_id),
