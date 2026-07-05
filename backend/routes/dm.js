@@ -12,6 +12,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
+const { sendPushNotification } = require('../services/firebaseAdmin');
 
 const router = express.Router();
 
@@ -250,6 +251,15 @@ router.post('/send', authRequired, async (req, res) => {
             );
         } catch { /* notification is non-critical */ }
 
+        // FCM push — fire-and-forget, never on the response's critical path. Skips
+        // silently if the sender somehow messaged themselves, or the receiver has
+        // no registered devices.
+        if (receiverId !== req.user.id) {
+            sendDmPush(receiverId, req.user.id, req.user.username, safeMessage).catch(err =>
+                console.error('DM push notification error:', err)
+            );
+        }
+
         res.status(201).json({ success: true, message: dm });
         awardXP(pool, req.app.get('io'), req.user.id, 'first_dm', 'first').catch(() => {});
     } catch (err) {
@@ -271,5 +281,31 @@ router.get('/unread-count', authRequired, async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
+
+/**
+ * sendDmPush
+ * @description Pushes a "new DM" notification to every device the receiver
+ * has registered. Silently does nothing if there are no tokens — that's the
+ * normal case for a receiver who never opened the app on this build.
+ */
+async function sendDmPush(receiverId, senderId, senderUsername, message) {
+    const tokensResult = await pool.query(
+        'SELECT fcm_token FROM user_fcm_tokens WHERE user_id = $1',
+        [receiverId]
+    );
+    if (tokensResult.rows.length === 0) return;
+
+    const body = message.length > 100 ? `${message.slice(0, 100)}...` : message;
+    // FCM data payload values must all be strings.
+    const pushData = {
+        type: 'dm',
+        senderId: String(senderId),
+        conversationWith: String(senderId)
+    };
+
+    await Promise.all(
+        tokensResult.rows.map(row => sendPushNotification(row.fcm_token, senderUsername, body, pushData))
+    );
+}
 
 module.exports = router;
