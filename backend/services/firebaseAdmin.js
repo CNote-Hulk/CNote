@@ -53,10 +53,23 @@ const DEAD_TOKEN_ERRORS = new Set([
 async function sendPushNotification(fcmToken, title, body, data) {
     if (!firebaseConfigured) return;
     try {
+        // Data-only (no top-level "notification" block): with a notification block, the
+        // OS auto-displays a plain system notification and skips onMessageReceived()
+        // entirely whenever the Android app isn't in the foreground — which is exactly
+        // when a push matters most, and it's the only place the app builds its own rich
+        // notification (message stacking, inline reply, mute). Data-only messages always
+        // reach onMessageReceived(), foreground or background. title/body ride inside
+        // `data` instead (all FCM data values must be strings, same as everything else here).
         await getMessaging().send({
             token: fcmToken,
-            notification: { title, body },
-            data: data || {}
+            data: {
+                ...(data || {}),
+                title: String(title),
+                body: String(body)
+            },
+            android: {
+                priority: 'high'
+            }
         });
     } catch (err) {
         const code = err && (err.code || err.errorInfo?.code);
