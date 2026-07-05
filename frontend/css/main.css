@@ -24,6 +24,7 @@
 @import url('./components/search-profile.css');
 @import url('./components/index-cards.css');
 @import url('./components/cookies.css');
+@import url('./components/avatar-crop.css');
 
 /* === UTILITIES === */
 @import url('./utilities/animations.css');

@@ -7,7 +7,21 @@
       "mcp__claude_ai_Supabase__list_projects",
       "mcp__claude_ai_Supabase__execute_sql",
       "Bash(node -e \"const p=require\\('./backend/package.json'\\); console.log\\(Object.keys\\(p.dependencies||{}\\).join\\('\\\\n'\\)\\)\")",
-      "Bash(grep -rn \"http\\(s\\)\\\\|startsWith\\('http'\\)\\\\|/^https\\\\?/\\\\|isValidUrl\\\\|data:image\" backend/routes backend/utils backend/middleware)"
+      "Bash(grep -rn \"http\\(s\\)\\\\|startsWith\\('http'\\)\\\\|/^https\\\\?/\\\\|isValidUrl\\\\|data:image\" backend/routes backend/utils backend/middleware)",
+      "PowerShell(node --check backend/routes/users.js; node --check frontend/js/pages/user-profile.js)",
+      "PowerShell(git *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/api/consoles/list)",
+      "Bash(kill %1)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s \"https://consolenotebook.com/api/users/CNote\")",
+      "Bash(curl -s \"https://consolenotebook.com/api/users/AndreiHulk07\")",
+      "Bash(curl -s \"https://consolenotebook.com/api/users/Nimic\")",
+      "PowerShell(Set-Location E:\\\\Console-Notebook; $env:JAVA_HOME = 'C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr'; .\\\\gradlew.bat compileDebugKotlin --console=plain -q)",
+      "PowerShell(Set-Location E:\\\\Console-Notebook; $env:JAVA_HOME = 'C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr'; .\\\\gradlew.bat compileDebugKotlin --console=plain)",
+      "Bash(mkdir -p /c/Users/andre/AppData/Local/Temp/claude/C--dev-cnote/efeba4fa-bef1-491c-b3d2-45e531726a2b/scratchpad/croptest)",
+      "Bash(cp /c/dev/cnote/frontend/js/modules/avatar-cropper.js /c/Users/andre/AppData/Local/Temp/claude/C--dev-cnote/efeba4fa-bef1-491c-b3d2-45e531726a2b/scratchpad/croptest/)",
+      "Bash(cp /c/dev/cnote/frontend/css/components/avatar-crop.css /c/Users/andre/AppData/Local/Temp/claude/C--dev-cnote/efeba4fa-bef1-491c-b3d2-45e531726a2b/scratchpad/croptest/)",
+      "Read(//c/Users/andre/AppData/Local/Temp/claude/C--dev-cnote/efeba4fa-bef1-491c-b3d2-45e531726a2b/scratchpad/croptest/**)"
     ]
   }
 }

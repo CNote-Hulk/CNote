@@ -10,6 +10,7 @@ import { API_BASE_URL } from '../../js/config.js';
 import { confirmModal } from '../../js/utils/confirm-modal.js';
 import { I18nModule } from '../../js/modules/i18n.js';
 import { createDatePicker } from '../../js/utils/date-picker.js';
+import { openAvatarCropper } from '../../js/modules/avatar-cropper.js';
 
 /** Shortcut pentru traduceri */
 const t = key => I18nModule.t(key);
@@ -183,30 +184,6 @@ function initSettings() {
         }
     };
 
-    const toCompressedBlob = (file) => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const img = new Image();
-            img.onload = () => {
-                const max = 1024;
-                const scale = Math.min(max / img.width, max / img.height, 1);
-                const w = Math.round(img.width * scale);
-                const h = Math.round(img.height * scale);
-                const canvas = document.createElement('canvas');
-                canvas.width = w; canvas.height = h;
-                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                canvas.toBlob(blob => {
-                    if (blob) resolve(blob);
-                    else reject(new Error('Could not process image.'));
-                }, 'image/jpeg', 0.9);
-            };
-            img.onerror = () => reject(new Error('Selected file is not a valid image.'));
-            img.src = reader.result;
-        };
-        reader.onerror = () => reject(new Error('Could not read file.'));
-        reader.readAsDataURL(file);
-    });
-
     renderAvatar(getPreferredAvatar());
 
     // ── Lightbox open/close ──
@@ -276,7 +253,12 @@ function initSettings() {
             return;
         }
         try {
-            const blob = await toCompressedBlob(file);
+            // WhatsApp-style crop: user picks which part of the image is visible
+            const blob = await openAvatarCropper(file);
+            if (!blob) { // cancelled
+                avatarInput.value = '';
+                return;
+            }
             const result = await AuthModule.uploadAvatar(blob);
             if (!result || !result.success) {
                 showSettingsMessage(result?.error || 'Could not update profile picture.', false);

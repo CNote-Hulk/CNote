@@ -1,0 +1,133 @@
+/* ══════════════════════════════════════════
+   AVATAR CROP MODAL (WhatsApp-style)
+   Built dynamically by js/modules/avatar-cropper.js
+   ══════════════════════════════════════════ */
+
+.avatar-crop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: avcrop-in 0.18s ease;
+}
+
+@keyframes avcrop-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.avatar-crop__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+}
+
+.avatar-crop__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 22px;
+    border-radius: 18px;
+    background: var(--dark-bg-2, #2a231f);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.55);
+    max-width: calc(100vw - 24px);
+}
+
+.avatar-crop__title {
+    color: var(--text-gray, #A89F94);
+    font-size: 0.9rem;
+}
+
+.avatar-crop__stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #000;
+}
+
+.avatar-crop__stage canvas {
+    display: block;
+    cursor: grab;
+    touch-action: none; /* pointer-event gestures handle pan/pinch */
+}
+
+.avatar-crop__stage canvas:active { cursor: grabbing; }
+
+.avatar-crop__mask {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.avatar-crop__mask::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    /* Darkens everything outside the circle */
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+}
+
+.avatar-crop__mask::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+}
+
+.avatar-crop__zoom-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.avatar-crop__zoom-icon { font-size: 1rem; line-height: 1; }
+.avatar-crop__zoom-icon--small { font-size: 0.75rem; }
+
+.avatar-crop__slider {
+    flex: 1;
+    accent-color: var(--accent-color, #d4a24e);
+    cursor: pointer;
+}
+
+.avatar-crop__actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.avatar-crop__btn {
+    flex: 1;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s, background 0.15s;
+}
+
+.avatar-crop__btn--cancel {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: var(--text-gray, #A89F94);
+}
+
+.avatar-crop__btn--cancel:hover { background: rgba(255, 255, 255, 0.08); }
+
+.avatar-crop__btn--save {
+    background: var(--accent-color, #d4a24e);
+    border: 1px solid transparent;
+    color: #1c1713;
+}
+
+.avatar-crop__btn--save:hover { filter: brightness(1.08); }
