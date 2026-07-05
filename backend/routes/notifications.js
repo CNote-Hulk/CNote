@@ -79,6 +79,30 @@ router.post('/read-all', authRequired, async (req, res) => {
     }
 });
 
+// ── POST /api/notifications/register-token ───────────────
+// Registers/refreshes a device's FCM push token (DM notifications). Upserts on
+// (user_id, fcm_token) — the same device re-registering (e.g. app relaunch)
+// just bumps updated_at instead of creating a duplicate row.
+router.post('/register-token', authRequired, async (req, res) => {
+    const { fcmToken, deviceInfo } = req.body;
+    if (!fcmToken || typeof fcmToken !== 'string' || !fcmToken.trim()) {
+        return res.status(400).json({ success: false, error: 'fcmToken is required.' });
+    }
+
+    try {
+        await pool.query(
+            `INSERT INTO user_fcm_tokens (user_id, fcm_token, device_info)
+             VALUES ($1, $2, $3)
+             ON CONFLICT (user_id, fcm_token) DO UPDATE SET updated_at = NOW()`,
+            [req.user.id, fcmToken.trim(), deviceInfo ? String(deviceInfo).slice(0, 255) : '']
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Register FCM token POST error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
 /**
  * Helper: create a notification (used by other routes)
  * Usage: const { createNotification } = require('./notifications');
