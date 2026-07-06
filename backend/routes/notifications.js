@@ -11,6 +11,7 @@
 const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
+const { sendPushToUser } = require('../services/firebaseAdmin');
 
 const router = express.Router();
 
@@ -99,6 +100,33 @@ router.post('/register-token', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('Register FCM token POST error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/notifications/notify-dm ────────────────────
+// The Android app writes DMs straight to Supabase (bypassing /api/dm/send
+// entirely), so that route's push trigger never fires for app-to-app chat.
+// This endpoint lets the app explicitly ask the backend to push-notify the
+// receiver after a successful Supabase insert — no direct_messages write here,
+// the app already did that; this only fans out the FCM push.
+router.post('/notify-dm', authRequired, async (req, res) => {
+    const receiverId = parseInt(req.body.receiverId);
+    const message = typeof req.body.message === 'string' ? req.body.message : '';
+    if (!receiverId || receiverId === req.user.id) {
+        return res.status(400).json({ success: false, error: 'Invalid receiverId.' });
+    }
+
+    try {
+        const body = message.length > 100 ? `${message.slice(0, 100)}...` : message;
+        await sendPushToUser(receiverId, req.user.username, body, {
+            type: 'dm',
+            senderId: String(req.user.id),
+            conversationWith: String(req.user.id)
+        });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('notify-dm POST error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
