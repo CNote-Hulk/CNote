@@ -68,7 +68,8 @@ async function authRequired(req, res, next) {
             show_friends: user.show_friends,
             show_social_links: user.show_social_links,
             nickname: user.nickname,
-            username_changed_at: user.username_changed_at
+            username_changed_at: user.username_changed_at,
+            language: user.language
         };
         return next();
     } catch (jwtErr) {
@@ -89,7 +90,7 @@ async function authRequired(req, res, next) {
                u.notify_new_friend, u.notify_new_message, u.notify_repair_reply,
                u.social_discord, u.social_twitter, u.social_youtube, u.social_instagram,
                u.show_email, u.show_stats, u.show_friends, u.show_social_links,
-               u.nickname, u.username_changed_at
+               u.nickname, u.username_changed_at, u.language
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = true
@@ -139,7 +140,8 @@ async function authRequired(req, res, next) {
         show_friends: session.show_friends,
         show_social_links: session.show_social_links,
         nickname: session.nickname,
-        username_changed_at: session.username_changed_at
+        username_changed_at: session.username_changed_at,
+        language: session.language
     };
     req.sessionId = session.session_id;
     req.sessionToken = token;

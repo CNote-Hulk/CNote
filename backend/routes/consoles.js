@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { awardXP } = require('../utils/gamification');
-
-const ALLOWED_LANGS = ['en', 'ro', 'es', 'fr', 'de', 'it'];
+const { ALLOWED_LANGS } = require('../utils/languages');
 
 // GET /api/consoles?lang=en  — all consoles for a language
 router.get('/', async (req, res) => {

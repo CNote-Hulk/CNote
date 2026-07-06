@@ -313,6 +313,7 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS show_social_links BOOLEAN DEFAULT TRUE`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS username_changed_at TIMESTAMP DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS nickname TEXT DEFAULT ''`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS language VARCHAR(5) DEFAULT 'en'`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS marketplace_provider TEXT DEFAULT NULL`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS external_listing_id TEXT DEFAULT NULL`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_from_external BOOLEAN DEFAULT FALSE`,

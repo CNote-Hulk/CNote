@@ -22,6 +22,7 @@ const emailService = require('../services/email');
 const { validatePassword } = require('../utils/passwordPolicy');
 const { getLevelFromXP, awardXP } = require('../utils/gamification');
 const { supabaseAdmin } = require('../utils/supabaseStorage');
+const { ALLOWED_LANGS } = require('../utils/languages');
 
 const router = express.Router();
 
@@ -221,7 +222,8 @@ function sanitizeUser(user) {
         show_social_links: user.show_social_links !== false,
         nickname: user.nickname || '',
         username_changed_at: user.username_changed_at || null,
-        birth_date: user.birth_date || null
+        birth_date: user.birth_date || null,
+        language: user.language || 'en'
     };
 }
 
@@ -699,7 +701,7 @@ const USERNAME_COOLDOWN_DAYS = 7;
 
 // PUT /api/me — Update profile (username, bio, avatar, favorite_consoles)
 router.put('/me', authRequired, async (req, res) => {
-    const { username, bio, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links, nickname, birth_date } = req.body;
+    const { username, bio, favorite_consoles, owned_consoles, notify_new_friend, notify_new_message, notify_repair_reply, social_discord, social_twitter, social_youtube, social_instagram, show_email, show_stats, show_friends, show_social_links, nickname, birth_date, language } = req.body;
     const updates = [];
     const params = [];
     let paramIndex = 1;
@@ -809,6 +811,13 @@ router.put('/me', authRequired, async (req, res) => {
             updates.push(`birth_date = $${paramIndex++}`);
             params.push(birth_date);
         }
+    }
+    if (language !== undefined) {
+        if (!ALLOWED_LANGS.includes(language)) {
+            return res.status(400).json({ success: false, error: 'Unsupported language.' });
+        }
+        updates.push(`language = $${paramIndex++}`);
+        params.push(language);
     }
 
     if (updates.length === 0) {
