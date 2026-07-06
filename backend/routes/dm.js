@@ -296,10 +296,12 @@ async function sendDmPush(receiverId, senderId, senderUsername, message) {
     if (tokensResult.rows.length === 0) return;
 
     const body = message.length > 100 ? `${message.slice(0, 100)}...` : message;
+    const avatarResult = await pool.query('SELECT avatar FROM users WHERE id = $1', [senderId]);
     // FCM data payload values must all be strings.
     const pushData = {
         type: 'dm',
         senderId: String(senderId),
+        senderAvatar: avatarResult.rows[0]?.avatar || '',
         conversationWith: String(senderId)
     };
 
@@ -307,5 +309,25 @@ async function sendDmPush(receiverId, senderId, senderUsername, message) {
         tokensResult.rows.map(row => sendPushNotification(row.fcm_token, senderUsername, body, pushData))
     );
 }
+
+// ── PATCH /api/dm/read/:partnerId ─────────────────────────
+// Lightweight mark-as-read used by the app's "Mark as read" notification action —
+// unlike GET /messages/:partnerId (which also marks read), this doesn't fetch/return
+// the message history, since the notification action has nowhere to show it.
+router.patch('/read/:partnerId', authRequired, async (req, res) => {
+    const partnerId = parseInt(req.params.partnerId);
+    if (isNaN(partnerId)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
+
+    try {
+        await pool.query(
+            'UPDATE direct_messages SET read = true WHERE sender_id = $1 AND receiver_id = $2 AND read = false',
+            [partnerId, req.user.id]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('DM mark-read PATCH error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
 
 module.exports = router;

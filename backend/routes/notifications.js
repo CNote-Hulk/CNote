@@ -119,9 +119,11 @@ router.post('/notify-dm', authRequired, async (req, res) => {
 
     try {
         const body = message.length > 100 ? `${message.slice(0, 100)}...` : message;
+        const senderAvatar = await getUserAvatar(req.user.id);
         await sendPushToUser(receiverId, req.user.username, body, {
             type: 'dm',
             senderId: String(req.user.id),
+            senderAvatar,
             conversationWith: String(req.user.id)
         });
         res.json({ success: true });
@@ -130,6 +132,51 @@ router.post('/notify-dm', authRequired, async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
+
+// ── POST /api/notifications/notify-dm-reaction ───────────
+// Same rationale as notify-dm above: reactions are written straight to Supabase's
+// message_reactions table (see ChatViewModel.toggleReaction on the app), so this
+// endpoint is the only way the receiver ever gets FCM-pushed about one. Reused as
+// a "dm" push (same MessagingStyle stack on the app) rather than its own channel —
+// a reaction is just another line in the same conversation thread.
+router.post('/notify-dm-reaction', authRequired, async (req, res) => {
+    const receiverId = parseInt(req.body.receiverId);
+    const emoji = typeof req.body.emoji === 'string' ? req.body.emoji.slice(0, 8) : '';
+    const messagePreview = typeof req.body.messagePreview === 'string' ? req.body.messagePreview.slice(0, 80) : '';
+    if (!receiverId || receiverId === req.user.id || !emoji) {
+        return res.status(400).json({ success: false, error: 'Invalid request.' });
+    }
+
+    try {
+        const body = messagePreview ? `${emoji} reacted: "${messagePreview}"` : `${emoji} reacted to your message`;
+        const senderAvatar = await getUserAvatar(req.user.id);
+        await sendPushToUser(receiverId, req.user.username, body, {
+            type: 'dm_reaction',
+            senderId: String(req.user.id),
+            senderAvatar,
+            conversationWith: String(req.user.id)
+        });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('notify-dm-reaction POST error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+/**
+ * getUserAvatar
+ * @description Looks up a user's avatar URL for embedding in a push payload.
+ * Returns '' (never null/undefined — FCM data values must all be strings) if
+ * the user has no avatar set or the lookup fails.
+ */
+async function getUserAvatar(userId) {
+    try {
+        const result = await pool.query('SELECT avatar FROM users WHERE id = $1', [userId]);
+        return result.rows[0]?.avatar || '';
+    } catch {
+        return '';
+    }
+}
 
 /**
  * Helper: create a notification (used by other routes)
