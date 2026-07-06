@@ -55,7 +55,20 @@ async function authRequired(req, res, next) {
             role: user.role || 'user',
             username_chosen: user.username_chosen !== false,
             created_at: user.created_at,
-            birth_date: user.birth_date || null
+            birth_date: user.birth_date || null,
+            notify_new_friend: user.notify_new_friend,
+            notify_new_message: user.notify_new_message,
+            notify_repair_reply: user.notify_repair_reply,
+            social_discord: user.social_discord,
+            social_twitter: user.social_twitter,
+            social_youtube: user.social_youtube,
+            social_instagram: user.social_instagram,
+            show_email: user.show_email,
+            show_stats: user.show_stats,
+            show_friends: user.show_friends,
+            show_social_links: user.show_social_links,
+            nickname: user.nickname,
+            username_changed_at: user.username_changed_at
         };
         return next();
     } catch (jwtErr) {
@@ -72,7 +85,11 @@ async function authRequired(req, res, next) {
                u.two_factor_totp_enabled, u.two_factor_email_enabled,
                u.google_id, u.avatar_url, u.password_hash,
                u.role, u.username_chosen,
-               u.created_at, u.birth_date
+               u.created_at, u.birth_date,
+               u.notify_new_friend, u.notify_new_message, u.notify_repair_reply,
+               u.social_discord, u.social_twitter, u.social_youtube, u.social_instagram,
+               u.show_email, u.show_stats, u.show_friends, u.show_social_links,
+               u.nickname, u.username_changed_at
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = true
@@ -109,7 +126,20 @@ async function authRequired(req, res, next) {
         role: session.role || 'user',
         username_chosen: session.username_chosen !== false,
         created_at: session.created_at,
-        birth_date: session.birth_date || null
+        birth_date: session.birth_date || null,
+        notify_new_friend: session.notify_new_friend,
+        notify_new_message: session.notify_new_message,
+        notify_repair_reply: session.notify_repair_reply,
+        social_discord: session.social_discord,
+        social_twitter: session.social_twitter,
+        social_youtube: session.social_youtube,
+        social_instagram: session.social_instagram,
+        show_email: session.show_email,
+        show_stats: session.show_stats,
+        show_friends: session.show_friends,
+        show_social_links: session.show_social_links,
+        nickname: session.nickname,
+        username_changed_at: session.username_changed_at
     };
     req.sessionId = session.session_id;
     req.sessionToken = token;
