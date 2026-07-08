@@ -13,6 +13,7 @@ If you have questions, you didn`t quite understand my prompt, ask.
 Every file you make, you delete, you move, you modify update in INDEX.md
 When you finish, always update curent status so we can resume were we remained and commit.
 This repo (the site/backend) gets committed automatically after any modification — no need to ask first. The Android app repo (`E:\Console-Notebook`) is the opposite: never commit there without being explicitly asked.
+After any modification that adds, removes, or changes a user-facing string on the site, update the translations in `frontend/js/modules/i18n.js`'s `MESSAGES` object for every language block present there (currently `en`, `es`, `fr`, `it`, `de` — no `ro` block exists on the site, unlike the Android app's 6 languages) in the same pass. `en` is the canonical source; mirror the key into the other blocks with a real translation, not a copy of the English value. Never leave the language blocks out of key-parity with each other.
 The native Android client for this same website lives in a separate repo at `E:\Console-Notebook` (Kotlin + Jetpack Compose). It hits this backend's REST API directly plus Supabase PostgREST for chat/forum/marketplace — it has its own CLAUDE.md/INDEX.md and in fact points back here for API/backend reference. When a task involves "the app" (as opposed to the website), it means that repo, not anything inside `frontend/`.
 
 ## Commands

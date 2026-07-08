@@ -21,6 +21,22 @@ function hashToken(token) {
 }
 
 /**
+ * currentSessionHash
+ * @description Resolves the caller's own session-token hash. JWT-authenticated
+ *              clients (the Android app, or the site when JWT wins in authRequired)
+ *              never get req.sessionToken populated, so they can identify their own
+ *              session row via the X-Session-Token header instead.
+ */
+function currentSessionHash(req) {
+    if (req.sessionToken) return hashToken(req.sessionToken);
+    const headerToken = req.headers['x-session-token'];
+    if (typeof headerToken === 'string' && headerToken.trim()) {
+        return hashToken(headerToken.trim());
+    }
+    return '';
+}
+
+/**
  * registerSseClient
  * @description Adds an SSE client connection to the tracking map.
  * @param {string} sessionToken
@@ -108,7 +124,7 @@ router.get('/', authRequired, async (req, res) => {
          FROM user_sessions
          WHERE user_id = $2 AND is_active = true
          ORDER BY last_activity DESC`,
-        [req.sessionToken ? hashToken(req.sessionToken) : '', req.user.id]
+        [currentSessionHash(req), req.user.id]
     );
 
     const formatted = result.rows.map(s => ({
@@ -149,14 +165,20 @@ router.delete('/:id', authRequired, async (req, res) => {
     res.json({ success: true, message: 'Sesiunea a fost inchisa.' });
 });
 
-// DELETE /api/sessions — Terminate all active sessions for current user
+// DELETE /api/sessions — Terminate all active sessions for current user.
+// When the caller identifies its own session via the X-Session-Token header
+// (JWT clients — the Android app), that session is kept alive so the action
+// means "log out from all OTHER devices", matching the button label.
+// Cookie-based callers keep the old terminate-everything behavior.
 router.delete('/', authRequired, async (req, res) => {
+    const keepHash = req.headers['x-session-token'] ? currentSessionHash(req) : '';
+
     // DB: deactivate all active sessions and collect their tokens
     const result = await pool.query(
         `UPDATE user_sessions SET is_active = false
-         WHERE user_id = $1 AND is_active = true
+         WHERE user_id = $1 AND is_active = true AND session_token <> $2
          RETURNING session_token`,
-        [req.user.id]
+        [req.user.id, keepHash]
     );
 
     const tokens = [...new Set(result.rows.map(r => r.session_token).filter(Boolean))];
