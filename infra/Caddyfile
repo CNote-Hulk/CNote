@@ -1,0 +1,13 @@
+# Reverse proxy for MinIO — Caddy handles TLS certs (Let's Encrypt) automatically.
+# Replace both hostnames before deploying, and point their DNS A records at the VPS IP.
+
+# S3 API — this is what OBJECT_STORAGE_ENDPOINT / OBJECT_STORAGE_PUBLIC_URL point to.
+storage.consolenotebook.com {
+	reverse_proxy cnote-minio:9000
+}
+
+# MinIO web console — admin-only. Optional; drop this block if you'd rather
+# manage the bucket exclusively via the `mc` CLI over SSH.
+storage-console.consolenotebook.com {
+	reverse_proxy cnote-minio:9001
+}

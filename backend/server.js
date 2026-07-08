@@ -65,6 +65,7 @@ const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
 const reportsRoutes = require('./routes/reports');
 const ebayRoutes = require('./routes/ebay');
+const uploadsRoutes = require('./routes/uploads');
 
 /* ── Environment validation ── */
 
@@ -98,6 +99,14 @@ function getOriginHost(value) {
 		return '';
 	}
 }
+
+// Origin of our self-hosted chat attachment storage (MinIO on our VPS) — used
+// below to allow the browser to fetch/play images & voice messages, and to
+// PUT files directly to it during upload. Empty until OBJECT_STORAGE_PUBLIC_URL
+// is configured (see .env.example) — CSP directives below tolerate that.
+const objectStorageOrigin = (() => {
+	try { return new URL(process.env.OBJECT_STORAGE_PUBLIC_URL).origin; } catch { return null; }
+})();
 
 const requiredEnv = ['DATABASE_URL', 'JWT_SECRET', 'SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
 
@@ -185,6 +194,14 @@ app.use(helmet({
 				                                    // any other HTTPS image
 			],
 
+			// Voice messages play via <audio src="..."> — falls back to default-src
+			// without this, which would block our self-hosted storage origin.
+			mediaSrc: [
+				"'self'",
+				'blob:',
+				...(objectStorageOrigin ? [objectStorageOrigin] : []),
+			],
+
 			connectSrc: [
 				"'self'",                             // API calls + same-origin WebSocket (Socket.IO)
 				'https://*.google-analytics.com',     // GA4 beacon / collect (covers region1, region2, www)
@@ -193,6 +210,7 @@ app.use(helmet({
 				'https://*.supabase.co',              // Supabase auth & realtime
 				'https://*.sentry.io',                // Sentry error reporting
 				'https://*.ingest.sentry.io',         // Sentry ingest endpoint
+				...(objectStorageOrigin ? [objectStorageOrigin] : []), // chat attachment storage (upload PUT + fetch)
 			],
 
 			frameSrc: [
@@ -293,6 +311,14 @@ const avatarLimiter = rateLimit({
 	message: { success: false, error: 'Too many avatar changes, please try again later.' }
 });
 
+const uploadLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 60,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many uploads, please try again later.' }
+});
+
 app.post('/api/login', authLimiter);
 app.post('/api/register', registerLimiter);
 app.post('/api/request-reset', authLimiter);
@@ -301,6 +327,7 @@ app.post('/api/2fa/verify', twoFactorLimiter);
 app.post('/api/2fa/email-fallback', twoFactorLimiter);
 app.post('/api/me/avatar', avatarLimiter);
 app.delete('/api/me/avatar', avatarLimiter);
+app.post('/api/uploads/presign', uploadLimiter);
 
 /* ── Request sanitize logger — scrubs sensitive fields before logging ─────
    Only active in development (NODE_ENV !== 'production').
@@ -386,6 +413,7 @@ app.use('/api/achievements', achievementsRoutes);
 app.use('/api', coursesRoutes);
 app.use('/api', reportsRoutes);
 app.use('/api/ebay', ebayRoutes);
+app.use('/api/uploads', uploadsRoutes);
 
 /* ── Static files & redirects ── */
 

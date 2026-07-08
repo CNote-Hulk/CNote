@@ -321,6 +321,17 @@ async function initializeSchema() {
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'RON'`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS url TEXT DEFAULT ''`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_at TIMESTAMP DEFAULT NULL`,
+		// ── Chat / DM attachments (images + voice messages, stored on our own object storage) ──
+		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_key TEXT DEFAULT NULL`,
+		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_type TEXT DEFAULT NULL CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice'))`,
+		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_size INTEGER DEFAULT NULL`,
+		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_duration_ms INTEGER DEFAULT NULL`,
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_key TEXT DEFAULT NULL`,
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_type TEXT DEFAULT NULL CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice'))`,
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_size INTEGER DEFAULT NULL`,
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_duration_ms INTEGER DEFAULT NULL`,
+		`ALTER TABLE messages ALTER COLUMN message DROP NOT NULL`,
+		`ALTER TABLE direct_messages ALTER COLUMN message DROP NOT NULL`,
 		`INSERT INTO storage.buckets (id, name, public, allowed_mime_types, file_size_limit)
 			VALUES ('avatars', 'avatars', true, ARRAY['image/jpeg','image/png','image/webp'], 2097152)
 			ON CONFLICT (id) DO NOTHING`

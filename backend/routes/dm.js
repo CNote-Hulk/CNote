@@ -13,8 +13,24 @@ const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
 const { sendPushNotification } = require('../services/firebaseAdmin');
+const { publicUrlForKey } = require('../utils/objectStorage');
 
 const router = express.Router();
+
+/**
+ * attachmentPayload
+ * @description Builds the { attachment: {...} } block for a DM row, or
+ * null if the message has no attachment.
+ */
+function attachmentPayload(row) {
+    if (!row.attachment_key) return null;
+    return {
+        url: publicUrlForKey(row.attachment_key),
+        type: row.attachment_type,
+        size: row.attachment_size,
+        duration_ms: row.attachment_duration_ms,
+    };
+}
 
 // ── Spam prevention — in-memory, resets on server restart ──────────────────
 
@@ -166,6 +182,7 @@ router.get('/messages/:partnerId', authRequired, async (req, res) => {
 
         const result = await pool.query(`
             SELECT dm.id, dm.sender_id, dm.receiver_id, dm.message, dm.created_at,
+                   dm.attachment_key, dm.attachment_type, dm.attachment_size, dm.attachment_duration_ms,
                    u.username AS sender_name
             FROM direct_messages dm
             JOIN users u ON u.id = dm.sender_id
@@ -175,7 +192,17 @@ router.get('/messages/:partnerId', authRequired, async (req, res) => {
             LIMIT 200
         `, [req.user.id, partnerId]);
 
-        res.json({ success: true, messages: result.rows });
+        const messages = result.rows.map(row => ({
+            id: row.id,
+            sender_id: row.sender_id,
+            receiver_id: row.receiver_id,
+            message: row.message,
+            created_at: row.created_at,
+            sender_name: row.sender_name,
+            attachment: attachmentPayload(row),
+        }));
+
+        res.json({ success: true, messages });
     } catch (err) {
         console.error('DM messages GET error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
@@ -186,10 +213,19 @@ router.get('/messages/:partnerId', authRequired, async (req, res) => {
 router.post('/send', authRequired, async (req, res) => {
     // Accept both receiverId (frontend) and receiver_id (alternative)
     const rawId = req.body.receiverId || req.body.receiver_id;
-    const { message, listingId } = req.body;
+    const { message, listingId, attachment_key, attachment_type, attachment_size, attachment_duration_ms } = req.body;
 
-    if (!rawId || !message || String(message).trim().length === 0) {
-        return res.status(400).json({ success: false, error: 'Recipient and message are required.' });
+    const hasAttachment = typeof attachment_key === 'string' && attachment_key.length > 0;
+    if (hasAttachment && attachment_type !== 'image' && attachment_type !== 'voice') {
+        return res.status(400).json({ success: false, error: 'Invalid attachment_type.' });
+    }
+    // attachment_key must be one we actually issued via /api/uploads/presign for this user
+    if (hasAttachment && !attachment_key.startsWith(`chat/${attachment_type === 'image' ? 'images' : 'voice'}/${req.user.id}/`)) {
+        return res.status(400).json({ success: false, error: 'Invalid attachment.' });
+    }
+
+    if (!rawId || (!hasAttachment && (!message || String(message).trim().length === 0))) {
+        return res.status(400).json({ success: false, error: 'Recipient and message or attachment are required.' });
     }
 
     const receiverId = parseInt(rawId);
@@ -197,7 +233,7 @@ router.post('/send', authRequired, async (req, res) => {
         return res.status(400).json({ success: false, error: 'Invalid recipient.' });
     }
 
-    const safeMessage = String(message).trim().slice(0, 2000);
+    const safeMessage = message ? String(message).trim().slice(0, 2000) : null;
     const safeListing = listingId ? parseInt(listingId) || null : null;
 
     // ── Pattern 2: flood check (burst) — runs first, cheaper ──────────────
@@ -232,13 +268,28 @@ router.post('/send', authRequired, async (req, res) => {
         }
 
         const result = await pool.query(`
-            INSERT INTO direct_messages (sender_id, receiver_id, message, listing_id)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO direct_messages (sender_id, receiver_id, message, listing_id, attachment_key, attachment_type, attachment_size, attachment_duration_ms)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING id, sender_id, receiver_id, message, listing_id, created_at
-        `, [req.user.id, receiverId, safeMessage, safeListing]);
+        `, [
+            req.user.id,
+            receiverId,
+            safeMessage,
+            safeListing,
+            hasAttachment ? attachment_key : null,
+            hasAttachment ? attachment_type : null,
+            hasAttachment ? (parseInt(attachment_size) || null) : null,
+            hasAttachment ? (parseInt(attachment_duration_ms) || null) : null,
+        ]);
 
         const dm = result.rows[0];
         dm.sender_name = req.user.username;
+        dm.attachment = hasAttachment ? {
+            url: publicUrlForKey(attachment_key),
+            type: attachment_type,
+            size: parseInt(attachment_size) || null,
+            duration_ms: parseInt(attachment_duration_ms) || null,
+        } : null;
 
         // Create notification for receiver
         try {
@@ -255,7 +306,8 @@ router.post('/send', authRequired, async (req, res) => {
         // silently if the sender somehow messaged themselves, or the receiver has
         // no registered devices.
         if (receiverId !== req.user.id) {
-            sendDmPush(receiverId, req.user.id, req.user.username, safeMessage).catch(err =>
+            const pushBody = safeMessage || (attachment_type === 'voice' ? '🎤 Voice message' : '📷 Photo');
+            sendDmPush(receiverId, req.user.id, req.user.username, pushBody).catch(err =>
                 console.error('DM push notification error:', err)
             );
         }

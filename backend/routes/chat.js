@@ -12,11 +12,28 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
+const { publicUrlForKey } = require('../utils/objectStorage');
 
 const router = express.Router();
 
 const MAX_MESSAGE_LENGTH = 500;
 const COOLDOWN_MS = 3000;
+const ATTACHMENT_COOLDOWN_MS = 3000; // same cooldown bucket as text — one message-or-attachment per window
+
+/**
+ * attachmentPayload
+ * @description Builds the { attachment: {...} } block for a message row, or
+ * null if the message has no attachment. Keeps GET/POST responses identical.
+ */
+function attachmentPayload(row) {
+    if (!row.attachment_key) return null;
+    return {
+        url: publicUrlForKey(row.attachment_key),
+        type: row.attachment_type,
+        size: row.attachment_size,
+        duration_ms: row.attachment_duration_ms,
+    };
+}
 
 // GET /api/chat/messages — Fetch recent messages with cursor-based pagination
 router.get('/messages', async (req, res) => {
@@ -25,13 +42,16 @@ router.get('/messages', async (req, res) => {
         const limit = Math.min(parseInt(req.query.limit) || 50, 100);
         const before = parseInt(req.query.before) || null;
 
+        const columns = `m.id, m.message, m.created_at,
+                       m.attachment_key, m.attachment_type, m.attachment_size, m.attachment_duration_ms,
+                       u.id AS user_id, u.username, u.avatar`;
+
         let query;
         let params;
         if (before) {
             // DB: fetch messages older than cursor ID, newest first
             query = `
-                SELECT m.id, m.message, m.created_at,
-                       u.id AS user_id, u.username, u.avatar
+                SELECT ${columns}
                 FROM messages m
                 JOIN users u ON u.id = m.user_id
                 WHERE m.id < $1
@@ -42,8 +62,7 @@ router.get('/messages', async (req, res) => {
         } else {
             // DB: fetch newest N messages
             query = `
-                SELECT m.id, m.message, m.created_at,
-                       u.id AS user_id, u.username, u.avatar
+                SELECT ${columns}
                 FROM messages m
                 JOIN users u ON u.id = m.user_id
                 ORDER BY m.id DESC
@@ -58,6 +77,7 @@ router.get('/messages', async (req, res) => {
             id: row.id,
             message: row.message,
             created_at: row.created_at,
+            attachment: attachmentPayload(row),
             user: {
                 id: row.user_id,
                 username: row.username,
@@ -72,16 +92,24 @@ router.get('/messages', async (req, res) => {
     }
 });
 
-// POST /api/chat/messages — Send a new chat message (rate-limited)
+// POST /api/chat/messages — Send a new chat message and/or attachment (rate-limited)
 router.post('/messages', authRequired, async (req, res) => {
     try {
-        const { message } = req.body;
+        const { message, attachment_key, attachment_type, attachment_size, attachment_duration_ms } = req.body;
 
-        if (!message || String(message).trim().length === 0) {
-            return res.status(400).json({ success: false, error: 'Message cannot be empty.' });
+        const hasAttachment = typeof attachment_key === 'string' && attachment_key.length > 0;
+        if (hasAttachment && attachment_type !== 'image' && attachment_type !== 'voice') {
+            return res.status(400).json({ success: false, error: 'Invalid attachment_type.' });
+        }
+        // attachment_key must be one we actually issued via /api/uploads/presign for this user
+        if (hasAttachment && !attachment_key.startsWith(`chat/${attachment_type === 'image' ? 'images' : 'voice'}/${req.user.id}/`)) {
+            return res.status(400).json({ success: false, error: 'Invalid attachment.' });
         }
 
-        const text = String(message).trim();
+        const text = message ? String(message).trim() : '';
+        if (!hasAttachment && text.length === 0) {
+            return res.status(400).json({ success: false, error: 'Message cannot be empty.' });
+        }
         if (text.length > MAX_MESSAGE_LENGTH) {
             return res.status(400).json({ success: false, error: `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters.` });
         }
@@ -93,18 +121,26 @@ router.post('/messages', authRequired, async (req, res) => {
         );
         if (lastMsg.rows.length > 0) {
             const elapsed = Date.now() - new Date(lastMsg.rows[0].created_at).getTime();
-            if (elapsed < COOLDOWN_MS) {
-                const wait = Math.ceil((COOLDOWN_MS - elapsed) / 1000);
+            const cooldown = hasAttachment ? ATTACHMENT_COOLDOWN_MS : COOLDOWN_MS;
+            if (elapsed < cooldown) {
+                const wait = Math.ceil((cooldown - elapsed) / 1000);
                 return res.status(429).json({ success: false, error: `Wait ${wait} seconds before sending another message.` });
             }
         }
 
-        // DB: insert message and return generated ID + timestamp
+        // DB: insert message (+ optional attachment) and return generated ID + timestamp
         const result = await pool.query(
-            'INSERT INTO messages (user_id, message) VALUES ($1, $2) RETURNING id, created_at',
-            [req.user.id, text]
+            `INSERT INTO messages (user_id, message, attachment_key, attachment_type, attachment_size, attachment_duration_ms)
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, created_at`,
+            [
+                req.user.id,
+                text || null,
+                hasAttachment ? attachment_key : null,
+                hasAttachment ? attachment_type : null,
+                hasAttachment ? (parseInt(attachment_size) || null) : null,
+                hasAttachment ? (parseInt(attachment_duration_ms) || null) : null,
+            ]
         );
-
 
         res.status(201).json({
             success: true,
@@ -112,6 +148,12 @@ router.post('/messages', authRequired, async (req, res) => {
                 id: result.rows[0].id,
                 message: text,
                 created_at: result.rows[0].created_at,
+                attachment: hasAttachment ? {
+                    url: publicUrlForKey(attachment_key),
+                    type: attachment_type,
+                    size: parseInt(attachment_size) || null,
+                    duration_ms: parseInt(attachment_duration_ms) || null,
+                } : null,
                 user: {
                     id: req.user.id,
                     username: req.user.username,

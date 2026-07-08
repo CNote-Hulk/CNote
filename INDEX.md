@@ -42,6 +42,7 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
     - reports.js
     - reset-progress.js
     - sessions.js
+    - uploads.js
     - users.js
   - **scripts/**
     - check-dependencies.js
@@ -53,6 +54,7 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
   - **utils/**
     - device.js
     - gamification.js
+    - objectStorage.js
     - passwordPolicy.js
     - supabaseStorage.js
   - .env.example
@@ -63,6 +65,11 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
   - README.md
   - server_check.js
   - server.js
+- **infra/**
+  - .env.example
+  - Caddyfile
+  - docker-compose.yml
+  - README.md
 - **frontend/**
   - **assets/**
     - **icons/**
