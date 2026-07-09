@@ -1,505 +1,199 @@
 # INDEX.md
 
-Complete file index for this repository (448 files, excluding `node_modules/`, `.git/`, and other gitignored paths). Generated from `git ls-files` plus new not-yet-committed files.
+Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
+
+Complete file index for this repository (461 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
 - **.claude/**
-  - settings.local.json
+  - settings.local.json — local Claude Code permissions/settings for this repo (not synced)
 - **.vscode/**
-  - settings.json
+  - settings.json — Live Server port config for local static preview
 - **backend/**
   - **js/**
-    - convert-md-to-json.js
-    - import-consoles.js
-    - reset-database.js
+    - convert-md-to-json.js — one-off script: merges translated .md console content into per-language JSON structure
+    - import-consoles.js — imports `frontend/js/data/consoles-{lang}.json` into Postgres `consoles_translations`; run on every Railway deploy
+    - reset-database.js — wipes user/session/token data for a clean public deployment (real logic behind `npm run reset-db`)
   - **middleware/**
-    - adminOnly.js
-    - auth.js
+    - adminOnly.js — Express middleware gating a route to `role === 'admin'`; must run after `authRequired`
+    - auth.js — `authRequired`/`authOptional`: validates JWT, falls back to hashed session-cookie lookup, populates `req.user`
   - **providers/**
-    - EbayProvider.js
-    - MarketplaceProvider.js
-    - OlxProvider.js
+    - EbayProvider.js — eBay marketplace integration: OAuth, listings fetch, normalization against real eBay APIs
+    - MarketplaceProvider.js — abstract base class defining the contract every marketplace provider must implement
+    - OlxProvider.js — OLX marketplace integration: OAuth + listings fetch/normalization against OLX Group API
   - **routes/**
-    - achievements.js
-    - auth.js
-    - chat.js
-    - consoles.js
-    - contact.js
-    - courses.js
-    - dm.js
-    - ebay.js
-    - favorites.js
-    - forum-liked.js
-    - forum-my-posts.js
-    - forum.js
-    - friends.js
-    - google-auth.js
-    - marketplace.js
-    - notifications.js
-    - progress.js
-    - ratings.js
-    - repair.js
-    - reports.js
-    - reset-progress.js
-    - sessions.js
-    - uploads.js
-    - users.js
-    - workshop.js
+    - achievements.js — GET own achievements (`/`) and another user's by username (`/user/:username`)
+    - auth.js — registration, login + 2FA, email verification, password reset, profile, avatar upload; largest route file
+    - chat.js — community/global chat: paginated message retrieval + posting with per-user rate-limit cooldown
+    - consoles.js — GET `/api/consoles?lang=` — serves console encyclopedia data per language from `consoles_translations`
+    - contact.js — contact form submission: honeypot bot check + sends email via Resend
+    - courses.js — course/module/lesson/quiz/reactions/comments endpoints; also self-creates `lesson_reactions` table on load
+    - dm.js — direct messages: conversation list, message thread, send DM
+    - ebay.js — eBay OAuth connect/callback/status/disconnect, listings import, and account-deletion webhook verification
+    - favorites.js — list/check/toggle favorite consoles for the logged-in user
+    - forum-liked.js — GET `/api/forum/liked` — threads the user has upvoted (dashboard widget)
+    - forum-my-posts.js — GET `/api/forum/my-posts` — threads created by the logged-in user (dashboard widget)
+    - forum.js — forum thread list, thread detail, create, reply, upvote
+    - friends.js — send/accept/reject friend requests, list friends, check friendship status
+    - google-auth.js — Google OAuth2 via Passport: login/register/link/unlink, custom state store (no express-session)
+    - marketplace.js — marketplace listings CRUD: search, filter, sort, pagination; ties into OLX/eBay sync
+    - notifications.js — in-app notifications for forum replies, DMs, listing activity, etc.
+    - progress.js — GET `/api/progress` — placeholder/dummy progress endpoint for dashboard
+    - ratings.js — console rating system: rate 1-5, view averages, see own ratings
+    - repair.js — submit repair requests, view own/all requests, admin reply/status update
+    - reports.js — DSA Article 16 notice-and-action: submit content report, list own reports
+    - reset-progress.js — POST `/reset-progress` — wipes a user's lessons/achievements/visits/favorites/XP, recomputes achievements
+    - sessions.js — session management + Server-Sent Events stream for real-time session-termination notices
+    - uploads.js — presigned PUT URL issuance for chat image/voice attachments (file bytes never touch this server)
+    - users.js — public user profiles, user search, console list loading (cached), owned-console management
+    - workshop.js — admin-only hardware-diagnostics tool (boards/components/pins/journal); uses service-role Supabase client (RLS deny-by-default)
   - **scripts/**
-    - check-dependencies.js
-    - insert-translations.js
+    - check-dependencies.js — pre-deploy check that every `require()`'d package is declared in `package.json`
+    - insert-translations.js — one-off script seeding French (and other) lesson translations directly into the DB
   - **services/**
-    - email.js
-    - firebaseAdmin.js
-    - marketplace-sync.js
+    - email.js — Resend-based email service: verification, password reset, 2FA codes, contact form, branded HTML templates
+    - firebaseAdmin.js — Firebase Admin SDK wrapper sending FCM push (currently DM push); auto-prunes dead tokens
+    - marketplace-sync.js — picks the right `MarketplaceProvider` by name and drives listing sync
   - **utils/**
-    - device.js
-    - gamification.js
-    - objectStorage.js
-    - passwordPolicy.js
-    - supabaseStorage.js
-  - .env.example
-  - .gitignore
-  - db.js
-  - package-lock.json
-  - package.json
-  - README.md
-  - server_check.js
-  - server.js
+    - device.js — parses `User-Agent` header into device type/browser/OS + IP, for session/security logging
+    - gamification.js — single source of truth for XP actions, levels, and achievement definitions; `awardXP()` lives here
+    - languages.js — `ALLOWED_LANGS`/`DEFAULT_LANG` constants shared across routes needing language validation
+    - objectStorage.js — generic S3-compatible client (MinIO today) for chat image/voice attachments, server-side only
+    - passwordPolicy.js — single source of truth for password strength rules; `validatePassword()` used on all password-set paths
+    - supabaseStorage.js — shared Supabase Storage client authenticated with the service-role key (avatar bucket), server-side only
+  - .env — local environment values (gitignored, not committed)
+  - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, etc.)
+  - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
+  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE` migration array run on boot
+  - package-lock.json — locked dependency tree for backend
+  - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`)
+  - README.md — backend setup instructions
+  - server_check.js — minimal standalone Express+Helmet snippet to sanity-check CSP config changes in isolation
+  - server.js — Express app entry point: middleware, CORS, CSP nonce injection, mounts all routes, serves static frontend, Socket.io init
 - **infra/**
-  - .env.example
-  - Caddyfile
-  - docker-compose.yml
-  - README.md
+  - .env.example — template for MinIO root user/password on the self-hosted VPS
+  - Caddyfile — reverse proxy config: TLS (Let's Encrypt) in front of the self-hosted MinIO object storage
+  - docker-compose.yml — deploys MinIO + Caddy on a VPS for chat attachment storage (Supabase Storage free tier too small)
+  - README.md — why/how of the self-hosted MinIO object-storage setup for chat attachments
 - **frontend/**
   - **assets/**
-    - **icons/**
-      - favicon.ico
+    - **icons/** — favicon.ico only
     - **images/**
-      - **consoles/**
-        - 3do.png
-        - 3do.webp
-        - atari-2600.png
-        - atari-2600.webp
-        - atari-5200.png
-        - atari-5200.webp
-        - atari-7800.png
-        - atari-7800.webp
-        - atari-home-pong.png
-        - atari-home-pong.webp
-        - atari-jaguar.png
-        - atari-jaguar.webp
-        - atari-lynx.png
-        - atari-lynx.webp
-        - coleco-telstar.png
-        - coleco-telstar.webp
-        - colecovision.png
-        - colecovision.webp
-        - famicom.png
-        - famicom.webp
-        - game-boy-advance.png
-        - game-boy-advance.webp
-        - game-boy-color.png
-        - game-boy-color.webp
-        - game-boy.png
-        - game-boy.webp
-        - intellivision.png
-        - intellivision.webp
-        - magnavox-odyssey-2.png
-        - magnavox-odyssey-2.webp
-        - magnavox-odyssey.png
-        - magnavox-odyssey.webp
-        - microvision.png
-        - microvision.webp
-        - neo-geo-aes.png
-        - neo-geo-aes.webp
-        - neo-geo-pocket-color.png
-        - neo-geo-pocket-color.webp
-        - neo-geo-pocket.png
-        - neo-geo-pocket.webp
-        - nes.png
-        - nes.webp
-        - nintendo-3ds.png
-        - nintendo-3ds.webp
-        - nintendo-64.png
-        - nintendo-64.webp
-        - nintendo-ds.png
-        - nintendo-ds.webp
-        - nintendo-gamecube.png
-        - nintendo-gamecube.webp
-        - nintendo-switch-2.png
-        - nintendo-switch-2.webp
-        - nintendo-switch.png
-        - nintendo-switch.webp
-        - nintendo-wii-u.png
-        - nintendo-wii-u.webp
-        - nintendo-wii.png
-        - nintendo-wii.webp
-        - pc-engine.png
-        - pc-engine.webp
-        - philips-cd-i.png
-        - philips-cd-i.webp
-        - ps-vita.png
-        - ps-vita.webp
-        - ps1.png
-        - ps1.webp
-        - ps2.png
-        - ps2.webp
-        - ps3.png
-        - ps3.webp
-        - ps4.png
-        - ps4.webp
-        - ps5.png
-        - ps5.webp
-        - psp.png
-        - psp.webp
-        - sega-dreamcast.png
-        - sega-dreamcast.webp
-        - sega-game-gear.png
-        - sega-game-gear.webp
-        - sega-genesis.png
-        - sega-genesis.webp
-        - sega-master-system.png
-        - sega-master-system.webp
-        - sega-saturn.png
-        - sega-saturn.webp
-        - sega-sg-1000.png
-        - sega-sg-1000.webp
-        - snes.png
-        - snes.webp
-        - vectrex.png
-        - vectrex.webp
-        - wonderswan.png
-        - wonderswan.webp
-        - xbox-one.png
-        - xbox-one.webp
-        - xbox-series-s.png
-        - xbox-series-s.webp
-        - xbox-series-x.png
-        - xbox-series-x.webp
-        - xbox.png
-        - xbox.webp
-        - xbox360.png
-        - xbox360.webp
-      - **wallpapers/**
-        - community.jpg
-        - comparatie.jpg
-        - evolutie.jpg
-        - help.jpg
-        - home.jpg
-        - index.jpg
-        - invata.jpg
-        - login.jpg
+      - **consoles/** — ~104 files (PNG+WebP pairs), one pair per console, filename = console slug; referenced by encyclopedia/comparison pages
+      - **wallpapers/** — 8 full-page background images, one per major page (home, community, comparatie, evolutie, help, index, invata, login)
     - **vendor/**
-      - **katex/**
-        - **contrib/**
-          - auto-render.min.js
-        - **fonts/**
-          - KaTeX_AMS-Regular.ttf
-          - KaTeX_AMS-Regular.woff
-          - KaTeX_AMS-Regular.woff2
-          - KaTeX_Caligraphic-Bold.ttf
-          - KaTeX_Caligraphic-Bold.woff
-          - KaTeX_Caligraphic-Bold.woff2
-          - KaTeX_Caligraphic-Regular.ttf
-          - KaTeX_Caligraphic-Regular.woff
-          - KaTeX_Caligraphic-Regular.woff2
-          - KaTeX_Fraktur-Bold.ttf
-          - KaTeX_Fraktur-Bold.woff
-          - KaTeX_Fraktur-Bold.woff2
-          - KaTeX_Fraktur-Regular.ttf
-          - KaTeX_Fraktur-Regular.woff
-          - KaTeX_Fraktur-Regular.woff2
-          - KaTeX_Main-Bold.ttf
-          - KaTeX_Main-Bold.woff
-          - KaTeX_Main-Bold.woff2
-          - KaTeX_Main-BoldItalic.ttf
-          - KaTeX_Main-BoldItalic.woff
-          - KaTeX_Main-BoldItalic.woff2
-          - KaTeX_Main-Italic.ttf
-          - KaTeX_Main-Italic.woff
-          - KaTeX_Main-Italic.woff2
-          - KaTeX_Main-Regular.ttf
-          - KaTeX_Main-Regular.woff
-          - KaTeX_Main-Regular.woff2
-          - KaTeX_Math-BoldItalic.ttf
-          - KaTeX_Math-BoldItalic.woff
-          - KaTeX_Math-BoldItalic.woff2
-          - KaTeX_Math-Italic.ttf
-          - KaTeX_Math-Italic.woff
-          - KaTeX_Math-Italic.woff2
-          - KaTeX_SansSerif-Bold.ttf
-          - KaTeX_SansSerif-Bold.woff
-          - KaTeX_SansSerif-Bold.woff2
-          - KaTeX_SansSerif-Italic.ttf
-          - KaTeX_SansSerif-Italic.woff
-          - KaTeX_SansSerif-Italic.woff2
-          - KaTeX_SansSerif-Regular.ttf
-          - KaTeX_SansSerif-Regular.woff
-          - KaTeX_SansSerif-Regular.woff2
-          - KaTeX_Script-Regular.ttf
-          - KaTeX_Script-Regular.woff
-          - KaTeX_Script-Regular.woff2
-          - KaTeX_Size1-Regular.ttf
-          - KaTeX_Size1-Regular.woff
-          - KaTeX_Size1-Regular.woff2
-          - KaTeX_Size2-Regular.ttf
-          - KaTeX_Size2-Regular.woff
-          - KaTeX_Size2-Regular.woff2
-          - KaTeX_Size3-Regular.ttf
-          - KaTeX_Size3-Regular.woff
-          - KaTeX_Size3-Regular.woff2
-          - KaTeX_Size4-Regular.ttf
-          - KaTeX_Size4-Regular.woff
-          - KaTeX_Size4-Regular.woff2
-          - KaTeX_Typewriter-Regular.ttf
-          - KaTeX_Typewriter-Regular.woff
-          - KaTeX_Typewriter-Regular.woff2
-        - katex.min.css
-        - katex.min.js
+      - **katex/** — vendored KaTeX library (JS/CSS/fonts + auto-render contrib) for math rendering in course lessons
   - **css/**
-    - **base/**
-      - reset.css
-      - typography.css
-      - variables.css
-    - **components/**
-      - avatar-crop.css
-      - buttons.css
-      - cards.css
-      - cookies.css
-      - date-picker.css
-      - forms.css
-      - index-cards.css
-      - levels.css
-      - quick-start-guide.css
-      - quiz.css
-      - report-modal.css
-      - search-profile.css
-      - sections.css
-    - **layout/**
-      - footer.css
-      - grid.css
-      - hero.css
-      - navbar.css
-    - **pages/**
-      - auth-profile.css
-      - community-hub.css
-      - community-landing.css
-      - comparatie.css
-      - console-detail.css
-      - contact.css
-      - course.css
-      - evolutie.css
-      - help-sub.css
-      - help.css
-      - home.css
-      - index.css
-      - lesson.css
-      - page-hero.css
-      - setup-username.css
-      - stats.css
-      - terms.css
-      - user-profile.css
-    - **utilities/**
-      - animations.css
-      - helpers.css
-      - responsive.css
-    - main.css
+    - **base/** — reset.css, typography.css, variables.css: global resets, type scale, CSS custom-property theme tokens
+    - **components/** — reusable component styles (buttons, cards, forms, cookies banner, avatar cropper, quiz, report modal, search/profile dropdown, levels, index cards, date picker, sections)
+    - **layout/** — footer.css, grid.css, hero.css, navbar.css: page-shell/structural layout styles
+    - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, lesson, stats, terms, user-profile, etc.)
+    - **utilities/** — animations.css, helpers.css, responsive.css: utility classes and breakpoint overrides
+    - main.css — entry point that `@import`s all of the above in cascade order
   - **html/**
     - **components/**
-      - footer.html
-      - navbar.html
+      - footer.html — shared site footer markup, injected client-side into every page's `#footer-placeholder`
+      - navbar.html — shared site navbar markup, injected client-side into every page's `#navbar-placeholder`
     - **js/**
-      - components.js
+      - components.js — fetches navbar.html/footer.html, sanitizes with DOMPurify, injects into placeholders; also lazy-loads Sentry with server-injected DSN
     - **pages/**
-      - **consoles/**
-        - 3do.html
-        - atari-2600.html
-        - atari-5200.html
-        - atari-7800.html
-        - atari-home-pong.html
-        - atari-jaguar.html
-        - atari-lynx.html
-        - coleco-telstar.html
-        - colecovision.html
-        - famicom.html
-        - game-boy-advance.html
-        - game-boy-color.html
-        - game-boy.html
-        - intellivision.html
-        - magnavox-odyssey-2.html
-        - magnavox-odyssey.html
-        - microvision.html
-        - neo-geo-aes.html
-        - neo-geo-pocket-color.html
-        - neo-geo-pocket.html
-        - nes.html
-        - nintendo-3ds.html
-        - nintendo-64.html
-        - nintendo-ds.html
-        - nintendo-gamecube.html
-        - nintendo-switch-2.html
-        - nintendo-switch.html
-        - nintendo-wii-u.html
-        - nintendo-wii.html
-        - pc-engine.html
-        - philips-cd-i.html
-        - playstation-1.html
-        - playstation-2.html
-        - playstation-3.html
-        - playstation-4.html
-        - playstation-5.html
-        - ps-vita.html
-        - psp.html
-        - sega-dreamcast.html
-        - sega-game-gear.html
-        - sega-genesis.html
-        - sega-master-system.html
-        - sega-saturn.html
-        - sega-sg-1000.html
-        - snes.html
-        - vectrex.html
-        - wonderswan.html
-        - xbox-360.html
-        - xbox-one.html
-        - xbox-series-s.html
-        - xbox-series-x.html
-        - xbox.html
-      - **help/**
-        - help-achievements.html
-        - help-comunitate.html
-        - help-console.html
-        - help-cont.html
-        - help-forum.html
-        - help-general.html
-        - help-marketplace.html
-        - help-prieteni.html
-        - help-profil.html
-        - help-repair.html
-      - **legal files/**
-        - community-rules-de.html
-        - community-rules-en.html
-        - community-rules-es.html
-        - community-rules-fr.html
-        - community-rules-it.html
-        - community-rules.html
-        - cookies-de.html
-        - cookies-en.html
-        - cookies-es.html
-        - cookies-fr.html
-        - cookies-it.html
-        - cookies.html
-        - privacy-de.html
-        - privacy-en.html
-        - privacy-es.html
-        - privacy-fr.html
-        - privacy-it.html
-        - privacy.html
-        - terms-de.html
-        - terms-en.html
-        - terms-es.html
-        - terms-fr.html
-        - terms-it.html
-        - terms.html
-      - community-welcome-page.html
-      - community.html
-      - comparatie.html
-      - course.html
-      - evolutie.html
-      - help.html
-      - home.html
-      - index.html
-      - invata.html
-      - lesson.html
-      - login.html
-      - profil.html
-      - register.html
-      - request-password-reset.html
-      - reset-password.html
-      - setup-username.html
-      - statistici.html
-      - user-profile.html
-      - verify-success.html
+      - **consoles/** — 51 static per-console detail pages, one per console, filename = console slug, rendered via `console-detail.js` + `data-loader.js`
+      - **help/** — 10 static help/FAQ sub-pages (achievements, community, console, account, forum, general, marketplace, friends, profile, repair)
+      - **legal files/** — 24 files: community-rules/cookies/privacy/terms, each translated into 6 languages (default + de/en/es/fr/it suffixed variants)
+      - community-welcome-page.html — logged-out landing page introducing the Community hub before login
+      - community.html — main Community hub shell: forum, marketplace, repair wizard, DMs (logic in `pages/community.js`)
+      - comparatie.html — hardware side-by-side console comparison tool page
+      - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
+      - evolutie.html — console evolution timeline / encyclopedia grid page
+      - help.html — Help & Support page: FAQ accordion, category filter, search
+      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed)
+      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase
+      - invata.html — "Learn" page: repair course catalog with per-course progress bars
+      - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
+      - login.html — login page: server/local login, Google OAuth, 2FA, resend verification
+      - profil.html — account Settings page: profile, privacy, security, notifications, appearance
+      - register.html — registration page: password strength meter, username availability check
+      - request-password-reset.html — "forgot password" email-request form
+      - reset-password.html — password reset/set form (token from URL; `?mode=set` for first-time set)
+      - setup-username.html — first-time username selection screen (post Google OAuth signup)
+      - statistici.html — personal stats dashboard: achievements, visits, friends, favorites, owned consoles
+      - user-profile.html — public profile page for any username (server-routed SPA-style via `GET /user/:username`)
+      - verify-success.html — email verification result page (forced English), handles resend
   - **js/**
     - **data/**
-      - consoles-data.js
-      - consoles-de.json
-      - consoles-en.json
-      - consoles-es.json
-      - consoles-fr.json
-      - consoles-it.json
-      - consoles-ro.json
-      - data-loader.js
-      - image-dimensions-data.js
-      - image-dimensions.json
-      - location-data.js
+      - consoles-data.js — auto-generated embedded English console dataset (`window.CONSOLES_DATA`), do not hand-edit
+      - consoles-de.json / consoles-en.json / consoles-es.json / consoles-fr.json / consoles-it.json / consoles-ro.json — per-language console encyclopedia source data (`consoles-en.json` canonical), imported into DB by `backend/js/import-consoles.js`
+      - data-loader.js — centralized console-data loader: fetches `/api/consoles?lang=`, falls back to English/embedded data, caches
+      - image-dimensions-data.js — auto-generated `window.IMAGE_DIMENSIONS_DATA` (width/height per console image, for layout-shift-free `<img>`)
+      - image-dimensions.json — source JSON behind `image-dimensions-data.js`
+      - location-data.js — `window.LOCATION_DATA`: country/city list used by location pickers (marketplace, profile)
     - **fallback/**
-      - comparatie.js
-      - console-detail.js
-      - contact-form.js
-      - quiz.js
-      - search-profile.js
+      - comparatie.js — no-ES-module fallback for the comparison page (hamburger menu + comparison logic) for `file://` usage
+      - console-detail.js — no-ES-module fallback that fetches console JSON and renders a console detail page dynamically
+      - contact-form.js — no-ES-module fallback contact form handler with validation + Nodemailer-backed API call
+      - quiz.js — no-ES-module fallback: auto-transforms static quiz HTML sections into interactive scored quizzes
+      - search-profile.js — no-ES-module fallback: advanced search (consoles→people→marketplace→pages) + profile dropdown
     - **modules/**
-      - achievement-socket.js
-      - achievements.js
-      - animations.js
-      - auth.js
-      - avatar-cropper.js
-      - contact-form.js
-      - custom-player.js
-      - diacritics.js
-      - gamification-data.js
-      - home-timeline.js
-      - home.js
-      - i18n.js
-      - marketplace.js
-      - navigation.js
-      - notifications.js
-      - profile-dropdown.js
-      - progress.js
-      - report-modal.js
-      - search.js
-      - sentry-init.js
+      - achievement-socket.js — connects Socket.io client, joins user's room, shows toast on `achievement_unlocked` events
+      - achievements.js — achievement/level display logic and toast notifications (definitions come from `gamification-data.js`)
+      - animations.js — scroll-triggered fade-in animations via IntersectionObserver
+      - auth.js — client-side session/API wrapper: login/register/logout, JWT + localStorage, `getCurrentUser()`/`isLoggedIn()`
+      - avatar-cropper.js — WhatsApp-style circular avatar crop modal; resolves a 512×512 JPEG Blob
+      - contact-form.js — ES-module contact form validation + submit (module-enabled environments)
+      - custom-player.js — custom YouTube IFrame API video player with play/pause/seek/volume controls
+      - diacritics.js — normalizes common Romanian words typed/rendered without diacritics
+      - gamification-data.js — frontend copy of XP/level/achievement constants (`window.GAMIFICATION_DATA`), must mirror `backend/utils/gamification.js`
+      - home-timeline.js — animates the quick-start guide timeline fill bar on the home page, clickable steps
+      - home.js — home page logic: user greeting, avatar URL normalization, achievements/auth wiring
+      - i18n.js — i18n engine: `data-i18n` attribute translation, language persisted to localStorage; holds the `MESSAGES` object (en/es/fr/it/de)
+      - marketplace.js — shared marketplace helper functions (provider display name/icon, etc.)
+      - navigation.js — smooth scrolling, active nav-link highlighting, mobile hamburger menu
+      - notifications.js — notification bell dropdown: badge count, polling, mark-as-read
+      - profile-dropdown.js — profile dropdown for logged-in/out states, language selector + theme switcher
+      - progress.js — course lesson-completion tracking via localStorage, keyed per user
+      - report-modal.js — DSA Article 16 content-report modal, `window.openReportModal(...)`, no framework
+      - search.js — advanced global search: consoles → people → marketplace → settings/pages, filter tabs, keyboard nav
+      - sentry-init.js — initializes Sentry browser SDK with PII-scrubbing `beforeSend` hook
     - **pages/**
-      - card-enhancements.js
-      - chat.js
-      - community-welcome-page.js
-      - community.js
-      - comparatie.js
-      - console-detail.js
-      - cookies.js
-      - course.js
-      - help.js
-      - index-auth.js
-      - index-cards.js
-      - invata.js
-      - lesson.js
-      - login.js
-      - profile.js
-      - register.js
-      - request-password-reset.js
-      - reset-password.js
-      - setup-username.js
-      - statistici.js
-      - user-profile.js
-      - verify-success.js
+      - card-enhancements.js — adds favorite-heart + community rating to console cards on the evolution/encyclopedia page
+      - chat.js — community.html global chat: polling, message rendering, cooldown rate limit, char counter
+      - community-welcome-page.js — logged-out community landing page interactivity (console category tiles etc.)
+      - community.js — Community hub controller: sidebar nav, forum, marketplace, repair wizard, DMs
+      - comparatie.js — comparison page ES module: loads console data via API, renders comparison UI
+      - console-detail.js — console detail page ES module: loads specs from `data-loader.js`, renders into page
+      - cookies.js — cookie consent banner logic for cookies.html (reads/writes consent to localStorage)
+      - course.js — course.html controller: loads course/module/lesson list, access control for non-starter courses
+      - help.js — help.html: FAQ accordion, category filter, search
+      - index-auth.js — logged-out index.html: checks Supabase session, redirects to home.html if already authenticated
+      - index-cards.js — index.html thumbnail-to-featured-card swap interaction
+      - invata.js — invata.html: fetches real course progress from API, updates course card progress bars
+      - lesson.js — lesson.html controller: loads lesson content/quiz, tracks progress, comments/reactions
+      - login.js — login.html: server/local login, Google OAuth redirect handling, 2FA verification, resend verification
+      - profile.js — profil.html Settings controller: account, profile/privacy, security, notifications, appearance tabs
+      - register.js — register.html: password strength indicator, username availability check, submit, Google OAuth
+      - request-password-reset.js — request-password-reset.html: submits reset request to API, shows result
+      - reset-password.js — reset-password.html: validates token from URL, submits new password (`?mode=set` variant)
+      - setup-username.js — setup-username.html: first-time username selection with live availability check
+      - statistici.js — statistici.html: personal progress dashboard (achievements, visits, friends, favorites, owned consoles)
+      - user-profile.js — user-profile.html: public profile view, progress/achievements/favorites, friend-request controls
+      - verify-success.js — verify-success.html: verifies email token from URL, shows result, handles resend (forced English)
     - **utils/**
-      - confirm-modal.js
-      - date-picker.js
-      - dom.js
-    - config.js
-    - cookie-consent.js
-    - main.js
-    - redirect.js
-    - reset-database.js
-  - robots.txt
-  - sitemap.xml
-- .gitignore
-- CLAUDE.md
-- index.html
-- LICENSE
-- package.json
-- railway.toml
-- README.md
-- sitemap.xml
+      - confirm-modal.js — custom confirm() replacement modal (`confirmModal()`), CSP-safe DOM building
+      - date-picker.js — custom styled calendar dropdown replacing native/hidden date inputs (`createDatePicker()`)
+      - dom.js — small DOM utility helpers: selectors, event handlers, class management
+    - config.js — exports `API_BASE_URL`, overridable via `window.CN_API_BASE_URL` for split frontend/API deployments
+    - cookie-consent.js — cookie consent banner + conditional Google Analytics (`gtag`) loader
+    - main.js — main JS entry point: imports and initializes Navigation/Animations/ContactForm/Diacritics/Search/ProfileDropdown modules
+    - redirect.js — root `index.html` redirect helper, keeps that file free of inline scripts
+    - reset-database.js — frontend entry shim, `require()`s the real logic in `backend/js/reset-database.js`
+  - robots.txt — crawler rules; disallows login/register pages
+  - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`)
+- .gitignore — repo-wide ignore rules (`.env*` except `.env.example`, `node_modules/`, etc.)
+- CLAUDE.md — Claude Code guidance: architecture, conventions, and rules for this repo
+- index.html — root redirect shim to `frontend/html/pages/`; not the real app entry point
+- LICENSE — project license
+- package.json — root scripts: `install:server`/`postinstall`, `start`/`start:server`, `dev:server`, `reset-db`, `import-consoles`
+- railway.toml — Railway deploy config: runs `import-consoles.js` then `npm start` on every deploy, healthcheck at `/api/health`
+- README.md — project overview: what Cnote Bakery / Console Notebook is
+- sitemap.xml — root-level XML sitemap for search engines
