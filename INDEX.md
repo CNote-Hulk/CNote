@@ -14,6 +14,7 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
     - import-consoles.js
     - reset-database.js
   - **middleware/**
+    - adminOnly.js
     - auth.js
   - **providers/**
     - EbayProvider.js
@@ -44,6 +45,7 @@ Complete file index for this repository (448 files, excluding `node_modules/`, `
     - sessions.js
     - uploads.js
     - users.js
+    - workshop.js
   - **scripts/**
     - check-dependencies.js
     - insert-translations.js

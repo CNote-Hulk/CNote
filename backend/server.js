@@ -66,6 +66,7 @@ const coursesRoutes = require('./routes/courses');
 const reportsRoutes = require('./routes/reports');
 const ebayRoutes = require('./routes/ebay');
 const uploadsRoutes = require('./routes/uploads');
+const workshopRoutes = require('./routes/workshop');
 
 /* ── Environment validation ── */
 
@@ -414,6 +415,7 @@ app.use('/api', coursesRoutes);
 app.use('/api', reportsRoutes);
 app.use('/api/ebay', ebayRoutes);
 app.use('/api/uploads', uploadsRoutes);
+app.use('/api/workshop', workshopRoutes);
 
 /* ── Static files & redirects ── */
 
