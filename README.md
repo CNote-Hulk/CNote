@@ -180,7 +180,6 @@ v0.1.0 (Beta)
 
 Planned improvements include:
 
-* improved search
 * advanced repair lessons
 * modding tutorials
 * dedicated gaming server
