@@ -2,7 +2,7 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (472 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (477 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
@@ -91,10 +91,11 @@ Complete file index for this repository (472 files, excluding `node_modules/`, `
   - README.md — why/how of the self-hosted MinIO object-storage setup for chat attachments
 - **frontend/**
   - **assets/**
-    - **icons/** — favicon.ico only
+    - **icons/** — favicon.ico (48×48, Atari 2600 photo, white-flattened), apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons); all derived from `images/consoles/atari-2600.png` via `sharp` (see manifest.json + the `<link rel="apple-touch-icon">`/`<link rel="manifest">` pair present in every page's `<head>` right after its favicon `<link>`)
     - **images/**
       - **consoles/** — ~104 files (PNG+WebP pairs), one pair per console, filename = console slug; referenced by encyclopedia/comparison pages
       - **wallpapers/** — 8 full-page background images, one per major page (home, community, comparatie, evolutie, help, index, invata, login)
+      - og-image.jpg — 1200×630 social-share preview image (Atari 2600 photo, white background), referenced by `og:image` on index.html/home.html
     - **vendor/**
       - **katex/** — vendored KaTeX library (JS/CSS/fonts + auto-render contrib) for math rendering in course lessons
   - **css/**
@@ -201,6 +202,7 @@ Complete file index for this repository (472 files, excluding `node_modules/`, `
     - main.js — main JS entry point: imports and initializes Navigation/Animations/ContactForm/Diacritics/Search/ProfileDropdown modules
     - redirect.js — root `index.html` redirect helper, keeps that file free of inline scripts
     - reset-database.js — frontend entry shim, `require()`s the real logic in `backend/js/reset-database.js`
+  - manifest.json — PWA manifest (name, icons, theme/background color), linked from every page's `<head>`
   - robots.txt — crawler rules; disallows login/register pages
   - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`); covers all public pages: main pages, 52 console pages, 10 help sub-pages, 24 legal-file language variants
 - .gitignore — repo-wide ignore rules (`.env*` except `.env.example`, `node_modules/`, etc.)
