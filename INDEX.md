@@ -73,7 +73,7 @@ Complete file index for this repository (467 files, excluding `node_modules/`, `
   - .env — local environment values (gitignored, not committed)
   - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, etc.)
   - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
-  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE` migration array run on boot
+  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns; a few target tables — `user_achievements`, `xp_transactions`, `user_lessons`, `user_course_progress` — that only exist live in Supabase and have no `CREATE TABLE` anywhere in this repo)
   - package-lock.json — locked dependency tree for backend
   - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
