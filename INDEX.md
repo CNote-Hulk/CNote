@@ -2,7 +2,7 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (471 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (472 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
@@ -11,6 +11,7 @@ Complete file index for this repository (471 files, excluding `node_modules/`, `
 - **.github/**
   - **workflows/**
     - ci.yml — GitHub Actions: on push/PR installs backend deps, runs `precheck`, runs `backend/test/*.test.js`
+    - db-backup.yml — GitHub Actions: daily encrypted `pg_dump` of production DB, uploaded as a 90-day artifact (independent of Supabase's own backup plan); needs `DATABASE_URL` + `BACKUP_ENCRYPTION_PASSPHRASE` repo secrets
 - **.vscode/**
   - settings.json — Live Server port config for local static preview
 - **backend/**
