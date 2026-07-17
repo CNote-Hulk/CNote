@@ -172,6 +172,7 @@ app.use(helmet({
 				'https://www.googletagmanager.com', // GA4 loader
 				'https://*.google-analytics.com',  // GA4 secondary scripts
 				'https://browser.sentry-cdn.com',  // Sentry browser SDK
+				'https://challenges.cloudflare.com', // Turnstile (CAPTCHA) widget script
 			],
 
 			styleSrc: [
@@ -211,12 +212,14 @@ app.use(helmet({
 				'https://*.supabase.co',              // Supabase auth & realtime
 				'https://*.sentry.io',                // Sentry error reporting
 				'https://*.ingest.sentry.io',         // Sentry ingest endpoint
+				'https://challenges.cloudflare.com',  // Turnstile (CAPTCHA) verification calls
 				...(objectStorageOrigin ? [objectStorageOrigin] : []), // chat attachment storage (upload PUT + fetch)
 			],
 
 			frameSrc: [
 				'https://www.youtube.com',          // YouTube embeds (consent-gated)
 				'https://www.youtube-nocookie.com', // YouTube privacy-enhanced mode
+				'https://challenges.cloudflare.com', // Turnstile (CAPTCHA) widget iframe
 			],
 
 			frameAncestors: ["'self'"],             // Clickjacking protection
@@ -446,9 +449,12 @@ async function serveHTMLWithNonce(req, res, next, filePath, statusCode) {
 		// can read it at runtime without committing the value to source control.
 		// The script tag carries the per-request nonce — CSP-compliant.
 		const frontendDsn = process.env.SENTRY_DSN_FRONTEND || '';
+		// Same pattern for the Turnstile (CAPTCHA) site key — public by design,
+		// but still kept out of source control so envs can swap keys freely.
+		const turnstileSiteKey = process.env.TURNSTILE_SITE_KEY || '';
 		html = html.replace(
 			'</head>',
-			`<script nonce="${nonce}">window.SENTRY_DSN_FRONTEND = ${JSON.stringify(frontendDsn)};</script>\n</head>`
+			`<script nonce="${nonce}">window.SENTRY_DSN_FRONTEND = ${JSON.stringify(frontendDsn)};window.TURNSTILE_SITE_KEY = ${JSON.stringify(turnstileSiteKey)};</script>\n</head>`
 		);
 
 		// Inject nonce into inline <script> tags.

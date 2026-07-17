@@ -2,7 +2,7 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (467 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (471 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
@@ -27,10 +27,10 @@ Complete file index for this repository (467 files, excluding `node_modules/`, `
     - OlxProvider.js — OLX marketplace integration: OAuth + listings fetch/normalization against OLX Group API
   - **routes/**
     - achievements.js — GET own achievements (`/`) and another user's by username (`/user/:username`)
-    - auth.js — registration, login + 2FA, email verification, password reset, profile, avatar upload; largest route file
+    - auth.js — registration (Turnstile CAPTCHA + disposable-email block), login + 2FA, email verification, password reset, profile, avatar upload; largest route file
     - chat.js — community/global chat: paginated message retrieval + posting with per-user rate-limit cooldown
     - consoles.js — GET `/api/consoles?lang=` — serves console encyclopedia data per language from `consoles_translations`
-    - contact.js — contact form submission: honeypot bot check + sends email via Resend
+    - contact.js — contact form submission: honeypot + Turnstile CAPTCHA bot checks + sends email via Resend
     - courses.js — course/module/lesson/quiz/reactions/comments endpoints; also self-creates `lesson_reactions` table on load
     - dm.js — direct messages: conversation list, message thread, send DM
     - ebay.js — eBay OAuth connect/callback/status/disconnect, listings import, and account-deletion webhook verification
@@ -60,25 +60,29 @@ Complete file index for this repository (467 files, excluding `node_modules/`, `
     - marketplace-sync.js — picks the right `MarketplaceProvider` by name and drives listing sync
   - **test/**
     - device.test.js — unit tests for `utils/device.js` (browser/OS/device-type parsing, IP fallback order)
+    - disposableEmail.test.js — unit tests for `utils/disposableEmail.js` (`isDisposableEmail()` coverage)
     - gamification.test.js — unit tests for `utils/gamification.js` (level curve, XP action shapes, achievement thresholds)
     - languages.test.js — unit tests for `utils/languages.js` (ALLOWED_LANGS/DEFAULT_LANG invariants)
     - passwordPolicy.test.js — unit tests for `utils/passwordPolicy.js` (`validatePassword()` rule coverage)
+    - turnstile.test.js — unit tests for `utils/turnstile.js` (dev-skip, prod-fail-closed, Cloudflare success/failure/network-error paths)
   - **utils/**
     - device.js — parses `User-Agent` header into device type/browser/OS + IP, for session/security logging
+    - disposableEmail.js — `isDisposableEmail()`: static blocklist of known temp-mail/throwaway domains, checked at registration
     - gamification.js — single source of truth for XP actions, levels, and achievement definitions; `awardXP()` lives here
     - languages.js — `ALLOWED_LANGS`/`DEFAULT_LANG` constants shared across routes needing language validation
     - objectStorage.js — generic S3-compatible client (MinIO today) for chat image/voice attachments, server-side only
     - passwordPolicy.js — single source of truth for password strength rules; `validatePassword()` used on all password-set paths
     - supabaseStorage.js — shared Supabase Storage client authenticated with the service-role key (avatar bucket), server-side only
+    - turnstile.js — `verifyTurnstileToken()`: Cloudflare Turnstile (CAPTCHA) server-side verification, used by register + contact routes
   - .env — local environment values (gitignored, not committed)
-  - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, etc.)
+  - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, Turnstile CAPTCHA keys, etc.)
   - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
   - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns; a few target tables — `user_achievements`, `xp_transactions`, `user_lessons`, `user_course_progress` — that only exist live in Supabase and have no `CREATE TABLE` anywhere in this repo)
   - package-lock.json — locked dependency tree for backend
   - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
   - server_check.js — minimal standalone Express+Helmet snippet to sanity-check CSP config changes in isolation
-  - server.js — Express app entry point: middleware, CORS, CSP nonce injection, mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init
+  - server.js — Express app entry point: middleware, CORS, CSP nonce injection (also injects `window.TURNSTILE_SITE_KEY`), mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init
 - **infra/**
   - .env.example — template for MinIO root user/password on the self-hosted VPS
   - Caddyfile — reverse proxy config: TLS (Let's Encrypt) in front of the self-hosted MinIO object storage
@@ -115,14 +119,14 @@ Complete file index for this repository (467 files, excluding `node_modules/`, `
       - comparatie.html — hardware side-by-side console comparison tool page
       - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
       - evolutie.html — console evolution timeline / encyclopedia grid page
-      - help.html — Help & Support page: FAQ accordion, category filter, search
+      - help.html — Help & Support page: FAQ accordion, category filter, search; contact form includes a Turnstile CAPTCHA widget
       - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed)
       - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
       - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
       - login.html — login page: server/local login, Google OAuth, 2FA, resend verification
       - profil.html — account Settings page: profile, privacy, security, notifications, appearance
-      - register.html — registration page: password strength meter, username availability check
+      - register.html — registration page: password strength meter, username availability check, Turnstile CAPTCHA widget
       - request-password-reset.html — "forgot password" email-request form
       - reset-password.html — password reset/set form (token from URL; `?mode=set` for first-time set)
       - setup-username.html — first-time username selection screen (post Google OAuth signup)
@@ -140,14 +144,14 @@ Complete file index for this repository (467 files, excluding `node_modules/`, `
     - **fallback/**
       - comparatie.js — no-ES-module fallback for the comparison page (hamburger menu + comparison logic) for `file://` usage
       - console-detail.js — no-ES-module fallback that fetches console JSON and renders a console detail page dynamically
-      - contact-form.js — no-ES-module fallback contact form handler with validation + Nodemailer-backed API call
+      - contact-form.js — no-ES-module fallback contact form handler with validation, Turnstile CAPTCHA widget, + Nodemailer-backed API call
       - quiz.js — no-ES-module fallback: auto-transforms static quiz HTML sections into interactive scored quizzes
       - search-profile.js — no-ES-module fallback: advanced search (consoles→people→marketplace→pages) + profile dropdown
     - **modules/**
       - achievement-socket.js — connects Socket.io client, joins user's room, shows toast on `achievement_unlocked` events
       - achievements.js — achievement/level display logic and toast notifications (definitions come from `gamification-data.js`)
       - animations.js — scroll-triggered fade-in animations via IntersectionObserver
-      - auth.js — client-side session/API wrapper: login/register/logout, JWT + localStorage, `getCurrentUser()`/`isLoggedIn()`
+      - auth.js — client-side session/API wrapper: login/register(terms/privacy/turnstileToken)/logout, JWT + localStorage, `getCurrentUser()`/`isLoggedIn()`
       - avatar-cropper.js — WhatsApp-style circular avatar crop modal; resolves a 512×512 JPEG Blob
       - contact-form.js — ES-module contact form validation + submit (module-enabled environments)
       - custom-player.js — custom YouTube IFrame API video player with play/pause/seek/volume controls
@@ -180,7 +184,7 @@ Complete file index for this repository (467 files, excluding `node_modules/`, `
       - lesson.js — lesson.html controller: loads lesson content/quiz, tracks progress, comments/reactions
       - login.js — login.html: server/local login, Google OAuth redirect handling, 2FA verification, resend verification
       - profile.js — profil.html Settings controller: account, profile/privacy, security, notifications, appearance tabs
-      - register.js — register.html: password strength indicator, username availability check, submit, Google OAuth
+      - register.js — register.html: password strength indicator, username availability check, Turnstile CAPTCHA widget, submit, Google OAuth
       - request-password-reset.js — request-password-reset.html: submits reset request to API, shows result
       - reset-password.js — reset-password.html: validates token from URL, submits new password (`?mode=set` variant)
       - setup-username.js — setup-username.html: first-time username selection with live availability check

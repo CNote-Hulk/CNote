@@ -78,6 +78,23 @@ usernameInput.addEventListener('input', () => {
     }, 500);
 });
 
+// ─── Turnstile (CAPTCHA) widget ────────────────────
+// Site key is injected server-side as window.TURNSTILE_SITE_KEY (see
+// server.js's serveHTMLWithNonce). Render once the widget script + key
+// are both available; skip entirely if no site key is configured.
+let turnstileWidgetId = null;
+function renderTurnstileWhenReady(attemptsLeft = 50) {
+    const container = document.getElementById('register-turnstile');
+    if (!container || !window.TURNSTILE_SITE_KEY) return;
+    if (window.turnstile) {
+        turnstileWidgetId = window.turnstile.render(container, { sitekey: window.TURNSTILE_SITE_KEY, theme: 'dark' });
+        return;
+    }
+    if (attemptsLeft <= 0) return; // Turnstile script failed to load — submit will proceed without a token
+    setTimeout(() => renderTurnstileWhenReady(attemptsLeft - 1), 100);
+}
+renderTurnstileWhenReady();
+
 // ─── Register form submission ─────────────────────
 document.getElementById('register-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -141,7 +158,14 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     submitBtn.textContent = 'Creating account...';
 
     try {
-        const result = await AuthModule.register(username, email, password, birthDateVal || undefined);
+        const turnstileToken = (window.turnstile && turnstileWidgetId != null)
+            ? window.turnstile.getResponse(turnstileWidgetId)
+            : undefined;
+        const result = await AuthModule.register(username, email, password, birthDateVal || undefined, {
+            termsAccepted: document.getElementById('reg-terms').checked,
+            privacyAccepted: document.getElementById('reg-privacy').checked,
+            turnstileToken,
+        });
         if (result.success) {
             document.getElementById('register-form-wrap').style.display = 'none';
             document.getElementById('register-sent-email').textContent = email;

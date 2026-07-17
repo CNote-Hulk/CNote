@@ -143,6 +143,21 @@ document.addEventListener('DOMContentLoaded', function () {
     if (contactForm && submitBtn) {
         window.__CONTACT_FORM_INITIALIZED__ = true;
 
+        // ─── Turnstile (CAPTCHA) widget ────────────────────
+        // Site key is injected server-side as window.TURNSTILE_SITE_KEY.
+        var turnstileWidgetId = null;
+        (function renderTurnstileWhenReady(attemptsLeft) {
+            if (attemptsLeft === undefined) attemptsLeft = 50;
+            var container = document.getElementById('contact-turnstile');
+            if (!container || !window.TURNSTILE_SITE_KEY) return;
+            if (window.turnstile) {
+                turnstileWidgetId = window.turnstile.render(container, { sitekey: window.TURNSTILE_SITE_KEY, theme: 'dark' });
+                return;
+            }
+            if (attemptsLeft <= 0) return;
+            setTimeout(function () { renderTurnstileWhenReady(attemptsLeft - 1); }, 100);
+        })();
+
         contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
             if (isSubmitting) return;
@@ -177,7 +192,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                var payload = { name: name, email: email, subject: subject, message: message, _honey: honeypot ? honeypot.value : '' };
+                var turnstileToken = (window.turnstile && turnstileWidgetId != null)
+                    ? window.turnstile.getResponse(turnstileWidgetId)
+                    : undefined;
+                var payload = { name: name, email: email, subject: subject, message: message, _honey: honeypot ? honeypot.value : '', turnstileToken: turnstileToken };
 
                 var response = await fetch(API_BASE_URL + '/contact', {
                     method: 'POST',

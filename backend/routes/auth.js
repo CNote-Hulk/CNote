@@ -23,6 +23,8 @@ const { validatePassword } = require('../utils/passwordPolicy');
 const { getLevelFromXP, awardXP } = require('../utils/gamification');
 const { supabaseAdmin } = require('../utils/supabaseStorage');
 const { ALLOWED_LANGS } = require('../utils/languages');
+const { verifyTurnstileToken } = require('../utils/turnstile');
+const { isDisposableEmail } = require('../utils/disposableEmail');
 
 const router = express.Router();
 
@@ -287,7 +289,12 @@ router.post('/setup-username', authRequired, async (req, res) => {
 // POST /api/register — Create new account with email verification
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, password, terms_accepted, privacy_accepted } = req.body;
+        const { username, email, password, terms_accepted, privacy_accepted, turnstileToken } = req.body;
+
+        const captcha = await verifyTurnstileToken(turnstileToken, parseDevice(req).ip);
+        if (!captcha.success) {
+            return res.status(400).json({ success: false, error: captcha.error });
+        }
 
         if (!terms_accepted || !privacy_accepted) {
             return res.status(400).json({ success: false, error: 'You must accept the Terms & Conditions and Privacy Policy.' });
@@ -304,6 +311,9 @@ router.post('/register', async (req, res) => {
 
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             return res.status(400).json({ success: false, error: 'Email address is not valid.' });
+        }
+        if (isDisposableEmail(email)) {
+            return res.status(400).json({ success: false, error: 'Disposable/temporary email addresses are not allowed. Please use a real email address.' });
         }
 
         // Password strength — validated via shared policy (backend/utils/passwordPolicy.js)

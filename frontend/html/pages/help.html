@@ -460,6 +460,8 @@
 
                     <input type="text" name="_honey" class="honeypot-input" tabindex="-1" autocomplete="off">
 
+                    <div id="contact-turnstile" style="margin:10px 0;"></div>
+
                     <div class="input-group contact-submit-group">
                         <button type="submit" class="demo-button" id="submit-btn" data-i18n="contact_send">Send message</button>
                         <div id="error-message" class="contact-inline-error" hidden></div>
@@ -477,6 +479,7 @@
     <!-- Scripts -->
     <script type="module" src="../../js/main.js"></script>
     <script src="../../js/pages/help.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="../../js/fallback/contact-form.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>

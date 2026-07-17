@@ -10,6 +10,8 @@
    ────────────────────────────────────────── */
 const express = require('express');
 const emailService = require('../services/email');
+const { verifyTurnstileToken } = require('../utils/turnstile');
+const { parseDevice } = require('../utils/device');
 
 const router = express.Router();
 
@@ -18,11 +20,16 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // POST /api/contact — Submit contact form and send email to admin + confirmation to user
 router.post('/contact', async (req, res) => {
     try {
-        const { name, email, subject, message, _honey } = req.body || {};
+        const { name, email, subject, message, _honey, turnstileToken } = req.body || {};
 
         // Honeypot field: if filled, it’s a bot — return silent success
         if (_honey && String(_honey).trim().length > 0) {
             return res.json({ success: true });
+        }
+
+        const captcha = await verifyTurnstileToken(turnstileToken, parseDevice(req).ip);
+        if (!captcha.success) {
+            return res.status(400).json({ success: false, error: captcha.error });
         }
 
         const cleanName = String(name || '').trim();
