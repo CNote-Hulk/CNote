@@ -218,6 +218,33 @@
         }
     }
 
+    // ── Accessibility: skip-to-content link ──────────────────────────────────
+    // Tags the page's main content landmark with id="main-content" (if it
+    // doesn't already have an id) and prepends a "Skip to main content" link
+    // as the very first focusable element in <body>. Runs once, after the
+    // navbar is injected, so pages without a semantic <main> still get a
+    // reasonable target (the first element right after the navbar).
+
+    function ensureMainLandmark() {
+        var main = document.querySelector('main');
+        if (!main) {
+            var navEl = document.querySelector('.navbar');
+            main = (navEl && navEl.nextElementSibling) || document.body.firstElementChild;
+        }
+        if (main && !main.id) main.id = 'main-content';
+        return main;
+    }
+
+    function addSkipLink(main) {
+        if (!main || document.querySelector('.skip-link')) return;
+        var link = document.createElement('a');
+        link.href = '#main-content';
+        link.className = 'skip-link';
+        link.setAttribute('data-i18n', 'a11y_skip_link');
+        link.textContent = (window.I18nModule && window.I18nModule.t('a11y_skip_link')) || 'Skip to main content';
+        document.body.insertBefore(link, document.body.firstChild);
+    }
+
     // ── Notifications ─────────────────────────────────────────────────────────
 
     function handleNotifications() {
@@ -287,6 +314,7 @@
             injectHTML('footer-placeholder', results[1]);
             setActiveLink();
             handleNotifications();
+            addSkipLink(ensureMainLandmark());
             scheduleReinit();
         });
     }

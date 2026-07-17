@@ -359,6 +359,10 @@ const MESSAGES = {
         verify_error_message: 'Invalid or expired link.',
         verify_error_resend: 'Resend verification email',
         verify_error_login: 'Log in',
+        notfound_title: '404 — Page Not Found',
+        notfound_message: "The page you're looking for doesn't exist or has been moved.",
+        notfound_home_link: 'Back to home',
+        a11y_skip_link: 'Skip to main content',
 
         navbar_profile: 'Profile',
         console_back_to_index: 'Back to index',
@@ -1870,6 +1874,10 @@ const MESSAGES = {
         verify_error_message: 'Link invalid sau expirat.',
         verify_error_resend: 'Retrimite emailul de verificare',
         verify_error_login: 'Autentificare',
+        notfound_title: '404 — Pagina nu a fost găsită',
+        notfound_message: 'Pagina pe care o cauți nu există sau a fost mutată.',
+        notfound_home_link: 'Înapoi acasă',
+        a11y_skip_link: 'Sari la conținutul principal',
 
         navbar_profile: 'Profil',
         console_back_to_index: 'Înapoi la index',
@@ -3354,6 +3362,10 @@ const MESSAGES = {
         verify_error_message: 'Enlace inválido o caducado.',
         verify_error_resend: 'Reenviar email de verificación',
         verify_error_login: 'Iniciar sesión',
+        notfound_title: '404 — Página no encontrada',
+        notfound_message: 'La página que buscas no existe o ha sido movida.',
+        notfound_home_link: 'Volver al inicio',
+        a11y_skip_link: 'Saltar al contenido principal',
 
         navbar_profile: 'Perfil',
         console_back_to_index: 'Volver al índice',
@@ -4832,6 +4844,10 @@ const MESSAGES = {
         verify_error_message: 'Lien invalide ou expiré.',
         verify_error_resend: 'Renvoyer l’email de vérification',
         verify_error_login: 'Connexion',
+        notfound_title: '404 — Page introuvable',
+        notfound_message: "La page que vous recherchez n'existe pas ou a été déplacée.",
+        notfound_home_link: "Retour à l'accueil",
+        a11y_skip_link: 'Aller au contenu principal',
 
         navbar_profile: 'Profil',
         console_back_to_index: 'Retour à l’index',
@@ -6308,6 +6324,10 @@ const MESSAGES = {
         verify_error_message: 'Link invalido o scaduto.',
         verify_error_resend: 'Reinvia email di verifica',
         verify_error_login: 'Accedi',
+        notfound_title: '404 — Pagina non trovata',
+        notfound_message: 'La pagina che stai cercando non esiste o è stata spostata.',
+        notfound_home_link: 'Torna alla home',
+        a11y_skip_link: 'Vai al contenuto principale',
 
         navbar_profile: 'Profilo',
         console_back_to_index: 'Torna all’indice',
@@ -7789,6 +7809,10 @@ const MESSAGES = {
         verify_error_message: 'Ungültiger oder abgelaufener Link.',
         verify_error_resend: 'Verifizierungs-E-Mail erneut senden',
         verify_error_login: 'Anmelden',
+        notfound_title: '404 — Seite nicht gefunden',
+        notfound_message: 'Die gesuchte Seite existiert nicht oder wurde verschoben.',
+        notfound_home_link: 'Zurück zur Startseite',
+        a11y_skip_link: 'Zum Hauptinhalt springen',
 
         navbar_profile: 'Profil',
 

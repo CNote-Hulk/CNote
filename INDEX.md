@@ -2,7 +2,7 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (461 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (462 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
@@ -70,7 +70,7 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
   - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`)
   - README.md — backend setup instructions
   - server_check.js — minimal standalone Express+Helmet snippet to sanity-check CSP config changes in isolation
-  - server.js — Express app entry point: middleware, CORS, CSP nonce injection, mounts all routes, serves static frontend, Socket.io init
+  - server.js — Express app entry point: middleware, CORS, CSP nonce injection, mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init
 - **infra/**
   - .env.example — template for MinIO root user/password on the self-hosted VPS
   - Caddyfile — reverse proxy config: TLS (Let's Encrypt) in front of the self-hosted MinIO object storage
@@ -85,7 +85,7 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
     - **vendor/**
       - **katex/** — vendored KaTeX library (JS/CSS/fonts + auto-render contrib) for math rendering in course lessons
   - **css/**
-    - **base/** — reset.css, typography.css, variables.css: global resets, type scale, CSS custom-property theme tokens
+    - **base/** — reset.css (global resets + site-wide `:focus-visible` outline + `.skip-link` styling), typography.css, variables.css: type scale, CSS custom-property theme tokens
     - **components/** — reusable component styles (buttons, cards, forms, cookies banner, avatar cropper, quiz, report modal, search/profile dropdown, levels, index cards, date picker, sections)
     - **layout/** — footer.css, grid.css, hero.css, navbar.css: page-shell/structural layout styles
     - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, lesson, stats, terms, user-profile, etc.)
@@ -96,11 +96,12 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
       - footer.html — shared site footer markup, injected client-side into every page's `#footer-placeholder`
       - navbar.html — shared site navbar markup, injected client-side into every page's `#navbar-placeholder`
     - **js/**
-      - components.js — fetches navbar.html/footer.html, sanitizes with DOMPurify, injects into placeholders; also lazy-loads Sentry with server-injected DSN
+      - components.js — fetches navbar.html/footer.html, sanitizes with DOMPurify, injects into placeholders; adds a skip-to-content link + tags the main content landmark for a11y; also lazy-loads Sentry with server-injected DSN
     - **pages/**
       - **consoles/** — 51 static per-console detail pages, one per console, filename = console slug, rendered via `console-detail.js` + `data-loader.js`
       - **help/** — 10 static help/FAQ sub-pages (achievements, community, console, account, forum, general, marketplace, friends, profile, repair)
       - **legal files/** — 24 files: community-rules/cookies/privacy/terms, each translated into 6 languages (default + de/en/es/fr/it suffixed variants)
+      - 404.html — branded not-found page; served by `server.js`'s catch-all 404 fallback (HTML 404 status, CSP nonce injected)
       - community-welcome-page.html — logged-out landing page introducing the Community hub before login
       - community.html — main Community hub shell: forum, marketplace, repair wizard, DMs (logic in `pages/community.js`)
       - comparatie.html — hardware side-by-side console comparison tool page
@@ -188,7 +189,7 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
     - redirect.js — root `index.html` redirect helper, keeps that file free of inline scripts
     - reset-database.js — frontend entry shim, `require()`s the real logic in `backend/js/reset-database.js`
   - robots.txt — crawler rules; disallows login/register pages
-  - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`)
+  - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`); covers all public pages: main pages, 52 console pages, 10 help sub-pages, 24 legal-file language variants
 - .gitignore — repo-wide ignore rules (`.env*` except `.env.example`, `node_modules/`, etc.)
 - CLAUDE.md — Claude Code guidance: architecture, conventions, and rules for this repo
 - index.html — root redirect shim to `frontend/html/pages/`; not the real app entry point
@@ -196,4 +197,4 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
 - package.json — root scripts: `install:server`/`postinstall`, `start`/`start:server`, `dev:server`, `reset-db`, `import-consoles`
 - railway.toml — Railway deploy config: runs `import-consoles.js` then `npm start` on every deploy, healthcheck at `/api/health`
 - README.md — project overview: what Cnote Bakery / Console Notebook is
-- sitemap.xml — root-level XML sitemap for search engines
+- sitemap.xml — root-level XML sitemap for search engines (kept in sync with `frontend/sitemap.xml`)

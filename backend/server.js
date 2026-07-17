@@ -145,8 +145,8 @@ app.use((req, res, next) => {
 
 app.use(helmet({
 	// ── Content-Security-Policy ────────────────────────────────────────────
-	// Running in REPORT-ONLY mode. Switch reportOnly → false once logs are
-	// clean for 24-48 h. See POST /api/csp-report for the violation sink.
+	// Enforced (reportOnly: false) — violations still flow to the sink below
+	// for monitoring, but the browser blocks anything not explicitly allowed.
 	//
 	// External origins inventoried from the frontend (2026-05-06):
 	//   cdn.socket.io          – Socket.IO client script
@@ -437,7 +437,7 @@ const FRONTEND_ROOT = path.join(__dirname, '..', 'frontend');
    express.static can serve a proper 404.
    No caching intentionally — nonce must be unique per request.
    ─────────────────────────────────────────────────────────────────────── */
-async function serveHTMLWithNonce(req, res, next, filePath) {
+async function serveHTMLWithNonce(req, res, next, filePath, statusCode) {
 	try {
 		let html = await fs.readFile(filePath, 'utf8');
 		const nonce = res.locals.cspNonce;
@@ -460,7 +460,7 @@ async function serveHTMLWithNonce(req, res, next, filePath) {
 			/<script(?![^>]*\b(?:src|nonce)=)([^>]*)>/g,
 			`<script nonce="${nonce}"$1>`
 		);
-		res.type('html').send(html);
+		res.status(statusCode || 200).type('html').send(html);
 	} catch {
 		next();
 	}
@@ -486,6 +486,19 @@ app.get('/', (req, res) => {
 app.get('/user/:username', (req, res, next) => {
 	// Use nonce-injecting helper — same as .html middleware above
 	serveHTMLWithNonce(req, res, next, path.join(FRONTEND_ROOT, 'html', 'pages', 'user-profile.html'));
+});
+
+// ── 404 fallbacks — nothing above matched ──────────────────────────────────
+// API requests get a JSON 404; everything else gets the branded 404 page.
+app.use('/api', (req, res) => {
+	res.status(404).json({ success: false, error: 'Not found' });
+});
+
+app.use(async (req, res, next) => {
+	if (req.method !== 'GET' && req.method !== 'HEAD') {
+		return res.status(404).end();
+	}
+	await serveHTMLWithNonce(req, res, next, path.join(FRONTEND_ROOT, 'html', 'pages', '404.html'), 404);
 });
 
 // Sentry must capture the error before the generic handler sends the response
