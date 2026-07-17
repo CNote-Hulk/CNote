@@ -2,12 +2,15 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (462 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (467 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
 - **.claude/**
   - settings.local.json — local Claude Code permissions/settings for this repo (not synced)
+- **.github/**
+  - **workflows/**
+    - ci.yml — GitHub Actions: on push/PR installs backend deps, runs `precheck`, runs `backend/test/*.test.js`
 - **.vscode/**
   - settings.json — Live Server port config for local static preview
 - **backend/**
@@ -55,6 +58,11 @@ Complete file index for this repository (462 files, excluding `node_modules/`, `
     - email.js — Resend-based email service: verification, password reset, 2FA codes, contact form, branded HTML templates
     - firebaseAdmin.js — Firebase Admin SDK wrapper sending FCM push (currently DM push); auto-prunes dead tokens
     - marketplace-sync.js — picks the right `MarketplaceProvider` by name and drives listing sync
+  - **test/**
+    - device.test.js — unit tests for `utils/device.js` (browser/OS/device-type parsing, IP fallback order)
+    - gamification.test.js — unit tests for `utils/gamification.js` (level curve, XP action shapes, achievement thresholds)
+    - languages.test.js — unit tests for `utils/languages.js` (ALLOWED_LANGS/DEFAULT_LANG invariants)
+    - passwordPolicy.test.js — unit tests for `utils/passwordPolicy.js` (`validatePassword()` rule coverage)
   - **utils/**
     - device.js — parses `User-Agent` header into device type/browser/OS + IP, for session/security logging
     - gamification.js — single source of truth for XP actions, levels, and achievement definitions; `awardXP()` lives here
@@ -67,7 +75,7 @@ Complete file index for this repository (462 files, excluding `node_modules/`, `
   - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
   - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE` migration array run on boot
   - package-lock.json — locked dependency tree for backend
-  - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`)
+  - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
   - server_check.js — minimal standalone Express+Helmet snippet to sanity-check CSP config changes in isolation
   - server.js — Express app entry point: middleware, CORS, CSP nonce injection, mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init
