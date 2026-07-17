@@ -1789,7 +1789,7 @@ router.get('/me/export', authRequired, async (req, res) => {
         let achievements = [];
         try {
             const achievementsResult = await pool.query(
-                'SELECT achievement_id, unlocked_at FROM user_achievements WHERE user_id = $1 ORDER BY unlocked_at DESC',
+                'SELECT badge_id, earned_at FROM user_achievements WHERE user_id = $1 ORDER BY earned_at DESC',
                 [req.user.id]
             );
             achievements = achievementsResult.rows;
