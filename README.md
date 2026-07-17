@@ -54,22 +54,41 @@ Features include:
 
 ### Marketplace
 
-A buy/sell marketplace for consoles, parts, and accessories:
+A buy/sell marketplace for consoles, games, accessories, and parts:
 
-* search, filter and sort listings
-* sync listings from OLX and eBay via user-linked accounts
-* favorite/save listings
+* listings with condition (new / like new / good / fair / parts-only), category, price, and photos
+* search, filter (category, condition, console type, country, city) and sort (newest, oldest, price)
+* location-aware: buyer/seller country and city, with built-in city data for 60+ countries
+* favorites, view counts, "similar listings" suggestions
+* eBay account sync (OAuth, import your eBay listings) — fully integrated
+* OLX sync — integration built (OAuth flow, provider adapter), **not yet live** — pending OLX API credentials
+
+---
+
+### Repair & Restoration Requests
+
+A guided request flow inside the Community hub, so anyone can get their hardware looked at:
+
+* step-by-step wizard: pick your console (Xbox / PlayStation / Nintendo / PC / other), model, symptoms from a curated per-console list (or describe your own), and a free-text description
+* track your own requests and their status (pending → in progress → resolved), with replies
+* admin dashboard to triage, reply to, and update the status of every incoming request, with email notifications both ways
 
 ---
 
 ### Community Hub
 
 * discussion forum: threads, replies, and upvotes
-* global community chat
 * direct messages between users, with push notifications
+* global community chat — **built but not yet live** (UI still shows "Coming Soon")
 * friends system (requests, accept/reject, friends list)
 * console rating system
 * in-app notifications for replies, DMs and marketplace activity
+
+---
+
+### Workshop (internal tool)
+
+An admin-only hardware-diagnostics tool: interactive circuit boards (real scanned photos with an overlaid component/pin map), a per-board repair journal, and draggable component positioning for building out new boards. Not user-facing — used internally for repair/restoration diagnostics.
 
 ---
 
@@ -183,6 +202,9 @@ Planned improvements include:
 * advanced repair lessons
 * modding tutorials
 * dedicated gaming server
+* launching global community chat (already built, not yet enabled)
+* going live with OLX marketplace sync
+* growing the marketplace into a dedicated storefront for restored/refurbished consoles (not just peer-to-peer listings), tightly integrated with the repair/restoration request flow
 
 ---
 
