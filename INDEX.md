@@ -91,11 +91,11 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
   - README.md — why/how of the self-hosted MinIO object-storage setup for chat attachments
 - **frontend/**
   - **assets/**
-    - **icons/** — favicon.ico (48×48, Atari 2600 photo, white-flattened), apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons); all derived from `images/consoles/atari-2600.png` via `sharp` (see manifest.json + the `<link rel="apple-touch-icon">`/`<link rel="manifest">` pair present in every page's `<head>` right after its favicon `<link>`)
+    - **icons/** — favicon.ico (64×64), apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons); all derived from `images/consoles/atari-2600.png` via `sharp`, cropped ("cover", right-anchored) to fill the frame rather than padded/letterboxed, so the console reads clearly at small sizes (see manifest.json + the `<link rel="apple-touch-icon">`/`<link rel="manifest">` pair present in every page's `<head>` right after its favicon `<link>`)
     - **images/**
       - **consoles/** — ~104 files (PNG+WebP pairs), one pair per console, filename = console slug; referenced by encyclopedia/comparison pages
       - **wallpapers/** — 8 full-page background images, one per major page (home, community, comparatie, evolutie, help, index, invata, login)
-      - og-image.jpg — 1200×630 social-share preview image (Atari 2600 photo, white background), referenced by `og:image` on index.html/home.html
+      - og-image.png — 1200×630 social-share preview image (Atari 2600 photo, white background, lossless PNG), referenced by `og:image` on index.html/home.html
     - **vendor/**
       - **katex/** — vendored KaTeX library (JS/CSS/fonts + auto-render contrib) for math rendering in course lessons
   - **css/**
@@ -122,8 +122,8 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
       - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
       - evolutie.html — console evolution timeline / encyclopedia grid page
       - help.html — Help & Support page: FAQ accordion, category filter, search; contact form includes a Turnstile CAPTCHA widget
-      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`)
-      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect)
+      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs
+      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect); `<title>` leads with "Console Notebook" for the same tab-truncation reason
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
       - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
       - login.html — login page: server/local login, Google OAuth, 2FA, resend verification
