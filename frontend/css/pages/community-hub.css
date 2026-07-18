@@ -921,6 +921,53 @@
     white-space: pre-wrap;
 }
 
+.hub-solved-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--success, #4ade80);
+    background: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 20px;
+    padding: 0.15em 0.7em;
+    font-family: var(--font-sans);
+}
+
+.hub-reply-card--solved {
+    border-color: rgba(74, 222, 128, 0.35);
+    background: rgba(74, 222, 128, 0.04);
+}
+
+.hub-reply-quote {
+    margin: 0 0 6px 32px;
+    padding: 6px 10px;
+    border-left: 2px solid var(--border-color);
+    color: var(--text-gray);
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+.hub-reply-context {
+    padding: 8px 24px 0;
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.hub-reply-context button {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 0.1em 0.7em;
+    color: var(--text-gray);
+    font-size: 0.72rem;
+    cursor: pointer;
+}
+
 .hub-reply-form {
     display: flex;
     gap: 10px;

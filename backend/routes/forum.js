@@ -94,7 +94,7 @@ router.get('/:console/threads', async (req, res) => {
     }
     try {
         const result = await pool.query(`
-            SELECT t.id, t.title, t.tag, t.views, t.upvotes, t.created_at,
+            SELECT t.id, t.title, t.tag, t.views, t.upvotes, t.created_at, t.solved_reply_id,
                    u.username, u.avatar,
                    (SELECT COUNT(*) FROM forum_replies r WHERE r.thread_id = t.id) AS reply_count
             FROM forum_threads t
@@ -123,7 +123,7 @@ router.get('/:console/threads/:id', async (req, res) => {
         await pool.query('UPDATE forum_threads SET views = views + 1 WHERE id = $1', [threadId]);
 
         const threadResult = await pool.query(`
-            SELECT t.id, t.title, t.body, t.tag, t.views, t.upvotes, t.created_at,
+            SELECT t.id, t.title, t.body, t.tag, t.views, t.upvotes, t.created_at, t.solved_reply_id, t.user_id,
                    u.username, u.avatar
             FROM forum_threads t
             JOIN users u ON u.id = t.user_id
@@ -135,10 +135,14 @@ router.get('/:console/threads/:id', async (req, res) => {
         }
 
         const repliesResult = await pool.query(`
-            SELECT r.id, r.body, r.upvotes, r.created_at,
-                   u.username, u.avatar
+            SELECT r.id, r.body, r.upvotes, r.created_at, r.reply_to_id,
+                   u.username, u.avatar,
+                   pu.username AS reply_to_username,
+                   LEFT(pr.body, 140) AS reply_to_snippet
             FROM forum_replies r
             JOIN users u ON u.id = r.user_id
+            LEFT JOIN forum_replies pr ON pr.id = r.reply_to_id
+            LEFT JOIN users pu ON pu.id = pr.user_id
             WHERE r.thread_id = $1
             ORDER BY r.created_at ASC
         `, [threadId]);
@@ -207,12 +211,20 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
         return res.status(400).json({ success: false, error: 'Invalid ID.' });
     }
 
-    const { body } = req.body;
+    const { body, reply_to_id } = req.body;
     if (!body || String(body).trim().length === 0) {
         return res.status(400).json({ success: false, error: 'Reply cannot be empty.' });
     }
 
     const safeBody = String(body).trim().slice(0, 3000);
+
+    let replyToId = null;
+    if (reply_to_id !== undefined && reply_to_id !== null) {
+        replyToId = parseInt(reply_to_id);
+        if (isNaN(replyToId)) {
+            return res.status(400).json({ success: false, error: 'Invalid reply_to_id.' });
+        }
+    }
 
     // ── Pattern 3b: reply spam check ──────────────────────────────────────
     try {
@@ -233,29 +245,74 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
             return res.status(404).json({ success: false, error: 'Thread not found.' });
         }
 
+        // Verify the quoted reply (if any) actually belongs to this thread
+        if (replyToId !== null) {
+            const parentReply = await pool.query(
+                'SELECT id FROM forum_replies WHERE id = $1 AND thread_id = $2',
+                [replyToId, threadId]
+            );
+            if (parentReply.rows.length === 0) {
+                return res.status(400).json({ success: false, error: 'That reply does not belong to this thread.' });
+            }
+        }
+
         const result = await pool.query(`
-            INSERT INTO forum_replies (thread_id, user_id, body)
-            VALUES ($1, $2, $3)
-            RETURNING id, body, upvotes, created_at
-        `, [threadId, req.user.id, safeBody]);
+            INSERT INTO forum_replies (thread_id, user_id, body, reply_to_id)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id, body, upvotes, created_at, reply_to_id
+        `, [threadId, req.user.id, safeBody, replyToId]);
 
         const reply = result.rows[0];
         reply.username = req.user.username;
 
-        // Notify thread author (if not self-reply)
+        if (replyToId !== null) {
+            const parentInfo = await pool.query(
+                'SELECT r.body, u.username FROM forum_replies r JOIN users u ON u.id = r.user_id WHERE r.id = $1',
+                [replyToId]
+            );
+            if (parentInfo.rows[0]) {
+                reply.reply_to = {
+                    id: replyToId,
+                    username: parentInfo.rows[0].username,
+                    body_snippet: String(parentInfo.rows[0].body).slice(0, 140),
+                };
+            }
+        }
+
+        // Notify thread author (if not self-reply), and separately notify
+        // the author of the specific reply being quoted (if different from
+        // both the replier and the thread author, to avoid double-notifying).
         try {
             const threadOwner = await pool.query('SELECT user_id, title, console FROM forum_threads WHERE id = $1', [threadId]);
             const ownerId = threadOwner.rows[0]?.user_id;
+            const threadTitle = String(threadOwner.rows[0]?.title || '').slice(0, 60);
+            const consoleKey = threadOwner.rows[0]?.console;
+            const link = `/html/pages/community.html#forum/${consoleKey}/thread/${threadId}`;
+            const { createNotification } = require('./notifications');
+
             if (ownerId && ownerId !== req.user.id) {
-                const { createNotification } = require('./notifications');
-                const threadTitle = String(threadOwner.rows[0].title).slice(0, 60);
-                const consoleKey = threadOwner.rows[0].console;
                 await createNotification(
                     ownerId,
                     'forum_reply',
                     `${req.user.username} replied to "${threadTitle}"`,
-                    `/html/pages/community.html#forum/${consoleKey}/thread/${threadId}`
+                    link
                 );
+            }
+
+            if (replyToId !== null) {
+                const quotedAuthor = await pool.query(
+                    'SELECT user_id FROM forum_replies WHERE id = $1',
+                    [replyToId]
+                );
+                const quotedUserId = quotedAuthor.rows[0]?.user_id;
+                if (quotedUserId && quotedUserId !== req.user.id && quotedUserId !== ownerId) {
+                    await createNotification(
+                        quotedUserId,
+                        'forum_reply',
+                        `${req.user.username} replied to your message in "${threadTitle}"`,
+                        link
+                    );
+                }
             }
         } catch { /* notification is non-critical */ }
 
@@ -263,6 +320,53 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
         awardXP(pool, req.app.get('io'), req.user.id, 'forum_reply', reply.id.toString()).catch(() => {});
     } catch (err) {
         console.error('Forum reply POST error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/forum/:console/threads/:id/solve ──────────
+// Marks a reply as the solution (reply_id in body), or clears it (reply_id
+// omitted/null). Thread-owner only.
+router.post('/:console/threads/:id/solve', authRequired, async (req, res) => {
+    const threadId = parseInt(req.params.id);
+    if (isNaN(threadId)) {
+        return res.status(400).json({ success: false, error: 'Invalid ID.' });
+    }
+
+    try {
+        const threadResult = await pool.query('SELECT user_id FROM forum_threads WHERE id = $1', [threadId]);
+        const thread = threadResult.rows[0];
+        if (!thread) {
+            return res.status(404).json({ success: false, error: 'Thread not found.' });
+        }
+        if (thread.user_id !== req.user.id) {
+            return res.status(403).json({ success: false, error: 'Only the thread author can mark a solution.' });
+        }
+
+        const { reply_id } = req.body;
+
+        if (reply_id === null || reply_id === undefined) {
+            await pool.query('UPDATE forum_threads SET solved_reply_id = NULL WHERE id = $1', [threadId]);
+            return res.json({ success: true, solved_reply_id: null });
+        }
+
+        const replyId = parseInt(reply_id);
+        if (isNaN(replyId)) {
+            return res.status(400).json({ success: false, error: 'Invalid reply ID.' });
+        }
+
+        const replyResult = await pool.query(
+            'SELECT id FROM forum_replies WHERE id = $1 AND thread_id = $2',
+            [replyId, threadId]
+        );
+        if (replyResult.rows.length === 0) {
+            return res.status(400).json({ success: false, error: 'That reply does not belong to this thread.' });
+        }
+
+        await pool.query('UPDATE forum_threads SET solved_reply_id = $1 WHERE id = $2', [replyId, threadId]);
+        res.json({ success: true, solved_reply_id: replyId });
+    } catch (err) {
+        console.error('Forum solve POST error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });

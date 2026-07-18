@@ -1,6 +1,7 @@
 import { I18nModule } from './i18n.js';
 import { AuthModule } from './auth.js';
 import { AchievementsModule } from './achievements.js';
+import { API_BASE_URL } from '../config.js';
 
 function normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
     const raw = typeof avatarUrl === 'string' ? avatarUrl.trim() : '';
@@ -630,6 +631,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 // ── Expandable levels panel ──
                 renderHomeLevelsPanel(lvl);
+                loadProgressLeaderboardPreview();
                 const progressLevelCardEl = document.getElementById('progress-level-card');
                 const homeLevelsPanel = document.getElementById('home-levels-panel');
                 if (progressLevelCardEl && homeLevelsPanel) {
@@ -1362,6 +1364,36 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 </div>`;
         }).join('');
+    }
+
+    function leaderboardAvatarHtml(u) {
+        if (u.avatar) {
+            return `<img class="idx-leaderboard__avatar" src="${escapeHtml(u.avatar)}" alt="" loading="lazy">`;
+        }
+        const initial = (u.username || '?').charAt(0).toUpperCase();
+        return `<div class="idx-leaderboard__avatar">${escapeHtml(initial)}</div>`;
+    }
+
+    async function loadProgressLeaderboardPreview() {
+        const list = document.getElementById('progress-leaderboard-list');
+        if (!list) return;
+        try {
+            const res = await apiFetch(`${API_BASE_URL}/leaderboard?limit=5`);
+            if (!res || !res.success || !res.users || res.users.length === 0) {
+                list.innerHTML = `<div class="idx-leaderboard__empty">${I18nModule.t('leaderboard_empty')}</div>`;
+                return;
+            }
+            list.innerHTML = res.users.map(u => `
+                <a class="idx-leaderboard__row" href="/user/${encodeURIComponent(u.username)}">
+                    <span class="idx-leaderboard__rank">${u.rank <= 3 ? ['🥇', '🥈', '🥉'][u.rank - 1] : '#' + u.rank}</span>
+                    ${leaderboardAvatarHtml(u)}
+                    <span class="idx-leaderboard__username">${escapeHtml(u.username)}</span>
+                    <span class="idx-leaderboard__xp">${u.xp.toLocaleString()} XP</span>
+                </a>
+            `).join('');
+        } catch {
+            list.innerHTML = `<div class="idx-leaderboard__empty">${I18nModule.t('leaderboard_error')}</div>`;
+        }
     }
 
     function renderQuickStartCompleted(data) {

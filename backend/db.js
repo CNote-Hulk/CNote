@@ -334,7 +334,56 @@ async function initializeSchema() {
 		`ALTER TABLE direct_messages ALTER COLUMN message DROP NOT NULL`,
 		`INSERT INTO storage.buckets (id, name, public, allowed_mime_types, file_size_limit)
 			VALUES ('avatars', 'avatars', true, ARRAY['image/jpeg','image/png','image/webp'], 2097152)
-			ON CONFLICT (id) DO NOTHING`
+			ON CONFLICT (id) DO NOTHING`,
+
+		// ── Indexes for the most frequent lookup/filter columns ──────────────
+		// None of these existed before — every query below was previously a
+		// sequential scan. Some target tables that are never CREATE TABLE'd in
+		// this file (user_achievements, xp_transactions, user_lessons,
+		// user_course_progress — see utils/gamification.js and routes/courses.js,
+		// which already assume they exist); CREATE INDEX IF NOT EXISTS against a
+		// table that doesn't exist just throws, and the try/catch below already
+		// swallows that, so it's safe to list them here too.
+		`CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id ON user_sessions(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_friend_requests_sender_id ON friend_requests(sender_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_friend_requests_receiver_id ON friend_requests(receiver_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_friends_user1_id ON friends(user1_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_friends_user2_id ON friends(user2_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_two_factor_codes_user_id ON two_factor_codes(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_two_factor_backup_codes_user_id ON two_factor_backup_codes(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_threads_user_id ON forum_threads(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_threads_console ON forum_threads(console)`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_replies_thread_id ON forum_replies(thread_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_replies_user_id ON forum_replies(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_upvotes_user_thread ON forum_upvotes(user_id, thread_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_upvotes_user_reply ON forum_upvotes(user_id, reply_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_listings_user_id ON listings(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_listings_category ON listings(category)`,
+		`CREATE INDEX IF NOT EXISTS idx_listings_status ON listings(status)`,
+		`CREATE INDEX IF NOT EXISTS idx_listing_favorites_listing_id ON listing_favorites(listing_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_repair_requests_user_id ON repair_requests(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_repair_requests_status ON repair_requests(status)`,
+		`CREATE INDEX IF NOT EXISTS idx_direct_messages_sender_receiver ON direct_messages(sender_id, receiver_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_direct_messages_receiver_sender ON direct_messages(receiver_id, sender_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_notifications_user_read ON notifications(user_id, read)`,
+		`CREATE INDEX IF NOT EXISTS idx_consoles_translations_lang ON consoles_translations(lang)`,
+		`CREATE INDEX IF NOT EXISTS idx_console_ratings_console_id ON console_ratings(console_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at)`,
+		`CREATE INDEX IF NOT EXISTS idx_user_achievements_user_id ON user_achievements(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_xp_transactions_user_id ON xp_transactions(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_user_lessons_user_id ON user_lessons(user_id)`,
+		`CREATE INDEX IF NOT EXISTS idx_user_course_progress_user_id ON user_course_progress(user_id)`,
+
+		// ── Leaderboard (public XP ranking) ──────────────────────────────────
+		`CREATE INDEX IF NOT EXISTS idx_users_xp_desc ON users(xp DESC) WHERE show_stats = true`,
+
+		// ── Forum "mark as solved" ───────────────────────────────────────────
+		`ALTER TABLE forum_threads ADD COLUMN IF NOT EXISTS solved_reply_id INTEGER REFERENCES forum_replies(id) ON DELETE SET NULL`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_threads_solved_reply_id ON forum_threads(solved_reply_id)`,
+
+		// ── Forum reply-to-a-specific-reply (quoted/threaded replies) ────────
+		`ALTER TABLE forum_replies ADD COLUMN IF NOT EXISTS reply_to_id INTEGER REFERENCES forum_replies(id) ON DELETE SET NULL`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_replies_reply_to_id ON forum_replies(reply_to_id)`,
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

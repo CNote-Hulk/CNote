@@ -2,15 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- ── MAIN PAGES ─────────────────────────── -->
-  <url>
-    <loc>https://consolenotebook.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <!-- Note: https://consolenotebook.com/ is intentionally NOT listed here —
+       it's a pure 302 redirect to the URL below, and Google's own guidance
+       is to never list a redirecting URL in a sitemap (only the final,
+       indexable target). -->
   <url>
     <loc>https://consolenotebook.com/html/pages/index.html</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://consolenotebook.com/html/pages/evolutie.html</loc>
@@ -36,6 +35,16 @@
     <loc>https://consolenotebook.com/html/pages/community.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/community-welcome-page.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/leaderboard.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://consolenotebook.com/html/pages/help.html</loc>
@@ -303,6 +312,180 @@
     <loc>https://consolenotebook.com/html/pages/consoles/nintendo-switch-2.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <!-- ── HELP PAGES ──────────────────── -->
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-achievements.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-comunitate.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-console.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-cont.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-forum.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-general.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-marketplace.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-prieteni.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-profil.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/help/help-repair.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- ── LEGAL PAGES ─────────────────── -->
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/community-rules-de.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/community-rules-en.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/community-rules-es.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/community-rules-fr.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/community-rules-it.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/community-rules.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/cookies-de.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/cookies-en.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/cookies-es.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/cookies-fr.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/cookies-it.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/cookies.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/privacy-de.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/privacy-en.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/privacy-es.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/privacy-fr.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/privacy-it.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/privacy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/terms-de.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/terms-en.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/terms-es.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/terms-fr.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/terms-it.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://consolenotebook.com/html/pages/legal%20files/terms.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 
 </urlset>

@@ -837,3 +837,203 @@ div.auth-page--nb {
 .nb-links li a:hover {
     background: rgba(150, 105, 20, 0.13);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   HIGHLIGHTS — Learn / Encyclopedia / Compare
+   ═══════════════════════════════════════════════════════════ */
+
+.idx-highlights {
+    max-width: 1000px;
+    margin: 4rem auto 0;
+    padding: 0 20px;
+}
+
+.idx-highlights__intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.idx-highlights__intro h2 {
+    font-family: var(--font-serif, serif);
+    font-size: 1.7rem;
+    color: var(--text-light);
+    margin: 0 0 0.4em;
+}
+
+.idx-highlights__intro p {
+    color: var(--text-gray);
+    margin: 0;
+}
+
+.idx-highlights__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 800px) {
+    .idx-highlights__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.idx-highlight-card {
+    display: block;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 10px);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.idx-highlight-card:hover,
+.idx-highlight-card:focus-visible {
+    border-color: var(--accent-color);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.45));
+}
+
+.idx-highlight-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: rgba(var(--accent-color-rgb), 0.12);
+    font-size: 1.5rem;
+    margin-bottom: 0.9rem;
+    transition: transform 0.15s ease;
+}
+
+.idx-highlight-card:hover .idx-highlight-card__icon {
+    transform: scale(1.08) rotate(-4deg);
+}
+
+.idx-highlight-card h3 {
+    font-family: var(--font-serif, serif);
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin: 0 0 0.4em;
+}
+
+.idx-highlight-card p {
+    font-size: 0.88rem;
+    color: var(--text-gray);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOP CONTRIBUTORS — leaderboard preview
+   ═══════════════════════════════════════════════════════════ */
+
+.idx-leaderboard {
+    max-width: 640px;
+    margin: 3rem auto 4rem;
+    padding: 0 20px;
+}
+
+.idx-leaderboard__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.idx-leaderboard__header h2 {
+    font-family: var(--font-serif, serif);
+    font-size: 1.4rem;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.idx-leaderboard__link {
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.idx-leaderboard__link:hover {
+    text-decoration: underline;
+}
+
+.idx-leaderboard__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.idx-leaderboard__row {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 10px);
+    padding: 0.6em 1em;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease;
+}
+
+.idx-leaderboard__row:hover,
+.idx-leaderboard__row:focus-visible {
+    border-color: var(--accent-color);
+}
+
+.idx-leaderboard__rank {
+    width: 2em;
+    flex-shrink: 0;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-gray);
+}
+
+.idx-leaderboard__row:nth-child(1) .idx-leaderboard__rank,
+.idx-leaderboard__row:nth-child(2) .idx-leaderboard__rank,
+.idx-leaderboard__row:nth-child(3) .idx-leaderboard__rank {
+    font-size: 1.2rem;
+}
+
+.idx-leaderboard__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
+.idx-leaderboard__username {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    color: var(--text-light);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.idx-leaderboard__xp {
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    color: var(--text-gray);
+}
+
+.idx-leaderboard__loading,
+.idx-leaderboard__empty {
+    text-align: center;
+    color: var(--text-gray);
+    padding: 1.5rem 0;
+}

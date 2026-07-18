@@ -26,9 +26,10 @@ npm run dev:server     # same server, via backend's "dev" script (no watch/reloa
 npm run reset-db       # wipes user/session/token data — frontend/js/reset-database.js is a 2-line shim requiring backend/js/reset-database.js (the real logic)
 npm run import-consoles # (re-)imports console encyclopedia data from JSON into Postgres
 cd backend && npm run precheck   # verifies every require()'d package is declared in package.json
+cd backend && npm test            # runs backend/test/*.test.js (Node's built-in test runner, no extra dependency)
 ```
 
-There is no bundler, no build step, no linter config, and no test framework in this repo (only third-party test files exist, inside `node_modules`). Don't assume `npm test`/`npm run build`/`npm run lint` exist.
+There is no bundler, no build step, and no linter config in this repo. `cd backend && npm test` runs a small Node built-in-test-runner suite (`backend/test/*.test.js`) covering the pure-logic utils (gamification, passwordPolicy, languages, device parsing) — it's not full route/integration coverage, just a regression net for those modules plus CI wiring (`.github/workflows/ci.yml`). Don't assume `npm run build`/`npm run lint` exist.
 
 The frontend has no dev server of its own — it's plain static HTML/CSS/JS served directly by the Express backend (`express.static`), so `npm start` is the only thing you need running to work on either side.
 

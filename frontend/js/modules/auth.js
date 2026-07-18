@@ -132,7 +132,7 @@ export const AuthModule = {
      * After registration the user must verify their email before logging in.
      * @returns {Promise<{success, error?, user?, message?}>}
      */
-    async register(username, email, password, birth_date) {
+    async register(username, email, password, birth_date, opts = {}) {
         if (!username || String(username).trim().length < 1)
             return { success: false, error: 'Username is required.' };
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
@@ -143,8 +143,13 @@ export const AuthModule = {
             return { success: false, error: 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.' };
 
         try {
-            const body = { username, email, password };
+            const body = {
+                username, email, password,
+                terms_accepted: !!opts.termsAccepted,
+                privacy_accepted: !!opts.privacyAccepted,
+            };
             if (birth_date) body.birth_date = birth_date;
+            if (opts.turnstileToken) body.turnstileToken = opts.turnstileToken;
             const data = await this._api('POST', '/register', body);
             // Do NOT set session — the user must verify email first
             return data;

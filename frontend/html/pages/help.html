@@ -10,6 +10,9 @@
     <meta name="description" content="Help & Support — Console Notebook">
     <meta name="theme-color" content="#1B1714">
     <link rel="icon" type="image/x-icon" href="../../assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="../../manifest.json">
+    <link rel="canonical" href="https://consolenotebook.com/html/pages/help.html" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -460,6 +463,8 @@
 
                     <input type="text" name="_honey" class="honeypot-input" tabindex="-1" autocomplete="off">
 
+                    <div id="contact-turnstile" style="margin:10px 0;"></div>
+
                     <div class="input-group contact-submit-group">
                         <button type="submit" class="demo-button" id="submit-btn" data-i18n="contact_send">Send message</button>
                         <div id="error-message" class="contact-inline-error" hidden></div>
@@ -477,6 +482,7 @@
     <!-- Scripts -->
     <script type="module" src="../../js/main.js"></script>
     <script src="../../js/pages/help.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="../../js/fallback/contact-form.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -492,6 +498,10 @@
             <a href="statistici.html" class="mbn-dd-item">
                 <span class="mbn-dd-icon">📊</span>
                 <span data-i18n="sidebar_stats">Statistics</span>
+            </a>
+            <a href="leaderboard.html" class="mbn-dd-item">
+                <span class="mbn-dd-icon">🏆</span>
+                <span data-i18n="sidebar_leaderboard">Leaderboard</span>
             </a>
             <div class="mbn-dd-sep"></div>
             <a href="/html/pages/community.html#repair-requests" class="mbn-dd-item">

@@ -1,0 +1,113 @@
+/**
+ * 404 page — playful "cartridge not found" retro theme.
+ */
+
+.nf-page {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 110px 20px 60px;
+}
+
+.nf-card {
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg, 16px);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.45));
+}
+
+.nf-glyph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15em;
+    margin-bottom: 1.2rem;
+}
+
+.nf-glyph__digit {
+    font-family: var(--font-serif, serif);
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--text-light);
+    line-height: 1;
+}
+
+.nf-glyph__controller {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    background: rgba(var(--accent-color-rgb), 0.12);
+    color: var(--accent-color);
+    animation: nf-float 2.6s ease-in-out infinite;
+}
+
+.nf-glyph__controller svg {
+    width: 1.9rem;
+    height: 1.9rem;
+}
+
+@keyframes nf-float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%      { transform: translateY(-6px) rotate(3deg); }
+}
+
+.nf-title {
+    font-family: var(--font-serif, serif);
+    font-size: 1.5rem;
+    color: var(--text-light);
+    margin: 0 0 0.6em;
+}
+
+.nf-message {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin: 0 0 1.6rem;
+    line-height: 1.5;
+}
+
+.nf-cta {
+    display: inline-block;
+    background: var(--accent-color);
+    color: var(--primary-color);
+    font-weight: 700;
+    padding: 0.7em 1.8em;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nf-cta:hover,
+.nf-cta:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-accent);
+}
+
+.nf-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    margin-top: 1.8rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.nf-links a {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    text-decoration: none;
+}
+
+.nf-links a:hover,
+.nf-links a:focus-visible {
+    color: var(--accent-color);
+    text-decoration: underline;
+}

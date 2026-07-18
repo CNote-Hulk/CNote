@@ -2,12 +2,16 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (461 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (483 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
 - **.claude/**
   - settings.local.json — local Claude Code permissions/settings for this repo (not synced)
+- **.github/**
+  - **workflows/**
+    - ci.yml — GitHub Actions: on push/PR installs backend deps, runs `precheck`, runs `backend/test/*.test.js`
+    - db-backup.yml — GitHub Actions: daily encrypted `pg_dump` of production DB, uploaded as a 90-day artifact (independent of Supabase's own backup plan); needs `DATABASE_URL` + `BACKUP_ENCRYPTION_PASSPHRASE` repo secrets
 - **.vscode/**
   - settings.json — Live Server port config for local static preview
 - **backend/**
@@ -24,17 +28,18 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
     - OlxProvider.js — OLX marketplace integration: OAuth + listings fetch/normalization against OLX Group API
   - **routes/**
     - achievements.js — GET own achievements (`/`) and another user's by username (`/user/:username`)
-    - auth.js — registration, login + 2FA, email verification, password reset, profile, avatar upload; largest route file
+    - leaderboard.js — `GET /api/leaderboard` (public, no auth): top users by XP, respects `show_stats` privacy flag; includes the caller's own rank if logged in (`authOptional`)
+    - auth.js — registration (Turnstile CAPTCHA + disposable-email block), login + 2FA, email verification, password reset, profile, avatar upload; largest route file
     - chat.js — community/global chat: paginated message retrieval + posting with per-user rate-limit cooldown
     - consoles.js — GET `/api/consoles?lang=` — serves console encyclopedia data per language from `consoles_translations`
-    - contact.js — contact form submission: honeypot bot check + sends email via Resend
+    - contact.js — contact form submission: honeypot + Turnstile CAPTCHA bot checks + sends email via Resend
     - courses.js — course/module/lesson/quiz/reactions/comments endpoints; also self-creates `lesson_reactions` table on load
     - dm.js — direct messages: conversation list, message thread, send DM
     - ebay.js — eBay OAuth connect/callback/status/disconnect, listings import, and account-deletion webhook verification
     - favorites.js — list/check/toggle favorite consoles for the logged-in user
     - forum-liked.js — GET `/api/forum/liked` — threads the user has upvoted (dashboard widget)
     - forum-my-posts.js — GET `/api/forum/my-posts` — threads created by the logged-in user (dashboard widget)
-    - forum.js — forum thread list, thread detail, create, reply, upvote
+    - forum.js — forum thread list, thread detail, create, reply (optionally quoting a specific earlier reply via `reply_to_id`), upvote, mark-a-reply-as-solution (`POST .../:id/solve`, thread-author-only)
     - friends.js — send/accept/reject friend requests, list friends, check friendship status
     - google-auth.js — Google OAuth2 via Passport: login/register/link/unlink, custom state store (no express-session)
     - marketplace.js — marketplace listings CRUD: search, filter, sort, pagination; ties into OLX/eBay sync
@@ -55,22 +60,31 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
     - email.js — Resend-based email service: verification, password reset, 2FA codes, contact form, branded HTML templates
     - firebaseAdmin.js — Firebase Admin SDK wrapper sending FCM push (currently DM push); auto-prunes dead tokens
     - marketplace-sync.js — picks the right `MarketplaceProvider` by name and drives listing sync
+  - **test/**
+    - device.test.js — unit tests for `utils/device.js` (browser/OS/device-type parsing, IP fallback order)
+    - disposableEmail.test.js — unit tests for `utils/disposableEmail.js` (`isDisposableEmail()` coverage)
+    - gamification.test.js — unit tests for `utils/gamification.js` (level curve, XP action shapes, achievement thresholds)
+    - languages.test.js — unit tests for `utils/languages.js` (ALLOWED_LANGS/DEFAULT_LANG invariants)
+    - passwordPolicy.test.js — unit tests for `utils/passwordPolicy.js` (`validatePassword()` rule coverage)
+    - turnstile.test.js — unit tests for `utils/turnstile.js` (dev-skip, prod-fail-closed, Cloudflare success/failure/network-error paths)
   - **utils/**
     - device.js — parses `User-Agent` header into device type/browser/OS + IP, for session/security logging
+    - disposableEmail.js — `isDisposableEmail()`: static blocklist of known temp-mail/throwaway domains, checked at registration
     - gamification.js — single source of truth for XP actions, levels, and achievement definitions; `awardXP()` lives here
     - languages.js — `ALLOWED_LANGS`/`DEFAULT_LANG` constants shared across routes needing language validation
     - objectStorage.js — generic S3-compatible client (MinIO today) for chat image/voice attachments, server-side only
     - passwordPolicy.js — single source of truth for password strength rules; `validatePassword()` used on all password-set paths
     - supabaseStorage.js — shared Supabase Storage client authenticated with the service-role key (avatar bucket), server-side only
+    - turnstile.js — `verifyTurnstileToken()`: Cloudflare Turnstile (CAPTCHA) server-side verification, used by register + contact routes
   - .env — local environment values (gitignored, not committed)
-  - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, etc.)
+  - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, Turnstile CAPTCHA keys, etc.)
   - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
-  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE` migration array run on boot
+  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns; a few target tables — `user_achievements`, `xp_transactions`, `user_lessons`, `user_course_progress` — that only exist live in Supabase and have no `CREATE TABLE` anywhere in this repo). Also adds `forum_threads.solved_reply_id` and `forum_replies.reply_to_id` (both `INTEGER REFERENCES forum_replies(id)`), plus a partial index `idx_users_xp_desc` on `users(xp DESC) WHERE show_stats = true` for the leaderboard
   - package-lock.json — locked dependency tree for backend
-  - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`)
+  - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
   - server_check.js — minimal standalone Express+Helmet snippet to sanity-check CSP config changes in isolation
-  - server.js — Express app entry point: middleware, CORS, CSP nonce injection, mounts all routes, serves static frontend, Socket.io init
+  - server.js — Express app entry point: middleware, CORS, CSP nonce injection (also injects `window.TURNSTILE_SITE_KEY`), mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init. `GET /` redirects to `/html/pages/index.html` (an explicit filename, not just the directory — a bare `/html/pages/` redirect used to bypass the nonce-injection middleware since it only intercepts paths ending in `.html`, silently breaking the inline theme-restore script via CSP). Host-canonicalization middleware forces `www.consolenotebook.com` → apex domain (301) alongside the existing http→https upgrade — `www.*` used to serve the entire site as an independent, non-redirected duplicate. `LEGACY_REDIRECTS` map 301s old/guessed URLs (`/html/pages/terms.html` etc.) to their real current location, for URLs Search Console still shows as 404
 - **infra/**
   - .env.example — template for MinIO root user/password on the self-hosted VPS
   - Caddyfile — reverse proxy config: TLS (Let's Encrypt) in front of the self-hosted MinIO object storage
@@ -78,17 +92,18 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
   - README.md — why/how of the self-hosted MinIO object-storage setup for chat attachments
 - **frontend/**
   - **assets/**
-    - **icons/** — favicon.ico only
+    - **icons/** — favicon.ico (24×24 red notebook logo; also used as the navbar `.logo-icon`); apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons) are all upscaled from favicon.ico itself (nearest-neighbor, so notebook branding stays consistent everywhere — blocky/pixel-art look at large sizes since the source is only 24×24, but no other higher-res logo source exists in the repo)
     - **images/**
       - **consoles/** — ~104 files (PNG+WebP pairs), one pair per console, filename = console slug; referenced by encyclopedia/comparison pages
       - **wallpapers/** — 8 full-page background images, one per major page (home, community, comparatie, evolutie, help, index, invata, login)
+      - og-image.png — 1200×630 social-share preview image (notebook favicon upscaled onto the dark theme background `#1B1714`, lossless PNG), referenced by `og:image` on index.html/home.html
     - **vendor/**
       - **katex/** — vendored KaTeX library (JS/CSS/fonts + auto-render contrib) for math rendering in course lessons
   - **css/**
-    - **base/** — reset.css, typography.css, variables.css: global resets, type scale, CSS custom-property theme tokens
+    - **base/** — reset.css (global resets + site-wide `:focus-visible` outline + `.skip-link` styling), typography.css, variables.css: type scale, CSS custom-property theme tokens
     - **components/** — reusable component styles (buttons, cards, forms, cookies banner, avatar cropper, quiz, report modal, search/profile dropdown, levels, index cards, date picker, sections)
     - **layout/** — footer.css, grid.css, hero.css, navbar.css: page-shell/structural layout styles
-    - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, lesson, stats, terms, user-profile, etc.)
+    - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, leaderboard, lesson, notfound, stats, terms, user-profile, etc.); community-hub.css also carries the forum "solved" badge/highlight and reply-quote/reply-context styles; leaderboard.css and notfound.css are bundled into main.css like the rest (no separate `<link>`) — gold/silver/bronze podium styling for ranks 1-3 is shared via `nth-child` selectors across `.lb-row`/`.idx-leaderboard__row` (leaderboard.html, index.html, and home.html's Progress-panel preview all inherit it for free)
     - **utilities/** — animations.css, helpers.css, responsive.css: utility classes and breakpoint overrides
     - main.css — entry point that `@import`s all of the above in cascade order
   - **html/**
@@ -96,24 +111,26 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
       - footer.html — shared site footer markup, injected client-side into every page's `#footer-placeholder`
       - navbar.html — shared site navbar markup, injected client-side into every page's `#navbar-placeholder`
     - **js/**
-      - components.js — fetches navbar.html/footer.html, sanitizes with DOMPurify, injects into placeholders; also lazy-loads Sentry with server-injected DSN
+      - components.js — fetches navbar.html/footer.html, sanitizes with DOMPurify, injects into placeholders; adds a skip-to-content link + tags the main content landmark for a11y; also lazy-loads Sentry with server-injected DSN
     - **pages/**
-      - **consoles/** — 51 static per-console detail pages, one per console, filename = console slug, rendered via `console-detail.js` + `data-loader.js`
+      - **consoles/** — 52 static per-console detail pages, one per console, filename = console slug, rendered via `console-detail.js` + `data-loader.js`; each now has a unique `<title>`/meta description/og:tags (name, manufacturer, release year, own image) generated from `consoles-en.json` — previously every one of the 52 shared the identical generic "Console Notebook" title and description
       - **help/** — 10 static help/FAQ sub-pages (achievements, community, console, account, forum, general, marketplace, friends, profile, repair)
       - **legal files/** — 24 files: community-rules/cookies/privacy/terms, each translated into 6 languages (default + de/en/es/fr/it suffixed variants)
+      - 404.html — branded not-found page ("Cartridge Not Found" — retro-themed, floating controller icon, quick links to Encyclopedia/Learn/Compare/Leaderboard); served by `server.js`'s catch-all 404 fallback (HTML 404 status, CSP nonce injected)
       - community-welcome-page.html — logged-out landing page introducing the Community hub before login
       - community.html — main Community hub shell: forum, marketplace, repair wizard, DMs (logic in `pages/community.js`)
       - comparatie.html — hardware side-by-side console comparison tool page
       - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
       - evolutie.html — console evolution timeline / encyclopedia grid page
-      - help.html — Help & Support page: FAQ accordion, category filter, search
-      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed)
-      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase
+      - help.html — Help & Support page: FAQ accordion, category filter, search; contact form includes a Turnstile CAPTCHA widget
+      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs; the Progress panel now embeds a "Top Contributors" leaderboard preview (below the All Levels list) with a link to the full leaderboard.html — previously the leaderboard was only reachable from the mobile "more" dropdown, invisible on desktop
+      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect); `<title>` leads with "Console Notebook" for the same tab-truncation reason; below the notebook scene, a "Learn/Encyclopedia/Compare" highlights strip and a live "Top Contributors" leaderboard preview (top 5, `pages/index.js`) for social proof on the logged-out landing page
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
+      - leaderboard.html — public XP leaderboard page (no login required), driven by `pages/leaderboard.js`; linked from the mobile-nav "more" dropdown on most pages and from the community-welcome-page's "Give Back" step (which previously promised a leaderboard that didn't exist)
       - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
       - login.html — login page: server/local login, Google OAuth, 2FA, resend verification
       - profil.html — account Settings page: profile, privacy, security, notifications, appearance
-      - register.html — registration page: password strength meter, username availability check
+      - register.html — registration page: password strength meter, username availability check, Turnstile CAPTCHA widget
       - request-password-reset.html — "forgot password" email-request form
       - reset-password.html — password reset/set form (token from URL; `?mode=set` for first-time set)
       - setup-username.html — first-time username selection screen (post Google OAuth signup)
@@ -131,21 +148,21 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
     - **fallback/**
       - comparatie.js — no-ES-module fallback for the comparison page (hamburger menu + comparison logic) for `file://` usage
       - console-detail.js — no-ES-module fallback that fetches console JSON and renders a console detail page dynamically
-      - contact-form.js — no-ES-module fallback contact form handler with validation + Nodemailer-backed API call
+      - contact-form.js — no-ES-module fallback contact form handler with validation, Turnstile CAPTCHA widget, + Nodemailer-backed API call
       - quiz.js — no-ES-module fallback: auto-transforms static quiz HTML sections into interactive scored quizzes
       - search-profile.js — no-ES-module fallback: advanced search (consoles→people→marketplace→pages) + profile dropdown
     - **modules/**
       - achievement-socket.js — connects Socket.io client, joins user's room, shows toast on `achievement_unlocked` events
       - achievements.js — achievement/level display logic and toast notifications (definitions come from `gamification-data.js`)
       - animations.js — scroll-triggered fade-in animations via IntersectionObserver
-      - auth.js — client-side session/API wrapper: login/register/logout, JWT + localStorage, `getCurrentUser()`/`isLoggedIn()`
+      - auth.js — client-side session/API wrapper: login/register(terms/privacy/turnstileToken)/logout, JWT + localStorage, `getCurrentUser()`/`isLoggedIn()`
       - avatar-cropper.js — WhatsApp-style circular avatar crop modal; resolves a 512×512 JPEG Blob
       - contact-form.js — ES-module contact form validation + submit (module-enabled environments)
       - custom-player.js — custom YouTube IFrame API video player with play/pause/seek/volume controls
       - diacritics.js — normalizes common Romanian words typed/rendered without diacritics
       - gamification-data.js — frontend copy of XP/level/achievement constants (`window.GAMIFICATION_DATA`), must mirror `backend/utils/gamification.js`
       - home-timeline.js — animates the quick-start guide timeline fill bar on the home page, clickable steps
-      - home.js — home page logic: user greeting, avatar URL normalization, achievements/auth wiring
+      - home.js — home page logic: user greeting, avatar URL normalization, achievements/auth wiring; also loads the Progress panel's "Top Contributors" leaderboard preview (`GET /api/leaderboard?limit=5`)
       - i18n.js — i18n engine: `data-i18n` attribute translation, language persisted to localStorage; holds the `MESSAGES` object (en/es/fr/it/de)
       - marketplace.js — shared marketplace helper functions (provider display name/icon, etc.)
       - navigation.js — smooth scrolling, active nav-link highlighting, mobile hamburger menu
@@ -159,19 +176,21 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
       - card-enhancements.js — adds favorite-heart + community rating to console cards on the evolution/encyclopedia page
       - chat.js — community.html global chat: polling, message rendering, cooldown rate limit, char counter
       - community-welcome-page.js — logged-out community landing page interactivity (console category tiles etc.)
-      - community.js — Community hub controller: sidebar nav, forum, marketplace, repair wizard, DMs
+      - community.js — Community hub controller: sidebar nav, forum, marketplace, repair wizard, DMs; forum thread view supports quoting a specific reply ("Reply" button → `reply_to_id`) and thread-owner-only "mark as solution" (✓ Solved badge on the thread and the winning reply)
+      - leaderboard.js — leaderboard.html controller: fetches `/api/leaderboard`, paginated "Load more", highlights the logged-in user's own rank
       - comparatie.js — comparison page ES module: loads console data via API, renders comparison UI
       - console-detail.js — console detail page ES module: loads specs from `data-loader.js`, renders into page
       - cookies.js — cookie consent banner logic for cookies.html (reads/writes consent to localStorage)
       - course.js — course.html controller: loads course/module/lesson list, access control for non-starter courses
       - help.js — help.html: FAQ accordion, category filter, search
-      - index-auth.js — logged-out index.html: checks Supabase session, redirects to home.html if already authenticated
-      - index-cards.js — index.html thumbnail-to-featured-card swap interaction
+      - index-auth.js — logged-out index.html: checks Supabase session, redirects to home.html if already authenticated (NOT currently `<script>`-included by index.html — index.html does its own inline `cn_session` check instead; this file appears unused/dead)
+      - index-cards.js — index.html thumbnail-to-featured-card swap interaction (also NOT currently included by index.html — same dead-code note as index-auth.js)
+      - index.js — index.html: fetches `/api/leaderboard?limit=5` and renders the "Top Contributors" preview list
       - invata.js — invata.html: fetches real course progress from API, updates course card progress bars
       - lesson.js — lesson.html controller: loads lesson content/quiz, tracks progress, comments/reactions
       - login.js — login.html: server/local login, Google OAuth redirect handling, 2FA verification, resend verification
       - profile.js — profil.html Settings controller: account, profile/privacy, security, notifications, appearance tabs
-      - register.js — register.html: password strength indicator, username availability check, submit, Google OAuth
+      - register.js — register.html: password strength indicator, username availability check, Turnstile CAPTCHA widget, submit, Google OAuth
       - request-password-reset.js — request-password-reset.html: submits reset request to API, shows result
       - reset-password.js — reset-password.html: validates token from URL, submits new password (`?mode=set` variant)
       - setup-username.js — setup-username.html: first-time username selection with live availability check
@@ -187,8 +206,9 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
     - main.js — main JS entry point: imports and initializes Navigation/Animations/ContactForm/Diacritics/Search/ProfileDropdown modules
     - redirect.js — root `index.html` redirect helper, keeps that file free of inline scripts
     - reset-database.js — frontend entry shim, `require()`s the real logic in `backend/js/reset-database.js`
+  - manifest.json — PWA manifest (name, icons, theme/background color), linked from every page's `<head>`
   - robots.txt — crawler rules; disallows login/register pages
-  - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`)
+  - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`); covers all public pages: main pages, 52 console pages, 10 help sub-pages, 24 legal-file language variants; deliberately excludes `https://consolenotebook.com/` itself (pure 302 redirect — Google's guidance is to never list a redirecting URL in a sitemap). Every public page now has a self-referencing `<link rel="canonical">` (94 total: legal files already had them; index.html/home.html/evolutie/comparatie/community/community-welcome-page/invata/help + 10 help sub-pages + 52 console pages added in this pass)
 - .gitignore — repo-wide ignore rules (`.env*` except `.env.example`, `node_modules/`, etc.)
 - CLAUDE.md — Claude Code guidance: architecture, conventions, and rules for this repo
 - index.html — root redirect shim to `frontend/html/pages/`; not the real app entry point
@@ -196,4 +216,4 @@ Complete file index for this repository (461 files, excluding `node_modules/`, `
 - package.json — root scripts: `install:server`/`postinstall`, `start`/`start:server`, `dev:server`, `reset-db`, `import-consoles`
 - railway.toml — Railway deploy config: runs `import-consoles.js` then `npm start` on every deploy, healthcheck at `/api/health`
 - README.md — project overview: what Cnote Bakery / Console Notebook is
-- sitemap.xml — root-level XML sitemap for search engines
+- sitemap.xml — root-level XML sitemap for search engines (kept in sync with `frontend/sitemap.xml`)

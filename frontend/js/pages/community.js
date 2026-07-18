@@ -635,6 +635,7 @@ async function loadThreads() {
                         <div class="hub-thread-title">
                             ${esc(t.title)}
                             <span class="hub-tag hub-tag--${(t.tag || 'general').toLowerCase()}">${esc(t.tag || 'General')}</span>
+                            ${t.solved_reply_id ? `<span class="hub-solved-badge">${I18nModule.t('forum_solved_badge')}</span>` : ''}
                         </div>
                         <div class="hub-thread-meta">
                             <span>${esc(t.username)}</span>
@@ -673,15 +674,18 @@ async function openThread(id) {
     const v = document.getElementById('view-thread');
     v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div>';
 
+    let replyTo = null; // { id, username, snippet } — cleared on every (re)render
+
     try {
         const data = await api('GET', `/forum/${S.console}/threads/${id}`);
         if (!data.success) throw 0;
         const t = data.thread, replies = t.replies || [], u = user();
+        const isOwner = u && u.id === t.user_id;
 
         v.innerHTML = `
             <div class="hub-view-header">
                 <button class="hub-view-header__back" id="thread-back">← Back</button>
-                <div class="hub-view-header__title">${esc(t.title)}</div>
+                <div class="hub-view-header__title">${esc(t.title)}${t.solved_reply_id ? ` <span class="hub-solved-badge">${I18nModule.t('forum_solved_badge')}</span>` : ''}</div>
             </div>
             <div class="hub-thread-detail" id="thread-detail">
                 <div class="hub-thread-original">
@@ -699,20 +703,25 @@ async function openThread(id) {
                 </div>
                 <div class="hub-replies-heading">Replies (${replies.length})</div>
                 ${replies.map(r => `
-                    <div class="hub-reply-card">
+                    <div class="hub-reply-card${t.solved_reply_id === r.id ? ' hub-reply-card--solved' : ''}" data-reply-id="${r.id}">
                         <div class="hub-reply-header">
                             <div class="hub-reply-avatar">${avatarHtml(r.username, r.avatar, 24)}</div>
                             <span class="hub-reply-user">${esc(r.username)}</span>
                             <span class="hub-reply-time">${timeAgo(r.created_at)}</span>
+                            ${t.solved_reply_id === r.id ? `<span class="hub-solved-badge">${I18nModule.t('forum_solved_badge')}</span>` : ''}
                         </div>
+                        ${r.reply_to_id ? `<div class="hub-reply-quote">${I18nModule.t('forum_replying_to')} <b>${esc(r.reply_to_username || '')}</b>: “${esc(r.reply_to_snippet || '')}”</div>` : ''}
                         <div class="hub-reply-text">${esc(r.body)}</div>
                         <div style="padding-left:32px;margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                             <button class="hub-btn hub-btn--secondary hub-btn--sm" data-upvote="reply" data-id="${r.id}">↑ ${r.upvotes || 0}</button>
+                            ${u ? `<button class="hub-btn hub-btn--secondary hub-btn--sm" data-reply-to="${r.id}" data-reply-to-user="${esc(r.username)}">${I18nModule.t('forum_reply_to_action')}</button>` : ''}
+                            ${isOwner ? `<button class="hub-btn hub-btn--secondary hub-btn--sm" data-solve="${r.id}">${t.solved_reply_id === r.id ? I18nModule.t('forum_unmark_solved') : I18nModule.t('forum_mark_solved')}</button>` : ''}
                             ${(u && u.id !== r.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_reply" data-report-id="${r.id}" data-report-preview="${esc((r.body || '').substring(0, 60))}">⚑ ${I18nModule.t('report_btn_trigger')}</button>` : ''}
                         </div>
                     </div>`).join('')}
             </div>
-            ${u ? `<form class="hub-reply-form" id="thread-reply-form">
+            ${u ? `<div class="hub-reply-context" id="thread-reply-context" hidden></div>
+            <form class="hub-reply-form" id="thread-reply-form">
                 <input type="text" placeholder="Write a reply…" maxlength="2000" required>
                 <button class="hub-btn hub-btn--primary" type="submit">Send</button>
             </form>` : ''}`;
@@ -720,6 +729,23 @@ async function openThread(id) {
         v.querySelector('#thread-back').addEventListener('click', () => {
             showView('forum'); renderForum(); loadThreads();
         });
+
+        const replyInput = v.querySelector('#thread-reply-form input');
+        const replyContext = v.querySelector('#thread-reply-context');
+
+        function setReplyTo(replyId, username, snippet) {
+            replyTo = replyId ? { id: replyId, username, snippet } : null;
+            if (!replyContext) return;
+            if (replyTo) {
+                replyContext.hidden = false;
+                replyContext.innerHTML = `${I18nModule.t('forum_replying_to')} <b>${esc(username)}</b>: “${esc((snippet || '').slice(0, 80))}” <button type="button" id="thread-reply-cancel">${I18nModule.t('forum_cancel_reply')}</button>`;
+                replyContext.querySelector('#thread-reply-cancel').addEventListener('click', () => setReplyTo(null));
+                replyInput?.focus();
+            } else {
+                replyContext.hidden = true;
+                replyContext.innerHTML = '';
+            }
+        }
 
         v.querySelector('#thread-detail').addEventListener('click', async e => {
             const reportBtn = e.target.closest('.report-trigger-btn');
@@ -733,6 +759,26 @@ async function openThread(id) {
                 }
                 return;
             }
+
+            const replyToBtn = e.target.closest('[data-reply-to]');
+            if (replyToBtn) {
+                const card = replyToBtn.closest('.hub-reply-card');
+                const snippet = card?.querySelector('.hub-reply-text')?.textContent || '';
+                setReplyTo(+replyToBtn.dataset.replyTo, replyToBtn.dataset.replyToUser, snippet);
+                return;
+            }
+
+            const solveBtn = e.target.closest('[data-solve]');
+            if (solveBtn) {
+                const replyId = +solveBtn.dataset.solve;
+                const alreadySolved = t.solved_reply_id === replyId;
+                const res = await api('POST', `/forum/${S.console}/threads/${id}/solve`, {
+                    reply_id: alreadySolved ? null : replyId,
+                });
+                if (res.success) openThread(id);
+                return;
+            }
+
             const btn = e.target.closest('[data-upvote]');
             if (!btn || !u) return;
             const type = btn.dataset.upvote;
@@ -749,7 +795,10 @@ async function openThread(id) {
             const input = e.target.querySelector('input');
             const body = input.value.trim();
             if (!body) return;
-            const res = await api('POST', `/forum/${S.console}/threads/${id}/reply`, { body });
+            const res = await api('POST', `/forum/${S.console}/threads/${id}/reply`, {
+                body,
+                reply_to_id: replyTo ? replyTo.id : undefined,
+            });
             if (res.success) {
                 window.dispatchEvent(new CustomEvent('cn:message-sent'));
                 openThread(id);

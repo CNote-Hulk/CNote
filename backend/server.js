@@ -60,6 +60,7 @@ const dmRoutes = require('./routes/dm');
 const notificationRoutes = require('./routes/notifications');
 const consolesRoutes = require('./routes/consoles');
 const achievementsRoutes = require('./routes/achievements');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
@@ -127,10 +128,21 @@ optionalEnv.forEach(name => {
 
 app.set('trust proxy', 1);
 
+// Canonicalize both protocol (http -> https) and host (www. -> apex) in one
+// pass. Without this, www.consolenotebook.com serves the exact same content
+// as the apex domain with no redirect between them — two fully independent,
+// crawlable copies of the entire site, which is a major contributor to the
+// duplicate-content noise Search Console reports (Page Indexing: "Page with
+// redirect" / "Alternate page with proper canonical tag" both included
+// www.* examples).
 app.use((req, res, next) => {
   if (req.path === '/api/health') return next();
-  if (req.headers['x-forwarded-proto'] !== 'https') {
-    return res.redirect(301, `https://${req.hostname}${req.url}`);
+  const isHttps = req.headers['x-forwarded-proto'] === 'https';
+  const host = req.hostname;
+  const isWww = host.startsWith('www.');
+  if (!isHttps || isWww) {
+    const targetHost = isWww ? host.slice(4) : host;
+    return res.redirect(301, `https://${targetHost}${req.url}`);
   }
   next();
 });
@@ -145,8 +157,8 @@ app.use((req, res, next) => {
 
 app.use(helmet({
 	// ── Content-Security-Policy ────────────────────────────────────────────
-	// Running in REPORT-ONLY mode. Switch reportOnly → false once logs are
-	// clean for 24-48 h. See POST /api/csp-report for the violation sink.
+	// Enforced (reportOnly: false) — violations still flow to the sink below
+	// for monitoring, but the browser blocks anything not explicitly allowed.
 	//
 	// External origins inventoried from the frontend (2026-05-06):
 	//   cdn.socket.io          – Socket.IO client script
@@ -172,6 +184,7 @@ app.use(helmet({
 				'https://www.googletagmanager.com', // GA4 loader
 				'https://*.google-analytics.com',  // GA4 secondary scripts
 				'https://browser.sentry-cdn.com',  // Sentry browser SDK
+				'https://challenges.cloudflare.com', // Turnstile (CAPTCHA) widget script
 			],
 
 			styleSrc: [
@@ -211,12 +224,14 @@ app.use(helmet({
 				'https://*.supabase.co',              // Supabase auth & realtime
 				'https://*.sentry.io',                // Sentry error reporting
 				'https://*.ingest.sentry.io',         // Sentry ingest endpoint
+				'https://challenges.cloudflare.com',  // Turnstile (CAPTCHA) verification calls
 				...(objectStorageOrigin ? [objectStorageOrigin] : []), // chat attachment storage (upload PUT + fetch)
 			],
 
 			frameSrc: [
 				'https://www.youtube.com',          // YouTube embeds (consent-gated)
 				'https://www.youtube-nocookie.com', // YouTube privacy-enhanced mode
+				'https://challenges.cloudflare.com', // Turnstile (CAPTCHA) widget iframe
 			],
 
 			frameAncestors: ["'self'"],             // Clickjacking protection
@@ -320,6 +335,14 @@ const uploadLimiter = rateLimit({
 	message: { success: false, error: 'Too many uploads, please try again later.' }
 });
 
+const contactLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 10,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many messages sent, please try again later.' }
+});
+
 app.post('/api/login', authLimiter);
 app.post('/api/register', registerLimiter);
 app.post('/api/request-reset', authLimiter);
@@ -328,6 +351,7 @@ app.post('/api/2fa/verify', twoFactorLimiter);
 app.post('/api/2fa/email-fallback', twoFactorLimiter);
 app.post('/api/me/avatar', avatarLimiter);
 app.delete('/api/me/avatar', avatarLimiter);
+app.post('/api/contact', contactLimiter);
 app.post('/api/uploads/presign', uploadLimiter);
 
 /* ── Request sanitize logger — scrubs sensitive fields before logging ─────
@@ -411,6 +435,7 @@ app.use('/api', resetProgressRoutes);
 
 app.use('/api/consoles', consolesRoutes);
 app.use('/api/achievements', achievementsRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api', coursesRoutes);
 app.use('/api', reportsRoutes);
 app.use('/api/ebay', ebayRoutes);
@@ -427,6 +452,21 @@ app.get('/src/*', (req, res) => {
 	res.redirect(301, target);
 });
 
+// Legacy/guessed URLs still showing up as 404s in Search Console — terms/
+// privacy/cookies moved into the "legal files" subfolder, and marketplace/
+// repair were never standalone pages (they're deep-linked panels inside
+// community.html). Redirect instead of letting them 404.
+const LEGACY_REDIRECTS = {
+	'/html/pages/terms.html': '/html/pages/legal%20files/terms.html',
+	'/html/pages/privacy.html': '/html/pages/legal%20files/privacy.html',
+	'/html/pages/cookies.html': '/html/pages/legal%20files/cookies.html',
+	'/html/pages/marketplace.html': '/html/pages/community.html#marketplace',
+	'/html/pages/repair.html': '/html/pages/community.html#repair',
+};
+app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
+	res.redirect(301, LEGACY_REDIRECTS[req.path]);
+});
+
 const FRONTEND_ROOT = path.join(__dirname, '..', 'frontend');
 
 /* ── HTML nonce-injection middleware ──────────────────────────────────────
@@ -437,7 +477,7 @@ const FRONTEND_ROOT = path.join(__dirname, '..', 'frontend');
    express.static can serve a proper 404.
    No caching intentionally — nonce must be unique per request.
    ─────────────────────────────────────────────────────────────────────── */
-async function serveHTMLWithNonce(req, res, next, filePath) {
+async function serveHTMLWithNonce(req, res, next, filePath, statusCode) {
 	try {
 		let html = await fs.readFile(filePath, 'utf8');
 		const nonce = res.locals.cspNonce;
@@ -446,9 +486,12 @@ async function serveHTMLWithNonce(req, res, next, filePath) {
 		// can read it at runtime without committing the value to source control.
 		// The script tag carries the per-request nonce — CSP-compliant.
 		const frontendDsn = process.env.SENTRY_DSN_FRONTEND || '';
+		// Same pattern for the Turnstile (CAPTCHA) site key — public by design,
+		// but still kept out of source control so envs can swap keys freely.
+		const turnstileSiteKey = process.env.TURNSTILE_SITE_KEY || '';
 		html = html.replace(
 			'</head>',
-			`<script nonce="${nonce}">window.SENTRY_DSN_FRONTEND = ${JSON.stringify(frontendDsn)};</script>\n</head>`
+			`<script nonce="${nonce}">window.SENTRY_DSN_FRONTEND = ${JSON.stringify(frontendDsn)};window.TURNSTILE_SITE_KEY = ${JSON.stringify(turnstileSiteKey)};</script>\n</head>`
 		);
 
 		// Inject nonce into inline <script> tags.
@@ -460,7 +503,7 @@ async function serveHTMLWithNonce(req, res, next, filePath) {
 			/<script(?![^>]*\b(?:src|nonce)=)([^>]*)>/g,
 			`<script nonce="${nonce}"$1>`
 		);
-		res.type('html').send(html);
+		res.status(statusCode || 200).type('html').send(html);
 	} catch {
 		next();
 	}
@@ -479,13 +522,26 @@ app.use(async (req, res, next) => {
 app.use(express.static(FRONTEND_ROOT));
 
 app.get('/', (req, res) => {
-	res.redirect(302, '/html/pages/');
+	res.redirect(302, '/html/pages/index.html');
 });
 
 // Catch-all for /user/:username → serve user-profile.html (SPA-style route)
 app.get('/user/:username', (req, res, next) => {
 	// Use nonce-injecting helper — same as .html middleware above
 	serveHTMLWithNonce(req, res, next, path.join(FRONTEND_ROOT, 'html', 'pages', 'user-profile.html'));
+});
+
+// ── 404 fallbacks — nothing above matched ──────────────────────────────────
+// API requests get a JSON 404; everything else gets the branded 404 page.
+app.use('/api', (req, res) => {
+	res.status(404).json({ success: false, error: 'Not found' });
+});
+
+app.use(async (req, res, next) => {
+	if (req.method !== 'GET' && req.method !== 'HEAD') {
+		return res.status(404).end();
+	}
+	await serveHTMLWithNonce(req, res, next, path.join(FRONTEND_ROOT, 'html', 'pages', '404.html'), 404);
 });
 
 // Sentry must capture the error before the generic handler sends the response
