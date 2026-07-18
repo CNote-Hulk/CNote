@@ -323,6 +323,14 @@ const uploadLimiter = rateLimit({
 	message: { success: false, error: 'Too many uploads, please try again later.' }
 });
 
+const contactLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 10,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many messages sent, please try again later.' }
+});
+
 app.post('/api/login', authLimiter);
 app.post('/api/register', registerLimiter);
 app.post('/api/request-reset', authLimiter);
@@ -331,6 +339,7 @@ app.post('/api/2fa/verify', twoFactorLimiter);
 app.post('/api/2fa/email-fallback', twoFactorLimiter);
 app.post('/api/me/avatar', avatarLimiter);
 app.delete('/api/me/avatar', avatarLimiter);
+app.post('/api/contact', contactLimiter);
 app.post('/api/uploads/presign', uploadLimiter);
 
 /* ── Request sanitize logger — scrubs sensitive fields before logging ─────
