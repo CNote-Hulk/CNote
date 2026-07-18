@@ -112,7 +112,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
     - **js/**
       - components.js — fetches navbar.html/footer.html, sanitizes with DOMPurify, injects into placeholders; adds a skip-to-content link + tags the main content landmark for a11y; also lazy-loads Sentry with server-injected DSN
     - **pages/**
-      - **consoles/** — 51 static per-console detail pages, one per console, filename = console slug, rendered via `console-detail.js` + `data-loader.js`
+      - **consoles/** — 52 static per-console detail pages, one per console, filename = console slug, rendered via `console-detail.js` + `data-loader.js`; each now has a unique `<title>`/meta description/og:tags (name, manufacturer, release year, own image) generated from `consoles-en.json` — previously every one of the 52 shared the identical generic "Console Notebook" title and description
       - **help/** — 10 static help/FAQ sub-pages (achievements, community, console, account, forum, general, marketplace, friends, profile, repair)
       - **legal files/** — 24 files: community-rules/cookies/privacy/terms, each translated into 6 languages (default + de/en/es/fr/it suffixed variants)
       - 404.html — branded not-found page; served by `server.js`'s catch-all 404 fallback (HTML 404 status, CSP nonce injected)
