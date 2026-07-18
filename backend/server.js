@@ -127,10 +127,21 @@ optionalEnv.forEach(name => {
 
 app.set('trust proxy', 1);
 
+// Canonicalize both protocol (http -> https) and host (www. -> apex) in one
+// pass. Without this, www.consolenotebook.com serves the exact same content
+// as the apex domain with no redirect between them — two fully independent,
+// crawlable copies of the entire site, which is a major contributor to the
+// duplicate-content noise Search Console reports (Page Indexing: "Page with
+// redirect" / "Alternate page with proper canonical tag" both included
+// www.* examples).
 app.use((req, res, next) => {
   if (req.path === '/api/health') return next();
-  if (req.headers['x-forwarded-proto'] !== 'https') {
-    return res.redirect(301, `https://${req.hostname}${req.url}`);
+  const isHttps = req.headers['x-forwarded-proto'] === 'https';
+  const host = req.hostname;
+  const isWww = host.startsWith('www.');
+  if (!isHttps || isWww) {
+    const targetHost = isWww ? host.slice(4) : host;
+    return res.redirect(301, `https://${targetHost}${req.url}`);
   }
   next();
 });
@@ -437,6 +448,21 @@ app.get('/api/health', (req, res) => res.json({ ok: true }));
 app.get('/src/*', (req, res) => {
 	const target = req.originalUrl.replace(/^\/src\//, '/');
 	res.redirect(301, target);
+});
+
+// Legacy/guessed URLs still showing up as 404s in Search Console — terms/
+// privacy/cookies moved into the "legal files" subfolder, and marketplace/
+// repair were never standalone pages (they're deep-linked panels inside
+// community.html). Redirect instead of letting them 404.
+const LEGACY_REDIRECTS = {
+	'/html/pages/terms.html': '/html/pages/legal%20files/terms.html',
+	'/html/pages/privacy.html': '/html/pages/legal%20files/privacy.html',
+	'/html/pages/cookies.html': '/html/pages/legal%20files/cookies.html',
+	'/html/pages/marketplace.html': '/html/pages/community.html#marketplace',
+	'/html/pages/repair.html': '/html/pages/community.html#repair',
+};
+app.get(Object.keys(LEGACY_REDIRECTS), (req, res) => {
+	res.redirect(301, LEGACY_REDIRECTS[req.path]);
 });
 
 const FRONTEND_ROOT = path.join(__dirname, '..', 'frontend');
