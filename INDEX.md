@@ -91,7 +91,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
   - README.md — why/how of the self-hosted MinIO object-storage setup for chat attachments
 - **frontend/**
   - **assets/**
-    - **icons/** — favicon.ico (24×24, original red notebook logo — also used as the navbar `.logo-icon`, so it stays notebook-branded, not console art); apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons, no navbar use) — these three are `images/consoles/atari-2600.png` via `sharp`, "cover"-cropped right-anchored on the console body, transparent background preserved (not flattened to white)
+    - **icons/** — favicon.ico only (24×24 red notebook logo; also used as the navbar `.logo-icon`)
     - **images/**
       - **consoles/** — ~104 files (PNG+WebP pairs), one pair per console, filename = console slug; referenced by encyclopedia/comparison pages
       - **wallpapers/** — 8 full-page background images, one per major page (home, community, comparatie, evolutie, help, index, invata, login)
@@ -202,7 +202,6 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
     - main.js — main JS entry point: imports and initializes Navigation/Animations/ContactForm/Diacritics/Search/ProfileDropdown modules
     - redirect.js — root `index.html` redirect helper, keeps that file free of inline scripts
     - reset-database.js — frontend entry shim, `require()`s the real logic in `backend/js/reset-database.js`
-  - manifest.json — PWA manifest (name, icons, theme/background color), linked from every page's `<head>`
   - robots.txt — crawler rules; disallows login/register pages
   - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`); covers all public pages: main pages, 52 console pages, 10 help sub-pages, 24 legal-file language variants; deliberately excludes `https://consolenotebook.com/` itself (pure 302 redirect — Google's guidance is to never list a redirecting URL in a sitemap). Every public page now has a self-referencing `<link rel="canonical">` (94 total: legal files already had them; index.html/home.html/evolutie/comparatie/community/community-welcome-page/invata/help + 10 help sub-pages + 52 console pages added in this pass)
 - .gitignore — repo-wide ignore rules (`.env*` except `.env.example`, `node_modules/`, etc.)
