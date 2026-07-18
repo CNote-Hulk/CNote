@@ -221,6 +221,46 @@
             </div>
 
         </section>
+
+        <!-- ===========================
+             HIGHLIGHTS — Learn / Encyclopedia / Compare
+             =========================== -->
+        <section class="idx-highlights">
+            <div class="idx-highlights__intro">
+                <h2 data-i18n="idx_highlights_title">Explore the platform</h2>
+                <p data-i18n="idx_highlights_subtitle">Three ways to dive into the world of retro and modern consoles.</p>
+            </div>
+            <div class="idx-highlights__grid">
+                <a href="invata.html" class="idx-highlight-card">
+                    <div class="idx-highlight-card__icon">📚</div>
+                    <h3 data-i18n="nav_learn">Learn</h3>
+                    <p data-i18n="idx_learn_desc">Step-by-step repair courses with progress tracking, from basic diagnostics to advanced fixes.</p>
+                </a>
+                <a href="evolutie.html" class="idx-highlight-card">
+                    <div class="idx-highlight-card__icon">🕹️</div>
+                    <h3 data-i18n="idx_encyclopedia_title">Console Encyclopedia</h3>
+                    <p data-i18n="idx_encyclopedia_desc">50+ consoles documented across 9 generations, from 1972 to today.</p>
+                </a>
+                <a href="comparatie.html" class="idx-highlight-card">
+                    <div class="idx-highlight-card__icon">⚖️</div>
+                    <h3 data-i18n="nav_compare">Compare</h3>
+                    <p data-i18n="idx_compare_desc">Put any two consoles side by side — full hardware specs, no guesswork.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- ===========================
+             TOP CONTRIBUTORS — leaderboard preview
+             =========================== -->
+        <section class="idx-leaderboard">
+            <div class="idx-leaderboard__header">
+                <h2 data-i18n="idx_leaderboard_title">Top Contributors</h2>
+                <a href="leaderboard.html" class="idx-leaderboard__link" data-i18n="idx_leaderboard_view_all">View full leaderboard →</a>
+            </div>
+            <div class="idx-leaderboard__list" id="idx-leaderboard-list">
+                <div class="idx-leaderboard__loading" data-i18n="leaderboard_loading">Loading…</div>
+            </div>
+        </section>
     </main>
 
     <!-- ===========================
@@ -231,6 +271,7 @@
     <!-- Scripts -->
     <script src="../../js/data/consoles-data.js"></script>
     <script type="module" src="../../js/main.js"></script>
+    <script type="module" src="../../js/pages/index.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
     <script src="/js/cookie-consent.js"></script>

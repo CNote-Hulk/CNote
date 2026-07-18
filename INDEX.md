@@ -2,7 +2,7 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (481 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (482 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
@@ -124,7 +124,7 @@ Complete file index for this repository (481 files, excluding `node_modules/`, `
       - evolutie.html — console evolution timeline / encyclopedia grid page
       - help.html — Help & Support page: FAQ accordion, category filter, search; contact form includes a Turnstile CAPTCHA widget
       - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs
-      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect); `<title>` leads with "Console Notebook" for the same tab-truncation reason
+      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect); `<title>` leads with "Console Notebook" for the same tab-truncation reason; below the notebook scene, a "Learn/Encyclopedia/Compare" highlights strip and a live "Top Contributors" leaderboard preview (top 5, `pages/index.js`) for social proof on the logged-out landing page
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
       - leaderboard.html — public XP leaderboard page (no login required), driven by `pages/leaderboard.js`; linked from the mobile-nav "more" dropdown on most pages and from the community-welcome-page's "Give Back" step (which previously promised a leaderboard that didn't exist)
       - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
@@ -183,8 +183,9 @@ Complete file index for this repository (481 files, excluding `node_modules/`, `
       - cookies.js — cookie consent banner logic for cookies.html (reads/writes consent to localStorage)
       - course.js — course.html controller: loads course/module/lesson list, access control for non-starter courses
       - help.js — help.html: FAQ accordion, category filter, search
-      - index-auth.js — logged-out index.html: checks Supabase session, redirects to home.html if already authenticated
-      - index-cards.js — index.html thumbnail-to-featured-card swap interaction
+      - index-auth.js — logged-out index.html: checks Supabase session, redirects to home.html if already authenticated (NOT currently `<script>`-included by index.html — index.html does its own inline `cn_session` check instead; this file appears unused/dead)
+      - index-cards.js — index.html thumbnail-to-featured-card swap interaction (also NOT currently included by index.html — same dead-code note as index-auth.js)
+      - index.js — index.html: fetches `/api/leaderboard?limit=5` and renders the "Top Contributors" preview list
       - invata.js — invata.html: fetches real course progress from API, updates course card progress bars
       - lesson.js — lesson.html controller: loads lesson content/quiz, tracks progress, comments/reactions
       - login.js — login.html: server/local login, Google OAuth redirect handling, 2FA verification, resend verification
