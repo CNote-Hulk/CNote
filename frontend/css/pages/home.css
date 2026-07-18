@@ -1807,6 +1807,18 @@ body.home-page::before {
     flex-shrink: 0;
 }
 
+.panel-section-title__link {
+    margin-left: auto;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.panel-section-title__link:hover {
+    text-decoration: underline;
+}
+
 /* ── Stats Card Icon ── */
 
 .stats-card__icon {

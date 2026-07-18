@@ -123,7 +123,7 @@ Complete file index for this repository (482 files, excluding `node_modules/`, `
       - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
       - evolutie.html — console evolution timeline / encyclopedia grid page
       - help.html — Help & Support page: FAQ accordion, category filter, search; contact form includes a Turnstile CAPTCHA widget
-      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs; desktop sidebar's "EXPLORE" section (Community/Marketplace/Repair) now also links to leaderboard.html — previously the leaderboard was only reachable from the mobile "more" dropdown, invisible on desktop
+      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs; the Progress panel now embeds a "Top Contributors" leaderboard preview (below the All Levels list) with a link to the full leaderboard.html — previously the leaderboard was only reachable from the mobile "more" dropdown, invisible on desktop
       - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect); `<title>` leads with "Console Notebook" for the same tab-truncation reason; below the notebook scene, a "Learn/Encyclopedia/Compare" highlights strip and a live "Top Contributors" leaderboard preview (top 5, `pages/index.js`) for social proof on the logged-out landing page
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
       - leaderboard.html — public XP leaderboard page (no login required), driven by `pages/leaderboard.js`; linked from the mobile-nav "more" dropdown on most pages and from the community-welcome-page's "Give Back" step (which previously promised a leaderboard that didn't exist)
@@ -162,7 +162,7 @@ Complete file index for this repository (482 files, excluding `node_modules/`, `
       - diacritics.js — normalizes common Romanian words typed/rendered without diacritics
       - gamification-data.js — frontend copy of XP/level/achievement constants (`window.GAMIFICATION_DATA`), must mirror `backend/utils/gamification.js`
       - home-timeline.js — animates the quick-start guide timeline fill bar on the home page, clickable steps
-      - home.js — home page logic: user greeting, avatar URL normalization, achievements/auth wiring
+      - home.js — home page logic: user greeting, avatar URL normalization, achievements/auth wiring; also loads the Progress panel's "Top Contributors" leaderboard preview (`GET /api/leaderboard?limit=5`)
       - i18n.js — i18n engine: `data-i18n` attribute translation, language persisted to localStorage; holds the `MESSAGES` object (en/es/fr/it/de)
       - marketplace.js — shared marketplace helper functions (provider display name/icon, etc.)
       - navigation.js — smooth scrolling, active nav-link highlighting, mobile hamburger menu
