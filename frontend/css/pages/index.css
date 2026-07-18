@@ -885,18 +885,31 @@ div.auth-page--nb {
     padding: 1.5rem;
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.15s ease, transform 0.15s ease;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .idx-highlight-card:hover,
 .idx-highlight-card:focus-visible {
     border-color: var(--accent-color);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.45));
 }
 
 .idx-highlight-card__icon {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: rgba(var(--accent-color-rgb), 0.12);
+    font-size: 1.5rem;
+    margin-bottom: 0.9rem;
+    transition: transform 0.15s ease;
+}
+
+.idx-highlight-card:hover .idx-highlight-card__icon {
+    transform: scale(1.08) rotate(-4deg);
 }
 
 .idx-highlight-card h3 {
@@ -979,6 +992,12 @@ div.auth-page--nb {
     text-align: center;
     font-weight: 700;
     color: var(--text-gray);
+}
+
+.idx-leaderboard__row:nth-child(1) .idx-leaderboard__rank,
+.idx-leaderboard__row:nth-child(2) .idx-leaderboard__rank,
+.idx-leaderboard__row:nth-child(3) .idx-leaderboard__rank {
+    font-size: 1.2rem;
 }
 
 .idx-leaderboard__avatar {

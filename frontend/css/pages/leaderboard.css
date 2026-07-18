@@ -93,6 +93,32 @@
 
 .lb-row--top3 .lb-row__rank {
     color: var(--accent-color);
+    font-size: 1.3rem;
+}
+
+/* Podium treatment — gold/silver/bronze, purely positional (rows arrive
+   pre-sorted from the API, so nth-child reliably matches rank 1/2/3). */
+#lb-list .lb-row:nth-child(1),
+.idx-leaderboard__list .idx-leaderboard__row:nth-child(1) {
+    border-color: rgba(255, 215, 0, 0.45);
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.08), var(--card-bg) 60%);
+}
+
+#lb-list .lb-row:nth-child(2),
+.idx-leaderboard__list .idx-leaderboard__row:nth-child(2) {
+    border-color: rgba(192, 192, 192, 0.4);
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.07), var(--card-bg) 60%);
+}
+
+#lb-list .lb-row:nth-child(3),
+.idx-leaderboard__list .idx-leaderboard__row:nth-child(3) {
+    border-color: rgba(205, 127, 50, 0.4);
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.07), var(--card-bg) 60%);
+}
+
+#lb-list .lb-row:nth-child(1) .lb-row__avatar,
+.idx-leaderboard__list .idx-leaderboard__row:nth-child(1) .idx-leaderboard__avatar {
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.6);
 }
 
 .lb-row__avatar {

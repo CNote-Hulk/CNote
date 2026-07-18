@@ -2,7 +2,7 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (482 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (483 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
@@ -103,7 +103,7 @@ Complete file index for this repository (482 files, excluding `node_modules/`, `
     - **base/** — reset.css (global resets + site-wide `:focus-visible` outline + `.skip-link` styling), typography.css, variables.css: type scale, CSS custom-property theme tokens
     - **components/** — reusable component styles (buttons, cards, forms, cookies banner, avatar cropper, quiz, report modal, search/profile dropdown, levels, index cards, date picker, sections)
     - **layout/** — footer.css, grid.css, hero.css, navbar.css: page-shell/structural layout styles
-    - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, leaderboard, lesson, stats, terms, user-profile, etc.); community-hub.css also carries the forum "solved" badge/highlight and reply-quote/reply-context styles
+    - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, leaderboard, lesson, notfound, stats, terms, user-profile, etc.); community-hub.css also carries the forum "solved" badge/highlight and reply-quote/reply-context styles; leaderboard.css and notfound.css are bundled into main.css like the rest (no separate `<link>`) — gold/silver/bronze podium styling for ranks 1-3 is shared via `nth-child` selectors across `.lb-row`/`.idx-leaderboard__row` (leaderboard.html, index.html, and home.html's Progress-panel preview all inherit it for free)
     - **utilities/** — animations.css, helpers.css, responsive.css: utility classes and breakpoint overrides
     - main.css — entry point that `@import`s all of the above in cascade order
   - **html/**
@@ -116,7 +116,7 @@ Complete file index for this repository (482 files, excluding `node_modules/`, `
       - **consoles/** — 52 static per-console detail pages, one per console, filename = console slug, rendered via `console-detail.js` + `data-loader.js`; each now has a unique `<title>`/meta description/og:tags (name, manufacturer, release year, own image) generated from `consoles-en.json` — previously every one of the 52 shared the identical generic "Console Notebook" title and description
       - **help/** — 10 static help/FAQ sub-pages (achievements, community, console, account, forum, general, marketplace, friends, profile, repair)
       - **legal files/** — 24 files: community-rules/cookies/privacy/terms, each translated into 6 languages (default + de/en/es/fr/it suffixed variants)
-      - 404.html — branded not-found page; served by `server.js`'s catch-all 404 fallback (HTML 404 status, CSP nonce injected)
+      - 404.html — branded not-found page ("Cartridge Not Found" — retro-themed, floating controller icon, quick links to Encyclopedia/Learn/Compare/Leaderboard); served by `server.js`'s catch-all 404 fallback (HTML 404 status, CSP nonce injected)
       - community-welcome-page.html — logged-out landing page introducing the Community hub before login
       - community.html — main Community hub shell: forum, marketplace, repair wizard, DMs (logic in `pages/community.js`)
       - comparatie.html — hardware side-by-side console comparison tool page
