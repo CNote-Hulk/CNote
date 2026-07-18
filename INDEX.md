@@ -91,7 +91,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
   - README.md — why/how of the self-hosted MinIO object-storage setup for chat attachments
 - **frontend/**
   - **assets/**
-    - **icons/** — favicon.ico (64×64), apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons); all derived from `images/consoles/atari-2600.png` via `sharp`, cropped ("cover", right-anchored) to fill the frame rather than padded/letterboxed, so the console reads clearly at small sizes (see manifest.json + the `<link rel="apple-touch-icon">`/`<link rel="manifest">` pair present in every page's `<head>` right after its favicon `<link>`)
+    - **icons/** — favicon.ico (24×24, original red notebook logo — also used as the navbar `.logo-icon`, so it stays notebook-branded, not console art); apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons, no navbar use) — these three are `images/consoles/atari-2600.png` via `sharp`, "cover"-cropped right-anchored on the console body, transparent background preserved (not flattened to white)
     - **images/**
       - **consoles/** — ~104 files (PNG+WebP pairs), one pair per console, filename = console slug; referenced by encyclopedia/comparison pages
       - **wallpapers/** — 8 full-page background images, one per major page (home, community, comparatie, evolutie, help, index, invata, login)
