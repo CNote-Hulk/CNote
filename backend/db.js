@@ -373,6 +373,17 @@ async function initializeSchema() {
 		`CREATE INDEX IF NOT EXISTS idx_xp_transactions_user_id ON xp_transactions(user_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_user_lessons_user_id ON user_lessons(user_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_user_course_progress_user_id ON user_course_progress(user_id)`,
+
+		// ── Leaderboard (public XP ranking) ──────────────────────────────────
+		`CREATE INDEX IF NOT EXISTS idx_users_xp_desc ON users(xp DESC) WHERE show_stats = true`,
+
+		// ── Forum "mark as solved" ───────────────────────────────────────────
+		`ALTER TABLE forum_threads ADD COLUMN IF NOT EXISTS solved_reply_id INTEGER REFERENCES forum_replies(id) ON DELETE SET NULL`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_threads_solved_reply_id ON forum_threads(solved_reply_id)`,
+
+		// ── Forum reply-to-a-specific-reply (quoted/threaded replies) ────────
+		`ALTER TABLE forum_replies ADD COLUMN IF NOT EXISTS reply_to_id INTEGER REFERENCES forum_replies(id) ON DELETE SET NULL`,
+		`CREATE INDEX IF NOT EXISTS idx_forum_replies_reply_to_id ON forum_replies(reply_to_id)`,
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

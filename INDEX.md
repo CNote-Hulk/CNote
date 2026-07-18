@@ -2,7 +2,7 @@
 
 Authoritative file map + purpose index for this repository. **Check here first** before grepping/globbing/searching — every code file below has a one-line description of what it does, so you can usually jump straight to the right file.
 
-Complete file index for this repository (477 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
+Complete file index for this repository (481 files, excluding `node_modules/`, `backend/node_modules/`, `.git/`, and `.claude/worktrees/` leftover git worktrees). Generated from a full repo walk.
 
 ---
 
@@ -28,6 +28,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
     - OlxProvider.js — OLX marketplace integration: OAuth + listings fetch/normalization against OLX Group API
   - **routes/**
     - achievements.js — GET own achievements (`/`) and another user's by username (`/user/:username`)
+    - leaderboard.js — `GET /api/leaderboard` (public, no auth): top users by XP, respects `show_stats` privacy flag; includes the caller's own rank if logged in (`authOptional`)
     - auth.js — registration (Turnstile CAPTCHA + disposable-email block), login + 2FA, email verification, password reset, profile, avatar upload; largest route file
     - chat.js — community/global chat: paginated message retrieval + posting with per-user rate-limit cooldown
     - consoles.js — GET `/api/consoles?lang=` — serves console encyclopedia data per language from `consoles_translations`
@@ -38,7 +39,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
     - favorites.js — list/check/toggle favorite consoles for the logged-in user
     - forum-liked.js — GET `/api/forum/liked` — threads the user has upvoted (dashboard widget)
     - forum-my-posts.js — GET `/api/forum/my-posts` — threads created by the logged-in user (dashboard widget)
-    - forum.js — forum thread list, thread detail, create, reply, upvote
+    - forum.js — forum thread list, thread detail, create, reply (optionally quoting a specific earlier reply via `reply_to_id`), upvote, mark-a-reply-as-solution (`POST .../:id/solve`, thread-author-only)
     - friends.js — send/accept/reject friend requests, list friends, check friendship status
     - google-auth.js — Google OAuth2 via Passport: login/register/link/unlink, custom state store (no express-session)
     - marketplace.js — marketplace listings CRUD: search, filter, sort, pagination; ties into OLX/eBay sync
@@ -78,7 +79,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
   - .env — local environment values (gitignored, not committed)
   - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, Turnstile CAPTCHA keys, etc.)
   - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
-  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns; a few target tables — `user_achievements`, `xp_transactions`, `user_lessons`, `user_course_progress` — that only exist live in Supabase and have no `CREATE TABLE` anywhere in this repo)
+  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns; a few target tables — `user_achievements`, `xp_transactions`, `user_lessons`, `user_course_progress` — that only exist live in Supabase and have no `CREATE TABLE` anywhere in this repo). Also adds `forum_threads.solved_reply_id` and `forum_replies.reply_to_id` (both `INTEGER REFERENCES forum_replies(id)`), plus a partial index `idx_users_xp_desc` on `users(xp DESC) WHERE show_stats = true` for the leaderboard
   - package-lock.json — locked dependency tree for backend
   - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
@@ -102,7 +103,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
     - **base/** — reset.css (global resets + site-wide `:focus-visible` outline + `.skip-link` styling), typography.css, variables.css: type scale, CSS custom-property theme tokens
     - **components/** — reusable component styles (buttons, cards, forms, cookies banner, avatar cropper, quiz, report modal, search/profile dropdown, levels, index cards, date picker, sections)
     - **layout/** — footer.css, grid.css, hero.css, navbar.css: page-shell/structural layout styles
-    - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, lesson, stats, terms, user-profile, etc.)
+    - **pages/** — one stylesheet per page (auth-profile, community, comparatie, console-detail, contact, course, evolutie, help, home, index, leaderboard, lesson, stats, terms, user-profile, etc.); community-hub.css also carries the forum "solved" badge/highlight and reply-quote/reply-context styles
     - **utilities/** — animations.css, helpers.css, responsive.css: utility classes and breakpoint overrides
     - main.css — entry point that `@import`s all of the above in cascade order
   - **html/**
@@ -125,6 +126,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
       - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs
       - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect); `<title>` leads with "Console Notebook" for the same tab-truncation reason
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
+      - leaderboard.html — public XP leaderboard page (no login required), driven by `pages/leaderboard.js`; linked from the mobile-nav "more" dropdown on most pages and from the community-welcome-page's "Give Back" step (which previously promised a leaderboard that didn't exist)
       - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
       - login.html — login page: server/local login, Google OAuth, 2FA, resend verification
       - profil.html — account Settings page: profile, privacy, security, notifications, appearance
@@ -174,7 +176,8 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
       - card-enhancements.js — adds favorite-heart + community rating to console cards on the evolution/encyclopedia page
       - chat.js — community.html global chat: polling, message rendering, cooldown rate limit, char counter
       - community-welcome-page.js — logged-out community landing page interactivity (console category tiles etc.)
-      - community.js — Community hub controller: sidebar nav, forum, marketplace, repair wizard, DMs
+      - community.js — Community hub controller: sidebar nav, forum, marketplace, repair wizard, DMs; forum thread view supports quoting a specific reply ("Reply" button → `reply_to_id`) and thread-owner-only "mark as solution" (✓ Solved badge on the thread and the winning reply)
+      - leaderboard.js — leaderboard.html controller: fetches `/api/leaderboard`, paginated "Load more", highlights the logged-in user's own rank
       - comparatie.js — comparison page ES module: loads console data via API, renders comparison UI
       - console-detail.js — console detail page ES module: loads specs from `data-loader.js`, renders into page
       - cookies.js — cookie consent banner logic for cookies.html (reads/writes consent to localStorage)

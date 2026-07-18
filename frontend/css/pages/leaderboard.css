@@ -1,0 +1,158 @@
+/**
+ * Leaderboard page — public XP ranking list.
+ */
+
+.lb-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 110px 20px 60px;
+    min-height: 60vh;
+}
+
+.lb-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg, 2rem);
+}
+
+.lb-header__title {
+    font-family: var(--font-serif, serif);
+    font-size: 2rem;
+    color: var(--text-light);
+    margin: 0 0 0.4em;
+}
+
+.lb-header__subtitle {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.lb-you {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 10px);
+    padding: 0.8em 1.2em;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.lb-you__label {
+    color: var(--text-gray);
+}
+
+.lb-you__rank {
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.lb-you__xp {
+    color: var(--text-gray);
+}
+
+.lb-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.lb-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9em;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 10px);
+    padding: 0.7em 1em;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.lb-row:hover,
+.lb-row:focus-visible {
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.lb-row--top3 {
+    border-color: rgba(var(--accent-color-rgb), 0.3);
+}
+
+.lb-row__rank {
+    width: 2.2em;
+    flex-shrink: 0;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-gray);
+}
+
+.lb-row--top3 .lb-row__rank {
+    color: var(--accent-color);
+}
+
+.lb-row__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--text-gray);
+}
+
+.lb-row__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15em;
+}
+
+.lb-row__username {
+    font-weight: 600;
+    color: var(--text-light);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lb-row__xp {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    text-align: right;
+}
+
+.lb-loading,
+.lb-empty {
+    text-align: center;
+    color: var(--text-gray);
+    padding: 2rem 0;
+}
+
+.lb-load-more {
+    display: block;
+    margin: 1.5rem auto 0;
+    padding: 0.6em 1.6em;
+    border-radius: var(--radius-md, 10px);
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-light);
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+.lb-load-more:hover,
+.lb-load-more:focus-visible {
+    border-color: var(--accent-color);
+}

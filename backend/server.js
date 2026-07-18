@@ -60,6 +60,7 @@ const dmRoutes = require('./routes/dm');
 const notificationRoutes = require('./routes/notifications');
 const consolesRoutes = require('./routes/consoles');
 const achievementsRoutes = require('./routes/achievements');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
@@ -434,6 +435,7 @@ app.use('/api', resetProgressRoutes);
 
 app.use('/api/consoles', consolesRoutes);
 app.use('/api/achievements', achievementsRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api', coursesRoutes);
 app.use('/api', reportsRoutes);
 app.use('/api/ebay', ebayRoutes);
