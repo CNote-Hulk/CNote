@@ -2,15 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- ── MAIN PAGES ─────────────────────────── -->
-  <url>
-    <loc>https://consolenotebook.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <!-- Note: https://consolenotebook.com/ is intentionally NOT listed here —
+       it's a pure 302 redirect to the URL below, and Google's own guidance
+       is to never list a redirecting URL in a sitemap (only the final,
+       indexable target). -->
   <url>
     <loc>https://consolenotebook.com/html/pages/index.html</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://consolenotebook.com/html/pages/evolutie.html</loc>

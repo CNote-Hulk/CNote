@@ -494,7 +494,7 @@ app.use(async (req, res, next) => {
 app.use(express.static(FRONTEND_ROOT));
 
 app.get('/', (req, res) => {
-	res.redirect(302, '/html/pages/');
+	res.redirect(302, '/html/pages/index.html');
 });
 
 // Catch-all for /user/:username → serve user-profile.html (SPA-style route)

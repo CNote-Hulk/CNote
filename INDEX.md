@@ -83,7 +83,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
   - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
   - server_check.js — minimal standalone Express+Helmet snippet to sanity-check CSP config changes in isolation
-  - server.js — Express app entry point: middleware, CORS, CSP nonce injection (also injects `window.TURNSTILE_SITE_KEY`), mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init
+  - server.js — Express app entry point: middleware, CORS, CSP nonce injection (also injects `window.TURNSTILE_SITE_KEY`), mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init. `GET /` redirects to `/html/pages/index.html` (an explicit filename, not just the directory — a bare `/html/pages/` redirect used to bypass the nonce-injection middleware since it only intercepts paths ending in `.html`, silently breaking the inline theme-restore script via CSP)
 - **infra/**
   - .env.example — template for MinIO root user/password on the self-hosted VPS
   - Caddyfile — reverse proxy config: TLS (Let's Encrypt) in front of the self-hosted MinIO object storage
@@ -122,8 +122,8 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
       - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
       - evolutie.html — console evolution timeline / encyclopedia grid page
       - help.html — Help & Support page: FAQ accordion, category filter, search; contact form includes a Turnstile CAPTCHA widget
-      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed)
-      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase
+      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`)
+      - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect)
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
       - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
       - login.html — login page: server/local login, Google OAuth, 2FA, resend verification
@@ -204,7 +204,7 @@ Complete file index for this repository (477 files, excluding `node_modules/`, `
     - reset-database.js — frontend entry shim, `require()`s the real logic in `backend/js/reset-database.js`
   - manifest.json — PWA manifest (name, icons, theme/background color), linked from every page's `<head>`
   - robots.txt — crawler rules; disallows login/register pages
-  - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`); covers all public pages: main pages, 52 console pages, 10 help sub-pages, 24 legal-file language variants
+  - sitemap.xml — frontend-specific sitemap (mirrors root `sitemap.xml`); covers all public pages: main pages, 52 console pages, 10 help sub-pages, 24 legal-file language variants; deliberately excludes `https://consolenotebook.com/` itself (pure 302 redirect — Google's guidance is to never list a redirecting URL in a sitemap). Every public page now has a self-referencing `<link rel="canonical">` (94 total: legal files already had them; index.html/home.html/evolutie/comparatie/community/community-welcome-page/invata/help + 10 help sub-pages + 52 console pages added in this pass)
 - .gitignore — repo-wide ignore rules (`.env*` except `.env.example`, `node_modules/`, etc.)
 - CLAUDE.md — Claude Code guidance: architecture, conventions, and rules for this repo
 - index.html — root redirect shim to `frontend/html/pages/`; not the real app entry point
