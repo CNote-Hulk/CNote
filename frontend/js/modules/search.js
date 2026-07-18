@@ -11,6 +11,7 @@ const ICONS = {
     console:     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="6" y2="12.01"/><line x1="10" y1="12" x2="10" y2="12.01"/><line x1="14" y1="12" x2="14" y2="12.01"/><line x1="18" y1="12" x2="18" y2="12.01"/></svg>',
     user:        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
     marketplace: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
+    forum:       '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
     settings:    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
     page:        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
     dashboard:   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
@@ -23,6 +24,7 @@ const CATEGORY_LABELS = {
     console:     'Consoles',
     user:        'People',
     marketplace: 'Marketplace',
+    forum:       'Forum',
     settings:    'Settings',
     page:        'Pages',
     dashboard:   'Dashboard',
@@ -30,7 +32,7 @@ const CATEGORY_LABELS = {
 };
 
 /* ── Render priority order ── */
-const RENDER_ORDER = ['console', 'user', 'marketplace', 'page', 'dashboard', 'settings', 'learn'];
+const RENDER_ORDER = ['console', 'user', 'marketplace', 'forum', 'page', 'dashboard', 'settings', 'learn'];
 
 /* ── Filter tab definitions ── */
 const FILTER_TABS = [
@@ -38,6 +40,7 @@ const FILTER_TABS = [
     { id: 'console',     label: 'Consoles' },
     { id: 'user',        label: 'People' },
     { id: 'marketplace', label: 'Posts' },
+    { id: 'forum',       label: 'Forum' },
     { id: 'settings',    label: 'Settings' },
 ];
 
@@ -47,6 +50,7 @@ const FILTER_CATEGORIES = {
     console:     ['console'],
     user:        ['user'],
     marketplace: ['marketplace'],
+    forum:       ['forum'],
     settings:    ['settings', 'page', 'dashboard', 'learn'],
 };
 
@@ -65,7 +69,7 @@ export const SearchModule = {
     _activeFilter:  'all',
 
     /* Accumulated results state — each async call updates its slice then re-renders */
-    _state: { console: [], user: [], marketplace: [], page: [], dashboard: [], settings: [], learn: [] },
+    _state: { console: [], user: [], marketplace: [], forum: [], page: [], dashboard: [], settings: [], learn: [] },
     _currentQuery: '',
 
     /* ── Init ── */
@@ -194,6 +198,10 @@ export const SearchModule = {
         if (path.includes('/pages/curs/')     || path.includes('\\pages\\curs\\'))     return '../community.html';
         if (path.includes('/pages/')          || path.includes('\\pages\\'))           return 'community.html';
         return '/html/pages/community.html';
+    },
+
+    _resolveForumThreadPath(consoleKey, threadId) {
+        return this._resolveCommunityPath() + `#forum/${consoleKey}/thread/${threadId}`;
     },
 
     /* ── Overlay DOM ── */
@@ -362,6 +370,7 @@ export const SearchModule = {
         await Promise.allSettled([
             this._searchUsers(query),
             this._searchMarketplace(query),
+            this._searchForum(query),
         ]);
     },
 
@@ -403,6 +412,24 @@ export const SearchModule = {
                 href:  this._resolveCommunityPath(),
                 img:   l.cover_image || '',
                 badge: l.price != null ? l.price + ' RON' : null,
+            }));
+            this._render();
+        } catch { /* silently fail */ }
+    },
+
+    async _searchForum(query) {
+        try {
+            const res = await fetch(API_BASE_URL + '/forum/search?q=' + encodeURIComponent(query) + '&limit=5');
+            if (!res.ok) return;
+            const data = await res.json();
+            if (!data.success || !data.threads?.length) return;
+            if (query !== this._currentQuery) return;
+
+            this._state.forum = data.threads.slice(0, 5).map(t => ({
+                cat:  'forum',
+                name: t.title,
+                desc: (t.snippet || '').trim() || ('@' + t.username),
+                href: this._resolveForumThreadPath(t.console, t.id),
             }));
             this._render();
         } catch { /* silently fail */ }

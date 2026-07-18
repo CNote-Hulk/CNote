@@ -7,6 +7,7 @@ const MarketplaceSyncService = require('../services/marketplace-sync');
 const { awardXP } = require('../utils/gamification');
 
 const router = express.Router();
+const OAUTH_STATE_TTL_MS = 10 * 60 * 1000; // CSRF state tokens (global.oauthStates) expire after 10 minutes
 
 // GET /api/ebay/account-deletion — eBay endpoint verification challenge
 router.get('/account-deletion', (req, res) => {
@@ -38,14 +39,11 @@ router.post('/account-deletion', async (req, res) => {
             try {
                 const db = require('../db');
                 await db.query(
-                    'DELETE FROM ebay_connections WHERE ebay_user_id = $1',
-                    [userId]
+                    `DELETE FROM marketplace_accounts WHERE provider = 'ebay' AND provider_user_id = $1`,
+                    [String(userId)]
                 );
             } catch (dbErr) {
-                // Table may not exist yet — not a fatal error
-                if (dbErr.code !== '42P01') {
-                    console.error('eBay deletion DB error:', dbErr.message);
-                }
+                console.error('eBay deletion DB error:', dbErr.message);
             }
             console.log('eBay account deletion processed:', userId, username || '');
         }
@@ -98,10 +96,13 @@ router.get('/callback', async (req, res) => {
     }
 
     const stateData = global.oauthStates[state];
+    delete global.oauthStates[state];
+    if (Date.now() - stateData.createdAt > OAUTH_STATE_TTL_MS) {
+        return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_connected=0&ebay=error`);
+    }
     if (stateData.provider !== 'ebay') {
         return res.redirect(`${frontendBase}/html/pages/profil.html?ebay=error`);
     }
-    delete global.oauthStates[state];
 
     try {
         const userId = stateData.userId;

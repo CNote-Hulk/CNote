@@ -39,12 +39,11 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
     - favorites.js — list/check/toggle favorite consoles for the logged-in user
     - forum-liked.js — GET `/api/forum/liked` — threads the user has upvoted (dashboard widget)
     - forum-my-posts.js — GET `/api/forum/my-posts` — threads created by the logged-in user (dashboard widget)
-    - forum.js — forum thread list, thread detail, create, reply (optionally quoting a specific earlier reply via `reply_to_id`), upvote, mark-a-reply-as-solution (`POST .../:id/solve`, thread-author-only)
+    - forum.js — forum thread list, thread detail, create, reply (optionally quoting a specific earlier reply via `reply_to_id`), upvote, mark-a-reply-as-solution (`POST .../:id/solve`, thread-author-only), `GET /search?q=` cross-console title/body search backing the global search bar
     - friends.js — send/accept/reject friend requests, list friends, check friendship status
     - google-auth.js — Google OAuth2 via Passport: login/register/link/unlink, custom state store (no express-session)
     - marketplace.js — marketplace listings CRUD: search, filter, sort, pagination; ties into OLX/eBay sync
     - notifications.js — in-app notifications for forum replies, DMs, listing activity, etc.
-    - progress.js — GET `/api/progress` — placeholder/dummy progress endpoint for dashboard
     - ratings.js — console rating system: rate 1-5, view averages, see own ratings
     - repair.js — submit repair requests, view own/all requests, admin reply/status update
     - reports.js — DSA Article 16 notice-and-action: submit content report, list own reports
@@ -61,8 +60,12 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
     - firebaseAdmin.js — Firebase Admin SDK wrapper sending FCM push (currently DM push); auto-prunes dead tokens
     - marketplace-sync.js — picks the right `MarketplaceProvider` by name and drives listing sync
   - **test/**
+    - **helpers/**
+      - mockDb.js — `installMockDb()`: pre-populates `require.cache` for `../db` with a fake pool before any route/middleware file is required, so integration tests never trigger db.js's real Postgres connection (which calls `process.exit(1)` on failure — fatal in CI, where no DB is reachable)
+    - authMiddleware.test.js — integration tests for `middleware/auth.js`'s `authRequired`/`authOptional` against a real Express app + mocked pool (JWT accepted/rejected, session-token fallback, anonymous pass-through)
     - device.test.js — unit tests for `utils/device.js` (browser/OS/device-type parsing, IP fallback order)
     - disposableEmail.test.js — unit tests for `utils/disposableEmail.js` (`isDisposableEmail()` coverage)
+    - forumSearch.test.js — integration tests for `GET /api/forum/search` (routes/forum.js) against a real Express app + mocked pool
     - gamification.test.js — unit tests for `utils/gamification.js` (level curve, XP action shapes, achievement thresholds)
     - languages.test.js — unit tests for `utils/languages.js` (ALLOWED_LANGS/DEFAULT_LANG invariants)
     - passwordPolicy.test.js — unit tests for `utils/passwordPolicy.js` (`validatePassword()` rule coverage)
@@ -123,7 +126,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
       - evolutie.html — console evolution timeline / encyclopedia grid page
       - help.html — Help & Support page: FAQ accordion, category filter, search; contact form includes a Turnstile CAPTCHA widget
-      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs; the Progress panel now embeds a "Top Contributors" leaderboard preview (below the All Levels list) with a link to the full leaderboard.html — previously the leaderboard was only reachable from the mobile "more" dropdown, invisible on desktop
+      - home.html — logged-in home/dashboard page (quick-start timeline, stats, feed); self-referencing canonical (fixed from wrongly pointing at `/`); `<title>` leads with "Console Notebook" so it doesn't get truncated to "Cnote Bak…" in narrow browser tabs; the Progress panel now embeds a "Top Contributors" leaderboard preview (below the All Levels list) with a link to the full leaderboard.html — previously the leaderboard was only reachable from the mobile "more" dropdown, invisible on desktop; no longer loads `index-cards.js` (was dead code here — targeted DOM IDs that don't exist on this page)
       - index.html — logged-out landing page (marketing/intro), thumbnail-to-featured console showcase; self-referencing canonical (fixed from wrongly pointing at `/`, which is just a redirect); `<title>` leads with "Console Notebook" for the same tab-truncation reason; below the notebook scene, a "Learn/Encyclopedia/Compare" highlights strip and a live "Top Contributors" leaderboard preview (top 5, `pages/index.js`) for social proof on the logged-out landing page
       - invata.html — "Learn" page: repair course catalog with per-course progress bars
       - leaderboard.html — public XP leaderboard page (no login required), driven by `pages/leaderboard.js`; linked from the mobile-nav "more" dropdown on most pages and from the community-welcome-page's "Give Back" step (which previously promised a leaderboard that didn't exist)
@@ -170,7 +173,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - profile-dropdown.js — profile dropdown for logged-in/out states, language selector + theme switcher
       - progress.js — course lesson-completion tracking via localStorage, keyed per user
       - report-modal.js — DSA Article 16 content-report modal, `window.openReportModal(...)`, no framework
-      - search.js — advanced global search: consoles → people → marketplace → settings/pages, filter tabs, keyboard nav
+      - search.js — advanced global search: consoles → people → marketplace → forum threads → settings/pages, filter tabs, keyboard nav
       - sentry-init.js — initializes Sentry browser SDK with PII-scrubbing `beforeSend` hook
     - **pages/**
       - card-enhancements.js — adds favorite-heart + community rating to console cards on the evolution/encyclopedia page
@@ -183,8 +186,6 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - cookies.js — cookie consent banner logic for cookies.html (reads/writes consent to localStorage)
       - course.js — course.html controller: loads course/module/lesson list, access control for non-starter courses
       - help.js — help.html: FAQ accordion, category filter, search
-      - index-auth.js — logged-out index.html: checks Supabase session, redirects to home.html if already authenticated (NOT currently `<script>`-included by index.html — index.html does its own inline `cn_session` check instead; this file appears unused/dead)
-      - index-cards.js — index.html thumbnail-to-featured-card swap interaction (also NOT currently included by index.html — same dead-code note as index-auth.js)
       - index.js — index.html: fetches `/api/leaderboard?limit=5` and renders the "Top Contributors" preview list
       - invata.js — invata.html: fetches real course progress from API, updates course card progress bars
       - lesson.js — lesson.html controller: loads lesson content/quiz, tracks progress, comments/reactions

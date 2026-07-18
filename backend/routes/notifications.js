@@ -15,7 +15,7 @@ const { sendPushToUser } = require('../services/firebaseAdmin');
 
 const router = express.Router();
 
-const VALID_TYPES = ['forum_reply', 'new_dm', 'listing_interest', 'listing_sold', 'repair_accepted', 'upvote', 'friend_request', 'friend_accepted'];
+const VALID_TYPES = ['forum_reply', 'new_dm', 'listing_interest', 'listing_sold', 'repair_accepted', 'upvote', 'friend_request', 'friend_accepted', 'achievement_unlocked'];
 
 // ── GET /api/notifications ───────────────────────────────
 router.get('/', authRequired, async (req, res) => {
@@ -191,7 +191,7 @@ async function createNotification(userId, type, message, link, req) {
         );
         // Emitere notificare live dacă există io
         if (req && req.app && req.app.get('io')) {
-            req.app.get('io').to(userId).emit('notification', { type, message, link });
+            req.app.get('io').to(String(userId)).emit('notification', { type, message, link });
         }
     } catch (err) {
         console.error('createNotification error:', err);

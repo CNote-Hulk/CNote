@@ -1378,7 +1378,6 @@ router.post('/2fa/setup/totp', authRequired, async (req, res) => {
 router.post('/2fa/setup/totp/confirm', authRequired, async (req, res) => {
     try {
         const { code, secret } = req.body || {};
-        console.log('TOTP confirm req.body:', { code: code ? '***' : undefined, secret: secret ? '(set)' : undefined });
         if (!code || !secret) {
             return res.status(400).json({ success: false, error: 'Code and secret are required.' });
         }

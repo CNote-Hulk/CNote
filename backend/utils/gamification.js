@@ -345,6 +345,21 @@ async function checkAchievements(pool, io, userId) {
             awardedAchievements.push(...bonus);
         }
 
+        // Persist a notification row for every unlock so offline/not-currently-connected
+        // users still see it later in the bell — the socket emit below is only a live toast
+        // and is skipped entirely when the user has no open connection.
+        if (awardedAchievements.length > 0) {
+            const { createNotification } = require('../routes/notifications');
+            for (const ach of awardedAchievements) {
+                await createNotification(
+                    userId,
+                    'achievement_unlocked',
+                    `${ach.emoji} Achievement unlocked: ${ach.name}`,
+                    '/html/pages/statistici.html'
+                );
+            }
+        }
+
         if (io && awardedAchievements.length > 0) {
             const room = io.sockets.adapter.rooms.get(String(userId));
             const delivered = room && room.size > 0;

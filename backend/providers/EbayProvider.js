@@ -20,35 +20,21 @@ class EbayProvider extends MarketplaceProvider {
 
 	// 🔐 OAuth authorization URL
 	getAuthorizationUrl(state) {
-	console.log({
-		clientId: this.clientId,
-		ruName: this.ruName
-	});
+		const params = new URLSearchParams({
+			response_type: 'code',
+			client_id: this.clientId,
+			redirect_uri: this.ruName,
+			state,
+			scope: [
+				'https://api.ebay.com/oauth/api_scope',
+				'https://api.ebay.com/oauth/api_scope/sell.inventory',
+				'https://api.ebay.com/oauth/api_scope/sell.account.readonly',
+				'https://api.ebay.com/oauth/api_scope/commerce.identity.readonly'
+			].join(' ')
+		});
 
-	const params = new URLSearchParams({
-		response_type: 'code',
-
-		client_id: this.clientId,
-
-		redirect_uri: this.ruName,
-
-		state,
-
-		scope: [
-			'https://api.ebay.com/oauth/api_scope',
-			'https://api.ebay.com/oauth/api_scope/sell.inventory',
-			'https://api.ebay.com/oauth/api_scope/sell.account.readonly',
-			'https://api.ebay.com/oauth/api_scope/commerce.identity.readonly'
-		].join(' ')
-	});
-
-	const url =
-		`https://auth.ebay.com/oauth2/authorize?${params.toString()}`;
-
-	console.log('eBay OAuth URL:', url);
-
-	return url;
-}
+		return `https://auth.ebay.com/oauth2/authorize?${params.toString()}`;
+	}
 
 	// 🔐 Exchange code → access token
 	async authenticate(code) {

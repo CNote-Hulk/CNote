@@ -14,7 +14,7 @@ If you have questions, you didn`t quite understand my prompt, ask.
 Every file you make, you delete, you move, you modify update in INDEX.md
 When you finish, always update curent status so we can resume were we remained and commit.
 This repo (the site/backend) gets committed automatically after any modification — no need to ask first. The Android app repo (`E:\Console-Notebook`) is the opposite: never commit there without being explicitly asked.
-After any modification that adds, removes, or changes a user-facing string on the site, update the translations in `frontend/js/modules/i18n.js`'s `MESSAGES` object for every language block present there (currently `en`, `es`, `fr`, `it`, `de` — no `ro` block exists on the site, unlike the Android app's 6 languages) in the same pass. `en` is the canonical source; mirror the key into the other blocks with a real translation, not a copy of the English value. Never leave the language blocks out of key-parity with each other.
+After any modification that adds, removes, or changes a user-facing string on the site, update the translations in `frontend/js/modules/i18n.js`'s `MESSAGES` object for every language block present there (currently `en`, `es`, `fr`, `it`, `de`, `ro`) in the same pass. `en` is the canonical source; mirror the key into the other blocks with a real translation, not a copy of the English value. Never leave the language blocks out of key-parity with each other.
 The native Android client for this same website lives in a separate repo at `E:\Console-Notebook` (Kotlin + Jetpack Compose). It hits this backend's REST API directly plus Supabase PostgREST for chat/forum/marketplace — it has its own CLAUDE.md/INDEX.md and in fact points back here for API/backend reference. When a task involves "the app" (as opposed to the website), it means that repo, not anything inside `frontend/`.
 
 ## Commands
@@ -29,7 +29,7 @@ cd backend && npm run precheck   # verifies every require()'d package is declare
 cd backend && npm test            # runs backend/test/*.test.js (Node's built-in test runner, no extra dependency)
 ```
 
-There is no bundler, no build step, and no linter config in this repo. `cd backend && npm test` runs a small Node built-in-test-runner suite (`backend/test/*.test.js`) covering the pure-logic utils (gamification, passwordPolicy, languages, device parsing) — it's not full route/integration coverage, just a regression net for those modules plus CI wiring (`.github/workflows/ci.yml`). Don't assume `npm run build`/`npm run lint` exist.
+There is no bundler, no build step, and no linter config in this repo. `cd backend && npm test` runs a small Node built-in-test-runner suite (`backend/test/*.test.js`) covering the pure-logic utils (gamification, passwordPolicy, languages, device parsing) plus a handful of real integration tests (`authMiddleware.test.js`, `forumSearch.test.js`) that boot a real Express app against a mocked `pool` (see `test/helpers/mockDb.js` — it pre-populates `require.cache` for `../db` so route/middleware files never trigger db.js's real Postgres connection, which is fatal in CI if unreachable). Still far from full route coverage — treat it as a regression net for those modules plus CI wiring (`.github/workflows/ci.yml`), not a substitute for manual testing of the rest. Don't assume `npm run build`/`npm run lint` exist.
 
 The frontend has no dev server of its own — it's plain static HTML/CSS/JS served directly by the Express backend (`express.static`), so `npm start` is the only thing you need running to work on either side.
 

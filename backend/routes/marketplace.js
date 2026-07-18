@@ -17,6 +17,7 @@ const VALID_CONDITIONS = ['new', 'like_new', 'good', 'fair', 'parts'];
 const VALID_CATEGORIES = ['consoles', 'games', 'accessories', 'parts'];
 const VALID_SORT = ['newest', 'oldest', 'price_asc', 'price_desc'];
 const VALID_STATUSES = ['active', 'inactive', 'sold'];
+const OAUTH_STATE_TTL_MS = 10 * 60 * 1000; // CSRF state tokens (global.oauthStates) expire after 10 minutes
 
 // ── GET /api/marketplace/listings ───────────────────────
 router.get('/listings', async (req, res) => {
@@ -659,11 +660,13 @@ router.get('/:provider/callback', async (req, res) => {
         }
 
         const stateData = global.oauthStates[state];
+        delete global.oauthStates[state];
+        if (Date.now() - stateData.createdAt > OAUTH_STATE_TTL_MS) {
+            return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_error=invalid_state`);
+        }
         if (stateData.provider !== provider) {
             return res.redirect(`${frontendBase}/html/pages/profil.html?marketplace_error=state_mismatch`);
         }
-
-        delete global.oauthStates[state];
         const userId = stateData.userId;
 
         // Exchange code for token
@@ -729,17 +732,18 @@ router.post('/:provider/callback', authRequired, async (req, res) => {
 
     try {
         // Verify state (CSRF protection)
-        const stateKey = `oauth_state_${provider}_${req.user.id}_${Date.now()}`;
         if (!global.oauthStates || !global.oauthStates[state]) {
             return res.status(400).json({ success: false, error: 'Invalid or expired state.' });
         }
 
         const stateData = global.oauthStates[state];
+        delete global.oauthStates[state];
+        if (Date.now() - stateData.createdAt > OAUTH_STATE_TTL_MS) {
+            return res.status(400).json({ success: false, error: 'Invalid or expired state.' });
+        }
         if (stateData.userId !== req.user.id || stateData.provider !== provider) {
             return res.status(403).json({ success: false, error: 'State mismatch.' });
         }
-
-        delete global.oauthStates[state];
 
         // Authenticate with provider
         let providerInstance;

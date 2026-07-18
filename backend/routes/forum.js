@@ -70,6 +70,30 @@ function checkForumReplyLimit(userId) {
     return { blocked: false };
 }
 
+// ── GET /api/forum/search?q= ─────────────────────────────
+// Global-search backing endpoint (frontend/js/modules/search.js) — searches
+// thread titles/bodies across all consoles, not scoped to a single console.
+router.get('/search', async (req, res) => {
+    const q = String(req.query.q || '').trim();
+    if (!q) return res.json({ success: true, threads: [] });
+    try {
+        const limit = Math.min(20, Math.max(1, parseInt(req.query.limit) || 8));
+        const result = await pool.query(`
+            SELECT t.id, t.title, t.console, t.tag, t.created_at, u.username,
+                   LEFT(t.body, 140) AS snippet
+            FROM forum_threads t
+            JOIN users u ON u.id = t.user_id
+            WHERE t.title ILIKE $1 OR t.body ILIKE $1
+            ORDER BY t.created_at DESC
+            LIMIT $2
+        `, [`%${q}%`, limit]);
+        res.json({ success: true, threads: result.rows });
+    } catch (err) {
+        console.error('Forum search GET error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
 // ── GET /api/forum/recent ────────────────────────────────
 router.get('/recent', async (req, res) => {
     try {
@@ -295,7 +319,8 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
                     ownerId,
                     'forum_reply',
                     `${req.user.username} replied to "${threadTitle}"`,
-                    link
+                    link,
+                    req
                 );
             }
 
@@ -310,7 +335,8 @@ router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
                         quotedUserId,
                         'forum_reply',
                         `${req.user.username} replied to your message in "${threadTitle}"`,
-                        link
+                        link,
+                        req
                     );
                 }
             }
@@ -461,26 +487,6 @@ router.post('/:console/threads/:id/replies/:replyId/upvote', authRequired, async
     } catch (err) {
         console.error('Forum reply upvote error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
-    }
-});
-
-// GET /api/forum/liked-posts — threads upvoted by the current user
-router.get('/liked-posts', authRequired, async (req, res) => {
-    try {
-        const result = await pool.query(
-            `SELECT ft.id, ft.title, ft.console, ft.tag, ft.upvotes, ft.created_at,
-                    u.username, u.avatar
-             FROM forum_threads ft
-             JOIN forum_upvotes fu ON fu.thread_id = ft.id
-             JOIN users u ON u.id = ft.user_id
-             WHERE fu.user_id = $1
-             ORDER BY fu.created_at DESC
-             LIMIT 50`,
-            [req.user.id]
-        );
-        res.json({ success: true, posts: result.rows });
-    } catch (e) {
-        res.json({ success: true, posts: [] });
     }
 });
 

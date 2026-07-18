@@ -2,7 +2,7 @@ const express = require('express');
 const { authRequired } = require('../middleware/auth');
 const router = express.Router();
 
-// GET /api/forum/my-posts — Dummy endpoint for dashboard
+// GET /api/forum/my-posts — threads created by the current user (dashboard widget)
 const pool = require('../db');
 router.get('/', authRequired, async (req, res) => {
     try {

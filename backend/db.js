@@ -273,6 +273,126 @@ async function initializeSchema() {
 			updated_at      TIMESTAMP DEFAULT NOW(),
 			UNIQUE(user_id, provider)
 		);
+
+		/* ── Learn: courses, modules, lessons, quizzes (routes/courses.js) ── */
+		CREATE TABLE IF NOT EXISTS courses (
+			id           SERIAL PRIMARY KEY,
+			slug         TEXT    NOT NULL UNIQUE,
+			title        TEXT    NOT NULL,
+			description  TEXT    DEFAULT '',
+			icon         TEXT    DEFAULT '',
+			order_index  INTEGER DEFAULT 0,
+			is_published BOOLEAN DEFAULT TRUE,
+			created_at   TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS modules (
+			id          SERIAL PRIMARY KEY,
+			course_id   INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+			title       TEXT    NOT NULL,
+			order_index INTEGER DEFAULT 0,
+			created_at  TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS lessons (
+			id           SERIAL PRIMARY KEY,
+			module_id    INTEGER NOT NULL REFERENCES modules(id) ON DELETE CASCADE,
+			title        TEXT    NOT NULL,
+			content_html TEXT    DEFAULT '',
+			order_index  INTEGER DEFAULT 0,
+			is_published BOOLEAN DEFAULT TRUE,
+			created_at   TIMESTAMP DEFAULT NOW()
+		);
+
+		CREATE TABLE IF NOT EXISTS quiz_questions (
+			id             SERIAL PRIMARY KEY,
+			lesson_id      INTEGER NOT NULL REFERENCES lessons(id) ON DELETE CASCADE,
+			question       TEXT    NOT NULL,
+			options        JSONB   NOT NULL,
+			correct_option INTEGER NOT NULL,
+			explanation    TEXT    DEFAULT ''
+		);
+
+		CREATE TABLE IF NOT EXISTS lesson_translations (
+			id           SERIAL PRIMARY KEY,
+			lesson_id    INTEGER NOT NULL REFERENCES lessons(id) ON DELETE CASCADE,
+			lang         TEXT    NOT NULL,
+			title        TEXT    NOT NULL,
+			content_html TEXT    DEFAULT '',
+			UNIQUE(lesson_id, lang)
+		);
+
+		CREATE TABLE IF NOT EXISTS module_translations (
+			id        SERIAL PRIMARY KEY,
+			module_id INTEGER NOT NULL REFERENCES modules(id) ON DELETE CASCADE,
+			lang      TEXT    NOT NULL,
+			title     TEXT    NOT NULL,
+			UNIQUE(module_id, lang)
+		);
+
+		CREATE TABLE IF NOT EXISTS user_lessons (
+			id           SERIAL PRIMARY KEY,
+			user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			lesson_id    INTEGER NOT NULL REFERENCES lessons(id) ON DELETE CASCADE,
+			completed    BOOLEAN DEFAULT FALSE,
+			quiz_score   INTEGER DEFAULT NULL,
+			completed_at TIMESTAMP DEFAULT NULL,
+			UNIQUE(user_id, lesson_id)
+		);
+
+		CREATE TABLE IF NOT EXISTS user_course_progress (
+			id             SERIAL PRIMARY KEY,
+			user_id        INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			course_id      INTEGER NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+			last_lesson_id INTEGER REFERENCES lessons(id) ON DELETE SET NULL,
+			completed_at   TIMESTAMP DEFAULT NULL,
+			UNIQUE(user_id, course_id)
+		);
+
+		/* ── Gamification: XP ledger + unlocked achievements (utils/gamification.js) ── */
+		CREATE TABLE IF NOT EXISTS xp_transactions (
+			id           SERIAL PRIMARY KEY,
+			user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			action_type  TEXT    NOT NULL,
+			xp_amount    INTEGER NOT NULL,
+			reference_id TEXT    DEFAULT NULL,
+			created_at   TIMESTAMP DEFAULT NOW(),
+			UNIQUE(user_id, action_type, reference_id)
+		);
+
+		CREATE TABLE IF NOT EXISTS user_achievements (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			badge_id    TEXT    NOT NULL,
+			xp_awarded  INTEGER DEFAULT 0,
+			earned_at   TIMESTAMP DEFAULT NOW(),
+			notified_at TIMESTAMP DEFAULT NULL,
+			UNIQUE(user_id, badge_id)
+		);
+
+		/* ── DSA Article 16 notice-and-action content reports (routes/reports.js) ── */
+		CREATE TABLE IF NOT EXISTS content_reports (
+			id               SERIAL PRIMARY KEY,
+			reporter_id      INTEGER REFERENCES users(id) ON DELETE SET NULL,
+			content_type     TEXT    NOT NULL,
+			content_id       TEXT    NOT NULL,
+			reason           TEXT    NOT NULL,
+			description      TEXT    DEFAULT NULL,
+			reporter_contact TEXT    DEFAULT NULL,
+			status           TEXT    DEFAULT 'pending',
+			created_at       TIMESTAMP DEFAULT NOW()
+		);
+
+		/* ── Push notification device tokens, Android app FCM (services/firebaseAdmin.js) ── */
+		CREATE TABLE IF NOT EXISTS user_fcm_tokens (
+			id          SERIAL PRIMARY KEY,
+			user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			fcm_token   TEXT    NOT NULL,
+			device_info TEXT    DEFAULT '',
+			created_at  TIMESTAMP DEFAULT NOW(),
+			updated_at  TIMESTAMP DEFAULT NOW(),
+			UNIQUE(user_id, fcm_token)
+		);
 	`);
 
 	// Column migrations — idempotent ALTER statements to evolve schema
@@ -321,6 +441,9 @@ async function initializeSchema() {
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'RON'`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS url TEXT DEFAULT ''`,
 		`ALTER TABLE listings ADD COLUMN IF NOT EXISTS synced_at TIMESTAMP DEFAULT NULL`,
+		// ── Gamification XP counter on the user row (utils/gamification.js) ──
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS xp INTEGER DEFAULT 0`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS xp_updated_at TIMESTAMP DEFAULT NULL`,
 		// ── Chat / DM attachments (images + voice messages, stored on our own object storage) ──
 		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_key TEXT DEFAULT NULL`,
 		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_type TEXT DEFAULT NULL CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice'))`,
@@ -338,12 +461,7 @@ async function initializeSchema() {
 
 		// ── Indexes for the most frequent lookup/filter columns ──────────────
 		// None of these existed before — every query below was previously a
-		// sequential scan. Some target tables that are never CREATE TABLE'd in
-		// this file (user_achievements, xp_transactions, user_lessons,
-		// user_course_progress — see utils/gamification.js and routes/courses.js,
-		// which already assume they exist); CREATE INDEX IF NOT EXISTS against a
-		// table that doesn't exist just throws, and the try/catch below already
-		// swallows that, so it's safe to list them here too.
+		// sequential scan.
 		`CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id ON user_sessions(user_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_friend_requests_sender_id ON friend_requests(sender_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_friend_requests_receiver_id ON friend_requests(receiver_id)`,

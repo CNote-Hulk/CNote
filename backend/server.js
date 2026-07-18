@@ -62,7 +62,6 @@ const consolesRoutes = require('./routes/consoles');
 const achievementsRoutes = require('./routes/achievements');
 const leaderboardRoutes = require('./routes/leaderboard');
 
-const progressRoutes = require('./routes/progress');
 const coursesRoutes = require('./routes/courses');
 const reportsRoutes = require('./routes/reports');
 const ebayRoutes = require('./routes/ebay');
@@ -343,6 +342,22 @@ const contactLimiter = rateLimit({
 	message: { success: false, error: 'Too many messages sent, please try again later.' }
 });
 
+const friendRequestLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 30,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many friend requests, please try again later.' }
+});
+
+const marketplaceListingLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 20,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { success: false, error: 'Too many listings created, please try again later.' }
+});
+
 app.post('/api/login', authLimiter);
 app.post('/api/register', registerLimiter);
 app.post('/api/request-reset', authLimiter);
@@ -353,6 +368,8 @@ app.post('/api/me/avatar', avatarLimiter);
 app.delete('/api/me/avatar', avatarLimiter);
 app.post('/api/contact', contactLimiter);
 app.post('/api/uploads/presign', uploadLimiter);
+app.post('/api/friends/request/:userId', friendRequestLimiter);
+app.post('/api/marketplace/listings', marketplaceListingLimiter);
 
 /* ── Request sanitize logger — scrubs sensitive fields before logging ─────
    Only active in development (NODE_ENV !== 'production').
@@ -430,7 +447,6 @@ app.use('/api/repair', repairRoutes);
 app.use('/api/dm', dmRoutes);
 app.use('/api/notifications', notificationRoutes);
 
-app.use('/api/progress', progressRoutes);
 app.use('/api', resetProgressRoutes);
 
 app.use('/api/consoles', consolesRoutes);
@@ -617,3 +633,32 @@ const PORT = process.env.PORT || 3000;
 httpServer.listen(PORT, () => {
   console.log(`Server + Socket.io running on port ${PORT}`);
 });
+
+// Periodic cleanup of abandoned marketplace/eBay OAuth CSRF states (routes/marketplace.js,
+// routes/ebay.js) — entries are only deleted on a successful callback, so a user who starts
+// but never finishes the OAuth flow would otherwise leak that entry in memory forever.
+const OAUTH_STATE_TTL_MS = 10 * 60 * 1000;
+setInterval(() => {
+  if (!global.oauthStates) return;
+  const now = Date.now();
+  for (const key of Object.keys(global.oauthStates)) {
+    if (now - global.oauthStates[key].createdAt > OAUTH_STATE_TTL_MS) {
+      delete global.oauthStates[key];
+    }
+  }
+}, OAUTH_STATE_TTL_MS);
+
+// Periodic marketplace resync — keeps connected OLX/eBay listings fresh without
+// requiring the user to manually re-trigger a sync. Runs a few minutes after boot
+// (avoids competing with startup traffic), then on a fixed interval.
+const MARKETPLACE_SYNC_INTERVAL_MS = 6 * 60 * 60 * 1000; // 6 hours
+setTimeout(() => {
+  const MarketplaceSyncService = require('./services/marketplace-sync');
+  const runSync = () => {
+    MarketplaceSyncService.syncAllUserListings().catch(err => {
+      console.error('Scheduled marketplace sync error:', err);
+    });
+  };
+  runSync();
+  setInterval(runSync, MARKETPLACE_SYNC_INTERVAL_MS);
+}, 5 * 60 * 1000);

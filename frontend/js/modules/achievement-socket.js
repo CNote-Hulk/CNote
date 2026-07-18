@@ -32,4 +32,8 @@ export function initAchievementSocket(userId) {
         }
         window.dispatchEvent(new CustomEvent('cn:xp-update'));
     });
+
+    socket.on('notification', () => {
+        document.dispatchEvent(new CustomEvent('cn:socket-notification'));
+    });
 }

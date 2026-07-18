@@ -66,7 +66,8 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                         receiverId,
                         'friend_accepted',
                         `${req.user.username} accepted your friend request.`,
-                        '/html/pages/home.html#friends'
+                        '/html/pages/home.html#friends',
+                        req
                     );
                     // FCM push — fire-and-forget, same pattern as DM push (routes/dm.js)
                     sendPushToUser(
@@ -104,7 +105,8 @@ router.post('/request/:userId', authRequired, async (req, res) => {
                 receiverId,
                 'friend_request',
                 `${req.user.username} sent you a friend request.`,
-                '/html/pages/home.html#friends'
+                '/html/pages/home.html#friends',
+                req
             );
             sendPushToUser(
                 receiverId,
@@ -165,7 +167,8 @@ router.post('/accept/:requestId', authRequired, async (req, res) => {
                 request.sender_id,
                 'friend_accepted',
                 `${req.user.username} accepted your friend request.`,
-                '/html/pages/home.html#friends'
+                '/html/pages/home.html#friends',
+                req
             );
             sendPushToUser(
                 request.sender_id,
