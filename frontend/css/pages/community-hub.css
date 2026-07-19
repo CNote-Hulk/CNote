@@ -2812,73 +2812,6 @@
     margin-bottom: 4px;
 }
 
-/* ── Notifications Dropdown ─────────────────────────────── */
-
-.hub-notif-toggle { position: relative; }
-
-.hub-notif-dropdown {
-    background: var(--card-bg, #2A2320);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    margin: 4px 10px 0;
-    max-height: 340px;
-    overflow-y: auto;
-}
-
-.hub-notif-dropdown__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px 8px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text-light);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.hub-notif-dropdown__read-all {
-    background: none;
-    border: none;
-    color: var(--accent-color);
-    font-size: 0.72rem;
-    cursor: pointer;
-    padding: 0;
-}
-.hub-notif-dropdown__read-all:hover { text-decoration: underline; }
-
-.hub-notif-item {
-    padding: 10px 14px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    cursor: pointer;
-    transition: background 0.15s;
-}
-.hub-notif-item:last-child { border-bottom: none; }
-.hub-notif-item:hover { background: rgba(255,255,255,0.04); }
-
-.hub-notif-item--unread {
-    background: rgba(var(--accent-rgb), 0.07);
-    border-left: 3px solid var(--accent-color);
-}
-
-.hub-notif-item__text {
-    font-size: 0.82rem;
-    color: var(--text-light);
-    line-height: 1.35;
-}
-
-.hub-notif-item__time {
-    font-size: 0.68rem;
-    color: var(--text-gray);
-    margin-top: 3px;
-}
-
-.hub-notif-empty {
-    text-align: center;
-    padding: 24px 14px;
-    color: var(--text-gray);
-    font-size: 0.82rem;
-}
-
 /* ── Marketplace FAB button (desktop: normal, mobile: FAB) ─ */
 
 .hub-market-add-btn__icon {
@@ -3806,14 +3739,6 @@
     background: rgba(0, 0, 0, 0.03);
 }
 
-[data-theme="light"] .hub-notif-item {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-[data-theme="light"] .hub-notif-item:hover {
-    background: rgba(0, 0, 0, 0.04);
-}
-
 [data-theme="light"] .hub-upload-zone {
     border: 2px dashed rgba(0, 0, 0, 0.15);
     background: rgba(0, 0, 0, 0.02);
@@ -4590,18 +4515,6 @@
     .chat-msg:hover,
     .chat-msg:active {
         background: rgba(255, 255, 255, 0.035);
-    }
-
-    /* ── Notifications dropdown on mobile ── */
-    .hub-notif-dropdown {
-        position: fixed;
-        inset: auto 12px 84px;
-        width: auto;
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
-        background: var(--dark-bg-2);
-        z-index: 2000;
     }
 
     /* ── Hub modal — bottom sheet on mobile ── */

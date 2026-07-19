@@ -2494,76 +2494,6 @@ function startUnreadPolling() {
 }
 
 /* ================================================================
-   NOTIFICATIONS UI
-   ================================================================ */
-
-/** Initialize notification bell: dropdown, badge polling, mark-read */
-function initNotifications() {
-    const toggle = document.getElementById('hub-notif-toggle');
-    const dropdown = document.getElementById('hub-notif-dropdown');
-    const badge = document.getElementById('hub-notif-badge');
-    const list = document.getElementById('hub-notif-list');
-    const readAllBtn = document.getElementById('notif-read-all');
-    if (!toggle || !dropdown) return;
-
-    toggle.addEventListener('click', e => {
-        e.stopPropagation();
-        const open = !dropdown.hidden;
-        dropdown.hidden = open;
-        if (!open) loadNotifications();
-    });
-
-    // Close dropdown on outside click
-    document.addEventListener('click', e => {
-        if (!dropdown.hidden && !dropdown.contains(e.target) && e.target !== toggle) {
-            dropdown.hidden = true;
-        }
-    });
-
-    readAllBtn?.addEventListener('click', async () => {
-        await api('POST', '/notifications/read-all');
-        list.querySelectorAll('.hub-notif-item--unread').forEach(el => el.classList.remove('hub-notif-item--unread'));
-        badge.hidden = true;
-    });
-
-    async function loadNotifications() {
-        try {
-            const data = await api('GET', '/notifications');
-            if (!data.success) return;
-            const items = data.notifications || [];
-            if (!items.length) {
-                list.innerHTML = '<div class="hub-notif-empty">No notifications</div>';
-                return;
-            }
-            list.innerHTML = items.map(n => `
-                <div class="hub-notif-item ${n.read ? '' : 'hub-notif-item--unread'}" data-nid="${n.id}">
-                    <div class="hub-notif-item__text">${esc(n.message)}</div>
-                    <div class="hub-notif-item__time">${timeAgo(n.created_at)}</div>
-                </div>`).join('');
-
-            list.addEventListener('click', async e => {
-                const item = e.target.closest('.hub-notif-item');
-                if (!item) return;
-                item.classList.remove('hub-notif-item--unread');
-                await api('POST', `/notifications/${item.dataset.nid}/read`);
-            });
-        } catch { list.innerHTML = '<div class="hub-notif-empty">Eroare</div>'; }
-    }
-
-    // Poll unread count
-    async function pollBadge() {
-        if (!user()) return;
-        try {
-            const d = await api('GET', '/notifications/unread-count');
-            if (d.success && d.count > 0) { badge.textContent = d.count; badge.hidden = false; }
-            else badge.hidden = true;
-        } catch { /* ignore */ }
-    }
-    pollBadge();
-    setInterval(pollBadge, 20000);
-}
-
-/* ================================================================
    BOOT
    ================================================================ */
 
@@ -2588,7 +2518,6 @@ if (!user() && !_isWelcomePage) {
 
 initSidebar();
 startUnreadPolling();
-initNotifications();
 
 // Hide admin-only sidebar items for non-admin users
 (function initAdminVisibility() {
@@ -2698,7 +2627,6 @@ window.addEventListener('hashchange', handleHashNavigation);
             const items = [];
             section.querySelectorAll('.hub-sidebar__item').forEach(item => {
                 if (item.classList.contains('hub-sidebar__item--locked')) return;
-                if (item.id === 'hub-notif-toggle') return;
                 if (window.getComputedStyle(item).display === 'none') return;
                 items.push({ el: item, label: item.textContent.replace(/\s+/g, ' ').trim() });
             });

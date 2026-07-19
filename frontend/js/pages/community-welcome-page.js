@@ -270,24 +270,24 @@
 
         /* ── Active Users Count ──────────────────────── */
         function loadActiveCount() {
+            var statEls = [
+                document.getElementById('cl-stat-members'),
+                document.getElementById('cl-stat-members-2')
+            ].filter(Boolean);
+            if (!statEls.length) return;
+
             fetchJSON('/users/active-count').then(function(data) {
-                var statEl = document.getElementById('cl-stat-members');
-                if (!statEl) return;
-                if (!data.success) {
-                    statEl.textContent = '0';
-                    statEl.setAttribute('data-count', '0');
-                    return;
-                }
-                var count = Number(data.count || 0);
-                statEl.setAttribute('data-count', count);
-                statEl.textContent = count.toLocaleString();
+                var count = data.success ? Number(data.count || 0) : 0;
+                statEls.forEach(function(statEl) {
+                    statEl.setAttribute('data-count', count);
+                    statEl.textContent = count.toLocaleString();
+                });
             }).catch(function(err) {
                 console.warn('loadActiveCount failed:', err);
-                var statEl = document.getElementById('cl-stat-members');
-                if (statEl) {
+                statEls.forEach(function(statEl) {
                     statEl.textContent = '0';
                     statEl.setAttribute('data-count', '0');
-                }
+                });
             });
         }
 

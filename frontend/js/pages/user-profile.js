@@ -374,18 +374,16 @@ const t = key => I18nModule.t(key);
                     adminBadge.hidden = false;
                 }
 
-                // Level badge — computed from publicly available data
+                // Level badge — real XP-based level from the backend (null when the user hides stats)
                 const userLevelEl = document.getElementById('user-level');
                 if (userLevelEl) {
-                    const favCount = (profile.favorite_console_ids || []).length
-                        || (profile.favorite_consoles || '').split(',').filter(Boolean).length;
-                    const ownedCount = (profile.owned_console_ids || []).length
-                        || (profile.owned_consoles || '').split(',').filter(Boolean).length;
-                    const friendCount = typeof profile.friend_count === 'number' ? profile.friend_count : 0;
-                    const daysMember = Math.max(1, Math.floor((Date.now() - new Date(profile.created_at)) / (1000 * 60 * 60 * 24)) + 1);
-                    const lvl = AchievementsModule.computePublicLevel(friendCount, favCount, ownedCount, daysMember);
-                    userLevelEl.textContent = `${lvl.emoji} ${lvl.name}`;
-                    userLevelEl.hidden = false;
+                    if (profile.level) {
+                        const lvl = AchievementsModule.computeLevel(profile.level);
+                        userLevelEl.textContent = `${lvl.emoji} ${lvl.name}`;
+                        userLevelEl.hidden = false;
+                    } else {
+                        userLevelEl.hidden = true;
+                    }
                 }
 
                 // Console lists

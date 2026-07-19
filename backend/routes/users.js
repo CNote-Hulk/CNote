@@ -13,7 +13,7 @@ const path = require('path');
 const fs = require('fs');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
-const { awardXP } = require('../utils/gamification');
+const { awardXP, getLevelFromXP } = require('../utils/gamification');
 
 const router = express.Router();
 
@@ -78,7 +78,7 @@ router.get('/users/:username', async (req, res) => {
         const result = await pool.query(
             `SELECT id, username, email, bio, avatar, favorite_consoles, owned_consoles, role, created_at,
                     social_discord, social_twitter, social_youtube, social_instagram,
-                    show_email, show_stats, show_friends, show_social_links
+                    show_email, show_stats, show_friends, show_social_links, xp
              FROM users WHERE LOWER(username) = LOWER($1)`,
             [username]
         );
@@ -117,7 +117,8 @@ router.get('/users/:username', async (req, res) => {
                 social_instagram: user.show_social_links !== false ? (user.social_instagram || '') : '',
                 show_stats: user.show_stats !== false,
                 show_friends: user.show_friends !== false,
-                show_social_links: user.show_social_links !== false
+                show_social_links: user.show_social_links !== false,
+                level: user.show_stats !== false ? getLevelFromXP(user.xp) : null
             }
         });
     } catch (err) {
