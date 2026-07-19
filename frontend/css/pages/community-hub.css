@@ -1627,7 +1627,16 @@
 .hub-detail-card--seller {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 14px;
+}
+
+.hub-detail-seller-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 200px;
 }
 
 .hub-detail-seller-avatar {
@@ -1642,6 +1651,35 @@
     font-weight: 700;
     font-size: 1.1rem;
     text-transform: uppercase;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.hub-detail-seller-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.hub-detail-seller-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: var(--text-light);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.hub-detail-seller-sub {
+    color: var(--text-gray);
+    font-size: 0.78rem;
+}
+
+.hub-detail-seller-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .hub-detail-price {
@@ -1793,6 +1831,25 @@
 
     .hub-detail-actions .hub-btn {
         width: 100%;
+        text-align: center;
+    }
+
+    .hub-detail-card--seller {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hub-detail-seller-actions {
+        width: 100%;
+    }
+
+    .hub-detail-seller-actions .hub-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .hub-detail-seller-actions .report-trigger-btn {
+        flex-basis: 100%;
         text-align: center;
     }
 
@@ -2431,6 +2488,11 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+/* Only shown on mobile, where the thread replaces the conversation list */
+.hub-dm-back-btn {
+    display: none;
 }
 
 .hub-dm-messages {
@@ -4347,11 +4409,39 @@
         padding: 8px 0;
     }
 
-    /* If a conversation is open, collapse list to a thin strip */
-    .hub-dm-layout:has(.hub-dm-thread:not(:empty)) .hub-dm-list {
-        max-height: 72px;
-        overflow: hidden;
-        flex: none;
+    /* Mobile: show either the conversation list or the open thread, never both */
+    .hub-dm-thread {
+        display: none;
+    }
+
+    .hub-dm-layout--thread-open .hub-dm-list {
+        display: none;
+    }
+
+    .hub-dm-layout--thread-open .hub-dm-thread {
+        display: flex;
+    }
+
+    .hub-dm-back-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        margin-right: 2px;
+        border: none;
+        background: none;
+        color: var(--text-light);
+        font-size: 1.2rem;
+        line-height: 1;
+        cursor: pointer;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+
+    .hub-dm-back-btn:hover,
+    .hub-dm-back-btn:active {
+        background: rgba(255, 255, 255, 0.06);
     }
 
     .hub-dm-conv {
@@ -4393,7 +4483,6 @@
 
     .hub-dm-thread {
         flex: 1;
-        display: flex;
         flex-direction: column;
         overflow: hidden;
         min-height: 0;

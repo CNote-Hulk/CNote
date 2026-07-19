@@ -1263,14 +1263,18 @@ async function openListingDetail(id) {
                         </div>
                     </div>
                     <div class="hub-detail-card hub-detail-card--seller">
-                        <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
-                        <div style="flex:1">
-                            <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}</div>
-                            <div style="color:var(--text-gray);font-size:.78rem" id="seller-rating-summary">Seller</div>
+                        <div class="hub-detail-seller-info">
+                            <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
+                            <div class="hub-detail-seller-meta">
+                                <div class="hub-detail-seller-name">${esc(l.seller_name)}${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}</div>
+                                <div class="hub-detail-seller-sub" id="seller-rating-summary">Seller</div>
+                            </div>
                         </div>
-                        ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
-                        ${u ? '<button class="hub-btn hub-btn--secondary" id="listing-share-btn">🔗 Share</button>' : ''}
-                        ${u && !own ? `<button class="report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">⚑ ${I18nModule.t('report_btn_trigger_listing')}</button>` : ''}
+                        <div class="hub-detail-seller-actions">
+                            ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
+                            ${u ? '<button class="hub-btn hub-btn--secondary" id="listing-share-btn">🔗 Share</button>' : ''}
+                            ${u && !own ? `<button class="report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">⚑ ${I18nModule.t('report_btn_trigger_listing')}</button>` : ''}
+                        </div>
                     </div>
                     <div class="hub-detail-card hub-detail-card--reviews" id="seller-reviews-card">
                         <div class="hub-seller-reviews__loading">⏳</div>
@@ -2182,7 +2186,7 @@ function renderDM() {
         return;
     }
     v.innerHTML = `
-        <div class="hub-dm-layout">
+        <div class="hub-dm-layout" id="dm-layout">
             <div class="hub-dm-list" id="dm-list"><div class="hub-dm-list__empty">Loading…</div></div>
             <div class="hub-dm-thread" id="dm-thread"><div class="hub-dm-empty">Select a conversation</div></div>
         </div>`;
@@ -2235,9 +2239,12 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         }
     });
 
+    document.getElementById('dm-layout')?.classList.add('hub-dm-layout--thread-open');
+
     const u = user();
     thread.innerHTML = `
         <div class="hub-dm-thread__header">
+            <button class="hub-dm-back-btn" id="dm-back-btn" aria-label="Back to conversations" type="button">←</button>
             <div class="hub-dm-conv__avatar" style="width:30px;height:30px;font-size:.7rem">${avatarHtml(partnerName, partnerAvatar, 30)}</div>
             <span style="color:var(--text-light);font-weight:600;font-size:.9rem">${esc(partnerName || 'Utilizator')}</span>
         </div>
@@ -2246,6 +2253,13 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             <input class="hub-dm-form__input" type="text" placeholder="Write a message…" maxlength="2000" required>
             <button class="hub-btn hub-btn--primary" type="submit">Send</button>
         </form>`;
+
+    thread.querySelector('#dm-back-btn').addEventListener('click', () => {
+        S.dmPartner = null;
+        document.getElementById('dm-layout')?.classList.remove('hub-dm-layout--thread-open');
+        document.querySelectorAll('.hub-dm-conv').forEach(c => c.classList.remove('hub-dm-conv--active'));
+        thread.innerHTML = '<div class="hub-dm-empty">Select a conversation</div>';
+    });
 
     try {
         const data = await api('GET', `/dm/messages/${partnerId}`);
