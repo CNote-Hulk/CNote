@@ -7,6 +7,7 @@ import { AuthModule } from '../modules/auth.js';
 import { I18nModule } from '../modules/i18n.js';
 import { API_BASE_URL } from '../config.js';
 import { confirmModal } from '../utils/confirm-modal.js';
+import { shareOrCopy } from '../utils/share.js';
 
 /** Shorthand for I18nModule.t() */
 const t = (key) => I18nModule.t(key);
@@ -579,6 +580,11 @@ function navigate(view, con, cat) {
             renderDM();
             loadConversations();
             break;
+        case 'photos':
+            showView('photos');
+            renderPhotos();
+            loadPhotos();
+            break;
     }
 }
 
@@ -1117,6 +1123,81 @@ async function loadListings() {
 }
 
 /** Open listing detail view with contact/DM options */
+function renderStars(rating) {
+    const full = Math.round(rating);
+    return Array.from({ length: 5 }, (_, i) => i < full ? '★' : '☆').join('');
+}
+
+/** Loads + renders the seller's review summary/list/form inside a listing's detail view */
+async function loadSellerReviews(sellerId, viewEl) {
+    const card = viewEl.querySelector('#seller-reviews-card');
+    const summaryEl = viewEl.querySelector('#seller-rating-summary');
+    if (!card) return;
+
+    try {
+        const data = await api('GET', `/marketplace/sellers/${sellerId}/reviews`);
+        if (!data.success) throw 0;
+
+        if (summaryEl) summaryEl.textContent = data.count ? `⭐ ${data.average} (${data.count})` : 'Seller';
+
+        const u = user();
+        const canReview = u && u.id !== sellerId;
+
+        const reviewsHtml = data.reviews.length
+            ? data.reviews.map(r => `
+                <div class="hub-seller-review">
+                    <div class="hub-seller-review__head">
+                        <strong>${esc(r.reviewer_username)}</strong>
+                        <span>${renderStars(r.rating)}</span>
+                    </div>
+                    ${r.comment ? `<p class="hub-seller-review__comment">${esc(r.comment)}</p>` : ''}
+                </div>`).join('')
+            : `<p class="hub-seller-reviews__empty">${I18nModule.t('reviews_empty')}</p>`;
+
+        card.innerHTML = `
+            <h3 class="hub-seller-reviews__title">${I18nModule.t('reviews_title')}${data.count ? ` · ⭐ ${data.average} (${data.count})` : ''}</h3>
+            ${canReview ? `
+                <div class="hub-seller-review-form">
+                    <div class="rating-interactive" id="seller-review-stars">
+                        ${[1, 2, 3, 4, 5].map(i => `<button type="button" class="star-btn${data.userRating && i <= data.userRating.rating ? ' active' : ''}" data-value="${i}">★</button>`).join('')}
+                    </div>
+                    <textarea id="seller-review-comment" placeholder="${I18nModule.t('reviews_comment_placeholder')}" maxlength="1000">${data.userRating ? esc(data.userRating.comment) : ''}</textarea>
+                    <button class="hub-btn hub-btn--primary" id="seller-review-submit">${I18nModule.t('reviews_submit')}</button>
+                </div>` : ''}
+            <div class="hub-seller-reviews__list">${reviewsHtml}</div>
+        `;
+
+        if (canReview) {
+            let selectedRating = data.userRating ? data.userRating.rating : 0;
+            const stars = card.querySelectorAll('#seller-review-stars .star-btn');
+            stars.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    const val = parseInt(btn.dataset.value);
+                    stars.forEach(b => b.classList.toggle('hover', parseInt(b.dataset.value) <= val));
+                });
+                btn.addEventListener('mouseleave', () => stars.forEach(b => b.classList.remove('hover')));
+                btn.addEventListener('click', () => {
+                    selectedRating = parseInt(btn.dataset.value);
+                    stars.forEach(b => b.classList.toggle('active', parseInt(b.dataset.value) <= selectedRating));
+                });
+            });
+            card.querySelector('#seller-review-submit').addEventListener('click', async () => {
+                if (!selectedRating) { showToast(I18nModule.t('reviews_select_rating'), 'error'); return; }
+                const comment = card.querySelector('#seller-review-comment').value.trim();
+                const res = await api('POST', `/marketplace/sellers/${sellerId}/review`, { rating: selectedRating, comment, listingId: S.listingId });
+                if (res.success) {
+                    showToast(I18nModule.t('reviews_thanks'));
+                    loadSellerReviews(sellerId, viewEl);
+                } else {
+                    showToast(res.error || 'Error', 'error');
+                }
+            });
+        }
+    } catch {
+        card.innerHTML = '';
+    }
+}
+
 async function openListingDetail(id) {
     S.listingId = id;
     showView('listing');
@@ -1184,10 +1265,14 @@ async function openListingDetail(id) {
                         <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
                         <div style="flex:1">
                             <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}</div>
-                            <div style="color:var(--text-gray);font-size:.78rem">Seller</div>
+                            <div style="color:var(--text-gray);font-size:.78rem" id="seller-rating-summary">Seller</div>
                         </div>
                         ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
+                        ${u ? '<button class="hub-btn hub-btn--secondary" id="listing-share-btn">🔗 Share</button>' : ''}
                         ${u && !own ? `<button class="report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">⚑ ${I18nModule.t('report_btn_trigger_listing')}</button>` : ''}
+                    </div>
+                    <div class="hub-detail-card hub-detail-card--reviews" id="seller-reviews-card">
+                        <div class="hub-seller-reviews__loading">⏳</div>
                     </div>
                     <div class="hub-detail-actions">
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
@@ -1306,6 +1391,14 @@ async function openListingDetail(id) {
             navigate('dm');
             setTimeout(() => openConversation(l.seller_id, l.seller_name), 250);
         });
+
+        v.querySelector('#listing-share-btn')?.addEventListener('click', async () => {
+            const shareUrl = `${location.origin}/html/pages/community.html#listing-${id}`;
+            const result = await shareOrCopy({ title: l.title, text: l.title, url: shareUrl });
+            if (result === 'copied') showToast(I18nModule.t('share_link_copied'));
+        });
+
+        loadSellerReviews(l.seller_id, v);
 
         v.querySelector('#listing-sold-btn')?.addEventListener('click', async () => {
             if ((await api('PATCH', `/marketplace/listings/${id}/sold`)).success) openListingDetail(id);
@@ -2203,6 +2296,135 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
 }
 
 /* ================================================================
+   COMMUNITY PHOTOS
+   ================================================================ */
+
+let photosState = { page: 1, items: [] };
+
+function renderPhotos() {
+    const v = document.getElementById('view-photos');
+    if (!v) return;
+    const u = user();
+    v.innerHTML = `
+        <div class="hub-view-header">
+            <h2 class="hub-view-header__title">${I18nModule.t('photos_title')}</h2>
+            ${u ? `<button class="hub-btn hub-btn--primary" id="photos-upload-btn">📸 ${I18nModule.t('photos_upload_btn')}</button>` : ''}
+        </div>
+        <div class="hub-photos-grid" id="photos-grid"></div>
+        <div class="hub-photos-loadmore" id="photos-loadmore" hidden>
+            <button class="hub-btn hub-btn--secondary" id="photos-loadmore-btn">${I18nModule.t('photos_load_more')}</button>
+        </div>
+        <div class="hub-modal-overlay" id="photo-upload-overlay">
+            <div class="hub-modal">
+                <button class="hub-modal__close" id="photo-upload-close" aria-label="Close">✕</button>
+                <h3>${I18nModule.t('photos_upload_title')}</h3>
+                <input type="file" id="photo-upload-file" accept="image/jpeg,image/png,image/webp,image/gif">
+                <textarea id="photo-upload-caption" placeholder="${I18nModule.t('photos_caption_placeholder')}" maxlength="300"></textarea>
+                <button class="hub-btn hub-btn--primary" id="photo-upload-submit">${I18nModule.t('photos_upload_submit')}</button>
+                <p class="hub-modal__status" id="photo-upload-status"></p>
+            </div>
+        </div>
+    `;
+
+    const overlay = v.querySelector('#photo-upload-overlay');
+    v.querySelector('#photos-upload-btn')?.addEventListener('click', () => overlay.classList.add('is-open'));
+    v.querySelector('#photo-upload-close').addEventListener('click', () => overlay.classList.remove('is-open'));
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('is-open'); });
+    v.querySelector('#photo-upload-submit').addEventListener('click', submitPhotoUpload);
+    v.querySelector('#photos-loadmore-btn')?.addEventListener('click', () => loadPhotos(true));
+}
+
+async function loadPhotos(append) {
+    const grid = document.getElementById('photos-grid');
+    if (!grid) return;
+
+    if (!append) {
+        photosState = { page: 1, items: [] };
+        grid.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">⏳</div></div>';
+    }
+
+    try {
+        const data = await api('GET', `/community/photos?page=${photosState.page}`);
+        if (!data.success) throw 0;
+        photosState.items.push(...data.photos);
+
+        if (!photosState.items.length) {
+            grid.innerHTML = `<div class="hub-empty"><div class="hub-empty__icon">📸</div><p>${I18nModule.t('photos_empty')}</p></div>`;
+            document.getElementById('photos-loadmore').hidden = true;
+            return;
+        }
+
+        const u = user();
+        grid.innerHTML = photosState.items.map(p => `
+            <div class="hub-photo-card">
+                <img src="${esc(p.imageUrl)}" alt="${esc(p.caption)}" loading="lazy">
+                <div class="hub-photo-card__meta">
+                    <span class="hub-photo-card__user">${esc(p.username)}</span>
+                    ${u && u.id === p.userId ? `<button class="hub-photo-card__delete" data-id="${p.id}" title="${I18nModule.t('photos_delete')}">🗑</button>` : ''}
+                </div>
+                ${p.caption ? `<p class="hub-photo-card__caption">${esc(p.caption)}</p>` : ''}
+            </div>
+        `).join('');
+
+        document.getElementById('photos-loadmore').hidden = data.photos.length < 24;
+        photosState.page++;
+
+        grid.querySelectorAll('.hub-photo-card__delete').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (!(await confirmModal(I18nModule.t('photos_delete_confirm')))) return;
+                const res = await api('DELETE', `/community/photos/${btn.dataset.id}`);
+                if (res.success) loadPhotos(false);
+            });
+        });
+    } catch {
+        if (!photosState.items.length) grid.innerHTML = `<div class="hub-empty"><p>${I18nModule.t('photos_error')}</p></div>`;
+    }
+}
+
+async function submitPhotoUpload() {
+    const fileInput = document.getElementById('photo-upload-file');
+    const captionInput = document.getElementById('photo-upload-caption');
+    const statusEl = document.getElementById('photo-upload-status');
+    const submitBtn = document.getElementById('photo-upload-submit');
+    const file = fileInput.files[0];
+    if (!file) { statusEl.textContent = I18nModule.t('photos_no_file'); return; }
+
+    submitBtn.disabled = true;
+    statusEl.textContent = I18nModule.t('photos_uploading');
+
+    try {
+        const presign = await api('POST', '/uploads/presign', {
+            kind: 'gallery',
+            contentType: file.type,
+            fileSize: file.size,
+        });
+        if (!presign.success) throw new Error(presign.error || 'Presign failed');
+
+        const putRes = await fetch(presign.uploadUrl, {
+            method: 'PUT',
+            headers: { 'Content-Type': file.type },
+            body: file,
+        });
+        if (!putRes.ok) throw new Error('Upload failed');
+
+        const meta = await api('POST', '/community/photos', {
+            imageKey: presign.key,
+            caption: captionInput.value.trim(),
+        });
+        if (!meta.success) throw new Error(meta.error || 'Save failed');
+
+        document.getElementById('photo-upload-overlay').classList.remove('is-open');
+        fileInput.value = '';
+        captionInput.value = '';
+        loadPhotos(false);
+    } catch (err) {
+        statusEl.textContent = err.message || I18nModule.t('photos_upload_error');
+    } finally {
+        submitBtn.disabled = false;
+    }
+}
+
+/* ================================================================
    UNREAD BADGE POLLING
    ================================================================ */
 
@@ -2362,7 +2584,7 @@ function handleHashNavigation() {
         const con  = parts[1] || null;
         const cat  = parts[2] || '';
 
-        const validViews = ['chat', 'forum', 'marketplace', 'repair', 'repair-requests', 'repair-admin', 'dm'];
+        const validViews = ['chat', 'forum', 'marketplace', 'repair', 'repair-requests', 'repair-admin', 'dm', 'photos'];
         if (validViews.includes(view)) {
             // Mark the active sidebar item
             sidebar?.querySelectorAll('.hub-sidebar__item').forEach(item => {

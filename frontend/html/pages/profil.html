@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/main.css?v=2">
     <link rel="stylesheet" href="../../css/components/date-picker.css?v=2">
-    <link rel="stylesheet" href="../../css/components/report-modal.css?v=2">
+    <link rel="stylesheet" href="../../css/components/report-modal.css?v=3">
     <link rel="stylesheet" href="../../css/components/levels.css?v=2">
 </head>
 <body class="has-mbn">
@@ -101,6 +101,10 @@
                     <button class="profile-tab sidebar-link admin-only-tab" data-tab="admin-reports" type="button" hidden>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         <span>Admin Reports</span>
+                    </button>
+                    <button class="profile-tab sidebar-link admin-only-tab" data-tab="admin-analytics" type="button" hidden>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        <span>Admin Analytics</span>
                     </button>
                 </div>
 
@@ -609,6 +613,19 @@
                     </div>
                 </div>
 
+                <!-- Admin Analytics Panel — visible only to admins -->
+                <div class="profile-panel" id="panel-admin-analytics" data-panel="admin-analytics">
+                    <div class="settings-row settings-row--meta-only">
+                        <div class="settings-row__meta">
+                            <div class="settings-row__title">📊 Admin — Analytics</div>
+                            <div class="settings-row__desc">Growth and activity snapshot. Active-user counts are approximated from login sessions.</div>
+                        </div>
+                    </div>
+                    <div id="admin-analytics-container">
+                        <p class="my-reports-empty">Se încarcă…</p>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -674,6 +691,10 @@
             <button type="button" class="mbn-dd-item admin-only-tab" data-mbn-tab="admin-reports" hidden>
                 <span class="mbn-dd-icon">🛡</span>
                 <span>Admin Reports</span>
+            </button>
+            <button type="button" class="mbn-dd-item admin-only-tab" data-mbn-tab="admin-analytics" hidden>
+                <span class="mbn-dd-icon">📊</span>
+                <span>Admin Analytics</span>
             </button>
             <div class="mbn-dd-sep"></div>
             <a href="home.html" class="mbn-dd-item">

@@ -2272,7 +2272,27 @@ body.home-page::before {
     gap: 6px;
     text-align: center;
     padding: 16px 12px;
+    position: relative;
     transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.achievement-card__share-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 6px;
+    line-height: 1;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+.achievement-card__share-btn:hover {
+    color: var(--text);
+    background: rgba(var(--accent-rgb), 0.1);
 }
 
 .achievement-card__desc {

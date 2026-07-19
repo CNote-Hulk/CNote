@@ -7,6 +7,7 @@ import { AuthModule } from '/js/modules/auth.js';
 import { API_BASE_URL } from '/js/config.js';
 import { AchievementsModule } from '/js/modules/achievements.js';
 import { I18nModule } from '/js/modules/i18n.js';
+import { shareOrCopy } from '/js/utils/share.js';
 
 /** Shortcut pentru traduceri */
 const t = key => I18nModule.t(key);
@@ -467,6 +468,27 @@ const t = key => I18nModule.t(key);
                     actionsEl.innerHTML = `<a href="/html/pages/profil.html#account" class="user-action-btn user-action-btn--edit">${t('up_edit_profile')}</a>`;
                 }
 
+                // Share profile button (always available, own or public)
+                const shareBtn = document.createElement('button');
+                shareBtn.className = 'user-action-btn';
+                shareBtn.textContent = '🔗 ' + t('share_profile_btn');
+                shareBtn.addEventListener('click', async () => {
+                    const result = await shareOrCopy({
+                        title: profile.username,
+                        text: t('share_profile_text').replace('{username}', profile.username),
+                        url: `${location.origin}/user/${encodeURIComponent(profile.username)}`,
+                    });
+                    if (result === 'copied') {
+                        const original = shareBtn.textContent;
+                        shareBtn.textContent = '✓ ' + t('share_link_copied');
+                        setTimeout(() => { shareBtn.textContent = original; }, 1800);
+                    }
+                });
+                actionsEl.appendChild(shareBtn);
+
+                // Seller review summary (only shown if they have any)
+                loadSellerRatingSummary(profile.id);
+
                 // Friends list
                 if (profile.show_friends !== false) {
                     await loadFriendsList(profile.username);
@@ -557,6 +579,21 @@ const t = key => I18nModule.t(key);
                             renderFriendButton(container, targetUserId);
                         });
                         break;
+                }
+            } catch { /* ignore */ }
+        }
+
+        /** Fetch and display the user's seller-review average, if they have any */
+        async function loadSellerRatingSummary(userId) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/marketplace/sellers/${userId}/reviews`);
+                const data = await res.json();
+                if (!data.success || !data.count) return;
+                const tile = document.getElementById('user-dash-seller-rating');
+                const valueEl = document.getElementById('user-dash-seller-rating-value');
+                if (tile && valueEl) {
+                    valueEl.textContent = `⭐ ${data.average} (${data.count})`;
+                    tile.hidden = false;
                 }
             } catch { /* ignore */ }
         }

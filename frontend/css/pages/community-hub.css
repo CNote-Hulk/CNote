@@ -1652,6 +1652,94 @@
     flex-wrap: wrap;
 }
 
+.hub-detail-card--reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hub-seller-reviews__title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+.hub-seller-reviews__empty {
+    color: var(--text-gray);
+    font-size: 0.82rem;
+    margin: 0;
+}
+
+.hub-seller-review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 8px);
+}
+
+.hub-seller-review-form textarea {
+    resize: vertical;
+    min-height: 60px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary, transparent);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 0.85rem;
+}
+
+.hub-seller-reviews__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hub-seller-review {
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+}
+
+.hub-seller-review__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.hub-seller-review__comment {
+    margin: 4px 0 0;
+    color: var(--text-gray);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.rating-interactive {
+    display: flex;
+    gap: 4px;
+}
+
+.rating-interactive .star-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    line-height: 1;
+    padding: 2px;
+    color: var(--border-color);
+    transition: color 0.1s ease;
+}
+
+.rating-interactive .star-btn.active,
+.rating-interactive .star-btn.hover {
+    color: #fab450;
+}
+
 .hub-detail-actions a {
     text-decoration: none;
 }
@@ -4767,4 +4855,141 @@
 [data-theme="light"] .hub-csel__option--selected {
     background: rgba(var(--accent-rgb), 0.12);
     color: var(--accent-color);
+}
+
+/* ── Community Photos ─────────────────────────────────────── */
+
+.hub-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    padding: 16px 20px;
+}
+
+.hub-photo-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+    background: var(--card-bg, transparent);
+    display: flex;
+    flex-direction: column;
+}
+
+.hub-photo-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+}
+
+.hub-photo-card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+.hub-photo-card__delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    padding: 2px 4px;
+}
+.hub-photo-card__delete:hover {
+    color: #f85149;
+}
+
+.hub-photo-card__caption {
+    margin: 0 10px 10px;
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    line-height: 1.4;
+}
+
+.hub-photos-loadmore {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 20px;
+}
+
+/* ── Generic small modal (photo upload) ───────────────────── */
+
+.hub-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.hub-modal-overlay.is-open {
+    display: flex;
+}
+
+.hub-modal {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.75rem;
+    max-width: 420px;
+    width: 92%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hub-modal h3 {
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    padding-right: 1.5rem;
+    color: var(--text-light);
+}
+
+.hub-modal input[type="file"] {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+}
+
+.hub-modal textarea {
+    resize: vertical;
+    min-height: 60px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 0.85rem;
+}
+
+.hub-modal__close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+}
+.hub-modal__close:hover {
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.hub-modal__status {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--text-gray);
 }

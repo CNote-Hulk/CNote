@@ -222,6 +222,22 @@ body.stats-bg::before {
     line-height: 1.4;
 }
 
+.statsd-level__share-btn {
+    margin-top: 10px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-gray);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+.statsd-level__share-btn:hover {
+    opacity: 0.8;
+}
+
 /* ── Card typography ── */
 .statsd-card__icon {
     font-size: 1.5rem;

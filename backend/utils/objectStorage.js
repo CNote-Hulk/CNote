@@ -50,11 +50,13 @@ if (missing.length === 0) {
  * @description Generates an unguessable object key namespaced by kind and
  * uploader, e.g. "chat/images/42/f3a1...c9.webp". Never derived from
  * user-supplied filenames — avoids path traversal / collision entirely.
+ * @param {string} [namespace] top-level folder — defaults to "chat" for the
+ * existing chat/DM attachment callers; community gallery uploads pass "community".
  */
-function buildAttachmentKey(userId, kind, extension) {
+function buildAttachmentKey(userId, kind, extension, namespace = 'chat') {
 	const safeExt = String(extension || '').replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 8);
 	const id = crypto.randomUUID();
-	return `chat/${kind}/${userId}/${id}${safeExt ? '.' + safeExt : ''}`;
+	return `${namespace}/${kind}/${userId}/${id}${safeExt ? '.' + safeExt : ''}`;
 }
 
 /**

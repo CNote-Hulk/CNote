@@ -22,7 +22,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // ── Constants ──────────────────────────────────────────────────────────────
 
 const VALID_CONTENT_TYPES = [
-    'forum_thread', 'forum_reply', 'direct_message', 'listing', 'user_profile'
+    'forum_thread', 'forum_reply', 'direct_message', 'listing', 'user_profile', 'community_photo'
 ];
 
 const VALID_REASONS = [
@@ -248,6 +248,12 @@ router.get('/reports/admin', authRequired, adminOnly, async (req, res) => {
                     r.content_label = row ? `DM from @${row.sender} to @${row.receiver}` : `Message #${r.content_id}`;
                     r.content_body = row?.message || null;
                     r.author_id = row?.sender_id || null;
+                } else if (r.content_type === 'community_photo') {
+                    const p = await pool.query('SELECT user_id, caption FROM community_photos WHERE id = $1', [r.content_id]);
+                    const row = p.rows[0];
+                    r.content_label = `Photo #${r.content_id}`;
+                    r.content_body = row?.caption || null;
+                    r.author_id = row?.user_id || null;
                 } else {
                     r.content_label = `${r.content_type} #${r.content_id}`;
                 }
@@ -317,6 +323,10 @@ async function resolveAuthorId(contentType, contentId) {
         case 'direct_message': {
             const r = await pool.query('SELECT sender_id FROM direct_messages WHERE id = $1', [contentId]);
             return r.rows[0]?.sender_id || null;
+        }
+        case 'community_photo': {
+            const r = await pool.query('SELECT user_id FROM community_photos WHERE id = $1', [contentId]);
+            return r.rows[0]?.user_id || null;
         }
         default:
             return null;
@@ -426,6 +436,9 @@ router.delete('/reports/admin/:id/content', authRequired, adminOnly, async (req,
                 break;
             case 'direct_message':
                 await pool.query('DELETE FROM direct_messages WHERE id = $1', [contentId]);
+                break;
+            case 'community_photo':
+                await pool.query('DELETE FROM community_photos WHERE id = $1', [contentId]);
                 break;
             default:
                 return res.status(400).json({ success: false, error: 'This content type cannot be deleted here — use ban-author for user_profile reports.' });

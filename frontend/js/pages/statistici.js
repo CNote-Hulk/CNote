@@ -7,6 +7,7 @@
 import { AuthModule } from '../modules/auth.js';
 import { AchievementsModule } from '../modules/achievements.js';
 import { I18nModule } from '../modules/i18n.js';
+import { shareOrCopy } from '../utils/share.js';
 
 
 let user = AuthModule.getCurrentUser();
@@ -148,6 +149,7 @@ function renderAchievementsPanel(allBadges) {
                 <strong class="achievement-card__name">${b.label || b.name}</strong>
                 <span class="achievement-card__desc">${b.description || ''}</span>
                 <span class="achievement-card__status">${b.earned ? `${I18nModule.t('ach_earned')}${earnedDate ? ' ' + earnedDate : ''}` : I18nModule.t('ach_locked')}</span>
+                ${b.earned ? `<button type="button" class="achievement-card__share-btn" data-name="${escapeAttr(b.label || b.name)}" data-emoji="${escapeAttr(b.emoji || b.icon || '🏆')}" title="${I18nModule.t('share_achievement_btn')}">🔗</button>` : ''}
             </div>`;
         }).join('');
         return `<div class="ach-category">
@@ -159,7 +161,30 @@ function renderAchievementsPanel(allBadges) {
             <div class="ach-category__grid">${cards}</div>
         </div>`;
     }).join('');
-    container.querySelector('.statsd-ach-grid').innerHTML = sectionsHtml;
+    const grid = container.querySelector('.statsd-ach-grid');
+    grid.innerHTML = sectionsHtml;
+
+    if (!grid.dataset.shareWired) {
+        grid.dataset.shareWired = '1';
+        grid.addEventListener('click', async (e) => {
+            const btn = e.target.closest('.achievement-card__share-btn');
+            if (!btn) return;
+            const result = await shareOrCopy({
+                title: `${btn.dataset.emoji} ${btn.dataset.name}`,
+                text: I18nModule.t('share_achievement_text').replace('{name}', btn.dataset.name),
+                url: `${location.origin}/user/${encodeURIComponent(user.username)}`,
+            });
+            if (result === 'copied') {
+                const original = btn.textContent;
+                btn.textContent = '✓';
+                setTimeout(() => { btn.textContent = original; }, 1500);
+            }
+        });
+    }
+}
+
+function escapeAttr(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 }
 
 /** Compute all stats and update DOM */
@@ -285,6 +310,22 @@ async function renderStats() {
     document.getElementById('stat-level-sub').textContent = level.sub;
     const emojiEl = document.getElementById('stats-level-emoji');
     if (emojiEl) emojiEl.textContent = level.emoji;
+
+    const shareLevelBtn = document.getElementById('share-level-btn');
+    if (shareLevelBtn) {
+        shareLevelBtn.onclick = async () => {
+            const result = await shareOrCopy({
+                title: `${level.emoji} ${level.name}`,
+                text: I18nModule.t('share_level_text').replace('{level}', level.name),
+                url: `${location.origin}/user/${encodeURIComponent(user.username)}`,
+            });
+            if (result === 'copied') {
+                const original = shareLevelBtn.textContent;
+                shareLevelBtn.textContent = '✓ ' + I18nModule.t('share_link_copied');
+                setTimeout(() => { shareLevelBtn.textContent = original; }, 1800);
+            }
+        };
+    }
 
     // Progress bar to next level
     const levelBarWrap = document.getElementById('stat-level-bar-wrap');

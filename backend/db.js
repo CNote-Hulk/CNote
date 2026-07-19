@@ -508,6 +508,30 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_reason TEXT DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_at TIMESTAMP DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS muted_until TIMESTAMP DEFAULT NULL`,
+
+		// ── Seller reviews (marketplace trust) ────────────────────────────────
+		`CREATE TABLE IF NOT EXISTS seller_reviews (
+			id SERIAL PRIMARY KEY,
+			reviewer_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			seller_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			listing_id INTEGER REFERENCES listings(id) ON DELETE SET NULL,
+			rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+			comment TEXT DEFAULT '',
+			created_at TIMESTAMP DEFAULT NOW(),
+			UNIQUE(reviewer_id, seller_id)
+		)`,
+		`CREATE INDEX IF NOT EXISTS idx_seller_reviews_seller_id ON seller_reviews(seller_id)`,
+
+		// ── Community photo gallery ────────────────────────────────────────────
+		`CREATE TABLE IF NOT EXISTS community_photos (
+			id SERIAL PRIMARY KEY,
+			user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			image_key TEXT NOT NULL,
+			caption TEXT DEFAULT '',
+			console_type TEXT DEFAULT '',
+			created_at TIMESTAMP DEFAULT NOW()
+		)`,
+		`CREATE INDEX IF NOT EXISTS idx_community_photos_created_at ON community_photos(created_at DESC)`,
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

@@ -68,6 +68,7 @@ function initSettings() {
     let achievementsLoaded = false;
     let reportsLoaded = false;
     let adminReportsLoaded = false;
+    let adminAnalyticsLoaded = false;
     const activateTab = (tabKey, syncHash = false) => {
         let tabBtn = document.querySelector(`.profile-tab[data-tab="${tabKey}"]`);
         let panel = document.querySelector(`.profile-panel[data-panel="${tabKey}"]`);
@@ -92,6 +93,11 @@ function initSettings() {
         if (tabKey === 'admin-reports' && !adminReportsLoaded) {
             adminReportsLoaded = true;
             loadAdminReports().catch(err => console.error('[admin-reports]', err));
+        }
+
+        if (tabKey === 'admin-analytics' && !adminAnalyticsLoaded) {
+            adminAnalyticsLoaded = true;
+            loadAdminAnalytics().catch(err => console.error('[admin-analytics]', err));
         }
 
         if (syncHash) {
@@ -1771,6 +1777,64 @@ async function loadAdminReports() {
     }
 }
 
+async function loadAdminAnalytics() {
+    const container = document.getElementById('admin-analytics-container');
+    if (!container) return;
+
+    const token = localStorage.getItem('cn_token') || '';
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+    container.innerHTML = `<p class="my-reports-empty">Loading…</p>`;
+    try {
+        const resp = await fetch(`${API_BASE_URL}/admin/stats`, { headers, credentials: 'include' });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok || !data.success) throw new Error(data.error || 'Error');
+
+        const tiles = [
+            { label: 'Total users', value: data.totalUsers },
+            { label: 'Active (7d)', value: data.activeUsers7d },
+            { label: 'Active (30d)', value: data.activeUsers30d },
+            { label: 'Listings', value: data.totalListings },
+            { label: 'Forum threads', value: data.totalThreads },
+            { label: 'Forum replies', value: data.totalReplies },
+        ];
+        const tilesHtml = tiles.map(t => `
+            <div class="aa-tile">
+                <div class="aa-tile__value">${t.value}</div>
+                <div class="aa-tile__label">${t.label}</div>
+            </div>
+        `).join('');
+
+        const maxSignups = Math.max(1, ...data.signupsByDay.map(d => d.count));
+        const signupsHtml = data.signupsByDay.length
+            ? data.signupsByDay.map(d => {
+                const date = new Date(d.day).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' });
+                const pct = Math.round((d.count / maxSignups) * 100);
+                return `<div class="aa-bar-row">
+                    <span class="aa-bar-row__label">${date}</span>
+                    <div class="aa-bar-row__track"><div class="aa-bar-row__fill" style="width:${pct}%"></div></div>
+                    <span class="aa-bar-row__value">${d.count}</span>
+                </div>`;
+            }).join('')
+            : `<p class="my-reports-empty">No signups in the last 30 days.</p>`;
+
+        const statusHtml = data.listingsByStatus.map(s =>
+            `<span class="aa-status-chip">${s.status}: ${s.count}</span>`
+        ).join('');
+
+        container.innerHTML = `
+            <div class="aa-tiles">${tilesHtml}</div>
+            <h4 class="aa-section-title">Signups — last 30 days</h4>
+            <div class="aa-bars">${signupsHtml}</div>
+            <h4 class="aa-section-title">Listings by status</h4>
+            <div class="aa-status-row">${statusHtml}</div>
+        `;
+    } catch (err) {
+        console.error('[loadAdminAnalytics]', err);
+        container.innerHTML = `<p class="my-reports-empty">Failed to load analytics.</p>`;
+    }
+}
+
 /** Initialize the owned-consoles multi-select dropdown */
 async function initOwnedConsolesSelect() {
     const listEl = document.getElementById('owned-consoles-list');
@@ -1852,7 +1916,7 @@ async function initOwnedConsolesSelect() {
 
 // ── Mobile bottom nav — tab switching ────────────────────────
 (function initMbnTabs() {
-    const TABS = ['account', 'profil', 'privacy', 'security', 'notifications', 'appearance', 'reports', 'admin-reports'];
+    const TABS = ['account', 'profil', 'privacy', 'security', 'notifications', 'appearance', 'reports', 'admin-reports', 'admin-analytics'];
     const btn = document.getElementById('mbn-more-btn');
     const dd  = document.getElementById('mbn-dropdown');
 

@@ -28,9 +28,11 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
     - OlxProvider.js — OLX marketplace integration: OAuth + listings fetch/normalization against OLX Group API
   - **routes/**
     - achievements.js — GET own achievements (`/`) and another user's by username (`/user/:username`)
+    - admin-stats.js — `GET /api/admin/stats` (`adminOnly`): growth/activity dashboard aggregate (total users/listings/threads/replies, signups per day for 30 days, `activeUsers7d`/`30d` approximated from `user_sessions.last_activity`, listings by status)
     - leaderboard.js — `GET /api/leaderboard` (public, no auth): top users by XP, respects `show_stats` privacy flag; includes the caller's own rank if logged in (`authOptional`)
     - auth.js — registration (Turnstile CAPTCHA + disposable-email block), login + 2FA, email verification, password reset, profile, avatar upload; largest route file; `POST /login` rejects banned accounts with `account_banned`-style message before issuing a token
     - chat.js — community/global chat: paginated message retrieval + posting with per-user rate-limit cooldown
+    - community-photos.js — `/api/community/photos`: metadata CRUD for the Community "Photos" tab gallery (`POST` validates `imageKey` prefix from a presigned upload, `GET` paginated newest-first, `DELETE` owner-only); image bytes go straight to object storage via `POST /api/uploads/presign` (`kind: 'gallery'`), never through this route
     - consoles.js — GET `/api/consoles?lang=` — serves console encyclopedia data per language from `consoles_translations`
     - contact.js — contact form submission: honeypot + Turnstile CAPTCHA bot checks + sends email via Resend
     - courses.js — course/module/lesson/quiz/reactions/comments endpoints; also self-creates `lesson_reactions` table on load
@@ -43,13 +45,14 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
     - friends.js — send/accept/reject friend requests, list friends, check friendship status
     - google-auth.js — Google OAuth2 via Passport: login/register/link/unlink, custom state store (no express-session); redirects to `login.html?error=account_banned` if the account is banned
     - marketplace.js — marketplace listings CRUD: search, filter, sort, pagination; ties into OLX/eBay sync; notifies a listing's owner on favorite (`listing_interest`) and notifies everyone who favorited a listing when it's marked sold (`listing_sold` fan-out via `notifyListingSold()`); listing creation rejects with 403 while the poster is muted
+    - marketplace-reviews.js — seller reviews (`GET/POST /api/marketplace/sellers/:sellerId/reviews`+`/review`), mounted alongside marketplace.js; a review is tied to the seller (user), not a listing, so it survives the listing being sold/deleted — one upsertable review per (reviewer, seller) pair, mirrors `ratings.js`'s console-rating shape plus a `comment` field
     - notifications.js — in-app notifications for forum replies, DMs, listing activity, etc.
     - ratings.js — console rating system: rate 1-5, view averages, see own ratings
     - repair.js — submit repair requests, view own/all requests, admin reply/status update
-    - reports.js — DSA Article 16 notice-and-action: submit content report, list own reports; admin routes (`GET/PATCH /admin*`, gated by `adminOnly`) enrich each report with the reported content's `author_id` and expose moderation actions: `POST /admin/:id/ban-author`, `POST /admin/:id/unban-author`, `POST /admin/:id/mute-author` (`{hours}`, default 72), `DELETE /admin/:id/content` (deletes the reported listing/thread/reply/DM; not available for `user_profile` reports — use ban instead)
+    - reports.js — DSA Article 16 notice-and-action: submit content report, list own reports; content types: `forum_thread`/`forum_reply`/`direct_message`/`listing`/`user_profile`/`community_photo`; admin routes (`GET/PATCH /admin*`, gated by `adminOnly`) enrich each report with the reported content's `author_id` and expose moderation actions: `POST /admin/:id/ban-author`, `POST /admin/:id/unban-author`, `POST /admin/:id/mute-author` (`{hours}`, default 72), `DELETE /admin/:id/content` (deletes the reported listing/thread/reply/DM/community_photo; not available for `user_profile` reports — use ban instead)
     - reset-progress.js — POST `/reset-progress` — wipes a user's lessons/achievements/visits/favorites/XP, recomputes achievements
     - sessions.js — session management + Server-Sent Events stream for real-time session-termination notices
-    - uploads.js — presigned PUT URL issuance for chat image/voice attachments (file bytes never touch this server)
+    - uploads.js — presigned PUT URL issuance for chat image/voice/community-gallery attachments (`kind: 'image'|'voice'|'gallery'`; file bytes never touch this server)
     - users.js — public user profiles, user search, console list loading (cached), owned-console management
     - workshop.js — admin-only hardware-diagnostics tool (boards/components/pins/journal); uses service-role Supabase client (RLS deny-by-default)
   - **scripts/**
@@ -76,14 +79,14 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
     - gamification.js — single source of truth for XP actions, levels, and achievement definitions; `awardXP()` lives here
     - languages.js — `ALLOWED_LANGS`/`DEFAULT_LANG` constants shared across routes needing language validation
     - moderation.js — `isMuted(user)`: checks `users.muted_until` against now; used as a posting guard in forum.js/marketplace.js/dm.js
-    - objectStorage.js — generic S3-compatible client (MinIO today) for chat image/voice attachments, server-side only
+    - objectStorage.js — generic S3-compatible client (MinIO today) for chat image/voice + community-gallery photo attachments, server-side only; `buildAttachmentKey(userId, kind, extension, namespace='chat')` — gallery uploads pass `namespace: 'community'`
     - passwordPolicy.js — single source of truth for password strength rules; `validatePassword()` used on all password-set paths
     - supabaseStorage.js — shared Supabase Storage client authenticated with the service-role key (avatar bucket), server-side only
     - turnstile.js — `verifyTurnstileToken()`: Cloudflare Turnstile (CAPTCHA) server-side verification, used by register + contact routes
   - .env — local environment values (gitignored, not committed)
   - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, Turnstile CAPTCHA keys, etc.)
   - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
-  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` (courses/modules/lessons/quiz_questions/lesson_translations/module_translations/user_lessons/user_course_progress/xp_transactions/user_achievements/content_reports/user_fcm_tokens, among others) + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns). Also adds `forum_threads.solved_reply_id` and `forum_replies.reply_to_id` (both `INTEGER REFERENCES forum_replies(id)`), a partial index `idx_users_xp_desc` on `users(xp DESC) WHERE show_stats = true` for the leaderboard, and moderation columns `users.is_banned`/`banned_reason`/`banned_at`/`muted_until`
+  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` (courses/modules/lessons/quiz_questions/lesson_translations/module_translations/user_lessons/user_course_progress/xp_transactions/user_achievements/content_reports/user_fcm_tokens/seller_reviews/community_photos, among others) + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns). Also adds `forum_threads.solved_reply_id` and `forum_replies.reply_to_id` (both `INTEGER REFERENCES forum_replies(id)`), a partial index `idx_users_xp_desc` on `users(xp DESC) WHERE show_stats = true` for the leaderboard, and moderation columns `users.is_banned`/`banned_reason`/`banned_at`/`muted_until`
   - package-lock.json — locked dependency tree for backend
   - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
@@ -122,7 +125,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - **legal files/** — 24 files: community-rules/cookies/privacy/terms, each translated into 6 languages (default + de/en/es/fr/it suffixed variants)
       - 404.html — branded not-found page ("Cartridge Not Found" — retro-themed, floating controller icon, quick links to Encyclopedia/Learn/Compare/Leaderboard); served by `server.js`'s catch-all 404 fallback (HTML 404 status, CSP nonce injected)
       - community-welcome-page.html — logged-out landing page introducing the Community hub before login
-      - community.html — main Community hub shell: forum, marketplace, repair wizard, DMs (logic in `pages/community.js`)
+      - community.html — main Community hub shell: forum, marketplace, repair wizard, DMs, Photos gallery (logic in `pages/community.js`)
       - comparatie.html — hardware side-by-side console comparison tool page
       - course.html — single course overview page (modules/lessons list), driven by `pages/course.js`
       - evolutie.html — console evolution timeline / encyclopedia grid page
@@ -133,12 +136,12 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - leaderboard.html — public XP leaderboard page (no login required), driven by `pages/leaderboard.js`; linked from the mobile-nav "more" dropdown on most pages and from the community-welcome-page's "Give Back" step (which previously promised a leaderboard that didn't exist)
       - lesson.html — single lesson viewer page (video/text/quiz), driven by `pages/lesson.js`
       - login.html — login page: server/local login, Google OAuth, 2FA, resend verification
-      - profil.html — account Settings page: profile, privacy, security, notifications, appearance
+      - profil.html — account Settings page: profile, privacy, security, notifications, appearance; admin-only tabs: Reports (moderation) and Analytics (growth/activity stats)
       - register.html — registration page: password strength meter, username availability check, Turnstile CAPTCHA widget
       - request-password-reset.html — "forgot password" email-request form
       - reset-password.html — password reset/set form (token from URL; `?mode=set` for first-time set)
       - setup-username.html — first-time username selection screen (post Google OAuth signup)
-      - statistici.html — personal stats dashboard: achievements, visits, friends, favorites, owned consoles
+      - statistici.html — personal stats dashboard: achievements, visits, friends, favorites, owned consoles; level card has a "share my level" button, earned achievement cards have a share button
       - user-profile.html — public profile page for any username (server-routed SPA-style via `GET /user/:username`)
       - verify-success.html — email verification result page (forced English), handles resend
   - **js/**
@@ -180,7 +183,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - card-enhancements.js — adds favorite-heart + community rating to console cards on the evolution/encyclopedia page
       - chat.js — community.html global chat: polling, message rendering, cooldown rate limit, char counter
       - community-welcome-page.js — logged-out community landing page interactivity (console category tiles etc.)
-      - community.js — Community hub controller: sidebar nav, forum, marketplace, repair wizard, DMs; forum thread view supports quoting a specific reply ("Reply" button → `reply_to_id`) and thread-owner-only "mark as solution" (✓ Solved badge on the thread and the winning reply)
+      - community.js — Community hub controller: sidebar nav, forum, marketplace, repair wizard, DMs, Photos gallery; forum thread view supports quoting a specific reply ("Reply" button → `reply_to_id`) and thread-owner-only "mark as solution" (✓ Solved badge on the thread and the winning reply); listing detail shows seller reviews (average + list + leave-a-review star form, `loadSellerReviews()`) and a share button; Photos tab (`renderPhotos()`/`loadPhotos()`/`submitPhotoUpload()`) uploads via `POST /api/uploads/presign` (`kind: 'gallery'`) → direct PUT to object storage → `POST /api/community/photos`
       - leaderboard.js — leaderboard.html controller: fetches `/api/leaderboard`, paginated "Load more", highlights the logged-in user's own rank
       - comparatie.js — comparison page ES module: loads console data via API, renders comparison UI
       - console-detail.js — console detail page ES module: loads specs from `data-loader.js`, renders into page
@@ -191,16 +194,17 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - invata.js — invata.html: fetches real course progress from API, updates course card progress bars
       - lesson.js — lesson.html controller: loads lesson content/quiz, tracks progress, comments/reactions
       - login.js — login.html: server/local login, Google OAuth redirect handling, 2FA verification, resend verification
-      - profile.js — profil.html Settings controller: account, profile/privacy, security, notifications, appearance tabs; admin-only reports tab (`loadAdminReports()`) adds per-report moderation buttons (ban/mute/delete-content) alongside the existing status-change actions
+      - profile.js — profil.html Settings controller: account, profile/privacy, security, notifications, appearance tabs; admin-only reports tab (`loadAdminReports()`) adds per-report moderation buttons (ban/mute/delete-content) alongside the existing status-change actions; admin-only analytics tab (`loadAdminAnalytics()`) renders stat tiles + a signups-per-day bar list from `GET /api/admin/stats`
       - register.js — register.html: password strength indicator, username availability check, Turnstile CAPTCHA widget, submit, Google OAuth
       - request-password-reset.js — request-password-reset.html: submits reset request to API, shows result
       - reset-password.js — reset-password.html: validates token from URL, submits new password (`?mode=set` variant)
       - setup-username.js — setup-username.html: first-time username selection with live availability check
-      - statistici.js — statistici.html: personal progress dashboard (achievements, visits, friends, favorites, owned consoles)
-      - user-profile.js — user-profile.html: public profile view, progress/achievements/favorites, friend-request controls
+      - statistici.js — statistici.html: personal progress dashboard (achievements, visits, friends, favorites, owned consoles); wires the level-card and per-achievement share buttons via `utils/share.js`
+      - user-profile.js — user-profile.html: public profile view, progress/achievements/favorites, friend-request controls; adds a "share profile" button and a read-only seller-rating stat tile (`loadSellerRatingSummary()`, only shown if the user has seller reviews)
       - verify-success.js — verify-success.html: verifies email token from URL, shows result, handles resend (forced English)
     - **utils/**
       - confirm-modal.js — custom confirm() replacement modal (`confirmModal()`), CSP-safe DOM building
+      - share.js — `shareOrCopy({title, text, url})`: native Web Share sheet with clipboard-copy fallback; used by user-profile.js, statistici.js, and community.js's listing detail
       - date-picker.js — custom styled calendar dropdown replacing native/hidden date inputs (`createDatePicker()`)
       - dom.js — small DOM utility helpers: selectors, event handlers, class management
     - config.js — exports `API_BASE_URL`, overridable via `window.CN_API_BASE_URL` for split frontend/API deployments
