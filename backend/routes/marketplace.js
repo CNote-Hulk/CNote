@@ -7,6 +7,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
+const { isMuted } = require('../utils/moderation');
 const MarketplaceSyncService = require('../services/marketplace-sync');
 const OlxProvider = require('../providers/OlxProvider');
 const EbayProvider = require('../providers/EbayProvider');
@@ -18,6 +19,27 @@ const VALID_CATEGORIES = ['consoles', 'games', 'accessories', 'parts'];
 const VALID_SORT = ['newest', 'oldest', 'price_asc', 'price_desc'];
 const VALID_STATUSES = ['active', 'inactive', 'sold'];
 const OAUTH_STATE_TTL_MS = 10 * 60 * 1000; // CSRF state tokens (global.oauthStates) expire after 10 minutes
+
+/**
+ * notifyListingSold
+ * @description Notifies every user who favorited a listing that it was marked sold.
+ */
+async function notifyListingSold(req, listingId, listingTitle) {
+    try {
+        const { createNotification } = require('./notifications');
+        const favs = await pool.query('SELECT user_id FROM listing_favorites WHERE listing_id = $1', [listingId]);
+        for (const { user_id: favUserId } of favs.rows) {
+            createNotification(
+                favUserId, 'listing_sold',
+                `A listing you favorited, "${listingTitle}", was marked as sold`,
+                `/html/pages/community.html#listing-${listingId}`,
+                req
+            ).catch(() => {});
+        }
+    } catch (err) {
+        console.error('notifyListingSold error:', err);
+    }
+}
 
 // ── GET /api/marketplace/listings ───────────────────────
 router.get('/listings', async (req, res) => {
@@ -328,6 +350,9 @@ router.get('/listings/:id/similar', async (req, res) => {
 
 // ── POST /api/marketplace/listings ──────────────────────
 router.post('/listings', authRequired, async (req, res) => {
+    if (isMuted(req.user)) {
+        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+    }
     const { title, description, price, condition, category, location, country, phone, olx_url, images, console_type } = req.body;
 
     if (!title || !description || price == null) {
@@ -417,12 +442,13 @@ router.patch('/listings/:id/sold', authRequired, async (req, res) => {
     if (isNaN(id)) return res.status(400).json({ success: false, error: 'ID invalid.' });
 
     try {
-        const check = await pool.query('SELECT user_id FROM listings WHERE id = $1', [id]);
+        const check = await pool.query('SELECT user_id, title FROM listings WHERE id = $1', [id]);
         if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
         if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'You do not have permission.' });
 
         await pool.query("UPDATE listings SET sold = TRUE, status = 'sold' WHERE id = $1", [id]);
         res.json({ success: true });
+        notifyListingSold(req, id, check.rows[0].title);
     } catch (err) {
         console.error('Marketplace sold PATCH error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
@@ -438,13 +464,14 @@ router.patch('/listings/:id/status', authRequired, async (req, res) => {
     if (!VALID_STATUSES.includes(status)) return res.status(400).json({ success: false, error: 'Status invalid.' });
 
     try {
-        const check = await pool.query('SELECT user_id FROM listings WHERE id = $1', [id]);
+        const check = await pool.query('SELECT user_id, title FROM listings WHERE id = $1', [id]);
         if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
         if (check.rows[0].user_id !== req.user.id) return res.status(403).json({ success: false, error: 'You do not have permission.' });
 
         const sold = status === 'sold';
         await pool.query('UPDATE listings SET status = $1, sold = $2 WHERE id = $3', [status, sold, id]);
         res.json({ success: true });
+        if (sold) notifyListingSold(req, id, check.rows[0].title);
     } catch (err) {
         console.error('Marketplace status PATCH error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
@@ -478,7 +505,7 @@ router.post('/listings/:id/favorite', authRequired, async (req, res) => {
     if (isNaN(id)) return res.status(400).json({ success: false, error: 'ID invalid.' });
 
     try {
-        const check = await pool.query('SELECT id FROM listings WHERE id = $1', [id]);
+        const check = await pool.query('SELECT id, user_id, title FROM listings WHERE id = $1', [id]);
         if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Listing not found.' });
 
         const existing = await pool.query(
@@ -494,6 +521,16 @@ router.post('/listings/:id/favorite', authRequired, async (req, res) => {
             await pool.query('INSERT INTO listing_favorites (user_id, listing_id) VALUES ($1, $2)', [req.user.id, id]);
             await pool.query('UPDATE listings SET favorites_count = COALESCE(favorites_count, 0) + 1 WHERE id = $1', [id]);
             res.json({ success: true, favorited: true });
+            const owner = check.rows[0];
+            if (owner.user_id !== req.user.id) {
+                const { createNotification } = require('./notifications');
+                createNotification(
+                    owner.user_id, 'listing_interest',
+                    `${req.user.username} favorited your listing "${owner.title}"`,
+                    `/html/pages/community.html#listing-${id}`,
+                    req
+                ).catch(() => {});
+            }
         }
     } catch (err) {
         console.error('Marketplace favorite POST error:', err);

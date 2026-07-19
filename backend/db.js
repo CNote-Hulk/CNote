@@ -502,6 +502,12 @@ async function initializeSchema() {
 		// ── Forum reply-to-a-specific-reply (quoted/threaded replies) ────────
 		`ALTER TABLE forum_replies ADD COLUMN IF NOT EXISTS reply_to_id INTEGER REFERENCES forum_replies(id) ON DELETE SET NULL`,
 		`CREATE INDEX IF NOT EXISTS idx_forum_replies_reply_to_id ON forum_replies(reply_to_id)`,
+
+		// ── Moderation (ban / temporary mute) ────────────────────────────────
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_banned BOOLEAN DEFAULT FALSE`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_reason TEXT DEFAULT NULL`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_at TIMESTAMP DEFAULT NULL`,
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS muted_until TIMESTAMP DEFAULT NULL`,
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

@@ -428,6 +428,11 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ success: false, error: 'Incorrect email or password.' });
         }
 
+        if (user.is_banned) {
+            const reasonSuffix = user.banned_reason ? ` Reason: ${user.banned_reason}` : '';
+            return res.status(403).json({ success: false, error: `Your account has been suspended.${reasonSuffix}` });
+        }
+
         // Check 2FA
         if (user.two_factor_enabled) {
             // Skip 2FA if this device is already trusted

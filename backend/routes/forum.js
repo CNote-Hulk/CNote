@@ -12,6 +12,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
+const { isMuted } = require('../utils/moderation');
 
 const router = express.Router();
 
@@ -183,6 +184,9 @@ router.get('/:console/threads/:id', async (req, res) => {
 
 // ── POST /api/forum/:console/threads ────────────────────
 router.post('/:console/threads', authRequired, async (req, res) => {
+    if (isMuted(req.user)) {
+        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+    }
     const consoleKey = req.params.console;
     if (!VALID_CONSOLES.includes(consoleKey)) {
         return res.status(400).json({ success: false, error: 'Invalid console.' });
@@ -230,6 +234,9 @@ router.post('/:console/threads', authRequired, async (req, res) => {
 
 // ── POST /api/forum/:console/threads/:id/reply ──────────
 router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
+    if (isMuted(req.user)) {
+        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+    }
     const threadId = parseInt(req.params.id);
     if (isNaN(threadId)) {
         return res.status(400).json({ success: false, error: 'Invalid ID.' });
@@ -419,10 +426,18 @@ router.post('/:console/threads/:id/upvote', authRequired, async (req, res) => {
             // Add upvote — award XP to thread author
             await pool.query('INSERT INTO forum_upvotes (user_id, thread_id) VALUES ($1, $2)', [req.user.id, threadId]);
             await pool.query('UPDATE forum_threads SET upvotes = upvotes + 1 WHERE id = $1', [threadId]);
-            const authorRes = await pool.query('SELECT user_id FROM forum_threads WHERE id = $1', [threadId]);
+            const authorRes = await pool.query('SELECT user_id, console, title FROM forum_threads WHERE id = $1', [threadId]);
             const authorId = authorRes.rows[0]?.user_id;
             if (authorId && authorId !== req.user.id) {
                 awardXP(pool, req.app.get('io'), authorId, 'post_upvoted', threadId.toString()).catch(() => {});
+                const { createNotification } = require('./notifications');
+                const thread = authorRes.rows[0];
+                createNotification(
+                    authorId, 'upvote',
+                    `${req.user.username} upvoted your thread "${thread.title}"`,
+                    `/html/pages/community.html#forum/${thread.console}/thread/${threadId}`,
+                    req
+                ).catch(() => {});
             }
         }
 
@@ -451,6 +466,21 @@ router.post('/:console/replies/:replyId/upvote', authRequired, async (req, res) 
         } else {
             await pool.query('INSERT INTO forum_upvotes (user_id, reply_id) VALUES ($1, $2)', [req.user.id, replyId]);
             await pool.query('UPDATE forum_replies SET upvotes = upvotes + 1 WHERE id = $1', [replyId]);
+
+            const authorRes = await pool.query(
+                `SELECT fr.user_id, ft.id AS thread_id, ft.console
+                 FROM forum_replies fr JOIN forum_threads ft ON ft.id = fr.thread_id
+                 WHERE fr.id = $1`, [replyId]);
+            const authorRow = authorRes.rows[0];
+            if (authorRow && authorRow.user_id !== req.user.id) {
+                const { createNotification } = require('./notifications');
+                createNotification(
+                    authorRow.user_id, 'upvote',
+                    `${req.user.username} upvoted your reply`,
+                    `/html/pages/community.html#forum/${authorRow.console}/thread/${authorRow.thread_id}`,
+                    req
+                ).catch(() => {});
+            }
         }
 
         const result = await pool.query('SELECT upvotes FROM forum_replies WHERE id = $1', [replyId]);
@@ -480,6 +510,21 @@ router.post('/:console/threads/:id/replies/:replyId/upvote', authRequired, async
         } else {
             await pool.query('INSERT INTO forum_upvotes (user_id, reply_id) VALUES ($1, $2)', [req.user.id, replyId]);
             await pool.query('UPDATE forum_replies SET upvotes = upvotes + 1 WHERE id = $1', [replyId]);
+
+            const authorRes = await pool.query(
+                `SELECT fr.user_id, ft.id AS thread_id, ft.console
+                 FROM forum_replies fr JOIN forum_threads ft ON ft.id = fr.thread_id
+                 WHERE fr.id = $1`, [replyId]);
+            const authorRow = authorRes.rows[0];
+            if (authorRow && authorRow.user_id !== req.user.id) {
+                const { createNotification } = require('./notifications');
+                createNotification(
+                    authorRow.user_id, 'upvote',
+                    `${req.user.username} upvoted your reply`,
+                    `/html/pages/community.html#forum/${authorRow.console}/thread/${authorRow.thread_id}`,
+                    req
+                ).catch(() => {});
+            }
         }
 
         const result = await pool.query('SELECT upvotes FROM forum_replies WHERE id = $1', [replyId]);

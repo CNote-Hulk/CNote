@@ -21,7 +21,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
     - reset-database.js — wipes user/session/token data for a clean public deployment (real logic behind `npm run reset-db`)
   - **middleware/**
     - adminOnly.js — Express middleware gating a route to `role === 'admin'`; must run after `authRequired`
-    - auth.js — `authRequired`/`authOptional`: validates JWT, falls back to hashed session-cookie lookup, populates `req.user`
+    - auth.js — `authRequired`/`authOptional`: validates JWT, falls back to hashed session-cookie lookup, populates `req.user`; `authRequired` rejects with 401 if `users.is_banned`
   - **providers/**
     - EbayProvider.js — eBay marketplace integration: OAuth, listings fetch, normalization against real eBay APIs
     - MarketplaceProvider.js — abstract base class defining the contract every marketplace provider must implement
@@ -29,24 +29,24 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
   - **routes/**
     - achievements.js — GET own achievements (`/`) and another user's by username (`/user/:username`)
     - leaderboard.js — `GET /api/leaderboard` (public, no auth): top users by XP, respects `show_stats` privacy flag; includes the caller's own rank if logged in (`authOptional`)
-    - auth.js — registration (Turnstile CAPTCHA + disposable-email block), login + 2FA, email verification, password reset, profile, avatar upload; largest route file
+    - auth.js — registration (Turnstile CAPTCHA + disposable-email block), login + 2FA, email verification, password reset, profile, avatar upload; largest route file; `POST /login` rejects banned accounts with `account_banned`-style message before issuing a token
     - chat.js — community/global chat: paginated message retrieval + posting with per-user rate-limit cooldown
     - consoles.js — GET `/api/consoles?lang=` — serves console encyclopedia data per language from `consoles_translations`
     - contact.js — contact form submission: honeypot + Turnstile CAPTCHA bot checks + sends email via Resend
     - courses.js — course/module/lesson/quiz/reactions/comments endpoints; also self-creates `lesson_reactions` table on load
-    - dm.js — direct messages: conversation list, message thread, send DM
+    - dm.js — direct messages: conversation list, message thread, send DM (`POST /send` rejects with 403 while the sender is muted)
     - ebay.js — eBay OAuth connect/callback/status/disconnect, listings import, and account-deletion webhook verification
     - favorites.js — list/check/toggle favorite consoles for the logged-in user
     - forum-liked.js — GET `/api/forum/liked` — threads the user has upvoted (dashboard widget)
     - forum-my-posts.js — GET `/api/forum/my-posts` — threads created by the logged-in user (dashboard widget)
-    - forum.js — forum thread list, thread detail, create, reply (optionally quoting a specific earlier reply via `reply_to_id`), upvote, mark-a-reply-as-solution (`POST .../:id/solve`, thread-author-only), `GET /search?q=` cross-console title/body search backing the global search bar
+    - forum.js — forum thread list, thread detail, create, reply (optionally quoting a specific earlier reply via `reply_to_id`), upvote (notifies the thread/reply author via `createNotification(..., 'upvote', ...)`), mark-a-reply-as-solution (`POST .../:id/solve`, thread-author-only), `GET /search?q=` cross-console title/body search backing the global search bar; thread/reply creation rejects with 403 while the poster is muted
     - friends.js — send/accept/reject friend requests, list friends, check friendship status
-    - google-auth.js — Google OAuth2 via Passport: login/register/link/unlink, custom state store (no express-session)
-    - marketplace.js — marketplace listings CRUD: search, filter, sort, pagination; ties into OLX/eBay sync
+    - google-auth.js — Google OAuth2 via Passport: login/register/link/unlink, custom state store (no express-session); redirects to `login.html?error=account_banned` if the account is banned
+    - marketplace.js — marketplace listings CRUD: search, filter, sort, pagination; ties into OLX/eBay sync; notifies a listing's owner on favorite (`listing_interest`) and notifies everyone who favorited a listing when it's marked sold (`listing_sold` fan-out via `notifyListingSold()`); listing creation rejects with 403 while the poster is muted
     - notifications.js — in-app notifications for forum replies, DMs, listing activity, etc.
     - ratings.js — console rating system: rate 1-5, view averages, see own ratings
     - repair.js — submit repair requests, view own/all requests, admin reply/status update
-    - reports.js — DSA Article 16 notice-and-action: submit content report, list own reports
+    - reports.js — DSA Article 16 notice-and-action: submit content report, list own reports; admin routes (`GET/PATCH /admin*`, gated by `adminOnly`) enrich each report with the reported content's `author_id` and expose moderation actions: `POST /admin/:id/ban-author`, `POST /admin/:id/unban-author`, `POST /admin/:id/mute-author` (`{hours}`, default 72), `DELETE /admin/:id/content` (deletes the reported listing/thread/reply/DM; not available for `user_profile` reports — use ban instead)
     - reset-progress.js — POST `/reset-progress` — wipes a user's lessons/achievements/visits/favorites/XP, recomputes achievements
     - sessions.js — session management + Server-Sent Events stream for real-time session-termination notices
     - uploads.js — presigned PUT URL issuance for chat image/voice attachments (file bytes never touch this server)
@@ -75,6 +75,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
     - disposableEmail.js — `isDisposableEmail()`: static blocklist of known temp-mail/throwaway domains, checked at registration
     - gamification.js — single source of truth for XP actions, levels, and achievement definitions; `awardXP()` lives here
     - languages.js — `ALLOWED_LANGS`/`DEFAULT_LANG` constants shared across routes needing language validation
+    - moderation.js — `isMuted(user)`: checks `users.muted_until` against now; used as a posting guard in forum.js/marketplace.js/dm.js
     - objectStorage.js — generic S3-compatible client (MinIO today) for chat image/voice attachments, server-side only
     - passwordPolicy.js — single source of truth for password strength rules; `validatePassword()` used on all password-set paths
     - supabaseStorage.js — shared Supabase Storage client authenticated with the service-role key (avatar bucket), server-side only
@@ -82,7 +83,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
   - .env — local environment values (gitignored, not committed)
   - .env.example — documented template of all backend env vars (DB, email, OAuth, storage, Turnstile CAPTCHA keys, etc.)
   - .gitignore — excludes `node_modules/`, `data/`, `.env`, local DB files from backend git tracking
-  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns; a few target tables — `user_achievements`, `xp_transactions`, `user_lessons`, `user_course_progress` — that only exist live in Supabase and have no `CREATE TABLE` anywhere in this repo). Also adds `forum_threads.solved_reply_id` and `forum_replies.reply_to_id` (both `INTEGER REFERENCES forum_replies(id)`), plus a partial index `idx_users_xp_desc` on `users(xp DESC) WHERE show_stats = true` for the leaderboard
+  - db.js — Postgres pool setup (Supabase); `CREATE TABLE IF NOT EXISTS` (courses/modules/lessons/quiz_questions/lesson_translations/module_translations/user_lessons/user_course_progress/xp_transactions/user_achievements/content_reports/user_fcm_tokens, among others) + idempotent `ALTER TABLE`/`CREATE INDEX` migration array run on boot (indexes cover forum/DM/notifications/marketplace/friends lookup columns). Also adds `forum_threads.solved_reply_id` and `forum_replies.reply_to_id` (both `INTEGER REFERENCES forum_replies(id)`), a partial index `idx_users_xp_desc` on `users(xp DESC) WHERE show_stats = true` for the leaderboard, and moderation columns `users.is_banned`/`banned_reason`/`banned_at`/`muted_until`
   - package-lock.json — locked dependency tree for backend
   - package.json — backend deps/scripts (`start`, `dev`, `reset-db`, `precheck`, `test`)
   - README.md — backend setup instructions
@@ -165,7 +166,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - diacritics.js — normalizes common Romanian words typed/rendered without diacritics
       - gamification-data.js — frontend copy of XP/level/achievement constants (`window.GAMIFICATION_DATA`), must mirror `backend/utils/gamification.js`
       - home-timeline.js — animates the quick-start guide timeline fill bar on the home page, clickable steps
-      - home.js — home page logic: user greeting, avatar URL normalization, achievements/auth wiring; also loads the Progress panel's "Top Contributors" leaderboard preview (`GET /api/leaderboard?limit=5`)
+      - home.js — home page logic: user greeting, avatar URL normalization, achievements/auth wiring; also loads the Progress panel's "Top Contributors" leaderboard preview (`GET /api/leaderboard?limit=5`); the Quick Start Guide overlay doubles as a sequential onboarding tour (Next/Skip through incomplete tasks, auto-started once per browser via `localStorage['cn_onboarding_tour_dismissed']`)
       - i18n.js — i18n engine: `data-i18n` attribute translation, language persisted to localStorage; holds the `MESSAGES` object (en/es/fr/it/de)
       - marketplace.js — shared marketplace helper functions (provider display name/icon, etc.)
       - navigation.js — smooth scrolling, active nav-link highlighting, mobile hamburger menu
@@ -190,7 +191,7 @@ Complete file index for this repository (483 files, excluding `node_modules/`, `
       - invata.js — invata.html: fetches real course progress from API, updates course card progress bars
       - lesson.js — lesson.html controller: loads lesson content/quiz, tracks progress, comments/reactions
       - login.js — login.html: server/local login, Google OAuth redirect handling, 2FA verification, resend verification
-      - profile.js — profil.html Settings controller: account, profile/privacy, security, notifications, appearance tabs
+      - profile.js — profil.html Settings controller: account, profile/privacy, security, notifications, appearance tabs; admin-only reports tab (`loadAdminReports()`) adds per-report moderation buttons (ban/mute/delete-content) alongside the existing status-change actions
       - register.js — register.html: password strength indicator, username availability check, Turnstile CAPTCHA widget, submit, Google OAuth
       - request-password-reset.js — request-password-reset.html: submits reset request to API, shows result
       - reset-password.js — reset-password.html: validates token from URL, submits new password (`?mode=set` variant)

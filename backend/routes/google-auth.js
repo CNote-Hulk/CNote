@@ -208,6 +208,10 @@ router.get('/google/callback',
                 user = insertResult.rows[0];
             }
 
+            if (user.is_banned) {
+                return res.redirect('/html/pages/login.html?error=account_banned');
+            }
+
             // Create session
             const deviceInfo = parseDevice(req);
             const sessionToken = await findOrCreateSession(user.id, deviceInfo);

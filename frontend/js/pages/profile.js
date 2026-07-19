@@ -1627,6 +1627,37 @@ async function loadAdminReports() {
         }
     }
 
+    async function moderationAction(reportId, action, cardEl, body) {
+        cardEl.classList.add('ar-card--loading');
+        try {
+            const res = await fetch(`${API_BASE_URL}/reports/admin/${reportId}/${action}`, {
+                method: action === 'content' ? 'DELETE' : 'POST',
+                headers: { ...headers, 'Content-Type': 'application/json' },
+                body: body ? JSON.stringify(body) : undefined,
+                credentials: 'include',
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (action === 'ban-author') {
+                    const r = allReports.find(x => String(x.id) === String(reportId));
+                    if (r) r.status = 'resolved';
+                } else if (action === 'mute-author') {
+                    const r = allReports.find(x => String(x.id) === String(reportId));
+                    if (r) r.status = 'reviewed';
+                } else if (action === 'content') {
+                    const r = allReports.find(x => String(x.id) === String(reportId));
+                    if (r) r.status = 'resolved';
+                }
+                applyFilter(activeFilter);
+            } else {
+                cardEl.classList.remove('ar-card--loading');
+                alert('Error: ' + (data.error || 'Unknown error'));
+            }
+        } catch {
+            cardEl.classList.remove('ar-card--loading');
+        }
+    }
+
     function renderCards(reports) {
         if (!reports.length) {
             container.innerHTML = `<p class="my-reports-empty">No reports in this category.</p>`;
@@ -1656,6 +1687,14 @@ async function loadAdminReports() {
                 `<button class="ar-btn ${a.cls}" data-id="${r.id}" data-status="${a.status}">${a.label}</button>`
             ).join('');
 
+            const modActions = r.author_id ? [
+                `<button class="ar-btn ar-btn--ban" data-id="${r.id}" data-mod-action="ban-author">🚫 Ban author</button>`,
+                `<button class="ar-btn ar-btn--mute" data-id="${r.id}" data-mod-action="mute-author">🔇 Mute 72h</button>`,
+                r.content_type !== 'user_profile'
+                    ? `<button class="ar-btn ar-btn--delete-content" data-id="${r.id}" data-mod-action="content">🗑 Delete content</button>`
+                    : '',
+            ].join('') : '';
+
             return `<div class="ar-card" data-report-id="${r.id}">
                 <div class="ar-card__header">
                     <div class="ar-card__type">${typeIcon} ${typeLabel}</div>
@@ -1674,15 +1713,34 @@ async function loadAdminReports() {
                     ${reporterNote}
                 </div>
                 <div class="ar-card__actions">${actions || '<span class="ar-no-actions">No further actions</span>'}</div>
+                ${modActions ? `<div class="ar-card__mod-actions">${modActions}</div>` : ''}
             </div>`;
         }).join('');
 
         container.innerHTML = `<div class="ar-card-list">${cards}</div>`;
 
-        container.querySelectorAll('.ar-btn').forEach(btn => {
+        container.querySelectorAll('.ar-btn[data-status]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const card = btn.closest('.ar-card');
                 setStatus(btn.dataset.id, btn.dataset.status, card);
+            });
+        });
+
+        container.querySelectorAll('.ar-btn[data-mod-action]').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const card = btn.closest('.ar-card');
+                const action = btn.dataset.modAction;
+                if (action === 'ban-author') {
+                    const ok = await confirmModal('Ban this user? They will be immediately logged out and unable to log back in.', { ok: 'Ban' });
+                    if (!ok) return;
+                    moderationAction(btn.dataset.id, 'ban-author', card, { reason: 'Content report' });
+                } else if (action === 'mute-author') {
+                    moderationAction(btn.dataset.id, 'mute-author', card, { hours: 72 });
+                } else if (action === 'content') {
+                    const ok = await confirmModal('Delete the reported content? This cannot be undone.', { ok: 'Delete' });
+                    if (!ok) return;
+                    moderationAction(btn.dataset.id, 'content', card);
+                }
             });
         });
     }

@@ -469,3 +469,30 @@
     border-color: rgba(250, 180, 80, 0.25);
     color: #fab450;
 }
+
+.ar-card__mod-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(var(--accent-color-rgb, 245,240,232), 0.15);
+}
+
+.ar-btn--ban {
+    background: rgba(248, 81, 73, 0.12);
+    border-color: rgba(248, 81, 73, 0.3);
+    color: #f85149;
+}
+
+.ar-btn--mute {
+    background: rgba(250, 180, 80, 0.12);
+    border-color: rgba(250, 180, 80, 0.3);
+    color: #fab450;
+}
+
+.ar-btn--delete-content {
+    background: rgba(168, 159, 148, 0.1);
+    border-color: rgba(168, 159, 148, 0.25);
+    color: var(--text-gray);
+}

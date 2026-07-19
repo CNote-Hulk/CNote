@@ -36,6 +36,9 @@ async function authRequired(req, res, next) {
         if (!user) {
             return res.status(401).json({ success: false, error: 'Utilizator inexistent.' });
         }
+        if (user.is_banned) {
+            return res.status(401).json({ success: false, error: 'Cont suspendat.', banned: true });
+        }
         req.user = {
             id: user.id,
             username: user.username,
@@ -69,7 +72,8 @@ async function authRequired(req, res, next) {
             show_social_links: user.show_social_links,
             nickname: user.nickname,
             username_changed_at: user.username_changed_at,
-            language: user.language
+            language: user.language,
+            muted_until: user.muted_until
         };
         return next();
     } catch (jwtErr) {
@@ -90,7 +94,8 @@ async function authRequired(req, res, next) {
                u.notify_new_friend, u.notify_new_message, u.notify_repair_reply,
                u.social_discord, u.social_twitter, u.social_youtube, u.social_instagram,
                u.show_email, u.show_stats, u.show_friends, u.show_social_links,
-               u.nickname, u.username_changed_at, u.language
+               u.nickname, u.username_changed_at, u.language,
+               u.is_banned, u.muted_until
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = true
@@ -103,6 +108,9 @@ async function authRequired(req, res, next) {
     const session = sessionResult.rows[0];
     if (!session) {
         return res.status(401).json({ success: false, error: 'Sesiune invalida sau expirata.' });
+    }
+    if (session.is_banned) {
+        return res.status(401).json({ success: false, error: 'Cont suspendat.', banned: true });
     }
 
     // DB: update last_activity timestamp for this session
@@ -141,7 +149,8 @@ async function authRequired(req, res, next) {
         show_social_links: session.show_social_links,
         nickname: session.nickname,
         username_changed_at: session.username_changed_at,
-        language: session.language
+        language: session.language,
+        muted_until: session.muted_until
     };
     req.sessionId = session.session_id;
     req.sessionToken = token;

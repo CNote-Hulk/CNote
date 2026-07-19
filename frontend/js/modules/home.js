@@ -1139,10 +1139,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             // QUICK START GUIDE
             // =========================
             try {
-                console.log('[QSG]', qsgRes);
                 if (qsgRes && qsgRes.success) {
                     if (qsgRes.show) {
                         renderQuickStart(qsgRes);
+                        maybeStartOnboardingTour(qsgRes);
                     } else {
                         renderQuickStartCompleted(qsgRes);
                     }
@@ -1185,9 +1185,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         overlay.innerHTML = `
             <div class="qsg-modal-content">
                 <button class="qsg-modal-close" id="qsg-modal-close" aria-label="Închide">✕</button>
+                <span id="qsg-tour-step" class="qsg-tour-step" hidden></span>
                 <h3 id="qsg-modal-title"></h3>
                 <p id="qsg-modal-body"></p>
                 <a id="qsg-modal-link" class="qsg-modal-link" href="#"></a>
+                <div id="qsg-tour-controls" class="qsg-tour-controls" hidden>
+                    <button id="qsg-tour-skip" class="qsg-tour-btn qsg-tour-btn--skip"></button>
+                    <button id="qsg-tour-next" class="qsg-tour-btn qsg-tour-btn--next"></button>
+                </div>
             </div>
         `;
         document.body.appendChild(overlay);
@@ -1200,19 +1205,74 @@ document.addEventListener('DOMContentLoaded', async () => {
         return overlay;
     }
 
-    function openQsgModal(task) {
+    function openQsgModal(task, tourCtx) {
         const overlay = ensureQsgOverlay();
         document.getElementById('qsg-modal-title').textContent = I18nModule.t(task.modalTitleKey);
         document.getElementById('qsg-modal-body').textContent = I18nModule.t(task.modalBodyKey).trim();
         const linkEl = document.getElementById('qsg-modal-link');
         linkEl.textContent = I18nModule.t(task.modalLinkKey);
         linkEl.href = task.modalLinkUrl;
+
+        const stepEl = document.getElementById('qsg-tour-step');
+        const controlsEl = document.getElementById('qsg-tour-controls');
+        if (tourCtx) {
+            stepEl.hidden = false;
+            stepEl.textContent = I18nModule.t('qsg_tour_step_x_of_y')
+                .replace('{current}', tourCtx.index).replace('{total}', tourCtx.total);
+            controlsEl.hidden = false;
+            const nextBtn = document.getElementById('qsg-tour-next');
+            const skipBtn = document.getElementById('qsg-tour-skip');
+            nextBtn.textContent = tourCtx.index < tourCtx.total ? I18nModule.t('qsg_tour_next') : I18nModule.t('qsg_tour_finish');
+            skipBtn.textContent = I18nModule.t('qsg_tour_skip');
+            nextBtn.onclick = tourCtx.onNext;
+            skipBtn.onclick = tourCtx.onSkip;
+        } else {
+            stepEl.hidden = true;
+            controlsEl.hidden = true;
+        }
+
         overlay.classList.add('is-open');
     }
 
     function closeQsgModal() {
         const overlay = document.getElementById(QSG_OVERLAY_ID);
         if (overlay) overlay.classList.remove('is-open');
+    }
+
+    // =========================
+    // ONBOARDING TOUR (sequential walk through incomplete QSG tasks)
+    // =========================
+    const TOUR_DISMISSED_KEY = 'cn_onboarding_tour_dismissed';
+
+    function maybeStartOnboardingTour(data) {
+        if (localStorage.getItem(TOUR_DISMISSED_KEY) === '1') return;
+        const incomplete = QUICK_START_TASKS.filter(t => data.tasks[t.id] !== true && t.modalTitleKey);
+        if (!incomplete.length) return;
+        startOnboardingTour(incomplete);
+    }
+
+    function startOnboardingTour(tasks) {
+        let idx = 0;
+
+        function finishTour() {
+            localStorage.setItem(TOUR_DISMISSED_KEY, '1');
+            closeQsgModal();
+        }
+
+        function showStep() {
+            openQsgModal(tasks[idx], {
+                index: idx + 1,
+                total: tasks.length,
+                onNext: () => {
+                    idx++;
+                    if (idx < tasks.length) showStep();
+                    else finishTour();
+                },
+                onSkip: finishTour,
+            });
+        }
+
+        showStep();
     }
 
     function renderQuickStart(data) {

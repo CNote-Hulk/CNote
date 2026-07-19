@@ -12,6 +12,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
+const { isMuted } = require('../utils/moderation');
 const { sendPushNotification } = require('../services/firebaseAdmin');
 const { publicUrlForKey } = require('../utils/objectStorage');
 
@@ -211,6 +212,9 @@ router.get('/messages/:partnerId', authRequired, async (req, res) => {
 
 // ── POST /api/dm/send ────────────────────────────────────
 router.post('/send', authRequired, async (req, res) => {
+    if (isMuted(req.user)) {
+        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+    }
     // Accept both receiverId (frontend) and receiver_id (alternative)
     const rawId = req.body.receiverId || req.body.receiver_id;
     const { message, listingId, attachment_key, attachment_type, attachment_size, attachment_duration_ms } = req.body;

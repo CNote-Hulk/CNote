@@ -236,7 +236,8 @@ if (googleError) {
     const errorMessages = {
         'google_failed': 'Google authentication failed.',
         'google_auth_failed': 'Error authenticating with Google.',
-        'google_not_configured': 'Google OAuth is not configured.'
+        'google_not_configured': 'Google OAuth is not configured.',
+        'account_banned': 'Your account has been suspended.'
     };
     errorEl.textContent = errorMessages[googleError] || 'Authentication error.';
     errorEl.classList.add('visible');
