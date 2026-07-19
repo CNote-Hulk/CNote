@@ -143,6 +143,15 @@ function timeAgo(d) {
 /** Get 2-letter initials from a username */
 function ini(n) { return n ? n.slice(0, 2).toUpperCase() : '?'; }
 
+/** Deterministic per-user avatar color (same palette as the chat module) */
+const AVATAR_COLORS = ['#5B8CFF', '#43B581', '#9B59B6', '#FF6B6B', '#F0A830'];
+function avatarColor(name) {
+    let hash = 0;
+    const s = name || '';
+    for (let i = 0; i < s.length; i++) hash = s.charCodeAt(i) + ((hash << 5) - hash);
+    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
 /** Show a non-blocking toast notification */
 function showToast(msg, type) {
     const el = document.createElement('div');
@@ -370,10 +379,11 @@ function cleanupHubSelects(container) {
 function avatarHtml(name, avatarUrl, size, extraStyle) {
     const sz = size || 36;
     const s = extraStyle || '';
+    const color = avatarColor(name);
     if (avatarUrl) {
-        return `<img src="${esc(avatarUrl)}" alt="" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;${s}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;align-items:center;justify-content:center;font-size:${sz * 0.022}rem;font-weight:700;text-transform:uppercase;${s}">${ini(name)}</span>`;
+        return `<img src="${esc(avatarUrl)}" alt="" style="width:${sz}px;height:${sz}px;border-radius:50%;object-fit:cover;${s}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:${sz}px;height:${sz}px;border-radius:50%;align-items:center;justify-content:center;font-size:${sz * 0.022}rem;font-weight:700;text-transform:uppercase;background:${color};color:#fff;${s}">${ini(name)}</span>`;
     }
-    return ini(name);
+    return `<span style="display:flex;width:${sz}px;height:${sz}px;border-radius:50%;align-items:center;justify-content:center;font-size:${sz * 0.38}px;font-weight:700;text-transform:uppercase;background:${color};color:#fff;${s}">${ini(name)}</span>`;
 }
 
 /** Authenticated API call helper — attaches JWT and returns parsed JSON */
@@ -1264,7 +1274,7 @@ async function openListingDetail(id) {
                     </div>
                     <div class="hub-detail-card hub-detail-card--seller">
                         <div class="hub-detail-seller-info">
-                            <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
+                            <div class="hub-detail-seller-avatar">${avatarHtml(l.seller_name, l.seller_avatar, 48)}</div>
                             <div class="hub-detail-seller-meta">
                                 <div class="hub-detail-seller-name">${esc(l.seller_name)}${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}</div>
                                 <div class="hub-detail-seller-sub" id="seller-rating-summary">Seller</div>
