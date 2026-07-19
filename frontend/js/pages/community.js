@@ -1109,7 +1109,7 @@ async function loadListings() {
                         <div class="hub-listing-info__meta">
                             <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
                             <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
-                            ${l.seller_is_official ? `<span class="hub-official-badge">✓ ${I18nModule.t('marketplace_official_badge')}</span>` : ''}
+                            ${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
                     </div>
                 </button>`;
@@ -1265,7 +1265,7 @@ async function openListingDetail(id) {
                     <div class="hub-detail-card hub-detail-card--seller">
                         <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
                         <div style="flex:1">
-                            <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}${l.seller_is_official ? `<span class="hub-official-badge">✓ ${I18nModule.t('marketplace_official_badge')}</span>` : ''}</div>
+                            <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}</div>
                             <div style="color:var(--text-gray);font-size:.78rem" id="seller-rating-summary">Seller</div>
                         </div>
                         ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
@@ -1463,7 +1463,7 @@ async function loadSimilarListings(listingId, container) {
                         <div class="hub-listing-info__meta">
                             <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
                             <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
-                            ${l.seller_is_official ? `<span class="hub-official-badge">✓ ${I18nModule.t('marketplace_official_badge')}</span>` : ''}
+                            ${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
                     </div>
                 </button>`;
@@ -2316,24 +2316,73 @@ function renderPhotos() {
         <div class="hub-photos-loadmore" id="photos-loadmore" hidden>
             <button class="hub-btn hub-btn--secondary" id="photos-loadmore-btn">${I18nModule.t('photos_load_more')}</button>
         </div>
-        <div class="hub-modal-overlay" id="photo-upload-overlay">
-            <div class="hub-modal">
-                <button class="hub-modal__close" id="photo-upload-close" aria-label="Close">✕</button>
-                <h3>${I18nModule.t('photos_upload_title')}</h3>
-                <input type="file" id="photo-upload-file" accept="image/jpeg,image/png,image/webp,image/gif">
-                <textarea id="photo-upload-caption" placeholder="${I18nModule.t('photos_caption_placeholder')}" maxlength="300"></textarea>
-                <button class="hub-btn hub-btn--primary" id="photo-upload-submit">${I18nModule.t('photos_upload_submit')}</button>
-                <p class="hub-modal__status" id="photo-upload-status"></p>
-            </div>
-        </div>
     `;
 
-    const overlay = v.querySelector('#photo-upload-overlay');
-    v.querySelector('#photos-upload-btn')?.addEventListener('click', () => overlay.classList.add('is-open'));
-    v.querySelector('#photo-upload-close').addEventListener('click', () => overlay.classList.remove('is-open'));
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('is-open'); });
-    v.querySelector('#photo-upload-submit').addEventListener('click', submitPhotoUpload);
+    v.querySelector('#photos-upload-btn')?.addEventListener('click', openPhotoUploadModal);
     v.querySelector('#photos-loadmore-btn')?.addEventListener('click', () => loadPhotos(true));
+}
+
+/** Open modal dialog to upload a new community photo — mirrors openAddListingModal()'s singleton overlay + dropzone pattern */
+function openPhotoUploadModal() {
+    const _prev = document.querySelector('.hub-modal-overlay');
+    if (_prev) _prev.remove();
+
+    let selectedFile = null;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'hub-modal-overlay';
+    overlay.innerHTML = `
+        <div class="hub-modal">
+            <div class="hub-modal__header">
+                <span class="hub-modal__title">${I18nModule.t('photos_upload_title')}</span>
+                <button class="hub-modal__close" aria-label="Close">&times;</button>
+            </div>
+            <div class="hub-modal__body">
+                <div class="hub-form-group">
+                    <div class="hub-upload-zone" id="photo-upload-zone">
+                        <input type="file" id="photo-upload-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                        <span class="hub-upload-zone__icon">📸</span>
+                        <span class="hub-upload-zone__text" id="photo-upload-zone-text">${I18nModule.t('photos_no_file')}</span>
+                    </div>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">${I18nModule.t('photos_caption_placeholder')}</label>
+                    <textarea class="hub-form-textarea" id="photo-upload-caption" maxlength="300" rows="2"></textarea>
+                </div>
+                <p class="hub-form-status" id="photo-upload-status"></p>
+            </div>
+            <div class="hub-modal__footer">
+                <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
+                <button type="button" class="hub-btn hub-btn--primary" id="photo-upload-submit">${I18nModule.t('photos_upload_submit')}</button>
+            </div>
+        </div>`;
+
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('.hub-modal__close').addEventListener('click', close);
+    overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    const zone = overlay.querySelector('#photo-upload-zone');
+    const fileInput = overlay.querySelector('#photo-upload-file');
+    const zoneText = overlay.querySelector('#photo-upload-zone-text');
+
+    function setFile(file) {
+        selectedFile = file || null;
+        zoneText.textContent = selectedFile ? selectedFile.name : I18nModule.t('photos_no_file');
+    }
+
+    zone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => setFile(fileInput.files[0]));
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('hub-upload-zone--drag'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('hub-upload-zone--drag'));
+    zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('hub-upload-zone--drag');
+        setFile(e.dataTransfer.files[0]);
+    });
+
+    overlay.querySelector('#photo-upload-submit').addEventListener('click', () => submitPhotoUpload(overlay, () => selectedFile, close));
 }
 
 async function loadPhotos(append) {
@@ -2383,12 +2432,11 @@ async function loadPhotos(append) {
     }
 }
 
-async function submitPhotoUpload() {
-    const fileInput = document.getElementById('photo-upload-file');
-    const captionInput = document.getElementById('photo-upload-caption');
-    const statusEl = document.getElementById('photo-upload-status');
-    const submitBtn = document.getElementById('photo-upload-submit');
-    const file = fileInput.files[0];
+async function submitPhotoUpload(overlay, getFile, close) {
+    const captionInput = overlay.querySelector('#photo-upload-caption');
+    const statusEl = overlay.querySelector('#photo-upload-status');
+    const submitBtn = overlay.querySelector('#photo-upload-submit');
+    const file = getFile();
     if (!file) { statusEl.textContent = I18nModule.t('photos_no_file'); return; }
 
     submitBtn.disabled = true;
@@ -2415,9 +2463,7 @@ async function submitPhotoUpload() {
         });
         if (!meta.success) throw new Error(meta.error || 'Save failed');
 
-        document.getElementById('photo-upload-overlay').classList.remove('is-open');
-        fileInput.value = '';
-        captionInput.value = '';
+        close();
         loadPhotos(false);
     } catch (err) {
         statusEl.textContent = err.message || I18nModule.t('photos_upload_error');

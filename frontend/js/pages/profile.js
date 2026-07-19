@@ -1694,10 +1694,10 @@ async function loadAdminReports() {
             ).join('');
 
             const modActions = r.author_id ? [
-                `<button class="ar-btn ar-btn--ban" data-id="${r.id}" data-mod-action="ban-author">🚫 Ban author</button>`,
-                `<button class="ar-btn ar-btn--mute" data-id="${r.id}" data-mod-action="mute-author">🔇 Mute 72h</button>`,
+                `<button class="ar-btn ar-btn--ban" data-id="${r.id}" data-mod-action="ban-author">🚫 ${t('admin_ban_author_btn')}</button>`,
+                `<button class="ar-btn ar-btn--mute" data-id="${r.id}" data-mod-action="mute-author">🔇 ${t('admin_mute_author_btn')}</button>`,
                 r.content_type !== 'user_profile'
-                    ? `<button class="ar-btn ar-btn--delete-content" data-id="${r.id}" data-mod-action="content">🗑 Delete content</button>`
+                    ? `<button class="ar-btn ar-btn--delete-content" data-id="${r.id}" data-mod-action="content">🗑 ${t('admin_delete_content_btn')}</button>`
                     : '',
             ].join('') : '';
 
@@ -1737,13 +1737,13 @@ async function loadAdminReports() {
                 const card = btn.closest('.ar-card');
                 const action = btn.dataset.modAction;
                 if (action === 'ban-author') {
-                    const ok = await confirmModal('Ban this user? They will be immediately logged out and unable to log back in.', { ok: 'Ban' });
+                    const ok = await confirmModal(t('admin_ban_confirm'), { ok: t('admin_ban_confirm_ok') });
                     if (!ok) return;
                     moderationAction(btn.dataset.id, 'ban-author', card, { reason: 'Content report' });
                 } else if (action === 'mute-author') {
                     moderationAction(btn.dataset.id, 'mute-author', card, { hours: 72 });
                 } else if (action === 'content') {
-                    const ok = await confirmModal('Delete the reported content? This cannot be undone.', { ok: 'Delete' });
+                    const ok = await confirmModal(t('admin_delete_content_confirm'), { ok: t('admin_delete_content_confirm_ok') });
                     if (!ok) return;
                     moderationAction(btn.dataset.id, 'content', card);
                 }
@@ -1784,24 +1784,25 @@ async function loadAdminAnalytics() {
     const token = localStorage.getItem('cn_token') || '';
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
-    container.innerHTML = `<p class="my-reports-empty">Loading…</p>`;
+    container.innerHTML = `<p class="my-reports-empty">${t('admin_analytics_loading')}</p>`;
     try {
         const resp = await fetch(`${API_BASE_URL}/admin/stats`, { headers, credentials: 'include' });
         const data = await resp.json().catch(() => ({}));
         if (!resp.ok || !data.success) throw new Error(data.error || 'Error');
 
         const tiles = [
-            { label: 'Total users', value: data.totalUsers },
-            { label: 'Active (7d)', value: data.activeUsers7d },
-            { label: 'Active (30d)', value: data.activeUsers30d },
-            { label: 'Listings', value: data.totalListings },
-            { label: 'Forum threads', value: data.totalThreads },
-            { label: 'Forum replies', value: data.totalReplies },
+            { icon: '👥', label: t('admin_stat_total_users'), value: data.totalUsers },
+            { icon: '🟢', label: t('admin_stat_active_7d'), value: data.activeUsers7d },
+            { icon: '📈', label: t('admin_stat_active_30d'), value: data.activeUsers30d },
+            { icon: '🛒', label: t('admin_stat_listings'), value: data.totalListings },
+            { icon: '💬', label: t('admin_stat_threads'), value: data.totalThreads },
+            { icon: '💭', label: t('admin_stat_replies'), value: data.totalReplies },
         ];
-        const tilesHtml = tiles.map(t => `
+        const tilesHtml = tiles.map(tile => `
             <div class="aa-tile">
-                <div class="aa-tile__value">${t.value}</div>
-                <div class="aa-tile__label">${t.label}</div>
+                <span class="aa-tile__icon">${tile.icon}</span>
+                <div class="aa-tile__value">${tile.value}</div>
+                <div class="aa-tile__label">${tile.label}</div>
             </div>
         `).join('');
 
@@ -1816,22 +1817,23 @@ async function loadAdminAnalytics() {
                     <span class="aa-bar-row__value">${d.count}</span>
                 </div>`;
             }).join('')
-            : `<p class="my-reports-empty">No signups in the last 30 days.</p>`;
+            : `<p class="my-reports-empty">${t('admin_analytics_no_signups')}</p>`;
 
+        const STATUS_ICONS = { active: '🟢', sold: '✅', inactive: '⏸' };
         const statusHtml = data.listingsByStatus.map(s =>
-            `<span class="aa-status-chip">${s.status}: ${s.count}</span>`
+            `<span class="aa-status-chip aa-status-chip--${s.status}">${STATUS_ICONS[s.status] || '•'} ${s.status}: ${s.count}</span>`
         ).join('');
 
         container.innerHTML = `
             <div class="aa-tiles">${tilesHtml}</div>
-            <h4 class="aa-section-title">Signups — last 30 days</h4>
+            <h4 class="aa-section-title">${t('admin_analytics_signups_title')}</h4>
             <div class="aa-bars">${signupsHtml}</div>
-            <h4 class="aa-section-title">Listings by status</h4>
+            <h4 class="aa-section-title">${t('admin_analytics_status_title')}</h4>
             <div class="aa-status-row">${statusHtml}</div>
         `;
     } catch (err) {
         console.error('[loadAdminAnalytics]', err);
-        container.innerHTML = `<p class="my-reports-empty">Failed to load analytics.</p>`;
+        container.innerHTML = `<p class="my-reports-empty">${t('admin_analytics_error')}</p>`;
     }
 }
 

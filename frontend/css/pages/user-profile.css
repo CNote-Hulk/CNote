@@ -669,14 +669,21 @@
 }
 
 .user-official-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     margin-top: 4px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.68rem;
+    padding: 2px 9px 2px 7px;
+    border-radius: 999px;
+    font-size: 0.66rem;
     font-weight: 700;
-    background: rgba(var(--up-accent-rgb, 100, 160, 255), 0.15);
+    background: linear-gradient(135deg, rgba(var(--up-accent-rgb, 100, 160, 255), 0.2), rgba(var(--up-accent-rgb, 100, 160, 255), 0.08));
+    border: 1px solid rgba(var(--up-accent-rgb, 100, 160, 255), 0.3);
     color: var(--up-accent);
+}
+
+.user-official-badge svg {
+    flex-shrink: 0;
 }
 
 .user-listings-empty {

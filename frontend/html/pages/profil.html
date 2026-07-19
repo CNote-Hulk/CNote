@@ -104,7 +104,7 @@
                     </button>
                     <button class="profile-tab sidebar-link admin-only-tab" data-tab="admin-analytics" type="button" hidden>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                        <span>Admin Analytics</span>
+                        <span data-i18n="admin_analytics_tab">Admin Analytics</span>
                     </button>
                 </div>
 
@@ -617,12 +617,12 @@
                 <div class="profile-panel" id="panel-admin-analytics" data-panel="admin-analytics">
                     <div class="settings-row settings-row--meta-only">
                         <div class="settings-row__meta">
-                            <div class="settings-row__title">📊 Admin — Analytics</div>
-                            <div class="settings-row__desc">Growth and activity snapshot. Active-user counts are approximated from login sessions.</div>
+                            <div class="settings-row__title" data-i18n="admin_analytics_title">📊 Admin — Analytics</div>
+                            <div class="settings-row__desc" data-i18n="admin_analytics_desc">Growth and activity snapshot. Active-user counts are approximated from login sessions.</div>
                         </div>
                     </div>
                     <div id="admin-analytics-container">
-                        <p class="my-reports-empty">Se încarcă…</p>
+                        <p class="my-reports-empty" data-i18n="admin_analytics_loading">Se încarcă…</p>
                     </div>
                 </div>
 
@@ -694,7 +694,7 @@
             </button>
             <button type="button" class="mbn-dd-item admin-only-tab" data-mbn-tab="admin-analytics" hidden>
                 <span class="mbn-dd-icon">📊</span>
-                <span>Admin Analytics</span>
+                <span data-i18n="admin_analytics_tab">Admin Analytics</span>
             </button>
             <div class="mbn-dd-sep"></div>
             <a href="home.html" class="mbn-dd-item">

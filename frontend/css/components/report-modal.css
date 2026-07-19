@@ -509,20 +509,35 @@
 .aa-tile {
     border: 1px solid rgba(var(--accent-color-rgb, 245,240,232), 0.15);
     border-radius: 10px;
-    padding: 14px;
+    padding: 16px 14px;
     text-align: center;
+    transition: border-color 0.18s ease, transform 0.18s ease;
+}
+.aa-tile:hover {
+    border-color: rgba(var(--accent-color-rgb, 245,240,232), 0.3);
+    transform: translateY(-2px);
+}
+
+.aa-tile__icon {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    opacity: 0.85;
 }
 
 .aa-tile__value {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
+    font-variant-numeric: tabular-nums;
     color: var(--accent-color, inherit);
 }
 
 .aa-tile__label {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: var(--text-gray);
     margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 .aa-section-title {
@@ -562,6 +577,7 @@
     height: 100%;
     background: var(--accent-color, #7eb8ff);
     border-radius: 4px;
+    transition: width 0.4s ease;
 }
 
 .aa-bar-row__value {
@@ -583,4 +599,9 @@
     background: rgba(var(--accent-color-rgb, 245,240,232), 0.08);
     font-size: 0.75rem;
     color: var(--text-gray);
+    text-transform: capitalize;
 }
+
+.aa-status-chip--active   { background: rgba(74, 222, 128, 0.12); color: #4ade80; }
+.aa-status-chip--sold     { background: rgba(100, 160, 255, 0.12); color: #7eb8ff; }
+.aa-status-chip--inactive { background: rgba(168, 159, 148, 0.12); color: var(--text-gray); }

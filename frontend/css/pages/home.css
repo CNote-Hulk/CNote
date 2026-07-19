@@ -2588,14 +2588,22 @@ body.home-page::before {
 }
 
 .home-official-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
     margin-left: 4px;
-    padding: 1px 6px;
-    border-radius: 10px;
-    font-size: 0.65rem;
+    padding: 1px 7px 1px 5px;
+    border-radius: 999px;
+    font-size: 0.63rem;
     font-weight: 700;
-    background: rgba(var(--accent-rgb), 0.18);
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.22), rgba(var(--accent-rgb), 0.1));
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
     color: var(--accent-color);
+    vertical-align: middle;
+}
+
+.home-official-badge svg {
+    flex-shrink: 0;
 }
 
 /* ── My Listings action row ── */

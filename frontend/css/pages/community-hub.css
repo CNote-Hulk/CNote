@@ -723,16 +723,23 @@
 .hub-official-badge {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     margin-left: 6px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.7rem;
+    padding: 2px 9px 2px 7px;
+    border-radius: 999px;
+    font-size: 0.68rem;
     font-weight: 700;
+    letter-spacing: 0.01em;
     font-family: var(--font-sans);
-    background: rgba(var(--accent-rgb), 0.18);
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.22), rgba(var(--accent-rgb), 0.1));
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
     color: var(--accent-color);
     white-space: nowrap;
+    vertical-align: middle;
+}
+
+.hub-official-badge svg {
+    flex-shrink: 0;
 }
 
 /* ── Forum ──────────────────────────────────────────────── */
@@ -4888,6 +4895,12 @@
     background: var(--card-bg, transparent);
     display: flex;
     flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.hub-photo-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(var(--accent-rgb), 0.25);
 }
 
 .hub-photo-card img {
@@ -4932,79 +4945,9 @@
     padding: 12px 0 20px;
 }
 
-/* ── Generic small modal (photo upload) ───────────────────── */
-
-.hub-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.hub-modal-overlay.is-open {
-    display: flex;
-}
-
-.hub-modal {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 1.75rem;
-    max-width: 420px;
-    width: 92%;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.hub-modal h3 {
-    margin: 0 0 4px;
-    font-size: 1.05rem;
-    padding-right: 1.5rem;
-    color: var(--text-light);
-}
-
-.hub-modal input[type="file"] {
-    font-size: 0.82rem;
-    color: var(--text-gray);
-}
-
-.hub-modal textarea {
-    resize: vertical;
-    min-height: 60px;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background: transparent;
-    color: var(--text-light);
-    font-family: inherit;
-    font-size: 0.85rem;
-}
-
-.hub-modal__close {
-    position: absolute;
-    top: 0.9rem;
-    right: 0.9rem;
-    background: transparent;
-    border: none;
-    color: var(--text-gray);
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 0.3rem 0.5rem;
-    border-radius: 6px;
-}
-.hub-modal__close:hover {
-    color: var(--text-light);
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.hub-modal__status {
+.hub-form-status {
     margin: 0;
     font-size: 0.78rem;
     color: var(--text-gray);
+    min-height: 1.1em;
 }
