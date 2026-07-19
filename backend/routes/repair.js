@@ -16,30 +16,30 @@ const CONSOLE_SYMPTOMS = {
         'No power', 'Overheating', 'Disc read error', 'No video output',
         'Controller drift', 'Blue screen / crash', 'Slow performance',
         'Network issues', 'Strange noises', 'Eject problems', "Won't update",
-        'HDMI port damaged', 'Power supply failure'
+        'HDMI port damaged', 'Power supply failure', 'Cosmetic restoration / upgrade'
     ],
     ps: [
         'No power', 'Overheating', 'Disc read error', 'No video output',
         'Controller drift', 'Blue screen / crash', 'Slow performance',
         'Network issues', 'Strange noises', 'Eject problems', "Won't update",
-        'HDMI port damaged', 'Rest mode freeze'
+        'HDMI port damaged', 'Rest mode freeze', 'Cosmetic restoration / upgrade'
     ],
     nintendo: [
         'No power', 'Overheating', 'Joy-Con drift', 'No video output',
         'Screen issues', 'Blue screen / crash', 'Slow performance',
         'Network issues', 'Strange noises', 'Charging problems',
-        "Won't update", 'Battery drain'
+        "Won't update", 'Battery drain', 'Cosmetic restoration / upgrade'
     ],
     pc: [
         'No power', 'Overheating', 'Blue screen / crash', 'No video output',
         'Slow performance', 'Network issues', 'Strange noises',
         'Boot loop', 'GPU artifacts', 'RAM errors',
-        'Driver issues', 'Storage failure'
+        'Driver issues', 'Storage failure', 'Cosmetic restoration / upgrade'
     ],
     other: [
         'No power', 'Overheating', 'No video output', 'Strange noises',
         "Won't turn on", 'Disc read error', 'Controller issues',
-        'Slow performance', 'Network issues'
+        'Slow performance', 'Network issues', 'Cosmetic restoration / upgrade'
     ]
 };
 

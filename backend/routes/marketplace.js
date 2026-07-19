@@ -104,7 +104,8 @@ router.get('/listings', async (req, res) => {
             SELECT l.id, l.title, l.description, l.price, l.condition, l.category,
                    l.location, l.country, l.images, l.sold, l.status, l.views,
                    l.favorites_count, l.console_type, l.created_at,
-                   u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar
+                   u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar,
+                   u.role = 'admin' AS seller_is_official
             FROM listings l
             JOIN users u ON u.id = l.user_id
             ${whereClause}
@@ -130,7 +131,8 @@ router.get('/listings', async (req, res) => {
             created_at: row.created_at,
             seller_id: row.seller_id,
             seller_name: row.seller_name,
-            seller_avatar: row.seller_avatar || ''
+            seller_avatar: row.seller_avatar || '',
+            seller_is_official: !!row.seller_is_official
         }));
 
         res.json({ success: true, listings, total, page, totalPages: Math.ceil(total / limit) });
@@ -186,7 +188,8 @@ router.get('/listings/user/:userId', async (req, res) => {
         const result = await pool.query(`
             SELECT l.id, l.title, l.price, l.condition, l.category, l.location, l.country,
                    l.images, l.sold, l.status, l.console_type, l.created_at,
-                   u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar
+                   u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar,
+                   u.role = 'admin' AS seller_is_official
             FROM listings l
             JOIN users u ON u.id = l.user_id
             WHERE l.user_id = $1 AND COALESCE(l.status, 'active') = 'active'
@@ -208,7 +211,8 @@ router.get('/listings/user/:userId', async (req, res) => {
             created_at: row.created_at,
             seller_id: row.seller_id,
             seller_name: row.seller_name,
-            seller_avatar: row.seller_avatar || ''
+            seller_avatar: row.seller_avatar || '',
+            seller_is_official: !!row.seller_is_official
         }));
 
         res.json({ success: true, listings });
@@ -226,7 +230,7 @@ router.get('/listings/:id', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT l.*, u.id AS seller_id, u.username AS seller_name,
-                   u.avatar AS seller_avatar
+                   u.avatar AS seller_avatar, u.role = 'admin' AS seller_is_official
             FROM listings l
             JOIN users u ON u.id = l.user_id
             WHERE l.id = $1
@@ -259,7 +263,8 @@ router.get('/listings/:id', async (req, res) => {
                 created_at: row.created_at,
                 seller_id: row.seller_id,
                 seller_name: row.seller_name,
-                seller_avatar: row.seller_avatar || ''
+                seller_avatar: row.seller_avatar || '',
+                seller_is_official: !!row.seller_is_official
             }
         });
     } catch (err) {
@@ -294,7 +299,8 @@ router.get('/listings/:id/similar', async (req, res) => {
             const brandResult = await pool.query(`
                 SELECT l.id, l.title, l.price, l.condition, l.category, l.location, l.country,
                        l.images, l.sold, l.status, l.created_at,
-                       u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar
+                       u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar,
+                       u.role = 'admin' AS seller_is_official
                 FROM listings l
                 JOIN users u ON u.id = l.user_id
                 WHERE l.category = $1 AND l.id != $2 AND l.user_id != $3
@@ -312,7 +318,8 @@ router.get('/listings/:id/similar', async (req, res) => {
             const fillResult = await pool.query(`
                 SELECT l.id, l.title, l.price, l.condition, l.category, l.location, l.country,
                        l.images, l.sold, l.status, l.created_at,
-                       u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar
+                       u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar,
+                       u.role = 'admin' AS seller_is_official
                 FROM listings l
                 JOIN users u ON u.id = l.user_id
                 WHERE l.category = $1 AND l.user_id != $2
@@ -338,7 +345,8 @@ router.get('/listings/:id/similar', async (req, res) => {
             created_at: row.created_at,
             seller_id: row.seller_id,
             seller_name: row.seller_name,
-            seller_avatar: row.seller_avatar || ''
+            seller_avatar: row.seller_avatar || '',
+            seller_is_official: !!row.seller_is_official
         }));
 
         res.json({ success: true, listings: mapped });
@@ -544,7 +552,8 @@ router.get('/favorites', authRequired, async (req, res) => {
         const result = await pool.query(`
             SELECT l.id, l.title, l.price, l.condition, l.category, l.location, l.country,
                    l.images, l.sold, l.status, l.views, l.favorites_count, l.created_at,
-                   u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar
+                   u.id AS seller_id, u.username AS seller_name, u.avatar AS seller_avatar,
+                   u.role = 'admin' AS seller_is_official
             FROM listing_favorites lf
             JOIN listings l ON l.id = lf.listing_id
             JOIN users u ON u.id = l.user_id
@@ -566,7 +575,8 @@ router.get('/favorites', authRequired, async (req, res) => {
             created_at: row.created_at,
             seller_id: row.seller_id,
             seller_name: row.seller_name,
-            seller_avatar: row.seller_avatar || ''
+            seller_avatar: row.seller_avatar || '',
+            seller_is_official: !!row.seller_is_official
         }));
 
         res.json({ success: true, listings });

@@ -2587,6 +2587,17 @@ body.home-page::before {
     text-overflow: ellipsis;
 }
 
+.home-official-badge {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: rgba(var(--accent-rgb), 0.18);
+    color: var(--accent-color);
+}
+
 /* ── My Listings action row ── */
 .home-listing-card__actions {
     display: flex;

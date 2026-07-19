@@ -720,6 +720,21 @@
 .hub-severity--medium { background: rgba(249, 115, 22, 0.15); color: #fb923c; }
 .hub-severity--high   { background: rgba(239, 68, 68, 0.15); color: #f87171; }
 
+.hub-official-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    background: rgba(var(--accent-rgb), 0.18);
+    color: var(--accent-color);
+    white-space: nowrap;
+}
+
 /* ── Forum ──────────────────────────────────────────────── */
 
 .hub-forum-filters {

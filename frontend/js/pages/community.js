@@ -33,30 +33,30 @@ const SYMPTOMS_BY_CONSOLE = {
         'No power', 'Overheating', 'Disc read error', 'No video output',
         'Controller drift', 'Blue screen / crash', 'Slow performance',
         'Network issues', 'Strange noises', 'Eject problems', "Won't update",
-        'HDMI port damaged', 'Power supply failure'
+        'HDMI port damaged', 'Power supply failure', 'Cosmetic restoration / upgrade'
     ],
     ps: [
         'No power', 'Overheating', 'Disc read error', 'No video output',
         'Controller drift', 'Blue screen / crash', 'Slow performance',
         'Network issues', 'Strange noises', 'Eject problems', "Won't update",
-        'HDMI port damaged', 'Rest mode freeze'
+        'HDMI port damaged', 'Rest mode freeze', 'Cosmetic restoration / upgrade'
     ],
     nintendo: [
         'No power', 'Overheating', 'Joy-Con drift', 'No video output',
         'Screen issues', 'Blue screen / crash', 'Slow performance',
         'Network issues', 'Strange noises', 'Charging problems',
-        "Won't update", 'Battery drain'
+        "Won't update", 'Battery drain', 'Cosmetic restoration / upgrade'
     ],
     pc: [
         'No power', 'Overheating', 'Blue screen / crash', 'No video output',
         'Slow performance', 'Network issues', 'Strange noises',
         'Boot loop', 'GPU artifacts', 'RAM errors',
-        'Driver issues', 'Storage failure'
+        'Driver issues', 'Storage failure', 'Cosmetic restoration / upgrade'
     ],
     other: [
         'No power', 'Overheating', 'No video output', 'Strange noises',
         "Won't turn on", 'Disc read error', 'Controller issues',
-        'Slow performance', 'Network issues'
+        'Slow performance', 'Network issues', 'Cosmetic restoration / upgrade'
     ]
 };
 
@@ -1109,6 +1109,7 @@ async function loadListings() {
                         <div class="hub-listing-info__meta">
                             <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
                             <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
+                            ${l.seller_is_official ? `<span class="hub-official-badge">✓ ${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
                     </div>
                 </button>`;
@@ -1264,7 +1265,7 @@ async function openListingDetail(id) {
                     <div class="hub-detail-card hub-detail-card--seller">
                         <div class="hub-detail-seller-avatar">${l.seller_avatar ? `<img src="${esc(l.seller_avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : ini(l.seller_name)}</div>
                         <div style="flex:1">
-                            <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}</div>
+                            <div style="color:var(--text-light);font-weight:600">${esc(l.seller_name)}${l.seller_is_official ? `<span class="hub-official-badge">✓ ${I18nModule.t('marketplace_official_badge')}</span>` : ''}</div>
                             <div style="color:var(--text-gray);font-size:.78rem" id="seller-rating-summary">Seller</div>
                         </div>
                         ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
@@ -1462,6 +1463,7 @@ async function loadSimilarListings(listingId, container) {
                         <div class="hub-listing-info__meta">
                             <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
                             <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
+                            ${l.seller_is_official ? `<span class="hub-official-badge">✓ ${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
                     </div>
                 </button>`;

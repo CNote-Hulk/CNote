@@ -765,7 +765,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div class="home-listing-card__info">
                             <div class="home-listing-card__title">${escapeHtml(l.title)}</div>
                             <div class="home-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
-                            <div class="home-listing-card__seller">${escapeHtml(l.seller_name || '')}</div>
+                            <div class="home-listing-card__seller">${escapeHtml(l.seller_name || '')}${l.seller_is_official ? `<span class="home-official-badge">✓ ${I18nModule.t('marketplace_official_badge')}</span>` : ''}</div>
                         </div>
                     </a>`;
                 }).join('');

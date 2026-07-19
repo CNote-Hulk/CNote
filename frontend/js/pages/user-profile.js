@@ -666,6 +666,7 @@ const t = key => I18nModule.t(key);
                             <div class="user-listing-card__condition">${condLabels[l.condition] || l.condition || ''}</div>
                             <div class="user-listing-card__title">${escapeHtml(l.title)}</div>
                             <div class="user-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
+                            ${l.seller_is_official ? `<span class="user-official-badge">✓ ${t('marketplace_official_badge')}</span>` : ''}
                         </div>
                     </a>`;
                 }).join('');

@@ -668,6 +668,17 @@
     margin-top: 4px;
 }
 
+.user-official-badge {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: rgba(var(--up-accent-rgb, 100, 160, 255), 0.15);
+    color: var(--up-accent);
+}
+
 .user-listings-empty {
     color: var(--text-gray, #A89F94);
     font-size: 0.85rem;
