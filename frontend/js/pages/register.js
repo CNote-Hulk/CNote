@@ -87,7 +87,7 @@ function renderTurnstileWhenReady(attemptsLeft = 50) {
     const container = document.getElementById('register-turnstile');
     if (!container || !window.TURNSTILE_SITE_KEY) return;
     if (window.turnstile) {
-        turnstileWidgetId = window.turnstile.render(container, { sitekey: window.TURNSTILE_SITE_KEY, theme: 'dark' });
+        turnstileWidgetId = window.turnstile.render(container, { sitekey: window.TURNSTILE_SITE_KEY, theme: 'light', size: 'flexible' });
         return;
     }
     if (attemptsLeft <= 0) return; // Turnstile script failed to load — submit will proceed without a token

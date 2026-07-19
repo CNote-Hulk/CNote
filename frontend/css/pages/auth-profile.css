@@ -4103,6 +4103,25 @@ a.chat-message__username:hover {
     color: #2a1a0e;
 }
 
+/* Turnstile verification field — frames the Cloudflare widget so it reads
+   as part of the form instead of a foreign box dropped on the paper. The
+   widget itself renders in Turnstile's "light" theme (set in register.js)
+   to match this background; we can't restyle the iframe's own contents,
+   only the frame around it. */
+.auth-field--turnstile {
+    gap: 8px;
+}
+.auth-field--turnstile #register-turnstile {
+    border: 1px solid rgba(130, 90, 20, 0.16);
+    border-radius: var(--radius-md, 8px);
+    padding: 3px;
+    background: rgba(61, 42, 26, 0.03);
+    overflow: hidden;
+}
+.auth-field--turnstile #register-turnstile iframe {
+    border-radius: calc(var(--radius-md, 8px) - 3px);
+}
+
 /* ═══════════════════════════════════════════
    MARKETPLACE INTEGRATION STYLES
    ═══════════════════════════════════════════ */
