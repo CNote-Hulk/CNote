@@ -305,6 +305,91 @@ function update() {
     });
 }
 
+// ── URL-driven state (?a=<id>&b=<id>) + dynamic SEO meta ──────────────────────
+// Query string (not #hash) so each pair can be linked/canonicalized/indexed as
+// its own URL — Google does not crawl/index fragment identifiers separately.
+const BASE_URL = 'https://consolenotebook.com/html/pages/comparatie.html';
+const DEFAULT_META = {
+    title: document.title,
+    description: document.querySelector('meta[name="description"]')?.content || '',
+};
+
+function findConsole(id) {
+    return consolesData ? consolesData.find(c => c.id === id) : null;
+}
+
+// Canonical pair order = order the two consoles appear in the source data
+// (roughly release order). This keeps "A vs B" and "B vs A" URLs pointing at
+// one authoritative canonical, instead of splitting SEO signal across both.
+function canonicalOrder(idA, idB) {
+    const iA = consolesData.findIndex(c => c.id === idA);
+    const iB = consolesData.findIndex(c => c.id === idB);
+    return iA <= iB ? [idA, idB] : [idB, idA];
+}
+
+function setMeta(selector, attr, value) {
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, value);
+}
+
+function updateMetaTags(idA, idB) {
+    const a = findConsole(idA);
+    const b = findConsole(idB);
+    if (!a || !b) return;
+
+    const title = `${a.name} vs ${b.name} — Console Notebook`;
+    const description = `Compare ${a.name} vs ${b.name}: CPU, GPU, RAM, storage, specs and verdict on Console Notebook.`;
+    const [canonA, canonB] = canonicalOrder(idA, idB);
+    const canonicalUrl = `${BASE_URL}?a=${canonA}&b=${canonB}`;
+    const ogImage = 'https://consolenotebook.com/' + a.image;
+
+    document.title = title;
+    setMeta('meta[name="description"]', 'content', description);
+    setMeta('link[rel="canonical"]', 'href', canonicalUrl);
+    setMeta('meta[property="og:title"]', 'content', title);
+    setMeta('meta[property="og:description"]', 'content', description);
+    setMeta('meta[property="og:url"]', 'content', canonicalUrl);
+    setMeta('meta[property="og:image"]', 'content', ogImage);
+}
+
+function resetMetaTags() {
+    document.title = DEFAULT_META.title;
+    setMeta('meta[name="description"]', 'content', DEFAULT_META.description);
+    setMeta('link[rel="canonical"]', 'href', BASE_URL);
+    setMeta('meta[property="og:title"]', 'content', DEFAULT_META.title);
+    setMeta('meta[property="og:description"]', 'content', DEFAULT_META.description);
+    setMeta('meta[property="og:url"]', 'content', BASE_URL);
+}
+
+function syncUrl(idA, idB, replace) {
+    const url = `${location.pathname}?a=${idA}&b=${idB}`;
+    if (replace) history.replaceState({ a: idA, b: idB }, '', url);
+    else history.pushState({ a: idA, b: idB }, '', url);
+}
+
+function onSelectionChange() {
+    update();
+    syncUrl(selectA.value, selectB.value, false);
+    updateMetaTags(selectA.value, selectB.value);
+}
+
+window.addEventListener('popstate', () => {
+    const params = new URLSearchParams(location.search);
+    const idA = params.get('a');
+    const idB = params.get('b');
+    if (idA && idB && findConsole(idA) && findConsole(idB)) {
+        selectA.value = idA;
+        selectB.value = idB;
+        update();
+        updateMetaTags(idA, idB);
+    } else {
+        selectA.value = 'playstation-5';
+        selectB.value = 'xbox-series-x';
+        update();
+        resetMetaTags();
+    }
+});
+
 // ── Init ──────────────────────────────────────────────────────────────────────
 async function init() {
     const data = await loadConsoles();
@@ -314,11 +399,18 @@ async function init() {
     }
     consolesData = data;
     populateSelects();
-    selectA.value = 'playstation-5';
-    selectB.value = 'xbox-series-x';
-    selectA.addEventListener('change', update);
-    selectB.addEventListener('change', update);
+
+    const params = new URLSearchParams(location.search);
+    const urlA = params.get('a');
+    const urlB = params.get('b');
+    const urlDriven = urlA && urlB && findConsole(urlA) && findConsole(urlB);
+
+    selectA.value = urlDriven ? urlA : 'playstation-5';
+    selectB.value = urlDriven ? urlB : 'xbox-series-x';
+    selectA.addEventListener('change', onSelectionChange);
+    selectB.addEventListener('change', onSelectionChange);
     update();
+    if (urlDriven) updateMetaTags(selectA.value, selectB.value);
 }
 
 init();
