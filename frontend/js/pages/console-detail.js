@@ -513,6 +513,90 @@ function renderHero(consola) {
     document.title = `${consola.name} — Console Notebook`;
 }
 
+/* ── Structured data (schema.org JSON-LD) ────────────────────────────────
+ * Injected client-side from the same consola object the rest of the page
+ * renders from, so it can't drift out of sync with visible content. Only
+ * real fields go in: no fabricated price/offers, and aggregateRating is
+ * added only once the /ratings endpoint returns an actual count > 0. */
+let structuredDataGraph = null;
+
+function addSpecProperty(props, name, value) {
+    if (value === undefined || value === null) return;
+    const v = String(value).trim();
+    if (!v || v === 'N/A') return;
+    props.push({ '@type': 'PropertyValue', name, value: v });
+}
+
+function buildStructuredData(consola, consoleId) {
+    const url = `https://consolenotebook.com/html/pages/consoles/${consoleId}.html`;
+    const props = [];
+    addSpecProperty(props, 'CPU Architecture', consola.cpu?.architecture);
+    addSpecProperty(props, 'CPU Cores/Threads', consola.cpu?.cores);
+    addSpecProperty(props, 'CPU Clock Speed', consola.cpu?.frequency);
+    addSpecProperty(props, 'GPU Architecture', consola.gpu?.architecture);
+    addSpecProperty(props, 'GPU TFLOPS', consola.gpu?.tflops);
+    addSpecProperty(props, 'Memory', consola.memory?.capacity ? `${consola.memory.capacity} ${consola.memory.type || ''}`.trim() : null);
+    addSpecProperty(props, 'Storage', consola.storage?.type);
+    addSpecProperty(props, 'Storage Speed', consola.storage?.speed);
+    addSpecProperty(props, 'Output Resolution', consola.output_video?.resolution);
+    addSpecProperty(props, 'Generation', consola.generation);
+
+    const product = {
+        '@type': 'Product',
+        '@id': `${url}#product`,
+        name: consola.name,
+        description: `${consola.name} by ${consola.manufacturer} (${consola.release}) — full specs, hardware, and history on Console Notebook.`,
+        image: `https://consolenotebook.com/${consola.image}`,
+        brand: { '@type': 'Brand', name: consola.manufacturer },
+        releaseDate: String(consola.release),
+        url,
+        additionalProperty: props
+    };
+
+    const breadcrumb = {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Console Notebook', item: 'https://consolenotebook.com/html/pages/index.html' },
+            { '@type': 'ListItem', position: 2, name: 'Encyclopedia', item: 'https://consolenotebook.com/html/pages/evolutie.html' },
+            { '@type': 'ListItem', position: 3, name: consola.name, item: url }
+        ]
+    };
+
+    return { product, breadcrumb };
+}
+
+function writeStructuredDataScript() {
+    if (!structuredDataGraph) return;
+    let script = document.getElementById('cn-jsonld');
+    if (!script) {
+        script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'cn-jsonld';
+        document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [structuredDataGraph.product, structuredDataGraph.breadcrumb]
+    });
+}
+
+function injectStructuredData(consola, consoleId) {
+    structuredDataGraph = buildStructuredData(consola, consoleId);
+    writeStructuredDataScript();
+}
+
+function updateStructuredDataRating(average, count) {
+    if (!structuredDataGraph || !count || count <= 0) return;
+    structuredDataGraph.product.aggregateRating = {
+        '@type': 'AggregateRating',
+        ratingValue: average,
+        ratingCount: count,
+        bestRating: 5,
+        worstRating: 1
+    };
+    writeStructuredDataScript();
+}
+
 /**
  * Render the community rating widget after specs
  */
@@ -650,6 +734,8 @@ function updateRatingDisplay(average, count) {
     if (countEl) countEl.textContent = count === 1
         ? I18nModule.t('console_rating_count_one')
         : I18nModule.t('console_rating_count_many').replace('{count}', count);
+
+    updateStructuredDataRating(average, count);
 }
 
 /**
@@ -737,6 +823,7 @@ async function init() {
     renderSpecs(currentConsole);
     renderRatingWidget(consoleId);
     initFavoriteButton(consoleId);
+    injectStructuredData(currentConsole, consoleId);
 
     // Mark console as visited on server
     try {
@@ -765,6 +852,8 @@ async function init() {
         renderHero(currentConsole);
         renderHistory(currentConsole);
         renderSpecs(currentConsole);
+        injectStructuredData(currentConsole, consoleId);
+        loadRating(consoleId);
     });
 
     AchievementsModule.trackConsoleVisit(consoleId);
