@@ -377,6 +377,14 @@ html[data-theme='light'] {
         drop-shadow(0 20px 28px rgba(20, 10, 2, 0.12));
 }
 
+/* Learn page: the Game Boy render is portrait (1200x1455) instead of the
+   wide/flat aspect ratio the other notebook consoles use (e.g. PS1's
+   1200x501), so at the shared 400px width cap it renders ~3x taller and
+   crowds out the header/fact card. Scale it down for this page only. */
+.ph-hero--invata .nb-right__img {
+    max-width: 230px;
+}
+
 /* Fun fact card */
 .nb-right__fact {
     background: rgba(150, 105, 20, 0.08);
