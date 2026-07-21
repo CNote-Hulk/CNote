@@ -25,6 +25,7 @@
     <title>Console Care & Cleaning Guide — Console Notebook</title>
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/pages/lesson.css">
+    <link rel="stylesheet" href="../../css/pages/console-care.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -56,90 +57,119 @@
 
     <div id="navbar-placeholder"></div>
 
-    <main class="terms-page">
-        <div class="terms-page__inner container">
+    <main class="care-page">
+        <div class="container">
 
-            <aside class="terms-sidebar">
-                <div class="terms-sidebar__wrap">
-                    <p class="terms-sidebar__label" data-i18n="care_toc_label">Contents</p>
-                    <nav class="terms-sidebar__nav">
-                        <a href="#why-it-matters" class="terms-sidebar__link" data-i18n="care_sec_why">1. Why Maintenance Matters</a>
-                        <a href="#shell-vents" class="terms-sidebar__link" data-i18n="care_sec_shell">2. Cleaning the Shell and Vents</a>
-                        <a href="#cartridges" class="terms-sidebar__link" data-i18n="care_sec_cartridges">3. Cartridges and Cartridge Slots</a>
-                        <a href="#optical-drives" class="terms-sidebar__link" data-i18n="care_sec_optical">4. Disc Drives and Laser Lenses</a>
-                        <a href="#controllers" class="terms-sidebar__link" data-i18n="care_sec_controllers">5. Controllers and Stick Drift</a>
-                        <a href="#opening-console" class="terms-sidebar__link" data-i18n="care_sec_opening">6. Opening a Console Safely</a>
-                        <a href="#storage" class="terms-sidebar__link" data-i18n="care_sec_storage">7. Storage and Transport</a>
-                        <a href="#glossary" class="terms-sidebar__link" data-i18n="care_sec_glossary">8. Glossary</a>
-                        <a href="#get-help" class="terms-sidebar__link" data-i18n="care_sec_help">9. When to Call In a Professional</a>
-                    </nav>
+            <section class="care-hero">
+                <div>
+                    <p class="care-hero__kicker" data-i18n="care_hero_kicker">Console Notebook Reference</p>
+                    <h1 class="care-hero__title" data-i18n="care_hero_title">Console Care &amp; Cleaning Guide</h1>
+                    <p class="care-hero__subtitle" data-i18n="care_hero_meta">A practical maintenance guide for retro and modern consoles — no tools or experience required</p>
                 </div>
-            </aside>
+                <div class="care-hero__plates" aria-hidden="true">
+                    <div class="model-plate"><span class="model-plate__label" data-i18n="care_plate_label">Model No.</span><span class="model-plate__code">SCPH-50004</span><div class="model-plate__meta"><span class="model-plate__console">PS2 Slim</span></div></div>
+                    <div class="model-plate"><span class="model-plate__label" data-i18n="care_plate_label">Model No.</span><span class="model-plate__code">CECHC04</span><div class="model-plate__meta"><span class="model-plate__console">PS3 Fat</span></div></div>
+                    <div class="model-plate"><span class="model-plate__label" data-i18n="care_plate_label">Model No.</span><span class="model-plate__code">HAC-001</span><div class="model-plate__meta"><span class="model-plate__console">Switch</span></div></div>
+                </div>
+            </section>
 
-            <article class="terms-content">
-                <header class="terms-content__header">
-                    <h1 class="terms-content__title" data-i18n="care_hero_title">Console Care &amp; Cleaning Guide</h1>
-                    <p class="terms-content__meta" data-i18n="care_hero_meta">A practical maintenance guide for retro and modern consoles — no tools or experience required</p>
-                </header>
+            <section class="care-directory" id="identify">
+                <h2 class="care-section-heading" data-i18n="care_dir_heading">Identify Your Model</h2>
+                <p class="care-section-lead" data-i18n="care_dir_lead">Every console has an official model number printed on a small plate on its underside or back panel — the same way a car has a VIN. Knowing yours matters before cleaning or opening a console: hardware revisions of the same console can differ in disassembly, parts, and known issues.</p>
 
-                <section id="why-it-matters" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_why">1. Why Maintenance Matters</h2>
-                    <p class="terms-section__body" data-i18n="care_why_body">Heat is the number one killer of game consoles — not age, and not bad luck. Every console pulls in air to cool itself and pushes hot air back out through its vents. Over months and years, dust collects on fans and heatsinks until the system can no longer cool itself properly. The fix costs nothing and takes a few minutes: keep the vents clear, and clean them before problems start, not after.</p>
-                    <a href="invata.html" class="cta-block" data-i18n="care_learn_cta"><p><strong>Want the full picture?</strong> The Console Starter Guide's final module covers console care hands-on, with quizzes and XP.</p></a>
-                </section>
-
-                <section id="shell-vents" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_shell">2. Cleaning the Shell and Vents</h2>
-                    <p class="terms-section__body" data-i18n="care_shell_body">Unplug the console first, always. Wipe the outer shell with a lightly damp microfiber cloth — plain water, or a 50/50 isopropyl alcohol mix for stubborn grime, never soaked. For the vents, use short bursts of compressed air held a few centimetres away, angled so dust blows out and away from the console rather than deeper inside. Never run a vacuum cleaner directly over the vents — the static it generates can damage internal components.</p>
-                </section>
-
-                <section id="cartridges" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_cartridges">3. Cartridges and Cartridge Slots</h2>
-                    <p class="terms-section__body" data-i18n="care_cartridges_body">Dirty contacts are the most common reason a cartridge-based console shows a black screen or garbled graphics — not a dead cartridge or a dead console. Dampen a cotton swab with isopropyl alcohol (90%+ concentration) and gently clean the metal contacts along the cartridge's edge, then let it dry fully before inserting it. Clean the contacts inside the console's cartridge slot the same way, with a slightly damp swab moved gently side to side.</p>
-                    <div class="myth-block" data-i18n="care_cartridges_myth"><h3>Myth: blowing into a cartridge fixes connection problems</h3><p>Blowing on a cartridge might dislodge a loose piece of dust, but the moisture in your breath is exactly what causes the contacts to corrode over time. It treats the symptom while making the actual cause worse. Isopropyl alcohol and a dry swab do the job without the side effect.</p></div>
-                </section>
-
-                <section id="optical-drives" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_optical">4. Disc Drives and Laser Lenses</h2>
-                    <p class="terms-section__body" data-i18n="care_optical_body">Optical drives — PlayStation, Xbox, Sega Saturn and Dreamcast among others — read discs with a laser lens that gathers dust just like everything else. If a console suddenly struggles to read discs it used to read fine, dust on the lens is the most common cause. Keep the discs themselves clean too: wipe from the centre outward, never in circles, and store them in cases rather than stacked loose.</p>
-                    <div class="myth-block" data-i18n="care_optical_myth"><h3>Myth: lens-cleaning discs are a safe first step</h3><p>Cleaning discs use small brushes that physically touch and drag across the lens. On older, more delicate lasers, this can do more harm than the dust ever would. If a lens genuinely needs cleaning, it's safer done by hand with a proper swab — or left to someone experienced.</p></div>
-                </section>
-
-                <section id="controllers" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_controllers">5. Controllers and Stick Drift</h2>
-                    <p class="terms-section__body" data-i18n="care_controllers_body">Most "stick drift" isn't a dead controller — it's built-up grime inside the potentiometer the thumbstick sits on. A short spray of contact cleaner into the gap around the stick's base, followed by rotating the stick through its full range a few times, resolves a large share of drift complaints without opening anything. Buttons that feel sticky or unresponsive usually just need the same contact-cleaner treatment around their edges.</p>
-                </section>
-
-                <section id="opening-console" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_opening">6. Opening a Console Safely</h2>
-                    <p class="terms-section__body" data-i18n="care_opening_body">Everything above needs no tools and carries no real risk. Opening a console is a different category: it can void warranties, and internal components can be damaged by a careless screwdriver or a static shock from your own hands as easily as by the fault you're trying to fix. If you go further than the outside, discharge static by touching bare metal first, keep screws organised by step, and photograph each stage before disconnecting anything.</p>
-                    <div class="think-block" data-i18n="care_opening_think"><h3>Think about this</h3><p>A console's case isn't just cosmetic — it channels airflow along a specific path from intake to exhaust. Leaving it open on a desk to "help it breathe" usually does the opposite: the fan spins with nothing to pull air through, and heat builds up faster, not slower.</p></div>
-                </section>
-
-                <section id="storage" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_storage">7. Storage and Transport</h2>
-                    <p class="terms-section__body" data-i18n="care_storage_body">Store consoles upright or flat exactly as the manufacturer intended — some drives are only rated to spin in one orientation. Avoid both direct sunlight and damp basements: heat warps plastic, moisture corrodes contacts. Before shipping or transporting a console, remove any disc and let a console that's been running cool down for a few minutes first — moving a hot drive is when scratches happen most.</p>
-                </section>
-
-                <section id="glossary" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_glossary">8. Glossary</h2>
-                    <div class="glossary-block">
-                        <h3>New terms</h3>
-                        <ul>
-                            <li><strong data-i18n="care_glossary_t1">ESD (Electrostatic Discharge)</strong> — <span data-i18n="care_glossary_d1">A static electricity spark, often too small to feel, that can silently damage electronic components on contact.</span></li>
-                            <li><strong data-i18n="care_glossary_t2">Contact cleaner</strong> — <span data-i18n="care_glossary_d2">A fast-evaporating solvent spray that dissolves grime inside switches and potentiometers without leaving residue.</span></li>
-                            <li><strong data-i18n="care_glossary_t3">Stick drift</strong> — <span data-i18n="care_glossary_d3">When a controller registers thumbstick movement even though nothing is touching it — usually a worn or dirty potentiometer.</span></li>
-                            <li><strong data-i18n="care_glossary_t4">Thermal paste</strong> — <span data-i18n="care_glossary_d4">A heat-conductive compound between a chip and its heatsink; it dries out over the years and can cause overheating even in an otherwise clean console.</span></li>
-                        </ul>
+                <div class="care-directory__controls">
+                    <input type="text" id="care-directory-search" class="care-directory__search" data-i18n="care_dir_search_placeholder" data-i18n-attr="placeholder" placeholder="Search a model, e.g. &quot;CECH&quot; or &quot;PS2&quot;">
+                    <div class="care-directory__tabs" role="tablist">
+                        <button type="button" class="care-tab is-active" data-mfr="all" data-i18n="care_tab_all">All</button>
+                        <button type="button" class="care-tab" data-mfr="PlayStation">PlayStation</button>
+                        <button type="button" class="care-tab" data-mfr="Xbox">Xbox</button>
+                        <button type="button" class="care-tab" data-mfr="Nintendo">Nintendo</button>
                     </div>
-                </section>
+                </div>
 
-                <section id="get-help" class="terms-section">
-                    <h2 class="terms-section__heading" data-i18n="care_sec_help">9. When to Call In a Professional</h2>
-                    <p class="terms-section__body" data-i18n="care_help_body">Everything in this guide is safe, reversible, and won't void anything if done carefully. But if a console still overheats, won't read discs, or shows a fault after basic cleaning, that's a hardware issue — not a dust issue. That's a different job.</p>
+                <p class="care-directory__count"><span id="care-directory-count">0</span> <span data-i18n="care_dir_count_label">models</span></p>
+
+                <div id="care-directory-grid"></div>
+                <p class="care-directory__empty" id="care-directory-empty" data-i18n="care_dir_empty">No models match your search.</p>
+            </section>
+
+            <nav class="care-chipnav" aria-label="Guide sections">
+                <a href="#why-it-matters" class="care-chipnav__link" data-i18n="care_sec_why">Why Maintenance Matters</a>
+                <a href="#shell-vents" class="care-chipnav__link" data-i18n="care_sec_shell">Shell &amp; Vents</a>
+                <a href="#cartridges" class="care-chipnav__link" data-i18n="care_sec_cartridges">Cartridges</a>
+                <a href="#optical-drives" class="care-chipnav__link" data-i18n="care_sec_optical">Disc Drives &amp; Lenses</a>
+                <a href="#controllers" class="care-chipnav__link" data-i18n="care_sec_controllers">Controllers &amp; Drift</a>
+                <a href="#opening-console" class="care-chipnav__link" data-i18n="care_sec_opening">Opening Safely</a>
+                <a href="#storage" class="care-chipnav__link" data-i18n="care_sec_storage">Storage &amp; Transport</a>
+                <a href="#glossary" class="care-chipnav__link" data-i18n="care_sec_glossary">Glossary</a>
+                <a href="#get-help" class="care-chipnav__link" data-i18n="care_sec_help">Get Help</a>
+            </nav>
+
+            <div class="care-topics">
+                <article id="why-it-matters" class="care-topic care-topic--wide">
+                    <span class="care-topic__icon">🌡️</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_why">Why Maintenance Matters</h3>
+                    <p class="care-topic__body" data-i18n="care_why_body">Heat is the number one killer of game consoles — not age, and not bad luck. Every console pulls in air to cool itself and pushes hot air back out through its vents. Over months and years, dust collects on fans and heatsinks until the system can no longer cool itself properly. The fix costs nothing and takes a few minutes: keep the vents clear, and clean them before problems start, not after.</p>
+                    <a href="invata.html" class="cta-block" data-i18n="care_learn_cta"><p><strong>Want the full picture?</strong> The Console Starter Guide's final module covers console care hands-on, with quizzes and XP.</p></a>
+                </article>
+
+                <article id="shell-vents" class="care-topic">
+                    <span class="care-topic__icon">🧴</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_shell">Cleaning the Shell and Vents</h3>
+                    <p class="care-topic__body" data-i18n="care_shell_body">Unplug the console first, always. Wipe the outer shell with a lightly damp microfiber cloth — plain water, or a 50/50 isopropyl alcohol mix for stubborn grime, never soaked. For the vents, use short bursts of compressed air held a few centimetres away, angled so dust blows out and away from the console rather than deeper inside. Never run a vacuum cleaner directly over the vents — the static it generates can damage internal components.</p>
+                </article>
+
+                <article id="cartridges" class="care-topic">
+                    <span class="care-topic__icon">🎮</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_cartridges">Cartridges and Cartridge Slots</h3>
+                    <p class="care-topic__body" data-i18n="care_cartridges_body">Dirty contacts are the most common reason a cartridge-based console shows a black screen or garbled graphics — not a dead cartridge or a dead console. Dampen a cotton swab with isopropyl alcohol (90%+ concentration) and gently clean the metal contacts along the cartridge's edge, then let it dry fully before inserting it. Clean the contacts inside the console's cartridge slot the same way, with a slightly damp swab moved gently side to side.</p>
+                    <div class="myth-block" data-i18n="care_cartridges_myth"><h3>Myth: blowing into a cartridge fixes connection problems</h3><p>Blowing on a cartridge might dislodge a loose piece of dust, but the moisture in your breath is exactly what causes the contacts to corrode over time. It treats the symptom while making the actual cause worse. Isopropyl alcohol and a dry swab do the job without the side effect.</p></div>
+                </article>
+
+                <article id="optical-drives" class="care-topic">
+                    <span class="care-topic__icon">💿</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_optical">Disc Drives and Laser Lenses</h3>
+                    <p class="care-topic__body" data-i18n="care_optical_body">Optical drives — PlayStation, Xbox, Sega Saturn and Dreamcast among others — read discs with a laser lens that gathers dust just like everything else. If a console suddenly struggles to read discs it used to read fine, dust on the lens is the most common cause. Keep the discs themselves clean too: wipe from the centre outward, never in circles, and store them in cases rather than stacked loose.</p>
+                    <div class="myth-block" data-i18n="care_optical_myth"><h3>Myth: lens-cleaning discs are a safe first step</h3><p>Cleaning discs use small brushes that physically touch and drag across the lens. On older, more delicate lasers, this can do more harm than the dust ever would. If a lens genuinely needs cleaning, it's safer done by hand with a proper swab — or left to someone experienced.</p></div>
+                </article>
+
+                <article id="controllers" class="care-topic">
+                    <span class="care-topic__icon">🕹️</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_controllers">Controllers and Stick Drift</h3>
+                    <p class="care-topic__body" data-i18n="care_controllers_body">Most "stick drift" isn't a dead controller — it's built-up grime inside the potentiometer the thumbstick sits on. A short spray of contact cleaner into the gap around the stick's base, followed by rotating the stick through its full range a few times, resolves a large share of drift complaints without opening anything. Buttons that feel sticky or unresponsive usually just need the same contact-cleaner treatment around their edges.</p>
+                </article>
+
+                <article id="opening-console" class="care-topic">
+                    <span class="care-topic__icon">🔩</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_opening">Opening a Console Safely</h3>
+                    <p class="care-topic__body" data-i18n="care_opening_body">Everything above needs no tools and carries no real risk. Opening a console is a different category: it can void warranties, and internal components can be damaged by a careless screwdriver or a static shock from your own hands as easily as by the fault you're trying to fix. If you go further than the outside, discharge static by touching bare metal first, keep screws organised by step, and photograph each stage before disconnecting anything.</p>
+                    <div class="think-block" data-i18n="care_opening_think"><h3>Think about this</h3><p>A console's case isn't just cosmetic — it channels airflow along a specific path from intake to exhaust. Leaving it open on a desk to "help it breathe" usually does the opposite: the fan spins with nothing to pull air through, and heat builds up faster, not slower.</p></div>
+                </article>
+
+                <article id="storage" class="care-topic">
+                    <span class="care-topic__icon">📦</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_storage">Storage and Transport</h3>
+                    <p class="care-topic__body" data-i18n="care_storage_body">Store consoles upright or flat exactly as the manufacturer intended — some drives are only rated to spin in one orientation. Avoid both direct sunlight and damp basements: heat warps plastic, moisture corrodes contacts. Before shipping or transporting a console, remove any disc and let a console that's been running cool down for a few minutes first — moving a hot drive is when scratches happen most.</p>
+                </article>
+
+                <article id="glossary" class="care-topic">
+                    <span class="care-topic__icon">📖</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_glossary">Glossary</h3>
+                    <div class="glossary-block">
+                        <div><strong data-i18n="care_glossary_t1">ESD (Electrostatic Discharge)</strong> — <span data-i18n="care_glossary_d1">A static electricity spark, often too small to feel, that can silently damage electronic components on contact.</span></div>
+                        <div><strong data-i18n="care_glossary_t2">Contact cleaner</strong> — <span data-i18n="care_glossary_d2">A fast-evaporating solvent spray that dissolves grime inside switches and potentiometers without leaving residue.</span></div>
+                        <div><strong data-i18n="care_glossary_t3">Stick drift</strong> — <span data-i18n="care_glossary_d3">When a controller registers thumbstick movement even though nothing is touching it — usually a worn or dirty potentiometer.</span></div>
+                        <div><strong data-i18n="care_glossary_t4">Thermal paste</strong> — <span data-i18n="care_glossary_d4">A heat-conductive compound between a chip and its heatsink; it dries out over the years and can cause overheating even in an otherwise clean console.</span></div>
+                    </div>
+                </article>
+
+                <article id="get-help" class="care-topic care-topic--wide">
+                    <span class="care-topic__icon">🛠️</span>
+                    <h3 class="care-topic__title" data-i18n="care_sec_help">When to Call In a Professional</h3>
+                    <p class="care-topic__body" data-i18n="care_help_body">Everything in this guide is safe, reversible, and won't void anything if done carefully. But if a console still overheats, won't read discs, or shows a fault after basic cleaning, that's a hardware issue — not a dust issue. That's a different job.</p>
                     <a href="community.html#repair-requests" class="cta-block" data-i18n="care_help_cta"><p><strong>Need more than a clean?</strong> Submit a repair request through Console Notebook's Community hub and get real hands-on help.</p></a>
-                </section>
-            </article>
+                </article>
+            </div>
 
         </div>
     </main>
@@ -147,6 +177,7 @@
     <div id="footer-placeholder"></div>
 
     <script type="module" src="../../js/main.js"></script>
+    <script type="module" src="../../js/pages/console-care.js"></script>
     <script src="../../js/fallback/search-profile.js"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
