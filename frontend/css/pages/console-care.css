@@ -454,3 +454,144 @@
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 }
+
+/* ── TUTORIAL (read view) ─────────────────── */
+
+.tutorial-admin-controls {
+    margin-bottom: 16px;
+}
+
+.tutorial-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0 0 10px;
+}
+
+.tutorial-intro {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    color: var(--text-gray);
+    line-height: 1.65;
+    margin: 0 0 28px;
+}
+
+.tutorial-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tutorial-step {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+}
+
+.tutorial-step__num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent-color);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tutorial-step__heading {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0 0 8px;
+}
+
+.tutorial-step__image {
+    max-width: 100%;
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.tutorial-step__desc {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ── TUTORIAL EDITOR (admin write mode) ──────── */
+
+.tutorial-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 640px;
+}
+
+.tutorial-editor__step {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+}
+
+.tutorial-editor__step-photo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.tutorial-editor__step-preview {
+    max-width: 120px;
+    max-height: 80px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+}
+
+.tutorial-editor__upload-btn {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tutorial-editor__upload-status {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
+.tutorial-editor__step-remove {
+    align-self: flex-start;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--error);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.tutorial-editor__actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+#tutorial-save-status {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin: 0;
+}

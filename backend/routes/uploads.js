@@ -34,16 +34,19 @@ const VOICE_TYPES = {
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;   // 8 MB
 const MAX_VOICE_BYTES = 15 * 1024 * 1024;  // 15 MB (few minutes of voice)
 
-// POST /api/uploads/presign — { kind: 'image'|'voice'|'gallery', contentType, fileSize }
+// POST /api/uploads/presign — { kind: 'image'|'voice'|'gallery'|'tutorial', contentType, fileSize }
 router.post('/presign', authRequired, async (req, res) => {
 	try {
 		const { kind, contentType, fileSize } = req.body || {};
 
-		if (kind !== 'image' && kind !== 'voice' && kind !== 'gallery') {
-			return res.status(400).json({ success: false, error: 'Invalid kind — must be "image", "voice", or "gallery".' });
+		if (kind !== 'image' && kind !== 'voice' && kind !== 'gallery' && kind !== 'tutorial') {
+			return res.status(400).json({ success: false, error: 'Invalid kind — must be "image", "voice", "gallery", or "tutorial".' });
+		}
+		if (kind === 'tutorial' && (!req.user || req.user.role !== 'admin')) {
+			return res.status(403).json({ success: false, error: 'Acces interzis.' });
 		}
 
-		const typeMap = kind === 'voice' ? VOICE_TYPES : IMAGE_TYPES; // "gallery" reuses the image type/size limits
+		const typeMap = kind === 'voice' ? VOICE_TYPES : IMAGE_TYPES; // "gallery"/"tutorial" reuse the image type/size limits
 		const extension = typeMap[contentType];
 		if (!extension) {
 			return res.status(400).json({ success: false, error: `Unsupported content type for ${kind}.` });
@@ -57,7 +60,9 @@ router.post('/presign', authRequired, async (req, res) => {
 
 		const key = kind === 'gallery'
 			? buildAttachmentKey(req.user.id, 'gallery', extension, 'community')
-			: buildAttachmentKey(req.user.id, kind === 'image' ? 'images' : 'voice', extension);
+			: kind === 'tutorial'
+				? buildAttachmentKey(req.user.id, 'tutorial', extension, 'console-tutorials')
+				: buildAttachmentKey(req.user.id, kind === 'image' ? 'images' : 'voice', extension);
 		const uploadUrl = await getPresignedUploadUrl(key, contentType);
 
 		res.json({
