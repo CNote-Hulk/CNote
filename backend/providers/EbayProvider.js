@@ -93,7 +93,7 @@ class EbayProvider extends MarketplaceProvider {
 
 			refreshToken: data.refresh_token || null,
 
-			expiresAt: Date.now() + data.expires_in * 1000,
+			expiresAt: new Date(Date.now() + data.expires_in * 1000),
 
 			providerUserId
 		};
@@ -137,7 +137,7 @@ class EbayProvider extends MarketplaceProvider {
 				refreshToken,
 
 			expiresAt:
-				Date.now() + data.expires_in * 1000
+				new Date(Date.now() + data.expires_in * 1000)
 		};
 	}
 

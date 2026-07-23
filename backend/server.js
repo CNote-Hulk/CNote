@@ -665,7 +665,11 @@ const MARKETPLACE_SYNC_INTERVAL_MS = 6 * 60 * 60 * 1000; // 6 hours
 setTimeout(() => {
   const MarketplaceSyncService = require('./services/marketplace-sync');
   const runSync = () => {
-    MarketplaceSyncService.syncAllUserListings().catch(err => {
+    // eBay deactivated 2026-07-23 (UI-only at first, but this background job
+    // syncs any account connected before that regardless of the UI toggle —
+    // excluded here too so a deactivated integration stays fully inactive.
+    // OLX was never connectable, so this is effectively a no-op for it.
+    MarketplaceSyncService.syncAllUserListings(['olx']).catch(err => {
       console.error('Scheduled marketplace sync error:', err);
     });
   };

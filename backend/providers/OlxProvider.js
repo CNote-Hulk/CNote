@@ -52,7 +52,7 @@ class OlxProvider extends MarketplaceProvider {
 		return {
 			accessToken: data.access_token,
 			refreshToken: data.refresh_token,
-			expiresAt: Date.now() + data.expires_in * 1000,
+			expiresAt: new Date(Date.now() + data.expires_in * 1000),
 			providerUserId: data.user_id
 		};
 	}
@@ -78,7 +78,7 @@ class OlxProvider extends MarketplaceProvider {
 		return {
 			accessToken: data.access_token,
 			refreshToken: data.refresh_token,
-			expiresAt: Date.now() + data.expires_in * 1000
+			expiresAt: new Date(Date.now() + data.expires_in * 1000)
 		};
 	}
 
