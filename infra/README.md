@@ -1,5 +1,11 @@
 # Chat attachment storage — self-hosted MinIO on our own VPS
 
+> **Not the active setup right now** — as of 2026-07-23 the site uses
+> Cloudflare R2 instead (see `R2-SETUP.md`), since it needs no VPS/DNS/Docker
+> to manage and has a free tier. This file is kept as a migration path if R2
+> is ever outgrown or self-hosting becomes preferable — same env vars, same
+> backend code, just different values.
+
 Why: chat images/voice messages need real storage. Supabase Storage's free
 tier is 1GB — not enough. This runs our own S3-compatible object storage
 (MinIO) on a VPS we control, so it scales just by growing the disk.

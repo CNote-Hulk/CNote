@@ -94,10 +94,11 @@ Complete file index for this repository (486 files, excluding `node_modules/`, `
   - server_check.js — minimal standalone Express+Helmet snippet to sanity-check CSP config changes in isolation
   - server.js — Express app entry point: middleware, CORS, CSP nonce injection (also injects `window.TURNSTILE_SITE_KEY`), mounts all routes, serves static frontend, 404 fallback (JSON for `/api/*`, branded `404.html` otherwise), Socket.io init. `GET /` redirects to `/html/pages/index.html` (an explicit filename, not just the directory — a bare `/html/pages/` redirect used to bypass the nonce-injection middleware since it only intercepts paths ending in `.html`, silently breaking the inline theme-restore script via CSP). Host-canonicalization middleware forces `www.consolenotebook.com` → apex domain (301) alongside the existing http→https upgrade — `www.*` used to serve the entire site as an independent, non-redirected duplicate. `LEGACY_REDIRECTS` map 301s old/guessed URLs (`/html/pages/terms.html` etc.) to their real current location, for URLs Search Console still shows as 404
 - **infra/**
-  - .env.example — template for MinIO root user/password on the self-hosted VPS
+  - .env.example — template for MinIO root user/password on the self-hosted VPS (see README.md note below — not the active setup)
   - Caddyfile — reverse proxy config: TLS (Let's Encrypt) in front of the self-hosted MinIO object storage
   - docker-compose.yml — deploys MinIO + Caddy on a VPS for chat attachment storage (Supabase Storage free tier too small)
-  - README.md — why/how of the self-hosted MinIO object-storage setup for chat attachments
+  - README.md — why/how of the self-hosted MinIO-on-VPS object-storage setup; now marked as a kept-for-later migration path, not the active one (see R2-SETUP.md)
+  - R2-SETUP.md — **active setup**: step-by-step Cloudflare R2 bucket + scoped API token + CORS + Railway env var instructions for `OBJECT_STORAGE_*` (chat attachments, Community Photos, console tutorial/modding step photos). Chosen over self-hosted MinIO for zero server/DNS/Docker management and a 10GB free tier with no egress fees; `backend/utils/objectStorage.js` is unchanged either way (plain S3-compatible client, provider swap = env vars only)
 - **frontend/**
   - **assets/**
     - **icons/** — favicon.ico (24×24 red notebook logo; also used as the navbar `.logo-icon`); apple-touch-icon.png (180×180), icon-192.png, icon-512.png (PWA manifest icons) are all upscaled from favicon.ico itself (nearest-neighbor, so notebook branding stays consistent everywhere — blocky/pixel-art look at large sizes since the source is only 24×24, but no other higher-res logo source exists in the repo)

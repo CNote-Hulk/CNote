@@ -1,10 +1,11 @@
 /* ─────────────────────────────────────────
    FILE: objectStorage.js
    DESCRIPTION: Generic S3-compatible object storage client for chat
-   attachments (images, voice messages). Works against a self-hosted
-   MinIO instance on our own VPS today, but is provider-agnostic — the
-   same code works unmodified against Cloudflare R2, Backblaze B2, or
-   real AWS S3 by just changing env vars. Server-side only.
+   attachments (images, voice messages), the community photo gallery, and
+   console tutorial/modding step photos. Runs against Cloudflare R2 today
+   (see /infra/R2-SETUP.md) but is provider-agnostic — the same code works
+   unmodified against a self-hosted MinIO VPS (see /infra/README.md),
+   Backblaze B2, or real AWS S3 by just changing env vars. Server-side only.
 
    Env vars (see .env.example):
      OBJECT_STORAGE_ENDPOINT      e.g. https://storage.consolenotebook.com
