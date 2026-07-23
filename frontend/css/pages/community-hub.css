@@ -2809,8 +2809,8 @@
 }
 
 .hub-form-textarea {
-    resize: none;
-    min-height: 90px;
+    resize: vertical;
+    min-height: 160px;
 }
 
 .hub-form-row {
@@ -2852,8 +2852,16 @@
     .hub-form-select,
     .hub-form-textarea {
         font-size: 16px;
-        min-height: 48px;
         padding: 12px 14px;
+    }
+
+    .hub-form-input,
+    .hub-form-select {
+        min-height: 48px;
+    }
+
+    .hub-form-textarea {
+        min-height: 140px;
     }
 
 }

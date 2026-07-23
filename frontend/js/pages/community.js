@@ -25,8 +25,9 @@ const CONSOLES = [
 
 const TAGS = ['All', 'General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];
 
-const CONDITIONS = { new: 'New', like_new: 'Like new', good: 'Good', fair: 'Fair', parts: 'Parts' };
-const CATEGORIES  = { consoles: 'Consoles', games: 'Games', accessories: 'Accessories', parts: 'Parts / Repairs' };
+// Values are i18n keys, not display strings — resolve with t(CONDITIONS[k]) / t(CATEGORIES[k]).
+const CONDITIONS = { new: 'condition_new', like_new: 'condition_like_new', good: 'condition_good', fair: 'condition_fair', parts: 'condition_parts' };
+const CATEGORIES  = { consoles: 'category_consoles', games: 'category_games', accessories: 'category_accessories', parts: 'category_parts_repairs' };
 
 const SYMPTOMS_BY_CONSOLE = {
     xbox: [
@@ -932,7 +933,7 @@ function renderMarketplace() {
                     <div class="hub-filter-section__label">Condition</div>
                     <select class="hub-form-select" id="market-condition">
                         <option value="">All</option>
-                        ${Object.entries(CONDITIONS).map(([k, val]) => `<option value="${k}" ${S.marketCondition===k?'selected':''}>${val}</option>`).join('')}
+                        ${Object.entries(CONDITIONS).map(([k, val]) => `<option value="${k}" ${S.marketCondition===k?'selected':''}>${esc(t(val))}</option>`).join('')}
                     </select>
                 </div>
 
@@ -1117,7 +1118,7 @@ async function loadListings() {
                         <div class="hub-listing-info__price">${Number(l.price).toFixed(0)} RON</div>
                         ${l.description ? `<div class="hub-listing-info__desc">${esc(l.description.slice(0, 100))}${l.description.length > 100 ? '…' : ''}</div>` : ''}
                         <div class="hub-listing-info__meta">
-                            <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
+                            <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] ? esc(t(CONDITIONS[l.condition])) : esc(l.condition)}</span>
                             <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
                             ${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
@@ -1256,8 +1257,8 @@ async function openListingDetail(id) {
                                 <div style="flex:1;min-width:0">
                                     <h2 class="hub-detail-title">${esc(l.title)}</h2>
                                     <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px">
-                                        <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
-                                        ${CATEGORIES[l.category] ? `<span style="color:var(--text-gray);font-size:.78rem">${CATEGORIES[l.category]}</span>` : ''}
+                                        <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] ? esc(t(CONDITIONS[l.condition])) : esc(l.condition)}</span>
+                                        ${CATEGORIES[l.category] ? `<span style="color:var(--text-gray);font-size:.78rem">${esc(t(CATEGORIES[l.category]))}</span>` : ''}
                                     </div>
                                 </div>
                                 <div class="hub-detail-price">${Number(l.price).toFixed(0)} RON</div>
@@ -1475,7 +1476,7 @@ async function loadSimilarListings(listingId, container) {
                         <div class="hub-listing-info__title">${esc(l.title)}</div>
                         <div class="hub-listing-info__price">${Number(l.price).toFixed(0)} RON</div>
                         <div class="hub-listing-info__meta">
-                            <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] || l.condition}</span>
+                            <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] ? esc(t(CONDITIONS[l.condition])) : esc(l.condition)}</span>
                             <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
                             ${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
@@ -1522,83 +1523,83 @@ function openAddListingModal() {
     overlay.innerHTML = `
         <div class="hub-modal">
             <div class="hub-modal__header">
-                <span class="hub-modal__title">New listing</span>
+                <span class="hub-modal__title">${esc(t('listing_new_title'))}</span>
                 <button class="hub-modal__close">&times;</button>
             </div>
             <form class="hub-modal__body" id="new-listing-form">
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Title</label>
-                    <input class="hub-form-input" name="title" maxlength="200" required placeholder="Ce vinzi?">
+                    <label class="hub-form-label">${esc(t('listing_field_title'))}</label>
+                    <input class="hub-form-input" name="title" maxlength="200" required placeholder="${esc(t('listing_title_placeholder'))}">
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Price (RON)</label>
+                        <label class="hub-form-label">${esc(t('listing_field_price'))}</label>
                         <input class="hub-form-input" name="price" type="number" min="0" step="1" required placeholder="0">
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Condition</label>
+                        <label class="hub-form-label">${esc(t('listing_field_condition'))}</label>
                         <select class="hub-form-select" name="condition">
-                            ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}"${k === 'good' ? ' selected' : ''}>${v}</option>`).join('')}
+                            ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}"${k === 'good' ? ' selected' : ''}>${esc(t(v))}</option>`).join('')}
                         </select>
                     </div>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Category</label>
+                    <label class="hub-form-label">${esc(t('listing_field_category'))}</label>
                     <select class="hub-form-select" name="category">
-                        ${Object.entries(CATEGORIES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}
+                        ${Object.entries(CATEGORIES).map(([k, v]) => `<option value="${k}">${esc(t(v))}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Console</label>
+                    <label class="hub-form-label">${esc(t('listing_field_console'))}</label>
                     <select class="hub-form-select" name="console_type">
-                        <option value="">— Alege consola —</option>
+                        <option value="">${esc(t('listing_console_placeholder'))}</option>
                         ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Description</label>
-                    <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="Describe the product…"></textarea>
+                    <label class="hub-form-label">${esc(t('listing_field_description'))}</label>
+                    <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4" placeholder="${esc(t('listing_description_placeholder'))}"></textarea>
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Country</label>
+                        <label class="hub-form-label">${esc(t('listing_field_country'))}</label>
                         <select class="hub-form-select" name="country" required>
-                            <option value="">— Select a country —</option>
+                            <option value="">${esc(t('listing_country_placeholder'))}</option>
                             ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${c.name}</option>`).join('')}
                         </select>
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">City</label>
+                        <label class="hub-form-label">${esc(t('listing_field_city'))}</label>
                         <select class="hub-form-select" name="location" required disabled>
-                            <option value="">— Select a country first —</option>
+                            <option value="">${esc(t('listing_city_placeholder_before'))}</option>
                         </select>
                     </div>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Telefon</label>
+                    <label class="hub-form-label">${esc(t('listing_field_phone'))}</label>
                     <input class="hub-form-input" name="phone" maxlength="20" required placeholder="+40…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">OLX Link (optional)</label>
+                    <label class="hub-form-label">${esc(t('listing_field_olx'))}</label>
                     <input class="hub-form-input" name="olx_url" type="url" placeholder="https://www.olx.ro/…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">eBay Link (optional)</label>
+                    <label class="hub-form-label">${esc(t('listing_field_ebay'))}</label>
                     <input class="hub-form-input" name="ebay_url" type="url" placeholder="https://www.ebay.com/…">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Images (max ${MAX_IMAGES} photos)</label>
+                    <label class="hub-form-label">${esc(t('listing_field_images').replace('{max}', MAX_IMAGES))}</label>
                     <div class="hub-upload-zone" id="upload-zone">
                         <input type="file" id="upload-input" accept="image/jpeg,image/png,image/webp" multiple hidden>
                         <span class="hub-upload-zone__icon">📁</span>
-                        <span class="hub-upload-zone__text">Drag photos here or click to choose</span>
+                        <span class="hub-upload-zone__text">${esc(t('listing_upload_hint'))}</span>
                     </div>
-                    <div class="hub-upload-counter" id="upload-counter">0 / ${MAX_IMAGES} imagini selectate</div>
+                    <div class="hub-upload-counter" id="upload-counter">${esc(t('listing_upload_counter').replace('{count}', '0').replace('{max}', MAX_IMAGES))}</div>
                     <div class="hub-upload-grid" id="upload-grid"></div>
                 </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
-                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
-                    <button type="submit" class="hub-btn hub-btn--primary">Publish</button>
+                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">${esc(t('tutorial_cancel'))}</button>
+                    <button type="submit" class="hub-btn hub-btn--primary">${esc(t('listing_publish'))}</button>
                 </div>
             </form>
         </div>`;
@@ -1612,7 +1613,7 @@ function openAddListingModal() {
     overlay.querySelector('[name="country"]').addEventListener('change', e => {
         const citySelect = overlay.querySelector('[name="location"]');
         const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
-        citySelect.innerHTML = '<option value="">— Select a city —</option>' +
+        citySelect.innerHTML = `<option value="">${esc(t('listing_city_placeholder'))}</option>` +
             (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
         citySelect.disabled = !e.target.value;
     });
@@ -1630,7 +1631,7 @@ function openAddListingModal() {
             thumb.innerHTML = `<img src="${URL.createObjectURL(file)}" alt=""><button type="button" class="hub-upload-thumb__remove" data-idx="${i}">&times;</button>`;
             uploadGrid.appendChild(thumb);
         });
-        uploadCounter.textContent = `${selectedFiles.length} / ${MAX_IMAGES} imagini selectate`;
+        uploadCounter.textContent = t('listing_upload_counter').replace('{count}', selectedFiles.length).replace('{max}', MAX_IMAGES);
     }
 
     function addFiles(files) {
@@ -1683,7 +1684,7 @@ function openAddListingModal() {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
         btn.disabled = true;
-        btn.textContent = 'Publishing…';
+        btn.textContent = t('listing_publishing');
 
         const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
 
@@ -1708,7 +1709,7 @@ function openAddListingModal() {
             images: finalImages,
         });
         if (res.success) { close(); loadListings(); }
-        else { btn.disabled = false; btn.textContent = 'Publish'; showToast(res.error || 'Error.', 'error'); }
+        else { btn.disabled = false; btn.textContent = t('listing_publish'); showToast(res.error || t('listing_generic_error'), 'error'); }
     });
 }
 
@@ -1723,55 +1724,55 @@ function openEditListingFromDetail(id, l) {
     overlay.innerHTML = `
         <div class="hub-modal">
             <div class="hub-modal__header">
-                <span class="hub-modal__title">Edit listing</span>
+                <span class="hub-modal__title">${esc(t('listing_edit_title'))}</span>
                 <button class="hub-modal__close">&times;</button>
             </div>
             <form class="hub-modal__body" id="edit-listing-form">
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Title</label>
+                    <label class="hub-form-label">${esc(t('listing_field_title'))}</label>
                     <input class="hub-form-input" name="title" maxlength="200" required value="${esc(l.title)}">
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Price (RON)</label>
+                        <label class="hub-form-label">${esc(t('listing_field_price'))}</label>
                         <input class="hub-form-input" name="price" type="number" min="0" step="1" required value="${l.price}">
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Condition</label>
+                        <label class="hub-form-label">${esc(t('listing_field_condition'))}</label>
                         <select class="hub-form-select" name="condition">
-                            ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${v}</option>`).join('')}
+                            ${Object.entries(CONDITIONS).map(([k, v]) => `<option value="${k}"${k === l.condition ? ' selected' : ''}>${esc(t(v))}</option>`).join('')}
                         </select>
                     </div>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Category</label>
+                    <label class="hub-form-label">${esc(t('listing_field_category'))}</label>
                     <select class="hub-form-select" name="category">
-                        ${Object.entries(CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${v}</option>`).join('')}
+                        ${Object.entries(CATEGORIES).map(([k, v]) => `<option value="${k}"${k === l.category ? ' selected' : ''}>${esc(t(v))}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Console</label>
+                    <label class="hub-form-label">${esc(t('listing_field_console'))}</label>
                     <select class="hub-form-select" name="console_type">
-                        <option value="">— Alege consola —</option>
+                        <option value="">${esc(t('listing_console_placeholder'))}</option>
                         ${(window.CONSOLES_DATA || []).slice().sort((a, b) => a.name.localeCompare(b.name)).map(c => `<option value="${c.id}"${c.id === (l.console_type || '') ? ' selected' : ''}>${c.name}</option>`).join('')}
                     </select>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Description</label>
+                    <label class="hub-form-label">${esc(t('listing_field_description'))}</label>
                     <textarea class="hub-form-textarea" name="description" maxlength="3000" required rows="4">${esc(l.description)}</textarea>
                 </div>
                 <div class="hub-form-row">
                     <div class="hub-form-group">
-                        <label class="hub-form-label">Country</label>
+                        <label class="hub-form-label">${esc(t('listing_field_country'))}</label>
                         <select class="hub-form-select" name="country" required>
-                            <option value="">— Select a country —</option>
+                            <option value="">${esc(t('listing_country_placeholder'))}</option>
                             ${(window.LOCATION_DATA?.countries || []).map(c => `<option value="${c.code}"${c.code === (l.country || '') ? ' selected' : ''}>${c.name}</option>`).join('')}
                         </select>
                     </div>
                     <div class="hub-form-group">
-                        <label class="hub-form-label">City</label>
+                        <label class="hub-form-label">${esc(t('listing_field_city'))}</label>
                         <select class="hub-form-select" name="location" required ${!l.country ? 'disabled' : ''}>
-                            <option value="">— Select a country first —</option>
+                            <option value="">${esc(t('listing_city_placeholder_before'))}</option>
                             ${l.country
                                 ? ((window.LOCATION_DATA?.countries || []).find(c => c.code === l.country)?.cities || [])
                                     .map(city => `<option value="${city}"${city === l.location ? ' selected' : ''}>${city}</option>`).join('')
@@ -1780,20 +1781,20 @@ function openEditListingFromDetail(id, l) {
                     </div>
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">Telefon</label>
+                    <label class="hub-form-label">${esc(t('listing_field_phone'))}</label>
                     <input class="hub-form-input" name="phone" maxlength="20" required value="${esc(l.phone || '')}">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">OLX Link (optional)</label>
+                    <label class="hub-form-label">${esc(t('listing_field_olx'))}</label>
                     <input class="hub-form-input" name="olx_url" type="url" value="${esc(l.olx_url || '')}">
                 </div>
                 <div class="hub-form-group">
-                    <label class="hub-form-label">eBay Link (optional)</label>
+                    <label class="hub-form-label">${esc(t('listing_field_ebay'))}</label>
                     <input class="hub-form-input" name="ebay_url" type="url" value="${esc(l.ebay_url || '')}">
                 </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
-                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
-                    <button type="submit" class="hub-btn hub-btn--primary">Save</button>
+                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">${esc(t('tutorial_cancel'))}</button>
+                    <button type="submit" class="hub-btn hub-btn--primary">${esc(t('tutorial_save'))}</button>
                 </div>
             </form>
         </div>`;
@@ -1809,7 +1810,7 @@ function openEditListingFromDetail(id, l) {
     overlay.querySelector('[name="country"]').addEventListener('change', e => {
         const citySelect = overlay.querySelector('[name="location"]');
         const country = window.LOCATION_DATA?.countries.find(c => c.code === e.target.value);
-        citySelect.innerHTML = '<option value="">— Select a city —</option>' +
+        citySelect.innerHTML = `<option value="">${esc(t('listing_city_placeholder'))}</option>` +
             (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
         citySelect.disabled = !e.target.value;
     });
@@ -1817,7 +1818,7 @@ function openEditListingFromDetail(id, l) {
     overlay.querySelector('#edit-listing-form').addEventListener('submit', async e => {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
-        btn.disabled = true; btn.textContent = 'Saving…';
+        btn.disabled = true; btn.textContent = t('listing_saving');
         const res = await api('PUT', `/marketplace/listings/${id}`, {
             title: f.title.value.trim(),
             description: f.description.value.trim(),
@@ -1832,7 +1833,7 @@ function openEditListingFromDetail(id, l) {
             ebay_url: f.ebay_url.value.trim(),
         });
         if (res.success) { close(); openListingDetail(id); } // reload detail
-        else { btn.disabled = false; btn.textContent = 'Save'; showToast(res.error || 'Error.', 'error'); }
+        else { btn.disabled = false; btn.textContent = t('tutorial_save'); showToast(res.error || t('listing_generic_error'), 'error'); }
     });
 }
 
