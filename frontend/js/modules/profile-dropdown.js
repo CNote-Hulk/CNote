@@ -10,10 +10,12 @@ import { I18nModule } from './i18n.js';
 const THEME_KEY = 'cnote-theme';
 const ACCENT_KEY = 'cnote-accent-color';
 
-// Apply saved theme immediately on module load (prevents flash)
+// Apply saved theme immediately on module load (prevents flash) — dark is the
+// default for a visitor who never touched the toggle; a stored empty string
+// (explicit "Default" choice) is deliberately distinct from no key at all.
 (function () {
-    const t = localStorage.getItem(THEME_KEY) || '';
-    document.documentElement.dataset.theme = t;
+    const stored = localStorage.getItem(THEME_KEY);
+    document.documentElement.dataset.theme = stored === null ? 'dark' : stored;
 })();
 
 // Apply saved accent color immediately on module load (only when logged in)
@@ -88,7 +90,8 @@ export const ProfileDropdownModule = {
     },
 
     _themePickerHTML() {
-        const current = localStorage.getItem(THEME_KEY) || '';
+        const stored = localStorage.getItem(THEME_KEY);
+        const current = stored === null ? 'dark' : stored;
         const active = (t) => current === t ? ' active' : '';
         return `
             <div class="profile-dropdown__divider"></div>
@@ -198,11 +201,10 @@ export const ProfileDropdownModule = {
 
     _setTheme(theme) {
         document.documentElement.dataset.theme = theme;
-        if (theme) {
-            localStorage.setItem(THEME_KEY, theme);
-        } else {
-            localStorage.removeItem(THEME_KEY);
-        }
+        // Always store explicitly (including '' for "Default") — an absent key means
+        // "never touched the toggle" and defaults to dark, which must stay distinct
+        // from a deliberate "Default" pick, or it would snap back to dark on reload.
+        localStorage.setItem(THEME_KEY, theme);
         this._dropdown.querySelectorAll('.profile-dropdown__theme-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.theme === theme);
         });

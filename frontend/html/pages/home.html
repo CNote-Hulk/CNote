@@ -5,7 +5,7 @@
          META INFORMATION
          =========================== -->
     <meta charset="UTF-8">
-    <script>!function(){var t=localStorage.getItem("cnote-theme");if(t)document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
+    <script>!function(){var t=localStorage.getItem("cnote-theme");if(t===null)t="dark";document.documentElement.dataset.theme=t;var a=localStorage.getItem("cnote-accent-color");if(a&&localStorage.getItem("cn_session")){var r=parseInt(a.slice(1,3),16),g=parseInt(a.slice(3,5),16),b=parseInt(a.slice(5,7),16),s=document.documentElement.style;s.setProperty("--accent-color",a);s.setProperty("--accent-light","#"+[r,g,b].map(function(c){return Math.min(255,Math.floor(c+(255-c)*.2)).toString(16).padStart(2,"0")}).join(""));s.setProperty("--accent-rgb",r+", "+g+", "+b);s.setProperty("--accent-color-rgb",r+", "+g+", "+b);s.setProperty("--glow-accent","0 0 20px rgba("+r+", "+g+", "+b+", .15)")}}()</script>
     <script>try{var _s=JSON.parse(localStorage.getItem("cn_session"));if(!_s||!_s.id)window.location.replace("index.html");}catch(e){window.location.replace("index.html");}</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Cnote Bakery (Console Notebook) is a platform dedicated to gaming consoles: history, hardware specs, repair guides and a community for enthusiasts.">
@@ -185,7 +185,11 @@
                         </div>
                     </section>
 
-                    <div class="dashboard-section">
+                    <section class="dashboard-section continue-section">
+                        <h2 class="panel-section-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                            <span data-i18n="home_continue_section_title">Continue Learning</span>
+                        </h2>
                         <div class="card continue-card">
                             <div class="continue-card__icon">📖</div>
                             <div class="continue-content">
@@ -195,7 +199,7 @@
                             </div>
                             <a id="home-continue-btn" href="course.html?slug=starter-guide" class="dash-course-card__btn">Start →</a>
                         </div>
-                    </div>
+                    </section>
 
                     <!-- Quick Start Guide -->
                     <section class="dashboard-section quick-start-guide" id="quick-start-guide" hidden></section>

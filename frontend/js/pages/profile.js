@@ -1353,16 +1353,19 @@ function initSettings() {
     loadTrustedDevices();
 
     // ═══ APPEARANCE TAB — Theme selector ═══
+    // Dark is the default for a visitor who never touched the toggle; a stored
+    // empty string (explicit "Default" choice) is deliberately distinct from no
+    // key at all, so picking "Default" doesn't snap back to dark on reload.
     const themeCards = document.querySelectorAll('.theme-card[data-theme-value]');
-    const currentTheme = localStorage.getItem('cnote-theme') || '';
+    const storedTheme = localStorage.getItem('cnote-theme');
+    const currentTheme = storedTheme === null ? 'dark' : storedTheme;
 
     themeCards.forEach(card => {
         if (card.dataset.themeValue === currentTheme) card.classList.add('active');
         card.addEventListener('click', () => {
             const theme = card.dataset.themeValue;
             document.documentElement.dataset.theme = theme;
-            if (theme) localStorage.setItem('cnote-theme', theme);
-            else localStorage.removeItem('cnote-theme');
+            localStorage.setItem('cnote-theme', theme);
             themeCards.forEach(c => c.classList.remove('active'));
             card.classList.add('active');
             // Sync accent picker if no custom accent is saved
