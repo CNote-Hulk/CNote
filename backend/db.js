@@ -535,6 +535,22 @@ async function initializeSchema() {
 			created_at TIMESTAMP DEFAULT NOW()
 		)`,
 		`CREATE INDEX IF NOT EXISTS idx_community_photos_created_at ON community_photos(created_at DESC)`,
+
+		// ── Articles (admin-written blog posts) ────────────────────────────────
+		`CREATE TABLE IF NOT EXISTS articles (
+			id SERIAL PRIMARY KEY,
+			slug TEXT UNIQUE NOT NULL,
+			title TEXT NOT NULL,
+			excerpt TEXT DEFAULT '',
+			content_html TEXT NOT NULL,
+			cover_image_key TEXT DEFAULT NULL,
+			author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			published BOOLEAN DEFAULT TRUE,
+			views INTEGER DEFAULT 0,
+			created_at TIMESTAMP DEFAULT NOW(),
+			updated_at TIMESTAMP DEFAULT NOW()
+		)`,
+		`CREATE INDEX IF NOT EXISTS idx_articles_published_created_at ON articles(published, created_at DESC)`,
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

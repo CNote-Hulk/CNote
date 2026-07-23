@@ -34,9 +34,9 @@ const VOICE_TYPES = {
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;   // 8 MB
 const MAX_VOICE_BYTES = 15 * 1024 * 1024;  // 15 MB (few minutes of voice)
 
-const VALID_KINDS = ['image', 'voice', 'gallery', 'tutorial', 'listing', 'forum'];
+const VALID_KINDS = ['image', 'voice', 'gallery', 'tutorial', 'listing', 'forum', 'article'];
 
-// POST /api/uploads/presign — { kind: 'image'|'voice'|'gallery'|'tutorial'|'listing'|'forum', contentType, fileSize }
+// POST /api/uploads/presign — { kind: 'image'|'voice'|'gallery'|'tutorial'|'listing'|'forum'|'article', contentType, fileSize }
 router.post('/presign', authRequired, async (req, res) => {
 	try {
 		const { kind, contentType, fileSize } = req.body || {};
@@ -44,7 +44,7 @@ router.post('/presign', authRequired, async (req, res) => {
 		if (!VALID_KINDS.includes(kind)) {
 			return res.status(400).json({ success: false, error: `Invalid kind — must be one of: ${VALID_KINDS.join(', ')}.` });
 		}
-		if (kind === 'tutorial' && (!req.user || req.user.role !== 'admin')) {
+		if ((kind === 'tutorial' || kind === 'article') && (!req.user || req.user.role !== 'admin')) {
 			return res.status(403).json({ success: false, error: 'Acces interzis.' });
 		}
 
@@ -64,6 +64,7 @@ router.post('/presign', authRequired, async (req, res) => {
 			: kind === 'tutorial' ? buildAttachmentKey(req.user.id, 'tutorial', extension, 'console-tutorials')
 			: kind === 'listing'  ? buildAttachmentKey(req.user.id, 'listing', extension, 'marketplace')
 			: kind === 'forum'    ? buildAttachmentKey(req.user.id, 'image', extension, 'forum')
+			: kind === 'article'  ? buildAttachmentKey(req.user.id, 'image', extension, 'articles')
 			: buildAttachmentKey(req.user.id, kind === 'image' ? 'images' : 'voice', extension);
 		const uploadUrl = await getPresignedUploadUrl(key, contentType);
 

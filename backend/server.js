@@ -71,6 +71,7 @@ const ebayRoutes = require('./routes/ebay');
 const uploadsRoutes = require('./routes/uploads');
 const workshopRoutes = require('./routes/workshop');
 const consoleTutorialsRoutes = require('./routes/console-tutorials');
+const articlesRoutes = require('./routes/articles');
 
 /* ── Environment validation ── */
 
@@ -465,6 +466,7 @@ app.use('/api/ebay', ebayRoutes);
 app.use('/api/uploads', uploadsRoutes);
 app.use('/api/workshop', workshopRoutes);
 app.use('/api/console-tutorials', consoleTutorialsRoutes);
+app.use('/api/articles', articlesRoutes);
 
 /* ── Static files & redirects ── */
 

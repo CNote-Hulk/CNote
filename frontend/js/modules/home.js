@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // parallel fetch
             const sf = { success: false };
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes] = (await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes, articlesRes] = (await Promise.all([
                 apiFetch('/api/ratings/user/all').catch(() => null),
                 apiFetch('/api/favorites').catch(() => null),
                 apiFetch('/api/friends').catch(() => null),
@@ -240,6 +240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/marketplace/favorites').catch(() => null),
                 apiFetch('/api/me/level').catch(() => null),
                 apiFetch('/api/me/quick-start-status').catch(() => null),
+                apiFetch('/api/articles?limit=3').catch(() => null),
             ])).map(r => r ?? sf);
 
             // =========================
@@ -1077,6 +1078,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <p class="dash-empty-state__text">No trending posts yet</p>
                             <p class="dash-empty-state__hint">Be the first to start a discussion!</p>
                             <a href="community.html" class="dash-empty-state__link">Go to community →</a>
+                        </div>`;
+                }
+            }
+
+            // =========================
+            // ARTICLES PREVIEW
+            // =========================
+            const articlesPreview = document.getElementById('home-articles-preview');
+            if (articlesPreview) {
+                if (articlesRes.success && articlesRes.articles.length > 0) {
+                    articlesPreview.innerHTML = articlesRes.articles.slice(0, 3).map(a => `
+                        <a href="article.html?slug=${encodeURIComponent(a.slug)}" class="article-card">
+                            ${a.cover_image_url ? `<img class="article-card__cover" src="${escapeHtml(a.cover_image_url)}" alt="" loading="lazy">` : '<div class="article-card__cover article-card__cover--placeholder">📰</div>'}
+                            <div class="article-card__body">
+                                <h3 class="article-card__title">${escapeHtml(a.title)}</h3>
+                                ${a.excerpt ? `<p class="article-card__excerpt">${escapeHtml(a.excerpt)}</p>` : ''}
+                            </div>
+                        </a>
+                    `).join('');
+                } else {
+                    articlesPreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">📰</span>
+                            <p class="dash-empty-state__text">${I18nModule.t('home_articles_empty')}</p>
+                            <a href="articles.html" class="dash-empty-state__link">${I18nModule.t('home_articles_see_all')}</a>
                         </div>`;
                 }
             }

@@ -6673,6 +6673,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://consolenotebook.com/html/pages/articles.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://consolenotebook.com/html/pages/statistici.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
