@@ -106,12 +106,31 @@ function getOriginHost(value) {
 	}
 }
 
-// Origin of our self-hosted chat attachment storage (MinIO on our VPS) — used
-// below to allow the browser to fetch/play images & voice messages, and to
-// PUT files directly to it during upload. Empty until OBJECT_STORAGE_PUBLIC_URL
-// is configured (see .env.example) — CSP directives below tolerate that.
+// Origin of our object storage's PUBLIC read URL (R2 pub-*.r2.dev, or a
+// self-hosted MinIO's public origin) — lets the browser fetch/play uploaded
+// images & voice messages. Empty until OBJECT_STORAGE_PUBLIC_URL is
+// configured (see .env.example) — CSP directives below tolerate that.
 const objectStorageOrigin = (() => {
 	try { return new URL(process.env.OBJECT_STORAGE_PUBLIC_URL).origin; } catch { return null; }
+})();
+
+// Origin(s) of the object storage's S3 API endpoint (OBJECT_STORAGE_ENDPOINT)
+// — this is what the browser PUTs the file bytes to directly via a presigned
+// URL, and it's a DIFFERENT host from the public read URL above. R2 with
+// FORCE_PATH_STYLE=false (virtual-hosted-style, our default) prefixes the
+// bucket name onto the endpoint's hostname for actual requests (e.g.
+// "mybucket.<account>.r2.cloudflarestorage.com"), so the bare endpoint origin
+// alone doesn't match — a wildcard covers that subdomain along with the bare
+// host (which path-style setups, or providers that don't rewrite the host,
+// still need). Without this, every direct-to-storage upload is silently
+// blocked by CSP's connect-src with a generic "Failed to fetch" in the
+// browser — no server-side log at all, since the browser never sends the
+// request.
+const objectStorageUploadOrigins = (() => {
+	try {
+		const u = new URL(process.env.OBJECT_STORAGE_ENDPOINT);
+		return [u.origin, `${u.protocol}//*.${u.host}`];
+	} catch { return []; }
 })();
 
 const requiredEnv = ['DATABASE_URL', 'JWT_SECRET', 'SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
@@ -229,7 +248,8 @@ app.use(helmet({
 				'https://*.sentry.io',                // Sentry error reporting
 				'https://*.ingest.sentry.io',         // Sentry ingest endpoint
 				'https://challenges.cloudflare.com',  // Turnstile (CAPTCHA) verification calls
-				...(objectStorageOrigin ? [objectStorageOrigin] : []), // chat attachment storage (upload PUT + fetch)
+				...(objectStorageOrigin ? [objectStorageOrigin] : []), // object storage public read URL (img/audio fetch)
+				...objectStorageUploadOrigins,         // object storage S3 API endpoint (direct browser PUT upload)
 			],
 
 			frameSrc: [
