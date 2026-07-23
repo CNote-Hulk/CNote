@@ -65,7 +65,7 @@ A buy/sell marketplace for consoles, games, accessories, and parts:
 * search, filter (category, condition, console type, country, city) and sort (newest, oldest, price)
 * location-aware: buyer/seller country and city, with built-in city data for 60+ countries
 * favorites, view counts, "similar listings" suggestions
-* eBay account sync (OAuth, import your eBay listings) — fully integrated
+* eBay account sync (OAuth, import your eBay listings) — fully built and integrated, but **deactivated in the UI** as of 2026-07-23 (the connect flow still works server-side, just not exposed to users right now)
 * OLX sync — integration built (OAuth flow, provider adapter), **not yet live** — OLX's API requires a registered business account to issue real credentials, which is still pending
 
 ---
@@ -209,6 +209,7 @@ Planned improvements include:
 * dedicated gaming server
 * launching global community chat (already built, not yet enabled)
 * going live with OLX marketplace sync, once a registered business account makes real API credentials possible
+* re-enabling eBay marketplace sync in the UI (temporarily deactivated 2026-07-23; the integration itself is untouched)
 * growing the marketplace into a dedicated storefront for restored/refurbished consoles (not just peer-to-peer listings), tightly integrated with the repair/restoration request flow — the long-term direction for the whole platform
 
 ---

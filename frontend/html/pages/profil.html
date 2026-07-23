@@ -348,7 +348,7 @@
                     <div class="settings-row">
                         <div class="settings-row__meta">
                             <div class="settings-row__title" data-i18n="settings_marketplace_title">Marketplace Connections</div>
-                            <div class="settings-row__desc" data-i18n="settings_marketplace_desc">Connect your eBay account to sync your listings to Console Notebook. OLX sync is coming soon.</div>
+                            <div class="settings-row__desc" data-i18n="settings_marketplace_desc">Marketplace sync (eBay, OLX) is coming soon.</div>
                         </div>
                         <div class="settings-row__body">
                             <div class="marketplace-providers">
@@ -358,7 +358,7 @@
                                         <div class="provider-logo">🛒</div>
                                         <div class="provider-info">
                                             <h3>OLX</h3>
-                                            <p class="provider-status" data-i18n="settings_olx_coming_soon">Coming soon</p>
+                                            <p class="provider-status" data-i18n="settings_marketplace_coming_soon">Coming soon</p>
                                         </div>
                                     </div>
                                     <div class="provider-actions">
@@ -366,24 +366,18 @@
                                     </div>
                                 </div>
 
-                                <!-- eBay Provider -->
+                                <!-- eBay Provider — deactivated 2026-07-23, same as OLX above (was fully functional; disabled pending a policy/process decision) -->
                                 <div class="marketplace-provider-card" id="ebay-provider-card">
                                     <div class="provider-header">
                                         <div class="provider-logo">🏪</div>
                                         <div class="provider-info">
                                             <h3>eBay</h3>
-                                            <p class="provider-status" id="ebay-status" data-i18n="settings_provider_not_connected">Not connected</p>
-                                            <div class="provider-user" id="ebay-user" hidden>
-                                                <span id="ebay-username"></span>
-                                            </div>
+                                            <p class="provider-status" data-i18n="settings_marketplace_coming_soon">Coming soon</p>
                                         </div>
                                     </div>
                                     <div class="provider-actions">
-                                        <button type="button" class="auth-btn auth-btn--small marketplace-connect-btn" id="connect-ebay-btn" data-i18n="settings_connect_ebay">Connect eBay</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-disconnect-btn" id="disconnect-ebay-btn" hidden data-i18n="settings_disconnect">Disconnect</button>
-                                        <button type="button" class="auth-btn auth-btn--small auth-btn--secondary marketplace-sync-btn" id="sync-ebay-btn" hidden data-i18n="settings_sync_listings">Sync listings</button>
+                                        <span class="hero-button" style="opacity:0.5;cursor:default;display:inline-block;" data-i18n="learn_course_coming_soon">Coming Soon</span>
                                     </div>
-                                    <div class="provider-last-sync" id="ebay-last-sync" hidden></div>
                                 </div>
                             </div>
                             <div class="auth-error" id="marketplace-msg" style="display:none;margin-top:16px;"></div>

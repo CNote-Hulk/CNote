@@ -1960,15 +1960,17 @@ initSettings();
 
 /**
  * Marketplace Connections Panel
- * Handles eBay integration UI (connect, disconnect, sync, status).
- * OLX shows as a static "Coming soon" card in profil.html (no button ids),
- * so it's deliberately excluded here — OLX's API needs a registered
- * business account for real credentials, not live yet.
+ * Handles marketplace integration UI (connect, disconnect, sync, status)
+ * for any provider added to MARKETPLACES below. Both eBay and OLX
+ * currently show as static "Coming soon" cards in profil.html (no button
+ * ids) — OLX because its API needs a registered business account not
+ * live yet, eBay deactivated 2026-07-23 (was fully functional; the
+ * backend integration — routes/ebay.js, providers/EbayProvider.js — is
+ * untouched and ready to re-enable, only the UI entry point is off).
+ * MARKETPLACES is intentionally empty until one of them comes back.
  */
 
-const MARKETPLACES = [
-	{ id: 'ebay', name: 'eBay' }
-];
+const MARKETPLACES = [];
 
 /** Initialize marketplace connections panel */
 async function initMarketplace() {
@@ -1992,20 +1994,6 @@ async function initMarketplace() {
 				const account = accounts.find(a => a.provider === id);
 				updateProviderUI(id, account);
 			});
-
-			// Fetch eBay username separately (backfills if missing in DB)
-			const ebayAccount = accounts.find(a => a.provider === 'ebay');
-			if (ebayAccount) {
-				fetch(`${API_BASE_URL}/ebay/status`, { headers: { Authorization: `Bearer ${token}` } })
-					.then(r => r.json())
-					.then(s => {
-						if (s.success && s.ebayUsername) {
-							ebayAccount.providerUserId = s.ebayUsername;
-							updateProviderUI('ebay', ebayAccount);
-						}
-					})
-					.catch(() => {});
-			}
 		} catch (err) {
 			console.error('Failed to load marketplace accounts:', err);
 		}
