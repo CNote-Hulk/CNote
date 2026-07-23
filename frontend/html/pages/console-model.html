@@ -4,7 +4,9 @@
     <!-- ===========================
          CONSOLE MODEL DETAIL
          Dynamic per-model page (?code=SCPH-50004) — reads the shared
-         MODELS data and will host the disassembly tutorial/photos.
+         MODELS data and hosts TWO independent write-ups: the disassembly
+         tutorial (linked from console-care.html) and the modding guide
+         (linked from console-modding.html).
          noindex until real tutorial content exists (avoid thin-content pages).
          =========================== -->
     <meta charset="UTF-8">
@@ -30,7 +32,7 @@
     <main class="care-page">
         <div class="container">
 
-            <a href="console-care.html#identify" class="care-back-link" data-i18n="care_back_to_directory">← Back to model directory</a>
+            <a href="console-care.html#identify" id="model-back-link" class="care-back-link" data-i18n="care_back_to_directory">← Back to model directory</a>
 
             <div id="model-detail-root" class="model-detail">
                 <div class="model-detail__plate">
@@ -46,6 +48,7 @@
                     <p class="care-section-lead" id="model-note"></p>
 
                     <div class="model-detail__tutorial">
+                        <h2 class="care-section-heading" data-i18n="tutorial_section_disassembly">Disassembly Tutorial</h2>
                         <div id="tutorial-admin-controls" class="tutorial-admin-controls"></div>
 
                         <div id="tutorial-view-wrap">
@@ -58,11 +61,26 @@
 
                         <div id="tutorial-editor" class="tutorial-editor" style="display:none;"></div>
                     </div>
+
+                    <div class="model-detail__tutorial">
+                        <h2 class="care-section-heading" data-i18n="tutorial_section_modding">Modding Guide</h2>
+                        <div id="mod-admin-controls" class="tutorial-admin-controls"></div>
+
+                        <div id="mod-view-wrap">
+                            <div id="mod-coming-soon">
+                                <span class="hero-button" style="opacity:0.5;cursor:default;display:inline-block;margin-bottom:12px;" data-i18n="learn_course_coming_soon">Coming Soon</span>
+                                <p class="care-section-lead" data-i18n="mod_tutorial_coming_body">A modding guide for this exact model — softmods, hardmods or custom firmware — is in the works.</p>
+                            </div>
+                            <div id="mod-content" style="display:none;"></div>
+                        </div>
+
+                        <div id="mod-editor" class="tutorial-editor" style="display:none;"></div>
+                    </div>
                 </div>
             </div>
 
             <div id="model-detail-notfound" style="display:none; padding: 40px 0;">
-                <p class="care-section-lead" data-i18n="care_model_notfound">We couldn't find that model. <a href="console-care.html#identify" class="terms-link">Browse the full directory</a>.</p>
+                <p class="care-section-lead" data-i18n="care_model_notfound">We couldn't find that model. <a href="console-care.html#identify" id="model-notfound-link" class="terms-link">Browse the full directory</a>.</p>
             </div>
 
         </div>
