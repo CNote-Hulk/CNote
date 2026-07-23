@@ -1960,11 +1960,13 @@ initSettings();
 
 /**
  * Marketplace Connections Panel
- * Handles OLX + eBay integration UI (connect, disconnect, sync, status)
+ * Handles eBay integration UI (connect, disconnect, sync, status).
+ * OLX shows as a static "Coming soon" card in profil.html (no button ids),
+ * so it's deliberately excluded here — OLX's API needs a registered
+ * business account for real credentials, not live yet.
  */
 
 const MARKETPLACES = [
-	{ id: 'olx', name: 'OLX' },
 	{ id: 'ebay', name: 'eBay' }
 ];
 

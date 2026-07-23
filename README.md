@@ -45,10 +45,15 @@ The platform includes a learning section focused on console repair and hardware 
 
 Features include:
 
-* structured courses, modules and lessons (video, text, and quizzes)
+* structured courses, modules and lessons (video, text, and quizzes) — the Console Starter Guide (7 modules, 21 lessons) is fully live; Console Engineering is planned but not yet populated
 * progress tracking per user
 * comments and reactions on lessons
 * XP, levels and an achievements system, with real-time unlock notifications
+
+Alongside the structured course, two standalone reference guides cover practical, per-model content that doesn't need progress tracking:
+
+* **Console Care & Cleaning Guide** — maintenance topics (dust/vents, cartridge contacts, optical drives, controller drift, safe opening, storage) plus a searchable directory of 194 real hardware models/revisions, each with its own disassembly tutorial page (photos, step-by-step)
+* **Console Modding Guide** — softmods vs hardmods, tools, backups, warranty/ban risk, staying legal, plus the same per-model directory linking to a written modding guide for each model
 
 ---
 
@@ -61,7 +66,7 @@ A buy/sell marketplace for consoles, games, accessories, and parts:
 * location-aware: buyer/seller country and city, with built-in city data for 60+ countries
 * favorites, view counts, "similar listings" suggestions
 * eBay account sync (OAuth, import your eBay listings) — fully integrated
-* OLX sync — integration built (OAuth flow, provider adapter), **not yet live** — pending OLX API credentials
+* OLX sync — integration built (OAuth flow, provider adapter), **not yet live** — OLX's API requires a registered business account to issue real credentials, which is still pending
 
 ---
 
@@ -199,12 +204,12 @@ v0.1.0 (Beta)
 
 Planned improvements include:
 
-* advanced repair lessons
-* modding tutorials
+* advanced repair lessons (Console Engineering course)
+* populating the Console Care and Console Modding guides with real per-model content (photos, step-by-step write-ups)
 * dedicated gaming server
 * launching global community chat (already built, not yet enabled)
-* going live with OLX marketplace sync
-* growing the marketplace into a dedicated storefront for restored/refurbished consoles (not just peer-to-peer listings), tightly integrated with the repair/restoration request flow
+* going live with OLX marketplace sync, once a registered business account makes real API credentials possible
+* growing the marketplace into a dedicated storefront for restored/refurbished consoles (not just peer-to-peer listings), tightly integrated with the repair/restoration request flow — the long-term direction for the whole platform
 
 ---
 
