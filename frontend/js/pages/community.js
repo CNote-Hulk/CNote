@@ -132,6 +132,18 @@ function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+/** Display name for a LOCATION_DATA country entry, translated via i18n (falls back to the raw data name) */
+function countryLabel(country) {
+    return I18nModule.t('country_' + country.code) || country.name;
+}
+
+/** Display name for a city string — most cities have no translation and render as-is; a handful of
+ * major cities with a real, established exonym are overridden via window.CITY_NAME_OVERRIDES
+ * (frontend/js/data/city-name-overrides.js). The underlying value used for filtering/storage never changes. */
+function cityLabel(city) {
+    return window.CITY_NAME_OVERRIDES?.[city]?.[I18nModule.lang] || city;
+}
+
 /** Format a date as a relative time string (Romanian locale) */
 function timeAgo(d) {
     const diff = Date.now() - new Date(d).getTime();
@@ -1076,7 +1088,7 @@ function renderMarketplace() {
                     <div class="hub-filter-section__label">Country</div>
                     <select class="hub-form-select" id="market-country">
                         <option value="">All countries</option>
-                        ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}" ${S.marketCountry===c.code?'selected':''}>${c.name}</option>`).join('')}
+                        ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}" ${S.marketCountry===c.code?'selected':''}>${esc(countryLabel(c))}</option>`).join('')}
                     </select>
                 </div>
 
@@ -1086,7 +1098,7 @@ function renderMarketplace() {
                         <option value="">All cities</option>
                         ${S.marketCountry
                             ? (window.LOCATION_DATA.countries.find(c => c.code === S.marketCountry)?.cities || [])
-                            .map(city => `<option value="${city}" ${S.marketCity===city?'selected':''}>${city}</option>`).join('')
+                            .map(city => `<option value="${city}" ${S.marketCity===city?'selected':''}>${esc(cityLabel(city))}</option>`).join('')
                             : ''}
                     </select>
                     ${!S.marketCountry ? '<div class="hub-filter-hint">Select a country first</div>' : ''}
@@ -1132,7 +1144,7 @@ function renderMarketplace() {
     const hint = v.querySelector('.hub-filter-hint');
     const country = window.LOCATION_DATA.countries.find(c => c.code === code);
     citySelect.innerHTML = '<option value="">All cities</option>' +
-        (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
+        (country?.cities || []).map(city => `<option value="${city}">${esc(cityLabel(city))}</option>`).join('');
     citySelect.disabled = !code;
     if (hint) hint.style.display = code ? 'none' : 'block';
     });
@@ -1245,7 +1257,7 @@ async function loadListings() {
                         ${l.description ? `<div class="hub-listing-info__desc">${esc(l.description.slice(0, 100))}${l.description.length > 100 ? '…' : ''}</div>` : ''}
                         <div class="hub-listing-info__meta">
                             <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] ? esc(t(CONDITIONS[l.condition])) : esc(l.condition)}</span>
-                            <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
+                            <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(cityLabel(l.location)) : ''}</span>
                             ${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
                     </div>
@@ -1395,7 +1407,7 @@ async function openListingDetail(id) {
                                 </button>
                             </div>
                             <div class="hub-detail-desc" style="margin-top:16px">${esc(l.description)}</div>
-                            ${l.location ? `<div class="hub-detail-location" style="margin-top:10px">📍 ${esc(l.location)}</div>` : ''}
+                            ${l.location ? `<div class="hub-detail-location" style="margin-top:10px">📍 ${esc(cityLabel(l.location))}</div>` : ''}
                             <div class="hub-detail-date" style="margin-top:6px">Publicat ${timeAgo(l.created_at)}</div>
                         </div>
                     </div>
@@ -1610,7 +1622,7 @@ async function loadSimilarListings(listingId, container) {
                         <div class="hub-listing-info__price">${Number(l.price).toFixed(0)} RON</div>
                         <div class="hub-listing-info__meta">
                             <span class="hub-condition hub-condition--${l.condition}">${CONDITIONS[l.condition] ? esc(t(CONDITIONS[l.condition])) : esc(l.condition)}</span>
-                            <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(l.location) : ''}</span>
+                            <span class="hub-listing-info__seller">${esc(l.seller_name)}${l.location ? ' · ' + esc(cityLabel(l.location)) : ''}</span>
                             ${l.seller_is_official ? `<span class="hub-official-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${I18nModule.t('marketplace_official_badge')}</span>` : ''}
                         </div>
                     </div>
@@ -1698,7 +1710,7 @@ function openAddListingModal() {
                         <label class="hub-form-label">${esc(t('listing_field_country'))}</label>
                         <select class="hub-form-select" name="country" required>
                             <option value="">${esc(t('listing_country_placeholder'))}</option>
-                            ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${c.name}</option>`).join('')}
+                            ${window.LOCATION_DATA.countries.map(c => `<option value="${c.code}">${esc(countryLabel(c))}</option>`).join('')}
                         </select>
                     </div>
                     <div class="hub-form-group">
@@ -1747,7 +1759,7 @@ function openAddListingModal() {
         const citySelect = overlay.querySelector('[name="location"]');
         const country = window.LOCATION_DATA.countries.find(c => c.code === e.target.value);
         citySelect.innerHTML = `<option value="">${esc(t('listing_city_placeholder'))}</option>` +
-            (country?.cities || []).map(c => `<option value="${c}">${c}</option>`).join('');
+            (country?.cities || []).map(c => `<option value="${c}">${esc(cityLabel(c))}</option>`).join('');
         citySelect.disabled = !e.target.value;
     });
 
@@ -1924,7 +1936,7 @@ function openEditListingFromDetail(id, l) {
                         <label class="hub-form-label">${esc(t('listing_field_country'))}</label>
                         <select class="hub-form-select" name="country" required>
                             <option value="">${esc(t('listing_country_placeholder'))}</option>
-                            ${(window.LOCATION_DATA?.countries || []).map(c => `<option value="${c.code}"${c.code === (l.country || '') ? ' selected' : ''}>${c.name}</option>`).join('')}
+                            ${(window.LOCATION_DATA?.countries || []).map(c => `<option value="${c.code}"${c.code === (l.country || '') ? ' selected' : ''}>${esc(countryLabel(c))}</option>`).join('')}
                         </select>
                     </div>
                     <div class="hub-form-group">
@@ -1933,7 +1945,7 @@ function openEditListingFromDetail(id, l) {
                             <option value="">${esc(t('listing_city_placeholder_before'))}</option>
                             ${l.country
                                 ? ((window.LOCATION_DATA?.countries || []).find(c => c.code === l.country)?.cities || [])
-                                    .map(city => `<option value="${city}"${city === l.location ? ' selected' : ''}>${city}</option>`).join('')
+                                    .map(city => `<option value="${city}"${city === l.location ? ' selected' : ''}>${esc(cityLabel(city))}</option>`).join('')
                                 : ''}
                         </select>
                     </div>
@@ -1969,7 +1981,7 @@ function openEditListingFromDetail(id, l) {
         const citySelect = overlay.querySelector('[name="location"]');
         const country = window.LOCATION_DATA?.countries.find(c => c.code === e.target.value);
         citySelect.innerHTML = `<option value="">${esc(t('listing_city_placeholder'))}</option>` +
-            (country?.cities || []).map(city => `<option value="${city}">${city}</option>`).join('');
+            (country?.cities || []).map(city => `<option value="${city}">${esc(cityLabel(city))}</option>`).join('');
         citySelect.disabled = !e.target.value;
     });
 
