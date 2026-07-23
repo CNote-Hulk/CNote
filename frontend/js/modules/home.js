@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // parallel fetch
             const sf = { success: false };
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes, articlesRes] = (await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes, articlesRes, trendingListingsRes] = (await Promise.all([
                 apiFetch('/api/ratings/user/all').catch(() => null),
                 apiFetch('/api/favorites').catch(() => null),
                 apiFetch('/api/friends').catch(() => null),
@@ -241,6 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/me/level').catch(() => null),
                 apiFetch('/api/me/quick-start-status').catch(() => null),
                 apiFetch('/api/articles?limit=3').catch(() => null),
+                apiFetch('/api/marketplace/listings?limit=4').catch(() => null),
             ])).map(r => r ?? sf);
 
             // =========================
@@ -1083,6 +1084,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // =========================
+            // MARKETPLACE PREVIEW (newest listings)
+            // =========================
+            const marketplacePreview = document.getElementById('home-marketplace-preview');
+            if (marketplacePreview) {
+                if (trendingListingsRes.success && trendingListingsRes.listings?.length > 0) {
+                    marketplacePreview.innerHTML = trendingListingsRes.listings.slice(0, 4).map(l => {
+                        const imgs = Array.isArray(l.images) ? l.images : [];
+                        const img = imgs[0] || '/assets/images/graphics/no-image-placeholder.jpg';
+                        return `<div class="home-listing-card" data-id="${l.id}">
+                            <a href="community.html#listing-${l.id}" class="home-listing-card__media">
+                                <img src="${escapeHtml(img)}" alt="" loading="lazy">
+                            </a>
+                            <div class="home-listing-card__info">
+                                <div class="home-listing-card__title">${escapeHtml(l.title)}</div>
+                                <div class="home-listing-card__price">${Number(l.price).toFixed(0)} RON</div>
+                            </div>
+                        </div>`;
+                    }).join('');
+                } else {
+                    marketplacePreview.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">🛒</span>
+                            <p class="dash-empty-state__text">No listings yet</p>
+                            <p class="dash-empty-state__hint">Be the first to post something for sale!</p>
+                            <a href="community.html#marketplace/new" class="dash-empty-state__link">+ Add listing →</a>
+                        </div>`;
+                }
+            }
+
+            // =========================
             // ARTICLES PREVIEW
             // =========================
             const articlesPreview = document.getElementById('home-articles-preview');
@@ -1125,13 +1156,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         btn.addEventListener('click', () => { window.location.href = `consoles/${c.id}.html`; });
                         homeCollectionPreview.appendChild(btn);
                     });
-                    if (user.owned_console_ids.length > 6) {
-                        const seeAll = document.createElement('a');
-                        seeAll.href = '#collection';
-                        seeAll.className = 'dash-see-all';
-                        seeAll.textContent = `See all ${user.owned_console_ids.length} consoles`;
-                        homeCollectionPreview.parentElement.appendChild(seeAll);
-                    }
                 } else {
                     homeCollectionPreview.innerHTML = `
                         <div class="dash-empty-state">
@@ -1205,7 +1229,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 </a>
                             `).join('')}
                         </div>
-                        ${friendsRes.friends.length > 8 ? `<a href="#friends" class="dash-see-all">${I18nModule.t('home_friends_see_all').replace('{count}', friendsRes.friends.length)}</a>` : ''}
                     `;
                 } else {
                     homeFriendsPreview.innerHTML = `
