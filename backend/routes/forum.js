@@ -13,6 +13,7 @@ const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
 const { isMuted } = require('../utils/moderation');
+const { publicUrlForKey } = require('../utils/objectStorage');
 
 const router = express.Router();
 
@@ -119,7 +120,7 @@ router.get('/:console/threads', async (req, res) => {
     }
     try {
         const result = await pool.query(`
-            SELECT t.id, t.title, t.tag, t.views, t.upvotes, t.created_at, t.solved_reply_id,
+            SELECT t.id, t.title, t.tag, t.views, t.upvotes, t.created_at, t.solved_reply_id, t.image_key,
                    LEFT(t.body, 200) AS body_snippet,
                    u.username, u.avatar,
                    (SELECT COUNT(*) FROM forum_replies r WHERE r.thread_id = t.id) AS reply_count
@@ -130,7 +131,8 @@ router.get('/:console/threads', async (req, res) => {
             LIMIT 100
         `, [consoleKey]);
 
-        res.json({ success: true, threads: result.rows });
+        const threads = result.rows.map(row => ({ ...row, image_url: publicUrlForKey(row.image_key) }));
+        res.json({ success: true, threads });
     } catch (err) {
         console.error('Forum threads GET error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
@@ -149,7 +151,7 @@ router.get('/:console/threads/:id', async (req, res) => {
         await pool.query('UPDATE forum_threads SET views = views + 1 WHERE id = $1', [threadId]);
 
         const threadResult = await pool.query(`
-            SELECT t.id, t.title, t.body, t.tag, t.views, t.upvotes, t.created_at, t.solved_reply_id, t.user_id,
+            SELECT t.id, t.title, t.body, t.tag, t.views, t.upvotes, t.created_at, t.solved_reply_id, t.user_id, t.image_key,
                    u.username, u.avatar
             FROM forum_threads t
             JOIN users u ON u.id = t.user_id
@@ -174,6 +176,7 @@ router.get('/:console/threads/:id', async (req, res) => {
         `, [threadId]);
 
         const thread = threadResult.rows[0];
+        thread.image_url = publicUrlForKey(thread.image_key);
         thread.replies = repliesResult.rows;
 
         res.json({ success: true, thread });
@@ -193,7 +196,7 @@ router.post('/:console/threads', authRequired, async (req, res) => {
         return res.status(400).json({ success: false, error: 'Invalid console.' });
     }
 
-    const { title, body, tag } = req.body;
+    const { title, body, tag, image_key } = req.body;
     if (!title || !body || String(title).trim().length === 0 || String(body).trim().length === 0) {
         return res.status(400).json({ success: false, error: 'Title and description are required.' });
     }
@@ -201,6 +204,10 @@ router.post('/:console/threads', authRequired, async (req, res) => {
     const safeTag = VALID_TAGS.includes(tag) ? tag : 'General';
     const safeTitle = String(title).trim().slice(0, 120);
     const safeBody = String(body).trim().slice(0, 5000);
+    // image_key must be one we actually issued via /api/uploads/presign (kind: 'forum') for this user
+    const safeImageKey = (typeof image_key === 'string' && image_key.startsWith(`forum/image/${req.user.id}/`))
+        ? image_key.slice(0, 200)
+        : null;
 
     // ── Pattern 3a: thread spam check ─────────────────────────────────────
     try {
@@ -216,14 +223,15 @@ router.post('/:console/threads', authRequired, async (req, res) => {
 
     try {
         const result = await pool.query(`
-            INSERT INTO forum_threads (user_id, console, title, body, tag)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING id, title, body, tag, views, upvotes, created_at
-        `, [req.user.id, consoleKey, safeTitle, safeBody, safeTag]);
+            INSERT INTO forum_threads (user_id, console, title, body, tag, image_key)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING id, title, body, tag, views, upvotes, created_at, image_key
+        `, [req.user.id, consoleKey, safeTitle, safeBody, safeTag, safeImageKey]);
 
         const thread = result.rows[0];
         thread.username = req.user.username;
         thread.reply_count = 0;
+        thread.image_url = publicUrlForKey(thread.image_key);
 
         res.status(201).json({ success: true, thread });
         awardXP(pool, req.app.get('io'), req.user.id, 'forum_post', thread.id.toString()).catch(() => {});

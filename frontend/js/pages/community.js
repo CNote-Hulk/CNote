@@ -677,6 +677,7 @@ async function loadThreads() {
                     </div>
                     <div class="hub-thread-card__title">${esc(t.title)}</div>
                     ${t.body_snippet ? `<div class="hub-thread-card__preview">${esc(t.body_snippet)}${t.body_snippet.length >= 200 ? '…' : ''}</div>` : ''}
+                    ${t.image_url ? `<img class="hub-thread-card__image" src="${esc(t.image_url)}" alt="" loading="lazy">` : ''}
                     <div class="hub-thread-card__actions">
                         <button class="hub-vote-pill" data-upvote="thread" data-id="${t.id}">
                             <span class="hub-vote-pill__arrow">▲</span><span class="hub-vote-pill__count">${formatCount(t.upvotes || 0)}</span>
@@ -785,6 +786,7 @@ async function openThread(id) {
                         <span>${timeAgo(t.created_at)}</span>
                     </div>
                     <div class="hub-thread-original__text">${esc(t.body)}</div>
+                    ${t.image_url ? `<img class="hub-thread-card__image" src="${esc(t.image_url)}" alt="" loading="lazy">` : ''}
                     <div class="hub-thread-card__actions">
                         <button class="hub-vote-pill" data-upvote="thread" data-id="${t.id}">
                             <span class="hub-vote-pill__arrow">▲</span><span class="hub-vote-pill__count">${formatCount(t.upvotes || 0)}</span>
@@ -921,6 +923,15 @@ function openNewThreadModal() {
                     <label class="hub-form-label">Message</label>
                     <textarea class="hub-form-textarea" name="body" maxlength="5000" required rows="5" placeholder="Write here…"></textarea>
                 </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">Photo (optional)</label>
+                    <div class="hub-upload-zone" id="thread-upload-zone">
+                        <input type="file" id="thread-upload-input" accept="image/jpeg,image/png,image/webp" hidden>
+                        <span class="hub-upload-zone__icon">📁</span>
+                        <span class="hub-upload-zone__text">${esc(t('listing_upload_hint'))}</span>
+                    </div>
+                    <div class="hub-upload-grid" id="thread-upload-grid"></div>
+                </div>
                 <div class="hub-modal__footer" style="padding:0;border:none">
                     <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">Cancel</button>
                     <button type="submit" class="hub-btn hub-btn--primary">Publish</button>
@@ -935,12 +946,50 @@ function openNewThreadModal() {
     overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
 
+    let selectedThreadImage = null;
+    const threadUploadZone = overlay.querySelector('#thread-upload-zone');
+    const threadUploadInput = overlay.querySelector('#thread-upload-input');
+    const threadUploadGrid = overlay.querySelector('#thread-upload-grid');
+
+    function setThreadImage(file) {
+        selectedThreadImage = file;
+        threadUploadGrid.innerHTML = file
+            ? `<div class="hub-upload-thumb"><img src="${URL.createObjectURL(file)}" alt=""><button type="button" class="hub-upload-thumb__remove">&times;</button></div>`
+            : '';
+    }
+
+    threadUploadZone.addEventListener('click', () => threadUploadInput.click());
+    threadUploadInput.addEventListener('change', () => {
+        if (threadUploadInput.files[0]) setThreadImage(threadUploadInput.files[0]);
+        threadUploadInput.value = '';
+    });
+    threadUploadZone.addEventListener('dragover', e => { e.preventDefault(); threadUploadZone.classList.add('hub-upload-zone--drag'); });
+    threadUploadZone.addEventListener('dragleave', () => threadUploadZone.classList.remove('hub-upload-zone--drag'));
+    threadUploadZone.addEventListener('drop', e => {
+        e.preventDefault();
+        threadUploadZone.classList.remove('hub-upload-zone--drag');
+        if (e.dataTransfer.files[0]) setThreadImage(e.dataTransfer.files[0]);
+    });
+    threadUploadGrid.addEventListener('click', e => { if (e.target.closest('.hub-upload-thumb__remove')) setThreadImage(null); });
+
     overlay.querySelector('#new-thread-form').addEventListener('submit', async e => {
         e.preventDefault();
         const f = e.target, btn = f.querySelector('[type="submit"]');
         btn.disabled = true;
+
+        let imageKey = null;
+        if (selectedThreadImage) {
+            const presign = await api('POST', '/uploads/presign', {
+                kind: 'forum', contentType: selectedThreadImage.type, fileSize: selectedThreadImage.size,
+            });
+            if (presign.success) {
+                const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': selectedThreadImage.type }, body: selectedThreadImage });
+                if (putRes.ok) imageKey = presign.key;
+            }
+        }
+
         const res = await api('POST', `/forum/${S.console}/threads`, {
-            title: f.title.value.trim(), body: f.body.value.trim(), tag: f.tag.value,
+            title: f.title.value.trim(), body: f.body.value.trim(), tag: f.tag.value, image_key: imageKey,
         });
         if (res.success) {
             close();
@@ -1726,7 +1775,7 @@ function openAddListingModal() {
         updatePreviews();
     });
 
-    /** Resize an image file to max 800px and return a base64 data URL */
+    /** Resize an image file to max 800px and return a JPEG Blob */
     function resizeImage(file) {
         return new Promise(resolve => {
             const img = new Image();
@@ -1740,11 +1789,19 @@ function openAddListingModal() {
                 const canvas = document.createElement('canvas');
                 canvas.width = w; canvas.height = h;
                 canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                resolve(canvas.toDataURL('image/jpeg', 0.75));
-                URL.revokeObjectURL(img.src);
+                canvas.toBlob(blob => { resolve(blob); URL.revokeObjectURL(img.src); }, 'image/jpeg', 0.75);
             };
             img.src = URL.createObjectURL(file);
         });
+    }
+
+    /** Upload a resized image blob via a presigned URL, returning its storage key (or null on failure) */
+    async function uploadListingImage(blob) {
+        if (!blob) return null;
+        const presign = await api('POST', '/uploads/presign', { kind: 'listing', contentType: 'image/jpeg', fileSize: blob.size });
+        if (!presign.success) return null;
+        const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'image/jpeg' }, body: blob });
+        return putRes.ok ? presign.key : null;
     }
 
     overlay.querySelector('#new-listing-form').addEventListener('submit', async e => {
@@ -1753,10 +1810,11 @@ function openAddListingModal() {
         btn.disabled = true;
         btn.textContent = t('listing_publishing');
 
-        const imageUrls = await Promise.all(selectedFiles.map(resizeImage));
+        const resizedBlobs = await Promise.all(selectedFiles.map(resizeImage));
+        const uploadedKeys = (await Promise.all(resizedBlobs.map(uploadListingImage))).filter(Boolean);
 
         // Default image: if no images uploaded but a console is selected, use console image
-        let finalImages = imageUrls;
+        let finalImages = uploadedKeys;
         if (finalImages.length === 0 && f.console_type.value) {
             const consoleDef = (window.CONSOLES_DATA || []).find(c => c.id === f.console_type.value);
             if (consoleDef && consoleDef.image) finalImages = [consoleDef.image];

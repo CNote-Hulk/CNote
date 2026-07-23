@@ -21,7 +21,7 @@ const { parseDevice } = require('../utils/device');
 const emailService = require('../services/email');
 const { validatePassword } = require('../utils/passwordPolicy');
 const { getLevelFromXP, awardXP } = require('../utils/gamification');
-const { supabaseAdmin } = require('../utils/supabaseStorage');
+const { uploadBuffer, deleteAttachment } = require('../utils/objectStorage');
 const { ALLOWED_LANGS } = require('../utils/languages');
 const { verifyTurnstileToken } = require('../utils/turnstile');
 const { isDisposableEmail } = require('../utils/disposableEmail');
@@ -883,18 +883,10 @@ router.post('/me/avatar', authRequired, (req, res) => {
             return res.status(400).json({ success: false, error: 'Invalid image file.' });
         }
 
-        if (!supabaseAdmin) {
-            return res.status(503).json({ success: false, error: 'Avatar storage is not configured on the server.' });
-        }
-        const objectPath = `${req.user.id}.webp`;
+        const objectPath = `avatars/${req.user.id}.webp`; // fixed key — overwritten on every re-upload, no orphaned old avatars
         try {
-            const { error: uploadError } = await supabaseAdmin.storage
-                .from('avatars')
-                .upload(objectPath, processed, { contentType: 'image/webp', upsert: true });
-            if (uploadError) throw uploadError;
-
-            const { data } = supabaseAdmin.storage.from('avatars').getPublicUrl(objectPath);
-            const avatarUrl = `${data.publicUrl}?v=${Date.now()}`;
+            const publicUrl = await uploadBuffer(objectPath, processed, 'image/webp');
+            const avatarUrl = `${publicUrl}?v=${Date.now()}`;
 
             await pool.query('UPDATE users SET avatar = $1, updated_at = NOW() WHERE id = $2', [avatarUrl, req.user.id]);
             const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
@@ -905,18 +897,15 @@ router.post('/me/avatar', authRequired, (req, res) => {
             }
         } catch (uploadErr) {
             console.error('Avatar upload error:', uploadErr.message);
-            res.status(500).json({ success: false, error: 'Internal error.' });
+            res.status(503).json({ success: false, error: 'Avatar storage is not available — try again shortly.' });
         }
     });
 });
 
 // DELETE /api/me/avatar — Remove the current profile picture
 router.delete('/me/avatar', authRequired, async (req, res) => {
-    if (!supabaseAdmin) {
-        return res.status(503).json({ success: false, error: 'Avatar storage is not configured on the server.' });
-    }
     try {
-        await supabaseAdmin.storage.from('avatars').remove([`${req.user.id}.webp`]);
+        await deleteAttachment(`avatars/${req.user.id}.webp`);
         await pool.query('UPDATE users SET avatar = $1, updated_at = NOW() WHERE id = $2', ['', req.user.id]);
         const updatedResult = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
         res.json({ success: true, user: sanitizeUser(updatedResult.rows[0]) });

@@ -77,6 +77,19 @@ async function getPresignedUploadUrl(key, contentType, expiresInSeconds = 300) {
 }
 
 /**
+ * uploadBuffer
+ * @description Direct server-side upload for callers that already have the
+ * final file bytes in memory (e.g. avatars, resized server-side with sharp
+ * before storing) — unlike getPresignedUploadUrl, the bytes go through this
+ * Node process. Returns the object's public URL.
+ */
+async function uploadBuffer(key, buffer, contentType) {
+	if (!s3) throw new Error('Object storage not configured');
+	await s3.send(new PutObjectCommand({ Bucket: BUCKET, Key: key, Body: buffer, ContentType: contentType }));
+	return publicUrlForKey(key);
+}
+
+/**
  * deleteAttachment
  * @description Best-effort delete, e.g. when a message is removed.
  */
@@ -98,4 +111,4 @@ function publicUrlForKey(key) {
 	return `${PUBLIC_URL}/${key}`;
 }
 
-module.exports = { s3, buildAttachmentKey, getPresignedUploadUrl, deleteAttachment, publicUrlForKey };
+module.exports = { s3, buildAttachmentKey, getPresignedUploadUrl, uploadBuffer, deleteAttachment, publicUrlForKey };

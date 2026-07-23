@@ -861,6 +861,15 @@
     overflow: hidden;
 }
 
+.hub-thread-card__image {
+    display: block;
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
 .hub-thread-card__actions {
     display: flex;
     align-items: center;

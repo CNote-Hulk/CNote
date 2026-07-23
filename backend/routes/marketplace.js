@@ -11,8 +11,26 @@ const { isMuted } = require('../utils/moderation');
 const MarketplaceSyncService = require('../services/marketplace-sync');
 const OlxProvider = require('../providers/OlxProvider');
 const EbayProvider = require('../providers/EbayProvider');
+const { publicUrlForKey } = require('../utils/objectStorage');
 
 const router = express.Router();
+
+/**
+ * resolveImages
+ * @description `listings.images` stores object-storage KEYS for photos
+ * uploaded via /api/uploads/presign (kind: 'listing') since 2026-07-23 —
+ * resolved to a real public URL here at read time, same indirection
+ * chat.js/dm.js use for attachment_key, so switching storage provider later
+ * never requires rewriting stored rows. Older rows (pre-migration) may still
+ * hold a full URL directly (base64 data URL, or an eBay/OLX-synced external
+ * image) — those pass through unchanged since they don't match the key prefix.
+ */
+function resolveImages(images) {
+    if (!images) return [];
+    const arr = typeof images === 'string' ? JSON.parse(images) : images;
+    if (!Array.isArray(arr)) return [];
+    return arr.map(v => (typeof v === 'string' && v.startsWith('marketplace/listing/')) ? (publicUrlForKey(v) || v) : v);
+}
 
 const VALID_CONDITIONS = ['new', 'like_new', 'good', 'fair', 'parts'];
 const VALID_CATEGORIES = ['consoles', 'games', 'accessories', 'parts'];
@@ -122,7 +140,7 @@ router.get('/listings', async (req, res) => {
             category: row.category,
             location: row.location,
             country: row.country || '',
-            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+            images: resolveImages(row.images),
             sold: row.sold,
             status: row.status || 'active',
             views: row.views || 0,
@@ -163,7 +181,7 @@ router.get('/listings/mine', authRequired, async (req, res) => {
             category: row.category,
             location: row.location,
             country: row.country || '',
-            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+            images: resolveImages(row.images),
             sold: row.sold,
             status: row.status || 'active',
             views: row.views || 0,
@@ -204,7 +222,7 @@ router.get('/listings/user/:userId', async (req, res) => {
             category: row.category,
             location: row.location,
             country: row.country || '',
-            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+            images: resolveImages(row.images),
             sold: row.sold,
             status: row.status || 'active',
             console_type: row.console_type || '',
@@ -254,7 +272,7 @@ router.get('/listings/:id', async (req, res) => {
                 country: row.country || '',
                 phone: row.phone,
                 olx_url: row.olx_url,
-                images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+                images: resolveImages(row.images),
                 sold: row.sold,
                 status: row.status || 'active',
                 views: row.views || 0,
@@ -339,7 +357,7 @@ router.get('/listings/:id/similar', async (req, res) => {
             category: row.category,
             location: row.location,
             country: row.country || '',
-            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+            images: resolveImages(row.images),
             sold: row.sold,
             status: row.status || 'active',
             created_at: row.created_at,
@@ -377,7 +395,7 @@ router.post('/listings', authRequired, async (req, res) => {
     const safePhone       = String(phone || '').trim().slice(0, 30);
     const rawOlx = String(olx_url || '').trim();
     const safeOlx = (rawOlx === '' || rawOlx.startsWith('https://') || rawOlx.startsWith('http://')) ? rawOlx.slice(0, 500) : '';
-    const safeImages      = JSON.stringify(Array.isArray(images) ? images.slice(0, 8).map(u => String(u).slice(0, 200000)) : []);
+    const safeImages      = JSON.stringify(Array.isArray(images) ? images.slice(0, 8).map(u => String(u).slice(0, 500)) : []);
     const safeConsoleType = String(console_type || '').trim().slice(0, 100);
 
     try {
@@ -426,7 +444,7 @@ router.put('/listings/:id', authRequired, async (req, res) => {
         if (console_type !== undefined){ sets.push(`console_type = $${idx++}`); params.push(String(console_type).trim().slice(0, 100)); }
         if (images !== undefined && Array.isArray(images)) {
             sets.push(`images = $${idx++}`);
-            params.push(JSON.stringify(images.slice(0, 8).map(u => String(u).slice(0, 200000))));
+            params.push(JSON.stringify(images.slice(0, 8).map(u => String(u).slice(0, 500))));
         }
 
         if (sets.length === 0) return res.status(400).json({ success: false, error: 'Nothing to update.' });
@@ -569,7 +587,7 @@ router.get('/favorites', authRequired, async (req, res) => {
             category: row.category,
             location: row.location,
             country: row.country || '',
-            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+            images: resolveImages(row.images),
             sold: row.sold,
             status: row.status || 'active',
             created_at: row.created_at,
@@ -944,7 +962,7 @@ router.get('/my-listings', authRequired, async (req, res) => {
         const listings = result.rows.map(row => ({
             ...row,
             price: parseFloat(row.price),
-            images: row.images ? (typeof row.images === 'string' ? JSON.parse(row.images) : row.images) : [],
+            images: resolveImages(row.images),
             status: row.status || 'active',
         }));
         res.json({ success: true, listings });
