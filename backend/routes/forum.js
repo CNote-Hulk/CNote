@@ -120,6 +120,7 @@ router.get('/:console/threads', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT t.id, t.title, t.tag, t.views, t.upvotes, t.created_at, t.solved_reply_id,
+                   LEFT(t.body, 200) AS body_snippet,
                    u.username, u.avatar,
                    (SELECT COUNT(*) FROM forum_replies r WHERE r.thread_id = t.id) AS reply_count
             FROM forum_threads t

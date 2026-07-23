@@ -527,6 +527,7 @@ const MESSAGES = {
         forum_solved_badge: '✓ Solved',
         forum_reply_to_action: 'Reply',
         forum_replying_to: 'Replying to',
+        forum_join_conversation: 'Join the conversation',
         forum_cancel_reply: 'Cancel',
 
         navbar_profile: 'Profile',
@@ -2287,6 +2288,7 @@ const MESSAGES = {
         forum_solved_badge: '✓ Rezolvat',
         forum_reply_to_action: 'Răspunde',
         forum_replying_to: 'Răspunzi la',
+        forum_join_conversation: 'Alătură-te discuției',
         forum_cancel_reply: 'Anulează',
 
         navbar_profile: 'Profil',
@@ -4046,6 +4048,7 @@ const MESSAGES = {
         forum_solved_badge: '✓ Resuelto',
         forum_reply_to_action: 'Responder',
         forum_replying_to: 'Respondiendo a',
+        forum_join_conversation: 'Únete a la conversación',
         forum_cancel_reply: 'Cancelar',
 
         navbar_profile: 'Perfil',
@@ -5805,6 +5808,7 @@ const MESSAGES = {
         forum_solved_badge: '✓ Résolu',
         forum_reply_to_action: 'Répondre',
         forum_replying_to: 'Réponse à',
+        forum_join_conversation: 'Rejoignez la conversation',
         forum_cancel_reply: 'Annuler',
 
         navbar_profile: 'Profil',
@@ -7564,6 +7568,7 @@ const MESSAGES = {
         forum_solved_badge: '✓ Risolto',
         forum_reply_to_action: 'Rispondi',
         forum_replying_to: 'Stai rispondendo a',
+        forum_join_conversation: 'Unisciti alla conversazione',
         forum_cancel_reply: 'Annulla',
 
         navbar_profile: 'Profilo',
@@ -9323,6 +9328,7 @@ const MESSAGES = {
         forum_solved_badge: '✓ Gelöst',
         forum_reply_to_action: 'Antworten',
         forum_replying_to: 'Antwort an',
+        forum_join_conversation: 'An der Diskussion teilnehmen',
         forum_cancel_reply: 'Abbrechen',
 
         navbar_profile: 'Profil',
