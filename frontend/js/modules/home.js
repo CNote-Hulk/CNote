@@ -374,11 +374,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             // =========================
             // MY LISTINGS (in collection panel)
             // =========================
-            const myListingsSection = document.getElementById('my-listings-section');
             const myListingsGrid = document.getElementById('my-listings-grid');
-            if (myListingsSection && myListingsGrid && myListingsRes.success && myListingsRes.listings && myListingsRes.listings.length > 0) {
-                myListingsSection.hidden = false;
-                renderMyListingCards(myListingsGrid, myListingsRes.listings);
+            if (myListingsGrid) {
+                const listings = (myListingsRes.success && myListingsRes.listings) || [];
+                if (listings.length > 0) {
+                    renderMyListingCards(myListingsGrid, listings);
+                } else {
+                    myListingsGrid.innerHTML = `
+                        <div class="dash-empty-state">
+                            <span class="dash-empty-state__icon">🛒</span>
+                            <p class="dash-empty-state__text">${escapeHtml(I18nModule.t('home_no_listings_text'))}</p>
+                            <p class="dash-empty-state__hint">${escapeHtml(I18nModule.t('home_no_listings_hint'))}</p>
+                        </div>`;
+                }
             }
 
             function renderMyListingCards(grid, listings) {

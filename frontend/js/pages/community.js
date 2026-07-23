@@ -96,7 +96,7 @@ const MODELS_BY_CONSOLE = {
 // ── State ──────────────────────────────────────────────────
 
 const S = {
-    view: 'chat',
+    view: 'marketplace',
     console: null,
     category: '',
     threadId: null,
@@ -900,7 +900,12 @@ function renderMarketplace() {
             <div class="hub-view-header__title">🛒 Marketplace</div>
             <div style="display:flex;gap:8px">
                 ${u ? '<button class="hub-btn hub-btn--primary hub-market-add-btn" id="market-add-btn"><span class="hub-market-add-btn__text">+ New listing</span><span class="hub-market-add-btn__icon">+</span></button>' : ''}
-                ${u ? '<button class="hub-btn hub-btn--secondary" id="market-dm-btn">💬 Messages</button>' : ''}
+                <select class="hub-market-select" id="market-sort" style="min-width:130px">
+                    <option value="newest" ${S.marketSort==='newest'?'selected':''}>Newest</option>
+                    <option value="oldest" ${S.marketSort==='oldest'?'selected':''}>Oldest</option>
+                    <option value="price_asc" ${S.marketSort==='price_asc'?'selected':''}>Price ↑</option>
+                    <option value="price_desc" ${S.marketSort==='price_desc'?'selected':''}>Price ↓</option>
+                </select>
             </div>
         </div>
 
@@ -910,12 +915,6 @@ function renderMarketplace() {
                 ⚙️ Filters
                 ${activeFilters > 0 ? `<span class="hub-filter-badge">${activeFilters}</span>` : ''}
             </button>
-            <select class="hub-market-select" id="market-sort" style="min-width:130px">
-                <option value="newest" ${S.marketSort==='newest'?'selected':''}>Newest</option>
-                <option value="oldest" ${S.marketSort==='oldest'?'selected':''}>Oldest</option>
-                <option value="price_asc" ${S.marketSort==='price_asc'?'selected':''}>Price ↑</option>
-                <option value="price_desc" ${S.marketSort==='price_desc'?'selected':''}>Price ↓</option>
-            </select>
         </div>
 
         <!-- Filter Drawer Overlay -->
@@ -1032,7 +1031,6 @@ function renderMarketplace() {
     });
 
     v.querySelector('#market-add-btn')?.addEventListener('click', openAddListingModal);
-    v.querySelector('#market-dm-btn')?.addEventListener('click', () => navigate('dm'));
 
     // ── Grid click handler — delegated once per render to avoid accumulation on loadListings re-calls ──
     const grid = v.querySelector('#market-grid');
@@ -2579,6 +2577,14 @@ function handleHashNavigation() {
         }
     }
 
+    // Deep link: open the "New listing" modal directly (used by the "Add listing"
+    // button in Home's Collection panel, which links to community.html#marketplace/new)
+    if (hash === '#marketplace/new') {
+        navigate('marketplace', null, '');
+        if (user()) openAddListingModal();
+        return;
+    }
+
     // Section: #marketplace, #marketplace/consoles, #forum/ps, etc.
     if (hash && hash.length > 1) {
         const parts = hash.slice(1).split('/');
@@ -2601,7 +2607,7 @@ function handleHashNavigation() {
     }
 
     // Default route
-    navigate('chat', null, '');
+    navigate('marketplace', null, '');
 }
 handleHashNavigation();
 window.addEventListener('hashchange', handleHashNavigation);

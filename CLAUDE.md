@@ -9,6 +9,7 @@ Console Notebook (Cnote Bakery) — a web platform for retro/console gaming enth
 ## Rules
 
 INDEX.md is the authoritative map of this repo: every file, where it lives, and a one-line description of what it does/handles. Always check INDEX.md FIRST to locate a file or understand what handles something. **As long as INDEX.md exists and answers the question, spawning a search/explore/general-purpose agent (or doing a repo-wide grep/glob) to find "where is X" is forbidden** — read INDEX.md directly, and if you need actual implementation detail beyond the one-line description, `Read` the specific file it points to yourself. Only fall back to searching the codebase (directly, still not via an agent, unless the task is genuinely broad enough to warrant one) when INDEX.md is genuinely insufficient — and when that happens, update INDEX.md with what you learned so the next lookup doesn't need to search either.
+**This still applies when a request has multiple parts, feels like a reorg, or you're already deep into unrelated work — "this feels complex enough to need a research agent" is not an exception.** Check INDEX.md and read/grep the files directly first; only spawn an agent if that genuinely comes up short.
 When you have to look for a file look first in INDEX.md.
 If you have questions, you didn`t quite understand my prompt, ask.
 Every file you make, you delete, you move, you modify update in INDEX.md
