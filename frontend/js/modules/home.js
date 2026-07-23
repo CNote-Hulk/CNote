@@ -380,13 +380,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (listings.length > 0) {
                     renderMyListingCards(myListingsGrid, listings);
                 } else {
-                    myListingsGrid.innerHTML = `
-                        <div class="dash-empty-state">
-                            <span class="dash-empty-state__icon">🛒</span>
-                            <p class="dash-empty-state__text">${escapeHtml(I18nModule.t('home_no_listings_text'))}</p>
-                            <p class="dash-empty-state__hint">${escapeHtml(I18nModule.t('home_no_listings_hint'))}</p>
-                        </div>`;
+                    myListingsGrid.innerHTML = myListingsEmptyStateHtml();
                 }
+            }
+
+            function myListingsEmptyStateHtml() {
+                return `<div class="dash-empty-state">
+                    <span class="dash-empty-state__icon">🛒</span>
+                    <p class="dash-empty-state__text">${escapeHtml(I18nModule.t('home_no_listings_text'))}</p>
+                    <p class="dash-empty-state__hint">${escapeHtml(I18nModule.t('home_no_listings_hint'))}</p>
+                </div>`;
             }
 
             function renderMyListingCards(grid, listings) {
@@ -407,6 +410,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                         <div class="home-listing-card__actions">
                             <a href="community.html#listing-${l.id}" class="hlc-btn hlc-btn--edit" title="Edit listing">✏️</a>
+                            <button class="hlc-btn hlc-btn--active" data-id="${l.id}" data-inactive="${isInactive}" title="${isInactive ? 'Mark as available' : 'Mark as unavailable'}">
+                                ${isInactive ? '🔒' : '🚫'}
+                            </button>
                             <button class="hlc-btn hlc-btn--sold" data-id="${l.id}" data-sold="${isSold}" title="${isSold ? 'Mark as unsold' : 'Mark as sold'}">
                                 ${isSold ? '↩️' : '✅'}
                             </button>
@@ -414,6 +420,49 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                     </div>`;
                 }).join('');
+
+                grid.querySelectorAll('.hlc-btn--active').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.dataset.id;
+                        const wasInactive = btn.dataset.inactive === 'true';
+                        const newStatus = wasInactive ? 'active' : 'inactive';
+                        const res = await apiFetch(`/api/marketplace/listings/${id}/status`, {
+                            method: 'PATCH',
+                            body: JSON.stringify({ status: newStatus })
+                        });
+                        if (res && res.success) {
+                            const card = grid.querySelector(`.home-listing-card[data-id="${id}"]`);
+                            if (card) {
+                                const soldBtn = card.querySelector('.hlc-btn--sold');
+                                const isSold = soldBtn?.dataset.sold === 'true';
+                                const overlay = card.querySelector('.home-listing-card__sold');
+                                if (newStatus === 'inactive') {
+                                    btn.textContent = '🔒';
+                                    btn.dataset.inactive = 'true';
+                                    btn.title = 'Mark as available';
+                                    if (!isSold) {
+                                        if (!overlay) {
+                                            const media = card.querySelector('.home-listing-card__media');
+                                            const span = document.createElement('span');
+                                            span.className = 'home-listing-card__sold';
+                                            span.style.background = 'rgba(100,100,100,.8)';
+                                            span.textContent = 'INACTIVE';
+                                            media.appendChild(span);
+                                        } else {
+                                            overlay.textContent = 'INACTIVE';
+                                            overlay.style.background = 'rgba(100,100,100,.8)';
+                                        }
+                                    }
+                                } else {
+                                    btn.textContent = '🚫';
+                                    btn.dataset.inactive = 'false';
+                                    btn.title = 'Mark as unavailable';
+                                    if (!isSold && overlay) overlay.remove();
+                                }
+                            }
+                        }
+                    });
+                });
 
                 grid.querySelectorAll('.hlc-btn--sold').forEach(btn => {
                     btn.addEventListener('click', async () => {
@@ -460,7 +509,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const res = await apiFetch(`/api/marketplace/listings/${id}`, { method: 'DELETE' });
                         if (res && res.success) {
                             const card = grid.querySelector(`.home-listing-card[data-id="${id}"]`);
-                            if (card) { card.style.opacity = '0'; card.style.transition = 'opacity .2s'; setTimeout(() => { card.remove(); if (!grid.querySelector('.home-listing-card')) myListingsSection.hidden = true; }, 200); }
+                            if (card) { card.style.opacity = '0'; card.style.transition = 'opacity .2s'; setTimeout(() => { card.remove(); if (!grid.querySelector('.home-listing-card')) grid.innerHTML = myListingsEmptyStateHtml(); }, 200); }
                         }
                     });
                 });

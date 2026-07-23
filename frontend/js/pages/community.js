@@ -979,24 +979,34 @@ function openNewThreadModal() {
 
         let imageKey = null;
         if (selectedThreadImage) {
-            const presign = await api('POST', '/uploads/presign', {
-                kind: 'forum', contentType: selectedThreadImage.type, fileSize: selectedThreadImage.size,
-            });
-            if (presign.success) {
-                const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': selectedThreadImage.type }, body: selectedThreadImage });
-                if (putRes.ok) imageKey = presign.key;
+            try {
+                const presign = await api('POST', '/uploads/presign', {
+                    kind: 'forum', contentType: selectedThreadImage.type, fileSize: selectedThreadImage.size,
+                });
+                if (presign.success) {
+                    const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': selectedThreadImage.type }, body: selectedThreadImage });
+                    if (putRes.ok) imageKey = presign.key;
+                }
+            } catch (err) {
+                console.error('Thread image upload failed:', err);
             }
         }
 
-        const res = await api('POST', `/forum/${S.console}/threads`, {
-            title: f.title.value.trim(), body: f.body.value.trim(), tag: f.tag.value, image_key: imageKey,
-        });
-        if (res.success) {
-            close();
-            window.dispatchEvent(new CustomEvent('cn:message-sent'));
-            loadThreads();
+        try {
+            const res = await api('POST', `/forum/${S.console}/threads`, {
+                title: f.title.value.trim(), body: f.body.value.trim(), tag: f.tag.value, image_key: imageKey,
+            });
+            if (res.success) {
+                close();
+                window.dispatchEvent(new CustomEvent('cn:message-sent'));
+                loadThreads();
+            }
+            else { btn.disabled = false; showToast(res.error || 'Error.', 'error'); }
+        } catch (err) {
+            console.error('Thread publish failed:', err);
+            btn.disabled = false;
+            showToast(t('listing_generic_error'), 'error');
         }
-        else { btn.disabled = false; showToast(res.error || 'Error.', 'error'); }
     });
 }
 
@@ -1411,6 +1421,7 @@ async function openListingDetail(id) {
                         ${l.olx_url ? `<a href="${esc(l.olx_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 OLX</a>` : ''}
                         ${l.ebay_url ? `<a href="${esc(l.ebay_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 eBay</a>` : ''}
                         ${own && !l.sold ? '<button class="hub-btn hub-btn--primary" id="listing-sold-btn">✓ Mark as sold</button>' : ''}
+                        ${own && !l.sold ? `<button class="hub-btn hub-btn--secondary" id="listing-active-btn" data-inactive="${l.status === 'inactive'}">${l.status === 'inactive' ? '🔒 Mark as available' : '🚫 Mark as unavailable'}</button>` : ''}
                         ${own ? '<button class="hub-btn hub-btn--secondary" id="listing-edit-btn">✏️ Edit</button>' : ''}
                         ${own ? '<button class="hub-btn hub-btn--danger" id="listing-del-btn">Delete</button>' : ''}
                     </div>
@@ -1534,6 +1545,12 @@ async function openListingDetail(id) {
 
         v.querySelector('#listing-sold-btn')?.addEventListener('click', async () => {
             if ((await api('PATCH', `/marketplace/listings/${id}/sold`)).success) openListingDetail(id);
+        });
+
+        v.querySelector('#listing-active-btn')?.addEventListener('click', async e => {
+            const wasInactive = e.currentTarget.dataset.inactive === 'true';
+            const res = await api('PATCH', `/marketplace/listings/${id}/status`, { status: wasInactive ? 'active' : 'inactive' });
+            if (res.success) openListingDetail(id);
         });
 
         v.querySelector('#listing-del-btn')?.addEventListener('click', async () => {
@@ -1795,13 +1812,18 @@ function openAddListingModal() {
         });
     }
 
-    /** Upload a resized image blob via a presigned URL, returning its storage key (or null on failure) */
+    /** Upload a resized image blob via a presigned URL, returning its storage key — never throws, returns null on any failure so one bad photo can't block publishing the listing */
     async function uploadListingImage(blob) {
         if (!blob) return null;
-        const presign = await api('POST', '/uploads/presign', { kind: 'listing', contentType: 'image/jpeg', fileSize: blob.size });
-        if (!presign.success) return null;
-        const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'image/jpeg' }, body: blob });
-        return putRes.ok ? presign.key : null;
+        try {
+            const presign = await api('POST', '/uploads/presign', { kind: 'listing', contentType: 'image/jpeg', fileSize: blob.size });
+            if (!presign.success) return null;
+            const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'image/jpeg' }, body: blob });
+            return putRes.ok ? presign.key : null;
+        } catch (err) {
+            console.error('Listing image upload failed:', err);
+            return null;
+        }
     }
 
     overlay.querySelector('#new-listing-form').addEventListener('submit', async e => {
@@ -1810,31 +1832,42 @@ function openAddListingModal() {
         btn.disabled = true;
         btn.textContent = t('listing_publishing');
 
-        const resizedBlobs = await Promise.all(selectedFiles.map(resizeImage));
-        const uploadedKeys = (await Promise.all(resizedBlobs.map(uploadListingImage))).filter(Boolean);
+        let finalImages = [];
+        try {
+            const resizedBlobs = await Promise.all(selectedFiles.map(resizeImage));
+            finalImages = (await Promise.all(resizedBlobs.map(uploadListingImage))).filter(Boolean);
+        } catch (err) {
+            console.error('Listing image processing failed:', err);
+        }
 
         // Default image: if no images uploaded but a console is selected, use console image
-        let finalImages = uploadedKeys;
         if (finalImages.length === 0 && f.console_type.value) {
             const consoleDef = (window.CONSOLES_DATA || []).find(c => c.id === f.console_type.value);
             if (consoleDef && consoleDef.image) finalImages = [consoleDef.image];
         }
 
-        const res = await api('POST', '/marketplace/listings', {
-            title: f.title.value.trim(),
-            description: f.description.value.trim(),
-            price: parseFloat(f.price.value),
-            condition: f.condition.value,
-            category: f.category.value,
-            console_type: f.console_type.value,
-            location: f.location.value.trim(),
-            phone: f.phone.value.trim(),
-            olx_url: f.olx_url.value.trim(),
-            ebay_url: f.ebay_url.value.trim(),
-            images: finalImages,
-        });
-        if (res.success) { close(); loadListings(); }
-        else { btn.disabled = false; btn.textContent = t('listing_publish'); showToast(res.error || t('listing_generic_error'), 'error'); }
+        try {
+            const res = await api('POST', '/marketplace/listings', {
+                title: f.title.value.trim(),
+                description: f.description.value.trim(),
+                price: parseFloat(f.price.value),
+                condition: f.condition.value,
+                category: f.category.value,
+                console_type: f.console_type.value,
+                location: f.location.value.trim(),
+                phone: f.phone.value.trim(),
+                olx_url: f.olx_url.value.trim(),
+                ebay_url: f.ebay_url.value.trim(),
+                images: finalImages,
+            });
+            if (res.success) { close(); loadListings(); }
+            else { btn.disabled = false; btn.textContent = t('listing_publish'); showToast(res.error || t('listing_generic_error'), 'error'); }
+        } catch (err) {
+            console.error('Listing publish failed:', err);
+            btn.disabled = false;
+            btn.textContent = t('listing_publish');
+            showToast(t('listing_generic_error'), 'error');
+        }
     });
 }
 
@@ -2385,8 +2418,12 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             <span style="color:var(--text-light);font-weight:600;font-size:.9rem">${esc(partnerName || 'Utilizator')}</span>
         </div>
         <div class="hub-dm-messages" id="dm-messages"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>
+        <div class="hub-dm-pending" id="dm-pending" hidden></div>
         <form class="hub-dm-form" id="dm-form">
-            <input class="hub-dm-form__input" type="text" placeholder="Write a message…" maxlength="2000" required>
+            <input type="file" id="dm-image-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+            <button type="button" class="hub-dm-form__icon-btn" id="dm-attach-btn" title="${I18nModule.t('dm_attach_image')}">+</button>
+            <button type="button" class="hub-dm-form__icon-btn" id="dm-mic-btn" title="${I18nModule.t('dm_record_voice')}">🎤</button>
+            <input class="hub-dm-form__input" type="text" placeholder="Write a message…" maxlength="2000">
             <button class="hub-btn hub-btn--primary" type="submit">Send</button>
         </form>`;
 
@@ -2406,7 +2443,9 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         } else {
             el.innerHTML = msgs.map(m => `
                 <div class="hub-dm-msg ${m.sender_id === u.id ? 'hub-dm-msg--mine' : 'hub-dm-msg--theirs'}">
-                    ${esc(m.message)}
+                    ${m.attachment?.type === 'image' ? `<img class="hub-dm-msg__image" src="${esc(m.attachment.url)}" alt="" loading="lazy">` : ''}
+                    ${m.attachment?.type === 'voice' ? `<audio class="hub-dm-msg__audio" controls src="${esc(m.attachment.url)}"></audio>` : ''}
+                    ${m.message ? esc(m.message) : ''}
                     <div class="hub-dm-msg__time">${timeAgo(m.created_at)}</div>
                     ${m.sender_id !== u.id ? `<button class="report-trigger-btn" data-report-type="direct_message" data-report-id="${m.id}" data-report-preview="${esc((m.message || '').substring(0, 60))}" title="${I18nModule.t('report_btn_trigger_dm_title')}">⚑</button>` : ''}
                 </div>`).join('');
@@ -2427,22 +2466,137 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         }
     });
 
+    const dmTextInput = thread.querySelector('.hub-dm-form__input');
+    const dmImageInput = document.getElementById('dm-image-input');
+    const dmAttachBtn = document.getElementById('dm-attach-btn');
+    const dmMicBtn = document.getElementById('dm-mic-btn');
+    const dmPendingEl = document.getElementById('dm-pending');
+    let pendingImageFile = null;
+
+    function appendSentMessage(html) {
+        const el = document.getElementById('dm-messages');
+        el.querySelector('.hub-dm-empty')?.remove();
+        const div = document.createElement('div');
+        div.className = 'hub-dm-msg hub-dm-msg--mine';
+        div.innerHTML = html;
+        el.appendChild(div);
+        el.scrollTop = el.scrollHeight;
+        window.dispatchEvent(new CustomEvent('cn:message-sent'));
+    }
+
+    function setPendingImage(file) {
+        pendingImageFile = file;
+        if (file) {
+            dmPendingEl.hidden = false;
+            dmPendingEl.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="">
+                <span class="hub-dm-pending__name">${esc(file.name)}</span>
+                <button type="button" class="hub-dm-pending__remove" aria-label="Remove">&times;</button>`;
+            dmPendingEl.querySelector('.hub-dm-pending__remove').addEventListener('click', () => setPendingImage(null));
+        } else {
+            dmPendingEl.hidden = true;
+            dmPendingEl.innerHTML = '';
+        }
+    }
+
+    dmAttachBtn.addEventListener('click', () => dmImageInput.click());
+    dmImageInput.addEventListener('change', () => {
+        if (dmImageInput.files[0]) setPendingImage(dmImageInput.files[0]);
+        dmImageInput.value = '';
+    });
+
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let recordStart = 0;
+
+    dmMicBtn.addEventListener('click', async () => {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+            return;
+        }
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mimeType = ['audio/webm', 'audio/ogg', 'audio/mp4'].find(m => window.MediaRecorder?.isTypeSupported(m)) || '';
+            mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+            recordedChunks = [];
+            recordStart = Date.now();
+            mediaRecorder.addEventListener('dataavailable', ev => { if (ev.data.size > 0) recordedChunks.push(ev.data); });
+            mediaRecorder.addEventListener('stop', async () => {
+                stream.getTracks().forEach(tr => tr.stop());
+                dmMicBtn.classList.remove('hub-dm-form__icon-btn--recording');
+                const durationMs = Date.now() - recordStart;
+                const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+                if (blob.size === 0) return;
+                try {
+                    const presign = await api('POST', '/uploads/presign', { kind: 'voice', contentType: blob.type, fileSize: blob.size });
+                    if (!presign.success) throw new Error(presign.error || 'Presign failed');
+                    const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': blob.type }, body: blob });
+                    if (!putRes.ok) throw new Error('Upload failed');
+                    const res = await api('POST', '/dm/send', {
+                        receiverId: partnerId, message: '',
+                        attachment_key: presign.key, attachment_type: 'voice',
+                        attachment_size: blob.size, attachment_duration_ms: durationMs,
+                    });
+                    if (res.success) {
+                        appendSentMessage(`<audio class="hub-dm-msg__audio" controls src="${esc(res.message?.attachment?.url || presign.publicUrl)}"></audio><div class="hub-dm-msg__time">now</div>`);
+                    } else {
+                        showToast(res.error || t('listing_generic_error'), 'error');
+                    }
+                } catch (err) {
+                    console.error('Voice message failed:', err);
+                    showToast(t('listing_generic_error'), 'error');
+                }
+            });
+            mediaRecorder.start();
+            dmMicBtn.classList.add('hub-dm-form__icon-btn--recording');
+        } catch (err) {
+            console.error('Mic access failed:', err);
+            showToast(t('dm_mic_denied'), 'error');
+        }
+    });
+
     document.getElementById('dm-form').addEventListener('submit', async e => {
         e.preventDefault();
-        const input = e.target.querySelector('input');
-        const msg = input.value.trim();
-        if (!msg) return;
-        input.value = '';
-        const res = await api('POST', '/dm/send', { receiverId: partnerId, message: msg });
-        if (res.success) {
-            const el = document.getElementById('dm-messages');
-            el.querySelector('.hub-dm-empty')?.remove();
-            const div = document.createElement('div');
-            div.className = 'hub-dm-msg hub-dm-msg--mine';
-            div.innerHTML = `${esc(msg)}<div class="hub-dm-msg__time">now</div>`;
-            el.appendChild(div);
-            el.scrollTop = el.scrollHeight;
-            window.dispatchEvent(new CustomEvent('cn:message-sent'));
+        const msg = dmTextInput.value.trim();
+        if (!msg && !pendingImageFile) return;
+        const btn = e.target.querySelector('[type="submit"]');
+        btn.disabled = true;
+        dmTextInput.value = '';
+        const imageFile = pendingImageFile;
+        setPendingImage(null);
+
+        try {
+            let attachmentKey = null;
+            if (imageFile) {
+                try {
+                    const presign = await api('POST', '/uploads/presign', { kind: 'image', contentType: imageFile.type, fileSize: imageFile.size });
+                    if (presign.success) {
+                        const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': imageFile.type }, body: imageFile });
+                        if (putRes.ok) attachmentKey = presign.key;
+                    }
+                } catch (err) {
+                    console.error('DM image upload failed:', err);
+                }
+            }
+            const body = { receiverId: partnerId, message: msg };
+            if (attachmentKey) {
+                body.attachment_key = attachmentKey;
+                body.attachment_type = 'image';
+                body.attachment_size = imageFile.size;
+            }
+            const res = await api('POST', '/dm/send', body);
+            if (res.success) {
+                appendSentMessage(`
+                    ${res.message?.attachment?.type === 'image' ? `<img class="hub-dm-msg__image" src="${esc(res.message.attachment.url)}" alt="" loading="lazy">` : ''}
+                    ${msg ? esc(msg) : ''}
+                    <div class="hub-dm-msg__time">now</div>`);
+            } else {
+                showToast(res.error || t('listing_generic_error'), 'error');
+            }
+        } catch (err) {
+            console.error('DM send failed:', err);
+            showToast(t('listing_generic_error'), 'error');
+        } finally {
+            btn.disabled = false;
         }
     });
 }

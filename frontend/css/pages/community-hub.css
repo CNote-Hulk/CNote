@@ -2690,6 +2690,96 @@ button.hub-action-pill:hover {
     border-color: var(--accent-color);
 }
 
+.hub-dm-msg__image {
+    display: block;
+    max-width: 100%;
+    max-height: 260px;
+    border-radius: var(--radius-md, 8px);
+    margin-bottom: 6px;
+    object-fit: cover;
+}
+
+.hub-dm-msg__audio {
+    display: block;
+    max-width: 220px;
+    height: 36px;
+    margin-bottom: 4px;
+}
+
+.hub-dm-form__icon-btn {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.hub-dm-form__icon-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.hub-dm-form__icon-btn--recording {
+    border-color: #e5484d;
+    color: #e5484d;
+    animation: hub-dm-recording-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes hub-dm-recording-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+
+.hub-dm-pending {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 20px;
+    padding: 6px 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.hub-dm-pending img {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.hub-dm-pending__name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hub-dm-pending__remove {
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+}
+
+.hub-dm-pending__remove:hover {
+    color: #e5484d;
+}
+
 .hub-dm-empty {
     flex: 1;
     display: flex;
@@ -3900,6 +3990,8 @@ button.hub-action-pill:hover {
 [data-theme="light"] .hub-reply-form input,
 [data-theme="light"] .hub-reply-form textarea,
 [data-theme="light"] .hub-dm-form__input,
+[data-theme="light"] .hub-dm-form__icon-btn,
+[data-theme="light"] .hub-dm-pending,
 [data-theme="light"] .hub-form-input,
 [data-theme="light"] .hub-form-select,
 [data-theme="light"] .hub-form-textarea {
