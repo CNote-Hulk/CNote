@@ -446,15 +446,41 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS xp_updated_at TIMESTAMP DEFAULT NULL`,
 		// ── Chat / DM attachments (images + voice messages, stored on our own object storage) ──
 		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_key TEXT DEFAULT NULL`,
-		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_type TEXT DEFAULT NULL CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice'))`,
+		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_type TEXT DEFAULT NULL CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice', 'sticker'))`,
 		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_size INTEGER DEFAULT NULL`,
 		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS attachment_duration_ms INTEGER DEFAULT NULL`,
 		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_key TEXT DEFAULT NULL`,
-		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_type TEXT DEFAULT NULL CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice'))`,
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_type TEXT DEFAULT NULL CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice', 'sticker'))`,
 		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_size INTEGER DEFAULT NULL`,
 		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_duration_ms INTEGER DEFAULT NULL`,
 		`ALTER TABLE messages ALTER COLUMN message DROP NOT NULL`,
 		`ALTER TABLE direct_messages ALTER COLUMN message DROP NOT NULL`,
+		// Widen the CHECK on databases created before 'sticker' existed (ADD COLUMN IF NOT
+		// EXISTS above is a no-op there, so it wouldn't pick up the new allowed value).
+		`ALTER TABLE messages DROP CONSTRAINT IF EXISTS messages_attachment_type_check`,
+		`ALTER TABLE messages ADD CONSTRAINT messages_attachment_type_check CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice', 'sticker'))`,
+		`ALTER TABLE direct_messages DROP CONSTRAINT IF EXISTS direct_messages_attachment_type_check`,
+		`ALTER TABLE direct_messages ADD CONSTRAINT direct_messages_attachment_type_check CHECK (attachment_type IS NULL OR attachment_type IN ('image', 'voice', 'sticker'))`,
+		// ── Synced sticker library (user's own stickers, sent via attachment_type='sticker' above) ──
+		`CREATE TABLE IF NOT EXISTS user_stickers (
+			id BIGSERIAL PRIMARY KEY,
+			user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			storage_key TEXT NOT NULL,
+			created_at TIMESTAMPTZ DEFAULT NOW()
+		)`,
+		`ALTER TABLE user_stickers ENABLE ROW LEVEL SECURITY`,
+		`DROP POLICY IF EXISTS mobile_read_stickers ON user_stickers`,
+		`CREATE POLICY mobile_read_stickers ON user_stickers FOR SELECT TO anon, authenticated USING (true)`,
+		`DROP POLICY IF EXISTS mobile_insert_stickers ON user_stickers`,
+		`CREATE POLICY mobile_insert_stickers ON user_stickers FOR INSERT TO anon, authenticated WITH CHECK (storage_key LIKE 'chat/stickers/%')`,
+		`DROP POLICY IF EXISTS mobile_delete_stickers ON user_stickers`,
+		`CREATE POLICY mobile_delete_stickers ON user_stickers FOR DELETE TO anon, authenticated USING (true)`,
+		// Fix: attachment-only messages (message = "") were rejected by RLS, which required
+		// char_length(message) >= 1 unconditionally — blocked every photo/voice/sticker send.
+		`DROP POLICY IF EXISTS mobile_insert_dms ON direct_messages`,
+		`CREATE POLICY mobile_insert_dms ON direct_messages FOR INSERT TO anon, authenticated WITH CHECK (attachment_key IS NOT NULL OR char_length(message) BETWEEN 1 AND 2000)`,
+		`DROP POLICY IF EXISTS mobile_insert_messages ON messages`,
+		`CREATE POLICY mobile_insert_messages ON messages FOR INSERT TO anon, authenticated WITH CHECK ((attachment_key IS NOT NULL OR char_length(message) BETWEEN 1 AND 500) AND channel = ANY (ARRAY['chat','playstation','xbox','nintendo','pc','other']))`,
 		`INSERT INTO storage.buckets (id, name, public, allowed_mime_types, file_size_limit)
 			VALUES ('avatars', 'avatars', true, ARRAY['image/jpeg','image/png','image/webp'], 2097152)
 			ON CONFLICT (id) DO NOTHING`,

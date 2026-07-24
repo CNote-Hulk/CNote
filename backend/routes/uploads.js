@@ -1,6 +1,6 @@
 /* ─────────────────────────────────────────
    FILE: uploads.js
-   DESCRIPTION: Chat attachment uploads (images + voice messages) —
+   DESCRIPTION: Chat attachment uploads (images + voice messages + stickers) —
    /api/uploads. Client asks here for a presigned PUT URL, uploads the
    file bytes directly to object storage, then sends the returned
    attachment_key along with the chat/DM message. The file itself never
@@ -34,7 +34,7 @@ const VOICE_TYPES = {
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;   // 8 MB
 const MAX_VOICE_BYTES = 15 * 1024 * 1024;  // 15 MB (few minutes of voice)
 
-const VALID_KINDS = ['image', 'voice', 'gallery', 'tutorial', 'listing', 'forum', 'article'];
+const VALID_KINDS = ['image', 'voice', 'sticker', 'gallery', 'tutorial', 'listing', 'forum', 'article'];
 
 // POST /api/uploads/presign — { kind: 'image'|'voice'|'gallery'|'tutorial'|'listing'|'forum'|'article', contentType, fileSize }
 router.post('/presign', authRequired, async (req, res) => {
@@ -65,6 +65,7 @@ router.post('/presign', authRequired, async (req, res) => {
 			: kind === 'listing'  ? buildAttachmentKey(req.user.id, 'listing', extension, 'marketplace')
 			: kind === 'forum'    ? buildAttachmentKey(req.user.id, 'image', extension, 'forum')
 			: kind === 'article'  ? buildAttachmentKey(req.user.id, 'image', extension, 'articles')
+			: kind === 'sticker'  ? buildAttachmentKey(req.user.id, 'stickers', extension)
 			: buildAttachmentKey(req.user.id, kind === 'image' ? 'images' : 'voice', extension);
 		const uploadUrl = await getPresignedUploadUrl(key, contentType);
 

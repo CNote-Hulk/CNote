@@ -220,11 +220,12 @@ router.post('/send', authRequired, async (req, res) => {
     const { message, listingId, attachment_key, attachment_type, attachment_size, attachment_duration_ms } = req.body;
 
     const hasAttachment = typeof attachment_key === 'string' && attachment_key.length > 0;
-    if (hasAttachment && attachment_type !== 'image' && attachment_type !== 'voice') {
+    if (hasAttachment && attachment_type !== 'image' && attachment_type !== 'voice' && attachment_type !== 'sticker') {
         return res.status(400).json({ success: false, error: 'Invalid attachment_type.' });
     }
     // attachment_key must be one we actually issued via /api/uploads/presign for this user
-    if (hasAttachment && !attachment_key.startsWith(`chat/${attachment_type === 'image' ? 'images' : 'voice'}/${req.user.id}/`)) {
+    const attachmentFolder = attachment_type === 'image' ? 'images' : attachment_type === 'sticker' ? 'stickers' : 'voice';
+    if (hasAttachment && !attachment_key.startsWith(`chat/${attachmentFolder}/${req.user.id}/`)) {
         return res.status(400).json({ success: false, error: 'Invalid attachment.' });
     }
 
