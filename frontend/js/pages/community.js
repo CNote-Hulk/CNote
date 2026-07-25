@@ -454,6 +454,20 @@ function showView(id) {
     const el = document.getElementById('view-' + id);
     if (el) el.classList.add('hub-view--active');
     S.view = id;
+    // Forum thread detail and listing detail already have their own in-page back link/button,
+    // so on mobile they go fullscreen (site navbar + bottom tab bar hidden) instead of wasting
+    // space on chrome that duplicates it. DM's own thread-open state isn't a distinct `S.view`
+    // (see openConversation()/its back button), so it's handled separately, not here.
+    setMobileFullscreen(id === 'thread' || id === 'listing');
+}
+
+/** Hide the site navbar + mobile bottom tab bar on mobile when a "detail" view (forum thread,
+ * listing detail, or an open DM conversation) already provides its own back navigation —
+ * reuses the same navbar--hidden/mbn--hidden classes navigation.js's scroll auto-hide uses. */
+function setMobileFullscreen(active) {
+    document.querySelector('.navbar')?.classList.toggle('navbar--hidden', active);
+    document.getElementById('mobile-bottom-nav')?.classList.toggle('mbn--hidden', active);
+    document.body.classList.toggle('hub-mobile-fullscreen', active);
 }
 
 // ── Sidebar ────────────────────────────────────────────────
@@ -2834,6 +2848,7 @@ function openConversationContextMenu(x, y, conv) {
         if (S.dmPartner === conv.partner_id) {
             S.dmPartner = null;
             document.getElementById('dm-layout')?.classList.remove('hub-dm-layout--thread-open');
+            setMobileFullscreen(false);
             const thread = document.getElementById('dm-thread');
             if (thread) thread.innerHTML = `<div class="hub-dm-empty">${esc(t('dm_select_conversation'))}</div>`;
         }
@@ -3105,6 +3120,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
     S.dmPartnerName = partnerName || t('dm_unknown_user');
 
     document.getElementById('dm-layout')?.classList.add('hub-dm-layout--thread-open');
+    setMobileFullscreen(true);
 
     const u = user();
     thread.innerHTML = `
@@ -3136,6 +3152,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         S.dmReplyTo = null;
         S.dmEditingId = null;
         document.getElementById('dm-layout')?.classList.remove('hub-dm-layout--thread-open');
+        setMobileFullscreen(false);
         document.querySelectorAll('.hub-dm-conv').forEach(c => c.classList.remove('hub-dm-conv--active'));
         thread.innerHTML = `<div class="hub-dm-empty">${esc(t('dm_select_conversation'))}</div>`;
     });

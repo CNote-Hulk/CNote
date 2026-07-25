@@ -3899,6 +3899,15 @@ button.hub-action-pill:hover {
     .community-page--hub::before {
         display: none; /* no overlay — wallpaper is gone */
     }
+
+    /* Forum thread detail, listing detail, and an open DM conversation already have their own
+       in-page back button — set via setMobileFullscreen() in community.js — so the site navbar
+       and floating bottom tab bar are transformed off-screen (same navbar--hidden/mbn--hidden
+       classes navigation.js's scroll auto-hide already uses) and the space reserved for the
+       navbar is reclaimed instead of leaving a blank gap above the now-hidden bar. */
+    body.hub-mobile-fullscreen .community-page--hub {
+        padding-top: 0;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════
