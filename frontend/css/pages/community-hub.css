@@ -2650,7 +2650,12 @@ button.hub-action-pill:hover {
 .hub-dm-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 60px 20px 16px; /* top clears the floating header's name/back-button row */
+    /* Top clears BOTH the floating header's own box (~58px) AND its ::after fade tail (30px
+       past that) — padding-top: 60px used to only clear the header's own box, so the topmost
+       message (visible at rest when scrolled all the way up) still sat under the tail end of
+       the gradient and looked like its top edge was darkened/"cut", especially noticeable on
+       a chrome-less sticker message. Bottom clears the form's own fade tail the same way. */
+    padding: 92px 20px 34px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -2986,7 +2991,7 @@ button.hub-action-pill:hover {
     border: 1px solid var(--border-color);
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.25);
-    color: var(--text-light);
+    color: var(--accent-color); /* persistently tinted, like Composer.kt's AccentGold icons — not just on hover */
     font-size: 1.2rem;
     line-height: 1;
     display: flex;
@@ -2994,12 +2999,11 @@ button.hub-action-pill:hover {
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: border-color var(--transition-fast), color var(--transition-fast);
+    transition: border-color var(--transition-fast);
 }
 
 .hub-dm-form__round-btn:hover {
     border-color: var(--accent-color);
-    color: var(--accent-color);
 }
 
 @keyframes hub-dm-recording-pulse {
@@ -3381,7 +3385,7 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-messages {
-        padding: 44px 10px 12px;
+        padding: 84px 10px 30px;
     }
 
     .hub-dm-msg {
@@ -5283,7 +5287,7 @@ button.hub-action-pill:hover {
     .hub-dm-messages {
         flex: 1;
         overflow-y: auto;
-        padding: 44px 12px 14px;
+        padding: 84px 12px 30px;
         gap: 8px;
         display: flex;
         flex-direction: column;

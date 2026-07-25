@@ -2689,7 +2689,7 @@ function syncComposerSendIcon(hasContent) {
     const btn = document.getElementById('dm-mic-send-btn');
     if (!btn) return;
     btn.classList.toggle('hub-dm-form__mic-send-btn--send', hasContent);
-    btn.textContent = hasContent ? '➤' : '🎤';
+    btn.textContent = hasContent ? '↑' : '🎤';
     btn.setAttribute('aria-label', hasContent ? t('dm_send') : t('dm_record_voice'));
 }
 
@@ -3120,7 +3120,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         <form class="hub-dm-form" id="dm-form">
             <input type="file" id="dm-image-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
             <button type="button" class="hub-dm-form__round-btn" id="dm-attach-btn" title="${esc(t('dm_attach_image'))}">+</button>
-            <button type="button" class="hub-dm-form__round-btn" id="dm-sticker-btn" title="${esc(t('dm_sticker_btn'))}">🎨</button>
+            <button type="button" class="hub-dm-form__round-btn" id="dm-sticker-btn" title="${esc(t('dm_sticker_btn'))}">😊</button>
             <div class="hub-dm-form__field" id="dm-field">
                 <input class="hub-dm-form__input" type="text" placeholder="${esc(t('dm_write_placeholder'))}" maxlength="2000">
                 <button type="button" class="hub-dm-form__mic-send-btn" id="dm-mic-send-btn" aria-label="${esc(t('dm_record_voice'))}">🎤</button>
@@ -3217,7 +3217,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         if (isRecording) return;
         const hasContent = !!(dmTextInput.value.trim() || pendingImageFile);
         dmMicSendBtn.classList.toggle('hub-dm-form__mic-send-btn--send', hasContent);
-        dmMicSendBtn.textContent = hasContent ? '➤' : '🎤';
+        dmMicSendBtn.textContent = hasContent ? '↑' : '🎤';
         dmMicSendBtn.setAttribute('aria-label', hasContent ? t('dm_send') : t('dm_record_voice'));
     }
     dmTextInput.addEventListener('input', updateComposerButton);
