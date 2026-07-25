@@ -455,6 +455,24 @@ async function initializeSchema() {
 		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS attachment_duration_ms INTEGER DEFAULT NULL`,
 		`ALTER TABLE messages ALTER COLUMN message DROP NOT NULL`,
 		`ALTER TABLE direct_messages ALTER COLUMN message DROP NOT NULL`,
+		// reply_to/edited_at + the message_reactions table were added directly on Supabase
+		// during the Android app's own development (it talks to Supabase PostgREST directly,
+		// bypassing this backend) and were never mirrored into this migration array — backfilled
+		// here (2026-07-25) so a fresh bootstrap of the DB matches what's actually live, and
+		// because the website's own /dm endpoints now use them too (reply/edit/reactions UI).
+		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS reply_to BIGINT REFERENCES messages(id) ON DELETE SET NULL`,
+		`ALTER TABLE messages ADD COLUMN IF NOT EXISTS edited_at TIMESTAMP DEFAULT NULL`,
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS reply_to BIGINT REFERENCES direct_messages(id) ON DELETE SET NULL`,
+		`ALTER TABLE direct_messages ADD COLUMN IF NOT EXISTS edited_at TIMESTAMP DEFAULT NULL`,
+		`CREATE TABLE IF NOT EXISTS message_reactions (
+			id SERIAL PRIMARY KEY,
+			scope TEXT NOT NULL CHECK (scope IN ('general', 'dm')),
+			message_id BIGINT NOT NULL,
+			user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			emoji TEXT NOT NULL CHECK (char_length(emoji) BETWEEN 1 AND 8),
+			created_at TIMESTAMP DEFAULT NOW(),
+			UNIQUE (scope, message_id, user_id, emoji)
+		)`,
 		// Widen the CHECK on databases created before 'sticker' existed (ADD COLUMN IF NOT
 		// EXISTS above is a no-op there, so it wouldn't pick up the new allowed value).
 		`ALTER TABLE messages DROP CONSTRAINT IF EXISTS messages_attachment_type_check`,

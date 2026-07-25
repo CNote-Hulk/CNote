@@ -102,6 +102,14 @@ const S = {
     threadId: null,
     listingId: null,
     dmPartner: null,
+    dmPartnerName: '',
+    dmMessages: [],
+    dmConversations: [],
+    dmReplyTo: null,
+    dmEditingId: null,
+    dmPins: null,
+    dmMutes: null,
+    dmHidden: null,
     forumTag: 'All',
     marketSearch: '',
     marketSort: 'newest',
@@ -2359,17 +2367,592 @@ async function renderRepairAdmin() {
    DIRECT MESSAGES
    ================================================================ */
 
+const QUICK_REACTIONS = ['👍', '❤️', '😂', '😮', '😢', '🔥'];
+
+// One playing voice note at a time, shared across every bubble/conversation.
+let activeVoiceAudio = null;
+let activeVoiceEl = null;
+
+/** Local-only conversation state (pin/mute/hide) — mirrors ChatViewModel.kt's own
+ * DataStore-backed pinnedIds/mutedIds/hiddenIds (no backend concept on Android either),
+ * namespaced per logged-in user id since multiple accounts can share a browser. */
+function dmLocalKey(suffix) {
+    const u = user();
+    return `cn_dm_${suffix}_${u ? u.id : 'anon'}`;
+}
+function loadDmSet(suffix) {
+    try { return new Set(JSON.parse(localStorage.getItem(dmLocalKey(suffix)) || '[]')); }
+    catch { return new Set(); }
+}
+function saveDmSet(suffix, set) {
+    localStorage.setItem(dmLocalKey(suffix), JSON.stringify([...set]));
+}
+function loadDmHidden() {
+    try { return new Map(Object.entries(JSON.parse(localStorage.getItem(dmLocalKey('hidden')) || '{}'))); }
+    catch { return new Map(); }
+}
+function saveDmHidden(map) {
+    localStorage.setItem(dmLocalKey('hidden'), JSON.stringify(Object.fromEntries(map)));
+}
+function ensureDmLocalPrefsLoaded() {
+    if (!S.dmPins) S.dmPins = loadDmSet('pins');
+    if (!S.dmMutes) S.dmMutes = loadDmSet('mutes');
+    if (!S.dmHidden) S.dmHidden = loadDmHidden();
+}
+
+/** Fallback label for an attachment-only message — mirrors ChatViewModel.kt's previewText() */
+function previewText(m) {
+    if (m?.message) return m.message;
+    if (m?.attachment?.type === 'voice') return t('dm_preview_voice');
+    if (m?.attachment?.type === 'sticker') return t('dm_preview_sticker');
+    if (m?.attachment?.type === 'image') return t('dm_preview_photo');
+    return '';
+}
+
+function hashStr(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
+    return h;
+}
+
+/** Custom waveform voice player markup — replaces the native <audio controls> element.
+ * The bar heights are a deterministic pseudo-pattern seeded by the message id (same idea
+ * as VoiceMessageBubble in ChatScreen.kt — not real decoded amplitude, just a stable per-message look). */
+function renderVoicePlayerHtml(url, durationMs, seedKey) {
+    let seed = Math.abs(hashStr(seedKey || url || ''));
+    const bars = Array.from({ length: 24 }, () => {
+        seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+        return 0.3 + (seed % 1000) / 1000 * 0.7;
+    });
+    const totalSec = Math.max(0, Math.round((durationMs || 0) / 1000));
+    const label = `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`;
+    return `<div class="hub-dm-voice" data-voice-url="${esc(url)}" data-voice-duration="${durationMs || 0}">
+        <button type="button" class="hub-dm-voice__toggle" data-voice-toggle aria-label="${esc(t('dm_play_voice'))}">▶</button>
+        <div class="hub-dm-voice__bars" data-voice-bars>${bars.map(h => `<span class="hub-dm-voice__bar" style="height:${Math.round(h * 100)}%"></span>`).join('')}</div>
+        <span class="hub-dm-voice__time" data-voice-time>${label}</span>
+    </div>`;
+}
+
+function resetVoiceUi(voiceEl) {
+    if (!voiceEl) return;
+    const toggleBtn = voiceEl.querySelector('[data-voice-toggle]');
+    if (toggleBtn) { toggleBtn.textContent = '▶'; toggleBtn.setAttribute('aria-label', t('dm_play_voice')); }
+    voiceEl.querySelectorAll('.hub-dm-voice__bar').forEach(b => b.classList.remove('hub-dm-voice__bar--played'));
+    const totalSec = Math.round((parseInt(voiceEl.dataset.voiceDuration) || 0) / 1000);
+    const timeEl = voiceEl.querySelector('[data-voice-time]');
+    if (timeEl) timeEl.textContent = `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`;
+    if (activeVoiceEl === voiceEl) { activeVoiceAudio = null; activeVoiceEl = null; }
+}
+
+function stopActiveVoice() {
+    if (activeVoiceAudio) activeVoiceAudio.pause();
+    if (activeVoiceEl) resetVoiceUi(activeVoiceEl);
+}
+
+function toggleVoicePlayback(voiceEl) {
+    if (!voiceEl) return;
+    if (activeVoiceEl === voiceEl && activeVoiceAudio) {
+        if (activeVoiceAudio.paused) {
+            activeVoiceAudio.play().catch(() => {});
+            voiceEl.querySelector('[data-voice-toggle]').textContent = '⏸';
+        } else {
+            activeVoiceAudio.pause();
+            voiceEl.querySelector('[data-voice-toggle]').textContent = '▶';
+        }
+        return;
+    }
+    if (activeVoiceAudio) stopActiveVoice();
+
+    const url = voiceEl.dataset.voiceUrl;
+    const audio = new Audio(url);
+    activeVoiceAudio = audio;
+    activeVoiceEl = voiceEl;
+    const toggleBtn = voiceEl.querySelector('[data-voice-toggle]');
+    const bars = voiceEl.querySelectorAll('.hub-dm-voice__bar');
+    const timeEl = voiceEl.querySelector('[data-voice-time]');
+    toggleBtn.textContent = '⏸';
+    toggleBtn.setAttribute('aria-label', t('dm_pause_voice'));
+    audio.addEventListener('timeupdate', () => {
+        const dur = audio.duration || (parseInt(voiceEl.dataset.voiceDuration) / 1000) || 0;
+        const progress = dur > 0 ? audio.currentTime / dur : 0;
+        const playedCount = Math.round(progress * bars.length);
+        bars.forEach((b, i) => b.classList.toggle('hub-dm-voice__bar--played', i < playedCount));
+        const sec = Math.floor(audio.currentTime);
+        if (timeEl) timeEl.textContent = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+    });
+    audio.addEventListener('ended', () => resetVoiceUi(voiceEl));
+    audio.play().catch(() => {});
+}
+
+function seekVoice(barsEl, clientX) {
+    const voiceEl = barsEl.closest('.hub-dm-voice');
+    if (activeVoiceEl !== voiceEl || !activeVoiceAudio || !activeVoiceAudio.duration) return;
+    const rect = barsEl.getBoundingClientRect();
+    const frac = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    activeVoiceAudio.currentTime = frac * activeVoiceAudio.duration;
+}
+
+/** Build one message bubble's full HTML — reply quote, attachment, text, edited label, reactions. */
+function renderMessageHtml(m, myId, partnerName, msgsById, prevMsg, nextMsg) {
+    const mine = m.sender_id === myId;
+    const stacked = !!(prevMsg && prevMsg.sender_id === m.sender_id && (new Date(m.created_at) - new Date(prevMsg.created_at)) < 5 * 60000);
+    const tail = !nextMsg || nextMsg.sender_id !== m.sender_id;
+    const repliedMsg = m.reply_to ? msgsById.get(m.reply_to) : null;
+    const isSticker = m.attachment?.type === 'sticker';
+
+    let replyHtml = '';
+    if (repliedMsg) {
+        const authorLabel = repliedMsg.sender_id === myId ? (user()?.username || '') : partnerName;
+        const isImg = (repliedMsg.attachment?.type === 'image' || repliedMsg.attachment?.type === 'sticker') && repliedMsg.attachment.url;
+        replyHtml = `<div class="hub-dm-reply-quote" data-jump-to="${repliedMsg.id}">
+            <div class="hub-dm-reply-quote__bar"></div>
+            <div class="hub-dm-reply-quote__body">
+                <div class="hub-dm-reply-quote__author">${esc(authorLabel)}</div>
+                ${isImg
+                    ? `<img class="hub-dm-reply-quote__thumb" src="${esc(repliedMsg.attachment.url)}" alt="">`
+                    : `<span class="hub-dm-reply-quote__text">${esc(previewText(repliedMsg))}</span>`}
+            </div>
+        </div>`;
+    }
+
+    let attachmentHtml = '';
+    if (m.attachment?.type === 'image') {
+        attachmentHtml = `<img class="hub-dm-msg__image" src="${esc(m.attachment.url)}" alt="" loading="lazy" data-viewable="1">`;
+    } else if (m.attachment?.type === 'voice') {
+        attachmentHtml = renderVoicePlayerHtml(m.attachment.url, m.attachment.duration_ms, 'dm-' + m.id);
+    } else if (isSticker) {
+        attachmentHtml = `<img class="hub-dm-msg__sticker-img" src="${esc(m.attachment.url)}" alt="" data-viewable="1">`;
+    }
+
+    const reactions = m.reactions || [];
+    const reactionsHtml = reactions.length ? `<div class="hub-dm-reactions">${reactions.map(r => `
+        <button type="button" class="hub-dm-reaction-chip${r.mine ? ' hub-dm-reaction-chip--mine' : ''}" data-react-emoji="${esc(r.emoji)}">
+            <span>${r.emoji}</span>${r.count > 1 ? `<span class="hub-dm-reaction-chip__count">${r.count}</span>` : ''}
+        </button>`).join('')}</div>` : '';
+
+    const reportBtn = !mine ? `<button class="report-trigger-btn" data-report-type="direct_message" data-report-id="${m.id}" data-report-preview="${esc((m.message || '').substring(0, 60))}" title="${esc(t('report_btn_trigger_dm_title'))}">⚑</button>` : '';
+
+    return `<div class="hub-dm-msg-row hub-dm-msg-row--${mine ? 'mine' : 'theirs'}${stacked ? ' hub-dm-msg-row--stacked' : ''}" data-msg-id="${m.id}" data-mine="${mine ? '1' : '0'}">
+        <div class="hub-dm-msg hub-dm-msg--${mine ? 'mine' : 'theirs'}${isSticker ? ' hub-dm-msg--sticker' : ''}${tail ? ' hub-dm-msg--tail' : ''}" data-msg-id="${m.id}">
+            ${replyHtml}
+            ${attachmentHtml}
+            ${m.message ? `<div>${esc(m.message)}</div>` : ''}
+            ${m.edited_at ? `<div class="hub-dm-msg__edited">${esc(t('dm_edited'))}</div>` : ''}
+            ${reportBtn}
+        </div>
+        ${reactionsHtml}
+        <div class="hub-dm-msg__time">${timeAgo(m.created_at)}</div>
+    </div>`;
+}
+
+/** Re-render a single message row in place (after a reaction/edit), preserving scroll position. */
+function updateMessageInPlace(m) {
+    const row = document.querySelector(`.hub-dm-msg-row[data-msg-id="${m.id}"]`);
+    if (!row) return;
+    const idx = S.dmMessages.findIndex(x => x.id === m.id);
+    const prevMsg = idx > 0 ? S.dmMessages[idx - 1] : null;
+    const nextMsg = idx >= 0 && idx < S.dmMessages.length - 1 ? S.dmMessages[idx + 1] : null;
+    row.outerHTML = renderMessageHtml(m, user().id, S.dmPartnerName, new Map(S.dmMessages.map(x => [x.id, x])), prevMsg, nextMsg);
+}
+
+/** Append a freshly-sent message to the open thread without a full reload. */
+function appendMessageToThread(m) {
+    const el = document.getElementById('dm-messages');
+    if (!el) return;
+    const prevMsg = S.dmMessages.length ? S.dmMessages[S.dmMessages.length - 1] : null;
+    S.dmMessages.push(m);
+    el.querySelector('.hub-dm-empty')?.remove();
+    const msgsById = new Map(S.dmMessages.map(x => [x.id, x]));
+    el.insertAdjacentHTML('beforeend', renderMessageHtml(m, user().id, S.dmPartnerName, msgsById, prevMsg, null));
+    if (prevMsg && prevMsg.sender_id === m.sender_id) updateMessageInPlace(prevMsg); // it's no longer the tail
+    el.scrollTop = el.scrollHeight;
+    window.dispatchEvent(new CustomEvent('cn:message-sent'));
+}
+
+/** Toggle a reaction on a message — optimistic, mirrors ChatViewModel.kt's toggleReaction(). */
+async function toggleReaction(m, emoji) {
+    const existing = (m.reactions || []).find(r => r.emoji === emoji);
+    const wasMine = !!existing?.mine;
+    if (wasMine) {
+        if (existing.count <= 1) m.reactions = (m.reactions || []).filter(r => r.emoji !== emoji);
+        else { existing.count--; existing.mine = false; }
+    } else if (existing) {
+        existing.count++; existing.mine = true;
+    } else {
+        m.reactions = [...(m.reactions || []), { emoji, count: 1, mine: true }];
+    }
+    updateMessageInPlace(m);
+    try {
+        if (wasMine) await api('DELETE', `/dm/${m.id}/react?emoji=${encodeURIComponent(emoji)}`);
+        else await api('POST', `/dm/${m.id}/react`, { emoji });
+    } catch (err) { console.error('Reaction failed:', err); }
+}
+
+/** Delete own message — optimistic, mirrors ChatViewModel.kt's deleteMessage(). */
+async function deleteDmMessage(m) {
+    document.querySelector(`.hub-dm-msg-row[data-msg-id="${m.id}"]`)?.remove();
+    S.dmMessages = S.dmMessages.filter(x => x.id !== m.id);
+    try {
+        const res = await api('DELETE', `/dm/${m.id}`);
+        if (!res.success) showToast(res.error || t('dm_delete_failed'), 'error');
+    } catch { showToast(t('dm_delete_failed'), 'error'); }
+}
+
+/** Rebuild the reply/edit banner above the compose form from current S.dmReplyTo/dmEditingId. */
+function renderComposeBanner() {
+    const el = document.getElementById('dm-compose-banner');
+    if (!el) return;
+    if (S.dmEditingId) {
+        const m = S.dmMessages.find(x => x.id === S.dmEditingId);
+        el.hidden = false;
+        el.innerHTML = `<div class="hub-dm-reply-banner__body">
+                <div class="hub-dm-reply-banner__label">${esc(t('dm_edit'))}</div>
+                <div class="hub-dm-reply-banner__text">${esc(m?.message || '')}</div>
+            </div>
+            <button type="button" class="hub-dm-reply-banner__close" data-cancel-compose aria-label="${esc(t('dm_cancel'))}">&times;</button>`;
+    } else if (S.dmReplyTo) {
+        const label = S.dmReplyTo.mine ? (user()?.username || '') : S.dmReplyTo.partnerName;
+        el.hidden = false;
+        el.innerHTML = `<div class="hub-dm-reply-banner__body">
+                <div class="hub-dm-reply-banner__label">${esc(t('dm_replying_to'))} ${esc(label)}</div>
+                <div class="hub-dm-reply-banner__text">${esc(previewText(S.dmReplyTo))}</div>
+            </div>
+            <button type="button" class="hub-dm-reply-banner__close" data-cancel-compose aria-label="${esc(t('dm_cancel'))}">&times;</button>`;
+    } else {
+        el.hidden = true;
+        el.innerHTML = '';
+        return;
+    }
+    el.querySelector('[data-cancel-compose]').addEventListener('click', () => {
+        const wasEditing = !!S.dmEditingId;
+        S.dmReplyTo = null; S.dmEditingId = null;
+        renderComposeBanner();
+        if (wasEditing) {
+            const input = document.querySelector('.hub-dm-form__input');
+            if (input) input.value = '';
+        }
+    });
+}
+
+function startReply(m, partnerName) {
+    S.dmEditingId = null;
+    S.dmReplyTo = { id: m.id, mine: m.sender_id === user()?.id, partnerName, message: m.message, attachment: m.attachment };
+    renderComposeBanner();
+    document.querySelector('.hub-dm-form__input')?.focus();
+}
+
+function startEdit(m) {
+    S.dmReplyTo = null;
+    S.dmEditingId = m.id;
+    renderComposeBanner();
+    const input = document.querySelector('.hub-dm-form__input');
+    if (input) { input.value = m.message || ''; input.focus(); }
+}
+
+async function submitEdit(newText) {
+    const id = S.dmEditingId;
+    S.dmEditingId = null;
+    renderComposeBanner();
+    const m = S.dmMessages.find(x => x.id === id);
+    if (!m || !newText) return;
+    try {
+        const res = await api('PATCH', `/dm/${id}`, { message: newText });
+        if (res.success) {
+            m.message = res.message.message;
+            m.edited_at = res.message.edited_at;
+            updateMessageInPlace(m);
+        } else {
+            showToast(res.error || t('dm_edit_failed'), 'error');
+        }
+    } catch { showToast(t('dm_edit_failed'), 'error'); }
+}
+
+function closeAnyContextMenu() {
+    document.querySelector('.hub-ctx-scrim')?.remove();
+    document.querySelector('.hub-ctx-menu')?.remove();
+}
+
+/** Position a floating context menu near (x, y), clamped to stay on-screen. */
+function positionCtxMenu(menu, x, y) {
+    document.body.appendChild(menu);
+    const rect = menu.getBoundingClientRect();
+    const left = Math.min(Math.max(14, x), window.innerWidth - rect.width - 14);
+    // Prefer opening downward from the click point; flip to open upward instead when
+    // there isn't enough room below (matches native context-menu behavior) — otherwise
+    // a click near the bottom of the viewport pushes the menu off-screen.
+    let top = (y + rect.height + 14 > window.innerHeight) ? y - rect.height : y;
+    top = Math.min(Math.max(14, top), window.innerHeight - rect.height - 14);
+    menu.style.left = left + 'px';
+    menu.style.top = top + 'px';
+}
+
+/** Right-click menu on a message bubble — quick reactions + Reply/Forward/Copy/Edit/Delete,
+ * matching ChatScreen.kt's MessageActionsMenu (minus the Compose-only animation/blur). */
+function openMessageContextMenu(x, y, m, mine, partnerName) {
+    closeAnyContextMenu();
+    const scrim = document.createElement('div');
+    scrim.className = 'hub-ctx-scrim';
+    document.body.appendChild(scrim);
+
+    const menu = document.createElement('div');
+    menu.className = 'hub-ctx-menu';
+
+    const reactionsRow = QUICK_REACTIONS.map(emoji => {
+        const isMine = (m.reactions || []).some(r => r.emoji === emoji && r.mine);
+        return `<button type="button" class="hub-ctx-menu__reaction-btn${isMine ? ' hub-ctx-menu__reaction-btn--mine' : ''}" data-emoji="${emoji}">${emoji}</button>`;
+    }).join('');
+
+    const rows = [`<button type="button" class="hub-ctx-menu__row" data-action="reply"><span>${esc(t('dm_reply'))}</span><span>↩</span></button>`,
+        `<button type="button" class="hub-ctx-menu__row" data-action="forward"><span>${esc(t('dm_forward'))}</span><span>➜</span></button>`];
+    if (m.message) rows.push(`<button type="button" class="hub-ctx-menu__row" data-action="copy"><span>${esc(t('dm_copy'))}</span><span>⧉</span></button>`);
+    if (mine && m.message) rows.push(`<button type="button" class="hub-ctx-menu__row" data-action="edit"><span>${esc(t('dm_edit'))}</span><span>✎</span></button>`);
+    if (mine) rows.push(`<button type="button" class="hub-ctx-menu__row hub-ctx-menu__row--destructive" data-action="delete"><span>${esc(t('dm_delete'))}</span><span>🗑</span></button>`);
+
+    menu.innerHTML = `<div class="hub-ctx-menu__reactions">${reactionsRow}</div><div class="hub-ctx-menu__actions">${rows.join('')}</div>`;
+    positionCtxMenu(menu, x, y);
+
+    const close = () => { scrim.remove(); menu.remove(); };
+    scrim.addEventListener('click', close);
+    menu.querySelectorAll('[data-emoji]').forEach(btn => {
+        btn.addEventListener('click', () => { close(); toggleReaction(m, btn.dataset.emoji); });
+    });
+    menu.querySelector('[data-action="reply"]')?.addEventListener('click', () => { close(); startReply(m, partnerName); });
+    menu.querySelector('[data-action="forward"]')?.addEventListener('click', () => { close(); openForwardPicker(m); });
+    menu.querySelector('[data-action="copy"]')?.addEventListener('click', () => {
+        close();
+        navigator.clipboard?.writeText(m.message || '').then(() => showToast(t('dm_copied'), 'success')).catch(() => {});
+    });
+    menu.querySelector('[data-action="edit"]')?.addEventListener('click', () => { close(); startEdit(m); });
+    menu.querySelector('[data-action="delete"]')?.addEventListener('click', async () => {
+        close();
+        const ok = await confirmModal(t('dm_delete_message_confirm'), { ok: t('dm_delete'), cancel: t('dm_cancel') });
+        if (ok) deleteDmMessage(m);
+    });
+}
+
+/** Right-click menu on a conversation row — Pin/Mute/Delete chat, matching ChatScreen.kt's
+ * ConversationActionsOverlay. All three are local-only (no backend concept on Android either). */
+function openConversationContextMenu(x, y, conv) {
+    ensureDmLocalPrefsLoaded();
+    closeAnyContextMenu();
+    const scrim = document.createElement('div');
+    scrim.className = 'hub-ctx-scrim';
+    document.body.appendChild(scrim);
+
+    const menu = document.createElement('div');
+    menu.className = 'hub-ctx-menu';
+    const key = String(conv.partner_id);
+    const pinned = S.dmPins.has(key);
+    const muted = S.dmMutes.has(key);
+    menu.innerHTML = `<div class="hub-ctx-menu__actions">
+        <button type="button" class="hub-ctx-menu__row" data-action="pin"><span>${esc(pinned ? t('dm_unpin') : t('dm_pin'))}</span><span>📌</span></button>
+        <button type="button" class="hub-ctx-menu__row" data-action="mute"><span>${esc(muted ? t('dm_unmute') : t('dm_mute'))}</span><span>🔕</span></button>
+        <button type="button" class="hub-ctx-menu__row hub-ctx-menu__row--destructive" data-action="delete"><span>${esc(t('dm_delete_chat'))}</span><span>🗑</span></button>
+    </div>`;
+    positionCtxMenu(menu, x, y);
+
+    const close = () => { scrim.remove(); menu.remove(); };
+    scrim.addEventListener('click', close);
+    menu.querySelector('[data-action="pin"]').addEventListener('click', () => {
+        close();
+        if (pinned) S.dmPins.delete(key); else S.dmPins.add(key);
+        saveDmSet('pins', S.dmPins);
+        loadConversations();
+    });
+    menu.querySelector('[data-action="mute"]').addEventListener('click', () => {
+        close();
+        if (muted) S.dmMutes.delete(key); else S.dmMutes.add(key);
+        saveDmSet('mutes', S.dmMutes);
+        loadConversations();
+    });
+    menu.querySelector('[data-action="delete"]').addEventListener('click', async () => {
+        close();
+        const ok = await confirmModal(t('dm_delete_chat_confirm').replace('{name}', conv.partner_name), { ok: t('dm_delete'), cancel: t('dm_cancel') });
+        if (!ok) return;
+        S.dmHidden.set(key, conv.last_time);
+        saveDmHidden(S.dmHidden);
+        if (S.dmPartner === conv.partner_id) {
+            S.dmPartner = null;
+            document.getElementById('dm-layout')?.classList.remove('hub-dm-layout--thread-open');
+            const thread = document.getElementById('dm-thread');
+            if (thread) thread.innerHTML = `<div class="hub-dm-empty">${esc(t('dm_select_conversation'))}</div>`;
+        }
+        loadConversations();
+    });
+}
+
+/** Forward a message (text and/or attachment, same storage key — no re-upload) into another
+ * DM conversation. Mirrors ChatViewModel.kt's forwardMessage() — DMs only, never general chat. */
+async function openForwardPicker(m) {
+    document.querySelector('.hub-modal-overlay')?.remove();
+    const overlay = document.createElement('div');
+    overlay.className = 'hub-modal-overlay';
+    overlay.innerHTML = `
+        <div class="hub-modal">
+            <div class="hub-modal__header">
+                <span class="hub-modal__title">${esc(t('dm_forward_title'))}</span>
+                <button class="hub-modal__close">&times;</button>
+            </div>
+            <div class="hub-modal__body">
+                <div class="hub-forward-list" id="forward-list"><div class="hub-dm-list__empty">${esc(t('dm_loading'))}</div></div>
+            </div>
+        </div>`;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.querySelector('.hub-modal__close').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    const listEl = overlay.querySelector('#forward-list');
+    try {
+        const data = await api('GET', '/dm/conversations');
+        const convs = data.conversations || [];
+        if (!convs.length) { listEl.innerHTML = `<div class="hub-dm-list__empty">${esc(t('dm_no_conversations'))}</div>`; return; }
+        listEl.innerHTML = convs.map(c => `
+            <button type="button" class="hub-forward-conv" data-id="${c.partner_id}" data-name="${esc(c.partner_name)}">
+                <div class="hub-dm-conv__avatar">${avatarHtml(c.partner_name, c.partner_avatar, 32)}</div>
+                <span>${esc(c.partner_name)}</span>
+            </button>`).join('');
+        listEl.querySelectorAll('.hub-forward-conv').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                listEl.querySelectorAll('.hub-forward-conv').forEach(b => b.disabled = true);
+                const toId = +btn.dataset.id;
+                try {
+                    const body = { receiverId: toId, message: m.message || '' };
+                    if (m.attachment) {
+                        body.attachment_key = m.attachment.key;
+                        body.attachment_type = m.attachment.type;
+                        body.attachment_size = m.attachment.size;
+                        body.attachment_duration_ms = m.attachment.duration_ms;
+                    }
+                    const res = await api('POST', '/dm/send', body);
+                    if (res.success) {
+                        showToast(t('dm_forward_sent'), 'success');
+                        close();
+                        if (S.dmPartner === toId) appendMessageToThread(res.message);
+                        else loadConversations();
+                    } else {
+                        showToast(res.error || t('dm_forward_error'), 'error');
+                        listEl.querySelectorAll('.hub-forward-conv').forEach(b => b.disabled = false);
+                    }
+                } catch {
+                    showToast(t('dm_forward_error'), 'error');
+                    listEl.querySelectorAll('.hub-forward-conv').forEach(b => b.disabled = false);
+                }
+            });
+        });
+    } catch {
+        listEl.innerHTML = `<div class="hub-dm-list__empty">${esc(t('dm_load_failed'))}</div>`;
+    }
+}
+
+/** Full-screen pinch-zoom/pan image viewer, opened by clicking an image/sticker bubble.
+ * Plain fixed-position overlay (not a modal "window"), so the edge-to-edge top/bottom fade
+ * just works — the exact class of bug the Android Dialog-based viewer fought for six rounds
+ * doesn't exist here since the browser has no separate window/inset system to fight. */
+function openImageViewer(m, partnerId, partnerName) {
+    stopActiveVoice();
+    document.querySelector('.hub-img-viewer')?.remove();
+    const url = m.attachment.url;
+    const viewer = document.createElement('div');
+    viewer.className = 'hub-img-viewer';
+    viewer.innerHTML = `
+        <div class="hub-img-viewer__top">
+            <button type="button" class="hub-img-viewer__btn" id="viewer-close" aria-label="${esc(t('dm_close_viewer'))}">←</button>
+            <span class="hub-img-viewer__name">${esc(partnerName || '')}</span>
+            <button type="button" class="hub-img-viewer__btn" id="viewer-forward" aria-label="${esc(t('dm_forward'))}">➜</button>
+        </div>
+        <div class="hub-img-viewer__stage" id="viewer-stage">
+            <img class="hub-img-viewer__img" id="viewer-img" src="${esc(url)}" alt="" draggable="false">
+        </div>
+        <div class="hub-img-viewer__bottom">
+            <input class="hub-img-viewer__reply-input" id="viewer-reply-input" type="text" maxlength="2000" placeholder="${esc(t('dm_write_placeholder'))}">
+            <button class="hub-btn hub-btn--primary hub-img-viewer__reply-send" id="viewer-reply-send" type="button">${esc(t('dm_send'))}</button>
+        </div>`;
+    document.body.appendChild(viewer);
+
+    const close = () => { document.removeEventListener('keydown', onKey); viewer.remove(); };
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    document.addEventListener('keydown', onKey);
+    viewer.querySelector('#viewer-close').addEventListener('click', close);
+    viewer.querySelector('#viewer-forward').addEventListener('click', () => openForwardPicker(m));
+
+    const img = viewer.querySelector('#viewer-img');
+    const stage = viewer.querySelector('#viewer-stage');
+    let scale = 1, tx = 0, ty = 0, dragging = false, lastX = 0, lastY = 0, dismissDrag = 0;
+
+    function applyTransform() { img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; }
+    function clampPan() {
+        const maxX = Math.max(0, (img.clientWidth * scale - stage.clientWidth) / 2);
+        const maxY = Math.max(0, (img.clientHeight * scale - stage.clientHeight) / 2);
+        tx = Math.min(maxX, Math.max(-maxX, tx));
+        ty = Math.min(maxY, Math.max(-maxY, ty));
+    }
+
+    stage.addEventListener('wheel', e => {
+        e.preventDefault();
+        scale = Math.min(4, Math.max(1, scale - e.deltaY * 0.0015));
+        if (scale === 1) { tx = 0; ty = 0; }
+        clampPan();
+        applyTransform();
+    }, { passive: false });
+
+    stage.addEventListener('dblclick', () => {
+        scale = scale > 1 ? 1 : 2;
+        tx = 0; ty = 0;
+        applyTransform();
+    });
+
+    stage.addEventListener('pointerdown', e => {
+        dragging = true; dismissDrag = 0;
+        lastX = e.clientX; lastY = e.clientY;
+        stage.setPointerCapture(e.pointerId);
+    });
+    stage.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const dx = e.clientX - lastX, dy = e.clientY - lastY;
+        lastX = e.clientX; lastY = e.clientY;
+        if (scale > 1) {
+            tx += dx; ty += dy;
+            clampPan();
+            applyTransform();
+        } else if (dy > 0 || dismissDrag > 0) {
+            dismissDrag += dy;
+            viewer.style.opacity = String(Math.max(0.4, 1 - dismissDrag / 300));
+            img.style.transform = `translateY(${dismissDrag}px)`;
+        }
+    });
+    stage.addEventListener('pointerup', () => {
+        dragging = false;
+        if (scale === 1 && dismissDrag > 120) { close(); return; }
+        if (scale === 1) { dismissDrag = 0; viewer.style.opacity = '1'; applyTransform(); }
+    });
+
+    const replyInput = viewer.querySelector('#viewer-reply-input');
+    viewer.querySelector('#viewer-reply-send').addEventListener('click', async () => {
+        const msg = replyInput.value.trim();
+        if (!msg) return;
+        replyInput.disabled = true;
+        try {
+            const res = await api('POST', '/dm/send', { receiverId: partnerId, message: msg });
+            if (res.success) { close(); appendMessageToThread(res.message); }
+            else showToast(res.error || t('dm_error_generic'), 'error');
+        } catch { showToast(t('dm_error_generic'), 'error'); }
+        replyInput.disabled = false;
+    });
+    replyInput.addEventListener('keydown', e => { if (e.key === 'Enter') viewer.querySelector('#viewer-reply-send').click(); });
+}
+
 /** Render the direct messages view: conversation list + chat panel */
 function renderDM() {
     const v = document.getElementById('view-dm');
     if (!user()) {
-        v.innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">🔒</div>You must be logged in.<br><a href="login.html" style="color:var(--accent-color)">Log in</a></div>';
+        v.innerHTML = `<div class="hub-empty"><div class="hub-empty__icon">🔒</div>${esc(t('dm_login_required'))}<br><a href="login.html" style="color:var(--accent-color)">${esc(t('dm_login_link'))}</a></div>`;
         return;
     }
     v.innerHTML = `
         <div class="hub-dm-layout" id="dm-layout">
-            <div class="hub-dm-list" id="dm-list"><div class="hub-dm-list__empty">Loading…</div></div>
-            <div class="hub-dm-thread" id="dm-thread"><div class="hub-dm-empty">Select a conversation</div></div>
+            <div class="hub-dm-list" id="dm-list"><div class="hub-dm-list__empty">${esc(t('dm_loading'))}</div></div>
+            <div class="hub-dm-thread" id="dm-thread"><div class="hub-dm-empty">${esc(t('dm_select_conversation'))}</div></div>
         </div>`;
 }
 
@@ -2377,38 +2960,75 @@ function renderDM() {
 async function loadConversations() {
     const list = document.getElementById('dm-list');
     if (!list) return;
+    ensureDmLocalPrefsLoaded();
     try {
         const data = await api('GET', '/dm/conversations');
         if (!data.success) throw 0;
-        const convs = data.conversations || [];
+        let convs = data.conversations || [];
 
-        if (!convs.length) { list.innerHTML = '<div class="hub-dm-list__empty">No conversations</div>'; return; }
+        // Local-only "delete chat": hide until a message newer than the delete-time arrives
+        convs = convs.filter(c => {
+            const hiddenAt = S.dmHidden.get(String(c.partner_id));
+            if (!hiddenAt) return true;
+            if (new Date(c.last_time) > new Date(hiddenAt)) {
+                S.dmHidden.delete(String(c.partner_id));
+                saveDmHidden(S.dmHidden);
+                return true;
+            }
+            return false;
+        });
 
-        list.innerHTML = convs.map(c => `
+        // Local-only "pin": pinned conversations float to the top
+        convs.sort((a, b) => {
+            const pa = S.dmPins.has(String(a.partner_id)) ? 1 : 0;
+            const pb = S.dmPins.has(String(b.partner_id)) ? 1 : 0;
+            if (pa !== pb) return pb - pa;
+            return new Date(b.last_time) - new Date(a.last_time);
+        });
+
+        S.dmConversations = convs;
+
+        if (!convs.length) { list.innerHTML = `<div class="hub-dm-list__empty">${esc(t('dm_no_conversations'))}</div>`; return; }
+
+        list.innerHTML = convs.map(c => {
+            const pinned = S.dmPins.has(String(c.partner_id));
+            const muted = S.dmMutes.has(String(c.partner_id));
+            return `
             <button class="hub-dm-conv${S.dmPartner === c.partner_id ? ' hub-dm-conv--active' : ''}" data-id="${c.partner_id}" data-name="${esc(c.partner_name)}" data-avatar="${esc(c.partner_avatar || '')}">
                 <div class="hub-dm-conv__avatar">${avatarHtml(c.partner_name, c.partner_avatar, 36)}</div>
                 <div class="hub-dm-conv__body">
-                    <div class="hub-dm-conv__name">${esc(c.partner_name)}</div>
+                    <div class="hub-dm-conv__name">${pinned ? '📌 ' : ''}${esc(c.partner_name)}${muted ? ' 🔕' : ''}</div>
                     <div class="hub-dm-conv__preview">${esc(c.last_message)}</div>
                 </div>
-                ${c.unread_count > 0 ? `<span class="hub-badge hub-badge--count">${c.unread_count}</span>` : ''}
-            </button>`).join('');
+                ${c.unread > 0 ? `<span class="hub-badge hub-badge--count">${c.unread}</span>` : ''}
+            </button>`;
+        }).join('');
 
         list.addEventListener('click', e => {
             const c = e.target.closest('.hub-dm-conv');
             if (c) openConversation(+c.dataset.id, c.dataset.name, c.dataset.avatar);
+        });
+        list.addEventListener('contextmenu', e => {
+            const c = e.target.closest('.hub-dm-conv');
+            if (!c) return;
+            e.preventDefault();
+            const conv = convs.find(cv => cv.partner_id === +c.dataset.id);
+            if (conv) openConversationContextMenu(e.clientX, e.clientY, conv);
         });
 
         if (S.dmPartner) {
             const found = convs.find(c => c.partner_id === S.dmPartner);
             if (found) openConversation(S.dmPartner, found.partner_name, found.partner_avatar);
         }
-    } catch { list.innerHTML = '<div class="hub-dm-list__empty">Failed to load</div>'; }
+    } catch { list.innerHTML = `<div class="hub-dm-list__empty">${esc(t('dm_load_failed'))}</div>`; }
 }
 
 /** Open a DM conversation thread with a specific user */
 async function openConversation(partnerId, partnerName, partnerAvatar) {
+    stopActiveVoice();
     S.dmPartner = partnerId;
+    S.dmReplyTo = null;
+    S.dmEditingId = null;
     const thread = document.getElementById('dm-thread');
     if (!thread) return;
 
@@ -2419,55 +3039,58 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             if (!partnerAvatar) partnerAvatar = c.dataset.avatar;
         }
     });
+    S.dmPartnerName = partnerName || t('dm_unknown_user');
 
     document.getElementById('dm-layout')?.classList.add('hub-dm-layout--thread-open');
 
     const u = user();
     thread.innerHTML = `
         <div class="hub-dm-thread__header">
-            <button class="hub-dm-back-btn" id="dm-back-btn" aria-label="Back to conversations" type="button">←</button>
+            <button class="hub-dm-back-btn" id="dm-back-btn" aria-label="${esc(t('dm_back_aria'))}" type="button">←</button>
             <div class="hub-dm-conv__avatar" style="width:30px;height:30px;font-size:.7rem">${avatarHtml(partnerName, partnerAvatar, 30)}</div>
-            <span style="color:var(--text-light);font-weight:600;font-size:.9rem">${esc(partnerName || 'Utilizator')}</span>
+            <span style="color:var(--text-light);font-weight:600;font-size:.9rem">${esc(S.dmPartnerName)}</span>
         </div>
-        <div class="hub-dm-messages" id="dm-messages"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>Loading…</div></div>
+        <div class="hub-dm-messages" id="dm-messages"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>${esc(t('dm_loading'))}</div></div>
+        <div class="hub-dm-reply-banner" id="dm-compose-banner" hidden></div>
+        <div class="hub-dm-sticker-panel" id="dm-sticker-panel" hidden></div>
         <div class="hub-dm-pending" id="dm-pending" hidden></div>
         <form class="hub-dm-form" id="dm-form">
             <input type="file" id="dm-image-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
-            <button type="button" class="hub-dm-form__icon-btn" id="dm-attach-btn" title="${I18nModule.t('dm_attach_image')}">+</button>
-            <button type="button" class="hub-dm-form__icon-btn" id="dm-mic-btn" title="${I18nModule.t('dm_record_voice')}">🎤</button>
-            <input class="hub-dm-form__input" type="text" placeholder="Write a message…" maxlength="2000">
-            <button class="hub-btn hub-btn--primary" type="submit">Send</button>
+            <button type="button" class="hub-dm-form__icon-btn" id="dm-attach-btn" title="${esc(t('dm_attach_image'))}">+</button>
+            <button type="button" class="hub-dm-form__icon-btn" id="dm-sticker-btn" title="${esc(t('dm_sticker_btn'))}">🎨</button>
+            <button type="button" class="hub-dm-form__icon-btn" id="dm-mic-btn" title="${esc(t('dm_record_voice'))}">🎤</button>
+            <input class="hub-dm-form__input" type="text" placeholder="${esc(t('dm_write_placeholder'))}" maxlength="2000">
+            <button class="hub-btn hub-btn--primary" type="submit">${esc(t('dm_send'))}</button>
         </form>`;
 
     thread.querySelector('#dm-back-btn').addEventListener('click', () => {
+        stopActiveVoice();
         S.dmPartner = null;
+        S.dmReplyTo = null;
+        S.dmEditingId = null;
         document.getElementById('dm-layout')?.classList.remove('hub-dm-layout--thread-open');
         document.querySelectorAll('.hub-dm-conv').forEach(c => c.classList.remove('hub-dm-conv--active'));
-        thread.innerHTML = '<div class="hub-dm-empty">Select a conversation</div>';
+        thread.innerHTML = `<div class="hub-dm-empty">${esc(t('dm_select_conversation'))}</div>`;
     });
 
+    const dmMessagesEl = document.getElementById('dm-messages');
     try {
         const data = await api('GET', `/dm/messages/${partnerId}`);
         const msgs = data.messages || [];
-        const el = document.getElementById('dm-messages');
+        S.dmMessages = msgs;
         if (!msgs.length) {
-            el.innerHTML = '<div class="hub-dm-empty" style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-gray)">Send the first message</div>';
+            dmMessagesEl.innerHTML = `<div class="hub-dm-empty" style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-gray)">${esc(t('dm_first_message'))}</div>`;
         } else {
-            el.innerHTML = msgs.map(m => `
-                <div class="hub-dm-msg ${m.sender_id === u.id ? 'hub-dm-msg--mine' : 'hub-dm-msg--theirs'}">
-                    ${m.attachment?.type === 'image' ? `<img class="hub-dm-msg__image" src="${esc(m.attachment.url)}" alt="" loading="lazy">` : ''}
-                    ${m.attachment?.type === 'voice' ? `<audio class="hub-dm-msg__audio" controls src="${esc(m.attachment.url)}"></audio>` : ''}
-                    ${m.message ? esc(m.message) : ''}
-                    <div class="hub-dm-msg__time">${timeAgo(m.created_at)}</div>
-                    ${m.sender_id !== u.id ? `<button class="report-trigger-btn" data-report-type="direct_message" data-report-id="${m.id}" data-report-preview="${esc((m.message || '').substring(0, 60))}" title="${I18nModule.t('report_btn_trigger_dm_title')}">⚑</button>` : ''}
-                </div>`).join('');
-            el.scrollTop = el.scrollHeight;
+            const msgsById = new Map(msgs.map(x => [x.id, x]));
+            dmMessagesEl.innerHTML = msgs.map((m, i) => renderMessageHtml(m, u.id, S.dmPartnerName, msgsById, msgs[i - 1] || null, msgs[i + 1] || null)).join('');
+            dmMessagesEl.scrollTop = dmMessagesEl.scrollHeight;
         }
     } catch {
-        document.getElementById('dm-messages').innerHTML = '<div class="hub-empty"><div class="hub-empty__icon">❌</div>Error.</div>';
+        S.dmMessages = [];
+        dmMessagesEl.innerHTML = `<div class="hub-empty"><div class="hub-empty__icon">❌</div>${esc(t('dm_error_generic'))}</div>`;
     }
 
-    document.getElementById('dm-messages').addEventListener('click', e => {
+    dmMessagesEl.addEventListener('click', e => {
         const reportBtn = e.target.closest('.report-trigger-btn');
         if (reportBtn && typeof window.openReportModal === 'function') {
             window.openReportModal({
@@ -2475,26 +3098,49 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                 contentId:   reportBtn.dataset.reportId,
                 contentPreview: reportBtn.dataset.reportPreview,
             });
+            return;
         }
+        const voiceToggle = e.target.closest('[data-voice-toggle]');
+        if (voiceToggle) { toggleVoicePlayback(voiceToggle.closest('.hub-dm-voice')); return; }
+        const voiceBars = e.target.closest('[data-voice-bars]');
+        if (voiceBars) { seekVoice(voiceBars, e.clientX); return; }
+        const reactBtn = e.target.closest('[data-react-emoji]');
+        if (reactBtn) {
+            const row = reactBtn.closest('.hub-dm-msg-row');
+            const m = S.dmMessages.find(x => x.id === +row.dataset.msgId);
+            if (m) toggleReaction(m, reactBtn.dataset.reactEmoji);
+            return;
+        }
+        const jump = e.target.closest('[data-jump-to]');
+        if (jump) {
+            const target = document.querySelector(`.hub-dm-msg-row[data-msg-id="${jump.dataset.jumpTo}"]`);
+            target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+        const viewable = e.target.closest('[data-viewable]');
+        if (viewable) {
+            const row = viewable.closest('.hub-dm-msg-row');
+            const m = S.dmMessages.find(x => x.id === +row.dataset.msgId);
+            if (m?.attachment) openImageViewer(m, partnerId, S.dmPartnerName);
+        }
+    });
+
+    dmMessagesEl.addEventListener('contextmenu', e => {
+        const row = e.target.closest('.hub-dm-msg-row');
+        if (!row) return;
+        e.preventDefault();
+        const m = S.dmMessages.find(x => x.id === +row.dataset.msgId);
+        if (m) openMessageContextMenu(e.clientX, e.clientY, m, row.dataset.mine === '1', S.dmPartnerName);
     });
 
     const dmTextInput = thread.querySelector('.hub-dm-form__input');
     const dmImageInput = document.getElementById('dm-image-input');
     const dmAttachBtn = document.getElementById('dm-attach-btn');
+    const dmStickerBtn = document.getElementById('dm-sticker-btn');
+    const dmStickerPanel = document.getElementById('dm-sticker-panel');
     const dmMicBtn = document.getElementById('dm-mic-btn');
     const dmPendingEl = document.getElementById('dm-pending');
     let pendingImageFile = null;
-
-    function appendSentMessage(html) {
-        const el = document.getElementById('dm-messages');
-        el.querySelector('.hub-dm-empty')?.remove();
-        const div = document.createElement('div');
-        div.className = 'hub-dm-msg hub-dm-msg--mine';
-        div.innerHTML = html;
-        el.appendChild(div);
-        el.scrollTop = el.scrollHeight;
-        window.dispatchEvent(new CustomEvent('cn:message-sent'));
-    }
 
     function setPendingImage(file) {
         pendingImageFile = file;
@@ -2514,6 +3160,35 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
     dmImageInput.addEventListener('change', () => {
         if (dmImageInput.files[0]) setPendingImage(dmImageInput.files[0]);
         dmImageInput.value = '';
+    });
+
+    dmStickerBtn.addEventListener('click', async () => {
+        const opening = dmStickerPanel.hidden;
+        dmStickerPanel.hidden = !opening;
+        if (!opening || dmStickerPanel.dataset.loaded) return;
+        dmStickerPanel.innerHTML = `<div class="hub-dm-sticker-panel__empty">${esc(t('dm_loading'))}</div>`;
+        try {
+            const data = await api('GET', '/stickers');
+            const stickers = data.stickers || [];
+            dmStickerPanel.innerHTML = stickers.length
+                ? stickers.map(s => `<img class="hub-dm-sticker-panel__item" src="${esc(s.url)}" data-sticker-key="${esc(s.key)}" alt="">`).join('')
+                : `<div class="hub-dm-sticker-panel__empty">${esc(t('dm_stickers_empty'))}</div>`;
+            dmStickerPanel.dataset.loaded = '1';
+            dmStickerPanel.querySelectorAll('[data-sticker-key]').forEach(imgEl => {
+                imgEl.addEventListener('click', async () => {
+                    try {
+                        const res = await api('POST', '/dm/send', {
+                            receiverId: partnerId, message: '',
+                            attachment_key: imgEl.dataset.stickerKey, attachment_type: 'sticker',
+                        });
+                        if (res.success) appendMessageToThread(res.message);
+                        else showToast(res.error || t('dm_error_generic'), 'error');
+                    } catch { showToast(t('dm_error_generic'), 'error'); }
+                });
+            });
+        } catch {
+            dmStickerPanel.innerHTML = `<div class="hub-dm-sticker-panel__empty">${esc(t('dm_load_failed'))}</div>`;
+        }
     });
 
     let mediaRecorder = null;
@@ -2547,12 +3222,11 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                         receiverId: partnerId, message: '',
                         attachment_key: presign.key, attachment_type: 'voice',
                         attachment_size: blob.size, attachment_duration_ms: durationMs,
+                        reply_to: S.dmReplyTo?.id || undefined,
                     });
-                    if (res.success) {
-                        appendSentMessage(`<audio class="hub-dm-msg__audio" controls src="${esc(res.message?.attachment?.url || presign.publicUrl)}"></audio><div class="hub-dm-msg__time">now</div>`);
-                    } else {
-                        showToast(res.error || t('listing_generic_error'), 'error');
-                    }
+                    S.dmReplyTo = null; renderComposeBanner();
+                    if (res.success) appendMessageToThread(res.message);
+                    else showToast(res.error || t('listing_generic_error'), 'error');
                 } catch (err) {
                     console.error('Voice message failed:', err);
                     showToast(t('listing_generic_error'), 'error');
@@ -2569,12 +3243,22 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
     document.getElementById('dm-form').addEventListener('submit', async e => {
         e.preventDefault();
         const msg = dmTextInput.value.trim();
+
+        if (S.dmEditingId) {
+            if (!msg) return;
+            dmTextInput.value = '';
+            await submitEdit(msg);
+            return;
+        }
+
         if (!msg && !pendingImageFile) return;
         const btn = e.target.querySelector('[type="submit"]');
         btn.disabled = true;
         dmTextInput.value = '';
         const imageFile = pendingImageFile;
         setPendingImage(null);
+        const replyToId = S.dmReplyTo?.id;
+        S.dmReplyTo = null; renderComposeBanner();
 
         try {
             let attachmentKey = null;
@@ -2595,15 +3279,10 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                 body.attachment_type = 'image';
                 body.attachment_size = imageFile.size;
             }
+            if (replyToId) body.reply_to = replyToId;
             const res = await api('POST', '/dm/send', body);
-            if (res.success) {
-                appendSentMessage(`
-                    ${res.message?.attachment?.type === 'image' ? `<img class="hub-dm-msg__image" src="${esc(res.message.attachment.url)}" alt="" loading="lazy">` : ''}
-                    ${msg ? esc(msg) : ''}
-                    <div class="hub-dm-msg__time">now</div>`);
-            } else {
-                showToast(res.error || t('listing_generic_error'), 'error');
-            }
+            if (res.success) appendMessageToThread(res.message);
+            else showToast(res.error || t('listing_generic_error'), 'error');
         } catch (err) {
             console.error('DM send failed:', err);
             showToast(t('listing_generic_error'), 'error');

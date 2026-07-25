@@ -2629,41 +2629,171 @@ button.hub-action-pill:hover {
     gap: 8px;
 }
 
-.hub-dm-msg {
+.hub-dm-msg-row {
+    display: flex;
+    flex-direction: column;
     max-width: 75%;
-    padding: 8px 14px;
-    border-radius: var(--radius-lg, 12px);
-    font-size: 0.88rem;
-    line-height: 1.4;
 }
 
-.hub-dm-msg--mine {
+.hub-dm-msg-row--mine {
     align-self: flex-end;
-    background: var(--accent-color);
+    align-items: flex-end;
+}
+
+.hub-dm-msg-row--theirs {
+    align-self: flex-start;
+    align-items: flex-start;
+}
+
+.hub-dm-msg-row--stacked {
+    margin-top: -4px;
+}
+
+.hub-dm-msg {
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    cursor: default;
+    user-select: text;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* iMessage-style glossy gradient for my own bubbles — top-highlight to bottom-shade,
+   built entirely from --accent-color so it auto-adapts per theme (near-white gloss on
+   dark theme, near-black on light theme) without needing separate theme overrides. */
+.hub-dm-msg--mine {
+    background: linear-gradient(180deg,
+        color-mix(in srgb, var(--accent-color) 100%, white 8%),
+        color-mix(in srgb, var(--accent-color) 88%, black 10%));
     color: var(--primary-color, #1B1714);
-    border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 5px;
 }
 
 .hub-dm-msg--theirs {
-    align-self: flex-start;
     background: var(--card-bg);
     color: var(--text-light);
     border: 1px solid var(--border-color);
-    border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 5px;
 }
+
+.hub-dm-msg-row--stacked .hub-dm-msg--mine { border-bottom-right-radius: 18px; }
+.hub-dm-msg-row--stacked .hub-dm-msg--theirs { border-bottom-left-radius: 18px; }
+.hub-dm-msg--tail.hub-dm-msg--mine { border-bottom-right-radius: 5px; }
+.hub-dm-msg--tail.hub-dm-msg--theirs { border-bottom-left-radius: 5px; }
 
 .hub-dm-msg__time {
     font-size: 0.62rem;
     margin-top: 3px;
     font-family: var(--font-sans);
+    padding: 0 4px;
 }
 
-.hub-dm-msg--mine .hub-dm-msg__time {
-    color: rgba(27, 23, 20, 0.5);
+.hub-dm-msg-row--mine .hub-dm-msg__time { color: var(--text-gray); text-align: right; }
+.hub-dm-msg-row--theirs .hub-dm-msg__time { color: var(--text-gray); }
+
+.hub-dm-msg__edited {
+    font-size: 0.62rem;
+    opacity: 0.6;
+    margin-top: 1px;
 }
 
-.hub-dm-msg--theirs .hub-dm-msg__time {
+/* Quoted reply — inline block inside the bubble, iMessage-style */
+.hub-dm-reply-quote {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: rgba(127, 127, 127, 0.14);
+    cursor: pointer;
+}
+
+.hub-dm-reply-quote__bar {
+    width: 2.5px;
+    height: 26px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
+.hub-dm-reply-quote__body { min-width: 0; }
+
+.hub-dm-reply-quote__author {
+    font-size: 0.66rem;
+    font-weight: 700;
+    opacity: 0.85;
+}
+
+.hub-dm-reply-quote__text {
+    font-size: 0.76rem;
+    opacity: 0.65;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.hub-dm-reply-quote__thumb {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Reaction chips — sit just below/overlapping the bubble, like iMessage tapbacks */
+.hub-dm-reactions {
+    display: flex;
+    gap: 4px;
+    margin-top: 3px;
+    padding: 0 4px;
+    flex-wrap: wrap;
+}
+
+.hub-dm-reaction-chip {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 7px;
+    border-radius: 50px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    font-size: 0.72rem;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.hub-dm-reaction-chip--mine {
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+.hub-dm-reaction-chip__count {
+    font-weight: 700;
+    font-size: 0.66rem;
     color: var(--text-gray);
+}
+
+.hub-dm-reaction-chip--mine .hub-dm-reaction-chip__count { color: var(--accent-color); }
+
+/* Sticker messages — no bubble chrome at all, matches the app's WhatsApp-style rendering */
+.hub-dm-msg--sticker {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.hub-dm-msg__sticker-img {
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
 }
 
 .hub-dm-form {
@@ -2693,18 +2823,66 @@ button.hub-action-pill:hover {
 
 .hub-dm-msg__image {
     display: block;
-    max-width: 100%;
-    max-height: 260px;
-    border-radius: var(--radius-md, 8px);
+    max-width: 220px;
+    max-height: 220px;
+    border-radius: 12px;
     margin-bottom: 6px;
     object-fit: cover;
+    cursor: pointer;
 }
 
-.hub-dm-msg__audio {
-    display: block;
-    max-width: 220px;
-    height: 36px;
+/* Custom waveform voice player — replaces the native <audio controls> element */
+.hub-dm-voice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 170px;
+    padding: 6px 10px;
+    border-radius: 50px;
+    background: rgba(127, 127, 127, 0.14);
     margin-bottom: 4px;
+}
+
+.hub-dm-voice__toggle {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(127, 127, 127, 0.22);
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.hub-dm-voice__bars {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.hub-dm-voice__bar {
+    flex: 1;
+    min-width: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    opacity: 0.35;
+}
+
+.hub-dm-voice__bar--played { opacity: 0.9; }
+
+.hub-dm-voice__time {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    min-width: 30px;
+    text-align: right;
 }
 
 .hub-dm-form__icon-btn {
@@ -2789,6 +2967,296 @@ button.hub-action-pill:hover {
     color: var(--text-gray);
     font-size: 0.88rem;
 }
+
+/* ── Reply banner (above the compose form, while replying/editing) ─────────── */
+.hub-dm-reply-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 20px 8px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    background: rgba(127, 127, 127, 0.12);
+    border-left: 3px solid var(--accent-color);
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.hub-dm-reply-banner__body { flex: 1; min-width: 0; }
+
+.hub-dm-reply-banner__label {
+    font-weight: 700;
+    font-size: 0.68rem;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.hub-dm-reply-banner__text {
+    color: var(--text-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hub-dm-reply-banner__close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+
+.hub-dm-reply-banner__close:hover { color: #e5484d; }
+
+/* ── Sticker picker panel (opens above the compose form) ────────────────────── */
+.hub-dm-sticker-panel {
+    margin: 0 20px 8px;
+    padding: 10px;
+    border-radius: var(--radius-md, 8px);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    max-height: 220px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 8px;
+}
+
+.hub-dm-sticker-panel__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    padding: 20px 8px;
+}
+
+.hub-dm-sticker-panel__item {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform var(--transition-fast);
+    background: none;
+    border: none;
+    padding: 4px;
+}
+
+.hub-dm-sticker-panel__item:hover { transform: scale(1.08); background: rgba(127, 127, 127, 0.12); }
+
+/* ── Message context menu (right-click) — floating quick-reactions + action list ── */
+.hub-ctx-scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 2000;
+    animation: hub-ctx-fade-in 0.15s ease;
+}
+
+@keyframes hub-ctx-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.hub-ctx-menu {
+    position: fixed;
+    z-index: 2001;
+    width: 250px;
+    max-height: calc(100vh - 28px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: hub-ctx-pop-in 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+@keyframes hub-ctx-pop-in {
+    from { opacity: 0; transform: scale(0.9) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.hub-ctx-menu__reactions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 50px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hub-ctx-menu__reaction-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    font-size: 1.15rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hub-ctx-menu__reaction-btn:hover,
+.hub-ctx-menu__reaction-btn--mine {
+    background: rgba(var(--accent-rgb), 0.16);
+}
+
+.hub-ctx-menu__actions {
+    border-radius: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hub-ctx-menu__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 11px 16px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-light);
+    font-size: 0.86rem;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    text-align: left;
+}
+
+.hub-ctx-menu__row:last-child { border-bottom: none; }
+.hub-ctx-menu__row:hover { background: rgba(127, 127, 127, 0.1); }
+.hub-ctx-menu__row--destructive { color: #e5484d; }
+
+/* ── Full-screen image viewer ──────────────────────────────────────────────── */
+.hub-img-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    animation: hub-ctx-fade-in 0.15s ease;
+}
+
+.hub-img-viewer__top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent);
+    z-index: 1;
+}
+
+.hub-img-viewer__btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.hub-img-viewer__name {
+    flex: 1;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hub-img-viewer__stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.hub-img-viewer__img {
+    max-width: 100%;
+    max-height: 100%;
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+    cursor: grab;
+}
+
+.hub-img-viewer__bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    gap: 10px;
+    padding: 14px 18px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.65), transparent);
+}
+
+.hub-img-viewer__reply-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md, 8px);
+    padding: 10px 14px;
+    color: #fff;
+    font-size: 0.88rem;
+    font-family: var(--font-sans);
+    outline: none;
+}
+
+.hub-img-viewer__reply-send {
+    flex-shrink: 0;
+}
+
+/* ── Forward picker (reuses .hub-modal-overlay/.hub-modal chrome) ───────────── */
+.hub-forward-list {
+    max-height: 340px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.hub-forward-conv {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md, 8px);
+    background: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    color: var(--text-light);
+    font-size: 0.86rem;
+}
+
+.hub-forward-conv:hover { background: rgba(127, 127, 127, 0.1); border-color: var(--border-color); }
+.hub-forward-conv[disabled] { opacity: 0.5; cursor: default; pointer-events: none; }
 
 @media (max-width: 768px) {
     .hub-dm-layout {

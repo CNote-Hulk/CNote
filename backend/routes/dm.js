@@ -26,6 +26,7 @@ const router = express.Router();
 function attachmentPayload(row) {
     if (!row.attachment_key) return null;
     return {
+        key: row.attachment_key, // exposed so the client can Forward without re-uploading — no more sensitive than the url, which already reveals it
         url: publicUrlForKey(row.attachment_key),
         type: row.attachment_type,
         size: row.attachment_size,
@@ -183,6 +184,7 @@ router.get('/messages/:partnerId', authRequired, async (req, res) => {
 
         const result = await pool.query(`
             SELECT dm.id, dm.sender_id, dm.receiver_id, dm.message, dm.created_at,
+                   dm.reply_to, dm.edited_at,
                    dm.attachment_key, dm.attachment_type, dm.attachment_size, dm.attachment_duration_ms,
                    u.username AS sender_name
             FROM direct_messages dm
@@ -193,14 +195,34 @@ router.get('/messages/:partnerId', authRequired, async (req, res) => {
             LIMIT 200
         `, [req.user.id, partnerId]);
 
+        // Reactions for this conversation's messages, aggregated per (message_id, emoji) —
+        // same shape ChatViewModel.kt's ReactionChip expects (count + whether I reacted).
+        const ids = result.rows.map(r => r.id);
+        const reactionsByMessage = {};
+        if (ids.length > 0) {
+            const reactionsResult = await pool.query(
+                `SELECT message_id, emoji, user_id FROM message_reactions WHERE scope = 'dm' AND message_id = ANY($1)`,
+                [ids]
+            );
+            for (const r of reactionsResult.rows) {
+                const list = (reactionsByMessage[r.message_id] ||= {});
+                const chip = (list[r.emoji] ||= { emoji: r.emoji, count: 0, mine: false });
+                chip.count++;
+                if (r.user_id === req.user.id) chip.mine = true;
+            }
+        }
+
         const messages = result.rows.map(row => ({
             id: row.id,
             sender_id: row.sender_id,
             receiver_id: row.receiver_id,
             message: row.message,
             created_at: row.created_at,
+            reply_to: row.reply_to ? parseInt(row.reply_to) : null, // BIGINT comes back as a string from pg — coerce so it matches `id` (a plain number) for client-side Map lookups
+            edited_at: row.edited_at,
             sender_name: row.sender_name,
             attachment: attachmentPayload(row),
+            reactions: Object.values(reactionsByMessage[row.id] || {}),
         }));
 
         res.json({ success: true, messages });
@@ -217,17 +239,18 @@ router.post('/send', authRequired, async (req, res) => {
     }
     // Accept both receiverId (frontend) and receiver_id (alternative)
     const rawId = req.body.receiverId || req.body.receiver_id;
-    const { message, listingId, attachment_key, attachment_type, attachment_size, attachment_duration_ms } = req.body;
+    const { message, listingId, attachment_key, attachment_type, attachment_size, attachment_duration_ms, reply_to } = req.body;
 
     const hasAttachment = typeof attachment_key === 'string' && attachment_key.length > 0;
     if (hasAttachment && attachment_type !== 'image' && attachment_type !== 'voice' && attachment_type !== 'sticker') {
         return res.status(400).json({ success: false, error: 'Invalid attachment_type.' });
     }
-    // attachment_key must be one we actually issued via /api/uploads/presign for this user
+    // attachment_key must either be one we actually issued via /api/uploads/presign for this
+    // user, OR (Forward — mirrors ChatViewModel.kt's forwardMessage(), which reuses the same
+    // storage key without re-uploading) a key already attached to a real message the caller was
+    // sender or receiver of — checked further down, once we're inside the try/pool block.
     const attachmentFolder = attachment_type === 'image' ? 'images' : attachment_type === 'sticker' ? 'stickers' : 'voice';
-    if (hasAttachment && !attachment_key.startsWith(`chat/${attachmentFolder}/${req.user.id}/`)) {
-        return res.status(400).json({ success: false, error: 'Invalid attachment.' });
-    }
+    const attachmentOwnPrefix = hasAttachment && attachment_key.startsWith(`chat/${attachmentFolder}/${req.user.id}/`);
 
     if (!rawId || (!hasAttachment && (!message || String(message).trim().length === 0))) {
         return res.status(400).json({ success: false, error: 'Recipient and message or attachment are required.' });
@@ -272,10 +295,37 @@ router.post('/send', authRequired, async (req, res) => {
             return res.status(404).json({ success: false, error: 'User not found.' });
         }
 
+        if (hasAttachment && !attachmentOwnPrefix) {
+            const existing = await pool.query(
+                `SELECT 1 FROM direct_messages WHERE attachment_key = $1 AND (sender_id = $2 OR receiver_id = $2)
+                 UNION SELECT 1 FROM messages WHERE attachment_key = $1
+                 LIMIT 1`,
+                [attachment_key, req.user.id]
+            );
+            if (existing.rows.length === 0) {
+                return res.status(400).json({ success: false, error: 'Invalid attachment.' });
+            }
+        }
+
+        // reply_to must point at a real message in THIS conversation (either party), so a
+        // client can't quote an arbitrary message id from an unrelated conversation.
+        let safeReplyTo = null;
+        if (reply_to) {
+            const replyToId = parseInt(reply_to);
+            if (!isNaN(replyToId)) {
+                const replyCheck = await pool.query(
+                    `SELECT id FROM direct_messages WHERE id = $1
+                     AND ((sender_id = $2 AND receiver_id = $3) OR (sender_id = $3 AND receiver_id = $2))`,
+                    [replyToId, req.user.id, receiverId]
+                );
+                if (replyCheck.rows.length > 0) safeReplyTo = replyToId;
+            }
+        }
+
         const result = await pool.query(`
-            INSERT INTO direct_messages (sender_id, receiver_id, message, listing_id, attachment_key, attachment_type, attachment_size, attachment_duration_ms)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-            RETURNING id, sender_id, receiver_id, message, listing_id, created_at
+            INSERT INTO direct_messages (sender_id, receiver_id, message, listing_id, attachment_key, attachment_type, attachment_size, attachment_duration_ms, reply_to)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            RETURNING id, sender_id, receiver_id, message, listing_id, created_at, reply_to
         `, [
             req.user.id,
             receiverId,
@@ -285,11 +335,14 @@ router.post('/send', authRequired, async (req, res) => {
             hasAttachment ? attachment_type : null,
             hasAttachment ? (parseInt(attachment_size) || null) : null,
             hasAttachment ? (parseInt(attachment_duration_ms) || null) : null,
+            safeReplyTo,
         ]);
 
         const dm = result.rows[0];
+        dm.reply_to = dm.reply_to ? parseInt(dm.reply_to) : null; // same BIGINT-as-string coercion as GET /messages
         dm.sender_name = req.user.username;
         dm.attachment = hasAttachment ? {
+            key: attachment_key,
             url: publicUrlForKey(attachment_key),
             type: attachment_type,
             size: parseInt(attachment_size) || null,
@@ -384,6 +437,105 @@ router.patch('/read/:partnerId', authRequired, async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('DM mark-read PATCH error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── PATCH /api/dm/:id ─────────────────────────────────────
+// Edit a message's text — sender-only, mirrors the Android app's commitEdit() (which writes
+// directly to Supabase). Attachment-only messages aren't editable from the UI, but nothing
+// here prevents adding text to one if a client wanted to.
+router.patch('/:id', authRequired, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
+    const message = String(req.body.message || '').trim().slice(0, 2000);
+    if (!message) return res.status(400).json({ success: false, error: 'Message cannot be empty.' });
+
+    try {
+        const result = await pool.query(
+            `UPDATE direct_messages SET message = $1, edited_at = NOW()
+             WHERE id = $2 AND sender_id = $3
+             RETURNING id, message, edited_at`,
+            [message, id, req.user.id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, error: 'Message not found.' });
+        }
+        res.json({ success: true, message: result.rows[0] });
+    } catch (err) {
+        console.error('DM edit PATCH error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── DELETE /api/dm/:id ────────────────────────────────────
+// Sender-only, mirrors deleteMessage() — no server-side object cleanup for attachments
+// (same tradeoff already made on the Android side: the R2 object is left orphaned rather
+// than wiring up an authenticated delete for it).
+router.delete('/:id', authRequired, async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
+
+    try {
+        const result = await pool.query(
+            'DELETE FROM direct_messages WHERE id = $1 AND sender_id = $2 RETURNING id',
+            [id, req.user.id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, error: 'Message not found.' });
+        }
+        res.json({ success: true });
+    } catch (err) {
+        console.error('DM delete error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/dm/:id/react ────────────────────────────────
+// Add a reaction — either conversation participant may react, not just the sender. Verifies
+// the message belongs to a conversation the caller is actually part of, since message_reactions
+// has no RLS-equivalent check at this layer (site backend, not PostgREST — see mobile client's
+// direct Supabase RLS policies for the same rule enforced there).
+router.post('/:id/react', authRequired, async (req, res) => {
+    const id = parseInt(req.params.id);
+    const emoji = String(req.body.emoji || '').trim().slice(0, 8);
+    if (isNaN(id) || !emoji) return res.status(400).json({ success: false, error: 'Invalid request.' });
+
+    try {
+        const msgCheck = await pool.query(
+            'SELECT id FROM direct_messages WHERE id = $1 AND (sender_id = $2 OR receiver_id = $2)',
+            [id, req.user.id]
+        );
+        if (msgCheck.rows.length === 0) {
+            return res.status(404).json({ success: false, error: 'Message not found.' });
+        }
+        await pool.query(
+            `INSERT INTO message_reactions (scope, message_id, user_id, emoji)
+             VALUES ('dm', $1, $2, $3)
+             ON CONFLICT DO NOTHING`,
+            [id, req.user.id, emoji]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('DM react POST error:', err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── DELETE /api/dm/:id/react ──────────────────────────────
+router.delete('/:id/react', authRequired, async (req, res) => {
+    const id = parseInt(req.params.id);
+    const emoji = String(req.query.emoji || req.body.emoji || '').trim().slice(0, 8);
+    if (isNaN(id) || !emoji) return res.status(400).json({ success: false, error: 'Invalid request.' });
+
+    try {
+        await pool.query(
+            `DELETE FROM message_reactions WHERE scope = 'dm' AND message_id = $1 AND user_id = $2 AND emoji = $3`,
+            [id, req.user.id, emoji]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('DM react DELETE error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
