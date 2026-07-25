@@ -2608,24 +2608,34 @@ button.hub-action-pill:hover {
     overflow: hidden;
 }
 
-/* Floats above the scrollable message list (not in normal flow) with a dark-to-transparent
-   fade, like PageScaffold's header treatment in the Android app — messages scroll fully
-   underneath it instead of stopping at a hard bar. `.hub-dm-messages` adds top padding so
-   its first message clears the visible name/back-button row. */
+/* Floats above the scrollable message list (not in normal flow) — same "transparent bar +
+   separate fade tail" pattern as .navbar/.navbar::after (no blur, no opaque bar of its own),
+   so messages scroll fully underneath instead of stopping at a hard bar. `.hub-dm-messages`
+   adds top padding so its first message clears the visible name/back-button row. */
 .hub-dm-thread__header {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     z-index: 3;
-    padding: 14px 20px 30px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    padding: 14px 20px;
+    background: transparent;
     display: flex;
     align-items: center;
     gap: 10px;
     pointer-events: none; /* let clicks/scroll reach the messages behind the fade's empty tail */
+}
+
+.hub-dm-thread__header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -30px;
+    background: linear-gradient(to bottom, rgba(var(--dark-rgb), 0.85) 0%, rgba(var(--dark-rgb), 0.5) 60%, transparent 100%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .hub-dm-thread__header > * {
@@ -2814,14 +2824,27 @@ button.hub-action-pill:hover {
 }
 
 .hub-dm-form {
+    position: relative;
     display: flex;
     gap: 10px;
-    padding: 20px 20px 14px;
+    padding: 14px 20px;
     border-top: none;
     flex-shrink: 0;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 100%);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: transparent;
+}
+
+/* Same "transparent bar + separate fade tail" pattern as the header above / .navbar::after —
+   no blur, just a gradient bleeding up into the message list behind it. */
+.hub-dm-form::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: -30px;
+    background: linear-gradient(to top, rgba(var(--dark-rgb), 0.85) 0%, rgba(var(--dark-rgb), 0.5) 60%, transparent 100%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .hub-dm-form__input {
@@ -2938,7 +2961,10 @@ button.hub-action-pill:hover {
     50% { opacity: 0.45; }
 }
 
-.hub-dm-pending {
+/* :not([hidden]) instead of a bare selector — a plain `display: flex` here would win over the
+   browser's default `[hidden] { display: none }` (equal specificity, author origin beats
+   user-agent), so the chip would stay visible as an empty bar even while `.hidden = true`. */
+.hub-dm-pending:not([hidden]) {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -2989,7 +3015,7 @@ button.hub-action-pill:hover {
 }
 
 /* ── Reply banner (above the compose form, while replying/editing) ─────────── */
-.hub-dm-reply-banner {
+.hub-dm-reply-banner:not([hidden]) {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -3033,7 +3059,7 @@ button.hub-action-pill:hover {
 .hub-dm-reply-banner__close:hover { color: #e5484d; }
 
 /* ── Sticker picker panel (opens above the compose form) ────────────────────── */
-.hub-dm-sticker-panel {
+.hub-dm-sticker-panel:not([hidden]) {
     margin: 0 20px 8px;
     padding: 10px;
     border-radius: var(--radius-md, 8px);
@@ -3305,11 +3331,11 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-thread__header {
-        padding: 10px 14px 22px;
+        padding: 10px 14px;
     }
 
     .hub-dm-messages {
-        padding: 46px 10px 12px;
+        padding: 44px 10px 12px;
     }
 
     .hub-dm-msg {
@@ -3318,7 +3344,7 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-form {
-        padding: 16px 12px 10px;
+        padding: 10px 12px;
         gap: 8px;
     }
 
@@ -5201,11 +5227,9 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-thread__header {
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
-        backdrop-filter: blur(3px);
-        -webkit-backdrop-filter: blur(3px);
+        background: transparent;
         border-bottom: none;
-        padding: 14px 14px 26px;
+        padding: 10px 14px;
         min-height: 52px;
         display: flex;
         align-items: center;
@@ -5215,7 +5239,7 @@ button.hub-action-pill:hover {
     .hub-dm-messages {
         flex: 1;
         overflow-y: auto;
-        padding: 48px 12px 14px;
+        padding: 44px 12px 14px;
         gap: 8px;
         display: flex;
         flex-direction: column;
@@ -5239,10 +5263,8 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-form {
-        padding: 18px 12px 10px;
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 100%);
-        backdrop-filter: blur(3px);
-        -webkit-backdrop-filter: blur(3px);
+        padding: 10px 12px;
+        background: transparent;
         border-top: none;
         gap: 8px;
         flex-shrink: 0;
