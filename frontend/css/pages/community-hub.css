@@ -5460,6 +5460,14 @@ button.hub-action-pill:hover {
     .community-page {
         padding-bottom: 90px;
     }
+
+    /* The community hub page also carries the plain .community-page class this rule targets
+       (`class="community-page community-page--hub"`) — a completely separate rule from the
+       fullscreen overrides above (different selector, different breakpoint: 680px vs 768px),
+       which is why it kept leaving a blank 90px gap at the bottom even after those. */
+    body.hub-mobile-fullscreen .community-page {
+        padding-bottom: 0;
+    }
 }
 
 /* ── Toast notifications ─────────────────────────────────── */
