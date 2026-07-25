@@ -2825,6 +2825,9 @@ button.hub-action-pill:hover {
 
 .hub-dm-form {
     position: relative;
+    z-index: 2; /* establishes its own stacking context (like the header's z-index: 3) so the
+                   ::after's z-index: -1 stays scoped to just this bar instead of escaping to
+                   compete with — and losing to — the message bubbles behind it */
     display: flex;
     gap: 10px;
     padding: 14px 20px;
@@ -2847,21 +2850,67 @@ button.hub-action-pill:hover {
     z-index: -1;
 }
 
-.hub-dm-form__input {
+/* Pill field wrapping the input + the merged mic/send button — same shape as the round
+   attach/sticker buttons alongside it (Composer in ChatScreen.kt: a rounded field with the
+   mic/send icon living inside it, not a separate button outside). */
+.hub-dm-form__field {
     flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 4px 6px 4px 16px;
+    border-radius: 26px;
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-md, 8px);
-    padding: 10px 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: border-color var(--transition-fast);
+}
+
+.hub-dm-form__field:focus-within {
+    border-color: var(--accent-color);
+}
+
+.hub-dm-form__field--recording {
+    border-color: #e5484d;
+}
+
+.hub-dm-form__input {
+    flex: 1;
+    min-width: 0;
+    background: none;
+    border: none;
+    padding: 8px 0;
     color: var(--text-light);
     font-size: 0.88rem;
     font-family: var(--font-sans);
     outline: none;
-    transition: border-color var(--transition-fast);
 }
 
-.hub-dm-form__input:focus {
-    border-color: var(--accent-color);
+.hub-dm-form__mic-send-btn {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: var(--text-gray);
+    font-size: 1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.hub-dm-form__mic-send-btn--send {
+    background: var(--accent-color);
+    color: var(--primary-color, #1B1714);
+}
+
+.hub-dm-form__mic-send-btn--recording {
+    color: #e5484d;
+    animation: hub-dm-recording-pulse 1.1s ease-in-out infinite;
 }
 
 .hub-dm-msg__image {
@@ -2928,32 +2977,29 @@ button.hub-action-pill:hover {
     text-align: right;
 }
 
-.hub-dm-form__icon-btn {
+/* Round "+"/sticker buttons — 44px to match the pill field's own min-height (Composer.kt's
+   44dp round buttons alongside the field). */
+.hub-dm-form__round-btn {
     flex-shrink: 0;
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--border-color);
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.25);
     color: var(--text-light);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: border-color var(--transition-fast), color var(--transition-fast);
 }
 
-.hub-dm-form__icon-btn:hover {
+.hub-dm-form__round-btn:hover {
     border-color: var(--accent-color);
     color: var(--accent-color);
-}
-
-.hub-dm-form__icon-btn--recording {
-    border-color: #e5484d;
-    color: #e5484d;
-    animation: hub-dm-recording-pulse 1.1s ease-in-out infinite;
 }
 
 @keyframes hub-dm-recording-pulse {
@@ -3349,9 +3395,7 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-form__input {
-        font-size: 16px;
-        padding: 10px 14px;
-        border-radius: 20px;
+        font-size: 16px; /* prevents iOS Safari's auto-zoom-on-focus */
     }
 }
 
@@ -4504,8 +4548,8 @@ button.hub-action-pill:hover {
 [data-theme="light"] .hub-market-select,
 [data-theme="light"] .hub-reply-form input,
 [data-theme="light"] .hub-reply-form textarea,
-[data-theme="light"] .hub-dm-form__input,
-[data-theme="light"] .hub-dm-form__icon-btn,
+[data-theme="light"] .hub-dm-form__field,
+[data-theme="light"] .hub-dm-form__round-btn,
 [data-theme="light"] .hub-dm-pending,
 [data-theme="light"] .hub-form-input,
 [data-theme="light"] .hub-form-select,
@@ -5270,18 +5314,20 @@ button.hub-action-pill:hover {
         flex-shrink: 0;
     }
 
-    .hub-dm-form__input {
+    .hub-dm-form__field {
         border-radius: 22px;
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.09);
-        font-size: 16px;
-        padding: 11px 16px;
         min-height: 44px;
     }
 
-    .hub-dm-form__input:focus {
+    .hub-dm-form__field:focus-within {
         border-color: rgba(var(--accent-rgb), 0.5);
         background: rgba(255, 255, 255, 0.08);
+    }
+
+    .hub-dm-form__input {
+        font-size: 16px; /* prevents iOS Safari's auto-zoom-on-focus */
     }
 
     /* ── Chat ── */

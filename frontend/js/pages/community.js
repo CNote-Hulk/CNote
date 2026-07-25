@@ -2678,8 +2678,19 @@ function renderComposeBanner() {
         if (wasEditing) {
             const input = document.querySelector('.hub-dm-form__input');
             if (input) input.value = '';
+            syncComposerSendIcon(false);
         }
     });
+}
+
+/** Toggle the merged mic/send button's icon from module-level code that can't reach
+ * openConversation()'s own `updateComposerButton()` closure (startEdit/cancel-compose). */
+function syncComposerSendIcon(hasContent) {
+    const btn = document.getElementById('dm-mic-send-btn');
+    if (!btn) return;
+    btn.classList.toggle('hub-dm-form__mic-send-btn--send', hasContent);
+    btn.textContent = hasContent ? '➤' : '🎤';
+    btn.setAttribute('aria-label', hasContent ? t('dm_send') : t('dm_record_voice'));
 }
 
 function startReply(m, partnerName) {
@@ -2695,6 +2706,7 @@ function startEdit(m) {
     renderComposeBanner();
     const input = document.querySelector('.hub-dm-form__input');
     if (input) { input.value = m.message || ''; input.focus(); }
+    syncComposerSendIcon(!!(m.message || '').trim());
 }
 
 async function submitEdit(newText) {
@@ -2981,7 +2993,9 @@ function openImageViewer(m, partnerId, partnerName) {
         if (!msg) return;
         replyInput.disabled = true;
         try {
-            const res = await api('POST', '/dm/send', { receiverId: partnerId, message: msg });
+            // Sending from inside the viewer is always a reply to the photo being looked at —
+            // matches the app's own bottom reply bar, which quotes the viewed image.
+            const res = await api('POST', '/dm/send', { receiverId: partnerId, message: msg, reply_to: m.id });
             if (res.success) { close(); appendMessageToThread(res.message); }
             else showToast(res.error || t('dm_error_generic'), 'error');
         } catch { showToast(t('dm_error_generic'), 'error'); }
@@ -3105,11 +3119,12 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         <div class="hub-dm-pending" id="dm-pending" hidden></div>
         <form class="hub-dm-form" id="dm-form">
             <input type="file" id="dm-image-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
-            <button type="button" class="hub-dm-form__icon-btn" id="dm-attach-btn" title="${esc(t('dm_attach_image'))}">+</button>
-            <button type="button" class="hub-dm-form__icon-btn" id="dm-sticker-btn" title="${esc(t('dm_sticker_btn'))}">🎨</button>
-            <button type="button" class="hub-dm-form__icon-btn" id="dm-mic-btn" title="${esc(t('dm_record_voice'))}">🎤</button>
-            <input class="hub-dm-form__input" type="text" placeholder="${esc(t('dm_write_placeholder'))}" maxlength="2000">
-            <button class="hub-btn hub-btn--primary" type="submit">${esc(t('dm_send'))}</button>
+            <button type="button" class="hub-dm-form__round-btn" id="dm-attach-btn" title="${esc(t('dm_attach_image'))}">+</button>
+            <button type="button" class="hub-dm-form__round-btn" id="dm-sticker-btn" title="${esc(t('dm_sticker_btn'))}">🎨</button>
+            <div class="hub-dm-form__field" id="dm-field">
+                <input class="hub-dm-form__input" type="text" placeholder="${esc(t('dm_write_placeholder'))}" maxlength="2000">
+                <button type="button" class="hub-dm-form__mic-send-btn" id="dm-mic-send-btn" aria-label="${esc(t('dm_record_voice'))}">🎤</button>
+            </div>
         </form>`;
 
     thread.querySelector('#dm-back-btn').addEventListener('click', () => {
@@ -3190,9 +3205,22 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
     const dmAttachBtn = document.getElementById('dm-attach-btn');
     const dmStickerBtn = document.getElementById('dm-sticker-btn');
     const dmStickerPanel = document.getElementById('dm-sticker-panel');
-    const dmMicBtn = document.getElementById('dm-mic-btn');
+    const dmField = document.getElementById('dm-field');
+    const dmMicSendBtn = document.getElementById('dm-mic-send-btn');
     const dmPendingEl = document.getElementById('dm-pending');
     let pendingImageFile = null;
+    let isRecording = false;
+
+    // Merged mic/send button, iMessage-style (Composer in ChatScreen.kt): shows the mic while
+    // the field is empty, swaps to a send arrow the moment there's text or a pending image.
+    function updateComposerButton() {
+        if (isRecording) return;
+        const hasContent = !!(dmTextInput.value.trim() || pendingImageFile);
+        dmMicSendBtn.classList.toggle('hub-dm-form__mic-send-btn--send', hasContent);
+        dmMicSendBtn.textContent = hasContent ? '➤' : '🎤';
+        dmMicSendBtn.setAttribute('aria-label', hasContent ? t('dm_send') : t('dm_record_voice'));
+    }
+    dmTextInput.addEventListener('input', updateComposerButton);
 
     function setPendingImage(file) {
         pendingImageFile = file;
@@ -3206,6 +3234,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             dmPendingEl.hidden = true;
             dmPendingEl.innerHTML = '';
         }
+        updateComposerButton();
     }
 
     dmAttachBtn.addEventListener('click', () => dmImageInput.click());
@@ -3247,21 +3276,27 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
     let recordedChunks = [];
     let recordStart = 0;
 
-    dmMicBtn.addEventListener('click', async () => {
+    function toggleRecording() {
         if (mediaRecorder && mediaRecorder.state === 'recording') {
             mediaRecorder.stop();
             return;
         }
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
             const mimeType = ['audio/webm', 'audio/ogg', 'audio/mp4'].find(m => window.MediaRecorder?.isTypeSupported(m)) || '';
             mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
             recordedChunks = [];
             recordStart = Date.now();
+            isRecording = true;
+            dmField.classList.add('hub-dm-form__field--recording');
+            dmMicSendBtn.classList.add('hub-dm-form__mic-send-btn--recording');
+            dmMicSendBtn.textContent = '⏹';
             mediaRecorder.addEventListener('dataavailable', ev => { if (ev.data.size > 0) recordedChunks.push(ev.data); });
             mediaRecorder.addEventListener('stop', async () => {
                 stream.getTracks().forEach(tr => tr.stop());
-                dmMicBtn.classList.remove('hub-dm-form__icon-btn--recording');
+                isRecording = false;
+                dmField.classList.remove('hub-dm-form__field--recording');
+                dmMicSendBtn.classList.remove('hub-dm-form__mic-send-btn--recording');
+                updateComposerButton();
                 const durationMs = Date.now() - recordStart;
                 const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
                 if (blob.size === 0) return;
@@ -3285,11 +3320,17 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                 }
             });
             mediaRecorder.start();
-            dmMicBtn.classList.add('hub-dm-form__icon-btn--recording');
-        } catch (err) {
+        }).catch(err => {
             console.error('Mic access failed:', err);
             showToast(t('dm_mic_denied'), 'error');
-        }
+        });
+    }
+
+    dmMicSendBtn.addEventListener('click', () => {
+        if (isRecording) { toggleRecording(); return; }
+        const hasContent = dmTextInput.value.trim() || pendingImageFile;
+        if (hasContent) document.getElementById('dm-form').requestSubmit();
+        else toggleRecording();
     });
 
     document.getElementById('dm-form').addEventListener('submit', async e => {
@@ -3299,13 +3340,13 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         if (S.dmEditingId) {
             if (!msg) return;
             dmTextInput.value = '';
+            updateComposerButton();
             await submitEdit(msg);
             return;
         }
 
         if (!msg && !pendingImageFile) return;
-        const btn = e.target.querySelector('[type="submit"]');
-        btn.disabled = true;
+        dmMicSendBtn.disabled = true;
         const imageFile = pendingImageFile;
 
         try {
@@ -3323,7 +3364,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                     // meant a failed upload looked exactly like "it ignored my photo".
                     console.error('DM image upload failed:', err);
                     showToast(t('dm_image_upload_failed'), 'error');
-                    btn.disabled = false;
+                    dmMicSendBtn.disabled = false;
                     return;
                 }
             }
@@ -3347,7 +3388,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             console.error('DM send failed:', err);
             showToast(t('listing_generic_error'), 'error');
         } finally {
-            btn.disabled = false;
+            dmMicSendBtn.disabled = false;
         }
     });
 }
