@@ -2672,12 +2672,10 @@ button.hub-action-pill:hover {
 }
 
 .hub-dm-msg-row--mine {
-    align-self: flex-end;
     align-items: flex-end;
 }
 
 .hub-dm-msg-row--theirs {
-    align-self: flex-start;
     align-items: flex-start;
 }
 
