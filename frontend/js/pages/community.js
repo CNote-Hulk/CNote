@@ -2603,7 +2603,7 @@ function renderMessageHtml(m, myId, partnerName, msgsById, prevMsg, nextMsg) {
         <div class="hub-dm-msg hub-dm-msg--${mine ? 'mine' : 'theirs'}${isSticker ? ' hub-dm-msg--sticker' : ''}${tail ? ' hub-dm-msg--tail' : ''}" data-msg-id="${m.id}">
             ${replyHtml}
             ${attachmentHtml}
-            ${m.message ? `<div>${esc(m.message)}</div>` : ''}
+            ${m.message ? `<div class="hub-dm-msg__text">${esc(m.message)}</div>` : ''}
             ${m.edited_at ? `<div class="hub-dm-msg__edited">${esc(t('dm_edited'))}</div>` : ''}
             ${reportBtn}
         </div>

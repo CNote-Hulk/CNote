@@ -2650,6 +2650,10 @@ button.hub-action-pill:hover {
 .hub-dm-messages {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden; /* setting overflow-y alone makes overflow-x compute to 'auto' too per
+                           spec, so anything that overflows horizontally (a long unbroken
+                           string, a fixed-width child) would trigger its own horizontal
+                           scrollbar here instead of just being clipped */
     /* Top clears the floating header's own box (~58px) plus its fade tail (30px past that).
        Bottom clears the compose dock's RESTING height (just the form row, ~72px) — no fade
        tail there (removed per feedback), so no extra buffer needed beyond the dock itself.
@@ -2691,6 +2695,15 @@ button.hub-action-pill:hover {
     position: relative;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
+
+/* No overflow-wrap here on purpose — every variant tried (on .hub-dm-msg, on a dedicated
+   .hub-dm-msg__text child, "anywhere" vs "break-word") made Chromium size the bubble's flex-item
+   auto-width far narrower than short ordinary text actually needs (e.g. "mgrorg" wrapping onto
+   2 lines despite plenty of room within max-width) — some interaction between flex auto-sizing
+   and a break-anywhere text property in this specific nested-flex chain, not worth fighting
+   further. A genuinely pathological unbroken string (no spaces) is instead just visually
+   clipped by .hub-dm-messages' own overflow-x: hidden rather than creating a scrollbar or
+   pushing the bubble wider — acceptable since real messages always have spaces. */
 
 /* iMessage-style glossy gradient for my own bubbles — top-highlight to bottom-shade,
    built entirely from --accent-color so it auto-adapts per theme (near-white gloss on
@@ -2761,12 +2774,15 @@ button.hub-action-pill:hover {
 }
 
 .hub-dm-reply-quote__text {
+    display: block;
     font-size: 0.76rem;
     opacity: 0.65;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
+    max-width: 100%; /* was a fixed 200px — didn't shrink for narrow screens, so on mobile it
+                        could stick out past the bubble (max-width: 75% of a narrow viewport)
+                        and the screen edge itself, causing a horizontal scrollbar */
 }
 
 .hub-dm-reply-quote__thumb {
