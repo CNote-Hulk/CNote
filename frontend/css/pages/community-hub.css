@@ -2668,7 +2668,6 @@ button.hub-action-pill:hover {
 .hub-dm-msg-row {
     display: flex;
     flex-direction: column;
-    max-width: 75%;
 }
 
 .hub-dm-msg-row--mine {
@@ -3908,6 +3907,16 @@ button.hub-action-pill:hover {
         display: flex;
         flex-direction: column;
         overflow: hidden;
+    }
+
+    /* reset.css sets a *global* `body { min-height: 100vh }` — on a real phone (not devtools'
+       responsive mode, which doesn't simulate this) 100vh includes the space behind the
+       collapsible browser address bar while 100dvh doesn't, so body ends up taller than the
+       actually-visible viewport the moment the bar is showing. That leftover sliver made the
+       whole page scrollable, which in turn fed navigation.js's scroll-driven auto-hide and
+       re-showed the navbar/bottom-nav even while a "fullscreen" detail view was open. */
+    body.community-navbar-page {
+        min-height: 100dvh;
     }
 
     .community-page--hub::before {

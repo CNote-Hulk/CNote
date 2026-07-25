@@ -392,6 +392,15 @@ export const NavigationModule = {
                 return;
             }
 
+            // A "fullscreen" hub detail view (DM/forum thread/listing) already explicitly
+            // hid the navbar/bottom-nav via setMobileFullscreen() — any scroll here (even a
+            // stray few px from iOS rubber-banding) must not fight that and re-show them.
+            if (document.body.classList.contains('hub-mobile-fullscreen')) {
+                lastScrollY = currentY;
+                ticking = false;
+                return;
+            }
+
             if (currentY < 80) {
                 showAll();
                 lastScrollY = currentY;
