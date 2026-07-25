@@ -2684,6 +2684,10 @@ button.hub-action-pill:hover {
 }
 
 .hub-dm-msg {
+    width: fit-content; /* explicit, so it can never get stretched by a flex-align quirk on
+                            an ancestor — the bubble is always exactly as wide as its content,
+                            never wider (which was rendering as "text bigger than the bubble") */
+    max-width: 100%;
     padding: 8px 14px;
     border-radius: 18px;
     font-size: 0.88rem;
@@ -3933,6 +3937,39 @@ button.hub-action-pill:hover {
 
     body.hub-mobile-fullscreen .hub-view {
         border-radius: 0;
+    }
+
+    /* Forum thread / marketplace listing detail: same floating "transparent bar + fade tail"
+       treatment as .navbar/.hub-dm-thread__header instead of the desktop solid card-header,
+       now that these views are edge-to-edge fullscreen with no site navbar above them. */
+    body.hub-mobile-fullscreen #view-thread .hub-view-header,
+    body.hub-mobile-fullscreen #view-listing .hub-view-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        background: transparent;
+        border-bottom: none;
+    }
+
+    body.hub-mobile-fullscreen #view-thread .hub-view-header::after,
+    body.hub-mobile-fullscreen #view-listing .hub-view-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: -30px;
+        background: linear-gradient(to bottom, rgba(var(--dark-rgb), 0.85) 0%, rgba(var(--dark-rgb), 0.5) 60%, transparent 100%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Content needs top clearance now that the header floats over it instead of pushing it down */
+    body.hub-mobile-fullscreen #view-thread .hub-thread-detail,
+    body.hub-mobile-fullscreen #view-listing .hub-detail-scroll {
+        padding-top: 84px;
     }
 }
 
