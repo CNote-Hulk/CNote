@@ -2601,18 +2601,35 @@ button.hub-action-pill:hover {
 }
 
 .hub-dm-thread {
+    position: relative; /* anchor for the header's floating edge-to-edge fade */
     flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
+/* Floats above the scrollable message list (not in normal flow) with a dark-to-transparent
+   fade, like PageScaffold's header treatment in the Android app — messages scroll fully
+   underneath it instead of stopping at a hard bar. `.hub-dm-messages` adds top padding so
+   its first message clears the visible name/back-button row. */
 .hub-dm-thread__header {
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border-color);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 14px 20px 30px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
     gap: 10px;
+    pointer-events: none; /* let clicks/scroll reach the messages behind the fade's empty tail */
+}
+
+.hub-dm-thread__header > * {
+    pointer-events: auto; /* ...but the actual back button/name/avatar stay clickable */
 }
 
 /* Only shown on mobile, where the thread replaces the conversation list */
@@ -2623,7 +2640,7 @@ button.hub-action-pill:hover {
 .hub-dm-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 16px 20px;
+    padding: 60px 20px 16px; /* top clears the floating header's name/back-button row */
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -2799,9 +2816,12 @@ button.hub-action-pill:hover {
 .hub-dm-form {
     display: flex;
     gap: 10px;
-    padding: 12px 20px;
-    border-top: 1px solid var(--border-color);
+    padding: 20px 20px 14px;
+    border-top: none;
     flex-shrink: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 100%);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
 }
 
 .hub-dm-form__input {
@@ -3285,11 +3305,11 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-thread__header {
-        padding: 10px 14px;
+        padding: 10px 14px 22px;
     }
 
     .hub-dm-messages {
-        padding: 12px 10px;
+        padding: 46px 10px 12px;
     }
 
     .hub-dm-msg {
@@ -3298,7 +3318,7 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-form {
-        padding: 10px 12px;
+        padding: 16px 12px 10px;
         gap: 8px;
     }
 
@@ -5181,9 +5201,11 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-thread__header {
-        background: var(--dark-bg-2);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        padding: 0 14px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        border-bottom: none;
+        padding: 14px 14px 26px;
         min-height: 52px;
         display: flex;
         align-items: center;
@@ -5193,7 +5215,7 @@ button.hub-action-pill:hover {
     .hub-dm-messages {
         flex: 1;
         overflow-y: auto;
-        padding: 14px 12px;
+        padding: 48px 12px 14px;
         gap: 8px;
         display: flex;
         flex-direction: column;
@@ -5217,9 +5239,11 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-form {
-        padding: 10px 12px;
-        background: var(--dark-bg-2);
-        border-top: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 18px 12px 10px;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 100%);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        border-top: none;
         gap: 8px;
         flex-shrink: 0;
     }

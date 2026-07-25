@@ -449,6 +449,7 @@ function showView(id) {
     document.querySelectorAll('.hub-csel--open').forEach(w => {
         if (w._hubCselClose) w._hubCselClose();
     });
+    if (S.view === 'dm' && id !== 'dm' && typeof stopDmPolling === 'function') stopDmPolling();
     content.querySelectorAll('.hub-view').forEach(v => v.classList.remove('hub-view--active'));
     const el = document.getElementById('view-' + id);
     if (el) el.classList.add('hub-view--active');
@@ -2373,6 +2374,53 @@ const QUICK_REACTIONS = ['👍', '❤️', '😂', '😮', '😢', '🔥'];
 let activeVoiceAudio = null;
 let activeVoiceEl = null;
 
+// Polling handle for the currently-open DM thread (there's no realtime transport for DM —
+// see CLAUDE.md: Socket.io is achievement/notification-only — so mirror chat.js's own
+// polling pattern instead of building a new one).
+const DM_POLL_INTERVAL_MS = 4000;
+let dmPollTimer = null;
+
+function stopDmPolling() {
+    if (dmPollTimer) { clearInterval(dmPollTimer); dmPollTimer = null; }
+}
+
+/** Poll the open conversation for new/edited/deleted/reacted messages sent from elsewhere
+ * (the other party, or this same account on another tab/device) and reconcile the DOM
+ * in place — new messages are appended, edits/reactions re-render just that row, and
+ * messages removed server-side are dropped from the list. Never touches compose/reply state. */
+async function syncDmMessages(partnerId) {
+    if (S.dmPartner !== partnerId) return; // conversation switched away since this was scheduled
+    try {
+        const data = await api('GET', `/dm/messages/${partnerId}`);
+        if (!data.success || S.dmPartner !== partnerId) return;
+        const incoming = data.messages || [];
+        const existingById = new Map(S.dmMessages.map(x => [x.id, x]));
+        const incomingIds = new Set(incoming.map(m => m.id));
+
+        const removedIds = S.dmMessages.filter(m => !incomingIds.has(m.id)).map(m => m.id);
+        if (removedIds.length) {
+            S.dmMessages = S.dmMessages.filter(m => incomingIds.has(m.id));
+            removedIds.forEach(id => document.querySelector(`.hub-dm-msg-row[data-msg-id="${id}"]`)?.remove());
+        }
+
+        for (const m of incoming) {
+            const existing = existingById.get(m.id);
+            if (!existing) continue;
+            const changed = existing.message !== m.message || existing.edited_at !== m.edited_at ||
+                JSON.stringify(existing.reactions || []) !== JSON.stringify(m.reactions || []);
+            if (changed) {
+                Object.assign(existing, m);
+                updateMessageInPlace(existing);
+            }
+        }
+
+        const newOnes = incoming.filter(m => !existingById.has(m.id));
+        for (const m of newOnes) appendMessageToThread(m);
+    } catch (err) {
+        console.error('DM sync failed:', err);
+    }
+}
+
 /** Local-only conversation state (pin/mute/hide) — mirrors ChatViewModel.kt's own
  * DataStore-backed pinnedIds/mutedIds/hiddenIds (no backend concept on Android either),
  * namespaced per logged-in user id since multiple accounts can share a browser. */
@@ -3026,6 +3074,7 @@ async function loadConversations() {
 /** Open a DM conversation thread with a specific user */
 async function openConversation(partnerId, partnerName, partnerAvatar) {
     stopActiveVoice();
+    stopDmPolling();
     S.dmPartner = partnerId;
     S.dmReplyTo = null;
     S.dmEditingId = null;
@@ -3065,6 +3114,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
 
     thread.querySelector('#dm-back-btn').addEventListener('click', () => {
         stopActiveVoice();
+        stopDmPolling();
         S.dmPartner = null;
         S.dmReplyTo = null;
         S.dmEditingId = null;
@@ -3089,6 +3139,8 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         S.dmMessages = [];
         dmMessagesEl.innerHTML = `<div class="hub-empty"><div class="hub-empty__icon">❌</div>${esc(t('dm_error_generic'))}</div>`;
     }
+
+    dmPollTimer = setInterval(() => syncDmMessages(partnerId), DM_POLL_INTERVAL_MS);
 
     dmMessagesEl.addEventListener('click', e => {
         const reportBtn = e.target.closest('.report-trigger-btn');
@@ -3254,25 +3306,33 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
         if (!msg && !pendingImageFile) return;
         const btn = e.target.querySelector('[type="submit"]');
         btn.disabled = true;
-        dmTextInput.value = '';
         const imageFile = pendingImageFile;
-        setPendingImage(null);
-        const replyToId = S.dmReplyTo?.id;
-        S.dmReplyTo = null; renderComposeBanner();
 
         try {
             let attachmentKey = null;
             if (imageFile) {
                 try {
                     const presign = await api('POST', '/uploads/presign', { kind: 'image', contentType: imageFile.type, fileSize: imageFile.size });
-                    if (presign.success) {
-                        const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': imageFile.type }, body: imageFile });
-                        if (putRes.ok) attachmentKey = presign.key;
-                    }
+                    if (!presign.success) throw new Error(presign.error || 'Presign failed');
+                    const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': imageFile.type }, body: imageFile });
+                    if (!putRes.ok) throw new Error('Upload failed');
+                    attachmentKey = presign.key;
                 } catch (err) {
+                    // Keep the pending image + typed text + reply state intact so the user can
+                    // retry — silently falling back to a text-only send here (as this used to)
+                    // meant a failed upload looked exactly like "it ignored my photo".
                     console.error('DM image upload failed:', err);
+                    showToast(t('dm_image_upload_failed'), 'error');
+                    btn.disabled = false;
+                    return;
                 }
             }
+
+            dmTextInput.value = '';
+            setPendingImage(null);
+            const replyToId = S.dmReplyTo?.id;
+            S.dmReplyTo = null; renderComposeBanner();
+
             const body = { receiverId: partnerId, message: msg };
             if (attachmentKey) {
                 body.attachment_key = attachmentKey;
