@@ -3908,6 +3908,18 @@ button.hub-action-pill:hover {
     body.hub-mobile-fullscreen .community-page--hub {
         padding-top: 0;
     }
+
+    /* .hub-content's own padding (12px/14px, meant to inset the desktop "card" look of
+       .hub-view — border-radius: 16px, see below) plus that same border-radius was still
+       there once the navbar/bottom-nav were hidden, so the detail view looked like a rounded
+       box floating inside the screen instead of genuinely edge-to-edge. Both removed here. */
+    body.hub-mobile-fullscreen .hub-content {
+        padding: 0;
+    }
+
+    body.hub-mobile-fullscreen .hub-view {
+        border-radius: 0;
+    }
 }
 
 /* ═══════════════════════════════════════════════════════════

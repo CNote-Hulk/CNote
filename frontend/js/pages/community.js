@@ -465,9 +465,14 @@ function showView(id) {
  * listing detail, or an open DM conversation) already provides its own back navigation —
  * reuses the same navbar--hidden/mbn--hidden classes navigation.js's scroll auto-hide uses. */
 function setMobileFullscreen(active) {
-    document.querySelector('.navbar')?.classList.toggle('navbar--hidden', active);
-    document.getElementById('mobile-bottom-nav')?.classList.toggle('mbn--hidden', active);
-    document.body.classList.toggle('hub-mobile-fullscreen', active);
+    // .navbar--hidden has no media-query guard of its own (navigation.js's own scroll-based
+    // auto-hide only ever adds it after checking matchMedia itself) — without the same check
+    // here, calling this on a desktop-width window would hide the navbar there too.
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const shouldHide = active && isMobile;
+    document.querySelector('.navbar')?.classList.toggle('navbar--hidden', shouldHide);
+    document.getElementById('mobile-bottom-nav')?.classList.toggle('mbn--hidden', shouldHide);
+    document.body.classList.toggle('hub-mobile-fullscreen', shouldHide);
 }
 
 // ── Sidebar ────────────────────────────────────────────────
