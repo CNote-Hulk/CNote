@@ -2684,10 +2684,6 @@ button.hub-action-pill:hover {
 }
 
 .hub-dm-msg {
-    width: fit-content; /* explicit, so it can never get stretched by a flex-align quirk on
-                            an ancestor — the bubble is always exactly as wide as its content,
-                            never wider (which was rendering as "text bigger than the bubble") */
-    max-width: 100%;
     padding: 8px 14px;
     border-radius: 18px;
     font-size: 0.88rem;
