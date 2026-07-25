@@ -3114,18 +3114,20 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             <span style="color:var(--text-light);font-weight:600;font-size:.9rem">${esc(S.dmPartnerName)}</span>
         </div>
         <div class="hub-dm-messages" id="dm-messages"><div class="hub-empty"><div class="hub-empty__icon">⏳</div>${esc(t('dm_loading'))}</div></div>
-        <div class="hub-dm-reply-banner" id="dm-compose-banner" hidden></div>
-        <div class="hub-dm-sticker-panel" id="dm-sticker-panel" hidden></div>
-        <div class="hub-dm-pending" id="dm-pending" hidden></div>
-        <form class="hub-dm-form" id="dm-form">
-            <input type="file" id="dm-image-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
-            <button type="button" class="hub-dm-form__round-btn" id="dm-attach-btn" title="${esc(t('dm_attach_image'))}">+</button>
-            <button type="button" class="hub-dm-form__round-btn" id="dm-sticker-btn" title="${esc(t('dm_sticker_btn'))}">😊</button>
-            <div class="hub-dm-form__field" id="dm-field">
-                <input class="hub-dm-form__input" type="text" placeholder="${esc(t('dm_write_placeholder'))}" maxlength="2000">
-                <button type="button" class="hub-dm-form__mic-send-btn" id="dm-mic-send-btn" aria-label="${esc(t('dm_record_voice'))}">🎤</button>
-            </div>
-        </form>`;
+        <div class="hub-dm-compose-dock" id="dm-compose-dock">
+            <div class="hub-dm-reply-banner" id="dm-compose-banner" hidden></div>
+            <div class="hub-dm-sticker-panel" id="dm-sticker-panel" hidden></div>
+            <div class="hub-dm-pending" id="dm-pending" hidden></div>
+            <form class="hub-dm-form" id="dm-form">
+                <input type="file" id="dm-image-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                <button type="button" class="hub-dm-form__round-btn" id="dm-attach-btn" title="${esc(t('dm_attach_image'))}">+</button>
+                <button type="button" class="hub-dm-form__round-btn" id="dm-sticker-btn" title="${esc(t('dm_sticker_btn'))}">😊</button>
+                <div class="hub-dm-form__field" id="dm-field">
+                    <input class="hub-dm-form__input" type="text" placeholder="${esc(t('dm_write_placeholder'))}" maxlength="2000">
+                    <button type="button" class="hub-dm-form__mic-send-btn" id="dm-mic-send-btn" aria-label="${esc(t('dm_record_voice'))}">🎤</button>
+                </div>
+            </form>
+        </div>`;
 
     thread.querySelector('#dm-back-btn').addEventListener('click', () => {
         stopActiveVoice();

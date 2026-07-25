@@ -2650,12 +2650,12 @@ button.hub-action-pill:hover {
 .hub-dm-messages {
     flex: 1;
     overflow-y: auto;
-    /* Top clears BOTH the floating header's own box (~58px) AND its ::after fade tail (30px
-       past that) — padding-top: 60px used to only clear the header's own box, so the topmost
-       message (visible at rest when scrolled all the way up) still sat under the tail end of
-       the gradient and looked like its top edge was darkened/"cut", especially noticeable on
-       a chrome-less sticker message. Bottom clears the form's own fade tail the same way. */
-    padding: 92px 20px 34px;
+    /* Top clears the floating header's own box (~58px) plus its fade tail (30px past that).
+       Bottom clears the compose dock's RESTING height — just the form row, ~72px — plus its
+       own fade tail; both the header and the dock are position:absolute overlays, so messages
+       actually scroll underneath them with the fade showing through, rather than stopping at
+       a hard edge above a bar that was still in normal document flow. */
+    padding: 92px 20px 102px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -2828,31 +2828,41 @@ button.hub-action-pill:hover {
     cursor: pointer;
 }
 
+/* Docks the reply banner / sticker panel / pending-image chip / compose form as ONE floating
+   overlay pinned to the bottom of the thread — same idea as .hub-dm-thread__header at the top.
+   Previously only the header floated; the form stayed in normal flow, so messages simply
+   stopped above it instead of actually scrolling underneath with the fade showing through
+   (reported as "content gets cut, no transparency behind it"). Anchored to the dock (not the
+   form) so the fade tail always starts just above whatever is currently the topmost visible
+   part of the dock — the reply banner or sticker panel when open, the form otherwise. */
+.hub-dm-compose-dock {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.hub-dm-compose-dock::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 30px;
+    background: linear-gradient(to top, rgba(var(--dark-rgb), 0.85) 0%, rgba(var(--dark-rgb), 0.5) 60%, transparent 100%);
+    pointer-events: none;
+}
+
 .hub-dm-form {
-    position: relative;
-    z-index: 2; /* establishes its own stacking context (like the header's z-index: 3) so the
-                   ::after's z-index: -1 stays scoped to just this bar instead of escaping to
-                   compete with — and losing to — the message bubbles behind it */
     display: flex;
     gap: 10px;
     padding: 14px 20px;
     border-top: none;
     flex-shrink: 0;
     background: transparent;
-}
-
-/* Same "transparent bar + separate fade tail" pattern as the header above / .navbar::after —
-   no blur, just a gradient bleeding up into the message list behind it. */
-.hub-dm-form::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: -30px;
-    background: linear-gradient(to top, rgba(var(--dark-rgb), 0.85) 0%, rgba(var(--dark-rgb), 0.5) 60%, transparent 100%);
-    pointer-events: none;
-    z-index: -1;
 }
 
 /* Pill field wrapping the input + the merged mic/send button — same shape as the round
@@ -3385,7 +3395,7 @@ button.hub-action-pill:hover {
     }
 
     .hub-dm-messages {
-        padding: 84px 10px 30px;
+        padding: 84px 10px 90px;
     }
 
     .hub-dm-msg {
@@ -5287,7 +5297,7 @@ button.hub-action-pill:hover {
     .hub-dm-messages {
         flex: 1;
         overflow-y: auto;
-        padding: 84px 12px 30px;
+        padding: 84px 12px 90px;
         gap: 8px;
         display: flex;
         flex-direction: column;
