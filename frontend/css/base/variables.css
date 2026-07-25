@@ -4,39 +4,44 @@
  */
 
 :root {
-    /* Color Palette - Warm Cinematic Documentary */
-    --primary-color: #1B1714;
-    --secondary-color: #2A2320;
-    --accent-color: #F5F0E8;
-    --accent-light: #FAF7F3;
-    --dark-bg: #1B1714;
-    --dark-bg-2: #151210;
-    --card-bg: #2A2320;
-    --text-light: #F5F0E8;
-    --text-gray: #A89F94;
+    /* Base fallback palette — mirrors [data-theme="dark"] exactly. The old "warm cinematic"
+       default theme was removed (2026-07-25, only Dark/Light/System remain selectable); JS
+       always sets data-theme to a concrete 'dark' or 'light' before first paint (see
+       profile-dropdown.js/resolveTheme()), so this block is normally never visibly used —
+       kept as a safe no-JS/pre-hydration fallback that matches Dark rather than reintroducing
+       a third, unreachable color identity. */
+    --primary-color: #0a0907;
+    --secondary-color: #161410;
+    --accent-color: #FFFFFF;
+    --accent-light: #FFFFFF;
+    --dark-bg: #0a0907;
+    --dark-bg-2: #050403;
+    --card-bg: #1c1916;
+    --text-light: #FFFFFF;
+    --text-gray: #b0a79e;
     --success: #4ADE80;
-    --error: #e57373;
+    --error: #ef9a9a;
     --warning: #E06B58;
-    --border-color: rgba(255, 255, 255, 0.05);
-    --grid-line: rgba(255, 255, 255, 0.03);
+    --border-color: rgba(255, 255, 255, 0.11);
+    --grid-line: rgba(255, 255, 255, 0.05);
 
     /* Aliases — used in component fallbacks */
     --text-primary: var(--text-light);
     --text-muted: var(--text-gray);
 
     /* Semantic state colors */
-    --success-light: #86EFAC;
-    --error-light: #FCA5A5;
+    --success-light: #6ee7a0;
+    --error-light: #fca5a5;
 
     /* RGB Helpers */
-    --primary-rgb: 27, 23, 20;
-    --secondary-rgb: 42, 35, 32;
-    --accent-rgb: 245, 240, 232;
-    --accent-color-rgb: 245, 240, 232;
-    --dark-rgb: 21, 18, 16;
-    --gray-rgb: 168, 159, 148;
+    --primary-rgb: 10, 9, 7;
+    --secondary-rgb: 22, 20, 16;
+    --accent-rgb: 255, 255, 255;
+    --accent-color-rgb: 255, 255, 255;
+    --dark-rgb: 5, 4, 3;
+    --gray-rgb: 176, 167, 158;
     --cream-rgb: 245, 240, 232;
-    --glow-accent: 0 0 20px rgba(245, 240, 232, 0.1);
+    --glow-accent: 0 0 20px rgba(255, 255, 255, 0.1);
 
     /* Spacing */
     --spacing-xs: 0.5rem;

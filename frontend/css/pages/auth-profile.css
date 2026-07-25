@@ -3284,9 +3284,9 @@ a.chat-message__username:hover {
     gap: 5px;
     overflow: hidden;
 }
-.theme-card__preview--default { background: #1B1714; }
 .theme-card__preview--dark { background: #0a0907; }
 .theme-card__preview--light { background: #f5f0e8; }
+.theme-card__preview--system { background: linear-gradient(90deg, #0a0907 50%, #F7F7F8 50%); }
 
 .theme-card__bar {
     height: 6px;

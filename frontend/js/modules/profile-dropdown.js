@@ -10,13 +10,25 @@ import { I18nModule } from './i18n.js';
 const THEME_KEY = 'cnote-theme';
 const ACCENT_KEY = 'cnote-accent-color';
 
-// Apply saved theme immediately on module load (prevents flash) — dark is the
-// default for a visitor who never touched the toggle; a stored empty string
-// (explicit "Default" choice) is deliberately distinct from no key at all.
+/** Resolves the raw stored preference ('dark' | 'light' | 'system' | null) to a concrete
+ * data-theme value — 'system' follows the OS's prefers-color-scheme live. */
+function resolveTheme(stored) {
+    if (stored === null) return 'dark'; // default for a visitor who never touched the toggle
+    if (stored === 'system') return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    return stored;
+}
+
+// Apply saved theme immediately on module load (prevents flash).
 (function () {
-    const stored = localStorage.getItem(THEME_KEY);
-    document.documentElement.dataset.theme = stored === null ? 'dark' : stored;
+    document.documentElement.dataset.theme = resolveTheme(localStorage.getItem(THEME_KEY));
 })();
+
+// Keep a "System" choice live if the OS preference changes while the page is open.
+matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+    if (localStorage.getItem(THEME_KEY) === 'system') {
+        document.documentElement.dataset.theme = resolveTheme('system');
+    }
+});
 
 // Apply saved accent color immediately on module load (only when logged in)
 (function () {
@@ -99,14 +111,14 @@ export const ProfileDropdownModule = {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
                 <span data-i18n="profile_theme">Theme</span>
                 <div class="profile-dropdown__theme-btns">
-                    <button class="profile-dropdown__theme-btn${active('')}" data-theme="" title="Default">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                    </button>
                     <button class="profile-dropdown__theme-btn${active('dark')}" data-theme="dark" title="Dark">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                     </button>
                     <button class="profile-dropdown__theme-btn${active('light')}" data-theme="light" title="Light">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+                    </button>
+                    <button class="profile-dropdown__theme-btn${active('system')}" data-theme="system" title="${I18nModule.t('profile_theme_system') || 'Set as system'}">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
                     </button>
                 </div>
             </div>`;
@@ -200,10 +212,10 @@ export const ProfileDropdownModule = {
     },
 
     _setTheme(theme) {
-        document.documentElement.dataset.theme = theme;
-        // Always store explicitly (including '' for "Default") — an absent key means
-        // "never touched the toggle" and defaults to dark, which must stay distinct
-        // from a deliberate "Default" pick, or it would snap back to dark on reload.
+        document.documentElement.dataset.theme = resolveTheme(theme);
+        // Store the raw choice ('dark' | 'light' | 'system'), not the resolved value — needed
+        // so "System" stays correctly highlighted/live-updating rather than freezing at
+        // whatever concrete theme happened to resolve at click time.
         localStorage.setItem(THEME_KEY, theme);
         this._dropdown.querySelectorAll('.profile-dropdown__theme-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.theme === theme);

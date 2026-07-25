@@ -1353,18 +1353,23 @@ function initSettings() {
     loadTrustedDevices();
 
     // ═══ APPEARANCE TAB — Theme selector ═══
-    // Dark is the default for a visitor who never touched the toggle; a stored
-    // empty string (explicit "Default" choice) is deliberately distinct from no
-    // key at all, so picking "Default" doesn't snap back to dark on reload.
+    // Dark is the default for a visitor who never touched the toggle. "System" is stored
+    // as the literal string 'system' and resolved live to whichever of dark/light matches
+    // the OS preference — see the matching resolveTheme() in profile-dropdown.js.
     const themeCards = document.querySelectorAll('.theme-card[data-theme-value]');
     const storedTheme = localStorage.getItem('cnote-theme');
     const currentTheme = storedTheme === null ? 'dark' : storedTheme;
+
+    function resolveThemeValue(theme) {
+        if (theme === 'system') return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        return theme;
+    }
 
     themeCards.forEach(card => {
         if (card.dataset.themeValue === currentTheme) card.classList.add('active');
         card.addEventListener('click', () => {
             const theme = card.dataset.themeValue;
-            document.documentElement.dataset.theme = theme;
+            document.documentElement.dataset.theme = resolveThemeValue(theme);
             localStorage.setItem('cnote-theme', theme);
             themeCards.forEach(c => c.classList.remove('active'));
             card.classList.add('active');
