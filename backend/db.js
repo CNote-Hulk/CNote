@@ -481,6 +481,13 @@ async function initializeSchema() {
 		`CREATE POLICY mobile_insert_dms ON direct_messages FOR INSERT TO anon, authenticated WITH CHECK (attachment_key IS NOT NULL OR char_length(message) BETWEEN 1 AND 2000)`,
 		`DROP POLICY IF EXISTS mobile_insert_messages ON messages`,
 		`CREATE POLICY mobile_insert_messages ON messages FOR INSERT TO anon, authenticated WITH CHECK ((attachment_key IS NOT NULL OR char_length(message) BETWEEN 1 AND 500) AND channel = ANY (ARRAY['chat','playstation','xbox','nintendo','pc','other']))`,
+			// Same bug, but on UPDATE — read-receipt PATCHes (only touch the `read` column)
+			// were silently rejected by RLS for attachment-only rows, since with_check is
+			// evaluated against the resulting row regardless of which columns actually changed.
+			`DROP POLICY IF EXISTS mobile_update_dms ON direct_messages`,
+			`CREATE POLICY mobile_update_dms ON direct_messages FOR UPDATE USING (true) WITH CHECK (attachment_key IS NOT NULL OR char_length(message) BETWEEN 1 AND 2000)`,
+			`DROP POLICY IF EXISTS mobile_update_messages ON messages`,
+			`CREATE POLICY mobile_update_messages ON messages FOR UPDATE USING (true) WITH CHECK (attachment_key IS NOT NULL OR char_length(message) BETWEEN 1 AND 500)`,
 		`INSERT INTO storage.buckets (id, name, public, allowed_mime_types, file_size_limit)
 			VALUES ('avatars', 'avatars', true, ARRAY['image/jpeg','image/png','image/webp'], 2097152)
 			ON CONFLICT (id) DO NOTHING`,
