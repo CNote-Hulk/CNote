@@ -3897,24 +3897,33 @@ button.hub-action-pill:hover {
 }
 
 @media (max-width: 768px) {
-    /* On mobile: no wallpaper, full-page solid layout */
+    /* On mobile: no wallpaper, full-page solid layout.
+       position: fixed + inset: 0 (not height: 100dvh on a normal-flow box) is deliberate: a
+       fixed, inset-0 box always exactly matches whatever the CURRENT visual viewport is, at
+       every instant — including the moment a phone's browser chrome (Samsung Internet/Chrome's
+       collapsible address bar / gesture-nav bar) hides or reappears mid-scroll. `100dvh` on a
+       flow participant only gets *recalculated* on such a resize, and body's own height could
+       still momentarily disagree with it, which made the page scroll by a few px and fed
+       navigation.js's scroll-driven auto-hide into re-showing the navbar/bottom-nav even while
+       a "fullscreen" detail view was open. Being position: fixed removes this element from
+       body's flow entirely, so body's height/scrollability can no longer be affected by it at
+       all, sidestepping the whole vh/dvh/chrome-resize mismatch class of bugs at the root. */
     .community-page--hub {
         background-image: none;
         background-color: var(--dark-bg-2, #151210);
         padding-top: var(--cn-nav-offset, 96px);
         padding-bottom: 0;
-        height: 100dvh;
+        position: fixed;
+        inset: 0;
+        z-index: 1;
         display: flex;
         flex-direction: column;
         overflow: hidden;
     }
 
-    /* reset.css sets a *global* `body { min-height: 100vh }` — on a real phone (not devtools'
-       responsive mode, which doesn't simulate this) 100vh includes the space behind the
-       collapsible browser address bar while 100dvh doesn't, so body ends up taller than the
-       actually-visible viewport the moment the bar is showing. That leftover sliver made the
-       whole page scrollable, which in turn fed navigation.js's scroll-driven auto-hide and
-       re-showed the navbar/bottom-nav even while a "fullscreen" detail view was open. */
+    /* Belt-and-suspenders: body itself should no longer have any tall flow content once
+       .community-page--hub is fixed/out-of-flow above, but keep it pinned to the live
+       viewport too in case anything else ever gets added to this page's body. */
     body.community-navbar-page {
         min-height: 100dvh;
     }
