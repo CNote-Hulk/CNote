@@ -1,4 +1,4 @@
-import { MODELS } from '../data/console-models.js';
+import { MODELS, MOD_OPTIONS } from '../data/console-models.js';
 import { I18nModule } from '../modules/i18n.js';
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
@@ -249,6 +249,7 @@ function createTutorialSection({ idPrefix, titleField, introField, stepsField })
 
 function createModTutorialSection() {
     let combos = [];
+    let staticOptions = null; // { flashTypes, firmwareVersions } from MOD_OPTIONS, or null
     let selectedFlash = null;
     let selectedVersion = null;
 
@@ -256,12 +257,20 @@ function createModTutorialSection() {
         return document.getElementById(id);
     }
 
+    // Flash types/firmware versions a visitor can pick from are the UNION of
+    // this console's static option list (MOD_OPTIONS — just a menu, no
+    // compatibility claim) and whatever real write-ups already exist. This
+    // is what makes the selector visible from the first visit to a model
+    // page, not only once an admin has written something for it.
     function flashTypes() {
-        return [...new Set(combos.map(c => c.flash_type))];
+        const staticFlashes = staticOptions?.flashTypes || [];
+        return [...new Set([...staticFlashes, ...combos.map(c => c.flash_type)])];
     }
 
     function versionsForFlash(flash) {
-        return combos.filter(c => c.flash_type === flash).map(c => c.firmware_version);
+        const staticVersions = staticOptions?.firmwareVersions || [];
+        const comboVersions = combos.filter(c => c.flash_type === flash).map(c => c.firmware_version);
+        return [...new Set([...staticVersions, ...comboVersions])];
     }
 
     function findCombo(flash, version) {
@@ -269,15 +278,8 @@ function createModTutorialSection() {
     }
 
     function renderSelectors() {
-        const selectorsWrap = el('mod-selectors');
         const flashSelect = el('mod-flash-select');
         const versionSelect = el('mod-version-select');
-
-        if (!combos.length) {
-            selectorsWrap.style.display = 'none';
-            return;
-        }
-        selectorsWrap.style.display = '';
 
         const flashes = flashTypes();
         if (!flashes.includes(selectedFlash)) selectedFlash = flashes[0];
@@ -294,19 +296,25 @@ function createModTutorialSection() {
 
     function renderView() {
         const comingSoon = el('mod-coming-soon');
+        const selectorsWrap = el('mod-selectors');
         const comboMissing = el('mod-combo-missing');
         const content = el('mod-content');
 
-        renderSelectors();
-
-        if (!combos.length) {
+        // Selector is visible whenever there's ANYTHING to choose from — this
+        // console's static option menu (MOD_OPTIONS), or a real write-up left
+        // over from before this model had a static list. Only when neither
+        // exists does the page fall back to the old flat "coming soon".
+        if (!flashTypes().length) {
             comingSoon.style.display = '';
+            selectorsWrap.style.display = 'none';
             comboMissing.style.display = 'none';
             content.style.display = 'none';
             content.innerHTML = '';
             return;
         }
         comingSoon.style.display = 'none';
+        selectorsWrap.style.display = '';
+        renderSelectors();
 
         const combo = findCombo(selectedFlash, selectedVersion);
         if (!combo) {
@@ -320,6 +328,45 @@ function createModTutorialSection() {
         content.innerHTML = renderTutorialMarkup(combo, { titleField: 'title', introField: 'intro', stepsField: 'steps' });
     }
 
+    // For a brand-new combo: if this console has a known option menu (or
+    // existing combos to draw from), let the admin PICK flash type/version
+    // from that same list instead of free-typing it — avoids creating a
+    // near-duplicate combo from a typo (e.g. a stray dash character). Falls
+    // back to free-text inputs when there's nothing to pick from yet.
+    function newComboFieldsMarkup() {
+        const flashes = flashTypes();
+        if (!flashes.length) {
+            return `
+                <input type="text" id="mod-editor-flash-type" placeholder="${I18nModule.t('mod_flash_type_placeholder')}" value="">
+                <input type="text" id="mod-editor-firmware-version" placeholder="${I18nModule.t('mod_firmware_version_placeholder')}" value="">
+            `;
+        }
+        // Pre-select whatever the admin is currently browsing in the
+        // read-view selector — if they clicked "Add tutorial" while looking
+        // at an empty NAND/4.90, for example, the form should already say
+        // NAND/4.90 instead of resetting to the first option in the list.
+        const flashOptions = flashes
+            .map(f => `<option value="${escapeHtml(f)}"${f === selectedFlash ? ' selected' : ''}>${escapeHtml(f)}</option>`)
+            .join('');
+        return `
+            <select id="mod-editor-flash-type" class="tutorial-select">${flashOptions}</select>
+            <select id="mod-editor-firmware-version" class="tutorial-select"></select>
+        `;
+    }
+
+    function wireNewComboFields() {
+        const flashField = el('mod-editor-flash-type');
+        const versionField = el('mod-editor-firmware-version');
+        if (!flashField || flashField.tagName !== 'SELECT') return; // free-text fallback needs no wiring
+        const populateVersions = () => {
+            versionField.innerHTML = versionsForFlash(flashField.value)
+                .map(v => `<option value="${escapeHtml(v)}"${v === selectedVersion && flashField.value === selectedFlash ? ' selected' : ''}>${escapeHtml(v)}</option>`)
+                .join('');
+        };
+        populateVersions();
+        flashField.addEventListener('change', populateVersions);
+    }
+
     function openEditor(isNew) {
         el('mod-view-wrap').style.display = 'none';
         const editor = el('mod-editor');
@@ -327,10 +374,7 @@ function createModTutorialSection() {
         const existing = isNew ? null : findCombo(selectedFlash, selectedVersion);
 
         editor.innerHTML = `
-            ${isNew ? `
-            <input type="text" id="mod-editor-flash-type" placeholder="${I18nModule.t('mod_flash_type_placeholder')}" value="">
-            <input type="text" id="mod-editor-firmware-version" placeholder="${I18nModule.t('mod_firmware_version_placeholder')}" value="">
-            ` : ''}
+            ${isNew ? newComboFieldsMarkup() : ''}
             <input type="text" id="mod-editor-title" placeholder="${I18nModule.t('tutorial_title_placeholder')}" value="${escapeHtml(existing?.title || '')}">
             <textarea id="mod-editor-intro" rows="3" placeholder="${I18nModule.t('tutorial_intro_placeholder')}">${escapeHtml(existing?.intro || '')}</textarea>
             <div id="mod-editor-steps"></div>
@@ -342,6 +386,8 @@ function createModTutorialSection() {
             </div>
             <p id="mod-editor-save-status"></p>
         `;
+
+        if (isNew) wireNewComboFields();
 
         const stepsWrap = el('mod-editor-steps');
         (existing?.steps?.length ? existing.steps : [{}]).forEach(s => stepsWrap.appendChild(stepEditorRow(s)));
@@ -417,8 +463,9 @@ function createModTutorialSection() {
         el('mod-add-btn').addEventListener('click', () => openEditor(true));
     }
 
-    function applyCombos(rows) {
+    function applyCombos(rows, consoleName) {
         combos = Array.isArray(rows) ? rows : [];
+        staticOptions = MOD_OPTIONS[consoleName] || null;
         selectedFlash = null;
         selectedVersion = null;
     }
@@ -493,7 +540,7 @@ async function render() {
     } catch {
         modTutorials = [];
     }
-    modding.applyCombos(modTutorials);
+    modding.applyCombos(modTutorials, currentModel.console);
     modding.renderView();
     modding.renderAdminControls();
 }

@@ -3,6 +3,23 @@
 // Compiled from web research across PSDevWiki/ConsoleMods/Wikipedia/xboxdevwiki/Free60/
 // Xbox One Research Wiki/3dbrew/Nintendo Life — see console-care.html's directory intro.
 
+// Static "what's pickable" option lists for the Modding Guide flash-type /
+// firmware-version selector on console-model.html, keyed by the `console`
+// field used in MODELS below. This is NOT compatibility data (no claim that
+// a given combination works) — it's just the menu of options a visitor can
+// choose from before a real write-up exists for most of them, so the
+// selector is visible and useful from the very first visit to a model page,
+// not only once an admin has written something. Firmware bracket labels
+// match the ones the site owner specified directly (not third-party
+// research). A model whose `console` isn't listed here falls back to the
+// old behaviour: the selector stays hidden until at least one real
+// (flash_type, firmware_version) write-up exists for it.
+export const MOD_OPTIONS = {
+    'PS3': { flashTypes: ['NAND', 'NOR'], firmwareVersions: ['3.55', '3.56–4.80', '4.81–4.89', '4.90', '4.91', '4.92', '4.93'] },
+    'PS3 Slim': { flashTypes: ['NOR'], firmwareVersions: ['3.55', '3.56–4.80', '4.81–4.89', '4.90', '4.91', '4.92', '4.93'] },
+    'PS3 Super Slim': { flashTypes: ['NOR'], firmwareVersions: ['3.55', '3.56–4.80', '4.81–4.89', '4.90', '4.91', '4.92', '4.93'] },
+};
+
 export const MODELS = [
     // ── Xbox ─────────────────────────────────
     // Microsoft never gave the original Xbox or the "fat" 360 an official
