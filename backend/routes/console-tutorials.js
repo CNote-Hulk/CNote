@@ -2,14 +2,22 @@
    FILE: console-tutorials.js
    DESCRIPTION: Per-model tutorial content for console-model.html (the
    detail page linked from both console-care.html's and console-modding.html's
-   model directories). Admin-only write, public read — one row per hardware
-   model code (e.g. "SCPH-50004"), keyed to the same `code` used in
-   frontend/js/data/console-models.js. Each row holds TWO independent
-   write-ups sharing one schema shape (title/intro/steps JSONB): the
-   disassembly tutorial (title/intro/steps) and the modding guide
-   (mod_title/mod_intro/mod_steps) — kept in the same table since they're
-   keyed by the same model_code and never queried separately. Step photos
-   are uploaded separately via the existing POST /api/uploads/presign
+   model directories). Admin-only write, public read. Two independent kinds
+   of content, on two separate tables:
+   - Disassembly tutorial: one row per hardware model code (e.g. "SCPH-50004")
+     in `console_tutorials` (title/intro/steps JSONB), keyed to the same
+     `code` used in frontend/js/data/console-models.js. Untouched by the
+     modding-guide selector below — cleaning doesn't depend on flash type or
+     firmware.
+   - Modding guide: MULTIPLE rows per model code in `console_mod_tutorials`,
+     one per (flash_type, firmware_version) combination — e.g. PS3 "CECHJ"
+     can have a "NOR"/"4.93" write-up completely independent from any other
+     combination. console-model.html lets a visitor pick flash type then
+     firmware version and shows that combination's own title/intro/steps.
+     The legacy `console_tutorials.mod_title/mod_intro/mod_steps` columns
+     are superseded by this table and are left in place, unused, per this
+     repo's "never drop columns" migration convention.
+   Step photos are uploaded separately via the existing POST /api/uploads/presign
    ('tutorial' kind).
    ───────────────────────────────────────── */
 const express = require('express');
@@ -30,6 +38,10 @@ const { adminOnly } = require('../middleware/adminOnly');
                 updated_at TIMESTAMP DEFAULT NOW()
             );
         `);
+        // mod_title/mod_intro/mod_steps: legacy single-row modding-guide columns,
+        // superseded by console_mod_tutorials (see initConsoleModTutorialsTable
+        // below). Left in place unused — never drop columns, existing envs just
+        // stop writing to them.
         await pool.query(`
             ALTER TABLE console_tutorials ADD COLUMN IF NOT EXISTS mod_title TEXT;
             ALTER TABLE console_tutorials ADD COLUMN IF NOT EXISTS mod_intro TEXT;
@@ -37,6 +49,27 @@ const { adminOnly } = require('../middleware/adminOnly');
         `);
     } catch (err) {
         console.error('[console-tutorials] table init error:', err.message);
+    }
+})();
+
+(async function initConsoleModTutorialsTable() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS console_mod_tutorials (
+                id SERIAL PRIMARY KEY,
+                model_code VARCHAR(60) NOT NULL,
+                flash_type VARCHAR(40) NOT NULL,
+                firmware_version VARCHAR(40) NOT NULL,
+                title TEXT,
+                intro TEXT,
+                steps JSONB NOT NULL DEFAULT '[]',
+                updated_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                updated_at TIMESTAMP DEFAULT NOW(),
+                UNIQUE (model_code, flash_type, firmware_version)
+            );
+        `);
+    } catch (err) {
+        console.error('[console-tutorials] mod-tutorials table init error:', err.message);
     }
 })();
 
@@ -53,11 +86,12 @@ function sanitizeSteps(input) {
 }
 
 // GET /api/console-tutorials/:code — public, no auth needed
-// Returns both the disassembly tutorial and the modding guide for this model.
+// Returns the disassembly tutorial for this model. (Modding guides live under
+// GET /:code/mod — see below — since a model can have several of them.)
 router.get('/:code', async (req, res) => {
     try {
         const { rows } = await pool.query(
-            'SELECT model_code, title, intro, steps, mod_title, mod_intro, mod_steps, updated_at FROM console_tutorials WHERE model_code = $1',
+            'SELECT model_code, title, intro, steps, updated_at FROM console_tutorials WHERE model_code = $1',
             [req.params.code]
         );
         if (!rows.length) return res.json({ success: true, tutorial: null });
@@ -84,7 +118,7 @@ router.put('/:code', authRequired, adminOnly, async (req, res) => {
              ON CONFLICT (model_code) DO UPDATE
                SET title = EXCLUDED.title, intro = EXCLUDED.intro, steps = EXCLUDED.steps,
                    updated_by = EXCLUDED.updated_by, updated_at = NOW()
-             RETURNING model_code, title, intro, steps, mod_title, mod_intro, mod_steps, updated_at`,
+             RETURNING model_code, title, intro, steps, updated_at`,
             [code, title, intro, JSON.stringify(steps), req.user.id]
         );
         res.json({ success: true, tutorial: rows[0] });
@@ -112,46 +146,72 @@ router.delete('/:code', authRequired, adminOnly, async (req, res) => {
     }
 });
 
-// PUT /api/console-tutorials/:code/mod — admin-only upsert of the modding guide
-router.put('/:code/mod', authRequired, adminOnly, async (req, res) => {
+// GET /api/console-tutorials/:code/mod — public, no auth needed
+// Returns EVERY (flash_type, firmware_version) modding-guide combination for
+// this model, full content included, so the frontend can populate both
+// selector dropdowns and switch between combinations client-side with no
+// further round-trips.
+router.get('/:code/mod', async (req, res) => {
+    try {
+        const { rows } = await pool.query(
+            `SELECT flash_type, firmware_version, title, intro, steps, updated_at
+             FROM console_mod_tutorials WHERE model_code = $1
+             ORDER BY flash_type, firmware_version`,
+            [req.params.code]
+        );
+        res.json({ success: true, tutorials: rows });
+    } catch (err) {
+        console.error('Console mod-tutorials GET error:', err.message);
+        res.status(500).json({ success: false, error: 'Could not load modding guides.' });
+    }
+});
+
+// PUT /api/console-tutorials/:code/mod/:flashType/:version — admin-only upsert
+// of a single (flash_type, firmware_version) modding guide. Used both to add
+// a brand-new combination and to edit an existing one.
+router.put('/:code/mod/:flashType/:version', authRequired, adminOnly, async (req, res) => {
     try {
         const code = String(req.params.code || '').slice(0, 60);
-        if (!code) return res.status(400).json({ success: false, error: 'Missing model code.' });
+        const flashType = String(req.params.flashType || '').trim().slice(0, 40).toUpperCase();
+        const version = String(req.params.version || '').trim().slice(0, 40);
+        if (!code || !flashType || !version) {
+            return res.status(400).json({ success: false, error: 'Missing model code, flash type, or firmware version.' });
+        }
 
-        const modTitle = String(req.body?.title || '').slice(0, 200);
-        const modIntro = String(req.body?.intro || '').slice(0, 5000);
-        const modSteps = sanitizeSteps(req.body?.steps);
+        const title = String(req.body?.title || '').slice(0, 200);
+        const intro = String(req.body?.intro || '').slice(0, 5000);
+        const steps = sanitizeSteps(req.body?.steps);
 
         const { rows } = await pool.query(
-            `INSERT INTO console_tutorials (model_code, mod_title, mod_intro, mod_steps, updated_by, updated_at)
-             VALUES ($1, $2, $3, $4, $5, NOW())
-             ON CONFLICT (model_code) DO UPDATE
-               SET mod_title = EXCLUDED.mod_title, mod_intro = EXCLUDED.mod_intro, mod_steps = EXCLUDED.mod_steps,
+            `INSERT INTO console_mod_tutorials (model_code, flash_type, firmware_version, title, intro, steps, updated_by, updated_at)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+             ON CONFLICT (model_code, flash_type, firmware_version) DO UPDATE
+               SET title = EXCLUDED.title, intro = EXCLUDED.intro, steps = EXCLUDED.steps,
                    updated_by = EXCLUDED.updated_by, updated_at = NOW()
-             RETURNING model_code, title, intro, steps, mod_title, mod_intro, mod_steps, updated_at`,
-            [code, modTitle, modIntro, JSON.stringify(modSteps), req.user.id]
+             RETURNING flash_type, firmware_version, title, intro, steps, updated_at`,
+            [code, flashType, version, title, intro, JSON.stringify(steps), req.user.id]
         );
         res.json({ success: true, tutorial: rows[0] });
     } catch (err) {
-        console.error('Console mod guide PUT error:', err.message);
+        console.error('Console mod-tutorial PUT error:', err.message);
         res.status(500).json({ success: false, error: 'Could not save modding guide.' });
     }
 });
 
-// DELETE /api/console-tutorials/:code/mod — admin-only, revert modding guide to "Coming soon"
-router.delete('/:code/mod', authRequired, adminOnly, async (req, res) => {
+// DELETE /api/console-tutorials/:code/mod/:flashType/:version — admin-only,
+// removes a single combination. If it was the last one for the model, the
+// model naturally falls back to the "coming soon" state.
+router.delete('/:code/mod/:flashType/:version', authRequired, adminOnly, async (req, res) => {
     try {
+        const flashType = String(req.params.flashType || '').trim().slice(0, 40).toUpperCase();
+        const version = String(req.params.version || '').trim().slice(0, 40);
         await pool.query(
-            `UPDATE console_tutorials SET mod_title = NULL, mod_intro = NULL, mod_steps = '[]' WHERE model_code = $1`,
-            [req.params.code]
-        );
-        await pool.query(
-            `DELETE FROM console_tutorials WHERE model_code = $1 AND title IS NULL AND intro IS NULL AND steps = '[]'`,
-            [req.params.code]
+            `DELETE FROM console_mod_tutorials WHERE model_code = $1 AND flash_type = $2 AND firmware_version = $3`,
+            [req.params.code, flashType, version]
         );
         res.json({ success: true });
     } catch (err) {
-        console.error('Console mod guide DELETE error:', err.message);
+        console.error('Console mod-tutorial DELETE error:', err.message);
         res.status(500).json({ success: false, error: 'Could not delete modding guide.' });
     }
 });

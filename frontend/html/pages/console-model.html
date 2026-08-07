@@ -71,6 +71,19 @@
                                 <span class="hero-button" style="opacity:0.5;cursor:default;display:inline-block;margin-bottom:12px;" data-i18n="learn_course_coming_soon">Coming Soon</span>
                                 <p class="care-section-lead" data-i18n="mod_tutorial_coming_body">A modding guide for this exact model — softmods, hardmods or custom firmware — is in the works.</p>
                             </div>
+                            <div id="mod-selectors" class="tutorial-selectors" style="display:none;">
+                                <label class="tutorial-selectors__field">
+                                    <span data-i18n="mod_flash_type_label">Flash type</span>
+                                    <select id="mod-flash-select" class="tutorial-select"></select>
+                                </label>
+                                <label class="tutorial-selectors__field">
+                                    <span data-i18n="mod_firmware_version_label">Firmware version</span>
+                                    <select id="mod-version-select" class="tutorial-select"></select>
+                                </label>
+                            </div>
+                            <div id="mod-combo-missing" style="display:none;">
+                                <p class="care-section-lead" data-i18n="mod_combo_coming_soon">A guide for this exact flash type and firmware version isn't available yet.</p>
+                            </div>
                             <div id="mod-content" style="display:none;"></div>
                         </div>
 

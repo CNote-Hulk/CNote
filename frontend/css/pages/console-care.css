@@ -527,6 +527,147 @@
     margin: 0;
 }
 
+.tutorial-selectors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.tutorial-selectors__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    flex: 1 1 200px;
+}
+
+.tutorial-select {
+    padding: 0.7rem 2.2rem 0.7rem 1rem;
+    background: rgba(var(--dark-rgb), 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-light);
+    font-size: 0.92rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23A89F94' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+}
+
+.tutorial-select:hover {
+    border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+.tutorial-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+}
+
+.tutorial-select option {
+    background: var(--secondary-color);
+    color: var(--text-light);
+}
+
+.warning-block {
+    background: rgba(var(--accent-rgb), 0.06);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 0 var(--radius-sm, 8px) var(--radius-sm, 8px) 0;
+    padding: 16px 20px;
+    margin: 1.6em 0;
+    font-size: 0.93rem;
+    color: var(--text-light);
+    line-height: 1.65;
+}
+
+.warning-block::before {
+    content: '⚠ Warning';
+    display: block;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    margin-bottom: 8px;
+}
+
+.living-doc-note {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-gray);
+    margin: 8px 0 24px;
+}
+
+/* ── PS3 COMPATIBILITY TABLES ─────────────────── */
+
+.compat-table-wrap {
+    overflow-x: auto;
+    margin: 20px 0 32px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+}
+
+.compat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.compat-table th,
+.compat-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.compat-table th {
+    background: rgba(var(--dark-rgb), 0.35);
+    color: var(--accent-color);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.compat-table td {
+    color: var(--text-gray);
+}
+
+.compat-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.compat-table tbody tr:hover td {
+    background: rgba(var(--accent-rgb), 0.05);
+}
+
+.compat-table td.compat-cell--pending {
+    color: var(--text-gray);
+    opacity: 0.55;
+    font-style: italic;
+    white-space: normal;
+}
+
+.compat-table td.compat-cell--tested {
+    color: var(--text-light);
+    white-space: normal;
+}
+
+.compat-table a {
+    color: var(--accent-color);
+}
+
 /* ── TUTORIAL EDITOR (admin write mode) ──────── */
 
 .tutorial-editor {

@@ -61,12 +61,91 @@ function isAdmin() {
 
 let currentModel = null;
 
-// ── One tutorial section (either the disassembly tutorial or the modding
-// guide) — same read view + admin editor behaviour, different DOM ids,
-// different field names on the shared console_tutorials row, and a
-// different API path segment. ─────────────────────────────────────────
+// ── Shared read-view markup, used by both the disassembly tutorial and the
+// modding guide (either the single row, or whichever combo is selected). ──
+function renderTutorialMarkup(data, { titleField, introField, stepsField }) {
+    const stepsHtml = (data[stepsField] || []).map((s, i) => `
+        <div class="tutorial-step">
+            <div class="tutorial-step__num">${i + 1}</div>
+            <div class="tutorial-step__body">
+                ${s.heading ? `<h3 class="tutorial-step__heading">${escapeHtml(s.heading)}</h3>` : ''}
+                ${s.image_url ? `<img class="tutorial-step__image" src="${escapeHtml(s.image_url)}" alt="${escapeHtml(s.heading || '')}" loading="lazy">` : ''}
+                ${s.description ? `<p class="tutorial-step__desc">${escapeHtml(s.description)}</p>` : ''}
+            </div>
+        </div>
+    `).join('');
 
-function createTutorialSection({ idPrefix, apiPath, titleField, introField, stepsField }) {
+    return `
+        ${data[titleField] ? `<h2 class="tutorial-title">${escapeHtml(data[titleField])}</h2>` : ''}
+        ${data[introField] ? `<p class="tutorial-intro">${escapeHtml(data[introField])}</p>` : ''}
+        <div class="tutorial-steps">${stepsHtml}</div>
+    `;
+}
+
+// ── Shared step editor row (heading/description/photo upload) — no
+// idPrefix-specific ids, only classes, so it works unmodified for both the
+// disassembly editor and the modding editor. ──
+function stepEditorRow(step) {
+    const row = document.createElement('div');
+    row.className = 'tutorial-editor__step';
+    row.innerHTML = `
+        <input type="text" class="tutorial-editor__step-heading" placeholder="${I18nModule.t('tutorial_step_heading_placeholder')}" value="${escapeHtml(step?.heading || '')}">
+        <textarea class="tutorial-editor__step-desc" rows="3" placeholder="${I18nModule.t('tutorial_step_desc_placeholder')}">${escapeHtml(step?.description || '')}</textarea>
+        <div class="tutorial-editor__step-photo">
+            <img class="tutorial-editor__step-preview" src="${escapeHtml(step?.image_url || '')}" style="${step?.image_url ? '' : 'display:none;'}">
+            <input type="hidden" class="tutorial-editor__step-image-url" value="${escapeHtml(step?.image_url || '')}">
+            <label class="hero-button hero-button--syllabus tutorial-editor__upload-btn">
+                <span data-i18n="tutorial_upload_photo">Upload photo</span>
+                <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;">
+            </label>
+            <span class="tutorial-editor__upload-status"></span>
+        </div>
+        <button type="button" class="tutorial-editor__step-remove" data-i18n="tutorial_remove_step">Remove step</button>
+    `;
+
+    const fileInput = row.querySelector('input[type="file"]');
+    const statusEl = row.querySelector('.tutorial-editor__upload-status');
+    const preview = row.querySelector('.tutorial-editor__step-preview');
+    const urlField = row.querySelector('.tutorial-editor__step-image-url');
+
+    fileInput.addEventListener('change', async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+        statusEl.textContent = I18nModule.t('tutorial_uploading');
+        try {
+            const presign = await api('POST', '/uploads/presign', {
+                kind: 'tutorial',
+                contentType: file.type,
+                fileSize: file.size,
+            });
+            if (!presign.success) throw new Error(presign.error || 'Presign failed');
+            const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
+            if (!putRes.ok) throw new Error('Upload failed');
+            urlField.value = presign.publicUrl;
+            preview.src = presign.publicUrl;
+            preview.style.display = '';
+            statusEl.textContent = '';
+        } catch (err) {
+            statusEl.textContent = err.message || I18nModule.t('tutorial_upload_error');
+        }
+    });
+
+    row.querySelector('.tutorial-editor__step-remove').addEventListener('click', () => row.remove());
+
+    return row;
+}
+
+function readStepsFromEditor(stepsWrapId) {
+    return Array.from(document.querySelectorAll(`#${stepsWrapId} .tutorial-editor__step`)).map(row => ({
+        heading: row.querySelector('.tutorial-editor__step-heading').value.trim(),
+        description: row.querySelector('.tutorial-editor__step-desc').value.trim(),
+        image_url: row.querySelector('.tutorial-editor__step-image-url').value.trim(),
+    }));
+}
+
+// ── Disassembly tutorial section — single row per model, unchanged behaviour. ──
+
+function createTutorialSection({ idPrefix, titleField, introField, stepsField }) {
     let data = null; // { [titleField]: ..., [introField]: ..., [stepsField]: [...] }
 
     function el(suffix) {
@@ -84,73 +163,7 @@ function createTutorialSection({ idPrefix, apiPath, titleField, introField, step
         }
         comingSoon.style.display = 'none';
         content.style.display = '';
-
-        const stepsHtml = (data[stepsField] || []).map((s, i) => `
-            <div class="tutorial-step">
-                <div class="tutorial-step__num">${i + 1}</div>
-                <div class="tutorial-step__body">
-                    ${s.heading ? `<h3 class="tutorial-step__heading">${escapeHtml(s.heading)}</h3>` : ''}
-                    ${s.image_url ? `<img class="tutorial-step__image" src="${escapeHtml(s.image_url)}" alt="${escapeHtml(s.heading || '')}" loading="lazy">` : ''}
-                    ${s.description ? `<p class="tutorial-step__desc">${escapeHtml(s.description)}</p>` : ''}
-                </div>
-            </div>
-        `).join('');
-
-        content.innerHTML = `
-            ${data[titleField] ? `<h2 class="tutorial-title">${escapeHtml(data[titleField])}</h2>` : ''}
-            ${data[introField] ? `<p class="tutorial-intro">${escapeHtml(data[introField])}</p>` : ''}
-            <div class="tutorial-steps">${stepsHtml}</div>
-        `;
-    }
-
-    function stepEditorRow(step) {
-        const row = document.createElement('div');
-        row.className = 'tutorial-editor__step';
-        row.innerHTML = `
-            <input type="text" class="tutorial-editor__step-heading" placeholder="${I18nModule.t('tutorial_step_heading_placeholder')}" value="${escapeHtml(step?.heading || '')}">
-            <textarea class="tutorial-editor__step-desc" rows="3" placeholder="${I18nModule.t('tutorial_step_desc_placeholder')}">${escapeHtml(step?.description || '')}</textarea>
-            <div class="tutorial-editor__step-photo">
-                <img class="tutorial-editor__step-preview" src="${escapeHtml(step?.image_url || '')}" style="${step?.image_url ? '' : 'display:none;'}">
-                <input type="hidden" class="tutorial-editor__step-image-url" value="${escapeHtml(step?.image_url || '')}">
-                <label class="hero-button hero-button--syllabus tutorial-editor__upload-btn">
-                    <span data-i18n="tutorial_upload_photo">Upload photo</span>
-                    <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;">
-                </label>
-                <span class="tutorial-editor__upload-status"></span>
-            </div>
-            <button type="button" class="tutorial-editor__step-remove" data-i18n="tutorial_remove_step">Remove step</button>
-        `;
-
-        const fileInput = row.querySelector('input[type="file"]');
-        const statusEl = row.querySelector('.tutorial-editor__upload-status');
-        const preview = row.querySelector('.tutorial-editor__step-preview');
-        const urlField = row.querySelector('.tutorial-editor__step-image-url');
-
-        fileInput.addEventListener('change', async () => {
-            const file = fileInput.files[0];
-            if (!file) return;
-            statusEl.textContent = I18nModule.t('tutorial_uploading');
-            try {
-                const presign = await api('POST', '/uploads/presign', {
-                    kind: 'tutorial',
-                    contentType: file.type,
-                    fileSize: file.size,
-                });
-                if (!presign.success) throw new Error(presign.error || 'Presign failed');
-                const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
-                if (!putRes.ok) throw new Error('Upload failed');
-                urlField.value = presign.publicUrl;
-                preview.src = presign.publicUrl;
-                preview.style.display = '';
-                statusEl.textContent = '';
-            } catch (err) {
-                statusEl.textContent = err.message || I18nModule.t('tutorial_upload_error');
-            }
-        });
-
-        row.querySelector('.tutorial-editor__step-remove').addEventListener('click', () => row.remove());
-
-        return row;
+        content.innerHTML = renderTutorialMarkup(data, { titleField, introField, stepsField });
     }
 
     function openEditor() {
@@ -189,14 +202,10 @@ function createTutorialSection({ idPrefix, apiPath, titleField, introField, step
         const statusEl = el('save-status');
         const title = document.getElementById(`${idPrefix}-editor-title`).value.trim();
         const intro = document.getElementById(`${idPrefix}-editor-intro`).value.trim();
-        const steps = Array.from(document.querySelectorAll(`#${idPrefix}-editor-steps .tutorial-editor__step`)).map(row => ({
-            heading: row.querySelector('.tutorial-editor__step-heading').value.trim(),
-            description: row.querySelector('.tutorial-editor__step-desc').value.trim(),
-            image_url: row.querySelector('.tutorial-editor__step-image-url').value.trim(),
-        }));
+        const steps = readStepsFromEditor(`${idPrefix}-editor-steps`);
 
         statusEl.textContent = I18nModule.t('tutorial_saving');
-        const result = await api('PUT', `/console-tutorials/${encodeURIComponent(currentModel.code)}${apiPath}`, { title, intro, steps });
+        const result = await api('PUT', `/console-tutorials/${encodeURIComponent(currentModel.code)}`, { title, intro, steps });
         if (!result.success) {
             statusEl.textContent = result.error || I18nModule.t('tutorial_save_error');
             return;
@@ -209,7 +218,7 @@ function createTutorialSection({ idPrefix, apiPath, titleField, introField, step
 
     async function del() {
         if (!confirm(I18nModule.t('tutorial_delete_confirm'))) return;
-        await api('DELETE', `/console-tutorials/${encodeURIComponent(currentModel.code)}${apiPath}`);
+        await api('DELETE', `/console-tutorials/${encodeURIComponent(currentModel.code)}`);
         data = null;
         closeEditor();
         renderView();
@@ -224,9 +233,6 @@ function createTutorialSection({ idPrefix, apiPath, titleField, introField, step
         el('write-btn').addEventListener('click', openEditor);
     }
 
-    // Reads the relevant fields off the full console_tutorials row (which
-    // carries both tutorial kinds) and stores them under generic keys so
-    // renderView()/openEditor() don't need to know the real column names.
     function applyRow(row) {
         if (!row || (!row[titleField] && !row[introField] && !row[stepsField]?.length)) {
             data = null;
@@ -238,21 +244,211 @@ function createTutorialSection({ idPrefix, apiPath, titleField, introField, step
     return { applyRow, renderView, renderAdminControls };
 }
 
+// ── Modding guide section — MULTIPLE rows per model, one per
+// (flash_type, firmware_version) combination, selected via two dropdowns. ──
+
+function createModTutorialSection() {
+    let combos = [];
+    let selectedFlash = null;
+    let selectedVersion = null;
+
+    function el(id) {
+        return document.getElementById(id);
+    }
+
+    function flashTypes() {
+        return [...new Set(combos.map(c => c.flash_type))];
+    }
+
+    function versionsForFlash(flash) {
+        return combos.filter(c => c.flash_type === flash).map(c => c.firmware_version);
+    }
+
+    function findCombo(flash, version) {
+        return combos.find(c => c.flash_type === flash && c.firmware_version === version) || null;
+    }
+
+    function renderSelectors() {
+        const selectorsWrap = el('mod-selectors');
+        const flashSelect = el('mod-flash-select');
+        const versionSelect = el('mod-version-select');
+
+        if (!combos.length) {
+            selectorsWrap.style.display = 'none';
+            return;
+        }
+        selectorsWrap.style.display = '';
+
+        const flashes = flashTypes();
+        if (!flashes.includes(selectedFlash)) selectedFlash = flashes[0];
+        flashSelect.innerHTML = flashes
+            .map(f => `<option value="${escapeHtml(f)}"${f === selectedFlash ? ' selected' : ''}>${escapeHtml(f)}</option>`)
+            .join('');
+
+        const versions = versionsForFlash(selectedFlash);
+        if (!versions.includes(selectedVersion)) selectedVersion = versions[0];
+        versionSelect.innerHTML = versions
+            .map(v => `<option value="${escapeHtml(v)}"${v === selectedVersion ? ' selected' : ''}>${escapeHtml(v)}</option>`)
+            .join('');
+    }
+
+    function renderView() {
+        const comingSoon = el('mod-coming-soon');
+        const comboMissing = el('mod-combo-missing');
+        const content = el('mod-content');
+
+        renderSelectors();
+
+        if (!combos.length) {
+            comingSoon.style.display = '';
+            comboMissing.style.display = 'none';
+            content.style.display = 'none';
+            content.innerHTML = '';
+            return;
+        }
+        comingSoon.style.display = 'none';
+
+        const combo = findCombo(selectedFlash, selectedVersion);
+        if (!combo) {
+            comboMissing.style.display = '';
+            content.style.display = 'none';
+            content.innerHTML = '';
+            return;
+        }
+        comboMissing.style.display = 'none';
+        content.style.display = '';
+        content.innerHTML = renderTutorialMarkup(combo, { titleField: 'title', introField: 'intro', stepsField: 'steps' });
+    }
+
+    function openEditor(isNew) {
+        el('mod-view-wrap').style.display = 'none';
+        const editor = el('mod-editor');
+        editor.style.display = '';
+        const existing = isNew ? null : findCombo(selectedFlash, selectedVersion);
+
+        editor.innerHTML = `
+            ${isNew ? `
+            <input type="text" id="mod-editor-flash-type" placeholder="${I18nModule.t('mod_flash_type_placeholder')}" value="">
+            <input type="text" id="mod-editor-firmware-version" placeholder="${I18nModule.t('mod_firmware_version_placeholder')}" value="">
+            ` : ''}
+            <input type="text" id="mod-editor-title" placeholder="${I18nModule.t('tutorial_title_placeholder')}" value="${escapeHtml(existing?.title || '')}">
+            <textarea id="mod-editor-intro" rows="3" placeholder="${I18nModule.t('tutorial_intro_placeholder')}">${escapeHtml(existing?.intro || '')}</textarea>
+            <div id="mod-editor-steps"></div>
+            <button type="button" id="mod-editor-add-step" class="care-back-link" data-i18n="tutorial_add_step">+ Add step</button>
+            <div class="tutorial-editor__actions">
+                <button type="button" id="mod-editor-save" class="hero-button" data-i18n="tutorial_save">Save</button>
+                <button type="button" id="mod-editor-cancel" class="hero-button hero-button--syllabus" data-i18n="tutorial_cancel">Cancel</button>
+                ${!isNew && existing ? `<button type="button" id="mod-editor-delete" class="hero-button hero-button--syllabus" data-i18n="tutorial_delete">Delete tutorial</button>` : ''}
+            </div>
+            <p id="mod-editor-save-status"></p>
+        `;
+
+        const stepsWrap = el('mod-editor-steps');
+        (existing?.steps?.length ? existing.steps : [{}]).forEach(s => stepsWrap.appendChild(stepEditorRow(s)));
+
+        el('mod-editor-add-step').addEventListener('click', () => stepsWrap.appendChild(stepEditorRow()));
+        el('mod-editor-cancel').addEventListener('click', closeEditor);
+        el('mod-editor-save').addEventListener('click', () => save(isNew));
+        el('mod-editor-delete')?.addEventListener('click', del);
+    }
+
+    function closeEditor() {
+        el('mod-editor').style.display = 'none';
+        el('mod-editor').innerHTML = '';
+        el('mod-view-wrap').style.display = '';
+    }
+
+    async function save(isNew) {
+        const statusEl = el('mod-editor-save-status');
+        const flashType = isNew ? document.getElementById('mod-editor-flash-type').value.trim() : selectedFlash;
+        const version = isNew ? document.getElementById('mod-editor-firmware-version').value.trim() : selectedVersion;
+        if (!flashType || !version) {
+            statusEl.textContent = I18nModule.t('tutorial_save_error');
+            return;
+        }
+
+        const title = document.getElementById('mod-editor-title').value.trim();
+        const intro = document.getElementById('mod-editor-intro').value.trim();
+        const steps = readStepsFromEditor('mod-editor-steps');
+
+        statusEl.textContent = I18nModule.t('tutorial_saving');
+        const result = await api(
+            'PUT',
+            `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(flashType)}/${encodeURIComponent(version)}`,
+            { title, intro, steps }
+        );
+        if (!result.success) {
+            statusEl.textContent = result.error || I18nModule.t('tutorial_save_error');
+            return;
+        }
+
+        const saved = result.tutorial;
+        const idx = combos.findIndex(c => c.flash_type === saved.flash_type && c.firmware_version === saved.firmware_version);
+        if (idx >= 0) combos[idx] = saved; else combos.push(saved);
+        selectedFlash = saved.flash_type;
+        selectedVersion = saved.firmware_version;
+
+        closeEditor();
+        renderView();
+        renderAdminControls();
+    }
+
+    async function del() {
+        if (!confirm(I18nModule.t('tutorial_delete_confirm'))) return;
+        await api('DELETE', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(selectedFlash)}/${encodeURIComponent(selectedVersion)}`);
+        combos = combos.filter(c => !(c.flash_type === selectedFlash && c.firmware_version === selectedVersion));
+        selectedFlash = null;
+        selectedVersion = null;
+        closeEditor();
+        renderView();
+        renderAdminControls();
+    }
+
+    function renderAdminControls() {
+        const wrap = el('mod-admin-controls');
+        if (!wrap) return;
+        if (!isAdmin()) { wrap.innerHTML = ''; return; }
+        const hasCurrent = !!findCombo(selectedFlash, selectedVersion);
+        wrap.innerHTML = `
+            ${hasCurrent ? `<button type="button" id="mod-edit-btn" class="hero-button hero-button--syllabus">${I18nModule.t('tutorial_edit_btn')}</button>` : ''}
+            <button type="button" id="mod-add-btn" class="hero-button hero-button--syllabus">${I18nModule.t('mod_add_combo_btn')}</button>
+        `;
+        el('mod-edit-btn')?.addEventListener('click', () => openEditor(false));
+        el('mod-add-btn').addEventListener('click', () => openEditor(true));
+    }
+
+    function applyCombos(rows) {
+        combos = Array.isArray(rows) ? rows : [];
+        selectedFlash = null;
+        selectedVersion = null;
+    }
+
+    // Selector dropdowns are static elements in console-model.html — wire
+    // their change listeners once, here, rather than re-attaching on every
+    // renderSelectors() call (which only replaces the <option> children).
+    el('mod-flash-select')?.addEventListener('change', (e) => {
+        selectedFlash = e.target.value;
+        selectedVersion = null; // let renderSelectors() pick the first version for the new flash type
+        renderView();
+        renderAdminControls();
+    });
+    el('mod-version-select')?.addEventListener('change', (e) => {
+        selectedVersion = e.target.value;
+        renderView();
+        renderAdminControls();
+    });
+
+    return { applyCombos, renderView, renderAdminControls };
+}
+
 const disassembly = createTutorialSection({
     idPrefix: 'tutorial',
-    apiPath: '',
     titleField: 'title',
     introField: 'intro',
     stepsField: 'steps',
 });
 
-const modding = createTutorialSection({
-    idPrefix: 'mod',
-    apiPath: '/mod',
-    titleField: 'mod_title',
-    introField: 'mod_intro',
-    stepsField: 'mod_steps',
-});
+const modding = createModTutorialSection();
 
 // ── Boot ─────────────────────────────────────────────────
 
@@ -279,17 +475,25 @@ async function render() {
     document.getElementById('model-console-name').textContent = currentModel.console;
     document.getElementById('model-note').textContent = currentModel.note || '';
 
-    let row = null;
+    let disassemblyRow = null;
     try {
         const result = await api('GET', `/console-tutorials/${encodeURIComponent(currentModel.code)}`);
-        row = result.success ? result.tutorial : null;
+        disassemblyRow = result.success ? result.tutorial : null;
     } catch {
-        row = null;
+        disassemblyRow = null;
     }
-    disassembly.applyRow(row);
-    modding.applyRow(row);
+    disassembly.applyRow(disassemblyRow);
     disassembly.renderView();
     disassembly.renderAdminControls();
+
+    let modTutorials = [];
+    try {
+        const result = await api('GET', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod`);
+        modTutorials = result.success ? result.tutorials : [];
+    } catch {
+        modTutorials = [];
+    }
+    modding.applyCombos(modTutorials);
     modding.renderView();
     modding.renderAdminControls();
 }

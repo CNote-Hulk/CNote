@@ -114,7 +114,7 @@ export const MODELS = [
     { mfr: 'PlayStation', console: 'PS3', code: 'CECHE', note: '80GB — last PS3 model with any PS2 disc compatibility (2007)' },
     { mfr: 'PlayStation', console: 'PS3', code: 'CECHG', note: '40GB — PS2 backward compatibility dropped entirely (2007)' },
     { mfr: 'PlayStation', console: 'PS3', code: 'CECHH', note: '40GB, no BC (2007)' },
-    { mfr: 'PlayStation', console: 'PS3', code: 'CECHJ', note: '40GB, no BC — non-US regional SKU (2007)' },
+    { mfr: 'PlayStation', console: 'PS3', code: 'CECHJ', note: '40GB, no BC — non-US regional SKU (2007) — CFW guide available (CECH-J03, NOR, OFW 4.93)' },
     { mfr: 'PlayStation', console: 'PS3', code: 'CECHK', note: '80GB, no BC — DualShock 3 rumble restored (2008)' },
     { mfr: 'PlayStation', console: 'PS3', code: 'CECHL', note: '80GB, no BC (2008)' },
     { mfr: 'PlayStation', console: 'PS3', code: 'CECHM', note: '80GB, no BC — non-US regional SKU (2008)' },
