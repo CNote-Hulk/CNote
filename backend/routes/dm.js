@@ -430,11 +430,18 @@ router.patch('/read/:partnerId', authRequired, async (req, res) => {
     if (isNaN(partnerId)) return res.status(400).json({ success: false, error: 'Invalid ID.' });
 
     try {
-        await pool.query(
+        const result = await pool.query(
             'UPDATE direct_messages SET read = true WHERE sender_id = $1 AND receiver_id = $2 AND read = false',
             [partnerId, req.user.id]
         );
-        res.json({ success: true });
+        // A 0-row UPDATE isn't a Postgres error, so it was silently reported as
+        // {success:true} even when nothing changed — the usual cause is this call running
+        // under the wrong account's session (multi-account-on-one-device: the notification's
+        // "Mark as read" always authenticates as whichever account is currently active in the
+        // app, not necessarily the one the notification was addressed to; if the receiving
+        // account wasn't switched to active first, sender_id/receiver_id never match a real
+        // row). Surfacing rowCount makes that failure visible instead of a silent no-op.
+        res.json({ success: true, updated: result.rowCount });
     } catch (err) {
         console.error('DM mark-read PATCH error:', err);
         res.status(500).json({ success: false, error: 'Internal error.' });
