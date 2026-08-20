@@ -124,7 +124,12 @@ router.post('/notify-dm', authRequired, async (req, res) => {
             type: 'dm',
             senderId: String(req.user.id),
             senderAvatar,
-            conversationWith: String(req.user.id)
+            conversationWith: String(req.user.id),
+            // Lets a multi-account-on-one-device client (Android's account switcher) know
+            // which of ITS saved accounts this push is addressed to, so notification actions
+            // (Reply/Mark as read) authenticate as that account instead of whichever one
+            // happens to be active in the app — see MessageNotifier.kt on the app.
+            receiverId: String(receiverId)
         });
         res.json({ success: true });
     } catch (err) {
@@ -154,7 +159,8 @@ router.post('/notify-dm-reaction', authRequired, async (req, res) => {
             type: 'dm_reaction',
             senderId: String(req.user.id),
             senderAvatar,
-            conversationWith: String(req.user.id)
+            conversationWith: String(req.user.id),
+            receiverId: String(receiverId)
         });
         res.json({ success: true });
     } catch (err) {
