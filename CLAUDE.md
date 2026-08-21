@@ -13,9 +13,17 @@ INDEX.md is the authoritative map of this repo: every file, where it lives, and 
 When you have to look for a file look first in INDEX.md.
 If you have questions, you didn`t quite understand my prompt, ask.
 Every file you make, you delete, you move, you modify update in INDEX.md
+Whenever a change is significant enough to update INDEX.md, also update this project's own note in
+the Mind Tree vault (`02 Proiecte/Console Notebook - Website/Console Notebook - Website.md`, GitHub
+repo `CNote-Hulk/Mind-Tree`, via the GitHub API) — not just the end-of-task Journal entry below. The
+Journal is a dated log; this note is the living summary (stadiu curent, task-uri, probleme deschise,
+faze if the note has them) that should stay as current as INDEX.md does for the code.
 When you finish, always update curent status so we can resume were we remained and commit.
 At the end of every task, append an entry to the Journal in the Mind Tree vault (GitHub repo CNote-Hulk/Mind-Tree, path `03 Jurnal/YYYY-MM-DD.md`, today date) via the GitHub API - no strict format required, plain history log of what happened. This repo does not keep its own JURNAL.md; the Mind Tree vault is the single journal across all projects.
-This repo (the site/backend) gets committed automatically after any modification — no need to ask first. The Android app repo (`E:\Console-Notebook`) is the opposite: never commit there without being explicitly asked.
+This repo (the site/backend) gets committed AND pushed automatically after any modification — no
+need to ask first (2026-08-20: push included explicitly now, not just commit — see credentials
+note right below). The Android app repo (`E:\Console-Notebook`) used to be the opposite (ask
+first) but now matches this — commit+push automatically there too.
 Committing isn't pushing — `git push` here (or to Mind-Tree for the journal entry above) needs
 GitHub credentials. When working from the Termux/proot-distro sandbox on the tablet (not
 Windows/WSL), check `~/.git-credentials` first — a Personal Access Token is usually already
