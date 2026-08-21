@@ -14,7 +14,8 @@ When you have to look for a file look first in INDEX.md.
 If you have questions, you didn`t quite understand my prompt, ask.
 Every file you make, you delete, you move, you modify update in INDEX.md
 Whenever a change is significant enough to update INDEX.md, also update this project's own note in
-the Mind Tree vault (`02 Proiecte/Console Notebook - Website/Console Notebook - Website.md`, GitHub
+the Mind Tree vault (`02 Proiecte/CNote-Website/CNote-Website.md` — renamed 2026-08-21 from
+`Console Notebook - Website`, matching this repo's own name now, GitHub
 repo `CNote-Hulk/Mind-Tree-Vault`, via the GitHub API) — not just the end-of-task Journal entry below. The
 Journal is a dated log; this note is the living summary (stadiu curent, task-uri, probleme deschise,
 faze if the note has them) that should stay as current as INDEX.md does for the code.
