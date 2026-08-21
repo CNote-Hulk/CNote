@@ -128,7 +128,10 @@
       "Bash(\"/mnt/c/Program Files/nodejs/node.exe\" --check frontend/js/pages/articles.js)",
       "Bash(\"/mnt/c/Program Files/nodejs/node.exe\" --check frontend/js/pages/article.js)",
       "Bash(cat)",
-      "Bash(\"/mnt/c/Program Files/nodejs/node.exe\" -v)"
+      "Bash(\"/mnt/c/Program Files/nodejs/node.exe\" -v)",
+      "Bash(gh run *)",
+      "Bash(gh secret *)",
+      "Bash(gh api *)"
     ]
   }
 }
