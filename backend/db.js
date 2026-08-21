@@ -602,6 +602,32 @@ async function initializeSchema() {
 			updated_at TIMESTAMP DEFAULT NOW()
 		)`,
 		`CREATE INDEX IF NOT EXISTS idx_articles_published_created_at ON articles(published, created_at DESC)`,
+
+		// ── Orders (no-payment marketplace checkout — buyer submits Sameday
+		// shipping data, seller processes the shipment off-platform) ──────────
+		`CREATE TABLE IF NOT EXISTS orders (
+			id                SERIAL PRIMARY KEY,
+			listing_id        INTEGER REFERENCES listings(id) ON DELETE SET NULL,
+			listing_title     TEXT NOT NULL,
+			buyer_id          INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			seller_id         INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+			delivery_method   TEXT NOT NULL,
+			recipient_name    TEXT NOT NULL,
+			recipient_phone   TEXT NOT NULL,
+			county            TEXT DEFAULT '',
+			city              TEXT DEFAULT '',
+			address           TEXT DEFAULT '',
+			easybox_name      TEXT DEFAULT '',
+			notes             TEXT DEFAULT '',
+			product_price     DECIMAL(10,2) NOT NULL,
+			shipping_price    DECIMAL(10,2) NOT NULL,
+			total_price       DECIMAL(10,2) NOT NULL,
+			status            TEXT NOT NULL DEFAULT 'new',
+			created_at        TIMESTAMP DEFAULT NOW(),
+			shipped_at        TIMESTAMP DEFAULT NULL
+		)`,
+		`CREATE INDEX IF NOT EXISTS idx_orders_seller_status ON orders(seller_id, status, created_at DESC)`,
+		`CREATE INDEX IF NOT EXISTS idx_orders_buyer ON orders(buyer_id, created_at DESC)`,
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

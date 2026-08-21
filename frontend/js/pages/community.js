@@ -1457,6 +1457,7 @@ async function openListingDetail(id) {
                         <div class="hub-seller-reviews__loading">⏳</div>
                     </div>
                     <div class="hub-detail-actions">
+                        ${u && !own && !l.sold ? `<button class="hub-btn hub-btn--primary" id="listing-buy-btn">🛒 ${esc(t('order_buy_button'))}</button>` : ''}
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
                         ${l.olx_url ? `<a href="${esc(l.olx_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 OLX</a>` : ''}
                         ${l.ebay_url ? `<a href="${esc(l.ebay_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 eBay</a>` : ''}
@@ -1600,6 +1601,10 @@ async function openListingDetail(id) {
 
         v.querySelector('#listing-edit-btn')?.addEventListener('click', () => {
             openEditListingFromDetail(id, l);
+        });
+
+        v.querySelector('#listing-buy-btn')?.addEventListener('click', () => {
+            openBuyListingModal(l);
         });
 
         // Favorite toggle on detail page
@@ -2032,6 +2037,147 @@ function openEditListingFromDetail(id, l) {
         });
         if (res.success) { close(); openListingDetail(id); } // reload detail
         else { btn.disabled = false; btn.textContent = t('tutorial_save'); showToast(res.error || t('listing_generic_error'), 'error'); }
+    });
+}
+
+// Romania's 41 counties + Bucharest — Sameday only ships domestically, so this
+// is a plain static list rather than the multi-country LOCATION_DATA used for
+// marketplace search filters.
+const ROMANIAN_COUNTIES = [
+    'Alba', 'Arad', 'Argeș', 'Bacău', 'Bihor', 'Bistrița-Năsăud', 'Botoșani', 'Brăila', 'Brașov',
+    'București', 'Buzău', 'Caraș-Severin', 'Călărași', 'Cluj', 'Constanța', 'Covasna', 'Dâmbovița',
+    'Dolj', 'Galați', 'Giurgiu', 'Gorj', 'Harghita', 'Hunedoara', 'Ialomița', 'Iași', 'Ilfov',
+    'Maramureș', 'Mehedinți', 'Mureș', 'Neamț', 'Olt', 'Prahova', 'Satu Mare', 'Sălaj', 'Sibiu',
+    'Suceava', 'Teleorman', 'Timiș', 'Tulcea', 'Vaslui', 'Vâlcea', 'Vrancea'
+];
+const ORDER_SHIPPING_PRICE = { address: 25, easybox: 20 };
+
+/**
+ * Buy modal — no-payment checkout ported to the app's mirror feature request:
+ * buyer submits Sameday shipping data (address or Easybox), sees the fixed
+ * total (listing price + flat shipping fee), and the order lands in the
+ * seller's own "My Orders" queue for manual Sameday AWB creation. Payment
+ * itself stays off-platform, arranged directly with the seller.
+ */
+function openBuyListingModal(l) {
+    const _prev = document.querySelector('.hub-modal-overlay');
+    if (_prev) { cleanupHubSelects(_prev); _prev.remove(); }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'hub-modal-overlay';
+    overlay.innerHTML = `
+        <div class="hub-modal">
+            <div class="hub-modal__header">
+                <span class="hub-modal__title">🛒 ${esc(t('order_modal_title'))}</span>
+                <button class="hub-modal__close">&times;</button>
+            </div>
+            <form class="hub-modal__body" id="buy-listing-form">
+                <div class="hub-form-group">
+                    <label class="hub-form-label">${esc(t('order_field_name'))}</label>
+                    <input class="hub-form-input" name="recipient_name" maxlength="100" required>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">${esc(t('order_field_phone'))}</label>
+                    <input class="hub-form-input" name="recipient_phone" type="tel" maxlength="30" required>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">${esc(t('order_field_method'))}</label>
+                    <div class="order-method-toggle">
+                        <button type="button" class="order-method-btn order-method-btn--active" data-method="address">📍 ${esc(t('order_method_address'))} (+${ORDER_SHIPPING_PRICE.address} RON)</button>
+                        <button type="button" class="order-method-btn" data-method="easybox">📦 ${esc(t('order_method_easybox'))} (+${ORDER_SHIPPING_PRICE.easybox} RON)</button>
+                    </div>
+                </div>
+                <div id="buy-address-fields">
+                    <div class="hub-form-row">
+                        <div class="hub-form-group">
+                            <label class="hub-form-label">${esc(t('order_field_county'))}</label>
+                            <select class="hub-form-select" name="county">
+                                <option value="">${esc(t('order_field_county_placeholder'))}</option>
+                                ${ROMANIAN_COUNTIES.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="hub-form-group">
+                            <label class="hub-form-label">${esc(t('order_field_city'))}</label>
+                            <input class="hub-form-input" name="city" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">${esc(t('order_field_address'))}</label>
+                        <textarea class="hub-form-textarea" name="address" rows="2" maxlength="300"></textarea>
+                    </div>
+                </div>
+                <div id="buy-easybox-fields" hidden>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">${esc(t('order_field_easybox'))}</label>
+                        <input class="hub-form-input" name="easybox_name" maxlength="200" placeholder="${esc(t('order_field_easybox_placeholder'))}">
+                    </div>
+                </div>
+                <div class="hub-form-group">
+                    <label class="hub-form-label">${esc(t('order_field_notes'))}</label>
+                    <textarea class="hub-form-textarea" name="notes" rows="2" maxlength="500"></textarea>
+                </div>
+                <div class="order-summary">
+                    <div class="order-summary__row"><span>${esc(t('order_summary_product'))}</span><span>${Number(l.price).toFixed(0)} RON</span></div>
+                    <div class="order-summary__row"><span>${esc(t('order_summary_shipping'))}</span><span id="buy-shipping-price">${ORDER_SHIPPING_PRICE.address} RON</span></div>
+                    <div class="order-summary__row order-summary__row--total"><span>${esc(t('order_summary_total'))}</span><span id="buy-total-price">${(Number(l.price) + ORDER_SHIPPING_PRICE.address).toFixed(0)} RON</span></div>
+                </div>
+                <p class="order-payment-note">💬 ${esc(t('order_payment_note'))}</p>
+                <div class="hub-modal__footer" style="padding:0;border:none">
+                    <button type="button" class="hub-btn hub-btn--secondary hub-modal__cancel">${esc(t('tutorial_cancel'))}</button>
+                    <button type="submit" class="hub-btn hub-btn--primary">${esc(t('order_place_button'))}</button>
+                </div>
+            </form>
+        </div>`;
+
+    document.body.appendChild(overlay);
+    initHubSelects(overlay);
+    const close = () => { cleanupHubSelects(overlay); overlay.remove(); };
+    overlay.querySelector('.hub-modal__close').addEventListener('click', close);
+    overlay.querySelector('.hub-modal__cancel').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    let method = 'address';
+    const addressFields = overlay.querySelector('#buy-address-fields');
+    const easyboxFields = overlay.querySelector('#buy-easybox-fields');
+    const shippingEl = overlay.querySelector('#buy-shipping-price');
+    const totalEl = overlay.querySelector('#buy-total-price');
+
+    overlay.querySelectorAll('.order-method-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            method = btn.dataset.method;
+            overlay.querySelectorAll('.order-method-btn').forEach(b => b.classList.toggle('order-method-btn--active', b === btn));
+            addressFields.hidden = method !== 'address';
+            easyboxFields.hidden = method !== 'easybox';
+            const shipping = ORDER_SHIPPING_PRICE[method];
+            shippingEl.textContent = `${shipping} RON`;
+            totalEl.textContent = `${(Number(l.price) + shipping).toFixed(0)} RON`;
+        });
+    });
+
+    overlay.querySelector('#buy-listing-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const f = e.target, btn = f.querySelector('[type="submit"]');
+        btn.disabled = true; btn.textContent = t('order_placing');
+        const res = await api('POST', '/orders', {
+            listing_id: l.id,
+            delivery_method: method,
+            recipient_name: f.recipient_name.value.trim(),
+            recipient_phone: f.recipient_phone.value.trim(),
+            county: method === 'address' ? f.county.value : '',
+            city: method === 'address' ? f.city.value.trim() : '',
+            address: method === 'address' ? f.address.value.trim() : '',
+            easybox_name: method === 'easybox' ? f.easybox_name.value.trim() : '',
+            notes: f.notes.value.trim(),
+        });
+        if (res.success) {
+            close();
+            showToast(t('order_success_toast'), 'success');
+            openListingDetail(l.id);
+        } else {
+            btn.disabled = false;
+            btn.textContent = t('order_place_button');
+            showToast(res.error || t('listing_generic_error'), 'error');
+        }
     });
 }
 

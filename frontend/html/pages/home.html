@@ -127,6 +127,11 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
                     <span data-i18n="profile_favorites">Liked Posts</span>
                 </a>
+                <a href="#orders" class="sidebar-link" data-panel="orders">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4L7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    <span data-i18n="sidebar_orders">My Orders</span>
+                    <span class="sidebar-badge" id="orders-new-badge" hidden>0</span>
+                </a>
             </div>
             <div class="sidebar-section">
                 <h3 data-i18n="sidebar_explore">EXPLORE</h3>
@@ -566,6 +571,26 @@
                             <div id="home-liked-preview">
                                 <p class="dash-empty">Loading...</p>
                             </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ===========================
+                     PANEL: My Orders (seller queue — no-payment Sameday checkout)
+                     =========================== -->
+                <div class="home-panel" data-panel="orders">
+                    <header class="dashboard-header">
+                        <div class="dashboard-header__row">
+                            <div>
+                                <h1 data-i18n="sidebar_orders">My Orders</h1>
+                                <p data-i18n="order_panel_subtitle">Orders on your listings — copy the shipping data straight into Sameday</p>
+                            </div>
+                            <span class="panel-badge" id="orders-count">0</span>
+                        </div>
+                    </header>
+                    <section class="dashboard-section">
+                        <div class="order-grid" id="orders-grid">
+                            <p class="dash-empty">Loading...</p>
                         </div>
                     </section>
                 </div>

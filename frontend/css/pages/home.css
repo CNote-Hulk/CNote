@@ -263,6 +263,19 @@ body.home-page::before {
     color: var(--accent);
 }
 
+.sidebar-badge {
+    margin-left: auto;
+    min-width: 16px;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.5;
+}
+
 .sidebar-footer {
     margin-top: 16px;
     padding: 14px 12px;
@@ -2639,6 +2652,131 @@ body.home-page::before {
 
 .hlc-btn--delete:hover {
     background: rgba(220,60,60,0.15);
+}
+
+/* ── My Orders panel (seller queue — no-payment Sameday checkout) ── */
+.order-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+}
+
+.order-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    overflow: hidden;
+}
+
+.order-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px 0;
+}
+
+.order-card__status {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(var(--accent-rgb), 0.14);
+    color: var(--accent-color);
+}
+
+.order-card__status--shipped {
+    background: rgba(80, 180, 120, 0.16);
+    color: #4caf7d;
+}
+
+.order-card__date {
+    font-size: 0.72rem;
+    color: var(--text-gray);
+}
+
+.order-card__product {
+    padding: 8px 12px 0;
+    font-size: 0.88rem;
+    color: var(--text-light);
+}
+
+.order-card__buyer {
+    padding: 2px 12px 8px;
+    font-size: 0.76rem;
+    color: var(--text-gray);
+}
+
+.order-card__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.order-card__field {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.order-card__label {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--text-gray);
+}
+
+.order-card__value {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.order-copy-btn {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-gray);
+    cursor: pointer;
+    font-size: 0.78rem;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.order-copy-btn:hover {
+    background: rgba(var(--accent-rgb), 0.1);
+    color: var(--accent-color);
+}
+
+.order-copy-btn--done {
+    color: #4caf7d;
+    border-color: #4caf7d;
+}
+
+.order-card__actions {
+    display: flex;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+.order-copy-all-btn {
+    flex: 3;
+    gap: 6px;
+    font-size: 0.78rem !important;
+}
+
+.order-ship-btn {
+    flex: 1;
 }
 
 /* ══════════════════════════════════════════════════════════════

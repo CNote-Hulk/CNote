@@ -3601,6 +3601,63 @@ button.hub-action-pill:hover {
     gap: 14px;
 }
 
+/* ── Buy listing modal (no-payment Sameday checkout) ─────────────── */
+.order-method-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.order-method-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg, transparent);
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+}
+
+.order-method-btn--active {
+    background: var(--accent-soft, rgba(216, 168, 74, .15));
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.order-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--input-bg, transparent);
+    border: 1px solid var(--border-color);
+}
+
+.order-summary__row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.order-summary__row--total {
+    padding-top: 6px;
+    margin-top: 4px;
+    border-top: 1px solid var(--border-color);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.order-payment-note {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    margin: 0;
+}
+
 .hub-modal__footer {
     display: flex;
     justify-content: flex-end;

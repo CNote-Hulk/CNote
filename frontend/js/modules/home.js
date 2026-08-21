@@ -128,6 +128,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
+    // Same behavior as community.js's local timeAgo() — not shared between the two
+    // pages, so duplicated here rather than introducing a new shared module for one fn.
+    function timeAgo(d) {
+        const diff = Date.now() - new Date(d).getTime();
+        if (diff < 60000)    return 'now';
+        if (diff < 3600000)  return Math.floor(diff / 60000) + ' min';
+        if (diff < 86400000) return Math.floor(diff / 3600000) + 'h';
+        return new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+    }
+
     // =========================
     // SIDEBAR — User info
     // =========================
@@ -225,7 +235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // parallel fetch
             const sf = { success: false };
-            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes, articlesRes, trendingListingsRes] = (await Promise.all([
+            const [ratingsRes, favoritesRes, friendsRes, friendRequestsRes, forumRes, myPostsRes, likedPostsRes, achievementsRes, starterProgressRes, visitedRes, myListingsRes, favListingsRes, levelRes, qsgRes, articlesRes, trendingListingsRes, myOrdersRes] = (await Promise.all([
                 apiFetch('/api/ratings/user/all').catch(() => null),
                 apiFetch('/api/favorites').catch(() => null),
                 apiFetch('/api/friends').catch(() => null),
@@ -242,6 +252,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 apiFetch('/api/me/quick-start-status').catch(() => null),
                 apiFetch('/api/articles?limit=3').catch(() => null),
                 apiFetch('/api/marketplace/listings?limit=4').catch(() => null),
+                apiFetch('/api/orders/mine').catch(() => null),
             ])).map(r => r ?? sf);
 
             // =========================
@@ -513,6 +524,124 @@ document.addEventListener('DOMContentLoaded', async () => {
                             const card = grid.querySelector(`.home-listing-card[data-id="${id}"]`);
                             if (card) { card.style.opacity = '0'; card.style.transition = 'opacity .2s'; setTimeout(() => { card.remove(); if (!grid.querySelector('.home-listing-card')) grid.innerHTML = myListingsEmptyStateHtml(); }, 200); }
                         }
+                    });
+                });
+            }
+
+            // =========================
+            // MY ORDERS (seller queue — no-payment Sameday checkout)
+            // =========================
+            const ordersGrid = document.getElementById('orders-grid');
+            if (ordersGrid) {
+                const orders = (myOrdersRes.success && myOrdersRes.orders) || [];
+
+                const ordersCount = document.getElementById('orders-count');
+                if (ordersCount) ordersCount.textContent = String(orders.length);
+
+                const newCount = orders.filter(o => o.status === 'new').length;
+                const ordersBadge = document.getElementById('orders-new-badge');
+                if (ordersBadge) {
+                    ordersBadge.textContent = String(newCount);
+                    ordersBadge.hidden = newCount === 0;
+                }
+
+                if (orders.length > 0) {
+                    renderOrderCards(ordersGrid, orders);
+                } else {
+                    ordersGrid.innerHTML = `<div class="dash-empty-state">
+                        <span class="dash-empty-state__icon">📦</span>
+                        <p class="dash-empty-state__text">${escapeHtml(I18nModule.t('order_empty_text'))}</p>
+                        <p class="dash-empty-state__hint">${escapeHtml(I18nModule.t('order_empty_hint'))}</p>
+                    </div>`;
+                }
+            }
+
+            async function copyOrderField(text, btn) {
+                try {
+                    await navigator.clipboard.writeText(text || '');
+                    const original = btn.textContent;
+                    btn.textContent = '✓';
+                    btn.classList.add('order-copy-btn--done');
+                    setTimeout(() => { btn.textContent = original; btn.classList.remove('order-copy-btn--done'); }, 1200);
+                } catch {
+                    // Clipboard permission denied or unavailable — silently ignore,
+                    // same failure mode as the existing share-link copy helper.
+                }
+            }
+
+            function renderOrderCards(grid, orders) {
+                const fieldRow = (label, value, id) => value ? `
+                    <div class="order-card__row">
+                        <div class="order-card__field">
+                            <span class="order-card__label">${escapeHtml(label)}</span>
+                            <span class="order-card__value">${escapeHtml(value)}</span>
+                        </div>
+                        <button type="button" class="order-copy-btn" data-copy-id="${id}" title="${escapeHtml(I18nModule.t('order_copy_field'))}">📋</button>
+                    </div>` : '';
+
+                grid.innerHTML = orders.map(o => {
+                    const isShipped = o.status === 'shipped';
+                    const methodLabel = o.delivery_method === 'easybox'
+                        ? `📦 ${I18nModule.t('order_method_easybox')}`
+                        : `📍 ${I18nModule.t('order_method_address')}`;
+                    const deliveryValue = o.delivery_method === 'easybox'
+                        ? o.easybox_name
+                        : [o.address, o.city, o.county].filter(Boolean).join(', ');
+                    const copyValues = {
+                        name: o.recipient_name,
+                        phone: o.recipient_phone,
+                        delivery: deliveryValue,
+                        total: `${Number(o.total_price).toFixed(0)} RON`,
+                    };
+                    return `<div class="order-card" data-id="${o.id}">
+                        <div class="order-card__top">
+                            <span class="order-card__status order-card__status--${o.status}">${isShipped ? '✅ ' + escapeHtml(I18nModule.t('order_status_shipped')) : '🆕 ' + escapeHtml(I18nModule.t('order_status_new'))}</span>
+                            <span class="order-card__date">${timeAgo(o.created_at)}</span>
+                        </div>
+                        <div class="order-card__product">${escapeHtml(o.listing_title)} · <strong>${Number(o.total_price).toFixed(0)} RON</strong></div>
+                        <div class="order-card__buyer">${escapeHtml(I18nModule.t('order_buyer_label'))}: ${escapeHtml(o.buyer_name)}</div>
+                        ${fieldRow(I18nModule.t('order_field_name'), o.recipient_name, `${o.id}-name`)}
+                        ${fieldRow(I18nModule.t('order_field_phone'), o.recipient_phone, `${o.id}-phone`)}
+                        ${fieldRow(methodLabel, deliveryValue, `${o.id}-delivery`)}
+                        ${o.notes ? fieldRow(I18nModule.t('order_field_notes'), o.notes, `${o.id}-notes`) : ''}
+                        <div class="order-card__actions">
+                            <button type="button" class="hlc-btn order-copy-all-btn" data-id="${o.id}" title="${escapeHtml(I18nModule.t('order_copy_all'))}">📋 ${escapeHtml(I18nModule.t('order_copy_all'))}</button>
+                            <button type="button" class="hlc-btn order-ship-btn" data-id="${o.id}" data-shipped="${isShipped}" title="${isShipped ? escapeHtml(I18nModule.t('order_mark_new')) : escapeHtml(I18nModule.t('order_mark_shipped'))}">
+                                ${isShipped ? '↩️' : '✅'}
+                            </button>
+                        </div>
+                        <div class="order-card__copy-values" hidden data-copy-store='${escapeHtml(JSON.stringify(copyValues))}'></div>
+                    </div>`;
+                }).join('');
+
+                grid.querySelectorAll('.order-copy-btn').forEach(btn => {
+                    const [orderId, field] = btn.dataset.copyId.split('-');
+                    btn.addEventListener('click', () => {
+                        const card = grid.querySelector(`.order-card[data-id="${orderId}"]`);
+                        const store = JSON.parse(card.querySelector('.order-card__copy-values').dataset.copyStore || '{}');
+                        copyOrderField(store[field], btn);
+                    });
+                });
+
+                grid.querySelectorAll('.order-copy-all-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const card = grid.querySelector(`.order-card[data-id="${btn.dataset.id}"]`);
+                        const store = JSON.parse(card.querySelector('.order-card__copy-values').dataset.copyStore || '{}');
+                        const block = [store.name, store.phone, store.delivery, store.total].filter(Boolean).join('\n');
+                        copyOrderField(block, btn);
+                    });
+                });
+
+                grid.querySelectorAll('.order-ship-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.dataset.id;
+                        const wasShipped = btn.dataset.shipped === 'true';
+                        const newStatus = wasShipped ? 'new' : 'shipped';
+                        const res = await apiFetch(`/api/orders/${id}/status`, {
+                            method: 'PATCH',
+                            body: JSON.stringify({ status: newStatus })
+                        });
+                        if (res && res.success) populateDashboard();
                     });
                 });
             }
@@ -1608,7 +1737,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ── Panel hash routing ────────────────────────────────────────
 (function initPanelRouting() {
-    const PANELS = ['home','collection','favorites','progress','achievements','courses','friends','posts','liked'];
+    const PANELS = ['home','collection','favorites','progress','achievements','courses','friends','posts','liked','orders'];
     const DEFAULT = 'home';
 
     function activatePanel(hash) {
