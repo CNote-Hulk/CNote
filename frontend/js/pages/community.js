@@ -724,7 +724,7 @@ async function loadThreads() {
                         </button>
                         <span class="hub-action-pill">💬 ${formatCount(t.reply_count || 0)}</span>
                         <button class="hub-action-pill hub-action-pill--share" data-share="${t.id}" data-share-title="${esc(t.title)}">↗ Share</button>
-                        ${(user() && user().id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}" title="${I18nModule.t('report_btn_trigger')}">⚑</button>` : ''}
+                        ${(user() && user().id !== t.user_id) ? `<button class="hub-action-pill report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}">${I18nModule.t('report_btn_trigger')}</button>` : ''}
                     </div>
                     <div class="hub-thread-card__views">👁 ${formatCount(t.views || 0)} views</div>
                 </div>
@@ -786,7 +786,7 @@ function renderReplyNode(r, childrenOf, depth, isOwner, solvedReplyId, u) {
                     </button>
                     ${u ? `<button class="hub-comment__action" data-reply-to="${r.id}" data-reply-to-user="${esc(r.username)}">${I18nModule.t('forum_reply_to_action')}</button>` : ''}
                     ${isOwner ? `<button class="hub-comment__action" data-solve="${r.id}">${isSolved ? I18nModule.t('forum_unmark_solved') : I18nModule.t('forum_mark_solved')}</button>` : ''}
-                    ${(u && u.id !== r.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_reply" data-report-id="${r.id}" data-report-preview="${esc((r.body || '').substring(0, 60))}" title="${I18nModule.t('report_btn_trigger')}">⚑</button>` : ''}
+                    ${(u && u.id !== r.user_id) ? `<button class="hub-comment__action report-trigger-btn" data-report-type="forum_reply" data-report-id="${r.id}" data-report-preview="${esc((r.body || '').substring(0, 60))}">${I18nModule.t('report_btn_trigger')}</button>` : ''}
                 </div>
             </div>
             ${kids.map(k => renderReplyNode(k, childrenOf, depth + 1, isOwner, solvedReplyId, u)).join('')}
@@ -833,7 +833,7 @@ async function openThread(id) {
                         </button>
                         <span class="hub-action-pill">💬 ${formatCount(replies.length)}</span>
                         <button class="hub-action-pill hub-action-pill--share" id="thread-share-btn">↗ Share</button>
-                        ${(u && u.id !== t.user_id) ? `<button class="report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}" title="${I18nModule.t('report_btn_trigger')}">⚑</button>` : ''}
+                        ${(u && u.id !== t.user_id) ? `<button class="hub-action-pill report-trigger-btn" data-report-type="forum_thread" data-report-id="${t.id}" data-report-preview="${esc(t.title)}">${I18nModule.t('report_btn_trigger')}</button>` : ''}
                     </div>
                     <div class="hub-thread-card__views">👁 ${formatCount(t.views || 0)} views</div>
                 </div>
@@ -1451,7 +1451,7 @@ async function openListingDetail(id) {
                         <div class="hub-detail-seller-actions">
                             ${u && !own ? '<button class="hub-btn hub-btn--primary" id="listing-dm-btn">💬 Contact</button>' : ''}
                             ${u ? '<button class="hub-btn hub-btn--secondary" id="listing-share-btn">🔗 Share</button>' : ''}
-                            ${u && !own ? `<button class="report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">⚑ ${I18nModule.t('report_btn_trigger_listing')}</button>` : ''}
+                            ${u && !own ? `<button class="hub-btn hub-btn--secondary report-trigger-btn" id="listing-report-btn" data-report-type="listing" data-report-id="${l.id}" data-report-preview="${esc(l.title)}">${I18nModule.t('report_btn_trigger_listing')}</button>` : ''}
                         </div>
                     </div>
                     <div class="hub-detail-card hub-detail-card--reviews" id="seller-reviews-card">

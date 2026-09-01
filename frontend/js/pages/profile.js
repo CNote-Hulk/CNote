@@ -1608,8 +1608,10 @@ async function loadAdminReports() {
         reviewed:  [
             { status: 'dismissed', label: '✖ Dismiss',          cls: 'ar-btn--dismiss' },
         ],
+        // (2026-09-01) Andrei: once a report is resolved (ban/mute/delete already acted on
+        // it), Dismiss doesn't make sense alongside it — the only thing left to offer is
+        // undoing the call, i.e. Reopen.
         resolved:  [
-            { status: 'dismissed', label: '✖ Dismiss',          cls: 'ar-btn--dismiss' },
             { status: 'pending',   label: '↩ Reopen',           cls: 'ar-btn--reopen' },
         ],
         dismissed: [
@@ -1661,8 +1663,13 @@ async function loadAdminReports() {
                     const r = allReports.find(x => String(x.id) === String(reportId));
                     if (r) r.status = 'resolved';
                 } else if (action === 'mute-author') {
+                    // Matches the server (reports.js's mute-author sets status='resolved',
+                    // it's one of the "Resolve" choices now, not a separate track) — this
+                    // was still stuck on the pre-redesign 'reviewed' value, which showed the
+                    // wrong badge/actions (Dismiss only, no Reopen) right after muting until
+                    // the next full reload re-fetched the real status from the server.
                     const r = allReports.find(x => String(x.id) === String(reportId));
-                    if (r) r.status = 'reviewed';
+                    if (r) r.status = 'resolved';
                 } else if (action === 'content') {
                     const r = allReports.find(x => String(x.id) === String(reportId));
                     if (r) r.status = 'resolved';

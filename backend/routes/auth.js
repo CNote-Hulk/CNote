@@ -225,7 +225,12 @@ function sanitizeUser(user) {
         nickname: user.nickname || '',
         username_changed_at: user.username_changed_at || null,
         birth_date: user.birth_date || null,
-        language: user.language || 'en'
+        language: user.language || 'en',
+        // (2026-09-01) own mute state, surfaced to self only — used by the app to disable
+        // the chat composer with "muted until X" instead of letting a send silently fail
+        // against forum.js/marketplace.js/dm.js's existing 403 enforcement. Not privacy-
+        // sensitive: this is the user's own account, same as is_banned already implicitly is.
+        muted_until: user.muted_until || null
     };
 }
 

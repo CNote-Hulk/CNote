@@ -450,8 +450,8 @@ const t = key => I18nModule.t(key);
                     await renderFriendButton(actionsEl, profile.id);
                     // DSA Art. 16 — report this profile
                     const reportBtn = document.createElement('button');
-                    reportBtn.className = 'report-trigger-btn';
-                    reportBtn.textContent = '⚑ ' + t('report_btn_trigger_profile');
+                    reportBtn.className = 'user-action-btn user-action-btn--remove report-trigger-btn';
+                    reportBtn.textContent = t('report_btn_trigger_profile');
                     reportBtn.addEventListener('click', () => {
                         if (typeof window.openReportModal === 'function') {
                             window.openReportModal({

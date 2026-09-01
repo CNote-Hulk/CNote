@@ -16,6 +16,7 @@ const { authRequired, authOptional } = require('../middleware/auth');
 const { adminOnly } = require('../middleware/adminOnly');
 const { Resend } = require('resend');
 const { publicUrlForKey } = require('../utils/objectStorage');
+const { sendPushToUser } = require('../services/firebaseAdmin');
 
 const router = express.Router();
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -525,6 +526,7 @@ router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req
         }
         await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
         await notifyReportOutcome(report.rows[0], 'resolved', authorId, { type: 'ban', reason, hours });
+        await pushBanNotice(authorId, { type: 'ban', reason, hours });
 
         return res.json({ success: true, authorId, hours });
     } catch (err) {
@@ -641,10 +643,33 @@ router.delete('/reports/admin/:id/content', authRequired, adminOnly, async (req,
     }
 });
 
-// describeAction/sendOutcomeEmail/getUserEmail reused by admin-stats.js's direct-by-
-// profile ban/mute (not tied to a report, so notifyReportOutcome itself doesn't apply,
-// but the banned/muted user still deserves to know why and for how long).
+// (2026-09-01) Andrei: "la ban sa ma deconecteze imediat" — a data-only FCM push telling
+// the app to log itself out right away, instead of waiting for the existing 401-on-next-
+// backend-call auto-logout (NetworkClient's AuthInterceptor) to eventually catch it. That
+// fallback alone could sit idle a while, since chat itself talks straight to Supabase, not
+// the backend, so an actively-chatting banned user wouldn't 401 out of it on their own.
+// See MyFirebaseMessagingService.kt's "account_banned" branch. Fire-and-forget: Firebase
+// not being configured, or the user having no registered device, must never break the ban
+// action itself (mirrors notifyReportOutcome's own try/catch wrapper further up).
+async function pushBanNotice(authorId, action) {
+    try {
+        await sendPushToUser(
+            authorId,
+            'Account suspended',
+            describeAction(action) || 'Your account has been suspended.',
+            { type: 'account_banned' }
+        );
+    } catch (err) {
+        console.error('[reports] pushBanNotice error:', err.message || err);
+    }
+}
+
+// describeAction/sendOutcomeEmail/getUserEmail/pushBanNotice reused by admin-stats.js's
+// direct-by-profile ban/mute (not tied to a report, so notifyReportOutcome itself doesn't
+// apply, but the banned/muted user still deserves to know why, for how long, and — for a
+// ban — to actually get logged out).
 module.exports = router;
 module.exports.describeAction = describeAction;
 module.exports.sendOutcomeEmail = sendOutcomeEmail;
 module.exports.getUserEmail = getUserEmail;
+module.exports.pushBanNotice = pushBanNotice;

@@ -14,7 +14,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { adminOnly } = require('../middleware/adminOnly');
-const { describeAction, sendOutcomeEmail, getUserEmail } = require('./reports');
+const { describeAction, sendOutcomeEmail, getUserEmail, pushBanNotice } = require('./reports');
 
 const router = express.Router();
 
@@ -129,6 +129,7 @@ router.post('/users/:id/ban', async (req, res) => {
             `${describeAction({ type: 'ban', reason, hours })}\n\n` +
             `If you have questions, please contact support.\n\n— Console Notebook Moderation`
         );
+        await pushBanNotice(userId, { type: 'ban', reason, hours });
         res.json({ success: true, hours });
     } catch (err) {
         console.error('[admin-stats] POST ban error:', err.message || err);
