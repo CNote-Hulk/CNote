@@ -3922,20 +3922,38 @@ button.hub-action-pill:hover {
    out a few px taller than the real viewport for any reason, body simply
    cannot reveal that excess as page scroll. Scoped to this body class (not
    a bare `body{}` rule) since main.css is loaded site-wide. */
+/* (2026-09-02, research: Samsung Developer Forums confirms "sticky/fixed + overflow sibling
+   breaks viewport" as a reproducible bug on Samsung Internet 16-17.x, and 100dvh is documented
+   to recalculate — and repaint — as browser chrome changes, which lines up with the still-
+   unconfirmed "page scrolls as one ~90-100px unit" report above) — 100svh is added as the final,
+   winning value: unlike 100dvh it's fixed to the *smallest* possible viewport and never
+   recalculates/repaints as toolbars show or hide, which is exactly the instability suspected of
+   causing DeX's rendering corruption (see .community-page--hub's background-attachment removal
+   and .navbar's translateZ(0) below for the other two prongs of this fix). */
 body.community-navbar-page {
     overflow: hidden;
     height: 100vh;
     height: 100dvh;
+    height: 100svh;
 }
 
 .community-page--hub {
     position: relative;
-    background: url('../../assets/images/wallpapers/community.jpg') center/cover no-repeat fixed;
+    /* `fixed` background-attachment dropped (2026-09-02) — well-documented as unreliable on
+       Android/Chromium mobile browsers (CSS-Tricks: "at best does not work well in mobile
+       browsers... the gradient/image scrolls along with content then jumps back" — browsers
+       struggle to re-render a fixed background in real time as chrome/toolbars change). Reported
+       live on Samsung DeX as ghosted/duplicated background content bleeding through the UI —
+       exactly this failure mode. This page never actually scrolls (overflow: hidden above), so
+       `fixed` bought zero visual benefit here anyway; plain `scroll` attachment renders
+       identically with no scrolling to tell them apart. */
+    background: url('../../assets/images/wallpapers/community.jpg') center/cover no-repeat;
     background-color: var(--dark-bg-2);
     padding: 64px 0 0 0;
     overflow: hidden;
     height: 100vh;
     height: 100dvh;
+    height: 100svh;
     min-height: 0;
     isolation: auto;
 }

@@ -10,7 +10,18 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    
+    /* (2026-09-02, research) Forces this fixed element onto its own GPU compositor layer —
+       a documented workaround for Android/Chromium mobile browsers (Samsung Internet included)
+       corrupting/duplicating the paint of position:fixed elements, most commonly cited as
+       "-webkit-transform: translateZ(0) forces hardware acceleration to continuously paint the
+       fixed element and avoid this behavior." Deliberately `translateZ(0)`, not `will-change:
+       transform` — the latter is documented to actually break `position: fixed` outright on some
+       engines. Safe to combine with .navbar--hidden's own translateY(-100%) below (see there).
+       Samsung Developer Forums separately confirm a reproducible "fixed element + overflow
+       sibling breaks viewport" bug on Samsung Internet 16-17.x, which this page's layout
+       (fixed navbar, `overflow: hidden`/`overflow-y: auto` siblings throughout) matches exactly. */
+    transform: translateZ(0);
+
     /* Dimensiuni */
     height: 64px;
     padding: 0 40px;
@@ -43,7 +54,10 @@ body > .navbar + * {
 
 /* Navbar hidden on scroll down */
 .navbar.navbar--hidden {
-    transform: translateY(-100%);
+    /* translateZ(0) kept alongside the slide-out so the GPU-layer hint above (see .navbar's own
+       comment) isn't dropped mid-animation — transform is replaced wholesale, not merged, so
+       omitting it here would lose the fix for the whole time the navbar is hidden/hiding. */
+    transform: translateY(-100%) translateZ(0);
 }
 
 /* Fade gradient at navbar base */
@@ -582,7 +596,7 @@ body > .navbar + * {
 }
 
 .navbar--hidden {
-    transform: translateY(-100%);
+    transform: translateY(-100%) translateZ(0);
     opacity: 0;
     pointer-events: none;
 }
