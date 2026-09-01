@@ -593,10 +593,15 @@
                         <button class="admin-filter-btn" data-filter="reviewed">Reviewed</button>
                         <button class="admin-filter-btn" data-filter="resolved">Resolved</button>
                         <button class="admin-filter-btn" data-filter="dismissed">Dismissed</button>
+                        <button class="admin-filter-btn admin-filter-btn--moderation" id="admin-view-moderated-btn" type="button">🔒 Banned &amp; Muted</button>
                     </div>
                     <div id="admin-reports-container">
                         <p class="my-reports-empty">Se încarcă…</p>
                     </div>
+                    <!-- Toggled in by #admin-view-moderated-btn — everyone currently banned or
+                         muted, independent of which report (if any) led to it, with an
+                         Unban/Unmute action to lift a mistake. -->
+                    <div id="admin-moderated-container" hidden></div>
                 </div>
 
                 <!-- Admin Analytics Panel — visible only to admins -->

@@ -1810,8 +1810,102 @@ async function loadAdminReports() {
         renderCards(filtered);
     }
 
-    document.querySelectorAll('.admin-filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+    document.querySelectorAll('.admin-filter-btn[data-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            showModerated(false);
+            applyFilter(btn.dataset.filter);
+        });
+    });
+
+    // ── "🔒 Banned & Muted" toggle — Andrei: "add a list where you can see everyone
+    // you've banned or muted, so you can lift it if it was a mistake". Swaps the reports
+    // list out for a flat list of currently-sanctioned users, independent of which
+    // report (if any) led to the sanction — lazy-loaded on first toggle.
+    const moderatedContainer = document.getElementById('admin-moderated-container');
+    const moderatedBtn = document.getElementById('admin-view-moderated-btn');
+    let moderatedLoaded = false;
+
+    function showModerated(show) {
+        if (moderatedContainer) moderatedContainer.hidden = !show;
+        if (container) container.hidden = show;
+        document.querySelector('.admin-reports-filters')?.querySelectorAll('.admin-filter-btn[data-filter]')
+            .forEach(b => b.classList.toggle('active', !show && b.dataset.filter === activeFilter));
+        moderatedBtn?.classList.toggle('active', show);
+    }
+
+    async function loadModeratedUsers() {
+        if (!moderatedContainer) return;
+        moderatedContainer.innerHTML = `<p class="my-reports-empty">Loading…</p>`;
+        try {
+            const resp = await fetch(`${API_BASE_URL}/admin/moderated-users`, { headers, credentials: 'include' });
+            const data = await resp.json().catch(() => ({}));
+            if (!resp.ok || !data.success) throw new Error(data.error || 'Error');
+            renderModeratedUsers(data.users || []);
+        } catch (err) {
+            console.error('[loadModeratedUsers]', err);
+            moderatedContainer.innerHTML = `<p class="my-reports-empty">Failed to load.</p>`;
+        }
+    }
+
+    function renderModeratedUsers(users) {
+        if (!users.length) {
+            moderatedContainer.innerHTML = `<p class="my-reports-empty">No one is currently banned or muted.</p>`;
+            return;
+        }
+        const rows = users.map(u => {
+            const banned = u.is_banned;
+            const muted = !banned && u.muted_until;
+            const untilLabel = banned
+                ? (u.banned_until ? `until ${new Date(u.banned_until).toLocaleString('ro-RO')}` : 'permanently')
+                : (muted ? `until ${new Date(u.muted_until).toLocaleString('ro-RO')}` : '');
+            const reasonLine = u.banned_reason ? `<div class="ar-description">"${escapeHtml(u.banned_reason)}"</div>` : '';
+            return `<div class="ar-card" data-user-id="${u.id}">
+                <div class="ar-card__header">
+                    <div class="ar-card__type">${banned ? '🚫 Banned' : '🔇 Muted'} ${escapeHtml(untilLabel)}</div>
+                </div>
+                <div class="ar-card__content">
+                    <div class="ar-card__label">@${escapeHtml(u.username)}</div>
+                    ${reasonLine}
+                </div>
+                <div class="ar-card__actions">
+                    <button class="ar-btn ar-btn--reopen" data-user-id="${u.id}" data-lift="${banned ? 'unban' : 'unmute'}">
+                        ↩ ${banned ? 'Unban' : 'Unmute'}
+                    </button>
+                </div>
+            </div>`;
+        }).join('');
+        moderatedContainer.innerHTML = `<div class="ar-card-list">${rows}</div>`;
+
+        moderatedContainer.querySelectorAll('.ar-btn[data-lift]').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const card = btn.closest('.ar-card');
+                card.classList.add('ar-card--loading');
+                try {
+                    const res = await fetch(`${API_BASE_URL}/admin/users/${btn.dataset.userId}/${btn.dataset.lift}`, {
+                        method: 'POST',
+                        headers: { ...headers, 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        card.remove();
+                    } else {
+                        card.classList.remove('ar-card--loading');
+                        alert('Error: ' + (data.error || 'Unknown error'));
+                    }
+                } catch {
+                    card.classList.remove('ar-card--loading');
+                }
+            });
+        });
+    }
+
+    moderatedBtn?.addEventListener('click', () => {
+        showModerated(true);
+        if (!moderatedLoaded) {
+            moderatedLoaded = true;
+            loadModeratedUsers();
+        }
     });
 
     container.innerHTML = `<p class="my-reports-empty">Loading…</p>`;

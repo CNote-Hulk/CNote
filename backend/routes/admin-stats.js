@@ -58,4 +58,54 @@ router.get('/stats', async (req, res) => {
     }
 });
 
+// ── GET /api/admin/moderated-users ──────────────────────────────────────────
+// Andrei: "a list where you can see everyone you've banned or muted, so you can
+// lift it if it was a mistake" — everyone currently under an active sanction,
+// independent of which report (if any) led to it.
+router.get('/moderated-users', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT id, username, avatar, is_banned, banned_reason, banned_at, banned_until, muted_until
+            FROM users
+            WHERE is_banned = TRUE OR (muted_until IS NOT NULL AND muted_until > NOW())
+            ORDER BY GREATEST(COALESCE(banned_at, 'epoch'), COALESCE(muted_until, 'epoch')) DESC
+        `);
+        res.json({ success: true, users: result.rows });
+    } catch (err) {
+        console.error('[admin-stats] GET /moderated-users error:', err.message || err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/admin/users/:id/unban ─────────────────────────────────────────
+// Direct-by-user-id unban — unlike reports.js's unban-author, doesn't require a
+// report to hang off of (this list isn't tied to any specific report).
+router.post('/users/:id/unban', async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ success: false, error: 'Invalid user ID.' });
+    try {
+        await pool.query(
+            `UPDATE users SET is_banned = FALSE, banned_reason = NULL, banned_at = NULL, banned_until = NULL WHERE id = $1`,
+            [userId]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('[admin-stats] POST unban error:', err.message || err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/admin/users/:id/unmute ────────────────────────────────────────
+router.post('/users/:id/unmute', async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ success: false, error: 'Invalid user ID.' });
+    try {
+        await pool.query(`UPDATE users SET muted_until = NULL WHERE id = $1`, [userId]);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('[admin-stats] POST unmute error:', err.message || err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
 module.exports = router;

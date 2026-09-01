@@ -313,6 +313,12 @@
     color: var(--accent-color);
 }
 
+/* "🔒 Banned & Muted" toggles a different view entirely (not a status filter) —
+   pushed to the far side so it doesn't read as one of the status pills. */
+.admin-filter-btn--moderation {
+    margin-left: auto;
+}
+
 /* resolved badge */
 .report-status-badge--resolved {
     background: rgba(74, 222, 128, 0.15);
