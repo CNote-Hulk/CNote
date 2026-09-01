@@ -410,9 +410,24 @@ async function notifyReportOutcome(report, newStatus, authorIdHint) {
 }
 
 async function notifyReportOutcomeInner(report, newStatus, authorIdHint) {
-    if (newStatus !== 'dismissed' && newStatus !== 'resolved') return;
+    // (2026-09-01) Andrei: whichever of the three outcomes an admin picks — reviewed,
+    // resolved, or dismissed — the reporter should always hear back; the reported user only
+    // when applicable (i.e. resolved, where an actual action was taken against them —
+    // reviewed/dismissed conclude with nothing done to their account/content).
+    if (newStatus !== 'dismissed' && newStatus !== 'resolved' && newStatus !== 'reviewed') return;
     const label = report.content_type.replace(/_/g, ' ');
     const reporterEmail = await getReporterEmail(report);
+
+    if (newStatus === 'reviewed') {
+        await sendOutcomeEmail(
+            reporterEmail,
+            '[Console Notebook] Your report is being reviewed',
+            `Thanks for reporting a ${label} on Console Notebook.\n\n` +
+            `Our moderation team has started reviewing it. We'll follow up once a decision has been made.\n\n` +
+            `— Console Notebook Moderation`
+        );
+        return;
+    }
 
     if (newStatus === 'dismissed') {
         await sendOutcomeEmail(
