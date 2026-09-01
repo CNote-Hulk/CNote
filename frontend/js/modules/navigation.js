@@ -382,8 +382,7 @@ export const NavigationModule = {
         let lastScrollY = window.scrollY;
         let ticking = false;
 
-        const onScroll = () => {
-            const currentY = window.scrollY;
+        const onScroll = (currentY) => {
             const delta = currentY - lastScrollY;
 
             if (document.body.classList.contains('menu-open')) {
@@ -425,10 +424,35 @@ export const NavigationModule = {
 
         window.addEventListener('scroll', () => {
             if (!ticking) {
-                window.requestAnimationFrame(onScroll);
+                window.requestAnimationFrame(() => onScroll(window.scrollY));
                 ticking = true;
             }
         }, { passive: true });
+
+        // The community hub page (community.html) never scrolls the document itself —
+        // .community-page--hub is height:100dvh/overflow:hidden, and every list/detail view
+        // (.hub-thread-list, .hub-market-grid, .hub-detail-scroll, .hub-thread-detail, ...)
+        // scrolls its OWN inner div instead — so window.scrollY above never changes on this
+        // page and the navbar/bottom-nav sat permanently visible no matter how far a user
+        // scrolled through a marketplace grid or forum thread list, wasting the space they'd
+        // otherwise reclaim by hiding on scroll like everywhere else on the site. `scroll`
+        // events don't bubble, but a capturing listener on the shared `.hub-content`
+        // ancestor still receives them from whichever descendant is the actual scroller
+        // (event.target) — one listener covers every current and future hub view without
+        // hardcoding each view's scroll-container class name. Reuses the same `ticking`/
+        // `lastScrollY` closure state as the window listener above (onScroll already clears
+        // `ticking` itself on every exit path), so switching between document scroll and hub
+        // scroll never double-counts a delta.
+        const hubContent = document.querySelector('.hub-content');
+        if (hubContent) {
+            hubContent.addEventListener('scroll', (e) => {
+                if (!ticking) {
+                    const top = e.target.scrollTop ?? 0;
+                    window.requestAnimationFrame(() => onScroll(top));
+                    ticking = true;
+                }
+            }, { capture: true, passive: true });
+        }
 
         mq.addEventListener('change', (e) => {
             if (!e.matches) showAll();

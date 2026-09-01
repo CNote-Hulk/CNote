@@ -3972,10 +3972,30 @@ button.hub-action-pill:hover {
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        transition: padding-top 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .community-page--hub::before {
         display: none; /* no overlay — wallpaper is gone */
+    }
+
+    /* List views (forum thread list, marketplace grid, repair, DM list, photos) DON'T use
+       setMobileFullscreen()/hub-mobile-fullscreen (only the 3 detail views do, see below) —
+       they keep the navbar, and navigation.js's scroll auto-hide normally reclaims that
+       space by sliding the navbar off-screen as you scroll. But navigation.js listens on
+       window.scrollY, and this page's own document never scrolls (height: 100dvh,
+       overflow: hidden, above) — every list scrolls its OWN inner div instead — so the
+       navbar sat permanently visible no matter how far into a list you scrolled. Fixed on
+       the JS side (navigation.js now also listens on .hub-content's scroll via capture, so
+       .navbar--hidden does get applied while scrolling a list) — this is the other half:
+       once it's hidden, reclaim the padding-top that was only ever there to keep the fixed
+       navbar from covering the top of the page, exactly like hub-mobile-fullscreen already
+       does for detail views, just driven by scroll instead of an explicit view type. .navbar
+       is a direct DOM sibling of .community-page--hub (see `body > .navbar + *` elsewhere in
+       this file) — untouched by hub-mobile-fullscreen, which sets height:auto/position:fixed
+       instead, so this padding-only rule can't conflict with it. */
+    .navbar.navbar--hidden + .community-page--hub {
+        padding-top: 0;
     }
 
     /* Forum thread detail, listing detail, and an open DM conversation already have their own
