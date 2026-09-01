@@ -371,13 +371,16 @@
     color: var(--text-light);
 }
 
-.ar-content-link {
-    color: var(--accent-color);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
+.ar-content-image {
+    display: block;
+    max-width: 100%;
+    max-height: 220px;
+    width: auto;
+    border-radius: 8px;
+    margin: 4px 0;
+    object-fit: contain;
+    background: rgba(0,0,0,0.2);
 }
-.ar-content-link:hover { text-decoration: underline; }
 
 .ar-content-body {
     font-size: 0.8rem;
@@ -387,10 +390,9 @@
     background: rgba(255,255,255,0.03);
     border-radius: 6px;
     border-left: 2px solid rgba(var(--accent-color-rgb, 245,240,232), 0.15);
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    /* (2026-09-01) Was clamped to 4 lines — Andrei asked to see the full reported
+       message/listing text right here instead of following a link elsewhere, so the
+       whole point is showing all of it, not a preview. */
     line-height: 1.5;
     white-space: pre-wrap;
     word-break: break-word;
@@ -484,6 +486,13 @@
     margin-top: 8px;
     padding-top: 8px;
     border-top: 1px dashed rgba(var(--accent-color-rgb, 245,240,232), 0.15);
+}
+
+/* (2026-09-01) "Resolve" toggles this panel via the [hidden] attribute — without this
+   override the display:flex above (an author rule) always beats the UA [hidden] rule
+   regardless of specificity, so [hidden] alone would never actually hide it. */
+.ar-card__mod-actions[hidden] {
+    display: none;
 }
 
 .ar-btn--ban {

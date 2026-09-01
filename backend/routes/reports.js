@@ -15,6 +15,7 @@ const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
 const { adminOnly } = require('../middleware/adminOnly');
 const { Resend } = require('resend');
+const { publicUrlForKey } = require('../utils/objectStorage');
 
 const router = express.Router();
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -215,6 +216,7 @@ router.get('/reports/admin', authRequired, adminOnly, async (req, res) => {
         for (const r of reports) {
             r.content_link = null;
             r.content_body = null;
+            r.content_image = null;
             r.author_id = null;
             try {
                 if (r.content_type === 'user_profile') {
@@ -243,12 +245,19 @@ router.get('/reports/admin', authRequired, adminOnly, async (req, res) => {
                     r.content_body = row?.body || null;
                     r.author_id = row?.user_id || null;
                 } else if (r.content_type === 'listing') {
-                    const l = await pool.query('SELECT user_id, title, description FROM listings WHERE id = $1', [r.content_id]);
+                    const l = await pool.query('SELECT user_id, title, description, images FROM listings WHERE id = $1', [r.content_id]);
                     const row = l.rows[0];
                     r.content_label = row?.title || `Listing #${r.content_id}`;
                     r.content_link = `/html/pages/community.html#listing-${r.content_id}`;
                     r.content_body = row?.description || null;
                     r.author_id = row?.user_id || null;
+                    // images is a JSON-stringified array of object-storage keys (see
+                    // PUT /marketplace/listings/:id's own RETURNING * note) — first photo only,
+                    // this is a moderation preview, not a full gallery.
+                    try {
+                        const imgs = row?.images ? JSON.parse(row.images) : [];
+                        r.content_image = Array.isArray(imgs) && imgs[0] ? publicUrlForKey(imgs[0]) : null;
+                    } catch { r.content_image = null; }
                 } else if (r.content_type === 'direct_message') {
                     const m = await pool.query(
                         `SELECT dm.message, dm.sender_id, s.username AS sender, rc.username AS receiver
@@ -261,11 +270,12 @@ router.get('/reports/admin', authRequired, adminOnly, async (req, res) => {
                     r.content_body = row?.message || null;
                     r.author_id = row?.sender_id || null;
                 } else if (r.content_type === 'community_photo') {
-                    const p = await pool.query('SELECT user_id, caption FROM community_photos WHERE id = $1', [r.content_id]);
+                    const p = await pool.query('SELECT user_id, caption, image_key FROM community_photos WHERE id = $1', [r.content_id]);
                     const row = p.rows[0];
                     r.content_label = `Photo #${r.content_id}`;
                     r.content_body = row?.caption || null;
                     r.author_id = row?.user_id || null;
+                    r.content_image = row?.image_key ? publicUrlForKey(row.image_key) : null;
                 } else {
                     r.content_label = `${r.content_type} #${r.content_id}`;
                 }
@@ -494,7 +504,10 @@ router.post('/reports/admin/:id/mute-author', authRequired, adminOnly, async (re
     const hours = Math.min(720, Math.max(1, parseInt(req.body?.hours, 10) || 72));
 
     try {
-        const report = await pool.query('SELECT content_type, content_id FROM content_reports WHERE id = $1', [reportId]);
+        const report = await pool.query(
+            'SELECT content_type, content_id, reporter_contact, reporter_id FROM content_reports WHERE id = $1',
+            [reportId]
+        );
         if (!report.rows.length) return res.status(404).json({ success: false, error: 'Report not found.' });
 
         const authorId = await resolveAuthorId(report.rows[0].content_type, report.rows[0].content_id);
@@ -504,7 +517,12 @@ router.post('/reports/admin/:id/mute-author', authRequired, adminOnly, async (re
             `UPDATE users SET muted_until = NOW() + make_interval(hours => $1) WHERE id = $2`,
             [hours, authorId]
         );
-        await pool.query(`UPDATE content_reports SET status = 'reviewed' WHERE id = $1`, [reportId]);
+        // (2026-09-01) Now counts as "resolving" the report, same as ban-author/delete-
+        // content, per Andrei: clicking "Resolve" offers ban/mute/etc. as the actual
+        // resolving action — so mute concludes with 'resolved' (was 'reviewed') and
+        // triggers the same outcome emails.
+        await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
+        await notifyReportOutcome(report.rows[0], 'resolved', authorId);
 
         return res.json({ success: true, authorId, hours });
     } catch (err) {

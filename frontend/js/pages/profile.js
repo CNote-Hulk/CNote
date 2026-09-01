@@ -1596,14 +1596,16 @@ async function loadAdminReports() {
         listing: 'Marketplace listing', direct_message: 'Direct message',
     };
     // Action buttons per status
+    // (2026-09-01) "Resolve" is no longer a plain status flip — Andrei asked for it to
+    // present the actual moderation choices (ban permanent/temp, mute, delete content)
+    // instead, since those are what actually resolve a report. It's handled separately
+    // below (data-resolve-toggle), not as a plain data-status entry here — see renderCards.
     const STATUS_ACTIONS = {
         pending:   [
             { status: 'reviewed',  label: '👁 Mark reviewed',  cls: 'ar-btn--review' },
-            { status: 'resolved',  label: '✅ Resolve',         cls: 'ar-btn--resolve' },
             { status: 'dismissed', label: '✖ Dismiss',          cls: 'ar-btn--dismiss' },
         ],
         reviewed:  [
-            { status: 'resolved',  label: '✅ Resolve',         cls: 'ar-btn--resolve' },
             { status: 'dismissed', label: '✖ Dismiss',          cls: 'ar-btn--dismiss' },
         ],
         resolved:  [
@@ -1692,17 +1694,34 @@ async function loadAdminReports() {
             const reporter = r.reporter_username
                 ? `<a href="/user/${escapeHtml(r.reporter_username)}" target="_blank" class="ar-reporter">@${escapeHtml(r.reporter_username)}</a>`
                 : '<span class="ar-reporter ar-reporter--anon">Anonymous</span>';
+            // (2026-09-01) content_label used to be a link that navigated away to the
+            // reported content's live page — Andrei asked to see the actual reported
+            // content (message/listing/etc.) right here instead, not leave Admin Reports.
+            // Plain non-navigating label now; content_body (already returned in full by
+            // GET /reports/admin, never truncated here) is the "show me the message" part.
             const rawLabel = r.content_label || `#${r.content_id}`;
-            const contentLabel = r.content_link
-                ? `<a href="${escapeHtml(r.content_link)}" target="_blank" class="ar-content-link">${escapeHtml(rawLabel)} ↗</a>`
-                : `<span>${escapeHtml(rawLabel)}</span>`;
+            const contentLabel = escapeHtml(rawLabel);
             const contentBody = r.content_body
                 ? `<div class="ar-content-body">${escapeHtml(r.content_body)}</div>`
+                : '';
+            const contentImage = r.content_image
+                ? `<img class="ar-content-image" src="${escapeHtml(r.content_image)}" alt="" loading="lazy">`
                 : '';
             const reporterNote = r.description ? `<div class="ar-description">"${escapeHtml(r.description)}"</div>` : '';
             const actions = (STATUS_ACTIONS[r.status] || []).map(a =>
                 `<button class="ar-btn ${a.cls}" data-id="${r.id}" data-status="${a.status}">${a.label}</button>`
             ).join('');
+
+            // "Resolve" — pending/reviewed only. Opens the moderation choice list
+            // (ar-card__mod-actions, hidden by default) if there's an author to act on;
+            // otherwise falls back to a plain status flip (data-resolve-fallback) since
+            // there's nothing left to ban/mute/delete.
+            const canModerate = (r.status === 'pending' || r.status === 'reviewed');
+            const resolveBtn = canModerate
+                ? (r.author_id
+                    ? `<button class="ar-btn ar-btn--resolve" data-id="${r.id}" data-resolve-toggle="1">✅ Resolve</button>`
+                    : `<button class="ar-btn ar-btn--resolve" data-id="${r.id}" data-status="resolved">✅ Resolve</button>`)
+                : '';
 
             const modActions = r.author_id ? [
                 `<button class="ar-btn ar-btn--ban" data-id="${r.id}" data-mod-action="ban-author-permanent">🚫 ${t('admin_ban_permanent_btn')}</button>`,
@@ -1720,6 +1739,7 @@ async function loadAdminReports() {
                 </div>
                 <div class="ar-card__content">
                     <div class="ar-card__label">${contentLabel}</div>
+                    ${contentImage}
                     ${contentBody}
                     <div class="ar-card__meta">
                         <span>${reasonIcon} <strong>${reasonLabel}</strong></span>
@@ -1730,8 +1750,8 @@ async function loadAdminReports() {
                     </div>
                     ${reporterNote}
                 </div>
-                <div class="ar-card__actions">${actions || '<span class="ar-no-actions">No further actions</span>'}</div>
-                ${modActions ? `<div class="ar-card__mod-actions">${modActions}</div>` : ''}
+                <div class="ar-card__actions">${resolveBtn}${actions || (resolveBtn ? '' : '<span class="ar-no-actions">No further actions</span>')}</div>
+                ${modActions ? `<div class="ar-card__mod-actions" hidden>${modActions}</div>` : ''}
             </div>`;
         }).join('');
 
@@ -1741,6 +1761,16 @@ async function loadAdminReports() {
             btn.addEventListener('click', () => {
                 const card = btn.closest('.ar-card');
                 setStatus(btn.dataset.id, btn.dataset.status, card);
+            });
+        });
+
+        // "Resolve" reveals the moderation choice list in place, instead of immediately
+        // flipping status — the actual chosen action (ban/mute/delete) is what resolves it.
+        container.querySelectorAll('.ar-btn[data-resolve-toggle]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const card = btn.closest('.ar-card');
+                const modPanel = card.querySelector('.ar-card__mod-actions');
+                if (modPanel) modPanel.hidden = !modPanel.hidden;
             });
         });
 
