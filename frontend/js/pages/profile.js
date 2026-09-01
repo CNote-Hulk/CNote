@@ -1643,8 +1643,11 @@ async function loadAdminReports() {
 
     async function moderationAction(reportId, action, cardEl, body) {
         cardEl.classList.add('ar-card--loading');
+        // ban-author-permanent/ban-author-temp are both the same `ban-author` server
+        // endpoint — the distinction lives in `body.hours` (see reports.js), not the URL.
+        const endpointAction = action.startsWith('ban-author') ? 'ban-author' : action;
         try {
-            const res = await fetch(`${API_BASE_URL}/reports/admin/${reportId}/${action}`, {
+            const res = await fetch(`${API_BASE_URL}/reports/admin/${reportId}/${endpointAction}`, {
                 method: action === 'content' ? 'DELETE' : 'POST',
                 headers: { ...headers, 'Content-Type': 'application/json' },
                 body: body ? JSON.stringify(body) : undefined,
@@ -1652,7 +1655,7 @@ async function loadAdminReports() {
             });
             const data = await res.json();
             if (data.success) {
-                if (action === 'ban-author') {
+                if (action.startsWith('ban-author')) {
                     const r = allReports.find(x => String(x.id) === String(reportId));
                     if (r) r.status = 'resolved';
                 } else if (action === 'mute-author') {
@@ -1702,7 +1705,8 @@ async function loadAdminReports() {
             ).join('');
 
             const modActions = r.author_id ? [
-                `<button class="ar-btn ar-btn--ban" data-id="${r.id}" data-mod-action="ban-author">🚫 ${t('admin_ban_author_btn')}</button>`,
+                `<button class="ar-btn ar-btn--ban" data-id="${r.id}" data-mod-action="ban-author-permanent">🚫 ${t('admin_ban_permanent_btn')}</button>`,
+                `<button class="ar-btn ar-btn--ban" data-id="${r.id}" data-mod-action="ban-author-temp">⏳ ${t('admin_ban_temp_btn')}</button>`,
                 `<button class="ar-btn ar-btn--mute" data-id="${r.id}" data-mod-action="mute-author">🔇 ${t('admin_mute_author_btn')}</button>`,
                 r.content_type !== 'user_profile'
                     ? `<button class="ar-btn ar-btn--delete-content" data-id="${r.id}" data-mod-action="content">🗑 ${t('admin_delete_content_btn')}</button>`
@@ -1744,12 +1748,20 @@ async function loadAdminReports() {
             btn.addEventListener('click', async () => {
                 const card = btn.closest('.ar-card');
                 const action = btn.dataset.modAction;
-                if (action === 'ban-author') {
+                if (action === 'ban-author-permanent') {
                     const ok = await confirmModal(t('admin_ban_confirm'), { ok: t('admin_ban_confirm_ok') });
                     if (!ok) return;
-                    moderationAction(btn.dataset.id, 'ban-author', card, { reason: 'Content report' });
+                    moderationAction(btn.dataset.id, 'ban-author-permanent', card, { reason: 'Content report' });
+                } else if (action === 'ban-author-temp') {
+                    const days = parseInt(prompt(t('admin_ban_temp_prompt'), '7'), 10);
+                    if (!days || days <= 0) return;
+                    const ok = await confirmModal(t('admin_ban_confirm'), { ok: t('admin_ban_confirm_ok') });
+                    if (!ok) return;
+                    moderationAction(btn.dataset.id, 'ban-author-temp', card, { reason: 'Content report', hours: days * 24 });
                 } else if (action === 'mute-author') {
-                    moderationAction(btn.dataset.id, 'mute-author', card, { hours: 72 });
+                    const hours = parseInt(prompt(t('admin_mute_prompt'), '72'), 10);
+                    if (!hours || hours <= 0) return;
+                    moderationAction(btn.dataset.id, 'mute-author', card, { hours });
                 } else if (action === 'content') {
                     const ok = await confirmModal(t('admin_delete_content_confirm'), { ok: t('admin_delete_content_confirm_ok') });
                     if (!ok) return;

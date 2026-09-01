@@ -561,6 +561,10 @@ async function initializeSchema() {
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_banned BOOLEAN DEFAULT FALSE`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_reason TEXT DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_at TIMESTAMP DEFAULT NULL`,
+		// (2026-09-01) NULL = permanent ban, a future timestamp = temporary ban that auto-
+		// lifts — see middleware/auth.js's isActivelyBanned/liftExpiredBan and
+		// routes/reports.js's ban-author (optional `hours` in the request body).
+		`ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_until TIMESTAMP DEFAULT NULL`,
 		`ALTER TABLE users ADD COLUMN IF NOT EXISTS muted_until TIMESTAMP DEFAULT NULL`,
 
 		// ── Seller reviews (marketplace trust) ────────────────────────────────

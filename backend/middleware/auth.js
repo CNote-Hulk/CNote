@@ -14,6 +14,29 @@ function hashSessionToken(token) {
 }
 
 /**
+ * isActivelyBanned / liftExpiredBan
+ * @description (2026-09-01) Bans can now be permanent (banned_until IS NULL) or
+ *              for a fixed period (banned_until in the future) — see
+ *              routes/reports.js's ban-author, which accepts an optional `hours`.
+ *              A row with is_banned=TRUE whose banned_until has already passed is
+ *              no longer actively banned; liftExpiredBan clears it (fire-and-forget,
+ *              errors ignored — worst case it re-checks next request) so the user
+ *              doesn't stay flagged banned forever in the DB once their time is up.
+ */
+function isActivelyBanned(user) {
+    if (!user.is_banned) return false;
+    if (!user.banned_until) return true; // permanent
+    return new Date(user.banned_until).getTime() > Date.now();
+}
+
+function liftExpiredBan(userId) {
+    pool.query(
+        `UPDATE users SET is_banned = FALSE, banned_reason = NULL, banned_at = NULL, banned_until = NULL WHERE id = $1`,
+        [userId]
+    ).catch(() => {});
+}
+
+/**
  * authRequired
  * @description Express middleware that authenticates requests.
  *              Strategy: try JWT verification first; if that fails,
@@ -36,9 +59,10 @@ async function authRequired(req, res, next) {
         if (!user) {
             return res.status(401).json({ success: false, error: 'Utilizator inexistent.' });
         }
-        if (user.is_banned) {
+        if (isActivelyBanned(user)) {
             return res.status(401).json({ success: false, error: 'Cont suspendat.', banned: true });
         }
+        if (user.is_banned) liftExpiredBan(user.id);
         req.user = {
             id: user.id,
             username: user.username,
@@ -95,7 +119,7 @@ async function authRequired(req, res, next) {
                u.social_discord, u.social_twitter, u.social_youtube, u.social_instagram,
                u.show_email, u.show_stats, u.show_friends, u.show_social_links,
                u.nickname, u.username_changed_at, u.language,
-               u.is_banned, u.muted_until
+               u.is_banned, u.banned_until, u.muted_until
         FROM user_sessions s
         JOIN users u ON u.id = s.user_id
         WHERE s.session_token = $1 AND s.is_active = true
@@ -109,9 +133,10 @@ async function authRequired(req, res, next) {
     if (!session) {
         return res.status(401).json({ success: false, error: 'Sesiune invalida sau expirata.' });
     }
-    if (session.is_banned) {
+    if (isActivelyBanned(session)) {
         return res.status(401).json({ success: false, error: 'Cont suspendat.', banned: true });
     }
+    if (session.is_banned) liftExpiredBan(session.user_id);
 
     // DB: update last_activity timestamp for this session
     await pool.query('UPDATE user_sessions SET last_activity = NOW() WHERE id = $1', [session.session_id]);
@@ -225,4 +250,4 @@ async function authOptional(req, res, next) {
     next();
 }
 
-module.exports = { authRequired, authOptional };
+module.exports = { authRequired, authOptional, isActivelyBanned, liftExpiredBan };

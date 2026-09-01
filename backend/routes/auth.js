@@ -16,7 +16,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const sharp = require('sharp');
 const pool = require('../db');
-const { authRequired } = require('../middleware/auth');
+const { authRequired, isActivelyBanned, liftExpiredBan } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
 const emailService = require('../services/email');
 const { validatePassword } = require('../utils/passwordPolicy');
@@ -428,10 +428,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ success: false, error: 'Incorrect email or password.' });
         }
 
-        if (user.is_banned) {
+        if (isActivelyBanned(user)) {
             const reasonSuffix = user.banned_reason ? ` Reason: ${user.banned_reason}` : '';
-            return res.status(403).json({ success: false, error: `Your account has been suspended.${reasonSuffix}` });
+            const untilSuffix = user.banned_until ? ` Until: ${new Date(user.banned_until).toISOString()}` : '';
+            return res.status(403).json({ success: false, error: `Your account has been suspended.${reasonSuffix}${untilSuffix}` });
         }
+        if (user.is_banned) liftExpiredBan(user.id);
 
         // Check 2FA
         if (user.two_factor_enabled) {

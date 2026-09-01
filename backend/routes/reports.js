@@ -334,11 +334,16 @@ async function resolveAuthorId(contentType, contentId) {
 }
 
 // ── POST /api/reports/admin/:id/ban-author ──────────────────────────────────
+// Body: { reason?, hours? }. Omit `hours` (or send 0/falsy) for a permanent ban;
+// a positive integer (1–8760, capped at one year) makes it a temporary ban that
+// auto-lifts — see middleware/auth.js's isActivelyBanned/liftExpiredBan.
 router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req, res) => {
     const reportId = parseInt(req.params.id, 10);
     if (!reportId) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
 
     const reason = req.body?.reason ? String(req.body.reason).trim().slice(0, 500) : null;
+    const rawHours = parseInt(req.body?.hours, 10);
+    const hours = rawHours > 0 ? Math.min(8760, rawHours) : null; // null = permanent
 
     try {
         const report = await pool.query('SELECT content_type, content_id FROM content_reports WHERE id = $1', [reportId]);
@@ -347,13 +352,20 @@ router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req
         const authorId = await resolveAuthorId(report.rows[0].content_type, report.rows[0].content_id);
         if (!authorId) return res.status(404).json({ success: false, error: 'Could not resolve the content author.' });
 
-        await pool.query(
-            `UPDATE users SET is_banned = TRUE, banned_reason = $1, banned_at = NOW() WHERE id = $2`,
-            [reason, authorId]
-        );
+        if (hours) {
+            await pool.query(
+                `UPDATE users SET is_banned = TRUE, banned_reason = $1, banned_at = NOW(), banned_until = NOW() + make_interval(hours => $2) WHERE id = $3`,
+                [reason, hours, authorId]
+            );
+        } else {
+            await pool.query(
+                `UPDATE users SET is_banned = TRUE, banned_reason = $1, banned_at = NOW(), banned_until = NULL WHERE id = $2`,
+                [reason, authorId]
+            );
+        }
         await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
 
-        return res.json({ success: true, authorId });
+        return res.json({ success: true, authorId, hours });
     } catch (err) {
         console.error('[reports] POST ban-author error:', err.message || err);
         return res.status(500).json({ success: false, error: 'Internal error.' });
@@ -373,7 +385,7 @@ router.post('/reports/admin/:id/unban-author', authRequired, adminOnly, async (r
         if (!authorId) return res.status(404).json({ success: false, error: 'Could not resolve the content author.' });
 
         await pool.query(
-            `UPDATE users SET is_banned = FALSE, banned_reason = NULL, banned_at = NULL WHERE id = $1`,
+            `UPDATE users SET is_banned = FALSE, banned_reason = NULL, banned_at = NULL, banned_until = NULL WHERE id = $1`,
             [authorId]
         );
 
