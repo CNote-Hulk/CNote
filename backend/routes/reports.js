@@ -392,7 +392,24 @@ async function sendOutcomeEmail(to, subject, text) {
 // `authorIdHint` — pass the already-resolved author id when the caller has one
 // (ban-author/mute-author already call resolveAuthorId for their own purposes) to
 // avoid resolving it twice.
+//
+// (2026-09-01) Wrapped the whole body in try/catch after a real bug: resolveAuthorId's
+// query throws "invalid input syntax for type integer" for a report whose content_id
+// isn't a real numeric id (hit live via a couple of synthetic test rows with content_id
+// like "debug-test-002") — that exception was propagating all the way up through the
+// PATCH/POST route handlers, turning an already-successful status change/ban/mute into a
+// 500 response, even though the actual moderation action had already committed. This
+// function must never be able to break the response it's attached to — sendOutcomeEmail
+// already isolated the email-send itself, but not the DB lookups feeding it.
 async function notifyReportOutcome(report, newStatus, authorIdHint) {
+    try {
+        await notifyReportOutcomeInner(report, newStatus, authorIdHint);
+    } catch (err) {
+        console.error('[reports] notifyReportOutcome failed (non-fatal):', err.message || err);
+    }
+}
+
+async function notifyReportOutcomeInner(report, newStatus, authorIdHint) {
     if (newStatus !== 'dismissed' && newStatus !== 'resolved') return;
     const label = report.content_type.replace(/_/g, ' ');
     const reporterEmail = await getReporterEmail(report);
