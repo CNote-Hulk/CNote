@@ -7,7 +7,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
-const { isMuted } = require('../utils/moderation');
+const { isMuted, mutedUntilMessage } = require('../utils/moderation');
 const MarketplaceSyncService = require('../services/marketplace-sync');
 const OlxProvider = require('../providers/OlxProvider');
 const EbayProvider = require('../providers/EbayProvider');
@@ -377,7 +377,7 @@ router.get('/listings/:id/similar', async (req, res) => {
 // ── POST /api/marketplace/listings ──────────────────────
 router.post('/listings', authRequired, async (req, res) => {
     if (isMuted(req.user)) {
-        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+        return res.status(403).json({ success: false, error: mutedUntilMessage(req.user.muted_until) });
     }
     const { title, description, price, condition, category, location, country, phone, olx_url, images, console_type } = req.body;
 

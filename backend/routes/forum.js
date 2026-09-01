@@ -12,7 +12,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
-const { isMuted } = require('../utils/moderation');
+const { isMuted, mutedUntilMessage } = require('../utils/moderation');
 const { publicUrlForKey } = require('../utils/objectStorage');
 
 const router = express.Router();
@@ -192,7 +192,7 @@ router.get('/:console/threads/:id', async (req, res) => {
 // ── POST /api/forum/:console/threads ────────────────────
 router.post('/:console/threads', authRequired, async (req, res) => {
     if (isMuted(req.user)) {
-        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+        return res.status(403).json({ success: false, error: mutedUntilMessage(req.user.muted_until) });
     }
     const consoleKey = req.params.console;
     if (!VALID_CONSOLES.includes(consoleKey)) {
@@ -247,7 +247,7 @@ router.post('/:console/threads', authRequired, async (req, res) => {
 // ── POST /api/forum/:console/threads/:id/reply ──────────
 router.post('/:console/threads/:id/reply', authRequired, async (req, res) => {
     if (isMuted(req.user)) {
-        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+        return res.status(403).json({ success: false, error: mutedUntilMessage(req.user.muted_until) });
     }
     const threadId = parseInt(req.params.id);
     if (isNaN(threadId)) {

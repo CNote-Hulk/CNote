@@ -142,6 +142,41 @@ textarea {
     background: rgba(239, 68, 68, 0.28);
 }
 
+/* (2026-09-01) promptModal/alertModal (confirm-modal.js) reuse .confirm-box/.confirm-btn but
+   aren't destructive actions like the base --ok (red, "Delete") — this neutral variant wins
+   by appearing after --ok in source order, same specificity. */
+.confirm-btn--ok-neutral {
+    background: var(--accent-color);
+    color: var(--primary-color, #1B1714);
+}
+
+.confirm-btn--ok-neutral:hover {
+    background: var(--accent-light, #E6C48A);
+}
+
+.confirm-actions--single {
+    justify-content: center;
+}
+
+.confirm-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: rgba(var(--accent-rgb), 0.05);
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.confirm-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
 /* ══════════════════════════════════════════
    LIGHT THEME — Forms & Confirm Modal
    ══════════════════════════════════════════ */

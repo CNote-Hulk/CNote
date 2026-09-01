@@ -70,3 +70,132 @@ export function confirmModal(message, opts = {}) {
         btnOk.focus();
     });
 }
+
+/* ── Custom Prompt Modal ─────────────────────────────────── */
+// (2026-09-01) Andrei: the ban-temp/mute-hours pickers used prompt() — a native browser
+// dialog that looks out of place next to the rest of the (already-custom) admin UI. Same
+// singleton-overlay pattern as confirmModal above, just with an <input> instead of only two
+// buttons.
+
+let _promptOverlay = null;
+
+function _getOrCreatePrompt() {
+    if (_promptOverlay) return _promptOverlay;
+
+    _promptOverlay = document.createElement('div');
+    _promptOverlay.className = 'confirm-overlay';
+    // SAFE: hardcoded shell only. message → .textContent, defaultValue → .value, both below.
+    _promptOverlay.innerHTML = `
+        <div class="confirm-box">
+            <p class="confirm-msg"></p>
+            <input class="confirm-input" type="number" min="1">
+            <div class="confirm-actions">
+                <button class="confirm-btn confirm-btn--cancel">Cancel</button>
+                <button class="confirm-btn confirm-btn--ok confirm-btn--ok-neutral">OK</button>
+            </div>
+        </div>`;
+    document.body.appendChild(_promptOverlay);
+    return _promptOverlay;
+}
+
+/**
+ * Show a styled numeric prompt. Returns a Promise<string|null> (null if canceled) —
+ * same contract as native prompt(), so callers keep doing their own parseInt/validation.
+ * @param {string} message
+ * @param {object} [opts] – { defaultValue, ok, cancel, min, max }
+ */
+export function promptModal(message, opts = {}) {
+    return new Promise(resolve => {
+        const el = _getOrCreatePrompt();
+        el.querySelector('.confirm-msg').textContent = message;
+        el.querySelector('.confirm-btn--ok').textContent = opts.ok || 'OK';
+        el.querySelector('.confirm-btn--cancel').textContent = opts.cancel || 'Cancel';
+        const input = el.querySelector('.confirm-input');
+        input.value = opts.defaultValue ?? '';
+        input.min = opts.min ?? 1;
+        if (opts.max !== undefined) input.max = opts.max; else input.removeAttribute('max');
+
+        el.classList.add('confirm-overlay--active');
+
+        function cleanup(result) {
+            el.classList.remove('confirm-overlay--active');
+            el.removeEventListener('click', onOverlay);
+            btnOk.removeEventListener('click', onOk);
+            btnCancel.removeEventListener('click', onCancel);
+            input.removeEventListener('keydown', onInputKey);
+            document.removeEventListener('keydown', onKey);
+            resolve(result);
+        }
+
+        const btnOk = el.querySelector('.confirm-btn--ok');
+        const btnCancel = el.querySelector('.confirm-btn--cancel');
+
+        function onOk() { cleanup(input.value); }
+        function onCancel() { cleanup(null); }
+        function onOverlay(e) { if (e.target === el) cleanup(null); }
+        function onKey(e) { if (e.key === 'Escape') cleanup(null); }
+        function onInputKey(e) { if (e.key === 'Enter') cleanup(input.value); }
+
+        btnOk.addEventListener('click', onOk);
+        btnCancel.addEventListener('click', onCancel);
+        el.addEventListener('click', onOverlay);
+        input.addEventListener('keydown', onInputKey);
+        document.addEventListener('keydown', onKey);
+
+        input.focus();
+        input.select();
+    });
+}
+
+/* ── Custom Alert Modal ──────────────────────────────────── */
+// Same rationale as promptModal above — replaces alert() (e.g. chat.js's "you can't post,
+// you're restricted until <date>" message) with the same visual language as confirmModal.
+
+let _alertOverlay = null;
+
+function _getOrCreateAlert() {
+    if (_alertOverlay) return _alertOverlay;
+
+    _alertOverlay = document.createElement('div');
+    _alertOverlay.className = 'confirm-overlay';
+    // SAFE: hardcoded shell only. message → .textContent below.
+    _alertOverlay.innerHTML = `
+        <div class="confirm-box">
+            <p class="confirm-msg"></p>
+            <div class="confirm-actions confirm-actions--single">
+                <button class="confirm-btn confirm-btn--ok confirm-btn--ok-neutral">OK</button>
+            </div>
+        </div>`;
+    document.body.appendChild(_alertOverlay);
+    return _alertOverlay;
+}
+
+/** Show a styled alert. Returns a Promise<void>, resolved once dismissed. */
+export function alertModal(message, opts = {}) {
+    return new Promise(resolve => {
+        const el = _getOrCreateAlert();
+        el.querySelector('.confirm-msg').textContent = message;
+        el.querySelector('.confirm-btn--ok').textContent = opts.ok || 'OK';
+
+        el.classList.add('confirm-overlay--active');
+
+        function cleanup() {
+            el.classList.remove('confirm-overlay--active');
+            el.removeEventListener('click', onOverlay);
+            btnOk.removeEventListener('click', onOk);
+            document.removeEventListener('keydown', onKey);
+            resolve();
+        }
+
+        const btnOk = el.querySelector('.confirm-btn--ok');
+        function onOk() { cleanup(); }
+        function onOverlay(e) { if (e.target === el) cleanup(); }
+        function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') cleanup(); }
+
+        btnOk.addEventListener('click', onOk);
+        el.addEventListener('click', onOverlay);
+        document.addEventListener('keydown', onKey);
+
+        btnOk.focus();
+    });
+}

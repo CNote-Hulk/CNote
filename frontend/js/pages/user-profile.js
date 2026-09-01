@@ -8,6 +8,7 @@ import { API_BASE_URL } from '/js/config.js';
 import { AchievementsModule } from '/js/modules/achievements.js';
 import { I18nModule } from '/js/modules/i18n.js';
 import { shareOrCopy } from '/js/utils/share.js';
+import { confirmModal, promptModal } from '/js/utils/confirm-modal.js';
 
 /** Shortcut pentru traduceri */
 const t = key => I18nModule.t(key);
@@ -860,21 +861,22 @@ const t = key => I18nModule.t(key);
                     if (ok) call('ban', { reason: 'Admin action from profile' });
                 });
                 box.querySelector('#up-admin-ban-temp-btn').addEventListener('click', async () => {
-                    const days = parseInt(prompt('Ban for how many days?', '7'), 10);
+                    const days = parseInt(await promptModal('Ban for how many days?', { defaultValue: 7 }), 10);
                     if (!days || days <= 0) return;
                     const ok = await confirmOrNativeConfirm(`Ban @${username} for ${days} day(s)?`);
                     if (ok) call('ban', { reason: 'Admin action from profile', hours: days * 24 });
                 });
-                box.querySelector('#up-admin-mute-btn').addEventListener('click', () => {
-                    const hours = parseInt(prompt('Mute for how many hours?', '72'), 10);
+                box.querySelector('#up-admin-mute-btn').addEventListener('click', async () => {
+                    const hours = parseInt(await promptModal('Mute for how many hours?', { defaultValue: 72 }), 10);
                     if (!hours || hours <= 0) return;
                     call('mute', { hours });
                 });
             }
         }
 
-        // confirmModal isn't imported on this page (admin-only tooling — plain native
-        // confirm() is an acceptable, consistent trade-off with the rest of the admin panel).
+        // (2026-09-01) Was plain native confirm() — Andrei asked for the same custom-styled
+        // dialog everywhere ("fereastra custom sa fie si atunci cand alegi cat dai mute sau
+        // ban la user"), so this now goes through the same confirmModal() Admin Reports uses.
         async function confirmOrNativeConfirm(message) {
-            return confirm(message);
+            return confirmModal(message, { ok: 'Confirm' });
         }

@@ -7,7 +7,7 @@ import { ProgressModule } from '../../js/modules/progress.js';
 import { AchievementsModule } from '../../js/modules/achievements.js';
 import { SearchModule } from '../../js/modules/search.js';
 import { API_BASE_URL } from '../../js/config.js';
-import { confirmModal } from '../../js/utils/confirm-modal.js';
+import { confirmModal, promptModal } from '../../js/utils/confirm-modal.js';
 import { I18nModule } from '../../js/modules/i18n.js';
 import { createDatePicker } from '../../js/utils/date-picker.js';
 import { openAvatarCropper } from '../../js/modules/avatar-cropper.js';
@@ -1790,13 +1790,13 @@ async function loadAdminReports() {
                     if (!ok) return;
                     moderationAction(btn.dataset.id, 'ban-author-permanent', card, { reason: 'Content report' });
                 } else if (action === 'ban-author-temp') {
-                    const days = parseInt(prompt(t('admin_ban_temp_prompt'), '7'), 10);
+                    const days = parseInt(await promptModal(t('admin_ban_temp_prompt'), { defaultValue: 7 }), 10);
                     if (!days || days <= 0) return;
                     const ok = await confirmModal(t('admin_ban_confirm'), { ok: t('admin_ban_confirm_ok') });
                     if (!ok) return;
                     moderationAction(btn.dataset.id, 'ban-author-temp', card, { reason: 'Content report', hours: days * 24 });
                 } else if (action === 'mute-author') {
-                    const hours = parseInt(prompt(t('admin_mute_prompt'), '72'), 10);
+                    const hours = parseInt(await promptModal(t('admin_mute_prompt'), { defaultValue: 72 }), 10);
                     if (!hours || hours <= 0) return;
                     moderationAction(btn.dataset.id, 'mute-author', card, { hours });
                 } else if (action === 'content') {

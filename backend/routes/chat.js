@@ -13,7 +13,7 @@ const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
 const { publicUrlForKey } = require('../utils/objectStorage');
-const { isMuted } = require('../utils/moderation');
+const { isMuted, mutedUntilMessage } = require('../utils/moderation');
 
 const router = express.Router();
 
@@ -99,7 +99,7 @@ router.post('/messages', authRequired, async (req, res) => {
     // (the general "Community Chat" — frontend/js/pages/chat.js) never did, the one gap in an
     // otherwise-consistent mute enforcement. Same message shape as the others.
     if (isMuted(req.user)) {
-        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+        return res.status(403).json({ success: false, error: mutedUntilMessage(req.user.muted_until) });
     }
     try {
         const { message, attachment_key, attachment_type, attachment_size, attachment_duration_ms } = req.body;

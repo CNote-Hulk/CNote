@@ -6,6 +6,7 @@
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
 import { I18nModule } from '../modules/i18n.js';
+import { alertModal } from '../utils/confirm-modal.js';
 
 const POLL_INTERVAL = 5000;
 const COOLDOWN_MS = 3000;
@@ -273,10 +274,10 @@ formEl.addEventListener('submit', async (e) => {
             scrollToBottom();
             window.dispatchEvent(new CustomEvent('cn:message-sent'));
         } else {
-            alert(data.error || 'Nu s-a putut trimite mesajul.');
+            alertModal(data.error || 'Could not send the message.');
         }
     } catch {
-        alert('Nu s-a putut contacta serverul.');
+        alertModal('Could not reach the server.');
     }
 
     // Cooldown
