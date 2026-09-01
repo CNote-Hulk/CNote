@@ -4007,9 +4007,10 @@ body.community-navbar-page {
     }
 
     /* List views (forum thread list, marketplace grid, repair, DM list, photos) DON'T use
-       setMobileFullscreen()/hub-mobile-fullscreen (only the 3 detail views do, see below) —
-       they keep the navbar, and navigation.js's scroll auto-hide normally reclaims that
-       space by sliding the navbar off-screen as you scroll. But navigation.js listens on
+       setMobileFullscreen()/hub-mobile-fullscreen (the 3 detail views — thread/listing/DM —
+       plus, since 2026-09-01, Chat itself do; see below) — they keep the navbar, and
+       navigation.js's scroll auto-hide normally reclaims that space by sliding the navbar
+       off-screen as you scroll. But navigation.js listens on
        window.scrollY, and this page's own document never scrolls (height: 100dvh,
        overflow: hidden, above) — every list scrolls its OWN inner div instead — so the
        navbar sat permanently visible no matter how far into a list you scrolled. Fixed on
@@ -4025,21 +4026,25 @@ body.community-navbar-page {
         padding-top: 0;
     }
 
-    /* Forum thread detail, listing detail, and an open DM conversation already have their own
-       in-page back button — set via setMobileFullscreen() in community.js — so the site navbar
-       and floating bottom tab bar are transformed off-screen (same navbar--hidden/mbn--hidden
-       classes navigation.js's scroll auto-hide already uses) and the space reserved for the
-       navbar is reclaimed instead of leaving a blank gap above the now-hidden bar.
+    /* Forum thread detail, listing detail, an open DM conversation, and (2026-09-01) Chat
+       itself all have their own in-page back button — set via setMobileFullscreen() in
+       community.js (Chat's is #chat-back, wired in chat.js since it's a standalone script) —
+       so the site navbar and floating bottom tab bar are transformed off-screen (same
+       navbar--hidden/mbn--hidden classes navigation.js's scroll auto-hide already uses) and
+       the space reserved for the navbar is reclaimed instead of leaving a blank gap above the
+       now-hidden bar. Chat is a direct bottom-nav destination with no "parent" list to return
+       to, unlike the other 3 — its back button just un-hides the nav in place rather than
+       navigating anywhere.
        position: fixed (height: auto cancels the base rule's height: 100dvh, which would
        otherwise over-constrain a fixed box that also has top/bottom both pinned to 0) is
-       ONLY applied here, scoped to these 3 fullscreen views — a fixed, inset-0 box always
+       ONLY applied here, scoped to these fullscreen views — a fixed, inset-0 box always
        exactly matches the CURRENT visual viewport with no recalculation lag, unlike
        height: 100dvh on a normal-flow box, which only gets recalculated on resize and could
        still momentarily disagree with body's own height right when a phone's browser chrome
        (Samsung Internet/Chrome's collapsible address bar / gesture-nav bar) hides or
        reappears mid-scroll — that gap made the page scroll a few px and re-triggered
-       navigation.js's scroll-driven auto-hide into bringing the navbar back. List views
-       (chat/forum list/marketplace list/DM list/photos/repair) keep the plain height: 100dvh
+       navigation.js's scroll-driven auto-hide into bringing the navbar back. Remaining list
+       views (forum list/marketplace list/DM list/photos/repair) keep the plain height: 100dvh
        behavior above, unaffected. */
     body.hub-mobile-fullscreen .community-page--hub {
         padding-top: 0;
@@ -4111,6 +4116,20 @@ body.community-navbar-page {
     border-image: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.3), transparent) 1;
     flex-shrink: 0;
     border-radius: 16px 16px 0 0;
+}
+
+/* (2026-09-01) Only meaningful once setMobileFullscreen(true) has hidden the site
+   navbar/bottom tab bar for #view-chat (mobile only, community.js) — with no back
+   button, that would strand mobile users on Chat with no way back to Home/Forum/etc.
+   Desktop never fullscreens Chat, so the button stays hidden there. */
+.chat-hdr__back {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .chat-hdr__back {
+        display: inline;
+    }
 }
 
 .chat-hdr__left {

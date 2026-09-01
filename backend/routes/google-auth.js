@@ -15,7 +15,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
-const { authRequired } = require('../middleware/auth');
+const { authRequired, isActivelyBanned, liftExpiredBan } = require('../middleware/auth');
 const { parseDevice } = require('../utils/device');
 const { findOrCreateSession } = require('./auth');
 
@@ -208,9 +208,24 @@ router.get('/google/callback',
                 user = insertResult.rows[0];
             }
 
-            if (user.is_banned) {
-                return res.redirect('/html/pages/login.html?error=account_banned');
+            // (2026-09-01) Was unconditional user.is_banned + always redirected to the site's
+            // login.html — a banned account signing in from the APP (Custom Tab, ?state=
+            // platform=android) got stranded on the site's browser page instead of returning
+            // to the app at all, since only the success path below ever checked `isMobile`.
+            // Also now uses isActivelyBanned() (an expired temp ban isn't actively banned) and
+            // builds the same detailed "why + until" message routes/auth.js's own /login gives,
+            // instead of a bare error code.
+            if (isActivelyBanned(user)) {
+                const reasonSuffix = user.banned_reason ? ` Reason: ${user.banned_reason}` : '';
+                const untilSuffix = user.banned_until ? ` Until: ${new Date(user.banned_until).toISOString()}` : '';
+                const banMessage = `Your account has been suspended.${reasonSuffix}${untilSuffix}`;
+                const isMobileBan = req.query.state && req.query.state.includes('platform=android');
+                if (isMobileBan) {
+                    return res.redirect(`cnote://auth/callback?error=account_banned&message=${encodeURIComponent(banMessage)}`);
+                }
+                return res.redirect(`/html/pages/login.html?error=account_banned&message=${encodeURIComponent(banMessage)}`);
             }
+            if (user.is_banned) liftExpiredBan(user.id);
 
             // Create session
             const deviceInfo = parseDevice(req);

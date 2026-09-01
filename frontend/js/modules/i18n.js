@@ -548,6 +548,7 @@ const MESSAGES = {
         community_chat_login: 'Log in',
         community_chat_placeholder: 'Write a message...',
         community_chat_send: 'Send',
+        chat_muted_notice: 'You\'re muted for another {hours}h — you can\'t send messages until then.',
         community_loading: 'Loading…',
         community_enter: 'Enter community',
 
@@ -2539,6 +2540,7 @@ const MESSAGES = {
         community_enter: 'Intră în comunitate',
 
         features_title: 'Știința din Spatele Consolelor',
+        chat_muted_notice: 'Ești redus la tăcere încă {hours}h — nu poți trimite mesaje până atunci.',
         feature_cpu_title: 'Arhitectura Internă',
         feature_cpu_desc: 'De la procesoare custom și arhitecturi optimizate, la paralelizare și unități grafice dedicate – analizăm structura internă care face posibil gaming-ul modern.',
         feature_thermal_title: 'Energie și Transfer Termic',
@@ -4528,6 +4530,7 @@ const MESSAGES = {
         feature_cpu_desc: 'Desde procesadores personalizados y arquitecturas optimizadas hasta el paralelismo y las GPU dedicadas: examinamos la estructura interna que hace posible el gaming moderno.',
         feature_thermal_title: 'Energía y Transferencia Térmica',
         feature_thermal_desc: 'Cada pizca de rendimiento genera calor. Exploramos la física en las consolas: conducción, convección, eficiencia energética y los límites del hardware.',
+        chat_muted_notice: 'Estás silenciado durante {hours}h más — no podrás enviar mensajes hasta entonces.',
         feature_render_title: 'Renderizado y Algoritmos Gráficos',
         feature_render_desc: '¿Cómo se convierten los cálculos matemáticos en mundos 3D? Del ray tracing a las optimizaciones de software, descubrimos la tecnología detrás de los gráficos realistas.',
 
@@ -6517,6 +6520,7 @@ const MESSAGES = {
         feature_render_desc: 'Comment les calculs mathématiques deviennent-ils des mondes 3D ? Du ray tracing aux optimisations logicielles, nous dévoilons la technologie derrière des visuels réalistes.',
 
         profile_courses: 'Mes cours',
+        chat_muted_notice: 'Vous êtes en sourdine pour encore {hours}h — vous ne pouvez pas envoyer de messages jusque-là.',
         profile_achievements: 'Réalisations',
         profile_announcements: 'Mes annonces',
         profile_favorites: 'Annonces aimées',
@@ -8506,6 +8510,7 @@ const MESSAGES = {
         profile_announcements: 'I miei annunci',
         profile_favorites: 'Annunci preferiti',
         profile_favorite_consoles: 'Console preferite',
+        chat_muted_notice: 'Sei in modalità silenziosa per altre {hours}h — non puoi inviare messaggi fino ad allora.',
         profile_owned_consoles: 'Console possedute',
         profile_no_consoles: 'Nessuna console.',
 
@@ -10495,6 +10500,7 @@ const MESSAGES = {
         profile_no_consoles: 'Keine Konsolen.',
 
         // ── Öffentliches Benutzerprofil (user-profile.html) ──
+        chat_muted_notice: 'Du bist noch {hours}Std. stummgeschaltet — bis dahin kannst du keine Nachrichten senden.',
         up_loading: 'Profil wird geladen...',
         up_stats_title: 'Statistiken',
         up_stat_courses: 'Kursfortschritt',

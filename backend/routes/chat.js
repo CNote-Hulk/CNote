@@ -13,6 +13,7 @@ const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { awardXP } = require('../utils/gamification');
 const { publicUrlForKey } = require('../utils/objectStorage');
+const { isMuted } = require('../utils/moderation');
 
 const router = express.Router();
 
@@ -94,6 +95,12 @@ router.get('/messages', async (req, res) => {
 
 // POST /api/chat/messages — Send a new chat message and/or attachment (rate-limited)
 router.post('/messages', authRequired, async (req, res) => {
+    // (2026-09-01) forum.js/marketplace.js/dm.js all reject a muted user's post — this route
+    // (the general "Community Chat" — frontend/js/pages/chat.js) never did, the one gap in an
+    // otherwise-consistent mute enforcement. Same message shape as the others.
+    if (isMuted(req.user)) {
+        return res.status(403).json({ success: false, error: `You are restricted from posting until ${new Date(req.user.muted_until).toISOString()}.` });
+    }
     try {
         const { message, attachment_key, attachment_type, attachment_size, attachment_duration_ms } = req.body;
 

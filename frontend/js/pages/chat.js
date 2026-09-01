@@ -5,6 +5,7 @@
  */
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
+import { I18nModule } from '../modules/i18n.js';
 
 const POLL_INTERVAL = 5000;
 const COOLDOWN_MS = 3000;
@@ -16,14 +17,34 @@ const formEl = document.getElementById('chat-form');
 const inputEl = document.getElementById('chat-input');
 const sendBtn = document.getElementById('chat-send-btn');
 const loginNotice = document.getElementById('chat-login-notice');
+const mutedNotice = document.getElementById('chat-muted-notice');
+const mutedText = document.getElementById('chat-muted-text');
 const charCount = document.getElementById('chat-char-count');
 const charCurrent = document.getElementById('char-current');
+const backBtn = document.getElementById('chat-back');
+
+// (2026-09-01) community.js's showView('chat') now fullscreens Chat on mobile the same way
+// it already does for a forum thread/listing/DM (site navbar + bottom tab bar hidden) — see
+// its setMobileFullscreen(). This button is the only way back since Chat has no "parent"
+// view to return to; duplicated inline here (not imported from community.js) since chat.js
+// is a wholly separate script with its own module scope, and this is the only place either
+// side needs the toggle-off direction.
+backBtn?.addEventListener('click', () => {
+    document.querySelector('.navbar')?.classList.remove('navbar--hidden');
+    document.getElementById('mobile-bottom-nav')?.classList.remove('mbn--hidden');
+    document.body.classList.remove('hub-mobile-fullscreen');
+});
 
 const user = AuthModule.getCurrentUser();
 let lastMessageId = 0;
 let cooldownActive = false;
 let lastMsgUser = '';
 let lastMsgDate = '';
+// (2026-09-01) Own mute state — same rationale as community.js's identical block: the
+// cached user object never carries a live muted_until, so this is refreshed from the
+// server periodically instead. Kept local to this page (chat.js and community.js load on
+// different views and don't share module scope).
+let myMutedUntil = null;
 
 // Show form or login notice
 if (user) {
@@ -31,6 +52,39 @@ if (user) {
     charCount.hidden = false;
 } else {
     loginNotice.hidden = false;
+}
+
+/** Hours left on a mute (rounded up, min 1 while active), or null if not muted / expired. */
+function mutedHoursRemaining() {
+    if (!myMutedUntil) return null;
+    const until = new Date(myMutedUntil).getTime();
+    if (isNaN(until) || until <= Date.now()) return null;
+    return Math.max(1, Math.ceil((until - Date.now()) / 3600000));
+}
+
+async function refreshMuteStatus() {
+    if (!user) return;
+    try {
+        const token = localStorage.getItem('cn_token');
+        const headers = {};
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        const res = await fetch(API_BASE_URL + '/me', { headers, credentials: 'include' });
+        const data = await res.json();
+        if (data.success && data.user) myMutedUntil = data.user.muted_until || null;
+    } catch { /* keep previous value on a transient failure */ }
+
+    const hours = mutedHoursRemaining();
+    if (mutedNotice && charCount) {
+        formEl.hidden = hours !== null;
+        mutedNotice.hidden = hours === null;
+        if (hours !== null) {
+            mutedText.textContent = I18nModule.t('chat_muted_notice').replace('{hours}', hours);
+        }
+    }
+}
+if (user) {
+    refreshMuteStatus();
+    setInterval(refreshMuteStatus, 15000);
 }
 
 // Character counter + auto-resize textarea

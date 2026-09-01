@@ -441,6 +441,51 @@ async function api(method, path, body) {
 
 function user() { return AuthModule.getCurrentUser(); }
 
+// (2026-09-01) Own mute state — AuthModule.getCurrentUser() only ever reads the local
+// cn_session snapshot taken at login, so a mute applied mid-session never shows up there.
+// This is refreshed from the server periodically instead (see startMuteStatusPolling below,
+// piggybacked on the same cadence as startUnreadPolling) and consumed by both the DM
+// composer (applyDmMuteUI) and the "New thread" trigger (openNewThreadModal).
+let myMutedUntil = null;
+
+/** Hours left on a mute (rounded up, min 1 while active), or null if not muted / expired.
+ *  Mirrors the app's ChatViewModel.mutedHoursRemaining(). */
+function mutedHoursRemaining() {
+    if (!myMutedUntil) return null;
+    const until = new Date(myMutedUntil).getTime();
+    if (isNaN(until) || until <= Date.now()) return null;
+    return Math.max(1, Math.ceil((until - Date.now()) / 3600000));
+}
+
+async function refreshMuteStatus() {
+    if (!user()) return;
+    try {
+        const data = await api('GET', '/me');
+        if (data.success && data.user) myMutedUntil = data.user.muted_until || null;
+    } catch { /* keep previous value on a transient failure */ }
+    applyDmMuteUI();
+}
+
+function startMuteStatusPolling() {
+    refreshMuteStatus();
+    setInterval(refreshMuteStatus, 15000);
+}
+
+/** Swaps the DM composer for a "muted for Nh" notice, same idea as the app's
+ *  MutedComposerNotice — no-ops if no conversation is currently open (#dm-form absent). */
+function applyDmMuteUI() {
+    const form = document.getElementById('dm-form');
+    const notice = document.getElementById('dm-muted-notice');
+    if (!form || !notice) return;
+    const hours = mutedHoursRemaining();
+    form.hidden = hours !== null;
+    notice.hidden = hours === null;
+    if (hours !== null) {
+        notice.querySelector('#dm-muted-text').textContent =
+            t('chat_muted_notice').replace('{hours}', hours);
+    }
+}
+
 // ── View switching ─────────────────────────────────────────
 
 /** Switch the active hub view panel with re-trigger animation */
@@ -458,7 +503,10 @@ function showView(id) {
     // so on mobile they go fullscreen (site navbar + bottom tab bar hidden) instead of wasting
     // space on chrome that duplicates it. DM's own thread-open state isn't a distinct `S.view`
     // (see openConversation()/its back button), so it's handled separately, not here.
-    setMobileFullscreen(id === 'thread' || id === 'listing');
+    // Chat (2026-09-01, Andrei: "cand intru pe chat, nu e fullscreen, imi apare navbaru") — a
+    // direct bottom-nav destination, not a "detail" reached from a list, so #chat-back doesn't
+    // navigate anywhere; it just un-hides the nav again so the user can tap Home/Forum/etc.
+    setMobileFullscreen(id === 'thread' || id === 'listing' || id === 'chat');
 }
 
 /** Hide the site navbar + mobile bottom tab bar on mobile when a "detail" view (forum thread,
@@ -937,6 +985,13 @@ async function openThread(id) {
 
 /** Open modal dialog to create a new forum thread */
 function openNewThreadModal() {
+    // (2026-09-01) backend/routes/forum.js already 403s a muted POST /threads — this just
+    // skips the wasted round-trip + generic alert, same as the app's onNewThread gate.
+    const mutedHours = mutedHoursRemaining();
+    if (mutedHours !== null) {
+        showToast(t('chat_muted_notice').replace('{hours}', mutedHours), 'error');
+        return;
+    }
     const _prev = document.querySelector('.hub-modal-overlay');
     if (_prev) { cleanupHubSelects(_prev); _prev.remove(); }
 
@@ -3304,6 +3359,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
             <div class="hub-dm-reply-banner" id="dm-compose-banner" hidden></div>
             <div class="hub-dm-sticker-panel" id="dm-sticker-panel" hidden></div>
             <div class="hub-dm-pending" id="dm-pending" hidden></div>
+            <div class="chat-login-notice" id="dm-muted-notice" hidden><p><span id="dm-muted-text"></span></p></div>
             <form class="hub-dm-form" id="dm-form">
                 <input type="file" id="dm-image-input" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
                 <button type="button" class="hub-dm-form__round-btn" id="dm-attach-btn" title="${esc(t('dm_attach_image'))}">+</button>
@@ -3314,6 +3370,7 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
                 </div>
             </form>
         </div>`;
+    applyDmMuteUI();
 
     thread.querySelector('#dm-back-btn').addEventListener('click', () => {
         stopActiveVoice();
@@ -3803,6 +3860,7 @@ if (!user() && !_isWelcomePage) {
 
 initSidebar();
 startUnreadPolling();
+startMuteStatusPolling();
 
 // Hide admin-only sidebar items for non-admin users
 (function initAdminVisibility() {

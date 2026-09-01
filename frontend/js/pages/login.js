@@ -239,7 +239,10 @@ if (googleError) {
         'google_not_configured': 'Google OAuth is not configured.',
         'account_banned': 'Your account has been suspended.'
     };
-    errorEl.textContent = errorMessages[googleError] || 'Authentication error.';
+    // (2026-09-01) google-auth.js now passes the real "why + until" message (same detail
+    // as a plain email/password login gets) for account_banned specifically — prefer it
+    // over the generic map entry when present.
+    errorEl.textContent = urlParams.get('message') || errorMessages[googleError] || 'Authentication error.';
     errorEl.classList.add('visible');
     history.replaceState(null, '', window.location.pathname);
 }
