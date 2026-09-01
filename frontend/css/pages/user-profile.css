@@ -241,6 +241,24 @@
     justify-content: center;
 }
 
+/* Admin-only ban/mute widget (renderAdminModerationWidget, user-profile.js) — a full-width
+   row of its own below the normal actions (friend/report/share), not squeezed in as one
+   more pill among them. */
+.up-admin-mod-widget {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 6px;
+}
+
+.up-admin-mod-widget__status {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
 /* ══════════════════════════════════════════
    SHARED CARD
    ══════════════════════════════════════════ */

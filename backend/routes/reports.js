@@ -401,15 +401,38 @@ async function sendOutcomeEmail(to, subject, text) {
 // 500 response, even though the actual moderation action had already committed. This
 // function must never be able to break the response it's attached to — sendOutcomeEmail
 // already isolated the email-send itself, but not the DB lookups feeding it.
-async function notifyReportOutcome(report, newStatus, authorIdHint) {
+async function notifyReportOutcome(report, newStatus, authorIdHint, action) {
     try {
-        await notifyReportOutcomeInner(report, newStatus, authorIdHint);
+        await notifyReportOutcomeInner(report, newStatus, authorIdHint, action);
     } catch (err) {
         console.error('[reports] notifyReportOutcome failed (non-fatal):', err.message || err);
     }
 }
 
-async function notifyReportOutcomeInner(report, newStatus, authorIdHint) {
+// Human-readable description of what actually happened, for both the reporter ("how it
+// was resolved") and the author ("why, and for how long") — Andrei: "not just 'it was
+// resolved and that's it' — what was resolved, how was it resolved". `action` is
+// { type: 'ban'|'mute'|'delete_content', reason?, hours? }, passed by whichever
+// route (ban-author/mute-author/DELETE content) actually performed it; absent when the
+// plain PATCH status endpoint resolved a report with no author to act on.
+function describeAction(action) {
+    if (!action) return null;
+    const reasonSuffix = action.reason ? ` Reason given: "${action.reason}".` : '';
+    switch (action.type) {
+        case 'ban':
+            return action.hours
+                ? `The account was temporarily banned for ${Math.round(action.hours / 24)} day(s) (until ${new Date(Date.now() + action.hours * 3600000).toISOString()}).${reasonSuffix}`
+                : `The account was permanently banned.${reasonSuffix}`;
+        case 'mute':
+            return `The account was muted for ${action.hours} hour(s) (until ${new Date(Date.now() + action.hours * 3600000).toISOString()}) — posting is disabled until then.`;
+        case 'delete_content':
+            return `The reported content was removed.`;
+        default:
+            return null;
+    }
+}
+
+async function notifyReportOutcomeInner(report, newStatus, authorIdHint, action) {
     // (2026-09-01) Andrei: whichever of the three outcomes an admin picks — reviewed,
     // resolved, or dismissed — the reporter should always hear back; the reported user only
     // when applicable (i.e. resolved, where an actual action was taken against them —
@@ -443,11 +466,14 @@ async function notifyReportOutcomeInner(report, newStatus, authorIdHint) {
     }
 
     // resolved
+    const actionDesc = describeAction(action);
     await sendOutcomeEmail(
         reporterEmail,
         '[Console Notebook] Your report has been resolved',
         `Thanks for reporting a ${label} on Console Notebook.\n\n` +
-        `Our moderation team reviewed it and took action.\n\n` +
+        (actionDesc
+            ? `Our moderation team reviewed it and took action: ${actionDesc}\n\n`
+            : `Our moderation team reviewed it and marked it resolved.\n\n`) +
         `— Console Notebook Moderation`
     );
     const authorId = authorIdHint !== undefined ? authorIdHint : await resolveAuthorId(report.content_type, report.content_id);
@@ -456,7 +482,10 @@ async function notifyReportOutcomeInner(report, newStatus, authorIdHint) {
         authorEmail,
         '[Console Notebook] Your content was reviewed by our moderation team',
         `A report was filed regarding your ${label} on Console Notebook.\n\n` +
-        `After review, our moderation team took action on it. If you have questions, please contact support.\n\n` +
+        (actionDesc
+            ? `After review, our moderation team took the following action: ${actionDesc}\n\n`
+            : `After review, our moderation team took action on it.\n\n`) +
+        `If you have questions, please contact support.\n\n` +
         `— Console Notebook Moderation`
     );
 }
@@ -495,7 +524,7 @@ router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req
             );
         }
         await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
-        await notifyReportOutcome(report.rows[0], 'resolved', authorId);
+        await notifyReportOutcome(report.rows[0], 'resolved', authorId, { type: 'ban', reason, hours });
 
         return res.json({ success: true, authorId, hours });
     } catch (err) {
@@ -554,7 +583,7 @@ router.post('/reports/admin/:id/mute-author', authRequired, adminOnly, async (re
         // resolving action — so mute concludes with 'resolved' (was 'reviewed') and
         // triggers the same outcome emails.
         await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
-        await notifyReportOutcome(report.rows[0], 'resolved', authorId);
+        await notifyReportOutcome(report.rows[0], 'resolved', authorId, { type: 'mute', hours });
 
         return res.json({ success: true, authorId, hours });
     } catch (err) {
@@ -603,7 +632,7 @@ router.delete('/reports/admin/:id/content', authRequired, adminOnly, async (req,
         }
 
         await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
-        await notifyReportOutcome(report.rows[0], 'resolved', authorId);
+        await notifyReportOutcome(report.rows[0], 'resolved', authorId, { type: 'delete_content' });
 
         return res.json({ success: true });
     } catch (err) {
@@ -612,4 +641,10 @@ router.delete('/reports/admin/:id/content', authRequired, adminOnly, async (req,
     }
 });
 
+// describeAction/sendOutcomeEmail/getUserEmail reused by admin-stats.js's direct-by-
+// profile ban/mute (not tied to a report, so notifyReportOutcome itself doesn't apply,
+// but the banned/muted user still deserves to know why and for how long).
 module.exports = router;
+module.exports.describeAction = describeAction;
+module.exports.sendOutcomeEmail = sendOutcomeEmail;
+module.exports.getUserEmail = getUserEmail;

@@ -462,6 +462,14 @@ const t = key => I18nModule.t(key);
                         }
                     });
                     actionsEl.appendChild(reportBtn);
+
+                    // Admin-only ban/mute widget — Andrei: "I'm admin, I should be able to
+                    // do this from a user's profile too", not only through a content report.
+                    // Direct POST /api/admin/users/{id}/{ban,mute} (admin-stats.js) — same
+                    // semantics/prompts as the Admin Reports moderation list.
+                    if (currentUser.role === 'admin') {
+                        renderAdminModerationWidget(actionsEl, profile.id, profile.username);
+                    }
                 } else if (currentUser && currentUser.id === profile.id) {
                     actionsEl.innerHTML = `<a href="/html/pages/profil.html#account" class="user-action-btn user-action-btn--edit">${t('up_edit_profile')}</a>`;
                 }
@@ -786,3 +794,87 @@ const t = key => I18nModule.t(key);
         });
 
         loadUserProfile();
+
+        /**
+         * renderAdminModerationWidget
+         * Admin-only ban/mute controls on any profile, direct by user id (not tied to a
+         * content report) — POST /api/admin/users/{id}/{ban,mute} (admin-stats.js). Fetches
+         * current status first so the buttons reflect reality (e.g. "Unban" instead of "Ban"
+         * if already banned).
+         */
+        async function renderAdminModerationWidget(container, userId, username) {
+            const token = localStorage.getItem('cn_token');
+            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+            const box = document.createElement('div');
+            box.className = 'up-admin-mod-widget';
+            box.innerHTML = `<span class="up-admin-mod-widget__loading">⏳</span>`;
+            container.appendChild(box);
+
+            let status = {};
+            try {
+                const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/status`, { headers, credentials: 'include' });
+                const data = await res.json();
+                if (data.success) status = data;
+            } catch { /* widget just won't render if this fails */ }
+
+            const isBanned = !!status.is_banned;
+            const isMuted = !isBanned && status.muted_until && new Date(status.muted_until) > new Date();
+
+            async function call(action, body) {
+                box.querySelectorAll('button').forEach(b => b.disabled = true);
+                try {
+                    const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/${action}`, {
+                        method: 'POST',
+                        headers: { ...headers, 'Content-Type': 'application/json' },
+                        body: body ? JSON.stringify(body) : undefined,
+                        credentials: 'include',
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        renderAdminModerationWidget(container, userId, username);
+                        box.remove();
+                    } else {
+                        box.querySelectorAll('button').forEach(b => b.disabled = false);
+                        alert('Error: ' + (data.error || 'Unknown error'));
+                    }
+                } catch {
+                    box.querySelectorAll('button').forEach(b => b.disabled = false);
+                }
+            }
+
+            if (isBanned || isMuted) {
+                box.innerHTML = `
+                    <span class="up-admin-mod-widget__status">${isBanned ? '🚫 Banned' : '🔇 Muted'}${status.banned_reason ? ` — "${escapeHtml(status.banned_reason)}"` : ''}</span>
+                    <button type="button" class="ar-btn ar-btn--reopen" id="up-admin-lift-btn">↩ ${isBanned ? 'Unban' : 'Unmute'}</button>
+                `;
+                box.querySelector('#up-admin-lift-btn').addEventListener('click', () => call(isBanned ? 'unban' : 'unmute'));
+            } else {
+                box.innerHTML = `
+                    <button type="button" class="ar-btn ar-btn--ban" id="up-admin-ban-perm-btn">🚫 Ban permanently</button>
+                    <button type="button" class="ar-btn ar-btn--ban" id="up-admin-ban-temp-btn">⏳ Ban temporarily</button>
+                    <button type="button" class="ar-btn ar-btn--mute" id="up-admin-mute-btn">🔇 Mute</button>
+                `;
+                box.querySelector('#up-admin-ban-perm-btn').addEventListener('click', async () => {
+                    const ok = await confirmOrNativeConfirm(`Ban @${username} permanently?`);
+                    if (ok) call('ban', { reason: 'Admin action from profile' });
+                });
+                box.querySelector('#up-admin-ban-temp-btn').addEventListener('click', async () => {
+                    const days = parseInt(prompt('Ban for how many days?', '7'), 10);
+                    if (!days || days <= 0) return;
+                    const ok = await confirmOrNativeConfirm(`Ban @${username} for ${days} day(s)?`);
+                    if (ok) call('ban', { reason: 'Admin action from profile', hours: days * 24 });
+                });
+                box.querySelector('#up-admin-mute-btn').addEventListener('click', () => {
+                    const hours = parseInt(prompt('Mute for how many hours?', '72'), 10);
+                    if (!hours || hours <= 0) return;
+                    call('mute', { hours });
+                });
+            }
+        }
+
+        // confirmModal isn't imported on this page (admin-only tooling — plain native
+        // confirm() is an acceptable, consistent trade-off with the rest of the admin panel).
+        async function confirmOrNativeConfirm(message) {
+            return confirm(message);
+        }

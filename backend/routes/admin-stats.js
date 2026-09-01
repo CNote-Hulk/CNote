@@ -14,6 +14,7 @@ const express = require('express');
 const pool = require('../db');
 const { authRequired } = require('../middleware/auth');
 const { adminOnly } = require('../middleware/adminOnly');
+const { describeAction, sendOutcomeEmail, getUserEmail } = require('./reports');
 
 const router = express.Router();
 
@@ -73,6 +74,86 @@ router.get('/moderated-users', async (req, res) => {
         res.json({ success: true, users: result.rows });
     } catch (err) {
         console.error('[admin-stats] GET /moderated-users error:', err.message || err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── GET /api/admin/users/:id/status ─────────────────────────────────────────
+// Lets an admin-only profile-page widget know a user's current ban/mute state
+// without fetching the entire moderated-users list just to check one id.
+router.get('/users/:id/status', async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ success: false, error: 'Invalid user ID.' });
+    try {
+        const r = await pool.query(
+            `SELECT is_banned, banned_reason, banned_at, banned_until, muted_until FROM users WHERE id = $1`,
+            [userId]
+        );
+        if (!r.rows.length) return res.status(404).json({ success: false, error: 'User not found.' });
+        res.json({ success: true, ...r.rows[0] });
+    } catch (err) {
+        console.error('[admin-stats] GET user status error:', err.message || err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/admin/users/:id/ban ───────────────────────────────────────────
+// Direct-by-user-id ban — Andrei: "I'm admin, I should be able to do this from a
+// user's profile too", not just through a content report. Body: { reason?, hours? } —
+// same semantics as reports.js's ban-author (omitted/0 hours = permanent).
+router.post('/users/:id/ban', async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ success: false, error: 'Invalid user ID.' });
+    const reason = req.body?.reason ? String(req.body.reason).trim().slice(0, 500) : null;
+    const rawHours = parseInt(req.body?.hours, 10);
+    const hours = rawHours > 0 ? Math.min(8760, rawHours) : null;
+    try {
+        if (hours) {
+            await pool.query(
+                `UPDATE users SET is_banned = TRUE, banned_reason = $1, banned_at = NOW(), banned_until = NOW() + make_interval(hours => $2) WHERE id = $3`,
+                [reason, hours, userId]
+            );
+        } else {
+            await pool.query(
+                `UPDATE users SET is_banned = TRUE, banned_reason = $1, banned_at = NOW(), banned_until = NULL WHERE id = $2`,
+                [reason, userId]
+            );
+        }
+        // Same "why and for how long" email as a report-triggered ban — this path has no
+        // report/reporter, just the banned user themselves.
+        const email = await getUserEmail(userId);
+        await sendOutcomeEmail(
+            email,
+            '[Console Notebook] Your account was reviewed by our moderation team',
+            `After review, our moderation team took the following action on your Console Notebook account: ` +
+            `${describeAction({ type: 'ban', reason, hours })}\n\n` +
+            `If you have questions, please contact support.\n\n— Console Notebook Moderation`
+        );
+        res.json({ success: true, hours });
+    } catch (err) {
+        console.error('[admin-stats] POST ban error:', err.message || err);
+        res.status(500).json({ success: false, error: 'Internal error.' });
+    }
+});
+
+// ── POST /api/admin/users/:id/mute ──────────────────────────────────────────
+router.post('/users/:id/mute', async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ success: false, error: 'Invalid user ID.' });
+    const hours = Math.min(720, Math.max(1, parseInt(req.body?.hours, 10) || 72));
+    try {
+        await pool.query(`UPDATE users SET muted_until = NOW() + make_interval(hours => $1) WHERE id = $2`, [hours, userId]);
+        const email = await getUserEmail(userId);
+        await sendOutcomeEmail(
+            email,
+            '[Console Notebook] Your account was reviewed by our moderation team',
+            `After review, our moderation team took the following action on your Console Notebook account: ` +
+            `${describeAction({ type: 'mute', hours })}\n\n` +
+            `If you have questions, please contact support.\n\n— Console Notebook Moderation`
+        );
+        res.json({ success: true, hours });
+    } catch (err) {
+        console.error('[admin-stats] POST mute error:', err.message || err);
         res.status(500).json({ success: false, error: 'Internal error.' });
     }
 });
