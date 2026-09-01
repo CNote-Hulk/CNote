@@ -2819,7 +2819,7 @@ const MESSAGES = {
         reset_label_new: '🔑 Parolă nouă',
         reset_placeholder_new: 'Minim 6 caractere',
         reset_label_password_confirm: '🔑 Confirmă parola',
-        reset_placeholder_password_confirm: 'Repetă noua parolă',
+        reset_placeholder_confirm: 'Repetă noua parolă',
         reset_btn: '✅ Resetează Parola',
         reset_success_title: '✅ Parolă Resetată',
         reset_success_msg: '🎉 Parola ta a fost schimbată cu succes.',
