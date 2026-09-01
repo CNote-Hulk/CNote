@@ -276,9 +276,6 @@
         flex-direction: column;
         height: 100%;
     }
-    .hub-view--chat {
-        border-radius: 0;
-    }
     /* Hide sidebar fade on mobile — interferes with touch */
     .hub-sidebar::before {
         display: none;
@@ -2613,6 +2610,17 @@ button.hub-action-pill:hover {
     overflow: hidden;
 }
 
+/* #dm-thread and #chat-thread (general chat, since 2026-09-02) are two permanent siblings
+ * sharing one .hub-dm-layout slot — only one is ever shown, toggled via the `hidden` attribute
+ * (openConversation()/openGeneralChat()/closeGeneralChat() in community.js). Without this,
+ * .hub-dm-thread's own `display: flex` above would beat the browser's default `[hidden] {
+ * display: none }` rule despite `hidden` being set, since both selectors have equal specificity
+ * and author styles always win over user-agent ones. */
+#dm-thread[hidden],
+#chat-thread[hidden] {
+    display: none !important;
+}
+
 /* Floats above the scrollable message list (not in normal flow) — same "transparent bar +
    separate fade tail" pattern as .navbar/.navbar::after (no blur, no opaque bar of its own),
    so messages scroll fully underneath instead of stopping at a hard bar. `.hub-dm-messages`
@@ -3891,44 +3899,6 @@ button.hub-action-pill:hover {
 
 /* ── Chat Full Height ───────────────────────────────────── */
 
-.hub-view--chat {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
-}
-
-.hub-view--chat.hub-view--active {
-    display: flex;
-}
-
-/* General chat's back button is always visible — unlike a DM thread's (.hub-dm-back-btn is
- * mobile-only by default, since desktop keeps the conversation list visible beside the open
- * thread), #view-chat is a standalone full panel on every screen size, reached from the merged
- * chat list with nothing persisting beside it on desktop either. Same declarations as the
- * mobile-only .hub-dm-back-btn rule further down, just scoped here instead of behind a
- * max-width media query. */
-#view-chat .hub-dm-back-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    margin-right: 2px;
-    border: none;
-    background: none;
-    color: var(--text-light);
-    font-size: 1.2rem;
-    line-height: 1;
-    cursor: pointer;
-    flex-shrink: 0;
-    border-radius: 50%;
-}
-
-#view-chat .hub-dm-back-btn:hover {
-    background: rgba(255, 255, 255, 0.06);
-}
-
 /* ── Community Page Background ──────────────────────────── */
 
 /* Belt-and-suspenders lock: .community-page--hub below already declares
@@ -4120,7 +4090,8 @@ body.community-navbar-page {
 /* (2026-09-02) The rest of what used to live in this "CHAT REDESIGN" section — its own header,
    message bubble, and typing-indicator styles — was retired once general chat's markup switched
    to the same .hub-dm-thread__header/.hub-dm-msg* design a DM thread uses (see chat.js's
-   renderMessage() and community.html's #view-chat). The date divider is the one piece still
+   renderMessage() and community.html's #chat-thread, now a permanent sibling of #dm-thread
+   inside #view-dm rather than its own separate view). The date divider is the one piece still
    actually used (chat.js's appendMessage()), so it's all that's left here. */
 
 .chat-date-divider {

@@ -109,39 +109,6 @@
 
             <!-- Content Area -->
             <main class="hub-content" id="hub-content">
-                <!-- General Chat — same visual design as a DM thread (.hub-dm-thread/.hub-dm-msg*),
-                     since it's now reached from the merged chat list as just another pinned
-                     conversation (see community.js's loadConversations()) rather than being its
-                     own distinct-looking destination. -->
-                <div class="hub-view hub-view--chat" id="view-chat">
-                    <div class="hub-dm-thread" id="chat-thread">
-                        <div class="hub-dm-thread__header">
-                            <button class="hub-dm-back-btn hub-view-header__back" id="chat-back" aria-label="Back">←</button>
-                            <div class="hub-dm-conv__avatar" style="width:30px;height:30px;font-size:.9rem">💬</div>
-                            <span style="color:var(--text-light);font-weight:600;font-size:.9rem" data-i18n="community_chat_header">Community chat</span>
-                        </div>
-                        <div class="hub-dm-messages" id="chat-messages">
-                            <div class="hub-dm-empty" id="chat-loading" data-i18n="community_chat_loading">Loading messages...</div>
-                        </div>
-                        <div class="hub-dm-compose-dock" id="chat-input-area">
-                            <div class="chat-login-notice" id="chat-login-notice" hidden>
-                                <p><span data-i18n="community_chat_login_notice">You must be logged in to send messages.</span> <a href="login.html" data-i18n="community_chat_login">Log in</a></p>
-                            </div>
-                            <div class="chat-login-notice" id="chat-muted-notice" hidden>
-                                <p><span id="chat-muted-text"></span></p>
-                            </div>
-                            <form class="hub-dm-form" id="chat-form" hidden>
-                                <div class="hub-dm-form__field">
-                                    <textarea class="hub-dm-form__input" id="chat-input" placeholder="Write a message..." data-i18n="community_chat_placeholder" data-i18n-attr="placeholder" maxlength="500" rows="1" autocomplete="off"></textarea>
-                                    <button type="submit" class="hub-dm-form__mic-send-btn hub-dm-form__mic-send-btn--send" id="chat-send-btn" title="Send" data-i18n="community_chat_send" data-i18n-attr="title">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Forum -->
                 <div class="hub-view" id="view-forum"></div>
                 <!-- Thread detail -->
@@ -156,8 +123,47 @@
                 <div class="hub-view hub-view--active" id="view-marketplace"></div>
                 <!-- Listing detail -->
                 <div class="hub-view" id="view-listing"></div>
-                <!-- Direct Messages -->
-                <div class="hub-view" id="view-dm"></div>
+                <!-- Direct Messages + General Chat — share one two-pane layout (list left, thread
+                     right on desktop; list OR thread fullscreen on mobile), same as the app's
+                     ChatListPage/ConversationPage. #dm-list and #dm-thread's *contents* are
+                     rebuilt by community.js (renderDM()/openConversation()) same as before, but
+                     the outer .hub-dm-layout/#dm-list/#dm-thread/#chat-thread elements themselves
+                     are now static — chat.js binds to #chat-thread's children once at module
+                     load, so they can never be wiped by an innerHTML rebuild the way a plain
+                     empty #view-dm used to be. Only one of #dm-thread/#chat-thread is shown at a
+                     time (community.js's openGeneralChat()/closeGeneralChat()). -->
+                <div class="hub-view" id="view-dm">
+                    <div class="hub-dm-layout" id="dm-layout">
+                        <div class="hub-dm-list" id="dm-list"></div>
+                        <div class="hub-dm-thread" id="dm-thread"></div>
+                        <div class="hub-dm-thread" id="chat-thread" hidden>
+                            <div class="hub-dm-thread__header">
+                                <button class="hub-dm-back-btn" id="chat-back" aria-label="Back">←</button>
+                                <div class="hub-dm-conv__avatar" style="width:30px;height:30px;font-size:.9rem">💬</div>
+                                <span style="color:var(--text-light);font-weight:600;font-size:.9rem" data-i18n="community_chat_header">Community chat</span>
+                            </div>
+                            <div class="hub-dm-messages" id="chat-messages">
+                                <div class="hub-dm-empty" id="chat-loading" data-i18n="community_chat_loading">Loading messages...</div>
+                            </div>
+                            <div class="hub-dm-compose-dock" id="chat-input-area">
+                                <div class="chat-login-notice" id="chat-login-notice" hidden>
+                                    <p><span data-i18n="community_chat_login_notice">You must be logged in to send messages.</span> <a href="login.html" data-i18n="community_chat_login">Log in</a></p>
+                                </div>
+                                <div class="chat-login-notice" id="chat-muted-notice" hidden>
+                                    <p><span id="chat-muted-text"></span></p>
+                                </div>
+                                <form class="hub-dm-form" id="chat-form" hidden>
+                                    <div class="hub-dm-form__field">
+                                        <textarea class="hub-dm-form__input" id="chat-input" placeholder="Write a message..." data-i18n="community_chat_placeholder" data-i18n-attr="placeholder" maxlength="500" rows="1" autocomplete="off"></textarea>
+                                        <button type="submit" class="hub-dm-form__mic-send-btn hub-dm-form__mic-send-btn--send" id="chat-send-btn" title="Send" data-i18n="community_chat_send" data-i18n-attr="title">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="hub-view" id="view-photos"></div>
             </main>
@@ -205,7 +211,7 @@
     <script src="../../js/data/city-name-overrides.js"></script>
     <script type="module" src="../../js/main.js"></script>
     <script type="module" src="../../js/pages/chat.js?v=20260902"></script>
-    <script type="module" src="../../js/pages/community.js?v=20260901"></script>
+    <script type="module" src="../../js/pages/community.js?v=20260902"></script>
     <script type="module" src="../../js/pages/community-welcome-page.js?v=20260511"></script>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 

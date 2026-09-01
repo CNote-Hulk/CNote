@@ -104,6 +104,7 @@ const S = {
     listingId: null,
     dmPartner: null,
     dmPartnerName: '',
+    generalChatOpen: false,
     dmMessages: [],
     dmConversations: [],
     dmReplyTo: null,
@@ -502,13 +503,11 @@ function showView(id) {
     S.view = id;
     // Forum thread detail and listing detail already have their own in-page back link/button,
     // so on mobile they go fullscreen (site navbar + bottom tab bar hidden) instead of wasting
-    // space on chrome that duplicates it. DM's own thread-open state isn't a distinct `S.view`
-    // (see openConversation()/its back button), so it's handled separately, not here.
-    // Chat (2026-09-01) also fullscreens on mobile like the other "detail" views above — since
-    // the same day's merge of general chat into the DM list (loadConversations()'s generalRow),
-    // it now genuinely is a detail reached from a list, and #chat-back (chat.js) returns there
-    // via window.cnCommunityBackToChatList instead of just un-hiding the nav in place.
-    setMobileFullscreen(id === 'thread' || id === 'listing' || id === 'chat');
+    // space on chrome that duplicates it. DM's own thread-open state (and, since 2026-09-02,
+    // general chat's — see openGeneralChat()/closeGeneralChat()) isn't a distinct `S.view` either
+    // (both live inside #view-dm, not a separate view), so both are handled by their own
+    // open/close functions calling setMobileFullscreen() directly instead of here.
+    setMobileFullscreen(id === 'thread' || id === 'listing');
 }
 
 /** Hide the site navbar + mobile bottom tab bar on mobile when a "detail" view (forum thread,
@@ -664,9 +663,6 @@ function navigate(view, con, cat) {
     }
     
     switch (view) {
-        case 'chat':
-            showView('chat');
-            break;
         case 'forum':
             S.console = con;
             S.forumTag = 'All';
@@ -3246,18 +3242,53 @@ function openImageViewer(m, partnerId, partnerName) {
     replyInput.addEventListener('keydown', e => { if (e.key === 'Enter') viewer.querySelector('#viewer-reply-send').click(); });
 }
 
-/** Render the direct messages view: conversation list + chat panel */
+/** Reset the conversation-list + thread-pane *content* for the DM/general-chat view. The outer
+ * .hub-dm-layout/#dm-list/#dm-thread/#chat-thread elements themselves are static (community.html)
+ * and never rebuilt here — chat.js binds to #chat-thread's children once at module load, and the
+ * page-level login gate above this whole script already guarantees `user()` by the time this
+ * runs, so there's no "not logged in" case left to render here either. */
 function renderDM() {
-    const v = document.getElementById('view-dm');
-    if (!user()) {
-        v.innerHTML = `<div class="hub-empty"><div class="hub-empty__icon">🔒</div>${esc(t('dm_login_required'))}<br><a href="login.html" style="color:var(--accent-color)">${esc(t('dm_login_link'))}</a></div>`;
-        return;
-    }
-    v.innerHTML = `
-        <div class="hub-dm-layout" id="dm-layout">
-            <div class="hub-dm-list" id="dm-list"><div class="hub-dm-list__empty">${esc(t('dm_loading'))}</div></div>
-            <div class="hub-dm-thread" id="dm-thread"><div class="hub-dm-empty">${esc(t('dm_select_conversation'))}</div></div>
-        </div>`;
+    const layout = document.getElementById('dm-layout');
+    const list = document.getElementById('dm-list');
+    const thread = document.getElementById('dm-thread');
+    if (!layout || !list || !thread) return;
+    list.innerHTML = `<div class="hub-dm-list__empty">${esc(t('dm_loading'))}</div>`;
+    thread.innerHTML = `<div class="hub-dm-empty">${esc(t('dm_select_conversation'))}</div>`;
+    thread.hidden = false;
+    document.getElementById('chat-thread')?.setAttribute('hidden', '');
+    layout.classList.remove('hub-dm-layout--thread-open');
+}
+
+/** Open general chat in the thread pane — the merged list's pinned "General" row leads here.
+ * Shares .hub-dm-layout's thread slot with #dm-thread (only one of the two is ever visible,
+ * see closeGeneralChat()/openConversation()), so on desktop it sits beside the conversation
+ * list exactly like an open DM does, and on mobile it goes fullscreen the same way too — not a
+ * separate full-page view any more (that was the pre-2026-09-02 design). chat.js already polls
+ * independently and binds to #chat-thread's children once at module load, so there's nothing to
+ * (re)render here beyond toggling visibility. */
+function openGeneralChat() {
+    stopActiveVoice();
+    stopDmPolling();
+    S.dmPartner = null;
+    S.generalChatOpen = true;
+    document.querySelectorAll('.hub-dm-conv').forEach(c => c.classList.toggle('hub-dm-conv--active', c.dataset.id === 'general'));
+    document.getElementById('dm-thread')?.setAttribute('hidden', '');
+    const chatThread = document.getElementById('chat-thread');
+    if (chatThread) chatThread.hidden = false;
+    document.getElementById('dm-layout')?.classList.add('hub-dm-layout--thread-open');
+    setMobileFullscreen(true);
+}
+
+/** Close general chat back to the conversation list — chat.js's #chat-back button calls this via
+ * window.cnCommunityBackToChatList(). Mirrors an open DM thread's own back button. */
+function closeGeneralChat() {
+    S.generalChatOpen = false;
+    document.getElementById('chat-thread')?.setAttribute('hidden', '');
+    const thread = document.getElementById('dm-thread');
+    if (thread) thread.hidden = false;
+    document.getElementById('dm-layout')?.classList.remove('hub-dm-layout--thread-open');
+    setMobileFullscreen(false);
+    document.querySelectorAll('.hub-dm-conv--general').forEach(c => c.classList.remove('hub-dm-conv--active'));
 }
 
 /** One-line preview of the latest general-chat message, for its row in the merged chat list
@@ -3274,8 +3305,8 @@ async function fetchGeneralPreview() {
 }
 
 /** Fetch DM conversation list (grouped by partner), with the general community chat pinned
- * as the first row — clicking it opens the full-page chat view (view-chat/chat.js), clicking
- * a real conversation opens its thread in-place like before. */
+ * as the first row — clicking it opens general chat in the shared thread pane (see
+ * openGeneralChat()), clicking a real conversation opens its thread the same way as before. */
 async function loadConversations() {
     const list = document.getElementById('dm-list');
     if (!list) return;
@@ -3286,7 +3317,7 @@ async function loadConversations() {
     list.addEventListener('click', e => {
         const c = e.target.closest('.hub-dm-conv');
         if (!c) return;
-        if (c.dataset.id === 'general') { navigate('chat'); return; }
+        if (c.dataset.id === 'general') { openGeneralChat(); return; }
         openConversation(+c.dataset.id, c.dataset.name, c.dataset.avatar);
     });
     list.addEventListener('contextmenu', e => {
@@ -3298,7 +3329,7 @@ async function loadConversations() {
     });
 
     const generalRow = `
-        <button class="hub-dm-conv hub-dm-conv--general" data-id="general">
+        <button class="hub-dm-conv hub-dm-conv--general${S.generalChatOpen ? ' hub-dm-conv--active' : ''}" data-id="general">
             <div class="hub-dm-conv__avatar">💬</div>
             <div class="hub-dm-conv__body">
                 <div class="hub-dm-conv__name">${esc(t('community_chat_header'))}</div>
@@ -3350,7 +3381,9 @@ async function loadConversations() {
         list.innerHTML = generalRow + (convsHtml || `<div class="hub-dm-list__empty">${esc(t('dm_no_conversations'))}</div>`);
         if (generalPreview) document.getElementById('dm-general-preview').textContent = generalPreview;
 
-        if (S.dmPartner) {
+        if (S.generalChatOpen) {
+            openGeneralChat();
+        } else if (S.dmPartner) {
             const found = convs.find(c => c.partner_id === S.dmPartner);
             if (found) openConversation(S.dmPartner, found.partner_name, found.partner_avatar);
         }
@@ -3367,8 +3400,11 @@ async function openConversation(partnerId, partnerName, partnerAvatar) {
     S.dmPartner = partnerId;
     S.dmReplyTo = null;
     S.dmEditingId = null;
+    S.generalChatOpen = false;
     const thread = document.getElementById('dm-thread');
     if (!thread) return;
+    document.getElementById('chat-thread')?.setAttribute('hidden', '');
+    thread.hidden = false;
 
     document.querySelectorAll('.hub-dm-conv').forEach(c => {
         c.classList.toggle('hub-dm-conv--active', +c.dataset.id === partnerId);
@@ -3893,10 +3929,9 @@ if (!user() && !_isWelcomePage) {
     }
 } else {
 
-// Exposed for chat.js (a separate module scope) so its own #chat-back button can return to the
-// merged chat list — general chat is now reached from there instead of being a standalone
-// bottom-nav destination (see loadConversations()'s generalRow).
-window.cnCommunityBackToChatList = () => { showView('dm'); renderDM(); loadConversations(); };
+// Exposed for chat.js (a separate module scope) so its own #chat-back button can close general
+// chat back to the conversation list, mirroring an open DM thread's own back button.
+window.cnCommunityBackToChatList = () => closeGeneralChat();
 
 initSidebar();
 startUnreadPolling();
@@ -3945,6 +3980,14 @@ function handleHashNavigation() {
         return;
     }
 
+    // Deep link: #chat — general chat lives inside the DM view now (openGeneralChat()), not a
+    // view of its own, but the hash is kept working in case anything still links to it.
+    if (hash === '#chat') {
+        navigate('dm', null, '');
+        openGeneralChat();
+        return;
+    }
+
     // Section: #marketplace, #marketplace/consoles, #forum/ps, etc.
     if (hash && hash.length > 1) {
         const parts = hash.slice(1).split('/');
@@ -3952,7 +3995,7 @@ function handleHashNavigation() {
         const con  = parts[1] || null;
         const cat  = parts[2] || '';
 
-        const validViews = ['chat', 'forum', 'marketplace', 'repair', 'repair-requests', 'repair-admin', 'dm', 'photos'];
+        const validViews = ['forum', 'marketplace', 'repair', 'repair-requests', 'repair-admin', 'dm', 'photos'];
         if (validViews.includes(view)) {
             // Mark the active sidebar item
             sidebar?.querySelectorAll('.hub-sidebar__item').forEach(item => {
@@ -3980,7 +4023,7 @@ window.addEventListener('hashchange', handleHashNavigation);
     const dd  = document.getElementById('mbn-dropdown');
 
     function switchView(view, con, cat) {
-        navigate(view || 'chat', con || null, cat || '');
+        navigate(view || 'dm', con || null, cat || '');
 
         // Sync active state on MBN items
         document.querySelectorAll('.mbn-item[data-mbn-view], .mbn-dd-item[data-mbn-view]').forEach(el => {
