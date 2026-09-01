@@ -497,20 +497,22 @@ body > .navbar + * {
     .hamburger { display: none; }
     body.community-navbar-page .hamburger { display: none; }
 
-    /* Nav-links: pill container cu wrap */
+    /* Nav-links: no enclosing pill box on mobile — was a background+border container
+       (rgba(255,255,255,.05), 14px radius, 4px padding + 10px bottom margin) that only
+       added visual weight and vertical height above the actual page content, which JS
+       (main.js's --cn-nav-offset measurement) then reserves as top padding on every page.
+       Individual links keep their own hover/active pill background below — just no shared
+       outer box — and margins are tightened now that there's no box to pad around. */
     .nav-links {
         display: flex !important;
         width: calc(100% - 16px);
-        margin: 0 8px 10px;
-        padding: 4px;
+        margin: 0 8px 6px;
+        padding: 0;
         list-style: none;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         gap: 2px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .nav-links li {
@@ -562,7 +564,7 @@ body > .navbar + * {
 
     .nav-links {
         width: calc(100% - 12px);
-        margin: 0 6px 10px;
+        margin: 0 6px 6px;
     }
 
     .nav-links a {
