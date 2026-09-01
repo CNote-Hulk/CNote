@@ -3915,6 +3915,33 @@ button.hub-action-pill:hover {
 
 /* ── Community Page Background ──────────────────────────── */
 
+/* Belt-and-suspenders lock: .community-page--hub below already declares
+   height:100vh/100dvh + overflow:hidden, so body's rendered height should
+   never exceed one viewport and the document itself should never scroll —
+   all sub-scrolling (sidebar list, market grid, thread list, detail pane)
+   happens via each area's own overflow-y:auto + min-height:0 instead.
+   Reported live (2026-09-01) on Samsung DeX specifically — NOT on a real
+   desktop browser — that the whole page (header/sidebar/content) scrolls
+   together as one unit, ~90-100px, matching a viewport-chrome-sized
+   discrepancy. Root cause is almost certainly `100vh`/`100dvh` being
+   computed inconsistently by DeX's windowed Chrome/Samsung-Internet shell
+   (a long-standing class of bug with dynamic mobile viewport units,
+   apparently including DeX's own resizable window chrome) rather than
+   anything wrong in this file's layout math — every candidate here
+   (.community-page--hub itself, .hub-market-grid, .mobile-bottom-nav,
+   #navbar-placeholder's fixed navbar) was individually verified correct
+   against the live deployed CSS/HTML and ruled out. Rather than depend on
+   the viewport-unit calculation being exactly right on every shell, hard
+   -clip at the body level too: if .community-page--hub's box ever comes
+   out a few px taller than the real viewport for any reason, body simply
+   cannot reveal that excess as page scroll. Scoped to this body class (not
+   a bare `body{}` rule) since main.css is loaded site-wide. */
+body.community-navbar-page {
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+}
+
 .community-page--hub {
     position: relative;
     background: url('../../assets/images/wallpapers/community.jpg') center/cover no-repeat fixed;
