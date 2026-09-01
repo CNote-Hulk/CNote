@@ -628,6 +628,16 @@ async function initializeSchema() {
 		)`,
 		`CREATE INDEX IF NOT EXISTS idx_orders_seller_status ON orders(seller_id, status, created_at DESC)`,
 		`CREATE INDEX IF NOT EXISTS idx_orders_buyer ON orders(buyer_id, created_at DESC)`,
+
+		// (2026-09-01) Checkout form gained separate first/last name + email +
+		// an optional address line 2 (apt/building/floor) — added as new
+		// columns rather than reworking recipient_name (still NOT NULL, kept
+		// populated as "first last" for backward compat with any existing
+		// rows and the seller-queue display code that already reads it).
+		`ALTER TABLE orders ADD COLUMN IF NOT EXISTS recipient_first_name TEXT DEFAULT ''`,
+		`ALTER TABLE orders ADD COLUMN IF NOT EXISTS recipient_last_name TEXT DEFAULT ''`,
+		`ALTER TABLE orders ADD COLUMN IF NOT EXISTS recipient_email TEXT DEFAULT ''`,
+		`ALTER TABLE orders ADD COLUMN IF NOT EXISTS address_line2 TEXT DEFAULT ''`,
 	];
 	for (const sql of migrations) {
 		try { await pool.query(sql); } catch { }

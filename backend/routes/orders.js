@@ -25,21 +25,32 @@ const SHIPPING_PRICE = { address: 25, easybox: 20 };
 // it can't be bought twice — if the order falls through, the seller can
 // revert it with the existing sold/active toggle (PATCH listings/:id/status).
 router.post('/', authRequired, async (req, res) => {
-    const { listing_id, delivery_method, recipient_name, recipient_phone, county, city, address, easybox_name, notes } = req.body;
+    const {
+        listing_id, delivery_method, recipient_first_name, recipient_last_name,
+        recipient_phone, recipient_email, county, city, address, address_line2,
+        easybox_name, notes
+    } = req.body;
 
     const listingId = parseInt(listing_id);
     if (isNaN(listingId)) return res.status(400).json({ success: false, error: 'Invalid listing.' });
     if (!VALID_METHODS.includes(delivery_method)) return res.status(400).json({ success: false, error: 'Invalid delivery method.' });
 
-    const safeName = String(recipient_name || '').trim().slice(0, 100);
+    const safeFirstName = String(recipient_first_name || '').trim().slice(0, 100);
+    const safeLastName = String(recipient_last_name || '').trim().slice(0, 100);
+    const safeName = `${safeFirstName} ${safeLastName}`.trim(); // kept for backward-compat (recipient_name is NOT NULL, still read by the seller queue)
     const safePhone = String(recipient_phone || '').trim().slice(0, 30);
-    if (!safeName || !safePhone) {
-        return res.status(400).json({ success: false, error: 'Name and phone are required.' });
+    const safeEmail = String(recipient_email || '').trim().slice(0, 150);
+    if (!safeFirstName || !safeLastName || !safePhone) {
+        return res.status(400).json({ success: false, error: 'First name, last name and phone are required.' });
+    }
+    if (safeEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(safeEmail)) {
+        return res.status(400).json({ success: false, error: 'Invalid email.' });
     }
 
     const safeCounty = String(county || '').trim().slice(0, 100);
     const safeCity = String(city || '').trim().slice(0, 100);
     const safeAddress = String(address || '').trim().slice(0, 300);
+    const safeAddress2 = String(address_line2 || '').trim().slice(0, 150);
     const safeEasybox = String(easybox_name || '').trim().slice(0, 200);
     const safeNotes = String(notes || '').trim().slice(0, 500);
 
@@ -69,16 +80,19 @@ router.post('/', authRequired, async (req, res) => {
         const result = await pool.query(`
             INSERT INTO orders (
                 listing_id, listing_title, buyer_id, seller_id, delivery_method,
-                recipient_name, recipient_phone, county, city, address, easybox_name, notes,
+                recipient_name, recipient_first_name, recipient_last_name, recipient_phone,
+                recipient_email, county, city, address, address_line2, easybox_name, notes,
                 product_price, shipping_price, total_price
             )
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
-            RETURNING id, listing_id, listing_title, delivery_method, recipient_name, recipient_phone,
-                      county, city, address, easybox_name, notes, product_price, shipping_price,
-                      total_price, status, created_at
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+            RETURNING id, listing_id, listing_title, delivery_method, recipient_name,
+                      recipient_first_name, recipient_last_name, recipient_phone, recipient_email,
+                      county, city, address, address_line2, easybox_name, notes, product_price,
+                      shipping_price, total_price, status, created_at
         `, [
             listingId, listing.title, req.user.id, listing.user_id, delivery_method,
-            safeName, safePhone, safeCounty, safeCity, safeAddress, safeEasybox, safeNotes,
+            safeName, safeFirstName, safeLastName, safePhone, safeEmail,
+            safeCounty, safeCity, safeAddress, safeAddress2, safeEasybox, safeNotes,
             productPrice, shippingPrice, totalPrice
         ]);
 

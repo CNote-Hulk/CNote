@@ -2072,13 +2072,25 @@ function openBuyListingModal(l) {
                 <button class="hub-modal__close">&times;</button>
             </div>
             <form class="hub-modal__body" id="buy-listing-form">
-                <div class="hub-form-group">
-                    <label class="hub-form-label">${esc(t('order_field_name'))}</label>
-                    <input class="hub-form-input" name="recipient_name" maxlength="100" required>
+                <div class="hub-form-row">
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">${esc(t('order_field_last_name'))}</label>
+                        <input class="hub-form-input" name="recipient_last_name" maxlength="100" required>
+                    </div>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">${esc(t('order_field_first_name'))}</label>
+                        <input class="hub-form-input" name="recipient_first_name" maxlength="100" required>
+                    </div>
                 </div>
-                <div class="hub-form-group">
-                    <label class="hub-form-label">${esc(t('order_field_phone'))}</label>
-                    <input class="hub-form-input" name="recipient_phone" type="tel" maxlength="30" required>
+                <div class="hub-form-row">
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">${esc(t('order_field_phone'))}</label>
+                        <input class="hub-form-input" name="recipient_phone" type="tel" maxlength="30" required>
+                    </div>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">${esc(t('order_field_email'))}</label>
+                        <input class="hub-form-input" name="recipient_email" type="email" maxlength="150">
+                    </div>
                 </div>
                 <div class="hub-form-group">
                     <label class="hub-form-label">${esc(t('order_field_method'))}</label>
@@ -2104,6 +2116,10 @@ function openBuyListingModal(l) {
                     <div class="hub-form-group">
                         <label class="hub-form-label">${esc(t('order_field_address'))}</label>
                         <textarea class="hub-form-textarea" name="address" rows="2" maxlength="300"></textarea>
+                    </div>
+                    <div class="hub-form-group">
+                        <label class="hub-form-label">${esc(t('order_field_address2'))}</label>
+                        <input class="hub-form-input" name="address_line2" maxlength="150" placeholder="${esc(t('order_field_address2_placeholder'))}">
                     </div>
                 </div>
                 <div id="buy-easybox-fields" hidden>
@@ -2161,11 +2177,14 @@ function openBuyListingModal(l) {
         const res = await api('POST', '/orders', {
             listing_id: l.id,
             delivery_method: method,
-            recipient_name: f.recipient_name.value.trim(),
+            recipient_first_name: f.recipient_first_name.value.trim(),
+            recipient_last_name: f.recipient_last_name.value.trim(),
             recipient_phone: f.recipient_phone.value.trim(),
+            recipient_email: f.recipient_email.value.trim(),
             county: method === 'address' ? f.county.value : '',
             city: method === 'address' ? f.city.value.trim() : '',
             address: method === 'address' ? f.address.value.trim() : '',
+            address_line2: method === 'address' ? f.address_line2.value.trim() : '',
             easybox_name: method === 'easybox' ? f.easybox_name.value.trim() : '',
             notes: f.notes.value.trim(),
         });

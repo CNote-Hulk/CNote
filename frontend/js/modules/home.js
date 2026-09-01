@@ -586,10 +586,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         : `📍 ${I18nModule.t('order_method_address')}`;
                     const deliveryValue = o.delivery_method === 'easybox'
                         ? o.easybox_name
-                        : [o.address, o.city, o.county].filter(Boolean).join(', ');
+                        : [o.address, o.address_line2, o.city, o.county].filter(Boolean).join(', ');
                     const copyValues = {
                         name: o.recipient_name,
                         phone: o.recipient_phone,
+                        email: o.recipient_email,
                         delivery: deliveryValue,
                         total: `${Number(o.total_price).toFixed(0)} RON`,
                     };
@@ -602,6 +603,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div class="order-card__buyer">${escapeHtml(I18nModule.t('order_buyer_label'))}: ${escapeHtml(o.buyer_name)}</div>
                         ${fieldRow(I18nModule.t('order_field_name'), o.recipient_name, `${o.id}-name`)}
                         ${fieldRow(I18nModule.t('order_field_phone'), o.recipient_phone, `${o.id}-phone`)}
+                        ${fieldRow(I18nModule.t('order_field_email'), o.recipient_email, `${o.id}-email`)}
                         ${fieldRow(methodLabel, deliveryValue, `${o.id}-delivery`)}
                         ${o.notes ? fieldRow(I18nModule.t('order_field_notes'), o.notes, `${o.id}-notes`) : ''}
                         <div class="order-card__actions">
@@ -627,7 +629,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     btn.addEventListener('click', () => {
                         const card = grid.querySelector(`.order-card[data-id="${btn.dataset.id}"]`);
                         const store = JSON.parse(card.querySelector('.order-card__copy-values').dataset.copyStore || '{}');
-                        const block = [store.name, store.phone, store.delivery, store.total].filter(Boolean).join('\n');
+                        const block = [store.name, store.phone, store.email, store.delivery, store.total].filter(Boolean).join('\n');
                         copyOrderField(block, btn);
                     });
                 });
