@@ -295,11 +295,13 @@ router.patch('/reports/admin/:id', authRequired, adminOnly, async (req, res) => 
 
     try {
         const result = await pool.query(
-            `UPDATE content_reports SET status = $1 WHERE id = $2 RETURNING id, status`,
+            `UPDATE content_reports SET status = $1 WHERE id = $2
+             RETURNING id, status, content_type, content_id, reporter_contact, reporter_id`,
             [status, reportId]
         );
         if (!result.rows.length) return res.status(404).json({ success: false, error: 'Report not found.' });
-        return res.json({ success: true, report: result.rows[0] });
+        await notifyReportOutcome(result.rows[0], status);
+        return res.json({ success: true, report: { id: result.rows[0].id, status: result.rows[0].status } });
     } catch (err) {
         console.error('[reports] PATCH /api/reports/admin error:', err.message || err);
         return res.status(500).json({ success: false, error: 'Internal error.' });
@@ -345,6 +347,78 @@ async function resolveAuthorId(contentType, contentId) {
     }
 }
 
+// ── Outcome emails (dismiss/resolve) ────────────────────────────────────────
+// Andrei: on dismiss, email the reporter it wasn't serious enough to act on; on
+// resolve, email BOTH the reporter and the reported user (whose content/account was
+// actioned) that the report was resolved. Fire-and-forget, same pattern as the
+// admin-notification email in POST /reports below — a failed send must never break the
+// status-change response.
+
+async function getReporterEmail(report) {
+    if (report.reporter_contact) return report.reporter_contact;
+    if (report.reporter_id) {
+        const r = await pool.query('SELECT email FROM users WHERE id = $1', [report.reporter_id]);
+        return r.rows[0]?.email || null;
+    }
+    return null;
+}
+
+async function getUserEmail(userId) {
+    if (!userId) return null;
+    const r = await pool.query('SELECT email FROM users WHERE id = $1', [userId]);
+    return r.rows[0]?.email || null;
+}
+
+async function sendOutcomeEmail(to, subject, text) {
+    if (!to) return;
+    try {
+        await resend.emails.send({ from: FROM, to, subject, text });
+    } catch (err) {
+        console.error('[reports] outcome email failed:', err.message || err);
+    }
+}
+
+// `report` needs content_type, content_id, reporter_contact, reporter_id.
+// `authorIdHint` — pass the already-resolved author id when the caller has one
+// (ban-author/mute-author already call resolveAuthorId for their own purposes) to
+// avoid resolving it twice.
+async function notifyReportOutcome(report, newStatus, authorIdHint) {
+    if (newStatus !== 'dismissed' && newStatus !== 'resolved') return;
+    const label = report.content_type.replace(/_/g, ' ');
+    const reporterEmail = await getReporterEmail(report);
+
+    if (newStatus === 'dismissed') {
+        await sendOutcomeEmail(
+            reporterEmail,
+            '[Console Notebook] Your report has been reviewed',
+            `Thanks for reporting a ${label} on Console Notebook.\n\n` +
+            `Our moderation team reviewed it and determined no action was necessary — it didn't ` +
+            `appear serious enough or in violation of our guidelines.\n\n` +
+            `If you believe this was a mistake or have more details, feel free to submit a new report.\n\n` +
+            `— Console Notebook Moderation`
+        );
+        return;
+    }
+
+    // resolved
+    await sendOutcomeEmail(
+        reporterEmail,
+        '[Console Notebook] Your report has been resolved',
+        `Thanks for reporting a ${label} on Console Notebook.\n\n` +
+        `Our moderation team reviewed it and took action.\n\n` +
+        `— Console Notebook Moderation`
+    );
+    const authorId = authorIdHint !== undefined ? authorIdHint : await resolveAuthorId(report.content_type, report.content_id);
+    const authorEmail = await getUserEmail(authorId);
+    await sendOutcomeEmail(
+        authorEmail,
+        '[Console Notebook] Your content was reviewed by our moderation team',
+        `A report was filed regarding your ${label} on Console Notebook.\n\n` +
+        `After review, our moderation team took action on it. If you have questions, please contact support.\n\n` +
+        `— Console Notebook Moderation`
+    );
+}
+
 // ── POST /api/reports/admin/:id/ban-author ──────────────────────────────────
 // Body: { reason?, hours? }. Omit `hours` (or send 0/falsy) for a permanent ban;
 // a positive integer (1–8760, capped at one year) makes it a temporary ban that
@@ -358,7 +432,10 @@ router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req
     const hours = rawHours > 0 ? Math.min(8760, rawHours) : null; // null = permanent
 
     try {
-        const report = await pool.query('SELECT content_type, content_id FROM content_reports WHERE id = $1', [reportId]);
+        const report = await pool.query(
+            'SELECT content_type, content_id, reporter_contact, reporter_id FROM content_reports WHERE id = $1',
+            [reportId]
+        );
         if (!report.rows.length) return res.status(404).json({ success: false, error: 'Report not found.' });
 
         const authorId = await resolveAuthorId(report.rows[0].content_type, report.rows[0].content_id);
@@ -376,6 +453,7 @@ router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req
             );
         }
         await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
+        await notifyReportOutcome(report.rows[0], 'resolved', authorId);
 
         return res.json({ success: true, authorId, hours });
     } catch (err) {
@@ -443,10 +521,16 @@ router.delete('/reports/admin/:id/content', authRequired, adminOnly, async (req,
     if (!isValidReportId(reportId)) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
 
     try {
-        const report = await pool.query('SELECT content_type, content_id FROM content_reports WHERE id = $1', [reportId]);
+        const report = await pool.query(
+            'SELECT content_type, content_id, reporter_contact, reporter_id FROM content_reports WHERE id = $1',
+            [reportId]
+        );
         if (!report.rows.length) return res.status(404).json({ success: false, error: 'Report not found.' });
 
         const { content_type: contentType, content_id: contentId } = report.rows[0];
+        // Resolve the author BEFORE deleting the content — the row (and its user_id/
+        // sender_id column) won't exist to look up afterward.
+        const authorId = await resolveAuthorId(contentType, contentId);
 
         switch (contentType) {
             case 'listing':
@@ -469,6 +553,7 @@ router.delete('/reports/admin/:id/content', authRequired, adminOnly, async (req,
         }
 
         await pool.query(`UPDATE content_reports SET status = 'resolved' WHERE id = $1`, [reportId]);
+        await notifyReportOutcome(report.rows[0], 'resolved', authorId);
 
         return res.json({ success: true });
     } catch (err) {
