@@ -387,19 +387,6 @@
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Chat view adjustments — rounded container */
-.hub-view--chat .chat-box {
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    flex: 1;
-    overflow: hidden;
-}
-
-.hub-view--chat .chat-box--large .chat-messages {
-    max-height: none;
-    min-height: 0;
-    flex: 1;
-}
 
 
 /* ── View Header ────────────────────────────────────────── */
@@ -2700,6 +2687,20 @@ button.hub-action-pill:hover {
     margin-top: -4px;
 }
 
+/* Sender name above the first bubble of a run from someone else — only needed in general chat
+ * (a group of >2 people), never in a real 1:1 DM thread, so this only ever appears there
+ * (see chat.js's renderMessage(), mirrors the app's `showAuthor` in ChatScreen.kt). */
+.hub-dm-msg__sender {
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin: 0 4px 2px;
+    text-decoration: none;
+}
+
+.hub-dm-msg__sender:hover {
+    text-decoration: underline;
+}
+
 .hub-dm-msg {
     padding: 8px 14px;
     border-radius: 18px;
@@ -2934,6 +2935,13 @@ button.hub-action-pill:hover {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+/* Only general chat ever disables this button (its send-cooldown, chat.js) — DM has no
+ * per-message cooldown, so this was never needed there before. */
+.hub-dm-form__mic-send-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 .hub-dm-form__mic-send-btn--send {
@@ -3894,36 +3902,31 @@ button.hub-action-pill:hover {
     display: flex;
 }
 
-.hub-view--chat .community-container {
+/* General chat's back button is always visible — unlike a DM thread's (.hub-dm-back-btn is
+ * mobile-only by default, since desktop keeps the conversation list visible beside the open
+ * thread), #view-chat is a standalone full panel on every screen size, reached from the merged
+ * chat list with nothing persisting beside it on desktop either. Same declarations as the
+ * mobile-only .hub-dm-back-btn rule further down, just scoped here instead of behind a
+ * max-width media query. */
+#view-chat .hub-dm-back-btn {
     display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    max-width: none;
-    padding: 0;
-    margin: 0;
-}
-
-.hub-view--chat .chat-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    overflow: hidden;
-}
-
-.hub-view--chat .chat-box .chat-messages {
-    flex: 1;
-    min-height: 0;
-    max-height: none;
-    overflow-y: auto;
-}
-
-.hub-view--chat .chat-input-area {
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: 2px;
+    border: none;
+    background: none;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
     flex-shrink: 0;
-    border-radius: 0 0 16px 16px;
+    border-radius: 50%;
+}
+
+#view-chat .hub-dm-back-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
 }
 
 /* ── Community Page Background ──────────────────────────── */
@@ -4113,90 +4116,12 @@ body.community-navbar-page {
     }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CHAT REDESIGN — Header, Messages, Input, Animations
-   ═══════════════════════════════════════════════════════════ */
-
-/* ── Chat Header ─────────────────────────────────────────── */
-
-.chat-hdr {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-bottom: 1px solid;
-    border-image: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.3), transparent) 1;
-    flex-shrink: 0;
-    border-radius: 16px 16px 0 0;
-}
-
-/* (2026-09-01) Only meaningful once setMobileFullscreen(true) has hidden the site
-   navbar/bottom tab bar for #view-chat (mobile only, community.js) — with no back
-   button, that would strand mobile users on Chat with no way back to Home/Forum/etc.
-   Desktop never fullscreens Chat, so the button stays hidden there. */
-.chat-hdr__back {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .chat-hdr__back {
-        display: inline;
-    }
-}
-
-.chat-hdr__left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.chat-hdr__icon {
-    font-size: 1.15rem;
-}
-
-.chat-hdr__title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text-light);
-    font-family: var(--font-sans);
-}
-
-.chat-hdr__right {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    color: var(--text-gray);
-}
-
-.chat-hdr__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #43B581;
-    box-shadow: 0 0 6px rgba(67, 181, 129, 0.4);
-}
-
-/* ── Messages Area ───────────────────────────────────────── */
-
-.hub-view--chat .chat-messages {
-    background:
-        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        var(--dark-bg-2);
-    background-size: 24px 24px, 24px 24px, auto;
-    padding: 16px 12px;
-    gap: 2px;
-}
-
-/* Custom thin scrollbar */
-.hub-view--chat .chat-messages::-webkit-scrollbar { width: 4px; }
-.hub-view--chat .chat-messages::-webkit-scrollbar-track { background: transparent; }
-.hub-view--chat .chat-messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
-.hub-view--chat .chat-messages::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
-
 /* ── Date Divider ────────────────────────────────────────── */
+/* (2026-09-02) The rest of what used to live in this "CHAT REDESIGN" section — its own header,
+   message bubble, and typing-indicator styles — was retired once general chat's markup switched
+   to the same .hub-dm-thread__header/.hub-dm-msg* design a DM thread uses (see chat.js's
+   renderMessage() and community.html's #view-chat). The date divider is the one piece still
+   actually used (chat.js's appendMessage()), so it's all that's left here. */
 
 .chat-date-divider {
     display: flex;
@@ -4266,361 +4191,12 @@ body.community-navbar-page {
     background: rgba(255, 255, 255, 0.06);
 }
 
-/* ── Message Bubble ──────────────────────────────────────── */
-
-.chat-msg {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    padding: 6px 12px;
-    border-radius: 8px;
-    transition: background 0.15s;
-    margin-top: 8px;
-}
-
-.chat-msg:hover {
-    background: rgba(255, 255, 255, 0.03);
-}
-
-.chat-msg__avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.02em;
-    user-select: none;
-    overflow: hidden;
-}
-
-.chat-msg__body {
-    flex: 1;
-    min-width: 0;
-}
-
-.chat-msg__header {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 2px;
-}
-
-.chat-msg__name {
-    font-size: 0.88rem;
-    font-weight: 700;
-    text-decoration: none;
-    font-family: var(--font-sans);
-}
-
-.chat-msg__name:hover {
-    text-decoration: underline;
-}
-
-.chat-msg__time {
-    font-size: 0.69rem;
-    color: var(--text-gray);
-}
-
-.chat-msg__text {
-    font-size: 0.88rem;
-    color: var(--text-light);
-    line-height: 1.6;
-    word-break: break-word;
-    white-space: pre-wrap;
-}
-
-/* Grouped / consecutive message from same user */
-.chat-msg--grouped {
-    margin-top: 1px;
-    padding-left: 60px;
-    position: relative;
-}
-
-.chat-msg--grouped:hover .chat-msg__time-hover {
-    opacity: 1;
-}
-
-.chat-msg__time-hover {
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.65rem;
-    color: var(--text-gray);
-    opacity: 0;
-    transition: opacity 0.15s;
-    width: 40px;
-    text-align: center;
-    pointer-events: none;
-}
-
-/* ── New Message Animation ───────────────────────────────── */
-
-@keyframes chatFadeSlide {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-.chat-msg--new {
-    animation: chatFadeSlide 0.3s ease;
-}
-
-/* ── Empty State ─────────────────────────────────────────── */
-
-.hub-view--chat .chat-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    padding: 0;
-    color: var(--text-gray);
-    font-size: 0.88rem;
-}
-
-.hub-view--chat .chat-loading[hidden] {
-    display: none !important;
-}
-
-.chat-empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-}
-
-.chat-empty-state__circle {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: rgba(var(--accent-rgb), 0.08);
-    border: 1px solid rgba(var(--accent-rgb), 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    margin-bottom: 4px;
-}
-
-.chat-empty-state__title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-light);
-}
-
-.chat-empty-state__subtitle {
-    font-size: 0.84rem;
-    color: var(--text-gray);
-}
-
-.chat-empty-state__btn {
-    margin-top: 8px;
-    padding: 10px 22px;
-    background: var(--accent-color);
-    color: var(--primary-color, #1B1714);
-    border: none;
-    border-radius: 999px;
-    font-size: 0.84rem;
-    font-weight: 600;
-    font-family: var(--font-sans);
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-}
-
-.chat-empty-state__btn:hover {
-    background: var(--accent-light, #E6C48A);
-    transform: translateY(-1px);
-}
-
-.chat-empty-state__btn:active {
-    transform: scale(0.97);
-}
-
-/* ── Input Bar (Pill) ────────────────────────────────────── */
-
-.hub-view--chat .chat-input-area {
-    padding: 12px 16px;
-    background: rgba(0, 0, 0, 0.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.hub-view--chat .chat-form {
-    gap: 0;
-}
-
-.chat-input-pill {
-    display: flex;
-    align-items: flex-end;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 999px;
-    padding: 6px 6px 6px 16px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.chat-input-pill:focus-within {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.12);
-}
-
-.chat-input-pill__attach {
-    font-size: 1.1rem;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
-    padding: 4px 4px 4px 0;
-    user-select: none;
-}
-
-.chat-input-pill__attach:hover {
-    opacity: 0.8;
-}
-
-.hub-view--chat .chat-input {
-    flex: 1;
-    background: none;
-    border: none;
-    border-radius: 0;
-    padding: 6px 8px;
-    color: var(--text-light);
-    font-size: 0.88rem;
-    font-family: var(--font-sans);
-    outline: none;
-    resize: none;
-    line-height: 1.4;
-    max-height: 120px;
-    min-height: unset;
-}
-
-.chat-input-pill__counter {
-    font-size: 0.65rem;
-    color: var(--text-gray);
-    opacity: 0.6;
-    padding: 0 8px 4px 0;
-    flex-shrink: 0;
-    align-self: flex-end;
-    white-space: nowrap;
-}
-
-.hub-view--chat .chat-send-btn {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    border-radius: 50%;
-    padding: 0;
-    flex-shrink: 0;
-    background: var(--accent-color);
-    color: var(--primary-color, #1B1714);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s, transform 0.15s;
-}
-
-.hub-view--chat .chat-send-btn:hover {
-    background: var(--accent-light, #E6C48A);
-    transform: none;
-}
-
-.hub-view--chat .chat-send-btn:active {
-    transform: scale(0.92);
-}
-
-.hub-view--chat .chat-send-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* ── Typing Indicator (for future socket.io integration) ── */
-
-@keyframes chatTypingBounce {
-    0%, 80%, 100% { transform: translateY(0); }
-    40%           { transform: translateY(-4px); }
-}
-
-.chat-typing {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 8px 4px 60px;
-    font-size: 0.78rem;
-    color: var(--text-gray);
-}
-
-.chat-typing__dots span {
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--text-gray);
-    animation: chatTypingBounce 1.2s infinite;
-}
-
-.chat-typing__dots span:nth-child(2) { animation-delay: 0.15s; }
-.chat-typing__dots span:nth-child(3) { animation-delay: 0.3s; }
-
-@media (max-width: 768px) {
-    .hub-view--chat .community-container {
-        padding: 0;
-    }
-
-    .hub-view--chat .chat-box {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-        flex: 1;
-        min-height: 0;
-    }
-
-    .chat-hdr {
-        padding: 12px 16px;
-        border-radius: 0;
-    }
-
-    .chat-messages {
-        padding: 10px 8px !important;
-        flex: 1;
-        min-height: 0;
-    }
-
-    .chat-msg__avatar {
-        width: 32px;
-        height: 32px;
-        font-size: 0.72rem;
-    }
-
-    .chat-msg__name {
-        font-size: 0.82rem;
-    }
-
-    .chat-msg__text {
-        font-size: 0.88rem;
-    }
-
-    .chat-msg__time {
-        font-size: 0.65rem;
-    }
-
-    /* Prevent iOS zoom on input focus */
-    .chat-input {
-        font-size: 16px !important;
-    }
-
-    .chat-input-pill {
-        border-radius: 20px;
-    }
-
-}
-
+/* #chat-loading reuses .hub-dm-empty (see community.html) for both its initial "Loading
+ * messages..." text and chat.js's showEmptyState() — no dedicated empty-state CSS needed here
+ * any more than DM's own "Select a conversation"/"Send the first message" text has one.
+ * Message bubbles reuse .hub-dm-msg-row/.hub-dm-msg (chat.js's renderMessage()) — see that file
+ * and .hub-dm-msg__sender above for the one addition general chat needed (a name label for
+ * "theirs" messages, since unlike a DM thread it can have more than one other sender). */
 
 /* === LOGIN GATE (not logged in) === */
 .hub-login-gate {
@@ -4744,31 +4320,9 @@ body.community-navbar-page {
     }
 }
 
-[data-theme="light"] .hub-view--chat .chat-messages {
-    background:
-        linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-        #f5f0e8;
-    background-size: 24px 24px, 24px 24px, auto;
-}
-
-[data-theme="light"] .chat-msg:hover {
-    background: rgba(0, 0, 0, 0.03);
-}
-
 [data-theme="light"] .chat-date-divider::before,
 [data-theme="light"] .chat-date-divider::after {
     background: rgba(0, 0, 0, 0.08);
-}
-
-[data-theme="light"] .hub-view--chat .chat-input-area {
-    background: rgba(0, 0, 0, 0.04);
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-[data-theme="light"] .chat-input-pill {
-    background: rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="light"] .hub-market-search,
@@ -4856,16 +4410,8 @@ body.community-navbar-page {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
-[data-theme="light"] .hub-view--chat .chat-input-area {
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
-}
-
 [data-theme="light"] .hub-upload-zone {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
-}
-
-[data-theme="light"] .chat-input-pill {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* ── Light theme: hub-view main panel ── */
@@ -5541,66 +5087,6 @@ body.community-navbar-page {
 
     .hub-dm-form__input {
         font-size: 16px; /* prevents iOS Safari's auto-zoom-on-focus */
-    }
-
-    /* ── Chat ── */
-    .hub-view--chat .community-container {
-        padding: 0;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-    }
-
-    .hub-view--chat .chat-box {
-        flex: 1;
-        border-radius: 0;
-        border: none;
-        min-height: 0;
-    }
-
-    .chat-hdr {
-        background: var(--dark-bg-2);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 0;
-        padding: 14px 16px;
-        min-height: 52px;
-        flex-shrink: 0;
-    }
-
-    .chat-input-area {
-        background: var(--dark-bg-2);
-        padding: 10px 12px;
-        border-top: 1px solid rgba(255, 255, 255, 0.07);
-        flex-shrink: 0;
-    }
-
-    .chat-input-pill {
-        border-radius: 26px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        transition: border-color 0.2s ease;
-    }
-
-    .chat-input-pill:focus-within {
-        border-color: rgba(var(--accent-rgb), 0.45);
-        background: rgba(255, 255, 255, 0.07);
-    }
-
-    .chat-messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 12px 12px !important;
-    }
-
-    .chat-msg {
-        padding: 6px 10px;
-        border-radius: 14px;
-    }
-
-    .chat-msg:hover,
-    .chat-msg:active {
-        background: rgba(255, 255, 255, 0.035);
     }
 
     /* ── Hub modal — bottom sheet on mobile ── */

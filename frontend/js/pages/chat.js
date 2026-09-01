@@ -1,7 +1,7 @@
 /**
  * Global Chat Script (community.html)
- * Real-time global chat with polling, message rendering,
- * cooldown-based rate limiting, and character counter.
+ * Real-time global chat with polling, message rendering (DM-style bubbles —
+ * see renderMessage()), and cooldown-based rate limiting.
  */
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
@@ -20,8 +20,6 @@ const sendBtn = document.getElementById('chat-send-btn');
 const loginNotice = document.getElementById('chat-login-notice');
 const mutedNotice = document.getElementById('chat-muted-notice');
 const mutedText = document.getElementById('chat-muted-text');
-const charCount = document.getElementById('chat-char-count');
-const charCurrent = document.getElementById('char-current');
 const backBtn = document.getElementById('chat-back');
 
 // (2026-09-01) community.js's showView('chat') fullscreens Chat on mobile the same way it
@@ -56,7 +54,6 @@ let myMutedUntil = null;
 // Show form or login notice
 if (user) {
     formEl.hidden = false;
-    charCount.hidden = false;
 } else {
     loginNotice.hidden = false;
 }
@@ -81,7 +78,7 @@ async function refreshMuteStatus() {
     } catch { /* keep previous value on a transient failure */ }
 
     const hours = mutedHoursRemaining();
-    if (mutedNotice && charCount) {
+    if (mutedNotice) {
         formEl.hidden = hours !== null;
         mutedNotice.hidden = hours === null;
         if (hours !== null) {
@@ -94,9 +91,9 @@ if (user) {
     setInterval(refreshMuteStatus, 15000);
 }
 
-// Character counter + auto-resize textarea
+// Auto-resize textarea (matches the DM composer's own input, which has no character counter
+// either — general chat dropped its counter when its bubble design was unified with DM's)
 inputEl.addEventListener('input', () => {
-    charCurrent.textContent = inputEl.value.length;
     inputEl.style.height = 'auto';
     inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
 });
@@ -122,11 +119,6 @@ function getUserColor(username) {
     return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
 
-/** Get 2-letter uppercase initials */
-function getInitials(username) {
-    return username.slice(0, 2).toUpperCase();
-}
-
 /** Format timestamp as HH:MM */
 function formatTimeShort(dateStr) {
     return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -144,37 +136,38 @@ function getDateLabel(dateStr) {
     return d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-/** Render a single chat message DOM element */
+/** Render a single chat message DOM element — same bubble markup/classes as a DM message
+ * (.hub-dm-msg-row/.hub-dm-msg, see community.js's renderMessageHtml()), since general chat is
+ * now just another conversation reached from the merged chat list rather than a differently-
+ * styled destination. Unlike DM there can be more than one "theirs" sender, so a small name
+ * label is shown above the first bubble of a run from someone else — mirrors the app's own
+ * `showAuthor = newGroup && isGroup` in ChatScreen.kt's buildRows(). No avatar-per-message
+ * either way, matching DM's own bubble-only look (avatars only ever show in a conversation list). */
 function renderMessage(msg, grouped) {
-    const div = document.createElement('div');
-    const color = getUserColor(msg.user.username);
+    const mine = !!(user && msg.user.id === user.id);
+    const isSticker = msg.attachment?.type === 'sticker';
     const time = formatTimeShort(msg.created_at);
 
-    if (grouped) {
-        div.className = 'chat-msg chat-msg--grouped chat-msg--new';
-        div.dataset.id = msg.id;
-        div.dataset.user = msg.user.username;
-        div.innerHTML = `
-            <span class="chat-msg__time-hover">${time}</span>
-            <div class="chat-msg__text">${escapeHtml(msg.message)}</div>`;
-    } else {
-        div.className = 'chat-msg chat-msg--new';
-        div.dataset.id = msg.id;
-        div.dataset.user = msg.user.username;
-        const avatarInner = msg.user.avatar
-            ? `<img src="${escapeHtml(msg.user.avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:100%;height:100%;align-items:center;justify-content:center">${getInitials(msg.user.username)}</span>`
-            : getInitials(msg.user.username);
-        div.innerHTML = `
-            <div class="chat-msg__avatar" style="background:${color}">${avatarInner}</div>
-            <div class="chat-msg__body">
-                <div class="chat-msg__header">
-                    <a href="/user/${encodeURIComponent(msg.user.username)}" class="chat-msg__name" style="color:${color}">${escapeHtml(msg.user.username)}</a>
-                    <span class="chat-msg__time">${time}</span>
-                </div>
-                <div class="chat-msg__text">${escapeHtml(msg.message)}</div>
-            </div>`;
-    }
-    return div;
+    const row = document.createElement('div');
+    row.className = `hub-dm-msg-row hub-dm-msg-row--${mine ? 'mine' : 'theirs'}${grouped ? ' hub-dm-msg-row--stacked' : ''}`;
+    row.dataset.id = msg.id;
+    row.dataset.user = msg.user.username;
+
+    const senderHtml = (!mine && !grouped)
+        ? `<a href="/user/${encodeURIComponent(msg.user.username)}" class="hub-dm-msg__sender" style="color:${getUserColor(msg.user.username)}">${escapeHtml(msg.user.username)}</a>`
+        : '';
+    const attachmentHtml = (isSticker && msg.attachment?.url)
+        ? `<img class="hub-dm-msg__sticker-img" src="${escapeHtml(msg.attachment.url)}" alt="">`
+        : '';
+
+    row.innerHTML = `
+        ${senderHtml}
+        <div class="hub-dm-msg hub-dm-msg--${mine ? 'mine' : 'theirs'}${isSticker ? ' hub-dm-msg--sticker' : ''}">
+            ${attachmentHtml}
+            ${msg.message ? `<div class="hub-dm-msg__text">${escapeHtml(msg.message)}</div>` : ''}
+        </div>
+        <div class="hub-dm-msg__time">${time}</div>`;
+    return row;
 }
 
 /** Append a message with date divider + grouping logic */
@@ -193,18 +186,15 @@ function appendMessage(msg) {
     lastMsgUser = msg.user.username;
 }
 
-/** Show the empty state */
+/** Show the empty state — reuses the DM thread's own plain "send the first message" text
+ * (dm_first_message) instead of the old chat-specific empty-state card, and #chat-loading's
+ * class already switched to .hub-dm-empty in the HTML to match. Clicking it focuses the
+ * composer, same intent as the old dedicated button. */
 function showEmptyState() {
-    loadingEl.innerHTML = `
-        <div class="chat-empty-state">
-            <div class="chat-empty-state__circle"><span>💬</span></div>
-            <div class="chat-empty-state__title">No messages yet</div>
-            <div class="chat-empty-state__subtitle">Be the first to start the conversation!</div>
-            <button class="chat-empty-state__btn" type="button">Write the first message →</button>
-        </div>`;
+    loadingEl.textContent = I18nModule.t('dm_first_message');
     loadingEl.hidden = false;
-    loadingEl.querySelector('.chat-empty-state__btn')?.addEventListener('click', () => inputEl.focus());
 }
+loadingEl.addEventListener('click', () => inputEl.focus());
 
 function scrollToBottom() {
     messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -241,7 +231,7 @@ async function fetchMessages() {
         }
     } catch {
         // On error, show empty state instead of stuck spinner
-        if (loadingEl && !loadingEl.hidden && !loadingEl.querySelector('.chat-empty-state')) {
+        if (loadingEl && !loadingEl.hidden) {
             showEmptyState();
         }
     }
@@ -276,7 +266,6 @@ formEl.addEventListener('submit', async (e) => {
             lastMessageId = Math.max(lastMessageId, data.message.id);
             inputEl.value = '';
             inputEl.style.height = 'auto';
-            charCurrent.textContent = '0';
             scrollToBottom();
             window.dispatchEvent(new CustomEvent('cn:message-sent'));
         } else {
@@ -299,7 +288,7 @@ setInterval(fetchMessages, POLL_INTERVAL);
 
 // Timeout fallback — if first load fails or hangs, show empty state after 5s
 setTimeout(() => {
-    if (loadingEl && !loadingEl.hidden && !loadingEl.querySelector('.chat-empty-state')) {
+    if (loadingEl && !loadingEl.hidden) {
         showEmptyState();
     }
 }, 5000);
