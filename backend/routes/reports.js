@@ -33,6 +33,18 @@ const VALID_REASONS = [
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FROM = 'Console Notebook <noreply@consolenotebook.com>';
 
+// content_reports.id is a uuid column (the live table predates and doesn't match this
+// file's own `CREATE TABLE IF NOT EXISTS ... id SERIAL` in db.js — it was provisioned some
+// other way, before that migration code existed). Every :id route below used to do
+// `parseInt(req.params.id, 10)`, which silently truncated a real uuid like
+// "428e4567-e89b-..." down to just 428 (parseInt stops at the first non-digit) and sent
+// that mangled value to Postgres — surfaced live as "invalid input syntax for type uuid:
+// '428'" on every PATCH/POST/DELETE admin-reports action. Validate as a uuid string instead.
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function isValidReportId(id) {
+    return typeof id === 'string' && UUID_REGEX.test(id);
+}
+
 // ── Rate limiter: 10 reports per hour per IP ───────────────────────────────
 
 const reportLimiter = rateLimit({
@@ -273,8 +285,8 @@ router.get('/reports/admin', authRequired, adminOnly, async (req, res) => {
 const VALID_STATUSES = ['pending', 'reviewed', 'resolved', 'dismissed'];
 
 router.patch('/reports/admin/:id', authRequired, adminOnly, async (req, res) => {
-    const reportId = parseInt(req.params.id, 10);
-    if (!reportId) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
+    const reportId = req.params.id;
+    if (!isValidReportId(reportId)) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
 
     const { status } = req.body || {};
     if (!status || !VALID_STATUSES.includes(status)) {
@@ -338,8 +350,8 @@ async function resolveAuthorId(contentType, contentId) {
 // a positive integer (1–8760, capped at one year) makes it a temporary ban that
 // auto-lifts — see middleware/auth.js's isActivelyBanned/liftExpiredBan.
 router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req, res) => {
-    const reportId = parseInt(req.params.id, 10);
-    if (!reportId) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
+    const reportId = req.params.id;
+    if (!isValidReportId(reportId)) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
 
     const reason = req.body?.reason ? String(req.body.reason).trim().slice(0, 500) : null;
     const rawHours = parseInt(req.body?.hours, 10);
@@ -374,8 +386,8 @@ router.post('/reports/admin/:id/ban-author', authRequired, adminOnly, async (req
 
 // ── POST /api/reports/admin/:id/unban-author ─────────────────────────────────
 router.post('/reports/admin/:id/unban-author', authRequired, adminOnly, async (req, res) => {
-    const reportId = parseInt(req.params.id, 10);
-    if (!reportId) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
+    const reportId = req.params.id;
+    if (!isValidReportId(reportId)) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
 
     try {
         const report = await pool.query('SELECT content_type, content_id FROM content_reports WHERE id = $1', [reportId]);
@@ -398,8 +410,8 @@ router.post('/reports/admin/:id/unban-author', authRequired, adminOnly, async (r
 
 // ── POST /api/reports/admin/:id/mute-author ──────────────────────────────────
 router.post('/reports/admin/:id/mute-author', authRequired, adminOnly, async (req, res) => {
-    const reportId = parseInt(req.params.id, 10);
-    if (!reportId) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
+    const reportId = req.params.id;
+    if (!isValidReportId(reportId)) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
 
     const hours = Math.min(720, Math.max(1, parseInt(req.body?.hours, 10) || 72));
 
@@ -427,8 +439,8 @@ router.post('/reports/admin/:id/mute-author', authRequired, adminOnly, async (re
 // Deletes the reported content itself (not the report row). user_profile
 // reports can't be handled this way — use ban-author instead.
 router.delete('/reports/admin/:id/content', authRequired, adminOnly, async (req, res) => {
-    const reportId = parseInt(req.params.id, 10);
-    if (!reportId) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
+    const reportId = req.params.id;
+    if (!isValidReportId(reportId)) return res.status(400).json({ success: false, error: 'Invalid report ID.' });
 
     try {
         const report = await pool.query('SELECT content_type, content_id FROM content_reports WHERE id = $1', [reportId]);
