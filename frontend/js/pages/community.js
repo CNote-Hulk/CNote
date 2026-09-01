@@ -8,6 +8,7 @@ import { I18nModule } from '../modules/i18n.js';
 import { API_BASE_URL } from '../config.js';
 import { confirmModal } from '../utils/confirm-modal.js';
 import { shareOrCopy } from '../utils/share.js';
+import { NO_IMAGE_PLACEHOLDER } from '../utils/no-image-placeholder.js';
 
 /** Shorthand for I18nModule.t() */
 const t = (key) => I18nModule.t(key);
@@ -503,9 +504,10 @@ function showView(id) {
     // so on mobile they go fullscreen (site navbar + bottom tab bar hidden) instead of wasting
     // space on chrome that duplicates it. DM's own thread-open state isn't a distinct `S.view`
     // (see openConversation()/its back button), so it's handled separately, not here.
-    // Chat (2026-09-01, Andrei: "cand intru pe chat, nu e fullscreen, imi apare navbaru") — a
-    // direct bottom-nav destination, not a "detail" reached from a list, so #chat-back doesn't
-    // navigate anywhere; it just un-hides the nav again so the user can tap Home/Forum/etc.
+    // Chat (2026-09-01) also fullscreens on mobile like the other "detail" views above — since
+    // the same day's merge of general chat into the DM list (loadConversations()'s generalRow),
+    // it now genuinely is a detail reached from a list, and #chat-back (chat.js) returns there
+    // via window.cnCommunityBackToChatList instead of just un-hiding the nav in place.
     setMobileFullscreen(id === 'thread' || id === 'listing' || id === 'chat');
 }
 
@@ -1328,7 +1330,7 @@ async function loadListings() {
             return `
                 <button class="hub-listing-card" data-id="${l.id}">
                     <div class="hub-listing-img">
-                        ${imgs[0] ? `<img src="${esc(imgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy" class="hub-listing-img__placeholder-img">'}
+                        ${imgs[0] ? `<img src="${esc(imgs[0])}" alt="" loading="lazy">` : `<img src="${NO_IMAGE_PLACEHOLDER}" alt="" loading="lazy" class="hub-listing-img__placeholder-img">`}
                         ${l.sold ? '<div class="hub-listing-sold-overlay"><span class="hub-listing-sold-badge">SOLD</span></div>' : ''}
                         <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Remove from favorites' : 'Add to favorites') : 'Log in for favorites'}">
                             ${isFav ? '❤️' : '🤍'}
@@ -1700,7 +1702,7 @@ async function loadSimilarListings(listingId, container) {
             return `
                 <button class="hub-listing-card" data-id="${l.id}">
                     <div class="hub-listing-img">
-                        ${simImgs[0] ? `<img src="${esc(simImgs[0])}" alt="" loading="lazy">` : '<img src="/assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy" class="hub-listing-img__placeholder-img">'}
+                        ${simImgs[0] ? `<img src="${esc(simImgs[0])}" alt="" loading="lazy">` : `<img src="${NO_IMAGE_PLACEHOLDER}" alt="" loading="lazy" class="hub-listing-img__placeholder-img">`}
                         <span class="hub-listing-fav-btn${isFav ? ' hub-listing-fav-btn--active' : ''}" data-fav-id="${l.id}" title="${u ? (isFav ? 'Remove from favorites' : 'Add to favorites') : 'Log in for favorites'}">
                             ${isFav ? '❤️' : '🤍'}
                         </span>
@@ -3258,13 +3260,54 @@ function renderDM() {
         </div>`;
 }
 
-/** Fetch DM conversation list (grouped by partner) */
+/** One-line preview of the latest general-chat message, for its row in the merged chat list
+ * (mirrors the Android app's ChatListPage, which folds general chat into the same conversation
+ * list as a pinned row with GENERAL_ID — see ChatViewModel.kt). Never throws. */
+async function fetchGeneralPreview() {
+    try {
+        const data = await api('GET', '/chat/messages?limit=1');
+        const m = data.messages?.[0];
+        if (!m) return '';
+        const who = m.user?.username ? `${m.user.username}: ` : '';
+        return who + (m.message || '');
+    } catch { return ''; }
+}
+
+/** Fetch DM conversation list (grouped by partner), with the general community chat pinned
+ * as the first row — clicking it opens the full-page chat view (view-chat/chat.js), clicking
+ * a real conversation opens its thread in-place like before. */
 async function loadConversations() {
     const list = document.getElementById('dm-list');
     if (!list) return;
     ensureDmLocalPrefsLoaded();
+
+    // Bound once per render — #dm-list is a fresh element every time renderDM() runs, so this
+    // never accumulates duplicate listeners across navigations.
+    list.addEventListener('click', e => {
+        const c = e.target.closest('.hub-dm-conv');
+        if (!c) return;
+        if (c.dataset.id === 'general') { navigate('chat'); return; }
+        openConversation(+c.dataset.id, c.dataset.name, c.dataset.avatar);
+    });
+    list.addEventListener('contextmenu', e => {
+        const c = e.target.closest('.hub-dm-conv');
+        if (!c || c.dataset.id === 'general') return;
+        e.preventDefault();
+        const conv = S.dmConversations.find(cv => cv.partner_id === +c.dataset.id);
+        if (conv) openConversationContextMenu(e.clientX, e.clientY, conv);
+    });
+
+    const generalRow = `
+        <button class="hub-dm-conv hub-dm-conv--general" data-id="general">
+            <div class="hub-dm-conv__avatar">💬</div>
+            <div class="hub-dm-conv__body">
+                <div class="hub-dm-conv__name">${esc(t('community_chat_header'))}</div>
+                <div class="hub-dm-conv__preview" id="dm-general-preview">${esc(t('community_chat_status_active'))}</div>
+            </div>
+        </button>`;
+
     try {
-        const data = await api('GET', '/dm/conversations');
+        const [data, generalPreview] = await Promise.all([api('GET', '/dm/conversations'), fetchGeneralPreview()]);
         if (!data.success) throw 0;
         let convs = data.conversations || [];
 
@@ -3290,9 +3333,7 @@ async function loadConversations() {
 
         S.dmConversations = convs;
 
-        if (!convs.length) { list.innerHTML = `<div class="hub-dm-list__empty">${esc(t('dm_no_conversations'))}</div>`; return; }
-
-        list.innerHTML = convs.map(c => {
+        const convsHtml = convs.map(c => {
             const pinned = S.dmPins.has(String(c.partner_id));
             const muted = S.dmMutes.has(String(c.partner_id));
             return `
@@ -3306,23 +3347,17 @@ async function loadConversations() {
             </button>`;
         }).join('');
 
-        list.addEventListener('click', e => {
-            const c = e.target.closest('.hub-dm-conv');
-            if (c) openConversation(+c.dataset.id, c.dataset.name, c.dataset.avatar);
-        });
-        list.addEventListener('contextmenu', e => {
-            const c = e.target.closest('.hub-dm-conv');
-            if (!c) return;
-            e.preventDefault();
-            const conv = convs.find(cv => cv.partner_id === +c.dataset.id);
-            if (conv) openConversationContextMenu(e.clientX, e.clientY, conv);
-        });
+        list.innerHTML = generalRow + (convsHtml || `<div class="hub-dm-list__empty">${esc(t('dm_no_conversations'))}</div>`);
+        if (generalPreview) document.getElementById('dm-general-preview').textContent = generalPreview;
 
         if (S.dmPartner) {
             const found = convs.find(c => c.partner_id === S.dmPartner);
             if (found) openConversation(S.dmPartner, found.partner_name, found.partner_avatar);
         }
-    } catch { list.innerHTML = `<div class="hub-dm-list__empty">${esc(t('dm_load_failed'))}</div>`; }
+    } catch {
+        S.dmConversations = [];
+        list.innerHTML = generalRow + `<div class="hub-dm-list__empty">${esc(t('dm_load_failed'))}</div>`;
+    }
 }
 
 /** Open a DM conversation thread with a specific user */
@@ -3858,6 +3893,11 @@ if (!user() && !_isWelcomePage) {
     }
 } else {
 
+// Exposed for chat.js (a separate module scope) so its own #chat-back button can return to the
+// merged chat list — general chat is now reached from there instead of being a standalone
+// bottom-nav destination (see loadConversations()'s generalRow).
+window.cnCommunityBackToChatList = () => { showView('dm'); renderDM(); loadConversations(); };
+
 initSidebar();
 startUnreadPolling();
 startMuteStatusPolling();
@@ -4061,7 +4101,7 @@ window.addEventListener('hashchange', handleHashNavigation);
     buildDropdown();
 
     // Sync MBN active state to current hash without navigating
-    const _initView = (window.location.hash.slice(1).split('/')[0]) || 'chat';
+    const _initView = (window.location.hash.slice(1).split('/')[0]) || 'dm';
     document.querySelectorAll('.mbn-item[data-mbn-view]').forEach(el => {
         el.classList.toggle('mbn-item--active', el.dataset.mbnView === _initView);
     });

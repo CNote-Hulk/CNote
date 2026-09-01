@@ -24,13 +24,19 @@ const charCount = document.getElementById('chat-char-count');
 const charCurrent = document.getElementById('char-current');
 const backBtn = document.getElementById('chat-back');
 
-// (2026-09-01) community.js's showView('chat') now fullscreens Chat on mobile the same way
-// it already does for a forum thread/listing/DM (site navbar + bottom tab bar hidden) — see
-// its setMobileFullscreen(). This button is the only way back since Chat has no "parent"
-// view to return to; duplicated inline here (not imported from community.js) since chat.js
-// is a wholly separate script with its own module scope, and this is the only place either
-// side needs the toggle-off direction.
+// (2026-09-01) community.js's showView('chat') fullscreens Chat on mobile the same way it
+// already does for a forum thread/listing/DM (site navbar + bottom tab bar hidden) — see its
+// setMobileFullscreen(). Chat is now reached from the merged chat list (general chat pinned
+// atop the DM list, see community.js's loadConversations()) rather than being its own bottom-nav
+// destination, so this button returns there — window.cnCommunityBackToChatList is exposed by
+// community.js for exactly this (chat.js is a wholly separate script/module scope, can't import
+// it directly). The manual un-hide is kept as a fallback for the unlikely case view-chat is ever
+// reached some other way.
 backBtn?.addEventListener('click', () => {
+    if (typeof window.cnCommunityBackToChatList === 'function') {
+        window.cnCommunityBackToChatList();
+        return;
+    }
     document.querySelector('.navbar')?.classList.remove('navbar--hidden');
     document.getElementById('mobile-bottom-nav')?.classList.remove('mbn--hidden');
     document.body.classList.remove('hub-mobile-fullscreen');

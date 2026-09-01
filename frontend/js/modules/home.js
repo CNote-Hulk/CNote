@@ -2,6 +2,7 @@ import { I18nModule } from './i18n.js';
 import { AuthModule } from './auth.js';
 import { AchievementsModule } from './achievements.js';
 import { API_BASE_URL } from '../config.js';
+import { NO_IMAGE_PLACEHOLDER } from '../utils/no-image-placeholder.js';
 
 function normalizeAvatarUrl(avatarUrl, preferredSize = 1024) {
     const raw = typeof avatarUrl === 'string' ? avatarUrl.trim() : '';
@@ -408,7 +409,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             function renderMyListingCards(grid, listings) {
                 grid.innerHTML = listings.map(l => {
                     const imgs = Array.isArray(l.images) ? l.images : [];
-                    const img = imgs[0] || '/assets/images/graphics/no-image-placeholder.jpg';
+                    const img = imgs[0] || NO_IMAGE_PLACEHOLDER;
                     const isSold = l.sold || l.status === 'sold';
                     const isInactive = !isSold && l.status === 'inactive';
                     return `<div class="home-listing-card" data-id="${l.id}">
@@ -946,7 +947,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 favListingsSection.hidden = false;
                 favListingsGrid.innerHTML = favListingsRes.listings.map(l => {
                     const imgs = Array.isArray(l.images) ? l.images : [];
-                    const img = imgs[0] || '/assets/images/graphics/no-image-placeholder.jpg';
+                    const img = imgs[0] || NO_IMAGE_PLACEHOLDER;
                     return `<a href="community.html#listing-${l.id}" class="home-listing-card">
                         <div class="home-listing-card__img">
                             <img src="${escapeHtml(img)}" alt="" loading="lazy">
@@ -1222,7 +1223,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (trendingListingsRes.success && trendingListingsRes.listings?.length > 0) {
                     marketplacePreview.innerHTML = trendingListingsRes.listings.slice(0, 4).map(l => {
                         const imgs = Array.isArray(l.images) ? l.images : [];
-                        const img = imgs[0] || '/assets/images/graphics/no-image-placeholder.jpg';
+                        const img = imgs[0] || NO_IMAGE_PLACEHOLDER;
                         return `<div class="home-listing-card" data-id="${l.id}">
                             <a href="community.html#listing-${l.id}" class="home-listing-card__media">
                                 <img src="${escapeHtml(img)}" alt="" loading="lazy">

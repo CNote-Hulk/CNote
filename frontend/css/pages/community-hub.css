@@ -2563,6 +2563,19 @@ button.hub-action-pill:hover {
     background: rgba(var(--accent-rgb), 0.06);
 }
 
+/* Pinned "General" row atop the merged chat list (community.js's loadConversations()) — a
+ * subtle tint + border sets it apart from real DM conversations, same idea as the app's
+ * pinned GENERAL_ID row in ChatListPage. rgba(var(--accent-rgb)) already adapts per theme,
+ * so no separate light-theme override is needed here. */
+.hub-dm-conv--general {
+    background: rgba(var(--accent-rgb), 0.04);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.12);
+}
+
+.hub-dm-conv--general:hover {
+    background: rgba(var(--accent-rgb), 0.08);
+}
+
 .hub-dm-conv__avatar {
     width: 36px;
     height: 36px;

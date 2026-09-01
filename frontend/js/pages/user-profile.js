@@ -9,6 +9,7 @@ import { AchievementsModule } from '/js/modules/achievements.js';
 import { I18nModule } from '/js/modules/i18n.js';
 import { shareOrCopy } from '/js/utils/share.js';
 import { confirmModal, promptModal } from '/js/utils/confirm-modal.js';
+import { NO_IMAGE_PLACEHOLDER } from '/js/utils/no-image-placeholder.js';
 
 /** Shortcut pentru traduceri */
 const t = key => I18nModule.t(key);
@@ -667,7 +668,7 @@ const t = key => I18nModule.t(key);
                     const condLabels = { new: 'New', like_new: 'Like new', good: 'Good', fair: 'Fair', parts: 'Parts' };
                     return `<a href="/html/pages/community.html#listing-${l.id}" class="user-listing-card">
                         <div class="user-listing-card__img">
-                            ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="" loading="lazy">` : `<img src="../../assets/images/graphics/no-image-placeholder.jpg" alt="" loading="lazy">`}
+                            ${imgs[0] ? `<img src="${escapeHtml(imgs[0])}" alt="" loading="lazy">` : `<img src="${NO_IMAGE_PLACEHOLDER}" alt="" loading="lazy">`}
                         </div>
                         <div class="user-listing-card__info">
                             <div class="user-listing-card__condition">${condLabels[l.condition] || l.condition || ''}</div>
