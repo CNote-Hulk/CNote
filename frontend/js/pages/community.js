@@ -1429,7 +1429,8 @@ async function openListingDetail(id) {
                                 </div>
                                 <div class="hub-detail-price">${Number(l.price).toFixed(0)} RON</div>
                             </div>
-                            <div style="display:flex;justify-content:flex-end;margin-top:8px">
+                            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px">
+                                ${u && !own && !l.sold ? `<button class="hub-btn hub-btn--primary" id="listing-buy-btn">🛒 ${esc(t('order_buy_button'))}</button>` : '<span></span>'}
                                 <button class="hub-detail-fav-btn${isFavDetail ? ' hub-detail-fav-btn--active' : ''}" id="detail-fav-btn" title="${u ? (isFavDetail ? 'Remove from favorites' : 'Add to favorites') : 'Log in for favorites'}">
                                     ${isFavDetail ? '❤️' : '🤍'}
                                 </button>
@@ -1457,7 +1458,6 @@ async function openListingDetail(id) {
                         <div class="hub-seller-reviews__loading">⏳</div>
                     </div>
                     <div class="hub-detail-actions">
-                        ${u && !own && !l.sold ? `<button class="hub-btn hub-btn--primary" id="listing-buy-btn">🛒 ${esc(t('order_buy_button'))}</button>` : ''}
                         ${l.phone   ? `<a href="tel:${esc(l.phone)}" class="hub-btn hub-btn--secondary">📞 ${esc(l.phone)}</a>` : ''}
                         ${l.olx_url ? `<a href="${esc(l.olx_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 OLX</a>` : ''}
                         ${l.ebay_url ? `<a href="${esc(l.ebay_url)}" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn--secondary">🔗 eBay</a>` : ''}
