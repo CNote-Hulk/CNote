@@ -5159,30 +5159,23 @@ button.hub-action-pill:hover {
         justify-content: center;
     }
 
-    /* ── Listing detail — full-bleed ── */
+    /* ── Listing detail — rounded cards, not edge-to-edge ──
+       Used to be full-bleed (padding: 0, every radius zeroed, side borders
+       stripped) for an OLX-app feel — reported back as looking flat and
+       "squarish" on a real device. Keeps the same compact mobile sizing
+       below, just lets the base (desktop) card look — rounded corners,
+       borders, breathing room — apply instead of stripping it. */
     .hub-detail-scroll {
-        padding: 0;
+        padding: 14px 12px;
     }
 
     .hub-detail-inner {
-        gap: 1px;
+        gap: 14px;
         max-width: none;
-    }
-
-    .hub-detail-gallery {
-        border-radius: 0;
     }
 
     .hub-detail-main-img {
         height: 260px;
-        border-radius: 0;
-    }
-
-    .hub-detail-card--main {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-        border-top: none;
     }
 
     .hub-detail-body {
@@ -5205,13 +5198,6 @@ button.hub-action-pill:hover {
         border-radius: 16px;
         font-size: 0.92rem;
         justify-content: center;
-    }
-
-    .hub-detail-card {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-        border-top: none;
     }
 
     .hub-detail-thumbs {
