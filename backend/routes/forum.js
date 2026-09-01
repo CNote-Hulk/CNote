@@ -18,7 +18,10 @@ const { publicUrlForKey } = require('../utils/objectStorage');
 const router = express.Router();
 
 // ── Console whitelist ──
-const VALID_CONSOLES = ['ps', 'xbox', 'nintendo', 'pc', 'general'];
+// Matches CONSOLES/validConsoles in frontend/js/pages/community.js exactly — 'other' was
+// missing here while the client already treated it as valid (sidebar chip + deep-link
+// regex both accept it), so GET/POST on the "Other Consoles" forum tab 400'd server-side.
+const VALID_CONSOLES = ['ps', 'xbox', 'nintendo', 'pc', 'general', 'other'];
 const VALID_TAGS = ['General', 'Help', 'Discussion', 'News', 'Bug', 'Guide', 'Modding'];
 
 // ── Forum spam prevention — in-memory, resets on server restart ────────────
