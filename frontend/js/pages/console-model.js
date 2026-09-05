@@ -535,7 +535,7 @@ async function render() {
 
     let modTutorials = [];
     try {
-        const result = await api('GET', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod`);
+        const result = await api('GET', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod?lang=${encodeURIComponent(I18nModule.lang)}`);
         modTutorials = result.success ? result.tutorials : [];
     } catch {
         modTutorials = [];

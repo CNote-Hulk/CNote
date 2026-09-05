@@ -58,7 +58,7 @@ const { adminOnly } = require('../middleware/adminOnly');
             CREATE TABLE IF NOT EXISTS console_mod_tutorials (
                 id SERIAL PRIMARY KEY,
                 model_code VARCHAR(60) NOT NULL,
-                flash_type VARCHAR(40) NOT NULL,
+                flash_type VARCHAR(80) NOT NULL,
                 firmware_version VARCHAR(40) NOT NULL,
                 title TEXT,
                 intro TEXT,
@@ -68,8 +68,38 @@ const { adminOnly } = require('../middleware/adminOnly');
                 UNIQUE (model_code, flash_type, firmware_version)
             );
         `);
+        // Widened from VARCHAR(40): PS2 softmod combos describe the install
+        // medium in this column (e.g. "Memory Card (softmod, no disc-swap...)")
+        // rather than the short NOR/NAND labels this column was designed for
+        // on PS3 — see console_mod_tutorials_row_en's "flash_type" for the
+        // SCPH-70004 FreeMcBoot guide. No-op once already widened.
+        await pool.query(`ALTER TABLE console_mod_tutorials ALTER COLUMN flash_type TYPE VARCHAR(80);`);
     } catch (err) {
         console.error('[console-tutorials] mod-tutorials table init error:', err.message);
+    }
+})();
+
+// Per-language overrides of a console_mod_tutorials row, mirroring
+// lesson_translations (see db.js/courses.js): EN lives on console_mod_tutorials
+// itself (the canonical row), every other language is a row here keyed by
+// (lang, tutorial_id). GET /:code/mod LEFT JOINs this and COALESCEs back to
+// the EN row per-field, so a combo with no translation yet just serves EN.
+(async function initConsoleModTutorialsTranslationsTable() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS console_mod_tutorials_translations (
+                tutorial_id INTEGER NOT NULL REFERENCES console_mod_tutorials(id) ON DELETE CASCADE,
+                lang VARCHAR(5) NOT NULL,
+                title TEXT,
+                intro TEXT,
+                steps JSONB NOT NULL DEFAULT '[]',
+                updated_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                updated_at TIMESTAMP DEFAULT NOW(),
+                PRIMARY KEY (lang, tutorial_id)
+            );
+        `);
+    } catch (err) {
+        console.error('[console-tutorials] mod-tutorials-translations table init error:', err.message);
     }
 })();
 
@@ -146,18 +176,28 @@ router.delete('/:code', authRequired, adminOnly, async (req, res) => {
     }
 });
 
-// GET /api/console-tutorials/:code/mod — public, no auth needed
+// GET /api/console-tutorials/:code/mod?lang= — public, no auth needed
 // Returns EVERY (flash_type, firmware_version) modding-guide combination for
 // this model, full content included, so the frontend can populate both
 // selector dropdowns and switch between combinations client-side with no
-// further round-trips.
+// further round-trips. `lang` (default 'en') pulls per-field overrides from
+// console_mod_tutorials_translations, falling back to the EN canonical row
+// wherever a translation is missing or hasn't been written yet.
 router.get('/:code/mod', async (req, res) => {
     try {
+        const lang = String(req.query.lang || 'en').trim().slice(0, 5).toLowerCase() || 'en';
         const { rows } = await pool.query(
-            `SELECT flash_type, firmware_version, title, intro, steps, updated_at
-             FROM console_mod_tutorials WHERE model_code = $1
-             ORDER BY flash_type, firmware_version`,
-            [req.params.code]
+            `SELECT cmt.id, cmt.flash_type, cmt.firmware_version,
+                    COALESCE(t.title, cmt.title) AS title,
+                    COALESCE(t.intro, cmt.intro) AS intro,
+                    COALESCE(t.steps, cmt.steps) AS steps,
+                    cmt.updated_at
+             FROM console_mod_tutorials cmt
+             LEFT JOIN console_mod_tutorials_translations t
+               ON t.tutorial_id = cmt.id AND t.lang = $2
+             WHERE cmt.model_code = $1
+             ORDER BY cmt.flash_type, cmt.firmware_version`,
+            [req.params.code, lang]
         );
         res.json({ success: true, tutorials: rows });
     } catch (err) {
@@ -213,6 +253,68 @@ router.delete('/:code/mod/:flashType/:version', authRequired, adminOnly, async (
     } catch (err) {
         console.error('Console mod-tutorial DELETE error:', err.message);
         res.status(500).json({ success: false, error: 'Could not delete modding guide.' });
+    }
+});
+
+// PUT /api/console-tutorials/:code/mod/:flashType/:version/translations/:lang
+// admin-only upsert of one language's override for one existing modding-guide
+// combo. Requires the EN combo to already exist (translations hang off its id).
+router.put('/:code/mod/:flashType/:version/translations/:lang', authRequired, adminOnly, async (req, res) => {
+    try {
+        const flashType = String(req.params.flashType || '').trim().slice(0, 40).toUpperCase();
+        const version = String(req.params.version || '').trim().slice(0, 40);
+        const lang = String(req.params.lang || '').trim().slice(0, 5).toLowerCase();
+        if (!flashType || !version || !lang) {
+            return res.status(400).json({ success: false, error: 'Missing flash type, firmware version, or language.' });
+        }
+
+        const tutorialRes = await pool.query(
+            `SELECT id FROM console_mod_tutorials WHERE model_code = $1 AND flash_type = $2 AND firmware_version = $3`,
+            [req.params.code, flashType, version]
+        );
+        if (!tutorialRes.rows.length) {
+            return res.status(404).json({ success: false, error: 'Base modding guide not found for this combination.' });
+        }
+        const tutorialId = tutorialRes.rows[0].id;
+
+        const title = String(req.body?.title || '').slice(0, 200);
+        const intro = String(req.body?.intro || '').slice(0, 5000);
+        const steps = sanitizeSteps(req.body?.steps);
+
+        const { rows } = await pool.query(
+            `INSERT INTO console_mod_tutorials_translations (tutorial_id, lang, title, intro, steps, updated_by, updated_at)
+             VALUES ($1, $2, $3, $4, $5, $6, NOW())
+             ON CONFLICT (lang, tutorial_id) DO UPDATE
+               SET title = EXCLUDED.title, intro = EXCLUDED.intro, steps = EXCLUDED.steps,
+                   updated_by = EXCLUDED.updated_by, updated_at = NOW()
+             RETURNING tutorial_id, lang, title, intro, steps, updated_at`,
+            [tutorialId, lang, title, intro, JSON.stringify(steps), req.user.id]
+        );
+        res.json({ success: true, translation: rows[0] });
+    } catch (err) {
+        console.error('Console mod-tutorial translation PUT error:', err.message);
+        res.status(500).json({ success: false, error: 'Could not save translation.' });
+    }
+});
+
+// DELETE .../translations/:lang — admin-only, drops one language's override so
+// that combo falls back to serving the EN canonical content for that language.
+router.delete('/:code/mod/:flashType/:version/translations/:lang', authRequired, adminOnly, async (req, res) => {
+    try {
+        const flashType = String(req.params.flashType || '').trim().slice(0, 40).toUpperCase();
+        const version = String(req.params.version || '').trim().slice(0, 40);
+        const lang = String(req.params.lang || '').trim().slice(0, 5).toLowerCase();
+        await pool.query(
+            `DELETE FROM console_mod_tutorials_translations t
+             USING console_mod_tutorials cmt
+             WHERE t.tutorial_id = cmt.id AND cmt.model_code = $1 AND cmt.flash_type = $2
+               AND cmt.firmware_version = $3 AND t.lang = $4`,
+            [req.params.code, flashType, version, lang]
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Console mod-tutorial translation DELETE error:', err.message);
+        res.status(500).json({ success: false, error: 'Could not delete translation.' });
     }
 });
 
