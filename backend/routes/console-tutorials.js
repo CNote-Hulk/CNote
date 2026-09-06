@@ -182,7 +182,10 @@ router.delete('/:code', authRequired, adminOnly, async (req, res) => {
 // selector dropdowns and switch between combinations client-side with no
 // further round-trips. `lang` (default 'en') pulls per-field overrides from
 // console_mod_tutorials_translations, falling back to the EN canonical row
-// wherever a translation is missing or hasn't been written yet.
+// wherever a translation is missing or hasn't been written yet. `has_translation`
+// tells the admin editor (console-model.js) whether the fields shown are a real
+// translation for `lang` or just the EN fallback, so it can label its "Edit"
+// button "Add translation" vs "Edit translation" without a second round-trip.
 router.get('/:code/mod', async (req, res) => {
     try {
         const lang = String(req.query.lang || 'en').trim().slice(0, 5).toLowerCase() || 'en';
@@ -191,7 +194,8 @@ router.get('/:code/mod', async (req, res) => {
                     COALESCE(t.title, cmt.title) AS title,
                     COALESCE(t.intro, cmt.intro) AS intro,
                     COALESCE(t.steps, cmt.steps) AS steps,
-                    cmt.updated_at
+                    cmt.updated_at,
+                    (t.tutorial_id IS NOT NULL) AS has_translation
              FROM console_mod_tutorials cmt
              LEFT JOIN console_mod_tutorials_translations t
                ON t.tutorial_id = cmt.id AND t.lang = $2

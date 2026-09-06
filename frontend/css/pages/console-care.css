@@ -712,6 +712,13 @@
     color: var(--text-gray);
 }
 
+.tutorial-editor__lang-note {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin: 0 0 8px;
+}
+
 .tutorial-editor__step-remove {
     align-self: flex-start;
     font-family: var(--font-sans);

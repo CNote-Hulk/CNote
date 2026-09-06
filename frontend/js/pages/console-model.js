@@ -371,10 +371,20 @@ function createModTutorialSection() {
         el('mod-view-wrap').style.display = 'none';
         const editor = el('mod-editor');
         editor.style.display = '';
+        const lang = I18nModule.lang;
         const existing = isNew ? null : findCombo(selectedFlash, selectedVersion);
+        // Editing an existing combo while browsing a non-EN language edits that
+        // language's translation instead of the EN canonical row (see save()) —
+        // `existing` here is already the effective (translation-or-EN-fallback)
+        // content from applyCombos(), so it's a sensible prefill either way.
+        // Deleting only makes sense when there's something to delete: the whole
+        // combo in EN mode, or — in translation mode — an actual override
+        // (not just the EN fallback masquerading as "existing").
+        const canDelete = !isNew && existing && (lang === 'en' || existing.has_translation);
 
         editor.innerHTML = `
             ${isNew ? newComboFieldsMarkup() : ''}
+            ${!isNew && lang !== 'en' ? `<p class="tutorial-editor__lang-note">${I18nModule.t('mod_editing_lang_note')} ${escapeHtml(lang.toUpperCase())}</p>` : ''}
             <input type="text" id="mod-editor-title" placeholder="${I18nModule.t('tutorial_title_placeholder')}" value="${escapeHtml(existing?.title || '')}">
             <textarea id="mod-editor-intro" rows="3" placeholder="${I18nModule.t('tutorial_intro_placeholder')}">${escapeHtml(existing?.intro || '')}</textarea>
             <div id="mod-editor-steps"></div>
@@ -382,7 +392,7 @@ function createModTutorialSection() {
             <div class="tutorial-editor__actions">
                 <button type="button" id="mod-editor-save" class="hero-button" data-i18n="tutorial_save">Save</button>
                 <button type="button" id="mod-editor-cancel" class="hero-button hero-button--syllabus" data-i18n="tutorial_cancel">Cancel</button>
-                ${!isNew && existing ? `<button type="button" id="mod-editor-delete" class="hero-button hero-button--syllabus" data-i18n="tutorial_delete">Delete tutorial</button>` : ''}
+                ${canDelete ? `<button type="button" id="mod-editor-delete" class="hero-button hero-button--syllabus">${lang === 'en' ? I18nModule.t('tutorial_delete') : I18nModule.t('mod_remove_translation_btn')}</button>` : ''}
             </div>
             <p id="mod-editor-save-status"></p>
         `;
@@ -404,8 +414,23 @@ function createModTutorialSection() {
         el('mod-view-wrap').style.display = '';
     }
 
+    // Re-fetches the effective combo list for the language currently being
+    // browsed. Used after removing a translation, since the local `combos`
+    // array may already hold that language's (now-deleted) override rather
+    // than the EN fallback it should show afterwards — cheaper to just ask
+    // the server for the right answer than to reconstruct it client-side.
+    async function reloadCombos() {
+        try {
+            const result = await api('GET', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod?lang=${encodeURIComponent(I18nModule.lang)}`);
+            combos = result.success ? result.tutorials : [];
+        } catch {
+            combos = [];
+        }
+    }
+
     async function save(isNew) {
         const statusEl = el('mod-editor-save-status');
+        const lang = I18nModule.lang;
         const flashType = isNew ? document.getElementById('mod-editor-flash-type').value.trim() : selectedFlash;
         const version = isNew ? document.getElementById('mod-editor-firmware-version').value.trim() : selectedVersion;
         if (!flashType || !version) {
@@ -418,21 +443,42 @@ function createModTutorialSection() {
         const steps = readStepsFromEditor('mod-editor-steps');
 
         statusEl.textContent = I18nModule.t('tutorial_saving');
-        const result = await api(
-            'PUT',
-            `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(flashType)}/${encodeURIComponent(version)}`,
-            { title, intro, steps }
-        );
-        if (!result.success) {
-            statusEl.textContent = result.error || I18nModule.t('tutorial_save_error');
-            return;
-        }
 
-        const saved = result.tutorial;
-        const idx = combos.findIndex(c => c.flash_type === saved.flash_type && c.firmware_version === saved.firmware_version);
-        if (idx >= 0) combos[idx] = saved; else combos.push(saved);
-        selectedFlash = saved.flash_type;
-        selectedVersion = saved.firmware_version;
+        // A brand-new combo (flash type/firmware version pair) is a structural
+        // addition, not translatable content, so it's always written to the EN
+        // canonical row regardless of which language is currently browsed (the
+        // "Add new combo" button itself is hidden outside EN — see
+        // renderAdminControls() — this branch just stays correct defensively).
+        if (isNew || lang === 'en') {
+            const result = await api(
+                'PUT',
+                `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(flashType)}/${encodeURIComponent(version)}`,
+                { title, intro, steps }
+            );
+            if (!result.success) {
+                statusEl.textContent = result.error || I18nModule.t('tutorial_save_error');
+                return;
+            }
+            const saved = { ...result.tutorial, has_translation: false };
+            const idx = combos.findIndex(c => c.flash_type === saved.flash_type && c.firmware_version === saved.firmware_version);
+            if (idx >= 0) combos[idx] = saved; else combos.push(saved);
+            selectedFlash = saved.flash_type;
+            selectedVersion = saved.firmware_version;
+        } else {
+            const result = await api(
+                'PUT',
+                `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(flashType)}/${encodeURIComponent(version)}/translations/${encodeURIComponent(lang)}`,
+                { title, intro, steps }
+            );
+            if (!result.success) {
+                statusEl.textContent = result.error || I18nModule.t('tutorial_save_error');
+                return;
+            }
+            const idx = combos.findIndex(c => c.flash_type === flashType && c.firmware_version === version);
+            if (idx >= 0) {
+                combos[idx] = { ...combos[idx], title: result.translation.title, intro: result.translation.intro, steps: result.translation.steps, has_translation: true };
+            }
+        }
 
         closeEditor();
         renderView();
@@ -440,11 +486,18 @@ function createModTutorialSection() {
     }
 
     async function del() {
-        if (!confirm(I18nModule.t('tutorial_delete_confirm'))) return;
-        await api('DELETE', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(selectedFlash)}/${encodeURIComponent(selectedVersion)}`);
-        combos = combos.filter(c => !(c.flash_type === selectedFlash && c.firmware_version === selectedVersion));
-        selectedFlash = null;
-        selectedVersion = null;
+        const lang = I18nModule.lang;
+        if (lang === 'en') {
+            if (!confirm(I18nModule.t('tutorial_delete_confirm'))) return;
+            await api('DELETE', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(selectedFlash)}/${encodeURIComponent(selectedVersion)}`);
+            combos = combos.filter(c => !(c.flash_type === selectedFlash && c.firmware_version === selectedVersion));
+            selectedFlash = null;
+            selectedVersion = null;
+        } else {
+            if (!confirm(I18nModule.t('mod_remove_translation_confirm'))) return;
+            await api('DELETE', `/console-tutorials/${encodeURIComponent(currentModel.code)}/mod/${encodeURIComponent(selectedFlash)}/${encodeURIComponent(selectedVersion)}/translations/${encodeURIComponent(lang)}`);
+            await reloadCombos();
+        }
         closeEditor();
         renderView();
         renderAdminControls();
@@ -454,13 +507,30 @@ function createModTutorialSection() {
         const wrap = el('mod-admin-controls');
         if (!wrap) return;
         if (!isAdmin()) { wrap.innerHTML = ''; return; }
-        const hasCurrent = !!findCombo(selectedFlash, selectedVersion);
+        const lang = I18nModule.lang;
+        const current = findCombo(selectedFlash, selectedVersion);
+
+        // EN: full control — edit the canonical combo, or add a brand-new one.
+        if (lang === 'en') {
+            wrap.innerHTML = `
+                ${current ? `<button type="button" id="mod-edit-btn" class="hero-button hero-button--syllabus">${I18nModule.t('tutorial_edit_btn')}</button>` : ''}
+                <button type="button" id="mod-add-btn" class="hero-button hero-button--syllabus">${I18nModule.t('mod_add_combo_btn')}</button>
+            `;
+            el('mod-edit-btn')?.addEventListener('click', () => openEditor(false));
+            el('mod-add-btn').addEventListener('click', () => openEditor(true));
+            return;
+        }
+
+        // Any other language: translate the currently-browsed combo only — no
+        // "add new combo" here, since flash type/firmware version are technical
+        // identifiers, not translatable content, and always live on the EN row.
+        if (!current) { wrap.innerHTML = ''; return; }
+        const label = current.has_translation ? I18nModule.t('mod_edit_translation_btn') : I18nModule.t('mod_add_translation_btn');
         wrap.innerHTML = `
-            ${hasCurrent ? `<button type="button" id="mod-edit-btn" class="hero-button hero-button--syllabus">${I18nModule.t('tutorial_edit_btn')}</button>` : ''}
-            <button type="button" id="mod-add-btn" class="hero-button hero-button--syllabus">${I18nModule.t('mod_add_combo_btn')}</button>
+            <button type="button" id="mod-edit-translation-btn" class="hero-button hero-button--syllabus">${label}</button>
+            <p class="tutorial-editor__lang-note">${I18nModule.t('mod_switch_to_en_note')}</p>
         `;
-        el('mod-edit-btn')?.addEventListener('click', () => openEditor(false));
-        el('mod-add-btn').addEventListener('click', () => openEditor(true));
+        el('mod-edit-translation-btn').addEventListener('click', () => openEditor(false));
     }
 
     function applyCombos(rows, consoleName) {
