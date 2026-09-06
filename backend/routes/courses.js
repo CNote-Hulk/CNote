@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { authRequired, authOptional } = require('../middleware/auth');
+const { adminOnly } = require('../middleware/adminOnly');
 const { awardXP } = require('../utils/gamification');
 
 /* ── One-time table creation for reactions + comments ── */
@@ -259,6 +260,93 @@ router.get('/lessons/:id', authOptional, async (req, res) => {
     } catch (err) {
         console.error('GET /lessons/:id error:', err);
         res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+// PUT /api/lessons/:id — admin-only, update the EN canonical title/content_html.
+// Learn/lesson content becomes admin-editable from the site (2026-09-06, same
+// push as the Evolution console-page editor) — `lessons.title`/`content_html`
+// ARE the EN row (mirrors console_mod_tutorials vs. its translations table:
+// the base table is the EN canonical content, `lesson_translations` holds
+// every other language separately and isn't touched here).
+router.put('/lessons/:id', authRequired, adminOnly, async (req, res) => {
+    const lessonId = parseInt(req.params.id, 10);
+    if (isNaN(lessonId)) {
+        return res.status(400).json({ success: false, error: 'Invalid lesson id' });
+    }
+    const { title, content_html } = req.body || {};
+    if (!title || typeof title !== 'string') {
+        return res.status(400).json({ success: false, error: 'Missing lesson title.' });
+    }
+    try {
+        const { rows } = await pool.query(
+            `UPDATE lessons SET title = $2, content_html = $3 WHERE id = $1 RETURNING id, title, content_html`,
+            [lessonId, String(title).slice(0, 300), String(content_html || '')]
+        );
+        if (!rows.length) return res.status(404).json({ success: false, error: 'Lesson not found.' });
+        res.json({ success: true, lesson: rows[0] });
+    } catch (err) {
+        console.error('PUT /lessons/:id error:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+// PUT /api/lessons/:id/quiz — admin-only, replaces the ENTIRE quiz question
+// set for this lesson in one call (delete-then-insert inside a transaction)
+// rather than per-question CRUD — one save operation for the whole editable
+// unit, same shape as how console_mod_tutorials' `steps` array editor works.
+router.put('/lessons/:id/quiz', authRequired, adminOnly, async (req, res) => {
+    const lessonId = parseInt(req.params.id, 10);
+    if (isNaN(lessonId)) {
+        return res.status(400).json({ success: false, error: 'Invalid lesson id' });
+    }
+    const questions = Array.isArray(req.body?.questions) ? req.body.questions.slice(0, 30) : [];
+
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        const lessonCheck = await client.query('SELECT id FROM lessons WHERE id = $1', [lessonId]);
+        if (!lessonCheck.rows.length) {
+            await client.query('ROLLBACK');
+            return res.status(404).json({ success: false, error: 'Lesson not found.' });
+        }
+
+        await client.query('DELETE FROM quiz_questions WHERE lesson_id = $1', [lessonId]);
+
+        for (const q of questions) {
+            const question = String(q?.question || '').slice(0, 1000);
+            const options = Array.isArray(q?.options)
+                ? q.options.map(o => String(o).slice(0, 300)).filter(Boolean).slice(0, 8)
+                : [];
+            const correctOption = parseInt(q?.correct_option, 10);
+            const explanation = String(q?.explanation || '').slice(0, 1000);
+            // Skip malformed rows instead of failing the whole save — an admin
+            // editing 5 good questions shouldn't lose all of them over one
+            // half-filled draft row left in the editor.
+            if (!question || options.length < 2 || isNaN(correctOption) || correctOption < 0 || correctOption >= options.length) {
+                continue;
+            }
+            await client.query(
+                `INSERT INTO quiz_questions (lesson_id, question, options, correct_option, explanation)
+                 VALUES ($1, $2, $3, $4, $5)`,
+                [lessonId, question, JSON.stringify(options), correctOption, explanation]
+            );
+        }
+
+        await client.query('COMMIT');
+
+        const { rows } = await pool.query(
+            'SELECT id, question, options, correct_option, explanation FROM quiz_questions WHERE lesson_id = $1 ORDER BY id',
+            [lessonId]
+        );
+        res.json({ success: true, questions: rows });
+    } catch (err) {
+        try { await client.query('ROLLBACK'); } catch { /* ignore */ }
+        console.error('PUT /lessons/:id/quiz error:', err);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    } finally {
+        client.release();
     }
 });
 

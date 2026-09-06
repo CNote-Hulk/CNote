@@ -1558,3 +1558,198 @@
         radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.08) 0%, transparent 55%),
         linear-gradient(180deg, var(--dark-bg, #f7f4ef) 0%, #ede8df 100%);
 }
+
+/* ── Admin edit modal (2026-09-06) ───────────────────────────────────────
+   Full-content editor for a lesson's title/content_html/quiz questions,
+   opened from a small admin-only trigger in the hero. Same overlay/modal
+   shape as console-detail.css's .console-edit-*/articles.css's
+   .article-modal*, given its own class prefix here since lesson.css is
+   linked directly (opt-in per page), not bundled into main.css. ── */
+
+.lesson-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 10px;
+    padding: 4px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-light);
+    background: rgba(var(--accent-rgb), 0.12);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.lesson-edit-trigger:hover {
+    background: rgba(var(--accent-rgb), 0.2);
+}
+
+.lesson-edit-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.lesson-edit-modal {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+}
+
+.lesson-edit-modal h2 {
+    margin: 0 0 18px;
+    color: var(--text-light);
+}
+
+.lesson-edit-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--text-gray);
+    cursor: pointer;
+}
+
+.lesson-edit-modal__close:hover {
+    color: var(--text-light);
+}
+
+.lesson-edit__label {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.86rem;
+    font-weight: 600;
+    margin: 16px 0 6px;
+}
+
+.lesson-edit__label:first-of-type {
+    margin-top: 0;
+}
+
+.lesson-edit__input,
+.lesson-edit__textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+}
+
+.lesson-edit__textarea {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.82rem;
+    resize: vertical;
+}
+
+.lesson-edit__quiz-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin-bottom: 14px;
+}
+
+.lesson-edit__quiz-card textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-family: var(--font-sans);
+    font-size: 0.86rem;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    resize: vertical;
+}
+
+.lesson-edit__quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.lesson-edit__quiz-option-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lesson-edit__quiz-option-row .lesson-edit__option-text {
+    flex: 1;
+    padding: 6px 10px;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+}
+
+.lesson-edit__array-remove {
+    flex-shrink: 0;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--error);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+
+.lesson-edit__remove-btn {
+    margin-top: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--error);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.lesson-edit__add-btn {
+    margin-top: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--accent-color);
+    background: none;
+    border: 1px dashed rgba(var(--accent-rgb), 0.4);
+    border-radius: var(--radius-md);
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.lesson-edit__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+#lesson-edit-status {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin: 10px 0 0;
+}

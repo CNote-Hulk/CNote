@@ -10,6 +10,8 @@ if (!lessonId) window.location.href = 'invata.html';
 let lessonData = null;
 let quizAnswers = {};
 let quizScore = null;
+let currentCourse = null;
+let currentLsnIdx = -1;
 
 function esc(str) {
     return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -855,6 +857,163 @@ function renderNavButtons(allLessons, lsnIdx, hasQuiz) {
     quizSection.appendChild(nav);
 }
 
+/* ═══════════════════════════════════════════════════
+   ADMIN EDIT MODAL (2026-09-06) — full-content editor for a lesson's
+   title/content_html/quiz questions. lessons.title/content_html ARE the EN
+   canonical row (lesson_translations holds every other language separately,
+   untouched by this — same convention as console_mod_tutorials this same
+   day). Mirrors console-detail.js's openConsoleEditor() shape.
+   ═══════════════════════════════════════════════════ */
+
+function isAdmin() {
+    return AuthModule.getCurrentUser()?.role === 'admin';
+}
+
+async function apiLesson(method, path, body) {
+    const token = localStorage.getItem('cn_token');
+    const opts = { method, credentials: 'include', headers: {} };
+    if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+    if (body) {
+        opts.headers['Content-Type'] = 'application/json';
+        opts.body = JSON.stringify(body);
+    }
+    const res = await fetch(API_BASE_URL + path, opts);
+    return res.json();
+}
+
+function lessonEditOptionRow(value, isCorrect, radioName) {
+    const row = document.createElement('div');
+    row.className = 'lesson-edit__quiz-option-row';
+    row.innerHTML = `
+        <input type="radio" name="${radioName}" class="lesson-edit__option-correct" ${isCorrect ? 'checked' : ''} title="Correct answer">
+        <input type="text" class="lesson-edit__option-text" value="${esc(value || '')}">
+        <button type="button" class="lesson-edit__array-remove">&times;</button>
+    `;
+    row.querySelector('.lesson-edit__array-remove').addEventListener('click', () => row.remove());
+    return row;
+}
+
+function lessonEditQuestionRow(q) {
+    const radioName = 'lesson-edit-correct-' + Math.random().toString(36).slice(2);
+    const row = document.createElement('div');
+    row.className = 'lesson-edit__quiz-card';
+    row.innerHTML = `
+        <textarea class="lesson-edit__quiz-question" rows="2" placeholder="Question">${esc(q?.question || '')}</textarea>
+        <div class="lesson-edit__quiz-options"></div>
+        <button type="button" class="lesson-edit__add-btn lesson-edit__add-option">+ Add option</button>
+        <textarea class="lesson-edit__quiz-explanation" rows="2" placeholder="Explanation (shown after answering)">${esc(q?.explanation || '')}</textarea>
+        <button type="button" class="lesson-edit__remove-btn lesson-edit__remove-question">Remove question</button>
+    `;
+    const optionsWrap = row.querySelector('.lesson-edit__quiz-options');
+    const options = Array.isArray(q?.options) && q.options.length ? q.options : ['', ''];
+    options.forEach((opt, i) => optionsWrap.appendChild(lessonEditOptionRow(opt, i === q?.correct_option, radioName)));
+    row.querySelector('.lesson-edit__add-option').addEventListener('click', () => {
+        optionsWrap.appendChild(lessonEditOptionRow('', optionsWrap.children.length === 0, radioName));
+    });
+    row.querySelector('.lesson-edit__remove-question').addEventListener('click', () => row.remove());
+    return row;
+}
+
+function readLessonEditQuiz() {
+    return Array.from(document.querySelectorAll('#lesson-edit-quiz .lesson-edit__quiz-card')).map(card => {
+        const optionRows = Array.from(card.querySelectorAll('.lesson-edit__quiz-option-row'));
+        const options = optionRows.map(r => r.querySelector('.lesson-edit__option-text').value.trim());
+        let correct_option = optionRows.findIndex(r => r.querySelector('.lesson-edit__option-correct').checked);
+        if (correct_option === -1) correct_option = 0;
+        return {
+            question: card.querySelector('.lesson-edit__quiz-question').value.trim(),
+            options,
+            correct_option,
+            explanation: card.querySelector('.lesson-edit__quiz-explanation').value.trim(),
+        };
+    }).filter(q => q.question && q.options.filter(Boolean).length >= 2);
+}
+
+function openLessonEditor() {
+    if (!lessonData) return;
+    const l = lessonData;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'lesson-edit-overlay';
+    overlay.innerHTML = `
+        <div class="lesson-edit-modal">
+            <button type="button" class="lesson-edit-modal__close" aria-label="Cancel">&times;</button>
+            <h2>Edit Lesson</h2>
+
+            <label class="lesson-edit__label" for="lesson-edit-title">Title</label>
+            <input type="text" id="lesson-edit-title" class="lesson-edit__input" value="${esc(l.title)}">
+
+            <label class="lesson-edit__label" for="lesson-edit-content">Content (HTML)</label>
+            <textarea id="lesson-edit-content" class="lesson-edit__textarea" rows="14">${esc(l.content_html || '')}</textarea>
+
+            <label class="lesson-edit__label">Quiz questions</label>
+            <div id="lesson-edit-quiz"></div>
+            <button type="button" id="lesson-edit-add-question" class="lesson-edit__add-btn">+ Add question</button>
+
+            <div class="lesson-edit__actions">
+                <button type="button" id="lesson-edit-save" class="hero-button">Save</button>
+                <button type="button" id="lesson-edit-cancel" class="hero-button hero-button--syllabus">Cancel</button>
+            </div>
+            <p id="lesson-edit-status"></p>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    const quizWrap = overlay.querySelector('#lesson-edit-quiz');
+    (l.quiz_questions || []).forEach(q => quizWrap.appendChild(lessonEditQuestionRow(q)));
+    overlay.querySelector('#lesson-edit-add-question').addEventListener('click', () => quizWrap.appendChild(lessonEditQuestionRow()));
+
+    function closeEditor() {
+        overlay.remove();
+        document.body.style.overflow = '';
+    }
+    overlay.querySelector('.lesson-edit-modal__close').addEventListener('click', closeEditor);
+    overlay.querySelector('#lesson-edit-cancel').addEventListener('click', closeEditor);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeEditor(); });
+
+    overlay.querySelector('#lesson-edit-save').addEventListener('click', async () => {
+        const statusEl = overlay.querySelector('#lesson-edit-status');
+        const title = overlay.querySelector('#lesson-edit-title').value.trim();
+        const content_html = overlay.querySelector('#lesson-edit-content').value;
+        if (!title) {
+            statusEl.textContent = 'Title is required.';
+            return;
+        }
+
+        statusEl.textContent = 'Saving…';
+        const lessonResult = await apiLesson('PUT', `/lessons/${encodeURIComponent(lessonId)}`, { title, content_html });
+        if (!lessonResult.success) {
+            statusEl.textContent = lessonResult.error || 'Could not save lesson.';
+            return;
+        }
+
+        const quizResult = await apiLesson('PUT', `/lessons/${encodeURIComponent(lessonId)}/quiz`, { questions: readLessonEditQuiz() });
+        if (!quizResult.success) {
+            statusEl.textContent = quizResult.error || 'Lesson saved, but the quiz could not be saved.';
+            return;
+        }
+
+        lessonData = { ...lessonData, title: lessonResult.lesson.title, content_html: lessonResult.lesson.content_html, quiz_questions: quizResult.questions };
+        renderLesson(lessonData, currentCourse, currentLsnIdx);
+        renderQuiz(lessonData.quiz_questions);
+        closeEditor();
+    });
+}
+
+function initLessonAdminEditButton() {
+    if (!isAdmin()) return;
+    const hero = document.querySelector('.lsn-hero__inner');
+    if (!hero || document.getElementById('lesson-edit-btn')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'lesson-edit-btn';
+    btn.className = 'lesson-edit-trigger';
+    btn.textContent = 'Edit lesson';
+    btn.addEventListener('click', openLessonEditor);
+    hero.appendChild(btn);
+}
+
 /* ─────────────────────────────────────
    INIT
 ───────────────────────────────────── */
@@ -896,10 +1055,13 @@ async function init() {
 
     const allLessons = course ? (course.modules || []).flatMap(m => m.lessons || []) : [];
     const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
+    currentCourse = course;
+    currentLsnIdx = lsnIdx;
 
     // Render lesson content first, then build TOC from the rendered headings
     renderLesson(lesson, course, lsnIdx);
     buildArticleTOC();
+    initLessonAdminEditButton();
     const hasQuiz = (lesson.quiz_questions || []).length > 0;
 
     // Set _lsnNextId for showResult()
@@ -940,9 +1102,12 @@ window.addEventListener('cn:language-changed', async () => {
 
     const allLessons = course ? (course.modules || []).flatMap(m => m.lessons || []) : [];
     const lsnIdx = allLessons.findIndex(l => l.id === lesson.id);
+    currentCourse = course;
+    currentLsnIdx = lsnIdx;
 
     renderLesson(lesson, course, lsnIdx);
     buildArticleTOC();
+    initLessonAdminEditButton();
 
     if (course) {
         const progressData = await fetchCourseProgress();
