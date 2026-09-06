@@ -1,13 +1,16 @@
-import { MODELS, MOD_OPTIONS } from '../data/console-models.js';
+import { MOD_OPTIONS, loadModels, invalidateModelsCache } from '../data/console-models.js';
 import { I18nModule } from '../modules/i18n.js';
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
 
-function findModel() {
-    const params = new URLSearchParams(location.search);
-    const code = params.get('code');
+function codeFromUrl() {
+    return new URLSearchParams(location.search).get('code');
+}
+
+function findModel(models) {
+    const code = codeFromUrl();
     if (!code) return null;
-    return MODELS.find(m => m.code === code) || null;
+    return models.find(m => m.code === code) || null;
 }
 
 // Which directory the visitor arrived from (?from=care|modding) so the
@@ -60,6 +63,107 @@ function isAdmin() {
 }
 
 let currentModel = null;
+
+// ── Admin edit: the model's own mfr/console/code/note (Phase 3 of the
+// site-wide admin-editing task, 2026-09-06) — separate from the disassembly/
+// modding tutorial content below, which already had its own admin editors. ──
+
+function openModelEditor() {
+    if (!currentModel) return;
+    const m = currentModel;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'model-directory-add-overlay';
+    overlay.innerHTML = `
+        <div class="model-directory-add-modal">
+            <button type="button" class="model-directory-add-modal__close" aria-label="${I18nModule.t('tutorial_cancel')}">&times;</button>
+            <h2>${I18nModule.t('model_edit_modal_title')}</h2>
+
+            <label class="model-directory-add__label" for="model-edit-mfr">${I18nModule.t('model_add_mfr_label')}</label>
+            <input type="text" id="model-edit-mfr" class="model-directory-add__input" value="${escapeHtml(m.mfr)}">
+
+            <label class="model-directory-add__label" for="model-edit-console">${I18nModule.t('model_add_console_label')}</label>
+            <input type="text" id="model-edit-console" class="model-directory-add__input" value="${escapeHtml(m.console)}">
+
+            <label class="model-directory-add__label" for="model-edit-code">${I18nModule.t('model_add_code_label')}</label>
+            <input type="text" id="model-edit-code" class="model-directory-add__input" value="${escapeHtml(m.code)}">
+            <p class="model-edit__code-warning">${I18nModule.t('model_edit_code_warning')}</p>
+
+            <label class="model-directory-add__label" for="model-edit-note">${I18nModule.t('model_add_note_label')}</label>
+            <textarea id="model-edit-note" class="model-directory-add__textarea" rows="3">${escapeHtml(m.note || '')}</textarea>
+
+            <div class="model-directory-add__actions">
+                <button type="button" id="model-edit-save" class="hero-button">${I18nModule.t('tutorial_save')}</button>
+                <button type="button" id="model-edit-cancel" class="hero-button hero-button--syllabus">${I18nModule.t('tutorial_cancel')}</button>
+            </div>
+            <p id="model-edit-status"></p>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    function closeEditor() {
+        overlay.remove();
+        document.body.style.overflow = '';
+    }
+    overlay.querySelector('.model-directory-add-modal__close').addEventListener('click', closeEditor);
+    overlay.querySelector('#model-edit-cancel').addEventListener('click', closeEditor);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeEditor(); });
+
+    overlay.querySelector('#model-edit-save').addEventListener('click', async () => {
+        const statusEl = overlay.querySelector('#model-edit-status');
+        const mfr = document.getElementById('model-edit-mfr').value.trim();
+        const consoleName = document.getElementById('model-edit-console').value.trim();
+        const code = document.getElementById('model-edit-code').value.trim();
+        const note = document.getElementById('model-edit-note').value.trim();
+
+        if (!mfr || !consoleName || !code) {
+            statusEl.textContent = I18nModule.t('tutorial_save_error');
+            return;
+        }
+
+        statusEl.textContent = I18nModule.t('tutorial_saving');
+        const result = await api('PUT', `/console-models/${m.id}`, { mfr, console: consoleName, code, note });
+        if (!result.success) {
+            statusEl.textContent = result.error || I18nModule.t('tutorial_save_error');
+            return;
+        }
+
+        invalidateModelsCache();
+        closeEditor();
+
+        // The URL's ?code= identifies which model this page shows — if the
+        // code changed, that param is now stale, so navigate to the new one
+        // instead of trying to re-render the old page in place.
+        if (result.model.code !== m.code) {
+            const params = new URLSearchParams(location.search);
+            params.set('code', result.model.code);
+            location.href = `console-model.html?${params.toString()}`;
+            return;
+        }
+
+        currentModel = result.model;
+        document.getElementById('model-plate-code').textContent = currentModel.code;
+        document.getElementById('model-plate-console').textContent = currentModel.console;
+        document.getElementById('model-mfr').textContent = currentModel.mfr;
+        document.getElementById('model-console-name').textContent = currentModel.console;
+        document.getElementById('model-note').textContent = currentModel.note || '';
+    });
+}
+
+function initModelAdminEditButton() {
+    if (!isAdmin()) return;
+    if (document.getElementById('model-edit-btn')) return;
+    const anchor = document.getElementById('model-note');
+    if (!anchor) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'model-edit-btn';
+    btn.className = 'model-edit-trigger';
+    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>${I18nModule.t('model_edit_btn')}</span>`;
+    btn.addEventListener('click', openModelEditor);
+    anchor.after(btn);
+}
 
 // ── Shared read-view markup, used by both the disassembly tutorial and the
 // modding guide (either the single row, or whichever combo is selected). ──
@@ -570,7 +674,8 @@ const modding = createModTutorialSection();
 // ── Boot ─────────────────────────────────────────────────
 
 async function render() {
-    currentModel = findModel();
+    const models = await loadModels();
+    currentModel = findModel(models);
     applyBackLinks();
     const root = document.getElementById('model-detail-root');
     const notFound = document.getElementById('model-detail-notfound');
@@ -591,6 +696,7 @@ async function render() {
     document.getElementById('model-mfr').textContent = currentModel.mfr;
     document.getElementById('model-console-name').textContent = currentModel.console;
     document.getElementById('model-note').textContent = currentModel.note || '';
+    initModelAdminEditButton();
 
     let disassemblyRow = null;
     try {

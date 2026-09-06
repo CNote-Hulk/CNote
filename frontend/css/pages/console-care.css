@@ -743,3 +743,161 @@
     color: var(--text-gray);
     margin: 0;
 }
+
+/* ── "Add model" admin button + modal (2026-09-06, Phase 3 of the
+   site-wide admin-editing task) — console-care.html/console-modding.html
+   share this same directory component (model-directory.js), so the styling
+   lives here rather than duplicated in both pages' stylesheets (they both
+   already link this one file). ── */
+
+.model-directory-add-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin: 10px 0 18px;
+    padding: 8px 16px;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.model-directory-add-trigger svg {
+    flex-shrink: 0;
+}
+
+.model-directory-add-trigger:hover {
+    background: rgba(var(--accent-rgb), 0.18);
+    border-color: rgba(var(--accent-rgb), 0.55);
+    transform: translateY(-1px);
+}
+
+.model-directory-add-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.model-directory-add-modal {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+}
+
+.model-directory-add-modal h2 {
+    margin: 0 0 18px;
+    color: var(--text-light);
+}
+
+.model-directory-add-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--text-gray);
+    cursor: pointer;
+}
+
+.model-directory-add-modal__close:hover {
+    color: var(--text-light);
+}
+
+.model-directory-add__label {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.86rem;
+    font-weight: 600;
+    margin: 16px 0 6px;
+}
+
+.model-directory-add__label:first-of-type {
+    margin-top: 0;
+}
+
+.model-directory-add__input,
+.model-directory-add__textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+}
+
+.model-directory-add__textarea {
+    resize: vertical;
+}
+
+.model-directory-add__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+#model-add-status {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin: 10px 0 0;
+}
+
+/* ── "Edit model" admin button, on console-model.html's own hero (mfr/
+   console/code/note — separate from the disassembly/modding tutorial
+   editors, which reuse .tutorial-editor__* above). ── */
+
+.model-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.model-edit-trigger svg {
+    flex-shrink: 0;
+}
+
+.model-edit-trigger:hover {
+    background: rgba(var(--accent-rgb), 0.18);
+    border-color: rgba(var(--accent-rgb), 0.55);
+    transform: translateY(-1px);
+}
+
+.model-edit__code-warning {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    margin: 4px 0 0;
+}
