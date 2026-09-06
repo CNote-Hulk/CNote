@@ -1001,17 +1001,22 @@ function openLessonEditor() {
     });
 }
 
+const EDIT_PENCIL_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+
 function initLessonAdminEditButton() {
     if (!isAdmin()) return;
-    const hero = document.querySelector('.lsn-hero__inner');
-    if (!hero || document.getElementById('lesson-edit-btn')) return;
+    // Anchored after the meta row (course name / progress indicator), not
+    // the title itself — reads as a page-level admin action rather than
+    // crowding the heading.
+    const anchor = document.querySelector('.lsn-hero__meta');
+    if (!anchor || document.getElementById('lesson-edit-btn')) return;
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.id = 'lesson-edit-btn';
     btn.className = 'lesson-edit-trigger';
-    btn.textContent = 'Edit lesson';
+    btn.innerHTML = `${EDIT_PENCIL_SVG}<span>Edit lesson</span>`;
     btn.addEventListener('click', openLessonEditor);
-    hero.appendChild(btn);
+    anchor.after(btn);
 }
 
 /* ─────────────────────────────────────

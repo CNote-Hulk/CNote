@@ -1100,17 +1100,22 @@ function openConsoleEditor() {
     });
 }
 
+const EDIT_PENCIL_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+
 function initAdminEditButton() {
     if (!isAdmin()) return;
-    const h1 = document.querySelector('.console-hero-text h1');
-    if (!h1 || document.getElementById('console-edit-btn')) return;
+    // Anchored after the meta row (manufacturer/year/generation), not the
+    // title itself — keeps the <h1> (and its favorite-heart button) clean and
+    // reads as a page-level admin action rather than crowding the heading.
+    const anchor = document.querySelector('.console-hero-text .console-meta');
+    if (!anchor || document.getElementById('console-edit-btn')) return;
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.id = 'console-edit-btn';
     btn.className = 'console-edit-trigger';
-    btn.textContent = I18nModule.t('console_edit_btn');
+    btn.innerHTML = `${EDIT_PENCIL_SVG}<span>${I18nModule.t('console_edit_btn')}</span>`;
     btn.addEventListener('click', openConsoleEditor);
-    h1.after(btn);
+    anchor.after(btn);
 }
 
 /**
