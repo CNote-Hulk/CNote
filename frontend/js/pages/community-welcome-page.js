@@ -416,6 +416,21 @@
         loadActiveCount();
         loadRepair();
         updateOnlineCount();
+
+        /* ── Live Refresh — "Community in numbers" (Active Now / Forum Threads
+           / Marketplace Listings) previously only ever loaded once, so a
+           visitor lingering on the landing page never saw them move even as
+           the real counts changed elsewhere. Re-fetches on an interval instead;
+           skipped while the tab is in the background (a visitor who switched
+           tabs) so a public, unauthenticated page doesn't poll pointlessly. ── */
+        var LIVE_STATS_REFRESH_MS = 30000;
+        setInterval(function() {
+            if (document.hidden) return;
+            loadActiveCount();
+            loadCategoryCounts();
+            loadMarketplace();
+            updateOnlineCount();
+        }, LIVE_STATS_REFRESH_MS);
         setupCommunityNavbarAutoHide();
 
         var hasIO = 'IntersectionObserver' in window;
