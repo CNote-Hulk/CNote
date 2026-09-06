@@ -203,7 +203,14 @@
         /* ── Category Counts ─────────────────────────── */
         var totalThreads = 0;
         function loadCategoryCounts() {
-            var consoles = ['ps', 'xbox', 'nintendo', 'pc', 'other'];
+            // 'general' has no tile in the "Browse by platform" grid below (by
+            // design — see community-welcome-page.html), but it's still a valid
+            // forum category (VALID_CONSOLES in forum.js) that real threads get
+            // posted under, so it must stay in this list for the "Forum Threads"
+            // stat to be accurate — omitting it previously left that stat stuck
+            // at 0 even with real threads in the DB. The missing `cl-cat-general`
+            // element below is harmless: the `if (el)` guard just skips it.
+            var consoles = ['ps', 'xbox', 'nintendo', 'pc', 'general', 'other'];
             totalThreads = 0;
 
             consoles.forEach(function(con) {
