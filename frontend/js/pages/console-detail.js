@@ -3,7 +3,7 @@
  * Loads console specs from consoles.json and renders them into the page
  */
 
-import { getConsoleById, getConsoleIdFromUrl, resolveImagePath } from '../data/data-loader.js';
+import { getConsoleById, getConsoleIdFromUrl, resolveImagePath, invalidateCache } from '../data/data-loader.js';
 import { AchievementsModule } from '../modules/achievements.js';
 import { AuthModule } from '../modules/auth.js';
 import { I18nModule } from '../modules/i18n.js';
@@ -795,6 +795,324 @@ async function initFavoriteButton(consoleId) {
     });
 }
 
+/* ═══════════════════════════════════════════════════
+   ADMIN EDIT MODAL (2026-09-06) — full-content editor for
+   name/manufacturer/generation/release/image/models/specs/advantages/
+   disadvantages/history, PUT to /api/consoles/:id (EN only for now,
+   translations reviewed/added separately later). Console encyclopedia data
+   is the live DB source of truth now — see CLAUDE.md.
+   ═══════════════════════════════════════════════════ */
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+}
+
+function isAdmin() {
+    return AuthModule.getCurrentUser()?.role === 'admin';
+}
+
+async function apiConsole(method, path, body) {
+    const token = localStorage.getItem('cn_token');
+    const opts = { method, credentials: 'include', headers: {} };
+    if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+    if (body) {
+        opts.headers['Content-Type'] = 'application/json';
+        opts.body = JSON.stringify(body);
+    }
+    const res = await fetch(API_BASE_URL + path, opts);
+    return res.json();
+}
+
+function consoleEditArrayRow(value) {
+    const row = document.createElement('div');
+    row.className = 'console-edit__array-row';
+    row.innerHTML = `
+        <input type="text" class="console-edit__array-input" value="${escapeHtml(value || '')}">
+        <button type="button" class="console-edit__array-remove">${I18nModule.t('console_edit_remove_item')}</button>
+    `;
+    row.querySelector('.console-edit__array-remove').addEventListener('click', () => row.remove());
+    return row;
+}
+
+function readConsoleEditArray(wrapId) {
+    return Array.from(document.querySelectorAll(`#${wrapId} .console-edit__array-input`))
+        .map(el => el.value.trim())
+        .filter(Boolean);
+}
+
+function consoleEditModelRow(model) {
+    const row = document.createElement('div');
+    row.className = 'console-edit__model-row';
+    row.innerHTML = `
+        <input type="text" class="console-edit__model-name" placeholder="${I18nModule.t('console_edit_model_name_placeholder')}" value="${escapeHtml(model?.name || '')}">
+        <input type="text" class="console-edit__model-year" placeholder="${I18nModule.t('console_edit_model_year_placeholder')}" value="${escapeHtml(model?.year || '')}">
+        <button type="button" class="console-edit__array-remove">${I18nModule.t('console_edit_remove_item')}</button>
+    `;
+    row.querySelector('.console-edit__array-remove').addEventListener('click', () => row.remove());
+    return row;
+}
+
+function readConsoleEditModels() {
+    return Array.from(document.querySelectorAll('#console-edit-models .console-edit__model-row')).map(row => ({
+        name: row.querySelector('.console-edit__model-name').value.trim(),
+        year: row.querySelector('.console-edit__model-year').value.trim(),
+    })).filter(m => m.name);
+}
+
+// One <label>+<input> pair for a spec field, reusing the same i18n keys
+// already used to DISPLAY that spec (spec_label_*) so this form needed
+// almost no new translation strings.
+function consoleEditSpecField(id, labelKey, value) {
+    return `
+        <label class="console-edit__label" for="${id}">${I18nModule.t(labelKey)}</label>
+        <input type="text" id="${id}" class="console-edit__input" value="${escapeHtml(value)}">
+    `;
+}
+
+function openConsoleEditor() {
+    if (!currentConsole) return;
+    const c = currentConsole;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'console-edit-overlay';
+    overlay.innerHTML = `
+        <div class="console-edit-modal">
+            <button type="button" class="console-edit-modal__close" aria-label="${I18nModule.t('tutorial_cancel')}">&times;</button>
+            <h2>${I18nModule.t('console_edit_modal_title')}</h2>
+
+            <label class="console-edit__label" for="console-edit-name">${I18nModule.t('console_edit_name_label')}</label>
+            <input type="text" id="console-edit-name" class="console-edit__input" value="${escapeHtml(c.name)}">
+
+            <label class="console-edit__label" for="console-edit-manufacturer">${I18nModule.t('console_edit_manufacturer_label')}</label>
+            <input type="text" id="console-edit-manufacturer" class="console-edit__input" value="${escapeHtml(c.manufacturer)}">
+
+            <div class="console-edit__row2">
+                <div>
+                    <label class="console-edit__label" for="console-edit-generation">${I18nModule.t('console_generation_prefix')}</label>
+                    <input type="number" id="console-edit-generation" class="console-edit__input" value="${escapeHtml(c.generation)}">
+                </div>
+                <div>
+                    <label class="console-edit__label" for="console-edit-release">${I18nModule.t('console_edit_release_label')}</label>
+                    <input type="number" id="console-edit-release" class="console-edit__input" value="${escapeHtml(c.release)}">
+                </div>
+            </div>
+
+            <label class="console-edit__label">${I18nModule.t('console_edit_image_label')}</label>
+            <div class="console-edit__upload">
+                <img class="console-edit__upload-preview" src="${escapeHtml(resolveImagePath(c.image))}" alt="">
+                <input type="hidden" id="console-edit-image-url" value="${escapeHtml(c.image || '')}">
+                <label class="hero-button hero-button--syllabus">
+                    <span>${I18nModule.t('tutorial_upload_photo')}</span>
+                    <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;">
+                </label>
+                <span class="console-edit__upload-status"></span>
+            </div>
+
+            <label class="console-edit__label">${I18nModule.t('console_edit_models_label')}</label>
+            <div id="console-edit-models"></div>
+            <button type="button" id="console-edit-add-model" class="console-edit__add-btn">${I18nModule.t('console_edit_add_item')}</button>
+
+            <div class="console-edit__specs-grid">
+                <fieldset>
+                    <legend>${I18nModule.t('spec_cpu_title')}</legend>
+                    ${consoleEditSpecField('console-edit-cpu-architecture', 'spec_label_architecture', c.cpu?.architecture)}
+                    ${consoleEditSpecField('console-edit-cpu-process', 'spec_label_process', c.cpu?.proces_nm)}
+                    ${consoleEditSpecField('console-edit-cpu-cores', 'spec_label_cores', c.cpu?.cores)}
+                    ${consoleEditSpecField('console-edit-cpu-frequency', 'spec_label_clock', c.cpu?.frequency)}
+                    ${consoleEditSpecField('console-edit-cpu-tdp', 'spec_label_tdp', c.cpu?.tdp)}
+                </fieldset>
+                <fieldset>
+                    <legend>${I18nModule.t('spec_gpu_title')}</legend>
+                    ${consoleEditSpecField('console-edit-gpu-architecture', 'spec_label_architecture', c.gpu?.architecture)}
+                    ${consoleEditSpecField('console-edit-gpu-units', 'spec_label_units', c.gpu?.units)}
+                    ${consoleEditSpecField('console-edit-gpu-frequency', 'spec_label_clock', c.gpu?.frequency)}
+                    ${consoleEditSpecField('console-edit-gpu-tflops', 'spec_label_tflops', c.gpu?.tflops)}
+                    ${consoleEditSpecField('console-edit-gpu-capabilities', 'spec_label_capabilities', c.gpu?.capabilities)}
+                </fieldset>
+                <fieldset>
+                    <legend>${I18nModule.t('spec_memory_title')}</legend>
+                    ${consoleEditSpecField('console-edit-memory-type', 'spec_label_type', c.memory?.type)}
+                    ${consoleEditSpecField('console-edit-memory-capacity', 'spec_label_capacity', c.memory?.capacity)}
+                    ${consoleEditSpecField('console-edit-memory-bus', 'spec_label_bus', c.memory?.bus)}
+                    ${consoleEditSpecField('console-edit-memory-bandwidth', 'spec_label_bandwidth', c.memory?.bandwidth)}
+                </fieldset>
+                <fieldset>
+                    <legend>${I18nModule.t('spec_storage_title')}</legend>
+                    ${consoleEditSpecField('console-edit-storage-type', 'spec_label_type', c.storage?.type)}
+                    ${consoleEditSpecField('console-edit-storage-interface', 'spec_label_interface', c.storage?.interface)}
+                    ${consoleEditSpecField('console-edit-storage-speed', 'spec_label_speed', c.storage?.speed)}
+                </fieldset>
+                <fieldset>
+                    <legend>${I18nModule.t('spec_output_title')}</legend>
+                    ${consoleEditSpecField('console-edit-video-resolution', 'spec_label_resolution', c.output_video?.resolution)}
+                    ${consoleEditSpecField('console-edit-video-refresh', 'spec_label_refresh', c.output_video?.refresh)}
+                    ${consoleEditSpecField('console-edit-video-hdr', 'spec_label_hdr', c.output_video?.hdr)}
+                    ${consoleEditSpecField('console-edit-video-upscaling', 'spec_label_upscaling', c.output_video?.upscaling)}
+                </fieldset>
+                <fieldset>
+                    <legend>${I18nModule.t('spec_tech_title')}</legend>
+                    <label class="console-edit__checkbox"><input type="checkbox" id="console-edit-tech-rt" ${c.technologies?.ray_tracing ? 'checked' : ''}> Ray Tracing</label>
+                    <label class="console-edit__checkbox"><input type="checkbox" id="console-edit-tech-vrr" ${c.technologies?.vrr ? 'checked' : ''}> VRR</label>
+                    ${consoleEditSpecField('console-edit-tech-backcompat', 'spec_label_backwards_compat', c.technologies?.backwards_compatibility)}
+                    ${consoleEditSpecField('console-edit-tech-other', 'spec_label_capabilities', c.technologies?.other)}
+                </fieldset>
+            </div>
+
+            <label class="console-edit__label">${I18nModule.t('console_pros_title')}</label>
+            <div id="console-edit-advantages"></div>
+            <button type="button" id="console-edit-add-advantage" class="console-edit__add-btn">${I18nModule.t('console_edit_add_item')}</button>
+
+            <label class="console-edit__label">${I18nModule.t('console_cons_title')}</label>
+            <div id="console-edit-disadvantages"></div>
+            <button type="button" id="console-edit-add-disadvantage" class="console-edit__add-btn">${I18nModule.t('console_edit_add_item')}</button>
+
+            <label class="console-edit__label" for="console-edit-history">${I18nModule.t('console_history_title')}</label>
+            <textarea id="console-edit-history" class="console-edit__textarea" rows="10">${escapeHtml(c.history || '')}</textarea>
+
+            <div class="console-edit__actions">
+                <button type="button" id="console-edit-save" class="hero-button">${I18nModule.t('tutorial_save')}</button>
+                <button type="button" id="console-edit-cancel" class="hero-button hero-button--syllabus">${I18nModule.t('tutorial_cancel')}</button>
+            </div>
+            <p id="console-edit-status"></p>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    const modelsWrap = overlay.querySelector('#console-edit-models');
+    (Array.isArray(c.models) ? c.models : []).forEach(m => modelsWrap.appendChild(consoleEditModelRow(m)));
+    overlay.querySelector('#console-edit-add-model').addEventListener('click', () => modelsWrap.appendChild(consoleEditModelRow()));
+
+    const advWrap = overlay.querySelector('#console-edit-advantages');
+    getLocalizedArray(c, 'advantages').forEach(a => advWrap.appendChild(consoleEditArrayRow(a)));
+    overlay.querySelector('#console-edit-add-advantage').addEventListener('click', () => advWrap.appendChild(consoleEditArrayRow()));
+
+    const consWrap = overlay.querySelector('#console-edit-disadvantages');
+    getLocalizedArray(c, 'disadvantages').forEach(d => consWrap.appendChild(consoleEditArrayRow(d)));
+    overlay.querySelector('#console-edit-add-disadvantage').addEventListener('click', () => consWrap.appendChild(consoleEditArrayRow()));
+
+    // Image upload — same presign-then-PUT flow used everywhere else on the
+    // site (kind: 'console', admin-gated server-side too, see uploads.js).
+    const fileInput = overlay.querySelector('input[type="file"]');
+    const preview = overlay.querySelector('.console-edit__upload-preview');
+    const urlField = overlay.querySelector('#console-edit-image-url');
+    const uploadStatus = overlay.querySelector('.console-edit__upload-status');
+    fileInput.addEventListener('change', async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+        uploadStatus.textContent = I18nModule.t('tutorial_uploading');
+        try {
+            const presign = await apiConsole('POST', '/uploads/presign', { kind: 'console', contentType: file.type, fileSize: file.size });
+            if (!presign.success) throw new Error(presign.error || 'Presign failed');
+            const putRes = await fetch(presign.uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
+            if (!putRes.ok) throw new Error('Upload failed');
+            urlField.value = presign.publicUrl;
+            preview.src = presign.publicUrl;
+            uploadStatus.textContent = '';
+        } catch (err) {
+            uploadStatus.textContent = err.message || I18nModule.t('tutorial_upload_error');
+        }
+    });
+
+    function closeEditor() {
+        overlay.remove();
+        document.body.style.overflow = '';
+    }
+    overlay.querySelector('.console-edit-modal__close').addEventListener('click', closeEditor);
+    overlay.querySelector('#console-edit-cancel').addEventListener('click', closeEditor);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeEditor(); });
+
+    overlay.querySelector('#console-edit-save').addEventListener('click', async () => {
+        const statusEl = overlay.querySelector('#console-edit-status');
+        const val = id => overlay.querySelector('#' + id).value.trim();
+
+        const payload = {
+            name: val('console-edit-name'),
+            manufacturer: val('console-edit-manufacturer'),
+            generation: Number(val('console-edit-generation')) || 0,
+            release: Number(val('console-edit-release')) || 0,
+            image: urlField.value.trim(),
+            models: readConsoleEditModels(),
+            cpu: {
+                architecture: val('console-edit-cpu-architecture'),
+                proces_nm: val('console-edit-cpu-process'),
+                cores: val('console-edit-cpu-cores'),
+                frequency: val('console-edit-cpu-frequency'),
+                tdp: val('console-edit-cpu-tdp'),
+            },
+            gpu: {
+                architecture: val('console-edit-gpu-architecture'),
+                units: val('console-edit-gpu-units'),
+                frequency: val('console-edit-gpu-frequency'),
+                tflops: val('console-edit-gpu-tflops'),
+                capabilities: val('console-edit-gpu-capabilities'),
+            },
+            memory: {
+                type: val('console-edit-memory-type'),
+                capacity: val('console-edit-memory-capacity'),
+                bus: val('console-edit-memory-bus'),
+                bandwidth: val('console-edit-memory-bandwidth'),
+            },
+            storage: {
+                type: val('console-edit-storage-type'),
+                interface: val('console-edit-storage-interface'),
+                speed: val('console-edit-storage-speed'),
+            },
+            output_video: {
+                resolution: val('console-edit-video-resolution'),
+                refresh: val('console-edit-video-refresh'),
+                hdr: val('console-edit-video-hdr'),
+                upscaling: val('console-edit-video-upscaling'),
+            },
+            technologies: {
+                ray_tracing: overlay.querySelector('#console-edit-tech-rt').checked,
+                vrr: overlay.querySelector('#console-edit-tech-vrr').checked,
+                backwards_compatibility: val('console-edit-tech-backcompat'),
+                other: val('console-edit-tech-other'),
+            },
+            advantages: readConsoleEditArray('console-edit-advantages'),
+            disadvantages: readConsoleEditArray('console-edit-disadvantages'),
+            history: overlay.querySelector('#console-edit-history').value,
+        };
+
+        if (!payload.name || !payload.manufacturer) {
+            statusEl.textContent = I18nModule.t('tutorial_save_error');
+            return;
+        }
+
+        statusEl.textContent = I18nModule.t('tutorial_saving');
+        const consoleId = getConsoleIdFromUrl();
+        const result = await apiConsole('PUT', `/consoles/${encodeURIComponent(consoleId)}`, payload);
+        if (!result.success) {
+            statusEl.textContent = result.error || I18nModule.t('tutorial_save_error');
+            return;
+        }
+
+        currentConsole = result.console;
+        invalidateCache();
+        renderHero(currentConsole);
+        renderHistory(currentConsole);
+        renderSpecs(currentConsole);
+        injectStructuredData(currentConsole, consoleId);
+        closeEditor();
+    });
+}
+
+function initAdminEditButton() {
+    if (!isAdmin()) return;
+    const h1 = document.querySelector('.console-hero-text h1');
+    if (!h1 || document.getElementById('console-edit-btn')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = 'console-edit-btn';
+    btn.className = 'console-edit-trigger';
+    btn.textContent = I18nModule.t('console_edit_btn');
+    btn.addEventListener('click', openConsoleEditor);
+    h1.after(btn);
+}
+
 /**
  * Initialize the console detail page
  */
@@ -823,6 +1141,7 @@ async function init() {
     renderSpecs(currentConsole);
     renderRatingWidget(consoleId);
     initFavoriteButton(consoleId);
+    initAdminEditButton();
     injectStructuredData(currentConsole, consoleId);
 
     // Mark console as visited on server
@@ -852,6 +1171,7 @@ async function init() {
         renderHero(currentConsole);
         renderHistory(currentConsole);
         renderSpecs(currentConsole);
+        initAdminEditButton();
         injectStructuredData(currentConsole, consoleId);
         loadRating(consoleId);
     });

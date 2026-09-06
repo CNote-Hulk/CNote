@@ -3,6 +3,8 @@ const router = express.Router();
 const pool = require('../db');
 const { awardXP } = require('../utils/gamification');
 const { ALLOWED_LANGS } = require('../utils/languages');
+const { authRequired } = require('../middleware/auth');
+const { adminOnly } = require('../middleware/adminOnly');
 
 // GET /api/consoles?lang=en  — all consoles for a language
 router.get('/', async (req, res) => {
@@ -62,6 +64,68 @@ router.get('/:id', async (req, res) => {
 	} catch (err) {
 		console.error('GET /api/consoles/:id error:', err);
 		res.status(500).json({ error: 'Failed to load console' });
+	}
+});
+
+// PUT /api/consoles/:id — admin-only, full-object update of one console's EN
+// data. Console encyclopedia data now lives in `consoles_translations` as the
+// live source of truth (2026-09-06) — this replaces the old
+// edit-JSON-file-then-reimport flow (see CLAUDE.md). Update-only: the console
+// must already exist (has its own static consoles/<id>.html page — this
+// route has no way to create that page, so silently allowing a brand-new id
+// here would create an orphaned DB row nothing could ever display). Only the
+// `en` row is editable from the site for now; other languages are reviewed
+// and updated separately later (same convention as
+// console_mod_tutorials_translations).
+const CONSOLE_SPEC_GROUPS = ['cpu', 'gpu', 'memory', 'storage', 'output_video', 'technologies'];
+router.put('/:id', authRequired, adminOnly, async (req, res) => {
+	const { id } = req.params;
+	const body = req.body || {};
+	if (body.id && body.id !== id) {
+		return res.status(400).json({ success: false, error: 'Body id does not match URL id.' });
+	}
+	if (!body.name || typeof body.name !== 'string') {
+		return res.status(400).json({ success: false, error: 'Missing console name.' });
+	}
+	if (!body.manufacturer || typeof body.manufacturer !== 'string') {
+		return res.status(400).json({ success: false, error: 'Missing manufacturer.' });
+	}
+
+	const data = {
+		id,
+		name: String(body.name).slice(0, 200),
+		manufacturer: String(body.manufacturer).slice(0, 200),
+		generation: Number(body.generation) || 0,
+		release: Number(body.release) || 0,
+		models: Array.isArray(body.models) ? body.models.map(m => String(m).slice(0, 100)).slice(0, 50) : [],
+		image: String(body.image || '').slice(0, 500),
+		advantages: Array.isArray(body.advantages) ? body.advantages.map(a => String(a).slice(0, 300)).slice(0, 20) : [],
+		disadvantages: Array.isArray(body.disadvantages) ? body.disadvantages.map(a => String(a).slice(0, 300)).slice(0, 20) : [],
+		history: String(body.history || '').slice(0, 20000),
+	};
+	CONSOLE_SPEC_GROUPS.forEach(key => {
+		data[key] = (body[key] && typeof body[key] === 'object' && !Array.isArray(body[key])) ? body[key] : {};
+	});
+
+	try {
+		const existing = await pool.query(`SELECT data FROM consoles_translations WHERE id = $1 AND lang = 'en'`, [id]);
+		if (!existing.rows.length) {
+			return res.status(404).json({ success: false, error: 'Console not found — this endpoint updates existing consoles only.' });
+		}
+		// Merge onto the existing row rather than replacing it outright — the
+		// admin edit form doesn't have fields for everything a console object
+		// can carry (e.g. the variable-shaped `dimensions` block, present on
+		// only some consoles), so anything it doesn't manage must survive a
+		// save untouched instead of silently disappearing.
+		const merged = { ...existing.rows[0].data, ...data };
+		const { rows } = await pool.query(
+			`UPDATE consoles_translations SET data = $2 WHERE id = $1 AND lang = 'en' RETURNING data`,
+			[id, merged]
+		);
+		res.json({ success: true, console: rows[0].data });
+	} catch (err) {
+		console.error('PUT /api/consoles/:id error:', err);
+		res.status(500).json({ success: false, error: 'Could not save console.' });
 	}
 });
 

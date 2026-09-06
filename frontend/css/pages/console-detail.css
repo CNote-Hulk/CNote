@@ -976,3 +976,220 @@
         border-radius: 10px;
     }
 }
+
+/* ── Admin edit modal (2026-09-06) ───────────────────────────────────────
+   Full-content editor for a console's name/manufacturer/specs/advantages-
+   disadvantages/history, opened from a small admin-only trigger next to the
+   hero title. Same overlay/modal shape as articles.css's .article-modal*,
+   but console-detail pages don't link articles.css, so these are their own
+   class names living here (already loaded globally via main.css). ── */
+
+.console-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 12px;
+    padding: 4px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-light);
+    background: rgba(var(--accent-rgb), 0.12);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    border-radius: 999px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.console-edit-trigger:hover {
+    background: rgba(var(--accent-rgb), 0.2);
+}
+
+.console-edit-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.console-edit-modal {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+}
+
+.console-edit-modal h2 {
+    margin: 0 0 18px;
+    color: var(--text-light);
+}
+
+.console-edit-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--text-gray);
+    cursor: pointer;
+}
+
+.console-edit-modal__close:hover {
+    color: var(--text-light);
+}
+
+.console-edit__label {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.86rem;
+    font-weight: 600;
+    margin: 16px 0 6px;
+}
+
+.console-edit__label:first-of-type {
+    margin-top: 0;
+}
+
+.console-edit__input,
+.console-edit__textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+}
+
+.console-edit__textarea {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.82rem;
+    resize: vertical;
+}
+
+.console-edit__row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.console-edit__upload {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.console-edit__upload-preview {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.console-edit__upload-status {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+}
+
+.console-edit__array-row,
+.console-edit__model-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.console-edit__array-row .console-edit__array-input,
+.console-edit__model-row input {
+    flex: 1;
+}
+
+.console-edit__array-remove {
+    flex-shrink: 0;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--error);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.console-edit__add-btn {
+    margin-top: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    color: var(--accent-color);
+    background: none;
+    border: 1px dashed rgba(var(--accent-rgb), 0.4);
+    border-radius: var(--radius-md);
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.console-edit__specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.console-edit__specs-grid fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    margin: 0;
+}
+
+.console-edit__specs-grid legend {
+    padding: 0 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.console-edit__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+    color: var(--text-light);
+    font-size: 0.86rem;
+    cursor: pointer;
+}
+
+.console-edit__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+#console-edit-status {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin: 10px 0 0;
+}
+
+@media (max-width: 640px) {
+    .console-edit__row2,
+    .console-edit__specs-grid {
+        grid-template-columns: 1fr;
+    }
+}

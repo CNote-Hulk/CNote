@@ -3,7 +3,7 @@ builder = "RAILPACK"
 buildEnvironment = "V3"
 
 [deploy]
-startCommand = "node backend/js/import-consoles.js && npm start"
+startCommand = "npm start"
 healthcheckPath = "/api/health"
 runtime = "V2"
 numReplicas = 1
