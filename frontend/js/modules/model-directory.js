@@ -8,7 +8,7 @@
 import { I18nModule } from './i18n.js';
 import { AuthModule } from './auth.js';
 import { API_BASE_URL } from '../config.js';
-import { loadModels, invalidateModelsCache } from '../data/console-models.js';
+import { loadModels, invalidateModelsCache } from '../data/console-models.js?v=20260906';
 
 function escapeHtml(str) {
     const div = document.createElement('div');

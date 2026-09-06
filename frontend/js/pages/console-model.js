@@ -1,4 +1,4 @@
-import { MOD_OPTIONS, loadModels, invalidateModelsCache } from '../data/console-models.js';
+import { MOD_OPTIONS, loadModels, invalidateModelsCache } from '../data/console-models.js?v=20260906';
 import { I18nModule } from '../modules/i18n.js';
 import { AuthModule } from '../modules/auth.js';
 import { API_BASE_URL } from '../config.js';
